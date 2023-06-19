@@ -64,6 +64,13 @@ pkg_runfiles(
     prefix = "tools/" + codeql_platform,
 )
 
+pkg_filegroup(
+    name = "resource-dir-arch",
+    srcs = ["//swift/third_party/swift-llvm-support:swift-resource-dir"],
+    prefix = "resource-dir/" + codeql_platform,
+    visibility = ["//visibility:public"],
+)
+
 pkg_files(
     name = "swift-test-sdk-arch",
     srcs = ["//swift/third_party/swift-llvm-support:swift-test-sdk"],
@@ -76,6 +83,7 @@ pkg_filegroup(
     srcs = [
         ":extractor",
         ":swift-test-sdk-arch",
+        ":resource-dir-arch",
     ] + select({
         "@platforms//os:linux": [
             ":incompatible-os",

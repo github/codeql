@@ -1,286 +1,286 @@
-| file://:0:0:0:0 | parameter 0 of AppendQuote | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuote |
-| file://:0:0:0:0 | parameter 0 of AppendQuoteToASCII | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuoteToASCII |
-| file://:0:0:0:0 | parameter 0 of AppendQuoteToGraphic | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuoteToGraphic |
-| file://:0:0:0:0 | parameter 0 of AppendSlice | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendSlice |
-| file://:0:0:0:0 | parameter 0 of As | file://:0:0:0:0 | [summary] to write: argument 1 in As |
-| file://:0:0:0:0 | parameter 0 of Base | file://:0:0:0:0 | [summary] to write: return (return[0]) in Base |
-| file://:0:0:0:0 | parameter 0 of BytePtrFromString | file://:0:0:0:0 | [summary] to write: return (return[0]) in BytePtrFromString |
-| file://:0:0:0:0 | parameter 0 of ByteSliceFromString | file://:0:0:0:0 | [summary] to write: return (return[0]) in ByteSliceFromString |
-| file://:0:0:0:0 | parameter 0 of Clean | file://:0:0:0:0 | [summary] to write: return (return[0]) in Clean |
-| file://:0:0:0:0 | parameter 0 of Dir | file://:0:0:0:0 | [summary] to write: return (return[0]) in Dir |
-| file://:0:0:0:0 | parameter 0 of Expand | file://:0:0:0:0 | [summary] to write: return (return[0]) in Expand |
-| file://:0:0:0:0 | parameter 0 of ExpandEnv | file://:0:0:0:0 | [summary] to write: return (return[0]) in ExpandEnv |
-| file://:0:0:0:0 | parameter 0 of Ext | file://:0:0:0:0 | [summary] to write: return (return[0]) in Ext |
-| file://:0:0:0:0 | parameter 0 of Fields | file://:0:0:0:0 | [summary] to write: return (return[0]) in Fields |
-| file://:0:0:0:0 | parameter 0 of FieldsFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in FieldsFunc |
-| file://:0:0:0:0 | parameter 0 of FileInfoToDirEntry | file://:0:0:0:0 | [summary] to write: return (return[0]) in FileInfoToDirEntry |
-| file://:0:0:0:0 | parameter 0 of Glob | file://:0:0:0:0 | [summary] to write: return (return[0]) in Glob |
-| file://:0:0:0:0 | parameter 0 of Indirect | file://:0:0:0:0 | [summary] to write: return (return[0]) in Indirect |
-| file://:0:0:0:0 | parameter 0 of Join | file://:0:0:0:0 | [summary] to write: return (return[0]) in Join |
-| file://:0:0:0:0 | parameter 0 of LimitReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in LimitReader |
-| file://:0:0:0:0 | parameter 0 of LoadOrStore | file://:0:0:0:0 | [summary] to write: argument -1 in LoadOrStore |
-| file://:0:0:0:0 | parameter 0 of LoadOrStore | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadOrStore |
-| file://:0:0:0:0 | parameter 0 of LoadPointer | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadPointer |
-| file://:0:0:0:0 | parameter 0 of LoadUintptr | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadUintptr |
-| file://:0:0:0:0 | parameter 0 of New | file://:0:0:0:0 | [summary] to write: return (return[0]) in New |
-| file://:0:0:0:0 | parameter 0 of NewFile | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewFile |
-| file://:0:0:0:0 | parameter 0 of NewReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewReader |
-| file://:0:0:0:0 | parameter 0 of NewSectionReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewSectionReader |
-| file://:0:0:0:0 | parameter 0 of NopCloser | file://:0:0:0:0 | [summary] to write: return (return[0]) in NopCloser |
-| file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse |
-| file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse |
-| file://:0:0:0:0 | parameter 0 of ParseQuery | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseQuery |
-| file://:0:0:0:0 | parameter 0 of ParseRequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseRequestURI |
-| file://:0:0:0:0 | parameter 0 of PathEscape | file://:0:0:0:0 | [summary] to write: return (return[0]) in PathEscape |
-| file://:0:0:0:0 | parameter 0 of PathUnescape | file://:0:0:0:0 | [summary] to write: return (return[0]) in PathUnescape |
-| file://:0:0:0:0 | parameter 0 of Put | file://:0:0:0:0 | [summary] to write: argument -1 in Put |
-| file://:0:0:0:0 | parameter 0 of QueryEscape | file://:0:0:0:0 | [summary] to write: return (return[0]) in QueryEscape |
-| file://:0:0:0:0 | parameter 0 of QueryUnescape | file://:0:0:0:0 | [summary] to write: return (return[0]) in QueryUnescape |
-| file://:0:0:0:0 | parameter 0 of Quote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Quote |
-| file://:0:0:0:0 | parameter 0 of QuoteToASCII | file://:0:0:0:0 | [summary] to write: return (return[0]) in QuoteToASCII |
-| file://:0:0:0:0 | parameter 0 of QuoteToGraphic | file://:0:0:0:0 | [summary] to write: return (return[0]) in QuoteToGraphic |
-| file://:0:0:0:0 | parameter 0 of QuotedPrefix | file://:0:0:0:0 | [summary] to write: return (return[0]) in QuotedPrefix |
-| file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
-| file://:0:0:0:0 | parameter 0 of ReadAtLeast | file://:0:0:0:0 | [summary] to write: argument 1 in ReadAtLeast |
-| file://:0:0:0:0 | parameter 0 of ReadDir | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadDir |
-| file://:0:0:0:0 | parameter 0 of ReadFile | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadFile |
-| file://:0:0:0:0 | parameter 0 of ReadFrom | file://:0:0:0:0 | [summary] to write: argument -1 in ReadFrom |
-| file://:0:0:0:0 | parameter 0 of ReadFrom | file://:0:0:0:0 | [summary] to write: argument -1 in ReadFrom |
-| file://:0:0:0:0 | parameter 0 of ReadFrom | file://:0:0:0:0 | [summary] to write: argument -1 in ReadFrom |
-| file://:0:0:0:0 | parameter 0 of ReadFull | file://:0:0:0:0 | [summary] to write: argument 1 in ReadFull |
-| file://:0:0:0:0 | parameter 0 of Repeat | file://:0:0:0:0 | [summary] to write: return (return[0]) in Repeat |
-| file://:0:0:0:0 | parameter 0 of Replace | file://:0:0:0:0 | [summary] to write: return (return[0]) in Replace |
-| file://:0:0:0:0 | parameter 0 of Replace | file://:0:0:0:0 | [summary] to write: return (return[0]) in Replace |
-| file://:0:0:0:0 | parameter 0 of ReplaceAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReplaceAll |
-| file://:0:0:0:0 | parameter 0 of Reset | file://:0:0:0:0 | [summary] to write: argument -1 in Reset |
-| file://:0:0:0:0 | parameter 0 of ResolveReference | file://:0:0:0:0 | [summary] to write: return (return[0]) in ResolveReference |
-| file://:0:0:0:0 | parameter 0 of Reverse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Reverse |
-| file://:0:0:0:0 | parameter 0 of Send | file://:0:0:0:0 | [summary] to write: argument -1 in Send |
-| file://:0:0:0:0 | parameter 0 of Set | file://:0:0:0:0 | [summary] to write: argument -1 in Set |
-| file://:0:0:0:0 | parameter 0 of SetBytes | file://:0:0:0:0 | [summary] to write: argument -1 in SetBytes |
-| file://:0:0:0:0 | parameter 0 of SetMapIndex | file://:0:0:0:0 | [summary] to write: argument -1 in SetMapIndex |
-| file://:0:0:0:0 | parameter 0 of SetPointer | file://:0:0:0:0 | [summary] to write: argument -1 in SetPointer |
-| file://:0:0:0:0 | parameter 0 of SetString | file://:0:0:0:0 | [summary] to write: argument -1 in SetString |
-| file://:0:0:0:0 | parameter 0 of Split | file://:0:0:0:0 | [summary] to write: return (return[0]) in Split |
-| file://:0:0:0:0 | parameter 0 of Split | file://:0:0:0:0 | [summary] to write: return (return[0]) in Split |
-| file://:0:0:0:0 | parameter 0 of Split | file://:0:0:0:0 | [summary] to write: return (return[1]) in Split |
-| file://:0:0:0:0 | parameter 0 of SplitAfter | file://:0:0:0:0 | [summary] to write: return (return[0]) in SplitAfter |
-| file://:0:0:0:0 | parameter 0 of SplitAfterN | file://:0:0:0:0 | [summary] to write: return (return[0]) in SplitAfterN |
-| file://:0:0:0:0 | parameter 0 of SplitN | file://:0:0:0:0 | [summary] to write: return (return[0]) in SplitN |
-| file://:0:0:0:0 | parameter 0 of Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
-| file://:0:0:0:0 | parameter 0 of Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
-| file://:0:0:0:0 | parameter 0 of Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
-| file://:0:0:0:0 | parameter 0 of Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
-| file://:0:0:0:0 | parameter 0 of StringBytePtr | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringBytePtr |
-| file://:0:0:0:0 | parameter 0 of StringByteSlice | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringByteSlice |
-| file://:0:0:0:0 | parameter 0 of Sub | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sub |
-| file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
-| file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
-| file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
-| file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
-| file://:0:0:0:0 | parameter 0 of SwapPointer | file://:0:0:0:0 | [summary] to write: return (return[0]) in SwapPointer |
-| file://:0:0:0:0 | parameter 0 of SwapUintptr | file://:0:0:0:0 | [summary] to write: return (return[0]) in SwapUintptr |
-| file://:0:0:0:0 | parameter 0 of TeeReader | file://:0:0:0:0 | [summary] to write: argument 1 in TeeReader |
-| file://:0:0:0:0 | parameter 0 of TeeReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in TeeReader |
-| file://:0:0:0:0 | parameter 0 of Title | file://:0:0:0:0 | [summary] to write: return (return[0]) in Title |
-| file://:0:0:0:0 | parameter 0 of ToLower | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToLower |
-| file://:0:0:0:0 | parameter 0 of ToTitle | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToTitle |
-| file://:0:0:0:0 | parameter 0 of ToUpper | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToUpper |
-| file://:0:0:0:0 | parameter 0 of ToValidUTF8 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToValidUTF8 |
-| file://:0:0:0:0 | parameter 0 of Trim | file://:0:0:0:0 | [summary] to write: return (return[0]) in Trim |
-| file://:0:0:0:0 | parameter 0 of TrimFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimFunc |
-| file://:0:0:0:0 | parameter 0 of TrimLeft | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimLeft |
-| file://:0:0:0:0 | parameter 0 of TrimLeftFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimLeftFunc |
-| file://:0:0:0:0 | parameter 0 of TrimPrefix | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimPrefix |
-| file://:0:0:0:0 | parameter 0 of TrimRight | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimRight |
-| file://:0:0:0:0 | parameter 0 of TrimRightFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimRightFunc |
-| file://:0:0:0:0 | parameter 0 of TrimSpace | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimSpace |
-| file://:0:0:0:0 | parameter 0 of TrimSuffix | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimSuffix |
-| file://:0:0:0:0 | parameter 0 of TrySend | file://:0:0:0:0 | [summary] to write: argument -1 in TrySend |
-| file://:0:0:0:0 | parameter 0 of Unquote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Unquote |
-| file://:0:0:0:0 | parameter 0 of UnquoteChar | file://:0:0:0:0 | [summary] to write: return (return[2]) in UnquoteChar |
-| file://:0:0:0:0 | parameter 0 of Unwrap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Unwrap |
-| file://:0:0:0:0 | parameter 0 of User | file://:0:0:0:0 | [summary] to write: return (return[0]) in User |
-| file://:0:0:0:0 | parameter 0 of UserPassword | file://:0:0:0:0 | [summary] to write: return (return[0]) in UserPassword |
-| file://:0:0:0:0 | parameter 0 of ValueOf | file://:0:0:0:0 | [summary] to write: return (return[0]) in ValueOf |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
-| file://:0:0:0:0 | parameter 0 of WriteAt | file://:0:0:0:0 | [summary] to write: argument -1 in WriteAt |
-| file://:0:0:0:0 | parameter 0 of WriteAt | file://:0:0:0:0 | [summary] to write: argument -1 in WriteAt |
-| file://:0:0:0:0 | parameter 0 of WriteAt | file://:0:0:0:0 | [summary] to write: argument -1 in WriteAt |
-| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
-| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
-| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
-| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
-| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
-| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
-| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
-| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
-| file://:0:0:0:0 | parameter 1 of AddUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in AddUintptr |
-| file://:0:0:0:0 | parameter 1 of AddUintptr | file://:0:0:0:0 | [summary] to write: return (return[0]) in AddUintptr |
-| file://:0:0:0:0 | parameter 1 of AppendQuote | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuote |
-| file://:0:0:0:0 | parameter 1 of AppendQuoteToASCII | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuoteToASCII |
-| file://:0:0:0:0 | parameter 1 of AppendQuoteToGraphic | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuoteToGraphic |
-| file://:0:0:0:0 | parameter 1 of AppendSlice | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendSlice |
-| file://:0:0:0:0 | parameter 1 of Copy | file://:0:0:0:0 | [summary] to write: argument 0 in Copy |
-| file://:0:0:0:0 | parameter 1 of Copy | file://:0:0:0:0 | [summary] to write: argument 0 in Copy |
-| file://:0:0:0:0 | parameter 1 of CopyBuffer | file://:0:0:0:0 | [summary] to write: argument 0 in CopyBuffer |
-| file://:0:0:0:0 | parameter 1 of CopyN | file://:0:0:0:0 | [summary] to write: argument 0 in CopyN |
-| file://:0:0:0:0 | parameter 1 of Join | file://:0:0:0:0 | [summary] to write: return (return[0]) in Join |
-| file://:0:0:0:0 | parameter 1 of LoadOrStore | file://:0:0:0:0 | [summary] to write: argument -1 in LoadOrStore |
-| file://:0:0:0:0 | parameter 1 of LoadOrStore | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadOrStore |
-| file://:0:0:0:0 | parameter 1 of Map | file://:0:0:0:0 | [summary] to write: return (return[0]) in Map |
-| file://:0:0:0:0 | parameter 1 of SetMapIndex | file://:0:0:0:0 | [summary] to write: argument -1 in SetMapIndex |
-| file://:0:0:0:0 | parameter 1 of Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
-| file://:0:0:0:0 | parameter 1 of StorePointer | file://:0:0:0:0 | [summary] to write: argument 0 in StorePointer |
-| file://:0:0:0:0 | parameter 1 of StoreUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in StoreUintptr |
-| file://:0:0:0:0 | parameter 1 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
-| file://:0:0:0:0 | parameter 1 of SwapPointer | file://:0:0:0:0 | [summary] to write: argument 0 in SwapPointer |
-| file://:0:0:0:0 | parameter 1 of SwapUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in SwapUintptr |
-| file://:0:0:0:0 | parameter 1 of ToLowerSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToLowerSpecial |
-| file://:0:0:0:0 | parameter 1 of ToTitleSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToTitleSpecial |
-| file://:0:0:0:0 | parameter 1 of ToUpperSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToUpperSpecial |
-| file://:0:0:0:0 | parameter 1 of ToValidUTF8 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToValidUTF8 |
-| file://:0:0:0:0 | parameter 1 of UserPassword | file://:0:0:0:0 | [summary] to write: return (return[0]) in UserPassword |
-| file://:0:0:0:0 | parameter 1 of WriteString | file://:0:0:0:0 | [summary] to write: argument 0 in WriteString |
-| file://:0:0:0:0 | parameter 1 of WriteString | file://:0:0:0:0 | [summary] to write: argument 0 in WriteString |
-| file://:0:0:0:0 | parameter 2 of CompareAndSwap | file://:0:0:0:0 | [summary] to write: argument -1 in CompareAndSwap |
-| file://:0:0:0:0 | parameter 2 of CompareAndSwapPointer | file://:0:0:0:0 | [summary] to write: argument 0 in CompareAndSwapPointer |
-| file://:0:0:0:0 | parameter 2 of CompareAndSwapUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in CompareAndSwapUintptr |
-| file://:0:0:0:0 | parameter 2 of Replace | file://:0:0:0:0 | [summary] to write: return (return[0]) in Replace |
-| file://:0:0:0:0 | parameter 2 of ReplaceAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReplaceAll |
-| file://:0:0:0:0 | parameter -1 of Addr | file://:0:0:0:0 | [summary] to write: return (return[0]) in Addr |
-| file://:0:0:0:0 | parameter -1 of Bytes | file://:0:0:0:0 | [summary] to write: return (return[0]) in Bytes |
-| file://:0:0:0:0 | parameter -1 of Convert | file://:0:0:0:0 | [summary] to write: return (return[0]) in Convert |
-| file://:0:0:0:0 | parameter -1 of Elem | file://:0:0:0:0 | [summary] to write: return (return[0]) in Elem |
-| file://:0:0:0:0 | parameter -1 of Encode | file://:0:0:0:0 | [summary] to write: return (return[0]) in Encode |
-| file://:0:0:0:0 | parameter -1 of EscapedPath | file://:0:0:0:0 | [summary] to write: return (return[0]) in EscapedPath |
-| file://:0:0:0:0 | parameter -1 of Fd | file://:0:0:0:0 | [summary] to write: return (return[0]) in Fd |
-| file://:0:0:0:0 | parameter -1 of Field | file://:0:0:0:0 | [summary] to write: return (return[0]) in Field |
-| file://:0:0:0:0 | parameter -1 of FieldByIndex | file://:0:0:0:0 | [summary] to write: return (return[0]) in FieldByIndex |
-| file://:0:0:0:0 | parameter -1 of FieldByName | file://:0:0:0:0 | [summary] to write: return (return[0]) in FieldByName |
-| file://:0:0:0:0 | parameter -1 of FieldByNameFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in FieldByNameFunc |
-| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | parameter -1 of Glob | file://:0:0:0:0 | [summary] to write: return (return[0]) in Glob |
-| file://:0:0:0:0 | parameter -1 of Glob | file://:0:0:0:0 | [summary] to write: return (return[0]) in Glob |
-| file://:0:0:0:0 | parameter -1 of GoString | file://:0:0:0:0 | [summary] to write: return (return[0]) in GoString |
-| file://:0:0:0:0 | parameter -1 of GoString | file://:0:0:0:0 | [summary] to write: return (return[0]) in GoString |
-| file://:0:0:0:0 | parameter -1 of Hostname | file://:0:0:0:0 | [summary] to write: return (return[0]) in Hostname |
-| file://:0:0:0:0 | parameter -1 of Index | file://:0:0:0:0 | [summary] to write: return (return[0]) in Index |
-| file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
-| file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
-| file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
-| file://:0:0:0:0 | parameter -1 of Interface | file://:0:0:0:0 | [summary] to write: return (return[0]) in Interface |
-| file://:0:0:0:0 | parameter -1 of InterfaceData | file://:0:0:0:0 | [summary] to write: return (return[0]) in InterfaceData |
-| file://:0:0:0:0 | parameter -1 of Key | file://:0:0:0:0 | [summary] to write: return (return[0]) in Key |
-| file://:0:0:0:0 | parameter -1 of Load | file://:0:0:0:0 | [summary] to write: return (return[0]) in Load |
-| file://:0:0:0:0 | parameter -1 of Load | file://:0:0:0:0 | [summary] to write: return (return[0]) in Load |
-| file://:0:0:0:0 | parameter -1 of Load | file://:0:0:0:0 | [summary] to write: return (return[0]) in Load |
-| file://:0:0:0:0 | parameter -1 of Load | file://:0:0:0:0 | [summary] to write: return (return[0]) in Load |
-| file://:0:0:0:0 | parameter -1 of LoadOrStore | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadOrStore |
-| file://:0:0:0:0 | parameter -1 of Lookup | file://:0:0:0:0 | [summary] to write: return (return[0]) in Lookup |
-| file://:0:0:0:0 | parameter -1 of MapIndex | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapIndex |
-| file://:0:0:0:0 | parameter -1 of MapKeys | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapKeys |
-| file://:0:0:0:0 | parameter -1 of MapRange | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapRange |
-| file://:0:0:0:0 | parameter -1 of MarshalBinary | file://:0:0:0:0 | [summary] to write: return (return[0]) in MarshalBinary |
-| file://:0:0:0:0 | parameter -1 of Method | file://:0:0:0:0 | [summary] to write: return (return[0]) in Method |
-| file://:0:0:0:0 | parameter -1 of MethodByName | file://:0:0:0:0 | [summary] to write: return (return[0]) in MethodByName |
-| file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
-| file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
-| file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
-| file://:0:0:0:0 | parameter -1 of Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open |
-| file://:0:0:0:0 | parameter -1 of Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open |
-| file://:0:0:0:0 | parameter -1 of Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open |
-| file://:0:0:0:0 | parameter -1 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse |
-| file://:0:0:0:0 | parameter -1 of Password | file://:0:0:0:0 | [summary] to write: return (return[0]) in Password |
-| file://:0:0:0:0 | parameter -1 of Pointer | file://:0:0:0:0 | [summary] to write: return (return[0]) in Pointer |
-| file://:0:0:0:0 | parameter -1 of Port | file://:0:0:0:0 | [summary] to write: return (return[0]) in Port |
-| file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of ReadAt | file://:0:0:0:0 | [summary] to write: argument 0 in ReadAt |
-| file://:0:0:0:0 | parameter -1 of ReadAt | file://:0:0:0:0 | [summary] to write: argument 0 in ReadAt |
-| file://:0:0:0:0 | parameter -1 of ReadAt | file://:0:0:0:0 | [summary] to write: argument 0 in ReadAt |
-| file://:0:0:0:0 | parameter -1 of ReadAt | file://:0:0:0:0 | [summary] to write: argument 0 in ReadAt |
-| file://:0:0:0:0 | parameter -1 of ReadDir | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadDir |
-| file://:0:0:0:0 | parameter -1 of ReadDir | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadDir |
-| file://:0:0:0:0 | parameter -1 of ReadFile | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadFile |
-| file://:0:0:0:0 | parameter -1 of ReadFile | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadFile |
-| file://:0:0:0:0 | parameter -1 of Recv | file://:0:0:0:0 | [summary] to write: return (return[0]) in Recv |
-| file://:0:0:0:0 | parameter -1 of RequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in RequestURI |
-| file://:0:0:0:0 | parameter -1 of ResolveReference | file://:0:0:0:0 | [summary] to write: return (return[0]) in ResolveReference |
-| file://:0:0:0:0 | parameter -1 of Slice | file://:0:0:0:0 | [summary] to write: return (return[0]) in Slice |
-| file://:0:0:0:0 | parameter -1 of Slice3 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Slice3 |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of Sub | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sub |
-| file://:0:0:0:0 | parameter -1 of Sub | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sub |
-| file://:0:0:0:0 | parameter -1 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
-| file://:0:0:0:0 | parameter -1 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
-| file://:0:0:0:0 | parameter -1 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
-| file://:0:0:0:0 | parameter -1 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
-| file://:0:0:0:0 | parameter -1 of SyscallConn | file://:0:0:0:0 | [summary] to write: return (return[0]) in SyscallConn |
-| file://:0:0:0:0 | parameter -1 of SyscallConn | file://:0:0:0:0 | [summary] to write: return (return[0]) in SyscallConn |
-| file://:0:0:0:0 | parameter -1 of Token | file://:0:0:0:0 | [summary] to write: return (return[0]) in Token |
-| file://:0:0:0:0 | parameter -1 of Token | file://:0:0:0:0 | [summary] to write: return (return[0]) in Token |
-| file://:0:0:0:0 | parameter -1 of TryRecv | file://:0:0:0:0 | [summary] to write: return (return[0]) in TryRecv |
-| file://:0:0:0:0 | parameter -1 of UnsafeAddr | file://:0:0:0:0 | [summary] to write: return (return[0]) in UnsafeAddr |
-| file://:0:0:0:0 | parameter -1 of Username | file://:0:0:0:0 | [summary] to write: return (return[0]) in Username |
-| file://:0:0:0:0 | parameter -1 of Value | file://:0:0:0:0 | [summary] to write: return (return[0]) in Value |
-| file://:0:0:0:0 | parameter -1 of WriteTo | file://:0:0:0:0 | [summary] to write: argument 0 in WriteTo |
-| file://:0:0:0:0 | parameter -1 of WriteTo | file://:0:0:0:0 | [summary] to write: argument 0 in WriteTo |
-| file://:0:0:0:0 | parameter -1 of WriteTo | file://:0:0:0:0 | [summary] to write: argument 0 in WriteTo |
-| file://:0:0:0:0 | parameter -1 of WriteTo | file://:0:0:0:0 | [summary] to write: argument 0 in WriteTo |
+| file://:0:0:0:0 | [summary param] 0 in AppendQuote | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuote |
+| file://:0:0:0:0 | [summary param] 0 in AppendQuoteToASCII | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuoteToASCII |
+| file://:0:0:0:0 | [summary param] 0 in AppendQuoteToGraphic | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuoteToGraphic |
+| file://:0:0:0:0 | [summary param] 0 in AppendSlice | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendSlice |
+| file://:0:0:0:0 | [summary param] 0 in As | file://:0:0:0:0 | [summary] to write: argument 1 in As |
+| file://:0:0:0:0 | [summary param] 0 in Base | file://:0:0:0:0 | [summary] to write: return (return[0]) in Base |
+| file://:0:0:0:0 | [summary param] 0 in BytePtrFromString | file://:0:0:0:0 | [summary] to write: return (return[0]) in BytePtrFromString |
+| file://:0:0:0:0 | [summary param] 0 in ByteSliceFromString | file://:0:0:0:0 | [summary] to write: return (return[0]) in ByteSliceFromString |
+| file://:0:0:0:0 | [summary param] 0 in Clean | file://:0:0:0:0 | [summary] to write: return (return[0]) in Clean |
+| file://:0:0:0:0 | [summary param] 0 in Dir | file://:0:0:0:0 | [summary] to write: return (return[0]) in Dir |
+| file://:0:0:0:0 | [summary param] 0 in Expand | file://:0:0:0:0 | [summary] to write: return (return[0]) in Expand |
+| file://:0:0:0:0 | [summary param] 0 in ExpandEnv | file://:0:0:0:0 | [summary] to write: return (return[0]) in ExpandEnv |
+| file://:0:0:0:0 | [summary param] 0 in Ext | file://:0:0:0:0 | [summary] to write: return (return[0]) in Ext |
+| file://:0:0:0:0 | [summary param] 0 in Fields | file://:0:0:0:0 | [summary] to write: return (return[0]) in Fields |
+| file://:0:0:0:0 | [summary param] 0 in FieldsFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in FieldsFunc |
+| file://:0:0:0:0 | [summary param] 0 in FileInfoToDirEntry | file://:0:0:0:0 | [summary] to write: return (return[0]) in FileInfoToDirEntry |
+| file://:0:0:0:0 | [summary param] 0 in Glob | file://:0:0:0:0 | [summary] to write: return (return[0]) in Glob |
+| file://:0:0:0:0 | [summary param] 0 in Indirect | file://:0:0:0:0 | [summary] to write: return (return[0]) in Indirect |
+| file://:0:0:0:0 | [summary param] 0 in Join | file://:0:0:0:0 | [summary] to write: return (return[0]) in Join |
+| file://:0:0:0:0 | [summary param] 0 in LimitReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in LimitReader |
+| file://:0:0:0:0 | [summary param] 0 in LoadOrStore | file://:0:0:0:0 | [summary] to write: argument -1 in LoadOrStore |
+| file://:0:0:0:0 | [summary param] 0 in LoadOrStore | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadOrStore |
+| file://:0:0:0:0 | [summary param] 0 in LoadPointer | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadPointer |
+| file://:0:0:0:0 | [summary param] 0 in LoadUintptr | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadUintptr |
+| file://:0:0:0:0 | [summary param] 0 in New | file://:0:0:0:0 | [summary] to write: return (return[0]) in New |
+| file://:0:0:0:0 | [summary param] 0 in NewFile | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewFile |
+| file://:0:0:0:0 | [summary param] 0 in NewReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewReader |
+| file://:0:0:0:0 | [summary param] 0 in NewSectionReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewSectionReader |
+| file://:0:0:0:0 | [summary param] 0 in NopCloser | file://:0:0:0:0 | [summary] to write: return (return[0]) in NopCloser |
+| file://:0:0:0:0 | [summary param] 0 in Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse |
+| file://:0:0:0:0 | [summary param] 0 in Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse |
+| file://:0:0:0:0 | [summary param] 0 in ParseQuery | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseQuery |
+| file://:0:0:0:0 | [summary param] 0 in ParseRequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseRequestURI |
+| file://:0:0:0:0 | [summary param] 0 in PathEscape | file://:0:0:0:0 | [summary] to write: return (return[0]) in PathEscape |
+| file://:0:0:0:0 | [summary param] 0 in PathUnescape | file://:0:0:0:0 | [summary] to write: return (return[0]) in PathUnescape |
+| file://:0:0:0:0 | [summary param] 0 in Put | file://:0:0:0:0 | [summary] to write: argument -1 in Put |
+| file://:0:0:0:0 | [summary param] 0 in QueryEscape | file://:0:0:0:0 | [summary] to write: return (return[0]) in QueryEscape |
+| file://:0:0:0:0 | [summary param] 0 in QueryUnescape | file://:0:0:0:0 | [summary] to write: return (return[0]) in QueryUnescape |
+| file://:0:0:0:0 | [summary param] 0 in Quote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Quote |
+| file://:0:0:0:0 | [summary param] 0 in QuoteToASCII | file://:0:0:0:0 | [summary] to write: return (return[0]) in QuoteToASCII |
+| file://:0:0:0:0 | [summary param] 0 in QuoteToGraphic | file://:0:0:0:0 | [summary] to write: return (return[0]) in QuoteToGraphic |
+| file://:0:0:0:0 | [summary param] 0 in QuotedPrefix | file://:0:0:0:0 | [summary] to write: return (return[0]) in QuotedPrefix |
+| file://:0:0:0:0 | [summary param] 0 in ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
+| file://:0:0:0:0 | [summary param] 0 in ReadAtLeast | file://:0:0:0:0 | [summary] to write: argument 1 in ReadAtLeast |
+| file://:0:0:0:0 | [summary param] 0 in ReadDir | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadDir |
+| file://:0:0:0:0 | [summary param] 0 in ReadFile | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadFile |
+| file://:0:0:0:0 | [summary param] 0 in ReadFrom | file://:0:0:0:0 | [summary] to write: argument -1 in ReadFrom |
+| file://:0:0:0:0 | [summary param] 0 in ReadFrom | file://:0:0:0:0 | [summary] to write: argument -1 in ReadFrom |
+| file://:0:0:0:0 | [summary param] 0 in ReadFrom | file://:0:0:0:0 | [summary] to write: argument -1 in ReadFrom |
+| file://:0:0:0:0 | [summary param] 0 in ReadFull | file://:0:0:0:0 | [summary] to write: argument 1 in ReadFull |
+| file://:0:0:0:0 | [summary param] 0 in Repeat | file://:0:0:0:0 | [summary] to write: return (return[0]) in Repeat |
+| file://:0:0:0:0 | [summary param] 0 in Replace | file://:0:0:0:0 | [summary] to write: return (return[0]) in Replace |
+| file://:0:0:0:0 | [summary param] 0 in Replace | file://:0:0:0:0 | [summary] to write: return (return[0]) in Replace |
+| file://:0:0:0:0 | [summary param] 0 in ReplaceAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReplaceAll |
+| file://:0:0:0:0 | [summary param] 0 in Reset | file://:0:0:0:0 | [summary] to write: argument -1 in Reset |
+| file://:0:0:0:0 | [summary param] 0 in ResolveReference | file://:0:0:0:0 | [summary] to write: return (return[0]) in ResolveReference |
+| file://:0:0:0:0 | [summary param] 0 in Reverse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Reverse |
+| file://:0:0:0:0 | [summary param] 0 in Send | file://:0:0:0:0 | [summary] to write: argument -1 in Send |
+| file://:0:0:0:0 | [summary param] 0 in Set | file://:0:0:0:0 | [summary] to write: argument -1 in Set |
+| file://:0:0:0:0 | [summary param] 0 in SetBytes | file://:0:0:0:0 | [summary] to write: argument -1 in SetBytes |
+| file://:0:0:0:0 | [summary param] 0 in SetMapIndex | file://:0:0:0:0 | [summary] to write: argument -1 in SetMapIndex |
+| file://:0:0:0:0 | [summary param] 0 in SetPointer | file://:0:0:0:0 | [summary] to write: argument -1 in SetPointer |
+| file://:0:0:0:0 | [summary param] 0 in SetString | file://:0:0:0:0 | [summary] to write: argument -1 in SetString |
+| file://:0:0:0:0 | [summary param] 0 in Split | file://:0:0:0:0 | [summary] to write: return (return[0]) in Split |
+| file://:0:0:0:0 | [summary param] 0 in Split | file://:0:0:0:0 | [summary] to write: return (return[0]) in Split |
+| file://:0:0:0:0 | [summary param] 0 in Split | file://:0:0:0:0 | [summary] to write: return (return[1]) in Split |
+| file://:0:0:0:0 | [summary param] 0 in SplitAfter | file://:0:0:0:0 | [summary] to write: return (return[0]) in SplitAfter |
+| file://:0:0:0:0 | [summary param] 0 in SplitAfterN | file://:0:0:0:0 | [summary] to write: return (return[0]) in SplitAfterN |
+| file://:0:0:0:0 | [summary param] 0 in SplitN | file://:0:0:0:0 | [summary] to write: return (return[0]) in SplitN |
+| file://:0:0:0:0 | [summary param] 0 in Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
+| file://:0:0:0:0 | [summary param] 0 in Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
+| file://:0:0:0:0 | [summary param] 0 in Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
+| file://:0:0:0:0 | [summary param] 0 in Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
+| file://:0:0:0:0 | [summary param] 0 in StringBytePtr | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringBytePtr |
+| file://:0:0:0:0 | [summary param] 0 in StringByteSlice | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringByteSlice |
+| file://:0:0:0:0 | [summary param] 0 in Sub | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sub |
+| file://:0:0:0:0 | [summary param] 0 in Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
+| file://:0:0:0:0 | [summary param] 0 in Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
+| file://:0:0:0:0 | [summary param] 0 in Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
+| file://:0:0:0:0 | [summary param] 0 in Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
+| file://:0:0:0:0 | [summary param] 0 in SwapPointer | file://:0:0:0:0 | [summary] to write: return (return[0]) in SwapPointer |
+| file://:0:0:0:0 | [summary param] 0 in SwapUintptr | file://:0:0:0:0 | [summary] to write: return (return[0]) in SwapUintptr |
+| file://:0:0:0:0 | [summary param] 0 in TeeReader | file://:0:0:0:0 | [summary] to write: argument 1 in TeeReader |
+| file://:0:0:0:0 | [summary param] 0 in TeeReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in TeeReader |
+| file://:0:0:0:0 | [summary param] 0 in Title | file://:0:0:0:0 | [summary] to write: return (return[0]) in Title |
+| file://:0:0:0:0 | [summary param] 0 in ToLower | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToLower |
+| file://:0:0:0:0 | [summary param] 0 in ToTitle | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToTitle |
+| file://:0:0:0:0 | [summary param] 0 in ToUpper | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToUpper |
+| file://:0:0:0:0 | [summary param] 0 in ToValidUTF8 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToValidUTF8 |
+| file://:0:0:0:0 | [summary param] 0 in Trim | file://:0:0:0:0 | [summary] to write: return (return[0]) in Trim |
+| file://:0:0:0:0 | [summary param] 0 in TrimFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimFunc |
+| file://:0:0:0:0 | [summary param] 0 in TrimLeft | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimLeft |
+| file://:0:0:0:0 | [summary param] 0 in TrimLeftFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimLeftFunc |
+| file://:0:0:0:0 | [summary param] 0 in TrimPrefix | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimPrefix |
+| file://:0:0:0:0 | [summary param] 0 in TrimRight | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimRight |
+| file://:0:0:0:0 | [summary param] 0 in TrimRightFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimRightFunc |
+| file://:0:0:0:0 | [summary param] 0 in TrimSpace | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimSpace |
+| file://:0:0:0:0 | [summary param] 0 in TrimSuffix | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimSuffix |
+| file://:0:0:0:0 | [summary param] 0 in TrySend | file://:0:0:0:0 | [summary] to write: argument -1 in TrySend |
+| file://:0:0:0:0 | [summary param] 0 in Unquote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Unquote |
+| file://:0:0:0:0 | [summary param] 0 in UnquoteChar | file://:0:0:0:0 | [summary] to write: return (return[2]) in UnquoteChar |
+| file://:0:0:0:0 | [summary param] 0 in Unwrap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Unwrap |
+| file://:0:0:0:0 | [summary param] 0 in User | file://:0:0:0:0 | [summary] to write: return (return[0]) in User |
+| file://:0:0:0:0 | [summary param] 0 in UserPassword | file://:0:0:0:0 | [summary] to write: return (return[0]) in UserPassword |
+| file://:0:0:0:0 | [summary param] 0 in ValueOf | file://:0:0:0:0 | [summary] to write: return (return[0]) in ValueOf |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
+| file://:0:0:0:0 | [summary param] 0 in WriteAt | file://:0:0:0:0 | [summary] to write: argument -1 in WriteAt |
+| file://:0:0:0:0 | [summary param] 0 in WriteAt | file://:0:0:0:0 | [summary] to write: argument -1 in WriteAt |
+| file://:0:0:0:0 | [summary param] 0 in WriteAt | file://:0:0:0:0 | [summary] to write: argument -1 in WriteAt |
+| file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary param] 1 in AddUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in AddUintptr |
+| file://:0:0:0:0 | [summary param] 1 in AddUintptr | file://:0:0:0:0 | [summary] to write: return (return[0]) in AddUintptr |
+| file://:0:0:0:0 | [summary param] 1 in AppendQuote | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuote |
+| file://:0:0:0:0 | [summary param] 1 in AppendQuoteToASCII | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuoteToASCII |
+| file://:0:0:0:0 | [summary param] 1 in AppendQuoteToGraphic | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendQuoteToGraphic |
+| file://:0:0:0:0 | [summary param] 1 in AppendSlice | file://:0:0:0:0 | [summary] to write: return (return[0]) in AppendSlice |
+| file://:0:0:0:0 | [summary param] 1 in Copy | file://:0:0:0:0 | [summary] to write: argument 0 in Copy |
+| file://:0:0:0:0 | [summary param] 1 in Copy | file://:0:0:0:0 | [summary] to write: argument 0 in Copy |
+| file://:0:0:0:0 | [summary param] 1 in CopyBuffer | file://:0:0:0:0 | [summary] to write: argument 0 in CopyBuffer |
+| file://:0:0:0:0 | [summary param] 1 in CopyN | file://:0:0:0:0 | [summary] to write: argument 0 in CopyN |
+| file://:0:0:0:0 | [summary param] 1 in Join | file://:0:0:0:0 | [summary] to write: return (return[0]) in Join |
+| file://:0:0:0:0 | [summary param] 1 in LoadOrStore | file://:0:0:0:0 | [summary] to write: argument -1 in LoadOrStore |
+| file://:0:0:0:0 | [summary param] 1 in LoadOrStore | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadOrStore |
+| file://:0:0:0:0 | [summary param] 1 in Map | file://:0:0:0:0 | [summary] to write: return (return[0]) in Map |
+| file://:0:0:0:0 | [summary param] 1 in SetMapIndex | file://:0:0:0:0 | [summary] to write: argument -1 in SetMapIndex |
+| file://:0:0:0:0 | [summary param] 1 in Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
+| file://:0:0:0:0 | [summary param] 1 in StorePointer | file://:0:0:0:0 | [summary] to write: argument 0 in StorePointer |
+| file://:0:0:0:0 | [summary param] 1 in StoreUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in StoreUintptr |
+| file://:0:0:0:0 | [summary param] 1 in Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
+| file://:0:0:0:0 | [summary param] 1 in SwapPointer | file://:0:0:0:0 | [summary] to write: argument 0 in SwapPointer |
+| file://:0:0:0:0 | [summary param] 1 in SwapUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in SwapUintptr |
+| file://:0:0:0:0 | [summary param] 1 in ToLowerSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToLowerSpecial |
+| file://:0:0:0:0 | [summary param] 1 in ToTitleSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToTitleSpecial |
+| file://:0:0:0:0 | [summary param] 1 in ToUpperSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToUpperSpecial |
+| file://:0:0:0:0 | [summary param] 1 in ToValidUTF8 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToValidUTF8 |
+| file://:0:0:0:0 | [summary param] 1 in UserPassword | file://:0:0:0:0 | [summary] to write: return (return[0]) in UserPassword |
+| file://:0:0:0:0 | [summary param] 1 in WriteString | file://:0:0:0:0 | [summary] to write: argument 0 in WriteString |
+| file://:0:0:0:0 | [summary param] 1 in WriteString | file://:0:0:0:0 | [summary] to write: argument 0 in WriteString |
+| file://:0:0:0:0 | [summary param] 2 in CompareAndSwap | file://:0:0:0:0 | [summary] to write: argument -1 in CompareAndSwap |
+| file://:0:0:0:0 | [summary param] 2 in CompareAndSwapPointer | file://:0:0:0:0 | [summary] to write: argument 0 in CompareAndSwapPointer |
+| file://:0:0:0:0 | [summary param] 2 in CompareAndSwapUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in CompareAndSwapUintptr |
+| file://:0:0:0:0 | [summary param] 2 in Replace | file://:0:0:0:0 | [summary] to write: return (return[0]) in Replace |
+| file://:0:0:0:0 | [summary param] 2 in ReplaceAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReplaceAll |
+| file://:0:0:0:0 | [summary param] -1 in Addr | file://:0:0:0:0 | [summary] to write: return (return[0]) in Addr |
+| file://:0:0:0:0 | [summary param] -1 in Bytes | file://:0:0:0:0 | [summary] to write: return (return[0]) in Bytes |
+| file://:0:0:0:0 | [summary param] -1 in Convert | file://:0:0:0:0 | [summary] to write: return (return[0]) in Convert |
+| file://:0:0:0:0 | [summary param] -1 in Elem | file://:0:0:0:0 | [summary] to write: return (return[0]) in Elem |
+| file://:0:0:0:0 | [summary param] -1 in Encode | file://:0:0:0:0 | [summary] to write: return (return[0]) in Encode |
+| file://:0:0:0:0 | [summary param] -1 in EscapedPath | file://:0:0:0:0 | [summary] to write: return (return[0]) in EscapedPath |
+| file://:0:0:0:0 | [summary param] -1 in Fd | file://:0:0:0:0 | [summary] to write: return (return[0]) in Fd |
+| file://:0:0:0:0 | [summary param] -1 in Field | file://:0:0:0:0 | [summary] to write: return (return[0]) in Field |
+| file://:0:0:0:0 | [summary param] -1 in FieldByIndex | file://:0:0:0:0 | [summary] to write: return (return[0]) in FieldByIndex |
+| file://:0:0:0:0 | [summary param] -1 in FieldByName | file://:0:0:0:0 | [summary] to write: return (return[0]) in FieldByName |
+| file://:0:0:0:0 | [summary param] -1 in FieldByNameFunc | file://:0:0:0:0 | [summary] to write: return (return[0]) in FieldByNameFunc |
+| file://:0:0:0:0 | [summary param] -1 in Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | [summary param] -1 in Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | [summary param] -1 in Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | [summary param] -1 in Glob | file://:0:0:0:0 | [summary] to write: return (return[0]) in Glob |
+| file://:0:0:0:0 | [summary param] -1 in Glob | file://:0:0:0:0 | [summary] to write: return (return[0]) in Glob |
+| file://:0:0:0:0 | [summary param] -1 in GoString | file://:0:0:0:0 | [summary] to write: return (return[0]) in GoString |
+| file://:0:0:0:0 | [summary param] -1 in GoString | file://:0:0:0:0 | [summary] to write: return (return[0]) in GoString |
+| file://:0:0:0:0 | [summary param] -1 in Hostname | file://:0:0:0:0 | [summary] to write: return (return[0]) in Hostname |
+| file://:0:0:0:0 | [summary param] -1 in Index | file://:0:0:0:0 | [summary] to write: return (return[0]) in Index |
+| file://:0:0:0:0 | [summary param] -1 in Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
+| file://:0:0:0:0 | [summary param] -1 in Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
+| file://:0:0:0:0 | [summary param] -1 in Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
+| file://:0:0:0:0 | [summary param] -1 in Interface | file://:0:0:0:0 | [summary] to write: return (return[0]) in Interface |
+| file://:0:0:0:0 | [summary param] -1 in InterfaceData | file://:0:0:0:0 | [summary] to write: return (return[0]) in InterfaceData |
+| file://:0:0:0:0 | [summary param] -1 in Key | file://:0:0:0:0 | [summary] to write: return (return[0]) in Key |
+| file://:0:0:0:0 | [summary param] -1 in Load | file://:0:0:0:0 | [summary] to write: return (return[0]) in Load |
+| file://:0:0:0:0 | [summary param] -1 in Load | file://:0:0:0:0 | [summary] to write: return (return[0]) in Load |
+| file://:0:0:0:0 | [summary param] -1 in Load | file://:0:0:0:0 | [summary] to write: return (return[0]) in Load |
+| file://:0:0:0:0 | [summary param] -1 in Load | file://:0:0:0:0 | [summary] to write: return (return[0]) in Load |
+| file://:0:0:0:0 | [summary param] -1 in LoadOrStore | file://:0:0:0:0 | [summary] to write: return (return[0]) in LoadOrStore |
+| file://:0:0:0:0 | [summary param] -1 in Lookup | file://:0:0:0:0 | [summary] to write: return (return[0]) in Lookup |
+| file://:0:0:0:0 | [summary param] -1 in MapIndex | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapIndex |
+| file://:0:0:0:0 | [summary param] -1 in MapKeys | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapKeys |
+| file://:0:0:0:0 | [summary param] -1 in MapRange | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapRange |
+| file://:0:0:0:0 | [summary param] -1 in MarshalBinary | file://:0:0:0:0 | [summary] to write: return (return[0]) in MarshalBinary |
+| file://:0:0:0:0 | [summary param] -1 in Method | file://:0:0:0:0 | [summary] to write: return (return[0]) in Method |
+| file://:0:0:0:0 | [summary param] -1 in MethodByName | file://:0:0:0:0 | [summary] to write: return (return[0]) in MethodByName |
+| file://:0:0:0:0 | [summary param] -1 in Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
+| file://:0:0:0:0 | [summary param] -1 in Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
+| file://:0:0:0:0 | [summary param] -1 in Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
+| file://:0:0:0:0 | [summary param] -1 in Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open |
+| file://:0:0:0:0 | [summary param] -1 in Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open |
+| file://:0:0:0:0 | [summary param] -1 in Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open |
+| file://:0:0:0:0 | [summary param] -1 in Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse |
+| file://:0:0:0:0 | [summary param] -1 in Password | file://:0:0:0:0 | [summary] to write: return (return[0]) in Password |
+| file://:0:0:0:0 | [summary param] -1 in Pointer | file://:0:0:0:0 | [summary] to write: return (return[0]) in Pointer |
+| file://:0:0:0:0 | [summary param] -1 in Port | file://:0:0:0:0 | [summary] to write: return (return[0]) in Port |
+| file://:0:0:0:0 | [summary param] -1 in Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: argument 0 in ReadAt |
+| file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: argument 0 in ReadAt |
+| file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: argument 0 in ReadAt |
+| file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: argument 0 in ReadAt |
+| file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadDir |
+| file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadDir |
+| file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadFile |
+| file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadFile |
+| file://:0:0:0:0 | [summary param] -1 in Recv | file://:0:0:0:0 | [summary] to write: return (return[0]) in Recv |
+| file://:0:0:0:0 | [summary param] -1 in RequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in RequestURI |
+| file://:0:0:0:0 | [summary param] -1 in ResolveReference | file://:0:0:0:0 | [summary] to write: return (return[0]) in ResolveReference |
+| file://:0:0:0:0 | [summary param] -1 in Slice | file://:0:0:0:0 | [summary] to write: return (return[0]) in Slice |
+| file://:0:0:0:0 | [summary param] -1 in Slice3 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Slice3 |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary param] -1 in Sub | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sub |
+| file://:0:0:0:0 | [summary param] -1 in Sub | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sub |
+| file://:0:0:0:0 | [summary param] -1 in Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
+| file://:0:0:0:0 | [summary param] -1 in Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
+| file://:0:0:0:0 | [summary param] -1 in Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
+| file://:0:0:0:0 | [summary param] -1 in Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
+| file://:0:0:0:0 | [summary param] -1 in SyscallConn | file://:0:0:0:0 | [summary] to write: return (return[0]) in SyscallConn |
+| file://:0:0:0:0 | [summary param] -1 in SyscallConn | file://:0:0:0:0 | [summary] to write: return (return[0]) in SyscallConn |
+| file://:0:0:0:0 | [summary param] -1 in Token | file://:0:0:0:0 | [summary] to write: return (return[0]) in Token |
+| file://:0:0:0:0 | [summary param] -1 in Token | file://:0:0:0:0 | [summary] to write: return (return[0]) in Token |
+| file://:0:0:0:0 | [summary param] -1 in TryRecv | file://:0:0:0:0 | [summary] to write: return (return[0]) in TryRecv |
+| file://:0:0:0:0 | [summary param] -1 in UnsafeAddr | file://:0:0:0:0 | [summary] to write: return (return[0]) in UnsafeAddr |
+| file://:0:0:0:0 | [summary param] -1 in Username | file://:0:0:0:0 | [summary] to write: return (return[0]) in Username |
+| file://:0:0:0:0 | [summary param] -1 in Value | file://:0:0:0:0 | [summary] to write: return (return[0]) in Value |
+| file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: argument 0 in WriteTo |
+| file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: argument 0 in WriteTo |
+| file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: argument 0 in WriteTo |
+| file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: argument 0 in WriteTo |
 | main.go:26:11:26:17 | type assertion | main.go:26:2:26:17 | ... := ...[0] |
 | main.go:26:11:26:17 | type assertion | main.go:26:2:26:17 | ... := ...[1] |
 | main.go:38:13:38:13 | 1 | main.go:38:7:38:20 | slice literal |

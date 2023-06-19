@@ -3,10 +3,26 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.Stmt
+import codeql.swift.elements.decl.VarDecl
 
 module Generated {
   class BraceStmt extends Synth::TBraceStmt, Stmt {
     override string getAPrimaryQlClass() { result = "BraceStmt" }
+
+    /**
+     * Gets the `index`th variable declared in the scope of this brace statement (0-based).
+     */
+    VarDecl getVariable(int index) { none() }
+
+    /**
+     * Gets any of the variables declared in the scope of this brace statement.
+     */
+    final VarDecl getAVariable() { result = this.getVariable(_) }
+
+    /**
+     * Gets the number of variables declared in the scope of this brace statement.
+     */
+    final int getNumberOfVariables() { result = count(int i | exists(this.getVariable(i))) }
 
     /**
      * Gets the `index`th element of this brace statement (0-based).

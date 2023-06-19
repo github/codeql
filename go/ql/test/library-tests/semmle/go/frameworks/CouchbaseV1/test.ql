@@ -2,12 +2,10 @@ import go
 import TestUtilities.InlineExpectationsTest
 import semmle.go.security.SqlInjection
 
-class SqlInjectionTest extends InlineExpectationsTest {
-  SqlInjectionTest() { this = "SqlInjectionTest" }
+module SqlInjectionTest implements TestSig {
+  string getARelevantTag() { result = "sqlinjection" }
 
-  override string getARelevantTag() { result = "sqlinjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "sqlinjection" and
     exists(DataFlow::Node sink | any(SqlInjection::Configuration c).hasFlow(_, sink) |
       element = sink.toString() and
@@ -17,3 +15,5 @@ class SqlInjectionTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<SqlInjectionTest>

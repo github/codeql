@@ -169,9 +169,6 @@ module SqlAlchemy {
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
   }
 
-  /** DEPRECATED: Alias for DBApiConnection */
-  deprecated module DBAPIConnection = DBApiConnection;
-
   /**
    * Provides models for the `sqlalchemy.orm.Session` class
    *
