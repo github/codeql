@@ -4,7 +4,6 @@ private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.controlflow.ControlFlowGraph
-private import internal.ControlFlowGraphImpl
 private import CfgNodes
 private import SuccessorTypes
 

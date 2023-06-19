@@ -6,16 +6,16 @@ private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.ast.internal.Literal
 private import ControlFlowGraph
-private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.Splitting
 
 /** An entry node for a given scope. */
-class EntryNode extends CfgNode, TEntryNode {
+class EntryNode extends CfgNode, CfgImpl::TEntryNode {
   override string getAPrimaryQlClass() { result = "EntryNode" }
 
   private CfgScope scope;
 
-  EntryNode() { this = TEntryNode(scope) }
+  EntryNode() { this = CfgImpl::TEntryNode(scope) }
 
   final override EntryBasicBlock getBasicBlock() { result = super.getBasicBlock() }
 
@@ -25,13 +25,13 @@ class EntryNode extends CfgNode, TEntryNode {
 }
 
 /** An exit node for a given scope, annotated with the type of exit. */
-class AnnotatedExitNode extends CfgNode, TAnnotatedExitNode {
+class AnnotatedExitNode extends CfgNode, CfgImpl::TAnnotatedExitNode {
   override string getAPrimaryQlClass() { result = "AnnotatedExitNode" }
 
   private CfgScope scope;
   private boolean normal;
 
-  AnnotatedExitNode() { this = TAnnotatedExitNode(scope, normal) }
+  AnnotatedExitNode() { this = CfgImpl::TAnnotatedExitNode(scope, normal) }
 
   /** Holds if this node represent a normal exit. */
   final predicate isNormal() { normal = true }
@@ -52,12 +52,12 @@ class AnnotatedExitNode extends CfgNode, TAnnotatedExitNode {
 }
 
 /** An exit node for a given scope. */
-class ExitNode extends CfgNode, TExitNode {
+class ExitNode extends CfgNode, CfgImpl::TExitNode {
   override string getAPrimaryQlClass() { result = "ExitNode" }
 
   private CfgScope scope;
 
-  ExitNode() { this = TExitNode(scope) }
+  ExitNode() { this = CfgImpl::TExitNode(scope) }
 
   final override Location getLocation() { result = scope.getLocation() }
 
@@ -71,14 +71,14 @@ class ExitNode extends CfgNode, TExitNode {
  * (dead) code or not important for control flow, and multiple when there are different
  * splits for the AST node.
  */
-class AstCfgNode extends CfgNode, TElementNode {
+class AstCfgNode extends CfgNode, CfgImpl::TElementNode {
   /** Gets the name of the primary QL class for this node. */
   override string getAPrimaryQlClass() { result = "AstCfgNode" }
 
-  private Splits splits;
+  private CfgImpl::Splits splits;
   AstNode e;
 
-  AstCfgNode() { this = TElementNode(_, e, splits) }
+  AstCfgNode() { this = CfgImpl::TElementNode(_, e, splits) }
 
   final override AstNode getNode() { result = e }
 
