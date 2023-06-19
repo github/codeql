@@ -139,8 +139,52 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
+private string getContentSpecific(Content c) {
+  exists(string name | c = TFieldContent(name) and result = "Field[" + name + "]")
+  or
+  exists(ConstantValue cv |
+    c = TKnownElementContent(cv) and result = "Element[" + cv.toString() + "!]"
+  )
+  or
+  c = TUnknownElementContent() and result = "Element[?]"
+}
+
+private string getContentSetSpecific(ContentSet cs) {
+  exists(Content c | cs = TSingletonContent(c) and result = getContentSpecific(c))
+  or
+  cs = TAnyElementContent() and result = "Element[any]"
+  or
+  exists(Content::KnownElementContent kec |
+    cs = TKnownOrUnknownElementContent(kec) and result = "Element[" + kec.getIndex() + "]"
+  )
+  or
+  exists(int lower, boolean includeUnknown, string unknown |
+    cs = TElementLowerBoundContent(lower, includeUnknown) and
+    (if includeUnknown = true then unknown = "" else unknown = "!") and
+    result = "Element[" + lower + ".." + unknown + "]"
+  )
+}
+
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getAccessStepSpecific(SummaryComponent sc) { none() }
+string getAccessStepSpecific(SummaryComponent sc) {
+  exists(ContentSet cs | sc = TContentSummaryComponent(cs) and result = getContentSetSpecific(cs))
+  or
+  exists(ContentSet cs |
+    sc = TWithoutContentSummaryComponent(cs) and
+    result = "WithoutElement[" + getContentSetSpecific(cs) + "]"
+  )
+  or
+  exists(ContentSet cs |
+    sc = TWithContentSummaryComponent(cs) and
+    result = "WithElement[" + getContentSetSpecific(cs) + "]"
+  )
+  or
+  exists(ReturnKind rk |
+    sc = TReturnSummaryComponent(rk) and
+    not rk = getReturnValueKind() and
+    result = "ReturnValue[" + rk + "]"
+  )
+}
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPosition(ParameterPosition pos) {
@@ -170,6 +214,9 @@ string getParameterPosition(ParameterPosition pos) {
   or
   pos.isAnyNamed() and
   result = "any-named"
+  or
+  pos.isHashSplat() and
+  result = "hash-splat"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
