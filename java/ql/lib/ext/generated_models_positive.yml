@@ -1,355 +1,355 @@
 extensions:
 - addsTo: {extensible: sinkModel, pack: codeql/java-all}
   data:
-  - [java.util.function, Function, true, apply, (URI), '', 'Argument[0]', ssrf, ai-generated]
+  - [java.util.function, Function, true, apply, (URI), '', 'Argument[0]', request-forgery, ai-generated]
   - [jakarta.persistence, TypedQuery, true, setParameter, '(String,Object)', '', 'Argument[1]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [jakarta.persistence, Query, true, setParameter, '(String,Object)', '', 'Argument[0]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [jakarta.persistence, Query, true, setParameter, '(String,Object)', '', 'Argument[1]',
-    sql, ai-generated]
-  - [java.sql, PreparedStatement, true, setString, '(int,String)', '', 'Argument[1]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
+  - [java.sql-injection, PreparedStatement, true, setString, '(int,String)', '', 'Argument[1]',
+    sql-injection, ai-generated]
   - [org.hibernate.query.spi, AbstractSelectionQuery, true, setParameter, '(String,Object,Class)',
-    '', 'Argument[0]', sql, ai-generated]
-  - [java.sql, Connection, true, prepareStatement, '(String,int,int)', '', 'Argument[this]',
-    sql, ai-generated]
-  - [java.sql, Connection, true, prepareStatement, (String), '', 'Argument[this]',
-    sql, ai-generated]
-  - [java.sql, CallableStatement, true, setObject, '(String,Object)', '', 'Argument[0]',
-    sql, ai-generated]
-  - [java.sql, CallableStatement, true, setObject, '(String,Object,int)', '', 'Argument[0]',
-    sql, ai-generated]
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [java.sql-injection, Connection, true, prepareStatement, '(String,int,int)', '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [java.sql-injection, Connection, true, prepareStatement, (String), '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [java.sql-injection, CallableStatement, true, setObject, '(String,Object)', '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [java.sql-injection, CallableStatement, true, setObject, '(String,Object,int)', '', 'Argument[0]',
+    sql-injection, ai-generated]
   - [jakarta.persistence, EntityManager, true, createQuery, (CriteriaQuery), '', 'Argument[0]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [jakarta.persistence, EntityManager, true, createQuery, (String), '', 'Argument[this]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [jakarta.persistence, EntityManager, true, find, '(Class,Object,LockModeType,Map)',
-    '', 'Argument[1]', sql, ai-generated]
+    '', 'Argument[1]', sql-injection, ai-generated]
   - [jakarta.persistence, EntityManager, true, find, '(Class,Object)', '', 'Argument[1]',
-    sql, ai-generated]
-  - [java.sql, ResultSet, true, getObject, (String), '', 'Argument[0]', sql, ai-generated]
-  - [org.hibernate.sql.ast.spi, AbstractSqlAstTranslator, true, appendSql, (String),
-    '', 'Argument[0]', sql, ai-generated]
+    sql-injection, ai-generated]
+  - [java.sql-injection, ResultSet, true, getObject, (String), '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.hibernate.sql.ast.spi, AbstractSqlAstTranslator, true, appendsql-injection, (String),
+    '', 'Argument[0]', sql-injection, ai-generated]
   - [org.hibernate.sql.ast, SqlAstTranslator, true, render, '(SqlAstNode,SqlAstNodeRenderingMode)',
-    '', 'Argument[0]', sql, ai-generated]
+    '', 'Argument[0]', sql-injection, ai-generated]
   - [org.hibernate.sql.ast, SqlAstTranslator, true, translate, '(JdbcParameterBindings,QueryOptions)',
-    '', 'Argument[1]', sql, ai-generated]
+    '', 'Argument[1]', sql-injection, ai-generated]
   - [jodd.http, HttpConnectionProvider, true, useProxy, (ProxyInfo), '', 'Argument[0]',
-    ssrf, ai-generated]
+    request-forgery, ai-generated]
   - [me.chanjar.weixin.common.util.http, RequestExecutor, true, execute, '(String,String,WxType)',
-    '', 'Argument[0]', ssrf, ai-generated]
+    '', 'Argument[0]', request-forgery, ai-generated]
   - [me.chanjar.weixin.common.util.http, RequestExecutor, true, execute, '(String,WxMpQrCodeTicket,WxType)',
-    '', 'Argument[0]', ssrf, ai-generated]
-  - [java.sql, Statement, true, executeQuery, (String), '', 'Argument[this]', sql,
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [java.sql-injection, Statement, true, executeQuery, (String), '', 'Argument[this]', sql-injection,
     ai-generated]
-  - [java.sql, Statement, true, execute, (String), '', 'Argument[this]', sql, ai-generated]
-  - [java.sql, Statement, true, execute, '(String,int)', '', 'Argument[this]', sql,
+  - [java.sql-injection, Statement, true, execute, (String), '', 'Argument[this]', sql-injection, ai-generated]
+  - [java.sql-injection, Statement, true, execute, '(String,int)', '', 'Argument[this]', sql-injection,
     ai-generated]
   - [org.hibernate.query.spi, AbstractQuery, true, setParameterList, '(String,Object[],BindableType)',
-    '', 'Argument[0]', sql, ai-generated]
+    '', 'Argument[0]', sql-injection, ai-generated]
   - [javax.net, SocketFactory, true, createSocket, '(String,int,InetAddress,int)',
-    '', 'Argument[0]', ssrf, ai-generated]
+    '', 'Argument[0]', request-forgery, ai-generated]
   - [java.nio.channels, FileChannel, true, write, '(ByteBuffer,long)', '', 'Argument[0]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [java.nio.channels, FileChannel, true, write, (ByteBuffer), '', 'Argument[0]',
-    tainted-path, ai-generated]
-  - [java.io, File, true, createNewFile, (), '', 'Argument[this]', tainted-path, ai-generated]
+    path-injection, ai-generated]
+  - [java.io, File, true, createNewFile, (), '', 'Argument[this]', path-injection, ai-generated]
   - [java.net, InetSocketAddress, true, InetSocketAddress, '(InetAddress,int)', '',
-    'Argument[0]', ssrf, ai-generated]
-  - [java.sql, CallableStatement, true, setString, '(String,String)', '', 'Argument[1]',
-    sql, ai-generated]
+    'Argument[0]', request-forgery, ai-generated]
+  - [java.sql-injection, CallableStatement, true, setString, '(String,String)', '', 'Argument[1]',
+    sql-injection, ai-generated]
   - [org.apache.http.client.config, RequestConfig$Builder, false, setProxy, (HttpHost),
-    '', 'Argument[0]', ssrf, ai-generated]
-  - [javax.tools, FileObject, true, openWriter, (), '', 'Argument[this]', tainted-path,
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [javax.tools, FileObject, true, openWriter, (), '', 'Argument[this]', path-injection,
     ai-generated]
   - [jakarta.persistence, EntityManager, true, createNamedQuery, (String), '', 'Argument[this]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [org.apache.ibatis.executor, Executor, true, query, '(MappedStatement,Object,RowBounds,ResultHandler,CacheKey,BoundSql)',
-    '', 'Argument[5]', sql, ai-generated]
+    '', 'Argument[5]', sql-injection, ai-generated]
   - [org.apache.ibatis.executor, Executor, true, query, '(MappedStatement,Object,RowBounds,ResultHandler,CacheKey,BoundSql)',
-    '', 'Argument[1]', sql, ai-generated]
-  - [kotlin.jvm.functions, Function1, true, invoke, (String), '', 'Argument[0]', ssrf,
+    '', 'Argument[1]', sql-injection, ai-generated]
+  - [kotlin.jvm.functions, Function1, true, invoke, (String), '', 'Argument[0]', request-forgery,
     ai-generated]
-  - [okio, Path, false, resolve, (String), '', 'Argument[this]', tainted-path, ai-generated]
-  - [okio, Path, false, resolve, (String), '', 'Argument[0]', tainted-path, ai-generated]
-  - [okhttp3, OkHttpClient, true, newCall, (Request), '', 'Argument[0]', ssrf, ai-generated]
+  - [okio, Path, false, resolve, (String), '', 'Argument[this]', path-injection, ai-generated]
+  - [okio, Path, false, resolve, (String), '', 'Argument[0]', path-injection, ai-generated]
+  - [okhttp3, OkHttpClient, true, newCall, (Request), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.apache.curator.framework, CuratorFrameworkFactory$Builder, false, connectString,
-    (String), '', 'Argument[this]', ssrf, ai-generated]
+    (String), '', 'Argument[this]', request-forgery, ai-generated]
   - [org.apache.curator.framework, CuratorFrameworkFactory$Builder, false, connectString,
-    (String), '', 'Argument[0]', ssrf, ai-generated]
+    (String), '', 'Argument[0]', request-forgery, ai-generated]
   - [io.netty.handler.ssl, SslContextBuilder, false, forServer, '(InputStream,InputStream,String)',
-    '', 'Argument[0]', tainted-path, ai-generated]
-  - [java.lang, Class, false, getResourceAsStream, (String), '', 'Argument[0]', tainted-path,
+    '', 'Argument[0]', path-injection, ai-generated]
+  - [java.lang, Class, false, getResourceAsStream, (String), '', 'Argument[0]', path-injection,
     ai-generated]
   - [liquibase, Liquibase, true, Liquibase, '(String,ResourceAccessor,Database)',
-    '', 'Argument[0]', tainted-path, ai-generated]
+    '', 'Argument[0]', path-injection, ai-generated]
   - [redis.clients.jedis, Jedis, true, evalsha, '(String,List,List)', '', 'Argument[2]',
     command-injection, ai-generated]
   - [redis.clients.jedis, Jedis, true, evalsha, '(String,List,List)', '', 'Argument[0]',
     command-injection, ai-generated]
   - [jodd.http, HttpRequest, true, withConnectionProvider, (HttpConnectionProvider),
-    '', 'Argument[0]', ssrf, ai-generated]
-  - [okhttp3, Call, true, execute, (), '', 'Argument[this]', ssrf, ai-generated]
-  - [okhttp3, RequestBody, false, create, '(MediaType,File)', '', 'Argument[1]', tainted-path,
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [okhttp3, Call, true, execute, (), '', 'Argument[this]', request-forgery, ai-generated]
+  - [okhttp3, RequestBody, false, create, '(MediaType,File)', '', 'Argument[1]', path-injection,
     ai-generated]
-  - [java.lang, ClassLoader, true, getResources, (String), '', 'Argument[0]', tainted-path,
+  - [java.lang, ClassLoader, true, getResources, (String), '', 'Argument[0]', path-injection,
     ai-generated]
   - [com.alibaba.druid.pool, DruidAbstractDataSource, true, setUrl, (String), '',
-    'Argument[0]', ssrf, ai-generated]
-  - [java.io, File, true, listFiles, (FilenameFilter), '', 'Argument[this]', tainted-path,
+    'Argument[0]', request-forgery, ai-generated]
+  - [java.io, File, true, listFiles, (FilenameFilter), '', 'Argument[this]', path-injection,
     ai-generated]
   - [com.alibaba.excel.metadata.data, WriteCellData, true, WriteCellData<Object>,
-    '(byte[])', '', 'Argument[0]', tainted-path, ai-generated]
-  - [java.lang, ClassLoader, true, getResources, (String), '', 'Argument[this]', tainted-path,
+    '(byte[])', '', 'Argument[0]', path-injection, ai-generated]
+  - [java.lang, ClassLoader, true, getResources, (String), '', 'Argument[this]', path-injection,
     ai-generated]
   - [org.apache.curator.framework.api, PathAndBytesable, true, forPath, '(String,byte[])',
-    '', 'Argument[0]', tainted-path, ai-generated]
+    '', 'Argument[0]', path-injection, ai-generated]
   - [java.nio.file, Files, false, newDirectoryStream, '(Path,Filter)', '', 'Argument[1]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [java.nio.channels, FileChannel, false, open, '(Path,OpenOption[])', '', 'Argument[0]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [java.lang, Process, true, waitFor, (), '', 'Argument[this]', command-injection,
     ai-generated]
-  - [javax.sql, DataSource, true, getConnection, '(String,String)', '', 'Argument[0]',
-    sql, ai-generated]
-  - [java.sql, DatabaseMetaData, true, getImportedKeys, '(String,String,String)',
-    '', 'Argument[0]', sql, ai-generated]
+  - [javax.sql-injection, DataSource, true, getConnection, '(String,String)', '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getImportedKeys, '(String,String,String)',
+    '', 'Argument[0]', sql-injection, ai-generated]
   - [java.nio.channels, FileChannel, true, map, '(MapMode,long,long)', '', 'Argument[0]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [java.nio.channels, FileChannel, false, open, '(Path,Set,FileAttribute[])', '',
-    'Argument[0]', tainted-path, ai-generated]
-  - [java.sql, DatabaseMetaData, true, getIndexInfo, '(String,String,String,boolean,boolean)',
-    '', 'Argument[2]', sql, ai-generated]
+    'Argument[0]', path-injection, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getIndexInfo, '(String,String,String,boolean,boolean)',
+    '', 'Argument[2]', sql-injection, ai-generated]
   - [java.nio.file, Files, false, walkFileTree, '(Path,FileVisitor)', '', 'Argument[0]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [java.nio.file, Files, false, walkFileTree, '(Path,FileVisitor)', '', 'Argument[1]',
-    tainted-path, ai-generated]
-  - [java.sql, PreparedStatement, true, execute, (), '', 'Argument[this]', sql, ai-generated]
-  - [java.net, URLConnection, true, getInputStream, (), '', 'Argument[this]', ssrf,
+    path-injection, ai-generated]
+  - [java.sql-injection, PreparedStatement, true, execute, (), '', 'Argument[this]', sql-injection, ai-generated]
+  - [java.net, URLConnection, true, getInputStream, (), '', 'Argument[this]', request-forgery,
     ai-generated]
-  - [java.sql, DatabaseMetaData, true, getImportedKeys, '(String,String,String)',
-    '', 'Argument[1]', sql, ai-generated]
-  - [java.sql, ResultSet, true, getString, (String), '', 'Argument[0]', sql, ai-generated]
-  - [java.sql, CallableStatement, true, setNull, '(String,int)', '', 'Argument[0]',
-    sql, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getImportedKeys, '(String,String,String)',
+    '', 'Argument[1]', sql-injection, ai-generated]
+  - [java.sql-injection, ResultSet, true, getString, (String), '', 'Argument[0]', sql-injection, ai-generated]
+  - [java.sql-injection, CallableStatement, true, setNull, '(String,int)', '', 'Argument[0]',
+    sql-injection, ai-generated]
   - [org.gradle.api.file, RegularFile, true, getAsFile, (), '', 'Argument[this]',
-    tainted-path, ai-generated]
-  - [java.io, File, true, listFiles, (FileFilter), '', 'Argument[0]', tainted-path,
+    path-injection, ai-generated]
+  - [java.io, File, true, listFiles, (FileFilter), '', 'Argument[0]', path-injection,
     ai-generated]
   - [jakarta.servlet, ServletContext, true, getResourceAsStream, (String), '', 'Argument[0]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [liquibase.structure.core, Table, true, setName, (String), '', 'Argument[0]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [jakarta.persistence.criteria, CriteriaBuilder, true, like, '(Expression,String)',
-    '', 'Argument[1]', sql, ai-generated]
-  - [java.util.zip, ZipEntry, true, ZipEntry, (String), '', 'Argument[0]', tainted-path,
+    '', 'Argument[1]', sql-injection, ai-generated]
+  - [java.util.zip, ZipEntry, true, ZipEntry, (String), '', 'Argument[0]', path-injection,
     ai-generated]
   - [jakarta.ws.rs.core, Response$ResponseBuilder, false, location, (URI), '', 'Argument[0]',
-    ssrf, ai-generated]
+    request-forgery, ai-generated]
   - [org.jboss.shrinkwrap.api, Archive, true, add, '(Asset,String)', '', 'Argument[1]',
-    tainted-path, ai-generated]
-  - [com.github.pagehelper, Page, true, setOrderBy, (String), '', 'Argument[0]', sql,
+    path-injection, ai-generated]
+  - [com.github.pagehelper, Page, true, setOrderBy, (String), '', 'Argument[0]', sql-injection,
     ai-generated]
-  - [okio, FileSystem, false, delete, (Path), '', 'Argument[0]', tainted-path, ai-generated]
-  - [okio, FileSystem, false, delete, (Path), '', 'Argument[this]', tainted-path,
+  - [okio, FileSystem, false, delete, (Path), '', 'Argument[0]', path-injection, ai-generated]
+  - [okio, FileSystem, false, delete, (Path), '', 'Argument[this]', path-injection,
     ai-generated]
   - [javax.net.ssl, SSLSocketFactory, true, createSocket, '(Socket,String,int,boolean)',
-    '', 'Argument[1]', ssrf, ai-generated]
-  - [java.net, CookieStore, true, add, '(URI,HttpCookie)', '', 'Argument[0]', ssrf,
+    '', 'Argument[1]', request-forgery, ai-generated]
+  - [java.net, CookieStore, true, add, '(URI,HttpCookie)', '', 'Argument[0]', request-forgery,
     ai-generated]
   - [jodd.http.net, SocketHttpConnectionProvider, true, useProxy, (ProxyInfo), '',
-    'Argument[0]', ssrf, ai-generated]
-  - [jodd.http, HttpRequest, false, get, (String), '', 'Argument[0]', ssrf, ai-generated]
-  - [okhttp3, Request$Builder, false, url, (String), '', 'Argument[this]', ssrf, ai-generated]
-  - [jodd.http, HttpRequest, true, send, (), '', 'Argument[this]', ssrf, ai-generated]
+    'Argument[0]', request-forgery, ai-generated]
+  - [jodd.http, HttpRequest, false, get, (String), '', 'Argument[0]', request-forgery, ai-generated]
+  - [okhttp3, Request$Builder, false, url, (String), '', 'Argument[this]', request-forgery, ai-generated]
+  - [jodd.http, HttpRequest, true, send, (), '', 'Argument[this]', request-forgery, ai-generated]
   - [org.apache.http.entity.mime, MultipartEntityBuilder, true, addBinaryBody, '(String,File)',
-    '', 'Argument[1]', tainted-path, ai-generated]
-  - [okhttp3, Request$Builder, false, get, (), '', 'Argument[this]', ssrf, ai-generated]
-  - [jodd.http, HttpRequest, false, post, (String), '', 'Argument[0]', ssrf, ai-generated]
+    '', 'Argument[1]', path-injection, ai-generated]
+  - [okhttp3, Request$Builder, false, get, (), '', 'Argument[this]', request-forgery, ai-generated]
+  - [jodd.http, HttpRequest, false, post, (String), '', 'Argument[0]', request-forgery, ai-generated]
   - [java.util.jar, JarFile, true, getInputStream, (ZipEntry), '', 'Argument[0]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [org.apache.http.client.utils, URIBuilder, true, setPath, (String), '', 'Argument[this]',
-    ssrf, ai-generated]
-  - [io.ebean, ExpressionList, true, eq, '(String,Object)', '', 'Argument[1]', sql,
+    request-forgery, ai-generated]
+  - [io.ebean, ExpressionList, true, eq, '(String,Object)', '', 'Argument[1]', sql-injection,
     ai-generated]
   - [org.apache.commons.io.monitor, FileAlterationListenerAdaptor, true, onFileChange,
-    (File), '', 'Argument[0]', tainted-path, ai-generated]
-  - [com.alibaba.druid.sql, SQLUtils, false, parseStatements, '(String,DbType,boolean)',
-    '', 'Argument[0]', sql, ai-generated]
+    (File), '', 'Argument[0]', path-injection, ai-generated]
+  - [com.alibaba.druid.sql-injection, SQLUtils, false, parseStatements, '(String,DbType,boolean)',
+    '', 'Argument[0]', sql-injection, ai-generated]
   - [org.apache.http.client.utils, URIBuilder, true, build, (), '', 'Argument[this]',
-    ssrf, ai-generated]
-  - [java.net, URL, false, getFile, (), '', 'Argument[this]', tainted-path, ai-generated]
+    request-forgery, ai-generated]
+  - [java.net, URL, false, getFile, (), '', 'Argument[this]', path-injection, ai-generated]
   - [io.grpc.netty.shaded.io.netty.handler.ssl, SslContextBuilder, false, trustManager,
-    (File), '', 'Argument[this]', tainted-path, ai-generated]
+    (File), '', 'Argument[this]', path-injection, ai-generated]
   - [org.apache.dubbo.registry.client, ServiceDiscoveryRegistryDirectory, true, ServiceDiscoveryRegistryDirectory<T>,
-    '(Class,URL)', '', 'Argument[1]', ssrf, ai-generated]
+    '(Class,URL)', '', 'Argument[1]', request-forgery, ai-generated]
   - [org.apache.dubbo.registry.integration, RegistryProtocol$ExporterChangeableWrapper,
-    true, setRegisterUrl, (URL), '', 'Argument[0]', ssrf, ai-generated]
+    true, setRegisterUrl, (URL), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.apache.dubbo.registry.client.migration, ServiceDiscoveryMigrationInvoker,
     true, ServiceDiscoveryMigrationInvoker<T>, '(RegistryProtocol,Cluster,Registry,Class,URL,URL)',
-    '', 'Argument[4]', ssrf, ai-generated]
+    '', 'Argument[4]', request-forgery, ai-generated]
   - [io.opentelemetry.exporter.otlp.trace, OtlpGrpcSpanExporterBuilder, false, setEndpoint,
-    (String), '', 'Argument[0]', ssrf, ai-generated]
+    (String), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.jose4j.http, Get, true, setSslSocketFactory, (SSLSocketFactory), '', 'Argument[0]',
-    ssrf, ai-generated]
+    request-forgery, ai-generated]
   - [java.lang, Process, true, getInputStream, (), '', 'Argument[this]', command-injection,
     ai-generated]
   - [org.eclipse.jetty.util.ssl, SslContextFactory, true, setTrustStorePath, (String),
-    '', 'Argument[this]', tainted-path, ai-generated]
+    '', 'Argument[this]', path-injection, ai-generated]
   - [org.apache.kafka.server.common, CheckpointFile, true, 'CheckpointFile<Entry<Integer,Long>>',
-    '(File,int,EntryFormatter)', '', 'Argument[0]', tainted-path, ai-generated]
+    '(File,int,EntryFormatter)', '', 'Argument[0]', path-injection, ai-generated]
   - [com.fasterxml.jackson.databind, ObjectMapper, true, writeValue, '(File,Object)',
-    '', 'Argument[0]', tainted-path, ai-generated]
+    '', 'Argument[0]', path-injection, ai-generated]
   - [org.rocksdb, RocksDB, false, open, '(DBOptions,String,List,List)', '', 'Argument[0]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [io.netty.handler.ssl, SslContextBuilder, false, trustManager, (File), '', 'Argument[this]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [org.apache.commons.cli, CommandLineParser, true, parse, '(Options,String[])',
     '', 'Argument[1]', command-injection, ai-generated]
   - [java.lang, ProcessBuilder, false, environment, (), '', 'Argument[this]', command-injection,
     ai-generated]
   - [java.lang, Runtime, true, exec, '(String[])', '', 'Argument[this]', command-injection,
     ai-generated]
-  - [java.sql, DatabaseMetaData, true, getProcedureColumns, '(String,String,String,String)',
-    '', 'Argument[0]', sql, ai-generated]
-  - [java.sql, DatabaseMetaData, true, getTablePrivileges, '(String,String,String)',
-    '', 'Argument[2]', sql, ai-generated]
-  - [java.sql, DatabaseMetaData, true, getSuperTypes, '(String,String,String)', '',
-    'Argument[0]', sql, ai-generated]
-  - [java.sql, DatabaseMetaData, true, getPseudoColumns, '(String,String,String,String)',
-    '', 'Argument[0]', sql, ai-generated]
-  - [java.sql, Connection, true, setCatalog, (String), '', 'Argument[0]', sql, ai-generated]
-  - [org.skife.jdbi.v2, StatementContext, true, getRawSql, (), '', 'Argument[this]',
-    sql, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getProcedureColumns, '(String,String,String,String)',
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getTablePrivileges, '(String,String,String)',
+    '', 'Argument[2]', sql-injection, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getSuperTypes, '(String,String,String)', '',
+    'Argument[0]', sql-injection, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getPseudoColumns, '(String,String,String,String)',
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [java.sql-injection, Connection, true, setCatalog, (String), '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.skife.jdbi.v2, StatementContext, true, getRawsql-injection, (), '', 'Argument[this]',
+    sql-injection, ai-generated]
   - [org.eclipse.jetty.server.handler, HandlerWrapper, true, handle, '(String,Request,HttpServletRequest,HttpServletResponse)',
-    '', 'Argument[0]', tainted-path, ai-generated]
+    '', 'Argument[0]', path-injection, ai-generated]
   - [java.nio.file, SecureDirectoryStream, true, newDirectoryStream, '(Path,LinkOption[])',
-    '', 'Argument[0]', tainted-path, ai-generated]
+    '', 'Argument[0]', path-injection, ai-generated]
   - [java.nio.file, FileSystems, false, newFileSystem, '(URI,Map)', '', 'Argument[0]',
-    tainted-path, ai-generated]
-  - [java.util.zip, ZipFile, true, getEntry, (String), '', 'Argument[0]', tainted-path,
+    path-injection, ai-generated]
+  - [java.util.zip, ZipFile, true, getEntry, (String), '', 'Argument[0]', path-injection,
     ai-generated]
-  - [java.sql, DatabaseMetaData, true, getCrossReference, '(String,String,String,String,String,String)',
-    '', 'Argument[2]', sql, ai-generated]
-  - [java.sql, DatabaseMetaData, true, getTables, '(String,String,String,String[])',
-    '', 'Argument[2]', sql, ai-generated]
-  - [java.sql, DatabaseMetaData, true, getVersionColumns, '(String,String,String)',
-    '', 'Argument[1]', sql, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getCrossReference, '(String,String,String,String,String,String)',
+    '', 'Argument[2]', sql-injection, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getTables, '(String,String,String,String[])',
+    '', 'Argument[2]', sql-injection, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getVersionColumns, '(String,String,String)',
+    '', 'Argument[1]', sql-injection, ai-generated]
   - [java.io, LineNumberReader, true, LineNumberReader, (Reader), '', 'Argument[0]',
-    tainted-path, ai-generated]
-  - [java.sql, Connection, true, createSQLXML, (), '', 'Argument[this]', sql, ai-generated]
-  - [java.sql, CallableStatement, true, getString, (String), '', 'Argument[0]', sql,
+    path-injection, ai-generated]
+  - [java.sql-injection, Connection, true, createSQLXML, (), '', 'Argument[this]', sql-injection, ai-generated]
+  - [java.sql-injection, CallableStatement, true, getString, (String), '', 'Argument[0]', sql-injection,
     ai-generated]
   - [org.hibernate.sql.results.spi, ResultsConsumer, true, consume, '(JdbcValues,SharedSessionContractImplementor,JdbcValuesSourceProcessingOptions,JdbcValuesSourceProcessingStateStandardImpl,RowProcessingStateStandardImpl,RowReader)',
-    '', 'Argument[5]', sql, ai-generated]
-  - [java.sql, DatabaseMetaData, true, getCatalogs, (), '', 'Argument[this]', sql,
+    '', 'Argument[5]', sql-injection, ai-generated]
+  - [java.sql-injection, DatabaseMetaData, true, getCatalogs, (), '', 'Argument[this]', sql-injection,
     ai-generated]
-  - [java.sql, CallableStatement, true, setNString, '(String,String)', '', 'Argument[0]',
-    sql, ai-generated]
+  - [java.sql-injection, CallableStatement, true, setNString, '(String,String)', '', 'Argument[0]',
+    sql-injection, ai-generated]
   - [org.hibernate.spatial.dialect.postgis, AbstractPostGISJdbcType$PGGeometryLiteralFormatter,
     false, PGGeometryLiteralFormatter<T>, '(String,JavaType)', '', 'Argument[0]',
-    sql, ai-generated]
-  - [org.gradle.api.file, Directory, true, getAsFile, (), '', 'Argument[this]', tainted-path,
+    sql-injection, ai-generated]
+  - [org.gradle.api.file, Directory, true, getAsFile, (), '', 'Argument[this]', path-injection,
     ai-generated]
   - [org.gradle.api.file, DirectoryProperty, true, file, (String), '', 'Argument[this]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [org.gradle.api.file, FileTreeElement, true, getFile, (), '', 'Argument[this]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [org.jsoup.helper, HttpConnection$Base, false, url, (URL), '', 'Argument[0]',
-    ssrf, ai-generated]
-  - [java.net, URL, false, URL, '(String,String,int,String)', '', 'Argument[1]', ssrf,
+    request-forgery, ai-generated]
+  - [java.net, URL, false, URL, '(String,String,int,String)', '', 'Argument[1]', request-forgery,
     ai-generated]
   - [javax.ws.rs.core, Response$ResponseBuilder, false, location, (URI), '', 'Argument[0]',
-    ssrf, ai-generated]
+    request-forgery, ai-generated]
   - [org.apache.http.conn.ssl, SSLSocketFactory, true, connectSocket, '(int,Socket,HttpHost,InetSocketAddress,InetSocketAddress,HttpContext)',
-    '', 'Argument[3]', ssrf, ai-generated]
+    '', 'Argument[3]', request-forgery, ai-generated]
   - [org.apache.http, HttpHost, false, HttpHost, '(String,int,String)', '', 'Argument[2]',
-    ssrf, ai-generated]
-  - [java.io, File, true, renameTo, (File), '', 'Argument[this]', tainted-path, ai-generated]
+    request-forgery, ai-generated]
+  - [java.io, File, true, renameTo, (File), '', 'Argument[this]', path-injection, ai-generated]
   - [org.jboss.aesh.console.command.container, CommandContainer, true, executeCommand,
     '(AeshLine,InvocationProviders,AeshContext,CommandInvocation)', '', 'Argument[3]',
     command-injection, ai-generated]
   - [liquibase.statement.core, UpdateStatement, true, UpdateStatement, '(String,String,String)',
-    '', 'Argument[2]', sql, ai-generated]
+    '', 'Argument[2]', sql-injection, ai-generated]
   - [liquibase.statement.core, DeleteStatement, true, addWhereParameters, '(Object[])',
-    '', 'Argument[this]', sql, ai-generated]
+    '', 'Argument[this]', sql-injection, ai-generated]
   - [liquibase.statement.core, RawSqlStatement, true, RawSqlStatement, (String), '',
-    'Argument[0]', sql, ai-generated]
+    'Argument[0]', sql-injection, ai-generated]
   - [liquibase.database, Database, true, escapeStringForDatabase, (String), '', 'Argument[0]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [liquibase.statement.core, UpdateStatement, true, setWhereClause, (String), '',
-    'Argument[0]', sql, ai-generated]
+    'Argument[0]', sql-injection, ai-generated]
   - [liquibase.executor, Executor, true, execute, (SqlStatement), '', 'Argument[0]',
-    sql, ai-generated]
-  - [java.nio.file, Path, true, resolveSibling, (String), '', 'Argument[0]', tainted-path,
+    sql-injection, ai-generated]
+  - [java.nio.file, Path, true, resolveSibling, (String), '', 'Argument[0]', path-injection,
     ai-generated]
   - [jakarta.persistence.criteria, CriteriaDelete, true, where, (Expression), '',
-    'Argument[0]', sql, ai-generated]
+    'Argument[0]', sql-injection, ai-generated]
   - [liquibase.statement.core, CreateIndexStatement, true, CreateIndexStatement, '(String,String,String,String,Boolean,String,AddColumnConfig[])',
-    '', 'Argument[3]', sql, ai-generated]
+    '', 'Argument[3]', sql-injection, ai-generated]
   - [liquibase.statement.core, SetNullableStatement, true, SetNullableStatement, '(String,String,String,String,String,boolean)',
-    '', 'Argument[2]', sql, ai-generated]
+    '', 'Argument[2]', sql-injection, ai-generated]
   - [io.quarkus.bootstrap.workspace, WorkspaceModule$Mutable, false, setModuleDir,
-    (Path), '', 'Argument[0]', tainted-path, ai-generated]
+    (Path), '', 'Argument[0]', path-injection, ai-generated]
   - [org.jboss.shrinkwrap.api.exporter, StreamExporter, true, exportTo, (File), '',
-    'Argument[0]', tainted-path, ai-generated]
+    'Argument[0]', path-injection, ai-generated]
   - [java.net, URI, false, URI, '(String,String,String,int,String,String,String)',
-    '', 'Argument[2]', ssrf, ai-generated]
+    '', 'Argument[2]', request-forgery, ai-generated]
   - [jakarta.xml.soap, SOAPConnection, true, call, '(SOAPMessage,Object)', '', 'Argument[1]',
-    ssrf, ai-generated]
+    request-forgery, ai-generated]
   - [jakarta.servlet, ServletRequest, true, getRequestDispatcher, (String), '', 'Argument[this]',
-    tainted-path, ai-generated]
+    path-injection, ai-generated]
   - [io.undertow.server.handlers.proxy, LoadBalancingProxyClient, true, addHost, '(URI,String)',
-    '', 'Argument[0]', ssrf, ai-generated]
+    '', 'Argument[0]', request-forgery, ai-generated]
   - [io.undertow.server.handlers, PathHandler, true, removePrefixPath, (String), '',
-    'Argument[0]', tainted-path, ai-generated]
+    'Argument[0]', path-injection, ai-generated]
   - [java.net, HttpURLConnection, true, setRequestMethod, (String), '', 'Argument[this]',
     command-injection, ai-generated]
   - [org.wildfly.extras.creaper.core.online, OnlineManagementClient, true, execute,
     (String), '', 'Argument[this]', command-injection, ai-generated]
-  - [org.jboss.shrinkwrap.api, Archive, true, get, (String), '', 'Argument[0]', tainted-path,
+  - [org.jboss.shrinkwrap.api, Archive, true, get, (String), '', 'Argument[0]', path-injection,
     ai-generated]
   - [org.keycloak.testsuite.cli.exec, AbstractExecBuilder, true, argsLine, (String),
     '', 'Argument[0]', command-injection, ai-generated]
   - [org.apache.tools.ant.taskdefs, JDBCTask, true, setUserid, (String), '', 'Argument[0]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [org.apache.tools.ant.taskdefs, SQLExec, true, execute, (), '', 'Argument[this]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [org.apache.directory.server.kerberos.shared.keytab, Keytab, true, write, (File),
-    '', 'Argument[0]', tainted-path, ai-generated]
-  - [org.apache.ibatis.jdbc, AbstractSQL, true, ORDER_BY, (String), '', 'Argument[this]',
-    sql, ai-generated]
-  - [org.apache.ibatis.jdbc, AbstractSQL, true, LEFT_OUTER_JOIN, (String), '', 'Argument[this]',
-    sql, ai-generated]
-  - [java.lang, Class, false, getResource, (String), '', 'Argument[0]', tainted-path,
+    '', 'Argument[0]', path-injection, ai-generated]
+  - [org.apache.ibatis.jdbc, Abstractsql-injection, true, ORDER_BY, (String), '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [org.apache.ibatis.jdbc, Abstractsql-injection, true, LEFT_OUTER_JOIN, (String), '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [java.lang, Class, false, getResource, (String), '', 'Argument[0]', path-injection,
     ai-generated]
-  - [org.apache.ibatis.mapping, BoundSql, true, getSql, (), '', 'Argument[this]',
-    sql, ai-generated]
+  - [org.apache.ibatis.mapping, Boundsql-injection, true, getsql-injection, (), '', 'Argument[this]',
+    sql-injection, ai-generated]
   - [net.sf.jsqlparser.statement.select, Select, true, toString, (), '', 'Argument[this]',
-    sql, ai-generated]
+    sql-injection, ai-generated]
   - [io.etcd.jetcd, ClientBuilder, false, endpoints, '(String[])', '', 'Argument[this]',
-    ssrf, ai-generated]
+    request-forgery, ai-generated]
   - [io.seata.rm.datasource.exec, StatementCallback, true, execute, '(Statement,Object[])',
-    '', 'Argument[1]', sql, ai-generated]
+    '', 'Argument[1]', sql-injection, ai-generated]
   - [io.seata.rm.datasource.exec, BaseInsertExecutor, true, getGeneratedKeys, (String),
-    '', 'Argument[0]', sql, ai-generated]
-  - [java.sql, PreparedStatement, true, setNString, '(int,String)', '', 'Argument[1]',
-    sql, ai-generated]
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [java.sql-injection, PreparedStatement, true, setNString, '(int,String)', '', 'Argument[1]',
+    sql-injection, ai-generated]
   - [redis.clients.jedis, PipelineBase, true, del, (String), '', 'Argument[0]', command-injection,
     ai-generated]
   - [com.alibaba.druid.pool, DruidAbstractDataSource, true, setValidationQuery, (String),
-    '', 'Argument[this]', sql, ai-generated]
+    '', 'Argument[this]', sql-injection, ai-generated]
   - [java.net, Authenticator, false, requestPasswordAuthentication, '(String,InetAddress,int,String,String,String,URL,RequestorType)',
-    '', 'Argument[6]', ssrf, ai-generated]
+    '', 'Argument[6]', request-forgery, ai-generated]
   - [kotlin.jvm.functions, Function2, true, invoke, '(Route,Response)', '', 'Argument[1]',
-    ssrf, ai-generated]
-  - [okio, FileSystem, false, deleteRecursively, (Path), '', 'Argument[0]', tainted-path,
+    request-forgery, ai-generated]
+  - [okio, FileSystem, false, deleteRecursively, (Path), '', 'Argument[0]', path-injection,
     ai-generated]
   - [okio, ForwardingFileSystem, true, atomicMove, '(Path,Path)', '', 'Argument[1]',
-    tainted-path, ai-generated]
-  - [okio, FileSystem, true, source, (Path), '', 'Argument[this]', tainted-path, ai-generated]
-  - [okio, ForwardingFileSystem, true, source, (Path), '', 'Argument[0]', tainted-path,
+    path-injection, ai-generated]
+  - [okio, FileSystem, true, source, (Path), '', 'Argument[this]', path-injection, ai-generated]
+  - [okio, ForwardingFileSystem, true, source, (Path), '', 'Argument[0]', path-injection,
     ai-generated]
-  - [okhttp3, Interceptor$Chain, false, proceed, (Request), '', 'Argument[0]', ssrf,
+  - [okhttp3, Interceptor$Chain, false, proceed, (Request), '', 'Argument[0]', request-forgery,
     ai-generated]
