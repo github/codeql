@@ -214,8 +214,7 @@ module ModelValidation {
       not kind =
         [
           "code-injection", "command-injection", "file-content-store", "html-injection",
-          "ldap-injection", "log-injection", "sql-injection", "url-redirection",
-          "js-injection",
+          "ldap-injection", "log-injection", "sql-injection", "url-redirection", "js-injection",
         ] and
       not kind.matches("encryption-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
