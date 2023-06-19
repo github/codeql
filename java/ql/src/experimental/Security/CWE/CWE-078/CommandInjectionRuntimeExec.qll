@@ -64,9 +64,9 @@ class ExecTaintConfiguration2 extends TaintTracking::Configuration {
 class AssignToNonZeroIndex extends DataFlow::Node {
   AssignToNonZeroIndex() {
     exists(AssignExpr assign, ArrayAccess access |
-        assign.getDest() = access and
-        access.getIndexExpr().(IntegerLiteral).getValue() != "0" and
-        assign.getSource() = this.asExpr()
+      assign.getDest() = access and
+      access.getIndexExpr().(IntegerLiteral).getValue() != "0" and
+      assign.getSource() = this.asExpr()
     )
   }
 }
@@ -75,8 +75,8 @@ class AssignToNonZeroIndex extends DataFlow::Node {
 class ArrayInitAtNonZeroIndex extends DataFlow::Node {
   ArrayInitAtNonZeroIndex() {
     exists(ArrayInit init, int index |
-        init.getInit(index) = this.asExpr() and
-        index != 0
+      init.getInit(index) = this.asExpr() and
+      index != 0
     )
   }
 }
@@ -85,9 +85,9 @@ class ArrayInitAtNonZeroIndex extends DataFlow::Node {
 class StreamConcatAtNonZeroIndex extends DataFlow::Node {
   StreamConcatAtNonZeroIndex() {
     exists(MethodAccess call, int index |
-        call.getMethod().getQualifiedName() = "java.util.stream.Stream.concat" and
-        call.getArgument(index) = this.asExpr() and
-        index != 0
+      call.getMethod().getQualifiedName() = "java.util.stream.Stream.concat" and
+      call.getArgument(index) = this.asExpr() and
+      index != 0
     )
   }
 }
