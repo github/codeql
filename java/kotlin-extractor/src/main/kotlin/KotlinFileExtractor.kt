@@ -1701,12 +1701,13 @@ open class KotlinFileExtractor(
 
     private fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
         with("synthetic body", b) {
-            when (b.kind) {
-                IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
-                IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+            val kind = b.kind
+            when {
+                kind == IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
+                kind == IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+                kind == kind_ENUM_ENTRIES -> tw.writeKtSyntheticBody(callable, 3)
                 else -> {
-                    // TODO: Support IrSyntheticBodyKind.ENUM_ENTRIES
-                    logger.errorElement("Unhandled synthetic body kind " + b.kind.javaClass, b)
+                    logger.errorElement("Unhandled synthetic body kind " + kind, b)
                 }
             }
         }
