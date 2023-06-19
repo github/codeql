@@ -67,7 +67,7 @@ module CommandInjection = TaintTracking::Global<CommandInjectionConfig>;
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }
 
-/** Command Injection sinks defined through CSV models. */
+/** Command Injection sinks defined through Models as Data. */
 private class ExternalCommandInjectionExprSink extends Sink {
   ExternalCommandInjectionExprSink() { sinkNode(this, "command-injection") }
 }
