@@ -62,7 +62,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
         "(credit|debit|bank|visa).?(card|num|no|acc(ou?)nt)|acc(ou)?nt.?(no|num|credit)|" +
         "salary|billing|credit.?(rating|score)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-        "e.?mail|" +
+        "email|e_mail|" +
         // Health - medical conditions, insurance status, prescription records
         "birth.?(date|day)|(date|day).?(of.?)?birth|" +
         "medical|(health|care).?plan|healthkit|appointment|prescription|" +
