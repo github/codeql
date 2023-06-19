@@ -5,8 +5,8 @@
 import csharp
 import TestUtilities.InlineFlowTest
 import DefaultFlowTest
-import ValueFlow::PathGraph
+import PathGraph
 
-from ValueFlow::PathNode source, ValueFlow::PathNode sink
-where ValueFlow::flowPath(source, sink)
+from PathNode source, PathNode sink
+where flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()
