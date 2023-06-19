@@ -98,6 +98,6 @@ class UnSafeExecutable extends string {
   bindingset[this]
   UnSafeExecutable() {
     this.regexpMatch("^(|.*/)([a-z]*sh|javac?|python.*|perl|[Pp]ower[Ss]hell|php|node|deno|bun|ruby|osascript|cmd|Rscript|groovy)(\\.exe)?$") and
-    not this.matches("netsh.exe")
+    not this = "netsh.exe"
   }
 }
