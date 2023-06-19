@@ -44,9 +44,9 @@ class ExecTaintConfiguration2 extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(RuntimeExecMethod method, MethodAccess call, int index |
+    exists(RuntimeExecMethod method, MethodAccess call |
       call.getMethod() = method and
-      sink.asExpr() = call.getArgument(index) and
+      sink.asExpr() = call.getArgument(_) and
       sink.asExpr().getType() instanceof Array
     )
   }
@@ -62,36 +62,33 @@ class ExecTaintConfiguration2 extends TaintTracking::Configuration {
 
 // array[3] = node
 class AssignToNonZeroIndex extends DataFlow::Node {
-  AssignExpr assign;
-  ArrayAccess access;
-
   AssignToNonZeroIndex() {
-    assign.getDest() = access and
-    access.getIndexExpr().(IntegerLiteral).getValue() != "0" and
-    assign.getSource() = this.asExpr()
+    exists(AssignExpr assign, ArrayAccess access |
+        assign.getDest() = access and
+        access.getIndexExpr().(IntegerLiteral).getValue() != "0" and
+        assign.getSource() = this.asExpr()
+    )
   }
 }
 
 // String[] array = {"a", "b, "c"};
 class ArrayInitAtNonZeroIndex extends DataFlow::Node {
-  ArrayInit init;
-  int index;
-
   ArrayInitAtNonZeroIndex() {
-    init.getInit(index) = this.asExpr() and
-    index != 0
+    exists(ArrayInit init, int index |
+        init.getInit(index) = this.asExpr() and
+        index != 0
+    )
   }
 }
 
 // Stream.concat(Arrays.stream(array_1), Arrays.stream(array_2))
 class StreamConcatAtNonZeroIndex extends DataFlow::Node {
-  MethodAccess call;
-  int index;
-
   StreamConcatAtNonZeroIndex() {
-    call.getMethod().getQualifiedName() = "java.util.stream.Stream.concat" and
-    call.getArgument(index) = this.asExpr() and
-    index != 0
+    exists(MethodAccess call, int index |
+        call.getMethod().getQualifiedName() = "java.util.stream.Stream.concat" and
+        call.getArgument(index) = this.asExpr() and
+        index != 0
+    )
   }
 }
 
