@@ -27,7 +27,7 @@ class LogInjectionAdditionalTaintStep extends Unit {
 }
 
 private class DefaultLogInjectionSink extends LogInjectionSink {
-  DefaultLogInjectionSink() { sinkNode(this, "logging") }
+  DefaultLogInjectionSink() { sinkNode(this, "log-injection") }
 }
 
 private class DefaultLogInjectionSanitizer extends LogInjectionSanitizer {

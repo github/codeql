@@ -6,5 +6,5 @@ extensions:
       - [
           "@example/execa",
           "Member[shell].Argument[0]",
-          "command-line-injection",
+          "command-injection",
         ]

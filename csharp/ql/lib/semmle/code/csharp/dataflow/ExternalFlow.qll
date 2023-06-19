@@ -211,7 +211,8 @@ module ModelValidation {
     )
     or
     exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["code", "sql", "xss", "remote", "html"] and
+      not kind =
+        ["code-injection", "sql-injection", "js-injection", "html-injection", "file-content-store"] and
       not kind.matches("encryption-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )

@@ -46,13 +46,13 @@ public class Test {
         new FileReader((File) source());
         // "java.io;FileReader;true;FileReader;(String);;Argument[0];read-file;ai-generated"
         new FileReader((String) source());
-        // "java.nio.file;Files;false;copy;;;Argument[0];read-file;manual"
-        Files.copy((Path) source(), (Path) null);
+        // "java.nio.file;Files;false;copy;(Path,OutputStream);;Argument[0];read-file;manual"
         Files.copy((Path) source(), (OutputStream) null);
-        Files.copy((InputStream) source(), null);
-        // "java.nio.file;Files;false;copy;;;Argument[1];create-file;manual"
+        // "java.nio.file;Files;false;copy;(Path,Path,CopyOption[]);;Argument[0];read-file;manual"
+        Files.copy((Path) source(), (Path) null);
+        // "java.nio.file;Files;false;copy;(Path,Path,CopyOption[]);;Argument[1];create-file;manual"
         Files.copy((Path) null, (Path) source());
-        Files.copy((Path) null, (OutputStream) source());
+        // "java.nio.file;Files;false;copy;(InputStream,Path,CopyOption[]);;Argument[1];create-file;manual"
         Files.copy((InputStream) null, (Path) source());
         // "java.nio.file;Files;false;createDirectories;;;Argument[0];create-file;manual"
         Files.createDirectories((Path) source());

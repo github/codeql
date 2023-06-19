@@ -7,7 +7,7 @@
  * import TestUtilities.InlineFlowTest
  * ```
  *
- * To declare expecations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
+ * To declare expectations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
  * Example of the corresponding test file, e.g. Test.java
  * ```go
  * public class Test {

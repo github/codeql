@@ -7,8 +7,9 @@
 #include "swift/logging/SwiftLogging.h"
 #include "swift/xcode-autobuilder/CustomizingBuildLink.h"
 
-static const char* uiTest = "com.apple.product-type.bundle.ui-testing";
-static const char* unitTest = "com.apple.product-type.bundle.unit-test";
+static constexpr std::string_view uiTest = "com.apple.product-type.bundle.ui-testing";
+static constexpr std::string_view unitTest = "com.apple.product-type.bundle.unit-test";
+static constexpr std::string_view unknownType = "<unknown_target_type>";
 
 const std::string_view codeql::programName = "autobuilder";
 
@@ -38,6 +39,16 @@ struct CLIArgs {
   bool dryRun;
 };
 
+static bool endsWith(std::string_view s, std::string_view suffix) {
+  return s.size() >= suffix.size() && s.substr(s.size() - suffix.size()) == suffix;
+}
+
+static bool isNonSwiftOrTestTarget(const Target& t) {
+  return t.fileCount == 0 || t.type == uiTest || t.type == unitTest ||
+         // unknown target types can be legitimate, let's do a name-based heuristic then
+         (t.type == unknownType && (endsWith(t.name, "Tests") || endsWith(t.name, "Test")));
+}
+
 static void autobuild(const CLIArgs& args) {
   auto collected = collectTargets(args.workingDir);
   auto& targets = collected.targets;
@@ -45,10 +56,7 @@ static void autobuild(const CLIArgs& args) {
     LOG_INFO("{}", t);
   }
   // Filter out targets that are tests or have no swift source files
-  targets.erase(std::remove_if(std::begin(targets), std::end(targets),
-                               [&](Target& t) -> bool {
-                                 return t.fileCount == 0 || t.type == uiTest || t.type == unitTest;
-                               }),
+  targets.erase(std::remove_if(std::begin(targets), std::end(targets), isNonSwiftOrTestTarget),
                 std::end(targets));
 
   // Sort targets by the amount of files in each

@@ -198,8 +198,8 @@ string getComponentSpecific(SummaryComponent sc) {
   or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + rk + "]" and
-    not rk instanceof NormalReturnKind
+    not rk = getReturnValueKind() and
+    result = "ReturnValue[" + rk + "]"
   )
 }
 

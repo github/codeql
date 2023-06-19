@@ -511,7 +511,8 @@
   "SensitiveDataHeuristics Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
     "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll",
-    "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll"
+    "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll",
+    "swift/ql/lib/codeql/swift/security/internal/SensitiveDataHeuristics.qll"
   ],
   "CFG": [
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",

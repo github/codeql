@@ -366,7 +366,10 @@ open class KotlinFileExtractor(
 
             val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
             if (typeArgs != null) {
-                for ((idx, arg) in typeArgs.withIndex()) {
+                // From 1.9, the list might change when we call erase,
+                // so we make a copy that it is safe to iterate over.
+                val typeArgsCopy = typeArgs.toList()
+                for ((idx, arg) in typeArgsCopy.withIndex()) {
                     val argId = getTypeArgumentLabel(arg).id
                     tw.writeTypeArgs(argId, idx, id)
                 }
@@ -5531,7 +5534,7 @@ open class KotlinFileExtractor(
                         return
                     }
 
-                    val typeOwner = e.typeOperandClassifier.owner
+                    val typeOwner = e.typeOperand.classifierOrFail.owner
                     if (typeOwner !is IrClass) {
                         logger.errorElement("Expected to find SAM conversion to IrClass. Found '${typeOwner.javaClass}' instead. Can't implement SAM interface.", e)
                         return

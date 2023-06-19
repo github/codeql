@@ -38,26 +38,33 @@ class StringType extends TStringType {
     csvLabel = "nsstring-length"
     or
     this = TStringUtf8() and
-    name = "String.utf8" and
-    singular = "a String.utf8" and
+    name = "String.UTF8View" and
+    singular = "a String.UTF8View" and
     equivClass = this and
     csvLabel = "string-utf8-length"
     or
     this = TStringUtf16() and
-    name = "String.utf16" and
-    singular = "a String.utf16" and
+    name = "String.UTF16View" and
+    singular = "a String.UTF16View" and
     equivClass = TNsString() and
     csvLabel = "string-utf16-length"
     or
     this = TStringUnicodeScalars() and
-    name = "String.unicodeScalars" and
-    singular = "a String.unicodeScalars" and
+    name = "String.UnicodeScalarView" and
+    singular = "a String.UnicodeScalarView" and
     equivClass = this and
     csvLabel = "string-unicodescalars-length"
   }
 
-  /** Gets a textual representation of this string type. */
+  /**
+   * Gets a textual representation of this string type.
+   */
   string toString() { result = name }
+
+  /**
+   * Gets the name of this string type.
+   */
+  string getName() { result = name }
 
   /**
    * Gets the equivalence class for this string type. If these are equal,
@@ -142,21 +149,16 @@ private class ExtraStringLengthConflationSource extends StringLengthConflationSo
   StringType stringType;
 
   ExtraStringLengthConflationSource() {
-    exists(MemberRefExpr memberRef, string typeName |
+    // source is the result of a call to `[stringType].count`.
+    exists(MemberRefExpr memberRef |
       (
-        // result of a call to `String.utf8.count`
-        typeName = "String.UTF8View" and
         stringType = TStringUtf8()
         or
-        // result of a call to `String.utf16.count`
-        typeName = "String.UTF16View" and
         stringType = TStringUtf16()
         or
-        // result of a call to `String.unicodeScalars.count`
-        typeName = "String.UnicodeScalarView" and
         stringType = TStringUnicodeScalars()
       ) and
-      memberRef.getBase().getType().(NominalType).getName() = typeName and
+      memberRef.getBase().getType().(NominalType).getName() = stringType.getName() and
       memberRef.getMember().(VarDecl).getName() = "count" and
       this.asExpr() = memberRef
     )
@@ -180,14 +182,6 @@ private class StringLengthConflationSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";Sequence;true;dropFirst(_:);;;Argument[0];string-length",
-        ";Sequence;true;dropLast(_:);;;Argument[0];string-length",
-        ";Sequence;true;prefix(_:);;;Argument[0];string-length",
-        ";Sequence;true;suffix(_:);;;Argument[0];string-length",
-        ";Collection;true;formIndex(_:offsetBy:);;;Argument[0..1];string-length",
-        ";Collection;true;formIndex(_:offsetBy:limitBy:);;;Argument[0..1];string-length",
-        ";Collection;true;removeFirst(_:);;;Argument[0];string-length",
-        ";RangeReplaceableCollection;true;removeLast(_:);;;Argument[0];string-length",
         ";String;true;index(_:offsetBy:);;;Argument[0..1];string-length",
         ";String;true;index(_:offsetBy:limitBy:);;;Argument[0..1];string-length",
         ";String.Index;true;init(encodedOffset:);;;Argument[0];string-length",
@@ -202,4 +196,46 @@ private class StringLengthConflationSinks extends SinkModelCsv {
         ";;false;NSMakeRange(_:_:);;;Argument[0..1];nsstring-length",
       ]
   }
+}
+
+/**
+ * An extra sink that don't fit into the CSV scheme (because we care about the actual
+ * type the method is being called on, not just the type it's declared on).
+ */
+private class ExtraStringLengthConflationSink extends StringLengthConflationSink {
+  StringType stringType;
+
+  ExtraStringLengthConflationSink() {
+    // sink is a length or offset argument of a call to `[stringType].[method]`.
+    exists(CallExpr call |
+      (
+        stringType = TString()
+        or
+        stringType = TStringUtf8()
+        or
+        stringType = TStringUtf16()
+        or
+        stringType = TStringUnicodeScalars()
+      ) and
+      (
+        call.getQualifier().getType().(NominalType).getName() = stringType.getName() or
+        call.getQualifier().getType().(InOutType).getObjectType().(NominalType).getName() =
+          stringType.getName()
+      ) and
+      (
+        call.getStaticTarget().getName() =
+          [
+            "dropFirst(_:)", "dropLast(_:)", "prefix(_:)", "suffix(_:)", "removeFirst(_:)",
+            "removeLast(_:)"
+          ] and
+        this.asExpr() = call.getArgument(0).getExpr()
+        or
+        call.getStaticTarget().getName() =
+          ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
+        this.asExpr() = call.getArgument([0, 1]).getExpr()
+      )
+    )
+  }
+
+  override StringType getCorrectStringType() { result = stringType }
 }

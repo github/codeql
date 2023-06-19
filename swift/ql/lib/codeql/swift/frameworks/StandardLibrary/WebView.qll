@@ -208,10 +208,5 @@ private class WKUserScriptSummaries extends SummaryModelCsv {
 private class WKUserScriptInheritsTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
-  WKUserScriptInheritsTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl().asNominalTypeDecl().getName() = "WKUserScript" and
-      f.getName() = "source"
-    )
-  }
+  WKUserScriptInheritsTaint() { this.getField().hasQualifiedName("WKUserScript", "source") }
 }

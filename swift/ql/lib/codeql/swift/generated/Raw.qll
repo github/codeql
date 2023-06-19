@@ -21,6 +21,8 @@ module Raw {
   class Callable extends @callable, Element {
     /**
      * Gets the name of this callable, if it exists.
+     *
+     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
      */
     string getName() { callable_names(this, result) }
 
@@ -1438,22 +1440,35 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An implicit expression created by the compiler when a method is called on a protocol. For example in
+   * ```
+   * protocol P {
+   *   func foo() -> Int
+   * }
+   * func bar(x: P) -> Int {
+   *   return x.foo()
+   * }
+   * `x.foo()` is actually wrapped in an `OpenExistentialExpr` that "opens" `x` replacing it in its subexpression with
+   * an `OpaqueValueExpr`.
+   * ```
    */
   class OpenExistentialExpr extends @open_existential_expr, Expr {
     override string toString() { result = "OpenExistentialExpr" }
 
     /**
      * Gets the sub expression of this open existential expression.
+     *
+     * This wrapped subexpression is where the opaque value and the dynamic type under the protocol type may be used.
      */
     Expr getSubExpr() { open_existential_exprs(this, result, _, _) }
 
     /**
-     * Gets the existential of this open existential expression.
+     * Gets the protocol-typed expression opened by this expression.
      */
     Expr getExistential() { open_existential_exprs(this, _, result, _) }
 
     /**
-     * Gets the opaque expression of this open existential expression.
+     * Gets the opaque value expression embedded within `getSubExpr()`.
      */
     OpaqueValueExpr getOpaqueExpr() { open_existential_exprs(this, _, _, result) }
   }

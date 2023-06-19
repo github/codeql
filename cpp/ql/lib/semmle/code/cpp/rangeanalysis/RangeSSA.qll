@@ -40,9 +40,6 @@ library class RangeSsa extends SsaHelper {
   }
 }
 
-/** DEPRECATED: Alias for RangeSsa */
-deprecated class RangeSSA = RangeSsa;
-
 private predicate guard_defn(VariableAccess v, Expr guard, BasicBlock b, boolean branch) {
   guardCondition(guard, v, branch) and
   guardSuccessor(guard, branch, b)

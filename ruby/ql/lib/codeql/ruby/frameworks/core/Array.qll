@@ -583,7 +583,8 @@ module Array {
 
   private class DeleteUnknownSummary extends DeleteSummary {
     DeleteUnknownSummary() {
-      this = "delete" and
+      // Note: take care to avoid a name clash with the "delete" summary from String.qll
+      this = "delete-unknown-key" and
       not exists(DataFlow::Content::getKnownElementIndex(mc.getArgument(0)))
     }
 

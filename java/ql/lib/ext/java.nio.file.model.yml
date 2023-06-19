@@ -3,47 +3,62 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.nio.file", "Files", False, "copy", "", "", "Argument[0]", "read-file", "manual"]
-      - ["java.nio.file", "Files", False, "copy", "(InputStream,Path,CopyOption[])", "", "Argument[0]", "write-file", "manual"]
-      - ["java.nio.file", "Files", False, "copy", "", "", "Argument[1]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "createDirectories", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "createDirectory", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "createFile", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "createLink", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "createSymbolicLink", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "createTempDirectory", "(Path,String,FileAttribute[])", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "createTempFile", "(Path,String,String,FileAttribute[])", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "delete", "(Path)", "", "Argument[0]", "create-file", "ai-manual"] # should be delete-file
-      - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "create-file", "ai-manual"] # should be delete-file
-      - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "create-file", "ai-manual"] # should be delete-file
-      - ["java.nio.file", "Files", False, "lines", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "lines", "(Path)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "move", "", "", "Argument[1]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "newBufferedReader", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "newBufferedReader", "(Path)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "newBufferedWriter", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "newOutputStream", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "readAllBytes", "(Path)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "readAllLines", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "readAllLines", "(Path)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "readString", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "readString", "(Path)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", False, "write", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "write", "", "", "Argument[1]", "write-file", "manual"]
-      - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[0]", "create-file", "manual"]
-      - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[1]", "write-file", "manual"]
-      - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[1]", "create-file", "ai-manual"]
-      - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[0]", "create-file", "ai-manual"] # should be delete-file
-      - ["java.nio.file", "Files", True, "delete", "(Path)", "", "Argument[0]", "create-file", "ai-manual"] # should be delete-file
-      - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.nio.file", "Files", True, "newOutputStream", "(Path,OpenOption[])", "", "Argument[0]", "create-file", "ai-manual"]
-      - ["java.nio.file", "SecureDirectoryStream", True, "deleteDirectory", "(Path)", "", "Argument[0]", "create-file", "ai-manual"] # should be delete-file
-      - ["java.nio.file", "SecureDirectoryStream", True, "deleteFile", "(Path)", "", "Argument[0]", "create-file", "ai-manual"] # should be delete-file
+      - ["java.nio.file", "Files", False, "copy", "(Path,OutputStream)", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "(Path,Path,CopyOption[])", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "(Path,Path,CopyOption[])", "", "Argument[1]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "(InputStream,Path,CopyOption[])", "", "Argument[0]", "file-content-store", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "(InputStream,Path,CopyOption[])", "", "Argument[1]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "createDirectories", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "createDirectory", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "createFile", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "createLink", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "createSymbolicLink", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "createTempDirectory", "(Path,String,FileAttribute[])", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "createTempFile", "(Path,String,String,FileAttribute[])", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "delete", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "getFileStore", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"] # the FileStore class is unlikely to be used for later sanitization
+      - ["java.nio.file", "Files", False, "lines", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "lines", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "move", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "newBufferedReader", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "newBufferedReader", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "newBufferedWriter", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "newOutputStream", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "probeContentType", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"] # accesses the file based on user input, but only reads its content type from it
+      - ["java.nio.file", "Files", False, "readAllBytes", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "readAllLines", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "readAllLines", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "readString", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "readString", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "write", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "write", "", "", "Argument[1]", "file-content-store", "manual"]
+      - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[1]", "file-content-store", "manual"]
+      - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", True, "delete", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", True, "newOutputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "FileSystem", False, "getPath", "", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Path", False, "of", "(String,String[])", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Path", False, "of", "(URI)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Path", False, "resolve", "(String)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Path", False, "resolveSibling", "(String)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Paths", False, "get", "(String,String[])", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Paths", False, "get", "(URI)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "SecureDirectoryStream", True, "deleteDirectory", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "SecureDirectoryStream", True, "deleteFile", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.nio.file", "Files", False, "find", "(Path,int,BiPredicate,FileVisitOption[])", "", "Argument[0]", "ReturnValue.Element", "taint", "ai-manual"]
+      - ["java.nio.file", "Files", False, "find", "(Path,int,BiPredicate,FileVisitOption[])", "", "Argument[2]", "ReturnValue.Element", "taint", "ai-manual"]
+      - ["java.nio.file", "Files", False, "list", "(Path)", "", "Argument[0]", "ReturnValue.Element", "taint", "ai-manual"]
+      - ["java.nio.file", "Files", False, "readSymbolicLink", "(Path)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"] # this can be used to enumerate a file system
       - ["java.nio.file", "Files", True, "newBufferedReader", "(Path,Charset)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Files", True, "newBufferedReader", "(Path)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Files", True, "newByteChannel", "(Path,OpenOption[])", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
@@ -79,4 +94,22 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      # summary neutrals
       - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "summary", "manual"]
+
+      # sink neutrals
+      - ["java.nio.file", "Files", "exists", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "getLastModifiedTime", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "getOwner", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "getPosixFilePermissions", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isDirectory", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isExecutable", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isHidden", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isReadable", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isRegularFile", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isSameFile", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isSymbolicLink", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isWritable", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "notExists", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "setLastModifiedTime", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "size", "", "sink", "hq-manual"]

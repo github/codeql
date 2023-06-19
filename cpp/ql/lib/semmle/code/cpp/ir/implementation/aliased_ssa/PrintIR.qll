@@ -42,6 +42,14 @@ private predicate shouldPrintFunction(Language::Declaration decl) {
   exists(PrintIRConfiguration config | config.shouldPrintFunction(decl))
 }
 
+private predicate shouldPrintInstruction(Instruction i) {
+  exists(IRPropertyProvider provider | provider.shouldPrintInstruction(i))
+}
+
+private predicate shouldPrintOperand(Operand operand) {
+  exists(IRPropertyProvider provider | provider.shouldPrintOperand(operand))
+}
+
 private string getAdditionalInstructionProperty(Instruction instr, string key) {
   exists(IRPropertyProvider provider | result = provider.getInstructionProperty(instr, key))
 }
@@ -84,7 +92,9 @@ private string getOperandPropertyString(Operand operand) {
 private newtype TPrintableIRNode =
   TPrintableIRFunction(IRFunction irFunc) { shouldPrintFunction(irFunc.getFunction()) } or
   TPrintableIRBlock(IRBlock block) { shouldPrintFunction(block.getEnclosingFunction()) } or
-  TPrintableInstruction(Instruction instr) { shouldPrintFunction(instr.getEnclosingFunction()) }
+  TPrintableInstruction(Instruction instr) {
+    shouldPrintInstruction(instr) and shouldPrintFunction(instr.getEnclosingFunction())
+  }
 
 /**
  * A node to be emitted in the IR graph.
@@ -252,7 +262,8 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
   private string getOperandsString() {
     result =
       concat(Operand operand |
-        operand = instr.getAnOperand()
+        operand = instr.getAnOperand() and
+        shouldPrintOperand(operand)
       |
         operand.getDumpString() + getOperandPropertyString(operand), ", "
         order by

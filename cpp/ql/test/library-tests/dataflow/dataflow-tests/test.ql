@@ -16,10 +16,8 @@ module AstTest {
   }
 
   /** Common data flow configuration to be used by tests. */
-  class AstTestAllocationConfig extends DataFlow::Configuration {
-    AstTestAllocationConfig() { this = "ASTTestAllocationConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
+  module AstTestAllocationConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asParameter().getName().matches("source%")
@@ -32,18 +30,20 @@ module AstTest {
       exists(source.asUninitialized())
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
         call.getTarget().getName() = ["sink", "indirect_sink"] and
         sink.asExpr() = call.getAnArgument()
       )
     }
 
-    override predicate isBarrier(DataFlow::Node barrier) {
+    predicate isBarrier(DataFlow::Node barrier) {
       barrier.asExpr().(VariableAccess).getTarget().hasName("barrier") or
       barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getABarrierNode()
     }
   }
+
+  module AstFlow = DataFlow::Global<AstTestAllocationConfig>;
 }
 
 module IRTest {
@@ -67,10 +67,8 @@ module IRTest {
   }
 
   /** Common data flow configuration to be used by tests. */
-  class IRTestAllocationConfig extends DataFlow::Configuration {
-    IRTestAllocationConfig() { this = "IRTestAllocationConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
+  module IRTestAllocationConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asIndirectExpr(1).(FunctionCall).getTarget().getName() = "indirect_source"
@@ -82,7 +80,7 @@ module IRTest {
       exists(source.asUninitialized())
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call, Expr e | e = call.getAnArgument() |
         call.getTarget().getName() = "sink" and
         sink.asExpr() = e
@@ -92,7 +90,7 @@ module IRTest {
       )
     }
 
-    override predicate isBarrier(DataFlow::Node barrier) {
+    predicate isBarrier(DataFlow::Node barrier) {
       exists(Expr barrierExpr | barrierExpr in [barrier.asExpr(), barrier.asIndirectExpr()] |
         barrierExpr.(VariableAccess).getTarget().hasName("barrier")
       )
@@ -102,4 +100,8 @@ module IRTest {
       barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getAnIndirectBarrierNode()
     }
   }
+
+  module IRFlow = DataFlow::Global<IRTestAllocationConfig>;
 }
+
+import MakeTest<MergeTests<AstFlowTest<AstTest::AstFlow>, IRFlowTest<IRTest::IRFlow>>>

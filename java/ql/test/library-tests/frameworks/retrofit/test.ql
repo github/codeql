@@ -5,7 +5,9 @@ import TestUtilities.InlineFlowTest
 module FlowConfig implements DataFlow::ConfigSig {
   predicate isSource = DefaultFlowConfig::isSource/1;
 
-  predicate isSink(DataFlow::Node n) { DefaultFlowConfig::isSink(n) or sinkNode(n, "open-url") }
+  predicate isSink(DataFlow::Node n) {
+    DefaultFlowConfig::isSink(n) or sinkNode(n, "request-forgery")
+  }
 }
 
 module Flow = DataFlow::Global<FlowConfig>;

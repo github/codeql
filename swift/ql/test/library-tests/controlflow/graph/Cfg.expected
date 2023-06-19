@@ -349,6 +349,7 @@ cfg.swift:
 #-----| match -> print(_:separator:terminator:)
 
 #   40| print(_:separator:terminator:)
+#-----|  -> OpaqueValueExpr
 
 #   40| call to print(_:separator:terminator:)
 #-----|  -> 0
@@ -366,7 +367,6 @@ cfg.swift:
 #-----|  -> [...]
 
 #   40| OpaqueValueExpr
-#-----|  -> .appendLiteral(_:)
 
 #   40| TapExpr
 #-----|  -> "..."
@@ -2777,6 +2777,7 @@ cfg.swift:
 #-----|  -> y
 
 #  262| y
+#-----|  -> OpaqueValueExpr
 
 #  263| return ...
 #-----| return -> exit interpolatedString(x:y:) (normal)
@@ -2788,7 +2789,6 @@ cfg.swift:
 #-----|  -> return ...
 
 #  263| OpaqueValueExpr
-#-----|  -> .appendLiteral(_:)
 
 #  263| TapExpr
 #-----|  -> "..."

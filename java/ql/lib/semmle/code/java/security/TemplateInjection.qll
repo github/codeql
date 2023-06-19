@@ -66,7 +66,7 @@ private class DefaultTemplateInjectionSource extends TemplateInjectionSource ins
 { }
 
 private class DefaultTemplateInjectionSink extends TemplateInjectionSink {
-  DefaultTemplateInjectionSink() { sinkNode(this, "ssti") }
+  DefaultTemplateInjectionSink() { sinkNode(this, "template-injection") }
 }
 
 private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitizer {

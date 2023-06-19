@@ -35,7 +35,7 @@ deprecated class SensitiveLoggerConfiguration extends TaintTracking::Configurati
 
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
-  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "logging") }
+  override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "log-injection") }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer.asExpr() instanceof LiveLiteral or
@@ -52,7 +52,7 @@ deprecated class SensitiveLoggerConfiguration extends TaintTracking::Configurati
 module SensitiveLoggerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
-  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "logging") }
+  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "log-injection") }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer.asExpr() instanceof LiveLiteral or

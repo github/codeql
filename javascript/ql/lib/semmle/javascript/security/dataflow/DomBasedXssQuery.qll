@@ -8,12 +8,6 @@ private import semmle.javascript.security.TaintedUrlSuffix
 import DomBasedXssCustomizations::DomBasedXss
 private import Xss::Shared as Shared
 
-/** DEPRECATED. Use `Configuration`. */
-deprecated class HtmlInjectionConfiguration = Configuration;
-
-/** DEPRECATED. Use `Configuration`. */
-deprecated class JQueryHtmlOrSelectorInjectionConfiguration = Configuration;
-
 /**
  * A sink that is not a URL write or a JQuery selector,
  * assumed to be a value that is interpreted as HTML.
