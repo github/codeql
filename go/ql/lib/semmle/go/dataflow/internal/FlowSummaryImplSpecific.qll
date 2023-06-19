@@ -252,6 +252,12 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
 }
 
 /**
+ * Holds if `pos` is the position of the `heap` parameter, and thus should not
+ * be included by models that specify "any argument" or "any parameter".
+ */
+predicate heapParameter(ParameterPosition pos) { none() }
+
+/**
  * Holds if specification component `c` parses as return value `n` or a range
  * containing `n`.
  */
