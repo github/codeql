@@ -55,10 +55,9 @@ private module Cached {
       )
     }
 
-  pragma[nomagic]
-  private TypeTracker noContentTypeTracker(boolean hasCall) {
-    result = MkTypeTracker(hasCall, noContent())
-  }
+  /** Gets a type tracker with no content and the call bit set to the given value. */
+  cached
+  TypeTracker noContentTypeTracker(boolean hasCall) { result = MkTypeTracker(hasCall, noContent()) }
 
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
@@ -340,6 +339,8 @@ class StepSummary extends TStepSummary {
 
 /** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
+  predicate append = Cached::append/2;
+
   /**
    * Gets the summary that corresponds to having taken a forwards
    * inter-procedural step from `nodeFrom` to `nodeTo`.
@@ -400,6 +401,35 @@ module StepSummary {
   }
 
   deprecated predicate localSourceStoreStep = flowsToStoreStep/3;
+
+  /** Gets the step summary for a level step. */
+  StepSummary levelStep() { result = LevelStep() }
+
+  /** Gets the step summary for a call step. */
+  StepSummary callStep() { result = CallStep() }
+
+  /** Gets the step summary for a return step. */
+  StepSummary returnStep() { result = ReturnStep() }
+
+  /** Gets the step summary for storing into `content`. */
+  StepSummary storeStep(TypeTrackerContent content) { result = StoreStep(content) }
+
+  /** Gets the step summary for loading from `content`. */
+  StepSummary loadStep(TypeTrackerContent content) { result = LoadStep(content) }
+
+  /** Gets the step summary for loading from `load` and then storing into `store`. */
+  StepSummary loadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
+    result = LoadStoreStep(load, store)
+  }
+
+  /** Gets the step summary for a step that only permits contents matched by `filter`. */
+  StepSummary withContent(ContentFilter filter) { result = WithContent(filter) }
+
+  /** Gets the step summary for a step that blocks contents matched by `filter`. */
+  StepSummary withoutContent(ContentFilter filter) { result = WithoutContent(filter) }
+
+  /** Gets the step summary for a jump step. */
+  StepSummary jumpStep() { result = JumpStep() }
 }
 
 /**
@@ -545,6 +575,13 @@ module TypeTracker {
    * Gets a valid end point of type tracking.
    */
   TypeTracker end() { result.end() }
+
+  /**
+   * INTERNAL USE ONLY.
+   *
+   * Gets a valid end point of type tracking with the call bit set to the given value.
+   */
+  predicate end = Cached::noContentTypeTracker/1;
 }
 
 pragma[nomagic]

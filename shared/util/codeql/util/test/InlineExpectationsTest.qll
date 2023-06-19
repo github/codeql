@@ -444,6 +444,19 @@ module Make<InlineExpectationsTestSig Impl> {
   class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
 
   class InvalidExpectation = LegacyTest::InvalidTestExpectation;
+
+  /**
+   * Holds if the expectation `tag=value` is found in one or more expectation comments.
+   *
+   * This can be used when writing tests where the set of possible values must be known in advance,
+   * for example, when testing a predicate for which `value` is part of the binding set.
+   */
+  predicate hasExpectationWithValue(string tag, string value) {
+    exists(string tags |
+      getAnExpectation(_, _, _, tags, value) and
+      tag = tags.splitAt(",")
+    )
+  }
 }
 
 /**
