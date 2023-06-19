@@ -191,12 +191,24 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends LocalSourceNode, TParameterNode instanceof ParameterNodeImpl {
+class ParameterNode extends LocalSourceNode instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   final Parameter getParameter() { result = super.getParameter() }
 
+  /** Gets the callable that this parameter belongs to. */
+  final Callable getCallable() { result = super.getCfgScope() }
+
   /** Gets the name of the parameter, if any. */
   final string getName() { result = this.getParameter().(NamedParameter).getName() }
+}
+
+/**
+ * The value of an implicit `self` parameter at function entry, viewed as a node in a data
+ * flow graph.
+ */
+class SelfParameterNode extends ParameterNode instanceof SelfParameterNodeImpl {
+  /** Gets the underlying `self` variable. */
+  final SelfVariable getSelfVariable() { result = super.getSelfVariable() }
 }
 
 /**
@@ -327,9 +339,6 @@ private module Cached {
     or
     exists(Node mid | hasLocalSource(mid, source) |
       localFlowStepTypeTracker(mid, sink)
-      or
-      // Explicitly include the SSA param input step as type-tracking omits this step.
-      LocalFlow::localFlowSsaParamInput(mid, sink)
       or
       LocalFlow::localFlowSsaParamCaptureInput(mid, sink)
     )
@@ -1177,18 +1186,14 @@ class CallableNode extends StmtSequenceNode {
   }
 
   /**
-   * Gets the canonical return node from this callable.
-   *
-   * Each callable has exactly one such node, and its location may not correspond
-   * to any particular return site - consider using `getAReturningNode` to get nodes
-   * whose locations correspond to return sites.
-   */
-  Node getReturn() { result.(SynthReturnNode).getCfgScope() = callable }
-
-  /**
    * Gets a data flow node whose value is about to be returned by this callable.
    */
-  Node getAReturningNode() { result = this.getReturn().(SynthReturnNode).getAnInput() }
+  Node getAReturnNode() { result.(ReturnNode).(NodeImpl).getCfgScope() = callable }
+
+  /**
+   * DEPRECATED. Use `getAReturnNode` instead.
+   */
+  deprecated Node getAReturningNode() { result = this.getAReturnNode() }
 }
 
 /**

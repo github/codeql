@@ -1,5 +1,4 @@
 load("//swift:rules.bzl", "swift_cc_binary")
-load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
 
 swift_cc_binary(
     name = "xcode-autobuilder",
@@ -7,20 +6,14 @@ swift_cc_binary(
         "*.cpp",
         "*.h",
     ]),
-    visibility = ["//swift:__subpackages__"],
     linkopts = [
         "-lxml2",
         "-framework CoreFoundation",
     ],
     target_compatible_with = ["@platforms//os:macos"],
+    visibility = ["//swift:__subpackages__"],
     deps = [
-        "@absl//absl/strings",
         "//swift/logging",
+        "@absl//absl/strings",
     ],
-)
-
-generate_cmake(
-    name = "cmake",
-    targets = [":xcode-autobuilder"],
-    visibility = ["//visibility:public"],
 )

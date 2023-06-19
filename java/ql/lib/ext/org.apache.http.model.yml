@@ -9,8 +9,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.http", "HttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "open-url", "hq-manual"]
-      - ["org.apache.http", "HttpResponse", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
+      - ["org.apache.http", "HttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.http", "HttpResponse", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "html-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

@@ -6584,6 +6584,13 @@
 | taint.cpp:691:18:691:18 | s [post update] | taint.cpp:695:7:695:7 | s |  |
 | taint.cpp:691:20:691:20 | ref arg x | taint.cpp:694:9:694:9 | x |  |
 | taint.cpp:694:7:694:7 | s [post update] | taint.cpp:695:7:695:7 | s |  |
+| taint.cpp:700:13:700:18 | call to source | taint.cpp:702:11:702:11 | s |  |
+| taint.cpp:701:9:701:9 | p | taint.cpp:702:4:702:4 | p |  |
+| taint.cpp:702:4:702:4 | p | taint.cpp:702:4:702:6 | ... ++ |  |
+| taint.cpp:702:4:702:6 | ... ++ | taint.cpp:702:3:702:6 | * ... | TAINT |
+| taint.cpp:702:4:702:6 | ... ++ | taint.cpp:703:8:703:8 | p | TAINT |
+| taint.cpp:702:10:702:11 | * ... | taint.cpp:702:3:702:11 | ... = ... |  |
+| taint.cpp:702:11:702:11 | s | taint.cpp:702:10:702:11 | * ... | TAINT |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

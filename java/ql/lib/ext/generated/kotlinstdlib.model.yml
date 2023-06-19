@@ -6,18 +6,18 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["kotlin.io", "FilesKt", false, "appendBytes", "(File,byte[])", "", "Argument[0]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "appendText", "(File,String,Charset)", "", "Argument[0]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "bufferedWriter", "(File,Charset,int)", "", "Argument[0]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "copyRecursively", "(File,File,boolean,Function2)", "", "Argument[1]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "copyTo", "(File,File,boolean,int)", "", "Argument[1]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "outputStream", "(File)", "", "Argument[0]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "printWriter", "(File,Charset)", "", "Argument[0]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "writeBytes", "(File,byte[])", "", "Argument[0]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "writeText", "(File,String,Charset)", "", "Argument[0]", "create-file", "df-generated"]
-      - ["kotlin.io", "FilesKt", false, "writer", "(File,Charset)", "", "Argument[0]", "create-file", "df-generated"]
-      - ["kotlin.io", "TextStreamsKt", false, "readBytes", "(URL)", "", "Argument[0]", "open-url", "df-generated"]
-      - ["kotlin.io", "TextStreamsKt", false, "readText", "(URL,Charset)", "", "Argument[0]", "open-url", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "appendBytes", "(File,byte[])", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "appendText", "(File,String,Charset)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "bufferedWriter", "(File,Charset,int)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "copyRecursively", "(File,File,boolean,Function2)", "", "Argument[1]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "copyTo", "(File,File,boolean,int)", "", "Argument[1]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "outputStream", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "printWriter", "(File,Charset)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "writeBytes", "(File,byte[])", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "writeText", "(File,String,Charset)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["kotlin.io", "FilesKt", false, "writer", "(File,Charset)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["kotlin.io", "TextStreamsKt", false, "readBytes", "(URL)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["kotlin.io", "TextStreamsKt", false, "readText", "(URL,Charset)", "", "Argument[0]", "request-forgery", "df-generated"]
 
 
   - addsTo:

@@ -58,7 +58,7 @@ extensions:
       - ["System.Data", "IDataParameterCollection", True, "set_Item", "(System.String,System.Object)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
       - ["System.Data", "ITableMappingCollection", True, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Data", "ITableMappingCollection", True, "set_Item", "(System.String,System.Object)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
-      - ["System.Data", "PropertyCollection", False, "Clone", "()", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      - ["System.Data", "PropertyCollection", False, "Clone", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Data", "TypedTableBaseExtensions", False, "AsEnumerable<>", "(System.Data.TypedTableBase<TRow>)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Data", "TypedTableBaseExtensions", False, "ElementAtOrDefault<>", "(System.Data.TypedTableBase<TRow>,System.Int32)", "", "Argument[0].Element", "ReturnValue", "value", "manual"]
       - ["System.Data", "TypedTableBaseExtensions", False, "OrderBy<,>", "(System.Data.TypedTableBase<TRow>,System.Func<TRow,TKey>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]

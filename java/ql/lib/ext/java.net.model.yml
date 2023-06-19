@@ -9,22 +9,22 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.net", "DatagramSocket", True, "connect", "(SocketAddress)", "", "Argument[0]", "open-url", "ai-manual"]
-      - ["java.net", "Socket", True, "Socket", "(String,int)", "", "Argument[0]", "open-url", "ai-manual"]
-      - ["java.net", "URL", False, "openConnection", "", "", "Argument[this]", "open-url", "manual"]
-      - ["java.net", "URL", False, "openConnection", "(Proxy)", "", "Argument[0]", "open-url", "ai-manual"]
-      - ["java.net", "URL", False, "openStream", "", "", "Argument[this]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader)", "", "Argument[1]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[1]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[])", "", "Argument[0]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader)", "", "Argument[0]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[0]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "newInstance", "", "", "Argument[0]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[1]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader)", "", "Argument[1]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[0]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader)", "", "Argument[0]", "open-url", "manual"]
-      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[])", "", "Argument[0]", "open-url", "manual"]
+      - ["java.net", "DatagramSocket", True, "connect", "(SocketAddress)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["java.net", "Socket", True, "Socket", "(String,int)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["java.net", "URL", False, "openConnection", "", "", "Argument[this]", "request-forgery", "manual"]
+      - ["java.net", "URL", False, "openConnection", "(Proxy)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["java.net", "URL", False, "openStream", "", "", "Argument[this]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[])", "", "Argument[0]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "newInstance", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(String,URL[],ClassLoader)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[],ClassLoader)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["java.net", "URLClassLoader", False, "URLClassLoader", "(URL[])", "", "Argument[0]", "request-forgery", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

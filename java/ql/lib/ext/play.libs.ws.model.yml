@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["play.libs.ws", "WSClient", True, "url", "", "", "Argument[0]", "open-url", "manual"]
-      - ["play.libs.ws", "StandaloneWSClient", True, "url", "", "", "Argument[0]", "open-url", "manual"]
+      - ["play.libs.ws", "WSClient", True, "url", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["play.libs.ws", "StandaloneWSClient", True, "url", "", "", "Argument[0]", "request-forgery", "manual"]

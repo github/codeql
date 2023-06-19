@@ -4,7 +4,8 @@ edges
 | reflected_xss.py:2:26:2:32 | GSSA Variable request | reflected_xss.py:21:23:21:29 | ControlFlowNode for request |
 | reflected_xss.py:2:26:2:32 | GSSA Variable request | reflected_xss.py:27:23:27:29 | ControlFlowNode for request |
 | reflected_xss.py:9:18:9:24 | ControlFlowNode for request | reflected_xss.py:9:18:9:29 | ControlFlowNode for Attribute |
-| reflected_xss.py:9:18:9:29 | ControlFlowNode for Attribute | reflected_xss.py:10:26:10:53 | ControlFlowNode for BinaryExpr |
+| reflected_xss.py:9:18:9:29 | ControlFlowNode for Attribute | reflected_xss.py:9:18:9:45 | ControlFlowNode for Attribute() |
+| reflected_xss.py:9:18:9:45 | ControlFlowNode for Attribute() | reflected_xss.py:10:26:10:53 | ControlFlowNode for BinaryExpr |
 | reflected_xss.py:21:23:21:29 | ControlFlowNode for request | reflected_xss.py:21:23:21:34 | ControlFlowNode for Attribute |
 | reflected_xss.py:21:23:21:34 | ControlFlowNode for Attribute | reflected_xss.py:22:26:22:41 | ControlFlowNode for Attribute() |
 | reflected_xss.py:27:23:27:29 | ControlFlowNode for request | reflected_xss.py:27:23:27:34 | ControlFlowNode for Attribute |
@@ -14,6 +15,7 @@ nodes
 | reflected_xss.py:2:26:2:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | reflected_xss.py:9:18:9:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | reflected_xss.py:9:18:9:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| reflected_xss.py:9:18:9:45 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | reflected_xss.py:10:26:10:53 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | reflected_xss.py:21:23:21:29 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | reflected_xss.py:21:23:21:34 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |

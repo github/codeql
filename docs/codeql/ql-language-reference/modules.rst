@@ -139,7 +139,7 @@ Parameterized modules
 =====================
 
 Parameterized modules are QL's approach to generic programming.
-Similar to explicit modules, parameterized modules are defined within other modules using the keywork ``module``.
+Similar to explicit modules, parameterized modules are defined within other modules using the keyword ``module``.
 In addition to the module name, parameterized modules declare one or more parameters between the name and the module body.
 
 For example, consider the module ``M``, which takes two predicate parameters and defines a new predicate

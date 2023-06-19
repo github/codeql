@@ -3434,18 +3434,22 @@ private module Impl {
   }
 
   private Element getImmediateChildOfBraceStmt(BraceStmt e, int index, string partialPredicateCall) {
-    exists(int b, int bStmt, int n, int nElement |
+    exists(int b, int bStmt, int n, int nVariable, int nElement |
       b = 0 and
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
       n = bStmt and
-      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      nVariable = n + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nElement = nVariable + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateElement(index - n) and
-        partialPredicateCall = "Element(" + (index - n).toString() + ")"
+        result = e.getVariable(index - n) and
+        partialPredicateCall = "Variable(" + (index - n).toString() + ")"
+        or
+        result = e.getImmediateElement(index - nVariable) and
+        partialPredicateCall = "Element(" + (index - nVariable).toString() + ")"
       )
     )
   }

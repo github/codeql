@@ -77,4 +77,26 @@ module Sqlite3 {
 
     override DataFlow::Node getSql() { result = this.getArgument(0) }
   }
+
+  /**
+   * A call to `SQLite3::Database.quote`, considered as a sanitizer for SQL statements.
+   */
+  private class SQLite3QuoteSanitization extends SqlSanitization {
+    SQLite3QuoteSanitization() {
+      this = API::getTopLevelMember("SQLite3").getMember("Database").getAMethodCall("quote")
+    }
+  }
+
+  /**
+   * Flow summary for `SQLite3::Database.quote()`.
+   */
+  private class QuoteSummary extends SummarizedCallable {
+    QuoteSummary() { this = "SQLite3::Database.quote()" }
+
+    override MethodCall getACall() { result = any(SQLite3QuoteSanitization c).asExpr().getExpr() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
+    }
+  }
 }
