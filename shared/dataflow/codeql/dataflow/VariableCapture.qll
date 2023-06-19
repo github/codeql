@@ -1,3 +1,8 @@
+/**
+ * Provides a module for synthesizing data-flow nodes and related step relations
+ * for supporting flow through captured variables.
+ */
+
 private import codeql.util.Boolean
 private import codeql.util.Unit
 private import codeql.ssa.Ssa as Ssa
@@ -159,6 +164,10 @@ signature module OutputSig<InputSig I> {
   predicate parameterReadStep(ClosureNode node, I::CapturedParameter p);
 }
 
+/**
+ * Constructs the type `ClosureNode` and associated step relations, which are
+ * intended to be included in the data-flow node and step relations.
+ */
 module Flow<InputSig Input> implements OutputSig<Input> {
   private import Input
 
