@@ -21,38 +21,15 @@ module Twirp {
       this = API::getTopLevelMember("Twirp").getMember("Service").getAnInstantiation()
     }
 
-    /**
-     * Gets a local source node for the Service instantiation argument (the service handler).
-     */
-    private DataFlow::LocalSourceNode getHandlerSource() {
-      result = this.getArgument(0).getALocalSource()
-    }
-
-    /**
-     * Gets the API::Node for the service handler's class.
-     */
-    private API::Node getAHandlerClassApiNode() {
-      result.getAnInstantiation() = this.getHandlerSource()
-    }
-
-    /**
-     * Gets the AST module for the service handler's class.
-     */
-    private Ast::Module getAHandlerClassAstNode() {
-      result =
-        this.getAHandlerClassApiNode()
-            .asSource()
-            .asExpr()
-            .(CfgNodes::ExprNodes::ConstantReadAccessCfgNode)
-            .getExpr()
-            .getModule()
+    private DataFlow::ClassNode getAHandlerClass() {
+      result.getAnImmediateReference().getAMethodCall("new").flowsTo(this.getArgument(0))
     }
 
     /**
      * Gets a handler's method.
      */
     Ast::Method getAHandlerMethod() {
-      result = this.getAHandlerClassAstNode().getAnInstanceMethod()
+      result = this.getAHandlerClass().getAnAncestor().getAnOwnInstanceMethod().asCallableAstNode()
     }
   }
 
