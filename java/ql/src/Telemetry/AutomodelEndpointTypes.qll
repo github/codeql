@@ -40,18 +40,18 @@ class NegativeSinkType extends SinkType {
 }
 
 /** A sink relevant to the SQL injection query */
-class SqlSinkType extends SinkType {
-  SqlSinkType() { this = "sql" }
+class SqlInjectionSinkType extends SinkType {
+  SqlInjectionSinkType() { this = "sql-injection" }
 }
 
 /** A sink relevant to the tainted path injection query. */
-class TaintedPathSinkType extends SinkType {
-  TaintedPathSinkType() { this = "tainted-path" }
+class PathInjectionSinkType extends SinkType {
+  PathInjectionSinkType() { this = "path-injection" }
 }
 
 /** A sink relevant to the SSRF query. */
 class RequestForgerySinkType extends SinkType {
-  RequestForgerySinkType() { this = "ssrf" }
+  RequestForgerySinkType() { this = "request-forgery" }
 }
 
 /** A sink relevant to the command injection query. */

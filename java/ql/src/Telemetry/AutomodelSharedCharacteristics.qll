@@ -50,7 +50,7 @@ signature module CandidateSig {
   /**
    * Defines what MaD kinds are known, and what endpoint type they correspond to.
    */
-  predicate isKnownKind(string kind, string humanReadableLabel, EndpointType type);
+  predicate isKnownKind(string kind, EndpointType type);
 
   /**
    * Holds if `e` is a flow sanitizer, and has type `t`.
@@ -276,7 +276,11 @@ module SharedCharacteristics<CandidateSig Candidate> {
       string madKind;
       Candidate::EndpointType endpointType;
 
-      KnownSinkCharacteristic() { Candidate::isKnownKind(madKind, this, endpointType) }
+      KnownSinkCharacteristic() {
+        Candidate::isKnownKind(madKind, endpointType) and
+        // bind "this" to a unique string differing from that of the SinkType classes
+        this = madKind + "-characteristic"
+      }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSink(e, madKind) }
 
