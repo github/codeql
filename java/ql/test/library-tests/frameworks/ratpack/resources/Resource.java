@@ -361,13 +361,13 @@ class Resource {
         Promise
             .value(tainted)
             .nextOp(value -> Operation.of(() -> {
-                sink(value); // MISSING: $hasTaintFlow
+                sink(value); //$hasTaintFlow
             }))
             .nextOpIf(value -> {
                 sink(value); //$hasTaintFlow
                 return true;
             }, value -> Operation.of(() -> {
-                sink(value); // MISSING: $hasTaintFlow
+                sink(value); //$hasTaintFlow
             }))
             .then(value -> {
                 sink(value); //$hasTaintFlow
@@ -379,7 +379,7 @@ class Resource {
         Promise
             .value(tainted)
             .flatOp(value ->  Operation.of(() -> {
-                sink(value); // MISSING: $hasTaintFlow
+                sink(value); //$hasTaintFlow
             }));
     }
 
