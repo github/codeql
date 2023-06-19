@@ -100,12 +100,7 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
     this = type + ";" + path
   }
 
-  override CallCfgNode getACall() {
-    exists(API::CallNode base |
-      ModelOutput::resolvedSummaryBase(type, path, base) and
-      result = base.getACall()
-    )
-  }
+  override CallCfgNode getACall() { ModelOutput::resolvedSummaryBase(type, path, result) }
 
   override ArgumentNode getACallback() {
     exists(API::Node base |
