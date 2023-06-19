@@ -1,6 +1,9 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
+# TODO: remove `remove-result-of.patch` once we update to a Swift version containing
+# https://github.com/apple/swift/commit/2ed2cea2
+# (probably when updating to 5.9)
 _swift_prebuilt_version = "swift-5.8.1-RELEASE.208"
 _swift_sha_map = {
     "Linux-X64": "1d93286d6219e5c5746938ab9287d90efea98039f022cb1433296ccbc1684bc0",
