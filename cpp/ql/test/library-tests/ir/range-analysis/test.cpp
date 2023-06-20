@@ -70,3 +70,27 @@ int f4(int x) {
     }
   }
 }
+
+void loopy(bool b1, bool b2)
+{
+  int j;
+
+  if (b1)
+    return;
+
+  if (b2)
+  {
+    for (j = 0; j < 10; ++j)
+    {
+    loopy_label:
+    }
+  }
+  else
+  {
+    for (j = 0; j < 10; ++j)
+    {
+      goto loopy_label;
+    }
+  }
+  range(j); // $ MISSING: range=<=10 range=>=0
+}
