@@ -1,0 +1,2 @@
+WARNING: Type SSTISink has been deprecated and may be removed in future (MakoSSTISinks.ql:4,6-14)
+| Mako.py:5:27:5:32 | argument to mako.template.Template() |
