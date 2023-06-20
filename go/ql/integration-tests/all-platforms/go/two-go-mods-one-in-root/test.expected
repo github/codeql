@@ -1,0 +1,2 @@
+| Extraction failed in test.go with error could not import subdir2 (invalid package name: "") | 2 |
+| Extraction failed in test.go with error package subdir2 is not in GOROOT (/usr/local/Cellar/go/1.20.5/libexec/src/subdir2) | 2 |
