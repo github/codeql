@@ -289,12 +289,6 @@ private module UnusedSourceSinkInterpretation {
 
   /** Provides additional source specification logic. */
   predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode node) { none() }
-
-  /**
-   * Holds if `pos` is the position of the `heap` parameter, and thus should not
-   * be included by models that specify "any argument" or "any parameter".
-   */
-  predicate heapParameter(ParameterPosition pos) { none() }
 }
 
 import UnusedSourceSinkInterpretation

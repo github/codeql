@@ -52,6 +52,16 @@ private predicate fieldStep(Node node1, Node node2) {
   )
 }
 
+private predicate closureFlowStep(Expr e1, Expr e2) {
+  simpleAstFlowStep(e1, e2)
+  or
+  exists(SsaVariable v |
+    v.getAUse() = e2 and
+    v.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
+      e1
+  )
+}
+
 private module CaptureInput implements VariableCapture::InputSig {
   private import java as J
 
@@ -60,7 +70,9 @@ private module CaptureInput implements VariableCapture::InputSig {
   class BasicBlock instanceof J::BasicBlock {
     string toString() { result = super.toString() }
 
-    DataFlowCallable getEnclosingCallable() { result.asCallable() = super.getEnclosingCallable() }
+    Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
+
+    Location getLocation() { result = super.getLocation() }
   }
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { bbIDominates(result, bb) }
@@ -80,39 +92,59 @@ private module CaptureInput implements VariableCapture::InputSig {
 
     string toString() { result = super.toString() }
 
-    DataFlowCallable getCallable() { result.asCallable() = super.getCallable() }
+    Callable getCallable() { result = super.getCallable() }
+
+    Location getLocation() { result = super.getLocation() }
   }
 
   class CapturedParameter extends CapturedVariable instanceof Parameter { }
 
-  additional predicate capturedVarUpdate(
-    J::BasicBlock bb, int i, CapturedVariable v, VariableUpdate upd
-  ) {
-    upd.getDestVar() = v and bb.getNode(i) = upd
-  }
-
-  additional predicate capturedVarRead(J::BasicBlock bb, int i, CapturedVariable v, RValue rv) {
-    v.(LocalScopeVariable).getAnAccess() = rv and bb.getNode(i) = rv
-  }
-
-  predicate variableWrite(BasicBlock bb, int i, CapturedVariable v, Location loc) {
-    exists(VariableUpdate upd | capturedVarUpdate(bb, i, v, upd) and loc = upd.getLocation())
-  }
-
-  predicate variableRead(BasicBlock bb, int i, CapturedVariable v, Location loc) {
-    exists(RValue rv | capturedVarRead(bb, i, v, rv) and loc = rv.getLocation())
-  }
-
-  class Callable = DataFlowCallable;
-
-  class Call instanceof DataFlowCall {
+  class Expr instanceof J::Expr {
     string toString() { result = super.toString() }
 
     Location getLocation() { result = super.getLocation() }
 
-    DataFlowCallable getEnclosingCallable() { result = super.getEnclosingCallable() }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i) }
+  }
 
-    predicate hasCfgNode(BasicBlock bb, int i) { super.asCall() = bb.(J::BasicBlock).getNode(i) }
+  class VariableWrite extends Expr instanceof VariableUpdate {
+    CapturedVariable v;
+
+    VariableWrite() { super.getDestVar() = v }
+
+    CapturedVariable getVariable() { result = v }
+
+    Expr getSource() {
+      result = this.(VariableAssign).getSource() or
+      result = this.(AssignOp)
+    }
+  }
+
+  class VariableRead extends Expr instanceof RValue {
+    CapturedVariable v;
+
+    VariableRead() { super.getVariable() = v }
+
+    CapturedVariable getVariable() { result = v }
+  }
+
+  class ClosureExpr extends Expr instanceof ClassInstanceExpr {
+    NestedClass nc;
+
+    ClosureExpr() {
+      nc.(AnonymousClass).getClassInstanceExpr() = this
+      or
+      nc instanceof LocalClass and
+      super.getConstructedType().getASourceSupertype*().getSourceDeclaration() = nc
+    }
+
+    predicate hasBody(Callable body) { nc.getACallable() = body }
+
+    predicate hasAliasedAccess(Expr f) { closureFlowStep+(this, f) and not closureFlowStep(f, _) }
+  }
+
+  class Callable extends J::Callable {
+    predicate isConstructor() { this instanceof Constructor }
   }
 }
 
@@ -122,40 +154,27 @@ class CapturedParameter = CaptureInput::CapturedParameter;
 
 module CaptureFlow = VariableCapture::Flow<CaptureInput>;
 
+CaptureFlow::ClosureNode asClosureNode(Node n) {
+  result = n.(CaptureNode).getSynthesizedCaptureNode() or
+  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
+  result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
+    n.(PostUpdateNode).getPreUpdateNode().asExpr() or
+  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter() or
+  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable() or
+  exprNode(result.(CaptureFlow::MallocNode).getClosureExpr()).(PostUpdateNode).getPreUpdateNode() =
+    n
+}
+
 private predicate captureStoreStep(Node node1, ClosureContent c, Node node2) {
-  exists(BasicBlock bb, int i, CaptureInput::CapturedVariable v, VariableUpdate upd |
-    upd.(VariableAssign).getSource() = node1.asExpr() or
-    upd.(AssignOp) = node1.asExpr()
-  |
-    CaptureInput::capturedVarUpdate(bb, i, v, upd) and
-    c.getVariable() = v and
-    CaptureFlow::storeStep(bb, i, v, node2.(ClosureNode).getCaptureFlowNode())
-  )
-  or
-  exists(Parameter p |
-    node1.asParameter() = p and
-    c.getVariable() = p and
-    CaptureFlow::parameterStoreStep(p, node2.(ClosureNode).getCaptureFlowNode())
-  )
+  CaptureFlow::storeStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
 }
 
 private predicate captureReadStep(Node node1, ClosureContent c, Node node2) {
-  exists(BasicBlock bb, int i, CaptureInput::CapturedVariable v |
-    CaptureFlow::readStep(node1.(ClosureNode).getCaptureFlowNode(), bb, i, v) and
-    c.getVariable() = v and
-    CaptureInput::capturedVarRead(bb, i, v, node2.asExpr())
-  )
-  or
-  exists(Parameter p |
-    CaptureFlow::parameterReadStep(node1.(ClosureNode).getCaptureFlowNode(), p) and
-    c.getVariable() = p and
-    node2.(PostUpdateNode).getPreUpdateNode().asParameter() = p
-  )
+  CaptureFlow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
 }
 
 predicate captureValueStep(Node node1, Node node2) {
-  CaptureFlow::localFlowStep(node1.(ClosureNode).getCaptureFlowNode(),
-    node2.(ClosureNode).getCaptureFlowNode())
+  CaptureFlow::localFlowStep(asClosureNode(node1), asClosureNode(node2))
 }
 
 /**
@@ -493,6 +512,8 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  or
+  CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(p.(InstanceParameterNode).getCallable())
 }
 
 /** An approximated `Content`. */

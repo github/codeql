@@ -1222,18 +1222,14 @@ module Private {
           node.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(mid.asCall(), apos) and
           parameterMatch(ppos, apos)
         |
-          c = "Argument" and not heapParameter(ppos)
-          or
-          parseArg(c, ppos)
+          c = "Argument" or parseArg(c, ppos)
         )
         or
         exists(ArgumentPosition apos, ParameterPosition ppos |
           node.asNode().(ParamNode).isParameterOf(mid.asCallable(), ppos) and
           parameterMatch(ppos, apos)
         |
-          c = "Parameter" and not heapParameter(ppos)
-          or
-          parseParam(c, apos)
+          c = "Parameter" or parseParam(c, apos)
         )
         or
         c = "ReturnValue" and
@@ -1263,9 +1259,7 @@ module Private {
           node.asNode().(ArgNode).argumentOf(mid.asCall(), apos) and
           parameterMatch(ppos, apos)
         |
-          c = "Argument" and not heapParameter(ppos)
-          or
-          parseArg(c, ppos)
+          c = "Argument" or parseArg(c, ppos)
         )
         or
         exists(ReturnNodeExt ret |

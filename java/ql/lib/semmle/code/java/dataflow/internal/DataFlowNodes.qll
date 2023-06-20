@@ -56,8 +56,7 @@ private module Cached {
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TFieldValueNode(Field f) or
-    TParameterPostUpdate(CapturedParameter p) or
-    TClosureNode(CaptureFlow::ClosureNode cn)
+    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn)
 
   cached
   newtype TContent =
@@ -131,7 +130,7 @@ module Public {
       or
       result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
       or
-      result = this.(ClosureNode).getTypeImpl()
+      result = this.(CaptureNode).getTypeImpl()
       or
       result = this.(FieldValueNode).getField().getType()
     }
@@ -365,10 +364,6 @@ private class ImplicitExprPostUpdate extends ImplicitPostUpdateNode, TImplicitEx
   }
 }
 
-private class ParameterPostUpdate extends ImplicitPostUpdateNode, TParameterPostUpdate {
-  override Node getPreUpdateNode() { this = TParameterPostUpdate(result.asParameter()) }
-}
-
 module Private {
   private import DataFlowDispatch
 
@@ -382,7 +377,7 @@ module Private {
     result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
     result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable() or
-    result = n.(ClosureNode).getCaptureFlowNode().getEnclosingCallable() or
+    result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
     result.asFieldScope() = n.(FieldValueNode).getField()
   }
 
@@ -411,8 +406,6 @@ module Private {
       this = getInstanceArgument(_)
       or
       this.(FlowSummaryNode).isArgumentOf(_, _)
-      or
-      this.(ClosureNode).isArgumentOf(_, _)
     }
 
     /**
@@ -430,8 +423,6 @@ module Private {
       pos = -1 and this = getInstanceArgument(call.asCall())
       or
       this.(FlowSummaryNode).isArgumentOf(call, pos)
-      or
-      this.(ClosureNode).isArgumentOf(call, pos)
     }
 
     /** Gets the call in which this node is an argument. */
@@ -511,28 +502,15 @@ module Private {
    * A synthesized data flow node representing a closure object that tracks
    * captured variables.
    */
-  class ClosureNode extends Node, TClosureNode {
-    CaptureFlow::ClosureNode getCaptureFlowNode() { this = TClosureNode(result) }
+  class CaptureNode extends Node, TCaptureNode {
+    CaptureFlow::SynthesizedCaptureNode getSynthesizedCaptureNode() { this = TCaptureNode(result) }
 
-    override Location getLocation() { result = this.getCaptureFlowNode().getLocation() }
+    override Location getLocation() { result = this.getSynthesizedCaptureNode().getLocation() }
 
-    override string toString() { result = this.getCaptureFlowNode().toString() }
+    override string toString() { result = this.getSynthesizedCaptureNode().toString() }
 
-    predicate isParameter(DataFlowCallable c) { this.getCaptureFlowNode().isParameter(c) }
-
-    predicate isArgumentOf(DataFlowCall call, int pos) {
-      this.getCaptureFlowNode().isArgument(call) and pos = -2
-    }
-
+    // TODO: expose hasTypeProxy(var / callable)
     Type getTypeImpl() { result instanceof TypeObject }
-  }
-
-  class ClosureParameterNode extends ParameterNode, ClosureNode {
-    ClosureParameterNode() { this.isParameter(_) }
-
-    override predicate isParameterOf(DataFlowCallable c, int pos) {
-      this.isParameter(c) and pos = -2
-    }
   }
 }
 
@@ -564,11 +542,12 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
   override Node getPreUpdateNode() { result = pre }
 }
 
-private class ClosurePostUpdateNode extends PostUpdateNode, ClosureNode {
-  private ClosureNode pre;
+private class CapturePostUpdateNode extends PostUpdateNode, CaptureNode {
+  private CaptureNode pre;
 
-  ClosurePostUpdateNode() {
-    CaptureFlow::closurePostUpdateNode(this.getCaptureFlowNode(), pre.getCaptureFlowNode())
+  CapturePostUpdateNode() {
+    CaptureFlow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+      pre.getSynthesizedCaptureNode())
   }
 
   override Node getPreUpdateNode() { result = pre }

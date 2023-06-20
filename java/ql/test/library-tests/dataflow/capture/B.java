@@ -95,4 +95,136 @@ public class B {
   void doRun(Runnable r) {
     r.run();
   }
+
+  void testNested() {
+    List<String> l1 = new ArrayList<>();
+    List<List<String>> l2 = new ArrayList<>();
+    l1.add(source("nest.out"));
+    l2.add(l1);
+    String s = source("nest.in");
+    List<String> out1 = new ArrayList<>();
+    List<String> out2 = new ArrayList<>();
+    l2.forEach(l -> l.forEach(x -> {
+      sink(s); // $ hasValueFlow=nest.in
+      out1.add(x);
+      out2.add(s);
+    }));
+    sink(out1.get(0)); // $ hasValueFlow=nest.out
+    sink(out2.get(0)); // $ hasValueFlow=nest.in
+  }
+
+  static interface TwoRuns {
+    void run1();
+    void run2();
+  }
+
+  void testAnonymousClass() {
+    List<String> l1 = new ArrayList<>();
+    List<String> l2 = new ArrayList<>();
+    TwoRuns r = new TwoRuns() {
+      @Override
+      public void run1() {
+        l1.add(source("run1"));
+      }
+      @Override
+      public void run2() {
+        l2.add(l1.get(0));
+      }
+    };
+    r.run2();
+    sink(l2.get(0));
+    r.run1();
+    r.run2();
+    sink(l2.get(0)); // $ hasValueFlow=run1
+  }
+
+  void testLocalClass1() {
+    String s = source("local1");
+    class MyLocal {
+      String f;
+      MyLocal() { this.f = s; }
+      String getF() { return this.f; }
+    }
+    MyLocal m = new MyLocal();
+    sink(m.getF()); // $ hasValueFlow=local1
+  }
+
+  void testLocalClass2() {
+    String s1 = source("s1");
+    String s2 = source("s2");
+    List<String> l = new ArrayList<>();
+    class MyLocal {
+      String f;
+      MyLocal() {
+        this.f = s1;
+        sink(s2); // $ hasValueFlow=s2
+      }
+      void test() {
+        sink(f); // $ hasValueFlow=s1
+        sink(s2); // $ hasValueFlow=s2
+      }
+      void add(String s) {
+        l.add(s);
+      }
+      String get() {
+        return l.get(0);
+      }
+    }
+    MyLocal m1 = new MyLocal();
+    MyLocal m2 = new MyLocal();
+    m1.test();
+    sink(m1.get());
+    m1.add(source("m1.add"));
+    sink(m2.get()); // $ hasValueFlow=m1.add
+  }
+
+  void testComplex() {
+    String s = source("complex");
+    class LocalComplex {
+      Supplier<StringBox> getBoxSupplier() {
+        return new Supplier<StringBox>() {
+          StringBox b = new StringBox();
+          @Override
+          public StringBox get() { return b; }
+        };
+      }
+      class StringBox {
+        String get() {
+          // capture through regular nested class inside local nested class
+          return s;
+        }
+      }
+    }
+    LocalComplex lc = new LocalComplex();
+    sink(lc.getBoxSupplier().get().get()); // $ MISSING: hasValueFlow=complex
+  }
+
+  void testCapturedLambda() {
+    String s = source("double.capture.in");
+    List<String> out = new ArrayList<>();
+    Runnable r1 = () -> {
+      sink(s); // $ hasValueFlow=double.capture.in
+      out.add(source("double.capture.out"));
+    };
+    Runnable r2 = () -> {
+      r1.run();
+    };
+    r2.run();
+    sink(out.get(0)); // $ MISSING: hasValueFlow=double.capture.out
+  }
+
+  void testEnhancedForStmtCapture() {
+    List<String> l = new ArrayList<>();
+    l.add(source("list"));
+    String[] a = new String[] { source("array") };
+    for (String x : l) {
+      Runnable r = () -> sink(x); // $ MISSING: hasValueFlow=list
+      r.run();
+    }
+    for (String x : a) {
+      Runnable r = () -> sink(x); // $ MISSING: hasValueFlow=array
+      r.run();
+    }
+  }
+
 }
