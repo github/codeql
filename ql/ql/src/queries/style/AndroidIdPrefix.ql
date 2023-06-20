@@ -1,6 +1,6 @@
 /**
  * @name Android query without android @id prefix
- * @description Android queries should include the `android` prefix in their `@id`.
+ * @description Android queries should include the `android/` prefix in their `@id`.
  * @kind problem
  * @problem.severity warning
  * @id ql/android-id-prefix
@@ -9,10 +9,7 @@
 
 import ql
 
-string getIdProperty(QLDoc doc) {
-  result = any(string id | id = doc.getContents().splitAt("@") and id.matches("id %"))
-}
-
+/** Holds if `t` transitively imports an Android module. */
 predicate importsAndroidModule(TopLevel t) {
   exists(Import i | t.getAnImport() = i |
     i.getImportString().toLowerCase().matches("%android%")
@@ -24,9 +21,9 @@ predicate importsAndroidModule(TopLevel t) {
   )
 }
 
-from TopLevel t
+from QueryDoc d
 where
-  t.getLocation().getFile().getRelativePath().matches("%src/Security/%.ql") and
-  not getIdProperty(t.getQLDoc()).matches("% java/android/%") and
-  importsAndroidModule(t)
-select t, "This Android query is missing the `android` prefix in its `@id`."
+  d.getLocation().getFile().getRelativePath().matches("%src/Security/%") and
+  not d.getQueryId().matches("android/%") and
+  importsAndroidModule(d.getParent())
+select d, "This Android query is missing the `android/` prefix in its `@id`."
