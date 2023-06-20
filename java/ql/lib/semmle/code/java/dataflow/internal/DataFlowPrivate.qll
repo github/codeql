@@ -242,6 +242,12 @@ class CastNode extends ExprNode {
   CastNode() { this.getExpr() instanceof CastingExpr }
 }
 
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { none() }
+
 private newtype TDataFlowCallable =
   TSrcCallable(Callable c) or
   TSummarizedCallable(SummarizedCallable c) or

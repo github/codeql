@@ -6,6 +6,7 @@ extractor: java
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/mad: ${workspace}
   codeql/regex: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/typetracking: ${workspace}

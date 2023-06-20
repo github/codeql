@@ -13,13 +13,10 @@
  */
 
 import python
-import semmle.python.security.Paths
-import semmle.python.dataflow.TaintTracking
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.TaintTracking
 import semmle.python.filters.Tests
-
-class HardcodedValue extends TaintKind {
-  HardcodedValue() { this = "hard coded value" }
-}
+import DataFlow::PathGraph
 
 bindingset[char, fraction]
 predicate fewer_characters_than(StrConst str, string char, float fraction) {
@@ -78,31 +75,27 @@ predicate maybeCredential(ControlFlowNode f) {
   )
 }
 
-class HardcodedValueSource extends TaintSource {
-  HardcodedValueSource() { maybeCredential(this) }
-
-  override predicate isSourceOf(TaintKind kind) { kind instanceof HardcodedValue }
+class HardcodedValueSource extends DataFlow::Node {
+  HardcodedValueSource() { maybeCredential(this.asCfgNode()) }
 }
 
-class CredentialSink extends TaintSink {
+class CredentialSink extends DataFlow::Node {
   CredentialSink() {
     exists(string name |
       name.regexpMatch(getACredentialRegex()) and
       not name.matches("%file")
     |
-      any(FunctionValue func).getNamedArgumentForCall(_, name) = this
+      any(FunctionValue func).getNamedArgumentForCall(_, name) = this.asCfgNode()
       or
-      exists(Keyword k | k.getArg() = name and k.getValue().getAFlowNode() = this)
+      exists(Keyword k | k.getArg() = name and k.getValue().getAFlowNode() = this.asCfgNode())
       or
       exists(CompareNode cmp, NameNode n | n.getId() = name |
-        cmp.operands(this, any(Eq eq), n)
+        cmp.operands(this.asCfgNode(), any(Eq eq), n)
         or
-        cmp.operands(n, any(Eq eq), this)
+        cmp.operands(n, any(Eq eq), this.asCfgNode())
       )
     )
   }
-
-  override predicate sinks(TaintKind kind) { kind instanceof HardcodedValue }
 }
 
 /**
@@ -118,16 +111,14 @@ private string getACredentialRegex() {
 class HardcodedCredentialsConfiguration extends TaintTracking::Configuration {
   HardcodedCredentialsConfiguration() { this = "Hardcoded credentials configuration" }
 
-  override predicate isSource(TaintTracking::Source source) {
-    source instanceof HardcodedValueSource
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof HardcodedValueSource }
 
-  override predicate isSink(TaintTracking::Sink sink) { sink instanceof CredentialSink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
 }
 
-from HardcodedCredentialsConfiguration config, TaintedPathSource src, TaintedPathSink sink
+from HardcodedCredentialsConfiguration config, DataFlow::PathNode src, DataFlow::PathNode sink
 where
   config.hasFlowPath(src, sink) and
-  not any(TestScope test).contains(src.getAstNode())
-select src.getSource(), src, sink, "This hardcoded value is $@.", sink.getNode(),
+  not any(TestScope test).contains(src.getNode().asCfgNode().getNode())
+select src.getNode(), src, sink, "This hardcoded value is $@.", sink.getNode(),
   "used as credentials"
