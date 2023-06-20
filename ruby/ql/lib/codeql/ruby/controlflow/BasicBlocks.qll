@@ -389,7 +389,7 @@ private module JoinBlockPredecessors {
   private predicate idOf(Ruby::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(toGeneratedInclSynth(jbp.getFirstNode().(AstCfgNode).getNode()), result)
+    idOf(toGeneratedInclSynth(jbp.getFirstNode().(AstCfgNode).getAstNode()), result)
     or
     idOf(toGeneratedInclSynth(jbp.(EntryBasicBlock).getScope()), result)
   }

@@ -12,7 +12,7 @@ private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl as CfgImpl
  */
 class Stmt extends AstNode, TStmt {
   /** Gets a control-flow node for this statement, if any. */
-  CfgNodes::AstCfgNode getAControlFlowNode() { result.getNode() = this }
+  CfgNodes::AstCfgNode getAControlFlowNode() { result.getAstNode() = this }
 
   /** Gets a control-flow entry node for this statement, if any */
   AstNode getAControlFlowEntryNode() { result = CfgImpl::getAControlFlowEntryNode(this) }

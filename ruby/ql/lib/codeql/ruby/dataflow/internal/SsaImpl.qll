@@ -31,7 +31,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
         i = 0
         or
         // ...or a class or module block.
-        bb.getNode(i).getNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
+        bb.getNode(i).getAstNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
         not scope instanceof Toplevel // handled by case above
       )
       or
@@ -126,8 +126,8 @@ private predicate namespaceSelfExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, 
     v.getDeclaringScope() = ns and
     last = ControlFlowGraphImpl::getAControlFlowExitNode(ns) and
     if last = ns
-    then bb.getNode(i).getAPredecessor().getNode() = last
-    else bb.getNode(i).getNode() = last
+    then bb.getNode(i).getAPredecessor().getAstNode() = last
+    else bb.getNode(i).getAstNode() = last
   )
 }
 
@@ -183,7 +183,7 @@ private predicate capturedCallRead(CallCfgNode call, Cfg::BasicBlock bb, int i, 
 private predicate variableReadActual(Cfg::BasicBlock bb, int i, LocalVariable v) {
   exists(VariableReadAccess read |
     read.getVariable() = v and
-    read = bb.getNode(i).getNode()
+    read = bb.getNode(i).getAstNode()
   )
 }
 

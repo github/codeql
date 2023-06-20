@@ -998,7 +998,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     abstract string toString();
 
     /** Gets the AST node that this node corresponds to, if any. */
-    abstract AstNode getNode();
+    abstract AstNode getAstNode();
 
     /** Gets the location of this control flow node. */
     abstract Location getLocation();
@@ -1038,7 +1038,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     EntryNodeImpl() { this = TEntryNode(scope) }
 
-    final override AstNode getNode() { none() }
+    final override AstNode getAstNode() { none() }
 
     final override Location getLocation() { result = scope.getLocation() }
 
@@ -1057,7 +1057,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if this node represent a normal exit. */
     final predicate isNormal() { normal = true }
 
-    final override AstNode getNode() { none() }
+    final override AstNode getAstNode() { none() }
 
     final override Location getLocation() { result = scope.getLocation() }
 
@@ -1080,7 +1080,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     ExitNodeImpl() { this = TExitNode(scope) }
 
-    final override AstNode getNode() { none() }
+    final override AstNode getAstNode() { none() }
 
     final override Location getLocation() { result = scope.getLocation() }
 
@@ -1102,7 +1102,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     AstCfgNodeImpl() { this = TAstNode(_, n, splits) }
 
-    final override AstNode getNode() { result = n }
+    final override AstNode getAstNode() { result = n }
 
     override Location getLocation() { result = n.getLocation() }
 
