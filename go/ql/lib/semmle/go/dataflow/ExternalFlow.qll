@@ -54,6 +54,18 @@
  *      return value. The return values are zero-indexed
  *    - "ReturnValue[n1..n2]": Similar to "ReturnValue[n]" but selects any
  *      return value in the given range. The range is inclusive at both ends.
+ *
+ *    For summaries, `input` and `output` may be suffixed by any number of the
+ *    following, separated by ".":
+ *    - "Field[pkg.className.fieldname]": Selects the contents of the field `f`
+ *      which satisfies `f.hasQualifiedName(pkg, className, fieldname)`.
+ *    - "SyntheticField[f]": Selects the contents of the synthetic field `f`.
+ *    - "ArrayElement": Selects an element in an array or slice.
+ *    - "Element": Selects an element in a collection.
+ *    - "MapKey": Selects a key in a map.
+ *    - "MapValue": Selects a value in a map.
+ *    - "Dereference": Selects the value referenced by a pointer.
+ *
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
