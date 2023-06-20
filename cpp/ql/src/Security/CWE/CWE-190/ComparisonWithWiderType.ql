@@ -46,9 +46,7 @@ Element friendlyLoc(Expr e) {
 }
 
 int getComparisonSizeAdjustment(Expr e) {
-  if e.getType().(IntegralType).isSigned()
-  then result = 1
-  else result = 0
+  if e.getType().(IntegralType).isSigned() then result = 1 else result = 0
 }
 
 from Loop l, RelationalOperation rel, VariableAccess small, Expr large
