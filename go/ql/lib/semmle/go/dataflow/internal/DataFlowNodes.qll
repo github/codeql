@@ -23,7 +23,12 @@ module Private {
     or
     not n instanceof FlowSummaryNode and
     not exists(n.getEnclosingCallable()) and
-    result.asFileScope() = n.getFile()
+    (
+      result.asFileScope() = n.getFile()
+      or
+      not exists(n.getFile()) and
+      result.isExternalFileScope()
+    )
     or
     result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable()
   }
