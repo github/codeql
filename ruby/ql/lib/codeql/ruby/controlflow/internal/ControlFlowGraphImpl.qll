@@ -27,7 +27,7 @@ private module CfgInput implements CfgShared::InputSig<Location> {
 
   class ControlFlowTreeBase = Impl::AstNode;
 
-  class ControlFlowElement = ControlFlowTreeBase;
+  class AstNode = ControlFlowTreeBase;
 
   class Completion = Comp::Completion;
 
@@ -35,17 +35,15 @@ private module CfgInput implements CfgShared::InputSig<Location> {
 
   predicate completionIsSimple(Completion c) { c instanceof Comp::SimpleCompletion }
 
-  predicate completionIsValidFor(Completion c, ControlFlowElement e) { c.isValidFor(e) }
+  predicate completionIsValidFor(Completion c, AstNode e) { c.isValidFor(e) }
 
   class CfgScope = Cfg::CfgScope;
 
-  CfgScope getCfgScope(ControlFlowElement n) { result = Impl::getCfgScope(n) }
+  CfgScope getCfgScope(AstNode n) { result = Impl::getCfgScope(n) }
 
-  predicate scopeFirst(CfgScope scope, ControlFlowElement first) {
-    scope.(Impl::CfgScopeImpl).entry(first)
-  }
+  predicate scopeFirst(CfgScope scope, AstNode first) { scope.(Impl::CfgScopeImpl).entry(first) }
 
-  predicate scopeLast(CfgScope scope, ControlFlowElement last, Completion c) {
+  predicate scopeLast(CfgScope scope, AstNode last, Completion c) {
     scope.(Impl::CfgScopeImpl).exit(last, c)
   }
 
@@ -132,7 +130,7 @@ predicate succExit(CfgScopeImpl scope, AstNode last, Completion c) { scope.exit(
 /** Defines the CFG by dispatch on the various AST types. */
 module Trees {
   private class AliasStmtTree extends StandardPreOrderTree instanceof AliasStmt {
-    final override ControlFlowTree getChildElement(int i) {
+    final override ControlFlowTree getChildNode(int i) {
       result = super.getNewName() and i = 0
       or
       result = super.getOldName() and i = 1
@@ -140,7 +138,7 @@ module Trees {
   }
 
   private class ArgumentListTree extends StandardPostOrderTree instanceof ArgumentList {
-    final override ControlFlowTree getChildElement(int i) { result = super.getElement(i) }
+    final override ControlFlowTree getChildNode(int i) { result = super.getElement(i) }
   }
 
   private class AssignExprTree extends StandardPostOrderTree instanceof AssignExpr {
@@ -151,7 +149,7 @@ module Trees {
       )
     }
 
-    final override ControlFlowTree getChildElement(int i) {
+    final override ControlFlowTree getChildNode(int i) {
       result = super.getLeftOperand() and i = 0
       or
       result = super.getRightOperand() and i = 1
@@ -167,7 +165,7 @@ module Trees {
   }
 
   private class BlockArgumentTree extends StandardPostOrderTree instanceof BlockArgument {
-    final override ControlFlowTree getChildElement(int i) { result = super.getValue() and i = 0 }
+    final override ControlFlowTree getChildNode(int i) { result = super.getValue() and i = 0 }
   }
 
   abstract private class NonDefaultValueParameterTree extends ControlFlowTree instanceof NamedParameter
@@ -422,7 +420,7 @@ module Trees {
       not this.(MethodCall).isSafeNavigation()
     }
 
-    override ControlFlowTree getChildElement(int i) { result = super.getArgument(i) }
+    override ControlFlowTree getChildNode(int i) { result = super.getArgument(i) }
   }
 
   private class CaseTree extends PostOrderTree instanceof CaseExpr, AstInternal::TCaseExpr {
@@ -784,11 +782,11 @@ module Trees {
 
   private class ParenthesizedPatternTree extends StandardPreOrderTree instanceof ParenthesizedPattern
   {
-    override ControlFlowTree getChildElement(int i) { result = super.getPattern() and i = 0 }
+    override ControlFlowTree getChildNode(int i) { result = super.getPattern() and i = 0 }
   }
 
   private class ReferencePatternTree extends StandardPreOrderTree instanceof ReferencePattern {
-    override ControlFlowTree getChildElement(int i) { result = super.getExpr() and i = 0 }
+    override ControlFlowTree getChildNode(int i) { result = super.getExpr() and i = 0 }
   }
 
   private class InClauseTree extends PreOrderTree instanceof InClause {
@@ -997,7 +995,7 @@ module Trees {
 
   private class DestructuredParameterTree extends StandardPostOrderTree instanceof DestructuredParameter
   {
-    final override ControlFlowTree getChildElement(int i) { result = super.getElement(i) }
+    final override ControlFlowTree getChildNode(int i) { result = super.getElement(i) }
   }
 
   private class DesugaredTree extends ControlFlowTree {
@@ -1059,12 +1057,12 @@ module Trees {
   { }
 
   private class HereDocTree extends StandardPostOrderTree instanceof HereDoc {
-    final override ControlFlowTree getChildElement(int i) { result = super.getComponent(i) }
+    final override ControlFlowTree getChildNode(int i) { result = super.getComponent(i) }
   }
 
   private class InstanceVariableTree extends StandardPostOrderTree instanceof InstanceVariableAccess
   {
-    final override ControlFlowTree getChildElement(int i) { result = super.getReceiver() and i = 0 }
+    final override ControlFlowTree getChildNode(int i) { result = super.getReceiver() and i = 0 }
   }
 
   private class KeywordParameterTree extends DefaultValueParameterTree instanceof KeywordParameter {
@@ -1139,7 +1137,7 @@ module Trees {
   }
 
   private class MethodCallTree extends CallTree instanceof MethodCall {
-    final override ControlFlowTree getChildElement(int i) {
+    final override ControlFlowTree getChildNode(int i) {
       result = super.getReceiver() and i = 0
       or
       result = super.getArgument(i - 1)
@@ -1208,7 +1206,7 @@ module Trees {
   }
 
   private class PairTree extends StandardPostOrderTree instanceof Pair {
-    final override ControlFlowTree getChildElement(int i) {
+    final override ControlFlowTree getChildNode(int i) {
       result = super.getKey() and i = 0
       or
       result = super.getValue() and i = 1
@@ -1216,7 +1214,7 @@ module Trees {
   }
 
   private class RangeLiteralTree extends StandardPostOrderTree instanceof RangeLiteral {
-    final override ControlFlowTree getChildElement(int i) {
+    final override ControlFlowTree getChildNode(int i) {
       result = super.getBegin() and i = 0
       or
       result = super.getEnd() and i = 1
@@ -1314,7 +1312,7 @@ module Trees {
   private class RetryStmtTree extends LeafTree instanceof RetryStmt { }
 
   private class ReturningStmtTree extends StandardPostOrderTree instanceof ReturningStmt {
-    final override ControlFlowTree getChildElement(int i) { result = super.getValue() and i = 0 }
+    final override ControlFlowTree getChildNode(int i) { result = super.getValue() and i = 0 }
   }
 
   private class SimpleParameterTree extends NonDefaultValueParameterTree instanceof SimpleParameter {
@@ -1415,13 +1413,13 @@ module Trees {
 
   private class StringConcatenationTree extends StandardPostOrderTree instanceof StringConcatenation
   {
-    final override ControlFlowTree getChildElement(int i) { result = super.getString(i) }
+    final override ControlFlowTree getChildNode(int i) { result = super.getString(i) }
   }
 
   private class StringlikeLiteralTree extends StandardPostOrderTree instanceof StringlikeLiteral {
     StringlikeLiteralTree() { not this instanceof HereDoc }
 
-    final override ControlFlowTree getChildElement(int i) { result = super.getComponent(i) }
+    final override ControlFlowTree getChildNode(int i) { result = super.getComponent(i) }
   }
 
   private class StringComponentTree extends LeafTree instanceof StringComponent {
@@ -1447,7 +1445,7 @@ module Trees {
   }
 
   private class UndefStmtTree extends StandardPreOrderTree instanceof UndefStmt {
-    final override ControlFlowTree getChildElement(int i) { result = super.getMethodName(i) }
+    final override ControlFlowTree getChildNode(int i) { result = super.getMethodName(i) }
   }
 
   private class WhenTree extends ControlFlowTree instanceof WhenClause {

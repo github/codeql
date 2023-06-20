@@ -17,7 +17,7 @@ signature module InputSig<LocationSig Location> {
   }
 
   /** An AST node. */
-  class ControlFlowElement extends ControlFlowTreeBase;
+  class AstNode extends ControlFlowTreeBase;
 
   /** A control-flow completion. */
   class Completion {
@@ -37,8 +37,8 @@ signature module InputSig<LocationSig Location> {
    */
   predicate completionIsSimple(Completion c);
 
-  /** Holds if `c` is a valid completion for `e`. */
-  predicate completionIsValidFor(Completion c, ControlFlowElement e);
+  /** Holds if `c` is a valid completion for AST node `n`. */
+  predicate completionIsValidFor(Completion c, AstNode n);
 
   /** A CFG scope. Each CFG scope gets its own control flow graph. */
   class CfgScope {
@@ -50,13 +50,13 @@ signature module InputSig<LocationSig Location> {
   }
 
   /** Gets the CFG scope of AST node `n`. */
-  CfgScope getCfgScope(ControlFlowElement n);
+  CfgScope getCfgScope(AstNode n);
 
-  /** Holds if `first` is first executed when entering `scope`. */
-  predicate scopeFirst(CfgScope scope, ControlFlowElement first);
+  /** Holds if `first` is executed first when entering `scope`. */
+  predicate scopeFirst(CfgScope scope, AstNode first);
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-  predicate scopeLast(CfgScope scope, ControlFlowElement last, Completion c);
+  predicate scopeLast(CfgScope scope, AstNode last, Completion c);
 
   /** Gets the maximum number of splits allowed for a given node. */
   default int maxSplits() { result = 5 }
@@ -130,42 +130,42 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   abstract class ControlFlowTree extends ControlFlowTreeBaseFinal {
     /** Holds if `first` is the first element executed within this element. */
     pragma[nomagic]
-    abstract predicate first(ControlFlowElement first);
+    abstract predicate first(AstNode first);
 
     /**
      * Holds if `last` with completion `c` is a potential last element executed
      * within this element.
      */
     pragma[nomagic]
-    abstract predicate last(ControlFlowElement last, Completion c);
+    abstract predicate last(AstNode last, Completion c);
 
     /** Holds if abnormal execution of `child` should propagate upwards. */
-    abstract predicate propagatesAbnormal(ControlFlowElement child);
+    abstract predicate propagatesAbnormal(AstNode child);
 
     /**
      * Holds if `succ` is a control flow successor for `pred`, given that `pred`
      * finishes with completion `c`.
      */
     pragma[nomagic]
-    abstract predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+    abstract predicate succ(AstNode pred, AstNode succ, Completion c);
   }
 
   /**
    * Holds if `first` is the first element executed within control flow
    * element `cft`.
    */
-  predicate first(ControlFlowTree cft, ControlFlowElement first) { cft.first(first) }
+  predicate first(ControlFlowTree cft, AstNode first) { cft.first(first) }
 
   /**
    * Holds if `last` with completion `c` is a potential last element executed
    * within control flow element `cft`.
    */
-  predicate last(ControlFlowTree cft, ControlFlowElement last, Completion c) {
+  predicate last(ControlFlowTree cft, AstNode last, Completion c) {
     cft.last(last, c)
     or
-    exists(ControlFlowElement cfe |
-      cft.propagatesAbnormal(cfe) and
-      last(cfe, last, c) and
+    exists(AstNode n |
+      cft.propagatesAbnormal(n) and
+      last(n, last, c) and
       not completionIsNormal(c)
     )
   }
@@ -175,18 +175,18 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * finishes with completion `c`.
    */
   pragma[nomagic]
-  predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+  predicate succ(AstNode pred, AstNode succ, Completion c) {
     any(ControlFlowTree cft).succ(pred, succ, c)
   }
 
   /** An element that is executed in pre-order, typically used for statements. */
   abstract class PreOrderTree extends ControlFlowTree {
-    final override predicate first(ControlFlowElement first) { first = this }
+    final override predicate first(AstNode first) { first = this }
   }
 
   /** An element that is executed in post-order, typically used for expressions. */
   abstract class PostOrderTree extends ControlFlowTree {
-    override predicate last(ControlFlowElement last, Completion c) {
+    override predicate last(AstNode last, Completion c) {
       last = this and
       completionIsValidFor(c, last)
     }
@@ -195,52 +195,45 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   /**
    * An element where the children are evaluated following a standard left-to-right
    * evaluation. The actual evaluation order is determined by the predicate
-   * `getChildElement()`.
+   * `getChildNode()`.
    */
   abstract class StandardTree extends ControlFlowTree {
     /** Gets the `i`th child element, in order of evaluation. */
-    abstract ControlFlowElement getChildElement(int i);
+    abstract AstNode getChildNode(int i);
 
-    private ControlFlowElement getChildElementRanked(int i) {
-      result =
-        rank[i + 1](ControlFlowElement child, int j |
-          child = this.getChildElement(j)
-        |
-          child order by j
-        )
+    private AstNode getChildNodeRanked(int i) {
+      result = rank[i + 1](AstNode child, int j | child = this.getChildNode(j) | child order by j)
     }
 
     /** Gets the first child node of this element. */
-    final ControlFlowElement getFirstChildElement() { result = this.getChildElementRanked(0) }
+    final AstNode getFirstChildNode() { result = this.getChildNodeRanked(0) }
 
     /** Gets the last child node of this node. */
-    final ControlFlowElement getLastChildElement() {
+    final AstNode getLastChildElement() {
       exists(int last |
-        result = this.getChildElementRanked(last) and
-        not exists(this.getChildElementRanked(last + 1))
+        result = this.getChildNodeRanked(last) and
+        not exists(this.getChildNodeRanked(last + 1))
       )
     }
 
     /** Holds if this element has no children. */
-    predicate isLeafElement() { not exists(this.getFirstChildElement()) }
+    predicate isLeafElement() { not exists(this.getFirstChildNode()) }
 
-    override predicate propagatesAbnormal(ControlFlowElement child) {
-      child = this.getChildElement(_)
-    }
+    override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
 
     pragma[nomagic]
-    override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
       exists(int i |
-        last(this.getChildElementRanked(i), pred, c) and
+        last(this.getChildNodeRanked(i), pred, c) and
         completionIsNormal(c) and
-        first(this.getChildElementRanked(i + 1), succ)
+        first(this.getChildNodeRanked(i + 1), succ)
       )
     }
   }
 
   /** A standard element that is executed in pre-order. */
   abstract class StandardPreOrderTree extends StandardTree, PreOrderTree {
-    override predicate last(ControlFlowElement last, Completion c) {
+    override predicate last(AstNode last, Completion c) {
       last(this.getLastChildElement(), last, c)
       or
       this.isLeafElement() and
@@ -248,25 +241,25 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       last = this
     }
 
-    override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
       StandardTree.super.succ(pred, succ, c)
       or
       pred = this and
-      first(this.getFirstChildElement(), succ) and
+      first(this.getFirstChildNode(), succ) and
       completionIsSimple(c)
     }
   }
 
   /** A standard element that is executed in post-order. */
   abstract class StandardPostOrderTree extends StandardTree, PostOrderTree {
-    override predicate first(ControlFlowElement first) {
-      first(this.getFirstChildElement(), first)
+    override predicate first(AstNode first) {
+      first(this.getFirstChildNode(), first)
       or
-      not exists(this.getFirstChildElement()) and
+      not exists(this.getFirstChildNode()) and
       first = this
     }
 
-    override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
       StandardTree.super.succ(pred, succ, c)
       or
       last(this.getLastChildElement(), pred, c) and
@@ -277,11 +270,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   /** An element that is a leaf in the control flow graph. */
   abstract class LeafTree extends PreOrderTree, PostOrderTree {
-    override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+    override predicate propagatesAbnormal(AstNode child) { none() }
 
-    override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      none()
-    }
+    override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
   }
 
   /**
@@ -289,7 +280,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * to at least one common AST node inside `scope`.
    */
   private predicate overlapping(CfgScope scope, SplitKind sk1, SplitKind sk2) {
-    exists(ControlFlowElement e |
+    exists(AstNode e |
       sk1.appliesTo(e) and
       sk2.appliesTo(e) and
       scope = getCfgScope(e)
@@ -305,7 +296,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     SplitImpl getASplit() { result.getKind() = this }
 
     /** Holds if some split of this kind applies to AST node `n`. */
-    predicate appliesTo(ControlFlowElement n) { this.getASplit().appliesTo(n) }
+    predicate appliesTo(AstNode n) { this.getASplit().appliesTo(n) }
 
     /**
      * Gets a unique integer representing this split kind. The integer is used
@@ -323,7 +314,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if this split kind is enabled for AST node `n`. For performance reasons,
      * the number of splits is restricted by the `maxSplits()` predicate.
      */
-    predicate isEnabled(ControlFlowElement n) {
+    predicate isEnabled(AstNode n) {
       this.appliesTo(n) and
       this.getRank(getCfgScope(n)) <= maxSplits()
     }
@@ -332,7 +323,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Gets the rank of this split kind among all the split kinds that apply to
      * AST node `n`. The rank is based on the order defined by `getListOrder()`.
      */
-    int getListRank(ControlFlowElement n) {
+    int getListRank(AstNode n) {
       this.isEnabled(n) and
       this = rank[result](SplitKind sk | sk.appliesTo(n) | sk order by sk.getListOrder())
     }
@@ -354,7 +345,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      *
      * Invariant: `hasEntry(pred, succ, c) implies succ(pred, succ, c)`.
      */
-    abstract predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+    abstract predicate hasEntry(AstNode pred, AstNode succ, Completion c);
 
     /**
      * Holds if this split is entered when control passes from `scope` to the entry point
@@ -362,7 +353,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      *
      * Invariant: `hasEntryScope(scope, first) implies scopeFirst(scope, first)`.
      */
-    abstract predicate hasEntryScope(CfgScope scope, ControlFlowElement first);
+    abstract predicate hasEntryScope(CfgScope scope, AstNode first);
 
     /**
      * Holds if this split is left when control passes from `pred` to `succ` with
@@ -370,7 +361,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      *
      * Invariant: `hasExit(pred, succ, c) implies succ(pred, succ, c)`.
      */
-    abstract predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+    abstract predicate hasExit(AstNode pred, AstNode succ, Completion c);
 
     /**
      * Holds if this split is left when control passes from `last` out of the enclosing
@@ -378,7 +369,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      *
      * Invariant: `hasExitScope(scope, last, c) implies scopeLast(scope, last, c)`
      */
-    abstract predicate hasExitScope(CfgScope scope, ControlFlowElement last, Completion c);
+    abstract predicate hasExitScope(CfgScope scope, AstNode last, Completion c);
 
     /**
      * Holds if this split is maintained when control passes from `pred` to `succ` with
@@ -386,15 +377,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      *
      * Invariant: `hasSuccessor(pred, succ, c) implies succ(pred, succ, c)`
      */
-    abstract predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c);
+    abstract predicate hasSuccessor(AstNode pred, AstNode succ, Completion c);
 
-    /** Holds if this split applies to control flow element `cfe`. */
-    final predicate appliesTo(ControlFlowElement cfe) {
-      this.hasEntry(_, cfe, _)
+    /** Holds if this split applies to AST node `n`. */
+    final predicate appliesTo(AstNode n) {
+      this.hasEntry(_, n, _)
       or
-      this.hasEntryScope(_, cfe)
+      this.hasEntryScope(_, n)
       or
-      exists(ControlFlowElement pred | this.appliesTo(pred) | this.hasSuccessor(pred, cfe, _))
+      exists(AstNode pred | this.appliesTo(pred) | this.hasSuccessor(pred, n, _))
     }
 
     /**
@@ -402,7 +393,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * finishes with completion `c`, and this split applies to `pred`.
      */
     pragma[noinline]
-    final predicate appliesSucc(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    final predicate appliesSucc(AstNode pred, AstNode succ, Completion c) {
       this.appliesTo(pred) and
       succ(pred, succ, c)
     }
@@ -426,9 +417,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  private predicate succEntrySplitsFromRank(
-    CfgScope pred, ControlFlowElement succ, Splits splits, int rnk
-  ) {
+  private predicate succEntrySplitsFromRank(CfgScope pred, AstNode succ, Splits splits, int rnk) {
     splits = TSplitsNil() and
     scopeFirst(pred, succ) and
     rnk = 0
@@ -439,7 +428,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   }
 
   private predicate succEntrySplitsCons(
-    CfgScope pred, ControlFlowElement succ, SplitImpl head, Splits tail, int rnk
+    CfgScope pred, AstNode succ, SplitImpl head, Splits tail, int rnk
   ) {
     succEntrySplitsFromRank(pred, succ, tail, rnk - 1) and
     head.hasEntryScope(pred, succ) and
@@ -451,9 +440,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * when entering callable `pred`.
    */
   pragma[noinline]
-  private predicate succEntrySplits(
-    CfgScope pred, ControlFlowElement succ, Splits succSplits, SuccessorType t
-  ) {
+  private predicate succEntrySplits(CfgScope pred, AstNode succ, Splits succSplits, SuccessorType t) {
     exists(int rnk |
       scopeFirst(pred, succ) and
       successorTypeIsSimple(t) and
@@ -471,9 +458,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * Holds if `pred` with splits `predSplits` can exit the enclosing callable
    * `succ` with type `t`.
    */
-  private predicate succExitSplits(
-    ControlFlowElement pred, Splits predSplits, CfgScope succ, SuccessorType t
-  ) {
+  private predicate succExitSplits(AstNode pred, Splits predSplits, CfgScope succ, SuccessorType t) {
     exists(Reachability::SameSplitsBlock b, Completion c | pred = b.getAnElement() |
       b.isReachable(succ, predSplits) and
       t = getAMatchingSuccessorType(c) and
@@ -493,7 +478,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * For the successor relation
    *
    * ```ql
-   * succSplits(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c)
+   * succSplits(AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, Completion c)
    * ```
    *
    * the following invariants are maintained:
@@ -528,17 +513,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    */
   private module SuccSplits {
     private predicate succInvariant1(
-      Reachability::SameSplitsBlock b, ControlFlowElement pred, Splits predSplits,
-      ControlFlowElement succ, Completion c
+      Reachability::SameSplitsBlock b, AstNode pred, Splits predSplits, AstNode succ, Completion c
     ) {
       pred = b.getAnElement() and
       b.isReachable(_, predSplits) and
       succ(pred, succ, c)
     }
 
-    private predicate case1b0(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
-    ) {
+    private predicate case1b0(AstNode pred, Splits predSplits, AstNode succ, Completion c) {
       exists(Reachability::SameSplitsBlock b |
         // Invariant 1
         succInvariant1(b, pred, predSplits, succ, c)
@@ -560,8 +542,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * to avoid negative recursion.
      */
     private predicate case1bForall(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
-      Splits except
+      AstNode pred, Splits predSplits, AstNode succ, Completion c, Splits except
     ) {
       case1b0(pred, predSplits, succ, c) and
       except = predSplits
@@ -574,15 +555,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     pragma[noinline]
     private predicate case1bForallCons(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
-      SplitImpl exceptHead, Splits exceptTail
+      AstNode pred, Splits predSplits, AstNode succ, Completion c, SplitImpl exceptHead,
+      Splits exceptTail
     ) {
       case1bForall(pred, predSplits, succ, c, TSplitsCons(exceptHead, exceptTail))
     }
 
-    private predicate case1(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
-    ) {
+    private predicate case1(AstNode pred, Splits predSplits, AstNode succ, Completion c) {
       // Case 1a
       exists(Reachability::SameSplitsBlock b | succInvariant1(b, pred, predSplits, succ, c) |
         succ = b.getAnElement() and
@@ -595,16 +574,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     pragma[noinline]
     private SplitImpl succInvariant1GetASplit(
-      Reachability::SameSplitsBlock b, ControlFlowElement pred, Splits predSplits,
-      ControlFlowElement succ, Completion c
+      Reachability::SameSplitsBlock b, AstNode pred, Splits predSplits, AstNode succ, Completion c
     ) {
       succInvariant1(b, pred, predSplits, succ, c) and
       result = predSplits.getASplit()
     }
 
-    private predicate case2aux(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
-    ) {
+    private predicate case2aux(AstNode pred, Splits predSplits, AstNode succ, Completion c) {
       exists(Reachability::SameSplitsBlock b |
         succInvariant1(b, pred, predSplits, succ, c) and
         (succ = b.getAnElement() implies succ = b)
@@ -623,8 +599,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * to avoid negative recursion.
      */
     private predicate case2aNoneInheritedOfKindForall(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
-      SplitKind sk, Splits except
+      AstNode pred, Splits predSplits, AstNode succ, Completion c, SplitKind sk, Splits except
     ) {
       case2aux(pred, predSplits, succ, c) and
       sk.appliesTo(succ) and
@@ -642,7 +617,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     pragma[nomagic]
     private predicate entryOfKind(
-      ControlFlowElement pred, ControlFlowElement succ, Completion c, SplitImpl split, SplitKind sk
+      AstNode pred, AstNode succ, Completion c, SplitImpl split, SplitKind sk
     ) {
       split.hasEntry(pred, succ, c) and
       sk = split.getKind()
@@ -651,8 +626,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if `succSplits` should not have a split of kind `sk`. */
     pragma[nomagic]
     private predicate case2aNoneOfKind(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
-      SplitKind sk
+      AstNode pred, Splits predSplits, AstNode succ, Completion c, SplitKind sk
     ) {
       // None inherited from predecessor
       case2aNoneInheritedOfKindForall(pred, predSplits, succ, c, sk, TSplitsNil()) and
@@ -663,7 +637,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if `succSplits` should not have a split of kind `sk` at rank `rnk`. */
     pragma[nomagic]
     private predicate case2aNoneAtRank(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
+      AstNode pred, Splits predSplits, AstNode succ, Completion c, int rnk
     ) {
       exists(SplitKind sk | case2aNoneOfKind(pred, predSplits, succ, c, sk) |
         rnk = sk.getListRank(succ)
@@ -672,7 +646,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     pragma[nomagic]
     private SplitImpl case2auxGetAPredecessorSplit(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c
+      AstNode pred, Splits predSplits, AstNode succ, Completion c
     ) {
       case2aux(pred, predSplits, succ, c) and
       result = predSplits.getASplit()
@@ -681,8 +655,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Gets a split that should be in `succSplits`. */
     pragma[nomagic]
     private SplitImpl case2aSome(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
-      SplitKind sk
+      AstNode pred, Splits predSplits, AstNode succ, Completion c, SplitKind sk
     ) {
       (
         // Inherited from predecessor
@@ -701,9 +674,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Gets a split that should be in `succSplits` at rank `rnk`. */
     pragma[nomagic]
-    SplitImpl case2aSomeAtRank(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
-    ) {
+    SplitImpl case2aSomeAtRank(AstNode pred, Splits predSplits, AstNode succ, Completion c, int rnk) {
       exists(SplitKind sk | result = case2aSome(pred, predSplits, succ, c, sk) |
         rnk = sk.getListRank(succ)
       )
@@ -725,8 +696,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * - invariant 4 holds for all splits in `succSplits` with rank at least `rnk`.
      */
     predicate case2aFromRank(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-      Completion c, int rnk
+      AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, Completion c, int rnk
     ) {
       case2aux(pred, predSplits, succ, c) and
       succSplits = TSplitsNil() and
@@ -742,8 +712,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     pragma[noinline]
     private SplitImpl case2aCons(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-      Completion c, int rnk
+      AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, Completion c, int rnk
     ) {
       case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1) and
       result = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
@@ -760,8 +729,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * to avoid negative recursion.
      */
     private predicate case2bForall(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
-      Splits except
+      AstNode pred, Splits predSplits, AstNode succ, Completion c, Splits except
     ) {
       // Invariant 1
       case2aux(pred, predSplits, succ, c) and
@@ -777,15 +745,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     pragma[noinline]
     private predicate case2bForallCons(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c,
-      SplitImpl exceptHead, Splits exceptTail
+      AstNode pred, Splits predSplits, AstNode succ, Completion c, SplitImpl exceptHead,
+      Splits exceptTail
     ) {
       case2bForall(pred, predSplits, succ, c, TSplitsCons(exceptHead, exceptTail))
     }
 
     private predicate case2(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-      Completion c
+      AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, Completion c
     ) {
       case2aFromRank(pred, predSplits, succ, succSplits, c, 1)
       or
@@ -798,8 +765,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * with splits `predSplits`.
      */
     predicate succSplits(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-      Completion c
+      AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, Completion c
     ) {
       case1(pred, predSplits, succ, c) and
       succSplits = predSplits
@@ -813,44 +779,44 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   /** Provides logic for calculating reachable control flow nodes. */
   private module Reachability {
     /**
-     * Holds if `cfe` is a control flow element where the set of possible splits may
-     * be different from the set of possible splits for one of `cfe`'s predecessors.
-     * That is, `cfe` starts a new block of elements with the same set of splits.
+     * Holds if `n` is an AST node where the set of possible splits may
+     * be different from the set of possible splits for one of `n`'s predecessors.
+     * That is, `n` starts a new block of elements with the same set of splits.
      */
-    private predicate startsSplits(ControlFlowElement cfe) {
-      scopeFirst(_, cfe)
+    private predicate startsSplits(AstNode n) {
+      scopeFirst(_, n)
       or
       exists(SplitImpl s |
-        s.hasEntry(_, cfe, _)
+        s.hasEntry(_, n, _)
         or
-        s.hasExit(_, cfe, _)
+        s.hasExit(_, n, _)
       )
       or
-      exists(ControlFlowElement pred, SplitImpl split, Completion c | succ(pred, cfe, c) |
+      exists(AstNode pred, SplitImpl split, Completion c | succ(pred, n, c) |
         split.appliesTo(pred) and
-        not split.hasSuccessor(pred, cfe, c)
+        not split.hasSuccessor(pred, n, c)
       )
     }
 
-    private predicate intraSplitsSucc(ControlFlowElement pred, ControlFlowElement succ) {
+    private predicate intraSplitsSucc(AstNode pred, AstNode succ) {
       succ(pred, succ, _) and
       not startsSplits(succ)
     }
 
-    private predicate splitsBlockContains(ControlFlowElement start, ControlFlowElement cfe) =
-      fastTC(intraSplitsSucc/2)(start, cfe)
+    private predicate splitsBlockContains(AstNode start, AstNode n) =
+      fastTC(intraSplitsSucc/2)(start, n)
 
-    final private class ControlFlowElementFinal = ControlFlowElement;
+    final private class AstNodeFinal = AstNode;
 
     /**
      * A block of control flow elements where the set of splits is guaranteed
      * to remain unchanged, represented by the first element in the block.
      */
-    class SameSplitsBlock extends ControlFlowElementFinal {
+    class SameSplitsBlock extends AstNodeFinal {
       SameSplitsBlock() { startsSplits(this) }
 
       /** Gets a control flow element in this block. */
-      ControlFlowElement getAnElement() {
+      AstNode getAnElement() {
         splitsBlockContains(this, result)
         or
         result = this
@@ -858,7 +824,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
       pragma[noinline]
       private SameSplitsBlock getASuccessor(Splits predSplits, Splits succSplits) {
-        exists(ControlFlowElement pred | pred = this.getAnElement() |
+        exists(AstNode pred | pred = this.getAnElement() |
           succSplits(pred, predSplits, result, succSplits, _)
         )
       }
@@ -892,9 +858,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     newtype TSplits =
       TSplitsNil() or
       TSplitsCons(SplitImpl head, Splits tail) {
-        exists(
-          ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
-        |
+        exists(AstNode pred, Splits predSplits, AstNode succ, Completion c, int rnk |
           case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1) and
           head = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
         )
@@ -939,9 +903,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           succExitSplits(b.getAnElement(), _, scope, _)
         )
       } or
-      TElementNode(CfgScope scope, ControlFlowElement cfe, Splits splits) {
+      TElementNode(CfgScope scope, AstNode n, Splits splits) {
         exists(Reachability::SameSplitsBlock b | b.isReachable(scope, splits) |
-          cfe = b.getAnElement()
+          n = b.getAnElement()
         )
       }
 
@@ -949,13 +913,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     cached
     TCfgNode getASuccessor(TCfgNode pred, SuccessorType t) {
       // Callable entry node -> callable body
-      exists(ControlFlowElement succElement, Splits succSplits, CfgScope scope |
+      exists(AstNode succElement, Splits succSplits, CfgScope scope |
         result = TElementNode(scope, succElement, succSplits) and
         pred = TEntryNode(scope) and
         succEntrySplits(scope, succElement, succSplits, t)
       )
       or
-      exists(CfgScope scope, ControlFlowElement predElement, Splits predSplits |
+      exists(CfgScope scope, AstNode predElement, Splits predSplits |
         pred = TElementNode(pragma[only_bind_into](scope), predElement, predSplits)
       |
         // Element node -> callable exit (annotated)
@@ -966,7 +930,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         )
         or
         // Element node -> element node
-        exists(ControlFlowElement succElement, Splits succSplits, Completion c |
+        exists(AstNode succElement, Splits succSplits, Completion c |
           result = TElementNode(pragma[only_bind_into](scope), succElement, succSplits)
         |
           succSplits(predElement, predSplits, succElement, succSplits, c) and
@@ -983,16 +947,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Gets a first control flow element executed within `cfe`.
+     * Gets a first control flow element executed within `n`.
      */
     cached
-    ControlFlowElement getAControlFlowEntryNode(ControlFlowElement cfe) { first(cfe, result) }
+    AstNode getAControlFlowEntryNode(AstNode n) { first(n, result) }
 
     /**
-     * Gets a potential last control flow element executed within `cfe`.
+     * Gets a potential last control flow element executed within `n`.
      */
     cached
-    ControlFlowElement getAControlFlowExitNode(ControlFlowElement cfe) { last(cfe, result, _) }
+    AstNode getAControlFlowExitNode(AstNode n) { last(n, result, _) }
 
     /**
      * Gets the CFG scope of node `n`. Unlike `getCfgScope`, this predicate
@@ -1091,8 +1055,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     query predicate breakInvariant2(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-      SplitImpl split, Completion c
+      AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, SplitImpl split,
+      Completion c
     ) {
       succSplits(pred, predSplits, succ, succSplits, c) and
       split = predSplits.getASplit() and
@@ -1101,8 +1065,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     query predicate breakInvariant3(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-      SplitImpl split, Completion c
+      AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, SplitImpl split,
+      Completion c
     ) {
       succSplits(pred, predSplits, succ, succSplits, c) and
       split = predSplits.getASplit() and
@@ -1112,8 +1076,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     query predicate breakInvariant4(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-      SplitImpl split, Completion c
+      AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, SplitImpl split,
+      Completion c
     ) {
       succSplits(pred, predSplits, succ, succSplits, c) and
       split.hasEntry(pred, succ, c) and
@@ -1123,8 +1087,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     query predicate breakInvariant5(
-      ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-      SplitImpl split, Completion c
+      AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, SplitImpl split,
+      Completion c
     ) {
       succSplits(pred, predSplits, succ, succSplits, c) and
       split = succSplits.getASplit() and
