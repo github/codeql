@@ -2046,6 +2046,8 @@ A valid stratification must include each predicate and type in the QL program th
 
 A valid stratification must not include the same predicate in multiple layers.
 
+Each non-abstract predicate has an associated body. For predicates inside *declared modules*, this is the predicate declaration. The body of an *instantiation-nested* predicate is the body of the *underlying nested* predicate where all references and calls have been substituted with the *instantiation-relative* entity or alias.
+
 Formulas, variable declarations and expressions within a predicate body have a *negation polarity* that is positive, negative, or zero. Positive and negative are opposites of each other, while zero is the opposite of itself. The negation polarity of a formula or expression is then determined as follows:
 
 -  The body of a predicate is positive.
