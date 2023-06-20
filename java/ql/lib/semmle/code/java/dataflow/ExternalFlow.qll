@@ -87,6 +87,7 @@ private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import ExternalFlowExtensions as Extensions
 private import FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A class for activating additional model rows.
@@ -265,86 +266,17 @@ module ModelValidation {
     )
   }
 
-  private class OutdatedSinkKind extends string {
-    OutdatedSinkKind() {
-      this =
-        [
-          "sql", "url-redirect", "xpath", "ssti", "logging", "groovy", "jexl", "mvel", "xslt",
-          "ldap", "pending-intent-sent", "intent-start", "set-hostname-verifier",
-          "header-splitting", "xss", "write-file", "create-file", "read-file", "open-url",
-          "jdbc-url"
-        ]
-    }
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
 
-    private string replacementKind() {
-      this = ["sql", "xpath", "groovy", "jexl", "mvel", "xslt", "ldap"] and
-      result = this + "-injection"
-      or
-      this = "url-redirect" and result = "url-redirection"
-      or
-      this = "ssti" and result = "template-injection"
-      or
-      this = "logging" and result = "log-injection"
-      or
-      this = "pending-intent-sent" and result = "pending-intents"
-      or
-      this = "intent-start" and result = "intent-redirection"
-      or
-      this = "set-hostname-verifier" and result = "hostname-verification"
-      or
-      this = "header-splitting" and result = "response-splitting"
-      or
-      this = "xss" and result = "html-injection\" or \"js-injection"
-      or
-      this = "write-file" and result = "file-content-store"
-      or
-      this = ["create-file", "read-file"] and result = "path-injection"
-      or
-      this = ["open-url", "jdbc-url"] and result = "request-forgery"
-    }
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
 
-    string outdatedMessage() {
-      result =
-        "The kind \"" + this + "\" is outdated. Use \"" + this.replacementKind() + "\" instead."
-    }
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
 
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string kind, string msg | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind =
-        [
-          "request-forgery", "jndi-injection", "ldap-injection", "sql-injection", "log-injection",
-          "mvel-injection", "xpath-injection", "groovy-injection", "html-injection", "js-injection",
-          "ognl-injection", "intent-redirection", "pending-intents", "url-redirection",
-          "path-injection", "file-content-store", "hostname-verification", "response-splitting",
-          "information-leak", "xslt-injection", "jexl-injection", "bean-validation",
-          "template-injection", "fragment-injection", "command-injection"
-        ] and
-      not kind.matches("regex-use%") and
-      not kind.matches("qltest%") and
-      msg = "Invalid kind \"" + kind + "\" in sink model." and
-      // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
-      if kind instanceof OutdatedSinkKind
-      then result = msg + " " + kind.(OutdatedSinkKind).outdatedMessage()
-      else result = msg
-    )
-    or
-    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["remote", "contentprovider", "android-external-storage-dir"] and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
-    or
-    exists(string kind | neutralModel(_, _, _, _, kind, _) |
-      not kind = ["summary", "source", "sink"] and
-      result = "Invalid kind \"" + kind + "\" in neutral model."
-    )
-  }
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(
@@ -387,7 +319,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelKind()
+        KindVal::getInvalidModelKind()
       ]
   }
 }

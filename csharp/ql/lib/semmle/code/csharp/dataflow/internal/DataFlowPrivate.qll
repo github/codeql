@@ -2140,6 +2140,12 @@ class CastNode extends Node {
   }
 }
 
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { none() }
+
 class DataFlowExpr = DotNet::Expr;
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
