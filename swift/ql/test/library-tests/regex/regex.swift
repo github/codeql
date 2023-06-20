@@ -98,7 +98,7 @@ class NSRegularExpression : NSObject {
 //
 // the focus for these tests is different ways of evaluating regexps.
 
-func myRegexpMethodsTests(b: Bool) throws {
+func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	let input = "abcdef"
 	let regex = try Regex(".*")
 
@@ -156,4 +156,21 @@ func myRegexpMethodsTests(b: Bool) throws {
 	_ = try Regex("\n").firstMatch(in: input) // $ regex=NEWLINE input=input
 	_ = try Regex("\\n").firstMatch(in: input) // $ regex=\n input=input
 	_ = try Regex(#"\n"#).firstMatch(in: input) // $ regex=\n input=input
+
+	// --- interpolated values ---
+
+	let str_constant = "aa"
+	_ = try Regex("\(str_constant))|bb").firstMatch(in: input) // $ input=input MISSING: regex=aa|bb
+	_ = try Regex("\(str_unknown))|bb").firstMatch(in: input) // $ input=input
+
+	// --- multi-line ---
+
+	_ = try Regex("""
+		aa|bb
+		""").firstMatch(in: input) // $ input=input regex=aa|bb
+
+	_ = try Regex("""
+		aa|
+		bb
+		""").firstMatch(in: input) // $ input=input regex=aa|NEWLINEbb
 }

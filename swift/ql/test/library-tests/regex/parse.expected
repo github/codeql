@@ -6254,3 +6254,22 @@ regex.swift:
 #  157| [RegExpConstant, RegExpEscape] \n
 
 #  158| [RegExpConstant, RegExpEscape] \n
+
+#  168| [RegExpConstant, RegExpNormalChar] aa
+
+#  168| [RegExpAlt] aa|bb
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] aa
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] bb
+
+#  168| [RegExpConstant, RegExpNormalChar] bb
+
+#  172| [RegExpConstant, RegExpNormalChar] 
+#  172| bb
+
+#  172| [RegExpConstant, RegExpNormalChar] aa
+
+#  172| [RegExpAlt] aa|
+#  172| bb
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] aa
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] 
+#-----| bb
