@@ -85,6 +85,9 @@ signature module InputSig<LocationSig Location> {
    */
   predicate successorTypeIsSimple(SuccessorType t);
 
+  /** Hold if `t` represents a conditional successor type. */
+  predicate successorTypeIsCondition(SuccessorType t);
+
   /** Holds if `t` is an abnormal exit type out of a CFG scope. */
   predicate isAbnormalExitType(SuccessorType t);
 }
@@ -774,7 +777,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  import SuccSplits
+  private import SuccSplits
 
   /** Provides logic for calculating reachable control flow nodes. */
   private module Reachability {
@@ -847,13 +850,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   cached
   private module Cached {
-    /**
-     * If needed, call this predicate from in order to force a stage-dependency on this
-     * cached stage.
-     */
-    cached
-    predicate forceCachingInSameStage() { any() }
-
     cached
     newtype TSplits =
       TSplitsNil() or
@@ -890,7 +886,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * The control flow graph is pruned for unreachable nodes.
      */
     cached
-    newtype TCfgNode =
+    newtype TNode =
       TEntryNode(CfgScope scope) { succEntrySplits(scope, _, _, _) } or
       TAnnotatedExitNode(CfgScope scope, boolean normal) {
         exists(Reachability::SameSplitsBlock b, SuccessorType t | b.isReachable(scope, _) |
@@ -903,7 +899,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           succExitSplits(b.getAnElement(), _, scope, _)
         )
       } or
-      TElementNode(CfgScope scope, AstNode n, Splits splits) {
+      TAstNode(CfgScope scope, AstNode n, Splits splits) {
         exists(Reachability::SameSplitsBlock b | b.isReachable(scope, splits) |
           n = b.getAnElement()
         )
@@ -911,16 +907,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Gets a successor node of a given flow type, if any. */
     cached
-    TCfgNode getASuccessor(TCfgNode pred, SuccessorType t) {
+    Node getASuccessor(Node pred, SuccessorType t) {
       // Callable entry node -> callable body
       exists(AstNode succElement, Splits succSplits, CfgScope scope |
-        result = TElementNode(scope, succElement, succSplits) and
+        result = TAstNode(scope, succElement, succSplits) and
         pred = TEntryNode(scope) and
         succEntrySplits(scope, succElement, succSplits, t)
       )
       or
       exists(CfgScope scope, AstNode predElement, Splits predSplits |
-        pred = TElementNode(pragma[only_bind_into](scope), predElement, predSplits)
+        pred = TAstNode(pragma[only_bind_into](scope), predElement, predSplits)
       |
         // Element node -> callable exit (annotated)
         exists(boolean normal |
@@ -931,7 +927,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         // Element node -> element node
         exists(AstNode succElement, Splits succSplits, Completion c |
-          result = TElementNode(pragma[only_bind_into](scope), succElement, succSplits)
+          result = TAstNode(pragma[only_bind_into](scope), succElement, succSplits)
         |
           succSplits(predElement, predSplits, succElement, succSplits, c) and
           t = getAMatchingSuccessorType(c)
@@ -947,60 +943,203 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /**
-     * Gets a first control flow element executed within `n`.
-     */
-    cached
-    AstNode getAControlFlowEntryNode(AstNode n) { first(n, result) }
-
-    /**
-     * Gets a potential last control flow element executed within `n`.
-     */
-    cached
-    AstNode getAControlFlowExitNode(AstNode n) { last(n, result, _) }
-
-    /**
      * Gets the CFG scope of node `n`. Unlike `getCfgScope`, this predicate
      * is calculated based on reachability from an entry node, and it may
      * yield different results for AST elements that are split into multiple
      * scopes.
      */
     cached
-    CfgScope getNodeCfgScope(TCfgNode n) {
+    CfgScope getNodeCfgScope(Node n) {
       n = TEntryNode(result)
       or
       n = TAnnotatedExitNode(result, _)
       or
       n = TExitNode(result)
       or
-      n = TElementNode(result, _, _)
+      n = TAstNode(result, _, _)
+    }
+
+    cached
+    module Public {
+      /**
+       * If needed, call this predicate from in order to force a stage-dependency on this
+       * cached stage.
+       */
+      cached
+      predicate forceCachingInSameStage() { any() }
+
+      /**
+       * Gets a first AST node executed within `n`.
+       */
+      cached
+      AstNode getAControlFlowEntryNode(AstNode n) { first(n, result) }
+
+      /**
+       * Gets a potential last AST node executed within `n`.
+       */
+      cached
+      AstNode getAControlFlowExitNode(AstNode n) { last(n, result, _) }
     }
   }
 
-  import Cached
+  private import Cached
+  import Cached::Public
 
-  /** A control-flow node. */
-  signature class NodeSig instanceof TCfgNode {
-    /** Gets the location of this element. */
-    Location getLocation();
+  /**
+   * A control flow node.
+   *
+   * A control flow node is a node in the control flow graph (CFG). There is a
+   * many-to-one relationship between CFG nodes and AST nodes.
+   *
+   * Only nodes that can be reached from an entry point are included in the CFG.
+   */
+  abstract private class NodeImpl extends TNode {
+    /** Gets a textual representation of this control flow node. */
+    abstract string toString();
 
-    /** Gets a textual representation of this element. */
-    string toString();
+    /** Gets the AST node that this node corresponds to, if any. */
+    abstract AstNode getNode();
+
+    /** Gets the location of this control flow node. */
+    abstract Location getLocation();
+
+    /** Holds if this control flow node has conditional successors. */
+    predicate isCondition() {
+      exists(this.getASuccessor(any(SuccessorType t | successorTypeIsCondition(t))))
+    }
+
+    /** Gets the scope of this node. */
+    CfgScope getScope() { result = getNodeCfgScope(this) }
+
+    /** Gets a successor node of a given type, if any. */
+    Node getASuccessor(SuccessorType t) { result = getASuccessor(this, t) }
+
+    /** Gets an immediate successor, if any. */
+    Node getASuccessor() { result = this.getASuccessor(_) }
+
+    /** Gets an immediate predecessor node of a given flow type, if any. */
+    Node getAPredecessor(SuccessorType t) { result.getASuccessor(t) = this }
+
+    /** Gets an immediate predecessor, if any. */
+    Node getAPredecessor() { result = this.getAPredecessor(_) }
+
+    /** Holds if this node has more than one predecessor. */
+    predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
+
+    /** Holds if this node has more than one successor. */
+    predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
   }
+
+  final class Node = NodeImpl;
+
+  /** An entry node for a given scope. */
+  private class EntryNodeImpl extends NodeImpl, TEntryNode {
+    private CfgScope scope;
+
+    EntryNodeImpl() { this = TEntryNode(scope) }
+
+    final override AstNode getNode() { none() }
+
+    final override Location getLocation() { result = scope.getLocation() }
+
+    final override string toString() { result = "enter " + scope }
+  }
+
+  final class EntryNode = EntryNodeImpl;
+
+  /** An exit node for a given scope, annotated with the type of exit. */
+  private class AnnotatedExitNodeImpl extends NodeImpl, TAnnotatedExitNode {
+    private CfgScope scope;
+    private boolean normal;
+
+    AnnotatedExitNodeImpl() { this = TAnnotatedExitNode(scope, normal) }
+
+    /** Holds if this node represent a normal exit. */
+    final predicate isNormal() { normal = true }
+
+    final override AstNode getNode() { none() }
+
+    final override Location getLocation() { result = scope.getLocation() }
+
+    final override string toString() {
+      exists(string s |
+        normal = true and s = "normal"
+        or
+        normal = false and s = "abnormal"
+      |
+        result = "exit " + scope + " (" + s + ")"
+      )
+    }
+  }
+
+  final class AnnotatedExitNode = AnnotatedExitNodeImpl;
+
+  /** An exit node for a given scope. */
+  private class ExitNodeImpl extends NodeImpl, TExitNode {
+    private CfgScope scope;
+
+    ExitNodeImpl() { this = TExitNode(scope) }
+
+    final override AstNode getNode() { none() }
+
+    final override Location getLocation() { result = scope.getLocation() }
+
+    final override string toString() { result = "exit " + scope }
+  }
+
+  final class ExitNode = ExitNodeImpl;
+
+  /**
+   * A node for an AST node.
+   *
+   * Each AST node maps to zero or more `AstCfgNode`s: zero when the node is unreachable
+   * (dead) code or not important for control flow, and multiple when there are different
+   * splits for the AST node.
+   */
+  private class AstCfgNodeImpl extends NodeImpl, TAstNode {
+    private Splits splits;
+    private AstNode n;
+
+    AstCfgNodeImpl() { this = TAstNode(_, n, splits) }
+
+    final override AstNode getNode() { result = n }
+
+    override Location getLocation() { result = n.getLocation() }
+
+    final override string toString() {
+      exists(string s | s = n.toString() |
+        result = "[" + this.getSplitsString() + "] " + s
+        or
+        not exists(this.getSplitsString()) and result = s
+      )
+    }
+
+    /** Gets a comma-separated list of strings for each split in this node, if any. */
+    final string getSplitsString() {
+      result = splits.toString() and
+      result != ""
+    }
+
+    /** Gets a split for this control flow node, if any. */
+    final Split getASplit() { result = splits.getASplit() }
+  }
+
+  final class AstCfgNode = AstCfgNodeImpl;
 
   /**
    * Import this module into a `.ql` file of `@kind graph` to render a CFG. The
    * graph is restricted to nodes from `RelevantNode`.
    */
-  module TestOutput<NodeSig Node> {
-    final private class NodeFinal = Node;
-
-    abstract class RelevantNode extends NodeFinal {
+  module TestOutput {
+    /** A CFG node to include in the output. */
+    abstract class RelevantNode extends Node {
       /**
        * Gets a string used to resolve ties in node and edge ordering.
        */
       string getOrderDisambiguation() { result = "" }
     }
 
+    /** Holds if `n` is a relevant node in the CFG. */
     query predicate nodes(RelevantNode n, string attr, string val) {
       attr = "semmle.order" and
       val =
@@ -1018,6 +1157,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         ).toString()
     }
 
+    /** Holds if `pred -> succ` is an edge in the CFG. */
     query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
       attr = "semmle.label" and
       val =
@@ -1047,13 +1187,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   }
 
   /** Provides a set of consistency queries. */
-  module Consistency<NodeSig Node> {
+  module Consistency {
+    /** Holds if `s1` and `s2` are distinct representations of the same set. */
     query predicate nonUniqueSetRepresentation(Splits s1, Splits s2) {
       forex(Split s | s = s1.getASplit() | s = s2.getASplit()) and
       forex(Split s | s = s2.getASplit() | s = s1.getASplit()) and
       s1 != s2
     }
 
+    /** Holds if splitting invariant 2 is violated. */
     query predicate breakInvariant2(
       AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, SplitImpl split,
       Completion c
@@ -1064,6 +1206,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       not split = succSplits.getASplit()
     }
 
+    /** Holds if splitting invariant 3 is violated. */
     query predicate breakInvariant3(
       AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, SplitImpl split,
       Completion c
@@ -1075,6 +1218,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       split = succSplits.getASplit()
     }
 
+    /** Holds if splitting invariant 4 is violated. */
     query predicate breakInvariant4(
       AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, SplitImpl split,
       Completion c
@@ -1086,6 +1230,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       split.getKind().isEnabled(succ)
     }
 
+    /** Holds if splitting invariant 5 is violated. */
     query predicate breakInvariant5(
       AstNode pred, Splits predSplits, AstNode succ, Splits succSplits, SplitImpl split,
       Completion c
@@ -1110,13 +1255,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       }
     }
 
+    /** Holds if `node` has multiple successors of the same type `t`. */
     query predicate multipleSuccessors(Node node, SuccessorType t, Node successor) {
       strictcount(getASuccessor(node, t)) > 1 and
       successor = getASuccessor(node, t) and
       // allow for functions with multiple bodies
-      not (t instanceof SimpleSuccessorType and node instanceof TEntryNode)
+      not (t instanceof SimpleSuccessorType and node instanceof EntryNode)
     }
 
+    /** Holds if `node` has both a simple and a normal (non-simple) successor type. */
     query predicate simpleAndNormalSuccessors(
       Node node, NormalSuccessorType t1, SimpleSuccessorType t2, Node succ1, Node succ2
     ) {
@@ -1125,16 +1272,19 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       succ2 = getASuccessor(node, t2)
     }
 
+    /** Holds if `node` is lacking a successor. */
     query predicate deadEnd(Node node) {
-      not node instanceof TExitNode and
+      not node instanceof ExitNode and
       not exists(getASuccessor(node, _))
     }
 
+    /** Holds if `split` has multiple kinds. */
     query predicate nonUniqueSplitKind(SplitImpl split, SplitKind sk) {
       sk = split.getKind() and
       strictcount(split.getKind()) > 1
     }
 
+    /** Holds if `sk` has multiple integer representations. */
     query predicate nonUniqueListOrder(SplitKind sk, int ord) {
       ord = sk.getListOrder() and
       strictcount(sk.getListOrder()) > 1

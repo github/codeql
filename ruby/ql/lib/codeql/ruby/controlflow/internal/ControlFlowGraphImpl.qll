@@ -59,19 +59,17 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     t instanceof Cfg::SuccessorTypes::NormalSuccessor
   }
 
+  predicate successorTypeIsCondition(SuccessorType t) {
+    t instanceof Cfg::SuccessorTypes::ConditionalSuccessor
+  }
+
   predicate isAbnormalExitType(SuccessorType t) {
     t instanceof Cfg::SuccessorTypes::RaiseSuccessor or
     t instanceof Cfg::SuccessorTypes::ExitSuccessor
   }
 }
 
-private module Shared = CfgShared::Make<Location, CfgInput>;
-
-import Shared
-
-module TestOutput = Shared::TestOutput<CfgNode>;
-
-module Consistency = Shared::Consistency<CfgNode>;
+import CfgShared::Make<Location, CfgInput>
 
 abstract class CfgScopeImpl extends AstNode {
   abstract predicate entry(AstNode first);

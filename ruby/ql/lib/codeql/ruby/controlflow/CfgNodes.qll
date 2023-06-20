@@ -10,58 +10,22 @@ private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.Splitting
 
 /** An entry node for a given scope. */
-class EntryNode extends CfgNode, CfgImpl::TEntryNode {
+class EntryNode extends CfgNode, CfgImpl::EntryNode {
   override string getAPrimaryQlClass() { result = "EntryNode" }
 
-  private CfgScope scope;
-
-  EntryNode() { this = CfgImpl::TEntryNode(scope) }
-
   final override EntryBasicBlock getBasicBlock() { result = super.getBasicBlock() }
-
-  final override Location getLocation() { result = scope.getLocation() }
-
-  final override string toString() { result = "enter " + scope }
 }
 
 /** An exit node for a given scope, annotated with the type of exit. */
-class AnnotatedExitNode extends CfgNode, CfgImpl::TAnnotatedExitNode {
+class AnnotatedExitNode extends CfgNode, CfgImpl::AnnotatedExitNode {
   override string getAPrimaryQlClass() { result = "AnnotatedExitNode" }
 
-  private CfgScope scope;
-  private boolean normal;
-
-  AnnotatedExitNode() { this = CfgImpl::TAnnotatedExitNode(scope, normal) }
-
-  /** Holds if this node represent a normal exit. */
-  final predicate isNormal() { normal = true }
-
   final override AnnotatedExitBasicBlock getBasicBlock() { result = super.getBasicBlock() }
-
-  final override Location getLocation() { result = scope.getLocation() }
-
-  final override string toString() {
-    exists(string s |
-      normal = true and s = "normal"
-      or
-      normal = false and s = "abnormal"
-    |
-      result = "exit " + scope + " (" + s + ")"
-    )
-  }
 }
 
 /** An exit node for a given scope. */
-class ExitNode extends CfgNode, CfgImpl::TExitNode {
+class ExitNode extends CfgNode, CfgImpl::ExitNode {
   override string getAPrimaryQlClass() { result = "ExitNode" }
-
-  private CfgScope scope;
-
-  ExitNode() { this = CfgImpl::TExitNode(scope) }
-
-  final override Location getLocation() { result = scope.getLocation() }
-
-  final override string toString() { result = "exit " + scope }
 }
 
 /**
@@ -71,42 +35,16 @@ class ExitNode extends CfgNode, CfgImpl::TExitNode {
  * (dead) code or not important for control flow, and multiple when there are different
  * splits for the AST node.
  */
-class AstCfgNode extends CfgNode, CfgImpl::TElementNode {
+class AstCfgNode extends CfgNode, CfgImpl::AstCfgNode {
   /** Gets the name of the primary QL class for this node. */
   override string getAPrimaryQlClass() { result = "AstCfgNode" }
-
-  private CfgImpl::Splits splits;
-  AstNode e;
-
-  AstCfgNode() { this = CfgImpl::TElementNode(_, e, splits) }
-
-  final override AstNode getNode() { result = e }
-
-  override Location getLocation() { result = e.getLocation() }
-
-  final override string toString() {
-    exists(string s | s = e.toString() |
-      result = "[" + this.getSplitsString() + "] " + s
-      or
-      not exists(this.getSplitsString()) and result = s
-    )
-  }
-
-  /** Gets a comma-separated list of strings for each split in this node, if any. */
-  final string getSplitsString() {
-    result = splits.toString() and
-    result != ""
-  }
-
-  /** Gets a split for this control flow node, if any. */
-  final Split getASplit() { result = splits.getASplit() }
 }
 
 /** A control-flow node that wraps an AST expression. */
 class ExprCfgNode extends AstCfgNode {
   override string getAPrimaryQlClass() { result = "ExprCfgNode" }
 
-  override Expr e;
+  Expr e;
 
   ExprCfgNode() { e = this.getNode() }
 
@@ -146,7 +84,7 @@ class StringComponentCfgNode extends AstCfgNode {
 class RegExpComponentCfgNode extends StringComponentCfgNode {
   override string getAPrimaryQlClass() { result = "RegExpComponentCfgNode" }
 
-  RegExpComponentCfgNode() { e instanceof RegExpComponent }
+  RegExpComponentCfgNode() { this.getNode() instanceof RegExpComponent }
 }
 
 private AstNode desugar(AstNode n) {
@@ -440,9 +378,11 @@ module ExprNodes {
 
   /** A control-flow node that wraps an `InClause` AST expression. */
   class InClauseCfgNode extends AstCfgNode {
-    override string getAPrimaryQlClass() { result = "InClauseCfgNode" }
+    private InClauseChildMapping e;
 
-    override InClauseChildMapping e;
+    InClauseCfgNode() { e = this.getNode() }
+
+    override string getAPrimaryQlClass() { result = "InClauseCfgNode" }
 
     /** Gets the pattern in this `in`-clause. */
     final AstCfgNode getPattern() { e.hasCfgChild(e.getPattern(), this, result) }
@@ -488,9 +428,11 @@ module ExprNodes {
 
   /** A control-flow node that wraps a `WhenClause` AST expression. */
   class WhenClauseCfgNode extends AstCfgNode {
-    override string getAPrimaryQlClass() { result = "WhenClauseCfgNode" }
+    private WhenClauseChildMapping e;
 
-    override WhenClauseChildMapping e;
+    WhenClauseCfgNode() { e = this.getNode() }
+
+    override string getAPrimaryQlClass() { result = "WhenClauseCfgNode" }
 
     /** Gets the body of this `when`-clause. */
     final ExprCfgNode getBody() {
@@ -507,9 +449,11 @@ module ExprNodes {
 
   /** A control-flow node that wraps a `CasePattern`. */
   class CasePatternCfgNode extends AstCfgNode {
-    override string getAPrimaryQlClass() { result = "CasePatternCfgNode" }
+    CasePattern e;
 
-    override CasePattern e;
+    CasePatternCfgNode() { e = this.getNode() }
+
+    override string getAPrimaryQlClass() { result = "CasePatternCfgNode" }
   }
 
   private class ArrayPatternChildMapping extends NonExprChildMapping, ArrayPattern {

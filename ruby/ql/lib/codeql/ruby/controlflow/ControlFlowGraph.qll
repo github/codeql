@@ -33,33 +33,15 @@ class CfgScope extends Scope instanceof CfgImpl::CfgScopeImpl {
  *
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
-class CfgNode extends CfgImpl::TCfgNode {
+class CfgNode extends CfgImpl::Node {
   /** Gets the name of the primary QL class for this node. */
   string getAPrimaryQlClass() { none() }
-
-  /** Gets a textual representation of this control flow node. */
-  string toString() { none() }
-
-  /** Gets the AST node that this node corresponds to, if any. */
-  AstNode getNode() { none() }
-
-  /** Gets the location of this control flow node. */
-  Location getLocation() { none() }
 
   /** Gets the file of this control flow node. */
   final File getFile() { result = this.getLocation().getFile() }
 
-  /** Holds if this control flow node has conditional successors. */
-  final predicate isCondition() { exists(this.getASuccessor(any(ConditionalSuccessor bs))) }
-
-  /** Gets the scope of this node. */
-  final CfgScope getScope() { result = CfgImpl::getNodeCfgScope(this) }
-
-  /** Gets the basic block that this control flow node belongs to. */
-  BasicBlock getBasicBlock() { result.getANode() = this }
-
   /** Gets a successor node of a given type, if any. */
-  final CfgNode getASuccessor(SuccessorType t) { result = CfgImpl::getASuccessor(this, t) }
+  final CfgNode getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
 
   /** Gets an immediate successor, if any. */
   final CfgNode getASuccessor() { result = this.getASuccessor(_) }
@@ -70,11 +52,8 @@ class CfgNode extends CfgImpl::TCfgNode {
   /** Gets an immediate predecessor, if any. */
   final CfgNode getAPredecessor() { result = this.getAPredecessor(_) }
 
-  /** Holds if this node has more than one predecessor. */
-  final predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
-
-  /** Holds if this node has more than one successor. */
-  final predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
+  /** Gets the basic block that this control flow node belongs to. */
+  BasicBlock getBasicBlock() { result.getANode() = this }
 }
 
 /** The type of a control flow successor. */
