@@ -25,5 +25,6 @@ from QueryDoc d
 where
   d.getLocation().getFile().getRelativePath().matches("%src/Security/%") and
   not d.getQueryId().matches("android/%") and
+  not d.getQueryId() = "improper-intent-verification" and // known badly identified query that sadly we can't fix
   importsAndroidModule(d.getParent())
 select d, "This Android query is missing the `android/` prefix in its `@id`."
