@@ -849,6 +849,12 @@ class CastNode extends Node {
   CastNode() { none() }
 }
 
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { none() }
+
 class DataFlowExpr = Expr;
 
 class DataFlowParameter = ParamDecl;

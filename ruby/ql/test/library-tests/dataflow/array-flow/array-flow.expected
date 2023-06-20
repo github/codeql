@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | array_flow.rb:2:5:2:5 | a [element 0] | array_flow.rb:3:10:3:10 | a [element 0] |
 | array_flow.rb:2:5:2:5 | a [element 0] | array_flow.rb:3:10:3:10 | a [element 0] |

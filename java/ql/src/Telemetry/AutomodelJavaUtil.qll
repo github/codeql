@@ -27,31 +27,17 @@ class DollarAtString extends string {
  * Holds for all combinations of MaD kinds (`kind`) and their human readable
  * descriptions.
  */
-predicate isKnownKind(
-  string kind, string humanReadableKind, AutomodelEndpointTypes::EndpointType type
-) {
-  kind = "read-file" and
-  humanReadableKind = "read file" and
-  type instanceof AutomodelEndpointTypes::TaintedPathSinkType
+predicate isKnownKind(string kind, AutomodelEndpointTypes::EndpointType type) {
+  kind = "path-injection" and
+  type instanceof AutomodelEndpointTypes::PathInjectionSinkType
   or
-  kind = "create-file" and
-  humanReadableKind = "create file" and
-  type instanceof AutomodelEndpointTypes::TaintedPathSinkType
+  kind = "sql-injection" and
+  type instanceof AutomodelEndpointTypes::SqlInjectionSinkType
   or
-  kind = "sql" and
-  humanReadableKind = "mad modeled sql" and
-  type instanceof AutomodelEndpointTypes::SqlSinkType
-  or
-  kind = "open-url" and
-  humanReadableKind = "open url" and
-  type instanceof AutomodelEndpointTypes::RequestForgerySinkType
-  or
-  kind = "jdbc-url" and
-  humanReadableKind = "jdbc url" and
+  kind = "request-forgery" and
   type instanceof AutomodelEndpointTypes::RequestForgerySinkType
   or
   kind = "command-injection" and
-  humanReadableKind = "command injection" and
   type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
 }
 

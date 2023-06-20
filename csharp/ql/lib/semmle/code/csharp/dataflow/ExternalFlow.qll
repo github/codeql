@@ -62,8 +62,8 @@
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
  *
- *    For summaries, `input` and `output` may be prefixed by one of the following,
- *    separated by the "of" keyword:
+ *    For summaries, `input` and `output` may be suffixed by any number of the
+ *    following, separated by ".":
  *    - "Element": Selects an element in a collection.
  *    - "Field[f]": Selects the contents of field `f`.
  *    - "Property[p]": Selects the contents of property `p`.
