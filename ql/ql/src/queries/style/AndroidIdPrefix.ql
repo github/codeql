@@ -12,7 +12,7 @@ import ql
 /** Holds if `t` transitively imports an Android module. */
 predicate importsAndroidModule(TopLevel t) {
   t.getFile() =
-    any(YAML::QLPack pack | pack.getExtractor() = "java").getADependency*().getAFileInPack() and
+    any(YAML::QLPack pack | pack.getADependency*().getExtractor() = "java").getAFileInPack() and
   exists(Import i | t.getAnImport() = i |
     i.getImportString().toLowerCase().matches("%android%")
     or
