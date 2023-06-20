@@ -1,0 +1,2 @@
+| FieldOnlyUsedInCharPred.qll:2:3:2:12 | FieldDecl | Field is only used in CharPred. |
+| FieldOnlyUsedInCharPred.qll:22:3:22:11 | FieldDecl | Field is only used in CharPred. |
