@@ -213,9 +213,9 @@ private module Impl implements RegexTreeViewSig {
     ) {
       filepath = re.getFile().getAbsolutePath() and
       startline = re.getLocation().getStartLine() and
-      startcolumn = re.getLocation().getStartColumn() and
+      startcolumn = re.getLocation().getStartColumn() + start + 1 and
       endline = re.getLocation().getEndLine() and
-      endcolumn = re.getLocation().getEndColumn()
+      endcolumn = re.getLocation().getStartColumn() + end - 1
     }
 
     /** Gets the file in which this term is found. */
