@@ -92,5 +92,5 @@ void loopy(bool b1, bool b2)
       goto loopy_label;
     }
   }
-  range(j); // $ MISSING: range=<=10 range=>=0
+  range(j); // $ range=<=10 range=>=0
 }

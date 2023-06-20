@@ -358,6 +358,8 @@ module SemanticExprConfig {
 
   predicate readBlock(SsaReadPosition pos, BasicBlock block) { pos = TReadPositionBlock(block) }
 
+  predicate semBackEdge(SemBasicBlock b1, SemBasicBlock b2) { b1.getBackEdgeSuccessor(_) = b2 }
+
   predicate phiInputEdge(SsaReadPosition pos, BasicBlock origBlock, BasicBlock phiBlock) {
     pos = TReadPositionPhiInputEdge(origBlock, phiBlock)
   }
