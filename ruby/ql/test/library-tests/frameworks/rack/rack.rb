@@ -16,7 +16,7 @@ class Proxy
 
   def call(the_env)
     status, headers, body = @app.call(the_env)
-    headers.content_type = Rack::Mime.mime_type(".gz")
+    headers.content_type = "text/html"
     [status, headers, body]
   end
 end

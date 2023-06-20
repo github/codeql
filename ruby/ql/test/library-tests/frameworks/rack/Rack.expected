@@ -6,8 +6,6 @@ rackApps
 | rack.rb:59:1:75:3 | Baz | rack.rb:60:12:60:14 | env |
 rackResponseContentTypes
 | rack.rb:8:5:8:38 | call to [] | rack.rb:7:34:7:45 | "text/plain" |
-| rack.rb:20:5:20:27 | call to [] | rack.rb:19:28:19:54 | call to mime_type |
-mimetypeCalls
-| rack.rb:19:28:19:54 | call to mime_type | application/x-gzip |
+| rack.rb:20:5:20:27 | call to [] | rack.rb:19:28:19:38 | "text/html" |
 redirectResponses
 | rack.rb:43:5:43:45 | call to [] | rack.rb:42:30:42:40 | "/foo.html" |
