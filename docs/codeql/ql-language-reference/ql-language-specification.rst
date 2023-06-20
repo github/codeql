@@ -323,6 +323,8 @@ For a *completely uninstantiated* parameter, the *bottom-up instantiation-resolu
 - If the entity is an *instantiated module* or an *instantiation-nested* entity, the *bottom-up instantiation-resolution* is the *instantiation-relative* entity of the *bottom-up instantiation-resolution* relative to the *underlying module*.
 - Otherwise, the *bottom-up instantiation-resolution* is the parameter itself.
 
+An entity is called *fully instantiated* if none of the *bottom-up instantiation-resolutions* of the parameters in the *relevant set of parameters* of the entity's *underlying completely uninstantiated* entity are parameters.
+
 Two *instantiated modules* or two *instantiation-nested* entities are considered *equivalent* if they have the same *underlying completely uninstantiated* entity and each parameter in its *relevant set of parameters* has the same *bottom-up instantiation-resolution* relative to either *instantiated module*.
 
 Module instantiation is applicative, meaning that *equivalent* *instantiated modules* and *equivalent* *instantiation-nested* entities are indistinguishable.
@@ -2040,7 +2042,7 @@ Stratification
 
 A QL program can be *stratified* to a sequence of *layers*. A layer is a set of predicates and types.
 
-A valid stratification must include each predicate and type in the QL program. It must not include any other predicates or types.
+A valid stratification must include each predicate and type in the QL program that is *fully instantiated*. It must not include any other predicates or types.
 
 A valid stratification must not include the same predicate in multiple layers.
 
