@@ -3,7 +3,7 @@ import semmle.python.dataflow.TaintTracking
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.dataflow.Implementation
 
-module TaintTracking {
+deprecated module TaintTracking {
   class Source = TaintSource;
 
   class Sink = TaintSink;

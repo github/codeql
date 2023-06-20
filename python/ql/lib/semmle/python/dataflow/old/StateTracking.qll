@@ -14,7 +14,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.objects.ObjectInternal
 
 /** A state that should be tracked. */
-abstract class TrackableState extends string {
+abstract deprecated class TrackableState extends string {
   bindingset[this]
   TrackableState() { this = this }
 
@@ -73,7 +73,7 @@ abstract class TrackableState extends string {
   predicate endsAt(ControlFlowNode f, Context ctx) { ctx.appliesTo(f) and this.endsAt(f) }
 }
 
-module StateTracking {
+deprecated module StateTracking {
   private predicate not_allowed(TrackableState state, ControlFlowNode f, Context ctx, boolean sense) {
     state.endsAt(f, ctx) and sense = true
     or

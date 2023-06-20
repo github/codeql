@@ -100,7 +100,7 @@ import semmle.python.dataflow.Configuration
  * or, for a super secure system, environment variables or
  * the local file system.
  */
-abstract class TaintKind extends string {
+abstract deprecated class TaintKind extends string {
   bindingset[this]
   TaintKind() { any() }
 
@@ -179,7 +179,7 @@ abstract class TaintKind extends string {
 /**
  * An Alias of `TaintKind`, so the two types can be used interchangeably.
  */
-class FlowLabel = TaintKind;
+deprecated class FlowLabel = TaintKind;
 
 /**
  * Taint kinds representing collections of other taint kind.
@@ -189,7 +189,7 @@ class FlowLabel = TaintKind;
  * in Python. We choose a single character prefix and suffix for simplicity
  * and ease of preventing infinite recursion.
  */
-abstract class CollectionKind extends TaintKind {
+abstract deprecated class CollectionKind extends TaintKind {
   bindingset[this]
   CollectionKind() {
     (this.charAt(0) = "[" or this.charAt(0) = "{") and
@@ -209,7 +209,7 @@ abstract class CollectionKind extends TaintKind {
  * A taint kind representing a flat collections of kinds.
  * Typically a sequence, but can include sets.
  */
-class SequenceKind extends CollectionKind {
+deprecated class SequenceKind extends CollectionKind {
   TaintKind itemKind;
 
   SequenceKind() { this = "[" + itemKind + "]" }
@@ -245,7 +245,7 @@ class SequenceKind extends CollectionKind {
   }
 }
 
-module SequenceKind {
+deprecated module SequenceKind {
   predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode, string edgeLabel) {
     tonode.(BinaryExprNode).getAnOperand() = fromnode and edgeLabel = "binary operation"
     or
@@ -262,7 +262,7 @@ module SequenceKind {
   }
 }
 
-module DictKind {
+deprecated module DictKind {
   predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode, string edgeLabel) {
     Implementation::copyCall(fromnode, tonode) and
     edgeLabel = "dict copy"
@@ -292,7 +292,7 @@ private predicate subscript_slice(ControlFlowNode obj, SubscriptNode sub) {
  * A taint kind representing a mapping of objects to kinds.
  * Typically a dict, but can include other mappings.
  */
-class DictKind extends CollectionKind {
+deprecated class DictKind extends CollectionKind {
   TaintKind valueKind;
 
   DictKind() { this = "{" + valueKind + "}" }
@@ -326,7 +326,7 @@ class DictKind extends CollectionKind {
  * Usually a sanitizer can only sanitize data for one particular use.
  * For example, a sanitizer for DB commands would not be safe to use for http responses.
  */
-abstract class Sanitizer extends string {
+abstract deprecated class Sanitizer extends string {
   bindingset[this]
   Sanitizer() { any() }
 
@@ -351,7 +351,7 @@ abstract class Sanitizer extends string {
  * Users of the taint tracking library should override this
  * class to provide their own sources.
  */
-abstract class TaintSource extends @py_flow_node {
+abstract deprecated class TaintSource extends @py_flow_node {
   /** Gets a textual representation of this element. */
   string toString() { result = "Taint source" }
 
@@ -420,7 +420,7 @@ abstract class TaintSource extends @py_flow_node {
  * Users of the taint tracking library can override this
  * class to provide their own sources on the ESSA graph.
  */
-abstract class TaintedDefinition extends EssaNodeDefinition {
+abstract deprecated class TaintedDefinition extends EssaNodeDefinition {
   /**
    * Holds if `this` is a source of taint kind `kind`
    *
@@ -476,7 +476,7 @@ private class SequenceExtends extends DataFlowExtension::DataFlowNode {
  * Users of the taint tracking library should extend this
  * class to provide their own sink nodes.
  */
-abstract class TaintSink extends @py_flow_node {
+abstract deprecated class TaintSink extends @py_flow_node {
   /** Gets a textual representation of this element. */
   string toString() { result = "Taint sink" }
 
@@ -509,7 +509,7 @@ abstract class TaintSink extends @py_flow_node {
  * library or framework specific and cannot be inferred by the general
  * data-flow machinery.
  */
-module DataFlowExtension {
+deprecated module DataFlowExtension {
   /** A control flow node that modifies the basic data-flow. */
   abstract class DataFlowNode extends @py_flow_node {
     /** Gets a textual representation of this element. */
@@ -581,20 +581,20 @@ module DataFlowExtension {
   }
 }
 
-class TaintedPathSource extends TaintTrackingNode {
+deprecated class TaintedPathSource extends TaintTrackingNode {
   TaintedPathSource() { this.isSource() }
 
   DataFlow::Node getSource() { result = this.getNode() }
 }
 
-class TaintedPathSink extends TaintTrackingNode {
+deprecated class TaintedPathSink extends TaintTrackingNode {
   TaintedPathSink() { this.isSink() }
 
   DataFlow::Node getSink() { result = this.getNode() }
 }
 
 /* Backwards compatible name */
-class TaintedNode = TaintTrackingNode;
+deprecated class TaintedNode = TaintTrackingNode;
 
 /* Helpers for Validating classes */
 private import semmle.python.pointsto.PointsTo
@@ -603,7 +603,7 @@ private import semmle.python.pointsto.PointsTo
  * Data flow module providing an interface compatible with
  * the other language implementations.
  */
-module DataFlow {
+deprecated module DataFlow {
   /**
    * The generic taint kind, source and sink classes for convenience and
    * compatibility with other language libraries

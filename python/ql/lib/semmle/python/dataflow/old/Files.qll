@@ -1,13 +1,13 @@
 import python
 import semmle.python.dataflow.TaintTracking
 
-class OpenFile extends TaintKind {
+deprecated class OpenFile extends TaintKind {
   OpenFile() { this = "file.open" }
 
   override string repr() { result = "an open file" }
 }
 
-class OpenFileConfiguration extends TaintTracking::Configuration {
+deprecated class OpenFileConfiguration extends TaintTracking::Configuration {
   OpenFileConfiguration() { this = "Open file configuration" }
 
   override predicate isSource(DataFlow::Node src, TaintKind kind) {

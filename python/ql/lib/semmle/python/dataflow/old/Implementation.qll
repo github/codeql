@@ -10,7 +10,7 @@ import semmle.python.dataflow.Legacy
  * including attribute paths, contexts and edges.
  */
 
-newtype TTaintTrackingContext =
+deprecated newtype TTaintTrackingContext =
   TNoParam() or
   TParamContext(TaintKind param, AttributePath path, int n) {
     any(TaintTrackingImplementation impl).callWithTaintedArgument(_, _, _, _, n, path, param)
@@ -23,7 +23,7 @@ newtype TTaintTrackingContext =
  *  * Tainted parameter; tracks the taint and attribute-path for a parameter
  *    Used to track taint through calls accurately and reasonably efficiently.
  */
-class TaintTrackingContext extends TTaintTrackingContext {
+deprecated class TaintTrackingContext extends TTaintTrackingContext {
   /** Gets a textual representation of this element. */
   string toString() {
     this = TNoParam() and result = ""
@@ -66,7 +66,7 @@ private newtype TAttributePath =
  * This is usually "no attribute".
  * Used for tracking tainted attributes of objects.
  */
-abstract class AttributePath extends TAttributePath {
+abstract deprecated class AttributePath extends TAttributePath {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
@@ -80,7 +80,7 @@ abstract class AttributePath extends TAttributePath {
 }
 
 /** The `AttributePath` for no attribute. */
-class NoAttribute extends TNoAttribute, AttributePath {
+deprecated class NoAttribute extends TNoAttribute, AttributePath {
   override string toString() { result = "no attribute" }
 
   override string extension() { result = "" }
@@ -89,7 +89,7 @@ class NoAttribute extends TNoAttribute, AttributePath {
 }
 
 /** The `AttributePath` for an attribute. */
-class NamedAttributePath extends TAttribute, AttributePath {
+deprecated class NamedAttributePath extends TAttribute, AttributePath {
   override string toString() {
     exists(string attr |
       this = TAttribute(attr) and
@@ -113,7 +113,7 @@ class NamedAttributePath extends TAttribute, AttributePath {
  * Type representing the (node, context, path, kind) tuple.
  * Construction of this type is mutually recursive with `TaintTrackingImplementation.flowStep(...)`
  */
-newtype TTaintTrackingNode =
+deprecated newtype TTaintTrackingNode =
   TTaintTrackingNode_(
     DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind,
     TaintTracking::Configuration config
@@ -127,7 +127,7 @@ newtype TTaintTrackingNode =
  * A class representing the (node, context, path, kind) tuple.
  * Used for context-sensitive path-aware taint-tracking.
  */
-class TaintTrackingNode extends TTaintTrackingNode {
+deprecated class TaintTrackingNode extends TTaintTrackingNode {
   /** Gets a textual representation of this element. */
   string toString() {
     if this.getPath() instanceof NoAttribute
@@ -197,7 +197,7 @@ class TaintTrackingNode extends TTaintTrackingNode {
  * It is implemented as a separate class for clarity and to keep the code
  * in `TaintTracking::Configuration` simpler.
  */
-class TaintTrackingImplementation extends string instanceof TaintTracking::Configuration {
+deprecated class TaintTrackingImplementation extends string instanceof TaintTracking::Configuration {
   /**
    * Hold if there is a flow from `source`, which is a taint source, to
    * `sink`, which is a taint sink, with this configuration.
@@ -644,7 +644,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
  * Another taint-tracking class to help partition the code for clarity
  * This class handle tracking of ESSA variables.
  */
-private class EssaTaintTracking extends string instanceof TaintTracking::Configuration {
+deprecated private class EssaTaintTracking extends string instanceof TaintTracking::Configuration {
   pragma[noinline]
   predicate taintedDefinition(
     TaintTrackingNode src, EssaDefinition defn, TaintTrackingContext context, AttributePath path,
@@ -930,7 +930,7 @@ private predicate piNodeTestAndUse(PyEdgeRefinement defn, ControlFlowNode test, 
 }
 
 /** Helper predicate for taintedMultiAssignment */
-private TaintKind taint_at_depth(SequenceKind parent_kind, int depth) {
+deprecated private TaintKind taint_at_depth(SequenceKind parent_kind, int depth) {
   depth >= 0 and
   (
     // base-case #0
@@ -959,7 +959,7 @@ private TaintKind taint_at_depth(SequenceKind parent_kind, int depth) {
  * - with `left_defn` = `*y`, `left_parent` = `(x, *y)`, result = 0
  * - with `left_defn` = `*y`, `left_parent` = `((x, *y), ...)`, result = 1
  */
-int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_defn) {
+deprecated int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_defn) {
   exists(Assign a | a.getATarget().getASubExpression*().getAFlowNode() = left_parent) and
   left_parent.getAnElement() = left_defn and
   // Handle `a, *b = some_iterable`
@@ -968,7 +968,7 @@ int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_de
   result = 1 + iterable_unpacking_descent(left_parent.getAnElement(), left_defn)
 }
 
-module Implementation {
+deprecated module Implementation {
   /** Holds if `tonode` is a call that returns a copy (or similar) of the argument `fromnode` */
   predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getFunction().(AttrNode).getObject("copy") = fromnode

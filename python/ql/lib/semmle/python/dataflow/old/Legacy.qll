@@ -3,7 +3,7 @@ private import semmle.python.objects.ObjectInternal
 import semmle.python.dataflow.Implementation
 
 /** A configuration that provides backwards compatibility with config-less taint-tracking */
-private class LegacyConfiguration extends TaintTracking::Configuration {
+deprecated private class LegacyConfiguration extends TaintTracking::Configuration {
   LegacyConfiguration() {
     /* A name that won't be accidentally chosen by users */
     this = "Semmle: Internal legacy configuration"
