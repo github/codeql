@@ -784,6 +784,12 @@ class CastNode extends Node {
 }
 
 /**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { none() }
+
+/**
  * A function that may contain code or a variable that may contain itself. When
  * flow crosses from one _enclosing callable_ to another, the interprocedural
  * data-flow library discards call contexts and inserts a node in the big-step

@@ -228,6 +228,12 @@ class CastNode extends ExprNode {
   override ConversionExpr expr;
 }
 
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { none() }
+
 class DataFlowExpr = Expr;
 
 private newtype TDataFlowType =

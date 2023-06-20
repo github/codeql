@@ -486,6 +486,14 @@ class DataFlowType extends TDataFlowType {
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
+  CastNode() { none() }
+}
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) {
   // We include read- and store steps here to force them to be
   // shown in path explanations.
   // This hack is necessary, because we have included some of these
@@ -494,7 +502,7 @@ class CastNode extends Node {
   // We should revert this once, we can remove this steps from the
   // default taint steps; this should be possible once we have
   // implemented flow summaries and recursive content.
-  CastNode() { readStep(_, _, this) or storeStep(_, _, this) }
+  readStep(_, _, n) or storeStep(_, _, n)
 }
 
 /**
