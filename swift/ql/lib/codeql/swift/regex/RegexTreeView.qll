@@ -1188,9 +1188,7 @@ private module Impl implements RegexTreeViewSig {
   /**
    * Holds if the regular expression should not be considered.
    */
-  predicate isExcluded(RegExpParent parent) {
-    none()
-  }
+  predicate isExcluded(RegExpParent parent) { none() }
 
   /**
    * Holds if `term` is a possessive quantifier.

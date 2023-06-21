@@ -379,13 +379,12 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex(#"([^\\\]]+)*"#).firstMatch(in: tainted)
 
     // BAD
-    // TODO: QL evaluation times out (for test, at 5 minutes)
-    // times out:
-//    _ = try Regex(#"(\w*foobarbaz\w*foobarbaz\w*foobarbaz\w*foobarbaz\s*foobarbaz\d*foobarbaz\w*)+-"#).firstMatch(in: tainted) // $ redos-vulnerable=
-    // a simpler regex that times out:
-//	_ = try Regex(#"(\w*foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar)+"#).firstMatch(in: tainted) // $ redos-vulnerable=
-    // a simpler regerx that doesn't time out but is slow to evaluate:
-//	_ = try Regex(#"(\w*foobarfoobarfoobar)+"#).firstMatch(in: tainted) // $ redos-vulnerable=
+    _ = try Regex(#"(\w*foobarbaz\w*foobarbaz\w*foobarbaz\w*foobarbaz\s*foobarbaz\d*foobarbaz\w*)+-"#).firstMatch(in: tainted) // $ redos-vulnerable=
+
+    // GOOD
+    // (these regexs explore a query performance issue we had at one point)
+    _ = try Regex(#"(\w*foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar)+"#).firstMatch(in: tainted)
+    _ = try Regex(#"(\w*foobarfoobarfoobar)+"#).firstMatch(in: tainted)
 
     // BAD (but cannot currently construct a prefix)
     // attack string: "aa" + "b" x lots + "!"
