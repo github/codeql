@@ -70,6 +70,21 @@ predicate semBackEdge(SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionP
   // Conservatively assume that every edge is a back edge if we don't have dominance information.
   (
     phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
+    trimmedReachable(phi.getBasicBlock(), edge.getOrigBlock()) or
     not edge.getOrigBlock().hasDominanceInformation()
   )
+}
+
+private predicate trimmedReachable(SemBasicBlock b1, SemBasicBlock b2) {
+  b1 = b2
+  or
+  exists(SemBasicBlock mid |
+    trimmedReachable(b1, mid) and
+    trimmedEdges(mid, b2)
+  )
+}
+
+private predicate trimmedEdges(SemBasicBlock pred, SemBasicBlock succ) {
+  pred.getASuccessor() = succ and
+  not succ.bbDominates(pred)
 }
