@@ -146,15 +146,15 @@ private string getContentSpecific(Content cs) {
   exists(string attr | cs = TAttributeContent(attr) and result = "Attribute[" + attr + "]")
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getAccessStepSpecific(SummaryComponent sc) {
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c |
     sc = TContentSummaryComponent(c) and
     result = getContentSpecific(c)
   )
 }
 
-/** Gets the textual representation of a parameter position in the format used for flow summaries. */
+/** Gets the textual representation of a parameter position in the format used for MaD models. */
 string getParameterPosition(ParameterPosition pos) {
   pos.isSelf() and result = "self"
   or
@@ -169,7 +169,7 @@ string getParameterPosition(ParameterPosition pos) {
   )
 }
 
-/** Gets the textual representation of an argument position in the format used for flow summaries. */
+/** Gets the textual representation of an argument position in the format used for MaD models. */
 string getArgumentPosition(ArgumentPosition pos) {
   pos.isSelf() and result = "self"
   or

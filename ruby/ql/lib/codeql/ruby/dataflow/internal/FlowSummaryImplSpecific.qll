@@ -165,8 +165,8 @@ private string getContentSetSpecific(ContentSet cs) {
   )
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getAccessStepSpecific(SummaryComponent sc) {
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(ContentSet cs | sc = TContentSummaryComponent(cs) and result = getContentSetSpecific(cs))
   or
   exists(ContentSet cs |
@@ -186,7 +186,7 @@ string getAccessStepSpecific(SummaryComponent sc) {
   )
 }
 
-/** Gets the textual representation of a parameter position in the format used for flow summaries. */
+/** Gets the textual representation of a parameter position in the format used for MaD models. */
 string getParameterPosition(ParameterPosition pos) {
   exists(int i |
     pos.isPositional(i) and
@@ -219,7 +219,7 @@ string getParameterPosition(ParameterPosition pos) {
   result = "hash-splat"
 }
 
-/** Gets the textual representation of an argument position in the format used for flow summaries. */
+/** Gets the textual representation of an argument position in the format used for MaD models. */
 string getArgumentPosition(ArgumentPosition pos) {
   pos.isSelf() and result = "self"
   or

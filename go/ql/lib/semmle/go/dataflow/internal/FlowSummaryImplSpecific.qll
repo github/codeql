@@ -22,10 +22,10 @@ DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
-/** Gets the textual representation of a parameter position in the format used for flow summaries. */
+/** Gets the textual representation of a parameter position in the format used for MaD models. */
 string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
-/** Gets the textual representation of an argument position in the format used for flow summaries. */
+/** Gets the textual representation of an argument position in the format used for MaD models. */
 string getArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
 
 /** Gets the synthesized data-flow call for `receiver`. */
@@ -110,8 +110,8 @@ private string getContentSpecific(Content c) {
   c instanceof PointerContent and result = "Dereference"
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
-string getAccessStepSpecific(SummaryComponent sc) {
+/** Gets the textual representation of the content in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   exists(ReturnKind rk |
