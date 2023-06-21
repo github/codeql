@@ -312,6 +312,13 @@ module CodeInjection {
     }
   }
 
+  /**
+   * A value interpreted as code by the `webix` library.
+   */
+  class WebixExec extends Sink {
+    WebixExec() { this = DataFlow::moduleImport("webix").getAMemberCall("exec").getArgument(0) }
+  }
+
   /** A sink for code injection via template injection. */
   abstract private class TemplateSink extends Sink {
     deprecated override string getMessageSuffix() {
@@ -416,6 +423,23 @@ module CodeInjection {
   class LodashUnderscoreTemplateSink extends TemplateSink {
     LodashUnderscoreTemplateSink() {
       this = LodashUnderscore::member("template").getACall().getArgument(0)
+    }
+  }
+
+  /**
+   * A value interpreted as a template by the `webix` library.
+   */
+  class WebixTemplateSink extends TemplateSink {
+    WebixTemplateSink() {
+      this = DataFlow::moduleImport("webix").getAMemberCall("ui").getOptionArgument(0, "template")
+      or
+      this.asExpr() =
+        DataFlow::moduleImport("webix")
+            .getAMemberCall("ui")
+            .getOptionArgument(0, "template")
+            .asExpr()
+            .(Function)
+            .getAReturnedExpr()
     }
   }
 

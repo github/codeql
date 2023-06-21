@@ -10,10 +10,11 @@ import * as mustache from 'mustache';
 const Hogan = require("hogan.js");
 import * as Eta from 'eta';
 import * as Sqrl from 'squirrelly'
+import * as webix from "webix";
 
 var app = express();
 
-app.get('/some/path', function(req, res) {
+app.get('/some/path', function (req, res) {
     let tainted = req.query.foo;
 
     pug.compile(tainted); // NOT OK
@@ -30,4 +31,6 @@ app.get('/some/path', function(req, res) {
     Hogan.compile(tainted); // NOT OK
     Eta.render(tainted); // NOT OK
     Sqrl.render(tainted); // NOT OK
+    webix.ui({ template: tainted }); // NOT OK
+    webix.ui({ template: function () { return tainted } }) // NOT OK
 });
