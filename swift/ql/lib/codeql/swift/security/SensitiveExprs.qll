@@ -57,19 +57,19 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
         // and telephone numbers
         "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no|phone)|" + "emergency.?contact|" +
         // Geographic location - where the user is (or was)
-        "latitude|longitude|nationality|" +
+        "l(atitude|ongitude)|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
         "(credit|debit|bank|visa).?(card|num|no|acc(ou?)nt)|acc(ou)?nt.?(no|num|credit)|" +
         "salary|billing|credit.?(rating|score)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-        "email|e_mail|" +
+        "e(mail|_mail)|" +
         // Health - medical conditions, insurance status, prescription records
-        "birth.?(date|day)|(date|day).?(of.?)?birth|" +
+        "birth.?da(te|y)|da(te|y).?(of.?)?birth|" +
         "medical|(health|care).?plan|healthkit|appointment|prescription|" +
         "blood.?(type|alcohol|glucose|pressure)|heart.?(rate|rhythm)|body.?(mass|fat)|" +
         "menstrua|pregnan|insulin|inhaler|" +
         // Relationships - work and family
-        "employer|employee|spouse|maiden.?name" +
+        "employ(er|ee)|spouse|maiden.?name" +
         // ---
         ").*"
   }
