@@ -1,0 +1,2 @@
+| AbstractClassImportTest1.qll:4:16:4:19 | Class Base | This abstract class imports its subclass $@ but doesn't import 4 other subclasses, such as $@. | AbstractClassImportTest2.qll:4:7:4:11 | Class Sub21 | Sub21 | AbstractClassImportTest3.qll:12:7:12:11 | Class Sub33 | Sub33 |
+| AbstractClassImportTest1.qll:4:16:4:19 | Class Base | This abstract class imports its subclass $@ but doesn't import 4 other subclasses, such as $@. | AbstractClassImportTest2.qll:8:7:8:11 | Class Sub22 | Sub22 | AbstractClassImportTest3.qll:12:7:12:11 | Class Sub33 | Sub33 |
