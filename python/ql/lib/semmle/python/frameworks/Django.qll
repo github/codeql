@@ -16,6 +16,7 @@ private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.UrlRedirectCustomizations
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -183,6 +184,10 @@ module Django {
                 .getMember("models")
                 .getMember(["ModelForm", "BaseModelForm"])
         }
+      }
+
+      private class MaDSubclass extends ModeledSubclass {
+        MaDSubclass() { this = ModelOutput::getATypeNode("django.forms.BaseForm~Subclass") }
       }
 
       /** Gets a reference to the `django.forms.forms.BaseForm` class or any subclass. */
