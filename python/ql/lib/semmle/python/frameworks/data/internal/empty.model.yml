@@ -25,6 +25,28 @@ extensions:
       - ["flask.MethodView~Subclass","flask_restplus","Member[resource].Member[MethodView]"]
       - ["flask.MethodView~Subclass","flask_restplus","Member[Resource]"]
 
+      - ["flask.MethodView~Subclass","flask_restx","Member[api].Member[SwaggerView]"]
+      - ["flask.MethodView~Subclass","flask_restx","Member[resource].Member[Resource]"]
+      - ["flask.MethodView~Subclass","flask_restx","Member[api].Member[Resource]"]
+      - ["flask.MethodView~Subclass","flask_restx","Member[resource].Member[MethodView]"]
+      - ["flask.MethodView~Subclass","flask_restx","Member[Resource]"]
+
+      - ["flask.MethodView~Subclass", "flask_restful", "Member[Resource]"]
+
+      - ["fastapi.APIRouter~Subclass","fastapi_utils","Member[inferring_router].Member[InferringRouter]"]
+      - ["fastapi.APIRouter~Subclass","fastapi_utils","Member[inferring_router].Member[APIRouter]"]
+      - ["fastapi.APIRouter~Subclass","fastapi_utils","Member[cbv].Member[APIRouter]"]
+
+      - ["django.forms.BaseForm~Subclass","haystack","Member[forms].Member[ModelSearchForm]"]
+      - ["django.forms.BaseForm~Subclass","haystack","Member[forms].Member[SearchForm]"]
+      - ["django.forms.BaseForm~Subclass","haystack","Member[forms].Member[FacetedSearchForm]"]
+      - ["django.forms.BaseForm~Subclass","haystack","Member[forms].Member[HighlightedSearchForm]"]
+      - ["django.forms.BaseForm~Subclass","haystack","Member[forms].Member[HighlightedModelSearchForm]"]
+      - ["django.forms.BaseForm~Subclass","haystack","Member[forms].Member[FacetedModelSearchForm]"]
+      - ["django.forms.BaseForm~Subclass","haystack","Member[views].Member[FacetedSearchForm]"]
+      - ["django.forms.BaseForm~Subclass","haystack","Member[views].Member[ModelSearchForm]"]
+
+
   - addsTo:
       pack: codeql/python-all
       extensible: typeVariableModel
