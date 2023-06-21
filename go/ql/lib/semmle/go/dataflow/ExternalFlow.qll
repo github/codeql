@@ -54,6 +54,18 @@
  *      return value. The return values are zero-indexed
  *    - "ReturnValue[n1..n2]": Similar to "ReturnValue[n]" but selects any
  *      return value in the given range. The range is inclusive at both ends.
+ *
+ *    For summaries, `input` and `output` may be suffixed by any number of the
+ *    following, separated by ".":
+ *    - "Field[pkg.className.fieldname]": Selects the contents of the field `f`
+ *      which satisfies `f.hasQualifiedName(pkg, className, fieldname)`.
+ *    - "SyntheticField[f]": Selects the contents of the synthetic field `f`.
+ *    - "ArrayElement": Selects an element in an array or slice.
+ *    - "Element": Selects an element in a collection.
+ *    - "MapKey": Selects a key in a map.
+ *    - "MapValue": Selects a value in a map.
+ *    - "Dereference": Selects the value referenced by a pointer.
+ *
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
@@ -68,6 +80,7 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A module importing the frameworks that provide external flow data,
@@ -188,12 +201,15 @@ module ModelValidation {
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(
@@ -231,7 +247,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelKind()
+        KindVal::getInvalidModelKind()
       ]
   }
 }
@@ -342,6 +358,8 @@ predicate parseContent(string component, DataFlow::Content content) {
   component = "MapKey" and content instanceof DataFlow::MapKeyContent
   or
   component = "MapValue" and content instanceof DataFlow::MapValueContent
+  or
+  component = "Dereference" and content instanceof DataFlow::PointerContent
 }
 
 cached

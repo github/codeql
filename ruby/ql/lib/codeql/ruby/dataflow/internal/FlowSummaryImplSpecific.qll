@@ -18,14 +18,14 @@ DataFlowCallable inject(SummarizedCallable c) { result.asLibraryCallable() = c }
 /** Gets the parameter position representing a callback itself, if any. */
 ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `self` for callbacks
 
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(ContentSet c) { any() }
+
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c, rk]

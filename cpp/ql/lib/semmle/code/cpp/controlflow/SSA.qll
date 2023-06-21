@@ -14,9 +14,6 @@ library class StandardSsa extends SsaHelper {
   StandardSsa() { this = 0 }
 }
 
-/** DEPRECATED: Alias for StandardSsa */
-deprecated class StandardSSA = StandardSsa;
-
 /**
  * A definition of one or more SSA variables, including phi node definitions.
  * An _SSA variable_, as defined in the literature, is effectively the pair of

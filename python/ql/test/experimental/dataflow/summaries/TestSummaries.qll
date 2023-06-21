@@ -60,7 +60,7 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
 }
 
 private class SummarizedCallableReversed extends SummarizedCallable {
-  SummarizedCallableReversed() { this = "reversed" }
+  SummarizedCallableReversed() { this = "list_reversed" }
 
   override DataFlow::CallCfgNode getACall() {
     result.getFunction().asCfgNode().(NameNode).getId() = this

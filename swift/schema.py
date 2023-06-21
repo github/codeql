@@ -399,7 +399,7 @@ class CapturedDecl(Decl):
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
-    closure_body: "ExplicitClosureExpr" | child
+    closure_body: "ClosureExpr" | child
 
 class CollectionExpr(Expr):
     pass
@@ -935,6 +935,7 @@ class StmtCondition(AstNode):
     elements: list[ConditionElement] | child
 
 class BraceStmt(Stmt):
+    variables: list[VarDecl] | synth | child | doc("variable declared in the scope of this brace statement")
     elements: list[AstNode] | child
 
 class BreakStmt(Stmt):

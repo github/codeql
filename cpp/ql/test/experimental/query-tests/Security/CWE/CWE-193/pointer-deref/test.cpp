@@ -347,7 +347,7 @@ void test24(unsigned size) {
   char *xs = new char[size];
   char *end = xs + size;
   if (xs < end) {
-    int val = *xs++; // GOOD [FALSE POSITIVE]
+    int val = *xs++; // GOOD
   }
 }
 
@@ -382,4 +382,54 @@ void test27(unsigned size, bool b) {
   }
 
   int val = *end; // BAD
+}
+
+void test28(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+    if (xs >= end)
+      return;
+    xs++;
+    if (xs >= end)
+      return;
+    xs[0] = 0;  // GOOD [FALSE POSITIVE]
+}
+
+struct test29_struct {
+  char* xs;
+};
+
+void test29(unsigned size) {
+  test29_struct val;
+  val.xs = new char[size];
+  size++;
+  val.xs = new char[size];
+  val.xs[size - 1] = 0; // GOOD [FALSE POSITIVE]
+}
+
+void test30(int *size)
+{
+  int new_size = 0, tmp_size = 0;
+
+  test30(&tmp_size);
+  if (tmp_size + 1 > new_size) {
+    new_size = tmp_size + 1;
+    char *xs = new char[new_size];
+    for (int i = 0; i < new_size; i++) {
+      xs[i] = 0;  // GOOD [FALSE POSITIVE]
+    }
+  }
+  *size = new_size;
+}
+
+void test31(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  unsigned dst_pos = src_pos;
+  if(dst_pos < size - 3) {
+    xs[dst_pos++] = 0; // GOOD [FALSE POSITIVE]
+  }
 }

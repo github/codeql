@@ -90,16 +90,11 @@ private module Cached {
     TPatternNode(CfgNode n, Pattern p) { hasPatternNode(n, p) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { modifiableParam(param) } or
-    TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-      FlowSummaryImpl::Private::summaryNodeRange(c, state)
-    } or
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TSourceParameterNode(ParamDecl param) or
     TKeyPathParameterNode(EntryNode entry) { entry.getScope() instanceof KeyPathExpr } or
     TKeyPathReturnNode(ExitNode exit) { exit.getScope() instanceof KeyPathExpr } or
     TKeyPathComponentNode(KeyPathComponent component) or
-    TSummaryParameterNode(FlowSummary::SummarizedCallable c, ParameterPosition pos) {
-      FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-    } or
     TExprPostUpdateNode(CfgNode n) {
       // Obviously, the base of setters needs a post-update node
       n = any(PropertySetterCfgNode setter).getBase()
@@ -223,7 +218,8 @@ private module Cached {
       nodeFrom.(KeyPathParameterNode).getComponent(0)
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), true)
   }
 
   /**
@@ -318,22 +314,19 @@ private module ParameterNodes {
     override ParamDecl getParameter() { result = param }
   }
 
-  class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
-    FlowSummary::SummarizedCallable sc;
-    ParameterPosition pos;
-
-    SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
-
-    override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
-      c.getUnderlyingCallable() = sc and
-      p = pos
+  class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
+    SummaryParameterNode() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
     }
 
-    override Location getLocationImpl() { result = sc.getLocation() }
+    private ParameterPosition getPosition() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+    }
 
-    override string toStringImpl() { result = "[summary param] " + pos + " in " + sc }
-
-    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
+      c.getUnderlyingCallable() = this.getSummarizedCallable() and
+      p = this.getPosition()
+    }
   }
 
   class KeyPathParameterNode extends ParameterNodeImpl, TKeyPathParameterNode {
@@ -362,17 +355,20 @@ private module ParameterNodes {
 import ParameterNodes
 
 /** A data-flow node used to model flow summaries. */
-class SummaryNode extends NodeImpl, TSummaryNode {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
-  private FlowSummaryImpl::Private::SummaryNodeState state;
+class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-  SummaryNode() { this = TSummaryNode(c, state) }
+  FlowSummary::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
 
-  override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSummarizedCallable() = this.getSummarizedCallable()
+  }
 
-  override UnknownLocation getLocationImpl() { any() }
+  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
 
-  override string toStringImpl() { result = "[summary] " + state + " in " + c }
+  override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
 
 /** A data-flow node that represents a call argument. */
@@ -448,11 +444,13 @@ private module ArgumentNodes {
     }
   }
 
-  class SummaryArgumentNode extends SummaryNode, ArgumentNode {
-    SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+  class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+    SummaryArgumentNode() {
+      FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+    }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
     }
   }
 
@@ -521,10 +519,10 @@ private module ReturnNodes {
     override string toStringImpl() { result = param.toString() + "[return]" }
   }
 
-  private class SummaryReturnNode extends SummaryNode, ReturnNode {
+  private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
     private ReturnKind rk;
 
-    SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+    SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
 
     override ReturnKind getKind() { result = rk }
   }
@@ -577,11 +575,11 @@ private module OutNodes {
     }
   }
 
-  class SummaryOutNode extends OutNode, SummaryNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+  class SummaryOutNode extends OutNode, FlowSummaryNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
+      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
     }
   }
 
@@ -642,7 +640,8 @@ private module OutNodes {
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
+    succ.(FlowSummaryNode).getSummaryNode())
 }
 
 predicate storeStep(Node node1, ContentSet c, Node node2) {
@@ -692,7 +691,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     init.isFailable()
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
@@ -793,6 +793,8 @@ class DataFlowType extends TDataFlowType {
   string toString() { result = "" }
 }
 
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(NodeImpl n) {
   any() // return the singleton DataFlowType until we support type pruning for Swift
@@ -828,11 +830,14 @@ private module PostUpdateNodes {
     override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
   }
 
-  class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
-    SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, _) }
+  class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl {
+    SummaryPostUpdateNode() {
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), _)
+    }
 
     override Node getPreUpdateNode() {
-      FlowSummaryImpl::Private::summaryPostUpdateNode(this, result)
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(),
+        result.(FlowSummaryNode).getSummaryNode())
     }
   }
 }
@@ -843,6 +848,12 @@ private import PostUpdateNodes
 class CastNode extends Node {
   CastNode() { none() }
 }
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { none() }
 
 class DataFlowExpr = Expr;
 
@@ -881,7 +892,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   receiver.asExpr() = call.asCall().getExpr().(ApplyExpr).getFunction()
   or
   kind = TLambdaCallKind() and
-  receiver = call.(SummaryCall).getReceiver()
+  receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver()
   or
   kind = TLambdaCallKind() and
   receiver.asExpr() = call.asKeyPath().getExpr().(KeyPathApplicationExpr).getKeyPath()

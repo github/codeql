@@ -76,9 +76,6 @@ abstract class TranslatedExpr extends TranslatedElement {
 
   final override Locatable getAst() { result = expr }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Declaration getFunction() { result = getEnclosingDeclaration(expr) }
 
   /**

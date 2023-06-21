@@ -205,6 +205,8 @@ predicate clearsContent(Node n, Content c) {
  */
 predicate expectsContent(Node n, ContentSet c) { none() }
 
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
 /** Gets the type of `n` used for type pruning. */
 Type getNodeType(Node n) {
   suppressUnusedNode(n) and
@@ -232,6 +234,12 @@ private predicate suppressUnusedNode(Node n) { any() }
 class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { none() }
 
 class DataFlowCallable = Function;
 

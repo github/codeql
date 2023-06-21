@@ -129,7 +129,8 @@ predicate jumpStep(Node n1, Node n2) {
     n2 = recvRead
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
+    n2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -153,7 +154,8 @@ predicate storeStep(Node node1, Content c, Node node2) {
   node1 = node2.(AddressOperationNode).getOperand() and
   c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
   or
   containerStoreStep(node1, node2, c)
 }
@@ -173,7 +175,8 @@ predicate readStep(Node node1, Content c, Node node2) {
     c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
   or
   containerReadStep(node1, node2, c)
 }
@@ -197,8 +200,10 @@ predicate clearsContent(Node n, Content c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
-  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
+
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
@@ -222,6 +227,12 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
 class CastNode extends ExprNode {
   override ConversionExpr expr;
 }
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) { none() }
 
 class DataFlowExpr = Expr;
 
@@ -378,7 +389,7 @@ Node getArgument(CallNode c, int i) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof SummaryNode or n instanceof SummarizedParameterNode }
+predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 
 class LambdaCallKind = Unit;
 
