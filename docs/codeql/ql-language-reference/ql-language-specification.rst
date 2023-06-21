@@ -1236,15 +1236,15 @@ The type environment for the arguments is the same as for the call.
 
 A valid call with results *resolves* to a set of predicates. The ways a call can resolve are as follows:
 
--  If the call has no receiver and the predicate name is a simple identifier, then the predicate is resolved by looking up its name and arity in the visible member-predicate environment of the enclosing class.
+-  If the call has no receiver and the predicate reference is a simple identifier, then the call is resolved by looking up the predicate reference and arity in the visible predicate environment of the enclosing class.
 
--  If the call has no receiver and the predicate name is a simple identifier, then the predicate is resolved by looking up its name and arity in the visible predicate environment of the enclosing module.
+-  If the call has no receiver and the predicate reference is a simple identifier, then the call is resolved by looking up the predicate reference and arity in the visible predicate environment of the enclosing module.
 
--  If the call has no receiver and the predicate name is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__"). The identifier is then resolved in the exported predicate environment of the qualifier module.
+-  If the call has no receiver and the predicate reference is a selection identifier, then the qualifier is resolved as a module (see "`Module resolution <#module-resolution>`__") and the call is resolved by looking up the identifier in the exported predicate environment of the qualifier module.
 
--  If the type of the receiver is the same as the enclosing class, the predicate is resolved by looking up its name and arity in the visible predicate environment of the class.
+-  If the the call has a receiver and the type of the receiver is the same as the enclosing class, the call is resolved by looking up the predicate name and arity in the visible predicate environment of the enclosing class.
 
--  If the type of the receiver is not the same as the enclosing class, the predicate is resolved by looking up its name and arity in the exported predicate environment of the class or domain type.
+-  If the the call has a receiver and the type of the receiver is not the same as the enclosing class, the call is resolved by looking up the predicate name and arity in the exported predicate environment of the type of the receiver.
 
 If all the predicates that the call resolves to are declared on a primitive type, we then restrict to the set of predicates where each argument of the call is a subtype of the corresponding predicate argument type.
 Then we find all predicates ``p`` from this new set such that there is not another predicate ``p'`` where each argument of ``p'`` is a subtype of the corresponding argument in ``p``. We then say the call resolves to this set instead.
