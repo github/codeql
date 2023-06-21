@@ -1219,7 +1219,6 @@ ktSyntheticBody(
   int kind: int ref
   // 1: ENUM_VALUES
   // 2: ENUM_VALUEOF
-  // 3: ENUM_ENTRIES
 )
 
 ktLocalFunction(
