@@ -23,9 +23,9 @@ module Public {
    * content type, or a return kind.
    */
   class SummaryComponent extends TSummaryComponent {
-    /** Gets a textual representation of this component used for flow summaries. */
-    string getAccessStep() {
-      result = getAccessStepSpecific(this)
+    /** Gets a textual representation of this component used for MaD models. */
+    string getMadRepresentation() {
+      result = getMadRepresentationSpecific(this)
       or
       exists(ArgumentPosition pos |
         this = TParameterSummaryComponent(pos) and
@@ -46,7 +46,7 @@ module Public {
     }
 
     /** Gets a textual representation of this summary component. */
-    string toString() { result = this.getAccessStep() }
+    string toString() { result = this.getMadRepresentation() }
   }
 
   /** Provides predicates for constructing summary components. */
@@ -127,21 +127,21 @@ module Public {
     }
 
     /** Gets a textual representation of this stack used for MaD models. */
-    string getAccessPath() {
+    string getMadRepresentation() {
       exists(SummaryComponent head, SummaryComponentStack tail |
         head = this.head() and
         tail = this.tail() and
-        result = tail.getAccessPath() + "." + head.getAccessStep()
+        result = tail.getMadRepresentation() + "." + head.getMadRepresentation()
       )
       or
       exists(SummaryComponent c |
         this = TSingletonSummaryComponentStack(c) and
-        result = c.getAccessStep()
+        result = c.getMadRepresentation()
       )
     }
 
     /** Gets a textual representation of this stack. */
-    string toString() { result = this.getAccessPath() }
+    string toString() { result = this.getMadRepresentation() }
   }
 
   /** Provides predicates for constructing stacks of summary components. */
@@ -1350,8 +1350,8 @@ module Private {
         c.relevantSummary(input, output, preservesValue) and
         csv =
           c.getCallableCsv() // Callable information
-            + input.getAccessPath() + ";" // input
-            + output.getAccessPath() + ";" // output
+            + input.getMadRepresentation() + ";" // input
+            + output.getMadRepresentation() + ";" // output
             + renderKind(preservesValue) + ";" // kind
             + renderProvenance(c) // provenance
       )

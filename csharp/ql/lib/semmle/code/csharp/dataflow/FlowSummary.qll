@@ -111,11 +111,11 @@ module SummaryComponentStack {
   }
 
   /**
-   * DEPRECATED: Use the member predicate `getAccessPath` instead.
+   * DEPRECATED: Use the member predicate `getMadRepresentation` instead.
    *
    * Gets a textual representation of this stack used for flow summaries.
    */
-  deprecated string getComponentStack(SummaryComponentStack s) { result = s.getAccessPath() }
+  deprecated string getComponentStack(SummaryComponentStack s) { result = s.getMadRepresentation() }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
