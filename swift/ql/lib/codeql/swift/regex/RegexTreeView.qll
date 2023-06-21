@@ -1189,7 +1189,7 @@ private module Impl implements RegexTreeViewSig {
    * Holds if the regular expression should not be considered.
    */
   predicate isExcluded(RegExpParent parent) {
-    none() //parent.(RegExpTerm).getRegExp().(Ast::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
+    none()
   }
 
   /**
