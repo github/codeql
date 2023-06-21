@@ -91,6 +91,7 @@ private string regexpProbablySafe() {
 private class SensitiveVarDecl extends VarDecl {
   SensitiveDataType sensitiveType;
 
+  cached
   SensitiveVarDecl() { this.getName().regexpMatch(sensitiveType.getRegexp()) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
@@ -106,6 +107,7 @@ private class SensitiveFunction extends Function {
   SensitiveDataType sensitiveType;
   string name; // name of the function, not including the argument list.
 
+  cached
   SensitiveFunction() {
     name = this.getShortName() and
     name.regexpMatch(sensitiveType.getRegexp())
@@ -123,6 +125,7 @@ private class SensitiveFunction extends Function {
 private class SensitiveArgument extends Argument {
   SensitiveDataType sensitiveType;
 
+  cached
   SensitiveArgument() { this.getLabel().regexpMatch(sensitiveType.getRegexp()) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
@@ -174,6 +177,7 @@ class SensitiveExpr extends Expr {
  * A function that is likely used to encrypt or hash data.
  */
 private class EncryptionFunction extends Function {
+  cached
   EncryptionFunction() { this.getName().regexpMatch("(?is).*(crypt|hash|encode|protect).*") }
 }
 
