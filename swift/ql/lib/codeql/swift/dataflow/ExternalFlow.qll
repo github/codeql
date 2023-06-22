@@ -74,6 +74,7 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 private import FlowSummary as FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A unit class for adding additional source model rows.
@@ -263,13 +264,15 @@ module CsvValidation {
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSubtype() {
     exists(string pred, string row |
@@ -335,7 +338,7 @@ module CsvValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
+        getInvalidModelSubtype(), getInvalidModelColumnCount(), KindVal::getInvalidModelKind()
       ]
   }
 }

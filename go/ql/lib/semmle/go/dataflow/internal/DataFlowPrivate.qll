@@ -232,7 +232,11 @@ class CastNode extends ExprNode {
  * Holds if `n` should never be skipped over in the `PathGraph` and in path
  * explanations.
  */
-predicate neverSkipInPathGraph(Node n) { none() }
+predicate neverSkipInPathGraph(Node n) {
+  exists(DataFlow::FunctionModel fm | fm.getAnInputNode(_) = n or fm.getAnOutputNode(_) = n)
+  or
+  exists(TaintTracking::FunctionModel fm | fm.getAnInputNode(_) = n or fm.getAnOutputNode(_) = n)
+}
 
 class DataFlowExpr = Expr;
 

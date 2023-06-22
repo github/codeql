@@ -653,6 +653,17 @@ module ModelOutput {
 
   import Cached
   import Specific::ModelOutputSpecific
+  private import codeql.mad.ModelValidation as SharedModelVal
+
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, kind) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, kind) }
+  }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   /**
    * Gets an error message relating to an invalid CSV row in a model.
@@ -698,5 +709,8 @@ module ModelOutput {
       not isValidNoArgumentTokenInIdentifyingAccessPath(token.getName()) and
       result = "Invalid token '" + token + "' is missing its arguments, in access path: " + path
     )
+    or
+    // Check for invalid model kinds
+    result = KindVal::getInvalidModelKind()
   }
 }
