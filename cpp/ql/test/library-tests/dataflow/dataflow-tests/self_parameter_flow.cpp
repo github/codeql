@@ -10,5 +10,5 @@ void callincr(unsigned char *s) // $ ast-def=s
 
 void test(unsigned char *s) // $ ast-def=s
 {
-  callincr(s); // $ MISSING: flow
+  callincr(s); // $ flow
 }
