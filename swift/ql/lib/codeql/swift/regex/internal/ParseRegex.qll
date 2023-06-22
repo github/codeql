@@ -121,7 +121,7 @@ abstract class RegExp extends Expr {
     )
   }
 
-  /** Whether there is a character class, between start (inclusive) and end (exclusive) */
+  /** Whether there is a character class, between start (inclusive) and end (exclusive). */
   predicate charSet(int start, int end) {
     exists(int innerStart, int innerEnd |
       this.charSetStart(start, innerStart) and
