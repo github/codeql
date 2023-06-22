@@ -46,12 +46,12 @@ private class MvcActionMethod extends ActionMethod {
 /** An action method on a subclass of `System.Web.UI.Page`. */
 private class WebFormActionMethod extends ActionMethod {
   WebFormActionMethod() {
-    this.getDeclaringType().getBaseClass*() instanceof SystemWebUIPageClass and
+    this.getDeclaringType().getBaseClass+() instanceof SystemWebUIPageClass and
     this.getAParameter().getType().getName().matches("%EventArgs")
   }
 
   override Callable getAnAuthorizingCallable() {
-    result = this
+    result = super.getAnAuthorizingCallable()
     or
     result.getDeclaringType() = this.getDeclaringType() and
     result.getName() = "Page_Load"
