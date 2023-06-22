@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision high
- * @id rb/bad-tag-filter
+ * @id swift/bad-tag-filter
  * @tags correctness
  *       security
  *       external/cwe/cwe-116
@@ -14,9 +14,12 @@
  *       external/cwe/cwe-186
  */
 
-private import codeql.ruby.regexp.RegExpTreeView::RegexTreeView as TreeView
+import codeql.swift.regex.Regex
+private import codeql.swift.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.BadTagFilterQuery::Make<TreeView>
 
 from HtmlMatchingRegExp regexp, string msg
-where msg = min(string m | isBadRegexpFilter(regexp, m) | m order by m.length(), m) // there might be multiple, we arbitrarily pick the shortest one
+where
+  // there might be multiple messages, we arbitrarily pick the shortest one
+  msg = min(string m | isBadRegexpFilter(regexp, m) | m order by m.length(), m)
 select regexp, msg
