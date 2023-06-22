@@ -120,7 +120,14 @@ ensure_tainted(
     tainted_list_implicit[0]  # $ tainted
     )
 
+# Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
+
+# so no data-flow
+SINK_F(json_loads(SOURCE))
+SINK_F(json_loads(SOURCE)[0])
+
+# but has taint-flow
 tainted_resultlist = json_loads(TAINTED_STRING)
 ensure_tainted(
     tainted_resultlist,  # $ tainted
