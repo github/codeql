@@ -67,6 +67,8 @@ postWithInFlow
 | ref.cpp:109:9:109:11 | val [post update] | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:113:11:113:13 | val [post update] | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:115:11:115:13 | val [post update] | PostUpdateNode should not be the target of local flow. |
+| self_parameter_flow.cpp:3:4:3:5 | ps [inner post update] | PostUpdateNode should not be the target of local flow. |
+| self_parameter_flow.cpp:8:9:8:9 | s [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:91:3:91:9 | source1 [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:115:3:115:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:115:4:115:6 | out [inner post update] | PostUpdateNode should not be the target of local flow. |
