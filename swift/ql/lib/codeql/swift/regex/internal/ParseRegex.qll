@@ -855,7 +855,7 @@ abstract class RegExp extends Expr {
 
   /**
    * Holds if a qualified part is found between `start` and `partEnd` and the qualifier is
-   * found between `part_end` and `end`.
+   * found between `partEnd` and `end`.
    *
    * `maybeEmpty` is true if the part is optional.
    * `mayRepeatForever` is true if the part may be repeated unboundedly.
