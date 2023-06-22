@@ -1,6 +1,11 @@
 class HelloWorld
   def call(env)
-    [200, {'Content-Type' => 'text/plain'}, ['Hello World']]
+    status = 200
+    if something_goes_wrong(env)
+      status = 500
+    end
+    headers = {'Content-Type' => 'text/plain'}
+    [status, headers, ['Hello World']]
   end
 end
 
@@ -11,6 +16,7 @@ class Proxy
 
   def call(the_env)
     status, headers, body = @app.call(the_env)
+    headers.content_type = "text/html"
     [status, headers, body]
   end
 end
@@ -27,6 +33,14 @@ class Logger
     header = Utils::HeaderHash.new(header)
     body = BodyProxy.new(body) { log(env, status, header, began_at) }
     [status, header, body]
+  end
+end
+
+class Redirector
+  def call(env)
+    status = 302
+    headers = {'location' => '/foo.html'}
+    [status, headers, ['this is a redirect']]
   end
 end
 
