@@ -195,8 +195,8 @@ abstract class RegExp extends Ast::StringlikeLiteral {
 
   /**
    * Holds if the character set starting at `charset_start` contains a character range
-   * with lower bound found between `start` and `lower_end`
-   * and upper bound found between `upper_start` and `end`.
+   * with lower bound found between `start` and `lowerEnd`
+   * and upper bound found between `upperStart` and `end`.
    */
   predicate charRange(int charsetStart, int start, int lowerEnd, int upperStart, int end) {
     exists(int index |
