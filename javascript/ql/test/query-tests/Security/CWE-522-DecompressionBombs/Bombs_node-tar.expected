@@ -1,0 +1,150 @@
+nodes
+| main-node-tar.js:14:22:14:24 | req |
+| main-node-tar.js:14:22:14:24 | req |
+| main-node-tar.js:15:13:15:15 | req |
+| main-node-tar.js:15:13:15:21 | req.files |
+| main-node-tar.js:15:13:15:21 | req.files |
+| main-node-tar.js:15:13:15:33 | req.fil ... ombFile |
+| main-node-tar.js:19:18:19:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile |
+| main-node-tar.js:21:37:21:43 | tarFile |
+| main-node-tar.js:21:37:21:43 | tarFile |
+| main-node-tar.js:21:37:21:48 | tarFile.data |
+| main-node-tar.js:21:37:21:48 | tarFile.data |
+| main-node-tar.js:24:9:24:15 | tar.x() |
+| main-node-tar.js:24:9:24:15 | tar.x() |
+| main-node-tar.js:24:9:24:15 | tar.x() |
+| main-node-tar.js:29:25:29:31 | tarFile |
+| main-node-tar.js:29:25:29:31 | tarFile |
+| main-node-tar.js:29:25:29:36 | tarFile.name |
+| main-node-tar.js:29:25:29:36 | tarFile.name |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:45:25:45:31 | tarFile |
+| main-node-tar.js:45:25:45:31 | tarFile |
+| main-node-tar.js:45:25:45:36 | tarFile.name |
+| main-node-tar.js:45:25:45:36 | tarFile.name |
+| main-node-tar.js:46:9:46:20 | decompressor |
+| main-node-tar.js:46:9:46:20 | decompressor |
+| main-node-tar.js:46:9:46:20 | decompressor |
+| main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:58:12:58:15 | file |
+| main-node-tar.js:58:12:58:15 | file |
+| main-node-tar.js:58:12:58:15 | file |
+| main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:59:18:59:21 | file |
+| main-node-tar.js:59:18:59:21 | file |
+| main-node-tar.js:59:18:59:21 | file |
+| main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:59:24:59:35 | tarFile.name |
+| main-node-tar.js:59:24:59:35 | tarFile.name |
+| main-node-tar.js:59:24:59:35 | tarFile.name |
+| main-node-tar.js:59:24:59:35 | tarFile.name |
+edges
+| main-node-tar.js:14:22:14:24 | req | main-node-tar.js:15:13:15:15 | req |
+| main-node-tar.js:14:22:14:24 | req | main-node-tar.js:15:13:15:15 | req |
+| main-node-tar.js:15:13:15:15 | req | main-node-tar.js:15:13:15:21 | req.files |
+| main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:15:13:15:33 | req.fil ... ombFile |
+| main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:15:13:15:33 | req.fil ... ombFile |
+| main-node-tar.js:15:13:15:33 | req.fil ... ombFile | main-node-tar.js:19:18:19:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:21:37:21:43 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:21:37:21:43 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:21:37:21:43 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:29:25:29:31 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:29:25:29:31 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:29:25:29:31 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:45:25:45:31 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:45:25:45:31 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:45:25:45:31 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:58:18:58:24 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:59:24:59:30 | tarFile |
+| main-node-tar.js:21:37:21:43 | tarFile | main-node-tar.js:21:37:21:48 | tarFile.data |
+| main-node-tar.js:21:37:21:43 | tarFile | main-node-tar.js:21:37:21:48 | tarFile.data |
+| main-node-tar.js:21:37:21:48 | tarFile.data | main-node-tar.js:24:9:24:15 | tar.x() |
+| main-node-tar.js:21:37:21:48 | tarFile.data | main-node-tar.js:24:9:24:15 | tar.x() |
+| main-node-tar.js:21:37:21:48 | tarFile.data | main-node-tar.js:24:9:24:15 | tar.x() |
+| main-node-tar.js:21:37:21:48 | tarFile.data | main-node-tar.js:24:9:24:15 | tar.x() |
+| main-node-tar.js:29:25:29:31 | tarFile | main-node-tar.js:29:25:29:36 | tarFile.name |
+| main-node-tar.js:29:25:29:31 | tarFile | main-node-tar.js:29:25:29:36 | tarFile.name |
+| main-node-tar.js:29:25:29:36 | tarFile.name | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:29:25:29:36 | tarFile.name | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:29:25:29:36 | tarFile.name | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:29:25:29:36 | tarFile.name | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) |
+| main-node-tar.js:45:25:45:31 | tarFile | main-node-tar.js:45:25:45:36 | tarFile.name |
+| main-node-tar.js:45:25:45:31 | tarFile | main-node-tar.js:45:25:45:36 | tarFile.name |
+| main-node-tar.js:45:25:45:36 | tarFile.name | main-node-tar.js:46:9:46:20 | decompressor |
+| main-node-tar.js:45:25:45:36 | tarFile.name | main-node-tar.js:46:9:46:20 | decompressor |
+| main-node-tar.js:45:25:45:36 | tarFile.name | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:45:25:45:36 | tarFile.name | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:45:25:45:36 | tarFile.name | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:45:25:45:36 | tarFile.name | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:46:9:46:20 | decompressor | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:46:9:46:20 | decompressor | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:46:9:46:20 | decompressor | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:46:9:46:20 | decompressor | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:46:9:46:20 | decompressor | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:46:9:46:20 | decompressor | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) |
+| main-node-tar.js:58:12:58:15 | file | main-node-tar.js:58:12:58:15 | file |
+| main-node-tar.js:58:18:58:24 | tarFile | main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:58:18:58:24 | tarFile | main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:58:18:58:24 | tarFile | main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:58:18:58:24 | tarFile | main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:58:18:58:29 | tarFile.name | main-node-tar.js:58:18:58:29 | tarFile.name |
+| main-node-tar.js:59:18:59:21 | file | main-node-tar.js:59:18:59:21 | file |
+| main-node-tar.js:59:24:59:30 | tarFile | main-node-tar.js:59:24:59:35 | tarFile.name |
+| main-node-tar.js:59:24:59:30 | tarFile | main-node-tar.js:59:24:59:35 | tarFile.name |
+| main-node-tar.js:59:24:59:30 | tarFile | main-node-tar.js:59:24:59:35 | tarFile.name |
+| main-node-tar.js:59:24:59:30 | tarFile | main-node-tar.js:59:24:59:35 | tarFile.name |
+| main-node-tar.js:59:24:59:35 | tarFile.name | main-node-tar.js:59:24:59:35 | tarFile.name |
+#select
+| main-node-tar.js:24:9:24:15 | tar.x() | main-node-tar.js:14:22:14:24 | req | main-node-tar.js:24:9:24:15 | tar.x() | This file extraction depends on a $@. | main-node-tar.js:14:22:14:24 | req | potentially untrusted source |
+| main-node-tar.js:24:9:24:15 | tar.x() | main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:24:9:24:15 | tar.x() | This file extraction depends on a $@. | main-node-tar.js:15:13:15:21 | req.files | potentially untrusted source |
+| main-node-tar.js:24:9:24:15 | tar.x() | main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:24:9:24:15 | tar.x() | This file extraction depends on a $@. | main-node-tar.js:19:18:19:24 | tarFile | potentially untrusted source |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | main-node-tar.js:14:22:14:24 | req | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | This file extraction depends on a $@. | main-node-tar.js:14:22:14:24 | req | potentially untrusted source |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | This file extraction depends on a $@. | main-node-tar.js:15:13:15:21 | req.files | potentially untrusted source |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | This file extraction depends on a $@. | main-node-tar.js:19:18:19:24 | tarFile | potentially untrusted source |
+| main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | This file extraction depends on a $@. | main-node-tar.js:30:9:33:10 | tar.x({ ...      }) | potentially untrusted source |
+| main-node-tar.js:48:9:50:10 | tar.x({ ...      }) | main-node-tar.js:14:22:14:24 | req | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) | This file extraction depends on a $@. | main-node-tar.js:14:22:14:24 | req | potentially untrusted source |
+| main-node-tar.js:48:9:50:10 | tar.x({ ...      }) | main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) | This file extraction depends on a $@. | main-node-tar.js:15:13:15:21 | req.files | potentially untrusted source |
+| main-node-tar.js:48:9:50:10 | tar.x({ ...      }) | main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) | This file extraction depends on a $@. | main-node-tar.js:19:18:19:24 | tarFile | potentially untrusted source |
+| main-node-tar.js:48:9:50:10 | tar.x({ ...      }) | main-node-tar.js:46:9:46:20 | decompressor | main-node-tar.js:48:9:50:10 | tar.x({ ...      }) | This file extraction depends on a $@. | main-node-tar.js:46:9:46:20 | decompressor | potentially untrusted source |
+| main-node-tar.js:58:12:58:15 | file | main-node-tar.js:58:12:58:15 | file | main-node-tar.js:58:12:58:15 | file | This file extraction depends on a $@. | main-node-tar.js:58:12:58:15 | file | potentially untrusted source |
+| main-node-tar.js:58:18:58:24 | tarFile | main-node-tar.js:14:22:14:24 | req | main-node-tar.js:58:18:58:24 | tarFile | This file extraction depends on a $@. | main-node-tar.js:14:22:14:24 | req | potentially untrusted source |
+| main-node-tar.js:58:18:58:24 | tarFile | main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:58:18:58:24 | tarFile | This file extraction depends on a $@. | main-node-tar.js:15:13:15:21 | req.files | potentially untrusted source |
+| main-node-tar.js:58:18:58:24 | tarFile | main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:58:18:58:24 | tarFile | This file extraction depends on a $@. | main-node-tar.js:19:18:19:24 | tarFile | potentially untrusted source |
+| main-node-tar.js:58:18:58:29 | tarFile.name | main-node-tar.js:14:22:14:24 | req | main-node-tar.js:58:18:58:29 | tarFile.name | This file extraction depends on a $@. | main-node-tar.js:14:22:14:24 | req | potentially untrusted source |
+| main-node-tar.js:58:18:58:29 | tarFile.name | main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:58:18:58:29 | tarFile.name | This file extraction depends on a $@. | main-node-tar.js:15:13:15:21 | req.files | potentially untrusted source |
+| main-node-tar.js:58:18:58:29 | tarFile.name | main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:58:18:58:29 | tarFile.name | This file extraction depends on a $@. | main-node-tar.js:19:18:19:24 | tarFile | potentially untrusted source |
+| main-node-tar.js:58:18:58:29 | tarFile.name | main-node-tar.js:58:18:58:29 | tarFile.name | main-node-tar.js:58:18:58:29 | tarFile.name | This file extraction depends on a $@. | main-node-tar.js:58:18:58:29 | tarFile.name | potentially untrusted source |
+| main-node-tar.js:59:18:59:21 | file | main-node-tar.js:59:18:59:21 | file | main-node-tar.js:59:18:59:21 | file | This file extraction depends on a $@. | main-node-tar.js:59:18:59:21 | file | potentially untrusted source |
+| main-node-tar.js:59:24:59:30 | tarFile | main-node-tar.js:14:22:14:24 | req | main-node-tar.js:59:24:59:30 | tarFile | This file extraction depends on a $@. | main-node-tar.js:14:22:14:24 | req | potentially untrusted source |
+| main-node-tar.js:59:24:59:30 | tarFile | main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:59:24:59:30 | tarFile | This file extraction depends on a $@. | main-node-tar.js:15:13:15:21 | req.files | potentially untrusted source |
+| main-node-tar.js:59:24:59:30 | tarFile | main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:59:24:59:30 | tarFile | This file extraction depends on a $@. | main-node-tar.js:19:18:19:24 | tarFile | potentially untrusted source |
+| main-node-tar.js:59:24:59:35 | tarFile.name | main-node-tar.js:14:22:14:24 | req | main-node-tar.js:59:24:59:35 | tarFile.name | This file extraction depends on a $@. | main-node-tar.js:14:22:14:24 | req | potentially untrusted source |
+| main-node-tar.js:59:24:59:35 | tarFile.name | main-node-tar.js:15:13:15:21 | req.files | main-node-tar.js:59:24:59:35 | tarFile.name | This file extraction depends on a $@. | main-node-tar.js:15:13:15:21 | req.files | potentially untrusted source |
+| main-node-tar.js:59:24:59:35 | tarFile.name | main-node-tar.js:19:18:19:24 | tarFile | main-node-tar.js:59:24:59:35 | tarFile.name | This file extraction depends on a $@. | main-node-tar.js:19:18:19:24 | tarFile | potentially untrusted source |
+| main-node-tar.js:59:24:59:35 | tarFile.name | main-node-tar.js:59:24:59:35 | tarFile.name | main-node-tar.js:59:24:59:35 | tarFile.name | This file extraction depends on a $@. | main-node-tar.js:59:24:59:35 | tarFile.name | potentially untrusted source |
