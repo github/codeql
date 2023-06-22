@@ -66,3 +66,21 @@ SINK(tainted_list[0])  # $ flow="SOURCE, l:-1 -> tainted_list[0]"
 from json import loads as json_loads
 tainted_resultlist = json_loads(SOURCE)
 SINK(tainted_resultlist[0])  # $ flow="SOURCE, l:-1 -> tainted_resultlist[0]"
+
+
+# Class methods are not handled right now
+
+class MyClass:
+    @staticmethod
+    def foo(x):
+        return x
+
+    def bar(self, x):
+        return x
+
+through_staticmethod = apply_lambda(MyClass.foo, SOURCE)
+through_staticmethod  # $ MISSING: flow
+
+mc = MyClass()
+through_method = apply_lambda(mc.bar, SOURCE)
+through_method  # $ MISSING: flow

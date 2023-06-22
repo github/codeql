@@ -3,6 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["java.io", "File", False, "File", "(File,String)", "", "Argument[1]", "path-injection", "manual"] # old PathCreation
+      - ["java.io", "File", False, "File", "(String)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.io", "File", False, "File", "(String,String)", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
+      - ["java.io", "File", False, "File", "(URI)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
       - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "path-injection", "ai-manual"]
       - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
@@ -11,6 +15,7 @@ extensions:
       - ["java.io", "FileOutputStream", False, "write", "", "", "Argument[0]", "file-content-store", "manual"]
       - ["java.io", "FileReader", True, "FileReader", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.io", "FileReader", True, "FileReader", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.io", "FileReader", True, "FileReader", "(String,Charset)", "", "Argument[0]", "path-injection", "manual"]
       - ["java.io", "FileSystem", True, "createDirectory", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.io", "FileWriter", False, "FileWriter", "", "", "Argument[0]", "path-injection", "manual"]
       - ["java.io", "PrintStream", False, "PrintStream", "(File)", "", "Argument[0]", "path-injection", "manual"]

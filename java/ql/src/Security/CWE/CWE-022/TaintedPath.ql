@@ -14,6 +14,7 @@
  */
 
 import java
+import semmle.code.java.security.PathCreation
 import semmle.code.java.security.TaintedPathQuery
 import TaintedPathFlow::PathGraph
 

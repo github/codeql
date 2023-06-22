@@ -18,9 +18,6 @@ class DomGlobalVariable extends GlobalVariable {
   }
 }
 
-/** DEPRECATED: Alias for DomGlobalVariable */
-deprecated class DOMGlobalVariable = DomGlobalVariable;
-
 /**
  * DEPRECATED: Use `isDomNode` instead.
  * Holds if `e` could hold a value that comes from the DOM.
@@ -44,27 +41,6 @@ predicate isLocationNode(DataFlow::Node e) {
   or
   e = DataFlow::globalVarRef("location")
 }
-
-/**
- * DEPRECATED: Use DOM::documentRef() instead.
- * Gets a reference to the 'document' object.
- */
-deprecated DataFlow::SourceNode document() { result = DOM::documentRef() }
-
-/**
- * DEPRECATED: Use DOM::documentRef() instead.
- * Holds if `e` could refer to the `document` object.
- */
-deprecated predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
-
-/**
- * DEPRECATED: Use DOM::locationSource() instead.
- * Holds if `e` could refer to the document URL.
- */
-deprecated predicate isDocumentUrl(Expr e) { e.flow() = DOM::locationSource() }
-
-/** DEPRECATED: Alias for isDocumentUrl */
-deprecated predicate isDocumentURL = isDocumentUrl/1;
 
 /**
  * DEPRECATED. In most cases, a sanitizer based on this predicate can be removed, as
@@ -178,9 +154,6 @@ deprecated class DomPropWriteNode extends Assignment {
    * Holds if the assigned value is interpreted as HTML.
    */
   predicate interpretsValueAsHtml() { node.interpretsValueAsHtml() }
-
-  /** DEPRECATED: Alias for interpretsValueAsHtml */
-  deprecated predicate interpretsValueAsHTML() { this.interpretsValueAsHtml() }
 
   /**
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.

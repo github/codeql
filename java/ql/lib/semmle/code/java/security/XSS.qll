@@ -6,6 +6,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+private import semmle.code.java.frameworks.hudson.Hudson
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow

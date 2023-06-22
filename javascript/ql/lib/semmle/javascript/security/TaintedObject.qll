@@ -120,6 +120,22 @@ module TaintedObject {
     override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
+  /** A guard that checks whether an input a valid string identifier using `mongoose.Types.ObjectId.isValid` */
+  class ObjectIdGuard extends SanitizerGuard instanceof API::CallNode {
+    ObjectIdGuard() {
+      this =
+        API::moduleImport("mongoose")
+            .getMember("Types")
+            .getMember("ObjectId")
+            .getMember("isValid")
+            .getACall()
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e, FlowLabel lbl) {
+      e = super.getAnArgument().asExpr() and outcome = true and lbl = label()
+    }
+  }
+
   /**
    * A sanitizer guard that validates an input against a JSON schema.
    */

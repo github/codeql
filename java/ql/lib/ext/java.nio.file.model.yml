@@ -18,6 +18,7 @@ extensions:
       - ["java.nio.file", "Files", False, "delete", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "Files", False, "getFileStore", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"] # the FileStore class is unlikely to be used for later sanitization
       - ["java.nio.file", "Files", False, "lines", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "lines", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "move", "", "", "Argument[1]", "path-injection", "manual"]
@@ -26,6 +27,7 @@ extensions:
       - ["java.nio.file", "Files", False, "newBufferedWriter", "", "", "Argument[0]", "path-injection", "manual"]
       - ["java.nio.file", "Files", False, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "newOutputStream", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "probeContentType", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"] # accesses the file based on user input, but only reads its content type from it
       - ["java.nio.file", "Files", False, "readAllBytes", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "readAllLines", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "readAllLines", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
@@ -40,12 +42,23 @@ extensions:
       - ["java.nio.file", "Files", True, "delete", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", True, "newOutputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "FileSystem", False, "getPath", "", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Path", False, "of", "(String,String[])", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Path", False, "of", "(URI)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Path", False, "resolve", "(String)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Path", False, "resolveSibling", "(String)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Paths", False, "get", "(String,String[])", "", "Argument[0..1]", "path-injection", "manual"] # old PathCreation
+      - ["java.nio.file", "Paths", False, "get", "(URI)", "", "Argument[0]", "path-injection", "manual"] # old PathCreation
       - ["java.nio.file", "SecureDirectoryStream", True, "deleteDirectory", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "SecureDirectoryStream", True, "deleteFile", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.nio.file", "Files", False, "find", "(Path,int,BiPredicate,FileVisitOption[])", "", "Argument[0]", "ReturnValue.Element", "taint", "ai-manual"]
+      - ["java.nio.file", "Files", False, "find", "(Path,int,BiPredicate,FileVisitOption[])", "", "Argument[2]", "ReturnValue.Element", "taint", "ai-manual"]
+      - ["java.nio.file", "Files", False, "list", "(Path)", "", "Argument[0]", "ReturnValue.Element", "taint", "ai-manual"]
+      - ["java.nio.file", "Files", False, "readSymbolicLink", "(Path)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"] # this can be used to enumerate a file system
       - ["java.nio.file", "Files", True, "newBufferedReader", "(Path,Charset)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Files", True, "newBufferedReader", "(Path)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Files", True, "newByteChannel", "(Path,OpenOption[])", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]

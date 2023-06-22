@@ -2797,43 +2797,43 @@
 | UseUseExplosion.rb:21:3686:21:3696 | else ... | UseUseExplosion.rb:21:9:21:3700 | if ... |
 | UseUseExplosion.rb:21:3691:21:3696 | call to use | UseUseExplosion.rb:21:3686:21:3696 | else ... |
 | UseUseExplosion.rb:24:5:25:7 | use | UseUseExplosion.rb:1:1:26:3 | C |
+| file://:0:0:0:0 | [summary param] position 0 in & | file://:0:0:0:0 | [summary] read: argument position 0.any element in & |
+| file://:0:0:0:0 | [summary param] position 0 in + | file://:0:0:0:0 | [summary] read: argument position 0.any element in + |
+| file://:0:0:0:0 | [summary param] position 0 in ActionController::Parameters#merge | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge |
+| file://:0:0:0:0 | [summary param] position 0 in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: argument self in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | [summary param] position 0 in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | [summary param] position 0 in Arel.sql | file://:0:0:0:0 | [summary] to write: return (return) in Arel.sql |
+| file://:0:0:0:0 | [summary param] position 0 in Base64.decode64() | file://:0:0:0:0 | [summary] to write: return (return) in Base64.decode64() |
+| file://:0:0:0:0 | [summary param] position 0 in ERB.new | file://:0:0:0:0 | [summary] to write: return (return) in ERB.new |
+| file://:0:0:0:0 | [summary param] position 0 in File.absolute_path | file://:0:0:0:0 | [summary] to write: return (return) in File.absolute_path |
+| file://:0:0:0:0 | [summary param] position 0 in File.dirname | file://:0:0:0:0 | [summary] to write: return (return) in File.dirname |
+| file://:0:0:0:0 | [summary param] position 0 in File.expand_path | file://:0:0:0:0 | [summary] to write: return (return) in File.expand_path |
+| file://:0:0:0:0 | [summary param] position 0 in File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
+| file://:0:0:0:0 | [summary param] position 0 in File.path | file://:0:0:0:0 | [summary] to write: return (return) in File.path |
+| file://:0:0:0:0 | [summary param] position 0 in File.realdirpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realdirpath |
+| file://:0:0:0:0 | [summary param] position 0 in File.realpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realpath |
+| file://:0:0:0:0 | [summary param] position 0 in Hash[] | file://:0:0:0:0 | [summary] read: argument position 0.any element in Hash[] |
+| file://:0:0:0:0 | [summary param] position 0 in Mysql2::Client.escape() | file://:0:0:0:0 | [summary] to write: return (return) in Mysql2::Client.escape() |
+| file://:0:0:0:0 | [summary param] position 0 in Mysql2::Client.new() | file://:0:0:0:0 | [summary] to write: return (return) in Mysql2::Client.new() |
+| file://:0:0:0:0 | [summary param] position 0 in PG.new() | file://:0:0:0:0 | [summary] to write: return (return) in PG.new() |
+| file://:0:0:0:0 | [summary param] position 0 in SQLite3::Database.quote() | file://:0:0:0:0 | [summary] to write: return (return) in SQLite3::Database.quote() |
+| file://:0:0:0:0 | [summary param] position 0 in Sequel.connect | file://:0:0:0:0 | [summary] to write: return (return) in Sequel.connect |
+| file://:0:0:0:0 | [summary param] position 0 in String.try_convert | file://:0:0:0:0 | [summary] to write: return (return) in String.try_convert |
+| file://:0:0:0:0 | [summary param] position 0 in \| | file://:0:0:0:0 | [summary] read: argument position 0.any element in \| |
+| file://:0:0:0:0 | [summary param] position 1.. in File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
+| file://:0:0:0:0 | [summary param] self in & | file://:0:0:0:0 | [summary] read: argument self.any element in & |
+| file://:0:0:0:0 | [summary param] self in * | file://:0:0:0:0 | [summary] read: argument self.any element in * |
+| file://:0:0:0:0 | [summary param] self in - | file://:0:0:0:0 | [summary] read: argument self.any element in - |
+| file://:0:0:0:0 | [summary param] self in ActionController::Parameters#<various> | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#<various> |
+| file://:0:0:0:0 | [summary param] self in ActionController::Parameters#merge | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge |
+| file://:0:0:0:0 | [summary param] self in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: argument self in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | [summary param] self in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | [summary param] self in ActiveSupportStringTransform | file://:0:0:0:0 | [summary] to write: return (return) in ActiveSupportStringTransform |
+| file://:0:0:0:0 | [summary param] self in [] | file://:0:0:0:0 | [summary] to write: return (return) in [] |
+| file://:0:0:0:0 | [summary param] self in \| | file://:0:0:0:0 | [summary] read: argument self.any element in \| |
+| file://:0:0:0:0 | [summary param] self in assoc-unknown-arg | file://:0:0:0:0 | [summary] read: argument self.any element in assoc-unknown-arg |
+| file://:0:0:0:0 | [summary param] self in each(0) | file://:0:0:0:0 | [summary] read: argument self.any element in each(0) |
 | file://:0:0:0:0 | [summary] read: argument position 0.any element in Hash[] | file://:0:0:0:0 | [summary] read: argument position 0.any element.element 1 or unknown in Hash[] |
-| file://:0:0:0:0 | parameter position 0 of & | file://:0:0:0:0 | [summary] read: argument position 0.any element in & |
-| file://:0:0:0:0 | parameter position 0 of + | file://:0:0:0:0 | [summary] read: argument position 0.any element in + |
-| file://:0:0:0:0 | parameter position 0 of ActionController::Parameters#merge | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge |
-| file://:0:0:0:0 | parameter position 0 of ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: argument self in ActionController::Parameters#merge! |
-| file://:0:0:0:0 | parameter position 0 of ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge! |
-| file://:0:0:0:0 | parameter position 0 of Arel.sql | file://:0:0:0:0 | [summary] to write: return (return) in Arel.sql |
-| file://:0:0:0:0 | parameter position 0 of Base64.decode64() | file://:0:0:0:0 | [summary] to write: return (return) in Base64.decode64() |
-| file://:0:0:0:0 | parameter position 0 of ERB.new | file://:0:0:0:0 | [summary] to write: return (return) in ERB.new |
-| file://:0:0:0:0 | parameter position 0 of File.absolute_path | file://:0:0:0:0 | [summary] to write: return (return) in File.absolute_path |
-| file://:0:0:0:0 | parameter position 0 of File.dirname | file://:0:0:0:0 | [summary] to write: return (return) in File.dirname |
-| file://:0:0:0:0 | parameter position 0 of File.expand_path | file://:0:0:0:0 | [summary] to write: return (return) in File.expand_path |
-| file://:0:0:0:0 | parameter position 0 of File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
-| file://:0:0:0:0 | parameter position 0 of File.path | file://:0:0:0:0 | [summary] to write: return (return) in File.path |
-| file://:0:0:0:0 | parameter position 0 of File.realdirpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realdirpath |
-| file://:0:0:0:0 | parameter position 0 of File.realpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realpath |
-| file://:0:0:0:0 | parameter position 0 of Hash[] | file://:0:0:0:0 | [summary] read: argument position 0.any element in Hash[] |
-| file://:0:0:0:0 | parameter position 0 of Mysql2::Client.escape() | file://:0:0:0:0 | [summary] to write: return (return) in Mysql2::Client.escape() |
-| file://:0:0:0:0 | parameter position 0 of Mysql2::Client.new() | file://:0:0:0:0 | [summary] to write: return (return) in Mysql2::Client.new() |
-| file://:0:0:0:0 | parameter position 0 of PG.new() | file://:0:0:0:0 | [summary] to write: return (return) in PG.new() |
-| file://:0:0:0:0 | parameter position 0 of SQLite3::Database.quote() | file://:0:0:0:0 | [summary] to write: return (return) in SQLite3::Database.quote() |
-| file://:0:0:0:0 | parameter position 0 of Sequel.connect | file://:0:0:0:0 | [summary] to write: return (return) in Sequel.connect |
-| file://:0:0:0:0 | parameter position 0 of String.try_convert | file://:0:0:0:0 | [summary] to write: return (return) in String.try_convert |
-| file://:0:0:0:0 | parameter position 0 of \| | file://:0:0:0:0 | [summary] read: argument position 0.any element in \| |
-| file://:0:0:0:0 | parameter position 1.. of File.join | file://:0:0:0:0 | [summary] to write: return (return) in File.join |
-| file://:0:0:0:0 | parameter self of & | file://:0:0:0:0 | [summary] read: argument self.any element in & |
-| file://:0:0:0:0 | parameter self of * | file://:0:0:0:0 | [summary] read: argument self.any element in * |
-| file://:0:0:0:0 | parameter self of - | file://:0:0:0:0 | [summary] read: argument self.any element in - |
-| file://:0:0:0:0 | parameter self of ActionController::Parameters#<various> | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#<various> |
-| file://:0:0:0:0 | parameter self of ActionController::Parameters#merge | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge |
-| file://:0:0:0:0 | parameter self of ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: argument self in ActionController::Parameters#merge! |
-| file://:0:0:0:0 | parameter self of ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: return (return) in ActionController::Parameters#merge! |
-| file://:0:0:0:0 | parameter self of ActiveSupportStringTransform | file://:0:0:0:0 | [summary] to write: return (return) in ActiveSupportStringTransform |
-| file://:0:0:0:0 | parameter self of [] | file://:0:0:0:0 | [summary] to write: return (return) in [] |
-| file://:0:0:0:0 | parameter self of \| | file://:0:0:0:0 | [summary] read: argument self.any element in \| |
-| file://:0:0:0:0 | parameter self of assoc-unknown-arg | file://:0:0:0:0 | [summary] read: argument self.any element in assoc-unknown-arg |
-| file://:0:0:0:0 | parameter self of each(0) | file://:0:0:0:0 | [summary] read: argument self.any element in each(0) |
 | local_dataflow.rb:1:1:7:3 | self (foo) | local_dataflow.rb:3:8:3:10 | self |
 | local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:1:1:7:3 | self (foo) |
 | local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |

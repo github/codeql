@@ -76,6 +76,3 @@ module ReflectedXss {
    */
   class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
 }
-
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;

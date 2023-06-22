@@ -1,8 +1,12 @@
 edges
 | TarSlipImprov.py:15:7:15:39 | ControlFlowNode for Attribute() | TarSlipImprov.py:17:5:17:10 | GSSA Variable member |
-| TarSlipImprov.py:17:5:17:10 | GSSA Variable member | TarSlipImprov.py:22:35:22:40 | ControlFlowNode for result |
+| TarSlipImprov.py:17:5:17:10 | GSSA Variable member | TarSlipImprov.py:20:19:20:24 | ControlFlowNode for member |
+| TarSlipImprov.py:20:5:20:10 | [post] ControlFlowNode for result | TarSlipImprov.py:22:35:22:40 | ControlFlowNode for result |
+| TarSlipImprov.py:20:19:20:24 | ControlFlowNode for member | TarSlipImprov.py:20:5:20:10 | [post] ControlFlowNode for result |
 | TarSlipImprov.py:26:21:26:27 | ControlFlowNode for tarfile | TarSlipImprov.py:28:9:28:14 | SSA variable member |
-| TarSlipImprov.py:28:9:28:14 | SSA variable member | TarSlipImprov.py:36:12:36:17 | ControlFlowNode for result |
+| TarSlipImprov.py:28:9:28:14 | SSA variable member | TarSlipImprov.py:35:23:35:28 | ControlFlowNode for member |
+| TarSlipImprov.py:35:9:35:14 | [post] ControlFlowNode for result | TarSlipImprov.py:36:12:36:17 | ControlFlowNode for result |
+| TarSlipImprov.py:35:23:35:28 | ControlFlowNode for member | TarSlipImprov.py:35:9:35:14 | [post] ControlFlowNode for result |
 | TarSlipImprov.py:38:7:38:39 | ControlFlowNode for Attribute() | TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar |
 | TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | TarSlipImprov.py:26:21:26:27 | ControlFlowNode for tarfile |
 | TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | TarSlipImprov.py:39:49:39:68 | ControlFlowNode for members_filter1() |
@@ -27,7 +31,9 @@ edges
 | TarSlipImprov.py:193:6:193:31 | ControlFlowNode for Attribute() | TarSlipImprov.py:194:49:194:51 | ControlFlowNode for tar |
 | TarSlipImprov.py:210:6:210:43 | ControlFlowNode for Attribute() | TarSlipImprov.py:211:5:211:7 | ControlFlowNode for tar |
 | TarSlipImprov.py:231:6:231:38 | ControlFlowNode for Attribute() | TarSlipImprov.py:233:9:233:9 | GSSA Variable f |
-| TarSlipImprov.py:233:9:233:9 | GSSA Variable f | TarSlipImprov.py:236:44:236:50 | ControlFlowNode for members |
+| TarSlipImprov.py:233:9:233:9 | GSSA Variable f | TarSlipImprov.py:235:28:235:28 | ControlFlowNode for f |
+| TarSlipImprov.py:235:13:235:19 | [post] ControlFlowNode for members | TarSlipImprov.py:236:44:236:50 | ControlFlowNode for members |
+| TarSlipImprov.py:235:28:235:28 | ControlFlowNode for f | TarSlipImprov.py:235:13:235:19 | [post] ControlFlowNode for members |
 | TarSlipImprov.py:258:6:258:26 | ControlFlowNode for Attribute() | TarSlipImprov.py:259:9:259:13 | GSSA Variable entry |
 | TarSlipImprov.py:259:9:259:13 | GSSA Variable entry | TarSlipImprov.py:261:25:261:29 | ControlFlowNode for entry |
 | TarSlipImprov.py:264:6:264:38 | ControlFlowNode for Attribute() | TarSlipImprov.py:265:9:265:13 | GSSA Variable entry |
@@ -41,13 +47,19 @@ edges
 | TarSlipImprov.py:292:7:292:39 | ControlFlowNode for Attribute() | TarSlipImprov.py:293:1:293:3 | ControlFlowNode for tar |
 | TarSlipImprov.py:300:6:300:51 | ControlFlowNode for Attribute() | TarSlipImprov.py:301:49:301:51 | ControlFlowNode for tar |
 | TarSlipImprov.py:304:7:304:39 | ControlFlowNode for Attribute() | TarSlipImprov.py:306:5:306:10 | GSSA Variable member |
-| TarSlipImprov.py:306:5:306:10 | GSSA Variable member | TarSlipImprov.py:310:49:310:54 | ControlFlowNode for result |
+| TarSlipImprov.py:306:5:306:10 | GSSA Variable member | TarSlipImprov.py:309:19:309:24 | ControlFlowNode for member |
+| TarSlipImprov.py:309:5:309:10 | [post] ControlFlowNode for result | TarSlipImprov.py:310:49:310:54 | ControlFlowNode for result |
+| TarSlipImprov.py:309:19:309:24 | ControlFlowNode for member | TarSlipImprov.py:309:5:309:10 | [post] ControlFlowNode for result |
 nodes
 | TarSlipImprov.py:15:7:15:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | TarSlipImprov.py:17:5:17:10 | GSSA Variable member | semmle.label | GSSA Variable member |
+| TarSlipImprov.py:20:5:20:10 | [post] ControlFlowNode for result | semmle.label | [post] ControlFlowNode for result |
+| TarSlipImprov.py:20:19:20:24 | ControlFlowNode for member | semmle.label | ControlFlowNode for member |
 | TarSlipImprov.py:22:35:22:40 | ControlFlowNode for result | semmle.label | ControlFlowNode for result |
 | TarSlipImprov.py:26:21:26:27 | ControlFlowNode for tarfile | semmle.label | ControlFlowNode for tarfile |
 | TarSlipImprov.py:28:9:28:14 | SSA variable member | semmle.label | SSA variable member |
+| TarSlipImprov.py:35:9:35:14 | [post] ControlFlowNode for result | semmle.label | [post] ControlFlowNode for result |
+| TarSlipImprov.py:35:23:35:28 | ControlFlowNode for member | semmle.label | ControlFlowNode for member |
 | TarSlipImprov.py:36:12:36:17 | ControlFlowNode for result | semmle.label | ControlFlowNode for result |
 | TarSlipImprov.py:38:7:38:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | TarSlipImprov.py:39:49:39:68 | ControlFlowNode for members_filter1() | semmle.label | ControlFlowNode for members_filter1() |
@@ -88,6 +100,8 @@ nodes
 | TarSlipImprov.py:211:5:211:7 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
 | TarSlipImprov.py:231:6:231:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | TarSlipImprov.py:233:9:233:9 | GSSA Variable f | semmle.label | GSSA Variable f |
+| TarSlipImprov.py:235:13:235:19 | [post] ControlFlowNode for members | semmle.label | [post] ControlFlowNode for members |
+| TarSlipImprov.py:235:28:235:28 | ControlFlowNode for f | semmle.label | ControlFlowNode for f |
 | TarSlipImprov.py:236:44:236:50 | ControlFlowNode for members | semmle.label | ControlFlowNode for members |
 | TarSlipImprov.py:254:1:254:31 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | TarSlipImprov.py:258:6:258:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
@@ -112,6 +126,8 @@ nodes
 | TarSlipImprov.py:301:49:301:51 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
 | TarSlipImprov.py:304:7:304:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | TarSlipImprov.py:306:5:306:10 | GSSA Variable member | semmle.label | GSSA Variable member |
+| TarSlipImprov.py:309:5:309:10 | [post] ControlFlowNode for result | semmle.label | [post] ControlFlowNode for result |
+| TarSlipImprov.py:309:19:309:24 | ControlFlowNode for member | semmle.label | ControlFlowNode for member |
 | TarSlipImprov.py:310:49:310:54 | ControlFlowNode for result | semmle.label | ControlFlowNode for result |
 | TarSlipImprov.py:316:1:316:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 subpaths

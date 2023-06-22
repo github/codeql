@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | pathname_flow.rb:4:5:4:6 | pn | pathname_flow.rb:5:10:5:11 | pn |
 | pathname_flow.rb:4:10:4:33 | call to new | pathname_flow.rb:4:5:4:6 | pn |

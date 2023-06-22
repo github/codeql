@@ -910,6 +910,17 @@ func getVersionWhenGoModVersionSupported(v versionInfo) (msg, version string) {
 
 // Check the versions of Go found in the environment and in the `go.mod` file, and return a
 // version to install. If the version is the empty string then no installation is required.
+// We never return a version of Go that is outside of the supported range.
+//
+// +-----------------------+-----------------------+-----------------------+-----------------------------------------------------+------------------------------------------------+
+// | Found in go.mod >     | *None*                | *Below min supported* | *In supported range*                                | *Above max supported                           |
+// | Installed \/          |                       |                       |                                                     |                                                |
+// |-----------------------|-----------------------|-----------------------|-----------------------------------------------------|------------------------------------------------|
+// | *None*                | Install max supported | Install min supported | Install version from go.mod                         | Install max supported                          |
+// | *Below min supported* | Install max supported | Install min supported | Install version from go.mod                         | Install max supported                          |
+// | *In supported range*  | No action             | No action             | Install version from go.mod if newer than installed | Install max supported if newer than installed  |
+// | *Above max supported* | Install max supported | Install min supported | Install version from go.mod                         | No action                                      |
+// +-----------------------+-----------------------+-----------------------+-----------------------------------------------------+------------------------------------------------+
 func getVersionToInstall(v versionInfo) (msg, version string) {
 	if !v.goModVersionFound {
 		return getVersionWhenGoModVersionNotFound(v)
