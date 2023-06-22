@@ -33,7 +33,7 @@ case marked GOOD uses <code>User.IsInRole</code> to check for the user's role.
 
 <p>
 The following <code>Web.config</code> file uses the <code>authorization</code> tag to deny access to anonymous users,
-in a <location> tag to have it apply to a specific path.
+in a <code>location</code>> tag to have it apply to a specific path.
 </p>
 
 <sample src="Web.config" />

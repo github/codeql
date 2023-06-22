@@ -83,7 +83,6 @@ private predicate virtualRouteMapping(string virtualRoute, string physicalRoute)
     physicalLit = mapPageRouteCall.getArgument(2) and
     virtualLit.getValue() = virtualRoute and
     physicalLit.getValue() = physicalRoute
-    // physicalRouteMatches(physicalLit.getValue(), physicalRoute)
   )
 }
 
