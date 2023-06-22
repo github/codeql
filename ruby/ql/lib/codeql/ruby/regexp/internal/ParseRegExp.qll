@@ -844,11 +844,11 @@ abstract class RegExp extends Ast::StringlikeLiteral {
   }
 
   /**
-   * Holds if a qualified part is found between `start` and `part_end` and the qualifier is
-   * found between `part_end` and `end`.
+   * Holds if a qualified part is found between `start` and `partEnd` and the qualifier is
+   * found between `partEnd` and `end`.
    *
-   * `maybe_empty` is true if the part is optional.
-   * `may_repeat_forever` is true if the part may be repeated unboundedly.
+   * `maybeEmpty` is true if the part is optional.
+   * `mayRepeatForever` is true if the part may be repeated unboundedly.
    */
   predicate qualifiedPart(
     int start, int partEnd, int end, boolean maybeEmpty, boolean mayRepeatForever
