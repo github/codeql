@@ -143,7 +143,7 @@ private string getContentSpecific(Content c) {
   exists(string name | c = TFieldContent(name) and result = "Field[" + name + "]")
   or
   exists(ConstantValue cv |
-    c = TKnownElementContent(cv) and result = "Element[" + cv.toString() + "!]"
+    c = TKnownElementContent(cv) and result = "Element[" + cv.serialize() + "!]"
   )
   or
   c = TUnknownElementContent() and result = "Element[?]"
@@ -155,7 +155,8 @@ private string getContentSetSpecific(ContentSet cs) {
   cs = TAnyElementContent() and result = "Element[any]"
   or
   exists(Content::KnownElementContent kec |
-    cs = TKnownOrUnknownElementContent(kec) and result = "Element[" + kec.getIndex() + "]"
+    cs = TKnownOrUnknownElementContent(kec) and
+    result = "Element[" + kec.getIndex().serialize() + "]"
   )
   or
   exists(int lower, boolean includeUnknown, string unknown |
