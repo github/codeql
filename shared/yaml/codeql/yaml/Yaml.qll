@@ -471,7 +471,7 @@ module Make<InputSig Input> {
      * Gets the `i`th key of this mapping.
      */
     YamlNode getKeyNode(int i) {
-      i >= 0 and
+      i > 0 and
       exists(int j | i = j - 1 and result = this.getChildNode(j))
     }
 
