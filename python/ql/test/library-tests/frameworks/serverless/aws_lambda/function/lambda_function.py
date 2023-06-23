@@ -1,2 +1,2 @@
-def lambda_handler(event, context): # $ MISSING: remoteFlow=event, remoteFlow=context
+def lambda_handler(event, context): # $ remoteFlow=event
     return "OK"
