@@ -92,7 +92,7 @@ private predicate physicalRouteMatches(string route, string actual) {
   route = actual
   or
   route.charAt(0) = "~" and
-  exists(string dir | actual = dir + route.substring(1, route.length()) + ".cs")
+  exists(string dir | actual = dir + route.suffix(1) + ".cs")
 }
 
 /** An expression that indicates that some authorization/authentication check is being performed. */
