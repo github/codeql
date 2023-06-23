@@ -2,7 +2,11 @@ private import codeql.ruby.AST
 private import codeql.ruby.frameworks.Rack
 private import codeql.ruby.DataFlow
 
-query predicate rackApps(Rack::App::App app, DataFlow::ParameterNode env) { env = app.getEnv() }
+query predicate rackApps(
+  Rack::App::App app, DataFlow::ParameterNode env, Rack::Response::ResponseNode resp
+) {
+  env = app.getEnv() and resp = app.getAResponse()
+}
 
 query predicate rackResponseContentTypes(
   Rack::Response::ResponseNode resp, DataFlow::Node contentType

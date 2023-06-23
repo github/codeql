@@ -1,14 +1,15 @@
 rackApps
-| Rack application: -> { ... } | rack_apps.rb:21:17:21:19 | env |
-| Rack application: Baz | rack.rb:60:12:60:14 | env |
-| Rack application: ClassApp | rack_apps.rb:16:17:16:19 | env |
-| Rack application: HelloWorld | rack.rb:2:12:2:14 | env |
-| Rack application: InstanceApp | rack_apps.rb:6:12:6:14 | env |
-| Rack application: Logger | rack.rb:30:12:30:14 | env |
-| Rack application: Proxy | rack.rb:17:12:17:18 | the_env |
-| Rack application: Qux | rack.rb:79:17:79:19 | env |
-| Rack application: Redirector | rack.rb:40:12:40:14 | env |
-| Rack application: { ... } | rack_apps.rb:23:24:23:26 | env |
+| Rack application: -> { ... } | rack_apps.rb:21:17:21:19 | env | rack_apps.rb:21:24:21:48 | call to [] |
+| Rack application: Baz | rack.rb:60:12:60:14 | env | rack.rb:66:7:66:22 | call to [] |
+| Rack application: Baz | rack.rb:60:12:60:14 | env | rack.rb:73:5:73:21 | call to [] |
+| Rack application: ClassApp | rack_apps.rb:16:17:16:19 | env | rack_apps.rb:17:5:17:28 | call to [] |
+| Rack application: HelloWorld | rack.rb:2:12:2:14 | env | rack.rb:8:5:8:38 | call to [] |
+| Rack application: InstanceApp | rack_apps.rb:6:12:6:14 | env | rack_apps.rb:10:12:10:34 | call to [] |
+| Rack application: Logger | rack.rb:30:12:30:14 | env | rack.rb:35:5:35:26 | call to [] |
+| Rack application: Proxy | rack.rb:17:12:17:18 | the_env | rack.rb:20:5:20:27 | call to [] |
+| Rack application: Qux | rack.rb:79:17:79:19 | env | rack.rb:93:5:93:78 | call to finish |
+| Rack application: Redirector | rack.rb:40:12:40:14 | env | rack.rb:43:5:43:45 | call to [] |
+| Rack application: { ... } | rack_apps.rb:23:24:23:26 | env | rack_apps.rb:23:29:23:51 | call to [] |
 rackResponseContentTypes
 | rack.rb:8:5:8:38 | call to [] | rack.rb:7:34:7:45 | "text/plain" |
 | rack.rb:20:5:20:27 | call to [] | rack.rb:19:28:19:38 | "text/html" |
