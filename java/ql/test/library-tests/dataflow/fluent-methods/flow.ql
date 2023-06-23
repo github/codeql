@@ -2,6 +2,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSteps
 import TestUtilities.InlineFlowTest
+import DefaultFlowTest
 
 class Model extends FluentMethod {
   Model() { this.getName() = "modelledFluentMethod" }

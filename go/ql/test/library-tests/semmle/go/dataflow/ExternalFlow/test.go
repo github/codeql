@@ -141,6 +141,22 @@ func simpleflow() {
 	c4.Set("")
 	b.Sink1(c4.Get()) // $ SPURIOUS: hasTaintFlow="call to Get" // because we currently don't clear content
 
+	cp1 := &test.C{""}
+	cp1.SetThroughPointer(a.Src1().(string))
+	b.Sink1(cp1.F) // $ hasTaintFlow="selection of F"
+
+	cp2 := &test.C{a.Src1().(string)}
+	b.Sink1(cp2.GetThroughPointer()) // $ hasTaintFlow="call to GetThroughPointer"
+
+	cp3 := &test.C{""}
+	cp3.SetThroughPointer(a.Src1().(string))
+	b.Sink1(cp3.GetThroughPointer()) // $ hasTaintFlow="call to GetThroughPointer"
+
+	cp4 := &test.C{""}
+	cp4.SetThroughPointer(a.Src1().(string))
+	cp4.SetThroughPointer("")
+	b.Sink1(cp4.GetThroughPointer()) // $ SPURIOUS: hasTaintFlow="call to GetThroughPointer" // because we currently don't clear content
+
 	arg1 := src
 	arg2 := src
 	arg3 := src

@@ -611,6 +611,8 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   predicate overrides(ClassPredicate other) { predOverrides(this, other) }
 
+  predicate shadows(ClassPredicate other) { predShadows(this, other) }
+
   override TypeExpr getReturnTypeExpr() { toQL(result) = pred.getReturnType() }
 
   override AstNode getAChild(string pred_name) {
@@ -878,6 +880,9 @@ class Module extends TModule, ModuleDeclaration {
 class ModuleMember extends TModuleMember, AstNode {
   /** Holds if this member is declared as `private`. */
   predicate isPrivate() { this.hasAnnotation("private") }
+
+  /** Holds if this member is declared as `final`. */
+  predicate isFinal() { this.hasAnnotation("final") }
 }
 
 /** A declaration. E.g. a class, type, predicate, newtype... */

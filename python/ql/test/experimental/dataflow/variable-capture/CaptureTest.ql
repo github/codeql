@@ -7,7 +7,7 @@ module CaptureTest implements TestSig {
   string getARelevantTag() { result = "captured" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node sink | exists(TestConfiguration cfg | cfg.hasFlowTo(sink)) |
+    exists(DataFlow::Node sink | TestFlow::flowTo(sink) |
       location = sink.getLocation() and
       tag = "captured" and
       value = "" and

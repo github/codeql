@@ -38,11 +38,15 @@ pkg_files(
 pkg_filegroup(
     name = "extractor-pack-generic",
     srcs = [
-        ":dbscheme_files",
         ":manifest",
-        "//swift/downgrades",
         "//swift/tools",
-    ],
+    ] + select({
+        "@platforms//os:windows": [],
+        "//conditions:default": [
+            ":dbscheme_files",
+            "//swift/downgrades",
+        ],
+    }),
     visibility = ["//visibility:public"],
 )
 
@@ -59,8 +63,8 @@ pkg_runfiles(
 )
 
 pkg_runfiles(
-    name = "incompatible-os",
-    srcs = ["//swift/tools/autobuilder-diagnostics:incompatible-os"],
+    name = "diagnostics",
+    srcs = ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
     prefix = "tools/" + codeql_platform,
 )
 
@@ -80,16 +84,19 @@ pkg_files(
 
 pkg_filegroup(
     name = "extractor-pack-arch",
-    srcs = [
-        ":extractor",
-        ":swift-test-sdk-arch",
-        ":resource-dir-arch",
-    ] + select({
-        "@platforms//os:linux": [
-            ":incompatible-os",
+    srcs = select({
+        "@platforms//os:windows": [],
+        "//conditions:default": [
+            ":extractor",
+            ":resource-dir-arch",
+            ":swift-test-sdk-arch",
         ],
+    }) + select({
         "@platforms//os:macos": [
             ":xcode-autobuilder",
+        ],
+        "//conditions:default": [
+            ":diagnostics",
         ],
     }),
     visibility = ["//visibility:public"],
@@ -122,7 +129,7 @@ generate_cmake(
         "//swift/extractor:extractor.real",
         "//swift/logging/tests/assertion-diagnostics:assert-false",
     ] + select({
-        "@platforms//os:linux": ["//swift/tools/autobuilder-diagnostics:incompatible-os"],
+        "@platforms//os:linux": ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
         "@platforms//os:macos": ["//swift/xcode-autobuilder"],
     }),
     visibility = ["//visibility:public"],

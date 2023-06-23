@@ -1379,18 +1379,16 @@ class HashLiteralNode extends LocalSourceNode, ExprNode {
  * into calls to `Array.[]`, so this includes both desugared calls as well as
  * explicit calls.
  */
-class ArrayLiteralNode extends LocalSourceNode, ExprNode {
+class ArrayLiteralNode extends LocalSourceNode, CallNode {
   ArrayLiteralNode() { super.getExprNode() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode }
 
   /**
    * Gets an element of the array.
    */
-  Node getAnElement() { result = this.(CallNode).getPositionalArgument(_) }
+  Node getAnElement() { result = this.getElement(_) }
 
-  /**
-   * Gets the `n`th element of the array.
-   */
-  Node getElement(int n) { result = this.(CallNode).getPositionalArgument(n) }
+  /** Gets the `i`th element of the array. */
+  Node getElement(int i) { result = this.getPositionalArgument(i) }
 }
 
 /**
