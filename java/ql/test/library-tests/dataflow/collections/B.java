@@ -303,6 +303,16 @@ public class B {
       Collection in = storeElementList(source()); out.addAll(0,in); sink(readElement(out)); // $ hasValueFlow
     }
     {
+      // "java.util;List;true;clear;;;Argument[this].WithoutElement;Argument[this];value;manual"
+      List out = null;
+      List in = storeElementList(source()); out = in; out.clear(); sink(readElement(out)); // No flow
+    }
+    {
+      // "java.util;List;true;clear;;;Argument[this].WithoutElement;Argument[this];value;manual"
+      List out = null;
+      List in = (List)source(); out = in; out.clear(); sink(out); // $ hasValueFlow
+    }
+    {
       // "java.util;Vector;true;elementAt;(int);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Vector in = storeElementStack(source()); out = in.elementAt(0); sink(out); // $ hasValueFlow

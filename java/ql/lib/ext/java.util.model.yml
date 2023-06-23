@@ -159,6 +159,7 @@ extensions:
       - ["java.util", "List", True, "set", "(int,Object)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "List", True, "set", "(int,Object)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
       - ["java.util", "List", True, "subList", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
+      - ["java.util", "List", True, "clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["java.util", "ListIterator", True, "add", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util", "ListIterator", True, "previous", "", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "ListIterator", True, "set", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
@@ -424,7 +425,6 @@ extensions:
       # When `WithoutElement` is implemented, these should be changed to summary models of the form `Argument[this].WithoutElement -> Argument[this]`.
       - ["java.util", "Collection", "removeIf", "(Predicate)", "summary", "manual"]
       - ["java.util", "Iterator", "remove", "()", "summary", "manual"]
-      - ["java.util", "List", "clear", "()", "summary", "manual"]
       - ["java.util", "List", "remove", "(Object)", "summary", "manual"]
       - ["java.util", "Map", "clear", "()", "summary", "manual"]
       - ["java.util", "Set", "clear", "()", "summary", "manual"]
