@@ -99,6 +99,7 @@ module Public {
       result = getHeaderValue(this, "content-type")
     }
 
+    /** Gets the headers returned with this response. */
     DataFlow::Node getHeaders() { result = this.(Private::PotentialResponseNode).getHeaders() }
 
     // TODO: is there a sensible value for this?

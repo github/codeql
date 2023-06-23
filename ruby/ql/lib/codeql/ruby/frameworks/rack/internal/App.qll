@@ -94,12 +94,16 @@ module App {
    * proc that takes a single `env` argument and returns a rack response.
    */
   abstract class App extends TApp {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Rack application" }
 
+    /** Gets the `DataFlow::CallableNode` that will handle requests to this app. */
     abstract CallNode getCall();
 
+    /** Gets the response returned from a request to this app. */
     RP::PotentialResponseNode getResponse() { result = this.getCall().getResponse() }
 
+    /** Gets the `env` parameter passed to this app when it handles a request. */
     DataFlow::ParameterNode getEnv() { result = this.getCall().getParameter(0) }
   }
 
