@@ -129,15 +129,18 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 	)
 }
 
+func plural(n int, singular, plural string) string {
+	if n == 1 {
+		return singular
+	} else {
+		return plural
+	}
+}
+
 const maxNumPkgPaths = 5
 
 func EmitCannotFindPackages(pkgPaths []string) {
 	numPkgPaths := len(pkgPaths)
-
-	ending := "s"
-	if numPkgPaths == 1 {
-		ending = ""
-	}
 
 	numPrinted := numPkgPaths
 	truncated := false
@@ -154,7 +157,11 @@ func EmitCannotFindPackages(pkgPaths []string) {
 	emitDiagnostic(
 		"go/autobuilder/package-not-found",
 		"Some packages could not be found",
-		fmt.Sprintf("%d package%s could not be found:\n\n%s.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).", numPkgPaths, ending, secondLine),
+		fmt.Sprintf(
+			"%d package%s could not be found:\n\n%s.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+			numPkgPaths,
+			plural(len(pkgPaths), "", "s"),
+			secondLine),
 		severityWarning,
 		fullVisibility,
 		noLocation,
