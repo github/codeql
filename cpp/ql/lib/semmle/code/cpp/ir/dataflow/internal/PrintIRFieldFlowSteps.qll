@@ -13,7 +13,7 @@ class FieldFlowPropertyProvider extends IRPropertyProvider {
   override string getOperandProperty(Operand operand, string key) {
     exists(PostFieldUpdateNode pfun, Content content |
       key = "store " + content.toString() and
-      operand = pfun.getPreUpdateNode().(IndirectOperand).getOperand() and
+      pfun.getPreUpdateNode().(IndirectOperand).hasOperandAndIndirectionIndex(operand, _) and
       result =
         strictconcat(string element, Node node |
           storeStep(node, content, pfun) and
@@ -25,7 +25,7 @@ class FieldFlowPropertyProvider extends IRPropertyProvider {
     or
     exists(Node node2, Content content |
       key = "read " + content.toString() and
-      operand = node2.(IndirectOperand).getOperand() and
+      node2.(IndirectOperand).hasOperandAndIndirectionIndex(operand, _) and
       result =
         strictconcat(string element, Node node1 |
           readStep(node1, content, node2) and

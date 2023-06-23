@@ -1701,12 +1701,13 @@ open class KotlinFileExtractor(
 
     private fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
         with("synthetic body", b) {
-            when (b.kind) {
-                IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
-                IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+            val kind = b.kind
+            when {
+                kind == IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
+                kind == IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+                kind == kind_ENUM_ENTRIES -> tw.writeKtSyntheticBody(callable, 3)
                 else -> {
-                    // TODO: Support IrSyntheticBodyKind.ENUM_ENTRIES
-                    logger.errorElement("Unhandled synthetic body kind " + b.kind.javaClass, b)
+                    logger.errorElement("Unhandled synthetic body kind " + kind, b)
                 }
             }
         }
@@ -5316,7 +5317,10 @@ open class KotlinFileExtractor(
     private fun extractTypeAccessRecursive(t: IrType, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx)
         if (t is IrSimpleType) {
-            t.arguments.forEachIndexed { argIdx, arg ->
+            // From 1.9, the list might change when we call erase,
+            // so we make a copy that it is safe to iterate over.
+            val argumentsCopy = t.arguments.toList()
+            argumentsCopy.forEachIndexed { argIdx, arg ->
                 extractWildcardTypeAccessRecursive(arg, location, typeAccessId, argIdx)
             }
         }

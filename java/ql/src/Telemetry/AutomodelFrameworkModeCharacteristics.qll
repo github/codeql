@@ -48,7 +48,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
 
-  predicate isKnownKind = AutomodelJavaUtil::isKnownKind/3;
+  predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
   predicate isSink(Endpoint e, string kind) {
     exists(string package, string type, string name, string signature, string ext, string input |
@@ -60,7 +60,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
       sinkSpec(e, package, type, name, signature, _, _) and
-      ExternalFlow::neutralModel(package, type, name, [signature, ""], _, _)
+      ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
     )
   }
 

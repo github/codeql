@@ -2476,7 +2476,7 @@ cfg.swift:
 #  377|         Type = Derived
 #-----|     getParam(0): [ParamDecl] n
 #-----|         Type = Int
-#-----|     getBody(): [BraceStmt] { ... }
+#  377|     getBody(): [BraceStmt] { ... }
 #  377|       getElement(0): [CallExpr] call to _unimplementedInitializer(className:initName:file:line:column:)
 #  377|         getFunction(): [DeclRefExpr] _unimplementedInitializer(className:initName:file:line:column:)
 #  377|         getArgument(0): [Argument] : cfg.Derived
@@ -4769,7 +4769,7 @@ expressions.swift:
 #   77|         Type = Derived
 #-----|     getParam(0): [ParamDecl] x
 #-----|         Type = Int
-#-----|     getBody(): [BraceStmt] { ... }
+#   77|     getBody(): [BraceStmt] { ... }
 #   77|       getElement(0): [CallExpr] call to _unimplementedInitializer(className:initName:file:line:column:)
 #   77|         getFunction(): [DeclRefExpr] _unimplementedInitializer(className:initName:file:line:column:)
 #   77|         getArgument(0): [Argument] : expressions.Derived

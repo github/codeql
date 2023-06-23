@@ -451,7 +451,15 @@ module Make<RegexTreeViewSig TreeImpl> {
       }
 
       bindingset[char]
-      override predicate matches(string char) { not hasChildThatMatches(cc, char) }
+      override predicate matches(string char) {
+        not hasChildThatMatches(cc, char) and
+        (
+          // detect unsupported char classes that doesn't match anything (e.g. `\p{L}` in ruby), and don't report any matches
+          hasChildThatMatches(cc, _)
+          or
+          not exists(cc.getAChild()) // [^] still matches everything
+        )
+      }
     }
 
     /**
@@ -536,7 +544,9 @@ module Make<RegexTreeViewSig TreeImpl> {
 
       bindingset[char]
       override predicate matches(string char) {
-        not classEscapeMatches(charClass.toLowerCase(), char)
+        not classEscapeMatches(charClass.toLowerCase(), char) and
+        // detect unsupported char classes (e.g. `\p{L}` in ruby), and don't report any matches
+        classEscapeMatches(charClass.toLowerCase(), _)
       }
     }
 
@@ -854,6 +864,9 @@ module Make<RegexTreeViewSig TreeImpl> {
      */
     RegExpTerm getRepr() { result = repr }
 
+    /**
+     * Holds if the term represented by this state is found at the specified location offsets.
+     */
     predicate hasLocationInfo(string file, int line, int column, int endline, int endcolumn) {
       repr.hasLocationInfo(file, line, column, endline, endcolumn)
     }
