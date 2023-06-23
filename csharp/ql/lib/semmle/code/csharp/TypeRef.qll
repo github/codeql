@@ -16,7 +16,7 @@ private class TypeRef extends @typeref {
     typeref_type(this, result)
     or
     not typeref_type(this, _) and
-    result instanceof UnknownType
+    result.(UnknownType).isCanonical()
   }
 }
 
