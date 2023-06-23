@@ -251,7 +251,7 @@ func getDepMode() DependencyInstallerMode {
 		return Dep
 	}
 	if util.FileExists("glide.yaml") {
-		log.Println("Found glide.yaml, enabling go modules")
+		log.Println("Found glide.yaml, using Glide instead of go get")
 		return Glide
 	}
 	return GoGetNoModules
