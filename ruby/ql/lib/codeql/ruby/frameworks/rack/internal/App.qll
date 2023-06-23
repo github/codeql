@@ -82,7 +82,7 @@ module App {
 
     /** Gets the response returned from a request to this application. */
     RP::PotentialResponseNode getResponse() { result = resp }
-}
+  }
 
   private newtype TApp =
     TClassApp(DataFlow::ClassNode cn, CallNode call) or
