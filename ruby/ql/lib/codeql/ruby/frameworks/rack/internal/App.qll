@@ -40,8 +40,8 @@ private class CallNode extends PotentialCallNode {
 
   CallNode() { resp = trackRackResponse(this) }
 
-  /** Gets the response returned from a request to this application. */
-  RP::PotentialResponseNode getResponse() { result = resp }
+  /** Gets a response returned from a request to this application. */
+  RP::PotentialResponseNode getAResponse() { result = resp }
 }
 
 private DataFlow::LocalSourceNode trackRackResponse(TypeBackTracker t, PotentialCallNode call) {
@@ -82,7 +82,7 @@ module App {
 
     /** Gets the response returned from a request to this application. */
     RP::PotentialResponseNode getResponse() { result = resp }
-  }
+}
 
   private newtype TApp =
     TClassApp(DataFlow::ClassNode cn, CallNode call) or
@@ -100,8 +100,8 @@ module App {
     /** Gets the `DataFlow::CallableNode` that will handle requests to this app. */
     abstract CallNode getCall();
 
-    /** Gets the response returned from a request to this app. */
-    RP::PotentialResponseNode getResponse() { result = this.getCall().getResponse() }
+    /** Gets a response returned from a request to this app. */
+    RP::PotentialResponseNode getAResponse() { result = this.getCall().getAResponse() }
 
     /** Gets the `env` parameter passed to this app when it handles a request. */
     DataFlow::ParameterNode getEnv() { result = this.getCall().getParameter(0) }
