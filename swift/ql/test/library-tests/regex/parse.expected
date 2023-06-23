@@ -6381,3 +6381,105 @@ regex.swift:
 
 #  172| [RegExpConstant, RegExpNormalChar] 
 #  172| bb
+
+#  180| [RegExpCharacterClass] [a-z]
+#-----| 0 -> [RegExpCharacterRange] a-z
+
+#  180| [RegExpConstant, RegExpNormalChar] a
+
+#  180| [RegExpCharacterRange] a-z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  180| [RegExpConstant, RegExpNormalChar] z
+
+#  181| [RegExpCharacterClass] [a-zA-Z]
+#-----| 0 -> [RegExpCharacterRange] a-z
+#-----| 1 -> [RegExpCharacterRange] A-Z
+
+#  181| [RegExpConstant, RegExpNormalChar] a
+
+#  181| [RegExpCharacterRange] a-z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] z
+
+#  181| [RegExpConstant, RegExpNormalChar] z
+
+#  181| [RegExpConstant, RegExpNormalChar] A
+
+#  181| [RegExpCharacterRange] A-Z
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] A
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
+
+#  181| [RegExpConstant, RegExpNormalChar] Z
+
+#  184| [RegExpCharacterClass] [a-]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] -
+
+#  184| [RegExpConstant, RegExpNormalChar] a
+
+#  184| [RegExpConstant, RegExpNormalChar] -
+
+#  185| [RegExpCharacterClass] [-a]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] -
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] a
+
+#  185| [RegExpConstant, RegExpNormalChar] -
+
+#  185| [RegExpConstant, RegExpNormalChar] a
+
+#  186| [RegExpCharacterClass] [-]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] -
+
+#  186| [RegExpConstant, RegExpNormalChar] -
+
+#  187| [RegExpCharacterClass] [*]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] *
+
+#  187| [RegExpConstant, RegExpNormalChar] *
+
+#  188| [RegExpCharacterClass] [^a]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  188| [RegExpConstant, RegExpNormalChar] a
+
+#  189| [RegExpCharacterClass] [a^]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] ^
+
+#  189| [RegExpConstant, RegExpNormalChar] a
+
+#  189| [RegExpConstant, RegExpNormalChar] ^
+
+#  190| [RegExpCharacterClass] [\\]
+#-----| 0 -> [RegExpConstant, RegExpEscape] \\
+
+#  190| [RegExpConstant, RegExpEscape] \\
+
+#  191| [RegExpCharacterClass] [\\\]]
+#-----| 0 -> [RegExpConstant, RegExpEscape] \\
+#-----| 1 -> [RegExpConstant, RegExpEscape] \]
+
+#  191| [RegExpConstant, RegExpEscape] \\
+
+#  191| [RegExpConstant, RegExpEscape] \]
+
+#  192| [RegExpCharacterClass] [:]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] :
+
+#  192| [RegExpConstant, RegExpNormalChar] :
+
+#  193| [RegExpNamedCharacterProperty] [:digit:]
+
+#  194| [RegExpNamedCharacterProperty] [:alnum:]
+
+#  197| [RegExpCharacterClass] []a]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ]
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] a
+
+#  197| [RegExpConstant, RegExpNormalChar] ]
+
+#  197| [RegExpConstant, RegExpNormalChar] a
+
+#  198| [RegExpNamedCharacterProperty] [:aaaaa:]

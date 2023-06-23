@@ -173,4 +173,27 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 		aa|
 		bb
 		""").firstMatch(in: input) // $ input=input regex=aa|NEWLINEbb
+
+    // --- exploring parser correctness ---
+
+    // ranges
+    _ = try Regex("[a-z]").firstMatch(in: input) // $ input=input regex=[a-z]
+    _ = try Regex("[a-zA-Z]").firstMatch(in: input) // $ input=input regex=[a-zA-Z]
+
+    // character classes
+    _ = try Regex("[a-]").firstMatch(in: input) // $ input=input regex=[a-]
+    _ = try Regex("[-a]").firstMatch(in: input) // $ input=input regex=[-a]
+    _ = try Regex("[-]").firstMatch(in: input) // $ input=input regex=[-]
+    _ = try Regex("[*]").firstMatch(in: input) // $ input=input regex=[*]
+    _ = try Regex("[^a]").firstMatch(in: input) // $ input=input regex=[^a]
+    _ = try Regex("[a^]").firstMatch(in: input) // $ input=input regex=[a^]
+    _ = try Regex(#"[\\]"#).firstMatch(in: input) // $ input=input regex=[\\]
+    _ = try Regex(#"[\\\]]"#).firstMatch(in: input) // $ input=input regex=[\\\]]
+    _ = try Regex("[:]").firstMatch(in: input) // $ input=input regex=[:]
+    _ = try Regex("[:digit:]").firstMatch(in: input) // $ input=input regex=[:digit:] SPURIOUS: $hasParseFailure
+    _ = try Regex("[:alnum:]").firstMatch(in: input) // $ input=input regex=[:alnum:] SPURIOUS: $hasParseFailure
+
+	// invalid (Swift doesn't like these regexs)
+    _ = try Regex("[]a]").firstMatch(in: input) // this is valid in other regex implementations, and is likely harmless to accept
+    _ = try Regex("[:aaaaa:]").firstMatch(in: input) // $ hasParseFailure
 }
