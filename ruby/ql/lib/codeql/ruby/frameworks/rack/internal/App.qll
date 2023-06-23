@@ -93,7 +93,7 @@ module App {
    * taking a single argument and returns a rack response, or a lambda or
    * proc that takes a single `env` argument and returns a rack response.
    */
-  abstract class App extends TApp {
+  abstract class RackApplication extends TApp {
     /** Gets a textual representation of this element. */
     string toString() { result = "Rack application" }
 
@@ -112,11 +112,11 @@ module App {
    * an instance method or a singleton method named "call" which takes a
    * single `env` argument and returns a rack response.
    */
-  private class ClassApp extends TApp, App {
+  private class ClassRackApplication extends TApp, RackApplication {
     private DataFlow::ClassNode cn;
     private CallNode call;
 
-    ClassApp() {
+    ClassRackApplication() {
       this = TClassApp(cn, call) and
       call = [cn.getInstanceMethod("call"), cn.getSingletonMethod("call")]
     }
@@ -130,10 +130,10 @@ module App {
    * A rack application that is either a lambda or a proc, which takes a
    * single `env` argument and returns a rack response.
    */
-  private class AnonymousApp extends TApp, App {
+  private class AnonymousRackApplication extends TApp, RackApplication {
     private CallNode call;
 
-    AnonymousApp() {
+    AnonymousRackApplication() {
       this = TAnonymousApp(call) and
       not exists(DataFlow::ClassNode cn |
         call = [cn.getInstanceMethod(_), cn.getSingletonMethod(_)]

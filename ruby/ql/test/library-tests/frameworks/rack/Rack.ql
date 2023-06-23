@@ -3,7 +3,7 @@ private import codeql.ruby.frameworks.Rack
 private import codeql.ruby.DataFlow
 
 query predicate rackApps(
-  Rack::App::App app, DataFlow::ParameterNode env, Rack::Response::ResponseNode resp
+  Rack::App::RackApplication app, DataFlow::ParameterNode env, Rack::Response::ResponseNode resp
 ) {
   env = app.getEnv() and resp = app.getAResponse()
 }
