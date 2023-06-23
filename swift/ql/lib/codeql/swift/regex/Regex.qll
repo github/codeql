@@ -60,18 +60,15 @@ private class ParsedStringRegex extends RegExp, StringLiteralExpr {
  * ```
  */
 abstract class RegexEval extends CallExpr {
-  Expr regexInput;
-  Expr stringInput;
-
   /**
    * Gets the input to this call that is the regular expression being evaluated.
    */
-  Expr getRegexInput() { result = regexInput }
+  abstract Expr getRegexInput();
 
   /**
    * Gets the input to this call that is the string the regular expression is evaluated on.
    */
-  Expr getStringInput() { result = stringInput }
+  abstract Expr getStringInput();
 
   /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
@@ -83,6 +80,9 @@ abstract class RegexEval extends CallExpr {
  * A call to a function that always evaluates a regular expression.
  */
 private class AlwaysRegexEval extends RegexEval {
+  Expr regexInput;
+  Expr stringInput;
+
   AlwaysRegexEval() {
     this.getStaticTarget()
         .(Method)
@@ -127,4 +127,8 @@ private class AlwaysRegexEval extends RegexEval {
     regexInput = this.getArgument(0).getExpr() and
     stringInput = this.getQualifier()
   }
+
+  override Expr getRegexInput() { result = regexInput }
+
+  override Expr getStringInput() { result = stringInput }
 }
