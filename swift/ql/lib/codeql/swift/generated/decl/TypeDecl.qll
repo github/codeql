@@ -30,7 +30,7 @@ module Generated {
     final Type getBaseType(int index) {
       exists(Type immediate |
         immediate = this.getImmediateBaseType(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 

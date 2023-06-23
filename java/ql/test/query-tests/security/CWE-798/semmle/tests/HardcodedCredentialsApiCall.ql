@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.HardcodedCredentialsApiCallQuery
 import TestUtilities.InlineExpectationsTest
 
-class HardcodedCredentialsApiCallTest extends InlineExpectationsTest {
-  HardcodedCredentialsApiCallTest() { this = "HardcodedCredentialsApiCallTest" }
+module HardcodedCredentialsApiCallTest implements TestSig {
+  string getARelevantTag() { result = "HardcodedCredentialsApiCall" }
 
-  override string getARelevantTag() { result = "HardcodedCredentialsApiCall" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "HardcodedCredentialsApiCall" and
     exists(DataFlow::Node sink | HardcodedCredentialApiCallFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -16,3 +14,5 @@ class HardcodedCredentialsApiCallTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HardcodedCredentialsApiCallTest>

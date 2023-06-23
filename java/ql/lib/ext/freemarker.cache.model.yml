@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["freemarker.cache", "StringTemplateLoader", True, "putTemplate", "", "", "Argument[1]", "ssti", "manual"]
+      - ["freemarker.cache", "StringTemplateLoader", True, "putTemplate", "", "", "Argument[1]", "template-injection", "manual"]

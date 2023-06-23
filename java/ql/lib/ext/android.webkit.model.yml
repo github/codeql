@@ -10,6 +10,6 @@ extensions:
       extensible: sinkModel
     data:
       # Models representing methods susceptible to XSS attacks.
-      - ["android.webkit", "WebView", False, "evaluateJavascript", "", "", "Argument[0]", "xss", "manual"]
-      - ["android.webkit", "WebView", False, "loadData", "", "", "Argument[0]", "xss", "manual"]
-      - ["android.webkit", "WebView", False, "loadDataWithBaseURL", "", "", "Argument[1]", "xss", "manual"]
+      - ["android.webkit", "WebView", False, "evaluateJavascript", "", "", "Argument[0]", "js-injection", "manual"]
+      - ["android.webkit", "WebView", False, "loadData", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["android.webkit", "WebView", False, "loadDataWithBaseURL", "", "", "Argument[1]", "html-injection", "manual"]

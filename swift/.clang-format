@@ -4,4 +4,4 @@ IndentWidth: 2
 SortIncludes: false
 AllowShortIfStatementsOnASingleLine: WithoutElse
 AlwaysBreakBeforeMultilineStrings: false
-Standard: c++17
+Standard: c++20

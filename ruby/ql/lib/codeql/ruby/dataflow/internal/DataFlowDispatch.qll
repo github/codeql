@@ -8,18 +8,21 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.SSA
+private import codeql.util.Boolean
+private import codeql.util.Unit
 
 /**
- * A `LocalSourceNode` for a `self` variable. This is either an implicit `self`
- * parameter or an implicit SSA entry definition.
+ * A `LocalSourceNode` for a `self` variable. This is the implicit `self`
+ * parameter, when it exists, otherwise the implicit SSA entry definition.
  */
 private class SelfLocalSourceNode extends DataFlow::LocalSourceNode {
   private SelfVariable self;
 
   SelfLocalSourceNode() {
-    self = this.(SelfParameterNode).getSelfVariable()
+    self = this.(SelfParameterNodeImpl).getSelfVariable()
     or
-    self = this.(SsaSelfDefinitionNode).getVariable()
+    self = this.(SsaSelfDefinitionNode).getVariable() and
+    not LocalFlow::localFlowSsaParamInput(_, this)
   }
 
   /** Gets the `self` variable. */
@@ -150,12 +153,12 @@ class DataFlowCall extends TDataFlowCall {
  */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
-  private DataFlow::Node receiver;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /** Gets the data flow node that this call targets. */
-  DataFlow::Node getReceiver() { result = receiver }
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
@@ -374,7 +377,9 @@ private module Cached {
   cached
   newtype TDataFlowCall =
     TNormalCall(CfgNodes::ExprNodes::CallCfgNode c) or
-    TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, DataFlow::Node receiver) {
+    TSummaryCall(
+      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+    ) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 
@@ -470,35 +475,28 @@ private module Cached {
 import Cached
 
 pragma[nomagic]
-private DataFlow::LocalSourceNode trackModuleAccess(Module m, TypeTracker t) {
-  t.start() and m = resolveConstantReadAccess(result.asExpr().getExpr())
-  or
-  exists(TypeTracker t2, StepSummary summary |
-    result = trackModuleAccessRec(m, t2, summary) and t = t2.append(summary)
-  )
+private predicate isNotSelf(DataFlow::Node n) { not n instanceof SelfParameterNodeImpl }
+
+private module TrackModuleInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Module;
+
+  predicate start(DataFlow::Node start, Module m) {
+    m = resolveConstantReadAccess(start.asExpr().getExpr())
+  }
+
+  // We exclude steps into `self` parameters, and instead rely on the type of the
+  // enclosing module
+  predicate filter(DataFlow::Node n) { n instanceof SelfParameterNodeImpl }
 }
 
-/**
- * We exclude steps into `self` parameters, and instead rely on the type of the
- * enclosing module.
- */
-pragma[nomagic]
-private DataFlow::LocalSourceNode trackModuleAccessRec(Module m, TypeTracker t, StepSummary summary) {
-  StepSummary::step(trackModuleAccess(m, t), result, summary) and
-  not result instanceof SelfParameterNode
-}
-
-pragma[nomagic]
-private DataFlow::LocalSourceNode trackModuleAccess(Module m) {
-  result = trackModuleAccess(m, TypeTracker::end())
-}
+predicate trackModuleAccess = CallGraphConstruction::Simple::Make<TrackModuleInput>::track/1;
 
 pragma[nomagic]
 private predicate hasUserDefinedNew(Module m) {
   exists(DataFlow::MethodNode method |
     // not `getAnAncestor` because singleton methods cannot be included
     singletonMethodOnModule(method.asCallableAstNode(), "new", m.getSuperClass*()) and
-    not method.getSelfParameter().getAMethodCall("allocate").flowsTo(method.getAReturningNode())
+    not method.getSelfParameter().getAMethodCall("allocate").flowsTo(method.getAReturnNode())
   )
 }
 
@@ -531,141 +529,162 @@ private predicate isStandardNewCall(RelevantCall new, Module m, boolean exact) {
   )
 }
 
-/** Holds if `n` is an instance of type `tp`. */
-private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
-  n.asExpr().getExpr() instanceof NilLiteral and
-  tp = TResolved("NilClass") and
-  exact = true
-  or
-  n.asExpr().getExpr().(BooleanLiteral).isFalse() and
-  tp = TResolved("FalseClass") and
-  exact = true
-  or
-  n.asExpr().getExpr().(BooleanLiteral).isTrue() and
-  tp = TResolved("TrueClass") and
-  exact = true
-  or
-  n.asExpr().getExpr() instanceof IntegerLiteral and
-  tp = TResolved("Integer") and
-  exact = true
-  or
-  n.asExpr().getExpr() instanceof FloatLiteral and
-  tp = TResolved("Float") and
-  exact = true
-  or
-  n.asExpr().getExpr() instanceof RationalLiteral and
-  tp = TResolved("Rational") and
-  exact = true
-  or
-  n.asExpr().getExpr() instanceof ComplexLiteral and
-  tp = TResolved("Complex") and
-  exact = true
-  or
-  n.asExpr().getExpr() instanceof StringlikeLiteral and
-  tp = TResolved("String") and
-  exact = true
-  or
-  n.asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode and
-  tp = TResolved("Array") and
-  exact = true
-  or
-  n.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode and
-  tp = TResolved("Hash") and
-  exact = true
-  or
-  n.asExpr().getExpr() instanceof MethodBase and
-  tp = TResolved("Symbol") and
-  exact = true
-  or
-  n.asParameter() instanceof BlockParameter and
-  tp = TResolved("Proc") and
-  exact = true
-  or
-  n.asExpr().getExpr() instanceof Lambda and
-  tp = TResolved("Proc") and
-  exact = true
-  or
-  isStandardNewCall(n.asExpr(), tp, exact)
-  or
-  // `self` reference in method or top-level (but not in module or singleton method,
-  // where instance methods cannot be called; only singleton methods)
-  n =
-    any(SelfLocalSourceNode self |
-      exists(MethodBase m |
-        selfInMethod(self.getVariable(), m, tp) and
-        not m instanceof SingletonMethod and
-        if m.getEnclosingModule() instanceof Toplevel then exact = true else exact = false
-      )
-      or
-      selfInToplevel(self.getVariable(), tp) and
-      exact = true
-    )
-  or
-  // `in C => c then c.foo`
-  asModulePattern(n, tp) and
-  exact = false
-  or
-  // `case object when C then object.foo`
-  hasAdjacentTypeCheckedReads(_, _, n.asExpr(), tp) and
-  exact = false
-}
-
-pragma[nomagic]
-private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
-  t.start() and
-  (
-    isInstance(result, tp, exact)
-    or
-    exists(Module m |
-      (if m.isClass() then tp = TResolved("Class") else tp = TResolved("Module")) and
-      exact = true
-    |
-      // needed for e.g. `C.new`
-      m = resolveConstantReadAccess(result.asExpr().getExpr())
-      or
-      // needed for e.g. `self.include`
-      selfInModule(result.(SelfLocalSourceNode).getVariable(), m)
-      or
-      // needed for e.g. `self.puts`
-      selfInMethod(result.(SelfLocalSourceNode).getVariable(), any(SingletonMethod sm), m)
-    )
-  )
-  or
-  exists(TypeTracker t2, StepSummary summary |
-    result = trackInstanceRec(tp, t2, exact, summary) and t = t2.append(summary)
-  )
-}
-
 private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
   localFlowStepTypeTracker(nodeFrom, nodeTo) and
   summary.toString() = "level"
 }
 
-pragma[nomagic]
-private predicate hasAdjacentTypeCheckedReads(DataFlow::Node node) {
-  hasAdjacentTypeCheckedReads(_, _, node.asExpr(), _)
-}
-
-/**
- * We exclude steps into `self` parameters and type checked variables. For those,
- * we instead rely on the type of the enclosing module resp. the type being checked
- * against, and apply an open-world assumption when determining possible dispatch
- * targets.
- */
-pragma[nomagic]
-private DataFlow::Node trackInstanceRec(Module tp, TypeTracker t, boolean exact, StepSummary summary) {
-  exists(DataFlow::Node mid | mid = trackInstance(tp, exact, t) |
-    StepSummary::smallstep(mid, result, summary) and
-    not result instanceof SelfParameterNode
+private module TrackInstanceInput implements CallGraphConstruction::InputSig {
+  pragma[nomagic]
+  private predicate isInstanceNoCall(DataFlow::Node n, Module tp, boolean exact) {
+    n.asExpr().getExpr() instanceof NilLiteral and
+    tp = TResolved("NilClass") and
+    exact = true
     or
-    localFlowStep(mid, result, summary) and
-    not hasAdjacentTypeCheckedReads(result)
-  )
+    n.asExpr().getExpr().(BooleanLiteral).isFalse() and
+    tp = TResolved("FalseClass") and
+    exact = true
+    or
+    n.asExpr().getExpr().(BooleanLiteral).isTrue() and
+    tp = TResolved("TrueClass") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof IntegerLiteral and
+    tp = TResolved("Integer") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof FloatLiteral and
+    tp = TResolved("Float") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof RationalLiteral and
+    tp = TResolved("Rational") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof ComplexLiteral and
+    tp = TResolved("Complex") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof StringlikeLiteral and
+    tp = TResolved("String") and
+    exact = true
+    or
+    n.asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode and
+    tp = TResolved("Array") and
+    exact = true
+    or
+    n.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode and
+    tp = TResolved("Hash") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof MethodBase and
+    tp = TResolved("Symbol") and
+    exact = true
+    or
+    n.asParameter() instanceof BlockParameter and
+    tp = TResolved("Proc") and
+    exact = true
+    or
+    n.asExpr().getExpr() instanceof Lambda and
+    tp = TResolved("Proc") and
+    exact = true
+    or
+    // `self` reference in method or top-level (but not in module or singleton method,
+    // where instance methods cannot be called; only singleton methods)
+    n =
+      any(SelfLocalSourceNode self |
+        exists(MethodBase m |
+          selfInMethod(self.getVariable(), m, tp) and
+          not m instanceof SingletonMethod and
+          if m.getEnclosingModule() instanceof Toplevel then exact = true else exact = false
+        )
+        or
+        selfInToplevel(self.getVariable(), tp) and
+        exact = true
+      )
+    or
+    // `in C => c then c.foo`
+    asModulePattern(n, tp) and
+    exact = false
+    or
+    // `case object when C then object.foo`
+    hasAdjacentTypeCheckedReads(_, _, n.asExpr(), tp) and
+    exact = false
+  }
+
+  pragma[nomagic]
+  private predicate isInstanceCall(DataFlow::Node n, Module tp, boolean exact) {
+    isStandardNewCall(n.asExpr(), tp, exact)
+  }
+
+  /** Holds if `n` is an instance of type `tp`. */
+  pragma[inline]
+  private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
+    isInstanceNoCall(n, tp, exact)
+    or
+    isInstanceCall(n, tp, exact)
+  }
+
+  pragma[nomagic]
+  private predicate hasAdjacentTypeCheckedReads(DataFlow::Node node) {
+    hasAdjacentTypeCheckedReads(_, _, node.asExpr(), _)
+  }
+
+  newtype State = additional MkState(Module m, Boolean exact)
+
+  predicate start(DataFlow::Node start, State state) {
+    exists(Module tp, boolean exact | state = MkState(tp, exact) |
+      isInstance(start, tp, exact)
+      or
+      exists(Module m |
+        (if m.isClass() then tp = TResolved("Class") else tp = TResolved("Module")) and
+        exact = true
+      |
+        // needed for e.g. `C.new`
+        m = resolveConstantReadAccess(start.asExpr().getExpr())
+        or
+        // needed for e.g. `self.include`
+        selfInModule(start.(SelfLocalSourceNode).getVariable(), m)
+        or
+        // needed for e.g. `self.puts`
+        selfInMethod(start.(SelfLocalSourceNode).getVariable(), any(SingletonMethod sm), m)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
+    // We exclude steps into `self` parameters. For those, we instead rely on the type of
+    // the enclosing module
+    StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary) and
+    isNotSelf(nodeTo)
+    or
+    // We exclude steps into type checked variables. For those, we instead rely on the
+    // type being checked against
+    localFlowStep(nodeFrom, nodeTo, summary) and
+    not hasAdjacentTypeCheckedReads(nodeTo)
+  }
+
+  predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
+    StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
+  }
+
+  class StateProj = Unit;
+
+  Unit stateProj(State state) { exists(state) and exists(result) }
+
+  // We exclude steps into `self` parameters, and instead rely on the type of the
+  // enclosing module
+  predicate filter(DataFlow::Node n, Unit u) {
+    n instanceof SelfParameterNodeImpl and
+    exists(u)
+  }
 }
 
 pragma[nomagic]
 private DataFlow::Node trackInstance(Module tp, boolean exact) {
-  result = trackInstance(tp, exact, TypeTracker::end())
+  result =
+    CallGraphConstruction::Make<TrackInstanceInput>::track(TrackInstanceInput::MkState(tp, exact))
 }
 
 pragma[nomagic]
@@ -706,30 +725,17 @@ private CfgScope getTargetInstance(RelevantCall call, string method) {
   )
 }
 
-pragma[nomagic]
-private DataFlow::LocalSourceNode trackBlock(Block block, TypeTracker t) {
-  t.start() and result.asExpr().getExpr() = block
-  or
-  exists(TypeTracker t2, StepSummary summary |
-    result = trackBlockRec(block, t2, summary) and
-    t = t2.append(summary)
-  )
+private module TrackBlockInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Block;
+
+  predicate start(DataFlow::Node start, Block block) { start.asExpr().getExpr() = block }
+
+  // We exclude steps into `self` parameters, and instead rely on the type of the
+  // enclosing module
+  predicate filter(DataFlow::Node n) { n instanceof SelfParameterNodeImpl }
 }
 
-/**
- * We exclude steps into `self` parameters, which may happen when the code
- * base contains implementations of `call`.
- */
-pragma[nomagic]
-private DataFlow::LocalSourceNode trackBlockRec(Block block, TypeTracker t, StepSummary summary) {
-  StepSummary::step(trackBlock(block, t), result, summary) and
-  not result instanceof SelfParameterNode
-}
-
-pragma[nomagic]
-private DataFlow::LocalSourceNode trackBlock(Block block) {
-  result = trackBlock(block, TypeTracker::end())
-}
+private predicate trackBlock = CallGraphConstruction::Simple::Make<TrackBlockInput>::track/1;
 
 /** Holds if `m` is a singleton method named `name`, defined on `object. */
 private predicate singletonMethod(MethodBase m, string name, Expr object) {
@@ -896,92 +902,98 @@ predicate singletonMethodOnInstance(MethodBase method, string name, Expr object)
   )
 }
 
-/**
- * Holds if there is reverse flow from `nodeFrom` to `nodeTo` via a parameter.
- *
- * This is only used for tracking singleton methods, where we want to be able
- * to handle cases like
- *
- * ```rb
- * def add_singleton x
- *   def x.foo; end
- * end
- *
- * y = add_singleton C.new
- * y.foo
- * ```
- *
- * and
- *
- * ```rb
- * class C
- *   def add_singleton_to_self
- *     def self.foo; end
- *   end
- * end
- *
- * y = C.new
- * y.add_singleton_to_self
- * y.foo
- * ```
- */
-pragma[nomagic]
-private predicate paramReturnFlow(
-  DataFlow::Node nodeFrom, DataFlow::PostUpdateNode nodeTo, StepSummary summary
-) {
-  exists(RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p, Expr nodeFromPreExpr |
-    TypeTrackerSpecific::callStep(call, arg, p) and
-    nodeTo.getPreUpdateNode() = arg and
-    summary.toString() = "return" and
-    (
-      nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruction::InputSig {
+  /**
+   * Holds if there is reverse flow from `nodeFrom` to `nodeTo` via a parameter.
+   *
+   * This is only used for tracking singleton methods, where we want to be able
+   * to handle cases like
+   *
+   * ```rb
+   * def add_singleton x
+   *   def x.foo; end
+   * end
+   *
+   * y = add_singleton C.new
+   * y.foo
+   * ```
+   *
+   * and
+   *
+   * ```rb
+   * class C
+   *   def add_singleton_to_self
+   *     def self.foo; end
+   *   end
+   * end
+   *
+   * y = C.new
+   * y.add_singleton_to_self
+   * y.foo
+   * ```
+   */
+  pragma[nomagic]
+  private predicate paramReturnFlow(
+    DataFlow::Node nodeFrom, DataFlow::PostUpdateNode nodeTo, StepSummary summary
+  ) {
+    exists(RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p, Expr nodeFromPreExpr |
+      TypeTrackerSpecific::callStep(call, arg, p) and
+      nodeTo.getPreUpdateNode() = arg and
+      summary.toString() = "return" and
+      (
+        nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+        or
+        nodeFromPreExpr = nodeFrom.asExpr().getExpr() and
+        singletonMethodOnInstance(_, _, nodeFromPreExpr)
+      )
+    |
+      nodeFromPreExpr = p.getParameter().(NamedParameter).getVariable().getAnAccess()
       or
-      nodeFromPreExpr = nodeFrom.asExpr().getExpr() and
-      singletonMethodOnInstance(_, _, nodeFromPreExpr)
+      nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfVariable().getAnAccess()
     )
-  |
-    nodeFromPreExpr = p.getParameter().(NamedParameter).getVariable().getAnAccess()
-    or
-    nodeFromPreExpr = p.(SelfParameterNode).getSelfVariable().getAnAccess()
-  )
-}
+  }
 
-pragma[nomagic]
-private DataFlow::Node trackSingletonMethodOnInstance(MethodBase method, string name, TypeTracker t) {
-  t.start() and
-  singletonMethodOnInstance(method, name, result.asExpr().getExpr())
-  or
-  exists(TypeTracker t2, StepSummary summary |
-    result = trackSingletonMethodOnInstanceRec(method, name, t2, summary) and
-    t = t2.append(summary) and
-    // Stop flow at redefinitions.
-    //
-    // Example:
-    // ```rb
-    // def x.foo; end
-    // def x.foo; end
-    // x.foo # <- we want to resolve this call to the second definition only
-    // ```
-    not singletonMethodOnInstance(_, name, result.asExpr().getExpr())
-  )
-}
+  class State = MethodBase;
 
-pragma[nomagic]
-private DataFlow::Node trackSingletonMethodOnInstanceRec(
-  MethodBase method, string name, TypeTracker t, StepSummary summary
-) {
-  exists(DataFlow::Node mid | mid = trackSingletonMethodOnInstance(method, name, t) |
-    StepSummary::smallstep(mid, result, summary)
+  predicate start(DataFlow::Node start, MethodBase method) {
+    singletonMethodOnInstance(method, _, start.asExpr().getExpr())
+  }
+
+  predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
+    StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary)
     or
-    paramReturnFlow(mid, result, summary)
+    localFlowStep(nodeFrom, nodeTo, summary)
+  }
+
+  predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
+    StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
     or
-    localFlowStep(mid, result, summary)
-  )
+    paramReturnFlow(nodeFrom, nodeTo, summary)
+  }
+
+  class StateProj extends string {
+    StateProj() { singletonMethodOnInstance(_, this, _) }
+  }
+
+  StateProj stateProj(MethodBase method) { singletonMethodOnInstance(method, result, _) }
+
+  // Stop flow at redefinitions.
+  //
+  // Example:
+  // ```rb
+  // def x.foo; end
+  // def x.foo; end
+  // x.foo # <- we want to resolve this call to the second definition only
+  // ```
+  predicate filter(DataFlow::Node n, StateProj name) {
+    singletonMethodOnInstance(_, name, n.asExpr().getExpr())
+  }
 }
 
 pragma[nomagic]
 private DataFlow::Node trackSingletonMethodOnInstance(MethodBase method, string name) {
-  result = trackSingletonMethodOnInstance(method, name, TypeTracker::end())
+  result = CallGraphConstruction::Make<TrackSingletonMethodOnInstanceInput>::track(method) and
+  singletonMethodOnInstance(method, name, _)
 }
 
 /** Holds if a `self` access may be the receiver of `call` directly inside module `m`. */

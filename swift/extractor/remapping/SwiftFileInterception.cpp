@@ -114,7 +114,6 @@ class FileInterceptor {
   }
 
   int open(const char* path, int flags, mode_t mode = 0) const {
-    fs::path fsPath{path};
     CODEQL_ASSERT((flags & O_ACCMODE) == O_RDONLY, "We should only be intercepting file reads");
     // try to use the hash map first
     errno = 0;
@@ -162,7 +161,7 @@ class FileInterceptor {
 };
 
 std::optional<std::string> getHashOfRealFile(const fs::path& path) {
-  static std::unordered_map<fs::path, std::string> cache;
+  static std::unordered_map<fs::path, std::string, codeql::PathHash> cache;
   auto resolved = resolvePath(path);
   if (auto found = cache.find(resolved); found != cache.end()) {
     return found->second;

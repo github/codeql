@@ -27,7 +27,7 @@ module Generated {
     final Expr getCondition() {
       exists(Expr immediate |
         immediate = this.getImmediateCondition() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 

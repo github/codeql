@@ -10,23 +10,10 @@ module Generated {
 
     /**
      * Gets the body of this do statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    BraceStmt getImmediateBody() {
+    BraceStmt getBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertDoStmtToRaw(this).(Raw::DoStmt).getBody())
-    }
-
-    /**
-     * Gets the body of this do statement.
-     */
-    final BraceStmt getBody() {
-      exists(BraceStmt immediate |
-        immediate = this.getImmediateBody() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }

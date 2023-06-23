@@ -33,25 +33,12 @@ module Generated {
 
     /**
      * Gets the type representation of this typed pattern, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    TypeRepr getImmediateTypeRepr() {
+    TypeRepr getTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertTypedPatternToRaw(this)
               .(Raw::TypedPattern)
               .getTypeRepr())
-    }
-
-    /**
-     * Gets the type representation of this typed pattern, if it exists.
-     */
-    final TypeRepr getTypeRepr() {
-      exists(TypeRepr immediate |
-        immediate = this.getImmediateTypeRepr() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

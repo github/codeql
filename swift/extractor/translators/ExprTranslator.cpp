@@ -61,10 +61,6 @@ codeql::InterpolatedStringLiteralExpr ExprTranslator::translateInterpolatedStrin
     const swift::InterpolatedStringLiteralExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.interpolation_expr = dispatcher.fetchOptionalLabel(expr.getInterpolationExpr());
-  // TODO we should be extracting getInterpolationCount and getLiteralCapacity directly to ints
-  // these expressions here are just an internal thing, the ints are actually directly available
-  entry.interpolation_count_expr = dispatcher.fetchOptionalLabel(expr.getInterpolationCountExpr());
-  entry.literal_capacity_expr = dispatcher.fetchOptionalLabel(expr.getLiteralCapacityExpr());
   entry.appending_expr = dispatcher.fetchOptionalLabel(expr.getAppendingExpr());
   return entry;
 }
@@ -407,7 +403,7 @@ codeql::ForceValueExpr ExprTranslator::translateForceValueExpr(const swift::Forc
   return entry;
 }
 
-codeql::IfExpr ExprTranslator::translateIfExpr(const swift::IfExpr& expr) {
+codeql::IfExpr ExprTranslator::translateTernaryExpr(const swift::TernaryExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.condition = dispatcher.fetchLabel(expr.getCondExpr());
   entry.then_expr = dispatcher.fetchLabel(expr.getThenExpr());

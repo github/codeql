@@ -22,25 +22,12 @@ module Generated {
 
     /**
      * Gets the naming declaration of this opaque type declaration.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ValueDecl getImmediateNamingDeclaration() {
+    ValueDecl getNamingDeclaration() {
       result =
         Synth::convertValueDeclFromRaw(Synth::convertOpaqueTypeDeclToRaw(this)
               .(Raw::OpaqueTypeDecl)
               .getNamingDeclaration())
-    }
-
-    /**
-     * Gets the naming declaration of this opaque type declaration.
-     */
-    final ValueDecl getNamingDeclaration() {
-      exists(ValueDecl immediate |
-        immediate = this.getImmediateNamingDeclaration() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
@@ -62,7 +49,7 @@ module Generated {
     final GenericTypeParamType getOpaqueGenericParam(int index) {
       exists(GenericTypeParamType immediate |
         immediate = this.getImmediateOpaqueGenericParam(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 

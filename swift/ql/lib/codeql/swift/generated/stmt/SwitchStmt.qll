@@ -26,31 +26,18 @@ module Generated {
     final Expr getExpr() {
       exists(Expr immediate |
         immediate = this.getImmediateExpr() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 
     /**
      * Gets the `index`th case of this switch statement (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    CaseStmt getImmediateCase(int index) {
+    CaseStmt getCase(int index) {
       result =
         Synth::convertCaseStmtFromRaw(Synth::convertSwitchStmtToRaw(this)
               .(Raw::SwitchStmt)
               .getCase(index))
-    }
-
-    /**
-     * Gets the `index`th case of this switch statement (0-based).
-     */
-    final CaseStmt getCase(int index) {
-      exists(CaseStmt immediate |
-        immediate = this.getImmediateCase(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

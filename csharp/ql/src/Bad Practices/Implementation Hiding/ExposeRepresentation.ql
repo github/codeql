@@ -78,4 +78,4 @@ where
   exposesByStore(c, f, why, whyText)
 select c,
   "'" + c.getName() + "' exposes the internal representation stored in field '" + f.getName() +
-    "'. The value may be modified $@.", why.getLocation(), whyText
+    "'. The value may be modified $@.", why, whyText

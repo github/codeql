@@ -12,7 +12,7 @@ abstract class UrlRedirectSink extends DataFlow::Node { }
 
 /** A default sink represeting methods susceptible to URL redirection attacks. */
 private class DefaultUrlRedirectSink extends UrlRedirectSink {
-  DefaultUrlRedirectSink() { sinkNode(this, "url-redirect") }
+  DefaultUrlRedirectSink() { sinkNode(this, "url-redirection") }
 }
 
 /** A Servlet URL redirection sink. */

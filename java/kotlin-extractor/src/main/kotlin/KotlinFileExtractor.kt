@@ -366,7 +366,10 @@ open class KotlinFileExtractor(
 
             val typeArgs = removeOuterClassTypeArgs(c, argsIncludingOuterClasses)
             if (typeArgs != null) {
-                for ((idx, arg) in typeArgs.withIndex()) {
+                // From 1.9, the list might change when we call erase,
+                // so we make a copy that it is safe to iterate over.
+                val typeArgsCopy = typeArgs.toList()
+                for ((idx, arg) in typeArgsCopy.withIndex()) {
                     val argId = getTypeArgumentLabel(arg).id
                     tw.writeTypeArgs(argId, idx, id)
                 }
@@ -1698,12 +1701,13 @@ open class KotlinFileExtractor(
 
     private fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
         with("synthetic body", b) {
-            when (b.kind) {
-                IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
-                IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+            val kind = b.kind
+            when {
+                kind == IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
+                kind == IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+                kind == kind_ENUM_ENTRIES -> tw.writeKtSyntheticBody(callable, 3)
                 else -> {
-                    // TODO: Support IrSyntheticBodyKind.ENUM_ENTRIES
-                    logger.errorElement("Unhandled synthetic body kind " + b.kind.javaClass, b)
+                    logger.errorElement("Unhandled synthetic body kind " + kind, b)
                 }
             }
         }
@@ -2394,9 +2398,9 @@ open class KotlinFileExtractor(
         return result
     }
 
-    private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, parameterTypes: Array<String>, warnAgainstElement: IrElement): IrFunction? {
+    private fun findTopLevelFunctionOrWarn(functionPkg: String, functionName: String, type: String, parameterTypes: Array<String>, warnAgainstElement: IrElement): IrFunction? {
 
-        val fn = getFunctionsByFqName(pluginContext, functionFilter)
+        val fn = getFunctionsByFqName(pluginContext, functionPkg, functionName)
             .firstOrNull { fnSymbol ->
                 fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
                 fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
@@ -2407,15 +2411,15 @@ open class KotlinFileExtractor(
                 extractExternalClassLater(fn.parentAsClass)
             }
         } else {
-            logger.errorElement("Couldn't find JVM intrinsic function $functionFilter in $type", warnAgainstElement)
+            logger.errorElement("Couldn't find JVM intrinsic function $functionPkg $functionName in $type", warnAgainstElement)
         }
 
         return fn
     }
 
-    private fun findTopLevelPropertyOrWarn(propertyFilter: String, type: String, warnAgainstElement: IrElement): IrProperty? {
+    private fun findTopLevelPropertyOrWarn(propertyPkg: String, propertyName: String, type: String, warnAgainstElement: IrElement): IrProperty? {
 
-        val prop = getPropertiesByFqName(pluginContext, propertyFilter)
+        val prop = getPropertiesByFqName(pluginContext, propertyPkg, propertyName)
             .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
             ?.owner
 
@@ -2424,7 +2428,7 @@ open class KotlinFileExtractor(
                 extractExternalClassLater(prop.parentAsClass)
             }
         } else {
-            logger.errorElement("Couldn't find JVM intrinsic property $propertyFilter in $type", warnAgainstElement)
+            logger.errorElement("Couldn't find JVM intrinsic property $propertyPkg $propertyName in $type", warnAgainstElement)
         }
 
         return prop
@@ -3016,7 +3020,7 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCall(c, "<get-java>", "kotlin.jvm") -> {
                     // Special case for KClass<*>.java, which is used in the Parcelize plugin. In normal cases, this is already rewritten to the property referenced below:
-                    findTopLevelPropertyOrWarn("kotlin.jvm.java", "kotlin.jvm.JvmClassMappingKt", c)?.let { javaProp ->
+                    findTopLevelPropertyOrWarn("kotlin.jvm", "java", "kotlin.jvm.JvmClassMappingKt", c)?.let { javaProp ->
                         val getter = javaProp.getter
                         if (getter == null) {
                             logger.error("Couldn't find getter of `kotlin.jvm.JvmClassMappingKt::java`")
@@ -3048,7 +3052,7 @@ open class KotlinFileExtractor(
                         "kotlin.jvm.internal.ArrayIteratorsKt"
                     }
 
-                    findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", typeFilter, arrayOf(parentClass.kotlinFqName.asString()), c)?.let { iteratorFn ->
+                    findTopLevelFunctionOrWarn("kotlin.jvm.internal", "iterator", typeFilter, arrayOf(parentClass.kotlinFqName.asString()), c)?.let { iteratorFn ->
                         val dispatchReceiver = c.dispatchReceiver
                         if (dispatchReceiver == null) {
                             logger.errorElement("No dispatch receiver found for array iterator call", c)
@@ -5313,7 +5317,10 @@ open class KotlinFileExtractor(
     private fun extractTypeAccessRecursive(t: IrType, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx)
         if (t is IrSimpleType) {
-            t.arguments.forEachIndexed { argIdx, arg ->
+            // From 1.9, the list might change when we call erase,
+            // so we make a copy that it is safe to iterate over.
+            val argumentsCopy = t.arguments.toList()
+            argumentsCopy.forEachIndexed { argIdx, arg ->
                 extractWildcardTypeAccessRecursive(arg, location, typeAccessId, argIdx)
             }
         }
@@ -5531,7 +5538,7 @@ open class KotlinFileExtractor(
                         return
                     }
 
-                    val typeOwner = e.typeOperandClassifier.owner
+                    val typeOwner = e.typeOperand.classifierOrFail.owner
                     if (typeOwner !is IrClass) {
                         logger.errorElement("Expected to find SAM conversion to IrClass. Found '${typeOwner.javaClass}' instead. Can't implement SAM interface.", e)
                         return
