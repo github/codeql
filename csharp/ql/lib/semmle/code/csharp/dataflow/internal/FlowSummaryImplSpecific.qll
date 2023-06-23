@@ -186,7 +186,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of the content in the format used MaD models. */
+/** Gets the textual representation of the content in the format used for MaD models. */
 private string getContentSpecific(Content c) {
   c = TElementContent() and result = "Element"
   or
