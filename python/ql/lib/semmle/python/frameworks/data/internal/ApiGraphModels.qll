@@ -644,7 +644,7 @@ module ModelOutput {
     }
 
     /**
-     * Holds if a `baseNode` is an invocation identified by the `type,path` part of a summary row.
+     * Holds if a `baseNode` is a callable identified by the `type,path` part of a summary row.
      */
     cached
     predicate resolvedSummaryRefBase(string type, string path, API::Node baseNode) {
