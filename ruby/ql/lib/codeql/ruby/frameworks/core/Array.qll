@@ -2067,7 +2067,11 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
-      output = ["Argument[block].Parameter[0]", "ReturnValue.Element[?]"] and
+      output = "Argument[block].Parameter[0]" and
+      preservesValue = true
+      or
+      input = "Argument[block].ReturnValue" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = true
     }
   }

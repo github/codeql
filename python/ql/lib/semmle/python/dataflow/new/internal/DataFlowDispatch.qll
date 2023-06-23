@@ -38,6 +38,7 @@ private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import semmle.python.internal.CachedStages
+private import semmle.python.dataflow.new.internal.TypeTracker::CallGraphConstruction as CallGraphConstruction
 
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
@@ -249,6 +250,9 @@ abstract class LibraryCallable extends string {
 
   /** Gets a call to this library callable. */
   abstract CallCfgNode getACall();
+
+  /** Same as `getACall` but without referring to the call graph or API graph. */
+  CallCfgNode getACallSimple() { none() }
 
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   abstract ArgumentNode getACallback();
@@ -464,103 +468,105 @@ private predicate ignoreForCallGraph(File f) {
   f.getAbsolutePath().matches("%/site-packages/sympy/%")
 }
 
-/**
- * Gets a reference to the function `func`.
- */
-private TypeTrackingNode functionTracker(TypeTracker t, Function func) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  (
-    result.asExpr() = func.getDefinition()
+private module TrackFunctionInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Function;
+
+  predicate start(Node start, Function func) {
+    start.asExpr() = func.getDefinition()
     or
     // when a function is decorated, it's the result of the (last) decorator call that
     // is used
-    result.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = functionTracker(t2, func).track(t2, t))
+    start.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
+  }
+
+  predicate filter(Node n) { ignoreForCallGraph(n.getLocation().getFile()) }
 }
 
 /**
  * Gets a reference to the function `func`.
  */
-Node functionTracker(Function func) { functionTracker(TypeTracker::end(), func).flowsTo(result) }
+Node functionTracker(Function func) {
+  CallGraphConstruction::Simple::Make<TrackFunctionInput>::track(func)
+      .(LocalSourceNode)
+      .flowsTo(result)
+}
 
-/**
- * Gets a reference to the class `cls`.
- */
-private TypeTrackingNode classTracker(TypeTracker t, Class cls) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  (
-    result.asExpr() = cls.getParent()
+private module TrackClassInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Class;
+
+  predicate start(Node start, Class cls) {
+    start.asExpr() = cls.getParent()
     or
     // when a class is decorated, it's the result of the (last) decorator call that
     // is used
-    result.asExpr() = cls.getParent().getADecoratorCall()
+    start.asExpr() = cls.getParent().getADecoratorCall()
     or
     // `type(obj)`, where obj is an instance of this class
-    result = getTypeCall() and
-    result.(CallCfgNode).getArg(0) = classInstanceTracker(cls)
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = classTracker(t2, cls).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+    start = getTypeCall() and
+    start.(CallCfgNode).getArg(0) = classInstanceTracker(cls)
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
  * Gets a reference to the class `cls`.
  */
-Node classTracker(Class cls) { classTracker(TypeTracker::end(), cls).flowsTo(result) }
+Node classTracker(Class cls) {
+  CallGraphConstruction::Simple::Make<TrackClassInput>::track(cls).(LocalSourceNode).flowsTo(result)
+}
 
-/**
- * Gets a reference to an instance of the class `cls`.
- */
-private TypeTrackingNode classInstanceTracker(TypeTracker t, Class cls) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  resolveClassCall(result.(CallCfgNode).asCfgNode(), cls)
-  or
-  // result of `super().__new__` as used in a `__new__` method implementation
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(Class classUsedInSuper |
-    fromSuperNewCall(result.(CallCfgNode).asCfgNode(), classUsedInSuper, _, _) and
-    classUsedInSuper = getADirectSuperclass*(cls)
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = classInstanceTracker(t2, cls).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+private module TrackClassInstanceInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Class;
+
+  predicate start(Node start, Class cls) {
+    resolveClassCall(start.(CallCfgNode).asCfgNode(), cls)
+    or
+    // result of `super().__new__` as used in a `__new__` method implementation
+    exists(Class classUsedInSuper |
+      fromSuperNewCall(start.(CallCfgNode).asCfgNode(), classUsedInSuper, _, _) and
+      classUsedInSuper = getADirectSuperclass*(cls)
+    )
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
  * Gets a reference to an instance of the class `cls`.
  */
 Node classInstanceTracker(Class cls) {
-  classInstanceTracker(TypeTracker::end(), cls).flowsTo(result)
+  CallGraphConstruction::Simple::Make<TrackClassInstanceInput>::track(cls)
+      .(LocalSourceNode)
+      .flowsTo(result)
 }
 
-/**
- * Gets a reference to the `self` argument of a method on class `classWithMethod`.
- * The method cannot be a `staticmethod` or `classmethod`.
- */
-private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(Function func |
-    func = classWithMethod.getAMethod() and
-    not isStaticmethod(func) and
-    not isClassmethod(func)
-  |
-    result.asExpr() = func.getArg(0)
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = selfTracker(t2, classWithMethod).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+private module TrackSelfInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Class;
+
+  predicate start(Node start, Class classWithMethod) {
+    exists(Function func |
+      func = classWithMethod.getAMethod() and
+      not isStaticmethod(func) and
+      not isClassmethod(func)
+    |
+      start.asExpr() = func.getArg(0)
+    )
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
@@ -568,33 +574,32 @@ private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
  * The method cannot be a `staticmethod` or `classmethod`.
  */
 Node selfTracker(Class classWithMethod) {
-  selfTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
+  CallGraphConstruction::Simple::Make<TrackSelfInput>::track(classWithMethod)
+      .(LocalSourceNode)
+      .flowsTo(result)
 }
 
-/**
- * Gets a reference to the enclosing class `classWithMethod` from within one of its
- * methods, either through the `cls` argument from a `classmethod` or from `type(self)`
- * from a normal method.
- */
-private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  (
+private module TrackClsArgumentInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Class;
+
+  predicate start(Node start, Class classWithMethod) {
     exists(Function func |
       func = classWithMethod.getAMethod() and
       isClassmethod(func)
     |
-      result.asExpr() = func.getArg(0)
+      start.asExpr() = func.getArg(0)
     )
     or
     // type(self)
-    result = getTypeCall() and
-    result.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = clsArgumentTracker(t2, classWithMethod).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+    start = getTypeCall() and
+    start.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
@@ -603,26 +608,28 @@ private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod
  * from a normal method.
  */
 Node clsArgumentTracker(Class classWithMethod) {
-  clsArgumentTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
+  CallGraphConstruction::Simple::Make<TrackClsArgumentInput>::track(classWithMethod)
+      .(LocalSourceNode)
+      .flowsTo(result)
 }
 
-/**
- * Gets a reference to the result of calling `super` without any argument, where the
- * call happened in the method `func` (either a method or a classmethod).
- */
-private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  not isStaticmethod(func) and
-  exists(CallCfgNode call | result = call |
-    call = getSuperCall() and
-    not exists(call.getArg(_)) and
-    call.getScope() = func
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = superCallNoArgumentTracker(t2, func).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+private module TrackSuperCallNoArgumentInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Function;
+
+  predicate start(Node start, Function func) {
+    not isStaticmethod(func) and
+    exists(CallCfgNode call | start = call |
+      call = getSuperCall() and
+      not exists(call.getArg(_)) and
+      call.getScope() = func
+    )
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
@@ -630,25 +637,30 @@ private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func
  * call happened in the method `func` (either a method or a classmethod).
  */
 Node superCallNoArgumentTracker(Function func) {
-  superCallNoArgumentTracker(TypeTracker::end(), func).flowsTo(result)
+  CallGraphConstruction::Simple::Make<TrackSuperCallNoArgumentInput>::track(func)
+      .(LocalSourceNode)
+      .flowsTo(result)
 }
 
-/**
- * Gets a reference to the result of calling `super` with 2 arguments, where the
- * first is a reference to the class `cls`, and the second argument is `obj`.
- */
-private TypeTrackingNode superCallTwoArgumentTracker(TypeTracker t, Class cls, Node obj) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(CallCfgNode call | result = call |
+private module TrackSuperCallTwoArgumentInput implements CallGraphConstruction::Simple::InputSig {
+  additional predicate superCall(CallCfgNode call, Class cls, Node obj) {
     call = getSuperCall() and
     call.getArg(0) = classTracker(cls) and
     call.getArg(1) = obj
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = superCallTwoArgumentTracker(t2, cls, obj).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
+
+  class State = CallCfgNode;
+
+  predicate start(Node start, CallCfgNode call) {
+    superCall(call, _, _) and
+    start = call
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
@@ -656,7 +668,12 @@ private TypeTrackingNode superCallTwoArgumentTracker(TypeTracker t, Class cls, N
  * first is a reference to the class `cls`, and the second argument is `obj`.
  */
 Node superCallTwoArgumentTracker(Class cls, Node obj) {
-  superCallTwoArgumentTracker(TypeTracker::end(), cls, obj).flowsTo(result)
+  exists(CallCfgNode call |
+    TrackSuperCallTwoArgumentInput::superCall(call, cls, obj) and
+    CallGraphConstruction::Simple::Make<TrackSuperCallTwoArgumentInput>::track(call)
+        .(LocalSourceNode)
+        .flowsTo(result)
+  )
 }
 
 // =============================================================================
@@ -800,20 +817,30 @@ Function findFunctionAccordingToMroKnownStartingClass(Class startingClass, strin
 // =============================================================================
 // attribute trackers
 // =============================================================================
-/** Gets a reference to the attribute read `attr` */
-private TypeTrackingNode attrReadTracker(TypeTracker t, AttrRead attr) {
-  t.start() and
-  result = attr and
-  attr.getObject() in [
-      classTracker(_), classInstanceTracker(_), selfTracker(_), clsArgumentTracker(_),
-      superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
-    ]
-  or
-  exists(TypeTracker t2 | result = attrReadTracker(t2, attr).track(t2, t))
+private module TrackAttrReadInput implements CallGraphConstruction::Simple::InputSig {
+  class State = AttrRead;
+
+  predicate start(Node start, AttrRead attr) {
+    start = attr and
+    attr.getObject() in [
+        classTracker(_), classInstanceTracker(_), selfTracker(_), clsArgumentTracker(_),
+        superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
+      ]
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /** Gets a reference to the attribute read `attr` */
-Node attrReadTracker(AttrRead attr) { attrReadTracker(TypeTracker::end(), attr).flowsTo(result) }
+Node attrReadTracker(AttrRead attr) {
+  CallGraphConstruction::Simple::Make<TrackAttrReadInput>::track(attr)
+      .(LocalSourceNode)
+      .flowsTo(result)
+}
 
 // =============================================================================
 // call and argument resolution
@@ -1292,7 +1319,9 @@ newtype TDataFlowCall =
   TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
   TPotentialLibraryCall(CallNode call) or
   /** A synthesized call inside a summarized callable */
-  TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
+  TSummaryCall(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+  ) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
@@ -1424,12 +1453,12 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
  */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
-  private Node receiver;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /** Gets the data flow node that this call targets. */
-  Node getReceiver() { result = receiver }
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
@@ -1462,44 +1491,35 @@ abstract class ParameterNodeImpl extends Node {
 }
 
 /** A parameter for a library callable with a flow summary. */
-class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
-  private FlowSummaryImpl::Public::SummarizedCallable sc;
-  private ParameterPosition pos;
+class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
+  SummaryParameterNode() {
+    FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
+  }
 
-  SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
+  private ParameterPosition getPosition() {
+    FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+  }
 
   override Parameter getParameter() { none() }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
-    sc = c.asLibraryCallable() and ppos = pos
-  }
-
-  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
-
-  override string toString() { result = "parameter " + pos + " of " + sc }
-
-  // Hack to return "empty location"
-  override predicate hasLocationInfo(
-    string file, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    file = "" and
-    startline = 0 and
-    startcolumn = 0 and
-    endline = 0 and
-    endcolumn = 0
+    this.getSummarizedCallable() = c.asLibraryCallable() and ppos = this.getPosition()
   }
 }
 
 /** A data-flow node used to model flow summaries. */
-class SummaryNode extends Node, TSummaryNode {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
-  private FlowSummaryImpl::Private::SummaryNodeState state;
+class FlowSummaryNode extends Node, TFlowSummaryNode {
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-  SummaryNode() { this = TSummaryNode(c, state) }
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
 
-  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asLibraryCallable() = this.getSummarizedCallable()
+  }
 
-  override string toString() { result = "[summary] " + state + " in " + c }
+  override string toString() { result = this.getSummaryNode().toString() }
 
   // Hack to return "empty location"
   override predicate hasLocationInfo(
@@ -1513,26 +1533,30 @@ class SummaryNode extends Node, TSummaryNode {
   }
 }
 
-private class SummaryReturnNode extends SummaryNode, ReturnNode {
+private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
   private ReturnKind rk;
 
-  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
 
   override ReturnKind getKind() { result = rk }
 }
 
-private class SummaryArgumentNode extends SummaryNode, ArgumentNode {
-  SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+  SummaryArgumentNode() {
+    FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+  }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+    FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
   }
 }
 
-private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
-  private Node pre;
+private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl {
+  private FlowSummaryNode pre;
 
-  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+  }
 
   override Node getPreUpdateNode() { result = pre }
 }
@@ -1601,11 +1625,11 @@ private module OutNodes {
     }
   }
 
-  private class SummaryOutNode extends SummaryNode, OutNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+  private class SummaryOutNode extends FlowSummaryNode, OutNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
+      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
     }
   }
 }

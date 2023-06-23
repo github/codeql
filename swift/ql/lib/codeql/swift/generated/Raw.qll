@@ -21,6 +21,8 @@ module Raw {
   class Callable extends @callable, Element {
     /**
      * Gets the name of this callable, if it exists.
+     *
+     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
      */
     string getName() { callable_names(this, result) }
 
@@ -1094,7 +1096,7 @@ module Raw {
     /**
      * Gets the closure body of this capture list expression.
      */
-    ExplicitClosureExpr getClosureBody() { capture_list_exprs(this, result) }
+    ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
   }
 
   /**

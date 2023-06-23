@@ -781,16 +781,6 @@ class Class extends RefType, @class_type {
 }
 
 /**
- * DEPRECATED: Use `RecordClass` instead.
- */
-deprecated class Record extends Class {
-  Record() { this.isRecord() }
-
-  /** Gets the clone method of this record. */
-  RecordCloneMethod getCloneMethod() { result = this.getAMember() }
-}
-
-/**
  * A `record`, for example
  *
  * ```csharp

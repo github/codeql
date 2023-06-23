@@ -155,12 +155,6 @@ abstract class Container extends @container {
   string toString() { result = this.getAbsolutePath() }
 
   /**
-   * Gets the name of this container.
-   * DEPRECATED: Use `getAbsolutePath` instead.
-   */
-  deprecated string getName() { result = this.getAbsolutePath() }
-
-  /**
    * Gets the relative path of this file or folder from the root folder of the
    * analyzed source location. The relative path of the root folder itself is
    * the empty string.

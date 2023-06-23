@@ -1,5 +1,6 @@
 WARNING: Type BarrierGuard has been deprecated and may be removed in future (barrier-guards.ql:10,3-15)
 failures
+testFailures
 oldStyleBarrierGuards
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | barrier-guards.rb:3:4:3:6 | foo | true |
 | barrier-guards.rb:3:4:3:15 | ... == ... | barrier-guards.rb:4:5:4:7 | foo | barrier-guards.rb:3:11:3:15 | "foo" | true |

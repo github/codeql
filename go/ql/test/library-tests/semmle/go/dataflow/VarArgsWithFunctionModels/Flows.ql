@@ -43,12 +43,10 @@ class DataConfiguration extends DataFlow::Configuration {
   }
 }
 
-class DataFlowTest extends InlineExpectationsTest {
-  DataFlowTest() { this = "DataFlowTest" }
+module DataFlowTest implements TestSig {
+  string getARelevantTag() { result = "dataflow" }
 
-  override string getARelevantTag() { result = "dataflow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "dataflow" and
     exists(DataFlow::Node sink | any(DataConfiguration c).hasFlow(_, sink) |
       element = sink.toString() and
@@ -71,12 +69,10 @@ class TaintConfiguration extends TaintTracking::Configuration {
   }
 }
 
-class TaintFlowTest extends InlineExpectationsTest {
-  TaintFlowTest() { this = "TaintFlowTest" }
+module TaintFlowTest implements TestSig {
+  string getARelevantTag() { result = "taintflow" }
 
-  override string getARelevantTag() { result = "taintflow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "taintflow" and
     exists(DataFlow::Node sink | any(TaintConfiguration c).hasFlow(_, sink) |
       element = sink.toString() and
@@ -86,9 +82,5 @@ class TaintFlowTest extends InlineExpectationsTest {
     )
   }
 }
-// from TaintConfiguration cfg, DataFlow::PartialPathNode source, DataFlow::PartialPathNode sink
-// where
-//   cfg.hasPartialFlow(source, sink, _)
-//   and
-//   source.getNode().hasLocationInfo(_, 22, _, _, _)
-// select sink, source, sink, "Partial flow from unsanitized user data"
+
+import MakeTest<MergeTests<DataFlowTest, TaintFlowTest>>

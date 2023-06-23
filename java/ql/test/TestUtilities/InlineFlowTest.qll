@@ -5,9 +5,15 @@
  * ```ql
  * import java
  * import TestUtilities.InlineFlowTest
+ * import DefaultFlowTest
+ * import PathGraph
+ *
+ * from PathNode source, PathNode sink
+ * where flowPath(source, sink)
+ * select sink, source, sink, "$@", source, source.toString()
  * ```
  *
- * To declare expecations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
+ * To declare expectations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
  * Example of the corresponding test file, e.g. Test.java
  * ```java
  * public class Test {
@@ -18,22 +24,18 @@
  *
  * 	public void test() {
  * 		Object s = source();
- * 		sink(s); //$hasValueFlow
+ * 		sink(s); // $ hasValueFlow
  * 		String t = "foo" + taint();
- * 		sink(t); //$hasTaintFlow
+ * 		sink(t); // $ hasTaintFlow
  * 	}
  *
  * }
  * ```
  *
- * If you're not interested in a specific flow type, you can disable either value or taint flow expectations as follows:
- * ```ql
- * class HasFlowTest extends InlineFlowTest {
- *   override DataFlow::Configuration getTaintFlowConfig() { none() }
- *
- *   override DataFlow::Configuration getValueFlowConfig() { none() }
- * }
- * ```
+ * If you are only interested in value flow, then instead of importing `DefaultFlowTest`, you can import
+ * `ValueFlowTest<DefaultFlowConfig>`. Similarly, if you are only interested in taint flow, then instead of
+ * importing `DefaultFlowTest`, you can import `TaintFlowTest<DefaultFlowConfig>`. In both cases
+ * `DefaultFlowConfig` can be replaced by another implementation of `DataFlow::ConfigSig`.
  *
  * If you need more fine-grained tuning, consider implementing a test using `InlineExpectationsTest`.
  */
@@ -43,57 +45,75 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import TestUtilities.InlineExpectationsTest
 
-private predicate defaultSource(DataFlow::Node src) {
-  src.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
+private predicate defaultSource(DataFlow::Node source) {
+  source.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
+}
+
+private predicate defaultSink(DataFlow::Node sink) {
+  exists(MethodAccess ma | ma.getMethod().hasName("sink") | sink.asExpr() = ma.getAnArgument())
 }
 
 module DefaultFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { defaultSource(n) }
+  predicate isSource(DataFlow::Node source) { defaultSource(source) }
 
-  predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
-  }
+  predicate isSink(DataFlow::Node sink) { defaultSink(sink) }
 
   int fieldFlowBranchLimit() { result = 1000 }
 }
 
-private module DefaultValueFlow = DataFlow::Global<DefaultFlowConfig>;
+private module NoFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { none() }
 
-private module DefaultTaintFlow = TaintTracking::Global<DefaultFlowConfig>;
+  predicate isSink(DataFlow::Node sink) { none() }
+}
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
   src.asExpr().(MethodAccess).getAnArgument().(StringLiteral).getValue() = result
 }
 
-class InlineFlowTest extends InlineExpectationsTest {
-  InlineFlowTest() { this = "HasFlowTest" }
+module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
+  module ValueFlow = DataFlow::Global<ValueFlowConfig>;
 
-  override string getARelevantTag() { result = ["hasValueFlow", "hasTaintFlow"] }
+  module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "hasValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | this.hasValueFlow(src, sink) |
-      sink.getLocation() = location and
-      element = sink.toString() and
-      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
-    )
-    or
-    tag = "hasTaintFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink |
-      this.hasTaintFlow(src, sink) and not this.hasValueFlow(src, sink)
-    |
-      sink.getLocation() = location and
-      element = sink.toString() and
-      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
-    )
+  private module InlineTest implements TestSig {
+    string getARelevantTag() { result = ["hasValueFlow", "hasTaintFlow"] }
+
+    predicate hasActualResult(Location location, string element, string tag, string value) {
+      tag = "hasValueFlow" and
+      exists(DataFlow::Node src, DataFlow::Node sink | ValueFlow::flow(src, sink) |
+        sink.getLocation() = location and
+        element = sink.toString() and
+        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
+      )
+      or
+      tag = "hasTaintFlow" and
+      exists(DataFlow::Node src, DataFlow::Node sink |
+        TaintFlow::flow(src, sink) and not ValueFlow::flow(src, sink)
+      |
+        sink.getLocation() = location and
+        element = sink.toString() and
+        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
+      )
+    }
   }
 
-  predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
-    DefaultValueFlow::flow(src, sink)
-  }
+  import MakeTest<InlineTest>
+  import DataFlow::MergePathGraph<ValueFlow::PathNode, TaintFlow::PathNode, ValueFlow::PathGraph, TaintFlow::PathGraph>
 
-  predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
-    DefaultTaintFlow::flow(src, sink)
+  predicate flowPath(PathNode source, PathNode sink) {
+    ValueFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) or
+    TaintFlow::flowPath(source.asPathNode2(), sink.asPathNode2())
   }
+}
+
+module DefaultFlowTest = FlowTest<DefaultFlowConfig, DefaultFlowConfig>;
+
+module ValueFlowTest<DataFlow::ConfigSig ValueFlowConfig> {
+  import FlowTest<ValueFlowConfig, NoFlowConfig>
+}
+
+module TaintFlowTest<DataFlow::ConfigSig TaintFlowConfig> {
+  import FlowTest<NoFlowConfig, TaintFlowConfig>
 }

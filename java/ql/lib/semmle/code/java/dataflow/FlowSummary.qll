@@ -149,8 +149,9 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
     or
     result = this.asSyntheticCallable().getParameterType(pos)
     or
-    exists(SyntheticCallable sc | sc = this.asSyntheticCallable() |
-      Impl::Private::summaryParameterNodeRange(this, pos) and
+    exists(SyntheticCallable sc, Impl::Private::SummaryNode p | sc = this.asSyntheticCallable() |
+      Impl::Private::summaryParameterNode(p, pos) and
+      this = p.getSummarizedCallable() and
       not exists(sc.getParameterType(pos)) and
       result instanceof TypeObject
     )

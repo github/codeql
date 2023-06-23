@@ -37,13 +37,13 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
   }
 
   override predicate postWithInFlowExclude(Node n) {
-    n instanceof SummaryNode
+    n instanceof FlowSummaryNode
     or
     n.asExpr().(ObjectCreation).hasInitializer()
   }
 
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    n instanceof SummaryNode
+    n instanceof FlowSummaryNode
     or
     not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
     or

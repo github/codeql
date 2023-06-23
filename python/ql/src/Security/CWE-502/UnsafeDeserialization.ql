@@ -1,5 +1,5 @@
 /**
- * @name Deserializing untrusted input
+ * @name Deserialization of user-controlled data
  * @description Deserializing user-controlled data may allow attackers to execute arbitrary code.
  * @kind path-problem
  * @id py/unsafe-deserialization

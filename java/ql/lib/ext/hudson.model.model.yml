@@ -3,16 +3,22 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["hudson.model", "DownloadService", True, "loadJSON", "(URL)", "", "Argument[0]", "open-url", "ai-manual"]
-      - ["hudson.model", "DownloadService", True, "loadJSONHTML", "(URL)", "", "Argument[0]", "open-url", "ai-manual"]
-      - ["hudson.model", "DirectoryBrowserSupport", False, "DirectoryBrowserSupport", "(ModelObject,FilePath,String,String,boolean)", "", "Argument[1]", "read-file", "ai-manual"]
-      - ["hudson.model", "Items", True, "load", "(ItemGroup,File)", "", "Argument[1]", "read-file", "ai-manual"]
-      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "download", "(DownloadJob,URL)", "", "Argument[1]", "open-url", "ai-manual"]
-      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[1]", "create-file", "ai-manual"] # should be delete-file
-      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[2]", "create-file", "ai-manual"]
+      - ["hudson.model", "DownloadService", True, "loadJSON", "(URL)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["hudson.model", "DownloadService", True, "loadJSONHTML", "(URL)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["hudson.model", "DirectoryBrowserSupport", False, "DirectoryBrowserSupport", "(ModelObject,FilePath,String,String,boolean)", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["hudson.model", "Items", True, "load", "(ItemGroup,File)", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "download", "(DownloadJob,URL)", "", "Argument[1]", "request-forgery", "ai-manual"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[2]", "path-injection", "ai-manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["hudson.model", "Node", True, "createPath", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["hudson.model", "DirectoryBrowserSupport$Path", False, "Path", "(String,String,boolean,long,boolean,long)", "", "Argument[0]", "Argument[this].SyntheticField[hudson.model.DirectoryBrowserSupport$Path.href]", "taint", "ai-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["hudson.model", "Descriptor", True, "configure", "", "", "Parameter", "remote", "manual"]
+      - ["hudson.model", "Descriptor", True, "newInstance", "", "", "Parameter", "remote", "manual"]

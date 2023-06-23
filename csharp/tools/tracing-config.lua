@@ -21,6 +21,7 @@ function RegisterExtractorPack(id)
         -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
         -- otherwise we do nothing.
         local match = false
+        local testMatch = false
         local dotnetRunNeedsSeparator = false;
         local dotnetRunInjectionIndex = nil;
         local argv = compilerArguments.argv
@@ -37,7 +38,7 @@ function RegisterExtractorPack(id)
                 if (not match) then
                     Log(1, 'Dotnet subcommand detected: %s', arg)
                 end
-                if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' or arg == 'test' then
+                if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' then
                     match = true
                     break
                 end
@@ -47,6 +48,16 @@ function RegisterExtractorPack(id)
                     match = true
                     dotnetRunNeedsSeparator = true
                     dotnetRunInjectionIndex = i + 1
+                end
+                if arg == 'test' then
+                    match = true
+                    testMatch = true
+                end
+                -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
+                -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
+                if testMatch and (arg:match('%.exe$') or arg:match('%.dll'))  then
+                    match = false
+                    break
                 end
             end
             -- if we see a separator to `dotnet run`, inject just prior to the existing separator

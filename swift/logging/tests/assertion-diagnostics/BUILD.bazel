@@ -4,7 +4,7 @@ load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
 swift_cc_binary(
     name = "assert-false",
     srcs = ["AssertFalse.cpp"],
-    visibility = ["//visibility:private"],
+    visibility = ["//swift:__pkg__"],
     deps = [
         "//swift/logging",
     ],
@@ -14,12 +14,9 @@ py_test(
     name = "test",
     size = "small",
     srcs = ["test.py"],
+    data = [
+        "diagnostics.expected",
+        ":assert-false",
+    ],
     deps = ["//swift/integration-tests:integration_tests"],
-    data = [":assert-false", "diagnostics.expected"],
-)
-
-generate_cmake(
-    name = "cmake",
-    targets = [":assert-false"],
-    visibility = ["//visibility:public"],
 )
