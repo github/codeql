@@ -788,6 +788,29 @@ edges
 | test.cpp:427:14:427:27 | new[] | test.cpp:433:5:433:6 | xs |
 | test.cpp:433:5:433:6 | xs | test.cpp:433:5:433:17 | access to array |
 | test.cpp:433:5:433:17 | access to array | test.cpp:433:5:433:21 | Store: ... = ... |
+| test.cpp:439:14:439:27 | new[] | test.cpp:444:5:444:6 | xs |
+| test.cpp:444:5:444:6 | xs | test.cpp:444:5:444:15 | access to array |
+| test.cpp:444:5:444:15 | access to array | test.cpp:444:5:444:19 | Store: ... = ... |
+| test.cpp:450:14:450:27 | new[] | test.cpp:455:5:455:6 | xs |
+| test.cpp:455:5:455:6 | xs | test.cpp:455:5:455:15 | access to array |
+| test.cpp:455:5:455:15 | access to array | test.cpp:455:5:455:19 | Store: ... = ... |
+| test.cpp:461:14:461:27 | new[] | test.cpp:466:5:466:6 | xs |
+| test.cpp:466:5:466:6 | xs | test.cpp:466:5:466:15 | access to array |
+| test.cpp:466:5:466:15 | access to array | test.cpp:466:5:466:19 | Store: ... = ... |
+| test.cpp:472:14:472:27 | new[] | test.cpp:477:5:477:6 | xs |
+| test.cpp:477:5:477:6 | xs | test.cpp:477:5:477:15 | access to array |
+| test.cpp:477:5:477:15 | access to array | test.cpp:477:5:477:19 | Store: ... = ... |
+| test.cpp:483:14:483:27 | new[] | test.cpp:488:5:488:6 | xs |
+| test.cpp:488:5:488:6 | xs | test.cpp:488:5:488:15 | access to array |
+| test.cpp:488:5:488:15 | access to array | test.cpp:488:5:488:19 | Store: ... = ... |
+| test.cpp:494:14:494:31 | new[] | test.cpp:499:5:499:6 | xs |
+| test.cpp:505:14:505:31 | new[] | test.cpp:510:5:510:6 | xs |
+| test.cpp:516:14:516:31 | new[] | test.cpp:521:5:521:6 | xs |
+| test.cpp:527:14:527:31 | new[] | test.cpp:532:5:532:6 | xs |
+| test.cpp:538:14:538:31 | new[] | test.cpp:543:5:543:6 | xs |
+| test.cpp:549:14:549:31 | new[] | test.cpp:554:5:554:6 | xs |
+| test.cpp:554:5:554:6 | xs | test.cpp:554:5:554:15 | access to array |
+| test.cpp:554:5:554:15 | access to array | test.cpp:554:5:554:19 | Store: ... = ... |
 nodes
 | test.cpp:4:15:4:20 | call to malloc | semmle.label | call to malloc |
 | test.cpp:5:15:5:15 | p | semmle.label | p |
@@ -1157,6 +1180,40 @@ nodes
 | test.cpp:433:5:433:6 | xs | semmle.label | xs |
 | test.cpp:433:5:433:17 | access to array | semmle.label | access to array |
 | test.cpp:433:5:433:21 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:439:14:439:27 | new[] | semmle.label | new[] |
+| test.cpp:444:5:444:6 | xs | semmle.label | xs |
+| test.cpp:444:5:444:15 | access to array | semmle.label | access to array |
+| test.cpp:444:5:444:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:450:14:450:27 | new[] | semmle.label | new[] |
+| test.cpp:455:5:455:6 | xs | semmle.label | xs |
+| test.cpp:455:5:455:15 | access to array | semmle.label | access to array |
+| test.cpp:455:5:455:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:461:14:461:27 | new[] | semmle.label | new[] |
+| test.cpp:466:5:466:6 | xs | semmle.label | xs |
+| test.cpp:466:5:466:15 | access to array | semmle.label | access to array |
+| test.cpp:466:5:466:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:472:14:472:27 | new[] | semmle.label | new[] |
+| test.cpp:477:5:477:6 | xs | semmle.label | xs |
+| test.cpp:477:5:477:15 | access to array | semmle.label | access to array |
+| test.cpp:477:5:477:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:483:14:483:27 | new[] | semmle.label | new[] |
+| test.cpp:488:5:488:6 | xs | semmle.label | xs |
+| test.cpp:488:5:488:15 | access to array | semmle.label | access to array |
+| test.cpp:488:5:488:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:494:14:494:31 | new[] | semmle.label | new[] |
+| test.cpp:499:5:499:6 | xs | semmle.label | xs |
+| test.cpp:505:14:505:31 | new[] | semmle.label | new[] |
+| test.cpp:510:5:510:6 | xs | semmle.label | xs |
+| test.cpp:516:14:516:31 | new[] | semmle.label | new[] |
+| test.cpp:521:5:521:6 | xs | semmle.label | xs |
+| test.cpp:527:14:527:31 | new[] | semmle.label | new[] |
+| test.cpp:532:5:532:6 | xs | semmle.label | xs |
+| test.cpp:538:14:538:31 | new[] | semmle.label | new[] |
+| test.cpp:543:5:543:6 | xs | semmle.label | xs |
+| test.cpp:549:14:549:31 | new[] | semmle.label | new[] |
+| test.cpp:554:5:554:6 | xs | semmle.label | xs |
+| test.cpp:554:5:554:15 | access to array | semmle.label | access to array |
+| test.cpp:554:5:554:19 | Store: ... = ... | semmle.label | Store: ... = ... |
 subpaths
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -1187,3 +1244,9 @@ subpaths
 | test.cpp:407:3:407:22 | Store: ... = ... | test.cpp:404:12:404:25 | new[] | test.cpp:407:3:407:22 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:404:12:404:25 | new[] | new[] | test.cpp:407:10:407:17 | ... - ... | ... - ... |
 | test.cpp:419:7:419:15 | Store: ... = ... | test.cpp:417:16:417:33 | new[] | test.cpp:419:7:419:15 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:417:16:417:33 | new[] | new[] | test.cpp:419:10:419:10 | i | i |
 | test.cpp:433:5:433:21 | Store: ... = ... | test.cpp:427:14:427:27 | new[] | test.cpp:433:5:433:21 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:427:14:427:27 | new[] | new[] | test.cpp:433:8:433:16 | ... ++ | ... ++ |
+| test.cpp:444:5:444:19 | Store: ... = ... | test.cpp:439:14:439:27 | new[] | test.cpp:444:5:444:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:439:14:439:27 | new[] | new[] | test.cpp:444:8:444:14 | src_pos | src_pos |
+| test.cpp:455:5:455:19 | Store: ... = ... | test.cpp:450:14:450:27 | new[] | test.cpp:455:5:455:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:450:14:450:27 | new[] | new[] | test.cpp:455:8:455:14 | src_pos | src_pos |
+| test.cpp:466:5:466:19 | Store: ... = ... | test.cpp:461:14:461:27 | new[] | test.cpp:466:5:466:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:461:14:461:27 | new[] | new[] | test.cpp:466:8:466:14 | src_pos | src_pos |
+| test.cpp:477:5:477:19 | Store: ... = ... | test.cpp:472:14:472:27 | new[] | test.cpp:477:5:477:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:472:14:472:27 | new[] | new[] | test.cpp:477:8:477:14 | src_pos | src_pos |
+| test.cpp:488:5:488:19 | Store: ... = ... | test.cpp:483:14:483:27 | new[] | test.cpp:488:5:488:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:483:14:483:27 | new[] | new[] | test.cpp:488:8:488:14 | src_pos | src_pos |
+| test.cpp:554:5:554:19 | Store: ... = ... | test.cpp:549:14:549:31 | new[] | test.cpp:554:5:554:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:549:14:549:31 | new[] | new[] | test.cpp:554:8:554:14 | src_pos | src_pos |
