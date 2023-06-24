@@ -416,7 +416,7 @@ void test30(int *size)
     new_size = tmp_size + 1;
     char *xs = new char[new_size];
     for (int i = 0; i < new_size; i++) {
-      xs[i] = 0;  // GOOD [FALSE POSITIVE]
+      xs[i] = 0;  // GOOD
     }
   }
   *size = new_size;
@@ -430,7 +430,7 @@ void test31(unsigned size, unsigned src_pos)
   }
   unsigned dst_pos = src_pos;
   if(dst_pos < size - 3) {
-    xs[dst_pos++] = 0; // GOOD [FALSE POSITIVE]
+    xs[dst_pos++] = 0; // GOOD
   }
 }
 
@@ -441,7 +441,7 @@ void test31_simple1(unsigned size, unsigned src_pos)
     src_pos = size;
   }
   if(src_pos < size) {
-    xs[src_pos] = 0; // GOOD [FALSE POSITIVE]
+    xs[src_pos] = 0; // GOOD
   }
 }
 
@@ -474,7 +474,7 @@ void test31_simple4(unsigned size, unsigned src_pos)
     src_pos = size;
   }
   if(src_pos < size - 1) {
-    xs[src_pos] = 0; // GOOD [FALSE POSITIVE]
+    xs[src_pos] = 0; // GOOD
   }
 }
 
@@ -485,7 +485,7 @@ void test31_simple5(unsigned size, unsigned src_pos)
     src_pos = size;
   }
   if(src_pos + 1 < size) {
-    xs[src_pos] = 0; // GOOD [FALSE POSITIVE]
+    xs[src_pos] = 0; // GOOD
   }
 }
 
