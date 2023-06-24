@@ -131,8 +131,8 @@ module Barrier2 {
   }
 
   Instruction getABarrierInstruction(FlowState2 state) {
-    exists(IRGuardCondition g, Operand right, ValueNumber value, boolean edge |
-      operandGuardChecks(g, value.getAUse(), right, state, edge) and
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      operandGuardChecks(g, value.getAUse(), _, state, edge) and
       result = value.getAnInstruction() and
       g.controls(result.getBlock(), edge)
     )
