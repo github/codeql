@@ -29,7 +29,10 @@ module XserialSnappy {
 
   predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(Call call |
-      call.getCallee().getDeclaringType() instanceof TypeInputStream and
+      (
+        call.getCallee().getDeclaringType() instanceof TypeInputStream or
+        call.(MethodAccess).getReceiverType() instanceof TypeInputStream
+      ) and
       call.getArgument(0) = n1.asExpr() and
       call = n2.asExpr()
     )
@@ -106,7 +109,10 @@ module ApacheCommons {
 
     predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
       exists(Call call |
-        call.getCallee().getDeclaringType() instanceof TypeCompressors and
+        (
+          call.getCallee().getDeclaringType() instanceof TypeCompressors or
+          call.(MethodAccess).getReceiverType() instanceof TypeCompressors
+        ) and
         call.getArgument(0) = n1.asExpr() and
         call = n2.asExpr()
       )
@@ -143,9 +149,22 @@ module ApacheCommons {
       }
     }
 
+    /**
+     *```java
+     *  ZipArchiveInputStream n2 = new ZipArchiveInputStream(n1);
+     *  ZipArchiveInputStream n = new ZipArchiveInputStream(inputStream);
+     *  n2 = n.read(n1);
+     *```
+     */
     predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
       exists(Call call |
-        call.getCallee().getDeclaringType() instanceof TypeArchivers and
+        (
+          // constructors
+          call.getCallee().getDeclaringType() instanceof TypeArchivers
+          or
+          // Method calls
+          call.(MethodAccess).getReceiverType() instanceof TypeArchivers
+        ) and
         n1.asExpr() = call.getArgument(0) and
         n2.asExpr() = call
       )
@@ -179,12 +198,24 @@ module ApacheCommons {
       }
     }
 
+    /**
+     * ```java
+     *CompressorInputStream n2 = new CompressorStreamFactory().createCompressorInputStream(n1)
+     *ArchiveInputStream n2 = new ArchiveStreamFactory().createArchiveInputStream(n1)
+     * ```
+     */
     predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
       exists(Call call |
         (
-          call.getCallee().getDeclaringType() instanceof TypeCompressors
+          // Constructors
+          call.getCallee().getDeclaringType() = any(TypeCompressors t)
           or
-          call.getCallee().getDeclaringType() instanceof TypeArchivers
+          call.getCallee().getDeclaringType() = any(TypeArchivers t)
+          or
+          // Method calls
+          call.(MethodAccess).getReceiverType() = any(TypeArchiveInputStream t)
+          or
+          call.(MethodAccess).getReceiverType() = any(TypeCompressorInputStream t)
         ) and
         n1.asExpr() = call.getArgument(0) and
         n2.asExpr() = call
@@ -257,7 +288,10 @@ module Zip4j {
    */
   predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(Call call |
-      call.getCallee().getDeclaringType() instanceof TypeZipInputStream and
+      (
+        call.getCallee().getDeclaringType() instanceof TypeZipInputStream or
+        call.(MethodAccess).getReceiverType() instanceof TypeZipInputStream
+      ) and
       call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
       call.getArgument(0) = n1.asExpr() and
       call = n2.asExpr()
@@ -276,7 +310,10 @@ module Zip {
 
   predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(Call call |
-      call.getCallee().getDeclaringType() instanceof TypeZipInputStream and
+      (
+        call.getCallee().getDeclaringType() instanceof TypeZipInputStream or
+        call.(MethodAccess).getReceiverType() instanceof TypeZipInputStream
+      ) and
       call.getArgument(0) = n1.asExpr() and
       call = n2.asExpr()
     )
