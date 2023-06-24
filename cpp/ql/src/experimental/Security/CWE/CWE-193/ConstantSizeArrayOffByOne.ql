@@ -78,28 +78,39 @@ predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string 
   )
 }
 
+predicate arrayTypeCand(ArrayType arrayType) { any(Variable v).getUnspecifiedType() = arrayType }
+
 pragma[nomagic]
 predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, int arraySize) {
+  arrayTypeCand(arr) and
   arr.getBaseType().getSize() = baseTypeSize and
   arr.getArraySize() = arraySize
 }
 
-predicate pointerArithOverflow0(
-  PointerArithmeticInstruction pai, Variable v, int size, int bound, int delta
-) {
-  not v.getNamespace() instanceof StdNamespace and
-  arrayTypeHasSizes(v.getUnspecifiedType(), pai.getElementSize(), size) and
-  semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
+bindingset[pai]
+pragma[inline_late]
+predicate constantUpperBounded(PointerArithmeticInstruction pai, int delta) {
+  semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), delta, true, _)
+}
+
+bindingset[pai, size]
+predicate pointerArithOverflow0Impl(PointerArithmeticInstruction pai, int size, int bound, int delta) {
+  constantUpperBounded(pai, bound) and
   delta = bound - size and
   delta >= 0 and
   size != 0 and
   size != 1
 }
 
+predicate pointerArithOverflow0(PointerArithmeticInstruction pai, int delta) {
+  exists(int size, int bound |
+    arrayTypeHasSizes(_, pai.getElementSize(), size) and
+    pointerArithOverflow0Impl(pai, size, bound, delta)
+  )
+}
+
 module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    pointerArithOverflow0(source.asInstruction(), _, _, _, _)
-  }
+  predicate isSource(DataFlow::Node source) { pointerArithOverflow0(source.asInstruction(), _) }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
@@ -110,30 +121,38 @@ module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
 
 module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
 
-predicate pointerArithOverflow(
-  PointerArithmeticInstruction pai, Variable v, int size, int bound, int delta
-) {
-  pointerArithOverflow0(pai, v, size, bound, delta) and
+predicate pointerArithOverflow(PointerArithmeticInstruction pai, int delta) {
+  pointerArithOverflow0(pai, delta) and
   PointerArithmeticToDerefFlow::flow(DataFlow::instructionNode(pai), _)
+}
+
+bindingset[v]
+predicate finalPointerArithOverflow(Variable v, PointerArithmeticInstruction pai, int delta) {
+  exists(int size |
+    arrayTypeHasSizes(pragma[only_bind_out](v.getUnspecifiedType()), pai.getElementSize(), size) and
+    pointerArithOverflow0Impl(pai, size, _, delta)
+  )
+}
+
+predicate isSourceImpl(DataFlow::Node source, Variable v) {
+  (
+    source.asInstruction().(FieldAddressInstruction).getField() = v
+    or
+    source.asInstruction().(VariableAddressInstruction).getAstVariable() = v
+  ) and
+  exists(v.getUnspecifiedType().(ArrayType).getArraySize())
 }
 
 module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
   newtype FlowState =
-    additional TArray(Variable v) { pointerArithOverflow(_, v, _, _, _) } or
+    additional TArray() or
     additional TOverflowArithmetic(PointerArithmeticInstruction pai) {
-      pointerArithOverflow(pai, _, _, _, _)
+      pointerArithOverflow(pai, _)
     }
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    exists(Variable v |
-      (
-        source.asInstruction().(FieldAddressInstruction).getField() = v
-        or
-        source.asInstruction().(VariableAddressInstruction).getAstVariable() = v
-      ) and
-      exists(v.getUnspecifiedType().(ArrayType).getArraySize()) and
-      state = TArray(v)
-    )
+    isSourceImpl(source, _) and
+    state = TArray()
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
@@ -152,12 +171,12 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(PointerArithmeticInstruction pai, Variable v |
-      state1 = TArray(v) and
+    exists(PointerArithmeticInstruction pai |
+      state1 = TArray() and
       state2 = TOverflowArithmetic(pai) and
       pai.getLeft() = node1.asInstruction() and
       node2.asInstruction() = pai and
-      pointerArithOverflow(pai, v, _, _, _)
+      pointerArithOverflow(pai, _)
     )
   }
 }
@@ -168,11 +187,11 @@ from
   Variable v, ArrayAddressToDerefFlow::PathNode source, PointerArithmeticInstruction pai,
   ArrayAddressToDerefFlow::PathNode sink, Instruction deref, string operation, int delta
 where
-  ArrayAddressToDerefFlow::flowPath(source, sink) and
+  ArrayAddressToDerefFlow::flowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
   isInvalidPointerDerefSink2(sink.getNode(), deref, operation) and
-  source.getState() = ArrayAddressToDerefConfig::TArray(v) and
-  sink.getState() = ArrayAddressToDerefConfig::TOverflowArithmetic(pai) and
-  pointerArithOverflow(pai, v, _, _, delta)
+  pragma[only_bind_out](sink.getState()) = ArrayAddressToDerefConfig::TOverflowArithmetic(pai) and
+  isSourceImpl(source.getNode(), v) and
+  finalPointerArithOverflow(v, pai, delta)
 select pai, source, sink,
   "This pointer arithmetic may have an off-by-" + (delta + 1) +
     " error allowing it to overrun $@ at this $@.", v, v.getName(), deref, operation
