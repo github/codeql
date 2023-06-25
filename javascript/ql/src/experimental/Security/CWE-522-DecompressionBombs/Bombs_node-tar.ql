@@ -5,13 +5,12 @@
  * @problem.severity error
  * @security-severity 7.8
  * @precision medium
- * @id js/user-controlled-file-decompression
+ * @id js/user-controlled-file-decompression--tar
  * @tags security
  *       experimental
  *       external/cwe/cwe-409
  */
 
-import javascript
 import DataFlow::PathGraph
 import API
 import semmle.javascript.Concepts

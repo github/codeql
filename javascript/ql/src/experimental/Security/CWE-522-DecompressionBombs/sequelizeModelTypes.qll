@@ -1,7 +1,7 @@
 import javascript
 import DataFlow
 
-module sequelizeModel {
+module SequelizeModel {
   SourceNode sequelizeModelAsSourceNode(TypeTracker t) {
     t.start() and
     exists(

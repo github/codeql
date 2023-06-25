@@ -3,6 +3,7 @@ import DataFlow::PathGraph
 import API
 
 /**
+ * A Command Line argument as a Flow Source
  * there are FP when the types are not str
  * because int,boolean types are not really dangerous as a source node
  */

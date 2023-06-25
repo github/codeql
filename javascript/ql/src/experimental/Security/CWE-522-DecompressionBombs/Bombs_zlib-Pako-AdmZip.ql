@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 7.8
  * @precision medium
- * @id js/user-controlled-file-decompression
+ * @id js/user-controlled-file-decompression-Zlib-Pako-AdmZip
  * @tags security
  *       experimental
  *       external/cwe/cwe-409
@@ -65,11 +65,7 @@ class BombConfiguration extends TaintTracking::Configuration {
     )
     or
     sink =
-      [
-        DataFlow::moduleMember("pako", ["inflate", "inflateRaw", "ungzip"])
-            .getACall()
-            .getArgument(0)
-      ]
+      DataFlow::moduleMember("pako", ["inflate", "inflateRaw", "ungzip"]).getACall().getArgument(0)
     or
     exists(API::Node n | n = API::moduleImport("adm-zip").getInstance() |
       (
@@ -85,7 +81,7 @@ class BombConfiguration extends TaintTracking::Configuration {
     readablePipeAdditionalTaintStep(pred, succ)
     or
     // succ = new Uint8Array(pred)
-    exists(DataFlow::Node n, NewExpr ne | ne = n.asExpr().(NewExpr) |
+    exists(DataFlow::Node n, NewExpr ne | ne = n.asExpr() |
       pred.asExpr() = ne.getArgument(0) and
       succ.asExpr() = ne and
       ne.getCalleeName() = "Uint8Array"

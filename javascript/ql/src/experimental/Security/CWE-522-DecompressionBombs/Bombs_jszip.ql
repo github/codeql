@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 7.8
  * @precision medium
- * @id js/user-controlled-file-decompression
+ * @id js/user-controlled-file-decompression-jszip
  * @tags security
  *       experimental
  *       external/cwe/cwe-409

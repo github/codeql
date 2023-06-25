@@ -10,7 +10,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import sequelizeModelTypes::sequelizeModel
+import sequelizeModelTypes::SequelizeModel
 import API
 
 class SequelizeModelConfiguration extends TaintTracking::Configuration {
