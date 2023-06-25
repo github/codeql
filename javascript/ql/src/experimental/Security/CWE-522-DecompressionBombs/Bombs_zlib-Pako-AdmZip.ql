@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 7.8
  * @precision medium
- * @id js/user-controlled-file-decompression-Zlib-Pako-AdmZip
+ * @id js/user-controlled-file-decompression-zlib-pako-admzip
  * @tags security
  *       experimental
  *       external/cwe/cwe-409
