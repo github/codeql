@@ -11,8 +11,8 @@ abstract class CommandLineFlowSource extends API::Node { }
 
 class Yargs extends CommandLineFlowSource {
   Yargs() {
-    this = API::moduleImport("yargs/yargs").getASuccessor().getMember("argv") or
-    this = API::moduleImport("yargs/yargs").getASuccessor().getMember("argv").getAMember()
+    this = API::moduleImport("yargs/yargs").getASuccessor*().getMember("argv") or
+    this = API::moduleImport("yargs/yargs").getASuccessor*().getMember("argv").getAMember()
   }
 }
 
