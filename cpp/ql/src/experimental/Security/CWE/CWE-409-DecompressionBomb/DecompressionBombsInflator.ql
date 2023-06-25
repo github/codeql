@@ -16,30 +16,34 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
 
 /**
- * A z_stream Variable as a Flow source
+ * A `z_stream` Variable as a Flow source
  */
 private class ZStreamVar extends VariableAccess {
   ZStreamVar() { this.getType().hasName("z_stream") }
 }
 
 /**
- * The `inflate`/`inflateSync` function is used in Flow sink
+ * The `inflate`/`inflateSync` functions are used in Flow sink
+ *
+ * `inflate(z_streamp strm, int flush)`
+ *
+ * `inflateSync(z_streamp strm)`
  */
-private class DeflateFunction extends Function {
-  DeflateFunction() { hasGlobalName(["inflate", "inflateSync"]) }
+private class InflateFunction extends Function {
+  InflateFunction() { this.hasGlobalName(["inflate", "inflateSync"]) }
 }
 
 module ZlibTaintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof ZStreamVar }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(FunctionCall fc | fc.getTarget() instanceof DeflateFunction |
+    exists(FunctionCall fc | fc.getTarget() instanceof InflateFunction |
       fc.getArgument(0) = sink.asExpr()
     )
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() instanceof DeflateFunction |
+    exists(FunctionCall fc | fc.getTarget() instanceof InflateFunction |
       node1.asExpr() = fc.getArgument(0) and
       node2.asExpr() = fc
     )
