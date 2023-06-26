@@ -1,7 +1,6 @@
 using System.IO.Compression;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MultipartFormWebAPITest.Controllers
 {
@@ -23,7 +22,7 @@ namespace MultipartFormWebAPITest.Controllers
                 if (readStream.Length == 0) return "400";
                 ZipHelpers.Bomb3(readStream);
                 ZipHelpers.Bomb2(formFile.FileName);
-                ZipHelpers.Bomb1(formFile.FileName);
+                ZipHelpers.BombSafe(formFile.FileName);
             }
             var tmp = Request.Form["aa"];
             var tmp2 = Request.Form.Keys;
@@ -31,7 +30,7 @@ namespace MultipartFormWebAPITest.Controllers
             ZipHelpers.Bomb3(Request.Body);
             ZipHelpers.Bomb2(Request.Query["param1"].ToString());
             var headers = Request.Headers;
-            ZipHelpers.Bomb1(headers.ETag);
+            ZipHelpers.BombSafe(headers.ETag);
             return "200";
         }
     }
@@ -41,8 +40,6 @@ internal static class ZipHelpers
 {
     public static void Bomb3(Stream compressedFileStream)
     {
-        // using FileStream compressedFileStream = File.Open(CompressedFileName, FileMode.Open);
-        // using FileStream outputFileStream = File.Create(DecompressedFileName);
         using var decompressor = new GZipStream(compressedFileStream, CompressionMode.Decompress);
         using var ms = new MemoryStream();
         decompressor.CopyTo(ms);
@@ -55,12 +52,13 @@ internal static class ZipHelpers
         foreach (var entry in archive.Entries) entry.ExtractToFile("./output.txt", true); // Sensitive
     }
 
-    public static void Bomb1(string filename)
+    public static void BombSafe(string filename)
     {
         const long maxLength = 10 * 1024 * 1024; // 10MB
-        // var filename = "/home/am/0_WorkDir/Payloads/Bombs/bombs-bones-codes-BH-2016/archives/evil-headers/10GB.zip";
         using var zipFile = ZipFile.OpenRead(filename);
-        // Quickly check the value from the zip header
+        // Quickly check the value from the zip header 
+        // we don't worry about malicious zip headers anymore
+        // because we read stream until the value of header not more
         var declaredSize = zipFile.Entries.Sum(entry => entry.Length);
         if (declaredSize > maxLength)
             throw new Exception("Archive is too big");
