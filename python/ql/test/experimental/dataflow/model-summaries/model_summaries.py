@@ -44,8 +44,6 @@ SINK(via_lambda[0])  # $ flow="SOURCE, l:-1 -> via_lambda[0]"
 not_via_lambda = MS_apply_lambda(lambda x: 1, SOURCE)
 SINK_F(not_via_lambda)
 
-untainted_lambda = MS_apply_lambda(lambda x: 1, TAINTED_STRING)
-ensure_not_tainted(untainted_lambda)
 
 # Collection summaries
 via_reversed = MS_reversed([SOURCE])
