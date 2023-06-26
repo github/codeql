@@ -18,7 +18,7 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.internal.DataFlowPublic
 
-module pyZipFile {
+module PyZipFile {
   /**
    * ```python
    * zipfile.PyZipFile()
@@ -78,7 +78,7 @@ module pyZipFile {
 
   /**
    * Same as ZipFile
-   * I made PyZipFile seperated from ZipFile as in future this will be compatible
+   * I made PyZipFile separated from ZipFile as in future this will be compatible
    * if anyone want to add new methods an sink to each object.
    */
   predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -283,7 +283,7 @@ module ZipFile {
   }
 
   /**
-   * a sanitizers which check if there is a managed read 
+   * a sanitizers which check if there is a managed read
    * ```python
    *    with zipfile.ZipFile(zipFileName) as myzip:
    *      with myzip.open(fileinfo.filename, mode="r") as myfile:
@@ -394,13 +394,11 @@ module TarFile {
 module Shutil {
   DataFlow::Node isSink() {
     result =
-      [
-        API::moduleImport("shutil")
-            .getMember("unpack_archive")
-            .getACall()
-            .getParameter(0, "filename")
-            .asSink()
-      ]
+      API::moduleImport("shutil")
+          .getMember("unpack_archive")
+          .getACall()
+          .getParameter(0, "filename")
+          .asSink()
   }
 }
 
@@ -445,8 +443,8 @@ module Pandas {
 module FileAndFormRemoteFlowSource {
   class FastAPI extends DataFlow::Node {
     FastAPI() {
-      exists(API::Node fastAPIParam |
-        fastAPIParam =
+      exists(API::Node fastApiParam |
+        fastApiParam =
           API::moduleImport("fastapi")
               .getMember("FastAPI")
               .getReturn()
@@ -459,11 +457,11 @@ module FileAndFormRemoteFlowSource {
             .getASubclass*()
             .getAValueReachableFromSource()
             .asExpr() =
-          fastAPIParam.asSource().asExpr().(Parameter).getAnnotation().getASubExpression*()
+          fastApiParam.asSource().asExpr().(Parameter).getAnnotation().getASubExpression*()
       |
         // in the case of List of files
         exists(For f, Attribute attr, DataFlow::Node a, DataFlow::Node b |
-          fastAPIParam.getAValueReachableFromSource().asExpr() = f.getIter().getASubExpression*()
+          fastApiParam.getAValueReachableFromSource().asExpr() = f.getIter().getASubExpression*()
         |
           // file.file in following
           // def upload(files: List[UploadFile] = File(...)):
@@ -477,20 +475,18 @@ module FileAndFormRemoteFlowSource {
           this.asExpr() = attr
         )
         or
-        // exclude cases like type-annotated with `Response`
-        // and not not any(Response::RequestHandlerParam src).asExpr() = result
         this =
           [
-            fastAPIParam.asSource(),
-            fastAPIParam.getMember(["filename", "content_type", "headers", "file"]).asSource(),
-            fastAPIParam.getMember(["read"]).getReturn().asSource(),
+            fastApiParam.asSource(),
+            fastApiParam.getMember(["filename", "content_type", "headers", "file"]).asSource(),
+            fastApiParam.getMember("read").getReturn().asSource(),
             // file-like object, I'm trying to not do additional work here by using already existing file-like objs if it is possible
-            // fastAPIParam.getMember("file").getAMember().asSource(),
+            // fastApiParam.getMember("file").getAMember().asSource(),
           ]
       )
       or
-      exists(API::Node fastAPIParam |
-        fastAPIParam =
+      exists(API::Node fastApiParam |
+        fastApiParam =
           API::moduleImport("fastapi")
               .getMember("FastAPI")
               .getReturn()
@@ -503,11 +499,11 @@ module FileAndFormRemoteFlowSource {
             .getASubclass*()
             .getAValueReachableFromSource()
             .asExpr() =
-          fastAPIParam.asSource().asExpr().(Parameter).getAnnotation().getASubExpression*()
+          fastApiParam.asSource().asExpr().(Parameter).getAnnotation().getASubExpression*()
       |
         // in the case of List of files
         exists(For f, Attribute attr, DataFlow::Node a, DataFlow::Node b |
-          fastAPIParam.getAValueReachableFromSource().asExpr() = f.getIter().getASubExpression*()
+          fastApiParam.getAValueReachableFromSource().asExpr() = f.getIter().getASubExpression*()
         |
           // file.file in following
           // def upload(files: List[UploadFile] = File(...)):
@@ -521,9 +517,7 @@ module FileAndFormRemoteFlowSource {
           this.asExpr() = attr
         )
         or
-        // exclude cases like type-annotated with `Response`
-        // and not not any(Response::RequestHandlerParam src).asExpr() = result
-        this = fastAPIParam.asSource()
+        this = fastApiParam.asSource()
       ) and
       exists(this.getLocation().getFile().getRelativePath())
     }
@@ -575,8 +569,8 @@ module BombsConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink =
       [
-        pyZipFile::isSink(), ZipFile::isSink(), Gzip::isSink(), Lzma::isSink(), Bz2::isSink(),
-        TarFile::isSink(), Lzma::isSink(), Shutil::isSink(), Pandas::isSink()
+        PyZipFile::isSink(), ZipFile::isSink(), Gzip::isSink(), Lzma::isSink(), Bz2::isSink(),
+        TarFile::isSink(), Shutil::isSink(), Pandas::isSink()
       ] and
     exists(sink.getLocation().getFile().getRelativePath())
   }
@@ -585,7 +579,7 @@ module BombsConfig implements DataFlow::ConfigSig {
     (
       isAdditionalTaintStepTextIOWrapper(nodeFrom, nodeTo) or
       ZipFile::isAdditionalTaintStep(nodeFrom, nodeTo) or
-      pyZipFile::isAdditionalTaintStep(nodeFrom, nodeTo) or
+      PyZipFile::isAdditionalTaintStep(nodeFrom, nodeTo) or
       TarFile::isAdditionalTaintStep(nodeFrom, nodeTo)
     ) and
     exists(nodeTo.getLocation().getFile().getRelativePath())
