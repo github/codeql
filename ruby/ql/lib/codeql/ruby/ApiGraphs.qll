@@ -298,7 +298,7 @@ module API {
     }
 
     /**
-     * Gets an access to a constant with this valeu as the base of the access.
+     * Gets an access to a constant with this value as the base of the access.
      *
      * This is equivalent to `getMember(_)` but can be more efficient.
      */
