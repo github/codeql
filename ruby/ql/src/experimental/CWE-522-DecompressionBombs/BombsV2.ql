@@ -12,6 +12,7 @@
  */
 
 import codeql.ruby.AST
+import codeql.ruby.frameworks.Files
 import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.RemoteFlowSources
@@ -135,6 +136,15 @@ module DecompressionBombs {
   }
 }
 
+/**
+ * A call to `IO.copy_stream`
+ */
+class IoCopyStream extends DataFlow::CallNode {
+  IoCopyStream() { this = API::getTopLevelMember("IO").getAMethodCall("copy_stream") }
+
+  DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+}
+
 class Bombs extends TaintTracking::Configuration {
   Bombs() { this = "Decompression Bombs" }
 
@@ -159,9 +169,19 @@ class Bombs extends TaintTracking::Configuration {
       nodeTo = n.getReturn().asSource()
     )
     or
+    exists(File::FileOpen n |
+      nodeFrom = n.getAPathArgument() and
+      nodeTo = n
+    )
+    or
     exists(API::Node n | n = API::root().getMember("StringIO").getMethod("new") |
       nodeFrom = n.getParameter(0).asSink() and
       nodeTo = n.getReturn().asSource()
+    )
+    or
+    exists(IoCopyStream n |
+      nodeFrom = n.getAPathArgument() and
+      nodeTo = n
     )
     or
     // following can be a global additional step
