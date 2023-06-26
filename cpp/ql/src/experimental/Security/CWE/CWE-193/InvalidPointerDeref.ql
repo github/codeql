@@ -241,6 +241,7 @@ pragma[nomagic]
 predicate pointerAddInstructionHasBounds(
   PointerAddInstruction pai, DataFlow::Node sink1, DataFlow::Node sink2, int delta
 ) {
+  InterestingPointerAddInstruction::isInteresting(pragma[only_bind_into](pai)) and
   exists(Instruction right, Instruction instr2 |
     pai.getRight() = right and
     pai.getLeft() = sink1.asInstruction() and
@@ -249,6 +250,29 @@ predicate pointerAddInstructionHasBounds(
     not right = Barrier2::getABarrierInstruction(delta) and
     not instr2 = Barrier2::getABarrierInstruction(delta)
   )
+}
+
+module InterestingPointerAddInstruction {
+  private module PointerAddInstructionConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      // The sources is the same as in the sources for the second
+      // projection in the `AllocToInvalidPointerConfig` module.
+      hasSize(source.asConvertedExpr(), _, _)
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      sink.asInstruction() = any(PointerAddInstruction pai).getLeft()
+    }
+  }
+
+  private import DataFlow::Global<PointerAddInstructionConfig>
+
+  predicate isInteresting(PointerAddInstruction pai) {
+    exists(DataFlow::Node n |
+      n.asInstruction() = pai.getLeft() and
+      flowTo(n)
+    )
+  }
 }
 
 /**
