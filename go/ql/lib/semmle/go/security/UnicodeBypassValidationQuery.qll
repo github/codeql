@@ -18,7 +18,7 @@ class PostValidation extends DataFlow::FlowState {
   PostValidation() { this = "PostValidation" }
 }
 
-private predicate intCheck(DataFlow::Node g, Expr e, boolean outcome) {
+private predicate indexCheck(DataFlow::Node g, Expr e, boolean outcome) {
   exists(DataFlow::CallNode cn, DataFlow::EqualityTestNode etn |
     g = etn and
     DataFlow::localFlow(cn.getResult(), etn.getAnOperand()) and
@@ -26,10 +26,22 @@ private predicate intCheck(DataFlow::Node g, Expr e, boolean outcome) {
         .hasQualifiedName("strings",
           [
             "Index", "IndexAny", "IndexByte", "IndexFunc", "IndexRune", "LastIndex", "LastIndexAny",
-            "LastIndexByte", "LastIndexFunc", "Count",
+            "LastIndexByte", "LastIndexFunc",
           ]) and
     cn.getArgument(0).asExpr() = e and
     etn.getAnOperand().getIntValue() = -1 and
+    outcome = etn.getPolarity()
+  )
+}
+
+private predicate countCheck(DataFlow::Node g, Expr e, boolean outcome) {
+  exists(DataFlow::CallNode cn, DataFlow::EqualityTestNode etn |
+    g = etn and
+    DataFlow::localFlow(cn.getResult(), etn.getAnOperand()) and
+    cn.getTarget()
+        .hasQualifiedName("strings", ["Count", "CountAny", "CountByte", "CountFunc", "CountRune"]) and
+    cn.getArgument(0).asExpr() = e and
+    etn.getAnOperand().getIntValue() = 0 and
     outcome = etn.getPolarity()
   )
 }
@@ -63,7 +75,9 @@ private predicate regexMatchCheck(DataFlow::Node cn, Expr e, boolean outcome) {
  */
 class UntrustedUnicodeCharChecks extends DataFlow::Node {
   UntrustedUnicodeCharChecks() {
-    this = DataFlow::BarrierGuard<intCheck/3>::getABarrierNode()
+    this = DataFlow::BarrierGuard<indexCheck/3>::getABarrierNode()
+    or
+    this = DataFlow::BarrierGuard<countCheck/3>::getABarrierNode()
     or
     this = DataFlow::BarrierGuard<boolCheck/3>::getABarrierNode()
     or
