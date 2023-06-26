@@ -134,7 +134,12 @@ class Configuration extends TaintTracking::Configuration {
     stateTo instanceof PostValidation
   }
 
-  /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
+  /*
+   * A Unicode Tranformation is considered a sink when the form algorithm used is for Unicode normalization (NFC, NFKC, etc) and one of the two scenarios happens:
+   *  - The flow went through a call to an Escape function, Regex Replace function, or a String manipulation function.
+   *  - The Unicode normalisation was guarded by a check that the input does not contain a particular character either using Regex match functions or String checks functions like Index/Contains functions.
+   */
+
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     (
       exists(string unicodeNorm, DataFlow::MethodCallNode cn |
