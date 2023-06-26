@@ -43,15 +43,23 @@ private predicate boolCheck(DataFlow::Node cn, Expr e, boolean outcome) {
   outcome = false
 }
 
+private predicate regexMatchCheck(DataFlow::Node cn, Expr e, boolean outcome) {
+  cn.(DataFlow::CallNode).getTarget() instanceof RegexpMatchFunction and
+  cn.(DataFlow::CallNode).getArgument(0).asExpr() = e and
+  outcome = false
+}
+
 /**
- * A use of a variable guarded by a call to `Index`, `ContainsAny`, or similar, in a context
- * suggesting it has been validated to not contain a particular character.
+ * A use of a variable guarded by a call to `Index`, `ContainsAny`, Regex match functions
+ * or similar, in a context suggesting it has been validated to not contain a particular character.
  */
 class UntrustedUnicodeCharChecks extends DataFlow::Node {
   UntrustedUnicodeCharChecks() {
     this = DataFlow::BarrierGuard<intCheck/3>::getABarrierNode()
     or
     this = DataFlow::BarrierGuard<boolCheck/3>::getABarrierNode()
+    or
+    this = DataFlow::BarrierGuard<regexMatchCheck/3>::getABarrierNode()
   }
 }
 
@@ -86,10 +94,7 @@ class Configuration extends TaintTracking::Configuration {
       )
       or
       exists(DataFlow::CallNode cn |
-        (
-          cn.getACalleeIncludingExternals().asFunction() instanceof RegexpMatchFunction or
-          cn.getACalleeIncludingExternals().asFunction() instanceof RegexpReplaceFunction
-        ) and
+        cn.getACalleeIncludingExternals().asFunction() instanceof RegexpReplaceFunction and
         nodeFrom = cn.getAnArgument() and
         nodeTo = cn.getResult()
       )
