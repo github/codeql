@@ -44,8 +44,8 @@ private predicate boolCheck(DataFlow::Node cn, Expr e, boolean outcome) {
 }
 
 /**
- * A call to a function called `Index`, `ContainsAny`, or similar, which may be
- * considered a barrier guard for eliminating untrusted Unicode characters.
+ * A use of a variable guarded by a call to `Index`, `ContainsAny`, or similar, in a context
+ * suggesting it has been validated to not contain a particular character.
  */
 class UntrustedUnicodeCharChecks extends DataFlow::Node {
   UntrustedUnicodeCharChecks() {
