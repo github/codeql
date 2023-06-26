@@ -1,0 +1,381 @@
+extensions:
+- addsTo: {extensible: sinkModel, pack: codeql/java-all}
+  data:
+  - [java.sql, Statement, true, execute, (String), '', 'Argument[this]', sql-injection,
+    ai-generated]
+  - [jakarta.persistence, EntityManager, true, find, '(Class,Object)', '', 'Argument[1]',
+    sql-injection, ai-generated]
+  - [org.hibernate.query, Query, true, executeUpdate, (), '', 'Argument[this]', sql-injection,
+    ai-generated]
+  - [jakarta.persistence, EntityManager, true, createQuery, (String), '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [jakarta.persistence, EntityManager, true, createQuery, (CriteriaUpdate), '',
+    'Argument[0]', sql-injection, ai-generated]
+  - [jakarta.persistence, EntityManager, true, createQuery, (CriteriaQuery), '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [java.sql, ResultSet, true, getString, (String), '', 'Argument[0]', sql-injection,
+    ai-generated]
+  - [java.util.function, Function, true, apply, (URL), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [java.sql, Connection, true, prepareStatement, (String), '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [java.sql, Connection, true, prepareStatement, '(String,int)', '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [jakarta.persistence, TypedQuery, true, setParameter, '(String,Object)', '', 'Argument[1]',
+    sql-injection, ai-generated]
+  - [java.sql, PreparedStatement, true, setString, '(int,String)', '', 'Argument[1]',
+    sql-injection, ai-generated]
+  - [jakarta.persistence, Query, true, executeUpdate, (), '', 'Argument[this]', sql-injection,
+    ai-generated]
+  - [org.hibernate.query, Query, true, setParameter, '(int,Object)', '', 'Argument[1]',
+    sql-injection, ai-generated]
+  - [java.sql, PreparedStatement, true, setObject, '(int,Object)', '', 'Argument[1]',
+    sql-injection, ai-generated]
+  - [java.lang, Runtime, true, addShutdownHook, (Thread), '', 'Argument[0]', command-injection,
+    ai-generated]
+  - [jakarta.persistence, EntityManager, true, remove, (Object), '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [java.lang, Class, false, getResourceAsStream, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [java.lang, ClassLoader, true, getResourceAsStream, (String), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [java.lang, Class, false, getResourceAsStream, (String), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [jakarta.ws.rs.core, MultivaluedMap, true, getFirst, (String), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [jakarta.ws.rs.client, Invocation$Builder, false, header, '(String,Object)', '',
+    'Argument[1]', request-forgery, ai-generated]
+  - [jakarta.ws.rs.client, Invocation$Builder, false, header, '(String,Object)', '',
+    'Argument[0]', request-forgery, ai-generated]
+  - [org.apache.dubbo.rpc.cluster.router.state, StateRouter, true, route, '(BitList,URL,Invocation,boolean,Holder)',
+    '', 'Argument[1]', request-forgery, ai-generated]
+  - [jakarta.persistence.criteria, CriteriaBuilder, true, function, '(String,Class,Expression[])',
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [jakarta.ws.rs.client, SyncInvoker, true, get, (), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [jakarta.persistence, EntityManager, true, createNativeQuery, (String), '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [jakarta.persistence, EntityManager, true, createNativeQuery, (String), '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [jakarta.persistence, EntityManager, true, createNativeQuery, '(String,Class)',
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [com.alibaba.nacos.api.naming, NamingService, true, batchRegisterInstance, '(String,String,List)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [java.lang, ClassLoader, true, getResource, (String), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [java.net, Socket, true, connect, '(SocketAddress,int)', '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [java.net, InetSocketAddress, true, InetSocketAddress, '(InetAddress,int)', '',
+    'Argument[0]', request-forgery, ai-generated]
+  - [java.net, Socket, true, connect, (SocketAddress), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [java.sql, Connection, true, prepareCall, (String), '', 'Argument[this]', sql-injection,
+    ai-generated]
+  - [java.lang, Class, false, getResource, (String), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [jakarta.ws.rs.core, UriBuilder, true, build, '(Object[])', '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [jakarta.ws.rs.client, SyncInvoker, true, post, '(Entity,Class)', '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [jakarta.ws.rs.client, SyncInvoker, true, post, (Entity), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [jakarta.ws.rs.client, SyncInvoker, true, post, (Entity), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [java.lang, Class, false, getResource, (String), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [java.sql, PreparedStatement, true, setDate, '(int,Date)', '', 'Argument[1]',
+    sql-injection, ai-generated]
+  - [me.chanjar.weixin.common.util.http, RequestExecutor, true, execute, '(String,String,WxType)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [me.chanjar.weixin.common.util.http, RequestExecutor, true, execute, '(String,WxMpMaterial,WxType)',
+    '', 'Argument[2]', request-forgery, ai-generated]
+  - [org.apache.kafka.clients.consumer, KafkaConsumer, true, 'KafkaConsumer<byte[],byte[]>',
+    (Map), '', 'Argument[0]', request-forgery, ai-generated]
+  - [java.sql, CallableStatement, true, getObject, '(String,Class)', '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [javax.servlet.http, HttpServletResponse, true, setHeader, '(String,String)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [javax.servlet.http, HttpServletResponse, true, setHeader, '(String,String)',
+    '', 'Argument[1]', request-forgery, ai-generated]
+  - [org.apache.http.message, AbstractHttpMessage, true, setHeader, '(String,String)',
+    '', 'Argument[1]', request-forgery, ai-generated]
+  - [java.net, URLConnection, true, getInputStream, (), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [org.apache.dubbo.rpc.cluster.router, MockInvoker, true, MockInvoker<String>,
+    '(URL,boolean)', '', 'Argument[0]', request-forgery, ai-generated]
+  - [org.apache.dubbo.rpc.cluster.router, MockInvoker, true, MockInvoker<String>,
+    (URL), '', 'Argument[0]', request-forgery, ai-generated]
+  - [org.apache.dubbo.remoting.zookeeper, AbstractZookeeperClient, true, create, '(String,boolean,boolean)',
+    '', 'Argument[0]', path-injection, ai-generated]
+  - [java.io, File, true, listFiles, (FileFilter), '', 'Argument[this]', path-injection,
+    ai-generated]
+  - [java.sql, CallableStatement, true, setCharacterStream, '(String,Reader,long)',
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [java.sql, CallableStatement, true, setObject, '(String,Object)', '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [jakarta.persistence, EntityManager, true, createNamedQuery, (String), '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [jakarta.persistence.criteria, CriteriaBuilder, true, like, '(Expression,String)',
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [jakarta.persistence.criteria, CriteriaBuilder, true, like, '(Expression,String)',
+    '', 'Argument[1]', sql-injection, ai-generated]
+  - [jakarta.ws.rs.core, UriBuilder, true, queryParam, '(String,Object[])', '', 'Argument[1]',
+    request-forgery, ai-generated]
+  - [jakarta.ws.rs.client, Entity, false, form, (Form), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [java.io, File, true, listFiles, (FilenameFilter), '', 'Argument[0]', path-injection,
+    ai-generated]
+  - [okhttp3.mockwebserver, MockWebServer, false, url, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [org.apache.http.client.methods, HttpRequestBase, true, setConfig, (RequestConfig),
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [jodd.http, ProxyInfo, true, ProxyInfo, '(ProxyType,String,int,String,String)',
+    '', 'Argument[1]', request-forgery, ai-generated]
+  - [redis.clients.jedis, JedisPool, true, JedisPool, '(GenericObjectPoolConfig,String,int,int,String,int)',
+    '', 'Argument[4]', command-injection, ai-generated]
+  - [io.restassured.specification, RequestSenderOptions, true, get, '(String,Object[])',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [io.restassured.specification, RequestSenderOptions, true, get, '(String,Object[])',
+    '', 'Argument[this]', request-forgery, ai-generated]
+  - [org.apache.curator.framework.api, Pathable, true, forPath, (String), '', 'Argument[0]',
+    path-injection, ai-generated]
+  - [com.alibaba.druid.sql.repository, SchemaRepository, true, console, (String),
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.apache.dubbo.rpc.cluster.router.mesh.route, StandardMeshRuleRouter, true,
+    StandardMeshRuleRouter<>, (URL), '', 'Argument[0]', request-forgery, ai-generated]
+  - [org.apache.kafka.clients.producer, KafkaProducer, true, 'KafkaProducer<K,V>',
+    (Properties), '', 'Argument[0]', request-forgery, ai-generated]
+  - [apache.rocketmq.v2, Address$Builder, false, setHost, (String), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [org.apache.hc.client5.http.impl.async, CloseableHttpAsyncClient, false, execute,
+    '(SimpleHttpRequest,FutureCallback)', '', 'Argument[0]', request-forgery, ai-generated]
+  - [java.lang, Runtime, true, exec, '(String[])', '', 'Argument[this]', command-injection,
+    ai-generated]
+  - [org.jboss.shrinkwrap.api.exporter, StreamExporter, true, exportTo, '(File,boolean)',
+    '', 'Argument[0]', path-injection, ai-generated]
+  - [java.io, BufferedWriter, true, BufferedWriter, (Writer), '', 'Argument[0]', path-injection,
+    ai-generated]
+  - [javax.cache.spi, CachingProvider, true, getCacheManager, '(URI,ClassLoader)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [org.keycloak.authorization.client.util, HttpMethod, true, param, '(String,String)',
+    '', 'Argument[this]', request-forgery, ai-generated]
+  - [org.keycloak.authorization.client.util, HttpMethod, true, param, '(String,String)',
+    '', 'Argument[1]', request-forgery, ai-generated]
+  - [java.net, URL, false, getFile, (), '', 'Argument[this]', request-forgery, ai-generated]
+  - [jakarta.ws.rs.core, UriInfo, true, getBaseUriBuilder, (), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [org.wildfly.extras.creaper.core.online, OnlineManagementClient, true, execute,
+    (String), '', 'Argument[this]', command-injection, ai-generated]
+  - [org.jboss.shrinkwrap.api, Archive, true, add, '(Asset,String)', '', 'Argument[1]',
+    request-forgery, ai-generated]
+  - [java.lang, Runtime, true, exec, (String), '', 'Argument[this]', command-injection,
+    ai-generated]
+  - [io.netty.util, DomainNameMappingBuilder, false, add, '(String,SslContext)', '',
+    'Argument[1]', request-forgery, ai-generated]
+  - [com.alibaba.druid.pool, DruidAbstractDataSource, true, setUrl, (String), '',
+    'Argument[this]', request-forgery, ai-generated]
+  - [com.alibaba.druid.sql, SQLUtils, false, parseStatements, '(String,String)', '',
+    'Argument[0]', sql-injection, ai-generated]
+  - [redis.clients.jedis, JedisPool, true, JedisPool, '(GenericObjectPoolConfig,String,int,int,String,int)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [okio, Okio, false, source, (File), '', 'Argument[0]', path-injection, ai-generated]
+  - [jodd.http, HttpRequest, false, post, (String), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [me.chanjar.weixin.cp.bean, WxCpAgentWorkBench$WxCpAgentWorkBenchBuilder, false,
+    url, (String), '', 'Argument[this]', request-forgery, ai-generated]
+  - [me.chanjar.weixin.cp.bean.templatecard, HorizontalContent$HorizontalContentBuilder,
+    false, url, (String), '', 'Argument[this]', request-forgery, ai-generated]
+  - [me.chanjar.weixin.cp.tp.service.impl, BaseWxCpTpServiceImpl, true, post, '(String,String)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [okhttp3, Request$Builder, false, get, (), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [jodd.http, HttpRequest, false, get, (String), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [okhttp3, Request$Builder, false, post, (RequestBody), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [okhttp3, RequestBody, false, create, '(MediaType,String)', '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [org.redisson, Redisson, false, create, (Config), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [jodd.http, HttpConnectionProvider, true, useProxy, (ProxyInfo), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [io.grpc, ManagedChannelBuilder, false, forAddress, '(String,int)', '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [io.restassured.specification, RequestSpecification, true, header, '(String,Object,Object[])',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [org.springframework.web.reactive.function.server, ServerResponse$HeadersBuilder,
+    false, build, (), '', 'Argument[this]', request-forgery, ai-generated]
+  - [com.alibaba.csp.sentinel.datasource, FileRefreshableDataSource, true, FileRefreshableDataSource<List<SystemRule>>,
+    '(String,Converter)', '', 'Argument[0]', request-forgery, ai-generated]
+  - [com.ecwid.consul.v1, ConsulClient, true, ConsulClient, '(String,int)', '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [com.alibaba.csp.sentinel.datasource.redis, RedisDataSource, true, RedisDataSource<List<FlowRule>>,
+    '(RedisConnectionConfig,String,String,Converter)', '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [org.apache.http.client.utils, URIBuilder, true, setPath, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [org.apache.http.client.utils, URIBuilder, true, setScheme, (String), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [org.elasticsearch.client.support, AbstractClient, true, prepareUpdate, '(String,String,String)',
+    '', 'Argument[1]', request-forgery, ai-generated]
+  - [org.apache.hadoop.hbase.client, HTable, true, getScanner, (Scan), '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [org.apache.kudu.client, KuduClient, true, openTable, (String), '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [com.alicloud.openservices.tablestore, DefaultTableStoreWriter, true, DefaultTableStoreWriter,
+    '(String,ServiceCredentials,String,String,WriterConfig,TableStoreCallback)', '',
+    'Argument[0]', request-forgery, ai-generated]
+  - [org.apache.commons.io, FileUtils, false, listFiles, '(File,IOFileFilter,IOFileFilter)',
+    '', 'Argument[0]', path-injection, ai-generated]
+  - [org.apache.commons.io, FileUtils, false, forceMkdir, (File), '', 'Argument[0]',
+    path-injection, ai-generated]
+  - [org.apache.dubbo.config, ReferenceConfigBase, true, setUrl, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [org.springframework.context.support, ClassPathXmlApplicationContext, true, ClassPathXmlApplicationContext,
+    (String), '', 'Argument[0]', request-forgery, ai-generated]
+  - [com.alibaba.nacos.api, NacosFactory, false, createConfigService, (Properties),
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [java.io, File, true, renameTo, (File), '', 'Argument[this]', path-injection,
+    ai-generated]
+  - [org.apache.dubbo.rpc, ServerService, true, getInvoker, (URL), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [java.net, URLEncoder, false, encode, '(String,String)', '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [org.apache.commons.exec, PumpStreamHandler, true, PumpStreamHandler, '(OutputStream,OutputStream,InputStream)',
+    '', 'Argument[0]', command-injection, ai-generated]
+  - [org.rocksdb, RocksDB, false, open, '(DBOptions,String,List,List)', '', 'Argument[2]',
+    path-injection, ai-generated]
+  - [org.apache.kafka.streams.processor.api, MockProcessorContext, true, 'MockProcessorContext<Void,Void>',
+    '(Properties,TaskId,File)', '', 'Argument[2]', path-injection, ai-generated]
+  - [javax.management.remote, JMXConnectorServerFactory, false, newJMXConnectorServer,
+    '(JMXServiceURL,Map,MBeanServer)', '', 'Argument[1]', request-forgery, ai-generated]
+  - [java.net, HttpURLConnection, true, setRequestMethod, (String), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [java.nio.file, Paths, false, get, '(String,String[])', '', 'Argument[1]', path-injection,
+    ai-generated]
+  - [org.apache.commons.io, FileUtils, false, deleteDirectory, (File), '', 'Argument[0]',
+    path-injection, ai-generated]
+  - [java.sql, DatabaseMetaData, true, getExportedKeys, '(String,String,String)',
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [java.sql, DatabaseMetaData, true, getPseudoColumns, '(String,String,String,String)',
+    '', 'Argument[2]', sql-injection, ai-generated]
+  - [org.eclipse.jetty.http, HttpTester$Request, false, setURI, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [java.io, File, true, mkdir, (), '', 'Argument[this]', path-injection, ai-generated]
+  - [java.io, FilePermission, false, FilePermission, '(String,String)', '', 'Argument[0]',
+    path-injection, ai-generated]
+  - [org.h2.mvstore, FileStore, true, open, '(String,boolean)', '', 'Argument[0]',
+    path-injection, ai-generated]
+  - [java.nio.file, Files, false, createTempFile, '(String,String,FileAttribute[])',
+    '', 'Argument[1]', path-injection, ai-generated]
+  - [java.sql, DatabaseMetaData, true, getProcedures, '(String,String,String)', '',
+    'Argument[1]', sql-injection, ai-generated]
+  - [java.sql, CallableStatement, true, setBinaryStream, '(String,InputStream,long)',
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.postgresql.util, PGobject, true, setValue, (String), '', 'Argument[0]', sql-injection,
+    ai-generated]
+  - [org.postgresql.util, PGobject, false, setType, (String), '', 'Argument[0]', sql-injection,
+    ai-generated]
+  - [org.jboss.shrinkwrap.api.container, ResourceContainer, true, addAsResource, '(File,ArchivePath)',
+    '', 'Argument[1]', path-injection, ai-generated]
+  - [java.sql, CallableStatement, true, setString, '(String,String)', '', 'Argument[1]',
+    sql-injection, ai-generated]
+  - [org.gradle.process, ExecSpec, true, args, '(Object[])', '', 'Argument[2]', command-injection,
+    ai-generated]
+  - [org.gradle.process, JavaExecSpec, true, args, '(Object[])', '', 'Argument[0]',
+    command-injection, ai-generated]
+  - [org.gradle.api.file, Directory, true, getAsFile, (), '', 'Argument[this]', path-injection,
+    ai-generated]
+  - [java.io, File, true, createNewFile, (), '', 'Argument[this]', path-injection,
+    ai-generated]
+  - [org.gradle.api.tasks, SourceTask, true, source, '(Object[])', '', 'Argument[0]',
+    path-injection, ai-generated]
+  - [org.gradle.testkit.runner, GradleRunner, true, withProjectDir, (File), '', 'Argument[0]',
+    path-injection, ai-generated]
+  - [javax.servlet, ServletContext, true, getResourceAsStream, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [javax.servlet.http, HttpServletResponse, true, sendRedirect, (String), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [org.keycloak.saml, BaseSAML2BindingBuilder, true, relayState, (String), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [jakarta.servlet.http, HttpServletResponse, true, sendRedirect, (String), '',
+    'Argument[0]', request-forgery, ai-generated]
+  - [java.nio.file, Files, false, getFileAttributeView, '(Path,Class,LinkOption[])',
+    '', 'Argument[0]', path-injection, ai-generated]
+  - [liquibase.statement.core, UpdateStatement, true, UpdateStatement, '(String,String,String)',
+    '', 'Argument[2]', sql-injection, ai-generated]
+  - [liquibase.database.jvm, JdbcConnection, true, prepareStatement, (String), '',
+    'Argument[0]', sql-injection, ai-generated]
+  - [liquibase.executor, Executor, true, execute, (SqlStatement), '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [com.openshift.restclient, ClientBuilder, true, ClientBuilder, (String), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [javax.naming.ldap, InitialLdapContext, true, InitialLdapContext, '(Hashtable,Control[])',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [java.lang, Process, true, destroy, (), '', 'Argument[this]', command-injection,
+    ai-generated]
+  - [jakarta.ws.rs.core, UriInfo, true, getBaseUri, (), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [jakarta.mail, Part, true, setHeader, '(String,String)', '', 'Argument[1]', request-forgery,
+    ai-generated]
+  - [jakarta.ws.rs.core, Response$ResponseBuilder, false, location, (URI), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [jakarta.servlet, ServletContext, true, getResourceAsStream, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [jakarta.servlet, ServletRequest, true, getRequestDispatcher, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [io.undertow, Undertow$Builder, false, addHttpsListener, '(int,String,SSLContext)',
+    '', 'Argument[1]', request-forgery, ai-generated]
+  - [org.keycloak.saml, BaseSAML2BindingBuilder, true, redirectBinding, (Document),
+    '', 'Argument[this]', request-forgery, ai-generated]
+  - [java.net, URI, false, getAuthority, (), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [org.jfree.chart, ChartUtilities, false, saveChartAsPNG, '(File,JFreeChart,int,int)',
+    '', 'Argument[0]', path-injection, ai-generated]
+  - [java.net, URL, false, URL, '(String,String,int,String)', '', 'Argument[1]', request-forgery,
+    ai-generated]
+  - [org.jboss.resteasy.plugins.providers.multipart, MultipartFormDataOutput, true,
+    addFormData, '(String,Object,MediaType)', '', 'Argument[2]', request-forgery,
+    ai-generated]
+  - [jakarta.ws.rs.client, WebTarget, true, path, (String), '', 'Argument[this]',
+    request-forgery, ai-generated]
+  - [org.apache.http.impl.cookie, BasicClientCookie, true, BasicClientCookie, '(String,String)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [jakarta.ws.rs.client, Client, true, target, (String), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [org.apache.ibatis.jdbc, AbstractSQL, true, HAVING, '(String[])', '', 'Argument[this]',
+    sql-injection, ai-generated]
+  - [io.netty.resolver, AddressResolver, true, resolve, (SocketAddress), '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [net.sf.jsqlparser.expression, BinaryExpression, true, setRightExpression, (Expression),
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [net.sf.jsqlparser.schema, Column, true, Column, (String), '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [net.sf.jsqlparser.parser, CCJSqlParserUtil, false, parse, (String), '', 'Argument[0]',
+    sql-injection, ai-generated]
+  - [org.apache.ibatis.io, Resources, false, getResourceAsReader, (String), '', 'Argument[0]',
+    path-injection, ai-generated]
+  - [com.ecwid.consul.v1, ConsulClient, true, setKVValue, '(String,String,String,PutParams)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [com.alibaba.nacos.api.config, ConfigService, true, removeConfig, '(String,String)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [io.etcd.jetcd, ClientBuilder, false, endpoints, '(String[])', '', 'Argument[0]',
+    request-forgery, ai-generated]
+  - [com.weibo.api.motan.config, AbstractServiceConfig, true, setExport, (String),
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [com.alibaba.druid.pool, DruidAbstractDataSource, true, setValidationQuery, (String),
+    '', 'Argument[0]', sql-injection, ai-generated]
+  - [java.net, Authenticator, false, requestPasswordAuthentication, '(String,InetAddress,int,String,String,String,URL,RequestorType)',
+    '', 'Argument[0]', request-forgery, ai-generated]
+  - [java.net, HttpCookie, false, setDomain, (String), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [java.net, Proxy, true, Proxy, '(Type,SocketAddress)', '', 'Argument[1]', request-forgery,
+    ai-generated]
+  - [okio, FileSystem, false, createDirectories, (Path), '', 'Argument[0]', path-injection,
+    ai-generated]
+  - [java.security, Provider, true, configure, (String), '', 'Argument[0]', request-forgery,
+    ai-generated]
+  - [okhttp3, HttpUrl, false, newBuilder, (), '', 'Argument[this]', request-forgery,
+    ai-generated]
+  - [javax.imageio, ImageIO, false, read, (File), '', 'Argument[0]', path-injection,
+    ai-generated]
