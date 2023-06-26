@@ -1290,10 +1290,16 @@ private import PostUpdateNodes
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
-  CastNode() {
-    // ensure that all variable assignments are included in the path graph
-    this.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
-  }
+  CastNode() { none() }
+}
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) {
+  // ensure that all variable assignments are included in the path graph
+  n.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
 }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;

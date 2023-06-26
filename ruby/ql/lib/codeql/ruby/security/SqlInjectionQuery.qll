@@ -15,7 +15,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSink(DataFlow::Node source) { source instanceof Sink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
