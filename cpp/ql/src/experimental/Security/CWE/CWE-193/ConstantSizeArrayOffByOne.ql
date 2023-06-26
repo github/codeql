@@ -94,18 +94,21 @@ predicate constantUpperBounded(PointerArithmeticInstruction pai, int delta) {
 }
 
 bindingset[pai, size]
-predicate pointerArithOverflow0Impl(PointerArithmeticInstruction pai, int size, int bound, int delta) {
-  constantUpperBounded(pai, bound) and
-  delta = bound - size and
-  delta >= 0 and
-  size != 0 and
-  size != 1
+predicate pointerArithOverflow0Impl(PointerArithmeticInstruction pai, int size, int delta) {
+  exists(int bound |
+    constantUpperBounded(pai, bound) and
+    delta = bound - size and
+    delta >= 0 and
+    size != 0 and
+    size != 1
+  )
 }
 
+pragma[nomagic]
 predicate pointerArithOverflow0(PointerArithmeticInstruction pai, int delta) {
-  exists(int size, int bound |
+  exists(int size |
     arrayTypeHasSizes(_, pai.getElementSize(), size) and
-    pointerArithOverflow0Impl(pai, size, bound, delta)
+    pointerArithOverflow0Impl(pai, size, delta)
   )
 }
 
@@ -130,7 +133,7 @@ bindingset[v]
 predicate finalPointerArithOverflow(Variable v, PointerArithmeticInstruction pai, int delta) {
   exists(int size |
     arrayTypeHasSizes(pragma[only_bind_out](v.getUnspecifiedType()), pai.getElementSize(), size) and
-    pointerArithOverflow0Impl(pai, size, _, delta)
+    pointerArithOverflow0Impl(pai, size, delta)
   )
 }
 
