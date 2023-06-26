@@ -502,8 +502,8 @@ module BombsConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink =
       [
-        PyZipFile::isSink(), ZipFile::isSink(), Gzip::isSink(), Lzma::isSink(), Bz2::isSink(),
-        TarFile::isSink(), Shutil::isSink(), Pandas::isSink()
+        ZipFile::isSink(), Gzip::isSink(), Lzma::isSink(), Bz2::isSink(), TarFile::isSink(),
+        Shutil::isSink(), Pandas::isSink()
       ] and
     exists(sink.getLocation().getFile().getRelativePath())
   }
@@ -512,7 +512,6 @@ module BombsConfig implements DataFlow::ConfigSig {
     (
       isAdditionalTaintStepTextIOWrapper(nodeFrom, nodeTo) or
       ZipFile::isAdditionalTaintStep(nodeFrom, nodeTo) or
-      PyZipFile::isAdditionalTaintStep(nodeFrom, nodeTo) or
       TarFile::isAdditionalTaintStep(nodeFrom, nodeTo)
     ) and
     exists(nodeTo.getLocation().getFile().getRelativePath())
