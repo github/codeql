@@ -34,7 +34,7 @@ module DecompressionBombs {
     }
 
     /**
-     * return values of following methods
+     * A return values of following methods
      * `Zlib::GzipReader.open`
      * `Zlib::GzipReader.zcat`
      * `Zlib::GzipReader.new`
@@ -66,7 +66,7 @@ module DecompressionBombs {
     }
 
     /**
-     * return values of following methods
+     * A return values of following methods
      * `ZipIO.read`
      * `ZipEntry.extract`
      */
@@ -105,7 +105,7 @@ module DecompressionBombs {
     }
 
     /**
-     * return values of following methods
+     * A return values of following methods
      * `ZipIO.read`
      * `ZipEntry.extract`
      * sanitize the nodes which have `entry.size > someOBJ`
@@ -123,7 +123,7 @@ module DecompressionBombs {
 
     predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(API::Node zipnodes | zipnodes = zipFile() |
-        nodeTo = [rubyZipNode(zipnodes).getMethod(["extract", "read"]).getReturn().asSource()] and
+        nodeTo = rubyZipNode(zipnodes).getMethod(["extract", "read"]).getReturn().asSource() and
         nodeFrom = zipnodes.getMethod(["new", "open"]).getParameter(0).asSink()
       )
     }
@@ -164,6 +164,7 @@ class Bombs extends TaintTracking::Configuration {
       nodeTo = n.getReturn().asSource()
     )
     or
+    // following can be a global additional step
     exists(DataFlow::CallNode cn |
       cn.getMethodName() = "open" and cn.getReceiver().toString() = "self"
     |

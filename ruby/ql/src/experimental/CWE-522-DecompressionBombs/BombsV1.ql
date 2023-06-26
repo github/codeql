@@ -28,7 +28,7 @@ module Zip {
     }
 
     /**
-     * input in following
+     * An input in following
      * ```ruby
      * input = ip::InputStream.open(path)
      * Zip::InputStream.open(path) do |input|
@@ -38,7 +38,7 @@ module Zip {
      */
     private API::Node instance() {
       result =
-        [zipInputStream().getMethod("open").(GetReturnOrGetBlock).getReturnOrGetBlockParameter()]
+        zipInputStream().getMethod("open").(GetReturnOrGetBlock).getReturnOrGetBlockParameter()
     }
 
     predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -59,7 +59,7 @@ module Zip {
     }
 
     DataFlow::Node isSink() {
-      exists(string ioMethods | not ioMethods = ["get_next_entry"] |
+      exists(string ioMethods | not ioMethods = "get_next_entry" |
         result = instance().getMethod(ioMethods).getReturn().asSource()
       )
     }
@@ -104,12 +104,7 @@ module Zip {
        */
       API::Node instance() {
         result =
-          [
-            zipFile()
-                .getMethod(["open", "new"])
-                .(GetReturnOrGetBlock)
-                .getReturnOrGetBlockParameter()
-          ]
+          zipFile().getMethod(["open", "new"]).(GetReturnOrGetBlock).getReturnOrGetBlockParameter()
       }
 
       /**
@@ -189,14 +184,6 @@ module Zip {
      * # Find specific entry with Zip::File.open(zipfile_path).glob(pattern)
      */
     module Glob {
-      API::Node instance() {
-        result =
-          [
-            zipFile().getMethod(["open", "new"]).getReturn().getMethod("glob"),
-            zipFile().getMethod(["open", "new"]).getBlock().getParameter(0).getMethod("glob")
-          ]
-      }
-
       /**
        * `extract` and `read` can be sink
        *  ```ruby
@@ -242,14 +229,12 @@ module Zip {
         exists(API::Node zipFileOpen | zipFileOpen = zipFile().getMethod(["open", "new"]) |
           nodeFrom = zipFileOpen.getParameter(0).asSink() and
           nodeTo =
-            [
-              isAdditionalTaintStepHelper(zipFileOpen
-                    .(GetReturnOrGetBlock)
-                    .getReturnOrGetBlockParameter()
-                    .getMethod("glob")
-                    .(GetReturnOrGetBlock)
-                    .getReturnOrGetBlockParameter())
-            ]
+            isAdditionalTaintStepHelper(zipFileOpen
+                  .(GetReturnOrGetBlock)
+                  .getReturnOrGetBlockParameter()
+                  .getMethod("glob")
+                  .(GetReturnOrGetBlock)
+                  .getReturnOrGetBlockParameter())
         )
       }
     }
@@ -258,38 +243,6 @@ module Zip {
      * `Zip::File`
      */
     private API::Node zipFile() { result = API::getTopLevelMember("Zip").getMember("File") }
-
-    /**
-     *  ```ruby
-     *  returun = inputNode do
-     *  returun.each do |entry|
-     *    outputnode = entry
-     *  end
-     *  ```
-     */
-    API::Node oneBlockParameter(API::Node nodeMiddle) {
-      result =
-        nodeMiddle.getReturn().getMethod(["each", "each_entry", "first"]).getBlock().getParameter(0)
-    }
-
-    /**
-     *  ```ruby
-     *  inputNode do |param|
-     *    param.each do |entry|
-     *      outputnode = entry
-     *    end
-     *  end
-     *  ```
-     */
-    API::Node twoBlockParameter(API::Node nodeMiddle) {
-      result =
-        nodeMiddle
-            .getBlock()
-            .getParameter(0)
-            .getMethod(["each", "each_entry", "first"])
-            .getBlock()
-            .getParameter(0)
-    }
 
     DataFlow::Node isAdditionalTaintStepHelper(API::Node nodeMiddle) {
       result = nodeMiddle.getMethod(_).getReturn().asSource() or
@@ -324,7 +277,7 @@ module Zlib {
       ]
   }
 
-  API::Node gzipReaderNew() { result = [gzipReaderInstance().getMethod("new").getReturn()] }
+  API::Node gzipReaderNew() { result = gzipReaderInstance().getMethod("new").getReturn() }
 
   /**
    * `entry` and `read` can be sink
@@ -361,7 +314,7 @@ module Zlib {
           .getParameter(0)
           .asSource()
     or
-    // _ is one of ["read", "readlines", "readpartial", "readline", "gets"] and more because gzipReader return an IO instance, there are alot of methods and gzipReader is for reading gzip files, so there is low FP rate here if we use _ instead of exact IO method names
+    // _ is one of ["read", "readlines", "readpartial", "readline", "gets"] and more because gzipReader return an IO instance, there are a lot of methods and gzipReader is for reading gzip files, so there is low FP rate here if we use _ instead of exact IO method names
     exists(string ioMethods | not ioMethods = ["glob", "each", "each_entry"] |
       result = gzipReaderNew().getMethod(ioMethods).getReturn().asSource() or
       result = gzipReaderOpen().getMethod(ioMethods).getReturn().asSource()
@@ -464,6 +417,7 @@ class Bombs extends TaintTracking::Configuration {
       nodeTo = n.getReturn().asSource()
     )
     or
+    // following can be a global additional step
     exists(DataFlow::CallNode cn |
       cn.getMethodName() = "open" and cn.getReceiver().toString() = "self"
     |
