@@ -785,11 +785,10 @@ predicate clearsContent(Node n, Content c) {
       p.getAnOperand() = op.getUse().getAst()
     )
     or
-    not exists(PostUpdateNode pun, Content d |
-      d.impliesClearOf(c) and
-      storeStepImpl(_, d, pun, true) and
-      c.getIndirectionIndex() > d.getIndirectionIndex() and
-      pun.getPreUpdateNode() = n
+    forex(PostUpdateNode pun, Content d |
+      d.impliesClearOf(c) and storeStepImpl(_, d, pun, true) and pun.getPreUpdateNode() = n
+    |
+      c.getIndirectionIndex() = d.getIndirectionIndex()
     )
   )
 }
