@@ -131,8 +131,10 @@ module Barrier2 {
   }
 
   Instruction getABarrierInstruction(FlowState2 state) {
-    exists(IRGuardCondition g, ValueNumber value, boolean edge |
-      operandGuardChecks(g, value.getAUse(), _, state, edge) and
+    exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge |
+      use = value.getAUse() and
+      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](use), _,
+        pragma[only_bind_into](state), pragma[only_bind_into](edge)) and
       result = value.getAnInstruction() and
       g.controls(result.getBlock(), edge)
     )
@@ -239,11 +241,13 @@ pragma[nomagic]
 predicate pointerAddInstructionHasBounds(
   PointerAddInstruction pai, DataFlow::Node sink1, DataFlow::Node sink2, int delta
 ) {
-  exists(Instruction right |
+  exists(Instruction right, Instruction instr2 |
     pai.getRight() = right and
     pai.getLeft() = sink1.asInstruction() and
-    bounded1(right, sink2.asInstruction(), delta) and
-    not [right, sink2.asInstruction()] = Barrier2::getABarrierInstruction(delta)
+    instr2 = sink2.asInstruction() and
+    bounded1(right, instr2, delta) and
+    not right = Barrier2::getABarrierInstruction(delta) and
+    not instr2 = Barrier2::getABarrierInstruction(delta)
   )
 }
 
