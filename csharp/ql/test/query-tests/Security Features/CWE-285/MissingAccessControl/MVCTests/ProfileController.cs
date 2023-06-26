@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 public class ProfileController : Controller {
     private void doThings() { }
@@ -18,4 +19,12 @@ public class ProfileController : Controller {
         doThings();
         return View();
     }
+
+    // GOOD: The Authorize attribute is used.
+    [Authorize]
+    public ActionResult Delete3(int id) {
+        doThings()
+        return View();
+    }
+
 }
