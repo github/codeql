@@ -108,7 +108,7 @@ module API {
    *
    * ### Backward data flow and classes
    *
-   * When inspecting the arguments of call, and the value flowing into that argument is a user-defined class (or an instance thereof),
+   * When inspecting the arguments of a call, and the value flowing into that argument is a user-defined class (or an instance thereof),
    * uses of `getMethod` will find method definitions in that class (including inherited ones) rather than finding method calls.
    *
    * This example illustrates how this can be used to model cases where the library calls a specific named method on a user-defined class:
