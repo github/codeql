@@ -43,6 +43,14 @@ private predicate boolCheck(DataFlow::Node cn, Expr e, boolean outcome) {
   outcome = false
 }
 
+private predicate compareCheck(DataFlow::Node cn, Expr e, boolean outcome) {
+  cn.(DataFlow::CallNode)
+      .getTarget()
+      .hasQualifiedName("strings", ["Compare", "CompareFold", "ComparePrefix", "CompareSuffix"]) and
+  cn.(DataFlow::CallNode).getArgument(0).asExpr() = e and
+  outcome = false
+}
+
 private predicate regexMatchCheck(DataFlow::Node cn, Expr e, boolean outcome) {
   cn.(DataFlow::CallNode).getTarget() instanceof RegexpMatchFunction and
   cn.(DataFlow::CallNode).getArgument(0).asExpr() = e and
@@ -60,6 +68,8 @@ class UntrustedUnicodeCharChecks extends DataFlow::Node {
     this = DataFlow::BarrierGuard<boolCheck/3>::getABarrierNode()
     or
     this = DataFlow::BarrierGuard<regexMatchCheck/3>::getABarrierNode()
+    or
+    this = DataFlow::BarrierGuard<compareCheck/3>::getABarrierNode()
   }
 }
 
@@ -97,12 +107,6 @@ class Configuration extends TaintTracking::Configuration {
         cn.getACalleeIncludingExternals().asFunction() instanceof RegexpReplaceFunction and
         nodeFrom = cn.getAnArgument() and
         nodeTo = cn.getResult()
-      )
-      or
-      exists(DataFlow::CallNode cn |
-        cn.getTarget().hasQualifiedName("strings", "Compare") and
-        nodeFrom = cn.getAnArgument() and
-        nodeTo = nodeFrom
       )
       or
       exists(DataFlow::CallNode cn |
