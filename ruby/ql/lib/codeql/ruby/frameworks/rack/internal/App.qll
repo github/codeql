@@ -12,8 +12,8 @@ private import Response::Private as RP
  * A callable node that takes a single argument and, if it has a method name,
  * is called "call".
  */
-private class PotentialCallNode extends DataFlow::CallableNode {
-  PotentialCallNode() {
+private class PotentialRequestHandler extends DataFlow::CallableNode {
+  PotentialRequestHandler() {
     this.getNumberOfParameters() = 1 and
     (
       this.(DataFlow::MethodNode).getMethodName() = "call"
@@ -32,26 +32,14 @@ private class PotentialCallNode extends DataFlow::CallableNode {
   }
 }
 
-/**
- * A callable node that looks like it implements the rack specification.
- */
-private class CallNode extends PotentialCallNode {
-  private RP::PotentialResponseNode resp;
-
-  CallNode() { resp = trackRackResponse(this) }
-
-  /** Gets a response returned from a request to this application. */
-  RP::PotentialResponseNode getAResponse() { result = resp }
-}
-
-private DataFlow::LocalSourceNode trackRackResponse(TypeBackTracker t, PotentialCallNode call) {
+private DataFlow::LocalSourceNode trackRackResponse(TypeBackTracker t, PotentialRequestHandler call) {
   t.start() and
   result = call.getAReturnNode().getALocalSource()
   or
   exists(TypeBackTracker t2 | result = trackRackResponse(t2, call).backtrack(t2, t))
 }
 
-private RP::PotentialResponseNode trackRackResponse(PotentialCallNode call) {
+private RP::PotentialResponseNode trackRackResponse(PotentialRequestHandler call) {
   result = trackRackResponse(TypeBackTracker::end(), call)
 }
 
@@ -66,7 +54,7 @@ module App {
    * (traditionally called `env`) and returns a rack-compatible response.
    */
   deprecated class AppCandidate extends DataFlow::ClassNode {
-    private CallNode call;
+    private RequestHandler call;
     private RP::PotentialResponseNode resp;
 
     AppCandidate() {
@@ -84,64 +72,18 @@ module App {
     RP::PotentialResponseNode getResponse() { result = resp }
   }
 
-  private newtype TApp =
-    TClassApp(DataFlow::ClassNode cn, CallNode call) or
-    TAnonymousApp(CallNode call)
-
   /**
-   * A rack application. This is either some object that responds to `call`
-   * taking a single argument and returns a rack response, or a lambda or
-   * proc that takes a single `env` argument and returns a rack response.
+   * A callable node that looks like it implements the rack specification.
    */
-  abstract class RackApplication extends TApp {
-    /** Gets a textual representation of this element. */
-    string toString() { result = "Rack application" }
+  class RequestHandler extends PotentialRequestHandler {
+    private RP::PotentialResponseNode resp;
 
-    /** Gets the `DataFlow::CallableNode` that will handle requests to this app. */
-    abstract CallNode getCall();
+    RequestHandler() { resp = trackRackResponse(this) }
 
-    /** Gets a response returned from a request to this app. */
-    RP::PotentialResponseNode getAResponse() { result = this.getCall().getAResponse() }
+    /** Gets the `env` parameter passed to this request handler. */
+    DataFlow::ParameterNode getEnv() { result = this.getParameter(0) }
 
-    /** Gets the `env` parameter passed to this app when it handles a request. */
-    DataFlow::ParameterNode getEnv() { result = this.getCall().getParameter(0) }
-  }
-
-  /**
-   * A rack application using a `DataFlow::ClassNode`. The class has either
-   * an instance method or a singleton method named "call" which takes a
-   * single `env` argument and returns a rack response.
-   */
-  private class ClassRackApplication extends TApp, RackApplication {
-    private DataFlow::ClassNode cn;
-    private CallNode call;
-
-    ClassRackApplication() {
-      this = TClassApp(cn, call) and
-      call = [cn.getInstanceMethod("call"), cn.getSingletonMethod("call")]
-    }
-
-    override string toString() { result = "Rack application: " + cn.toString() }
-
-    override CallNode getCall() { result = call }
-  }
-
-  /**
-   * A rack application that is either a lambda or a proc, which takes a
-   * single `env` argument and returns a rack response.
-   */
-  private class AnonymousRackApplication extends TApp, RackApplication {
-    private CallNode call;
-
-    AnonymousRackApplication() {
-      this = TAnonymousApp(call) and
-      not exists(DataFlow::ClassNode cn |
-        call = [cn.getInstanceMethod(_), cn.getSingletonMethod(_)]
-      )
-    }
-
-    override string toString() { result = "Rack application: " + call.toString() }
-
-    override CallNode getCall() { result = call }
+    /** Gets a response returned from this request handler. */
+    RP::PotentialResponseNode getAResponse() { result = resp }
   }
 }
