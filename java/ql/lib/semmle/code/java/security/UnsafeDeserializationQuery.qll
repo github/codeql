@@ -29,7 +29,7 @@ private class ObjectInputStreamReadObjectMethod extends Method {
 }
 
 /**
- * A type coming from `ObjectInputStream` that makes it safe to deserialize untrusted data.
+ * A type extending `ObjectInputStream` that makes it safe to deserialize untrusted data.
  *
  * * See https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/serialization/ValidatingObjectInputStream.html
  * * See https://github.com/ikkisoft/SerialKiller
