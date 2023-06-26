@@ -43,7 +43,14 @@ def load_dependencies(workspace_name):
             build_file = _build(workspace_name, "swift-llvm-support"),
             sha256 = sha256,
             patch_args = ["-p1"],
-            patches = ["@%s//swift/third_party/swift-llvm-support:patches/remove-result-of.patch" % workspace_name],
+            patches = [
+                "@%s//swift/third_party/swift-llvm-support:patches/%s.patch" % (workspace_name, patch_name)
+                for patch_name in (
+                    "remove-result-of",
+                    "remove-redundant-operators",
+                    "add-constructor-to-Compilation",
+                )
+            ],
         )
 
     _github_archive(
