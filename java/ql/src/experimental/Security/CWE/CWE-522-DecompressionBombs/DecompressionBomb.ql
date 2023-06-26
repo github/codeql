@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision medium
+ * @precision high
  * @id java/user-controlled-file-decompression
  * @tags security
  *       experimental
