@@ -17,14 +17,14 @@ void test()
 		S s;
 		**s.x = user_input();
 		*s.x = 0;
-		sink(**s.x); // $ clean, as *s.x was overwritten and that contains the tainted **s.x
+		sink(**s.x); // clean, as *s.x was overwritten and that contains the tainted **s.x
 	}
 
 	{
 		S s;
 		**s.x = user_input();
 		**s.x = 0;
-		sink(**s.x); // $ clean, as **s.x was overwritten and tainted
+		sink(**s.x); // clean, as **s.x was overwritten and tainted
 	}
 
 	{
