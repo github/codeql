@@ -78,7 +78,10 @@ predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string 
   )
 }
 
-predicate arrayTypeCand(ArrayType arrayType) { any(Variable v).getUnspecifiedType() = arrayType }
+predicate arrayTypeCand(ArrayType arrayType) {
+  any(Variable v).getUnspecifiedType() = arrayType and
+  exists(arrayType.getArraySize())
+}
 
 pragma[nomagic]
 predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, int arraySize) {
@@ -143,7 +146,7 @@ predicate isSourceImpl(DataFlow::Node source, Variable v) {
     or
     source.asInstruction().(VariableAddressInstruction).getAstVariable() = v
   ) and
-  exists(v.getUnspecifiedType().(ArrayType).getArraySize())
+  arrayTypeCand(v.getUnspecifiedType())
 }
 
 module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
