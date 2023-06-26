@@ -38,8 +38,7 @@ private predicate countCheck(DataFlow::Node g, Expr e, boolean outcome) {
   exists(DataFlow::CallNode cn, DataFlow::EqualityTestNode etn |
     g = etn and
     DataFlow::localFlow(cn.getResult(), etn.getAnOperand()) and
-    cn.getTarget()
-        .hasQualifiedName("strings", ["Count", "CountAny", "CountByte", "CountFunc", "CountRune"]) and
+    cn.getTarget().hasQualifiedName("strings", "Count") and
     cn.getArgument(0).asExpr() = e and
     etn.getAnOperand().getIntValue() = 0 and
     outcome = etn.getPolarity()
