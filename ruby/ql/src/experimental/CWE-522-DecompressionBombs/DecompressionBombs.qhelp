@@ -21,7 +21,8 @@
 <references>
 
 <li>
-<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-22898">CVE-2023-22898</a>
+<a href="https://www.cvedetails.com/cve/CVE-2022-3759/">CVE-2023-22898</a>
+<a href="https://gitlab.com/gitlab-org/gitlab/-/issues/379633">Gitlab issue</a>
 </li>
 <li>
 <a href="https://www.bamsoftware.com/hacks/zipbomb/">A great research to gain more impact by this kind of attack</a>
