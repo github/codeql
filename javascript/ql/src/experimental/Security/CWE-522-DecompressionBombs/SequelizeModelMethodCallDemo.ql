@@ -1,7 +1,7 @@
 /**
  * @id javascript/sequlize
  * @kind path-problem
- * @name demonstrate sequlize additional taintstep
+ * @name demonstrate sequlize additional taint step for findByPk method
  * @description add sequlize methods calls on custom models as sinks and additional taint steps
  * @problem.severity error
  * @precision low
