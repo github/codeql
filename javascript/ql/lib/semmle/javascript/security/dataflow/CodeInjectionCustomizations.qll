@@ -431,9 +431,10 @@ module CodeInjection {
    */
   class WebixTemplateSink extends TemplateSink {
     WebixTemplateSink() {
-      this = API::moduleImport("webix").getMember("ui").getParameter(0).getMember("template").asSink()
+      this =
+        API::moduleImport("webix").getMember("ui").getParameter(0).getMember("template").asSink()
       or
-      this.asExpr() =
+      this =
         API::moduleImport("webix")
             .getMember("ui")
             .getParameter(0)
