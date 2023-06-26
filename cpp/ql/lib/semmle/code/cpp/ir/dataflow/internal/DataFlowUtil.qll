@@ -1832,6 +1832,26 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if a write to this `Content` implies that `c` is
+   * also cleared.
+   *
+   * For example, a write to a field `f` implies that any content of
+   * the form `*f` is also cleared.
+   */
+  abstract predicate impliesClearOf(Content c);
+
+  abstract int getIndirectionIndex();
+}
+
+predicate foo(FieldContent f) {
+  exists(int i, Field ff |
+    i = f.getIndirectionIndex() and
+    ff = f.getField()
+  )
 }
 
 /** A reference through a non-union instance field. */
@@ -1850,8 +1870,18 @@ class FieldContent extends Content, TFieldContent {
   Field getField() { result = f }
 
   pragma[inline]
-  int getIndirectionIndex() {
+  override int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
+
+  override predicate impliesClearOf(Content c) {
+    exists(FieldContent fc |
+      fc = c and
+      fc.getField() = f and
+      // If `this` is `f` then `c` is cleared if it's of the
+      // form `*f`, `**f`, etc.
+      fc.getIndirectionIndex() >= indirectionIndex
+    )
   }
 }
 
@@ -1877,8 +1907,20 @@ class UnionContent extends Content, TUnionContent {
 
   /** Gets the indirection index of this `UnionContent`. */
   pragma[inline]
-  int getIndirectionIndex() {
+  override int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
+
+  override predicate impliesClearOf(Content c) {
+    exists(UnionContent uc |
+      uc = c and
+      uc.getUnion() = u and
+      // If `this` is `u` then `c` is cleared if it's of the
+      // form `*u`, `**u`, etc. (and we ignore `bytes` because
+      // we know the entire union is overwritten because it's a
+      // union).
+      uc.getIndirectionIndex() >= indirectionIndex
+    )
   }
 }
 
