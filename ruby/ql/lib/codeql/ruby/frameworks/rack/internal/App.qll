@@ -48,7 +48,7 @@ private RP::PotentialResponseNode trackRackResponse(PotentialRequestHandler call
  */
 module App {
   /**
-   * DEPRECATED: Use `App` instead.
+   * DEPRECATED: Use `RequestHandler` instead.
    * A class that may be a rack application.
    * This is a class that has a `call` method that takes a single argument
    * (traditionally called `env`) and returns a rack-compatible response.
