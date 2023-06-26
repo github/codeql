@@ -23,7 +23,7 @@ public class ProfileController : Controller {
     // GOOD: The Authorize attribute is used.
     [Authorize]
     public ActionResult Delete3(int id) {
-        doThings()
+        doThings();
         return View();
     }
 
