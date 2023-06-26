@@ -253,7 +253,7 @@ module API {
     deprecated DataFlow::CallNode getCallNode() { this = Impl::MkMethodAccessNode(result) }
 
     /**
-     * Gets a module that descends from the value referenced by this API node.
+     * Gets a module or class that descends from the module or class referenced by this API node.
      */
     bindingset[this]
     pragma[inline_late]
