@@ -1833,6 +1833,9 @@ class Content extends TContent {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
 
+  /** Gets the indirection index of this `Content`. */
+  abstract int getIndirectionIndex();
+
   /**
    * INTERNAL: Do not use.
    *
@@ -1843,15 +1846,6 @@ class Content extends TContent {
    * the form `*f` is also cleared.
    */
   abstract predicate impliesClearOf(Content c);
-
-  abstract int getIndirectionIndex();
-}
-
-predicate foo(FieldContent f) {
-  exists(int i, Field ff |
-    i = f.getIndirectionIndex() and
-    ff = f.getField()
-  )
 }
 
 /** A reference through a non-union instance field. */
@@ -1869,6 +1863,7 @@ class FieldContent extends Content, TFieldContent {
 
   Field getField() { result = f }
 
+  /** Gets the indirection index of this `FieldContent`. */
   pragma[inline]
   override int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
