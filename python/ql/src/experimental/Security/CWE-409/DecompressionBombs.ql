@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision medium
+ * @precision high
  * @id py/user-controlled-file-decompression
  * @tags security
  *       experimental
@@ -18,85 +18,13 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.internal.DataFlowPublic
 
-module PyZipFile {
-  /**
-   * ```python
-   * zipfile.PyZipFile()
-   */
-  private API::Node pyZipFileClass() {
-    result = API::moduleImport("zipfile").getMember("PyZipFile")
-  }
-
-  /**
-   * same as zipfileSinks
-   */
-  DataFlow::Node isSink() { result = sink(pyZipFileClass()).getACall() }
-
-  private API::Node sink(API::Node pyZipFileClass) {
-    result = pyZipFileClass.getReturn().getMember(["extractall", "read", "extract", "testzip"])
-    or
-    result = pyZipFileClass.getReturn().getMember("open") and
-    // only read mode is sink
-    // mode can be set in open() argument or in PyZipFile instantiation argument
-    (
-      not exists(
-        result
-            .getACall()
-            .getParameter(1, "mode")
-            .getAValueReachingSink()
-            .asExpr()
-            .(StrConst)
-            .getText()
-      ) or
-      result
-          .getACall()
-          .getParameter(1, "mode")
-          .getAValueReachingSink()
-          .asExpr()
-          .(StrConst)
-          .getText() = "r"
-    ) and
-    (
-      not exists(
-        pyZipFileClass
-            .getACall()
-            .getParameter(1, "mode")
-            .getAValueReachingSink()
-            .asExpr()
-            .(StrConst)
-            .getText()
-      ) or
-      pyZipFileClass
-          .getACall()
-          .getParameter(1, "mode")
-          .getAValueReachingSink()
-          .asExpr()
-          .(StrConst)
-          .getText() = "r"
-    )
-  }
-
-  /**
-   * Same as ZipFile
-   * I made PyZipFile separated from ZipFile as in future this will be compatible
-   * if anyone want to add new methods an sink to each object.
-   */
-  predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(API::Node pyZipFileClass | pyZipFileClass = pyZipFileClass() |
-      nodeFrom = pyZipFileClass.getACall().getParameter(0, "file").asSink() and
-      nodeTo =
-        [
-          sink(pyZipFileClass).getACall(),
-          pyZipFileClass
-              .getACall()
-              .getReturn()
-              .getMember(["extractall", "read", "extract", "testzip"])
-              .getACall()
-        ]
-    )
-  }
-}
-
+// /**
+//  * Same as ZipFile
+//  * I can made PyZipFile separated from ZipFile
+//  * as in future this will be more compatible if it has more differences from ZipFile
+//  * and we can add new changes easier.
+//  */
+// module PyZipFile { }
 module Lzma {
   private API::Node lzmaClass() {
     result = API::moduleImport("lzma").getMember(["LZMAFile", "open"])
@@ -204,13 +132,18 @@ module Gzip {
 }
 
 module ZipFile {
-  // more sinks file:///home/am/CodeQL-home/codeql-repo/python/ql/src/experimental/semmle/python/security/ZipSlip.qll
   /**
    * ```python
    * zipfile.ZipFile()
    * ```
    */
-  private API::Node zipFileClass() { result = API::moduleImport("zipfile").getMember("ZipFile") }
+  private API::Node zipFileClass() {
+    result =
+      [
+        API::moduleImport("zipfile").getMember("ZipFile"),
+        API::moduleImport("zipfile").getMember("PyZipFile")
+      ]
+  }
 
   /**
    * ```python
