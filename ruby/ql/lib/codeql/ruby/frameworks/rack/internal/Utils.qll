@@ -14,7 +14,12 @@ module Utils {
     ParseQuerySummary() { this = "Rack::Utils.parse_query" }
 
     override MethodCall getACall() {
-      result = API::getTopLevelMember("Rack").getMember("Utils").getAMethodCall("parse_query").asExpr().getExpr()
+      result =
+        API::getTopLevelMember("Rack")
+            .getMember("Utils")
+            .getAMethodCall("parse_query")
+            .asExpr()
+            .getExpr()
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
