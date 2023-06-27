@@ -651,13 +651,16 @@ predicate jumpStep(Node n1, Node n2) {
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
+ *
+ * The boolean `certain` is true if the destination address does not involve
+ * any pointer arithmetic, and false otherwise.
  */
-predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
+predicate storeStepImpl(Node node1, Content c, PostFieldUpdateNode node2, boolean certain) {
   exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
     nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
     node2.getIndirectionIndex() = 1 and
     numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
-      numberOfLoads)
+      numberOfLoads, certain)
   |
     exists(FieldContent fc | fc = c |
       fc.getField() = node2.getUpdatedField() and
@@ -672,20 +675,33 @@ predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
 }
 
 /**
+ * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
+ * Thus, `node2` references an object with a field `f` that contains the
+ * value of `node1`.
+ */
+predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
+  storeStepImpl(node1, c, node2, _)
+}
+
+/**
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
  * operations and exactly `n` `LoadInstruction` operations.
  */
-private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand operandTo, int ind) {
+private predicate numberOfLoadsFromOperandRec(
+  Operand operandFrom, Operand operandTo, int ind, boolean certain
+) {
   exists(Instruction load | Ssa::isDereference(load, operandFrom) |
-    operandTo = operandFrom and ind = 0
+    operandTo = operandFrom and ind = 0 and certain = true
     or
-    numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1)
+    numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1, certain)
   )
   or
-  exists(Operand op, Instruction instr |
+  exists(Operand op, Instruction instr, boolean isPointerArith, boolean certain0 |
     instr = op.getDef() and
-    conversionFlow(operandFrom, instr, _, _) and
-    numberOfLoadsFromOperand(op, operandTo, ind)
+    conversionFlow(operandFrom, instr, isPointerArith, _) and
+    numberOfLoadsFromOperand(op, operandTo, ind, certain0)
+  |
+    if isPointerArith = true then certain = false else certain = certain0
   )
 }
 
@@ -693,13 +709,16 @@ private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand opera
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
  * operations and exactly `n` `LoadInstruction` operations.
  */
-private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandTo, int n) {
-  numberOfLoadsFromOperandRec(operandFrom, operandTo, n)
+private predicate numberOfLoadsFromOperand(
+  Operand operandFrom, Operand operandTo, int n, boolean certain
+) {
+  numberOfLoadsFromOperandRec(operandFrom, operandTo, n, certain)
   or
   not Ssa::isDereference(_, operandFrom) and
   not conversionFlow(operandFrom, _, _, _) and
   operandFrom = operandTo and
-  n = 0
+  n = 0 and
+  certain = true
 }
 
 // Needed to join on both an operand and an index at the same time.
@@ -729,7 +748,7 @@ predicate readStep(Node node1, Content c, Node node2) {
     // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
     // in `storeStep`.
     nodeHasOperand(node1, fa1.getObjectAddressOperand(), 1) and
-    numberOfLoadsFromOperand(fa1, operand, numberOfLoads)
+    numberOfLoadsFromOperand(fa1, operand, numberOfLoads, _)
   |
     exists(FieldContent fc | fc = c |
       fc.getField() = fa1.getField() and
@@ -747,7 +766,33 @@ predicate readStep(Node node1, Content c, Node node2) {
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
 predicate clearsContent(Node n, Content c) {
-  none() // stub implementation
+  n =
+    any(PostUpdateNode pun, Content d | d.impliesClearOf(c) and storeStepImpl(_, d, pun, true) | pun)
+        .getPreUpdateNode() and
+  (
+    // The crement operations and pointer addition and subtraction self-assign. We do not
+    // want to clear the contents if it is indirectly pointed at by any of these operations,
+    // as part of the contents might still be accessible afterwards. If there is no such
+    // indirection clearing the contents is safe.
+    not exists(Operand op, Cpp::Operation p |
+      n.(IndirectOperand).hasOperandAndIndirectionIndex(op, _) and
+      (
+        p instanceof Cpp::AssignPointerAddExpr or
+        p instanceof Cpp::AssignPointerSubExpr or
+        p instanceof Cpp::CrementOperation
+      )
+    |
+      p.getAnOperand() = op.getUse().getAst()
+    )
+    or
+    forex(PostUpdateNode pun, Content d |
+      pragma[only_bind_into](d).impliesClearOf(pragma[only_bind_into](c)) and
+      storeStepImpl(_, d, pun, true) and
+      pun.getPreUpdateNode() = n
+    |
+      c.getIndirectionIndex() = d.getIndirectionIndex()
+    )
+  )
 }
 
 /**

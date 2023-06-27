@@ -404,7 +404,7 @@ void test29(unsigned size) {
   val.xs = new char[size];
   size++;
   val.xs = new char[size];
-  val.xs[size - 1] = 0; // GOOD [FALSE POSITIVE]
+  val.xs[size - 1] = 0; // GOOD
 }
 
 void test30(int *size)
