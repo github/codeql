@@ -253,12 +253,7 @@ extensions:
     '(String,Object,Class,MessagePostProcessor)', '', 'Argument[0]', sql-injection,
     ai-generated]
   - [org.springframework.jms.core, JmsMessagingTemplate, true, convertSendAndReceive,
-    '(String,Object,Class,MessagePostProcessor)', '', 'Argument[1]', sql-injection,
-    ai-generated]
-  - [org.springframework.jms.core, JmsMessagingTemplate, true, convertSendAndReceive,
     '(String,Object,Map,Class)', '', 'Argument[0]', sql-injection, ai-generated]
-  - [org.springframework.jms.core, JmsMessagingTemplate, true, convertSendAndReceive,
-    '(String,Object,Map,Class)', '', 'Argument[1]', sql-injection, ai-generated]
   - [org.springframework.jms.core, JmsMessagingTemplate, true, convertSendAndReceive,
     '(Object,Class)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.core, JmsMessagingTemplate, true, convertSendAndReceive,
@@ -375,9 +370,6 @@ extensions:
     '(URI,HttpHeaders,Mono,String)', '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.reactive.socket, HandshakeInfo, true, HandshakeInfo,
     '(URI,HttpHeaders,Mono,String)', '', 'Argument[1]', request-forgery, ai-generated]
-  - [org.springframework.web.servlet.mvc.condition, PatternsRequestCondition, true,
-    PatternsRequestCondition, '(String[],UrlPathHelper,PathMatcher,boolean)', '',
-    'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.jdbc.object, SqlQuery, true, execute, (String), '', 'Argument[0]',
     sql-injection, ai-generated]
   - [org.springframework.jdbc.object, SqlQuery, true, execute, '(String,Map)', '',
@@ -525,9 +517,6 @@ extensions:
     ai-generated]
   - [org.springframework.web.client, RestOperationsExtensionsKt, false, postForObject$default,
     '(RestOperations,String,Object,Object[],int,Object)', '', 'Argument[3]', request-forgery,
-    ai-generated]
-  - [org.springframework.web.client, RestOperationsExtensionsKt, false, postForObject$default,
-    '(RestOperations,String,Object,Object[],int,Object)', '', 'Argument[4]', request-forgery,
     ai-generated]
   - [org.springframework.web.client, RestOperationsExtensionsKt, false, postForObject$default,
     '(RestOperations,String,Object,Object[],int,Object)', '', 'Argument[5]', request-forgery,
@@ -695,8 +684,6 @@ extensions:
     ai-generated]
   - [org.springframework.web.client, RestOperationsExtensionsKt, false, exchange,
     '(RestOperations,RequestEntity)', '', 'Argument[1]', request-forgery, ai-generated]
-  - [org.springframework.http, RequestEntity, true, RequestEntity, '(Object,MultiValueMap,HttpMethod,URI,Type)',
-    '', 'Argument[4]', request-forgery, ai-generated]
   - [org.springframework.http, RequestEntity, true, RequestEntity, '(Object,HttpMethod,URI,Type)',
     '', 'Argument[3]', request-forgery, ai-generated]
   - [org.springframework.jms.core, JmsMessagingTemplate, true, convertAndSend, '(String,Object,Map,MessagePostProcessor)',
@@ -978,6 +965,8 @@ extensions:
   - [org.springframework.core.io.buffer, DataBufferUtils, false, read, '(Path,DataBufferFactory,int,OpenOption[])',
     '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.core.io.buffer, DataBufferUtils, false, read, '(Path,DataBufferFactory,int,OpenOption[])',
+    '', 'Argument[1]', path-injection, ai-generated]
+  - [org.springframework.core.io.buffer, DataBufferUtils, false, read, '(Path,DataBufferFactory,int,OpenOption[])',
     '', 'Argument[3]', path-injection, ai-generated]
   - [org.springframework.jdbc.core, JdbcTemplate, true, queryForList, '(String,Object[])',
     '', 'Argument[1]', sql-injection, ai-generated]
@@ -1094,6 +1083,8 @@ extensions:
     '(RestOperations,String,Object,Object[])', '', 'Argument[3]', request-forgery,
     ai-generated]
   - [org.springframework.web.client, RestOperationsExtensionsKt, false, postForEntity,
+    '(RestOperations,String,Object,Map)', '', 'Argument[0]', request-forgery, ai-generated]
+  - [org.springframework.web.client, RestOperationsExtensionsKt, false, postForEntity,
     '(RestOperations,String,Object,Map)', '', 'Argument[1]', request-forgery, ai-generated]
   - [org.springframework.web.client, RestOperationsExtensionsKt, false, postForEntity,
     '(RestOperations,String,Object,Map)', '', 'Argument[2]', request-forgery, ai-generated]
@@ -1111,6 +1102,8 @@ extensions:
     '(String[],boolean)', '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.context.support, FileSystemXmlApplicationContext, true, FileSystemXmlApplicationContext,
     '(String[],ApplicationContext)', '', 'Argument[0]', path-injection, ai-generated]
+  - [org.springframework.context.support, FileSystemXmlApplicationContext, true, FileSystemXmlApplicationContext,
+    '(String[],ApplicationContext)', '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.context.support, FileSystemXmlApplicationContext, true, FileSystemXmlApplicationContext,
     '(String[])', '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.context.support, FileSystemXmlApplicationContext, true, FileSystemXmlApplicationContext,
@@ -1259,8 +1252,6 @@ extensions:
   - [org.springframework.jdbc.datasource, SimpleDriverDataSource, true, SimpleDriverDataSource,
     '(Driver,String)', '', 'Argument[1]', sql-injection, ai-generated]
   - [org.springframework.mail.javamail, MimeMessageHelper, true, addAttachment, '(String,InputStreamSource,String)',
-    '', 'Argument[0]', path-injection, ai-generated]
-  - [org.springframework.mail.javamail, MimeMessageHelper, true, addAttachment, '(String,InputStreamSource,String)',
     '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.mail.javamail, MimeMessageHelper, true, addAttachment, '(String,InputStreamSource)',
     '', 'Argument[0]', path-injection, ai-generated]
@@ -1327,8 +1318,6 @@ extensions:
   - [org.springframework.web.reactive.function.server, RouterFunctionDsl, false, PUT,
     (String), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.reactive.function.server, RouterFunctionDsl, false, PATCH,
-    '(String,Function1)', '', 'Argument[0]', request-forgery, ai-generated]
-  - [org.springframework.web.reactive.function.server, RouterFunctionDsl, false, PATCH,
     '(String,RequestPredicate,Function1)', '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.reactive.function.server, RouterFunctionDsl, false, PATCH,
     (String), '', 'Argument[0]', request-forgery, ai-generated]
@@ -1364,6 +1353,8 @@ extensions:
     '', 'Argument[1]', request-forgery, ai-generated]
   - [org.springframework.core.io, UrlResource, true, UrlResource, '(String,String,String)',
     '', 'Argument[2]', request-forgery, ai-generated]
+  - [org.springframework.core.io, UrlResource, true, UrlResource, '(String,String)',
+    '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.core.io, UrlResource, true, UrlResource, '(String,String)',
     '', 'Argument[1]', request-forgery, ai-generated]
   - [org.springframework.core.io, UrlResource, true, UrlResource, (String), '', 'Argument[0]',
@@ -1435,6 +1426,8 @@ extensions:
     '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.core, JmsTemplate, true, execute, '(String,ProducerCallback)',
     '', 'Argument[1]', sql-injection, ai-generated]
+  - [org.springframework.jms.core, JmsTemplate, true, execute, (ProducerCallback),
+    '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.orm.hibernate5, HibernateTemplate, true, delete, '(String,Object,LockMode)',
     '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.orm.hibernate5, HibernateTemplate, true, delete, '(String,Object,LockMode)',
@@ -1636,9 +1629,6 @@ extensions:
     false, fromMethodName, '(UriComponentsBuilder,Class,String,Object[])', '', 'Argument[0]',
     request-forgery, ai-generated]
   - [org.springframework.web.socket.client, WebSocketConnectionManager, true, WebSocketConnectionManager,
-    '(WebSocketClient,WebSocketHandler,URI)', '', 'Argument[0]', request-forgery,
-    ai-generated]
-  - [org.springframework.web.socket.client, WebSocketConnectionManager, true, WebSocketConnectionManager,
     '(WebSocketClient,WebSocketHandler,URI)', '', 'Argument[1]', request-forgery,
     ai-generated]
   - [org.springframework.web.socket.client, WebSocketConnectionManager, true, WebSocketConnectionManager,
@@ -1658,8 +1648,6 @@ extensions:
     '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.aot.generate, GeneratedFiles, true, addResourceFile, '(String,InputStreamSource)',
     '', 'Argument[1]', path-injection, ai-generated]
-  - [org.springframework.aot.generate, GeneratedFiles, true, addResourceFile, '(String,ThrowingConsumer)',
-    '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.asm, ClassReader, true, ClassReader, (String), '', 'Argument[0]',
     path-injection, ai-generated]
   - [org.springframework.asm, ClassReader, true, ClassReader, (InputStream), '', 'Argument[0]',
@@ -1813,6 +1801,8 @@ extensions:
   - [org.springframework.jdbc.support.xml, Jdbc4SqlXmlHandler, true, getXmlAsSource,
     '(ResultSet,int,Class)', '', 'Argument[1]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support.xml, Jdbc4SqlXmlHandler, true, getXmlAsSource,
+    '(ResultSet,String,Class)', '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.springframework.jdbc.support.xml, Jdbc4SqlXmlHandler, true, getXmlAsSource,
     '(ResultSet,String,Class)', '', 'Argument[1]', sql-injection, ai-generated]
   - [org.springframework.jms.connection, DelegatingConnectionFactory, true, createContext,
     '(String,String,int)', '', 'Argument[0]', sql-injection, ai-generated]
@@ -1876,8 +1866,6 @@ extensions:
     '', 'Argument[1]', request-forgery, ai-generated]
   - [org.springframework.web.socket.client, WebSocketClient, true, doHandshake, '(WebSocketHandler,WebSocketHttpHeaders,URI)',
     '', 'Argument[2]', request-forgery, ai-generated]
-  - [org.springframework.web.socket.client, WebSocketClient, true, doHandshake, '(WebSocketHandler,String,Object[])',
-    '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.socket.client, WebSocketClient, true, doHandshake, '(WebSocketHandler,String,Object[])',
     '', 'Argument[1]', request-forgery, ai-generated]
   - [org.springframework.web.socket.client, WebSocketClient, true, doHandshake, '(WebSocketHandler,String,Object[])',
@@ -2133,6 +2121,8 @@ extensions:
     '(boolean,boolean,String,Resource[])', '', 'Argument[3]', path-injection, ai-generated]
   - [org.springframework.r2dbc.connection.init, ResourceDatabasePopulator, true, ResourceDatabasePopulator,
     '(Resource[])', '', 'Argument[0]', path-injection, ai-generated]
+  - [org.springframework.scheduling.concurrent, ConcurrentTaskScheduler, true, scheduleWithFixedDelay,
+    '(Runnable,Duration)', '', 'Argument[0]', command-injection, ai-generated]
   - [org.springframework.scheduling.concurrent, ConcurrentTaskScheduler, true, scheduleAtFixedRate,
     '(Runnable,Duration)', '', 'Argument[0]', command-injection, ai-generated]
   - [org.springframework.scheduling.concurrent, ConcurrentTaskScheduler, true, scheduleAtFixedRate,
@@ -2146,6 +2136,8 @@ extensions:
     path-injection, ai-generated]
   - [org.springframework.web.client, RestTemplate, true, put, '(URI,Object)', '',
     'Argument[1]', request-forgery, ai-generated]
+  - [org.springframework.web.client, RestTemplate, true, put, '(String,Object,Map)',
+    '', 'Argument[1]', request-forgery, ai-generated]
   - [org.springframework.web.client, RestTemplate, true, put, '(String,Object,Map)',
     '', 'Argument[2]', request-forgery, ai-generated]
   - [org.springframework.web.client, RestTemplate, true, put, '(String,Object,Object[])',
@@ -2365,6 +2357,8 @@ extensions:
   - [org.springframework.jdbc.datasource, ConnectionHolder, true, ConnectionHolder,
     (ConnectionHandle), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support, JdbcUtils, false, extractDatabaseMetaData,
+    '(DataSource,String)', '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.springframework.jdbc.support, JdbcUtils, false, extractDatabaseMetaData,
     '(DataSource,String)', '', 'Argument[1]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support, JdbcUtils, false, extractDatabaseMetaData,
     '(DataSource,DatabaseMetaDataCallback)', '', 'Argument[0]', sql-injection, ai-generated]
@@ -2374,6 +2368,8 @@ extensions:
     '(PreparedStatement,int,Reader,int)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support.lob, TemporaryLobCreator, true, setClobAsCharacterStream,
     '(PreparedStatement,int,Reader,int)', '', 'Argument[1]', sql-injection, ai-generated]
+  - [org.springframework.jdbc.support.lob, TemporaryLobCreator, true, setClobAsCharacterStream,
+    '(PreparedStatement,int,Reader,int)', '', 'Argument[2]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support.lob, TemporaryLobCreator, true, setClobAsAsciiStream,
     '(PreparedStatement,int,InputStream,int)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support.lob, TemporaryLobCreator, true, setClobAsAsciiStream,
@@ -2429,12 +2425,11 @@ extensions:
   - [org.springframework.util, FileSystemUtils, false, copyRecursively, '(File,File)',
     '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.util, PropertyPlaceholderHelper, true, replacePlaceholders,
+    '(String,PlaceholderResolver)', '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.springframework.util, PropertyPlaceholderHelper, true, replacePlaceholders,
     '(String,Properties)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.util, StreamUtils, false, copyToString, '(InputStream,Charset)',
     '', 'Argument[0]', path-injection, ai-generated]
-  - [org.springframework.web.method.support, CompositeUriComponentsContributor, true,
-    CompositeUriComponentsContributor, (Collection), '', 'Argument[0]', request-forgery,
-    ai-generated]
   - [org.springframework.web.method.support, CompositeUriComponentsContributor, true,
     CompositeUriComponentsContributor, '(UriComponentsContributor[])', '', 'Argument[0]',
     request-forgery, ai-generated]
@@ -2519,6 +2514,8 @@ extensions:
     '(String,String[])', '', 'Argument[1]', command-injection, ai-generated]
   - [org.springframework.core.env, SimpleCommandLinePropertySource, true, SimpleCommandLinePropertySource,
     '(String[])', '', 'Argument[0]', command-injection, ai-generated]
+  - [org.springframework.core.io, InputStreamResource, true, InputStreamResource,
+    (InputStream), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.core.io, PathResource, true, PathResource, (URI), '', 'Argument[0]',
     path-injection, ai-generated]
   - [org.springframework.core.io, PathResource, true, PathResource, (String), '',
@@ -2778,19 +2775,15 @@ extensions:
   - [org.springframework.oxm.xstream, XStreamMarshaller, true, unmarshalInputStream,
     (InputStream), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.r2dbc.connection, ConnectionFactoryUtils, false, convertR2dbcException,
-    '(String,String,R2dbcException)', '', 'Argument[0]', sql-injection, ai-generated]
-  - [org.springframework.r2dbc.connection, ConnectionFactoryUtils, false, convertR2dbcException,
     '(String,String,R2dbcException)', '', 'Argument[1]', sql-injection, ai-generated]
-  - [org.springframework.r2dbc.connection, ConnectionHolder, true, ConnectionHolder,
-    '(Connection,boolean)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.r2dbc.core.binding, MutableBindings, true, bind, (Object),
     '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.r2dbc.core.binding, MutableBindings, true, bind, '(BindMarker,Object)',
     '', 'Argument[1]', sql-injection, ai-generated]
   - [org.springframework.scheduling.concurrent, ConcurrentTaskExecutor, true, execute,
     (Runnable), '', 'Argument[0]', command-injection, ai-generated]
-  - [org.springframework.scheduling.concurrent, ThreadPoolTaskScheduler, true, execute,
-    (Runnable), '', 'Argument[0]', command-injection, ai-generated]
+  - [org.springframework.scheduling.quartz, SimpleThreadPoolTaskExecutor, true, execute,
+    '(Runnable,long)', '', 'Argument[0]', command-injection, ai-generated]
   - [org.springframework.scripting.bsh, BshScriptFactory, true, BshScriptFactory,
     '(String,Class[])', '', 'Argument[0]', command-injection, ai-generated]
   - [org.springframework.scripting.support, StaticScriptSource, true, StaticScriptSource,
@@ -2825,11 +2818,6 @@ extensions:
     '(String,Resource)', '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.web.servlet.handler, MappedInterceptor, false, matches, '(String,PathMatcher)',
     '', 'Argument[0]', request-forgery, ai-generated]
-  - [org.springframework.web.servlet.handler, MappedInterceptor, false, matches, (HttpServletRequest),
-    '', 'Argument[0]', request-forgery, ai-generated]
-  - [org.springframework.web.servlet.mvc.method.annotation, MvcUriComponentsBuilder,
-    false, fromMappingName, '(UriComponentsBuilder,String)', '', 'Argument[0]', request-forgery,
-    ai-generated]
   - [org.springframework.web.servlet.mvc.method.annotation, MvcUriComponentsBuilder,
     false, fromMappingName, '(UriComponentsBuilder,String)', '', 'Argument[1]', sql-injection,
     ai-generated]
@@ -2905,6 +2893,8 @@ extensions:
     request-forgery, ai-generated]
   - [org.springframework.web.util, UriComponentsBuilder, true, build, '(Object[])',
     '', 'Argument[0]', request-forgery, ai-generated]
+  - [org.springframework.web.util, UriComponentsBuilder, true, build, (boolean), '',
+    'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.util, UrlPathHelper, true, getLookupPathForRequest, (HttpServletRequest),
     '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.messaging.rsocket, RSocketRequesterExtensionsKt, false, connectTcpAndAwait,
@@ -2946,15 +2936,11 @@ extensions:
   - [org.springframework.aot.generate, GeneratedFiles, true, addClassFile, '(String,InputStreamSource)',
     '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.aot.generate, InMemoryGeneratedFiles, true, getGeneratedFile,
-    '(Kind,String)', '', 'Argument[0]', path-injection, ai-generated]
-  - [org.springframework.aot.generate, InMemoryGeneratedFiles, true, getGeneratedFile,
     '(Kind,String)', '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.aot.generate, InMemoryGeneratedFiles, true, getGeneratedFileContent,
     '(Kind,String)', '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.aot.generate, InMemoryGeneratedFiles, true, getGeneratedFileContent,
     '(Kind,String)', '', 'Argument[1]', path-injection, ai-generated]
-  - [org.springframework.asm, ClassVisitor, true, visitSource, '(String,String)',
-    '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.beans.factory.groovy, GroovyBeanDefinitionReader, true, loadBeanDefinitions,
     (EncodedResource), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.beans.factory.groovy, GroovyBeanDefinitionReader, true, loadBeanDefinitions,
@@ -2969,6 +2955,8 @@ extensions:
     '(String,String)', '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.beans.factory.xml, XmlBeanDefinitionReader, true, registerBeanDefinitions,
     '(Document,Resource)', '', 'Argument[1]', path-injection, ai-generated]
+  - [org.springframework.beans.support, ResourceEditorRegistrar, true, ResourceEditorRegistrar,
+    '(ResourceLoader,PropertyResolver)', '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.build.shadow, ShadowSource, true, relocate, '(String,String)',
     '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.context.testfixture.index, CandidateComponentsTestClassLoader,
@@ -2993,6 +2981,8 @@ extensions:
     '(Class,ClassLoader)', '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.core.serializer.support, SerializationDelegate, true, serialize,
     '(Object,OutputStream)', '', 'Argument[1]', path-injection, ai-generated]
+  - [org.springframework.core.task.support, TaskExecutorAdapter, true, submit, (Runnable),
+    '', 'Argument[0]', command-injection, ai-generated]
   - [org.springframework.core.testfixture.io, ResourceTestUtils, false, qualifiedResource,
     '(Class,String)', '', 'Argument[1]', path-injection, ai-generated]
   - [org.springframework.core.type.classreading, SimpleMetadataReaderFactory, true,
@@ -3151,8 +3141,6 @@ extensions:
     '(Connection,DataSource)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.datasource, DataSourceUtils, false, prepareConnectionForTransaction,
     '(Connection,TransactionDefinition)', '', 'Argument[0]', sql-injection, ai-generated]
-  - [org.springframework.jdbc.datasource, DataSourceUtils, false, prepareConnectionForTransaction,
-    '(Connection,TransactionDefinition)', '', 'Argument[1]', sql-injection, ai-generated]
   - [org.springframework.jdbc.datasource, DelegatingDataSource, true, getConnection,
     '(String,String)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.datasource, DelegatingDataSource, true, getConnection,
@@ -3358,10 +3346,14 @@ extensions:
     '(String,String)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.connection, DelegatingConnectionFactory, true, createConnection,
     '(String,String)', '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.springframework.jms.connection, SingleConnectionFactory, true, createTopicConnection,
+    '(String,String)', '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.springframework.jms.connection, SingleConnectionFactory, true, createConnection,
+    '(String,String)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.connection, TransactionAwareConnectionFactoryProxy, true,
     createTopicConnection, '(String,String)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.connection, TransactionAwareConnectionFactoryProxy, true,
-    createConnection, '(String,String)', '', 'Argument[0]', sql-injection, ai-generated]
+    createQueueConnection, '(String,String)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.connection, UserCredentialsConnectionFactoryAdapter,
     true, createTopicConnection, '(String,String)', '', 'Argument[0]', sql-injection,
     ai-generated]
@@ -3700,8 +3692,6 @@ extensions:
     (String), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.core.io.support, ResourcePatternUtils, false, getResourcePatternResolver,
     (ResourceLoader), '', 'Argument[0]', path-injection, ai-generated]
-  - [org.springframework.core.serializer, DefaultDeserializer, true, deserialize,
-    (InputStream), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.core.serializer.support, SerializationDelegate, true, deserialize,
     (InputStream), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.core.type.classreading, CachingMetadataReaderFactory, true,
@@ -3909,8 +3899,6 @@ extensions:
     false, extractData, (ResultSet), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.core.support, JdbcBeanDefinitionReader, true, loadBeanDefinitions,
     (String), '', 'Argument[0]', sql-injection, ai-generated]
-  - [org.springframework.jdbc.core.support, JdbcBeanDefinitionReader, true, setJdbcTemplate,
-    (JdbcTemplate), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.core.support, JdbcBeanDefinitionReader, true, setDataSource,
     (DataSource), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.datasource, AbstractDriverBasedDataSource, true, setConnectionProperties,
@@ -4028,6 +4016,8 @@ extensions:
     'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.object, SqlQuery, true, SqlQuery, '(DataSource,String)',
     '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.springframework.jdbc.object, MappingSqlQueryWithParameters, true, MappingSqlQueryWithParameters,
+    '(DataSource,String)', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.object, MappingSqlQuery, true, MappingSqlQuery, '(DataSource,String)',
     '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.object, RdbmsOperation, true, setParameters, '(SqlParameter[])',
@@ -4068,8 +4058,6 @@ extensions:
     '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support, SQLErrorCodeSQLExceptionTranslator, true, setDatabaseProductName,
     (String), '', 'Argument[0]', sql-injection, ai-generated]
-  - [org.springframework.jdbc.support, SQLErrorCodes, true, setDataIntegrityViolationCodes,
-    '(String[])', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support, SQLErrorCodes, true, setBadSqlGrammarCodes,
     '(String[])', '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jdbc.support, SQLErrorCodes, true, setDatabaseProductNames,
@@ -4102,10 +4090,10 @@ extensions:
     (String), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.config, AbstractJmsListenerEndpoint, true, setDestination,
     (String), '', 'Argument[0]', sql-injection, ai-generated]
-  - [org.springframework.jms.connection, JmsTransactionManager, true, JmsTransactionManager,
-    (ConnectionFactory), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.core, JmsMessagingTemplate, true, receive, (String),
     '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.springframework.jms.core, JmsMessagingTemplate, true, setDefaultDestinationName,
+    (String), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.core, JmsTemplate, true, setDefaultDestinationName, (String),
     '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.jms.core.support, JmsGatewaySupport, false, setJmsTemplate,
@@ -4138,8 +4126,6 @@ extensions:
     (Resource), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.mail.javamail, JavaMailSenderImpl, true, createMimeMessage,
     (InputStream), '', 'Argument[0]', path-injection, ai-generated]
-  - [org.springframework.messaging.simp.config, StompBrokerRelayRegistration, true,
-    setRelayHost, (String), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.messaging.simp.stomp, StompHeaderAccessor, true, setHost,
     (String), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.messaging.simp.stomp, StompHeaders, true, setHost, (String),
@@ -4188,6 +4174,8 @@ extensions:
     (Properties), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.orm.jpa, JpaTransactionManager, true, setJpaPropertyMap,
     (Map), '', 'Argument[0]', sql-injection, ai-generated]
+  - [org.springframework.orm.jpa, JpaTransactionManager, true, setJpaProperties, (Properties),
+    '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.orm.jpa, LocalContainerEntityManagerFactoryBean, true, setJtaDataSource,
     (DataSource), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.orm.jpa, LocalContainerEntityManagerFactoryBean, true, setDataSource,
@@ -4196,6 +4184,8 @@ extensions:
     '(String[])', '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.orm.jpa, LocalContainerEntityManagerFactoryBean, true, setPersistenceUnitRootLocation,
     (String), '', 'Argument[0]', path-injection, ai-generated]
+  - [org.springframework.orm.jpa, LocalContainerEntityManagerFactoryBean, true, setPersistenceUnitName,
+    (String), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.orm.jpa, LocalContainerEntityManagerFactoryBean, true, setPersistenceXmlLocation,
     (String), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.orm.jpa.persistenceunit, DefaultPersistenceUnitManager, true,
@@ -4243,7 +4233,7 @@ extensions:
     (Connection), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.r2dbc.connection.init, ResourceDatabasePopulator, true, setBlockCommentEndDelimiter,
     (String), '', 'Argument[0]', sql-injection, ai-generated]
-  - [org.springframework.r2dbc.connection.init, ResourceDatabasePopulator, true, setCommentPrefix,
+  - [org.springframework.r2dbc.connection.init, ResourceDatabasePopulator, true, setBlockCommentStartDelimiter,
     (String), '', 'Argument[0]', sql-injection, ai-generated]
   - [org.springframework.r2dbc.connection.init, ResourceDatabasePopulator, true, setSeparator,
     (String), '', 'Argument[0]', sql-injection, ai-generated]
@@ -4289,8 +4279,6 @@ extensions:
     (String), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.ui.freemarker, FreeMarkerConfigurationFactory, true, setConfigLocation,
     (Resource), '', 'Argument[0]', path-injection, ai-generated]
-  - [org.springframework.ui.freemarker, SpringTemplateLoader, true, findTemplateSource,
-    (String), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.util, FileCopyUtils, false, copyToString, (Reader), '', 'Argument[0]',
     path-injection, ai-generated]
   - [org.springframework.util, ResourceUtils, false, toURL, (String), '', 'Argument[0]',
@@ -4382,8 +4370,6 @@ extensions:
     (List), '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.web.reactive.resource, ResourceWebHandler, true, setLocationValues,
     (List), '', 'Argument[0]', path-injection, ai-generated]
-  - [org.springframework.web.reactive.result.method, RequestMappingInfo, false, paths,
-    '(String[])', '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.reactive.result.method.annotation, RequestMappingHandlerMapping,
     true, setPathPrefixes, (Map), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.reactive.result.view, AbstractUrlBasedView, true, setUrl,
@@ -4410,8 +4396,6 @@ extensions:
     setScripts, '(String[])', '', 'Argument[0]', path-injection, ai-generated]
   - [org.springframework.web.reactive.result.view.script, ScriptTemplateView, true,
     ScriptTemplateView, (String), '', 'Argument[0]', path-injection, ai-generated]
-  - [org.springframework.web.server, ServerWebExchangeDecorator, true, addUrlTransformer,
-    (Function), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.server, ServerWebExchangeDecorator, true, transformUrl,
     (String), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.server.adapter, DefaultServerWebExchange, true, transformUrl,
@@ -4477,8 +4461,6 @@ extensions:
     ai-generated]
   - [org.springframework.web.servlet.support, ServletUriComponentsBuilder, false,
     fromContextPath, (HttpServletRequest), '', 'Argument[0]', request-forgery, ai-generated]
-  - [org.springframework.web.servlet.tags, Param, true, setValue, (String), '', 'Argument[0]',
-    request-forgery, ai-generated]
   - [org.springframework.web.servlet.tags, UrlTag, true, setValue, (String), '', 'Argument[0]',
     request-forgery, ai-generated]
   - [org.springframework.web.servlet.tags.form, FormTag, true, setServletRelativeAction,
@@ -4606,8 +4588,6 @@ extensions:
     (Map), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.util, ServletRequestPathUtils, false, getCachedPath,
     (ServletRequest), '', 'Argument[0]', request-forgery, ai-generated]
-  - [org.springframework.web.util, UriComponentsBuilder, true, uriVariables, (Map),
-    '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.util, UriComponentsBuilder, true, fragment, (String),
     '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.util, UriComponentsBuilder, true, replacePath, (String),
@@ -4683,5 +4663,3 @@ extensions:
     (URI), '', 'Argument[0]', request-forgery, ai-generated]
   - [org.springframework.web.servlet.function, RouterFunctionDsl, false, seeOther,
     (URI), '', 'Argument[0]', request-forgery, ai-generated]
-  - [org.springframework.web.servlet.function, ServerRequestExtensionsKt, false, remoteAddressOrNull,
-    (ServerRequest), '', 'Argument[0]', request-forgery, ai-generated]
