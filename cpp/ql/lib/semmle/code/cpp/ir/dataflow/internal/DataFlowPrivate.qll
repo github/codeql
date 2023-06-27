@@ -786,7 +786,9 @@ predicate clearsContent(Node n, Content c) {
     )
     or
     forex(PostUpdateNode pun, Content d |
-      d.impliesClearOf(c) and storeStepImpl(_, d, pun, true) and pun.getPreUpdateNode() = n
+      pragma[only_bind_into](d).impliesClearOf(pragma[only_bind_into](c)) and
+      storeStepImpl(_, d, pun, true) and
+      pun.getPreUpdateNode() = n
     |
       c.getIndirectionIndex() = d.getIndirectionIndex()
     )
