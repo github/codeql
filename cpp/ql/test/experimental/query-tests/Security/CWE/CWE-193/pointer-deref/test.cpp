@@ -416,7 +416,7 @@ void test30(int *size)
     new_size = tmp_size + 1;
     char *xs = new char[new_size];
     for (int i = 0; i < new_size; i++) {
-      xs[i] = 0;  // GOOD [FALSE POSITIVE]
+      xs[i] = 0;  // GOOD
     }
   }
   *size = new_size;
@@ -430,6 +430,127 @@ void test31(unsigned size, unsigned src_pos)
   }
   unsigned dst_pos = src_pos;
   if(dst_pos < size - 3) {
-    xs[dst_pos++] = 0; // GOOD [FALSE POSITIVE]
+    xs[dst_pos++] = 0; // GOOD
+  }
+}
+
+void test31_simple1(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos < size) {
+    xs[src_pos] = 0; // GOOD
+  }
+}
+
+void test31_simple2(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos < size + 1) {
+    xs[src_pos] = 0; // BAD
+  }
+}
+
+void test31_simple3(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos - 1 < size) {
+    xs[src_pos] = 0; // BAD
+  }
+}
+
+void test31_simple4(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos < size - 1) {
+    xs[src_pos] = 0; // GOOD
+  }
+}
+
+void test31_simple5(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos + 1 < size) {
+    xs[src_pos] = 0; // GOOD
+  }
+}
+
+void test31_simple1_plus1(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size + 1];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos < size) {
+    xs[src_pos] = 0; // GOOD
+  }
+}
+
+void test31_simple2_plus1(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size + 1];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos < size + 1) {
+    xs[src_pos] = 0; // GOOD
+  }
+}
+
+void test31_simple3_plus1(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size + 1];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos - 1 < size) {
+    xs[src_pos] = 0; // GOOD
+  }
+}
+
+void test31_simple4_plus1(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size + 1];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos < size - 1) {
+    xs[src_pos] = 0; // GOOD
+  }
+}
+
+void test31_simple5_plus1(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size + 1];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos + 1 < size) {
+    xs[src_pos] = 0; // GOOD
+  }
+}
+
+void test31_simple1_sub1(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size - 1];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if(src_pos < size) {
+    xs[src_pos] = 0; // BAD
   }
 }
