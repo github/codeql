@@ -85,7 +85,7 @@ void testCharIndex(BigArray *arr) {
     char *charBuf = (char*) arr->buf;
 
     charBuf[MAX_SIZE_BYTES - 1] = 0; // GOOD
-    charBuf[MAX_SIZE_BYTES] = 0; // BAD [FALSE NEGATIVE]
+    charBuf[MAX_SIZE_BYTES] = 0; // BAD
 }
 
 void testEqRefinement() {
@@ -119,4 +119,26 @@ void testEqRefinement2() {
             n = arr[i]; // GOOD
         }
     }
+}
+
+void testStackAllocated() {
+    char *arr[MAX_SIZE];
+
+    for(int i = 0; i <= MAX_SIZE; i++) {
+        arr[i] = 0; // BAD
+    }
+}
+
+int strncmp(const char*, const char*, int);
+
+char testStrncmp2(char *arr) {
+    if(strncmp(arr, "<test>", 6) == 0) {
+        arr += 6;
+    }
+    return *arr; // GOOD [FALSE POSITIVE]
+}
+
+void testStrncmp1() {
+    char asdf[5];
+    testStrncmp2(asdf);
 }
