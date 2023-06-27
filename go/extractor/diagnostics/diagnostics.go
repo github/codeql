@@ -201,6 +201,119 @@ func EmitRelativeImportPaths() {
 	)
 }
 
+// The following diagnostics are telemetry-only.
+
+func EmitBazelBuildFileFound() {
+	emitDiagnostic(
+		"go/autobuilder/bazel-build-file-found",
+		"A Bazel `BUILD` file was found",
+		"A Bazel `BUILD` file was found",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGopkgTomlFound() {
+	emitDiagnostic(
+		"go/autobuilder/gopkg-toml-found",
+		"A dep `Gopkg.toml` file was found",
+		"A dep `Gopkg.toml` file was found",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGlideYamlFound() {
+	emitDiagnostic(
+		"go/autobuilder/glide-yaml-found",
+		"A Glide `glide.yaml` file was found",
+		"A Glide `glide.yaml` file was found",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoWorkFound(goWorkPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/go-work-found",
+		"`go.work` file found",
+		fmt.Sprintf(
+			"%d `go.work` %s found:\n\n`%s`",
+			len(goWorkPaths),
+			plural(len(goWorkPaths), "file was", "files were"),
+			strings.Join(goWorkPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoFilesOutsideGoModules(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/go-files-outside-go-modules",
+		"Go files were found outside Go modules",
+		"Go files were found outside of the Go modules corresponding to these `go.mod` files.\n\n`"+strings.Join(goModPaths, "`, `")+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitMultipleGoModFoundNested(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/multiple-go-mod-found-nested",
+		"Multiple `go.mod` files were found, all nested under one root `go.mod` file",
+		fmt.Sprintf(
+			"%d `go.mod` files were found:\n\n`%s`",
+			len(goModPaths),
+			strings.Join(goModPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitMultipleGoModFoundNotNested(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/multiple-go-mod-found-not-nested",
+		"Multiple `go.mod` files found, not all nested under one root `go.mod` file",
+		fmt.Sprintf(
+			"%d `go.mod` files were found:\n\n`%s`",
+			len(goModPaths),
+			strings.Join(goModPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitSingleRootGoModFound(goModPath string) {
+	emitDiagnostic(
+		"go/autobuilder/single-root-go-mod-found",
+		"A single `go.mod` file was found in the root",
+		"A single `go.mod` file was found.\n\n`"+goModPath+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitSingleNonRootGoModFound(goModPath string) {
+	emitDiagnostic(
+		"go/autobuilder/single-non-root-go-mod-found",
+		"A single, non-root `go.mod` file was found",
+		"A single, non-root `go.mod` file was found.\n\n`"+goModPath+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+// The following diagnostics are related to identifying the build environment.
+
 func EmitNoGoModAndNoGoEnv(msg string) {
 	emitDiagnostic(
 		"go/autobuilder/env-no-go-mod-no-go-env",
