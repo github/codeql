@@ -204,9 +204,6 @@ open class LoggerBase(val logCounter: LogCounter) {
             val severity = info.first
             val count = info.second
             if(count >= logCounter.diagnosticLimit) {
-                // We don't know if this location relates to an error
-                // or a warning, so we just declare hitting the limit
-                // to be an error regardless.
                 val message = "Total of $count diagnostics (reached limit of ${logCounter.diagnosticLimit}) from $caller."
                 if (verbosity >= 1) {
                     emitDiagnostic(dtw, severity, "Limit", message, message)
