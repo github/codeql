@@ -19,4 +19,17 @@ jobs:
         run: python config/sync-files.py
       - name: Check dbscheme fragments
         run: python config/sync-dbscheme-fragments.py
+      - name: Check that all packs have enabled implicit 'this' warnings
+        shell: bash
+	run: |
+	  EXIT_CODE=0
+          packs="$(find . -iname 'qlpack.yml')"
+          for pack_file in ${packs}; do
+            option="$(yq '.warnOnImplicitThis' ${pack_file})"
+            if [ "${option}" != "true" ]; then
+              echo "warnOnImplicitThis property must be set to 'true' for pack ${pack_file}"
+              EXIT_CODE=1
+            fi
+          done
+          exit "${EXIT_CODE}"
 
