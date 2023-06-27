@@ -128,3 +128,17 @@ void testStackAllocated() {
         arr[i] = 0; // BAD
     }
 }
+
+int strncmp(const char*, const char*, int);
+
+char testStrncmp2(char *arr) {
+    if(strncmp(arr, "<test>", 6) == 0) {
+        arr += 6;
+    }
+    return *arr; // GOOD [FALSE POSITIVE]
+}
+
+void testStrncmp1() {
+    char asdf[5];
+    testStrncmp2(asdf);
+}

@@ -17,3 +17,8 @@ query predicate missingLocation(Element e) {
   not exists(TupleType t | e = t or e = t.getAField()) and
   not exists(e.getLocation())
 }
+
+query predicate multipleToString(Element e, string s) {
+  s = strictconcat(e.toString(), ",") and
+  strictcount(e.toString()) > 1
+}

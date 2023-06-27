@@ -86,6 +86,7 @@ module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
 cached
 private module Cached {
   private import DataFlowImplCommon as DataFlowImplCommon
+  private import DataFlowPrivate as DataFlowPrivate
 
   cached
   predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
@@ -136,7 +137,8 @@ private module Cached {
       )
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(src.(DataFlowPrivate::FlowSummaryNode)
+          .getSummaryNode(), sink.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
   }
 
   /**

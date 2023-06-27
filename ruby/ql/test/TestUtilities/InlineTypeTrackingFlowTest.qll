@@ -15,12 +15,10 @@ DataFlow::LocalSourceNode track(DataFlow::CallNode source) {
   result = track(TypeTracker::end(), source)
 }
 
-class TypeTrackingFlowTest extends InlineExpectationsTest {
-  TypeTrackingFlowTest() { this = "TypeTrackingFlowTest" }
+module TypeTrackingFlowTest implements TestSig {
+  string getARelevantTag() { result = "hasValueFlow" }
 
-  override string getARelevantTag() { result = "hasValueFlow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node sink, DataFlow::Node source |
       defaultSink(sink) and
       track(source).flowsTo(sink) and
@@ -31,3 +29,5 @@ class TypeTrackingFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<TypeTrackingFlowTest>

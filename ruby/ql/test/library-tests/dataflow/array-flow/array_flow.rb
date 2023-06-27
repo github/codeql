@@ -506,8 +506,19 @@ def m56
     a = [0, 1, 2, source(56)]
     b = a.filter_map do |x|
         sink(x) # $ hasValueFlow=56
+        x
     end
-    sink(b[0]) # $ hasValueFlow=56
+    sink(b[3]) # $ hasValueFlow=56
+
+    c = a.filter_map do |x|
+        "safe"
+    end
+    sink(c[0]) # safe
+
+    d = ["safe"].filter_map do |x|
+        source(56.1)
+    end
+    sink(d[0]) # $ hasValueFlow=56.1
 end
 
 def m57

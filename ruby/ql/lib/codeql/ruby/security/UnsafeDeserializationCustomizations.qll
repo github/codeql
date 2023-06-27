@@ -75,13 +75,34 @@ module UnsafeDeserialization {
   }
 
   /**
-   * An argument in a call to `YAML.load`, considered a sink
+   * An argument in a call to `YAML.unsafe_*` and `YAML.load_stream` , considered a sink
    * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
    * recent versions of Ruby.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
-      this = API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall("load").getArgument(0)
+      // Note: this is safe in psych/yaml >= 4.0.0.
+      this = yamlNode().getAMethodCall("load").getArgument(0)
+      or
+      this =
+        yamlNode().getAMethodCall(["unsafe_load_file", "unsafe_load", "load_stream"]).getArgument(0)
+      or
+      this = yamlNode().getAMethodCall(["unsafe_load", "load_stream"]).getKeywordArgument("yaml")
+      or
+      this = yamlNode().getAMethodCall("unsafe_load_file").getKeywordArgument("filename")
+    }
+  }
+
+  private API::Node yamlNode() { result = API::getTopLevelMember(["YAML", "Psych"]) }
+
+  /**
+   * An argument in a call to `YAML.parse*`, considered a sink for unsafe deserialization
+   * if there is a call to `to_ruby` on the returned value.
+   */
+  class YamlParseArgument extends Sink {
+    YamlParseArgument() {
+      this =
+        yamlNode().getAMethodCall(["parse", "parse_stream", "parse_file"]).getAMethodCall("to_ruby")
     }
   }
 
@@ -204,6 +225,25 @@ module UnsafeDeserialization {
           not exists(SetOjDefaultOptionsCall setOpts |
             setOpts.getValue().(OjOptionsHashWithModeKey).hasSafeMode()
           )
+        )
+      )
+    }
+  }
+
+  /**
+   * An argument in a call to `Plist.parse_xml` where `marshal` is `true` (which is
+   * the default), considered a sink for unsafe deserialization.
+   */
+  class UnsafePlistParsexmlArgument extends Sink {
+    UnsafePlistParsexmlArgument() {
+      exists(DataFlow::CallNode plistParseXml |
+        plistParseXml = API::getTopLevelMember("Plist").getAMethodCall("parse_xml")
+      |
+        this = [plistParseXml.getArgument(0), plistParseXml.getKeywordArgument("filename_or_xml")] and
+        (
+          plistParseXml.getKeywordArgument("marshal").getConstantValue().isBoolean(true)
+          or
+          plistParseXml.getNumberOfArguments() = 1
         )
       )
     }

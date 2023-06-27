@@ -17,7 +17,8 @@ edges
 | ConstantOauth2State.go:210:9:210:42 | call to AuthCodeURL | ConstantOauth2State.go:211:54:211:56 | url |
 | ConstantOauth2State.go:232:9:232:42 | call to AuthCodeURL | ConstantOauth2State.go:233:28:233:30 | url |
 | ConstantOauth2State.go:239:17:239:39 | "http://localhost:8080" | ConstantOauth2State.go:249:9:249:12 | conf |
-| ConstantOauth2State.go:256:38:256:60 | "http://localhost:8080" | ConstantOauth2State.go:266:9:266:12 | conf |
+| ConstantOauth2State.go:256:17:256:67 | call to Sprintf | ConstantOauth2State.go:266:9:266:12 | conf |
+| ConstantOauth2State.go:256:38:256:60 | "http://localhost:8080" | ConstantOauth2State.go:256:17:256:67 | call to Sprintf |
 | ConstantOauth2State.go:272:17:272:21 | "oob" | ConstantOauth2State.go:282:9:282:12 | conf |
 nodes
 | ConstantOauth2State.go:20:26:20:32 | "state" | semmle.label | "state" |
@@ -46,6 +47,7 @@ nodes
 | ConstantOauth2State.go:239:17:239:39 | "http://localhost:8080" | semmle.label | "http://localhost:8080" |
 | ConstantOauth2State.go:249:9:249:12 | conf | semmle.label | conf |
 | ConstantOauth2State.go:249:26:249:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:256:17:256:67 | call to Sprintf | semmle.label | call to Sprintf |
 | ConstantOauth2State.go:256:38:256:60 | "http://localhost:8080" | semmle.label | "http://localhost:8080" |
 | ConstantOauth2State.go:266:9:266:12 | conf | semmle.label | conf |
 | ConstantOauth2State.go:266:26:266:41 | stateStringConst | semmle.label | stateStringConst |

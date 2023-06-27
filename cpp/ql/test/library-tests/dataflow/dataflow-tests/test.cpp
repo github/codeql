@@ -703,3 +703,34 @@ void test_conflation_regression(int* source) { // $ ast-def=source
   int* buf = source;
   call_increment_buf(&buf);
 }
+
+void write_to_star_star_p(unsigned char **p) // $ ast-def=p ir-def=**p ir-def=*p
+{
+  **p = 0;
+}
+
+void write_to_star_buf(unsigned char *buf) // $ ast-def=buf
+{
+  unsigned char *c = buf;
+  write_to_star_star_p(&c);
+}
+
+void test_write_to_star_buf(unsigned char *source) // $ ast-def=source
+{
+  write_to_star_buf(source);
+  sink(*source); // clean
+}
+
+void does_not_write_source_to_dereference(int *p) // $ ast-def=p ir-def=*p
+{
+  int x = source();
+  p = &x;
+  *p = 42;
+}
+
+void test_does_not_write_source_to_dereference()
+{
+  int x;
+  does_not_write_source_to_dereference(&x);
+  sink(x); // $ ast,ir=733:7 SPURIOUS: ast,ir=726:11
+}

@@ -52,6 +52,3 @@ module NoSqlInjection {
     ConvertedToDict() { this = "ConvertedToDict" }
   }
 }
-
-/** DEPRECATED: Alias for NoSqlInjection */
-deprecated module NoSQLInjection = NoSqlInjection;

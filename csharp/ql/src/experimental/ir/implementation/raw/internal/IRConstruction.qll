@@ -378,12 +378,6 @@ private module Cached {
     result = getInstructionTranslatedElement(instruction).getAst()
   }
 
-  /** DEPRECATED: Alias for getInstructionAst */
-  cached
-  deprecated Language::AST getInstructionAST(Instruction instruction) {
-    result = getInstructionAst(instruction)
-  }
-
   cached
   CSharpType getInstructionResultType(Instruction instruction) {
     getInstructionTranslatedElement(instruction)

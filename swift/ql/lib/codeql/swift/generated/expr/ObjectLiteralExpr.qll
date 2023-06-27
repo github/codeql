@@ -22,25 +22,12 @@ module Generated {
 
     /**
      * Gets the `index`th argument of this object literal expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Argument getImmediateArgument(int index) {
+    Argument getArgument(int index) {
       result =
         Synth::convertArgumentFromRaw(Synth::convertObjectLiteralExprToRaw(this)
               .(Raw::ObjectLiteralExpr)
               .getArgument(index))
-    }
-
-    /**
-     * Gets the `index`th argument of this object literal expression (0-based).
-     */
-    final Argument getArgument(int index) {
-      exists(Argument immediate |
-        immediate = this.getImmediateArgument(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

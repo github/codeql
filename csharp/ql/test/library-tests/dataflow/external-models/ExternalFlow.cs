@@ -149,9 +149,9 @@ namespace My.Qltest
 
         static T Apply<S, T>(Func<S, T> f, S s) => throw null;
 
-        static S[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
+        static T[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
 
-        static void Apply2<S>(Action<S> f, S s1, S s2) => throw null;
+        static void Apply2(Action<object> f, D d1, D d2) => throw null;
 
         static void Parse(string s, out int i) => throw null;
 

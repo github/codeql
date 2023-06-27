@@ -19,16 +19,20 @@ class SummarizedCallableBase extends Callable {
   SummarizedCallableBase() { this.isUnboundDeclaration() }
 }
 
+/**
+ * A module for importing frameworks that define synthetic globals.
+ */
+private module SyntheticGlobals {
+  private import semmle.code.csharp.frameworks.EntityFramework
+}
+
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
 
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) {
@@ -44,7 +48,21 @@ DataFlowType getContentType(Content c) {
   )
 }
 
-private DataFlowType getReturnTypeBase(DotNet::Callable c, ReturnKind rk) {
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+    exists(int i |
+      pos.getPosition() = i and
+      t = c.getParameter(i).getType()
+    )
+    or
+    pos.isThisParameter() and
+    t = c.getDeclaringType()
+  )
+}
+
+/** Gets the return type of kind `rk` for callable `c`. */
+DataFlowType getReturnType(DotNet::Callable c, ReturnKind rk) {
   exists(Type t | result = Gvn::getGlobalValueNumber(t) |
     rk instanceof NormalReturnKind and
     (
@@ -56,15 +74,6 @@ private DataFlowType getReturnTypeBase(DotNet::Callable c, ReturnKind rk) {
     or
     t = c.getParameter(rk.(OutRefReturnKind).getPosition()).getType()
   )
-}
-
-/** Gets the return type of kind `rk` for callable `c`. */
-bindingset[c]
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getReturnTypeBase(c, rk)
-  or
-  rk =
-    any(JumpReturnKind jrk | result = getReturnTypeBase(jrk.getTarget(), jrk.getTargetReturnKind()))
 }
 
 /**
@@ -198,8 +207,8 @@ string getComponentSpecific(SummaryComponent sc) {
   or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + rk + "]" and
-    not rk instanceof NormalReturnKind
+    not rk = getReturnValueKind() and
+    result = "ReturnValue[" + rk + "]"
   )
 }
 

@@ -50,25 +50,12 @@ module Generated {
 
     /**
      * Gets the parameter declaration owning this wrapper application.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ParamDecl getImmediateParam() {
+    ParamDecl getParam() {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertAppliedPropertyWrapperExprToRaw(this)
               .(Raw::AppliedPropertyWrapperExpr)
               .getParam())
-    }
-
-    /**
-     * Gets the parameter declaration owning this wrapper application.
-     */
-    final ParamDecl getParam() {
-      exists(ParamDecl immediate |
-        immediate = this.getImmediateParam() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }
