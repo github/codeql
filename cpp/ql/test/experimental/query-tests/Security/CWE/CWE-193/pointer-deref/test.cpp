@@ -387,12 +387,105 @@ void test27(unsigned size, bool b) {
 void test28(unsigned size) {
   char *xs = new char[size];
   char *end = &xs[size];
-    if (xs >= end)
-      return;
+  if (xs >= end)
+    return;
+  xs++;
+  if (xs >= end)
+    return;
+  xs[0] = 0;  // GOOD
+}
+
+void test28_simple(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+  if (xs < end) {
     xs++;
-    if (xs >= end)
-      return;
-    xs[0] = 0;  // GOOD [FALSE POSITIVE]
+    if (xs < end) {
+      xs[0] = 0;  // GOOD
+    }
+  }
+}
+
+void test28_simple2(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+  if (xs < end) {
+    xs++;
+    if (xs < end + 1) {
+      xs[0] = 0;  // BAD
+    }
+  }
+}
+
+void test28_simple3(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+  if (xs < end) {
+    xs++;
+    if (xs - 1 < end) {
+      xs[0] = 0;  // BAD
+    }
+  }
+}
+
+void test28_simple4(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+  if (xs < end) {
+    end++;
+    xs++;
+    if (xs < end) {
+      xs[0] = 0;  // BAD
+    }
+  }
+}
+
+void test28_simple5(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+  end++;
+  if (xs < end) {
+    xs++;
+    if (xs < end) {
+      xs[0] = 0;  // BAD
+    }
+  }
+}
+
+void test28_simple6(unsigned size) {
+  char *xs = new char[size + 1];
+  char *end = &xs[size];
+  end++;
+  if (xs < end) {
+    xs++;
+    if (xs < end) {
+      xs[0] = 0;  // GOOD
+    }
+  }
+}
+
+void test28_simple7(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+  end++;
+  if (xs < end) {
+    xs++;
+    if (xs < end - 1) {
+      xs[0] = 0;  // GOOD
+    }
+  }
+}
+
+void test28_simple8(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+  end += 500;
+  if (xs < end) {
+    xs++;
+    if (xs < end - 1) {
+      xs[0] = 0;  // BAD
+    }
+  }
 }
 
 struct test29_struct {
@@ -429,7 +522,7 @@ void test31(unsigned size, unsigned src_pos)
     src_pos = size;
   }
   unsigned dst_pos = src_pos;
-  if(dst_pos < size - 3) {
+  if (dst_pos < size - 3) {
     xs[dst_pos++] = 0; // GOOD
   }
 }
@@ -440,7 +533,7 @@ void test31_simple1(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos < size) {
+  if (src_pos < size) {
     xs[src_pos] = 0; // GOOD
   }
 }
@@ -451,7 +544,7 @@ void test31_simple2(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos < size + 1) {
+  if (src_pos < size + 1) {
     xs[src_pos] = 0; // BAD
   }
 }
@@ -462,7 +555,7 @@ void test31_simple3(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos - 1 < size) {
+  if (src_pos - 1 < size) {
     xs[src_pos] = 0; // BAD
   }
 }
@@ -473,7 +566,7 @@ void test31_simple4(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos < size - 1) {
+  if (src_pos < size - 1) {
     xs[src_pos] = 0; // GOOD
   }
 }
@@ -484,7 +577,7 @@ void test31_simple5(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos + 1 < size) {
+  if (src_pos + 1 < size) {
     xs[src_pos] = 0; // GOOD
   }
 }
@@ -495,7 +588,7 @@ void test31_simple1_plus1(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos < size) {
+  if (src_pos < size) {
     xs[src_pos] = 0; // GOOD
   }
 }
@@ -506,7 +599,7 @@ void test31_simple2_plus1(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos < size + 1) {
+  if (src_pos < size + 1) {
     xs[src_pos] = 0; // GOOD
   }
 }
@@ -517,7 +610,7 @@ void test31_simple3_plus1(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos - 1 < size) {
+  if (src_pos - 1 < size) {
     xs[src_pos] = 0; // GOOD
   }
 }
@@ -528,7 +621,7 @@ void test31_simple4_plus1(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos < size - 1) {
+  if (src_pos < size - 1) {
     xs[src_pos] = 0; // GOOD
   }
 }
@@ -539,7 +632,7 @@ void test31_simple5_plus1(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos + 1 < size) {
+  if (src_pos + 1 < size) {
     xs[src_pos] = 0; // GOOD
   }
 }
@@ -550,7 +643,7 @@ void test31_simple1_sub1(unsigned size, unsigned src_pos)
   if (src_pos > size) {
     src_pos = size;
   }
-  if(src_pos < size) {
+  if (src_pos < size) {
     xs[src_pos] = 0; // BAD
   }
 }
