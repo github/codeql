@@ -937,23 +937,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
-    /**
-     * Gets the CFG scope of node `n`. Unlike `getCfgScope`, this predicate
-     * is calculated based on reachability from an entry node, and it may
-     * yield different results for AST elements that are split into multiple
-     * scopes.
-     */
-    cached
-    CfgScope getNodeCfgScope(Node n) {
-      n = TEntryNode(result)
-      or
-      n = TAnnotatedExitNode(result, _)
-      or
-      n = TExitNode(result)
-      or
-      n = TAstNode(result, _, _)
-    }
-
     cached
     module Public {
       /**
@@ -974,6 +957,23 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        */
       cached
       AstNode getAControlFlowExitNode(AstNode n) { last(n, result, _) }
+
+      /**
+       * Gets the CFG scope of node `n`. Unlike `getCfgScope`, this predicate
+       * is calculated based on reachability from an entry node, and it may
+       * yield different results for AST elements that are split into multiple
+       * scopes.
+       */
+      cached
+      CfgScope getNodeCfgScope(Node n) {
+        n = TEntryNode(result)
+        or
+        n = TAnnotatedExitNode(result, _)
+        or
+        n = TExitNode(result)
+        or
+        n = TAstNode(result, _, _)
+      }
     }
   }
 
