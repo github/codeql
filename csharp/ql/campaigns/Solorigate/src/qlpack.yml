@@ -7,3 +7,4 @@ defaultSuiteFile: codeql-suites/solorigate.qls
 dependencies:
     codeql/csharp-all: ${workspace}
     codeql/csharp-solorigate-all: ${workspace}
+warnOnImplicitThis: true
