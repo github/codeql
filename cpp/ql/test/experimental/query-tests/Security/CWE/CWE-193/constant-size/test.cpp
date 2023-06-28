@@ -169,3 +169,52 @@ void pointer_size_larger_than_array_element_size_and_does_not_divide_it() {
     ptr[0] = vec3{}; // GOOD: writes ints 0, 1, 2
     ptr[1] = vec3{}; // BAD: writes ints 3, 4, 5 [NOT DETECTED]
 }
+
+void use(...);
+
+void call_use(unsigned char* p, int n) {
+    if(n == 0) {
+        return;
+    }
+    if(n == 1) {
+        unsigned char x = p[0];
+        use(x);
+    }
+    if(n == 2) {
+        unsigned char x = p[0];
+        unsigned char y = p[1];
+        use(x, y);
+    }
+    if(n == 3) {
+        unsigned char x = p[0];
+        unsigned char y = p[1];
+        unsigned char z = p[2]; // GOOD [FALSE POSITIVE]: `call_use(buffer2, 2)` won't reach this point.
+        use(x, y, z);
+    }
+}
+
+void test_call_use() {
+    unsigned char buffer1[1];
+    call_use(buffer1,1);
+
+    unsigned char buffer2[2];
+    call_use(buffer2,2);
+
+    unsigned char buffer3[3];
+    call_use(buffer3,3);
+}
+
+void call_call_use(unsigned char* p, int n) {
+    call_use(p, n);
+}
+
+void test_call_use2() {
+    unsigned char buffer1[1];
+    call_call_use(buffer1,1);
+
+    unsigned char buffer2[2];
+    call_call_use(buffer2,2);
+
+    unsigned char buffer3[3];
+    call_call_use(buffer3,3);
+}
