@@ -22,6 +22,7 @@ module Sqlite3 {
   private API::Node dbInstance() {
     result = databaseConst().getInstance()
     or
+    // e.g. SQLite3::Database.new("foo.db") |db| { db.some_method }
     result = databaseConst().getMethod("new").getBlock().getParameter(0)
   }
 
