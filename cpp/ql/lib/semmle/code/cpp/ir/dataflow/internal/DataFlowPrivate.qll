@@ -321,9 +321,11 @@ private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
 
 private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode {
   override predicate argumentOf(DataFlowCall dfCall, ArgumentPosition pos) {
-    this.getCallInstruction() = dfCall and
-    pos.(IndirectionPosition).getArgumentIndex() = this.getArgumentIndex() and
-    super.hasAddressOperandAndIndirectionIndex(_, pos.(IndirectionPosition).getIndirectionIndex())
+    exists(int indirectionIndex |
+      pos = TIndirectionPosition(argumentIndex, pragma[only_bind_into](indirectionIndex)) and
+      this.getCallInstruction() = dfCall and
+      super.hasAddressOperandAndIndirectionIndex(_, pragma[only_bind_into](indirectionIndex))
+    )
   }
 }
 
