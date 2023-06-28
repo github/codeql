@@ -21,16 +21,17 @@ module Twirp {
       this = API::getTopLevelMember("Twirp").getMember("Service").getAnInstantiation()
     }
 
-    private DataFlow::ClassNode getAHandlerClass() {
-      result.getAnImmediateReference().getAMethodCall("new").flowsTo(this.getArgument(0))
-    }
-
     /**
      * Gets a handler's method.
      */
-    Ast::Method getAHandlerMethod() {
-      result = this.getAHandlerClass().getAnAncestor().getAnOwnInstanceMethod().asCallableAstNode()
+    DataFlow::MethodNode getAHandlerMethodNode() {
+      result = this.getArgument(0).backtrack().getMethod(_).asCallable()
     }
+
+    /**
+     * Gets a handler's method as an AST node.
+     */
+    Ast::Method getAHandlerMethod() { result = this.getAHandlerMethodNode().asCallableAstNode() }
   }
 
   /**
@@ -52,7 +53,7 @@ module Twirp {
     DataFlow::ParameterNode
   {
     UnmarshaledParameter() {
-      exists(ServiceInstantiation i | i.getAHandlerMethod().getParameter(0) = this.asParameter())
+      this = any(ServiceInstantiation i).getAHandlerMethodNode().getParameter(0)
     }
 
     override string getSourceType() { result = "Twirp Unmarhaled Parameter" }
