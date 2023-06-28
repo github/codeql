@@ -18,10 +18,12 @@ private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import internal.ApiGraphModels as Shared
 private import internal.ApiGraphModelsSpecific as Specific
+private import internal.ApiGraphModelsExtensions
 import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.FlowSummary
+private import codeql.ruby.dataflow.Sinks
 
 /**
  * A remote flow source originating from a CSV source row.
@@ -57,4 +59,12 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
       preservesValue = false
     )
   }
+}
+
+private class SinkFromModel extends AdditionalSink::Range {
+  private string kind;
+
+  SinkFromModel() { this = ModelOutput::getASinkNode(kind).asSink() }
+
+  override string getSinkType() { result = kind }
 }
