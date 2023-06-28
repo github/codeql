@@ -734,3 +734,58 @@ void test_does_not_write_source_to_dereference()
   does_not_write_source_to_dereference(&x);
   sink(x); // $ ast,ir=733:7 SPURIOUS: ast,ir=726:11
 }
+
+void sometimes_calls_sink_eq(int x, int n) {
+  if(n == 0) {
+    sink(x); // $ ast,ir=751:27 ast,ir=755:32 SPURIOUS: ast,ir=749:27 ast,ir=753:32
+  }
+}
+
+void call_sometimes_calls_sink_eq(int x, int n) {
+  sometimes_calls_sink_eq(x, n);
+}
+
+void test_sometimes_calls_sink_eq_1() {
+  sometimes_calls_sink_eq(source(), 1);
+  sometimes_calls_sink_eq(0, 0);
+  sometimes_calls_sink_eq(source(), 0);
+
+  call_sometimes_calls_sink_eq(source(), 1);
+  call_sometimes_calls_sink_eq(0, 0);
+  call_sometimes_calls_sink_eq(source(), 0);
+}
+
+void sometimes_calls_sink_lt(int x, int n) {
+  if(n < 10) {
+    sink(x); // $ ast,ir=771:27 ast,ir=775:32 SPURIOUS: ast,ir=769:27 ast,ir=773:32
+  }
+}
+
+void call_sometimes_calls_sink_lt(int x, int n) {
+  sometimes_calls_sink_lt(x, n);
+}
+
+void test_sometimes_calls_sink_lt() {
+  sometimes_calls_sink_lt(source(), 10);
+  sometimes_calls_sink_lt(0, 0);
+  sometimes_calls_sink_lt(source(), 2);
+
+  call_sometimes_calls_sink_lt(source(), 10);
+  call_sometimes_calls_sink_lt(0, 0);
+  call_sometimes_calls_sink_lt(source(), 2);
+
+}
+
+void sometimes_calls_sink_switch(int x, int n) {
+  switch(n) {
+    case 0:
+      sink(x); // $ ast,ir=790:31 SPURIOUS: ast,ir=788:31
+      break;
+  }
+}
+
+void test_sometimes_calls_sink_switch() {
+  sometimes_calls_sink_switch(source(), 1);
+  sometimes_calls_sink_switch(0, 0);
+  sometimes_calls_sink_switch(source(), 0);
+}
