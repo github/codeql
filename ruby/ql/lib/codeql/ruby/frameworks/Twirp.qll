@@ -16,7 +16,7 @@ module Twirp {
   /**
    * A Twirp service instantiation
    */
-  class ServiceInstantiation extends DataFlow::CallNode {
+  deprecated class ServiceInstantiation extends DataFlow::CallNode {
     ServiceInstantiation() {
       this = API::getTopLevelMember("Twirp").getMember("Service").getAnInstantiation()
     }
@@ -37,7 +37,7 @@ module Twirp {
   /**
    * A Twirp client
    */
-  class ClientInstantiation extends DataFlow::CallNode {
+  deprecated class ClientInstantiation extends DataFlow::CallNode {
     ClientInstantiation() {
       this = API::getTopLevelMember("Twirp").getMember("Client").getAnInstantiation()
     }
@@ -45,7 +45,10 @@ module Twirp {
 
   /** The URL of a Twirp service, considered as a sink. */
   class ServiceUrlAsSsrfSink extends ServerSideRequestForgery::Sink {
-    ServiceUrlAsSsrfSink() { exists(ClientInstantiation c | c.getArgument(0) = this) }
+    ServiceUrlAsSsrfSink() {
+      this =
+        API::getTopLevelMember("Twirp").getMember("Client").getMethod("new").getArgument(0).asSink()
+    }
   }
 
   /** A parameter that will receive parts of the url when handling an incoming request. */
@@ -53,7 +56,14 @@ module Twirp {
     DataFlow::ParameterNode
   {
     UnmarshaledParameter() {
-      this = any(ServiceInstantiation i).getAHandlerMethodNode().getParameter(0)
+      this =
+        API::getTopLevelMember("Twirp")
+            .getMember("Service")
+            .getMethod("new")
+            .getArgument(0)
+            .getMethod(_)
+            .getParameter(0)
+            .asSource()
     }
 
     override string getSourceType() { result = "Twirp Unmarhaled Parameter" }
