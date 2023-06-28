@@ -203,11 +203,15 @@ func EmitRelativeImportPaths() {
 
 // The following diagnostics are telemetry-only.
 
-func EmitBazelBuildFileFound() {
+func EmitBazelBuildFilesFound(bazelPaths []string) {
 	emitDiagnostic(
 		"go/autobuilder/bazel-build-file-found",
-		"A Bazel `BUILD` file was found",
-		"A Bazel `BUILD` file was found",
+		"Bazel BUILD files were found",
+		fmt.Sprintf(
+			"%d bazel BUILD %s found:\n\n`%s`",
+			len(bazelPaths),
+			plural(len(bazelPaths), "file was", "files were"),
+			strings.Join(bazelPaths, "`, `")),
 		severityNote,
 		telemetryOnly,
 		noLocation,
