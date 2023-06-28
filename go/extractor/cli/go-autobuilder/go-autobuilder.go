@@ -262,19 +262,23 @@ func checkDirsNested(dirs []string) bool {
 	return true
 }
 
-func findGoModFiles(emitDiagnostics bool) (string, bool) {
+// Returns the directory to run the go build in and whether a go.mod file was
+// found.
+func findGoModFiles(emitDiagnostics bool) (baseDir string, goModFound bool) {
 	goModPaths := util.FindAllFilesWithName(".", "go.mod", "vendor")
 	if len(goModPaths) == 0 {
-		// preserve current behaviour
-		return ".", false
+		baseDir = "."
+		goModFound = false
+		return
 	}
 	goModDirs := getDirs(goModPaths)
 	if util.AnyGoFilesOutsideDirs(".", goModDirs...) {
 		if emitDiagnostics {
 			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)
 		}
-		// preserve current behaviour
-		return ".", true
+		baseDir = "."
+		goModFound = true
+		return
 	}
 	if len(goModPaths) > 1 {
 		// currently not supported
@@ -285,8 +289,9 @@ func findGoModFiles(emitDiagnostics bool) (string, bool) {
 				diagnostics.EmitMultipleGoModFoundNotNested(goModPaths)
 			}
 		}
-		// preserve current behaviour
-		return ".", true
+		baseDir = "."
+		goModFound = true
+		return
 	}
 	if emitDiagnostics {
 		if goModDirs[0] == "." {
@@ -295,15 +300,19 @@ func findGoModFiles(emitDiagnostics bool) (string, bool) {
 			diagnostics.EmitSingleNonRootGoModFound(goModPaths[0])
 		}
 	}
-	return goModDirs[0], true
+	baseDir = goModDirs[0]
+	goModFound = true
+	return
 }
 
 // Returns the appropriate DependencyInstallerMode for the current project
 func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
-	if util.FileExists("BUILD") {
+	bazelPaths := util.FindAllFilesWithName(".", "BUILD", "vendor")
+	bazelPaths = append(bazelPaths, util.FindAllFilesWithName(".", "BUILD.bazel", "vendor")...)
+	if len(bazelPaths) > 0 {
 		// currently not supported
 		if emitDiagnostics {
-			diagnostics.EmitBazelBuildFileFound()
+			diagnostics.EmitBazelBuildFilesFound(bazelPaths)
 		}
 	}
 
@@ -740,7 +749,7 @@ func installDependenciesAndBuild() {
 
 	goModVersion, goModVersionFound := tryReadGoDirective(depMode, baseDir)
 
-	if semver.Compare("v"+goModVersion, getEnvGoSemVer()) >= 0 {
+	if goModVersionFound && semver.Compare("v"+goModVersion, getEnvGoSemVer()) >= 0 {
 		diagnostics.EmitNewerGoVersionNeeded()
 	}
 
