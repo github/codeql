@@ -1,5 +1,5 @@
 ---
-category: library
+category: majorAnalysis
 ---
 * The API graph library (`codeql.ruby.ApiGraphs`) has been significantly improved, with better support for inheritance,
   and data-flow nodes can now be converted to API nodes by calling `.track()` or `.backtrack()` on the node.
