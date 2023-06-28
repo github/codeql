@@ -329,7 +329,7 @@ module Bun {
           arg = 0
           or
           tp = "RawQuery" and
-          m = ["NewRawQuery"] and
+          m = "NewRawQuery" and
           arg = 1
         )
       |
