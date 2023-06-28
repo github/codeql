@@ -854,7 +854,73 @@ class DataFlowCall extends CallInstruction {
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+module IsUnreachableInCall {
+  private import semmle.code.cpp.ir.ValueNumbering
+  private import semmle.code.cpp.controlflow.IRGuards as G
+
+  private class ConstantIntegralTypeArgumentNode extends PrimaryArgumentNode {
+    int value;
+
+    ConstantIntegralTypeArgumentNode() {
+      value = op.getDef().(IntegerConstantInstruction).getValue().toInt()
+    }
+
+    int getValue() { result = value }
+  }
+
+  pragma[nomagic]
+  private predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
+    any(G::IRGuardCondition guard).ensuresEq(left, right, k, block, areEqual)
+  }
+
+  pragma[nomagic]
+  private predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
+    any(G::IRGuardCondition guard).ensuresLt(left, right, k, block, areEqual)
+  }
+
+  predicate isUnreachableInCall(Node n, DataFlowCall call) {
+    exists(
+      DirectParameterNode paramNode, ConstantIntegralTypeArgumentNode arg,
+      IntegerConstantInstruction constant, int k, Operand left, Operand right, IRBlock block
+    |
+      // arg flows into `paramNode`
+      DataFlowImplCommon::viableParamArg(call, paramNode, arg) and
+      left = constant.getAUse() and
+      right = valueNumber(paramNode.getInstruction()).getAUse() and
+      block = n.getBasicBlock()
+    |
+      // and there's a guard condition which ensures that the result of `left == right + k` is `areEqual`
+      exists(boolean areEqual |
+        ensuresEq(pragma[only_bind_into](left), pragma[only_bind_into](right),
+          pragma[only_bind_into](k), pragma[only_bind_into](block), areEqual)
+      |
+        // this block ensures that left = right + k, but it holds that `left != right + k`
+        areEqual = true and
+        constant.getValue().toInt() != arg.getValue() + k
+        or
+        // this block ensures that or `left != right + k`, but it holds that `left = right + k`
+        areEqual = false and
+        constant.getValue().toInt() = arg.getValue() + k
+      )
+      or
+      // or there's a guard condition which ensures that the result of `left < right + k` is `isLessThan`
+      exists(boolean isLessThan |
+        ensuresLt(pragma[only_bind_into](left), pragma[only_bind_into](right),
+          pragma[only_bind_into](k), pragma[only_bind_into](block), isLessThan)
+      |
+        isLessThan = true and
+        // this block ensures that `left < right + k`, but it holds that `left >= right + k`
+        constant.getValue().toInt() >= arg.getValue() + k
+        or
+        // this block ensures that `left >= right + k`, but it holds that `left < right + k`
+        isLessThan = false and
+        constant.getValue().toInt() < arg.getValue() + k
+      )
+    )
+  }
+}
+
+import IsUnreachableInCall
 
 int accessPathLimit() { result = 5 }
 
