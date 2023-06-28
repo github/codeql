@@ -201,6 +201,25 @@ module API {
     DataFlow::Node asSink() { result = asSinkInline(this) }
 
     /**
+     * Gets a callable that can reach this sink.
+     *
+     * For example:
+     * ```ruby
+     * Foo.bar do |x| # API::getTopLevelMember("Foo").getMethod("bar").getBlock().asCallable()
+     * end
+     *
+     * class Baz
+     *   def m # API::getTopLevelMember("Foo").getMethod("bar").getArgument(0).getMethod("m").asCallable()
+     *   end
+     * end
+     * Foo.bar(Baz.new)
+     * ```
+     */
+    bindingset[this]
+    pragma[inline_late]
+    DataFlow::CallableNode asCallable() { Impl::asCallable(this.getAnEpsilonSuccessor(), result) }
+
+    /**
      * Get a data-flow node that transitively flows to this value, provided that this value corresponds
      * to a sink.
      *
@@ -1194,6 +1213,11 @@ module API {
         pred = MkModuleInstanceUp(mod) and
         succ = getBackwardStartNode(mod.getOwnInstanceMethod(name))
       )
+    }
+
+    cached
+    predicate asCallable(Node apiNode, DataFlow::CallableNode callable) {
+      apiNode = getBackwardStartNode(callable)
     }
 
     cached
