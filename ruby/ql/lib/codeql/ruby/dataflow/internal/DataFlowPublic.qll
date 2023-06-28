@@ -1518,14 +1518,9 @@ class ConstRef extends LocalSourceNode {
    * end
    * ```
    */
-  pragma[inline]
-  ModuleNode getADescendentModule() { result = getADescendentModuleInline(this) }
-}
-
-bindingset[ref]
-pragma[inline_late]
-private ModuleNode getADescendentModuleInline(ConstRef ref) {
-  MkAncestorLookup(result) = getATargetScope(ref)
+  bindingset[this]
+  pragma[inline_late]
+  ModuleNode getADescendentModule() { MkAncestorLookup(result) = getATargetScope(this) }
 }
 
 /**
