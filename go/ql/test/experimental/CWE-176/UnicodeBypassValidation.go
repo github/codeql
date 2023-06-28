@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"html"
 	"net/http"
-	"strings"
 	"regexp"
+	"strings"
 
 	"golang.org/x/text/unicode/norm"
 )
@@ -63,7 +63,7 @@ func bad() {
 
 	http.HandleFunc("/bad_4", func(w http.ResponseWriter, req *http.Request) {
 
-		// BAD: Unicode normalization is performed after the regex match validation is performed 
+		// BAD: Unicode normalization is performed after the regex match validation is performed
 		// against the unsafe characters "<" and ">". This may be bypassed using the Unicode characters
 		// equivalent to "<" and ">".
 		unicode_input := req.URL.Query().Get("unicode_input")
@@ -77,5 +77,18 @@ func bad() {
 
 	})
 
+	http.HandleFunc("/bad_5", func(w http.ResponseWriter, req *http.Request) {
+
+		// BAD: Unicode normalization is performed after the check whether the unicode_input contains an unsafe characters
+		// "<" and ">". This may be bypassed using the Unicode characters equivalent to "<" and ">".
+		unicode_input := req.URL.Query().Get("unicode_input")
+		if strings.Count("<", unicode_input) > 0 || strings.Count(">", unicode_input) > 0 {
+			fmt.Println("The input is not safe.")
+		} else {
+			unicode_norm := norm.NFKC.String(unicode_input) // $result=BAD
+			fmt.Println(w, "Results: %q", unicode_norm)
+		}
+
+	})
+
 }
-u
