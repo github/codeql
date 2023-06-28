@@ -47,7 +47,7 @@ module Sqlite3 {
       this.getMethodName() = ["columns", "execute", "execute!", "get_metadata", "types"]
     }
 
-    override DataFlow::Node getSql() { result = stmt.getReceiver() }
+    override DataFlow::Node getSql() { result = stmt.getSql() }
   }
 
   /**
