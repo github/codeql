@@ -3,8 +3,8 @@
   "severity": "note",
   "source": {
     "extractorName": "go",
-    "id": "go/autobuilder/multiple-go-mod-found-not-nested",
-    "name": "Multiple `go.mod` files found, not all nested under one root `go.mod` file"
+    "id": "go/autobuilder/multiple-go-mod-found-nested",
+    "name": "Multiple `go.mod` files were found, all nested under one root `go.mod` file"
   },
   "visibility": {
     "cliSummaryTable": false,
