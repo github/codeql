@@ -369,7 +369,7 @@ void test26(unsigned size) {
   }
 
   if (p < end) {
-    int val = *p; // GOOD [FALSE POSITIVE]
+    int val = *p; // GOOD
   }
 }
 
