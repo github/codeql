@@ -137,13 +137,8 @@ void SwiftMangler::indexExtensions(llvm::ArrayRef<swift::Decl*> siblings) {
   }
 }
 
-SwiftMangledName SwiftMangler::visitAbstractTypeParamDecl(
-    const swift::AbstractTypeParamDecl* decl) {
-  return visitValueDecl(decl, /* force */ true);
-}
-
 SwiftMangledName SwiftMangler::visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl) {
-  return visitAbstractTypeParamDecl(decl) << '_' << decl->getDepth() << '_' << decl->getIndex();
+  return visitValueDecl(decl, /*force=*/true) << '_' << decl->getDepth() << '_' << decl->getIndex();
 }
 
 SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
