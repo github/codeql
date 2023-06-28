@@ -7,6 +7,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.dataflow.Sinks
 private import codeql.ruby.ApiGraphs
 
 /**
@@ -27,6 +28,12 @@ module SqlInjection {
    * A source of remote user input, considered as a flow source.
    */
   private class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+
+  private class DataExtensionSqlExecutionSink extends Sink {
+    DataExtensionSqlExecutionSink() {
+      this = any(AdditionalSink s | s.getSinkType() = "sql-injection")
+    }
+  }
 
   /**
    * An SQL statement of a SQL execution, considered as a flow sink.
