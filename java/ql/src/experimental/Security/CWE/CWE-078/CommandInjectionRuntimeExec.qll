@@ -1,11 +1,10 @@
 import java
 import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 
 // a static string of an unsafe executable tainting arg 0 of Runtime.exec()
-class ExecTaintConfiguration extends TaintTracking::Configuration {
+deprecated class ExecTaintConfiguration extends TaintTracking::Configuration {
   ExecTaintConfiguration() { this = "ExecTaintConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -33,12 +32,41 @@ class ExecTaintConfiguration extends TaintTracking::Configuration {
   }
 }
 
+module ExecCmdFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof StringLiteral and
+    source.asExpr().(StringLiteral).getValue() instanceof UnSafeExecutable
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(RuntimeExecMethod method, MethodAccess call |
+      call.getMethod() = method and
+      sink.asExpr() = call.getArgument(0) and
+      sink.asExpr().getType() instanceof Array
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.asExpr().getFile().isSourceFile() and
+    (
+      node instanceof AssignToNonZeroIndex or
+      node instanceof ArrayInitAtNonZeroIndex or
+      node instanceof StreamConcatAtNonZeroIndex or
+      node.getType() instanceof PrimitiveType or
+      node.getType() instanceof BoxedType
+    )
+  }
+}
+
+/** Tracks flow of unvalidated user input that is used in Runtime.Exec */
+module ExecCmdFlow = TaintTracking::Global<ExecCmdFlowConfig>;
+
 abstract class Source extends DataFlow::Node {
   Source() { this = this }
 }
 
 // taint flow from user data to args of the command
-class ExecTaintConfiguration2 extends TaintTracking::Configuration {
+deprecated class ExecTaintConfiguration2 extends TaintTracking::Configuration {
   ExecTaintConfiguration2() { this = "ExecTaintConfiguration2" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -59,6 +87,31 @@ class ExecTaintConfiguration2 extends TaintTracking::Configuration {
     )
   }
 }
+
+module ExecUserFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source instanceof Source
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(RuntimeExecMethod method, MethodAccess call |
+      call.getMethod() = method and
+      sink.asExpr() = call.getArgument(_) and
+      sink.asExpr().getType() instanceof Array
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.asExpr().getFile().isSourceFile() and
+    (
+      node.getType() instanceof PrimitiveType or
+      node.getType() instanceof BoxedType
+    )
+  }
+}
+
+/** Tracks flow of unvalidated user input that is used in Runtime.Exec */
+module ExecUserFlow = TaintTracking::Global<ExecUserFlowConfig>;
 
 // array[3] = node
 class AssignToNonZeroIndex extends DataFlow::Node {
@@ -100,4 +153,18 @@ class UnSafeExecutable extends string {
     this.regexpMatch("^(|.*/)([a-z]*sh|javac?|python.*|perl|[Pp]ower[Ss]hell|php|node|deno|bun|ruby|osascript|cmd|Rscript|groovy)(\\.exe)?$") and
     not this = "netsh.exe"
   }
+}
+
+predicate callIsTaintedByUserInputAndDangerousCommand(MethodAccess call, ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd, DataFlow::Node sinkCmd) {
+  call.getMethod() instanceof RuntimeExecMethod and
+  // this is a command-accepting call to exec, e.g. rt.exec(new String[]{"/bin/sh", ...})
+  (
+    ExecCmdFlow::flow(sourceCmd, sinkCmd) and
+    sinkCmd.asExpr() = call.getArgument(0)
+  ) and
+  // it is tainted by untrusted user input
+  (
+    ExecUserFlow::flowPath(source, sink) and
+    sink.getNode().asExpr() = call.getArgument(0)
+  )
 }
