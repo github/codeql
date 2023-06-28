@@ -62,6 +62,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitSubscriptDecl(const swift::SubscriptDecl* decl);
   SwiftMangledName visitVarDecl(const swift::VarDecl* decl);
   SwiftMangledName visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl);
+  SwiftMangledName visitAssociatedTypeDecl(const swift::AssociatedTypeDecl* decl);
 
   // default fallback for non mangled types. This covers types that should not appear in normal
   // successful extractor runs, like ErrorType

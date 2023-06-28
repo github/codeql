@@ -141,6 +141,10 @@ SwiftMangledName SwiftMangler::visitGenericTypeParamDecl(const swift::GenericTyp
   return visitValueDecl(decl, /*force=*/true) << '_' << decl->getDepth() << '_' << decl->getIndex();
 }
 
+SwiftMangledName SwiftMangler::visitAssociatedTypeDecl(const swift::AssociatedTypeDecl* decl) {
+  return visitValueDecl(decl, /*force=*/true);
+}
+
 SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
   return initMangled(type) << fetch(type->getModule());
 }
