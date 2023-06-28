@@ -11,6 +11,7 @@
 #include "swift/extractor/infra/SwiftMangledName.h"
 
 #include <optional>
+#include <unordered_map>
 
 namespace codeql {
 
