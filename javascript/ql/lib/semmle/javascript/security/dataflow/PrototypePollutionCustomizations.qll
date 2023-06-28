@@ -173,7 +173,7 @@ module PrototypePollution {
     id = "angular"
     or
     call.isDeep() and
-    call = DataFlow::moduleImport("webix").getAMemberCall(["extend", "copy"]) and
+    call = Webix::webix().getMember(["extend", "copy"]).getACall() and
     id = "webix"
   }
 }

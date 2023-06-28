@@ -316,7 +316,7 @@ module CodeInjection {
    * A value interpreted as code by the `webix` library.
    */
   class WebixExec extends Sink {
-    WebixExec() { this = API::moduleImport("webix").getMember("exec").getParameter(0).asSink() }
+    WebixExec() { this = Webix::webix().getMember("exec").getParameter(0).asSink() }
   }
 
   /** A sink for code injection via template injection. */
@@ -431,16 +431,10 @@ module CodeInjection {
    */
   class WebixTemplateSink extends TemplateSink {
     WebixTemplateSink() {
-      this =
-        API::moduleImport("webix").getMember("ui").getParameter(0).getMember("template").asSink()
+      this = Webix::webix().getMember("ui").getParameter(0).getMember("template").asSink()
       or
       this =
-        API::moduleImport("webix")
-            .getMember("ui")
-            .getParameter(0)
-            .getMember("template")
-            .getReturn()
-            .asSink()
+        Webix::webix().getMember("ui").getParameter(0).getMember("template").getReturn().asSink()
     }
   }
 

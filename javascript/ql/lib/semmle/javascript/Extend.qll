@@ -97,7 +97,9 @@ private class ExtendCallDeep extends ExtendCall {
       callee = LodashUnderscore::member("mergeWith") or
       callee = LodashUnderscore::member("defaultsDeep") or
       callee = AngularJS::angular().getAPropertyRead("merge") or
-      callee = DataFlow::moduleImport("webix").getAPropertyRead(["extend", "copy"])
+      callee =
+        [DataFlow::moduleImport("webix"), DataFlow::globalVarRef("webix")]
+            .getAPropertyRead(["extend", "copy"])
     )
   }
 

@@ -31,6 +31,4 @@ app.get('/some/path', function (req, res) {
     Hogan.compile(tainted); // NOT OK
     Eta.render(tainted); // NOT OK
     Sqrl.render(tainted); // NOT OK
-    webix.ui({ template: tainted }); // NOT OK
-    webix.ui({ template: function () { return tainted } }); // NOT OK
 });
