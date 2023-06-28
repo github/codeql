@@ -1,0 +1,3 @@
+# Patterns for files created by this project.
+# For other files, use global gitignore.
+*.s3db

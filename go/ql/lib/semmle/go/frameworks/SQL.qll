@@ -289,3 +289,52 @@ module Xorm {
     }
   }
 }
+
+/**
+ * Provides classes for working with the [Bun](https://bun.uptrace.dev/) package.
+ */
+module Bun {
+  /** Gets the package name for Xorm. */
+  string packagePath() { result = package("github.com/uptrace/bun", "") }
+
+  /** A model for sinks of XORM. */
+  private class BunSink extends SQL::QueryString::Range {
+    BunSink() {
+      exists(Function f, int arg |
+        f.(Method)
+            .hasQualifiedName(packagePath(), ["DB", "Conn"],
+              ["ExecContext", "PrepareContext", "QueryContext", "QueryRowContext"]) and
+        arg = 1
+        or
+        f.(Method)
+            .hasQualifiedName(packagePath(), ["DB", "Conn"],
+              ["Exec", "NewRaw", "Prepare", "Query", "QueryRow", "Raw"]) and
+        arg = 0
+        or
+        exists(string tp, string m | f.(Method).hasQualifiedName(packagePath(), tp, m) |
+          tp.matches("%Query") and
+          m =
+            [
+              "ColumnExpr", "DistinctOn", "For", "GroupExpr", "Having", "ModelTableExpr",
+              "OrderExpr", "TableExpr", "Where", "WhereIn", "WhereInMulti", "WhereOr"
+            ] and
+          arg = 0
+          or
+          tp.matches("%Query") and
+          m = ["FormatQuery", "With", "WithRecursive"] and
+          arg = 1
+          or
+          tp = "RawQuery" and
+          m = ["NewRaw"] and
+          arg = 0
+          or
+          tp = "RawQuery" and
+          m = ["NewRawQuery"] and
+          arg = 1
+        )
+      |
+        this = f.getACall().getArgument(arg)
+      )
+    }
+  }
+}
