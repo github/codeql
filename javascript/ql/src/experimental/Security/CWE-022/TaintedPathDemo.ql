@@ -115,7 +115,9 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = any(FileSystemReadAccess a).getAPathArgument()
+    sink = any(NodeJSPromisesFileSystemAccessRead a).getAPathArgument()
+    or
+    sink = any(NodeJSPromisesFileSystemAccessWrite a).getAPathArgument()
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
