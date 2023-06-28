@@ -12,7 +12,7 @@ import (
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+	panic(fmt.Errorf("not implemented: CreateTodo - createTodo %v", input))
 }
 
 // Todos is the resolver for the todos field.
