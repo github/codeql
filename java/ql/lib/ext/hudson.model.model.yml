@@ -16,3 +16,9 @@ extensions:
     data:
       - ["hudson.model", "Node", True, "createPath", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["hudson.model", "DirectoryBrowserSupport$Path", False, "Path", "(String,String,boolean,long,boolean,long)", "", "Argument[0]", "Argument[this].SyntheticField[hudson.model.DirectoryBrowserSupport$Path.href]", "taint", "ai-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["hudson.model", "Descriptor", True, "configure", "", "", "Parameter", "remote", "manual"]
+      - ["hudson.model", "Descriptor", True, "newInstance", "", "", "Parameter", "remote", "manual"]

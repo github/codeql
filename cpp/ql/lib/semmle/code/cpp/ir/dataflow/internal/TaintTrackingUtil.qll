@@ -160,7 +160,7 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
     FunctionInput modelIn, FunctionOutput modelOut
   |
     indirectArgument = callInput(call, modelIn) and
-    indirectArgument.getAddressOperand() = nodeIn.asOperand() and
+    indirectArgument.hasAddressOperandAndIndirectionIndex(nodeIn.asOperand(), _) and
     call.getStaticCallTarget() = func and
     (
       func.(DataFlowFunction).hasDataFlow(modelIn, modelOut)

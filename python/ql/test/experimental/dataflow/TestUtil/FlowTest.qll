@@ -3,22 +3,21 @@ import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
 
-abstract class FlowTest extends InlineExpectationsTest {
-  bindingset[this]
-  FlowTest() { any() }
+signature module FlowTestSig {
+  string flowTag();
 
-  abstract string flowTag();
+  predicate relevantFlow(DataFlow::Node fromNode, DataFlow::Node toNode);
+}
 
-  abstract predicate relevantFlow(DataFlow::Node fromNode, DataFlow::Node toNode);
+private module FlowTest<FlowTestSig Impl> implements TestSig {
+  string getARelevantTag() { result = Impl::flowTag() }
 
-  override string getARelevantTag() { result = this.flowTag() }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node fromNode, DataFlow::Node toNode | this.relevantFlow(fromNode, toNode) |
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DataFlow::Node fromNode, DataFlow::Node toNode | Impl::relevantFlow(fromNode, toNode) |
       location = toNode.getLocation() and
-      tag = this.flowTag() and
+      tag = Impl::flowTag() and
       value =
-        "\"" + prettyNode(fromNode).replaceAll("\"", "'") + this.lineStr(fromNode, toNode) + " -> " +
+        "\"" + prettyNode(fromNode).replaceAll("\"", "'") + lineStr(fromNode, toNode) + " -> " +
           prettyNode(toNode).replaceAll("\"", "'") + "\"" and
       element = toNode.toString()
     )
@@ -37,4 +36,12 @@ abstract class FlowTest extends InlineExpectationsTest {
         else result = ", l:" + delta.toString()
     )
   }
+}
+
+module MakeFlowTest<FlowTestSig Impl> {
+  import MakeTest<FlowTest<Impl>>
+}
+
+module MakeFlowTest2<FlowTestSig Impl1, FlowTestSig Impl2> {
+  import MakeTest<MergeTests<FlowTest<Impl1>, FlowTest<Impl2>>>
 }

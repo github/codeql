@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | captured_variables.rb:1:24:1:24 | x | captured_variables.rb:2:20:2:20 | x |
 | captured_variables.rb:1:24:1:24 | x | captured_variables.rb:2:20:2:20 | x |

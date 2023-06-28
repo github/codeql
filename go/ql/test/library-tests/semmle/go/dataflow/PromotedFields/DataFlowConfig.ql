@@ -21,12 +21,10 @@ class TestConfig extends DataFlow::Configuration {
   }
 }
 
-class PromotedFieldsTest extends InlineExpectationsTest {
-  PromotedFieldsTest() { this = "PromotedFieldsTest" }
+module PromotedFieldsTest implements TestSig {
+  string getARelevantTag() { result = "promotedfields" }
 
-  override string getARelevantTag() { result = "promotedfields" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TestConfig config, DataFlow::PathNode sink |
       config.hasFlowPath(_, sink) and
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -37,3 +35,5 @@ class PromotedFieldsTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<PromotedFieldsTest>
