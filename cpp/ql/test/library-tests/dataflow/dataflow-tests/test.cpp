@@ -737,7 +737,7 @@ void test_does_not_write_source_to_dereference()
 
 void sometimes_calls_sink_eq(int x, int n) {
   if(n == 0) {
-    sink(x); // $ ast,ir=751:27 ast,ir=755:32 SPURIOUS: ast,ir=749:27 ast,ir=753:32
+    sink(x); // $ ast,ir=751:27 ast,ir=755:32 SPURIOUS: ast=749:27 ast,ir=753:32 // IR spurious results because we only have call contexts of depth 1
   }
 }
 
@@ -757,7 +757,7 @@ void test_sometimes_calls_sink_eq_1() {
 
 void sometimes_calls_sink_lt(int x, int n) {
   if(n < 10) {
-    sink(x); // $ ast,ir=771:27 ast,ir=775:32 SPURIOUS: ast,ir=769:27 ast,ir=773:32
+    sink(x); // $ ast,ir=771:27 ast,ir=775:32 SPURIOUS: ast=769:27 ast,ir=773:32 // IR spurious results because we only have call contexts of depth 1
   }
 }
 
@@ -779,7 +779,7 @@ void test_sometimes_calls_sink_lt() {
 void sometimes_calls_sink_switch(int x, int n) {
   switch(n) {
     case 0:
-      sink(x); // $ ast,ir=790:31 SPURIOUS: ast,ir=788:31
+      sink(x); // $ ast,ir=790:31 SPURIOUS: ast,ir=788:31 // IR spurious results because IRGuard don't understand switch statements.
       break;
   }
 }
