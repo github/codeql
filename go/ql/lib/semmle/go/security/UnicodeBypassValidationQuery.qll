@@ -35,13 +35,16 @@ private predicate indexCheck(DataFlow::Node g, Expr e, boolean outcome) {
 }
 
 private predicate countCheck(DataFlow::Node g, Expr e, boolean outcome) {
-  exists(DataFlow::CallNode cn, DataFlow::EqualityTestNode etn |
-    g = etn and
-    DataFlow::localFlow(cn.getResult(), etn.getAnOperand()) and
+  exists(
+    DataFlow::RelationalComparisonNode cmp, DataFlow::CallNode cn, DataFlow::Node zero,
+    DataFlow::Node r
+  |
+    g = cmp and
+    DataFlow::localFlow(cn.getResult(), r) and
     cn.getTarget().hasQualifiedName("strings", "Count") and
-    cn.getArgument(0).asExpr() = e and
-    etn.getAnOperand().getIntValue() = 0 and
-    outcome = etn.getPolarity()
+    cn.getArgument(1).asExpr() = e and
+    zero.getNumericValue() = 0 and
+    cmp.leq(outcome, r, zero, 0)
   )
 }
 
