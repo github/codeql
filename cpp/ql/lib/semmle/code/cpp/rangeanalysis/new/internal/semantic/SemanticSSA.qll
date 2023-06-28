@@ -70,7 +70,7 @@ predicate semBackEdge(SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionP
   // Conservatively assume that every edge is a back edge if we don't have dominance information.
   (
     phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
-    irreducibleSccEdge(phi.getBasicBlock(), edge.getOrigBlock()) or
+    irreducibleSccEdge(edge.getOrigBlock(), phi.getBasicBlock()) or
     not edge.getOrigBlock().hasDominanceInformation()
   )
 }
