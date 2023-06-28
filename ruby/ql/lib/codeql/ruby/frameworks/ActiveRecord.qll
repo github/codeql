@@ -128,7 +128,7 @@ class ActiveRecordModelClass extends ClassDeclaration {
     )
   }
 
-  /** Gets the class as a `DataFlow::ClasNode`. */
+  /** Gets the class as a `DataFlow::ClassNode`. */
   DataFlow::ClassNode getClassNode() { result = cls }
 }
 

@@ -84,7 +84,6 @@ module ApiGraphShared<ApiGraphSharedSig S> {
     pragma[noopt]
     cached
     predicate epsilonEdge(ApiNode pred, ApiNode succ) {
-      // forward
       exists(
         StepSummary summary, TypeTrackingNode predNode, TypeTracker predState,
         TypeTrackingNode succNode, TypeTracker succState

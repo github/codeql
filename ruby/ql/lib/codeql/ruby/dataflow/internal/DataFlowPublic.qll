@@ -419,7 +419,7 @@ private module Cached {
   }
 
   /**
-   * Gets a module for which this constant is the reference to an ancestor module.
+   * Gets a module for which `constRef` is the reference to an ancestor module.
    *
    * For example, `M` is the ancestry target of `C` in the following examples:
    * ```rb
@@ -437,11 +437,10 @@ private module Cached {
   private ModuleNode getAncestryTarget(ConstRef constRef) { result.getAnAncestorExpr() = constRef }
 
   /**
-   * Gets a scope in which a constant lookup may access the contents of the module referenced by this constant.
+   * Gets a scope in which a constant lookup may access the contents of the module referenced by `constRef`.
    */
   cached
   TConstLookupScope getATargetScope(ConstRef constRef) {
-    forceCachingInSameStage() and
     result = MkAncestorLookup(getAncestryTarget(constRef).getAnImmediateDescendent*())
     or
     constRef.asConstantAccess() = any(ConstantAccess ac).getScopeExpr() and

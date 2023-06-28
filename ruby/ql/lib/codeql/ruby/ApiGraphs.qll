@@ -1,6 +1,6 @@
 /**
  * Provides an implementation of _API graphs_, which allow efficient modelling of how a given
- * value is used the code base or how values produced by the code base are consumed by a library.
+ * value is used by the code base or how values produced by the code base are consumed by a library.
  *
  * See `API::Node` for more details.
  */
@@ -53,7 +53,7 @@ module API {
    *
    * The members predicates on this class generally take inheritance and data flow into account.
    *
-   * The following example demonstrate a case where data flow was used to find the sink `x`:
+   * The following example demonstrates a case where data flow was used to find the sink `x`:
    * ```ruby
    * def doSomething f
    *   f.bar(x) # API::getTopLevelMember("Foo").getInstance().getMethod("bar").getArgument(0).asSink()
@@ -280,7 +280,6 @@ module API {
     /**
      * Gets an access to the constant `m` with this value as the base of the access.
      *
-     * For example, the constant `A::B` would be found by `API::getATopLevelMember("A").getMember("B")`
      * For example:
      * ```ruby
      * A::B # API::getATopLevelMember("A").getMember("B")
@@ -761,7 +760,7 @@ module API {
   /**
    * A node corresponding to an argument, right-hand side of a store, or return value from a callable.
    *
-   * Such a node may serve as the starting-point of backtracking, and has epsilon edges going
+   * Such a node may serve as the starting-point of backtracking, and has epsilon edges going to
    * the backward nodes corresponding to `getALocalSource`.
    */
   private class SinkNode extends Node, Impl::MkSinkNode {
@@ -905,7 +904,7 @@ module API {
     }
 
     /**
-     * Holds if the epsilon `pred -> succ` be generated, to associate `mod` with its references in the codebase.
+     * Holds if the epsilon `pred -> succ` should be generated, to associate `mod` with its references in the codebase.
      */
     bindingset[mod]
     pragma[inline_late]
