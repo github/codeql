@@ -10,6 +10,7 @@ app.config.from_pyfile("config.py")
 app.config.from_pyfile("config2.py")
 app.config.from_object('config.Config')
 app.config.from_object('config2.Config')
+app.config.from_object('settings')
 
 
 @app.route('/')

@@ -130,19 +130,27 @@ module FlaskConstantSecretKeyConfig {
    */
   class SecretKeyAssignStmt extends AssignStmt {
     SecretKeyAssignStmt() {
-      exists(string configFileName, string fileNamehelper, DataFlow::Node n1 |
-        fileNamehelper = flaskConfiFileName(n1) and
+      exists(string configFileName, string fileNamehelper, DataFlow::Node n1, File file |
+        fileNamehelper = [flaskConfiFileName(n1), flaskConfiFileName2(n1)] and
         // because of `from_object` we want first part of `Config.AClassName` which `Config` is a python file name
         configFileName = fileNamehelper.splitAt(".") and
-        // after spliting, don't look at %py% pattern
-        configFileName != "py"
+        file = this.getLocation().getFile()
       |
         (
-          if configFileName = "__name__"
+          if fileNamehelper = "__name__"
           then
-            this.getLocation().getFile().getShortName() =
-              flaskInstance().asSource().getLocation().getFile().getShortName()
-          else this.getLocation().getFile().getShortName().matches("%" + configFileName + "%")
+            file.getShortName() = flaskInstance().asSource().getLocation().getFile().getShortName()
+          else (
+            fileNamehelper.matches("%.py") and
+            file.getShortName().matches("%" + configFileName + "%") and
+            // after spliting, don't look at %py% pattern
+            configFileName != ".py"
+            or
+            // in case of referencing to a directory which then we must look for __init__.py file
+            not fileNamehelper.matches("%.py") and
+            file.getRelativePath()
+                .matches("%" + fileNamehelper.replaceAll(".", "/") + "/__init__.py")
+          )
         ) and
         this.getTarget(0).(Name).getId() = ["SECRET_KEY", "JWT_SECRET_KEY"]
       ) and
@@ -160,14 +168,27 @@ module FlaskConstantSecretKeyConfig {
    * `app.config.from_object("configFileName.ClassName")`
    */
   string flaskConfiFileName(API::CallNode cn) {
-    exists(API::Node app |
-      app = flaskInstance().getACall().getReturn() and
-      cn = app.getMember("config").getMember(["from_object", "from_pyfile"]).getACall() and
-      result =
-        [
-          cn.getParameter(0).getAValueReachingSink().asExpr().(StrConst).getText(),
-          cn.getParameter(0).asSink().asExpr().(Name).getId()
-        ]
-    )
+    cn =
+      flaskInstance()
+          .getReturn()
+          .getMember("config")
+          .getMember(["from_object", "from_pyfile"])
+          .getACall() and
+    result =
+      [
+        cn.getParameter(0).getAValueReachingSink().asExpr().(StrConst).getText(),
+        cn.getParameter(0).asSink().asExpr().(Name).getId()
+      ]
+  }
+
+  string flaskConfiFileName2(API::CallNode cn) {
+    cn =
+      API::moduleImport("flask")
+          .getMember("Flask")
+          .getASubclass*()
+          .getASuccessor*()
+          .getMember("from_object")
+          .getACall() and
+    result = cn.getParameter(0).asSink().asExpr().(StrConst).getText()
   }
 }
