@@ -65,7 +65,8 @@ module FlaskConstantSecretKeyConfig {
       source.asExpr() =
         API::moduleImport("os").getMember("environ").getASubscript().asSource().asExpr()
     ) and
-    exists(source.getScope().getLocation().getFile().getRelativePath())
+    exists(source.getScope().getLocation().getFile().getRelativePath()) and
+    not source.getScope().getLocation().getFile().inStdlib()
   }
 
   /**
@@ -102,14 +103,14 @@ module FlaskConstantSecretKeyConfig {
         attr.getAttributeName() = ["secret_key", "jwt_secret_key"] and
         sink = attr.getValue()
       )
+      or
+      exists(SecretKeyAssignStmt e |
+        sink.asExpr() = e.getValue()
+        //  | sameAsHardCodedConstantSanitizer(e.getTarget(0))
+      )
     ) and
-    exists(sink.getScope().getLocation().getFile().getRelativePath())
-    or
-    exists(SecretKeyAssignStmt e |
-      sink.asExpr() = e.getValue()
-      //  | sameAsHardCodedConstantSanitizer(e.getTarget(0))
-    ) and
-    exists(sink.getScope().getLocation().getFile().getRelativePath())
+    exists(sink.getScope().getLocation().getFile().getRelativePath()) and
+    not sink.getScope().getLocation().getFile().inStdlib()
   }
 
   // for case check whether SECRECT_KEY is empty or not or whether it is == to a hardcoded constant value
@@ -145,7 +146,8 @@ module FlaskConstantSecretKeyConfig {
         ) and
         this.getTarget(0).toString() = ["SECRET_KEY", "JWT_SECRET_KEY"]
       ) and
-      exists(this.getScope().getLocation().getFile().getRelativePath())
+      exists(this.getScope().getLocation().getFile().getRelativePath()) and
+      not this.getScope().getLocation().getFile().inStdlib()
     }
   }
 
