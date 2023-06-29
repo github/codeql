@@ -18,7 +18,6 @@ module Webix {
   /** Gets a reference to the Webix package. */
   API::Node webix() {
     result = API::moduleImport("webix") or
-    result.asSource() = DataFlow::moduleImport("webix") or
     result = any(WebixGlobalEntry w).getANode()
   }
 }
