@@ -270,13 +270,13 @@ func checkDirsNested(inputDirs []string) bool {
 	return true
 }
 
-// Returns the directory to run the go build in and whether a go.mod file was
-// found.
-func findGoModFiles(emitDiagnostics bool) (baseDir string, goModFound bool) {
+// Returns the directory to run the go build in and whether to use a go.mod
+// file.
+func findGoModFiles(emitDiagnostics bool) (baseDir string, useGoMod bool) {
 	goModPaths := util.FindAllFilesWithName(".", "go.mod", "vendor")
 	if len(goModPaths) == 0 {
 		baseDir = "."
-		goModFound = false
+		useGoMod = false
 		return
 	}
 	goModDirs := getDirs(goModPaths)
@@ -285,7 +285,7 @@ func findGoModFiles(emitDiagnostics bool) (baseDir string, goModFound bool) {
 			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)
 		}
 		baseDir = "."
-		goModFound = false
+		useGoMod = false
 		return
 	}
 	if len(goModPaths) > 1 {
@@ -298,7 +298,7 @@ func findGoModFiles(emitDiagnostics bool) (baseDir string, goModFound bool) {
 			}
 		}
 		baseDir = "."
-		goModFound = false
+		useGoMod = false
 		return
 	}
 	if emitDiagnostics {
@@ -309,7 +309,7 @@ func findGoModFiles(emitDiagnostics bool) (baseDir string, goModFound bool) {
 		}
 	}
 	baseDir = goModDirs[0]
-	goModFound = true
+	useGoMod = true
 	return
 }
 
@@ -332,8 +332,8 @@ func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
 		}
 	}
 
-	baseDir, goModFound := findGoModFiles(emitDiagnostics)
-	if goModFound {
+	baseDir, useGoMod := findGoModFiles(emitDiagnostics)
+	if useGoMod {
 		log.Println("Found go.mod, enabling go modules")
 		return GoGetWithModules, baseDir
 	}
