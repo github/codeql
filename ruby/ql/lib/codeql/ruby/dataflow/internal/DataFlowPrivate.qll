@@ -1333,7 +1333,12 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
     creation.asExpr() =
       any(CfgNodes::ExprNodes::MethodCallCfgNode mc |
         c.asCallable() = mc.getBlock().getExpr() and
-        mc.getExpr().getMethodName() = ["lambda", "proc"]
+        (
+          mc.getExpr().getMethodName() = ["lambda", "proc"]
+          or
+          mc.getExpr().getMethodName() = "new" and
+          mc.getReceiver().getExpr().(ConstantReadAccess).getAQualifiedName() = "Proc"
+        )
       )
   )
 }
