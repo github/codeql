@@ -520,7 +520,7 @@
     "swift/ql/lib/codeql/swift/controlflow/internal/ControlFlowGraphImplShared.qll"
   ],
   "TypeTracker": [
-    "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
+    "python/ql/lib/semmle/python/dataflow/new/internal/TypeTrackerImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/TypeTrackerImpl.qll"
   ],
   "SummaryTypeTracker": [

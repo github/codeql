@@ -4,7 +4,7 @@
  */
 
 private import python
-private import internal.TypeTracker as Internal
+private import internal.TypeTrackerImpl as Internal
 private import internal.TypeTrackerSpecific as InternalSpecific
 
 /** A string that may appear as the name of an attribute or access path. */
