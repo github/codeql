@@ -1022,6 +1022,25 @@ edges
 | test.cpp:642:14:642:31 | new[] | test.cpp:647:5:647:6 | xs |
 | test.cpp:647:5:647:6 | xs | test.cpp:647:5:647:15 | access to array |
 | test.cpp:647:5:647:15 | access to array | test.cpp:647:5:647:19 | Store: ... = ... |
+| test.cpp:652:14:652:27 | new[] | test.cpp:653:16:653:17 | xs |
+| test.cpp:652:14:652:27 | new[] | test.cpp:656:3:656:4 | xs |
+| test.cpp:653:16:653:17 | xs | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:653:16:653:17 | xs | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:653:16:653:17 | xs | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:653:16:653:17 | xs | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:653:16:653:17 | xs | test.cpp:657:7:657:8 | xs |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:657:7:657:8 | xs |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:657:7:657:8 | xs |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:657:7:657:8 | xs | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:667:14:667:31 | new[] | test.cpp:675:7:675:8 | xs |
+| test.cpp:675:7:675:8 | xs | test.cpp:675:7:675:19 | access to array |
+| test.cpp:675:7:675:19 | access to array | test.cpp:675:7:675:23 | Store: ... = ... |
 nodes
 | test.cpp:4:15:4:20 | call to malloc | semmle.label | call to malloc |
 | test.cpp:5:15:5:15 | p | semmle.label | p |
@@ -1502,6 +1521,19 @@ nodes
 | test.cpp:647:5:647:6 | xs | semmle.label | xs |
 | test.cpp:647:5:647:15 | access to array | semmle.label | access to array |
 | test.cpp:647:5:647:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:652:14:652:27 | new[] | semmle.label | new[] |
+| test.cpp:653:16:653:17 | xs | semmle.label | xs |
+| test.cpp:656:3:656:4 | xs | semmle.label | xs |
+| test.cpp:656:3:656:6 | ... ++ | semmle.label | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | semmle.label | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | semmle.label | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | semmle.label | ... ++ |
+| test.cpp:657:7:657:8 | xs | semmle.label | xs |
+| test.cpp:662:3:662:11 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:667:14:667:31 | new[] | semmle.label | new[] |
+| test.cpp:675:7:675:8 | xs | semmle.label | xs |
+| test.cpp:675:7:675:19 | access to array | semmle.label | access to array |
+| test.cpp:675:7:675:23 | Store: ... = ... | semmle.label | Store: ... = ... |
 subpaths
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -1535,3 +1567,5 @@ subpaths
 | test.cpp:548:5:548:19 | Store: ... = ... | test.cpp:543:14:543:27 | new[] | test.cpp:548:5:548:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:543:14:543:27 | new[] | new[] | test.cpp:548:8:548:14 | src_pos | src_pos |
 | test.cpp:559:5:559:19 | Store: ... = ... | test.cpp:554:14:554:27 | new[] | test.cpp:559:5:559:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:554:14:554:27 | new[] | new[] | test.cpp:559:8:559:14 | src_pos | src_pos |
 | test.cpp:647:5:647:19 | Store: ... = ... | test.cpp:642:14:642:31 | new[] | test.cpp:647:5:647:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:642:14:642:31 | new[] | new[] | test.cpp:647:8:647:14 | src_pos | src_pos |
+| test.cpp:662:3:662:11 | Store: ... = ... | test.cpp:652:14:652:27 | new[] | test.cpp:662:3:662:11 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:652:14:652:27 | new[] | new[] | test.cpp:653:19:653:22 | size | size |
+| test.cpp:675:7:675:23 | Store: ... = ... | test.cpp:667:14:667:31 | new[] | test.cpp:675:7:675:23 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:667:14:667:31 | new[] | new[] | test.cpp:675:10:675:18 | ... ++ | ... ++ |
