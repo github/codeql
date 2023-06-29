@@ -448,6 +448,42 @@ edges
 | by_reference.cpp:135:8:135:13 | pouter [inner_ptr, a] | by_reference.cpp:135:16:135:24 | inner_ptr [a] |
 | by_reference.cpp:135:16:135:24 | inner_ptr [a] | by_reference.cpp:135:27:135:27 | a |
 | by_reference.cpp:136:8:136:13 | pouter [a] | by_reference.cpp:136:16:136:16 | a |
+| clearning.cpp:53:4:53:4 | s [post update] [x] | clearning.cpp:55:8:55:8 | s [x] |
+| clearning.cpp:53:6:53:6 | x [inner post update] | clearning.cpp:53:4:53:4 | s [post update] [x] |
+| clearning.cpp:53:10:53:19 | call to user_input | clearning.cpp:53:6:53:6 | x [inner post update] |
+| clearning.cpp:55:8:55:8 | s [x] | clearning.cpp:55:10:55:10 | x |
+| clearning.cpp:124:2:124:2 | s [post update] [val] | clearning.cpp:126:7:126:7 | s [val] |
+| clearning.cpp:124:2:124:25 | ... = ... | clearning.cpp:124:2:124:2 | s [post update] [val] |
+| clearning.cpp:124:10:124:19 | call to user_input | clearning.cpp:124:2:124:25 | ... = ... |
+| clearning.cpp:126:7:126:7 | s [val] | clearning.cpp:126:9:126:11 | val |
+| clearning.cpp:131:2:131:2 | s [post update] [val] | clearning.cpp:133:7:133:7 | s [val] |
+| clearning.cpp:131:2:131:25 | ... = ... | clearning.cpp:131:2:131:2 | s [post update] [val] |
+| clearning.cpp:131:10:131:19 | call to user_input | clearning.cpp:131:2:131:25 | ... = ... |
+| clearning.cpp:133:7:133:7 | s [val] | clearning.cpp:133:9:133:11 | val |
+| clearning.cpp:138:2:138:2 | s [post update] [val] | clearning.cpp:140:7:140:7 | s [val] |
+| clearning.cpp:138:2:138:25 | ... = ... | clearning.cpp:138:2:138:2 | s [post update] [val] |
+| clearning.cpp:138:10:138:19 | call to user_input | clearning.cpp:138:2:138:25 | ... = ... |
+| clearning.cpp:140:7:140:7 | s [val] | clearning.cpp:140:9:140:11 | val |
+| clearning.cpp:151:3:151:3 | s [post update] [val] | clearning.cpp:152:8:152:8 | s [val] |
+| clearning.cpp:151:3:151:22 | ... = ... | clearning.cpp:151:3:151:3 | s [post update] [val] |
+| clearning.cpp:151:11:151:20 | call to user_input | clearning.cpp:151:3:151:22 | ... = ... |
+| clearning.cpp:152:8:152:8 | s [val] | clearning.cpp:152:10:152:12 | val |
+| clearning.cpp:157:3:157:3 | s [post update] [val] | clearning.cpp:159:8:159:8 | s [val] |
+| clearning.cpp:157:3:157:22 | ... = ... | clearning.cpp:157:3:157:3 | s [post update] [val] |
+| clearning.cpp:157:11:157:20 | call to user_input | clearning.cpp:157:3:157:22 | ... = ... |
+| clearning.cpp:159:8:159:8 | s [val] | clearning.cpp:159:10:159:12 | val |
+| clearning.cpp:164:3:164:3 | s [post update] [val] | clearning.cpp:166:8:166:8 | s [val] |
+| clearning.cpp:164:3:164:22 | ... = ... | clearning.cpp:164:3:164:3 | s [post update] [val] |
+| clearning.cpp:164:11:164:20 | call to user_input | clearning.cpp:164:3:164:22 | ... = ... |
+| clearning.cpp:166:8:166:8 | s [val] | clearning.cpp:166:10:166:12 | val |
+| clearning.cpp:171:3:171:3 | s [post update] [val] | clearning.cpp:173:8:173:8 | s [val] |
+| clearning.cpp:171:3:171:22 | ... = ... | clearning.cpp:171:3:171:3 | s [post update] [val] |
+| clearning.cpp:171:11:171:20 | call to user_input | clearning.cpp:171:3:171:22 | ... = ... |
+| clearning.cpp:173:8:173:8 | s [val] | clearning.cpp:173:10:173:12 | val |
+| clearning.cpp:178:3:178:3 | s [post update] [val] | clearning.cpp:180:8:180:8 | s [val] |
+| clearning.cpp:178:3:178:22 | ... = ... | clearning.cpp:178:3:178:3 | s [post update] [val] |
+| clearning.cpp:178:11:178:20 | call to user_input | clearning.cpp:178:3:178:22 | ... = ... |
+| clearning.cpp:180:8:180:8 | s [val] | clearning.cpp:180:10:180:12 | val |
 | complex.cpp:9:7:9:7 | this [a_] | complex.cpp:9:20:9:21 | this [a_] |
 | complex.cpp:9:20:9:21 | this [a_] | complex.cpp:9:20:9:21 | a_ |
 | complex.cpp:10:7:10:7 | this [b_] | complex.cpp:10:20:10:21 | this [b_] |
@@ -1155,6 +1191,51 @@ nodes
 | by_reference.cpp:135:27:135:27 | a | semmle.label | a |
 | by_reference.cpp:136:8:136:13 | pouter [a] | semmle.label | pouter [a] |
 | by_reference.cpp:136:16:136:16 | a | semmle.label | a |
+| clearning.cpp:53:4:53:4 | s [post update] [x] | semmle.label | s [post update] [x] |
+| clearning.cpp:53:6:53:6 | x [inner post update] | semmle.label | x [inner post update] |
+| clearning.cpp:53:10:53:19 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:55:8:55:8 | s [x] | semmle.label | s [x] |
+| clearning.cpp:55:10:55:10 | x | semmle.label | x |
+| clearning.cpp:124:2:124:2 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearning.cpp:124:2:124:25 | ... = ... | semmle.label | ... = ... |
+| clearning.cpp:124:10:124:19 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:126:7:126:7 | s [val] | semmle.label | s [val] |
+| clearning.cpp:126:9:126:11 | val | semmle.label | val |
+| clearning.cpp:131:2:131:2 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearning.cpp:131:2:131:25 | ... = ... | semmle.label | ... = ... |
+| clearning.cpp:131:10:131:19 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:133:7:133:7 | s [val] | semmle.label | s [val] |
+| clearning.cpp:133:9:133:11 | val | semmle.label | val |
+| clearning.cpp:138:2:138:2 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearning.cpp:138:2:138:25 | ... = ... | semmle.label | ... = ... |
+| clearning.cpp:138:10:138:19 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:140:7:140:7 | s [val] | semmle.label | s [val] |
+| clearning.cpp:140:9:140:11 | val | semmle.label | val |
+| clearning.cpp:151:3:151:3 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearning.cpp:151:3:151:22 | ... = ... | semmle.label | ... = ... |
+| clearning.cpp:151:11:151:20 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:152:8:152:8 | s [val] | semmle.label | s [val] |
+| clearning.cpp:152:10:152:12 | val | semmle.label | val |
+| clearning.cpp:157:3:157:3 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearning.cpp:157:3:157:22 | ... = ... | semmle.label | ... = ... |
+| clearning.cpp:157:11:157:20 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:159:8:159:8 | s [val] | semmle.label | s [val] |
+| clearning.cpp:159:10:159:12 | val | semmle.label | val |
+| clearning.cpp:164:3:164:3 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearning.cpp:164:3:164:22 | ... = ... | semmle.label | ... = ... |
+| clearning.cpp:164:11:164:20 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:166:8:166:8 | s [val] | semmle.label | s [val] |
+| clearning.cpp:166:10:166:12 | val | semmle.label | val |
+| clearning.cpp:171:3:171:3 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearning.cpp:171:3:171:22 | ... = ... | semmle.label | ... = ... |
+| clearning.cpp:171:11:171:20 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:173:8:173:8 | s [val] | semmle.label | s [val] |
+| clearning.cpp:173:10:173:12 | val | semmle.label | val |
+| clearning.cpp:178:3:178:3 | s [post update] [val] | semmle.label | s [post update] [val] |
+| clearning.cpp:178:3:178:22 | ... = ... | semmle.label | ... = ... |
+| clearning.cpp:178:11:178:20 | call to user_input | semmle.label | call to user_input |
+| clearning.cpp:180:8:180:8 | s [val] | semmle.label | s [val] |
+| clearning.cpp:180:10:180:12 | val | semmle.label | val |
 | complex.cpp:9:7:9:7 | this [a_] | semmle.label | this [a_] |
 | complex.cpp:9:20:9:21 | a_ | semmle.label | a_ |
 | complex.cpp:9:20:9:21 | this [a_] | semmle.label | this [a_] |
@@ -1551,6 +1632,15 @@ subpaths
 | by_reference.cpp:134:29:134:29 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:134:29:134:29 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:135:27:135:27 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:135:27:135:27 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
 | by_reference.cpp:136:16:136:16 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
+| clearning.cpp:55:10:55:10 | x | clearning.cpp:53:10:53:19 | call to user_input | clearning.cpp:55:10:55:10 | x | x flows from $@ | clearning.cpp:53:10:53:19 | call to user_input | call to user_input |
+| clearning.cpp:126:9:126:11 | val | clearning.cpp:124:10:124:19 | call to user_input | clearning.cpp:126:9:126:11 | val | val flows from $@ | clearning.cpp:124:10:124:19 | call to user_input | call to user_input |
+| clearning.cpp:133:9:133:11 | val | clearning.cpp:131:10:131:19 | call to user_input | clearning.cpp:133:9:133:11 | val | val flows from $@ | clearning.cpp:131:10:131:19 | call to user_input | call to user_input |
+| clearning.cpp:140:9:140:11 | val | clearning.cpp:138:10:138:19 | call to user_input | clearning.cpp:140:9:140:11 | val | val flows from $@ | clearning.cpp:138:10:138:19 | call to user_input | call to user_input |
+| clearning.cpp:152:10:152:12 | val | clearning.cpp:151:11:151:20 | call to user_input | clearning.cpp:152:10:152:12 | val | val flows from $@ | clearning.cpp:151:11:151:20 | call to user_input | call to user_input |
+| clearning.cpp:159:10:159:12 | val | clearning.cpp:157:11:157:20 | call to user_input | clearning.cpp:159:10:159:12 | val | val flows from $@ | clearning.cpp:157:11:157:20 | call to user_input | call to user_input |
+| clearning.cpp:166:10:166:12 | val | clearning.cpp:164:11:164:20 | call to user_input | clearning.cpp:166:10:166:12 | val | val flows from $@ | clearning.cpp:164:11:164:20 | call to user_input | call to user_input |
+| clearning.cpp:173:10:173:12 | val | clearning.cpp:171:11:171:20 | call to user_input | clearning.cpp:173:10:173:12 | val | val flows from $@ | clearning.cpp:171:11:171:20 | call to user_input | call to user_input |
+| clearning.cpp:180:10:180:12 | val | clearning.cpp:178:11:178:20 | call to user_input | clearning.cpp:180:10:180:12 | val | val flows from $@ | clearning.cpp:178:11:178:20 | call to user_input | call to user_input |
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:53:19:53:28 | call to user_input | call to user_input |
 | complex.cpp:42:18:42:18 | call to a | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:42:18:42:18 | call to a | call to a flows from $@ | complex.cpp:55:19:55:28 | call to user_input | call to user_input |
 | complex.cpp:43:18:43:18 | call to b | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:43:18:43:18 | call to b | call to b flows from $@ | complex.cpp:54:19:54:28 | call to user_input | call to user_input |

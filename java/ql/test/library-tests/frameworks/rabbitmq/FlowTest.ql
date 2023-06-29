@@ -11,10 +11,4 @@ module Config implements DataFlow::ConfigSig {
   }
 }
 
-module Flow = TaintTracking::Global<Config>;
-
-class HasFlowTest extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
-
-  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) { Flow::flow(src, sink) }
-}
+import TaintFlowTest<Config>

@@ -396,6 +396,63 @@ module Make<InlineExpectationsTestSig Impl> {
     }
   }
 
+  /**
+   * A module that merges three test signatures.
+   */
+  module MergeTests3<TestSig TestImpl1, TestSig TestImpl2, TestSig TestImpl3> implements TestSig {
+    private module M = MergeTests<MergeTests<TestImpl1, TestImpl2>, TestImpl3>;
+
+    string getARelevantTag() { result = M::getARelevantTag() }
+
+    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
+      M::hasActualResult(location, element, tag, value)
+    }
+
+    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
+      M::hasOptionalResult(location, element, tag, value)
+    }
+  }
+
+  /**
+   * A module that merges four test signatures.
+   */
+  module MergeTests4<TestSig TestImpl1, TestSig TestImpl2, TestSig TestImpl3, TestSig TestImpl4>
+    implements TestSig
+  {
+    private module M = MergeTests<MergeTests3<TestImpl1, TestImpl2, TestImpl3>, TestImpl4>;
+
+    string getARelevantTag() { result = M::getARelevantTag() }
+
+    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
+      M::hasActualResult(location, element, tag, value)
+    }
+
+    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
+      M::hasOptionalResult(location, element, tag, value)
+    }
+  }
+
+  /**
+   * A module that merges five test signatures.
+   */
+  module MergeTests5<
+    TestSig TestImpl1, TestSig TestImpl2, TestSig TestImpl3, TestSig TestImpl4, TestSig TestImpl5>
+    implements TestSig
+  {
+    private module M =
+      MergeTests<MergeTests4<TestImpl1, TestImpl2, TestImpl3, TestImpl4>, TestImpl5>;
+
+    string getARelevantTag() { result = M::getARelevantTag() }
+
+    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
+      M::hasActualResult(location, element, tag, value)
+    }
+
+    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
+      M::hasOptionalResult(location, element, tag, value)
+    }
+  }
+
   private module LegacyImpl implements TestSig {
     string getARelevantTag() { result = any(InlineExpectationsTest t).getARelevantTag() }
 
@@ -444,6 +501,19 @@ module Make<InlineExpectationsTestSig Impl> {
   class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
 
   class InvalidExpectation = LegacyTest::InvalidTestExpectation;
+
+  /**
+   * Holds if the expectation `tag=value` is found in one or more expectation comments.
+   *
+   * This can be used when writing tests where the set of possible values must be known in advance,
+   * for example, when testing a predicate for which `value` is part of the binding set.
+   */
+  predicate hasExpectationWithValue(string tag, string value) {
+    exists(string tags |
+      getAnExpectation(_, _, _, tags, value) and
+      tag = tags.splitAt(",")
+    )
+  }
 }
 
 /**

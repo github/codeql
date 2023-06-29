@@ -126,7 +126,7 @@ body must also be annotated with ``cached``, otherwise a compiler error is repor
 ``deprecated``
 ==============
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |fields|, |modules|, |aliases|
+**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
 
 The ``deprecated`` annotation is applied to names that are outdated and scheduled for removal
 in a future release of QL.

@@ -106,6 +106,8 @@ private string getContentSpecific(Content c) {
   c instanceof MapKeyContent and result = "MapKey"
   or
   c instanceof MapValueContent and result = "MapValue"
+  or
+  c instanceof PointerContent and result = "Dereference"
 }
 
 /** Gets the textual representation of the content in the format used for flow summaries. */
