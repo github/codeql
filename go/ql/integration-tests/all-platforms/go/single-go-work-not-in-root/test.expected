@@ -1,4 +1,4 @@
-| Extraction failed in modules/subdir1/test.go with error cannot find package "subdir1/subsubdir1" in any of:\n\t/usr/local/Cellar/go/1.20.5/libexec/src/subdir1/subsubdir1 (from $GOROOT)\n\t/Users/owen-mc/go/src/subdir1/subsubdir1 (from $GOPATH) | 2 |
+| Extraction failed in modules/subdir1/test.go with error cannot find package "subdir1/subsubdir1" in any of:\n\t(absolute path)/src/subdir1/subsubdir1 (from $GOROOT)\n\t(absolute path)/src/subdir1/subsubdir1 (from $GOPATH) | 2 |
 | Extraction failed in modules/subdir1/test.go with error could not import subdir1/subsubdir1 (invalid package name: "") | 2 |
-| Extraction failed in modules/subdir2/test.go with error cannot find package "subdir2/subsubdir2" in any of:\n\t/usr/local/Cellar/go/1.20.5/libexec/src/subdir2/subsubdir2 (from $GOROOT)\n\t/Users/owen-mc/go/src/subdir2/subsubdir2 (from $GOPATH) | 2 |
+| Extraction failed in modules/subdir2/test.go with error cannot find package "subdir2/subsubdir2" in any of:\n\t(absolute path)/src/subdir2/subsubdir2 (from $GOROOT)\n\t(absolute path)/src/subdir2/subsubdir2 (from $GOPATH) | 2 |
 | Extraction failed in modules/subdir2/test.go with error could not import subdir2/subsubdir2 (invalid package name: "") | 2 |
