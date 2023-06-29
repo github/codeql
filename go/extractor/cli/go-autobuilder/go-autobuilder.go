@@ -385,9 +385,9 @@ func getModMode(depMode DependencyInstallerMode, baseDir string) ModMode {
 	if depMode == GoGetWithModules {
 		// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
 		// skip the dependency installation step and run the extractor with `-mod=vendor`
-		if util.FileExists(baseDir + "/vendor/modules.txt") {
+		if util.FileExists(filepath.Join(baseDir, "vendor", "modules.txt")) {
 			return ModVendor
-		} else if util.DirExists(baseDir + "/vendor") {
+		} else if util.DirExists(filepath.Join(baseDir, "vendor")) {
 			return ModMod
 		}
 	}
