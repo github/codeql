@@ -647,3 +647,31 @@ void test31_simple1_sub1(unsigned size, unsigned src_pos)
     xs[src_pos] = 0; // BAD
   }
 }
+
+void test32(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+  if (xs >= end)
+    return;
+  xs++;
+  if (xs >= end)
+    return;
+  xs++;
+  if (xs >= end)
+    return;
+  xs[0] = 0; // GOOD [FALSE POSITIVE]
+}
+
+void test33(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size + 1];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  unsigned dst_pos = src_pos;
+  while (dst_pos < size - 1) {
+    dst_pos++;
+    if (true)
+      xs[dst_pos++] = 0; // GOOD [FALSE POSITIVE]
+  }
+}
