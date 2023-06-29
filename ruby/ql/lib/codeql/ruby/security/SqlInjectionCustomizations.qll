@@ -31,7 +31,7 @@ module SqlInjection {
 
   private class DataExtensionSqlExecutionSink extends Sink {
     DataExtensionSqlExecutionSink() {
-      this = any(AdditionalSink s | s.getSinkType() = "sql-injection")
+      this = ModelOutput::getASinkNode("sql-injection").asSink()
     }
   }
 
