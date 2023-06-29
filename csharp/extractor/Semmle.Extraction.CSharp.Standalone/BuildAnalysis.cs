@@ -100,9 +100,8 @@ namespace Semmle.BuildAnalyser
                 dllDirNames.Add(runtimeLocation);
             }
 
-            // These files can sometimes prevent `dotnet restore` from working correctly.
+            // TODO: remove the below when the required SDK is installed
             using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
-            using (new FileRenamer(sourceDir.GetFiles("Directory.Build.props", SearchOption.AllDirectories)))
             {
                 var solutions = options.SolutionFile is not null ?
                         new[] { options.SolutionFile } :
