@@ -2,7 +2,7 @@ private import codeql.ruby.AST
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import codeql.ruby.CFG
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.dataflow.TypeTracker
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
 private import SsaImpl as SsaImpl

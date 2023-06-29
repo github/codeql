@@ -281,7 +281,7 @@ predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
 cached
 private module Cached {
   private import TaintTrackingPrivate as TaintTrackingPrivate
-  private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+  private import codeql.ruby.dataflow.internal.TypeTrackerSpecific as TypeTrackerSpecific
 
   cached
   newtype TNode =

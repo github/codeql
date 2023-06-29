@@ -48,7 +48,7 @@ module UnsafeShellCommandConstruction {
     source = backtrackShellExec(TypeTracker::TypeBackTracker::end(), shellExec)
   }
 
-  import codeql.ruby.typetracking.TypeTracker as TypeTracker
+  import codeql.ruby.dataflow.TypeTracker as TypeTracker
 
   private DataFlow::LocalSourceNode backtrackShellExec(
     TypeTracker::TypeBackTracker t, Concepts::SystemCommandExecution shellExec

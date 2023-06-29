@@ -42,7 +42,7 @@ module UnsafeCodeConstruction {
     result = getANodeExecutedAsCode(TypeTracker::TypeBackTracker::end(), codeExec)
   }
 
-  import codeql.ruby.typetracking.TypeTracker as TypeTracker
+  import codeql.ruby.dataflow.TypeTracker as TypeTracker
 
   /** Gets a node that is eventually executed as code at `codeExec`, type-tracked with `t`. */
   private DataFlow::LocalSourceNode getANodeExecutedAsCode(

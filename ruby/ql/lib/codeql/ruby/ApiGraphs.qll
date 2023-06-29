@@ -7,9 +7,9 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-private import codeql.ruby.typetracking.ApiGraphShared
-private import codeql.ruby.typetracking.TypeTracker
-private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+private import codeql.ruby.dataflow.internal.ApiGraphShared
+private import codeql.ruby.dataflow.TypeTracker
+private import codeql.ruby.dataflow.internal.TypeTrackerSpecific as TypeTrackerSpecific
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch

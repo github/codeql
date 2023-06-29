@@ -40,7 +40,7 @@ module UnsafeHtmlConstruction {
     result = getANodeThatEndsInXssSink(TypeTracker::TypeBackTracker::end(), sink)
   }
 
-  private import codeql.ruby.typetracking.TypeTracker as TypeTracker
+  private import codeql.ruby.dataflow.TypeTracker as TypeTracker
 
   /** Gets a node that is eventually ends up in the XSS `sink`, type-tracked with `t`. */
   private DataFlow::LocalSourceNode getANodeThatEndsInXssSink(
