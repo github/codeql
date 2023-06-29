@@ -580,6 +580,22 @@ module Templating {
     override string getAPackageName() { result = "ejs" }
   }
 
+  /**
+   * doT-style syntax, using `{{! }}` for safe interpolation, and `{{= }}` for
+   * unsafe interpolation.
+   */
+  private class DotStyleSyntax extends TemplateSyntax {
+    DotStyleSyntax() { this = "dot" }
+
+    override string getRawInterpolationRegexp() { result = "(?s)\\{\\{!(.*?)\\}\\}" }
+
+    override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{=(.*?)\\}\\}" }
+
+    override string getAFileExtension() { result = "dot" }
+
+    override string getAPackageName() { result = "dot" }
+  }
+
   private TemplateSyntax getOwnTemplateSyntaxInFolder(Folder f) {
     exists(PackageDependencies deps |
       deps.getADependency(result.getAPackageName(), _) and

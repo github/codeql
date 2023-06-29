@@ -66,3 +66,9 @@ app.get('/angularjs', (req, res) => {
         rawHtml: req.query.rawHtml,
     });
 });
+
+app.get('/dotjs', (req, res) => {
+    res.render('dot_sinks', {
+        tainted: req.query.foo,
+    });
+});
