@@ -1,2 +1,5 @@
 failures
 testFailures
+| explicit-proc.rb:2:7:2:78 | # $ reachableFromSource=Member[Foo].Method[bar].Argument[0].Parameter[0] | Missing result:reachableFromSource=Member[Foo].Method[bar].Argument[0].Parameter[0] |
+| explicit-proc.rb:6:7:6:78 | # $ reachableFromSource=Member[Foo].Method[bar].Argument[0].Parameter[0] | Missing result:reachableFromSource=Member[Foo].Method[bar].Argument[0].Parameter[0] |
+| explicit-proc.rb:10:7:10:78 | # $ reachableFromSource=Member[Foo].Method[bar].Argument[0].Parameter[0] | Missing result:reachableFromSource=Member[Foo].Method[bar].Argument[0].Parameter[0] |
