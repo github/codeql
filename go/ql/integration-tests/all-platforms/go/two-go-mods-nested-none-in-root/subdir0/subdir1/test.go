@@ -1,7 +1,7 @@
-package test
+package subdir1
 
 import (
-	"subdir2"
+	"subdir1/subsubdir1"
 
 	"golang.org/x/net/ipv4"
 )
@@ -9,6 +9,6 @@ import (
 func test() {
 
 	header := ipv4.Header{}
-	header.Version = subdir2.Add(2, 2)
+	header.Version = subsubdir1.Add(2, 2)
 
 }
