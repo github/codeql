@@ -5,7 +5,6 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.TypeTracker
 private import Response::Private as RP
 
 /**
@@ -32,15 +31,17 @@ private class PotentialRequestHandler extends DataFlow::CallableNode {
   }
 }
 
-private DataFlow::LocalSourceNode trackRackResponse(TypeBackTracker t, PotentialRequestHandler call) {
+private DataFlow::LocalSourceNode trackRackResponse(
+  DataFlow::TypeBackTracker t, PotentialRequestHandler call
+) {
   t.start() and
   result = call.getAReturnNode().getALocalSource()
   or
-  exists(TypeBackTracker t2 | result = trackRackResponse(t2, call).backtrack(t2, t))
+  exists(DataFlow::TypeBackTracker t2 | result = trackRackResponse(t2, call).backtrack(t2, t))
 }
 
 private RP::PotentialResponseNode trackRackResponse(PotentialRequestHandler call) {
-  result = trackRackResponse(TypeBackTracker::end(), call)
+  result = trackRackResponse(DataFlow::TypeBackTracker::end(), call)
 }
 
 /**

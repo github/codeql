@@ -7,7 +7,6 @@
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
-private import codeql.ruby.dataflow.TypeTracker
 private import codeql.ruby.frameworks.Files
 private import codeql.ruby.frameworks.core.IO
 
@@ -155,11 +154,13 @@ module InsecureDownload {
   /**
    * Gets a node for the response from `request`, type-tracked using `t`.
    */
-  DataFlow::LocalSourceNode clientRequestResponse(TypeTracker t, Http::Client::Request request) {
+  DataFlow::LocalSourceNode clientRequestResponse(
+    DataFlow::TypeTracker t, Http::Client::Request request
+  ) {
     t.start() and
     result = request.getResponseBody()
     or
-    exists(TypeTracker t2 | result = clientRequestResponse(t2, request).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = clientRequestResponse(t2, request).track(t2, t))
   }
 
   /**
@@ -185,7 +186,7 @@ module InsecureDownload {
       // ```
       exists(IO::FileWriter write, FileSystemAccess file |
         this = request.getAUrlPart() and
-        clientRequestResponse(TypeTracker::end(), request).flowsTo(write.getADataNode()) and
+        clientRequestResponse(DataFlow::TypeTracker::end(), request).flowsTo(write.getADataNode()) and
         (file.(DataFlow::LocalSourceNode).flowsTo(write.getReceiver()) or file = write) and
         hasUnsafeExtension(file.getAPathArgument().asExpr().getConstantValue().getString())
       )

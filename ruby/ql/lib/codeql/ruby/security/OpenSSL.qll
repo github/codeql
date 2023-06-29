@@ -7,7 +7,6 @@ private import internal.CryptoAlgorithmNames
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.dataflow.TypeTracker
 
 bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {
@@ -532,13 +531,13 @@ private class CipherInstantiation extends DataFlow::CallNode {
 }
 
 private DataFlow::LocalSourceNode cipherInstance(
-  TypeTracker t, OpenSslCipher cipher, CipherMode cipherMode
+  DataFlow::TypeTracker t, OpenSslCipher cipher, CipherMode cipherMode
 ) {
   t.start() and
   result.(CipherInstantiation).getCipher() = cipher and
   result.(CipherInstantiation).getCipherMode() = cipherMode
   or
-  exists(TypeTracker t2 | result = cipherInstance(t2, cipher, cipherMode).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = cipherInstance(t2, cipher, cipherMode).track(t2, t))
 }
 
 /** A node with flow from `OpenSSL::Cipher.new`. */
@@ -546,7 +545,7 @@ private class CipherNode extends DataFlow::Node {
   private OpenSslCipher cipher;
   private CipherMode cipherMode;
 
-  CipherNode() { cipherInstance(TypeTracker::end(), cipher, cipherMode).flowsTo(this) }
+  CipherNode() { cipherInstance(DataFlow::TypeTracker::end(), cipher, cipherMode).flowsTo(this) }
 
   /** Gets the cipher associated with this node. */
   OpenSslCipher getCipher() { result = cipher }

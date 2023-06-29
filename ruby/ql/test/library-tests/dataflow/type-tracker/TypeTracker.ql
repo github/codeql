@@ -1,37 +1,38 @@
 import codeql.ruby.AST
 import codeql.ruby.DataFlow
-import codeql.ruby.dataflow.TypeTracker
 
 class LocalSourceNode extends DataFlow::LocalSourceNode {
   LocalSourceNode() { this.getLocation().getFile().getExtension() = "rb" }
 }
 
-query predicate track(LocalSourceNode src, TypeTracker t, LocalSourceNode dst) {
+query predicate track(LocalSourceNode src, DataFlow::TypeTracker t, LocalSourceNode dst) {
   t.start() and
   dst = src
   or
-  exists(TypeTracker t2, LocalSourceNode mid | track(src, t2, mid) and dst = mid.track(t2, t))
+  exists(DataFlow::TypeTracker t2, LocalSourceNode mid |
+    track(src, t2, mid) and dst = mid.track(t2, t)
+  )
 }
 
 query predicate trackEnd(LocalSourceNode src, DataFlow::Node dst) {
   exists(LocalSourceNode end |
-    track(src, TypeTracker::end(), end) and
+    track(src, DataFlow::TypeTracker::end(), end) and
     end.flowsTo(dst)
   )
 }
 
-predicate backtrack(LocalSourceNode sink, TypeBackTracker t, LocalSourceNode src) {
+predicate backtrack(LocalSourceNode sink, DataFlow::TypeBackTracker t, LocalSourceNode src) {
   t.start() and
   sink.getALocalSource() = src
   or
-  exists(TypeBackTracker t2, LocalSourceNode mid |
+  exists(DataFlow::TypeBackTracker t2, LocalSourceNode mid |
     backtrack(sink, t2, mid) and
     src = mid.backtrack(t2, t)
   )
 }
 
 predicate backtrackEnd(LocalSourceNode sink, LocalSourceNode src) {
-  backtrack(sink, TypeBackTracker::end(), src)
+  backtrack(sink, DataFlow::TypeBackTracker::end(), src)
 }
 
 query predicate forwardButNoBackwardFlow(LocalSourceNode src, LocalSourceNode sink) {

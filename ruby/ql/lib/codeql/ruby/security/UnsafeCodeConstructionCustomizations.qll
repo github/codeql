@@ -39,20 +39,18 @@ module UnsafeCodeConstruction {
 
   /** Gets a node that is eventually executed as code at `codeExec`. */
   DataFlow::Node getANodeExecutedAsCode(Concepts::CodeExecution codeExec) {
-    result = getANodeExecutedAsCode(TypeTracker::TypeBackTracker::end(), codeExec)
+    result = getANodeExecutedAsCode(DataFlow::TypeBackTracker::end(), codeExec)
   }
-
-  import codeql.ruby.dataflow.TypeTracker as TypeTracker
 
   /** Gets a node that is eventually executed as code at `codeExec`, type-tracked with `t`. */
   private DataFlow::LocalSourceNode getANodeExecutedAsCode(
-    TypeTracker::TypeBackTracker t, Concepts::CodeExecution codeExec
+    DataFlow::TypeBackTracker t, Concepts::CodeExecution codeExec
   ) {
     t.start() and
     result = codeExec.getCode().getALocalSource() and
     codeExec.runsArbitraryCode() // methods like `Object.send` is benign here, because of the string-construction the attacker cannot control the entire method name
     or
-    exists(TypeTracker::TypeBackTracker t2 |
+    exists(DataFlow::TypeBackTracker t2 |
       result = getANodeExecutedAsCode(t2, codeExec).backtrack(t2, t)
     )
   }

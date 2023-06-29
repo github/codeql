@@ -5,7 +5,6 @@
 private import codeql.ruby.Concepts
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.TypeTracker
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.controlflow.CfgNodes as CfgNodes
 
@@ -212,7 +211,7 @@ private predicate bitWiseAndOr(CfgNodes::ExprNodes::OperationCfgNode operation) 
   operation.getExpr() instanceof AssignBitwiseOrExpr
 }
 
-private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTracker t) {
+private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, DataFlow::TypeTracker t) {
   t.start() and
   (
     // An integer literal with the feature-bit enabled/disabled
@@ -271,11 +270,11 @@ private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTr
     )
   )
   or
-  exists(TypeTracker t2 | result = trackFeature(f, enable, t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = trackFeature(f, enable, t2).track(t2, t))
 }
 
 private DataFlow::Node trackFeature(Feature f, boolean enable) {
-  trackFeature(f, enable, TypeTracker::end()).flowsTo(result)
+  trackFeature(f, enable, DataFlow::TypeTracker::end()).flowsTo(result)
 }
 
 private DataFlow::Node trackEnableFeature(Feature f) { result = trackFeature(f, true) }

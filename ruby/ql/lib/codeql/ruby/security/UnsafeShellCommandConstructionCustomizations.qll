@@ -45,18 +45,16 @@ module UnsafeShellCommandConstruction {
 
   /** Holds if the string constructed at `source` is executed at `shellExec` */
   predicate isUsedAsShellCommand(DataFlow::Node source, Concepts::SystemCommandExecution shellExec) {
-    source = backtrackShellExec(TypeTracker::TypeBackTracker::end(), shellExec)
+    source = backtrackShellExec(DataFlow::TypeBackTracker::end(), shellExec)
   }
 
-  import codeql.ruby.dataflow.TypeTracker as TypeTracker
-
   private DataFlow::LocalSourceNode backtrackShellExec(
-    TypeTracker::TypeBackTracker t, Concepts::SystemCommandExecution shellExec
+    DataFlow::TypeBackTracker t, Concepts::SystemCommandExecution shellExec
   ) {
     t.start() and
     result = any(DataFlow::Node n | shellExec.isShellInterpreted(n)).getALocalSource()
     or
-    exists(TypeTracker::TypeBackTracker t2 |
+    exists(DataFlow::TypeBackTracker t2 |
       result = backtrackShellExec(t2, shellExec).backtrack(t2, t)
     )
   }
