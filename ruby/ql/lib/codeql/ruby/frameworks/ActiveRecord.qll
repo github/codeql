@@ -30,54 +30,16 @@ private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName)
   methodName = objectInstanceMethodName()
 }
 
-private API::Node activeRecordBaseClass() {
+private API::Node activeRecordClassApiNode() {
   result =
+    // class Foo < ActiveRecord::Base
+    // class Bar < Foo
     [
       API::getTopLevelMember("ActiveRecord").getMember("Base"),
       // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
       // treat it separately in case the `ApplicationRecord` definition is not in the database.
       API::getTopLevelMember("ApplicationRecord")
     ]
-}
-
-/**
- * Gets an object with methods from the ActiveRecord query interface.
- */
-private API::Node activeRecordQueryBuilder() {
-  result = activeRecordBaseClass()
-  or
-  result = activeRecordBaseClass().getInstance()
-  or
-  // Assume any method call might return an ActiveRecord::Relation
-  // These are dynamically generated
-  result = activeRecordQueryBuilderMethodAccess(_).getReturn()
-}
-
-/** Gets a call targeting the ActiveRecord query interface. */
-private API::MethodAccessNode activeRecordQueryBuilderMethodAccess(string name) {
-  result = activeRecordQueryBuilder().getMethod(name) and
-  // Due to the heuristic tracking of query builder objects, add a restriction for methods with a known call target
-  not isUnlikelyExternalCall(result)
-}
-
-/** Gets a call targeting the ActiveRecord query interface. */
-private DataFlow::CallNode activeRecordQueryBuilderCall(string name) {
-  result = activeRecordQueryBuilderMethodAccess(name).asCall()
-}
-
-/**
- * Holds if `call` is unlikely to call into an external library, since it has a possible
- * call target in its enclosing module.
- */
-private predicate isUnlikelyExternalCall(API::MethodAccessNode node) {
-  exists(DataFlow::ModuleNode mod, DataFlow::CallNode call | call = node.asCall() |
-    call.getATarget() = [mod.getAnOwnSingletonMethod(), mod.getAnOwnInstanceMethod()] and
-    call.getEnclosingMethod() = [mod.getAnOwnSingletonMethod(), mod.getAnOwnInstanceMethod()]
-  )
-}
-
-private API::Node activeRecordConnectionInstance() {
-  result = activeRecordBaseClass().getReturn("connection")
 }
 
 /**
@@ -93,19 +55,20 @@ private API::Node activeRecordConnectionInstance() {
  * ```
  */
 class ActiveRecordModelClass extends ClassDeclaration {
-  private DataFlow::ClassNode cls;
-
   ActiveRecordModelClass() {
-    cls = activeRecordBaseClass().getADescendentModule() and this = cls.getADeclaration()
+    this.getSuperclassExpr() =
+      activeRecordClassApiNode().getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes
-  private ModuleBase getAllClassDeclarations() { result = cls.getAnAncestor().getADeclaration() }
+  private ModuleBase getAllClassDeclarations() {
+    result = this.getModule().getSuperClass*().getADeclaration()
+  }
 
   /**
    * Gets methods defined in this class that may access a field from the database.
    */
-  deprecated Method getAPotentialFieldAccessMethod() {
+  Method getAPotentialFieldAccessMethod() {
     // It's a method on this class or one of its super classes
     result = this.getAllClassDeclarations().getAMethod() and
     // There is a value that can be returned by this method which may include field data
@@ -127,84 +90,58 @@ class ActiveRecordModelClass extends ClassDeclaration {
       )
     )
   }
-
-  /** Gets the class as a `DataFlow::ClassNode`. */
-  DataFlow::ClassNode getClassNode() { result = cls }
 }
 
-/**
- * Gets a potential reference to an ActiveRecord class object.
- */
-deprecated private API::Node getAnActiveRecordModelClassRef() {
-  result = any(ActiveRecordModelClass cls).getClassNode().trackModule()
-  or
-  // For methods with an unknown call target, assume this might be a database field, thus returning another ActiveRecord object.
-  // In this case we do not know which class it belongs to, which is why this predicate can't associate the reference with a specific class.
-  result = getAnUnknownActiveRecordModelClassCall().getReturn()
-}
+/** A class method call whose receiver is an `ActiveRecordModelClass`. */
+class ActiveRecordModelClassMethodCall extends MethodCall {
+  private ActiveRecordModelClass recvCls;
 
-/**
- * Gets a call performed on an ActiveRecord class object, without a known call target in the codebase.
- */
-deprecated private API::MethodAccessNode getAnUnknownActiveRecordModelClassCall() {
-  result = getAnActiveRecordModelClassRef().getMethod(_) and
-  result.asCall().asExpr().getExpr() instanceof UnknownMethodCall
-}
-
-/**
- * DEPRECATED. Use `ActiveRecordModelClass.getClassNode().trackModule().getMethod()` instead.
- *
- * A class method call whose receiver is an `ActiveRecordModelClass`.
- */
-deprecated class ActiveRecordModelClassMethodCall extends MethodCall {
   ActiveRecordModelClassMethodCall() {
-    this = getAnUnknownActiveRecordModelClassCall().asCall().asExpr().getExpr()
+    // e.g. Foo.where(...)
+    recvCls.getModule() = this.getReceiver().(ConstantReadAccess).getModule()
+    or
+    // e.g. Foo.joins(:bars).where(...)
+    recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
+    or
+    // e.g. self.where(...) within an ActiveRecordModelClass
+    this.getReceiver() instanceof SelfVariableAccess and
+    this.getEnclosingModule() = recvCls
   }
 
-  /** Gets the `ActiveRecordModelClass` of the receiver of this method, if it can be determined. */
-  ActiveRecordModelClass getReceiverClass() {
-    this = result.getClassNode().trackModule().getMethod(_).asCall().asExpr().getExpr()
-  }
+  /** The `ActiveRecordModelClass` of the receiver of this method. */
+  ActiveRecordModelClass getReceiverClass() { result = recvCls }
 }
 
-private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::Node sink) {
-  call =
-    activeRecordQueryBuilderCall([
-        "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
-        "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
-        "group", "having", "joins", "lock", "not", "order", "reorder", "pluck", "where", "rewhere",
-        "select", "reselect", "update_all"
-      ]) and
-  sink = call.getArgument(0)
-  or
-  call = activeRecordQueryBuilderCall("calculate") and
-  sink = call.getArgument(1)
-  or
-  call =
-    activeRecordQueryBuilderCall(["average", "count", "maximum", "minimum", "sum", "count_by_sql"]) and
-  sink = call.getArgument(0)
-  or
-  // This format was supported until Rails 2.3.8
-  call = activeRecordQueryBuilderCall(["all", "find", "first", "last"]) and
-  sink = call.getKeywordArgument("conditions")
-  or
-  call = activeRecordQueryBuilderCall("reload") and
-  sink = call.getKeywordArgument("lock")
-  or
-  // Calls to `annotate` can be used to add block comments to SQL queries. These are potentially vulnerable to
-  // SQLi if user supplied input is passed in as an argument.
-  call = activeRecordQueryBuilderCall("annotate") and
-  sink = call.getArgument(_)
-  or
-  call = activeRecordConnectionInstance().getAMethodCall("execute") and
-  sink = call.getArgument(0)
-}
-
-private predicate sqlFragmentArgument(DataFlow::CallNode call, DataFlow::Node sink) {
-  exists(DataFlow::Node arg |
-    sqlFragmentArgumentInner(call, arg) and
-    sink = [arg, arg.(DataFlow::ArrayLiteralNode).getElement(0)] and
-    unsafeSqlExpr(sink.asExpr().getExpr())
+private Expr sqlFragmentArgument(MethodCall call) {
+  exists(string methodName |
+    methodName = call.getMethodName() and
+    (
+      methodName =
+        [
+          "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
+          "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
+          "group", "having", "joins", "lock", "not", "order", "reorder", "pluck", "where",
+          "rewhere", "select", "reselect", "update_all"
+        ] and
+      result = call.getArgument(0)
+      or
+      methodName = "calculate" and result = call.getArgument(1)
+      or
+      methodName in ["average", "count", "maximum", "minimum", "sum", "count_by_sql"] and
+      result = call.getArgument(0)
+      or
+      // This format was supported until Rails 2.3.8
+      methodName = ["all", "find", "first", "last"] and
+      result = call.getKeywordArgument("conditions")
+      or
+      methodName = "reload" and
+      result = call.getKeywordArgument("lock")
+      or
+      // Calls to `annotate` can be used to add block comments to SQL queries. These are potentially vulnerable to
+      // SQLi if user supplied input is passed in as an argument.
+      methodName = "annotate" and
+      result = call.getArgument(_)
+    )
   )
 }
 
@@ -225,8 +162,6 @@ private predicate unsafeSqlExpr(Expr sqlFragmentExpr) {
 }
 
 /**
- * DEPRECATED. Use the `SqlExecution` concept or `ActiveRecordSqlExecutionRange`.
- *
  * A method call that may result in executing unintended user-controlled SQL
  * queries if the `getSqlFragmentSinkArgument()` expression is tainted by
  * unsanitized user-controlled input. For example, supposing that `User` is an
@@ -240,30 +175,53 @@ private predicate unsafeSqlExpr(Expr sqlFragmentExpr) {
  * as `"') OR 1=1 --"` could result in the application looking up all users
  * rather than just one with a matching name.
  */
-deprecated class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
-  private DataFlow::CallNode call;
+class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
+  // The SQL fragment argument itself
+  private Expr sqlFragmentExpr;
 
   PotentiallyUnsafeSqlExecutingMethodCall() {
-    call.asExpr().getExpr() = this and sqlFragmentArgument(call, _)
+    exists(Expr arg |
+      arg = sqlFragmentArgument(this) and
+      unsafeSqlExpr(sqlFragmentExpr) and
+      (
+        sqlFragmentExpr = arg
+        or
+        sqlFragmentExpr = arg.(ArrayLiteral).getElement(0)
+      ) and
+      // Check that method has not been overridden
+      not exists(SingletonMethod m |
+        m.getName() = this.getMethodName() and
+        m.getOuterScope() = this.getReceiverClass()
+      )
+    )
   }
 
   /**
    * Gets the SQL fragment argument of this method call.
    */
-  Expr getSqlFragmentSinkArgument() {
-    exists(DataFlow::Node sink |
-      sqlFragmentArgument(call, sink) and result = sink.asExpr().getExpr()
-    )
-  }
+  Expr getSqlFragmentSinkArgument() { result = sqlFragmentExpr }
 }
 
 /**
- * A SQL execution arising from a call to the ActiveRecord library.
+ * An `SqlExecution::Range` for an argument to a
+ * `PotentiallyUnsafeSqlExecutingMethodCall` that may be vulnerable to being
+ * controlled by user input.
  */
 class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
-  ActiveRecordSqlExecutionRange() { sqlFragmentArgument(_, this) }
+  ActiveRecordSqlExecutionRange() {
+    exists(PotentiallyUnsafeSqlExecutingMethodCall mc |
+      this.asExpr().getNode() = mc.getSqlFragmentSinkArgument()
+    )
+    or
+    this = activeRecordConnectionInstance().getAMethodCall("execute").getArgument(0) and
+    unsafeSqlExpr(this.asExpr().getExpr())
+  }
 
   override DataFlow::Node getSql() { result = this }
+}
+
+private API::Node activeRecordConnectionInstance() {
+  result = activeRecordClassApiNode().getReturn("connection")
 }
 
 // TODO: model `ActiveRecord` sanitizers
@@ -283,8 +241,15 @@ abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
   override predicate methodCallMayAccessField(string methodName) {
     // The method is not a built-in, and...
     not isBuiltInMethodForActiveRecordModelInstance(methodName) and
-    // ...There is no matching method definition in the class
-    not exists(this.getClass().getMethod(methodName))
+    (
+      // ...There is no matching method definition in the class, or...
+      not exists(this.getClass().getMethod(methodName))
+      or
+      // ...the called method can access a field.
+      exists(Method m | m = this.getClass().getAPotentialFieldAccessMethod() |
+        m.getName() = methodName
+      )
+    )
   }
 }
 
@@ -352,10 +317,21 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
 }
 
 // A `self` reference that may resolve to an active record model object
-private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation {
+private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation,
+  DataFlow::SelfParameterNode
+{
   private ActiveRecordModelClass cls;
 
-  ActiveRecordModelClassSelfReference() { this = cls.getClassNode().getAnOwnInstanceSelf() }
+  ActiveRecordModelClassSelfReference() {
+    exists(MethodBase m |
+      m = this.getCallable() and
+      m.getEnclosingModule() = cls and
+      m = cls.getAMethod()
+    ) and
+    // In a singleton method, `self` refers to the class itself rather than an
+    // instance of that class
+    not this.getSelfVariable().getDeclaringScope() instanceof SingletonMethod
+  }
 
   final override ActiveRecordModelClass getClass() { result = cls }
 }
@@ -366,7 +342,7 @@ private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInsta
 class ActiveRecordInstance extends DataFlow::Node {
   private ActiveRecordModelInstantiation instantiation;
 
-  ActiveRecordInstance() { this = instantiation.track().getAValueReachableFromSource() }
+  ActiveRecordInstance() { this = instantiation or instantiation.flowsTo(this) }
 
   /** Gets the `ActiveRecordModelClass` that this is an instance of. */
   ActiveRecordModelClass getClass() { result = instantiation.getClass() }
@@ -404,12 +380,12 @@ private module Persistence {
   /** A call to e.g. `User.create(name: "foo")` */
   private class CreateLikeCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     CreateLikeCall() {
-      this =
-        activeRecordBaseClass()
-            .getAMethodCall([
-                "create", "create!", "create_or_find_by", "create_or_find_by!", "find_or_create_by",
-                "find_or_create_by!", "insert", "insert!"
-              ])
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
+      this.getMethodName() =
+        [
+          "create", "create!", "create_or_find_by", "create_or_find_by!", "find_or_create_by",
+          "find_or_create_by!", "insert", "insert!"
+        ]
     }
 
     override DataFlow::Node getValue() {
@@ -426,7 +402,8 @@ private module Persistence {
   /** A call to e.g. `User.update(1, name: "foo")` */
   private class UpdateLikeClassMethodCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
     UpdateLikeClassMethodCall() {
-      this = activeRecordBaseClass().getAMethodCall(["update", "update!", "upsert"])
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
+      this.getMethodName() = ["update", "update!", "upsert"]
     }
 
     override DataFlow::Node getValue() {
@@ -471,7 +448,10 @@ private module Persistence {
    * ```
    */
   private class TouchAllCall extends DataFlow::CallNode, PersistentWriteAccess::Range {
-    TouchAllCall() { this = activeRecordQueryBuilderCall("touch_all") }
+    TouchAllCall() {
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
+      this.getMethodName() = "touch_all"
+    }
 
     override DataFlow::Node getValue() { result = this.getKeywordArgument("time") }
   }
@@ -481,7 +461,8 @@ private module Persistence {
     private ExprNodes::ArrayLiteralCfgNode arr;
 
     InsertAllLikeCall() {
-      this = activeRecordBaseClass().getAMethodCall(["insert_all", "insert_all!", "upsert_all"]) and
+      exists(this.asExpr().getExpr().(ActiveRecordModelClassMethodCall).getReceiverClass()) and
+      this.getMethodName() = ["insert_all", "insert_all!", "upsert_all"] and
       arr = this.getArgument(0).asExpr()
     }
 

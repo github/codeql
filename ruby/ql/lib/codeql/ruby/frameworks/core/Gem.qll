@@ -24,7 +24,7 @@ module Gem {
 
     GemSpec() {
       this.getExtension() = "gemspec" and
-      specCall = API::getTopLevelMember("Gem").getMember("Specification").getMethod("new") and
+      specCall = API::root().getMember("Gem").getMember("Specification").getMethod("new") and
       specCall.getLocation().getFile() = this
     }
 
@@ -42,7 +42,7 @@ module Gem {
               .getBlock()
               .getParameter(0)
               .getMethod(name + "=")
-              .getArgument(0)
+              .getParameter(0)
               .asSink()
               .asExpr()
               .getExpr()

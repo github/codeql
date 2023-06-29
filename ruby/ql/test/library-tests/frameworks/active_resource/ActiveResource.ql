@@ -3,8 +3,7 @@ import codeql.ruby.DataFlow
 import codeql.ruby.frameworks.ActiveResource
 
 query predicate modelClasses(
-  ActiveResource::ModelClassNode c, DataFlow::Node siteAssignCall,
-  boolean disablesCertificateValidation
+  ActiveResource::ModelClass c, DataFlow::Node siteAssignCall, boolean disablesCertificateValidation
 ) {
   c.getASiteAssignment() = siteAssignCall and
   if c.disablesCertificateValidation(siteAssignCall)
@@ -14,16 +13,8 @@ query predicate modelClasses(
 
 query predicate modelClassMethodCalls(ActiveResource::ModelClassMethodCall c) { any() }
 
-deprecated query predicate modelInstances(ActiveResource::ModelInstance c) { any() }
-
-query predicate modelInstancesAsSource(
-  ActiveResource::ModelClassNode cls, DataFlow::LocalSourceNode node
-) {
-  node = cls.getAnInstanceReference().asSource()
-}
+query predicate modelInstances(ActiveResource::ModelInstance c) { any() }
 
 query predicate modelInstanceMethodCalls(ActiveResource::ModelInstanceMethodCall c) { any() }
 
-deprecated query predicate collections(ActiveResource::Collection c) { any() }
-
-query predicate collectionSources(ActiveResource::CollectionSource c) { any() }
+query predicate collections(ActiveResource::Collection c) { any() }

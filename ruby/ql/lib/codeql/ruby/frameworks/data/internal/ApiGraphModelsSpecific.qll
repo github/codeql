@@ -99,10 +99,9 @@ API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
   // A row of form `any;Method[foo]` should match any method named `foo`.
   type = "any" and
   n = 1 and
-  exists(string methodName, DataFlow::CallNode call |
-    methodMatchedByName(path, methodName) and
-    call.getMethodName() = methodName and
-    result.(API::MethodAccessNode).asCall() = call
+  exists(EntryPointFromAnyType entry |
+    methodMatchedByName(path, entry.getName()) and
+    result = entry.getANode()
   )
 }
 
@@ -113,10 +112,20 @@ API::Node getExtraNodeFromType(string type) {
     constRef = getConstantFromConstPath(consts)
   |
     suffix = "!" and
-    result = constRef.track()
+    (
+      result.(API::Node::Internal).asSourceInternal() = constRef
+      or
+      result.(API::Node::Internal).asSourceInternal() =
+        constRef.getADescendentModule().getAnOwnModuleSelf()
+    )
     or
     suffix = "" and
-    result = constRef.track().getInstance()
+    (
+      result.(API::Node::Internal).asSourceInternal() = constRef.getAMethodCall("new")
+      or
+      result.(API::Node::Internal).asSourceInternal() =
+        constRef.getADescendentModule().getAnInstanceSelf()
+    )
   )
   or
   type = "" and
@@ -137,6 +146,21 @@ private predicate methodMatchedByName(AccessPath path, string methodName) {
 }
 
 /**
+ * An API graph entry point corresponding to a method name such as `foo` in `;any;Method[foo]`.
+ *
+ * This ensures that the API graph rooted in that method call is materialized.
+ */
+private class EntryPointFromAnyType extends API::EntryPoint {
+  string name;
+
+  EntryPointFromAnyType() { this = "AnyMethod[" + name + "]" and methodMatchedByName(_, name) }
+
+  override DataFlow::CallNode getACall() { result.getMethodName() = name }
+
+  string getName() { result = name }
+}
+
+/**
  * Gets a Ruby-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
@@ -151,11 +175,9 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   result = node.getInstance()
   or
   token.getName() = "Parameter" and
-  exists(DataFlowDispatch::ArgumentPosition argPos, DataFlowDispatch::ParameterPosition paramPos |
-    argPos = FlowSummaryImplSpecific::parseParamBody(token.getAnArgument()) and
-    DataFlowDispatch::parameterMatch(paramPos, argPos) and
-    result = node.getParameterAtPosition(paramPos)
-  )
+  result =
+    node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
+              .getAnArgument())))
   or
   exists(DataFlow::ContentSet contents |
     SummaryComponent::content(contents) = FlowSummaryImplSpecific::interpretComponentSpecific(token) and
@@ -169,11 +191,9 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
 bindingset[token]
 API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
   token.getName() = "Argument" and
-  exists(DataFlowDispatch::ArgumentPosition argPos, DataFlowDispatch::ParameterPosition paramPos |
-    paramPos = FlowSummaryImplSpecific::parseArgBody(token.getAnArgument()) and
-    DataFlowDispatch::parameterMatch(paramPos, argPos) and
-    result = node.getArgumentAtPosition(argPos)
-  )
+  result =
+    node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
+              .getAnArgument())))
 }
 
 /**
@@ -191,7 +211,7 @@ predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToke
 /** An API graph node representing a method call. */
 class InvokeNode extends API::MethodAccessNode {
   /** Gets the number of arguments to the call. */
-  int getNumArgument() { result = this.asCall().getNumberOfArguments() }
+  int getNumArgument() { result = this.getCallNode().getNumberOfArguments() }
 }
 
 /** Gets the `InvokeNode` corresponding to a specific invocation of `node`. */

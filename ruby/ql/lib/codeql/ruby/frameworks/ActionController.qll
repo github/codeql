@@ -83,8 +83,8 @@ class ActionControllerClass extends DataFlow::ClassNode {
   }
 }
 
-private API::Node actionControllerInstance() {
-  result = any(ActionControllerClass cls).getSelf().track()
+private DataFlow::LocalSourceNode actionControllerInstance() {
+  result = any(ActionControllerClass cls).getSelf()
 }
 
 /**
@@ -222,19 +222,19 @@ private class ActionControllerRenderToCall extends RenderToCallImpl {
   }
 }
 
-pragma[nomagic]
-private DataFlow::CallNode renderCall() {
-  // ActionController#render is an alias for ActionController::Renderer#render
-  result =
-    [
-      any(ActionControllerClass c).trackModule().getAMethodCall("render"),
-      any(ActionControllerClass c).trackModule().getReturn("renderer").getAMethodCall("render")
-    ]
-}
-
 /** A call to `ActionController::Renderer#render`. */
 private class RendererRenderCall extends RenderCallImpl {
-  RendererRenderCall() { this = renderCall().asExpr().getExpr() }
+  RendererRenderCall() {
+    this =
+      [
+        // ActionController#render is an alias for ActionController::Renderer#render
+        any(ActionControllerClass c).getAnImmediateReference().getAMethodCall("render"),
+        any(ActionControllerClass c)
+            .getAnImmediateReference()
+            .getAMethodCall("renderer")
+            .getAMethodCall("render")
+      ].asExpr().getExpr()
+  }
 }
 
 /** A call to `html_escape` from within a controller. */
@@ -260,7 +260,6 @@ class RedirectToCall extends MethodCall {
     this =
       controller
           .getSelf()
-          .track()
           .getAMethodCall(["redirect_to", "redirect_back", "redirect_back_or_to"])
           .asExpr()
           .getExpr()
@@ -601,7 +600,9 @@ private module ParamsSummaries {
  * response.
  */
 private module Response {
-  API::Node response() { result = actionControllerInstance().getReturn("response") }
+  DataFlow::LocalSourceNode response() {
+    result = actionControllerInstance().getAMethodCall("response")
+  }
 
   class BodyWrite extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
     BodyWrite() { this = response().getAMethodCall("body=") }
@@ -627,7 +628,7 @@ private module Response {
     HeaderWrite() {
       // response.header[key] = val
       // response.headers[key] = val
-      this = response().getReturn(["header", "headers"]).getAMethodCall("[]=")
+      this = response().getAMethodCall(["header", "headers"]).getAMethodCall("[]=")
       or
       // response.set_header(key) = val
       // response[header] = val
@@ -672,12 +673,18 @@ private module Response {
   }
 }
 
+private class ActionControllerLoggerInstance extends DataFlow::Node {
+  ActionControllerLoggerInstance() {
+    this = actionControllerInstance().getAMethodCall("logger")
+    or
+    any(ActionControllerLoggerInstance i).(DataFlow::LocalSourceNode).flowsTo(this)
+  }
+}
+
 private class ActionControllerLoggingCall extends DataFlow::CallNode, Logging::Range {
   ActionControllerLoggingCall() {
-    this =
-      actionControllerInstance()
-          .getReturn("logger")
-          .getAMethodCall(["debug", "error", "fatal", "info", "unknown", "warn"])
+    this.getReceiver() instanceof ActionControllerLoggerInstance and
+    this.getMethodName() = ["debug", "error", "fatal", "info", "unknown", "warn"]
   }
 
   // Note: this is identical to the definition `stdlib.Logger.LoggerInfoStyleCall`.
