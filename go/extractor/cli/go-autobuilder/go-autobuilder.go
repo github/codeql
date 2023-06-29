@@ -249,7 +249,7 @@ func getDirs(paths []string) []string {
 	return dirs
 }
 
-func checkDirsNested(inputDirs []string) bool {
+func checkDirsNested(inputDirs []string) (string, bool) {
 	// replace "." with "" so that we can check if all the paths are nested
 	dirs := make([]string, len(inputDirs))
 	for i, inputDir := range inputDirs {
@@ -264,10 +264,10 @@ func checkDirsNested(inputDirs []string) bool {
 	sort.Strings(dirs)
 	for _, dir := range dirs {
 		if !strings.HasPrefix(dir, dirs[0]) {
-			return false
+			return "", false
 		}
 	}
-	return true
+	return dirs[0], true
 }
 
 // Returns the directory to run the go build in and whether to use a go.mod
@@ -290,15 +290,20 @@ func findGoModFiles(emitDiagnostics bool) (baseDir string, useGoMod bool) {
 	}
 	if len(goModPaths) > 1 {
 		// currently not supported
+		baseDir = "."
+		commonRoot, nested := checkDirsNested(goModDirs)
+		if nested && commonRoot == "" {
+			useGoMod = true
+		} else {
+			useGoMod = false
+		}
 		if emitDiagnostics {
-			if checkDirsNested(goModDirs) {
+			if nested {
 				diagnostics.EmitMultipleGoModFoundNested(goModPaths)
 			} else {
 				diagnostics.EmitMultipleGoModFoundNotNested(goModPaths)
 			}
 		}
-		baseDir = "."
-		useGoMod = false
 		return
 	}
 	if emitDiagnostics {
