@@ -890,6 +890,21 @@ module API {
       exists(DataFlow::HashLiteralNode splat | hashSplatEdge(splat, pred, succ))
     }
 
+    pragma[inline]
+    private DataFlow::ModuleNode getAnImmediateDescendentStrict(DataFlow::ModuleNode mod) {
+      result = pragma[only_bind_out](mod.getAnImmediateDescendent())
+    }
+
+    /**
+     * Holds if `mod` is not `Object`. We block upward epsilon edges leading to this class, to
+     * avoid spurious flow for methods that happen to exist on Object, such as top-level methods.
+     */
+    bindingset[mod]
+    pragma[inline_late]
+    private predicate isNotObject(DataFlow::ModuleNode mod) {
+      not mod.getQualifiedName() = "Object"
+    }
+
     /**
      * Holds if the epsilon edge `pred -> succ` should be generated, to handle inheritance relations of `mod`.
      */
@@ -897,23 +912,18 @@ module API {
     private predicate moduleInheritanceEdge(DataFlow::ModuleNode mod, ApiNode pred, ApiNode succ) {
       exists(boolean isForward |
         pred = Impl::MkModuleObjectDown(mod, isForward) and
-        succ = Impl::MkModuleObjectDown(mod.getAnImmediateDescendent(), isForward)
+        succ = Impl::MkModuleObjectDown(getAnImmediateDescendentStrict(mod), isForward)
         or
         pred = Impl::MkModuleInstanceDown(mod, isForward) and
-        succ = Impl::MkModuleInstanceDown(mod.getAnImmediateDescendent(), isForward)
+        succ = Impl::MkModuleInstanceDown(getAnImmediateDescendentStrict(mod), isForward)
         or
-        exists(DataFlow::ModuleNode ancestor |
-          ancestor = mod.getAnImmediateAncestor() and
-          // Restrict flow back to Object to avoid spurious flow for methods that happen
-          // to exist on Object, such as top-level methods.
-          not ancestor.getQualifiedName() = "Object"
-        |
-          pred = Impl::MkModuleInstanceUp(mod, isForward) and
-          succ = Impl::MkModuleInstanceUp(ancestor, isForward)
-          or
-          pred = Impl::MkModuleObjectUp(mod, isForward) and
-          succ = Impl::MkModuleObjectUp(ancestor, isForward)
-        )
+        pred = Impl::MkModuleInstanceUp(getAnImmediateDescendentStrict(mod), isForward) and
+        succ = Impl::MkModuleInstanceUp(mod, isForward) and
+        isNotObject(mod)
+        or
+        pred = Impl::MkModuleObjectUp(getAnImmediateDescendentStrict(mod), isForward) and
+        succ = Impl::MkModuleObjectUp(mod, isForward) and
+        isNotObject(mod)
         or
         // Due to multiple inheritance, allow upwards traversal after downward traversal,
         // so we can detect calls sideways in the hierarchy.
