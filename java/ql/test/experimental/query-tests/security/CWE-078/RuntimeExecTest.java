@@ -11,32 +11,37 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class RuntimeExecTest {
-    public static void test(String[] args) {
+    public static void test() {
         System.out.println("Command injection test");
 
-        try {
-            // 1. array literal
-            String[] commandArray1 = new String[]{"/bin/sh", args[2], args[3], args[4]};
-            Runtime.getRuntime().exec(commandArray1);
+        String script = System.getenv("SCRIPTNAME");
 
-            // 2. array assignment after it is created
-            String[] commandArray2 = new String[4];
-            commandArray2[0] = "/bin/sh";
-            commandArray2[1] = args[2];
-            commandArray2[2] = args[3];
-            commandArray2[3] = args[4];
-            Runtime.getRuntime().exec(commandArray2);
+        if (script != null) {
+            try {
+                // 1. array literal in the args
+                Runtime.getRuntime().exec(new String[]{"/bin/sh", script});
 
-            // 3. Stream concatenation
-            Runtime.getRuntime().exec(
-                Stream.concat(
-                    Arrays.stream(new String[]{"/bin/sh"}),
-                    Arrays.stream(new String[]{args[2], args[3], args[4]})
-                ).toArray(String[]::new)
-            );
+                // 2. array literal with dataflow
+                String[] commandArray1 = new String[]{"/bin/sh", script};
+                Runtime.getRuntime().exec(commandArray1);
 
-        } catch (Exception e) {
-            System.err.println("ERROR: " + e.getMessage());
+                // 3. array assignment after it is created
+                String[] commandArray2 = new String[4];
+                commandArray2[0] = "/bin/sh";
+                commandArray2[1] = script;
+                Runtime.getRuntime().exec(commandArray2);
+
+                // 4. Stream concatenation
+                Runtime.getRuntime().exec(
+                    Stream.concat(
+                        Arrays.stream(new String[]{"/bin/sh"}),
+                        Arrays.stream(new String[]{script})
+                    ).toArray(String[]::new)
+                );
+
+            } catch (Exception e) {
+                System.err.println("ERROR: " + e.getMessage());
+            }
         }
     }
 }
