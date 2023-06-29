@@ -7,8 +7,8 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.dataflow.Sinks
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting SQL injection
@@ -30,9 +30,7 @@ module SqlInjection {
   private class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 
   private class DataExtensionSqlExecutionSink extends Sink {
-    DataExtensionSqlExecutionSink() {
-      this = ModelOutput::getASinkNode("sql-injection").asSink()
-    }
+    DataExtensionSqlExecutionSink() { this = ModelOutput::getASinkNode("sql-injection").asSink() }
   }
 
   /**
