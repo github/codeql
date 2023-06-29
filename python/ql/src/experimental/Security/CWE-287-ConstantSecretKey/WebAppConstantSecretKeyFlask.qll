@@ -144,7 +144,7 @@ module FlaskConstantSecretKeyConfig {
               flaskInstance().asSource().getLocation().getFile().getShortName()
           else this.getLocation().getFile().getShortName().matches("%" + configFileName + "%")
         ) and
-        this.getTarget(0).toString() = ["SECRET_KEY", "JWT_SECRET_KEY"]
+        this.getTarget(0).(Name).getId() = ["SECRET_KEY", "JWT_SECRET_KEY"]
       ) and
       exists(this.getScope().getLocation().getFile().getRelativePath()) and
       not this.getScope().getLocation().getFile().inStdlib()
