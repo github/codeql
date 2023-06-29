@@ -312,11 +312,13 @@ Instruction getASuccessor(Instruction instr) {
  */
 pragma[inline]
 predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string operation, int delta) {
-  exists(AddressOperand addr, Instruction s |
+  exists(AddressOperand addr, Instruction s, IRBlock b |
     s = sink.asInstruction() and
-    bounded1(addr.getDef(), s, delta) and
+    boundedImpl(addr.getDef(), s, delta) and
     delta >= 0 and
-    i.getAnOperand() = addr
+    i.getAnOperand() = addr and
+    b = i.getBlock() and
+    not b = InvalidPointerToDerefBarrier::getABarrierBlock(delta)
   |
     i instanceof StoreInstruction and
     operation = "write"
@@ -324,6 +326,60 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
     i instanceof LoadInstruction and
     operation = "read"
   )
+}
+
+module InvalidPointerToDerefBarrier {
+  private module BarrierConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      // The sources is the same as in the sources for `InvalidPointerToDerefConfig`.
+      invalidPointerToDerefSource(_, source, _)
+    }
+
+    additional predicate isSink(
+      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int state, boolean testIsTrue
+    ) {
+      // The sink is any "large" side of a relational comparison.
+      g.comparesLt(left.asOperand(), right.asOperand(), state, true, testIsTrue)
+    }
+
+    predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
+  }
+
+  private import DataFlow::Global<BarrierConfig>
+
+  private int getInvalidPointerToDerefSourceDelta(DataFlow::Node node) {
+    exists(DataFlow::Node source |
+      flow(source, node) and
+      invalidPointerToDerefSource(_, source, result)
+    )
+  }
+
+  private predicate operandGuardChecks(
+    IRGuardCondition g, Operand left, Operand right, int state, boolean edge
+  ) {
+    exists(DataFlow::Node nLeft, DataFlow::Node nRight, int state0 |
+      nRight.asOperand() = right and
+      nLeft.asOperand() = left and
+      BarrierConfig::isSink(nLeft, nRight, g, state0, edge) and
+      state = getInvalidPointerToDerefSourceDelta(nRight) and
+      state0 <= state
+    )
+  }
+
+  Instruction getABarrierInstruction(int state) {
+    exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge |
+      use = value.getAUse() and
+      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](use), _, state,
+        pragma[only_bind_into](edge)) and
+      result = value.getAnInstruction() and
+      g.controls(result.getBlock(), edge)
+    )
+  }
+
+  DataFlow::Node getABarrierNode() { result.asOperand() = getABarrierInstruction(_).getAUse() }
+
+  pragma[nomagic]
+  IRBlock getABarrierBlock(int state) { result.getAnInstruction() = getABarrierInstruction(state) }
 }
 
 /**
@@ -338,6 +394,8 @@ module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     node = any(DataFlow::SsaPhiNode phi | not phi.isPhiRead()).getAnInput(true)
+    or
+    node = InvalidPointerToDerefBarrier::getABarrierNode()
   }
 }
 
@@ -382,7 +440,7 @@ newtype TMergedPathNode =
   // pointer, but we want to raise an alert at the dereference.
   TPathNodeSink(Instruction i) {
     exists(DataFlow::Node n |
-      InvalidPointerToDerefFlow::flowTo(n) and
+      InvalidPointerToDerefFlow::flowTo(pragma[only_bind_into](n)) and
       isInvalidPointerDerefSink(n, i, _, _) and
       i = getASuccessor(n.asInstruction())
     )

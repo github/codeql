@@ -27,8 +27,9 @@ class ExternalApi extends Callable {
    */
   string getApiName() {
     result =
-      this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
-        "#" + this.getName() + paramsString(this)
+      this.getDeclaringType().getPackage() + "." +
+        this.getDeclaringType().getSourceDeclaration().nestedName() + "#" + this.getName() +
+        paramsString(this)
   }
 
   private string getJarName() {
