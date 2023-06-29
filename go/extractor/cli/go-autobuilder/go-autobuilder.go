@@ -285,7 +285,7 @@ func findGoModFiles(emitDiagnostics bool) (baseDir string, goModFound bool) {
 			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)
 		}
 		baseDir = "."
-		goModFound = true
+		goModFound = false
 		return
 	}
 	if len(goModPaths) > 1 {
@@ -298,7 +298,7 @@ func findGoModFiles(emitDiagnostics bool) (baseDir string, goModFound bool) {
 			}
 		}
 		baseDir = "."
-		goModFound = true
+		goModFound = false
 		return
 	}
 	if emitDiagnostics {
