@@ -2,10 +2,8 @@ from flask import Flask, session
 from secrets import token_hex
 
 app = Flask(__name__)
-SECRET_KEY = 'CHANGEME'
 
-if not SECRET_KEY:
-    SECRET_KEY = token_hex(16)
+SECRET_KEY = token_hex(16)
 
 
 @app.route('/')
