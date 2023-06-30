@@ -243,7 +243,7 @@ module API {
      */
     bindingset[this]
     pragma[inline_late]
-    DataFlow::ModuleNode asModule() { this = Impl::MkModuleObjectDown(result) }
+    DataFlow::ModuleNode asModule() { this = Impl::MkModuleObjectDown(result, _) }
 
     /**
      * Gets the call referred to by this API node.
@@ -592,9 +592,9 @@ module API {
       result = this.getInducingNode().getLocation()
       or
       exists(DataFlow::ModuleNode mod |
-        this = Impl::MkModuleObjectDown(mod)
+        this = Impl::MkModuleObjectDown(mod, _)
         or
-        this = Impl::MkModuleInstanceUp(mod)
+        this = Impl::MkModuleInstanceUp(mod, _)
       |
         result = mod.getLocation()
       )
@@ -742,7 +742,7 @@ module API {
   /** A node representing a module/class object with epsilon edges to its descendents. */
   private class ModuleObjectDownNode extends Node, Impl::MkModuleObjectDown {
     /** Gets the module represented by this API node. */
-    DataFlow::ModuleNode getModule() { this = Impl::MkModuleObjectDown(result) }
+    DataFlow::ModuleNode getModule() { this = Impl::MkModuleObjectDown(result, _) }
 
     override string toString() { result = "ModuleObjectDown(" + this.getModule() + ")" }
   }
@@ -750,7 +750,7 @@ module API {
   /** A node representing a module/class object with epsilon edges to its ancestors. */
   private class ModuleObjectUpNode extends Node, Impl::MkModuleObjectUp {
     /** Gets the module represented by this API node. */
-    DataFlow::ModuleNode getModule() { this = Impl::MkModuleObjectUp(result) }
+    DataFlow::ModuleNode getModule() { this = Impl::MkModuleObjectUp(result, _) }
 
     override string toString() { result = "ModuleObjectUp(" + this.getModule() + ")" }
   }
@@ -758,7 +758,7 @@ module API {
   /** A node representing instances of a module/class with epsilon edges to its ancestors. */
   private class ModuleInstanceUpNode extends Node, Impl::MkModuleInstanceUp {
     /** Gets the module whose instances are represented by this API node. */
-    DataFlow::ModuleNode getModule() { this = Impl::MkModuleInstanceUp(result) }
+    DataFlow::ModuleNode getModule() { this = Impl::MkModuleInstanceUp(result, _) }
 
     override string toString() { result = "ModuleInstanceUp(" + this.getModule() + ")" }
   }
@@ -766,7 +766,7 @@ module API {
   /** A node representing instances of a module/class with epsilon edges to its descendents. */
   private class ModuleInstanceDownNode extends Node, Impl::MkModuleInstanceDown {
     /** Gets the module whose instances are represented by this API node. */
-    DataFlow::ModuleNode getModule() { this = Impl::MkModuleInstanceDown(result) }
+    DataFlow::ModuleNode getModule() { this = Impl::MkModuleInstanceDown(result, _) }
 
     override string toString() { result = "ModuleInstanceDown(" + this.getModule() + ")" }
   }
@@ -882,7 +882,7 @@ module API {
         moduleInheritanceEdge(mod, pred, succ)
         or
         pred = getForwardEndNode(getSuperClassNode(mod)) and
-        succ = Impl::MkModuleObjectDown(mod)
+        succ = Impl::MkModuleObjectDown(mod, true)
       )
       or
       implicitCallEdge(pred, succ)
@@ -890,36 +890,48 @@ module API {
       exists(DataFlow::HashLiteralNode splat | hashSplatEdge(splat, pred, succ))
     }
 
+    pragma[inline]
+    private DataFlow::ModuleNode getAnImmediateDescendentStrict(DataFlow::ModuleNode mod) {
+      result = pragma[only_bind_out](mod.getAnImmediateDescendent())
+    }
+
+    /**
+     * Holds if `mod` is not `Object`. We block upward epsilon edges leading to this class, to
+     * avoid spurious flow for methods that happen to exist on Object, such as top-level methods.
+     */
+    bindingset[mod]
+    pragma[inline_late]
+    private predicate isNotObject(DataFlow::ModuleNode mod) {
+      not mod.getQualifiedName() = "Object"
+    }
+
     /**
      * Holds if the epsilon edge `pred -> succ` should be generated, to handle inheritance relations of `mod`.
      */
     pragma[inline]
     private predicate moduleInheritanceEdge(DataFlow::ModuleNode mod, ApiNode pred, ApiNode succ) {
-      pred = Impl::MkModuleObjectDown(mod) and
-      succ = Impl::MkModuleObjectDown(mod.getAnImmediateDescendent())
-      or
-      pred = Impl::MkModuleInstanceDown(mod) and
-      succ = Impl::MkModuleInstanceDown(mod.getAnImmediateDescendent())
-      or
-      exists(DataFlow::ModuleNode ancestor |
-        ancestor = mod.getAnImmediateAncestor() and
-        // Restrict flow back to Object to avoid spurious flow for methods that happen
-        // to exist on Object, such as top-level methods.
-        not ancestor.getQualifiedName() = "Object"
-      |
-        pred = Impl::MkModuleInstanceUp(mod) and
-        succ = Impl::MkModuleInstanceUp(ancestor)
+      exists(boolean isForward |
+        pred = Impl::MkModuleObjectDown(mod, isForward) and
+        succ = Impl::MkModuleObjectDown(getAnImmediateDescendentStrict(mod), isForward)
         or
-        pred = Impl::MkModuleObjectUp(mod) and
-        succ = Impl::MkModuleObjectUp(ancestor)
+        pred = Impl::MkModuleInstanceDown(mod, isForward) and
+        succ = Impl::MkModuleInstanceDown(getAnImmediateDescendentStrict(mod), isForward)
+        or
+        pred = Impl::MkModuleInstanceUp(getAnImmediateDescendentStrict(mod), isForward) and
+        succ = Impl::MkModuleInstanceUp(mod, isForward) and
+        isNotObject(mod)
+        or
+        pred = Impl::MkModuleObjectUp(getAnImmediateDescendentStrict(mod), isForward) and
+        succ = Impl::MkModuleObjectUp(mod, isForward) and
+        isNotObject(mod)
+        or
+        // Due to multiple inheritance, allow upwards traversal after downward traversal,
+        // so we can detect calls sideways in the hierarchy.
+        // Note that a similar case does not exist for ModuleObject since singleton methods are only inherited
+        // from the superclass, and there can only be one superclass.
+        pred = Impl::MkModuleInstanceDown(mod, isForward) and
+        succ = Impl::MkModuleInstanceUp(mod, isForward)
       )
-      or
-      // Due to multiple inheritance, allow upwards traversal after downward traversal,
-      // so we can detect calls sideways in the hierarchy.
-      // Note that a similar case does not exist for ModuleObject since singleton methods are only inherited
-      // from the superclass, and there can only be one superclass.
-      pred = Impl::MkModuleInstanceDown(mod) and
-      succ = Impl::MkModuleInstanceUp(mod)
     }
 
     /**
@@ -928,24 +940,24 @@ module API {
     bindingset[mod]
     pragma[inline_late]
     private predicate moduleReferenceEdge(DataFlow::ModuleNode mod, ApiNode pred, ApiNode succ) {
-      pred = Impl::MkModuleObjectDown(mod) and
+      pred = Impl::MkModuleObjectDown(mod, true) and
       succ = getForwardStartNode(getAModuleReference(mod))
       or
       pred = getBackwardEndNode(getAModuleReference(mod)) and
       (
-        succ = Impl::MkModuleObjectUp(mod)
+        succ = Impl::MkModuleObjectUp(mod, false)
         or
-        succ = Impl::MkModuleObjectDown(mod)
+        succ = Impl::MkModuleObjectDown(mod, false)
       )
       or
-      pred = Impl::MkModuleInstanceUp(mod) and
+      pred = Impl::MkModuleInstanceUp(mod, true) and
       succ = getAModuleInstanceUseNode(mod)
       or
       pred = getAModuleInstanceDefNode(mod) and
-      succ = Impl::MkModuleInstanceUp(mod)
+      succ = Impl::MkModuleInstanceUp(mod, false)
       or
       pred = getAModuleDescendentInstanceDefNode(mod) and
-      succ = Impl::MkModuleInstanceDown(mod)
+      succ = Impl::MkModuleInstanceDown(mod, false)
     }
 
     /**
@@ -972,10 +984,10 @@ module API {
       or
       exists(DataFlow::ModuleNode mod |
         // Step from module/class to its own `call` method without needing `getMethod("call")`.
-        (pred = Impl::MkModuleObjectDown(mod) or pred = Impl::MkModuleObjectUp(mod)) and
+        (pred = Impl::MkModuleObjectDown(mod, false) or pred = Impl::MkModuleObjectUp(mod, false)) and
         succ = getBackwardEndNode(mod.getOwnSingletonMethod("call"))
         or
-        pred = Impl::MkModuleInstanceUp(mod) and
+        pred = Impl::MkModuleInstanceUp(mod, false) and
         succ = getBackwardEndNode(mod.getOwnInstanceMethod("call"))
       )
     }
@@ -1076,7 +1088,7 @@ module API {
     /** Gets the API node corresponding to the module/class object for `mod`. */
     bindingset[mod]
     pragma[inline_late]
-    Node getModuleNode(DataFlow::ModuleNode mod) { result = Impl::MkModuleObjectDown(mod) }
+    Node getModuleNode(DataFlow::ModuleNode mod) { result = Impl::MkModuleObjectDown(mod, _) }
 
     /** Gets the API node corresponding to instances of `mod`. */
     bindingset[mod]
@@ -1095,14 +1107,32 @@ module API {
       MkRoot() or
       /** The method accessed at `call`, synthetically treated as a separate object. */
       MkMethodAccessNode(DataFlow::CallNode call) or
-      /** The module object `mod` with epsilon edges to its ancestors. */
-      MkModuleObjectUp(DataFlow::ModuleNode mod) or
-      /** The module object `mod` with epsilon edges to its descendents. */
-      MkModuleObjectDown(DataFlow::ModuleNode mod) or
-      /** Instances of `mod` with epsilon edges to its ancestors. */
-      MkModuleInstanceUp(DataFlow::ModuleNode mod) or
-      /** Instances of `mod` with epsilon edges to its descendents, and to its upward node. */
-      MkModuleInstanceDown(DataFlow::ModuleNode mod) or
+      /**
+       * The module object `mod` with epsilon edges to its ancestors.
+       *
+       * `isForward` is the data flow direction to associate with references.
+       */
+      MkModuleObjectUp(DataFlow::ModuleNode mod, boolean isForward) { isForward = [true, false] } or
+      /**
+       * The module object `mod` with epsilon edges to its descendents.
+       *
+       * `isForward` is the data flow direction to associate with references.
+       */
+      MkModuleObjectDown(DataFlow::ModuleNode mod, boolean isForward) { isForward = [true, false] } or
+      /**
+       * Instances of `mod` with epsilon edges to its ancestors.
+       *
+       * `isForward` is the data flow direction to associate with references.
+       */
+      MkModuleInstanceUp(DataFlow::ModuleNode mod, boolean isForward) { isForward = [true, false] } or
+      /**
+       * Instances of `mod` with epsilon edges to its descendents, and to its upward node.
+       *
+       * `isForward` is the data flow direction to associate with references.
+       */
+      MkModuleInstanceDown(DataFlow::ModuleNode mod, boolean isForward) {
+        isForward = [true, false]
+      } or
       /** Intermediate node for following forward data flow. */
       MkForwardNode(DataFlow::LocalSourceNode node, TypeTracker t) { isReachable(node, t) } or
       /** Intermediate node for following backward data flow. */
@@ -1145,7 +1175,7 @@ module API {
         not exists(namespace.getScopeExpr()) and
         if namespace.hasGlobalScope() or namespace.getEnclosingModule() instanceof Toplevel
         then pred = MkRoot()
-        else pred = MkModuleObjectDown(namespace.getEnclosingModule().getModule())
+        else pred = MkModuleObjectDown(namespace.getEnclosingModule().getModule(), true)
       )
     }
 
@@ -1166,7 +1196,7 @@ module API {
       or
       exists(DataFlow::ModuleNode mod |
         moduleScope(mod, pred, name) and
-        (succ = MkModuleObjectDown(mod) or succ = MkModuleObjectUp(mod))
+        (succ = MkModuleObjectDown(mod, _) or succ = MkModuleObjectUp(mod, _))
       )
     }
 
@@ -1192,10 +1222,10 @@ module API {
         succ = MkMethodAccessNode(call) and
         name = call.getMethodName()
       |
-        pred = MkModuleObjectDown(mod) and
+        pred = MkModuleObjectDown(mod, true) and
         call = mod.getAnOwnSingletonMethod().getASuperCall()
         or
-        pred = MkModuleInstanceUp(mod) and
+        pred = MkModuleInstanceUp(mod, true) and
         call = mod.getAnOwnInstanceMethod().getASuperCall()
       )
       or
@@ -1207,10 +1237,10 @@ module API {
       )
       or
       exists(DataFlow::ModuleNode mod |
-        (pred = MkModuleObjectDown(mod) or pred = MkModuleObjectUp(mod)) and
+        (pred = MkModuleObjectDown(mod, false) or pred = MkModuleObjectUp(mod, false)) and
         succ = getBackwardStartNode(mod.getOwnSingletonMethod(name))
         or
-        pred = MkModuleInstanceUp(mod) and
+        pred = MkModuleInstanceUp(mod, false) and
         succ = getBackwardStartNode(mod.getOwnInstanceMethod(name))
       )
     }
@@ -1323,9 +1353,9 @@ module API {
 
     cached
     predicate instanceEdge(Node pred, Node succ) {
-      exists(DataFlow::ModuleNode mod |
-        pred = MkModuleObjectDown(mod) and
-        succ = MkModuleInstanceUp(mod)
+      exists(DataFlow::ModuleNode mod, boolean isForward |
+        pred = MkModuleObjectDown(mod, isForward) and
+        succ = MkModuleInstanceUp(mod, isForward)
       )
       or
       exists(DataFlow::LocalSourceNode receiver, DataFlow::CallNode call |

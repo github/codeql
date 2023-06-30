@@ -74,45 +74,44 @@ module ApiGraphShared<ApiGraphSharedSig S> {
   pragma[inline_late]
   TypeTrackingNode getALocalSourceStrict(Node node) { result = node.getALocalSource() }
 
+  /**
+   * Holds if there is an epsilon edge `pred -> succ`.
+   *
+   * That relation is reflexive, so `fastTC` produces the equivalent of a reflexive, transitive closure.
+   */
+  pragma[noopt]
+  private predicate epsilonEdge(ApiNode pred, ApiNode succ) {
+    exists(
+      StepSummary summary, TypeTrackingNode predNode, TypeTracker predState,
+      TypeTrackingNode succNode, TypeTracker succState
+    |
+      StepSummary::stepCall(predNode, succNode, summary)
+      or
+      StepSummary::stepNoCall(predNode, succNode, summary)
+    |
+      pred = getForwardNode(predNode, predState) and
+      succState = StepSummary::append(predState, summary) and
+      succ = getForwardNode(succNode, succState)
+      or
+      succ = getBackwardNode(predNode, predState) and // swap order for backward flow
+      succState = StepSummary::append(predState, summary) and
+      pred = getBackwardNode(succNode, succState) // swap order for backward flow
+    )
+    or
+    exists(Node sink, TypeTrackingNode localSource |
+      pred = getSinkNode(sink) and
+      localSource = getALocalSourceStrict(sink) and
+      succ = getBackwardStartNode(localSource)
+    )
+    or
+    specificEpsilonEdge(pred, succ)
+    or
+    succ instanceof ApiNode and
+    succ = pred
+  }
+
   cached
   private module Cached {
-    /**
-     * Holds if there is an epsilon edge `pred -> succ`.
-     *
-     * That relation is reflexive, so `fastTC` produces the equivalent of a reflexive, transitive closure.
-     */
-    pragma[noopt]
-    cached
-    predicate epsilonEdge(ApiNode pred, ApiNode succ) {
-      exists(
-        StepSummary summary, TypeTrackingNode predNode, TypeTracker predState,
-        TypeTrackingNode succNode, TypeTracker succState
-      |
-        StepSummary::stepCall(predNode, succNode, summary)
-        or
-        StepSummary::stepNoCall(predNode, succNode, summary)
-      |
-        pred = getForwardNode(predNode, predState) and
-        succState = StepSummary::append(predState, summary) and
-        succ = getForwardNode(succNode, succState)
-        or
-        succ = getBackwardNode(predNode, predState) and // swap order for backward flow
-        succState = StepSummary::append(predState, summary) and
-        pred = getBackwardNode(succNode, succState) // swap order for backward flow
-      )
-      or
-      exists(Node sink, TypeTrackingNode localSource |
-        pred = getSinkNode(sink) and
-        localSource = getALocalSourceStrict(sink) and
-        succ = getBackwardStartNode(localSource)
-      )
-      or
-      specificEpsilonEdge(pred, succ)
-      or
-      succ instanceof ApiNode and
-      succ = pred
-    }
-
     /**
      * Holds if `pred` can reach `succ` by zero or more epsilon edges.
      */
