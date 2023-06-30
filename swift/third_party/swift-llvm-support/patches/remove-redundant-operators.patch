@@ -1,0 +1,24 @@
+In C++20 the removed operators are available via operator rewriting and
+implicit constructors, providing them leads to ambiguity.
+
+diff --git a/include/swift/SIL/SILValue.h b/include/swift/SIL/SILValue.h
+index 378ca039c7e..37c119c50c1 100644
+--- a/include/swift/SIL/SILValue.h
++++ b/include/swift/SIL/SILValue.h
+@@ -271,16 +271,6 @@ struct ValueOwnershipKind {
+
+   explicit operator bool() const { return value != OwnershipKind::Any; }
+
+-  bool operator==(ValueOwnershipKind other) const {
+-    return value == other.value;
+-  }
+-  bool operator!=(ValueOwnershipKind other) const {
+-    return !(value == other.value);
+-  }
+-
+-  bool operator==(innerty other) const { return value == other; }
+-  bool operator!=(innerty other) const { return !(value == other); }
+-
+   /// We merge by moving down the lattice.
+   ValueOwnershipKind merge(ValueOwnershipKind rhs) const {
+     return value.meet(rhs.value);

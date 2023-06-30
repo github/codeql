@@ -90,6 +90,7 @@ void gotoLoop(bool b1, bool b2)
   {
     for (j = 0; j < 10; ++j)
     {
+      int x;
       main_decode_loop:
     }
   }
