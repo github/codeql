@@ -401,7 +401,7 @@ func getModMode(depMode DependencyInstallerMode, baseDir string) ModMode {
 }
 
 // fixGoVendorIssues fixes issues with go vendor for go version >= 1.14
-func fixGoVendorIssues(buildInfo BuildInfo, goModVersionFound bool) ModMode {
+func fixGoVendorIssues(buildInfo *BuildInfo, goModVersionFound bool) {
 	if buildInfo.ModMode == ModVendor {
 		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
 		// if this is the case, and dependencies were vendored with an old go version (and therefore
@@ -421,13 +421,12 @@ func fixGoVendorIssues(buildInfo BuildInfo, goModVersionFound bool) ModMode {
 					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
 					if !addVersionToMod("1.13") {
 						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
-						return ModMod
+						buildInfo.ModMode = ModMod
 					}
 				}
 			}
 		}
 	}
-	return buildInfo.ModMode
 }
 
 // Determines whether the project needs a GOPATH set up
@@ -778,7 +777,7 @@ func installDependenciesAndBuild() {
 		diagnostics.EmitNewerGoVersionNeeded()
 	}
 
-	buildInfo.ModMode = fixGoVendorIssues(buildInfo, goModVersionFound)
+	fixGoVendorIssues(&buildInfo, goModVersionFound)
 
 	tryUpdateGoModAndGoSum(buildInfo)
 
