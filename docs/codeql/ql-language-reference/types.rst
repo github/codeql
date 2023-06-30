@@ -112,12 +112,13 @@ the supertypes (that is, they are in the :ref:`class domain type <domain-types>`
 A class inherits all member predicates from its base types.
 
 A class can extend multiple types. For more information, see ":ref:`multiple-inheritance`."
+A class can extend final types (or final aliases of types), see ":ref:`final-extensions`."
 Classes can also specialise other types without extending the class interface via `instanceof`,
 see ":ref:`instanceof-extensions`.".
 
 To be valid, a class:
   - Must not extend itself.
-  - Must not extend a :ref:`final` class. 
+  - Must not (transitively) extend a non-final type and a final alias of that same type.
   - Must not extend types that are incompatible. For more information, see ":ref:`type-compatibility`."
 
 You can also annotate a class. See the list of :ref:`annotations <annotations-overview>`
@@ -242,6 +243,7 @@ A class :ref:`annotated <abstract>` with ``abstract``, known as an **abstract** 
 the values in a larger type. However, an abstract class is defined as the union of its 
 subclasses. In particular, for a value to be in an abstract class, it must satisfy the 
 characteristic predicate of the class itself **and** the characteristic predicate of a subclass.
+Note that final extensions are not considered subclasses in this context.
 
 An abstract class is useful if you want to group multiple existing classes together 
 under a common name. You can then define member predicates on all those classes. You can also 
@@ -281,9 +283,9 @@ there is no need to update the queries that rely on it.
 Overriding member predicates
 ============================
 
-If a class inherits a member predicate from a supertype, you can **override** the inherited
-definition. You do this by defining a member predicate with the same name and arity as the
-inherited predicate, and by adding the ``override`` :ref:`annotation <override>`. 
+If a class inherits a member predicate from a non-final supertype, you can **override** the
+inherited definition. You do this by defining a member predicate with the same name and arity
+as the inherited predicate, and by adding the ``override`` :ref:`annotation <override>`.
 This is useful if you want to refine the predicate to give a more specific result for the 
 values in the subclass.
 
@@ -381,6 +383,68 @@ from ``OneTwoThree`` and ``int``.
    If a subclass inherits multiple definitions for the same predicate name, then it
    must :ref:`override <overriding-member-predicates>` those definitions to avoid ambiguity.
    :ref:`Super expressions <super>` are often useful in this situation.
+
+.. _final-extensions:
+
+Final extensions
+================
+
+A class can extend final types or final aliases of types. In that case, it inherits final
+versions of all the member predicates and fields of those supertypes.
+Member predicates that are inherited through final extensions cannot be overridden,
+but they can be shadowed.
+
+For example, extending the class from the :ref:`first example <defining-a-class>`:
+
+.. code-block:: ql
+
+    final class FinalOneTwoThree = OneTwoThree;
+    
+    class OneTwo extends FinalOneTwoThree {
+      OneTwo() {
+        this = 1 or this = 2
+      }
+    
+      string getAString() {
+        result = "One or two: " + this.toString()
+      }
+    }
+
+The member predicate ``getAString()`` shadows the original definition of ``getAString()``
+from ``OneTwoThree``.
+
+Different to overriding (see ":ref:`overriding-member-predicates`"),
+final extensions leave the extended type unchanged:
+
+.. code-block:: ql
+
+    from OneTwoTree o
+    select o, o.getAString()
+
++---+-------------------------+
+| o | ``getAString()`` result |
++===+=========================+
+| 1 | One, two or three: 1    |
++---+-------------------------+
+| 2 | One, two or three: 2    |
++---+-------------------------+
+| 3 | One, two or three: 3    |
++---+-------------------------+
+
+However, when calling ``getAString()`` on ``OneTwo``, the original definition is shadowed:
+
+.. code-block:: ql
+
+    from OneTwo o
+    select o, o.getAString()
+
++---+-------------------------+
+| o | ``getAString()`` result |
++===+=========================+
+| 1 | One or two: 1           |
++---+-------------------------+
+| 2 | One or two: 2           |
++---+-------------------------+
 
 .. _instanceof-extensions:
 
