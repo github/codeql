@@ -33,3 +33,8 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     )
   }
 }
+
+query predicate multipleToString(Node n, string s) {
+  s = strictconcat(n.toString(), ",") and
+  strictcount(n.toString()) > 1
+}

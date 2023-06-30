@@ -644,6 +644,15 @@ module ModelOutput {
     }
 
     /**
+     * Holds if a `baseNode` is a callable identified by the `type,path` part of a summary row.
+     */
+    cached
+    predicate resolvedSummaryRefBase(string type, string path, API::Node baseNode) {
+      summaryModel(type, path, _, _, _) and
+      baseNode = getNodeFromPath(type, path)
+    }
+
+    /**
      * Holds if `node` is seen as an instance of `type` due to a type definition
      * contributed by a CSV model.
      */

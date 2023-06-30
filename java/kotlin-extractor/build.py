@@ -133,30 +133,6 @@ def find_sources(path):
     return glob.glob(path + '/**/*.kt', recursive=True) + glob.glob(path + '/**/*.java', recursive=True)
 
 
-def get_kotlin_lib_folder():
-    x = run_process([kotlinc, '-version', '-verbose'], capture_output=True)
-    output = x.stderr.decode(encoding='UTF-8', errors='strict')
-    m = re.match(
-        r'.*\nlogging: using Kotlin home directory ([^\n]+)\n.*', output)
-    if m is None:
-        raise Exception('Cannot determine kotlinc home directory')
-    kotlin_home = m.group(1)
-    print("Kotlin home directory: " + kotlin_home)
-    return kotlin_home + '/lib'
-
-
-def get_gradle_lib_folder():
-    x = run_process(['gradle', 'getHomeDir'], capture_output=True)
-    output = x.stdout.decode(encoding='UTF-8', errors='strict')
-    m = re.search(r'(?m)^> Task :getHomeDir\n([^\n]+)$', output)
-    if m is None:
-        print("gradle getHomeDir output:\n" + output, file=sys.stderr)
-        raise Exception('Cannot determine gradle home directory')
-    gradle_home = m.group(1)
-    print("Gradle home directory: " + gradle_home)
-    return gradle_home + '/lib'
-
-
 def find_jar(path, base):
     fn = path + '/' + base + '.jar'
     if not os.path.isfile(fn):

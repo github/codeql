@@ -282,7 +282,7 @@ private predicate hasPatternNode(PatternCfgNode n, Pattern p) {
 import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {

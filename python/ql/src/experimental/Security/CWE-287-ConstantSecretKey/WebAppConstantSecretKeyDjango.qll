@@ -12,6 +12,19 @@ module DjangoConstantSecretKeyConfig {
    */
   predicate isSource(DataFlow::Node source) {
     (
+      // because Env return an Exeption if there isan't any value (instead of none) we should check whether
+      // there is a default value of there is a config file which mostly these config files have a default value
+      exists(API::Node env | env = API::moduleImport("environ").getMember("Env") |
+        (
+          // has default value
+          exists(env.getKeywordParameter("SECRET_KEY").asSource())
+          or
+          // get value from a config file which is not best security practice
+          exists(env.getReturn().getMember("read_env"))
+        ) and
+        source = env.getReturn().getReturn().asSource()
+      )
+      or
       source.asExpr().isConstant()
       or
       exists(API::Node cn |
@@ -47,13 +60,13 @@ module DjangoConstantSecretKeyConfig {
         source.asExpr() = cn.asExpr()
       )
       or
-      source.asExpr() =
-        API::moduleImport("os").getMember("environ").getASubscript().asSource().asExpr()
+      source = API::moduleImport("os").getMember("environ").getASubscript().asSource()
     ) and
     // followings will sanitize the get_random_secret_key of django.core.management.utils and similar random generators which we have their source code and some of them can be tracking by taint tracking because they are initilized by a constant!
     exists(source.getScope().getLocation().getFile().getRelativePath()) and
-    // special case for get_random_secret_key
-    not source.getScope().getLocation().getFile().getBaseName() = "crypto.py"
+    not source.getScope().getLocation().getFile().inStdlib() and
+    // special sanitize case for get_random_secret_key and django-environ
+    not source.getScope().getLocation().getFile().getBaseName() = ["environ.py", "crypto.py"]
   }
 
   /**
@@ -90,6 +103,7 @@ module DjangoConstantSecretKeyConfig {
         sink = attr.getValue()
       )
     ) and
-    exists(sink.getScope().getLocation().getFile().getRelativePath())
+    exists(sink.getScope().getLocation().getFile().getRelativePath()) and
+    not sink.getScope().getLocation().getFile().inStdlib()
   }
 }
