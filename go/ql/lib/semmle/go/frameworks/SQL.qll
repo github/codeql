@@ -294,10 +294,10 @@ module Xorm {
  * Provides classes for working with the [Bun](https://bun.uptrace.dev/) package.
  */
 module Bun {
-  /** Gets the package name for Xorm. */
+  /** Gets the package name for Bun. */
   string packagePath() { result = package("github.com/uptrace/bun", "") }
 
-  /** A model for sinks of XORM. */
+  /** A model for sinks of Bun. */
   private class BunSink extends SQL::QueryString::Range {
     BunSink() {
       exists(Function f, int arg |
