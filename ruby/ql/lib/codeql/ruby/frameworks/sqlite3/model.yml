@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: sinkModel
+    data:
+      - [
+          "SQLite3::Database",
+          "Method[prepare,execute,execute2,execute_batch,execute_batch2,get_first_row,get_first_value,query].Argument[0]",
+          "sql-injection",
+        ]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: typeModel
+    data:
+      - [
+          "SQLite3::Database",
+          "SQLite3::Database!",
+          "Method[new].Argument[block].Parameter[0]",
+        ]
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - [
+          "SQLite3::Database!",
+          "Method[quote]",
+          "Argument[0]",
+          "ReturnValue",
+          "taint",
+        ]

@@ -33,10 +33,10 @@ module Sqlite3 {
   }
 
   /** A prepared but unexecuted SQL statement. */
-  private class PreparedStatement extends SqlConstruction::Range, DataFlow::CallNode {
+  private class PreparedStatement extends DataFlow::CallNode {
     PreparedStatement() { this = getADatabaseMethodCall("prepare") }
 
-    override DataFlow::Node getSql() { result = this.getArgument(0) }
+    DataFlow::Node getSql() { result = this.getArgument(0) }
   }
 
   /** Execution of a prepared SQL statement. */
@@ -48,34 +48,7 @@ module Sqlite3 {
       this.getMethodName() = ["columns", "execute", "execute!", "get_metadata", "types"]
     }
 
-    override DataFlow::Node getSql() { result = stmt.getReceiver() }
-  }
-
-  /** Gets the name of a method called against a database that executes an SQL statement. */
-  private string getAnExecutionMethodName() {
-    result =
-      [
-        "execute", "execute2", "execute_batch", "execute_batch2", "get_first_row",
-        "get_first_value", "query"
-      ]
-  }
-
-  /** A method call against a database that constructs an SQL query. */
-  private class DatabaseMethodCallSqlConstruction extends SqlConstruction::Range, DataFlow::CallNode
-  {
-    // Database query execution methods also construct an SQL query
-    DatabaseMethodCallSqlConstruction() {
-      this = getADatabaseMethodCall(getAnExecutionMethodName())
-    }
-
-    override DataFlow::Node getSql() { result = this.getArgument(0) }
-  }
-
-  /** A method call against a database that executes an SQL query. */
-  private class DatabaseMethodCallSqlExecution extends SqlExecution::Range, DataFlow::CallNode {
-    DatabaseMethodCallSqlExecution() { this = getADatabaseMethodCall(getAnExecutionMethodName()) }
-
-    override DataFlow::Node getSql() { result = this.getArgument(0) }
+    override DataFlow::Node getSql() { result = stmt.getSql() }
   }
 
   /**
@@ -84,19 +57,6 @@ module Sqlite3 {
   private class SQLite3QuoteSanitization extends SqlSanitization {
     SQLite3QuoteSanitization() {
       this = API::getTopLevelMember("SQLite3").getMember("Database").getAMethodCall("quote")
-    }
-  }
-
-  /**
-   * Flow summary for `SQLite3::Database.quote()`.
-   */
-  private class QuoteSummary extends SummarizedCallable {
-    QuoteSummary() { this = "SQLite3::Database.quote()" }
-
-    override MethodCall getACall() { result = any(SQLite3QuoteSanitization c).asExpr().getExpr() }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
   }
 }
