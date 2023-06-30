@@ -877,7 +877,6 @@ module RangeStage<
     )
   }
 
-  pragma[assume_small_delta]
   pragma[nomagic]
   private predicate boundedPhiRankStep(
     SemSsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,

@@ -359,7 +359,6 @@ module ProductFlow {
       Config::isSinkPair(node1.getNode(), node1.getState(), node2.getNode(), node2.getState())
     }
 
-    pragma[assume_small_delta]
     pragma[nomagic]
     private predicate fwdReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
       isSourcePair(node1, node2)
@@ -396,7 +395,6 @@ module ProductFlow {
       fwdIsSuccessorExit(pragma[only_bind_into](mid1), pragma[only_bind_into](mid2), succ1, succ2)
     }
 
-    pragma[assume_small_delta]
     private predicate fwdIsSuccessor(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
@@ -406,7 +404,6 @@ module ProductFlow {
       )
     }
 
-    pragma[assume_small_delta]
     pragma[nomagic]
     private predicate revReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
       fwdReachableInterprocEntry(node1, node2) and
