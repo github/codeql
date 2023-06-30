@@ -400,8 +400,8 @@ For example, extending the class from the :ref:`first example <defining-a-class>
 
     final class FinalOneTwoThree = OneTwoThree;
     
-    class OneTwo extends FinalOneTwoThree {
-      OneTwo() {
+    class OneTwoFinalExtension extends FinalOneTwoThree {
+      OneTwoFinalExtension() {
         this = 1 or this = 2
       }
     
@@ -431,11 +431,11 @@ final extensions leave the extended type unchanged:
 | 3 | One, two or three: 3    |
 +---+-------------------------+
 
-However, when calling ``getAString()`` on ``OneTwo``, the original definition is shadowed:
+However, when calling ``getAString()`` on ``OneTwoFinalExtension``, the original definition is shadowed:
 
 .. code-block:: ql
 
-    from OneTwo o
+    from OneTwoFinalExtension o
     select o, o.getAString()
 
 +---+-------------------------+
