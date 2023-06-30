@@ -1,1 +1,4 @@
+serverRequests
 | main.go:14:46:14:48 | definition of req |
+clientRequests
+| client/main.go:19:41:19:63 | "http://localhost:8000" |
