@@ -63,7 +63,7 @@
   some_user.handle.html_safe
 %>
 
-<%# BAD: Indirect to a database value without escaping (currently missed due to lack of 'self' handling in ORM tracking) %>
+<%# BAD: Indirect to a database value without escaping %>
 <%=
   some_user = User.find 1
   some_user.raw_name.html_safe
@@ -75,10 +75,10 @@
   some_user.handle
 %>
 
-<%# BAD: Indirect to a database value without escaping (currently missed due to lack of 'self' handling in ORM tracking) %>
+<%# BAD: Indirect to a database value without escaping %>
 <%= @user.display_name.html_safe %>
 
-<%# BAD: Indirect to a database value without escaping (currently missed due to lack of 'self' handling in ORM tracking) %>
+<%# BAD: Indirect to a database value without escaping %>
 <%= @other_user_raw_name.html_safe %>
 
 <%# BAD: Kernel.sprintf is a taint-step %>

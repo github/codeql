@@ -27,8 +27,8 @@ module ActionMailbox {
     Mail() {
       this =
         [
-          controller().trackInstance().getReturn("inbound_email").getAMethodCall("mail"),
-          controller().trackInstance().getAMethodCall("mail")
+          controller().getAnInstanceSelf().getAMethodCall("inbound_email").getAMethodCall("mail"),
+          controller().getAnInstanceSelf().getAMethodCall("mail")
         ]
     }
   }
@@ -40,7 +40,7 @@ module ActionMailbox {
     RemoteContent() {
       this =
         any(Mail m)
-            .track()
+            .(DataFlow::LocalSourceNode)
             .getAMethodCall([
                 "body", "to", "from", "raw_source", "subject", "from_address",
                 "recipients_addresses", "cc_addresses", "bcc_addresses", "in_reply_to",

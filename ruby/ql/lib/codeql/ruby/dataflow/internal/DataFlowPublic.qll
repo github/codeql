@@ -6,17 +6,12 @@ private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
 private import SsaImpl as SsaImpl
-private import codeql.ruby.ApiGraphs
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
  * (`ExprNode`) or a parameter (`ParameterNode`).
  */
 class Node extends TNode {
-  /** Starts backtracking from this node using API graphs. */
-  pragma[inline]
-  API::Node backtrack() { result = API::Internal::getNodeForBacktracking(this) }
-
   /** Gets the expression corresponding to this node, if any. */
   CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
 
@@ -80,11 +75,6 @@ class Node extends TNode {
       lambdaCreation(this, _, c) and
       result.asCallableAstNode() = c.asCallable()
     )
-  }
-
-  /** Gets the enclosing method, if any. */
-  MethodNode getEnclosingMethod() {
-    result.asCallableAstNode() = this.asExpr().getExpr().getEnclosingMethod()
   }
 }
 
@@ -154,18 +144,6 @@ class CallNode extends LocalSourceNode, ExprNode {
       result.asExpr() = pair.getValue()
     )
   }
-
-  /**
-   * Gets a potential target of this call, if any.
-   */
-  final CallableNode getATarget() {
-    result.asCallableAstNode() = this.asExpr().getExpr().(Call).getATarget()
-  }
-
-  /**
-   * Holds if this is a `super` call.
-   */
-  final predicate isSuperCall() { this.asExpr().getExpr() instanceof SuperCall }
 }
 
 /**
@@ -238,10 +216,6 @@ class SelfParameterNode extends ParameterNode instanceof SelfParameterNodeImpl {
  */
 class LocalSourceNode extends Node {
   LocalSourceNode() { isLocalSourceNode(this) }
-
-  /** Starts tracking this node forward using API graphs. */
-  pragma[inline]
-  API::Node track() { result = API::Internal::getNodeForForwardTracking(this) }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
   pragma[inline]
@@ -385,11 +359,6 @@ private module Cached {
     )
   }
 
-  cached
-  predicate methodHasSuperCall(MethodNode method, CallNode call) {
-    call.isSuperCall() and method = call.getEnclosingMethod()
-  }
-
   /**
    * A place in which a named constant can be looked up during constant lookup.
    */
@@ -416,39 +385,6 @@ private module Cached {
     or
     not access instanceof Namespace and
     result.asExpr().getExpr() = access
-  }
-
-  /**
-   * Gets a module for which `constRef` is the reference to an ancestor module.
-   *
-   * For example, `M` is the ancestry target of `C` in the following examples:
-   * ```rb
-   * class M < C {}
-   *
-   * module M
-   *   include C
-   * end
-   *
-   * module M
-   *   prepend C
-   * end
-   * ```
-   */
-  private ModuleNode getAncestryTarget(ConstRef constRef) { result.getAnAncestorExpr() = constRef }
-
-  /**
-   * Gets a scope in which a constant lookup may access the contents of the module referenced by `constRef`.
-   */
-  cached
-  TConstLookupScope getATargetScope(ConstRef constRef) {
-    result = MkAncestorLookup(getAncestryTarget(constRef).getAnImmediateDescendent*())
-    or
-    constRef.asConstantAccess() = any(ConstantAccess ac).getScopeExpr() and
-    result = MkQualifiedLookup(constRef.asConstantAccess())
-    or
-    result = MkNestedLookup(getAncestryTarget(constRef))
-    or
-    result = MkExactLookup(constRef.asConstantAccess().(Namespace).getModule())
   }
 
   cached
@@ -1092,33 +1028,6 @@ class ModuleNode instanceof Module {
    * this predicate.
    */
   ModuleNode getNestedModule(string name) { result = super.getNestedModule(name) }
-
-  /**
-   * Starts tracking the module object using API graphs.
-   *
-   * Concretely, this tracks forward from the following starting points:
-   * - A constant access that resolves to this module.
-   * - `self` in the module scope or in a singleton method of the module.
-   * - A call to `self.class` in an instance method of this module or an ancestor module.
-   */
-  bindingset[this]
-  pragma[inline]
-  API::Node trackModule() { result = API::Internal::getModuleNode(this) }
-
-  /**
-   * Starts tracking instances of this module forward using API graphs.
-   *
-   * Concretely, this tracks forward from the following starting points:
-   * - `self` in instance methods of this module and ancestor modules
-   * - Calls to `new` on the module object
-   *
-   * Note that this includes references to `self` in ancestor modules, but not in descendent modules.
-   * This is usually the desired behavior, particularly if this module was itself found using
-   * a call to `getADescendentModule()`.
-   */
-  bindingset[this]
-  pragma[inline]
-  API::Node trackInstance() { result = API::Internal::getModuleInstance(this) }
 }
 
 /**
@@ -1307,9 +1216,6 @@ class MethodNode extends CallableNode {
 
   /** Holds if this method is protected. */
   predicate isProtected() { this.asCallableAstNode().isProtected() }
-
-  /** Gets a `super` call in this method. */
-  CallNode getASuperCall() { methodHasSuperCall(this, result) }
 }
 
 /**
@@ -1429,11 +1335,45 @@ class ConstRef extends LocalSourceNode {
   }
 
   /**
+   * Gets a module for which this constant is the reference to an ancestor module.
+   *
+   * For example, `M` is the ancestry target of `C` in the following examples:
+   * ```rb
+   * class M < C {}
+   *
+   * module M
+   *   include C
+   * end
+   *
+   * module M
+   *   prepend C
+   * end
+   * ```
+   */
+  private ModuleNode getAncestryTarget() { result.getAnAncestorExpr() = this }
+
+  /**
    * Gets the known target module.
    *
    * We resolve these differently to prune out infeasible constant lookups.
    */
   private Module getExactTarget() { result.getAnImmediateReference() = access }
+
+  /**
+   * Gets a scope in which a constant lookup may access the contents of the module referenced by this constant.
+   */
+  cached
+  private TConstLookupScope getATargetScope() {
+    forceCachingInSameStage() and
+    result = MkAncestorLookup(this.getAncestryTarget().getAnImmediateDescendent*())
+    or
+    access = any(ConstantAccess ac).getScopeExpr() and
+    result = MkQualifiedLookup(access)
+    or
+    result = MkNestedLookup(this.getAncestryTarget())
+    or
+    result = MkExactLookup(access.(Namespace).getModule())
+  }
 
   /**
    * Gets the scope expression, or the immediately enclosing `Namespace` (skipping over singleton classes).
@@ -1496,7 +1436,7 @@ class ConstRef extends LocalSourceNode {
   pragma[inline]
   ConstRef getConstant(string name) {
     exists(TConstLookupScope scope |
-      pragma[only_bind_into](scope) = getATargetScope(pragma[only_bind_out](this)) and
+      pragma[only_bind_into](scope) = pragma[only_bind_out](this).getATargetScope() and
       result.accesses(pragma[only_bind_out](scope), name)
     )
   }
@@ -1518,9 +1458,7 @@ class ConstRef extends LocalSourceNode {
    * end
    * ```
    */
-  bindingset[this]
-  pragma[inline_late]
-  ModuleNode getADescendentModule() { MkAncestorLookup(result) = getATargetScope(this) }
+  ModuleNode getADescendentModule() { MkAncestorLookup(result) = this.getATargetScope() }
 }
 
 /**

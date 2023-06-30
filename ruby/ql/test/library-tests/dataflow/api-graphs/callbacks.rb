@@ -1,39 +1,39 @@
-Something.foo.withCallback do |a, b| #$ source=Member[Something].Method[foo].ReturnValue
-    a.something #$ source=Member[Something].Method[foo].ReturnValue.Method[withCallback].Argument[block].Argument[0].Method[something].ReturnValue
-    b.somethingElse #$ source=Member[Something].Method[foo].ReturnValue.Method[withCallback].Argument[block].Argument[1].Method[somethingElse].ReturnValue
-end #$ source=Member[Something].Method[foo].ReturnValue.Method[withCallback].ReturnValue
+Something.foo.withCallback do |a, b| #$ use=getMember("Something").getMethod("foo").getReturn()
+    a.something #$ use=getMember("Something").getMethod("foo").getReturn().getMethod("withCallback").getBlock().getParameter(0).getMethod("something").getReturn()
+    b.somethingElse #$ use=getMember("Something").getMethod("foo").getReturn().getMethod("withCallback").getBlock().getParameter(1).getMethod("somethingElse").getReturn()
+end #$ use=getMember("Something").getMethod("foo").getReturn().getMethod("withCallback").getReturn()
 
-Something.withNamedArg do |a:, b: nil| #$ source=Member[Something]
-    a.something #$ source=Member[Something].Method[withNamedArg].Argument[block].Parameter[a:].Method[something].ReturnValue
-    b.somethingElse #$ source=Member[Something].Method[withNamedArg].Argument[block].Parameter[b:].Method[somethingElse].ReturnValue
-end #$ source=Member[Something].Method[withNamedArg].ReturnValue
+Something.withNamedArg do |a:, b: nil| #$ use=getMember("Something")
+    a.something #$ use=getMember("Something").getMethod("withNamedArg").getBlock().getKeywordParameter("a").getMethod("something").getReturn()
+    b.somethingElse #$ use=getMember("Something").getMethod("withNamedArg").getBlock().getKeywordParameter("b").getMethod("somethingElse").getReturn()
+end #$ use=getMember("Something").getMethod("withNamedArg").getReturn()
 
-Something.withLambda ->(a, b) { #$ source=Member[Something]
-    a.something #$ source=Member[Something].Method[withLambda].Argument[0].Parameter[0].Method[something].ReturnValue
-    b.something #$ source=Member[Something].Method[withLambda].Argument[0].Parameter[1].Method[something].ReturnValue
-} #$ source=Member[Something].Method[withLambda].ReturnValue
+Something.withLambda ->(a, b) { #$ use=getMember("Something")
+    a.something #$ use=getMember("Something").getMethod("withLambda").getParameter(0).getParameter(0).getMethod("something").getReturn()
+    b.something #$ use=getMember("Something").getMethod("withLambda").getParameter(0).getParameter(1).getMethod("something").getReturn()
+} #$ use=getMember("Something").getMethod("withLambda").getReturn()
 
-Something.namedCallback( #$ source=Member[Something]
+Something.namedCallback( #$ use=getMember("Something")
     onEvent: ->(a, b) {
-        a.something #$ source=Member[Something].Method[namedCallback].Argument[onEvent:].Parameter[0].Method[something].ReturnValue
-        b.something #$ source=Member[Something].Method[namedCallback].Argument[onEvent:].Parameter[1].Method[something].ReturnValue
+        a.something #$ use=getMember("Something").getMethod("namedCallback").getKeywordParameter("onEvent").getParameter(0).getMethod("something").getReturn()
+        b.something #$ use=getMember("Something").getMethod("namedCallback").getKeywordParameter("onEvent").getParameter(1).getMethod("something").getReturn()
     }
-) #$ source=Member[Something].Method[namedCallback].ReturnValue
+) #$ use=getMember("Something").getMethod("namedCallback").getReturn()
 
-Something.nestedCall1 do |a| #$ source=Member[Something]
-    a.nestedCall2 do |b:| #$ reachableFromSource=Member[Something].Method[nestedCall1].Argument[block].Parameter[0]
-        b.something #$ source=Member[Something].Method[nestedCall1].Argument[block].Parameter[0].Method[nestedCall2].Argument[block].Parameter[b:].Method[something].ReturnValue
-    end #$ source=Member[Something].Method[nestedCall1].Argument[block].Parameter[0].Method[nestedCall2].ReturnValue
-end #$ source=Member[Something].Method[nestedCall1].ReturnValue
+Something.nestedCall1 do |a| #$ use=getMember("Something")
+    a.nestedCall2 do |b:| #$ use=getMember("Something").getMethod("nestedCall1").getBlock().getParameter(0)
+        b.something #$ use=getMember("Something").getMethod("nestedCall1").getBlock().getParameter(0).getMethod("nestedCall2").getBlock().getKeywordParameter("b").getMethod("something").getReturn()
+    end #$ use=getMember("Something").getMethod("nestedCall1").getBlock().getParameter(0).getMethod("nestedCall2").getReturn()
+end #$ use=getMember("Something").getMethod("nestedCall1").getReturn()
 
 def getCallback()
     ->(x) {
-        x.something #$ source=Member[Something].Method[indirectCallback].Argument[0].Parameter[0].Method[something].ReturnValue
+        x.something #$ use=getMember("Something").getMethod("indirectCallback").getParameter(0).getParameter(0).getMethod("something").getReturn()
     }
 end
-Something.indirectCallback(getCallback()) #$ source=Member[Something].Method[indirectCallback].ReturnValue
+Something.indirectCallback(getCallback()) #$ use=getMember("Something").getMethod("indirectCallback").getReturn()
 
-Something.withMixed do |a, *args, b| #$ source=Member[Something]
-    a.something #$ source=Member[Something].Method[withMixed].Argument[block].Parameter[0].Method[something].ReturnValue
+Something.withMixed do |a, *args, b| #$ use=getMember("Something")
+    a.something #$ use=getMember("Something").getMethod("withMixed").getBlock().getParameter(0).getMethod("something").getReturn()
     # b.something # not currently handled correctly
-end #$ source=Member[Something].Method[withMixed].ReturnValue
+end #$ use=getMember("Something").getMethod("withMixed").getReturn()
