@@ -703,3 +703,11 @@ namespace strings {
 		sink(p); // $ ast ir
 	}
 }
+
+char * strncpy (char *, const char *, unsigned long);
+
+void test_strncpy(char* d, char* s) {
+	argument_source(s);
+	strncpy(d, s, 16);
+	sink(d); // $ ast ir
+}
