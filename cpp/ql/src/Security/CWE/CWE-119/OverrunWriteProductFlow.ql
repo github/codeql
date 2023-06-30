@@ -120,10 +120,6 @@ module ValidState {
 
     predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 
-    predicate isBarrierOut(DataFlow::Node node) {
-      node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
-    }
-
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
