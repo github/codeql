@@ -1,6 +1,6 @@
 package main
 
-//go:generate depstubber -vendor go-micro.dev/v4 Service
+//go:generate depstubber -vendor go-micro.dev/v4 Service,Option,Options NewService,Name,Handle
 //go:generate depstubber -vendor go-micro.dev/v4/server Server
 //go:generate depstubber -vendor go-micro.dev/v4/client Client
 
