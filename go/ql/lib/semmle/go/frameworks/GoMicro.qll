@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.security.RequestForgeryCustomizations
 
 /**
  * Module for Go-Micro framework.
@@ -13,6 +14,13 @@ module GoMicro {
    */
   class GoMicroServerType extends Type {
     GoMicroServerType() { this.hasQualifiedName("go-micro.dev/v4/server", "Server") }
+  }
+
+  /**
+   * A GoMicro client type.
+   */
+  class GoMicroClientType extends Type {
+    GoMicroClientType() { this.hasQualifiedName("go-micro.dev/v4/client", "Client") }
   }
 
   /**
@@ -85,6 +93,20 @@ module GoMicro {
   }
 
   /**
+   * A Client server handler type.
+   */
+  class ClientServiceType extends NamedType {
+    ClientServiceType() {
+      exists(ServiceInterfaceType i, TypeEntity te |
+        this.implements(i) and
+        this.getName().regexpMatch("(?i).*Service") and
+        te.getType() = this and
+        te.getDeclaration().getLocation().getFile() instanceof ProtocGeneratedFile
+      )
+    }
+  }
+
+  /**
    * A service register handler.
    */
   class ServiceRegisterHandler extends Function {
@@ -109,6 +131,36 @@ module GoMicro {
         this.implements(i.getNamedType().getMethod(_))
       )
     }
+  }
+
+  /**
+   * A client service function.
+   */
+  class ClientService extends Function {
+    ClientService() {
+      exists(ClientServiceType c |
+        this.getName().regexpMatch("(?i)new" + c.getName()) and
+        this.getParameterType(0) instanceof StringType and
+        this.getParameterType(1) instanceof GoMicroClientType and
+        this.getDeclaration().getLocation().getFile() instanceof ProtocGeneratedFile
+      )
+    }
+  }
+
+  /**
+   * An SSRF sink for the Client service function.
+   */
+  class ClientRequestUrlAsSink extends RequestForgery::Sink {
+    ClientRequestUrlAsSink() {
+      exists(DataFlow::CallNode call |
+        call.getArgument(0) = this and
+        call.getTarget() instanceof ClientService
+      )
+    }
+
+    override DataFlow::Node getARequest() { result = this }
+
+    override string getKind() { result = "URL" }
   }
 
   /**
