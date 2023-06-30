@@ -1,6 +1,16 @@
+/**
+ * Provides models of the [go-micro library](https://github.com/go-micro/go-micro).
+ */
+
 import go
 
+/**
+ * Module for Go-Micro framework.
+ */
 module GoMicro {
+  /**
+   * GoMicro server type.
+   */
   class GoMicroServerType extends Type {
     GoMicroServerType() { this.hasQualifiedName("go-micro.dev/v4/server", "Server") }
   }
