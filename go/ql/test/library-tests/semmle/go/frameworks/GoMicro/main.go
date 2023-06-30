@@ -1,5 +1,9 @@
 package main
 
+//go:generate depstubber -vendor go-micro.dev/v4 Service
+//go:generate depstubber -vendor go-micro.dev/v4/server Server
+//go:generate depstubber -vendor go-micro.dev/v4/client Client
+
 import (
 	pb "codeql-go-tests/frameworks/GoMicro/proto"
 	"context"
