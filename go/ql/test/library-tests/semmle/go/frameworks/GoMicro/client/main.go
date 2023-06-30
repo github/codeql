@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"go-micro.dev/v4"
+	micro "go-micro.dev/v4"
 )
 
 func main() {

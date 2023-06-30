@@ -1,8 +1,8 @@
 package main
 
-//go:generate depstubber -vendor go-micro.dev/v4 Service,Option,Options NewService,Name,Handle
-//go:generate depstubber -vendor go-micro.dev/v4/server Server
-//go:generate depstubber -vendor go-micro.dev/v4/client Client
+//go:generate depstubber -vendor go-micro.dev/v4 Service,Option,Options NewService,Name,Handle,Server,Client
+//go:generate depstubber -vendor go-micro.dev/v4/server Server Handle
+//go:generate depstubber -vendor go-micro.dev/v4/client Client Call
 
 import (
 	pb "codeql-go-tests/frameworks/GoMicro/proto"
@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"log"
 
-	"go-micro.dev/v4"
+	micro "go-micro.dev/v4"
 )
 
 type Greeter struct{}
