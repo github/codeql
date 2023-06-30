@@ -959,13 +959,18 @@ The types specified after the ``extends`` keyword are the *base types* of the cl
 
 The types specified after the ``instanceof`` keyword are the *instanceof types* of the class.
 
-A class type is said to *inherit* from the base types. In addition, inheritance is transitive: If a type ``A`` inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` inherits from ``C``.
+A class type is said to *final inherit* from base types that are final or referenced through final aliases, and a class type is said to *inherit* from its other base types. In addition, inheritance is transitive:
+
+- If a type ``A`` inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` inherits from ``C``.
+- If a type ``A`` final inherits from a type ``B``, and ``B`` inherits from a type ``C``, then ``A`` final inherits from ``C``.
+- If a type ``A`` inherits from a type ``B``, and ``B`` final inherits from a type ``C``, then ``A`` final inherits from ``C``.
+- If a type ``A`` final inherits from a type ``B``, and ``B`` final inherits from a type ``C``, then ``A`` final inherits from ``C``.
 
 A class adds a mapping from the class name to the class declaration to the current module's declared type environment.
 
 A valid class can be annotated with ``abstract``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
 
-A valid class may not inherit from a final class, from itself, or from more than one primitive type.
+A valid class may not inherit from itself, or from more than one primitive type. The set of types that a valid class inherits from must be disjunct from the set of types that it final inherits from.
 
 A valid class must have at least one base type or instanceof type.
 
@@ -975,9 +980,10 @@ Class dependencies
 The program is invalid if there is a cycle of class dependencies.
 
 The following are class dependencies:
+
 - ``C`` depends on ``C.C``
 - ``C.C`` depends on ``C.extends``
-- If ``C`` is abstract then it depends on all classes ``D`` such that ``C`` is a base type of ``D``.
+- If ``C`` is abstract then it depends on all classes ``D`` such that ``C`` is a base type of ``D`` and ``D`` inherits from ``C``.
 - ``C.extends`` depends on ``D.D`` for each base type ``D`` of ``C``.
 - ``C.extends`` depends on ``D`` for each instanceof type ``D`` of ``C``.
 
@@ -1029,7 +1035,9 @@ A valid member predicate can be annotated with ``abstract``, ``cached``, ``final
 
 If a type is provided before the name of the member predicate, then that type is the *result type* of the predicate. Otherwise, the predicate has no result type. The types of the variables in the ``var_decls`` are called the predicate's *argument types*.
 
-A member predicate ``p`` with enclosing class ``C`` *overrides* a member predicate ``p'`` with enclosing class ``D`` when ``C`` inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name and the same arity. An overriding predicate must have the same sequence of argument types as any predicates which it overrides, otherwise the program is invalid.
+A member predicate ``p`` with enclosing class ``C`` *overrides* a member predicate ``p'`` with enclosing class ``D`` when ``p`` is annotated ``overrride``, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, ``p'`` is not final, and both ``p`` and ``p'`` have the same name and the same arity. An overriding predicate must have the same sequence of argument types as any predicates which it overrides, otherwise the program is invalid.
+
+A member predicate ``p`` with enclosing class ``C`` *shadows* a member predicate ``p'`` with enclosing class ``D`` when ``C`` final inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name and the same arity. Additionally, a member predicate ``p`` with enclosing class ``C`` *shadows* a member predicate ``p'`` with enclosing class ``D`` when ``C`` inherits from ``D``, ``p'`` is visible in ``C``, ``p'`` is final, and both ``p`` and ``p'`` have the same name and the same arity.
 
 Member predicates have one or more *root definitions*. If a member predicate overrides no other member predicate, then it is its own root definition. Otherwise, its root definitions are those of any member predicate that it overrides.
 
@@ -1043,7 +1051,9 @@ A class may not inherit from a class with an abstract member predicate unless it
 
 A valid class must include a non-private predicate named ``toString`` with no arguments and a result type of ``string``, or it must inherit from a class that does.
 
-A valid class may not inherit from two different classes that include a predicate with the same name and number of arguments, unless either one of the predicates overrides the other, or the class defines a predicate that overrides both of them.
+A valid class may not inherit from two different classes that include a predicate with the same name and number of arguments, unless either one of the predicates overrides or shadows the other, or the class defines a predicate that overrides or shadows both of them.
+
+A valid class may not final inherit from two different classes that include a predicate with the same name and number of arguments, unless either one of the predicates overrides or shadows the other, or the class defines a predicate that shadows both of them.
 
 The typing environment for a member predicate or character is the same as if it were a non-member predicate, except that it additionally maps ``this`` to a type and also maps any fields on a class to a type. If the member is a character, then the typing environment maps ``this`` to the class domain type of the class. Otherwise, it maps ``this`` to the class type of the class itself.
 The typing environment also maps any field to the type of the field.
@@ -1053,9 +1063,13 @@ Fields
 
 A field declaration introduces a mapping from the field name to the field declaration in the class's declared field environment.
 
-A field ``f`` with enclosing class ``C`` *overrides* a field ``f'`` with enclosing class ``D`` when ``f`` is annotated ``override``, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name.
+A field ``f`` with enclosing class ``C`` *overrides* a field ``f'`` with enclosing class ``D`` when ``f`` is annotated ``override``, ``C`` inherits from ``D``, ``p'`` is visible in ``C``, ``p'`` is not final, and both ``p`` and ``p'`` have the same name.
 
-A valid class may not inherit from two different classes that include a field with the same name, unless either one of the fields overrides the other, or the class defines a field that overrides both of them.
+A field ``f`` with enclosing class ``C`` *shadows* a field ``f'`` with enclosing class ``D`` when ``C`` final inherits from ``D``, ``p'`` is visible in ``C``, and both ``p`` and ``p'`` have the same name. Additionally, a field ``f`` with enclosing class ``C`` *shadows* a field ``f'`` with enclosing class ``D`` when ``C`` inherits from ``D``, ``p'`` is visible in ``C``, ``p'`` is final, and both ``p`` and ``p'`` have the same name.
+
+A valid class may not inherit from two different classes that include a field with the same name, unless either one of the fields overrides or shadows the other, or the class defines a field that overrides or shadows both of them.
+
+A valid class may not final inherit from two different classes that include a field with the same name, unless either one of the fields overrides or shadows the other, or the class defines a field that shadows both of them.
 
 A valid field must override another field if it is annotated ``override``.
 
@@ -1349,9 +1363,10 @@ If the call includes a closure, then all declared predicate arguments, the enclo
 
 A call to a member predicate may  be a *direct* call:
  - If the receiver is not a super expression it is not direct.
- - If the receiver is ``A.super`` and ``A`` is an instanceof type and not a base type then it is not direct.
- - If the receiver is ``A.super`` and ``A`` is a base type type and not an instanceof type then it is direct.
- - If the receiver is ``A.super`` and ``A`` is a base type and an instanceof type then the call is not valid.
+ - If the receiver is ``A.super`` and ``A`` is an instanceof type and not a base type that is inherited from then it is not direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type that is final inherited from then it is not direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type that is inherited from and not an instanceof type then it is direct.
+ - If the receiver is ``A.super`` and ``A`` is a base type that is inherited from and an instanceof type then the call is not valid.
  - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of an instanceof type and not in the exported member predicate environment of a base type then it isn't direct.
  - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and not in the exported member predicate environment of an instanceof type then it is direct.
  - If the receiver is ``super`` and the member predicate is in the exported member predicate environment of a base type and in the exported member predicate environment of an instanceof type then the call is not valid.
@@ -2123,7 +2138,7 @@ Predicates, and types can *depend* and *strictly depend* on each other. Such dep
 
 -  For each class ``C`` with a characteristic predicate, ``C.C`` depends on the characteristic predicate.
 
--  For each abstract class ``A`` in the program, for each type ``C`` that has ``A`` as a base type, ``A.class`` depends on ``C.class``.
+-  For each abstract class ``A`` in the program, for each type ``C`` that inherits from ``A`` and has ``A`` as a base type, ``A.class`` depends on ``C.class``.
 
 -  A predicate with a higher-order body may strictly depend or depend on each predicate reference within the body. The exact dependencies are left unspecified.
 
@@ -2175,7 +2190,7 @@ Each layer of the stratification is *populated* in order. To populate a layer, e
 
 -  To populate the type ``C.class`` for an abstract class type ``C``, identify each named tuple that has the following properties:
      - It is a member of ``C.C``.
-     - For each class ``D`` that has ``C`` as a base type then there is a named tuple with variables from the public fields of ``C`` and ``this`` that the given tuple and a tuple in ``D.class`` both extend.
+     - For each class ``D`` that inherits from ``C`` and has ``C`` as a base type then there is a named tuple with variables from the public fields of ``C`` and ``this`` that the given tuple and a tuple in ``D.class`` both extend.
 
 
 Query evaluation
