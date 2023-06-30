@@ -9,7 +9,7 @@ import go
  */
 module GoMicro {
   /**
-   * GoMicro server type.
+   * A GoMicro server type.
    */
   class GoMicroServerType extends Type {
     GoMicroServerType() { this.hasQualifiedName("go-micro.dev/v4/server", "Server") }
@@ -46,7 +46,7 @@ module GoMicro {
   }
 
   /**
-   * Server internal
+   * A Server Interface type.
    */
   class ServiceInterfaceType extends InterfaceType {
     NamedType namedType;
@@ -71,7 +71,7 @@ module GoMicro {
   }
 
   /**
-   * A service server type.
+   * A Service server handler type.
    */
   class ServiceServerType extends NamedType {
     ServiceServerType() {
@@ -112,7 +112,7 @@ module GoMicro {
   }
 
   /**
-   * Remote / Untrusted requests coming to the service handler.
+   * A set of remote requests from a service handler.
    */
   class Request extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
     Request() {
