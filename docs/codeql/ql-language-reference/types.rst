@@ -136,8 +136,9 @@ The body of a class can contain:
 
 When you define a class, that class also inherits all non-:ref:`private` member predicates and
 fields from its supertypes.
-You can :ref:`override <overriding-member-predicates>` or :ref:`shadow <final-extensions>` those
-predicates and fields (depending on whether they are final) to give them a more specific definition.
+
+Depending on whether they are final, you can :ref:`override <overriding-member-predicates>` or 
+:ref:`shadow <final-extensions>` those predicates and fields to give them a more specific definition.
 
 .. _characteristic-predicates:
 
