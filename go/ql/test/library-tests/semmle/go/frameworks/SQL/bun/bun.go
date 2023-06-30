@@ -7,7 +7,6 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/sqliteshim"
-	"github.com/uptrace/bun/extra/bundebug"
 )
 
 func getUntrustedString() string {
@@ -36,4 +35,5 @@ func main() {
 	db.Query(untrusted)
 	db.Prepare(untrusted)
 	db.PrepareContext(ctx, untrusted)
+	bun.NewRawQuery(db, untrusted)
 }

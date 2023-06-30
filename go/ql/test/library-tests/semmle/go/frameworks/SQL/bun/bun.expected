@@ -1,16 +1,17 @@
-| bun.go:27:10:27:18 | untrusted | github.com/uptrace/bun | DB | Exec |
-| bun.go:28:22:28:30 | untrusted | github.com/uptrace/bun | DB | ExecContext |
-| bun.go:29:26:29:34 | untrusted | github.com/uptrace/bun | DB | QueryRowContext |
-| bun.go:30:28:30:36 | untrusted | github.com/uptrace/bun | SelectQuery | ColumnExpr |
-| bun.go:30:28:30:36 | untrusted | github.com/uptrace/bun | countQuery | ColumnExpr |
-| bun.go:30:28:30:36 | untrusted | github.com/uptrace/bun | selectExistsQuery | ColumnExpr |
-| bun.go:30:28:30:36 | untrusted | github.com/uptrace/bun | selectQueryBuilder | ColumnExpr |
-| bun.go:30:28:30:36 | untrusted | github.com/uptrace/bun | whereExistsQuery | ColumnExpr |
-| bun.go:31:12:31:20 | untrusted | github.com/uptrace/bun | DB | NewRaw |
-| bun.go:32:23:32:31 | untrusted | github.com/uptrace/bun | DB | QueryContext |
-| bun.go:33:26:33:34 | untrusted | github.com/uptrace/bun | DB | QueryRowContext |
-| bun.go:34:14:34:22 | untrusted | github.com/uptrace/bun | DB | QueryRow |
-| bun.go:35:9:35:17 | untrusted | github.com/uptrace/bun | DB | Raw |
-| bun.go:36:11:36:19 | untrusted | github.com/uptrace/bun | DB | Query |
-| bun.go:37:13:37:21 | untrusted | github.com/uptrace/bun | DB | Prepare |
-| bun.go:38:25:38:33 | untrusted | github.com/uptrace/bun | DB | PrepareContext |
+| bun.go:26:10:26:18 | untrusted | github.com/uptrace/bun.DB | Exec |
+| bun.go:27:22:27:30 | untrusted | github.com/uptrace/bun.DB | ExecContext |
+| bun.go:28:26:28:34 | untrusted | github.com/uptrace/bun.DB | QueryRowContext |
+| bun.go:29:28:29:36 | untrusted | github.com/uptrace/bun.SelectQuery | ColumnExpr |
+| bun.go:29:28:29:36 | untrusted | github.com/uptrace/bun.countQuery | ColumnExpr |
+| bun.go:29:28:29:36 | untrusted | github.com/uptrace/bun.selectExistsQuery | ColumnExpr |
+| bun.go:29:28:29:36 | untrusted | github.com/uptrace/bun.selectQueryBuilder | ColumnExpr |
+| bun.go:29:28:29:36 | untrusted | github.com/uptrace/bun.whereExistsQuery | ColumnExpr |
+| bun.go:30:12:30:20 | untrusted | github.com/uptrace/bun.DB | NewRaw |
+| bun.go:31:23:31:31 | untrusted | github.com/uptrace/bun.DB | QueryContext |
+| bun.go:32:26:32:34 | untrusted | github.com/uptrace/bun.DB | QueryRowContext |
+| bun.go:33:14:33:22 | untrusted | github.com/uptrace/bun.DB | QueryRow |
+| bun.go:34:9:34:17 | untrusted | github.com/uptrace/bun.DB | Raw |
+| bun.go:35:11:35:19 | untrusted | github.com/uptrace/bun.DB | Query |
+| bun.go:36:13:36:21 | untrusted | github.com/uptrace/bun.DB | Prepare |
+| bun.go:37:25:37:33 | untrusted | github.com/uptrace/bun.DB | PrepareContext |
+| bun.go:38:22:38:30 | untrusted | github.com/uptrace/bun | NewRawQuery |
