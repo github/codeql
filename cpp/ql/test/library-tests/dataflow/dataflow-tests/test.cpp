@@ -779,7 +779,7 @@ void test_sometimes_calls_sink_lt() {
 void sometimes_calls_sink_switch(int x, int n) {
   switch(n) {
     case 0:
-      sink(x); // $ ast,ir=790:31 SPURIOUS: ast,ir=788:31 // IR spurious results because IRGuard don't understand switch statements.
+      sink(x); // $ ast,ir=790:31 SPURIOUS: ast,ir=788:31 // IR spurious results because IRGuard doesn't understand switch statements.
       break;
   }
 }
