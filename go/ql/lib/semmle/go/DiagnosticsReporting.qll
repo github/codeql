@@ -38,12 +38,14 @@ private class Diagnostic extends @diagnostic {
 bindingset[msg]
 private string removeAbsolutePaths(string msg) {
   exists(string r |
-    // turn
+    // turn both
     // cannot find package "subdir1/subsubdir1" in any of:\n\t/usr/local/Cellar/go/1.20.5/libexec/src/subdir1/subsubdir1 (from $GOROOT)\n\t/Users/owen-mc/go/src/subdir1/subsubdir1 (from $GOPATH)
+    // and
+    // cannot find package "subdir1/subsubdir1" in any of:\n\tC:\\hostedtoolcache\\windows\\go\\1.20.5\\x64\\src\\subdir1\\subsubdir1 (from $GOROOT)\n\tC:\\Users\\runneradmin\\go\\src\\subdir1\\subsubdir1 (from $GOPATH)
     // into
-    // cannot find package "subdir1/subsubdir1" in any of:\n\t(absolute path)/src/subdir1/subsubdir1 (from $GOROOT)\n\t(absolute path)/src/subdir1/subsubdir1 (from $GOPATH)
+    // cannot find package "subdir1/subsubdir1" in any of:\n\t(absolute path) (from $GOROOT)\n\t(absolute path) (from $GOPATH)
     r =
-      "(cannot find package [^ ]* in any of:\\n\\t)/[^ ]*(/src/[^ ]* \\(from \\$GOROOT\\)\\n\\t)/[^ ]*(/src/[^ ]* \\(from \\$GOPATH\\))" and
+      "(cannot find package [^ ]* in any of:\\n\\t).*( \\(from \\$GOROOT\\)\\n\\t).*( \\(from \\$GOPATH\\))" and
     if exists(msg.regexpCapture(r, 1))
     then
       result =
