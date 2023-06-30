@@ -120,6 +120,10 @@ module ValidState {
 
     predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 
+    predicate isBarrierOut(DataFlow::Node node) {
+      node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
+    }
+
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
@@ -233,7 +237,8 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
     exists(state1) and
-    hasSize(bufSource.asConvertedExpr(), sizeSource, state2)
+    hasSize(bufSource.asConvertedExpr(), sizeSource, state2) and
+    validState(sizeSource, state2)
   }
 
   predicate isSinkPair(

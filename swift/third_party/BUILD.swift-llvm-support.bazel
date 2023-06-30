@@ -2,8 +2,19 @@ load("@rules_pkg//:mappings.bzl", "pkg_files", "strip_prefix")
 
 cc_library(
     name = "swift-llvm-support",
-    srcs = glob(["*.a", "*.so", "*.dylib"]),
-    hdrs = glob(["include/**/*", "stdlib/**/*" ]),
+    srcs = glob([
+        "*.a",
+        "*.so",
+        "*.dylib",
+    ]),
+    hdrs = glob([
+        "include/**/*",
+        "stdlib/**/*",
+    ]),
+    includes = [
+        "include",
+        "stdlib/public/SwiftShims",
+    ],
     linkopts = [
         "-lm",
         "-lz",
@@ -19,7 +30,6 @@ cc_library(
         ],
         "//conditions:default": [],
     }),
-    includes = ["include", "stdlib/public/SwiftShims"],
     visibility = ["//visibility:public"],
 )
 

@@ -2795,11 +2795,14 @@ cfg.swift:
 #-----|                   getSource(): [IntegerLiteralExpr] 1
 #-----|               getLabel(0): [CaseLabelItem] .B
 #-----|                 getPattern(): [EnumElementPattern] .B
-#-----|           getElement(2): [CallExpr] call to ...
-#-----|             getFunction(): [UnresolvedDotExpr] ... .combine(_:)
-#-----|               getBase(): [DeclRefExpr] hasher
+#-----|           getElement(2): [CallExpr] call to combine(_:)
+#-----|             getFunction(): [MethodLookupExpr] .combine(_:)
+#-----|               getBase(): [InOutExpr] &...
+#-----|                 getSubExpr(): [DeclRefExpr] hasher
+#-----|               getMethodRef(): [DeclRefExpr] combine(_:)
 #-----|             getArgument(0): [Argument] : discriminator
 #-----|               getExpr(): [DeclRefExpr] discriminator
+#-----|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
 #-----|       getMember(7): [ConcreteVarDecl] hashValue
 #-----|           Type = Int
 #-----|         getAccessor(0): [Accessor] get
@@ -3482,11 +3485,14 @@ declarations.swift:
 #-----|               getSource(): [IntegerLiteralExpr] 4
 #-----|           getLabel(0): [CaseLabelItem] .value5
 #-----|             getPattern(): [EnumElementPattern] .value5
-#-----|       getElement(2): [CallExpr] call to ...
-#-----|         getFunction(): [UnresolvedDotExpr] ... .combine(_:)
-#-----|           getBase(): [DeclRefExpr] hasher
+#-----|       getElement(2): [CallExpr] call to combine(_:)
+#-----|         getFunction(): [MethodLookupExpr] .combine(_:)
+#-----|           getBase(): [InOutExpr] &...
+#-----|             getSubExpr(): [DeclRefExpr] hasher
+#-----|           getMethodRef(): [DeclRefExpr] combine(_:)
 #-----|         getArgument(0): [Argument] : discriminator
 #-----|           getExpr(): [DeclRefExpr] discriminator
+#-----|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
 #-----|   getMember(10): [ConcreteVarDecl] hashValue
 #-----|       Type = Int
 #-----|     getAccessor(0): [Accessor] get
@@ -4394,11 +4400,14 @@ expressions.swift:
 #-----|               getSource(): [IntegerLiteralExpr] 0
 #-----|           getLabel(0): [CaseLabelItem] .failed
 #-----|             getPattern(): [EnumElementPattern] .failed
-#-----|       getElement(2): [CallExpr] call to ...
-#-----|         getFunction(): [UnresolvedDotExpr] ... .combine(_:)
-#-----|           getBase(): [DeclRefExpr] hasher
+#-----|       getElement(2): [CallExpr] call to combine(_:)
+#-----|         getFunction(): [MethodLookupExpr] .combine(_:)
+#-----|           getBase(): [InOutExpr] &...
+#-----|             getSubExpr(): [DeclRefExpr] hasher
+#-----|           getMethodRef(): [DeclRefExpr] combine(_:)
 #-----|         getArgument(0): [Argument] : discriminator
 #-----|           getExpr(): [DeclRefExpr] discriminator
+#-----|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
 #-----|   getMember(5): [ConcreteVarDecl] hashValue
 #-----|       Type = Int
 #-----|     getAccessor(0): [Accessor] get
@@ -6656,11 +6665,14 @@ statements.swift:
 #-----|               getSource(): [IntegerLiteralExpr] 0
 #-----|           getLabel(0): [CaseLabelItem] .failed
 #-----|             getPattern(): [EnumElementPattern] .failed
-#-----|       getElement(2): [CallExpr] call to ...
-#-----|         getFunction(): [UnresolvedDotExpr] ... .combine(_:)
-#-----|           getBase(): [DeclRefExpr] hasher
+#-----|       getElement(2): [CallExpr] call to combine(_:)
+#-----|         getFunction(): [MethodLookupExpr] .combine(_:)
+#-----|           getBase(): [InOutExpr] &...
+#-----|             getSubExpr(): [DeclRefExpr] hasher
+#-----|           getMethodRef(): [DeclRefExpr] combine(_:)
 #-----|         getArgument(0): [Argument] : discriminator
 #-----|           getExpr(): [DeclRefExpr] discriminator
+#-----|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
 #-----|   getMember(5): [ConcreteVarDecl] hashValue
 #-----|       Type = Int
 #-----|     getAccessor(0): [Accessor] get
