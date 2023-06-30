@@ -237,7 +237,7 @@ void pointer_size_larger_than_array_element_size_and_does_not_divide_it() {
     vec3 *ptr = (vec3 *)array; // pai.getElementSize() will be 3 * sizeof(int) -> size = 1
 
     ptr[0] = vec3{}; // GOOD: writes ints 0, 1, 2
-    ptr[1] = vec3{}; // BAD: writes ints 3, 4, 5 [NOT DETECTED]
+    ptr[1] = vec3{}; // BAD: writes ints 3, 4, 5
 }
 
 void use(...);
@@ -287,4 +287,17 @@ void test_call_use2() {
 
     unsigned char buffer3[3];
     call_call_use(buffer3,3);
+}
+
+void foo(unsigned char* p, unsigned n) {
+  unsigned char* q = nullptr;
+  if(n < 10) {
+    q = &p[n];
+  }
+  unsigned char x = *q; // OK (There's a null pointer deref, but we don't care about that one here.)
+}
+
+void test(unsigned n) {
+  unsigned char buffer[10];
+  foo(buffer, n);
 }
