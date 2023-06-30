@@ -16,24 +16,34 @@ func getUntrustedString() string {
 func main() {
 	untrusted := getUntrustedString()
 
-	var num int
 	ctx := context.Background()
 	sqlite, err := sql.Open(sqliteshim.ShimName, "file::memory:?cache=shared")
 	if err != nil {
 		panic(err)
 	}
 	db := bun.NewDB(sqlite, sqlitedialect.New())
-	db.Exec(untrusted)
+	bun.NewRawQuery(db, untrusted)
+
 	db.ExecContext(ctx, untrusted)
-	db.QueryRowContext(ctx, untrusted).Scan(&num)
-	db.NewSelect().ColumnExpr(untrusted).Exec(ctx)
-	db.NewRaw(untrusted).Scan(ctx, &num)
+	db.PrepareContext(ctx, untrusted)
 	db.QueryContext(ctx, untrusted)
 	db.QueryRowContext(ctx, untrusted)
+
+	db.Exec(untrusted)
+	db.NewRaw(untrusted)
+	db.Prepare(untrusted)
+	db.Query(untrusted)
 	db.QueryRow(untrusted)
 	db.Raw(untrusted)
-	db.Query(untrusted)
-	db.Prepare(untrusted)
-	db.PrepareContext(ctx, untrusted)
-	bun.NewRawQuery(db, untrusted)
+
+	db.NewSelect().ColumnExpr(untrusted)
+	db.NewSelect().DistinctOn(untrusted)
+	db.NewSelect().For(untrusted)
+	db.NewSelect().GroupExpr(untrusted)
+	db.NewSelect().Having(untrusted)
+	db.NewSelect().ModelTableExpr(untrusted)
+	db.NewSelect().OrderExpr(untrusted)
+	db.NewSelect().TableExpr(untrusted)
+	db.NewSelect().Where(untrusted)
+	db.NewSelect().WhereOr(untrusted)
 }
