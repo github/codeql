@@ -153,5 +153,5 @@
     o.push({specified : 1, nodeName : a});
   });  
 
-  content = content.replace(/.+?(?=\s)/, ''); // OK - but flagged as not sanitizing <script> tags [INCONSISTENCY]
+  content = content.replace(/.+?(?=\s)/, ''); // OK
 });
