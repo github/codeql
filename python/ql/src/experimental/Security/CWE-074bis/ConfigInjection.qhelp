@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>Directly writing user input coming from an HTTP request parameter or straight from the
+			command-line input into the user's configuration file, without
+			properly sanitizing the input first, would lead to arbitrary configuration injection
+			vulnerability.</p>
+
+		<p>Which in turn may permit to achieve arbitrary code execution, via configuration values
+			that specify executables, such as <code>core.pager</code>, <code>core.editor</code>, and
+			so on.</p>
+
+	</overview>
+	<recommendation>
+
+		<p>To guard against arbitrary configuration injection, consider sanitizing the user input
+			from special characters in strings like escape sequence <code>\r</code> .</p>
+
+	</recommendation>
+	<example>
+
+		<p>The following example shows the user input coming from an HTTP request parameter being
+			written directly to the configuration file, leaving the program vulnerable to arbitrary
+			configuration injection with a malicious payload, like <code>value2\rmalicious_key
+				= malicious_value</code>.</p>
+
+		<sample src="example-bad.py" />
+
+	</example>
+	<references>
+
+
+		<li> Ethiack blog article: <a
+				href="https://blog.ethiack.com/blog/git-arbitrary-configuration-injection-cve-2023-29007">
+			Git Arbitrary Configuration Injection - CVE-2023-29007</a>. </li>
+
+
+	</references>
+</qhelp>
