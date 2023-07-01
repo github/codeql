@@ -11,4 +11,4 @@ private import AutomodelAlertSinkUtil
 
 from string queryId, int alertCount, string sinkModel
 where sinkModelTallyPerQuery(queryId, alertCount, sinkModel)
-select alertCount, sinkModel
+select queryId, alertCount, sinkModel
