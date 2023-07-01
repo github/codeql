@@ -2,14 +2,13 @@
 <qhelp>
 
 	<overview>
-		<p>Directly writing user input coming from an HTTP request parameter or straight from the
-			command-line input into the user's configuration file, without
-			properly sanitizing the input first, would lead to arbitrary configuration injection
-			vulnerability.</p>
+		<p> Directly writing user input coming from an HTTP request parameter or straight from the
+			command-line input into the user's configuration file, without properly sanitizing the
+			input first, would lead to arbitrary configuration injection vulnerability.</p>
 
-		<p>Which in turn may permit to achieve arbitrary code execution, via configuration values
-			that specify executables, such as <code>core.pager</code>, <code>core.editor</code>, and
-			so on.</p>
+		<p>This, in turn, may permit to achieve of arbitrary code execution, via configuration
+			values that specify executables, such as <code>core.pager</code>, <code>core.editor</code>,
+			and so on.</p>
 
 	</overview>
 	<recommendation>
