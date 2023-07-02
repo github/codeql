@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 7.8
  * @precision high
- * @id cpp/user-controlled-file-decompression3
+ * @id cpp/user-controlled-file-zlibuncompress
  * @tags security
  *       experimental
  *       external/cwe/cwe-409
@@ -35,13 +35,6 @@ module ZlibTaintConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc | fc.getTarget() instanceof UncompressFunction |
       fc.getArgument(0) = sink.asExpr()
-    )
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(FunctionCall fc | fc.getTarget() instanceof UncompressFunction |
-      node1.asExpr() = fc.getArgument(0) and
-      node2.asExpr() = fc
     )
   }
 }

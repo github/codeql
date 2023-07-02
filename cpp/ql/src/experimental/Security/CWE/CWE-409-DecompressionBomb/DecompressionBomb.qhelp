@@ -5,7 +5,6 @@
 <overview>
 <p>Extracting Compressed files with any compression algorithm like gzip can cause to denial of service attacks.</p>
 <p>Attackers can compress a huge file which created by repeated similiar byte and convert it to a small compressed file.</p>
-
 </overview>
 <recommendation>
 
@@ -25,7 +24,12 @@ An Unsafe Approach can be this example which we don't check for uncompressed siz
 <sample src="example_bad.cpp" />
 
 </example>
+
 <references>
+
+<li>
+<a href="https://zlib.net/manual.html">Zlib Documentation</a>
+</li>
 
 <li>
 <a href="https://www.bamsoftware.com/hacks/zipbomb/">A great research to gain more impact by this kind of attacks</a>

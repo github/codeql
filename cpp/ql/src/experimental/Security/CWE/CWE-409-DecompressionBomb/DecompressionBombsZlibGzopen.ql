@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 7.8
  * @precision high
- * @id cpp/user-controlled-file-decompression1
+ * @id cpp/user-controlled-file-zlibgz
  * @tags security
  *       experimental
  *       external/cwe/cwe-409

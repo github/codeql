@@ -1,3 +1,8 @@
+#include <iostream>
+#include <vector>
+#include "zlib.h"
+#include <cstdio>
+#include <cstring>
 
 int SafeGzread() {
     std::cout << "enter compressed file name!\n" << std::endl;

@@ -1,3 +1,8 @@
+#include <iostream>
+#include <vector>
+#include "zlib.h"
+#include <cstdio>
+#include <cstring>
 
 int UnsafeInflate(int argc, char *argv[]) {
     // original string len = 36
