@@ -11,28 +11,25 @@
  */
 
 import go
-import DataFlow::PathGraph
 
-/**
- * A data flow tracking configuration for tracking flow from RSA key length to
- * calls to RSA key generation functions.
- */
-class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
-  RsaKeyTrackingConfiguration() { this = "RsaKeyTrackingConfiguration" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.getIntValue() < 2048 }
 
-  override predicate isSource(DataFlow::Node source) { source.getIntValue() < 2048 }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(DataFlow::CallNode c |
       sink = c.getArgument(1) and
       c.getTarget().hasQualifiedName("crypto/rsa", "GenerateKey")
     )
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<comparisonBarrierGuard/3>::getABarrierNode()
   }
 }
+
+module Flow = DataFlow::Global<Config>;
+
+import Flow::PathGraph
 
 /**
  * Holds if `g` is a comparison which guarantees that `e` is at least 2048 on `branch`,
@@ -50,6 +47,6 @@ predicate comparisonBarrierGuard(DataFlow::Node g, Expr e, boolean branch) {
   )
 }
 
-from RsaKeyTrackingConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
 select sink, source, sink, "The size of this RSA key should be at least 2048 bits."
