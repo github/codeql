@@ -1,0 +1,8 @@
+edges
+| tests.swift:93:22:93:46 | call to String.init(contentsOf:) | tests.swift:118:19:118:19 | taintedString |
+nodes
+| tests.swift:93:22:93:46 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| tests.swift:118:19:118:19 | taintedString | semmle.label | taintedString |
+subpaths
+#select
+| tests.swift:118:19:118:19 | taintedString | tests.swift:93:22:93:46 | call to String.init(contentsOf:) | tests.swift:118:19:118:19 | taintedString | This regular expression is constructed from a $@. | tests.swift:93:22:93:46 | call to String.init(contentsOf:) | user-provided value |
