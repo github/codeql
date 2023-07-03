@@ -45,7 +45,7 @@ which still contains an HTML comment.
 </p>
 
 <p>
-One possible fix for this issue is to apply the regular expression replacement recursively until no
+One possible fix for this issue is to apply the regular expression replacement repeatedly until no
 more replacements can be performed. This ensures that the unsafe text does not re-appear in the sanitized input, effectively 
 removing all instances of the targeted pattern:
 </p>
