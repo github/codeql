@@ -16,10 +16,16 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
 
 /**
+ * A Pointer Variable is used in Flow source
+ */
+private class PointerVar extends VariableAccess {
+  PointerVar() { this.getType() instanceof PointerType }
+}
+/**
  * A unsigned char Variable is used in Flow source
  */
 private class Uint8Var extends VariableAccess {
-  Uint8Var() { this.getType().stripType().resolveTypedefs() instanceof UnsignedCharType }
+  Uint8Var() { this.getType().stripType().resolveTypedefs*() instanceof UnsignedCharType }
 }
 
 /**
@@ -33,7 +39,7 @@ private class MzStreampVar extends VariableAccess {
  * A Char Variable is used in Flow source
  */
 private class CharVar extends VariableAccess {
-  CharVar() { this.getType().stripType() instanceof CharType }
+  CharVar() { this.getType().stripType().resolveTypedefs*() instanceof CharType }
 }
 
 /**
@@ -71,7 +77,10 @@ private class MzZipReaderExtract extends Function {
   MzZipReaderExtract() {
     this.hasGlobalName([
         "mz_zip_reader_extract_file_to_heap", "mz_zip_reader_extract_to_heap",
-        "mz_zip_reader_extract_to_callback"
+        "mz_zip_reader_extract_to_callback", "mz_zip_reader_extract_file_to_callback",
+        "mz_zip_reader_extract_to_mem", "mz_zip_reader_extract_file_to_mem",
+        "mz_zip_reader_extract_iter_read", "mz_zip_reader_extract_to_file",
+        "mz_zip_reader_extract_file_to_file"
       ])
   }
 }
@@ -109,6 +118,9 @@ module MinizTaintConfig implements DataFlow::StateConfigSig {
 
   predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     source.asExpr() instanceof Uint8Var and
+    state = ""
+    or
+    source.asExpr() instanceof PointerVar and
     state = ""
     or
     source.asExpr() instanceof CharVar and
