@@ -142,3 +142,73 @@ void testStrncmp1() {
     char asdf[5];
     testStrncmp2(asdf);
 }
+
+void countdownBuf1(int **p) {
+  *--(*p) = 1; // GOOD [FALSE POSITIVE]
+  *--(*p) = 2; // GOOD
+  *--(*p) = 3; // GOOD
+  *--(*p) = 4; // GOOD
+}
+
+void countdownBuf2() {
+  int buf[4];
+
+  int *x = buf + 4;
+
+  countdownBuf1(&x);
+}
+
+int access(int *p) {
+    return p[0];
+}
+
+
+// unrolled loop style seen in crypto code.
+int countdownLength1(int *p, int len) {
+    while(len > 0) {
+        access(p);
+        p[1] = 1;
+        p[2] = 2;
+        p[3] = 3;
+        p[4] = 4;
+        p[5] = 5;
+        p[6] = 6; // BAD [FALSE NEGATIVE]
+        p[7] = 7; // BAD [FALSE NEGATIVE]
+        p += 8;
+        len -= 8;
+    }
+
+    return p[5];
+}
+
+int callCountdownLenght() {
+    
+    int buf[6];
+
+    return countdownLength1(buf, 6);
+}
+
+int countdownLength2() {
+    int buf[6];
+    int len = 6;
+    int *p = buf;
+    
+    if(len % 8) {
+        return -1;
+    }
+
+    while(len > 0) {
+        p[0] = 0;
+        p[1] = 1;
+        p[2] = 2;
+        p[3] = 3;
+        p[4] = 4;
+        p[5] = 5;
+        p[6] = 6; // GOOD
+        p[7] = 7; // GOOD
+        p += 8;
+        len -= 8;
+    }
+
+    return p[5];
+}
