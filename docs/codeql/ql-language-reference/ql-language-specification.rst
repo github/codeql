@@ -970,7 +970,7 @@ A class adds a mapping from the class name to the class declaration to the curre
 
 A valid class can be annotated with ``abstract``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
 
-A valid class may not inherit from itself, or from more than one primitive type. The set of types that a valid class inherits from must be disjunct from the set of types that it final inherits from.
+A valid class may not inherit from itself, or from more than one primitive type. The set of types that a valid class inherits from must be disjoint from the set of types that it final inherits from.
 
 A valid class must have at least one base type or instanceof type.
 
