@@ -61,7 +61,6 @@ class SsaSourceVariable extends TSsaSourceVariable {
    * accessed from nested callables are therefore associated with several
    * `SsaSourceVariable`s.
    */
-  pragma[assume_small_delta]
   cached
   VarAccess getAnAccess() {
     exists(LocalScopeVariable v, Callable c |
@@ -451,7 +450,6 @@ private module SsaImpl {
    * Holds if `f` is live in `b` at index `i`. The rank of `i` is `rankix` as
    * defined by `callDefUseRank`.
    */
-  pragma[assume_small_delta]
   private predicate liveAtRank(TrackedField f, BasicBlock b, int rankix, int i) {
     callDefUseRank(f, b, rankix, i) and
     (
@@ -565,7 +563,6 @@ private module SsaImpl {
   }
 
   /** Holds if a phi node for `v` is needed at the beginning of basic block `b`. */
-  pragma[assume_small_delta]
   cached
   predicate phiNode(TrackedVar v, BasicBlock b) {
     liveAtEntry(v, b) and
