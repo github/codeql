@@ -460,7 +460,6 @@ module Impl<FullStateConfigSig Config> {
      * The Boolean `cc` records whether the node is reached through an
      * argument in a call.
      */
-    pragma[assume_small_delta]
     private predicate fwdFlow(NodeEx node, Cc cc) {
       sourceNode(node, _) and
       if hasSourceCallCtx() then cc = true else cc = false
@@ -570,7 +569,6 @@ module Impl<FullStateConfigSig Config> {
     /**
      * Holds if `c` is the target of a store in the flow covered by `fwdFlow`.
      */
-    pragma[assume_small_delta]
     pragma[nomagic]
     private predicate fwdFlowConsCand(Content c) {
       exists(NodeEx mid, NodeEx node |
@@ -1216,7 +1214,6 @@ module Impl<FullStateConfigSig Config> {
         fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
       }
 
-      pragma[assume_small_delta]
       pragma[nomagic]
       private predicate fwdFlow0(
         NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
@@ -2777,7 +2774,6 @@ module Impl<FullStateConfigSig Config> {
   /**
    * Gets the number of `AccessPath`s that correspond to `apa`.
    */
-  pragma[assume_small_delta]
   private int countAps(AccessPathApprox apa) {
     evalUnfold(apa, false) and
     result = 1 and
@@ -2796,7 +2792,6 @@ module Impl<FullStateConfigSig Config> {
    * that it is expanded to a precise head-tail representation.
    */
   language[monotonicAggregates]
-  pragma[assume_small_delta]
   private int countPotentialAps(AccessPathApprox apa) {
     apa instanceof AccessPathApproxNil and result = 1
     or
@@ -2833,7 +2828,6 @@ module Impl<FullStateConfigSig Config> {
     }
 
   private newtype TPathNode =
-    pragma[assume_small_delta]
     TPathNodeMid(
       NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t, AccessPath ap
     ) {
@@ -2918,7 +2912,6 @@ module Impl<FullStateConfigSig Config> {
 
     override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
 
-    pragma[assume_small_delta]
     override AccessPathApproxCons getApprox() {
       result = TConsNil(head_, t) and tail_ = TAccessPathNil()
       or
@@ -2927,7 +2920,6 @@ module Impl<FullStateConfigSig Config> {
       result = TCons1(head_, this.length())
     }
 
-    pragma[assume_small_delta]
     override int length() { result = 1 + tail_.length() }
 
     private string toStringImpl(boolean needsSuffix) {
@@ -3379,7 +3371,6 @@ module Impl<FullStateConfigSig Config> {
    * Holds if data may flow from `mid` to `node`. The last step in or out of
    * a callable is recorded by `cc`.
    */
-  pragma[assume_small_delta]
   pragma[nomagic]
   private predicate pathStep0(
     PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
@@ -3592,7 +3583,6 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
-  pragma[assume_small_delta]
   pragma[nomagic]
   private predicate pathThroughCallable0(
     DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, FlowState state, CallContext cc,

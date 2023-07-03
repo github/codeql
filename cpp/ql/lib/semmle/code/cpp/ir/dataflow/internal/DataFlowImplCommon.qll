@@ -187,7 +187,6 @@ private module LambdaFlow {
     else any()
   }
 
-  pragma[assume_small_delta]
   pragma[nomagic]
   predicate revLambdaFlow0(
     DataFlowCall lambdaCall, LambdaCallKind kind, Node node, DataFlowType t, boolean toReturn,
@@ -274,7 +273,6 @@ private module LambdaFlow {
     )
   }
 
-  pragma[assume_small_delta]
   pragma[nomagic]
   predicate revLambdaFlowOut(
     DataFlowCall lambdaCall, LambdaCallKind kind, TReturnPositionSimple pos, DataFlowType t,
