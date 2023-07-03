@@ -77,6 +77,8 @@ class NSRegularExpression : NSObject {
 	init(pattern: String, options: NSRegularExpression.Options = []) throws { }
 
 	func firstMatch(in string: String, options: NSRegularExpression.MatchingOptions = [], range: NSRange) -> NSTextCheckingResult? { return nil }
+
+    class func escapedPattern(for string: String) -> String { return "" }
 }
 
 extension String {
@@ -133,4 +135,20 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	let nsString = NSString(string: varString)
 	_ = nsString.replacingOccurrences(of: constString, with: "", options: .regularExpression, range: NSMakeRange(0, nsString.length))
 	_ = nsString.replacingOccurrences(of: taintedString, with: "", options: .regularExpression, range: NSMakeRange(0, nsString.length)) // BAD [NOT DETECTED]
+
+	// --- from the qhelp ---
+
+	let remoteInput = taintedString
+    let myRegex = ".*"
+
+	_ = try Regex(remoteInput) // BAD
+
+	let regexStr = "abc|\(remoteInput)"
+	_ = try NSRegularExpression(pattern: regexStr) // BAD
+
+	_ = try Regex(myRegex)
+
+	let escapedInput = NSRegularExpression.escapedPattern(for: remoteInput)
+	let regexStr4 = "abc|\(escapedInput)"
+	_ = try NSRegularExpression(pattern: regexStr4)
 }
