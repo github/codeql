@@ -22,10 +22,10 @@ DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
-/** Gets the textual representation of a parameter position in the format used for MaD models. */
+/** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
-/** Gets the textual representation of an argument position in the format used for MaD models. */
+/** Gets the textual representation of an argument position in the format used for flow summaries. */
 string getArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
 
 /** Gets the synthesized data-flow call for `receiver`. */

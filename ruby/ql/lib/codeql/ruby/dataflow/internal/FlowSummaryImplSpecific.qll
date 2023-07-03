@@ -187,7 +187,7 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
   )
 }
 
-/** Gets the textual representation of a parameter position in the format used for MaD models. */
+/** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPosition(ParameterPosition pos) {
   exists(int i |
     pos.isPositional(i) and
@@ -220,7 +220,7 @@ string getParameterPosition(ParameterPosition pos) {
   result = "hash-splat"
 }
 
-/** Gets the textual representation of an argument position in the format used for MaD models. */
+/** Gets the textual representation of an argument position in the format used for flow summaries. */
 string getArgumentPosition(ArgumentPosition pos) {
   pos.isSelf() and result = "self"
   or

@@ -122,10 +122,10 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
   )
 }
 
-/** Gets the textual representation of a parameter position in the format used for MaD models. */
+/** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
-/** Gets the textual representation of an argument position in the format used for MaD models. */
+/** Gets the textual representation of an argument position in the format used for flow summaries. */
 string getArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
 
 /** Holds if input specification component `c` needs a reference. */
