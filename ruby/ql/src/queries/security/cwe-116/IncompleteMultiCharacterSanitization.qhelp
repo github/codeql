@@ -7,7 +7,7 @@
 <p>
 Sanitizing untrusted input is a common technique for preventing injection attacks and other security 
 vulnerabilities. Regular expressions are often used to perform this sanitization. However, when the 
-regex matches multiple consecutive characters, applying a regular expression replacement just once 
+regular expression matches multiple consecutive characters, replacing it just once 
 can result in the unsafe text re-appearing in the sanitized input.
 </p>
 <p>
@@ -25,7 +25,7 @@ possible. These libraries are more likely to handle corner cases and ensure effe
 
 <p>
 If a library is not an option, you can consider alternative strategies to fix the issue. For example, 
-applying the regular expression replacement recursively until a fixpoint is reached or to rewrite the regular 
+applying the regular expression replacement repeatedly until no more replacements can be performed or to rewrite the regular 
 expression to match single characters instead of the entire unsafe text.
 </p>
 </recommendation>
@@ -45,8 +45,8 @@ which still contains an HTML comment.
 </p>
 
 <p>
-One possible fix for this issue is to apply the regular expression replacement recursively until a fixpoint 
-is reached. This ensures that the unsafe text does not re-appear in the sanitized input, effectively 
+One possible fix for this issue is to apply the regular expression replacement recursively until no
+more replacements can be performed. This ensures that the unsafe text does not re-appear in the sanitized input, effectively 
 removing all instances of the targeted pattern:
 </p>
 
@@ -90,7 +90,7 @@ end
 
 <example>
 <p>
-Lastly, consider a path sanitizer using the regex <code>/\.\.\//</code>:
+Lastly, consider a path sanitizer using the regular expression <code>/\.\.\//</code>:
 </p>
 
 <sample language="ruby">
@@ -119,6 +119,6 @@ end
 
 <references>
 <li>OWASP Top 10: <a href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection">A1 Injection</a>.</li>
-<li>Stackoverflow: <a href="https://stackoverflow.com/questions/6659351/removing-all-script-tags-from-html-with-js-regular-expression">Removing all script tags from HTML with JS regular expression</a>.</li>
+<li>Stack Overflow: <a href="https://stackoverflow.com/questions/6659351/removing-all-script-tags-from-html-with-js-regular-expression">Removing all script tags from HTML with JS regular expression</a>.</li>
 </references>
 </qhelp>
