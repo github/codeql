@@ -31,6 +31,10 @@ class RegexInjectionAdditionalFlowStep extends Unit {
 
 /**
  * A sink that is a regular expression evaluation defined in the Regex library.
+ * This includes various methods that consume a regular expression string, but
+ * in general misses cases where a regular expression string is converted into
+ * an object (such as a `Regex` or `NSRegularExpression`) for later evaluation.
+ * These cases are modelled separately.
  */
 private class EvalRegexInjectionSink extends RegexInjectionSink {
   EvalRegexInjectionSink() { this.asExpr() = any(RegexEval e).getRegexInput() }
@@ -41,4 +45,15 @@ private class EvalRegexInjectionSink extends RegexInjectionSink {
  */
 private class DefaultRegexInjectionSink extends RegexInjectionSink {
   DefaultRegexInjectionSink() { sinkNode(this, "regex-use") }
+}
+
+private class RegexInjectionSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";Regex;true;init(_:);;;Argument[0];regex-use",
+        ";Regex;true;init(_:as:);;;Argument[0];regex-use",
+        ";NSRegularExpression;true;init(pattern:options:);;;Argument[0];regex-use",
+      ]
+  }
 }

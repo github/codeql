@@ -96,20 +96,20 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 
 	_ = try Regex(constString).firstMatch(in: varString)
 	_ = try Regex(varString).firstMatch(in: varString)
-	_ = try Regex(taintedString).firstMatch(in: varString) // BAD [NOT DETECTED]
+	_ = try Regex(taintedString).firstMatch(in: varString) // BAD
 
 	_ = try Regex("(a|" + constString + ")").firstMatch(in: varString)
-	_ = try Regex("(a|" + taintedString + ")").firstMatch(in: varString) // BAD [NOT DETECTED]
+	_ = try Regex("(a|" + taintedString + ")").firstMatch(in: varString) // BAD
 	_ = try Regex("(a|\(constString))").firstMatch(in: varString)
-	_ = try Regex("(a|\(taintedString))").firstMatch(in: varString) // BAD [NOT DETECTED]
+	_ = try Regex("(a|\(taintedString))").firstMatch(in: varString) // BAD
 
 	_ = try Regex(cond ? constString : constString).firstMatch(in: varString)
-	_ = try Regex(cond ? taintedString : constString).firstMatch(in: varString) // BAD [NOT DETECTED]
-	_ = try Regex(cond ? constString : taintedString).firstMatch(in: varString) // BAD [NOT DETECTED]
+	_ = try Regex(cond ? taintedString : constString).firstMatch(in: varString) // BAD
+	_ = try Regex(cond ? constString : taintedString).firstMatch(in: varString) // BAD
 
 	_ = try (cond ? Regex(constString) : Regex(constString)).firstMatch(in: varString)
-	_ = try (cond ? Regex(taintedString) : Regex(constString)).firstMatch(in: varString) // BAD [NOT DETECTED]
-	_ = try (cond ? Regex(constString) : Regex(taintedString)).firstMatch(in: varString) // BAD [NOT DETECTED]
+	_ = try (cond ? Regex(taintedString) : Regex(constString)).firstMatch(in: varString) // BAD
+	_ = try (cond ? Regex(constString) : Regex(taintedString)).firstMatch(in: varString) // BAD
 
 	// --- RangeReplaceableCollection ---
 
@@ -126,7 +126,7 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	// --- NSRegularExpression ---
 
 	_ = try NSRegularExpression(pattern: constString).firstMatch(in: varString, range: NSMakeRange(0, varString.utf16.count))
-	_ = try NSRegularExpression(pattern: taintedString).firstMatch(in: varString, range: NSMakeRange(0, varString.utf16.count)) // BAD [NOT DETECTED]
+	_ = try NSRegularExpression(pattern: taintedString).firstMatch(in: varString, range: NSMakeRange(0, varString.utf16.count)) // BAD
 
 	// --- NSString ---
 
