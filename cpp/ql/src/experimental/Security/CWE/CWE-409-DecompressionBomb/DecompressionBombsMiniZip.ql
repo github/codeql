@@ -16,6 +16,43 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.security.FlowSources
 
 /**
+ * The `mz_zip_reader_create` function as a Flow source
+ * create a `mz_zip_reader` instance
+ */
+private class Mz_zip_reader_create extends Function {
+  Mz_zip_reader_create() { this.hasGlobalName("mz_zip_reader_create") }
+}
+
+/**
+ * The `mz_zip_create` function as a Flow source
+ * create a `mz_zip` instance
+ */
+private class Mz_zip_create extends Function {
+  Mz_zip_create() { this.hasGlobalName("mz_zip_create") }
+}
+
+/**
+ * The `mz_zip_entry` function is used in Flow source
+ * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip.md)
+ */
+private class Mz_zip_entry extends Function {
+  Mz_zip_entry() { this.hasGlobalName("mz_zip_entry_read") }
+}
+
+/**
+ * The `mz_zip_reader_entry_*` and `mz_zip_reader_save_all` functions are used in Flow source
+ * [docuemnt](https://github.com/zlib-ng/minizip-ng/blob/master/doc/mz_zip_rw.md)
+ */
+private class Mz_zip_reader_entry extends Function {
+  Mz_zip_reader_entry() {
+    this.hasGlobalName([
+        "mz_zip_reader_entry_save", "mz_zip_reader_entry_read", "mz_zip_reader_entry_save_process",
+        "mz_zip_reader_entry_save_file", "mz_zip_reader_entry_save_buffer", "mz_zip_reader_save_all"
+      ])
+  }
+}
+
+/**
  * A `unzFile` Variable as a Flow source
  */
 private class UnzFileVar extends VariableAccess {
@@ -27,13 +64,6 @@ private class UnzFileVar extends VariableAccess {
  */
 private class UnzOpenFunction extends Function {
   UnzOpenFunction() { this.hasGlobalName(["UnzOpen", "unzOpen64", "unzOpen2", "unzOpen2_64"]) }
-}
-
-/**
- * The `mz_stream_open` function is used in Flow source
- */
-private class MzStreamOpenFunction extends Function {
-  MzStreamOpenFunction() { this.hasGlobalName("mz_stream_open") }
 }
 
 /**
@@ -55,16 +85,14 @@ module MiniZipTaintConfig implements DataFlow::StateConfigSig {
     source.asExpr() instanceof UnzFileVar and
     state = "unzFile"
     or
-    // TO Check
-    exists(FunctionCall fc | fc.getTarget() instanceof MzStreamOpenFunction |
-      fc.getArgument(0).getEnclosingVariable() = source.asVariable() and
-      state = "MzStream"
+    exists(FunctionCall fc | fc.getTarget() instanceof Mz_zip_reader_create |
+      fc = source.asExpr() and
+      state = "mz_zip_reader"
     )
     or
-    // TO Check
-    exists(FunctionCall fc | fc.getTarget() instanceof MzStreamOpenFunction |
-      fc.getArgument(0).getEnclosingVariable() = source.asVariable() and
-      state = "MzStream"
+    exists(FunctionCall fc | fc.getTarget() instanceof Mz_zip_create |
+      fc = source.asExpr() and
+      state = "mz_zip"
     )
   }
 
@@ -72,7 +100,16 @@ module MiniZipTaintConfig implements DataFlow::StateConfigSig {
     exists(FunctionCall fc | fc.getTarget() instanceof UnzReadCurrentFileFunction |
       fc.getArgument(0) = sink.asExpr() and
       state = "unzFile"
-      // and not sanitizer(fc)
+    )
+    or
+    exists(FunctionCall fc | fc.getTarget() instanceof Mz_zip_reader_entry |
+      fc.getArgument(1) = sink.asExpr() and
+      state = "mz_zip_reader"
+    )
+    or
+    exists(FunctionCall fc | fc.getTarget() instanceof Mz_zip_entry |
+      fc.getArgument(1) = sink.asExpr() and
+      state = "mz_zip"
     )
   }
 
@@ -86,11 +123,24 @@ module MiniZipTaintConfig implements DataFlow::StateConfigSig {
       state1 = "" and
       state2 = "unzFile"
     )
+    or
+    exists(FunctionCall fc | fc.getTarget() instanceof Mz_zip_reader_entry |
+      node1.asExpr() = fc.getArgument(0) and
+      node2.asExpr() = fc.getArgument(1) and
+      state1 = "" and
+      state2 = "mz_zip_reader"
+    )
+    or
+    exists(FunctionCall fc | fc.getTarget() instanceof Mz_zip_entry |
+      node1.asExpr() = fc.getArgument(0) and
+      node2.asExpr() = fc.getArgument(1) and
+      state1 = "" and
+      state2 = "mz_zip"
+    )
   }
 
   predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) { none() }
 }
-
 
 module MiniZipTaint = TaintTracking::GlobalWithState<MiniZipTaintConfig>;
 
