@@ -14,6 +14,7 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysi
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.DataFlow
+import semmle.code.cpp.ir.ValueNumbering
 import semmle.code.cpp.controlflow.IRGuards
 import ArrayAddressToDerefFlow::PathGraph
 
@@ -144,10 +145,42 @@ predicate ensuresLt(Operand left, Operand right, int k, IRBlock block) {
   any(IRGuardCondition g).ensuresLt(left, right, k, block, true)
 }
 
+module VariableToPointerArithBarrier {
+  module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      // The sources are all the instructions that contains a
+      // reference to a variable of an array type.
+      isSourceImpl(source, _, _, _)
+    }
+
+    predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(PointerArithmeticInstruction pai, int index |
+        pai.getLeftOperand() = sink.asOperand() and
+        PointerArithmeticToDeref::constantUpperBounded(pai, index)
+      )
+    }
+  }
+
+  private import DataFlow::Global<Config>
+
+  predicate candidate(
+    DataFlow::Node sink, Instruction right, ArrayType arrayType, int elementSize, int index
+  ) {
+    exists(DataFlow::Node source, PointerArithmeticInstruction pai |
+      isSourceImpl(source, _, arrayType, _) and
+      flow(source, sink) and
+      pai.getLeftOperand() = sink.asOperand() and
+      elementSize = pai.getElementSize() and
+      PointerArithmeticToDeref::constantUpperBounded(pai, index) and
+      right = pai.getRight()
+    )
+  }
+}
+
 /** Variable to pointer arithmetic flow. */
 module VariableToPointerArith {
-  private import semmle.code.cpp.ir.ValueNumbering
-
   module Config implements DataFlow::StateConfigSig {
     class FlowState extends ArrayType {
       FlowState() { isSourceImpl(_, _, this, _) }
@@ -171,15 +204,15 @@ module VariableToPointerArith {
 
     pragma[inline]
     predicate isSink(DataFlow::Node sink, FlowState state) {
-      exists(PointerArithmeticInstruction pai, int index |
-        pai.getLeftOperand() = sink.asOperand() and
-        PointerArithmeticToDeref::constantUpperBounded(pai, index) and
-        not (index + 1) * pai.getElementSize() <= state.getByteSize() and
-        not exists(ConstantInstruction right, int k1, int k2 |
-          pai.getElementSize() * (k1 + k2) <= state.getByteSize() and
-          right.getValue().toInt() = k1 and
-          // `index < k1 + k2 <= array size` so this is safe
-          ensuresLt(valueNumber(pai.getRight()).getAUse(), right.getAUse(), k2, sink.getBasicBlock())
+      exists(int index, int elementSize, int byteSize, Instruction right |
+        VariableToPointerArithBarrier::candidate(sink, right, state, elementSize, index) and
+        byteSize = state.getByteSize() and
+        not (index + 1) * elementSize <= byteSize and
+        not exists(ConstantInstruction constant, int k1, int k2 |
+          (elementSize) * (k1 + k2) <= byteSize and
+          constant.getValue().toInt() = k1 and
+          // `index < k1 + k2 <= array size` so this is a safe access
+          ensuresLt(valueNumber(right).getAUse(), constant.getAUse(), k2, sink.getBasicBlock())
         )
       )
     }
@@ -201,8 +234,45 @@ module VariableToPointerArith {
   }
 }
 
+module ArrayAddressToDerefBarrier {
+  private predicate isSink(Operand left, DataFlow::Node right) {
+    exists(int k |
+      ensuresLt(left, right.asOperand(), k, _) and
+      k <= 0
+    )
+  }
+
+  private predicate isSource(DataFlow::Node source, ArrayType arrayType) {
+    source.asInstruction().(ConstantInstruction).getValue().toInt() = arrayType.getArraySize() and
+    VariableToPointerArith::candidateSource(arrayType, _)
+  }
+
+  module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { isSource(source, _) }
+
+    predicate isSink(DataFlow::Node sink) { isSink(_, sink) }
+  }
+
+  private import DataFlow::Global<Config>
+
+  predicate comparedToSizeOfArrayType(Operand left, ArrayType arrayType) {
+    exists(DataFlow::Node source, Operand right, DataFlow::Node sink |
+      sink.asOperand() = right and
+      flow(source, sink) and
+      isSink(left, sink) and
+      isSource(source, arrayType)
+    )
+  }
+}
+
 /** Variable to dereference flow. */
 module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
+  private predicate hasArrayType(FlowState state, ArrayType arrayType) {
+    state = TArray(arrayType)
+    or
+    state = TOverflowArithmetic(arrayType, _)
+  }
+
   newtype FlowState =
     additional TArray(ArrayType array) { VariableToPointerArith::candidateSource(array, _) } or
     additional TOverflowArithmetic(ArrayType array, PointerArithmeticInstruction pai) {
@@ -223,7 +293,15 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    exists(ValueNumber value, Operand left, ArrayType arrayType, int k |
+      left = value.getAnInstruction().getAUse() and
+      hasArrayType(state, arrayType) and
+      ArrayAddressToDerefBarrier::comparedToSizeOfArrayType(left, arrayType) and
+      k <= 0 and
+      ensuresLt(left, _, k, node.getBasicBlock())
+    )
+  }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node, _) }
 
