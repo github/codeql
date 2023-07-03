@@ -10,7 +10,7 @@
       an expensive input string for the regular expression to match.
     </p>
     <p>
-      The regular expression engine used by Swift uses a
+      The regular expression engine used by Swift uses
       backtracking non-deterministic finite automata to implement regular
       expression matching. While this approach is space-efficient and allows
       supporting advanced features like capture groups, it is not time-efficient
