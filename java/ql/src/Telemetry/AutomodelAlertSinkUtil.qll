@@ -78,7 +78,7 @@ class SinkModel extends TSinkModel {
 }
 
 /** An expression that may correspond to a sink model. */
-private class PotentialSinkModelExpr extends Expr {
+class PotentialSinkModelExpr extends Expr {
   /**
    *  Holds if this expression has the given signature. The signature should contain enough
    *  information to determine a corresponding sink model, if one exists.
