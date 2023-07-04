@@ -55,7 +55,7 @@ namespace Semmle.BuildAnalyser
             this.progressMonitor.FindingFiles(options.SrcDir);
 
             this.allSources = GetFiles("*.cs").ToArray();
-
+            var allProjects = GetFiles("*.csproj");
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
                 : GetFiles("*.sln");
@@ -94,6 +94,7 @@ namespace Semmle.BuildAnalyser
                 using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
                 {
                     Restore(solutions);
+                    Restore(allProjects);
                 }
             }
 
