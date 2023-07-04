@@ -19,45 +19,49 @@ import semmle.code.csharp.security.dataflow.flowsources.Remote
  */
 abstract class DecompressionSource extends DataFlow::Node { }
 
-class ZipOpenReadSource extends DecompressionSource {
-  ZipOpenReadSource() {
+/**
+ * A data flow sink for unsafe zip extraction.
+ */
+abstract class DecompressionSink extends DataFlow::Node { }
+
+class ZipFile extends DecompressionSource {
+  ZipFile() {
     exists(MethodCall mc |
-      mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipFile", ["OpenRead", "Open"]) and
-      this.asExpr() = mc.getArgument(0) and
+      (
+        mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipFile", "Open") and
+        this.asExpr() = mc.getArgument(0) and
+        mc.getArgument(1) =
+          any(EnumConstant e |
+            e.hasQualifiedName("System.IO.Compression", "ZipArchiveMode", ["Update", "Read"])
+          ).getAnAccess()
+        or
+        mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipFile", "OpenRead") and
+        this.asExpr() = mc.getArgument(0)
+      ) and
       not mc.getArgument(0).getType().isConst()
     )
   }
 }
 
 /** A path argument to a call to the `ZipArchive` constructor call. */
-class ZipArchiveArgSource extends DecompressionSource {
-  ZipArchiveArgSource() {
-    exists(ObjectCreation oc |
-      oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression", "ZipArchive")
+class ZipArchive extends DecompressionSource {
+  ZipArchive() {
+    exists(Constructor c |
+      c.getDeclaringType().hasQualifiedName("System.IO.Compression", "ZipArchive")
     |
-      this.asExpr() = oc.getArgument(0)
-    )
-  }
-}
-
-/**
- * A data flow sink for unsafe zip extraction.
- */
-abstract class DecompressionSink extends DataFlow::Node { }
-
-/** A Caller of the `ExtractToFile` method. */
-class ExtractToFileCallSink extends DecompressionSink {
-  ExtractToFileCallSink() {
-    exists(MethodCall mc |
-      mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToFile") and
-      this.asExpr() = mc.getArgumentForName("source")
+      this.asExpr() = c.getACall() and
+      not c.getACall().getArgument(0).getType().isConst() and
+      c.getACall().getArgument(1) =
+        any(EnumConstant e |
+          e.hasQualifiedName("System.IO.Compression", "ZipArchiveMode", ["Update", "Read"])
+        ).getAnAccess()
     )
   }
 }
 
 /** A Qualifier of the `Open()` method. */
-class OpenCallSink extends DecompressionSink {
-  OpenCallSink() {
+class ZipArchiveEntry extends DecompressionSink {
+  ZipArchiveEntry() {
     exists(MethodCall mc |
       mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipArchiveEntry", "Open") and
       this.asExpr() = mc.getQualifier()
@@ -65,12 +69,78 @@ class OpenCallSink extends DecompressionSink {
   }
 }
 
-/** A Call to the `GZipStreamSink` first arugument of Constructor Call . */
+/** A Caller of the `ExtractToFile` method. */
+class ZipFileExtensionsCallSink extends DecompressionSink {
+  ZipFileExtensionsCallSink() {
+    exists(MethodCall mc |
+      mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToFile") and
+      this.asExpr() = mc.getArgumentForName("source") and
+      mc.getArgumentForName("source")
+          .getType()
+          .hasQualifiedName("System.IO.Compression", "ZipArchiveEntry")
+      or
+      mc.getTarget()
+          .hasQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToDirectory") and
+      this.asExpr() = mc.getArgumentForName("source") and
+      mc.getArgumentForName("source")
+          .getType()
+          .hasQualifiedName("System.IO.Compression", "ZipArchive")
+    )
+  }
+}
+
+/** A Call to the `GZipStream` first arugument of Constructor Call . */
 class GZipStreamSink extends DecompressionSink, DecompressionSource {
   GZipStreamSink() {
     exists(Constructor mc |
       mc.getDeclaringType().hasQualifiedName("System.IO.Compression", "GZipStream") and
-      this.asExpr() = mc.getACall().getArgument(0)
+      this.asExpr() = mc.getACall().getArgument(0) and
+      mc.getACall().getArgument(1) =
+        any(EnumConstant e |
+          e.hasQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
+        ).getAnAccess()
+    )
+  }
+}
+
+/** A Call to the `BrotliStream` first arugument of Constructor Call . */
+class BrotliStreamSink extends DecompressionSink, DecompressionSource {
+  BrotliStreamSink() {
+    exists(Constructor mc |
+      mc.getDeclaringType().hasQualifiedName("System.IO.Compression", "BrotliStream") and
+      this.asExpr() = mc.getACall().getArgument(0) and
+      mc.getACall().getArgument(1) =
+        any(EnumConstant e |
+          e.hasQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
+        ).getAnAccess()
+    )
+  }
+}
+
+/** A Call to the `BrotliStream` first arugument of Constructor Call . */
+class DeflateStreamSink extends DecompressionSink, DecompressionSource {
+  DeflateStreamSink() {
+    exists(Constructor mc |
+      mc.getDeclaringType().hasQualifiedName("System.IO.Compression", "DeflateStream") and
+      this.asExpr() = mc.getACall().getArgument(0) and
+      mc.getACall().getArgument(1) =
+        any(EnumConstant e |
+          e.hasQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
+        ).getAnAccess()
+    )
+  }
+}
+
+/** A Call to the `ZLibStream` first arugument of Constructor Call . */
+class ZLibStreamSink extends DecompressionSink, DecompressionSource {
+  ZLibStreamSink() {
+    exists(Constructor mc |
+      mc.getDeclaringType().hasQualifiedName("System.IO.Compression", "ZLibStream") and
+      this.asExpr() = mc.getACall().getArgument(0) and
+      mc.getACall().getArgument(1) =
+        any(EnumConstant e |
+          e.hasQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
+        ).getAnAccess()
     )
   }
 }
@@ -88,18 +158,17 @@ private module DecompressionBombConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // var node2 = new ZipArchive(node1, ZipArchiveMode.Read);
-    exists(ObjectCreation oc |
-      oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression", "ZipArchive") and
-      node2.asExpr() = oc and
-      node1.asExpr() = oc.getArgumentForName("stream")
-    )
-    or
     // var node2 = node1.ExtractToFile("./output.txt", true)
     exists(MethodCall mc |
       mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToFile") and
       node2.asExpr() = mc and
       node1.asExpr() = mc.getArgumentForName("source")
+    )
+    or
+    exists(MethodCall mc |
+      mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipArchive", "GetEntry") and
+      node1.asExpr() = mc.getQualifier() and
+      node2.asExpr() = mc
     )
     or
     // var node2 = node1.OpenReadStream()

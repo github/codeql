@@ -5,23 +5,18 @@ import semmle.code.csharp.security.dataflow.flowsources.Remote
 class FormFile extends AspNetRemoteFlowSource {
   FormFile() {
     exists(MethodCall mc |
-      mc.getTarget()
-          .hasQualifiedName(["Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Http.Features"],
-            "IFormFile", ["OpenReadStream", "ContentType", "ContentDisposition", "Name", "FileName"]) and
+      mc.getTarget().hasQualifiedName("Microsoft.AspNetCore.Http", "IFormFile", "OpenReadStream") and
       this.asExpr() = mc
     )
     or
     exists(MethodCall mc |
       mc.getTarget()
-          .hasQualifiedName(["Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Http.Features"],
-            "IFormFile", "CopyTo") and
+          .hasQualifiedName("Microsoft.AspNetCore.Http", "IFormFile", ["CopyTo", "CopyToAsync"]) and
       this.asParameter() = mc.getTarget().getParameter(0)
     )
     or
     exists(Property fa |
-      fa.getDeclaringType()
-          .hasQualifiedName(["Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Http.Features"],
-            "IFormFile") and
+      fa.getDeclaringType().hasQualifiedName("Microsoft.AspNetCore.Http", "IFormFile") and
       fa.hasName(["ContentType", "ContentDisposition", "Name", "FileName"]) and
       this.asExpr() = fa.getAnAccess()
     )
