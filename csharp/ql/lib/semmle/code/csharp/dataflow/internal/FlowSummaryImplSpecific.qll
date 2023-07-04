@@ -186,7 +186,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
+/** Gets the textual representation of the content in the format used for MaD models. */
 private string getContentSpecific(Content c) {
   c = TElementContent() and result = "Element"
   or
@@ -197,8 +197,8 @@ private string getContentSpecific(Content c) {
   exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   sc = TWithoutContentSummaryComponent(_) and result = "WithoutElement"
