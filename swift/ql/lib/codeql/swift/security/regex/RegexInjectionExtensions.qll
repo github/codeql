@@ -34,7 +34,7 @@ class RegexInjectionAdditionalFlowStep extends Unit {
  * This includes various methods that consume a regular expression string, but
  * in general misses cases where a regular expression string is converted into
  * an object (such as a `Regex` or `NSRegularExpression`) for later evaluation.
- * These cases are modelled separately.
+ * These cases are modeled separately.
  */
 private class EvalRegexInjectionSink extends RegexInjectionSink {
   EvalRegexInjectionSink() { this.asExpr() = any(RegexEval e).getRegexInput() }
