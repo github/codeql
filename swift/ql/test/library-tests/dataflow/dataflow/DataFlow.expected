@@ -269,6 +269,8 @@ edges
 | test.swift:592:17:592:17 | KeyPathComponent [x] | test.swift:592:11:592:17 | exit #keyPath(...) |
 | test.swift:593:13:593:13 | s2 [s, x] | test.swift:592:11:592:17 | enter #keyPath(...) [s, x] |
 | test.swift:593:13:593:13 | s2 [s, x] | test.swift:593:13:593:26 | \\...[...] |
+| test.swift:618:13:618:20 | call to source() | test.swift:626:15:626:15 | y |
+| test.swift:628:9:628:16 | call to source() | test.swift:631:15:631:15 | x |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
@@ -562,6 +564,10 @@ nodes
 | test.swift:592:17:592:17 | KeyPathComponent [x] | semmle.label | KeyPathComponent [x] |
 | test.swift:593:13:593:13 | s2 [s, x] | semmle.label | s2 [s, x] |
 | test.swift:593:13:593:26 | \\...[...] | semmle.label | \\...[...] |
+| test.swift:618:13:618:20 | call to source() | semmle.label | call to source() |
+| test.swift:626:15:626:15 | y | semmle.label | y |
+| test.swift:628:9:628:16 | call to source() | semmle.label | call to source() |
+| test.swift:631:15:631:15 | x | semmle.label | x |
 subpaths
 | test.swift:75:21:75:22 | &... | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:31:75:32 | [post] &... |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -673,3 +679,5 @@ subpaths
 | test.swift:575:13:575:25 | \\...[...] | test.swift:573:16:573:23 | call to source() | test.swift:575:13:575:25 | \\...[...] | result |
 | test.swift:578:13:578:32 | \\...[...] | test.swift:573:16:573:23 | call to source() | test.swift:578:13:578:32 | \\...[...] | result |
 | test.swift:593:13:593:26 | \\...[...] | test.swift:590:16:590:23 | call to source() | test.swift:593:13:593:26 | \\...[...] | result |
+| test.swift:626:15:626:15 | y | test.swift:618:13:618:20 | call to source() | test.swift:626:15:626:15 | y | result |
+| test.swift:631:15:631:15 | x | test.swift:628:9:628:16 | call to source() | test.swift:631:15:631:15 | x | result |
