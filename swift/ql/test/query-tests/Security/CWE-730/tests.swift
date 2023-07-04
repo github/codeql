@@ -184,4 +184,10 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	if (okSet.contains(taintedString)) {
 		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
+
+	// --- multiple evaluations ---
+
+	let re = try Regex(taintedString) // BAD
+	_ = try re.firstMatch(in: varString) // (we only want to flag one location total)
+	_ = try re.firstMatch(in: varString)
 }
