@@ -103,7 +103,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
+/** Gets the textual representation of the content in the format used for MaD models. */
 private string getContentSpecific(ContentSet cs) {
   exists(Content::FieldContent c |
     cs.isSingleton(c) and
@@ -111,8 +111,8 @@ private string getContentSpecific(ContentSet cs) {
   )
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(ContentSet c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   exists(ReturnKind rk |

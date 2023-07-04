@@ -206,7 +206,6 @@ private predicate relevantNodeBack(ObjNode n) {
   exists(ObjNode mid | objStep(n, mid) and relevantNodeBack(mid))
 }
 
-pragma[assume_small_delta]
 private predicate relevantNode(ObjNode n) {
   source(_, n) and relevantNodeBack(n)
   or

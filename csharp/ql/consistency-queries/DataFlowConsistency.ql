@@ -74,3 +74,8 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
 
   override predicate identityLocalStepExclude(Node n) { none() }
 }
+
+query predicate multipleToString(Node n, string s) {
+  s = strictconcat(n.toString(), ",") and
+  strictcount(n.toString()) > 1
+}

@@ -50,7 +50,7 @@ class ExternalApi extends DotNet::Callable {
   bindingset[this]
   private string getSignature() {
     result =
-      this.getDeclaringType().getUnboundDeclaration() + "." + this.getName() + "(" +
+      nestedName(this.getDeclaringType().getUnboundDeclaration()) + "." + this.getName() + "(" +
         parameterQualifiedTypeNamesToString(this) + ")"
   }
 
@@ -119,9 +119,24 @@ class ExternalApi extends DotNet::Callable {
 }
 
 /**
+ * Gets the nested name of the declaration.
+ *
+ * If the declaration is not a nested type, the result is the same as \`getName()\`.
+ * Otherwise the name of the nested type is prefixed with a \`+\` and appended to
+ * the name of the enclosing type, which might be a nested type as well.
+ */
+private string nestedName(Declaration declaration) {
+  not exists(declaration.getDeclaringType().getUnboundDeclaration()) and
+  result = declaration.getName()
+  or
+  nestedName(declaration.getDeclaringType().getUnboundDeclaration()) + "+" + declaration.getName() =
+    result
+}
+
+/**
  * Gets the limit for the number of results produced by a telemetry query.
  */
-int resultLimit() { result = 1000 }
+int resultLimit() { result = 100 }
 
 /**
  * Holds if it is relevant to count usages of `api`.
