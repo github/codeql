@@ -21,6 +21,7 @@ import semmle.code.cpp.security.FlowSources
 private class PointerVar extends VariableAccess {
   PointerVar() { this.getType() instanceof PointerType }
 }
+
 /**
  * A unsigned char Variable is used in Flow source
  */
@@ -54,6 +55,18 @@ private class MzZipArchiveVar extends VariableAccess {
  */
 private class MzUncompress extends Function {
   MzUncompress() { this.hasGlobalName(["uncompress", "mz_uncompress", "mz_uncompress2"]) }
+}
+
+/**
+ * A `zip handle` is used in Flow source
+ */
+private class MzZip extends Function {
+  MzZip() {
+    this.hasGlobalName([
+        "mz_zip_reader_open", "mz_zip_reader_open_file", "mz_zip_reader_open_file_in_memory",
+        "mz_zip_reader_open_buffer", "mz_zip_reader_entry_open"
+      ])
+  }
 }
 
 /**
@@ -138,6 +151,9 @@ module MinizTaintConfig implements DataFlow::StateConfigSig {
     source.asDefiningArgument() =
       any(Call call | call.getTarget() instanceof MzInflateInit).getArgument(0) and
     state = "inflate"
+    or
+    source.asDefiningArgument() = any(Call call | call.getTarget() instanceof MzZip).getArgument(0) and
+    state = ""
   }
 
   predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
