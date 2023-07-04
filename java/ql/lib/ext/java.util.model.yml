@@ -140,7 +140,7 @@ extensions:
       - ["java.util", "LinkedHashSet", False, "LinkedHashSet", "(Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["java.util", "LinkedList", False, "LinkedList", "(Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["java.util", "List", True, "add", "(int,Object)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
-      - ["java.util", "List", True, "addAll", "(int,Collection)", "", "Argument[1].Element", "Argument[this].Element", "value", "manual"]
+      - ["java.util", "List", True, "addAll", "(int,Collection)", "", "Argument[1].WithElement", "Argument[this]", "value", "manual"]
       - ["java.util", "List", False, "copyOf", "(Collection)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "List", True, "get", "(int)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "List", True, "listIterator", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
