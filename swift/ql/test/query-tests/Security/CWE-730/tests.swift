@@ -139,7 +139,7 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	// --- from the qhelp ---
 
 	let remoteInput = taintedString
-    let myRegex = ".*"
+	let myRegex = ".*"
 
 	_ = try Regex(remoteInput) // BAD
 
@@ -151,4 +151,37 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	let escapedInput = NSRegularExpression.escapedPattern(for: remoteInput)
 	let regexStr4 = "abc|\(escapedInput)"
 	_ = try NSRegularExpression(pattern: regexStr4)
+
+	// --- barriers ---
+
+	let okInput = "abc"
+	let okInputs = ["abc", "def"]
+	let okSet: Set = ["abc", "def"]
+
+	if (taintedString == okInput) {
+		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+	} else {
+		_ = try Regex(taintedString).firstMatch(in: varString) // BAD
+	}
+	if (taintedString != okInput) {
+		_ = try Regex(taintedString).firstMatch(in: varString) // BAD
+	}
+	if (varString == okInput) {
+		_ = try Regex(taintedString).firstMatch(in: varString) // BAD
+	}
+	if (okInputs.contains(taintedString)) {
+		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+	}
+	if (okInputs.firstIndex(of: taintedString) != nil) {
+		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+	}
+	if let index = okInputs.firstIndex(of: taintedString) {
+		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+	}
+	if let index = okInputs.index(of: taintedString) {
+		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+	}
+	if (okSet.contains(taintedString)) {
+		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+	}
 }
