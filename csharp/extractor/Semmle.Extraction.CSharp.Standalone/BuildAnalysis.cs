@@ -12,85 +12,44 @@ using System.Security.Cryptography;
 namespace Semmle.BuildAnalyser
 {
     /// <summary>
-    /// The output of a build analysis.
-    /// </summary>
-    internal interface IBuildAnalysis
-    {
-        /// <summary>
-        /// Full filepaths of external references.
-        /// </summary>
-        IEnumerable<string> ReferenceFiles { get; }
-
-        /// <summary>
-        /// Full filepaths of C# source files from project files.
-        /// </summary>
-        IEnumerable<string> ProjectSourceFiles { get; }
-
-        /// <summary>
-        /// Full filepaths of C# source files in the filesystem.
-        /// </summary>
-        IEnumerable<string> AllSourceFiles { get; }
-
-        /// <summary>
-        /// The assembly IDs which could not be resolved.
-        /// </summary>
-        IEnumerable<string> UnresolvedReferences { get; }
-
-        /// <summary>
-        /// List of source files referenced by projects but
-        /// which were not found in the filesystem.
-        /// </summary>
-        IEnumerable<string> MissingSourceFiles { get; }
-    }
-
-    /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    internal sealed class BuildAnalysis : IBuildAnalysis, IDisposable
+    internal sealed class BuildAnalysis : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
-        private readonly IProgressMonitor progressMonitor;
+        private readonly ProgressMonitor progressMonitor;
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
         private readonly IDictionary<string, bool> sources = new ConcurrentDictionary<string, bool>();
         private readonly IDictionary<string, string> unresolvedReferences = new ConcurrentDictionary<string, string>();
-        private int failedProjects, succeededProjects;
+        private int failedProjects;
+        private int succeededProjects;
         private readonly string[] allSources;
         private int conflictedReferences = 0;
+        private readonly Options options;
+        private readonly DirectoryInfo sourceDir;
 
         /// <summary>
         /// Performs a C# build analysis.
         /// </summary>
         /// <param name="options">Analysis options from the command line.</param>
-        /// <param name="progress">Display of analysis progress.</param>
-        public BuildAnalysis(Options options, IProgressMonitor progress)
+        /// <param name="progressMonitor">Display of analysis progress.</param>
+        public BuildAnalysis(Options options, ProgressMonitor progressMonitor)
         {
             var startTime = DateTime.Now;
 
-            progressMonitor = progress;
-            var sourceDir = new DirectoryInfo(options.SrcDir);
+            this.options = options;
+            this.progressMonitor = progressMonitor;
+            this.sourceDir = new DirectoryInfo(options.SrcDir);
 
-            progressMonitor.FindingFiles(options.SrcDir);
+            this.progressMonitor.FindingFiles(options.SrcDir);
 
-            allSources = sourceDir.GetFiles("*.cs", SearchOption.AllDirectories)
-                .Select(d => d.FullName)
-                .Where(d => !options.ExcludesFile(d))
-                .ToArray();
+            this.allSources = GetFiles("*.cs").ToArray();
+
+            var solutions = options.SolutionFile is not null
+                ? new[] { options.SolutionFile }
+                : GetFiles("*.sln");
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
-            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
-
-            if (options.UseNuGet)
-            {
-                try
-                {
-                    var nuget = new NugetPackages(sourceDir.FullName, packageDirectory);
-                    nuget.InstallPackages(progressMonitor);
-                }
-                catch (FileNotFoundException)
-                {
-                    progressMonitor.MissingNuGet();
-                }
-            }
 
             // Find DLLs in the .Net Framework
             if (options.ScanNetFrameworkDlls)
@@ -100,28 +59,39 @@ namespace Semmle.BuildAnalyser
                 dllDirNames.Add(runtimeLocation);
             }
 
-            // TODO: remove the below when the required SDK is installed
-            using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
-            {
-                var solutions = options.SolutionFile is not null ?
-                        new[] { options.SolutionFile } :
-                        sourceDir.GetFiles("*.sln", SearchOption.AllDirectories).Select(d => d.FullName);
-
-                if (options.UseNuGet)
-                {
-                    RestoreSolutions(solutions);
-                }
-                dllDirNames.Add(packageDirectory.DirInfo.FullName);
-                assemblyCache = new BuildAnalyser.AssemblyCache(dllDirNames, progress);
-                AnalyseSolutions(solutions);
-
-                foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
-                    UseReference(filename);
-            }
-
             if (options.UseMscorlib)
             {
                 UseReference(typeof(object).Assembly.Location);
+            }
+
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+
+            if (options.UseNuGet)
+            {
+                dllDirNames.Add(packageDirectory.DirInfo.FullName);
+                try
+                {
+                    var nuget = new NugetPackages(sourceDir.FullName, packageDirectory, progressMonitor);
+                    nuget.InstallPackages();
+                }
+                catch (FileNotFoundException)
+                {
+                    progressMonitor.MissingNuGet();
+                }
+
+                // TODO: remove the below when the required SDK is installed
+                using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
+                {
+                    RestoreSolutions(solutions);
+                }
+            }
+
+            assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
+            AnalyseSolutions(solutions);
+
+            foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
+            {
+                UseReference(filename);
             }
 
             ResolveConflicts();
@@ -149,6 +119,13 @@ namespace Semmle.BuildAnalyser
                 DateTime.Now - startTime);
         }
 
+        private IEnumerable<string> GetFiles(string pattern)
+        {
+            return sourceDir.GetFiles(pattern, SearchOption.AllDirectories)
+                .Select(d => d.FullName)
+                .Where(d => !options.ExcludesFile(d));
+        }
+
         /// <summary>
         /// Computes a unique temp directory for the packages associated
         /// with this source tree. Use a SHA1 of the directory name.
@@ -158,9 +135,7 @@ namespace Semmle.BuildAnalyser
         private static string ComputeTempDirectory(string srcDir)
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
-
-            using var sha1 = SHA1.Create();
-            var sha = sha1.ComputeHash(bytes);
+            var sha = SHA1.HashData(bytes);
             var sb = new StringBuilder();
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
@@ -195,12 +170,15 @@ namespace Semmle.BuildAnalyser
 
             // Pick the highest version for each assembly name
             foreach (var r in sortedReferences)
+            {
                 finalAssemblyList[r.Name] = r;
-
+            }
             // Update the used references list
             usedReferences.Clear();
             foreach (var r in finalAssemblyList.Select(r => r.Value.Filename))
+            {
                 UseReference(r);
+            }
 
             // Report the results
             foreach (var r in sortedReferences)
@@ -278,7 +256,9 @@ namespace Semmle.BuildAnalyser
         private void AnalyseProjectFiles(IEnumerable<FileInfo> projectFiles)
         {
             foreach (var proj in projectFiles)
+            {
                 AnalyseProject(proj);
+            }
         }
 
         private void AnalyseProject(FileInfo project)
@@ -348,12 +328,12 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        public void RestoreSolutions(IEnumerable<string> solutions)
+        private void RestoreSolutions(IEnumerable<string> solutions)
         {
             Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 }, Restore);
         }
 
-        public void AnalyseSolutions(IEnumerable<string> solutions)
+        private void AnalyseSolutions(IEnumerable<string> solutions)
         {
             Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 }, solutionFile =>
             {

@@ -3,27 +3,7 @@ using System;
 
 namespace Semmle.BuildAnalyser
 {
-    /// <summary>
-    /// Callback for various events that may happen during the build analysis.
-    /// </summary>
-    internal interface IProgressMonitor
-    {
-        void FindingFiles(string dir);
-        void UnresolvedReference(string id, string project);
-        void AnalysingSolution(string filename);
-        void FailedProjectFile(string filename, string reason);
-        void FailedNugetCommand(string exe, string args, string message);
-        void NugetInstall(string package);
-        void ResolvedReference(string filename);
-        void Summary(int existingSources, int usedSources, int missingSources, int references, int unresolvedReferences, int resolvedConflicts, int totalProjects, int failedProjects, TimeSpan analysisTime);
-        void Log(Severity severity, string message);
-        void ResolvedConflict(string asm1, string asm2);
-        void MissingProject(string projectFile);
-        void CommandFailed(string exe, string arguments, int exitCode);
-        void MissingNuGet();
-    }
-
-    internal class ProgressMonitor : IProgressMonitor
+    internal class ProgressMonitor
     {
         private readonly ILogger logger;
 
