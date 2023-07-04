@@ -27,6 +27,7 @@ namespace Semmle.BuildAnalyser
         private int conflictedReferences = 0;
         private readonly Options options;
         private readonly DirectoryInfo sourceDir;
+        private readonly DotNet dotnet;
 
         /// <summary>
         /// Performs a C# build analysis.
@@ -40,6 +41,16 @@ namespace Semmle.BuildAnalyser
             this.options = options;
             this.progressMonitor = progressMonitor;
             this.sourceDir = new DirectoryInfo(options.SrcDir);
+
+            try
+            {
+                this.dotnet = new DotNet(progressMonitor);
+            }
+            catch
+            {
+                progressMonitor.MissingDotNet();
+                throw;
+            }
 
             this.progressMonitor.FindingFiles(options.SrcDir);
 
@@ -82,7 +93,7 @@ namespace Semmle.BuildAnalyser
                 // TODO: remove the below when the required SDK is installed
                 using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
                 {
-                    RestoreSolutions(solutions);
+                    Restore(solutions);
                 }
             }
 
@@ -304,33 +315,17 @@ namespace Semmle.BuildAnalyser
 
         }
 
-        private void Restore(string projectOrSolution)
+        private void Restore(string target)
         {
-            int exit;
-            try
-            {
-                exit = DotNet.RestoreToDirectory(projectOrSolution, packageDirectory.DirInfo.FullName);
-            }
-            catch (FileNotFoundException)
-            {
-                exit = 2;
-            }
-
-            switch (exit)
-            {
-                case 0:
-                case 1:
-                    // No errors
-                    break;
-                default:
-                    progressMonitor.CommandFailed("dotnet", $"restore \"{projectOrSolution}\"", exit);
-                    break;
-            }
+            dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName);
         }
 
-        private void RestoreSolutions(IEnumerable<string> solutions)
+        private void Restore(IEnumerable<string> targets)
         {
-            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 }, Restore);
+            foreach (var target in targets)
+            {
+                Restore(target);
+            }
         }
 
         private void AnalyseSolutions(IEnumerable<string> solutions)

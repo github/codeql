@@ -97,5 +97,15 @@ namespace Semmle.BuildAnalyser
         {
             logger.Log(Severity.Error, "Missing nuget.exe");
         }
+
+        public void MissingDotNet()
+        {
+            logger.Log(Severity.Error, "Missing dotnet CLI");
+        }
+
+        public void RunningProcess(string command)
+        {
+            logger.Log(Severity.Info, $"Running {command}");
+        }
     }
 }
