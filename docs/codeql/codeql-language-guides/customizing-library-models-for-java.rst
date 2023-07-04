@@ -397,6 +397,8 @@ The following components are supported:
 - **SyntheticGlobal[**\ `name`\ **]** selects the synthetic global with name `name`.
 - **ArrayElement** selects the elements of an array.
 - **Element** selects the elements of a collection-like container.
+- **WithoutElement** selects a collection-like container without its elements (input only).
+- **WithElement** selects the elements of a collection-like container but not the container itself (input only).
 - **MapKey** selects the element keys of a map.
 - **MapValue** selects the element values of a map.
 
