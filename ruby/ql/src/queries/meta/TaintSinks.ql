@@ -5,6 +5,7 @@
  * @problem.severity recommendation
  * @id rb/meta/taint-sinks
  * @tags meta
+ *       meta-taint
  * @precision very-low
  */
 

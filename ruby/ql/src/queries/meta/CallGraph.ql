@@ -5,6 +5,7 @@
  * @problem.severity recommendation
  * @id rb/meta/call-graph
  * @tags meta
+ *       meta-calls
  * @precision very-low
  */
 
