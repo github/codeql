@@ -41,6 +41,8 @@ namespace Semmle.BuildAnalyser
             }
         }
 
+        private static readonly Version emptyVersion = new Version(0, 0, 0, 0);
+
         /// <summary>
         /// Indexes all DLLs we have located.
         /// Because this is a potentially time-consuming operation, it is put into a separate stage.
@@ -55,7 +57,9 @@ namespace Semmle.BuildAnalyser
 
             // Index "assemblyInfo" by version string
             // The OrderBy is used to ensure that we by default select the highest version number.
-            foreach (var info in assemblyInfoByFileName.Values.OrderBy(info => info.Id))
+            foreach (var info in assemblyInfoByFileName.Values
+                .OrderBy(info => info.Name)
+                .ThenBy(info => info.Version ?? emptyVersion))
             {
                 foreach (var index in info.IndexStrings)
                     assemblyInfoById[index] = info;

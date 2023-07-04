@@ -100,7 +100,7 @@ namespace Semmle.Extraction.CSharp
 
             // Figure out if it's dotnet core
 
-            var netCoreProjectFile = root.GetAttribute("Sdk") == "Microsoft.NET.Sdk";
+            var netCoreProjectFile = root.GetAttribute("Sdk").StartsWith("Microsoft.NET.Sdk");
 
             if (netCoreProjectFile)
             {
