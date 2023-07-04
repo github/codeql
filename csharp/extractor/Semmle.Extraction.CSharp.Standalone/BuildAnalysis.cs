@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace Semmle.BuildAnalyser
 {
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    internal sealed class BuildAnalysis : IDisposable
+    internal sealed partial class BuildAnalysis : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly ProgressMonitor progressMonitor;
@@ -95,6 +96,7 @@ namespace Semmle.BuildAnalyser
                 {
                     Restore(solutions);
                     Restore(allProjects);
+                    DownloadMissingPackages(allProjects);
                 }
             }
 
@@ -316,9 +318,9 @@ namespace Semmle.BuildAnalyser
 
         }
 
-        private void Restore(string target)
+        private bool Restore(string target)
         {
-            dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName);
+            return dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName);
         }
 
         private void Restore(IEnumerable<string> targets)
@@ -326,6 +328,76 @@ namespace Semmle.BuildAnalyser
             foreach (var target in targets)
             {
                 Restore(target);
+            }
+        }
+
+        private void DownloadMissingPackages(IEnumerable<string> restoreTargets)
+        {
+            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName).Select(d => Path.GetFileName(d).ToLowerInvariant()).ToHashSet();
+            var notYetDownloadedPackages = new HashSet<string>();
+
+            var allFiles = GetFiles("*.*").ToArray();
+            foreach (var file in allFiles)
+            {
+                try
+                {
+                    using var sr = new StreamReader(file);
+                    ReadOnlySpan<char> line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        foreach (var valueMatch in PackageReference().EnumerateMatches(line))
+                        {
+                            // We can't get the group from the ValueMatch, so doing it manually:
+                            var match = line.Slice(valueMatch.Index, valueMatch.Length);
+                            var includeIndex = match.IndexOf("Include", StringComparison.InvariantCultureIgnoreCase);
+                            if (includeIndex == -1)
+                            {
+                                continue;
+                            }
+
+                            match = match.Slice(includeIndex + "Include".Length + 1);
+
+                            var quoteIndex1 = match.IndexOf("\"");
+                            var quoteIndex2 = match.Slice(quoteIndex1 + 1).IndexOf("\"");
+
+                            var packageName = match.Slice(quoteIndex1 + 1, quoteIndex2).ToString().ToLowerInvariant();
+                            if (!alreadyDownloadedPackages.Contains(packageName))
+                            {
+                                notYetDownloadedPackages.Add(packageName);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    progressMonitor.FailedToReadFile(file, ex);
+                    continue;
+                }
+            }
+
+            foreach (var package in notYetDownloadedPackages)
+            {
+                progressMonitor.NugetInstall(package);
+                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
+                var success = dotnet.New(tempDir.DirInfo.FullName);
+                if (!success)
+                {
+                    continue;
+                }
+                success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
+                if (!success)
+                {
+                    continue;
+                }
+
+                success = Restore(tempDir.DirInfo.FullName);
+
+                // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+
+                if (!success)
+                {
+                    progressMonitor.FailedToRestoreNugetPackage(package);
+                }
             }
         }
 
@@ -350,5 +422,8 @@ namespace Semmle.BuildAnalyser
         {
             packageDirectory?.Dispose();
         }
+
+        [GeneratedRegex("<PackageReference .*Include=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex PackageReference();
     }
 }

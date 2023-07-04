@@ -107,5 +107,16 @@ namespace Semmle.BuildAnalyser
         {
             logger.Log(Severity.Info, $"Running {command}");
         }
+
+        public void FailedToRestoreNugetPackage(string package)
+        {
+            logger.Log(Severity.Info, $"Failed to restore nuget package {package}");
+        }
+
+        public void FailedToReadFile(string file, Exception ex)
+        {
+            logger.Log(Severity.Info, $"Failed to read file {file}");
+            logger.Log(Severity.Debug, $"Failed to read file {file}, exception: {ex}");
+        }
     }
 }

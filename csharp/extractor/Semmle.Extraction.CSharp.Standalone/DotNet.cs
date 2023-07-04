@@ -36,16 +36,36 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        public void RestoreToDirectory(string projectOrSolutionFile, string packageDirectory)
+        private bool RunCommand(string args)
         {
-            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
             progressMonitor.RunningProcess($"dotnet {args}");
             using var proc = Process.Start("dotnet", args);
             proc.WaitForExit();
             if (proc.ExitCode != 0)
             {
                 progressMonitor.CommandFailed("dotnet", args, proc.ExitCode);
+                return false;
             }
+
+            return true;
+        }
+
+        public bool RestoreToDirectory(string projectOrSolutionFile, string packageDirectory)
+        {
+            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
+            return RunCommand(args);
+        }
+
+        public bool New(string folder)
+        {
+            var args = $"new console --no-restore --output \"{folder}\"";
+            return RunCommand(args);
+        }
+
+        public bool AddPackage(string folder, string package)
+        {
+            var args = $"add \"{folder}\" package \"{package}\" --no-restore";
+            return RunCommand(args);
         }
     }
 }
