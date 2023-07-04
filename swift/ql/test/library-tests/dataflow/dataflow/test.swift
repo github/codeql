@@ -629,5 +629,5 @@ func testSwap() {
     y = 0
     swap(&x, &y)
     sink(arg: x) // $ SPURIOUS: flow=628
-    sink(arg: y) // $ MISSING: flow=628
+    sink(arg: y) // $ flow=628
 }
