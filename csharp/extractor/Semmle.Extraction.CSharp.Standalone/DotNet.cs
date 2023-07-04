@@ -20,6 +20,7 @@ namespace Semmle.BuildAnalyser
         {
             try
             {
+                // TODO: make sure the below `dotnet` version is matching the one specified in global.json
                 progressMonitor.RunningProcess("dotnet --info");
                 using var proc = Process.Start("dotnet", "--info");
                 proc.WaitForExit();
