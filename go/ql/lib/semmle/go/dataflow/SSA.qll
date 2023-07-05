@@ -187,6 +187,13 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   ) {
     this.getInstruction().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /** Holds if this definition is either used or captured. */
+  predicate mayBeUsed() {
+    exists(BasicBlock bb, int i, SsaSourceVariable v | this = TExplicitDef(bb, i, v) |
+      mayBeUsed(bb, i, v)
+    )
+  }
 }
 
 /** Provides a helper predicate for working with explicit SSA definitions. */

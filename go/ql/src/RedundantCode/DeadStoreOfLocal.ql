@@ -29,8 +29,9 @@ predicate isSimple(IR::Instruction nd) {
 
 from IR::Instruction def, SsaSourceVariable target, IR::Instruction rhs
 where
+  // def.hasLocationInfo(_, 25, _, _, _) and
   def.writes(target, rhs) and
-  not exists(SsaExplicitDefinition ssa | ssa.getInstruction() = def) and
+  not exists(SsaExplicitDefinition ssa | ssa.mayBeUsed() | ssa.getInstruction() = def) and
   // exclude assignments in dead code
   def.getBasicBlock() instanceof ReachableBasicBlock and
   // exclude assignments with default values or simple expressions

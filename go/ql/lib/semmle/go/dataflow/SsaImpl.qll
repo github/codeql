@@ -21,6 +21,16 @@ private module Internal {
   }
 
   /**
+   * Holds if the `i`th node of `bb` defines `v`, and `v` is either used or
+   * captured.
+   */
+  cached
+  predicate mayBeUsed(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
+    defAt(bb, i, v) and
+    (liveAfterDef(bb, i, v) or v.isCaptured())
+  }
+
+  /**
    * A data type representing SSA definitions.
    *
    * We distinguish three kinds of SSA definitions:
@@ -42,8 +52,9 @@ private module Internal {
      * An SSA definition that corresponds to an explicit assignment or other variable definition.
      */
     TExplicitDef(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-      defAt(bb, i, v) and
-      (liveAfterDef(bb, i, v) or v.isCaptured() or v instanceof Parameter)
+      mayBeUsed(bb, i, v)
+      or
+      defAt(bb, i, v) and v instanceof Parameter
     } or
     /**
      * An SSA definition representing the capturing of an SSA-convertible variable
