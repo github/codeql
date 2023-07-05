@@ -130,7 +130,8 @@ module PointerArithmeticToDeref {
 
 /**
  * Holds if `source` is a `FieldAddressInstruction` or `VariableAddressInstruction`
- * that represents `v`, and `v` is of an array-type size `size` number of elements.
+ * that represents `v`, and `v` is of an array-type `t` such that `sizeof(t)` is
+ * equal to `bytes`.
  */
 predicate isSourceImpl(DataFlow::Node source, Variable v, ArrayType t, int bytes) {
   (
@@ -156,9 +157,9 @@ module VariableToPointerArithBarrier {
     predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
     predicate isSink(DataFlow::Node sink) {
-      exists(PointerArithmeticInstruction pai, int index |
+      exists(PointerArithmeticInstruction pai |
         pai.getLeftOperand() = sink.asOperand() and
-        PointerArithmeticToDeref::constantUpperBounded(pai, index)
+        PointerArithmeticToDeref::constantUpperBounded(pai, _)
       )
     }
   }
