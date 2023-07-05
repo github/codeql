@@ -32,6 +32,7 @@
 | main.go:82:25:82:25 | (def@82:25) | b |
 | main.go:83:2:83:2 | (def@83:2) | x |
 | main.go:84:5:84:5 | (def@84:5) | a |
+| main.go:93:15:93:16 | (def@93:15) | cb |
 | main.go:95:22:95:28 | (def@95:22) | wrapper |
 | main.go:95:22:95:28 | (def@95:22).s | wrapper.s |
 | main.go:96:2:96:2 | (def@96:2) | x |

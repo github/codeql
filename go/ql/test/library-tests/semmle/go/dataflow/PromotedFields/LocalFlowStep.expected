@@ -78,6 +78,7 @@
 | main.go:7:6:7:9 | function sink | main.go:148:2:148:5 | sink |
 | main.go:7:6:7:9 | function sink | main.go:149:2:149:5 | sink |
 | main.go:7:6:7:9 | function sink | main.go:150:2:150:5 | sink |
+| main.go:7:11:7:11 | argument corresponding to s | main.go:7:11:7:11 | definition of s |
 | main.go:22:2:22:6 | definition of outer | main.go:25:7:25:11 | outer |
 | main.go:22:2:22:6 | definition of outer | main.go:26:7:26:11 | outer |
 | main.go:22:2:22:6 | definition of outer | main.go:27:7:27:11 | outer |

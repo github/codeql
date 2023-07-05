@@ -32,6 +32,7 @@
 | main.go:82:25:82:25 | definition of b |
 | main.go:83:2:83:2 | definition of x |
 | main.go:84:5:84:5 | definition of a |
+| main.go:93:15:93:16 | definition of cb |
 | main.go:95:22:95:28 | definition of wrapper |
 | main.go:96:2:96:2 | definition of x |
 | main.go:97:2:99:3 | capture variable x |
