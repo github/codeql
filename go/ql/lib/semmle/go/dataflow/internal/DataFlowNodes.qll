@@ -680,12 +680,15 @@ module Public {
     }
   }
 
-  /** A representation of a parameter initialization, defined in source via an SSA node. */
-  class SsaParameterNode extends ParameterNode, SsaNode {
-    override SsaExplicitDefinition ssa;
+  /**
+   * A representation of a parameter, defined in source via an
+   * InitParameterInstruction instruction node.
+   */
+  class InsnParameterNode extends ParameterNode, InstructionNode {
+    override IR::InitParameterInstruction insn;
     Parameter parm;
 
-    SsaParameterNode() { ssa.getInstruction() = IR::initParamInstruction(parm) }
+    InsnParameterNode() { insn = IR::initParamInstruction(parm) }
 
     /** Gets the parameter this node initializes. */
     override Parameter asParameter() { result = parm }
@@ -693,10 +696,12 @@ module Public {
     override predicate isParameterOf(DataFlowCallable c, int i) {
       parm.isParameterOf(c.asCallable().getFuncDef(), i)
     }
+
+    SsaNode getSsaNode() { result.getDefinition().(SsaExplicitDefinition).getInstruction() = insn }
   }
 
   /** A representation of a receiver initialization. */
-  class ReceiverNode extends SsaParameterNode {
+  class ReceiverNode extends InsnParameterNode {
     override ReceiverVariable parm;
 
     /** Gets the receiver variable this node initializes. */
