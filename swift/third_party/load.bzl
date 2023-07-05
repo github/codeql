@@ -46,7 +46,6 @@ def load_dependencies(workspace_name):
             patches = [
                 "@%s//swift/third_party/swift-llvm-support:patches/%s.patch" % (workspace_name, patch_name)
                 for patch_name in (
-                    "remove-result-of",
                     "remove-redundant-operators",
                     "add-constructor-to-Compilation",
                 )
