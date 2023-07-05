@@ -18,22 +18,16 @@ namespace Semmle.BuildAnalyser
 
         private void Info()
         {
-            try
+            // TODO: make sure the below `dotnet` version is matching the one specified in global.json
+            progressMonitor.RunningProcess("dotnet --info");
+            using var proc = Process.Start("dotnet", "--info");
+            proc.WaitForExit();
+            var ret = proc.ExitCode;
+
+            if (ret != 0)
             {
-                // TODO: make sure the below `dotnet` version is matching the one specified in global.json
-                progressMonitor.RunningProcess("dotnet --info");
-                using var proc = Process.Start("dotnet", "--info");
-                proc.WaitForExit();
-                var ret = proc.ExitCode;
-                if (ret != 0)
-                {
-                    progressMonitor.CommandFailed("dotnet", "--info", ret);
-                    throw new Exception($"dotnet --info failed with exit code {ret}.");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("dotnet --info failed.", ex);
+                progressMonitor.CommandFailed("dotnet", "--info", ret);
+                throw new Exception($"dotnet --info failed with exit code {ret}.");
             }
         }
 
