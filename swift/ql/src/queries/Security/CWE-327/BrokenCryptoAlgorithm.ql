@@ -11,7 +11,7 @@
  */
 
 import swift
-import codeql.swift.security.Cryptography
+import codeql.swift.Concepts
 
 from Cryptography::CryptographicOperation operation, string msgPrefix
 where
