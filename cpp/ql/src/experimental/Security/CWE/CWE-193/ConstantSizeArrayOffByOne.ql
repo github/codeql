@@ -80,14 +80,14 @@ predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string 
 
 predicate arrayTypeCand(ArrayType arrayType) {
   any(Variable v).getUnspecifiedType() = arrayType and
-  exists(arrayType.getArraySize())
+  exists(arrayType.getByteSize())
 }
 
-pragma[nomagic]
-predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, int arraySize) {
+bindingset[baseTypeSize]
+pragma[inline_late]
+predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, int size) {
   arrayTypeCand(arr) and
-  arr.getBaseType().getSize() = baseTypeSize and
-  arr.getArraySize() = arraySize
+  arr.getByteSize() / baseTypeSize = size
 }
 
 bindingset[pai]

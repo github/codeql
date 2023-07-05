@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.3
- * @precision low
+ * @precision medium
  * @id cpp/overrun-write
  * @tags reliability
  *       security
@@ -233,7 +233,8 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
     exists(state1) and
-    hasSize(bufSource.asConvertedExpr(), sizeSource, state2)
+    hasSize(bufSource.asConvertedExpr(), sizeSource, state2) and
+    validState(sizeSource, state2)
   }
 
   predicate isSinkPair(
