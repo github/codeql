@@ -181,7 +181,7 @@ int countdownLength1(int *p, int len) {
     return p[5];
 }
 
-int callCountdownLenght() {
+int callCountdownLength() {
     
     int buf[6];
 
