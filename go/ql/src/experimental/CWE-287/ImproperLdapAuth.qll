@@ -18,19 +18,33 @@ abstract class LdapAuthSink extends DataFlow::Node { }
 abstract class LdapSanitizer extends DataFlow::Node { }
 
 /**
- * A vulnerable argument to `go-ldap` or `ldap`'s `NewSearchRequest` function.
+ * A vulnerable argument to `go-ldap` or `ldap`'s `bind` function (Only v2).
  */
 private class GoLdapBindSink extends LdapAuthSink {
   GoLdapBindSink() {
     exists(Method meth, string base, string t, string m |
       t = ["Conn"] and
-      meth.hasQualifiedName([
-          "github.com/go-ldap/ldap", "github.com/go-ldap/ldap/v3", "gopkg.in/ldap.v2",
-          "gopkg.in/ldap.v3"
-        ], t, m) and
+      meth.hasQualifiedName(["gopkg.in/ldap.v2"], t, m) and
       this = meth.getACall().getArgument(1)
     |
       base = ["Bind"] and m = base
+    )
+  }
+}
+
+/**
+ * A vulnerable argument to `go-ldap` or `ldap`'s `UnauthenticatedBind` function (Only v3).
+ */
+private class GoLdapAnonymousBindSink extends LdapAuthSink {
+  GoLdapAnonymousBindSink() {
+    exists(Method meth, string base, string t, string m |
+      t = ["Conn"] and
+      meth.hasQualifiedName([
+          "github.com/go-ldap/ldap", "github.com/go-ldap/ldap/v3", "gopkg.in/ldap.v3"
+        ], t, m) and
+      this = meth.getACall().getArgument(0)
+    |
+      base = ["UnauthenticatedBind"] and m = base
     )
   }
 }
