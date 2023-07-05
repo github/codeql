@@ -73,6 +73,18 @@
 
 	<sample src="examples/unsafe-shell-command-construction_fixed.js" />
 
+	<p>
+
+		If you want to allow the user to specify other options to
+		<code>wget</code> as a string, we can use a library like
+		<code>shell-quote</code>
+		to parse the user input into an array of arguments without risking
+		command injection:
+
+	</p>
+
+	<sample src="examples/unsafe-shell-command-construction_shellquote.js" />
+
 </example>
 <references>
 

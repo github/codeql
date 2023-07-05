@@ -10,22 +10,18 @@ allows the user to execute malicious code.</p>
 </overview>
 
 <recommendation>
-<p>If possible, use hard-coded string literals to specify the command to run.
-Instead of interpreting the user input directly as a shell command, examine the
-user input and then choose among hard-coded string literals.</p>
+<p>If possible, use APIs that don't run shell commands, and accept command
+arguments as an array of strings rather than a single concatenated string. This
+is both safer and more portable.</p>
 
-<p>If the applicable libraries or commands cannot be determined until runtime,
-then add code to verify that the user input string is safe before using it.</p>
+<p>If you are given the arguments as a single string, note that it is not safe
+to simply split the string on whitespace, since an argument may contain quoted
+whitespace which would cause it to be split into multiple arguments. Instead,
+use a library such as <code>shell-quote</code> to parse the string into an array
+of arguments.</p>
 
-<p>If possible, use APIs that don't run shell commands, and accept command arguments
-as an array of strings rather than a single concatenated string. This is both safer and more portable.</p>
-
-<p>In the latter case, if you are given the arguments as a single string, note
-that it is not safe to simply split the string on whitespace, since an argument
-may contain quoted whitespace which would cause it to be split into multiple
-arguments. Instead, use a library such as <code>shell-quote</code> to parse the
-string into an array of arguments.</p>
-
+<p>If this approach is not viable, then add code to verify that the user input
+string is safe before using it.</p>
 </recommendation>
 
 <example>
@@ -45,6 +41,12 @@ directory.</p>
 default:</p>
 
 <sample src="examples/command-injection_fixed.js" />
+
+<p>If you want to allow the user to specify other options to <code>wc</code>,
+you can use a library like <code>shell-quote</code> to parse the user input into
+an array of arguments without risking command injection:</p>
+
+<sample src="examples/command-injection_shellquote.js" />
 </example>
 
 <references>

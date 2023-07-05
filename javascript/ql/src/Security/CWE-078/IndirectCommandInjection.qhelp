@@ -27,38 +27,27 @@
 
 		<p>
 
-			If possible, use hard-coded string literals to specify the
-			command to run or library to load. Instead of forwarding the
-			command-line arguments to the process, examine the command-line
-			arguments and then choose among hard-coded string literals.
+			If possible, use APIs that don't run shell commands, and accept
+			command arguments as an array of strings rather than a single
+			concatenated string. This is both safer and more portable.
 
 		</p>
 
 		<p>
 
-			If the applicable libraries or commands cannot be determined
-			at compile time, then add code to verify that each forwarded
-			command-line argument is properly escaped before using it.
+			If you are given the arguments as a single string, note that it is
+			not safe to simply split the string on whitespace, since an argument
+			may contain quoted whitespace which would cause it to be split into
+			multiple arguments. Instead, use a library such as
+			<code>shell-quote</code> to parse the string into an array of
+			arguments.
 
 		</p>
 
 		<p>
 
-			If the forwarded command-line arguments are part of the
-			arguments of the system command, prefer a library routine that handles
-			the arguments as an array of strings rather than a single concatenated
-			string. This prevents the unexpected evaluation of special characters.
-
-		</p>
-
-		<p>
-
-			In the latter case, if you are given the arguments as a single
-			string, note that it is not safe to simply split the string on
-			whitespace, since an argument may contain quoted whitespace which
-			would cause it to be split into multiple arguments. Instead, use a
-			library such as <code>shell-quote</code> to parse the string into an
-			array of arguments.
+			If this approach is not viable, then add code to verify that each
+			forwarded command-line argument is properly escaped before using it.
 
 		</p>
 
@@ -101,6 +90,17 @@
 		</p>
 
 		<sample src="examples/indirect-command-injection_fixed.js" />
+
+		<p>
+
+			If we want to allow the user to specify other options to
+			<code>node</code>, we can use a library like
+			<code>shell-quote</code> to parse the user input into an array of
+			arguments without risking command injection:
+
+		</p>
+
+		<sample src="examples/indirect-command-injection_shellquote.js" />
 
 	</example>
 
