@@ -5,8 +5,8 @@
 
 <overview>
 <p>Code that passes untrusted user input directly to
-<code>child_process.exec</code> or similar APIs that execute commands by
-spawning a shell allows the user to execute malicious code.</p>
+<code>child_process.exec</code> or similar APIs that execute shell commands
+allows the user to execute malicious code.</p>
 </overview>
 
 <recommendation>
@@ -17,9 +17,8 @@ user input and then choose among hard-coded string literals.</p>
 <p>If the applicable libraries or commands cannot be determined until runtime,
 then add code to verify that the user input string is safe before using it.</p>
 
-<p>If possible, prefer APIs that run the commands directly rather than via a
-shell, and that accept command arguments as an array of strings rather than a
-single concatenated string. This is both safer and more portable.</p>
+<p>If possible, use APIs that don't run shell commands, and accept command arguments
+as an array of strings rather than a single concatenated string. This is both safer and more portable.</p>
 
 <p>In the latter case, if you are given the arguments as a single string, note
 that it is not safe to simply split the string on whitespace, since an argument
@@ -41,7 +40,7 @@ passing a filename like <code>foo.txt; rm -rf .</code>, which will first count
 the lines in <code>foo.txt</code> and then delete all files in the current
 directory.</p>
 
-<p>To avoid this potentially catastrophic loophole, use an API like
+<p>To avoid this catastrophic loophole, use an API like
 <code>child_process.execFileSync</code> that does not spawn a shell by
 default:</p>
 
