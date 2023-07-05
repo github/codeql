@@ -496,3 +496,19 @@ func taintUrlAsync() async throws {
 		sink(string: line) // $ MISSING: tainted=490
 	}
 }
+
+func closureReturnValue() {
+	let url = URL(string: "http://example.com/")!
+
+	let r1 = url.withUnsafeFileSystemRepresentation({
+		ptr in
+		return "abc"
+	})
+	sink(string: r1)
+
+	let r2 = url.withUnsafeFileSystemRepresentation({
+		ptr in
+		return source() as! String
+	})
+	sink(string: r2) // $ tainted=511
+}
