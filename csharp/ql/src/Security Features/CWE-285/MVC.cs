@@ -5,7 +5,7 @@ public class ProfileController : Controller {
         ...
     }
 
-    // GOOD: The `Authorize` tag is used.
+    // GOOD: The `Authorize` attribute is used.
     [Authorize]
     public ActionResult Delete(int id) {
         ...

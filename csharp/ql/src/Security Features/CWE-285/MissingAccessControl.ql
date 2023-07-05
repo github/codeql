@@ -1,6 +1,6 @@
 /**
  * @name Missing function level access control
- * @description Sensitive actions should have authorization checks to prevent them from being used by arbitrary users.
+ * @description Sensitive actions should have authorization checks to prevent them from being used by malicious actors.
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.5
