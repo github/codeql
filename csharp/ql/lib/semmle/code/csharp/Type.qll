@@ -115,6 +115,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     extend(this, getTypeRef(result))
     or
     not extend(this, _) and
+    not implement(this, _) and
     not isObjectClass(this) and
     not this instanceof DynamicType and
     not this instanceof NullType and
@@ -198,6 +199,21 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     this.hasMember(c.(Accessor).getDeclaration())
   }
 
+  pragma[nomagic]
+  private predicate baseTypeHasAvailableMember(Member m) {
+    exists(ValueOrRefType base |
+      base = this.getABaseType() and
+      base.hasMember(m) and
+      not m.isPrivate()
+    |
+      not base instanceof Interface
+      or
+      not m.getDeclaringType() instanceof ObjectType
+      or
+      forall(ValueOrRefType other | other = this.getABaseType() | other instanceof Interface)
+    )
+  }
+
   /**
    * Holds if this type has member `m`, that is, either `m` is declared in this
    * type, or `m` is inherited by this type.
@@ -221,29 +237,24 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * }
    * ```
    */
-  pragma[inline]
+  cached
   predicate hasMember(Member m) {
     m = this.getAMember()
     or
-    hasNonOverriddenMember(this.getBaseClass+(), m)
-    or
-    this.hasOverriddenMember(m)
+    this.baseTypeHasAvailableMember(m) and
+    not this.someMemberOverridesOrImplements(m)
   }
 
-  cached
-  private predicate hasOverriddenMember(Virtualizable v) {
-    v.isOverridden() and
-    v = this.getAMember()
-    or
-    this.getBaseClass().(ValueOrRefType).hasOverriddenMember(v) and
-    not v.isPrivate() and
-    not this.memberOverrides(v)
-  }
-
-  // Predicate folding for proper join-order
-  pragma[noinline]
-  private predicate memberOverrides(Virtualizable v) {
-    this.getAMember().(Virtualizable).getOverridee() = v
+  pragma[nomagic]
+  private predicate someMemberOverridesOrImplements(Virtualizable v) {
+    exists(Virtualizable m |
+      m = this.getAMember()
+      or
+      this.someMemberOverridesOrImplements(m)
+    |
+      m.getOverridee() = v or
+      m.getImplementee() = v
+    )
   }
 
   /** Gets a field (or member constant) with the given name. */
@@ -758,13 +769,6 @@ class RefType extends ValueOrRefType, @ref_type {
   }
 
   override predicate isRefType() { any() }
-}
-
-pragma[noinline]
-private predicate hasNonOverriddenMember(Class c, Member m) {
-  m = c.getAMember() and
-  not m.(Virtualizable).isOverridden() and
-  not m.isPrivate()
 }
 
 /**
