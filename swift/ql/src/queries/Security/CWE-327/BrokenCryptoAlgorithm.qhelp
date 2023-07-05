@@ -27,7 +27,7 @@
 
           <p>
                Ensure that you use a strong, modern cryptographic
-               algorithm, such as AES-128 or RSA-2048.
+               algorithm, such as AES-256 or RSA-2048.
           </p>
 
      </recommendation>
@@ -49,9 +49,7 @@
      <references>
           <li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
           <li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf"> Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
-          <li>OWASP: <a
-          href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#rule---use-strong-approved-authenticated-encryption">Rule
-          - Use strong approved cryptographic algorithms</a>.
+          <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#algorithms">Cryptographic Storage Cheat Sheet - Algorithms</a>.
           </li>
      </references>
 

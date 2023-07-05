@@ -3,13 +3,13 @@ import Foundation
 
 let SECRET_KEY = SymmetricKey(size: .bits256)
 
-func sendEncrypted(plaintext: Data, to channel: Channel) {
-    channel.send(cipher.encrypt(plaintext)) // BAD: weak encryption
+func encrypt(plaintext: Data) -> Data {
+    return cipher.encrypt(plaintext) // BAD: weak encryption
 }
 
-func sendEncrypted(plaintext: Data, to channel: Channel) {
+func encrypt(plaintext: Data) -> Data {
     // GOOD: strong encryption
     let sealedData = try! AES.GCM.seal(plaintext, using: SECRET_KEY, nonce: AES.GCM.Nonce())
     let encryptedContent = try! sealedData.combined!
-    channel.send(encryptedContent)
+    return encryptedContent
 }

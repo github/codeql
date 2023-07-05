@@ -11,17 +11,12 @@
  */
 
 import swift
-import codeql.swift.security.Cryptography // TODO: or use a megamodule like Concepts, containing a Cryptography module?
+import codeql.swift.security.Cryptography
 
-from
-  Cryptography::CryptographicOperation operation, Cryptography::CryptographicAlgorithm algorithm,
-  string msgPrefix
+from Cryptography::CryptographicOperation operation, string msgPrefix
 where
-  algorithm = operation.getAlgorithm() and
-  // `Cryptography::HashingAlgorithm` and `Cryptography::PasswordHashingAlgorithm` are
-  // handled by `py/weak-sensitive-data-hashing`
-  algorithm instanceof Cryptography::EncryptionAlgorithm and
-  (
+  // Hashing algorithms are handled by `swift/weak-sensitive-data-hashing`
+  exists(Cryptography::EncryptionAlgorithm algorithm | algorithm = operation.getAlgorithm() |
     algorithm.isWeak() and
     msgPrefix = "The cryptographic algorithm " + operation.getAlgorithm().getName()
   )
