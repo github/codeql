@@ -33,6 +33,8 @@ private module Internal {
    * SSA definitions are only introduced where necessary. In particular,
    * unreachable code has no SSA definitions associated with it, and neither
    * have dead assignments (that is, assignments whose value is never read).
+   * The one exception is that we always make SSA definitions for parameters,
+   * even if they are not used, so that we can easily define parameter nodes.
    */
   cached
   newtype TSsaDefinition =
@@ -41,7 +43,7 @@ private module Internal {
      */
     TExplicitDef(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
       defAt(bb, i, v) and
-      (liveAfterDef(bb, i, v) or v.isCaptured())
+      (liveAfterDef(bb, i, v) or v.isCaptured() or v instanceof Parameter)
     } or
     /**
      * An SSA definition representing the capturing of an SSA-convertible variable
