@@ -16,6 +16,10 @@ _swift_arch_map = {
     "macOS-X64": "darwin_x86_64",
 }
 
+def get_swift_version():
+    _, version, _ = _swift_prebuilt_version.split("-")
+    return tuple([int(x) for x in version.split(".")])
+
 def _github_archive(*, name, repository, commit, build_file = None, sha256 = None):
     github_name = repository[repository.index("/") + 1:]
     maybe(

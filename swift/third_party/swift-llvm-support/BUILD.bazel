@@ -1,3 +1,5 @@
+load("//swift/third_party:load.bzl", "get_swift_version")
+
 package(default_visibility = ["//swift:__subpackages__"])
 
 #TODO we will be introducing universal binaries at a later stage, when we have both architectures prebuilt for macOS
@@ -12,10 +14,23 @@ _arch_override = {
         actual = select({
             "@bazel_tools//src/conditions:%s" % arch: "@swift_prebuilt_%s//:%s" % (
                 _arch_override.get(arch, arch),
-                name,
+                name.lstrip("_"),
             )
             for arch in ("linux", "darwin_x86_64", "darwin_arm64")
         }),
     )
-    for name in ("swift-llvm-support", "swift-test-sdk", "swift-resource-dir")
+    for name in ("_swift-llvm-support", "swift-test-sdk", "swift-resource-dir")
 ]
+
+_major, _minor, _patch = get_swift_version()
+
+cc_library(
+    name = "swift-llvm-support",
+    defines = [
+        "SWIFT_VERSION=%d" % (_major * 1000000 + _minor * 1000 + _patch),
+        "SWIFT_VERSION_MAJOR=%d" % _major,
+        "SWIFT_VERSION_MINOR=%d" % _minor,
+        "SWIFT_VERSION_PATCH=%d" % _patch,
+    ],
+    deps = [":_swift-llvm-support"],
+)
