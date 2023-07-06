@@ -35,10 +35,10 @@
 
 		<p>
 
-<p>If given arguments as a single string, avoid simply splitting the string on 
+If given arguments as a single string, avoid simply splitting the string on 
 whitespace. Arguments may contain quoted whitespace, causing them to split into 
 multiple arguments. Use a library like <code>shell-quote</code> to parse the string 
-into an array of arguments instead.</p>
+into an array of arguments instead.
 
 		</p>
 
