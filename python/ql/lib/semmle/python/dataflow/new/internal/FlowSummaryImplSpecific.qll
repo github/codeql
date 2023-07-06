@@ -47,14 +47,14 @@ DataFlowCallable inject(SummarizedCallable c) { result.asLibraryCallable() = c }
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
 
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { any() }
+
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c, rk]
@@ -128,10 +128,30 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
-  sc = TContentSummaryComponent(any(ListElementContent c)) and
-  result = "ListElement"
+private string getContentSpecific(Content cs) {
+  cs = TListElementContent() and result = "ListElement"
+  or
+  cs = TSetElementContent() and result = "SetElement"
+  or
+  exists(int index |
+    cs = TTupleElementContent(index) and result = "TupleElement[" + index.toString() + "]"
+  )
+  or
+  exists(string key |
+    cs = TDictionaryElementContent(key) and result = "DictionaryElement[" + key + "]"
+  )
+  or
+  cs = TDictionaryElementAnyContent() and result = "DictionaryElementAny"
+  or
+  exists(string attr | cs = TAttributeContent(attr) and result = "Attribute[" + attr + "]")
+}
+
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
+  exists(Content c |
+    sc = TContentSummaryComponent(c) and
+    result = getContentSpecific(c)
+  )
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */

@@ -70,3 +70,28 @@ int f4(int x) {
     }
   }
 }
+
+// No interesting ranges to check here - this irreducible CFG caused an infinite loop due to back edge detection
+void gotoLoop(bool b1, bool b2)
+{
+  int j;
+
+  if (b1)
+    return;
+
+  if (!b2)
+  {
+    for (j = 0; j < 10; ++j)
+    {
+     goto main_decode_loop;
+    }
+  }
+  else
+  {
+    for (j = 0; j < 10; ++j)
+    {
+      int x;
+      main_decode_loop:
+    }
+  }
+}

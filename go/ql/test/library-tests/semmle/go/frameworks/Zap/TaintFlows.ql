@@ -13,12 +13,10 @@ class TestConfig extends TaintTracking::Configuration {
   }
 }
 
-class ZapTest extends InlineExpectationsTest {
-  ZapTest() { this = "ZapTest" }
+module ZapTest implements TestSig {
+  string getARelevantTag() { result = "zap" }
 
-  override string getARelevantTag() { result = "zap" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "zap" and
     exists(DataFlow::Node sink | any(TestConfig c).hasFlow(_, sink) |
       element = sink.toString() and
@@ -28,3 +26,5 @@ class ZapTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<ZapTest>

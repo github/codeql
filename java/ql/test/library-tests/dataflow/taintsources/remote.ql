@@ -22,12 +22,10 @@ module RemoteTaintConfig implements DataFlow::ConfigSig {
 
 module RemoteTaintFlow = TaintTracking::Global<RemoteTaintConfig>;
 
-class RemoteFlowTest extends InlineExpectationsTest {
-  RemoteFlowTest() { this = "RemoteFlowTest" }
+module RemoteFlowTest implements TestSig {
+  string getARelevantTag() { result = ["hasRemoteValueFlow", "hasRemoteTaintFlow"] }
 
-  override string getARelevantTag() { result = ["hasRemoteValueFlow", "hasRemoteTaintFlow"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasRemoteValueFlow" and
     exists(DataFlow::Node sink | RemoteValueFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -45,3 +43,5 @@ class RemoteFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<RemoteFlowTest>

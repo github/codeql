@@ -251,6 +251,9 @@ abstract class LibraryCallable extends string {
   /** Gets a call to this library callable. */
   abstract CallCfgNode getACall();
 
+  /** Same as `getACall` but without referring to the call graph or API graph. */
+  CallCfgNode getACallSimple() { none() }
+
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   abstract ArgumentNode getACallback();
 }
@@ -1224,7 +1227,6 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
  * time the bound method is used, such that the `clear()` call would essentially be
  * translated into `l.clear()`, and we can still have use-use flow.
  */
-pragma[assume_small_delta]
 cached
 predicate getCallArg(CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
   Stages::DataFlow::ref() and
@@ -1316,7 +1318,9 @@ newtype TDataFlowCall =
   TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
   TPotentialLibraryCall(CallNode call) or
   /** A synthesized call inside a summarized callable */
-  TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
+  TSummaryCall(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+  ) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
@@ -1448,12 +1452,12 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
  */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
-  private Node receiver;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /** Gets the data flow node that this call targets. */
-  Node getReceiver() { result = receiver }
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
@@ -1486,44 +1490,35 @@ abstract class ParameterNodeImpl extends Node {
 }
 
 /** A parameter for a library callable with a flow summary. */
-class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
-  private FlowSummaryImpl::Public::SummarizedCallable sc;
-  private ParameterPosition pos;
+class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
+  SummaryParameterNode() {
+    FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
+  }
 
-  SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
+  private ParameterPosition getPosition() {
+    FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+  }
 
   override Parameter getParameter() { none() }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
-    sc = c.asLibraryCallable() and ppos = pos
-  }
-
-  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
-
-  override string toString() { result = "parameter " + pos + " of " + sc }
-
-  // Hack to return "empty location"
-  override predicate hasLocationInfo(
-    string file, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    file = "" and
-    startline = 0 and
-    startcolumn = 0 and
-    endline = 0 and
-    endcolumn = 0
+    this.getSummarizedCallable() = c.asLibraryCallable() and ppos = this.getPosition()
   }
 }
 
 /** A data-flow node used to model flow summaries. */
-class SummaryNode extends Node, TSummaryNode {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
-  private FlowSummaryImpl::Private::SummaryNodeState state;
+class FlowSummaryNode extends Node, TFlowSummaryNode {
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-  SummaryNode() { this = TSummaryNode(c, state) }
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
 
-  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asLibraryCallable() = this.getSummarizedCallable()
+  }
 
-  override string toString() { result = "[summary] " + state + " in " + c }
+  override string toString() { result = this.getSummaryNode().toString() }
 
   // Hack to return "empty location"
   override predicate hasLocationInfo(
@@ -1537,26 +1532,30 @@ class SummaryNode extends Node, TSummaryNode {
   }
 }
 
-private class SummaryReturnNode extends SummaryNode, ReturnNode {
+private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
   private ReturnKind rk;
 
-  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
 
   override ReturnKind getKind() { result = rk }
 }
 
-private class SummaryArgumentNode extends SummaryNode, ArgumentNode {
-  SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+  SummaryArgumentNode() {
+    FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+  }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+    FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
   }
 }
 
-private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
-  private Node pre;
+private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl {
+  private FlowSummaryNode pre;
 
-  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+  }
 
   override Node getPreUpdateNode() { result = pre }
 }
@@ -1625,11 +1624,11 @@ private module OutNodes {
     }
   }
 
-  private class SummaryOutNode extends SummaryNode, OutNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+  private class SummaryOutNode extends FlowSummaryNode, OutNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
+      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
     }
   }
 }

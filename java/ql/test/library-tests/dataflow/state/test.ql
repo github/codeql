@@ -59,12 +59,10 @@ module Flow = TaintTracking::GlobalWithState<Config>;
 
 module PartialFlow = Flow::FlowExploration<explorationLimit/0>;
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = ["pFwd", "pRev", "flow"] }
 
-  override string getARelevantTag() { result = ["pFwd", "pRev", "flow"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "flow" and
     exists(Flow::PathNode src, Flow::PathNode sink |
       Flow::flowPath(src, sink) and
@@ -92,3 +90,5 @@ class HasFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasFlowTest>

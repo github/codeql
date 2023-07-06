@@ -14,6 +14,7 @@
 
 import java
 import semmle.code.java.security.CommandLineQuery
+import semmle.code.java.security.ExternalProcess
 
 /**
  * Strings that are known to be sane by some simple local analysis. Such strings

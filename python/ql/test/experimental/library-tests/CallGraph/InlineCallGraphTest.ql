@@ -37,12 +37,10 @@ predicate typeTrackerClassCall(CallNode call, Function callable) {
   )
 }
 
-class CallGraphTest extends InlineExpectationsTest {
-  CallGraphTest() { this = "CallGraphTest" }
+module CallGraphTest implements TestSig {
+  string getARelevantTag() { result in ["pt", "tt"] }
 
-  override string getARelevantTag() { result in ["pt", "tt"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(CallNode call, Function target |
       tag = "tt" and
@@ -57,6 +55,8 @@ class CallGraphTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<CallGraphTest>
 
 bindingset[call, target]
 string getCallEdgeValue(CallNode call, Function target) {

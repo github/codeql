@@ -364,7 +364,25 @@ abstract private class OperandBasedUse extends UseImpl {
   OperandBasedUse() { any() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    operand.getUse() = block.getInstruction(index)
+    // See the comment in `ssa0`'s `OperandBasedUse` for an explanation of this
+    // predicate's implementation.
+    exists(BaseSourceVariableInstruction base | base = this.getBase() |
+      if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
+      then
+        exists(Operand op, int indirectionIndex, int indirection |
+          indirectionIndex = this.getIndirectionIndex() and
+          indirection = this.getIndirection() and
+          op =
+            min(Operand cand, int i |
+              isUse(_, cand, base, indirection, indirectionIndex) and
+              block.getInstruction(i) = cand.getUse()
+            |
+              cand order by i
+            ) and
+          block.getInstruction(index) = op.getUse()
+        )
+      else operand.getUse() = block.getInstruction(index)
+    )
   }
 
   final Operand getOperand() { result = operand }

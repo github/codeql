@@ -644,6 +644,15 @@ module ModelOutput {
     }
 
     /**
+     * Holds if a `baseNode` is a callable identified by the `type,path` part of a summary row.
+     */
+    cached
+    predicate resolvedSummaryRefBase(string type, string path, API::Node baseNode) {
+      summaryModel(type, path, _, _, _) and
+      baseNode = getNodeFromPath(type, path)
+    }
+
+    /**
      * Holds if `node` is seen as an instance of `type` due to a type definition
      * contributed by a CSV model.
      */
@@ -653,6 +662,17 @@ module ModelOutput {
 
   import Cached
   import Specific::ModelOutputSpecific
+  private import codeql.mad.ModelValidation as SharedModelVal
+
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, kind) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, kind) }
+  }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   /**
    * Gets an error message relating to an invalid CSV row in a model.
@@ -698,5 +718,8 @@ module ModelOutput {
       not isValidNoArgumentTokenInIdentifyingAccessPath(token.getName()) and
       result = "Invalid token '" + token + "' is missing its arguments, in access path: " + path
     )
+    or
+    // Check for invalid model kinds
+    result = KindVal::getInvalidModelKind()
   }
 }

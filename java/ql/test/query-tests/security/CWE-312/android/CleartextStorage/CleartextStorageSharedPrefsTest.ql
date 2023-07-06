@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.CleartextStorageSharedPrefsQuery
 import TestUtilities.InlineExpectationsTest
 
-class CleartextStorageSharedPrefsTest extends InlineExpectationsTest {
-  CleartextStorageSharedPrefsTest() { this = "CleartextStorageSharedPrefsTest" }
+module CleartextStorageSharedPrefsTest implements TestSig {
+  string getARelevantTag() { result = "hasCleartextStorageSharedPrefs" }
 
-  override string getARelevantTag() { result = "hasCleartextStorageSharedPrefs" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasCleartextStorageSharedPrefs" and
     exists(SensitiveSource data, SharedPreferencesEditorMethodAccess s, Expr input, Expr store |
       input = s.getAnInput() and
@@ -20,3 +18,5 @@ class CleartextStorageSharedPrefsTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<CleartextStorageSharedPrefsTest>
