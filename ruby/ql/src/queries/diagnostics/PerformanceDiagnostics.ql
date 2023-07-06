@@ -81,7 +81,7 @@ module MethodOverrides implements HistogramSig {
 
 query predicate numberOfOverriddenMethodsHistogram = MakeHistogram<MethodOverrides>::histogram/2;
 
-module MethodOverridenBy implements HistogramSig {
+module MethodOverriddenBy implements HistogramSig {
   class Bucket = DataFlow::MethodNode;
 
   int getCounts(DataFlow::MethodNode method) {
@@ -89,7 +89,7 @@ module MethodOverridenBy implements HistogramSig {
   }
 }
 
-query predicate numberOfOverridingMethodsHistogram = MakeHistogram<MethodOverridenBy>::histogram/2;
+query predicate numberOfOverridingMethodsHistogram = MakeHistogram<MethodOverriddenBy>::histogram/2;
 
 module Ancestors implements HistogramSig {
   class Bucket = DataFlow::ModuleNode;
