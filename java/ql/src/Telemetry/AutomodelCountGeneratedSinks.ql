@@ -11,7 +11,8 @@ private import AutomodelAlertSinkUtil
 
 from int instanceCount, SinkModel s
 where
-  instanceCount = strictcount(PotentialSinkModelExpr p | p.getSinkModel() = s) and
+  instanceCount = s.getInstanceCount() and
+  instanceCount > 0 and
   s.getProvenance() = "ai-generated"
 select instanceCount, s.getPackage() as package, s.getType() as type, s.getSubtypes() as subtypes,
   s.getName() as name, s.getSignature() as signature, s.getInput() as input, s.getExt() as ext,

@@ -61,6 +61,9 @@ class SinkModel extends TSinkModel {
   /** Gets the provenance for this sink model. */
   string getProvenance() { result = provenance }
 
+  /** Gets the number of instances of this sink model. */
+  int getInstanceCount() { result = count(PotentialSinkModelExpr p | p.getSinkModel() = this) }
+
   /** Gets a string representation of this sink model. */
   string toString() {
     result =
