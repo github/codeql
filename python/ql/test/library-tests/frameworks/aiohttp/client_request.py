@@ -7,8 +7,8 @@ async def test():
     resp = await s.request("method", url="url") # $ clientRequestUrlPart="url"
 
     async with aiohttp.ClientSession() as session:
-        resp = await session.get("url") # $ MISSING: clientRequestUrlPart="url"
-        resp = await session.request(method="GET", url="url") # $ MISSING: clientRequestUrlPart="url"
+        resp = await session.get("url") # $ clientRequestUrlPart="url"
+        resp = await session.request(method="GET", url="url") # $ clientRequestUrlPart="url"
 
     # other methods than GET
     s = aiohttp.ClientSession()
