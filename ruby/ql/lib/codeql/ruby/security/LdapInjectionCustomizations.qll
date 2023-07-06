@@ -26,7 +26,7 @@ module LdapInjection {
   /**
    * Additional taint steps for "LDAP Injection" vulnerabilities.
    */
-  predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     filterTaintStep(nodeFrom, nodeTo)
   }
 
