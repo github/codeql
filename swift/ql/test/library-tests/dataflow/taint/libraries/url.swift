@@ -260,7 +260,6 @@ func taintThroughURL() {
 	if let x = URL(string: clean) {
 		sink(arg: x)
 	}
-
 	if let y = URL(string: tainted) {
 		sink(arg: y) // $ tainted=210
 	}
@@ -289,7 +288,8 @@ func taintThroughURL() {
 		ptrClean in
 		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrClean, isDirectory: false, relativeTo: nil))
 		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrClean, isDirectory: false, relativeTo: urlTainted)) // $ MISSING: tainted=210
-	})
+	});
+	sink(arg: URL(fileURLWithFileSystemRepresentation: 0 as! UnsafePointer<Int8>, isDirectory: false, relativeTo: urlTainted)) // $ tainted=210
 	let _ = tainted.withCString({
 		ptrTainted in
 		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrTainted, isDirectory: false, relativeTo: nil)) // $ MISSING: tainted=210
