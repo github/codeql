@@ -1,3 +1,9 @@
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getURL` predicate from the `Container`, `Folder`, and `File` classes. Use the `getLocation` predicate instead.
+
 ## 0.7.3
 
 ### Minor Analysis Improvements

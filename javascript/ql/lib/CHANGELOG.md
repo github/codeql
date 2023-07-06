@@ -1,3 +1,9 @@
+## 0.6.4
+
+### Minor Analysis Improvements
+
+* Added models for the Webix Framework.
+
 ## 0.6.3
 
 ### Major Analysis Improvements
