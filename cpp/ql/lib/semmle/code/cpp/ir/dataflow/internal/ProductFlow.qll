@@ -192,13 +192,13 @@ module ProductFlow {
      * Holds if data flow through `node` is prohibited through the first projection of the product
      * dataflow graph when the flow state is `state`.
      */
-    predicate isBarrier1(DataFlow::Node node, FlowState1 state);
+    default predicate isBarrier1(DataFlow::Node node, FlowState1 state) { none() }
 
     /**
      * Holds if data flow through `node` is prohibited through the second projection of the product
      * dataflow graph when the flow state is `state`.
      */
-    predicate isBarrier2(DataFlow::Node node, FlowState2 state);
+    default predicate isBarrier2(DataFlow::Node node, FlowState2 state) { none() }
 
     /**
      * Holds if data flow through `node` is prohibited through the first projection of the product
@@ -237,9 +237,11 @@ module ProductFlow {
      *
      * This step is only applicable in `state1` and updates the flow state to `state2`.
      */
-    predicate isAdditionalFlowStep1(
+    default predicate isAdditionalFlowStep1(
       DataFlow::Node node1, FlowState1 state1, DataFlow::Node node2, FlowState1 state2
-    );
+    ) {
+      none()
+    }
 
     /**
      * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps in
@@ -253,9 +255,11 @@ module ProductFlow {
      *
      * This step is only applicable in `state1` and updates the flow state to `state2`.
      */
-    predicate isAdditionalFlowStep2(
+    default predicate isAdditionalFlowStep2(
       DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2
-    );
+    ) {
+      none()
+    }
 
     /**
      * Holds if data flow into `node` is prohibited in the first projection of the product
