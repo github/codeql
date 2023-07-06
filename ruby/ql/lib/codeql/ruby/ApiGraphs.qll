@@ -948,11 +948,10 @@ module API {
       succ = getForwardStartNode(getAModuleReference(mod))
       or
       pred = getBackwardEndNode(getAModuleReference(mod)) and
-      (
-        succ = Impl::MkModuleObjectUp(mod, false)
-        or
-        succ = Impl::MkModuleObjectDown(mod, false)
-      )
+      succ = Impl::MkModuleObjectUp(mod, false)
+      or
+      pred = getBackwardEndNode(getAModuleSelfReference(mod)) and
+      succ = Impl::MkModuleObjectDown(mod, false)
       or
       pred = Impl::MkModuleInstanceUp(mod, true) and
       succ = getAModuleInstanceUseNode(mod)
@@ -1024,6 +1023,12 @@ module API {
       result = mod.getAnImmediateReference()
       or
       mod.getAnAncestor().getAnOwnInstanceSelf() = getANodeReachingClassCall(result)
+    }
+
+    bindingset[mod]
+    pragma[inline_late]
+    private DataFlow::LocalSourceNode getAModuleSelfReference(DataFlow::ModuleNode mod) {
+      result = mod.getAnOwnModuleSelf()
     }
 
     /**
