@@ -27,7 +27,7 @@
 
 		<p>
 
-			If possible, use APIs that don't run shell commands, and accept
+			If possible, use APIs that don't run shell commands and accept
 			command arguments as an array of strings rather than a single
 			concatenated string. This is both safer and more portable.
 
@@ -35,12 +35,10 @@
 
 		<p>
 
-			If you are given the arguments as a single string, note that it is
-			not safe to simply split the string on whitespace, since an argument
-			may contain quoted whitespace which would cause it to be split into
-			multiple arguments. Instead, use a library such as
-			<code>shell-quote</code> to parse the string into an array of
-			arguments.
+<p>If given arguments as a single string, avoid simply splitting the string on 
+whitespace. Arguments may contain quoted whitespace, causing them to split into 
+multiple arguments. Use a library like <code>shell-quote</code> to parse the string 
+into an array of arguments instead.</p>
 
 		</p>
 

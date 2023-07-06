@@ -10,15 +10,14 @@ allows the user to execute malicious code.</p>
 </overview>
 
 <recommendation>
-<p>If possible, use APIs that don't run shell commands, and accept command
+<p>If possible, use APIs that don't run shell commands and accept command
 arguments as an array of strings rather than a single concatenated string. This
 is both safer and more portable.</p>
 
-<p>If you are given the arguments as a single string, note that it is not safe
-to simply split the string on whitespace, since an argument may contain quoted
-whitespace which would cause it to be split into multiple arguments. Instead,
-use a library such as <code>shell-quote</code> to parse the string into an array
-of arguments.</p>
+<p>If given arguments as a single string, avoid simply splitting the string on 
+whitespace. Arguments may contain quoted whitespace, causing them to split into 
+multiple arguments. Use a library like <code>shell-quote</code> to parse the string 
+into an array of arguments instead.</p>
 
 <p>If this approach is not viable, then add code to verify that the user input
 string is safe before using it.</p>
@@ -31,12 +30,9 @@ command to count its lines without examining it first.</p>
 
 <sample src="examples/command-injection.js" />
 
-<p>A malicious user can exploit this code to execute arbitrary shell commands by
-passing a filename like <code>foo.txt; rm -rf .</code>, which will first count
-the lines in <code>foo.txt</code> and then delete all files in the current
-directory.</p>
+<p>A malicious user can take advantage of this code by executing arbitrary shell commands. For instance, by providing a filename like <code>foo.txt; rm -rf .</code>, the user can first count the lines in <code>foo.txt</code> and subsequently delete all files in the current directory. </p>
 
-<p>To avoid this catastrophic loophole, use an API like
+<p>To avoid this catastrophic loophole, use an API such as
 <code>child_process.execFileSync</code> that does not spawn a shell by
 default:</p>
 
