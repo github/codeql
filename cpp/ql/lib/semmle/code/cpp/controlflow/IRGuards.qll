@@ -627,6 +627,20 @@ private predicate sub_lt(
     x = int_value(rhs.getRight()) and
     k = c - x
   )
+  or
+  exists(PointerSubInstruction lhs, int c, int x |
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    left = lhs.getLeftOperand() and
+    x = int_value(lhs.getRight()) and
+    k = c + x
+  )
+  or
+  exists(PointerSubInstruction rhs, int c, int x |
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    right = rhs.getLeftOperand() and
+    x = int_value(rhs.getRight()) and
+    k = c - x
+  )
 }
 
 // left + x < right + c => left < right + (c-x)
@@ -645,6 +659,26 @@ private predicate add_lt(
   )
   or
   exists(AddInstruction rhs, int c, int x |
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    (
+      right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
+      or
+      right = rhs.getRightOperand() and x = int_value(rhs.getLeft())
+    ) and
+    k = c + x
+  )
+  or
+  exists(PointerAddInstruction lhs, int c, int x |
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+  or
+  exists(PointerAddInstruction rhs, int c, int x |
     compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
@@ -673,6 +707,20 @@ private predicate sub_eq(
     x = int_value(rhs.getRight()) and
     k = c - x
   )
+  or
+  exists(PointerSubInstruction lhs, int c, int x |
+    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+    left = lhs.getLeftOperand() and
+    x = int_value(lhs.getRight()) and
+    k = c + x
+  )
+  or
+  exists(PointerSubInstruction rhs, int c, int x |
+    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+    right = rhs.getLeftOperand() and
+    x = int_value(rhs.getRight()) and
+    k = c - x
+  )
 }
 
 // left + x == right + c => left == right + (c-x)
@@ -691,6 +739,26 @@ private predicate add_eq(
   )
   or
   exists(AddInstruction rhs, int c, int x |
+    compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
+    (
+      right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
+      or
+      right = rhs.getRightOperand() and x = int_value(rhs.getLeft())
+    ) and
+    k = c + x
+  )
+  or
+  exists(PointerAddInstruction lhs, int c, int x |
+    compares_eq(cmp, lhs.getAUse(), right, c, areEqual, testIsTrue) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+  or
+  exists(PointerAddInstruction rhs, int c, int x |
     compares_eq(cmp, left, rhs.getAUse(), c, areEqual, testIsTrue) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
