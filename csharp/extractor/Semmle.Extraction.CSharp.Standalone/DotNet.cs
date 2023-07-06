@@ -1,17 +1,66 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Semmle.BuildAnalyser
 {
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
-    internal static class DotNet
+    internal class DotNet
     {
-        public static int RestoreToDirectory(string projectOrSolutionFile, string packageDirectory)
+        private readonly ProgressMonitor progressMonitor;
+
+        public DotNet(ProgressMonitor progressMonitor)
         {
-            using var proc = Process.Start("dotnet", $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true");
+            this.progressMonitor = progressMonitor;
+            Info();
+        }
+
+        private void Info()
+        {
+            // TODO: make sure the below `dotnet` version is matching the one specified in global.json
+            progressMonitor.RunningProcess("dotnet --info");
+            using var proc = Process.Start("dotnet", "--info");
             proc.WaitForExit();
-            return proc.ExitCode;
+            var ret = proc.ExitCode;
+
+            if (ret != 0)
+            {
+                progressMonitor.CommandFailed("dotnet", "--info", ret);
+                throw new Exception($"dotnet --info failed with exit code {ret}.");
+            }
+        }
+
+        private bool RunCommand(string args)
+        {
+            progressMonitor.RunningProcess($"dotnet {args}");
+            using var proc = Process.Start("dotnet", args);
+            proc.WaitForExit();
+            if (proc.ExitCode != 0)
+            {
+                progressMonitor.CommandFailed("dotnet", args, proc.ExitCode);
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool RestoreToDirectory(string projectOrSolutionFile, string packageDirectory)
+        {
+            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
+            return RunCommand(args);
+        }
+
+        public bool New(string folder)
+        {
+            var args = $"new console --no-restore --output \"{folder}\"";
+            return RunCommand(args);
+        }
+
+        public bool AddPackage(string folder, string package)
+        {
+            var args = $"add \"{folder}\" package \"{package}\" --no-restore";
+            return RunCommand(args);
         }
     }
 }

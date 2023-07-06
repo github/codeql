@@ -16,12 +16,12 @@ namespace Semmle.BuildAnalyser
         /// Locate all reference files and index them.
         /// </summary>
         /// <param name="dirs">Directories to search.</param>
-        /// <param name="progress">Callback for progress.</param>
-        public AssemblyCache(IEnumerable<string> dirs, IProgressMonitor progress)
+        /// <param name="progressMonitor">Callback for progress.</param>
+        public AssemblyCache(IEnumerable<string> dirs, ProgressMonitor progressMonitor)
         {
             foreach (var dir in dirs)
             {
-                progress.FindingFiles(dir);
+                progressMonitor.FindingFiles(dir);
                 AddReferenceDirectory(dir);
             }
             IndexReferences();
