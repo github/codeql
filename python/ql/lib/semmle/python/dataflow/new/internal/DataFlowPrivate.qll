@@ -308,7 +308,7 @@ module EssaFlow {
       // note: we allow this for both `with` and `async with`, since some
       // implementations do `async def __aenter__(self): return self`, so you can do
       // both:
-      // * `foo = x.foo(); await foo.async_methoid(); foo.close()` and
+      // * `foo = x.foo(); await foo.async_method(); foo.close()` and
       // * `async with x.foo() as foo: await foo.async_method()`.
     )
     or
@@ -322,7 +322,7 @@ module EssaFlow {
     // We have this step in addition to the step above, to handle cases where the QL
     // modeling of `f(42)` requires a `.getAwaited()` step (in API graphs) when not
     // using `async with`, so you can do both:
-    // * `foo = await x.foo(); await foo.async_methoid(); foo.close()` and
+    // * `foo = await x.foo(); await foo.async_method(); foo.close()` and
     // * `async with x.foo() as foo: await foo.async_method()`.
     exists(With with, ControlFlowNode var |
       nodeFrom.(CfgNode).getNode() = var and
