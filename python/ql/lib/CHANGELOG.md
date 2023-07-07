@@ -7,7 +7,7 @@
 ### Minor Analysis Improvements
 
 * Deleted many models that used the old dataflow library, the new models can be found in the `python/ql/lib/semmle/python/frameworks` folder.
-* More precise modelling of several container functions (such as `sorted`, `reversed`) and methods (such as `set.add`, `list.append`).
+* More precise modeling of several container functions (such as `sorted`, `reversed`) and methods (such as `set.add`, `list.append`).
 * Added modeling of taint flow through the template argument of `flask.render_template_string` and `flask.stream_template_string`.
 * Deleted many deprecated predicates and classes with uppercase `API`, `HTTP`, `XSS`, `SQL`, etc. in their names. Use the PascalCased versions instead.
 * Deleted the deprecated `getName()` predicate from the `Container` class, use `getAbsolutePath()` instead.
