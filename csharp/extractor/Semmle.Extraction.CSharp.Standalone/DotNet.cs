@@ -5,10 +5,18 @@ using Semmle.Util;
 
 namespace Semmle.BuildAnalyser
 {
+    internal interface IDotNet
+    {
+        bool RestoreToDirectory(string project, string directory);
+        bool New(string folder);
+        bool AddPackage(string folder, string package);
+        public IList<string> GetListedRuntimes();
+    }
+
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
-    internal class DotNet
+    internal class DotNet : IDotNet
     {
         private const string dotnet = "dotnet";
         private readonly ProgressMonitor progressMonitor;

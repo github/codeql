@@ -17,12 +17,12 @@ namespace Semmle.Extraction.CSharp.Standalone
         private const string netCoreApp = "Microsoft.NETCore.App";
         private const string aspNetCoreApp = "Microsoft.AspNetCore.App";
 
-        private readonly DotNet dotNet;
+        private readonly IDotNet dotNet;
         private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
-        public Runtime(DotNet dotNet) => this.dotNet = dotNet;
+        public Runtime(IDotNet dotNet) => this.dotNet = dotNet;
 
-        private sealed class RuntimeVersion : IComparable<RuntimeVersion>
+        internal sealed class RuntimeVersion : IComparable<RuntimeVersion>
         {
             private readonly string dir;
             private Version Version { get; }
@@ -97,7 +97,10 @@ namespace Semmle.Extraction.CSharp.Standalone
             return runtimes;
         }
 
-        private Dictionary<string, RuntimeVersion> GetNewestRuntimes()
+        /// <summary>
+        /// Returns a dictionary mapping runtimes to their newest version.
+        /// </summary>
+        internal Dictionary<string, RuntimeVersion> GetNewestRuntimes()
         {
             var listed = dotNet.GetListedRuntimes();
             return ParseRuntimes(listed);
