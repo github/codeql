@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public Runtime(IDotNet dotNet) => this.dotNet = dotNet;
 
-        internal sealed class RuntimeVersion : IComparable<RuntimeVersion>
+        internal record RuntimeVersion : IComparable<RuntimeVersion>
         {
             private readonly string dir;
             private readonly Version version;
@@ -70,11 +70,6 @@ namespace Semmle.Extraction.CSharp.Standalone
 
                 return c;
             }
-
-            public override bool Equals(object? obj) =>
-                obj is not null && obj is RuntimeVersion other && other.FullPath == FullPath;
-
-            public override int GetHashCode() => FullPath.GetHashCode();
 
             public override string ToString() => FullPath;
         }
