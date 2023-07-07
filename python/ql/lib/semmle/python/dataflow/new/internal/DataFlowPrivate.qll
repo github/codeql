@@ -292,12 +292,7 @@ module EssaFlow {
     //   nodeFrom is `f(42)`, cfg node
     //   nodeTo is `x`, essa var
     nodeFrom.(CfgNode).getNode() =
-      nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue() and
-    // we need to ensure that enclosing callable is the same, since a parameter with a
-    // default value will be in the scope of the function, while the default value
-    // itself will be in the scope that _defines_ the function.
-    // We handle _that_ as a jumpstep
-    nodeFrom.getEnclosingCallable() = nodeTo.getEnclosingCallable()
+      nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
     or
     // With definition
     //   `with f(42) as x:`
@@ -473,8 +468,7 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   // function, while the default value itself will be in the scope that _defines_ the
   // function.
   nodeFrom.(CfgNode).getNode() =
-    nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue() and
-  not nodeFrom.getEnclosingCallable() = nodeTo.getEnclosingCallable()
+    nodeTo.(EssaNode).getVar().getDefinition().(ParameterDefinition).getDefault()
 }
 
 /**
