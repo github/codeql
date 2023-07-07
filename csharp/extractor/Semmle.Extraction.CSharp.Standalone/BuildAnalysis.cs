@@ -133,9 +133,9 @@ namespace Semmle.BuildAnalyser
                 DateTime.Now - startTime);
         }
 
-        private IEnumerable<string> GetFiles(string pattern)
+        private IEnumerable<string> GetFiles(string pattern, bool recurseSubdirectories = true)
         {
-            return sourceDir.GetFiles(pattern, SearchOption.AllDirectories)
+            return sourceDir.GetFiles(pattern, new EnumerationOptions { RecurseSubdirectories = recurseSubdirectories, MatchCasing = MatchCasing.CaseInsensitive })
                 .Select(d => d.FullName)
                 .Where(d => !options.ExcludesFile(d));
         }
@@ -318,16 +318,16 @@ namespace Semmle.BuildAnalyser
 
         }
 
-        private bool Restore(string target)
+        private bool Restore(string target, string? pathToNugetConfig = null)
         {
-            return dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName);
+            return dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName, pathToNugetConfig);
         }
 
-        private void Restore(IEnumerable<string> targets)
+        private void Restore(IEnumerable<string> targets, string? pathToNugetConfig = null)
         {
             foreach (var target in targets)
             {
-                Restore(target);
+                Restore(target, pathToNugetConfig);
             }
         }
 
@@ -336,7 +336,23 @@ namespace Semmle.BuildAnalyser
             var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName).Select(d => Path.GetFileName(d).ToLowerInvariant()).ToHashSet();
             var notYetDownloadedPackages = new HashSet<string>();
 
-            var allFiles = GetFiles("*.*").ToArray();
+            var nugetConfigs = GetFiles("nuget.config", recurseSubdirectories: true).ToArray();
+            string? nugetConfig = null;
+            if (nugetConfigs.Length > 1)
+            {
+                progressMonitor.MultipleNugetConfig(nugetConfigs);
+                nugetConfig = GetFiles("nuget.config", recurseSubdirectories: false).FirstOrDefault();
+                if (nugetConfig == null)
+                {
+                    progressMonitor.NoTopLevelNugetConfig();
+                }
+            }
+            else
+            {
+                nugetConfig = nugetConfigs.FirstOrDefault();
+            }
+
+            var allFiles = GetFiles("*.*");
             foreach (var file in allFiles)
             {
                 try
@@ -390,7 +406,7 @@ namespace Semmle.BuildAnalyser
                     continue;
                 }
 
-                success = Restore(tempDir.DirInfo.FullName);
+                success = Restore(tempDir.DirInfo.FullName, nugetConfig);
 
                 // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
 
