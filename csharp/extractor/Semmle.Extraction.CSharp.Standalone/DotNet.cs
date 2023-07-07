@@ -56,9 +56,11 @@ namespace Semmle.BuildAnalyser
             return true;
         }
 
-        public bool RestoreToDirectory(string projectOrSolutionFile, string packageDirectory)
+        public bool RestoreToDirectory(string projectOrSolutionFile, string packageDirectory, string? pathToNugetConfig = null)
         {
             var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
+            if (pathToNugetConfig != null)
+                args += $" --configfile \"{pathToNugetConfig}\"";
             return RunCommand(args);
         }
 
