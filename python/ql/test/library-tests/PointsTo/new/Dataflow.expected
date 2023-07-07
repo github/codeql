@@ -48,8 +48,8 @@
 | a_simple.py:34 | f_0 = FunctionExpr |
 | a_simple.py:34 | kwargs_0 = ParameterDefinition |
 | a_simple.py:38 | a_0 = ParameterDefinition |
-| a_simple.py:38 | b_0 = ParameterDefinition |
-| a_simple.py:38 | c_0 = ParameterDefinition |
+| a_simple.py:38 | b_0 = Str |
+| a_simple.py:38 | c_0 = Str |
 | a_simple.py:38 | multi_assign_and_packing_0 = FunctionExpr |
 | a_simple.py:39 | t_0 = Tuple |
 | a_simple.py:40 | w_0 = Tuple |
@@ -151,7 +151,7 @@
 | b_condition.py:79 | t_4 = ArgumentRefinement(t_3) |
 | b_condition.py:81 | bar_0 = ScopeEntryDefinition |
 | b_condition.py:81 | bar_2 = phi(bar_0, bar_1) |
-| b_condition.py:81 | foo_0 = ParameterDefinition |
+| b_condition.py:81 | foo_0 = True |
 | b_condition.py:81 | foo_3 = Pi(foo_0) [false] |
 | b_condition.py:81 | foo_4 = phi(foo_1, foo_3) |
 | b_condition.py:81 | odasa6261_1 = FunctionExpr |
@@ -159,8 +159,8 @@
 | b_condition.py:83 | foo_1 = Pi(foo_0) [true] |
 | b_condition.py:83 | foo_2 = ScopeEntryDefinition |
 | b_condition.py:87 | split_bool1_1 = FunctionExpr |
-| b_condition.py:87 | x_0 = ParameterDefinition |
-| b_condition.py:87 | y_0 = ParameterDefinition |
+| b_condition.py:87 | x_0 = None |
+| b_condition.py:87 | y_0 = None |
 | b_condition.py:88 | x_1 = Pi(x_0) [true] |
 | b_condition.py:90 | x_4 = Pi(x_0) [false] |
 | b_condition.py:90 | x_5 = SingleSuccessorGuard(x_4) [false] |
@@ -643,7 +643,7 @@
 | n_nesting.py:0 | __name___0 = ScopeEntryDefinition |
 | n_nesting.py:0 | __package___0 = ScopeEntryDefinition |
 | n_nesting.py:8 | C_0 = ScopeEntryDefinition |
-| n_nesting.py:8 | compile_ops_0 = ParameterDefinition |
+| n_nesting.py:8 | compile_ops_0 = True |
 | n_nesting.py:8 | foo_0 = FunctionExpr |
 | n_nesting.py:9 | C_1 = CallsiteRefinement(C_0) |
 | n_nesting.py:10 | C_5 = ScopeEntryDefinition |
@@ -722,10 +722,10 @@
 | r_regressions.py:27 | gv_33 = phi(gv_12, gv_13) |
 | r_regressions.py:27 | x_0 = ParameterDefinition |
 | r_regressions.py:27 | x_5 = phi(x_3, x_4) |
-| r_regressions.py:27 | y_0 = ParameterDefinition |
+| r_regressions.py:27 | y_0 = None |
 | r_regressions.py:27 | y_7 = Pi(y_2) [false] |
 | r_regressions.py:27 | y_8 = phi(y_3, y_6, y_7) |
-| r_regressions.py:27 | z_0 = ParameterDefinition |
+| r_regressions.py:27 | z_0 = IntegerLiteral |
 | r_regressions.py:27 | z_3 = Pi(z_0) [false] |
 | r_regressions.py:27 | z_4 = phi(z_0, z_2, z_3) |
 | r_regressions.py:31 | x_1 = Pi(x_0) [true] |
@@ -761,7 +761,7 @@
 | r_regressions.py:58 | decorator_0 = ParameterDefinition |
 | r_regressions.py:58 | gv_19 = ScopeEntryDefinition |
 | r_regressions.py:58 | method_decorator_0 = FunctionExpr |
-| r_regressions.py:58 | name_0 = ParameterDefinition |
+| r_regressions.py:58 | name_0 = Str |
 | r_regressions.py:61 | _dec_0 = FunctionExpr |
 | r_regressions.py:61 | func_0 = ScopeEntryDefinition |
 | r_regressions.py:61 | gv_20 = ScopeEntryDefinition |
