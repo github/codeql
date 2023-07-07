@@ -1096,13 +1096,13 @@ module API {
       /** The method accessed at `call`, synthetically treated as a separate object. */
       MkMethodAccessNode(DataFlow::CallNode call) or
       /** The module object `mod` with epsilon edges to its ancestors. */
-      MkModuleObjectUp(DataFlow::ModuleNode mod) or
+      MkModuleObjectUp(DataFlow::ModuleNode mod) { not mod.getQualifiedName() = "Object" } or
       /** The module object `mod` with epsilon edges to its descendents. */
-      MkModuleObjectDown(DataFlow::ModuleNode mod) or
+      MkModuleObjectDown(DataFlow::ModuleNode mod) { not mod.getQualifiedName() = "Object" } or
       /** Instances of `mod` with epsilon edges to its ancestors. */
-      MkModuleInstanceUp(DataFlow::ModuleNode mod) or
+      MkModuleInstanceUp(DataFlow::ModuleNode mod) { not mod.getQualifiedName() = "Object" } or
       /** Instances of `mod` with epsilon edges to its descendents, and to its upward node. */
-      MkModuleInstanceDown(DataFlow::ModuleNode mod) or
+      MkModuleInstanceDown(DataFlow::ModuleNode mod) { not mod.getQualifiedName() = "Object" } or
       /** Intermediate node for following forward data flow. */
       MkForwardNode(DataFlow::LocalSourceNode node, TypeTracker t) { isReachable(node, t) } or
       /** Intermediate node for following backward data flow. */
