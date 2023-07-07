@@ -331,8 +331,8 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    exists(ArrayType arrayType, PointerArithmeticInstruction pai |
-      state = TOverflowArithmetic(arrayType, pai) and
+    exists(ArrayType arrayType |
+      state = TOverflowArithmetic(arrayType, _) and
       ArrayAddressToDeref0::candidateSink(sink, arrayType)
     )
   }
