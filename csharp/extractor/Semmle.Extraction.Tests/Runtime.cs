@@ -59,8 +59,8 @@ namespace Semmle.Extraction.Tests
             var listedRuntimes = new List<string>
             {
                 "Microsoft.NETCore.App 7.0.2 [/path/dotnet/shared/Microsoft.NETCore.App]",
-                "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]",
-                "Microsoft.NETCore.App 8.0.0-preview.5.43280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
+                "Microsoft.NETCore.App 8.0.0-preview.5.43280.8 [/path/dotnet/shared/Microsoft.NETCore.App]",
+                "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
             };
             var dotnet = new DotNetStub(listedRuntimes);
             var runtime = new Runtime(dotnet);
@@ -74,5 +74,29 @@ namespace Semmle.Extraction.Tests
             Assert.True(runtimes.TryGetValue("Microsoft.NETCore.App", out var netCoreApp));
             Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/8.0.0-preview.5.43280.8", netCoreApp.FullPath);
         }
+
+        [Fact]
+        public void TestRuntime3()
+        {
+            // Setup
+            var listedRuntimes = new List<string>
+            {
+                "Microsoft.NETCore.App 7.0.2 [/path/dotnet/shared/Microsoft.NETCore.App]",
+                "Microsoft.NETCore.App 8.0.0-rc.4.43280.8 [/path/dotnet/shared/Microsoft.NETCore.App]",
+                "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
+            };
+            var dotnet = new DotNetStub(listedRuntimes);
+            var runtime = new Runtime(dotnet);
+
+            // Execute
+            var runtimes = runtime.GetNewestRuntimes();
+
+            // Verify
+            Assert.Single(runtimes);
+
+            Assert.True(runtimes.TryGetValue("Microsoft.NETCore.App", out var netCoreApp));
+            Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/8.0.0-rc.4.43280.8", netCoreApp.FullPath);
+        }
+
     }
 }

@@ -25,42 +25,49 @@ namespace Semmle.Extraction.CSharp.Standalone
         internal sealed class RuntimeVersion : IComparable<RuntimeVersion>
         {
             private readonly string dir;
-            private Version Version { get; }
-            private Version? PreviewVersion { get; } = null;
-            private bool IsPreview => PreviewVersion is not null;
+            private readonly Version version;
+            private readonly Version? preReleaseVersion;
+            private readonly string? preReleaseVersionType;
+            private bool IsPreRelease => preReleaseVersionType is not null && preReleaseVersion is not null;
             public string FullPath
             {
                 get
                 {
-                    var preview = IsPreview ? $"-preview.{PreviewVersion}" : "";
-                    var version = Version + preview;
+                    var preRelease = IsPreRelease ? $"-{preReleaseVersionType}.{preReleaseVersion}" : "";
+                    var version = this.version + preRelease;
                     return Path.Combine(dir, version);
                 }
             }
 
-            private static Version MakeVersion(string version)
-            {
-                var versionParts = version.Split('.');
-                return new Version(int.Parse(versionParts[0]), int.Parse(versionParts[1]), int.Parse(versionParts[2]));
-            }
-
-            public RuntimeVersion(string dir, string version, string previewVersion)
+            public RuntimeVersion(string dir, string version, string preReleaseVersionType, string preReleaseVersion)
             {
                 this.dir = dir;
-                Version = MakeVersion(version);
-                if (!string.IsNullOrEmpty(previewVersion))
+                this.version = Version.Parse(version);
+                if (!string.IsNullOrEmpty(preReleaseVersion) && !string.IsNullOrEmpty(preReleaseVersionType))
                 {
-                    PreviewVersion = MakeVersion(previewVersion);
+                    this.preReleaseVersionType = preReleaseVersionType;
+                    this.preReleaseVersion = Version.Parse(preReleaseVersion);
                 }
             }
 
             public int CompareTo(RuntimeVersion? other)
             {
-                var c = Version.CompareTo(other?.Version);
-                if (c == 0 && IsPreview)
+                var c = version.CompareTo(other?.version);
+                if (c == 0 && IsPreRelease)
                 {
-                    return other!.IsPreview ? PreviewVersion!.CompareTo(other!.PreviewVersion) : -1;
+                    if (!other!.IsPreRelease)
+                    {
+                        return -1;
+                    }
+
+                    // Both are pre-release like runtime versions.
+                    // The pre-release version types are sorted alphabetically (e.g. alpha, beta, preview, rc)
+                    // and the pre-release version types are more important that the pre-release version numbers.
+                    return preReleaseVersionType != other!.preReleaseVersionType
+                        ? preReleaseVersionType!.CompareTo(other!.preReleaseVersionType)
+                        : preReleaseVersion!.CompareTo(other!.preReleaseVersion);
                 }
+
                 return c;
             }
 
@@ -72,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             public override string ToString() => FullPath;
         }
 
-        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-preview\.(\d+\.\d+\.\d+))?\s\[(\S+)\]$")]
+        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-([a-z]+)\.(\d+\.\d+\.\d+))?\s\[(\S+)\]$")]
         private static partial Regex RuntimeRegex();
 
         /// <summary>
@@ -90,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                 var match = RuntimeRegex().Match(r);
                 if (match.Success)
                 {
-                    runtimes.AddOrUpdate(match.Groups[1].Value, new RuntimeVersion(match.Groups[5].Value, match.Groups[2].Value, match.Groups[4].Value));
+                    runtimes.AddOrUpdate(match.Groups[1].Value, new RuntimeVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
                 }
             });
 
