@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Semmle.Util;
@@ -7,7 +7,7 @@ namespace Semmle.BuildAnalyser
 {
     internal interface IDotNet
     {
-        bool RestoreToDirectory(string project, string directory);
+        bool RestoreToDirectory(string project, string directory, string? pathToNugetConfig = null);
         bool New(string folder);
         bool AddPackage(string folder, string package);
         public IList<string> GetListedRuntimes();
