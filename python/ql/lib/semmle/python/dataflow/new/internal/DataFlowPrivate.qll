@@ -467,8 +467,10 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   // a parameter with a default value, since the parameter will be in the scope of the
   // function, while the default value itself will be in the scope that _defines_ the
   // function.
-  nodeFrom.(CfgNode).getNode() =
-    nodeTo.(EssaNode).getVar().getDefinition().(ParameterDefinition).getDefault()
+  exists(ParameterDefinition param |
+    nodeFrom.asCfgNode() = param.getDefault() and
+    nodeTo.asCfgNode() = param.getDefiningNode()
+  )
 }
 
 /**
