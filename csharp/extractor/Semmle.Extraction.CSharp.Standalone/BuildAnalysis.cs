@@ -66,7 +66,7 @@ namespace Semmle.BuildAnalyser
             // Find DLLs in the .Net Framework
             if (options.ScanNetFrameworkDlls)
             {
-                var runtimeLocation = Runtime.GetRuntime(options.UseSelfContainedDotnet);
+                var runtimeLocation = new Runtime(dotnet).GetRuntime(options.UseSelfContainedDotnet);
                 progressMonitor.Log(Util.Logging.Severity.Debug, $"Runtime location selected: {runtimeLocation}");
                 dllDirNames.Add(runtimeLocation);
             }

@@ -1,13 +1,24 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Semmle.Util;
 
 namespace Semmle.BuildAnalyser
 {
+    internal interface IDotNet
+    {
+        bool RestoreToDirectory(string project, string directory);
+        bool New(string folder);
+        bool AddPackage(string folder, string package);
+        public IList<string> GetListedRuntimes();
+    }
+
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
-    internal class DotNet
+    internal class DotNet : IDotNet
     {
+        private const string dotnet = "dotnet";
         private readonly ProgressMonitor progressMonitor;
 
         public DotNet(ProgressMonitor progressMonitor)
@@ -19,26 +30,26 @@ namespace Semmle.BuildAnalyser
         private void Info()
         {
             // TODO: make sure the below `dotnet` version is matching the one specified in global.json
-            progressMonitor.RunningProcess("dotnet --info");
-            using var proc = Process.Start("dotnet", "--info");
+            progressMonitor.RunningProcess($"{dotnet} --info");
+            using var proc = Process.Start(dotnet, "--info");
             proc.WaitForExit();
             var ret = proc.ExitCode;
 
             if (ret != 0)
             {
-                progressMonitor.CommandFailed("dotnet", "--info", ret);
-                throw new Exception($"dotnet --info failed with exit code {ret}.");
+                progressMonitor.CommandFailed(dotnet, "--info", ret);
+                throw new Exception($"{dotnet} --info failed with exit code {ret}.");
             }
         }
 
         private bool RunCommand(string args)
         {
-            progressMonitor.RunningProcess($"dotnet {args}");
-            using var proc = Process.Start("dotnet", args);
+            progressMonitor.RunningProcess($"{dotnet} {args}");
+            using var proc = Process.Start(dotnet, args);
             proc.WaitForExit();
             if (proc.ExitCode != 0)
             {
-                progressMonitor.CommandFailed("dotnet", args, proc.ExitCode);
+                progressMonitor.CommandFailed(dotnet, args, proc.ExitCode);
                 return false;
             }
 
@@ -61,6 +72,23 @@ namespace Semmle.BuildAnalyser
         {
             var args = $"add \"{folder}\" package \"{package}\" --no-restore";
             return RunCommand(args);
+        }
+
+        public IList<string> GetListedRuntimes()
+        {
+            var args = "--list-runtimes";
+            var pi = new ProcessStartInfo(dotnet, args)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false
+            };
+            var exitCode = pi.ReadOutput(out var runtimes);
+            if (exitCode != 0)
+            {
+                progressMonitor.CommandFailed(dotnet, args, exitCode);
+                return new List<string>();
+            }
+            return runtimes;
         }
     }
 }
