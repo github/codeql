@@ -71,7 +71,7 @@ def from_parameter_default():
     def outer(x=tracked): # $tracked
         print(x) # $tracked
         def inner():
-            print(x) # $ MISSING: tracked
+            print(x) # $ tracked
             print(x_alias) # $tracked
         return x # $tracked
     also_x = outer() # $tracked
