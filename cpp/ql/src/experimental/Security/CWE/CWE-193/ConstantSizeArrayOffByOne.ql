@@ -94,37 +94,8 @@ predicate cand(Variable v, ArrayType arrayType, int bytes) {
 /** Pointer arithmetic to dereference flow. */
 module PointerArithmeticToDeref {
   /** Holds if `pai`'s right-hand side can be upper bounded non-strictly by `delta`. */
-  private predicate constantUpperBounded0(PointerArithmeticInstruction pai, int delta) {
-    semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), delta, true, _)
-  }
-
-  module Config implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) {
-      // The sources are all the pointer-arithmetic expressions for
-      // which we can bound the right-hand side by a constant.
-      constantUpperBounded0(source.asInstruction(), _)
-    }
-
-    predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
-
-    predicate isSink(DataFlow::Node sink) {
-      // The sinks are all the values that non-strictly upper bounds
-      // a value that is dereferenced.
-      isInvalidPointerDerefSink1(sink, _, _)
-    }
-  }
-
-  private import DataFlow::Global<Config>
-
-  predicate candidate(PointerArithmeticInstruction pai) { candidateForSink(pai, _) }
-
-  predicate candidateForSink(PointerArithmeticInstruction pai, DataFlow::Node sink) {
-    flow(DataFlow::instructionNode(pai), sink)
-  }
-
   predicate constantUpperBounded(PointerArithmeticInstruction pai, int delta) {
-    constantUpperBounded0(pai, delta) and
-    candidate(pai)
+    semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), delta, true, _)
   }
 }
 
@@ -203,7 +174,6 @@ module VariableToPointerArith {
       none()
     }
 
-    pragma[inline]
     predicate isSink(DataFlow::Node sink, FlowState state) {
       exists(int index, int elementSize, int byteSize, Instruction right |
         VariableToPointerArithBarrier::candidate(sink, right, state, elementSize, index) and
@@ -226,8 +196,10 @@ module VariableToPointerArith {
     isSourceImpl(source, _, array, _)
   }
 
-  predicate candidatePointerArithmetic(ArrayType array, PointerArithmeticInstruction pai) {
-    exists(DataFlow::Node source, DataFlow::Node sink |
+  predicate candidatePointerArithmetic(
+    DataFlow::Node source, ArrayType array, PointerArithmeticInstruction pai
+  ) {
+    exists(DataFlow::Node sink |
       candidateSource(array, source) and
       flow(source, sink) and
       sink.asOperand() = pai.getLeftOperand()
@@ -266,6 +238,77 @@ module ArrayAddressToDerefBarrier {
   }
 }
 
+module ArrayAddressToDeref0 {
+  /** Variable to dereference flow. */
+  private module Config implements DataFlow::StateConfigSig {
+    additional predicate hasArrayType(FlowState state, ArrayType arrayType) {
+      state = TArray(arrayType)
+    }
+
+    newtype FlowState =
+      additional TArray(ArrayType array) { VariableToPointerArith::candidateSource(array, _) } or
+      additional TOverflowArithmetic()
+
+    predicate isSource(DataFlow::Node source, FlowState state) {
+      exists(ArrayType array |
+        state = TArray(array) and
+        VariableToPointerArith::candidateSource(array, source)
+      )
+    }
+
+    predicate isSink(DataFlow::Node sink, FlowState state) {
+      state = TOverflowArithmetic() and
+      isInvalidPointerDerefSink1(sink, _, _)
+    }
+
+    predicate isBarrier(DataFlow::Node node, FlowState state) {
+      exists(ValueNumber value, Operand left, ArrayType arrayType, int k |
+        left = value.getAnInstruction().getAUse() and
+        hasArrayType(state, arrayType) and
+        ArrayAddressToDerefBarrier::comparedToSizeOfArrayType(left, arrayType) and
+        k <= 0 and
+        ensuresLt(left, _, k, node.getBasicBlock())
+      )
+    }
+
+    predicate isAdditionalFlowStep(
+      DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+    ) {
+      exists(PointerArithmeticInstruction pai, ArrayType t |
+        state1 = TArray(t) and
+        VariableToPointerArith::candidatePointerArithmetic(_, t, pai) and
+        state2 = TOverflowArithmetic() and
+        pai.getLeftOperand() = node1.asOperand() and
+        node2.asInstruction() = pai
+      )
+    }
+  }
+
+  private import DataFlow::GlobalWithState<Config>
+
+  predicate candidateSource(DataFlow::Node source, ArrayType arrayType) {
+    exists(Config::FlowState state |
+      flow(source, _) and
+      Config::isSource(source, state) and
+      Config::hasArrayType(state, arrayType)
+    )
+  }
+
+  predicate candidatePointerArithmetic(ArrayType arrayType, PointerArithmeticInstruction pai) {
+    exists(DataFlow::Node source |
+      flow(source, _) and
+      VariableToPointerArith::candidatePointerArithmetic(source, arrayType, pai)
+    )
+  }
+
+  predicate candidateSink(DataFlow::Node sink, ArrayType arrayType) {
+    exists(DataFlow::Node source |
+      candidateSource(source, arrayType) and
+      flow(source, sink)
+    )
+  }
+}
+
 /** Variable to dereference flow. */
 module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
   private predicate hasArrayType(FlowState state, ArrayType arrayType) {
@@ -275,22 +318,22 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
   }
 
   newtype FlowState =
-    additional TArray(ArrayType array) { VariableToPointerArith::candidateSource(array, _) } or
+    additional TArray(ArrayType array) { ArrayAddressToDeref0::candidateSource(_, array) } or
     additional TOverflowArithmetic(ArrayType array, PointerArithmeticInstruction pai) {
-      VariableToPointerArith::candidatePointerArithmetic(array, pai)
+      ArrayAddressToDeref0::candidatePointerArithmetic(array, pai)
     }
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     exists(ArrayType array |
       state = TArray(array) and
-      VariableToPointerArith::candidateSource(array, source)
+      ArrayAddressToDeref0::candidateSource(source, array)
     )
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    exists(PointerArithmeticInstruction pai |
-      state = TOverflowArithmetic(_, pai) and
-      PointerArithmeticToDeref::candidateForSink(pai, sink)
+    exists(ArrayType arrayType, PointerArithmeticInstruction pai |
+      state = TOverflowArithmetic(arrayType, pai) and
+      ArrayAddressToDeref0::candidateSink(sink, arrayType)
     )
   }
 
