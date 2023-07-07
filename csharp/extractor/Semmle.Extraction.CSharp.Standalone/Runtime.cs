@@ -25,30 +25,54 @@ namespace Semmle.Extraction.CSharp.Standalone
         private sealed class RuntimeVersion : IComparable<RuntimeVersion>
         {
             private readonly string dir;
-            public Version Version { get; }
-
-            public string FullPath => Path.Combine(dir, Version.ToString());
-
-            // TODO: Also improve to account for preview versions.
-            public RuntimeVersion(string version, string dir)
+            private Version Version { get; }
+            private Version? PreviewVersion { get; } = null;
+            private bool IsPreview => PreviewVersion is not null;
+            public string FullPath
             {
-                var parts = version.Split('.');
-                Version = new Version(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
-                this.dir = dir;
+                get
+                {
+                    var preview = IsPreview ? $"-preview.{PreviewVersion}" : "";
+                    var version = Version + preview;
+                    return Path.Combine(dir, version);
+                }
             }
 
-            public int CompareTo(RuntimeVersion? other) => Version.CompareTo(other?.Version);
+            private static Version MakeVersion(string version)
+            {
+                var versionParts = version.Split('.');
+                return new Version(int.Parse(versionParts[0]), int.Parse(versionParts[1]), int.Parse(versionParts[2]));
+            }
+
+            public RuntimeVersion(string dir, string version, string previewVersion)
+            {
+                this.dir = dir;
+                Version = MakeVersion(version);
+                if (!string.IsNullOrEmpty(previewVersion))
+                {
+                    PreviewVersion = MakeVersion(previewVersion);
+                }
+            }
+
+            public int CompareTo(RuntimeVersion? other)
+            {
+                var c = Version.CompareTo(other?.Version);
+                if (c == 0 && IsPreview)
+                {
+                    return other!.IsPreview ? PreviewVersion!.CompareTo(other!.PreviewVersion) : -1;
+                }
+                return c;
+            }
 
             public override bool Equals(object? obj) =>
                 obj is not null && obj is RuntimeVersion other && other.FullPath == FullPath;
 
-            public override int GetHashCode() => Version.GetHashCode();
+            public override int GetHashCode() => FullPath.GetHashCode();
 
             public override string ToString() => FullPath;
         }
 
-
-        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)\s\[(\S+)\]$")]
+        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-preview\.(\d+\.\d+\.\d+))?\s\[(\S+)\]$")]
         private static partial Regex RuntimeRegex();
 
         /// <summary>
@@ -66,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                 var match = RuntimeRegex().Match(r);
                 if (match.Success)
                 {
-                    runtimes.AddOrUpdate(match.Groups[1].Value, new RuntimeVersion(match.Groups[2].Value, match.Groups[3].Value));
+                    runtimes.AddOrUpdate(match.Groups[1].Value, new RuntimeVersion(match.Groups[5].Value, match.Groups[2].Value, match.Groups[4].Value));
                 }
             });
 
