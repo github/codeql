@@ -14,54 +14,39 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// </summary>
     internal partial class Runtime
     {
+        private const string netCoreApp = "Microsoft.NETCore.App";
+        private const string aspNetCoreApp = "Microsoft.AspNetCore.App";
+
         private readonly DotNet dotNet;
-        public Runtime(DotNet dotNet) => this.dotNet = dotNet;
-
-        private sealed class Version : IComparable<Version>
-        {
-            private readonly string Dir;
-            public int Major { get; }
-            public int Minor { get; }
-            public int Patch { get; }
-
-
-            public string FullPath => Path.Combine(Dir, this.ToString());
-
-
-            public Version(string version, string dir)
-            {
-                var parts = version.Split('.');
-                Major = int.Parse(parts[0]);
-                Minor = int.Parse(parts[1]);
-                Patch = int.Parse(parts[2]);
-                Dir = dir;
-            }
-
-            public int CompareTo(Version? other) =>
-                other is null ? 1 : GetHashCode().CompareTo(other.GetHashCode());
-
-            public override bool Equals(object? obj) =>
-                obj is not null && obj is Version other && other.FullPath == FullPath;
-
-            public override int GetHashCode() =>
-                (Major * 1000 + Minor) * 1000 + Patch;
-
-            public override string ToString() =>
-                $"{Major}.{Minor}.{Patch}";
-        }
-
         private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
-        private static readonly string NetCoreApp = "Microsoft.NETCore.App";
-        private static readonly string AspNetCoreApp = "Microsoft.AspNetCore.App";
+        public Runtime(DotNet dotNet) => this.dotNet = dotNet;
 
-        private static void AddOrUpdate(Dictionary<string, Version> dict, string framework, Version version)
+        private sealed class RuntimeVersion : IComparable<RuntimeVersion>
         {
-            if (!dict.TryGetValue(framework, out var existing) || existing.CompareTo(version) < 0)
+            private readonly string dir;
+            public Version Version { get; }
+
+            public string FullPath => Path.Combine(dir, Version.ToString());
+
+            // TODO: Also improve to account for preview versions.
+            public RuntimeVersion(string version, string dir)
             {
-                dict[framework] = version;
+                var parts = version.Split('.');
+                Version = new Version(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+                this.dir = dir;
             }
+
+            public int CompareTo(RuntimeVersion? other) => Version.CompareTo(other?.Version);
+
+            public override bool Equals(object? obj) =>
+                obj is not null && obj is RuntimeVersion other && other.FullPath == FullPath;
+
+            public override int GetHashCode() => Version.GetHashCode();
+
+            public override string ToString() => FullPath;
         }
+
 
         [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)\s\[(\S+)\]$")]
         private static partial Regex RuntimeRegex();
@@ -72,36 +57,27 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// It is assume that the format of a listed runtime is something like:
         /// Microsoft.NETCore.App 7.0.2 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
         /// </summary>
-        private static Dictionary<string, Version> ParseRuntimes(IList<string> listed)
+        private static Dictionary<string, RuntimeVersion> ParseRuntimes(IList<string> listed)
         {
             // Parse listed runtimes.
-            var runtimes = new Dictionary<string, Version>();
+            var runtimes = new Dictionary<string, RuntimeVersion>();
             listed.ForEach(r =>
             {
                 var match = RuntimeRegex().Match(r);
                 if (match.Success)
                 {
-                    AddOrUpdate(runtimes, match.Groups[1].Value, new Version(match.Groups[2].Value, match.Groups[3].Value));
+                    runtimes.AddOrUpdate(match.Groups[1].Value, new RuntimeVersion(match.Groups[2].Value, match.Groups[3].Value));
                 }
             });
 
             return runtimes;
         }
 
-        private Dictionary<string, Version> GetNewestRuntimes()
+        private Dictionary<string, RuntimeVersion> GetNewestRuntimes()
         {
-            try
-            {
-                var listed = dotNet.GetListedRuntimes();
-                return ParseRuntimes(listed);
-            }
-            catch (Exception ex)
-                when (ex is System.ComponentModel.Win32Exception || ex is FileNotFoundException)
-            {
-                return new Dictionary<string, Version>();
-            }
+            var listed = dotNet.GetListedRuntimes();
+            return ParseRuntimes(listed);
         }
-
 
         /// <summary>
         /// Locates .NET Desktop Runtimes.
@@ -141,15 +117,15 @@ namespace Semmle.Extraction.CSharp.Standalone
             var newestRuntimes = GetNewestRuntimes();
 
             // Location of the newest .NET Core Runtime.
-            if (newestRuntimes.TryGetValue(NetCoreApp, out var netCoreApp))
+            if (newestRuntimes.TryGetValue(netCoreApp, out var netCoreVersion))
             {
-                yield return netCoreApp.FullPath;
+                yield return netCoreVersion.FullPath;
             }
 
             // Location of the newest ASP.NET Core Runtime.
-            if (newestRuntimes.TryGetValue(AspNetCoreApp, out var aspNetCoreApp))
+            if (newestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
             {
-                yield return aspNetCoreApp.FullPath;
+                yield return aspNetCoreVersion.FullPath;
             }
 
             foreach (var r in DesktopRuntimes)
