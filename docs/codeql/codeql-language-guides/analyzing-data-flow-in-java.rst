@@ -17,6 +17,18 @@ The following sections describe how to use the libraries for local data flow, gl
 
 For a more general introduction to modeling data flow, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
 
+For data flow you need the following import:
+
+.. code-block:: ql
+
+   import semmle.code.java.dataflow.DataFlow
+
+For taint tracking you need this import:
+
+.. code-block:: ql
+
+   import semmle.code.java.dataflow.TaintTracking
+
 Local data flow
 ---------------
 
