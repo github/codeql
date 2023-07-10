@@ -1618,12 +1618,15 @@ redos_variants.swift:
 
 #  142| [RegExpConstant, RegExpNormalChar] !
 
-#  146| [RegExpZeroWidthMatch] (?s)
+#  146| [RegExpGroup] (?s)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] s
 
 #  146| [RegExpSequence] (?s)(.|\n)*!
-#-----| 0 -> [RegExpZeroWidthMatch] (?s)
+#-----| 0 -> [RegExpGroup] (?s)
 #-----| 1 -> [RegExpStar] (.|\n)*
 #-----| 2 -> [RegExpConstant, RegExpNormalChar] !
+
+#  146| [RegExpConstant, RegExpNormalChar] s
 
 #  146| [RegExpGroup] (.|\n)
 #-----| 0 -> [RegExpAlt] .|\n
@@ -6489,30 +6492,36 @@ regex.swift:
 
 #  205| [RegExpNamedCharacterProperty] [:aaaaa:]
 
-#  209| [RegExpZeroWidthMatch] (?i)
+#  209| [RegExpGroup] (?i)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] i
 
 #  209| [RegExpSequence] (?i)abc
-#-----| 0 -> [RegExpZeroWidthMatch] (?i)
+#-----| 0 -> [RegExpGroup] (?i)
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
+
+#  209| [RegExpConstant, RegExpNormalChar] i
 
 #  209| [RegExpConstant, RegExpNormalChar] abc
 
-#  210| [RegExpZeroWidthMatch] (?s)
+#  210| [RegExpGroup] (?s)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] s
 
 #  210| [RegExpSequence] (?s)abc
-#-----| 0 -> [RegExpZeroWidthMatch] (?s)
+#-----| 0 -> [RegExpGroup] (?s)
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
+
+#  210| [RegExpConstant, RegExpNormalChar] s
 
 #  210| [RegExpConstant, RegExpNormalChar] abc
 
 #  211| [RegExpGroup] (?is)
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] s
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] is
 
 #  211| [RegExpSequence] (?is)abc
 #-----| 0 -> [RegExpGroup] (?is)
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
 
-#  211| [RegExpConstant, RegExpNormalChar] s
+#  211| [RegExpConstant, RegExpNormalChar] is
 
 #  211| [RegExpConstant, RegExpNormalChar] abc
 

@@ -24,9 +24,9 @@ abstract class RegExp extends Expr {
   predicate isIgnoreCase() { this.getAMode() = "IGNORECASE" }
 
   /**
-   * Gets the flags for this `RegExp`, or the empty string if it has no flags.
+   * Gets a string repreenting the flags for this `RegExp`, or the empty string if it has no flags.
    */
-  string getFlags() { result = concat(string mode | mode = this.getAMode() | mode, " | ")}
+  string getFlags() { result = concat(string mode | mode = this.getAMode() | mode, " | ") }
 
   /**
    * Helper predicate for `charSetStart(int start, int end)`.
@@ -275,27 +275,34 @@ abstract class RegExp extends Expr {
   private predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
 
   /**
-   * Holds if `start` and `end` are the range of the mode prefix substring (if any) of this
-   * regular expression, and `c` is a mode prefix character specified in it.  For example
-   * in the following regular expression, `start` is `0`, `end` is `3` and `c` is `i`.
+   * Holds if a parse mode prefix starts between `start` and `end`. For example:
    * ```
-   * (?i)one|two
+   * (?i)
    * ```
    */
-  private predicate flagGroupStart(int start, int end, string c) {
-    // TODO: I believe this fails with multiple mode specifiers such as (?is) at the moment.
+  private predicate flagGroupStart(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    end = start + 3 and
-    c = this.getChar(start + 2) and
-    c in ["i", "m", "s", "u", "x", "U"]
+    end = start + 2
+  }
+
+  /**
+   * Holds if a parse mode prefix group is between `start` and `end`, and includes the
+   * mode flag `c`.
+   */
+  private predicate flagGroup(int start, int end, string c) {
+    exists(int inStart, int inEnd |
+      this.flagGroupStart(start, inStart) and
+      this.groupContents(start, end, inStart, inEnd) and
+      this.getChar([inStart .. inEnd - 1]) = c
+    )
   }
 
   /**
    * Gets a mode of this regular expression string if it is defined by a mode prefix.
    */
   string getModeFromPrefix() {
-    exists(string c | this.flagGroupStart(_, _, c) |
+    exists(string c | this.flagGroup(_, _, c) |
       // TODO: are these correct in Swift?
       c = "i" and result = "IGNORECASE"
       or
@@ -322,10 +329,13 @@ abstract class RegExp extends Expr {
    * UNICODECLASS
    */
   string getAMode() {
-    /* TODO
-    result != "None" and
-    usedAsRegex(this, result, _)
-    or*/
+    /*
+     * TODO
+     *    result != "None" and
+     *    usedAsRegex(this, result, _)
+     *    or
+     */
+
     result = this.getModeFromPrefix()
   }
 
@@ -709,7 +719,7 @@ abstract class RegExp extends Expr {
     or
     this.simpleGroupStart(start, end)
     or
-    this.flagGroupStart(start, end, _)
+    this.flagGroupStart(start, end)
   }
 
   /** Matches the start of a non-capturing group, e.g. `(?:` */

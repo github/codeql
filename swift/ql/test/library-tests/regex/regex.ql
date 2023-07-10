@@ -34,7 +34,7 @@ module RegexTest implements TestSig {
       location = eval.getLocation() and
       element = eval.toString() and
       tag = "modes" and
-      value = regex.getFlags() and
+      value = quote(regex.getFlags()) and
       value != ""
     )
   }

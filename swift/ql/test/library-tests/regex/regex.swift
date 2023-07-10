@@ -208,7 +208,7 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 
     _ = try Regex("(?i)abc").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=(?i)abc
     _ = try Regex("(?s)abc").firstMatch(in: input) // $ input=input modes=DOTALL regex=(?s)abc
-    _ = try Regex("(?is)abc").firstMatch(in: input) // $ input=input regex=(?is)abc MISSING: modes="DOTALL | IGNORECASE" SPURIOUS: modes=IGNORECASE
+    _ = try Regex("(?is)abc").firstMatch(in: input) // $ input=input modes="DOTALL | IGNORECASE" regex=(?is)abc
 
     _ = try Regex("abc").dotMatchesNewlines(true).firstMatch(in: input) // $ input=input regex=abc MISSING: modes=DOTALL
     _ = try Regex("abc").dotMatchesNewlines(false).firstMatch(in: input) // $ input=input regex=abc
