@@ -16,17 +16,17 @@ abstract class RegExp extends Expr {
   /**
    * Holds if this `RegExp` has the `s` flag for multi-line matching.
    */
-  predicate isDotAll() { none() }
+  predicate isDotAll() { this.getAMode() = "DOTALL" }
 
   /**
    * Holds if this `RegExp` has the `i` flag for case-insensitive matching.
    */
-  predicate isIgnoreCase() { none() }
+  predicate isIgnoreCase() { this.getAMode() = "IGNORECASE" }
 
   /**
    * Gets the flags for this `RegExp`, or the empty string if it has no flags.
    */
-  string getFlags() { result = "" }
+  string getFlags() { result = concat(string mode | mode = this.getAMode() | mode, " | ")}
 
   /**
    * Helper predicate for `charSetStart(int start, int end)`.
@@ -273,6 +273,61 @@ abstract class RegExp extends Expr {
   private predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
 
   private predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
+
+  /**
+   * Holds if `start` and `end` are the range of the mode prefix substring (if any) of this
+   * regular expression, and `c` is a mode prefix character specified in it.  For example
+   * in the following regular expression, `start` is `0`, `end` is `3` and `c` is `i`.
+   * ```
+   * (?i)one|two
+   * ```
+   */
+  private predicate flagGroupStart(int start, int end, string c) {
+    // TODO: I believe this fails with multiple mode specifiers such as (?is) at the moment.
+    this.isGroupStart(start) and
+    this.getChar(start + 1) = "?" and
+    end = start + 3 and
+    c = this.getChar(start + 2) and
+    c in ["i", "m", "s", "u", "x", "U"]
+  }
+
+  /**
+   * Gets a mode of this regular expression string if it is defined by a mode prefix.
+   */
+  string getModeFromPrefix() {
+    exists(string c | this.flagGroupStart(_, _, c) |
+      // TODO: are these correct in Swift?
+      c = "i" and result = "IGNORECASE"
+      or
+      c = "m" and result = "MULTILINE"
+      or
+      c = "s" and result = "DOTALL"
+      or
+      c = "u" and result = "UNICODE"
+      or
+      c = "x" and result = "VERBOSE"
+      or
+      c = "U" and result = "UNICODECLASS"
+    )
+  }
+
+  /**
+   * Gets a mode (if any) of this regular expression. Can be any of:
+   * DEBUG
+   * IGNORECASE
+   * MULTILINE
+   * DOTALL
+   * UNICODE
+   * VERBOSE
+   * UNICODECLASS
+   */
+  string getAMode() {
+    /* TODO
+    result != "None" and
+    usedAsRegex(this, result, _)
+    or*/
+    result = this.getModeFromPrefix()
+  }
 
   /**
    * Holds if the `i`th character could not be parsed.
