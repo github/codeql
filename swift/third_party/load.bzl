@@ -49,6 +49,7 @@ def load_dependencies(workspace_name):
                     "remove-result-of",
                     "remove-redundant-operators",
                     "add-constructor-to-Compilation",
+                    "remove-fallthrough-assertion",
                 )
             ],
         )
