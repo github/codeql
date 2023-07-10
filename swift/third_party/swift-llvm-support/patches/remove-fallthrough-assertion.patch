@@ -1,0 +1,12 @@
+diff --git a/include/swift/AST/Stmt.h b/include/swift/AST/Stmt.h
+index 56f8769a502..4d1ea5f84c1 100644
+--- a/include/swift/AST/Stmt.h
++++ b/include/swift/AST/Stmt.h
+@@ -1049,7 +1049,6 @@ public:
+   /// Get the CaseStmt block to which the fallthrough transfers control.
+   /// Set during Sema.
+   CaseStmt *getFallthroughDest() const {
+-    assert(FallthroughDest && "fallthrough dest is not set until Sema");
+     return FallthroughDest;
+   }
+   void setFallthroughDest(CaseStmt *C) {
