@@ -114,7 +114,7 @@ signature module StateConfigSig {
    * Holds if data flow through `node` is prohibited when the flow state is
    * `state`.
    */
-  predicate isBarrier(Node node, FlowState state);
+  default predicate isBarrier(Node node, FlowState state) { none() }
 
   /** Holds if data flow into `node` is prohibited. */
   default predicate isBarrierIn(Node node) { none() }
