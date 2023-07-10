@@ -1,5 +1,5 @@
 /**
- * Provides models of the [go-micro library](https://github.com/go-micro/go-micro).
+ * Provides models of the [Go Micro library](https://github.com/go-micro/go-micro).
  */
 
 import go
