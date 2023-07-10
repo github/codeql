@@ -688,5 +688,5 @@ void test_missing_call_context_1(unsigned size) {
 void test_missing_call_context_2(unsigned size) {
   int* p = new int[size];
   int* end_minus_one = pointer_arithmetic(p, size - 1);
-  *end_minus_one = '0'; // GOOD [FALSE POSITIVE]
+  *end_minus_one = '0'; // GOOD
 }
