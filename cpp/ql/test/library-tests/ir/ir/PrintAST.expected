@@ -14562,6 +14562,40 @@ ir.cpp:
 # 1930|               Value = [Literal] 40
 # 1930|               ValueCategory = prvalue
 # 1931|     getStmt(2): [ReturnStmt] return ...
+# 1933| [TopLevelFunction] void test_assign_with_assign_operation()
+# 1933|   <params>: 
+# 1933|   getEntryPoint(): [BlockStmt] { ... }
+# 1934|     getStmt(0): [DeclStmt] declaration
+# 1934|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 1934|           Type = [IntType] int
+# 1934|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of j
+# 1934|           Type = [IntType] int
+# 1934|         getVariable().getInitializer(): [Initializer] initializer for j
+# 1934|           getExpr(): [Literal] 0
+# 1934|               Type = [IntType] int
+# 1934|               Value = [Literal] 0
+# 1934|               ValueCategory = prvalue
+# 1935|     getStmt(1): [ExprStmt] ExprStmt
+# 1935|       getExpr(): [AssignExpr] ... = ...
+# 1935|           Type = [IntType] int
+# 1935|           ValueCategory = lvalue
+# 1935|         getLValue(): [VariableAccess] i
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = lvalue
+# 1935|         getRValue(): [AssignAddExpr] ... += ...
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = prvalue
+# 1935|           getLValue(): [VariableAccess] j
+# 1935|               Type = [IntType] int
+# 1935|               ValueCategory = lvalue
+# 1935|           getRValue(): [Literal] 40
+# 1935|               Type = [IntType] int
+# 1935|               Value = [Literal] 40
+# 1935|               ValueCategory = prvalue
+# 1935|         getRValue().getFullyConverted(): [ParenthesisExpr] (...)
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = prvalue
+# 1936|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
