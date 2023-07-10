@@ -24,7 +24,7 @@ abstract class RegExp extends Expr {
   predicate isIgnoreCase() { this.getAMode() = "IGNORECASE" }
 
   /**
-   * Gets a string repreenting the flags for this `RegExp`, or the empty string if it has no flags.
+   * Gets a string representing the flags for this `RegExp`, or the empty string if it has no flags.
    */
   string getFlags() { result = concat(string mode | mode = this.getAMode() | mode, " | ") }
 
@@ -275,10 +275,7 @@ abstract class RegExp extends Expr {
   private predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
 
   /**
-   * Holds if a parse mode prefix starts between `start` and `end`. For example:
-   * ```
-   * (?i)
-   * ```
+   * Holds if a parse mode starts between `start` and `end`.
    */
   private predicate flagGroupStart(int start, int end) {
     this.isGroupStart(start) and
@@ -288,8 +285,11 @@ abstract class RegExp extends Expr {
   }
 
   /**
-   * Holds if a parse mode prefix group is between `start` and `end`, and includes the
-   * mode flag `c`.
+   * Holds if a parse mode group is between `start` and `end`, and includes the
+   * mode flag `c`. For example the following span, with mode flag `i`:
+   * ```
+   * (?i)
+   * ```
    */
   private predicate flagGroup(int start, int end, string c) {
     exists(int inStart, int inEnd |
