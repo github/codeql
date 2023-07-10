@@ -402,3 +402,8 @@ app.get('/dotdot-regexp', (req, res) => {
     fs.readFileSync(path); // OK
   }
 });
+
+app.get('/join-spread', (req, res) => {
+  fs.readFileSync(pathModule.join('foo', ...req.query.x.split('/'))); // NOT OK
+  fs.readFileSync(pathModule.join(...req.query.x.split('/'))); // NOT OK
+});
