@@ -303,41 +303,27 @@ abstract class RegExp extends Expr {
    */
   string getModeFromPrefix() {
     exists(string c | this.flagGroup(_, _, c) |
-      // TODO: are these correct in Swift?
-      c = "i" and result = "IGNORECASE"
+      c = "i" and result = "IGNORECASE" // case insensitive
       or
-      c = "m" and result = "MULTILINE"
+      c = "x" and result = "VERBOSE" // ignores whitespace and `#` comments within patterns
       or
-      c = "s" and result = "DOTALL"
+      c = "s" and result = "DOTALL" // dot matches all characters, including line terminators
       or
-      c = "u" and result = "UNICODE"
+      c = "m" and result = "MULTILINE" // `^` and `$` also match beginning and end of lines
       or
-      c = "x" and result = "VERBOSE"
-      or
-      c = "U" and result = "UNICODECLASS"
+      c = "w" and result = "UNICODE" // Unicode UAX 29 word boundary mode
     )
   }
 
   /**
    * Gets a mode (if any) of this regular expression. Can be any of:
-   * DEBUG
    * IGNORECASE
-   * MULTILINE
-   * DOTALL
-   * UNICODE
    * VERBOSE
-   * UNICODECLASS
+   * DOTALL
+   * MULTILINE
+   * UNICODE
    */
-  string getAMode() {
-    /*
-     * TODO
-     *    result != "None" and
-     *    usedAsRegex(this, result, _)
-     *    or
-     */
-
-    result = this.getModeFromPrefix()
-  }
+  string getAMode() { result = this.getModeFromPrefix() }
 
   /**
    * Holds if the `i`th character could not be parsed.
