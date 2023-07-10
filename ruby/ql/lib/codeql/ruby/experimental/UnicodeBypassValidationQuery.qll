@@ -91,19 +91,19 @@ class Configuration extends TaintTracking::Configuration {
       // unicode_utils
       exists(API::MethodAccessNode mac |
         mac = API::getTopLevelMember("UnicodeUtils").getMethod(["nfkd", "nfc", "nfd", "nfkc"]) and
-        sink = mac.getParameter(0).asSink()
+        sink = mac.getArgument(0).asSink()
       )
       or
       // eprun
       exists(API::MethodAccessNode mac |
         mac = API::getTopLevelMember("Eprun").getMethod("normalize") and
-        sink = mac.getParameter(0).asSink()
+        sink = mac.getArgument(0).asSink()
       )
       or
       // unf
       exists(API::MethodAccessNode mac |
         mac = API::getTopLevelMember("UNF").getMember("Normalizer").getMethod("normalize") and
-        sink = mac.getParameter(0).asSink()
+        sink = mac.getArgument(0).asSink()
       )
       or
       // ActiveSupport::Multibyte::Chars
@@ -113,7 +113,7 @@ class Configuration extends TaintTracking::Configuration {
               .getMember("Multibyte")
               .getMember("Chars")
               .getMethod("new")
-              .getCallNode() and
+              .asCall() and
         n = cn.getAMethodCall("normalize") and
         sink = cn.getArgument(0)
       )
