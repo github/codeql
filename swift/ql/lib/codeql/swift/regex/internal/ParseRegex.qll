@@ -708,6 +708,8 @@ abstract class RegExp extends Expr {
     this.commentGroupStart(start, end)
     or
     this.simpleGroupStart(start, end)
+    or
+    this.flagGroupStart(start, end, _)
   }
 
   /** Matches the start of a non-capturing group, e.g. `(?:` */
