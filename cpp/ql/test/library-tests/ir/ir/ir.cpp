@@ -1930,4 +1930,9 @@ void test_double_assign() {
   i = j = 40;
 }
 
+void test_assign_with_assign_operation() {
+  int i, j = 0;
+  i = (j += 40);
+}
+
 // semmle-extractor-options: -std=c++17 --clang

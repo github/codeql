@@ -10244,6 +10244,28 @@ ir.cpp:
 # 1928|     v1928_5(void)       = AliasedUse         : ~m?
 # 1928|     v1928_6(void)       = ExitFunction       : 
 
+# 1933| void test_assign_with_assign_operation()
+# 1933|   Block 0
+# 1933|     v1933_1(void)       = EnterFunction      : 
+# 1933|     mu1933_2(unknown)   = AliasedDefinition  : 
+# 1933|     mu1933_3(unknown)   = InitializeNonLocal : 
+# 1934|     r1934_1(glval<int>) = VariableAddress[i] : 
+# 1934|     mu1934_2(int)       = Uninitialized[i]   : &:r1934_1
+# 1934|     r1934_3(glval<int>) = VariableAddress[j] : 
+# 1934|     r1934_4(int)        = Constant[0]        : 
+# 1934|     mu1934_5(int)       = Store[j]           : &:r1934_3, r1934_4
+# 1935|     r1935_1(int)        = Constant[40]       : 
+# 1935|     r1935_2(glval<int>) = VariableAddress[j] : 
+# 1935|     r1935_3(int)        = Load[j]            : &:r1935_2, ~m?
+# 1935|     r1935_4(int)        = Add                : r1935_3, r1935_1
+# 1935|     mu1935_5(int)       = Store[j]           : &:r1935_2, r1935_4
+# 1935|     r1935_6(glval<int>) = VariableAddress[i] : 
+# 1935|     mu1935_7(int)       = Store[i]           : &:r1935_6, r1935_4
+# 1936|     v1936_1(void)       = NoOp               : 
+# 1933|     v1933_4(void)       = ReturnVoid         : 
+# 1933|     v1933_5(void)       = AliasedUse         : ~m?
+# 1933|     v1933_6(void)       = ExitFunction       : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
