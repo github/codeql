@@ -288,3 +288,67 @@ void test_call_use2() {
     unsigned char buffer3[3];
     call_call_use(buffer3,3);
 }
+
+int guardingCallee(int *arr, int size) {
+    if (size > MAX_SIZE) {
+        return -1;
+    }
+
+    int sum;
+    for (int i = 0; i < size; i++) {
+        sum += arr[i]; // GOOD [FALSE POSITIVE] - guarded by size
+    }
+    return sum;
+}
+
+int guardingCaller() {
+    int arr1[MAX_SIZE];
+    guardingCallee(arr1, MAX_SIZE);
+    
+    int arr2[10];
+    guardingCallee(arr2, 10);
+}
+
+// simplified md5 padding
+void correlatedCondition(int num) {
+    char temp[64];
+
+    char *end;
+    if(num < 64) {
+        if (num < 56) {
+            end = temp + 56;
+        }
+        else if (num < 64) {
+            end = temp + 64; // GOOD [FALSE POSITVE]
+        }
+        char *temp2 = temp + num;
+        while(temp2 != end) {
+            *temp2 = 0;
+            temp2++;
+        }
+        if(num < 56) {
+            temp2[0] = 0;
+            temp2[1] = 0;
+            // ...
+            temp2[7] = 0;
+        }
+    }
+}
+
+int positiveRange(int x) {
+    if (x < 40) {
+        return -1;
+    }
+    if (x > 1024) {
+        return -1;
+    }
+
+    int offset = (unsigned char)(x + 7)/8;
+
+    int arr[128];
+
+    for(int i=127-offset; i>= 0; i--) {
+        arr[i] = arr[i+1] + arr[i+offset]; // GOOD [FALSE POSITIVE]
+    }
+    return arr[0];
+}
