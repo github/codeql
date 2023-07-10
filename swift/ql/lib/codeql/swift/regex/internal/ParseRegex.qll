@@ -283,6 +283,7 @@ abstract class RegExp extends Expr {
   private predicate flagGroupStart(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
+    this.getChar(start + 2) in ["i", "x", "s", "m", "w"] and
     end = start + 2
   }
 
