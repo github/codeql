@@ -6,7 +6,7 @@ import go
 private import semmle.go.security.RequestForgeryCustomizations
 
 /**
- * Module for Go-Micro framework.
+ * Module for Go Micro framework.
  */
 module GoMicro {
   /**
