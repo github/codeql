@@ -28,17 +28,21 @@
 
 	<p>
 
-If given arguments as a single string, avoid simply splitting the string on 
-whitespace. Arguments may contain quoted whitespace, causing them to split into 
-multiple arguments. Use a library like <code>shell-quote</code> to parse the string 
-into an array of arguments instead.
+		If given arguments as a single string, avoid simply splitting the string
+		on whitespace. Arguments may contain quoted whitespace, causing them to
+		split into multiple arguments. Use a library like
+		<code>shell-quote</code> to parse the string into an array of arguments
+		instead.
 
 	</p>
 
 	<p>
-		Alternatively, if the shell command must be constructed
-		dynamically, then add code to ensure that special characters 
-		do not alter the shell command unexpectedly.
+
+		Alternatively, if the command must be interpreted by a shell (for
+		example because it includes I/O redirections), you can use
+		<code>shell-quote</code> to escape any special characters in the input
+		before embedding it in the command.
+
 	</p>
 
 </recommendation>
@@ -74,15 +78,24 @@ into an array of arguments instead.
 
 	<p>
 
-		If you want to allow the user to specify other options to
-		<code>wget</code> as a string, we can use a library like
-		<code>shell-quote</code>
-		to parse the user input into an array of arguments without risking
-		command injection:
+		As another example, consider the following code which is similar to the
+		above, but pipes the output of <code>wget</code> into <code>wc -l</code>
+		to count the number of lines in the downloaded file.
 
 	</p>
 
-	<sample src="examples/unsafe-shell-command-construction_shellquote.js" />
+	<sample src="examples/unsafe-shell-command-construction_pipe.js" />
+
+	<p>
+
+		In this case, using <code>child_process.execFile</code> is not an option
+		because the shell is needed to interpret the pipe operator. Instead, we
+		can use <code>shell-quote</code> to escape the input before embedding it
+		in the command:
+
+	</p>
+
+	<sample src="examples/unsafe-shell-command-construction_pipe_fixed.js" />
 
 </example>
 <references>
