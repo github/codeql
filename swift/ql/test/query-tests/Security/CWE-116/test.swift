@@ -83,9 +83,16 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     let re2 = try Regex(#"<script.*?>.*?<\/script>/is"#).ignoresCase(true)
     _ = try re2.firstMatch(in: tainted)
 
+    // GOOD
+    let re3a = try Regex(#"(?is)<script.*?>.*?<\/script[^>]*>"#)
+    _ = try re3a.firstMatch(in: tainted)
     // GOOD [FALSE POSITIVE]
-    let re3 = try Regex(#"<script.*?>.*?<\/script[^>]*>"#).ignoresCase(true).dotMatchesNewlines(true)
-    _ = try re3.firstMatch(in: tainted)
+    let re3b = try Regex(#"<script.*?>.*?<\/script[^>]*>"#).ignoresCase(true).dotMatchesNewlines(true)
+    _ = try re3b.firstMatch(in: tainted)
+    // GOOD [FALSE POSITIVE]
+    let options3b: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    let ns3b = try NSRegularExpression(pattern: #"<script.*?>.*?<\/script[^>]*>"#, options: options3b)
+    _ = ns3b.firstMatch(in: tainted, range: NSMakeRange(0, tainted.utf16.count))
 
     // GOOD - we don't care regexps that only match comments [FALSE POSITIVE]
     let re4 = try Regex(#"<!--.*-->"#).ignoresCase(true).dotMatchesNewlines(true)
