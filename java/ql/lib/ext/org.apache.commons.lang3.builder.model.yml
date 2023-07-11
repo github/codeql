@@ -20,3 +20,4 @@ extensions:
       - ["org.apache.commons.lang3.builder", "ToStringBuilder", False, "build", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3.builder", "ToStringBuilder", False, "getStringBuffer", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.lang3.builder", "ToStringBuilder", False, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.lang3.builder", "ToStringBuilder", False, "reflectionToString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
