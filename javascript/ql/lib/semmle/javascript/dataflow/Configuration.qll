@@ -167,6 +167,26 @@ abstract class Configuration extends string {
   }
 
   /**
+   * Holds if flow into `node` is prohibited.
+   */
+  predicate isBarrierIn(DataFlow::Node node) { none() }
+
+  /**
+   * Holds if flow out `node` is prohibited.
+   */
+  predicate isBarrierOut(DataFlow::Node node) { none() }
+
+  /**
+   * Holds if flow into `node` is prohibited for the flow label `lbl`.
+   */
+  predicate isBarrierIn(DataFlow::Node node, FlowLabel lbl) { none() }
+
+  /**
+   * Holds if flow out `node` is prohibited for the flow label `lbl`.
+   */
+  predicate isBarrierOut(DataFlow::Node node, FlowLabel lbl) { none() }
+
+  /**
    * Holds if flow from `pred` to `succ` is prohibited.
    */
   predicate isBarrierEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
