@@ -16,6 +16,6 @@ import codeql.ruby.security.LdapInjectionQuery
 import LdapInjection::PathGraph
 
 from LdapInjection::PathNode source, LdapInjection::PathNode sink
-where LdapInjection::hasFlowPath(source, sink)
+where LdapInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "This LDAP query depends on a $@.", source.getNode(),
   "user-provided value"
