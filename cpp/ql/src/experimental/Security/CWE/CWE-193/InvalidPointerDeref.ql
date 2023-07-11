@@ -397,25 +397,26 @@ module InvalidPointerToDerefFlow = DataFlow::Global<InvalidPointerToDerefConfig>
  * case `delta` is 1.
  */
 predicate invalidPointerToDerefSource(
-  AllocToInvalidPointerFlow::PathNode1 source1, PointerArithmeticInstruction pai,
-  DataFlow::Node source, int delta
+  DataFlow::Node source1, PointerArithmeticInstruction pai, DataFlow::Node derefSource, int delta
 ) {
   exists(
-    AllocToInvalidPointerFlow::PathNode1 p1, AllocToInvalidPointerFlow::PathNode2 p2,
-    DataFlow::Node sink1, DataFlow::Node sink2, int delta0
+    AllocToInvalidPointerFlow::PathNode1 pSource1, AllocToInvalidPointerFlow::PathNode1 pSink1,
+    AllocToInvalidPointerFlow::PathNode2 pSink2, DataFlow::Node sink1, DataFlow::Node sink2,
+    int delta0
   |
-    pragma[only_bind_out](p1.getNode()) = sink1 and
-    pragma[only_bind_out](p2.getNode()) = sink2 and
-    AllocToInvalidPointerFlow::flowPath(source1, _, pragma[only_bind_into](p1),
-      pragma[only_bind_into](p2)) and
+    pragma[only_bind_out](pSource1.getNode()) = source1 and
+    pragma[only_bind_out](pSink1.getNode()) = sink1 and
+    pragma[only_bind_out](pSink2.getNode()) = sink2 and
+    AllocToInvalidPointerFlow::flowPath(pSource1, _, pragma[only_bind_into](pSink1),
+      pragma[only_bind_into](pSink2)) and
     // Note that `delta` is not necessarily equal to `delta0`:
     // `delta0` is the constant offset added to the size of the allocation, and
     // delta is the constant difference between the pointer-arithmetic instruction
     // and the instruction computing the address for which we will search for a dereference.
     isSinkImpl(pai, sink1, sink2, delta0) and
-    bounded2(source.asInstruction(), pai, delta) and
+    bounded2(derefSource.asInstruction(), pai, delta) and
     delta >= 0 and
-    not source.getBasicBlock() = Barrier2::getABarrierBlock(delta0)
+    not derefSource.getBasicBlock() = Barrier2::getABarrierBlock(delta0)
   )
 }
 
@@ -496,9 +497,8 @@ module FinalConfig implements DataFlow::StateConfigSig {
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     state = TInitial() and
-    exists(AllocToInvalidPointerFlow::PathNode1 p, DataFlow::Node derefSource |
-      source = p.getNode() and
-      invalidPointerToDerefSource(p, _, derefSource, _) and
+    exists(DataFlow::Node derefSource |
+      invalidPointerToDerefSource(source, _, derefSource, _) and
       InvalidPointerToDerefFlow::flow(derefSource, _)
     )
   }
@@ -552,14 +552,16 @@ query predicate subpaths(
 }
 
 predicate hasFlowPath(
-  MergedPathNode source, MergedPathNode sink, InvalidPointerToDerefFlow::PathNode source3,
-  PointerArithmeticInstruction pai, string operation, int delta
+  MergedPathNode mergedSource, MergedPathNode mergedSink,
+  InvalidPointerToDerefFlow::PathNode source3, PointerArithmeticInstruction pai, string operation,
+  int delta
 ) {
-  exists(FinalFlow::PathNode sink3, int delta0, int delta1 |
-    FinalFlow::flowPath(source.asPathNode(), sink3) and
-    invalidPointerToDerefSource(_, pai, source3.getNode(), delta0) and
+  exists(FinalFlow::PathNode source, FinalFlow::PathNode sink3, int delta0, int delta1 |
+    source = mergedSource.asPathNode() and
+    FinalFlow::flowPath(source, sink3) and
+    invalidPointerToDerefSource(source.getNode(), pai, source3.getNode(), delta0) and
     sink3.getState() = FinalConfig::TPointerArith(pai, delta0) and
-    isInvalidPointerDerefSink(sink3.getNode(), sink.asSinkNode(), operation, delta1) and
+    isInvalidPointerDerefSink(sink3.getNode(), mergedSink.asSinkNode(), operation, delta1) and
     delta = delta0 + delta1
   )
 }
@@ -571,7 +573,7 @@ where
   k =
     min(int k2, int k3, InvalidPointerToDerefFlow::PathNode source3 |
       hasFlowPath(source, sink, source3, pai, operation, k3) and
-      invalidPointerToDerefSource(_, pai, source3.getNode(), k2)
+      invalidPointerToDerefSource(source.asPathNode().getNode(), pai, source3.getNode(), k2)
     |
       k2 + k3
     ) and
