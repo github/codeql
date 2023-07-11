@@ -73,6 +73,7 @@ extensions:
       - ["org.apache.struts2.util", "StrutsUtil", true, "makeSelectList", "(String,String,String,String)", "", "Argument[1]", "ognl-injection", "manual"]
       - ["org.apache.struts2.util", "StrutsUtil", true, "makeSelectList", "(String,String,String,String)", "", "Argument[2]", "ognl-injection", "manual"]
       - ["org.apache.struts2.util", "StrutsUtil", true, "makeSelectList", "(String,String,String,String)", "", "Argument[3]", "ognl-injection", "manual"]
+      - ["org.apache.struts2.util", "StrutsUtil", True, "translateVariables", "", "", "Argument[0]", "ognl-injection", "manual"]
       - ["org.apache.struts2.views.jsp", "StrutsBodyTagSupport", False, "findPattern", "", "", "Argument[1]", "ognl-injection", "manual"]
       - ["org.apache.struts2.views.jsp", "StrutsBodyTagSupport", False, "findString", "", "", "Argument[1]", "ognl-injection", "manual"]
       - ["com.opensymphony.xwork2.validator.validators", "ValidatorSupport", False, "parse", "", "", "Argument[0]", "ognl-injection", "manual"]

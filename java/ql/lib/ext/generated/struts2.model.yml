@@ -4345,7 +4345,6 @@ extensions:
       - ["org.apache.struts2.util", "StrutsUtil", true, "findString", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["org.apache.struts2.util", "StrutsUtil", true, "findValue", "(String,String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["org.apache.struts2.util", "StrutsUtil", true, "getContext", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["org.apache.struts2.util", "StrutsUtil", True, "translateVariables", "", "", "Argument[0]", "ognl-injection", "df-generated"]
       - ["org.apache.struts2.util", "StrutsUtil", true, "getText", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["org.apache.struts2.util", "StrutsUtil", true, "makeSelectList", "(String,String,String,String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["org.apache.struts2.util", "StrutsUtil", true, "urlEncode", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
