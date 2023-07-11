@@ -47,6 +47,23 @@ private class GlobalVariablePathInjectionSink extends PathInjectionSink {
   }
 }
 
+/**
+ * A sink that is a write to a global variable.
+ */
+private class EnumConstructorPathInjectionSink extends PathInjectionSink {
+  EnumConstructorPathInjectionSink() {
+    // first argument to `Connection.Location.uri(_:parameters:)`
+    exists(ApplyExpr ae, EnumElementDecl decl, NominalTypeDecl parent |
+      ae.getFunction().(MethodLookupExpr).getMember() = decl and
+      decl.getName() = "uri" and
+      decl.getDeclaringDecl() = parent and
+      parent.getName() = "Location" and
+      parent.getDeclaringDecl().(NominalTypeDecl).(NominalTypeDecl).getName() = "Connection" and
+      this.asExpr() = ae.getArgument(0).getExpr()
+    )
+  }
+}
+
 private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
   DefaultPathInjectionBarrier() {
     // This is a simplified implementation.
@@ -154,7 +171,6 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";;false;sqlite3_filename_wal(_:);;;Argument[0];path-injection",
         ";;false;sqlite3_free_filename(_:);;;Argument[0];path-injection",
         // SQLite.swift
-        ";Connection.Location.uri;true;init(_:parameters:);;;Argument[0];path-injection",
         ";Connection;true;init(_:readonly:);;;Argument[0];path-injection",
       ]
   }

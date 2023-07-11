@@ -388,7 +388,7 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     try! _ = Connection()
     try! _ = Connection(Connection.Location.uri("myFile.sqlite3")) // GOOD
-    try! _ = Connection(Connection.Location.uri(remoteString)) // $ MISSING: hasPathInjection=253
+    try! _ = Connection(Connection.Location.uri(remoteString)) // $ hasPathInjection=253
     try! _ = Connection("myFile.sqlite3") // GOOD
     try! _ = Connection(remoteString) // $ hasPathInjection=253
 }
