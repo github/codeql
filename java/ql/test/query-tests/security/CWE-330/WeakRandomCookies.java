@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.security.SecureRandom;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,5 +37,10 @@ public class WeakRandomCookies extends HttpServlet {
         // GOOD: The cookie value is unpredictable.
         Cookie cookie4 = new Cookie("name", new String(bytes2));
         response.addCookie(cookie4);
+
+        ThreadLocalRandom tlr = ThreadLocalRandom.current();
+
+        Cookie cookie5 = new Cookie("name", Integer.toString(tlr.nextInt()));
+        response.addCookie(cookie5); // $hasWeakRandomFlow
     }
 }

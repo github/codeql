@@ -29,6 +29,9 @@ private class JavaRandomSource extends WeakRandomnessSource {
   }
 }
 
+/**
+ * A node representing a call to one of the methods of `org.apache.commons.lang.RandomStringUtils`.
+ */
 private class ApacheRandomStringUtilsMethodAccessSource extends WeakRandomnessSource {
   ApacheRandomStringUtilsMethodAccessSource() {
     exists(MethodAccess ma | this.asExpr() = ma |
@@ -40,6 +43,17 @@ private class ApacheRandomStringUtilsMethodAccessSource extends WeakRandomnessSo
       ma.getMethod()
           .getDeclaringType()
           .hasQualifiedName("org.apache.commons.lang", "RandomStringUtils")
+    )
+  }
+}
+
+private class ThreadLocalRandomSource extends WeakRandomnessSource {
+  ThreadLocalRandomSource() {
+    exists(MethodAccess ma | this.asExpr() = ma |
+      ma.getMethod().hasName("current") and
+      ma.getMethod()
+          .getDeclaringType()
+          .hasQualifiedName("java.util.concurrent", "ThreadLocalRandom")
     )
   }
 }
@@ -123,7 +137,7 @@ module WeakRandomnessConfig implements DataFlow::ConfigSig {
     exists(MethodAccess ma, Method m |
       n1.asExpr() = ma.getQualifier() and
       ma.getMethod() = m and
-      m.getDeclaringType() instanceof TypeRandom and
+      m.getDeclaringType().getAnAncestor() instanceof TypeRandom and
       (
         m.hasName(["nextInt", "nextLong", "nextFloat", "nextDouble", "nextBoolean", "nextGaussian"]) and
         n2.asExpr() = ma
