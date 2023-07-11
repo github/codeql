@@ -9,7 +9,9 @@ bindingset[s]
 string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
 
 module RegexTest implements TestSig {
-  string getARelevantTag() { result = ["regex", "input", "redos-vulnerable", "hasParseFailure", "modes"] }
+  string getARelevantTag() {
+    result = ["regex", "input", "redos-vulnerable", "hasParseFailure", "modes"]
+  }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TreeView::RegExpTerm t |
