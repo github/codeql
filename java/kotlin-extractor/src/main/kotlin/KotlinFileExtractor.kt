@@ -157,10 +157,21 @@ open class KotlinFileExtractor(
             else -> false
         }
 
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun isFake(d: IrDeclarationWithVisibility): Boolean {
         val hasFakeVisibility = d.visibility.let { it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake } || d.isFakeOverride
         if (hasFakeVisibility && !isJavaBinaryObjectMethodRedeclaration(d))
             return true
+        try {
+            if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
+                return true
+            }
+        }
+        catch (e: NotImplementedError) {
+            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
+            logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            return false
+        }
         return false
     }
 

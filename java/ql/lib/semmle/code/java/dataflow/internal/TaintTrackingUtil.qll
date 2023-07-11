@@ -617,7 +617,6 @@ private MethodAccess callReturningSameType(Expr ref) {
   result.getMethod().getReturnType() = ref.getType()
 }
 
-pragma[assume_small_delta]
 private SrcRefType entrypointType() {
   exists(RemoteFlowSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and

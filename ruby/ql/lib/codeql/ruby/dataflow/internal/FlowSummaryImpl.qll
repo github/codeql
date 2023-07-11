@@ -23,29 +23,30 @@ module Public {
    * content type, or a return kind.
    */
   class SummaryComponent extends TSummaryComponent {
-    /** Gets a textual representation of this summary component. */
-    string toString() {
-      exists(ContentSet c | this = TContentSummaryComponent(c) and result = c.toString())
-      or
-      exists(ContentSet c | this = TWithoutContentSummaryComponent(c) and result = "without " + c)
-      or
-      exists(ContentSet c | this = TWithContentSummaryComponent(c) and result = "with " + c)
+    /** Gets a textual representation of this component used for MaD models. */
+    string getMadRepresentation() {
+      result = getMadRepresentationSpecific(this)
       or
       exists(ArgumentPosition pos |
-        this = TParameterSummaryComponent(pos) and result = "parameter " + pos
+        this = TParameterSummaryComponent(pos) and
+        result = "Parameter[" + getArgumentPosition(pos) + "]"
       )
       or
       exists(ParameterPosition pos |
-        this = TArgumentSummaryComponent(pos) and result = "argument " + pos
+        this = TArgumentSummaryComponent(pos) and
+        result = "Argument[" + getParameterPosition(pos) + "]"
       )
       or
-      exists(ReturnKind rk | this = TReturnSummaryComponent(rk) and result = "return (" + rk + ")")
-      or
-      exists(SummaryComponent::SyntheticGlobal sg |
-        this = TSyntheticGlobalSummaryComponent(sg) and
-        result = "synthetic global (" + sg + ")"
+      exists(string synthetic |
+        this = TSyntheticGlobalSummaryComponent(synthetic) and
+        result = "SyntheticGlobal[" + synthetic + "]"
       )
+      or
+      this = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
     }
+
+    /** Gets a textual representation of this summary component. */
+    string toString() { result = this.getMadRepresentation() }
   }
 
   /** Provides predicates for constructing summary components. */
@@ -110,7 +111,6 @@ module Public {
     }
 
     /** Gets the stack obtained by dropping the first `i` elements, if any. */
-    pragma[assume_small_delta]
     SummaryComponentStack drop(int i) {
       i = 0 and result = this
       or
@@ -125,19 +125,22 @@ module Public {
       this = TSingletonSummaryComponentStack(result) or result = this.tail().bottom()
     }
 
-    /** Gets a textual representation of this stack. */
-    string toString() {
+    /** Gets a textual representation of this stack used for MaD models. */
+    string getMadRepresentation() {
       exists(SummaryComponent head, SummaryComponentStack tail |
         head = this.head() and
         tail = this.tail() and
-        result = tail + "." + head
+        result = tail.getMadRepresentation() + "." + head.getMadRepresentation()
       )
       or
       exists(SummaryComponent c |
         this = TSingletonSummaryComponentStack(c) and
-        result = c.toString()
+        result = c.getMadRepresentation()
       )
     }
+
+    /** Gets a textual representation of this stack. */
+    string toString() { result = this.getMadRepresentation() }
   }
 
   /** Provides predicates for constructing stacks of summary components. */
@@ -164,42 +167,6 @@ module Public {
 
     /** Gets a singleton stack representing a return of kind `rk`. */
     SummaryComponentStack return(ReturnKind rk) { result = singleton(SummaryComponent::return(rk)) }
-  }
-
-  /** Gets a textual representation of this component used for flow summaries. */
-  private string getComponent(SummaryComponent sc) {
-    result = getComponentSpecific(sc)
-    or
-    exists(ArgumentPosition pos |
-      sc = TParameterSummaryComponent(pos) and
-      result = "Parameter[" + getArgumentPosition(pos) + "]"
-    )
-    or
-    exists(ParameterPosition pos |
-      sc = TArgumentSummaryComponent(pos) and
-      result = "Argument[" + getParameterPosition(pos) + "]"
-    )
-    or
-    exists(string synthetic |
-      sc = TSyntheticGlobalSummaryComponent(synthetic) and
-      result = "SyntheticGlobal[" + synthetic + "]"
-    )
-    or
-    sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
-  }
-
-  /** Gets a textual representation of this stack used for flow summaries. */
-  string getComponentStack(SummaryComponentStack stack) {
-    exists(SummaryComponent head, SummaryComponentStack tail |
-      head = stack.head() and
-      tail = stack.tail() and
-      result = getComponentStack(tail) + "." + getComponent(head)
-    )
-    or
-    exists(SummaryComponent c |
-      stack = TSingletonSummaryComponentStack(c) and
-      result = getComponent(c)
-    )
   }
 
   /**
@@ -1382,8 +1349,8 @@ module Private {
         c.relevantSummary(input, output, preservesValue) and
         csv =
           c.getCallableCsv() // Callable information
-            + getComponentStack(input) + ";" // input
-            + getComponentStack(output) + ";" // output
+            + input.getMadRepresentation() + ";" // input
+            + output.getMadRepresentation() + ";" // output
             + renderKind(preservesValue) + ";" // kind
             + renderProvenance(c) // provenance
       )

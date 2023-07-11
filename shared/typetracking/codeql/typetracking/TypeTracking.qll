@@ -803,7 +803,6 @@ module TypeTracking<TypeTrackingInput I> {
    * those sources.
    */
   module TypeTrack<endpoint/1 source> {
-    pragma[assume_small_delta]
     private Node flow(TypeTracker tt) {
       tt.start() and source(result)
       or

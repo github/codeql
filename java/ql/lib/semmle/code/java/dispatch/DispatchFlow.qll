@@ -31,7 +31,6 @@ private Callable dispatchCand(Call c) {
 /**
  * Holds if `t` and all its enclosing types are public.
  */
-pragma[assume_small_delta]
 private predicate veryPublic(RefType t) {
   t.isPublic() and
   (

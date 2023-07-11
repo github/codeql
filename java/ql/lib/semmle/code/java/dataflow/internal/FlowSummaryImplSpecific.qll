@@ -193,8 +193,8 @@ private string getContentSpecific(Content c) {
   c instanceof MapValueContent and result = "MapValue"
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of the content in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
 }
 

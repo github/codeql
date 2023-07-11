@@ -30,6 +30,10 @@ astGuards
 | test.c:152:10:152:10 | x |
 | test.c:152:10:152:15 | ... && ... |
 | test.c:152:15:152:15 | y |
+| test.c:156:9:156:19 | ... == ... |
+| test.c:159:9:159:19 | ... == ... |
+| test.c:162:9:162:18 | ... < ... |
+| test.c:165:9:165:18 | ... < ... |
 | test.cpp:18:8:18:10 | call to get |
 | test.cpp:31:7:31:13 | ... == ... |
 | test.cpp:42:13:42:20 | call to getABool |
@@ -122,6 +126,38 @@ astGuardsCompare
 | 109 | y < 0+0 when ... < ... is true |
 | 109 | y >= 0+0 when ... < ... is false |
 | 109 | y >= 0+0 when ... \|\| ... is false |
+| 156 | ... + ... != x+0 when ... == ... is false |
+| 156 | ... + ... == x+0 when ... == ... is true |
+| 156 | x != ... + ...+0 when ... == ... is false |
+| 156 | x != y+42 when ... == ... is false |
+| 156 | x == ... + ...+0 when ... == ... is true |
+| 156 | x == y+42 when ... == ... is true |
+| 156 | y != x+-42 when ... == ... is false |
+| 156 | y == x+-42 when ... == ... is true |
+| 159 | ... - ... != x+0 when ... == ... is false |
+| 159 | ... - ... == x+0 when ... == ... is true |
+| 159 | x != ... - ...+0 when ... == ... is false |
+| 159 | x != y+-42 when ... == ... is false |
+| 159 | x == ... - ...+0 when ... == ... is true |
+| 159 | x == y+-42 when ... == ... is true |
+| 159 | y != x+42 when ... == ... is false |
+| 159 | y == x+42 when ... == ... is true |
+| 162 | ... + ... < x+1 when ... < ... is false |
+| 162 | ... + ... >= x+1 when ... < ... is true |
+| 162 | x < ... + ...+0 when ... < ... is true |
+| 162 | x < y+42 when ... < ... is true |
+| 162 | x >= ... + ...+0 when ... < ... is false |
+| 162 | x >= y+42 when ... < ... is false |
+| 162 | y < x+-41 when ... < ... is false |
+| 162 | y >= x+-41 when ... < ... is true |
+| 165 | ... - ... < x+1 when ... < ... is false |
+| 165 | ... - ... >= x+1 when ... < ... is true |
+| 165 | x < ... - ...+0 when ... < ... is true |
+| 165 | x < y+-42 when ... < ... is true |
+| 165 | x >= ... - ...+0 when ... < ... is false |
+| 165 | x >= y+-42 when ... < ... is false |
+| 165 | y < x+43 when ... < ... is false |
+| 165 | y >= x+43 when ... < ... is true |
 astGuardsControl
 | test.c:7:9:7:13 | ... > ... | false | 10 | 11 |
 | test.c:7:9:7:13 | ... > ... | true | 7 | 9 |
@@ -208,6 +244,10 @@ astGuardsControl
 | test.c:152:10:152:10 | x | true | 152 | 152 |
 | test.c:152:10:152:15 | ... && ... | true | 151 | 152 |
 | test.c:152:15:152:15 | y | true | 151 | 152 |
+| test.c:156:9:156:19 | ... == ... | true | 156 | 157 |
+| test.c:159:9:159:19 | ... == ... | true | 159 | 160 |
+| test.c:162:9:162:18 | ... < ... | true | 162 | 163 |
+| test.c:165:9:165:18 | ... < ... | true | 165 | 166 |
 | test.cpp:18:8:18:10 | call to get | true | 19 | 19 |
 | test.cpp:31:7:31:13 | ... == ... | false | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | false | 34 | 34 |
@@ -364,6 +404,22 @@ astGuardsEnsure
 | test.c:109:9:109:23 | ... \|\| ... | test.c:109:23:109:23 | 0 | < | test.c:109:19:109:19 | y | 1 | 113 | 113 |
 | test.c:109:19:109:23 | ... < ... | test.c:109:19:109:19 | y | >= | test.c:109:23:109:23 | 0 | 0 | 113 | 113 |
 | test.c:109:19:109:23 | ... < ... | test.c:109:23:109:23 | 0 | < | test.c:109:19:109:19 | y | 1 | 113 | 113 |
+| test.c:156:9:156:19 | ... == ... | test.c:156:9:156:9 | x | == | test.c:156:14:156:14 | y | 42 | 156 | 157 |
+| test.c:156:9:156:19 | ... == ... | test.c:156:9:156:9 | x | == | test.c:156:14:156:19 | ... + ... | 0 | 156 | 157 |
+| test.c:156:9:156:19 | ... == ... | test.c:156:14:156:14 | y | == | test.c:156:9:156:9 | x | -42 | 156 | 157 |
+| test.c:156:9:156:19 | ... == ... | test.c:156:14:156:19 | ... + ... | == | test.c:156:9:156:9 | x | 0 | 156 | 157 |
+| test.c:159:9:159:19 | ... == ... | test.c:159:9:159:9 | x | == | test.c:159:14:159:14 | y | -42 | 159 | 160 |
+| test.c:159:9:159:19 | ... == ... | test.c:159:9:159:9 | x | == | test.c:159:14:159:19 | ... - ... | 0 | 159 | 160 |
+| test.c:159:9:159:19 | ... == ... | test.c:159:14:159:14 | y | == | test.c:159:9:159:9 | x | 42 | 159 | 160 |
+| test.c:159:9:159:19 | ... == ... | test.c:159:14:159:19 | ... - ... | == | test.c:159:9:159:9 | x | 0 | 159 | 160 |
+| test.c:162:9:162:18 | ... < ... | test.c:162:9:162:9 | x | < | test.c:162:13:162:13 | y | 42 | 162 | 163 |
+| test.c:162:9:162:18 | ... < ... | test.c:162:9:162:9 | x | < | test.c:162:13:162:18 | ... + ... | 0 | 162 | 163 |
+| test.c:162:9:162:18 | ... < ... | test.c:162:13:162:13 | y | >= | test.c:162:9:162:9 | x | -41 | 162 | 163 |
+| test.c:162:9:162:18 | ... < ... | test.c:162:13:162:18 | ... + ... | >= | test.c:162:9:162:9 | x | 1 | 162 | 163 |
+| test.c:165:9:165:18 | ... < ... | test.c:165:9:165:9 | x | < | test.c:165:13:165:13 | y | -42 | 165 | 166 |
+| test.c:165:9:165:18 | ... < ... | test.c:165:9:165:9 | x | < | test.c:165:13:165:18 | ... - ... | 0 | 165 | 166 |
+| test.c:165:9:165:18 | ... < ... | test.c:165:13:165:13 | y | >= | test.c:165:9:165:9 | x | 43 | 165 | 166 |
+| test.c:165:9:165:18 | ... < ... | test.c:165:13:165:18 | ... - ... | >= | test.c:165:9:165:9 | x | 1 | 165 | 166 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | test.cpp:31:12:31:13 | - ... | 0 | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | test.cpp:31:12:31:13 | - ... | 0 | 34 | 34 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | == | test.cpp:31:12:31:13 | - ... | 0 | 30 | 30 |
@@ -397,6 +453,10 @@ irGuards
 | test.c:146:8:146:8 | Load: x |
 | test.c:152:10:152:10 | Load: x |
 | test.c:152:15:152:15 | Load: y |
+| test.c:156:9:156:19 | CompareEQ: ... == ... |
+| test.c:159:9:159:19 | CompareEQ: ... == ... |
+| test.c:162:9:162:18 | CompareLT: ... < ... |
+| test.c:165:9:165:18 | CompareLT: ... < ... |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... |
 | test.cpp:42:13:42:20 | Call: call to getABool |
@@ -473,6 +533,38 @@ irGuardsCompare
 | 109 | x == 0+0 when CompareEQ: ... == ... is true |
 | 109 | y < 0+0 when CompareLT: ... < ... is true |
 | 109 | y >= 0+0 when CompareLT: ... < ... is false |
+| 156 | ... + ... != x+0 when CompareEQ: ... == ... is false |
+| 156 | ... + ... == x+0 when CompareEQ: ... == ... is true |
+| 156 | x != ... + ...+0 when CompareEQ: ... == ... is false |
+| 156 | x != y+42 when CompareEQ: ... == ... is false |
+| 156 | x == ... + ...+0 when CompareEQ: ... == ... is true |
+| 156 | x == y+42 when CompareEQ: ... == ... is true |
+| 156 | y != x+-42 when CompareEQ: ... == ... is false |
+| 156 | y == x+-42 when CompareEQ: ... == ... is true |
+| 159 | ... - ... != x+0 when CompareEQ: ... == ... is false |
+| 159 | ... - ... == x+0 when CompareEQ: ... == ... is true |
+| 159 | x != ... - ...+0 when CompareEQ: ... == ... is false |
+| 159 | x != y+-42 when CompareEQ: ... == ... is false |
+| 159 | x == ... - ...+0 when CompareEQ: ... == ... is true |
+| 159 | x == y+-42 when CompareEQ: ... == ... is true |
+| 159 | y != x+42 when CompareEQ: ... == ... is false |
+| 159 | y == x+42 when CompareEQ: ... == ... is true |
+| 162 | ... + ... < x+1 when CompareLT: ... < ... is false |
+| 162 | ... + ... >= x+1 when CompareLT: ... < ... is true |
+| 162 | x < ... + ...+0 when CompareLT: ... < ... is true |
+| 162 | x < y+42 when CompareLT: ... < ... is true |
+| 162 | x >= ... + ...+0 when CompareLT: ... < ... is false |
+| 162 | x >= y+42 when CompareLT: ... < ... is false |
+| 162 | y < x+-41 when CompareLT: ... < ... is false |
+| 162 | y >= x+-41 when CompareLT: ... < ... is true |
+| 165 | ... - ... < x+1 when CompareLT: ... < ... is false |
+| 165 | ... - ... >= x+1 when CompareLT: ... < ... is true |
+| 165 | x < ... - ...+0 when CompareLT: ... < ... is true |
+| 165 | x < y+-42 when CompareLT: ... < ... is true |
+| 165 | x >= ... - ...+0 when CompareLT: ... < ... is false |
+| 165 | x >= y+-42 when CompareLT: ... < ... is false |
+| 165 | y < x+43 when CompareLT: ... < ... is false |
+| 165 | y >= x+43 when CompareLT: ... < ... is true |
 irGuardsControl
 | test.c:7:9:7:13 | CompareGT: ... > ... | false | 11 | 11 |
 | test.c:7:9:7:13 | CompareGT: ... > ... | true | 8 | 8 |
@@ -551,6 +643,10 @@ irGuardsControl
 | test.c:146:8:146:8 | Load: x | false | 147 | 147 |
 | test.c:152:10:152:10 | Load: x | true | 152 | 152 |
 | test.c:152:15:152:15 | Load: y | true | 152 | 152 |
+| test.c:156:9:156:19 | CompareEQ: ... == ... | true | 156 | 157 |
+| test.c:159:9:159:19 | CompareEQ: ... == ... | true | 159 | 160 |
+| test.c:162:9:162:18 | CompareLT: ... < ... | true | 162 | 163 |
+| test.c:165:9:165:18 | CompareLT: ... < ... | true | 165 | 166 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | true | 19 | 19 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | false | 34 | 34 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | true | 30 | 30 |
@@ -690,6 +786,22 @@ irGuardsEnsure
 | test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:14:109:14 | Constant: 0 | != | test.c:109:9:109:9 | Load: x | 0 | 113 | 113 |
 | test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:19:109:19 | Load: y | >= | test.c:109:23:109:23 | Constant: (long)... | 0 | 113 | 113 |
 | test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:23:109:23 | Constant: (long)... | < | test.c:109:19:109:19 | Load: y | 1 | 113 | 113 |
+| test.c:156:9:156:19 | CompareEQ: ... == ... | test.c:156:9:156:9 | Load: x | == | test.c:156:14:156:14 | Load: y | 42 | 156 | 157 |
+| test.c:156:9:156:19 | CompareEQ: ... == ... | test.c:156:9:156:9 | Load: x | == | test.c:156:14:156:19 | PointerAdd: ... + ... | 0 | 156 | 157 |
+| test.c:156:9:156:19 | CompareEQ: ... == ... | test.c:156:14:156:14 | Load: y | == | test.c:156:9:156:9 | Load: x | -42 | 156 | 157 |
+| test.c:156:9:156:19 | CompareEQ: ... == ... | test.c:156:14:156:19 | PointerAdd: ... + ... | == | test.c:156:9:156:9 | Load: x | 0 | 156 | 157 |
+| test.c:159:9:159:19 | CompareEQ: ... == ... | test.c:159:9:159:9 | Load: x | == | test.c:159:14:159:14 | Load: y | -42 | 159 | 160 |
+| test.c:159:9:159:19 | CompareEQ: ... == ... | test.c:159:9:159:9 | Load: x | == | test.c:159:14:159:19 | PointerSub: ... - ... | 0 | 159 | 160 |
+| test.c:159:9:159:19 | CompareEQ: ... == ... | test.c:159:14:159:14 | Load: y | == | test.c:159:9:159:9 | Load: x | 42 | 159 | 160 |
+| test.c:159:9:159:19 | CompareEQ: ... == ... | test.c:159:14:159:19 | PointerSub: ... - ... | == | test.c:159:9:159:9 | Load: x | 0 | 159 | 160 |
+| test.c:162:9:162:18 | CompareLT: ... < ... | test.c:162:9:162:9 | Load: x | < | test.c:162:13:162:13 | Load: y | 42 | 162 | 163 |
+| test.c:162:9:162:18 | CompareLT: ... < ... | test.c:162:9:162:9 | Load: x | < | test.c:162:13:162:18 | PointerAdd: ... + ... | 0 | 162 | 163 |
+| test.c:162:9:162:18 | CompareLT: ... < ... | test.c:162:13:162:13 | Load: y | >= | test.c:162:9:162:9 | Load: x | -41 | 162 | 163 |
+| test.c:162:9:162:18 | CompareLT: ... < ... | test.c:162:13:162:18 | PointerAdd: ... + ... | >= | test.c:162:9:162:9 | Load: x | 1 | 162 | 163 |
+| test.c:165:9:165:18 | CompareLT: ... < ... | test.c:165:9:165:9 | Load: x | < | test.c:165:13:165:13 | Load: y | -42 | 165 | 166 |
+| test.c:165:9:165:18 | CompareLT: ... < ... | test.c:165:9:165:9 | Load: x | < | test.c:165:13:165:18 | PointerSub: ... - ... | 0 | 165 | 166 |
+| test.c:165:9:165:18 | CompareLT: ... < ... | test.c:165:13:165:13 | Load: y | >= | test.c:165:9:165:9 | Load: x | 43 | 165 | 166 |
+| test.c:165:9:165:18 | CompareLT: ... < ... | test.c:165:13:165:18 | PointerSub: ... - ... | >= | test.c:165:9:165:9 | Load: x | 1 | 165 | 166 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:10 | Call: call to get | != | test.cpp:18:8:18:12 | Constant: (bool)... | 0 | 19 | 19 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:12 | Constant: (bool)... | != | test.cpp:18:8:18:10 | Call: call to get | 0 | 19 | 19 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | test.cpp:31:12:31:13 | Constant: - ... | 0 | 34 | 34 |
