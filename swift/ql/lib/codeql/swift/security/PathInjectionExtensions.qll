@@ -33,6 +33,20 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
   DefaultPathInjectionSink() { sinkNode(this, "path-injection") }
 }
 
+/**
+ * A sink that is a write to a global variable.
+ */
+private class GlobalVariablePathInjectionSink extends PathInjectionSink {
+  GlobalVariablePathInjectionSink() {
+    // value assigned to global variable `sqlite3_temp_directory`
+    // the sink should be the `DeclRefExpr` itself, but we don't currently have taint flow to globals.
+    exists(AssignExpr ae |
+      ae.getDest().(DeclRefExpr).getDecl().(VarDecl).getName() = "sqlite3_temp_directory" and
+      ae.getSource() = this.asExpr()
+    )
+  }
+}
+
 private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
   DefaultPathInjectionBarrier() {
     // This is a simplified implementation.
@@ -139,7 +153,6 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";;false;sqlite3_filename_journal(_:);;;Argument[0];path-injection",
         ";;false;sqlite3_filename_wal(_:);;;Argument[0];path-injection",
         ";;false;sqlite3_free_filename(_:);;;Argument[0];path-injection",
-        ";;false;sqlite3_temp_directory;;;PostUpdate;path-injection",
         // SQLite.swift
         ";Connection.Location.uri;true;init(_:parameters:);;;Argument[0];path-injection",
         ";Connection;true;init(_:readonly:);;;Argument[0];path-injection",
