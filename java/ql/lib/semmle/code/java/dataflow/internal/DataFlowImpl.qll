@@ -67,6 +67,12 @@ signature module FullStateConfigSig {
   predicate allowImplicitRead(Node node, ContentSet c);
 
   /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  predicate neverSkip(Node node);
+
+  /**
    * Gets the virtual dispatch branching limit when calculating field flow.
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
@@ -2024,7 +2030,8 @@ module Impl<FullStateConfigSig Config> {
         castNode(this.asNode()) or
         clearsContentCached(this.asNode(), _) or
         expectsContentCached(this.asNode(), _) or
-        neverSkipInPathGraph(this.asNode())
+        neverSkipInPathGraph(this.asNode()) or
+        Config::neverSkip(this.asNode())
       }
     }
 
