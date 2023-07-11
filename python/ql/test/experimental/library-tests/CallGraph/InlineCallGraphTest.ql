@@ -108,7 +108,7 @@ query predicate pointsTo_found_typeTracker_notFound(CallNode call, string qualna
     not typeTrackerCallEdge(call, target) and
     qualname = getCallEdgeValue(call, target) and
     // ignore SPURIOUS call edges
-    not exists(FalsePositiveExpectation spuriousResult |
+    not exists(FalsePositiveTestExpectation spuriousResult |
       spuriousResult.getTag() = "pt" and
       spuriousResult.getValue() = getCallEdgeValue(call, target) and
       spuriousResult.getLocation().getFile() = call.getLocation().getFile() and
@@ -127,7 +127,7 @@ query predicate typeTracker_found_pointsTo_notFound(CallNode call, string qualna
     // between the two).
     not typeTrackerClassCall(call, target) and
     // ignore SPURIOUS call edges
-    not exists(FalsePositiveExpectation spuriousResult |
+    not exists(FalsePositiveTestExpectation spuriousResult |
       spuriousResult.getTag() = "tt" and
       spuriousResult.getValue() = getCallEdgeValue(call, target) and
       spuriousResult.getLocation().getFile() = call.getLocation().getFile() and
