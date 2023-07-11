@@ -128,5 +128,15 @@ namespace Semmle.BuildAnalyser
         {
             logger.Log(Severity.Info, $"Could not find a top-level nuget.config file.");
         }
+
+        internal void RazorSourceGeneratorMissing(string fullPath)
+        {
+            logger.Log(Severity.Info, $"Razor source generator folder {fullPath} does not exist.");
+        }
+
+        internal void CscMissing(string cscPath)
+        {
+            logger.Log(Severity.Info, $"Csc.exe not found at {cscPath}.");
+        }
     }
 }

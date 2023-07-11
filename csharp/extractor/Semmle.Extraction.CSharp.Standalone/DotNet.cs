@@ -5,14 +5,6 @@ using Semmle.Util;
 
 namespace Semmle.BuildAnalyser
 {
-    internal interface IDotNet
-    {
-        bool RestoreToDirectory(string project, string directory, string? pathToNugetConfig = null);
-        bool New(string folder);
-        bool AddPackage(string folder, string package);
-        public IList<string> GetListedRuntimes();
-    }
-
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
@@ -76,6 +68,13 @@ namespace Semmle.BuildAnalyser
             return RunCommand(args);
         }
 
+        public bool Exec(string execArgs)
+        {
+            // TODO: we might need to swallow the stdout of the started process to not pollute the logs of the extraction.
+            var args = $"exec {execArgs}";
+            return RunCommand(args);
+        }
+
         public IList<string> GetListedRuntimes()
         {
             var args = "--list-runtimes";
@@ -91,6 +90,23 @@ namespace Semmle.BuildAnalyser
                 return new List<string>();
             }
             return runtimes;
+        }
+
+        public IList<string> GetListedSdks()
+        {
+            var args = "--list-sdks";
+            var pi = new ProcessStartInfo(dotnet, args)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false
+            };
+            var exitCode = pi.ReadOutput(out var sdks);
+            if (exitCode != 0)
+            {
+                progressMonitor.CommandFailed(dotnet, args, exitCode);
+                return new List<string>();
+            }
+            return sdks;
         }
     }
 }

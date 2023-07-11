@@ -24,11 +24,13 @@ namespace Semmle.BuildAnalyser
         private readonly IDictionary<string, string> unresolvedReferences = new ConcurrentDictionary<string, string>();
         private int failedProjects;
         private int succeededProjects;
-        private readonly string[] allSources;
+        private readonly List<string> allSources;
         private int conflictedReferences = 0;
         private readonly Options options;
         private readonly DirectoryInfo sourceDir;
         private readonly DotNet dotnet;
+        private readonly TemporaryDirectory packageDirectory;
+        private readonly TemporaryDirectory? cshtmlWorkingDirectory;
 
         /// <summary>
         /// Performs a C# build analysis.
@@ -55,11 +57,33 @@ namespace Semmle.BuildAnalyser
 
             this.progressMonitor.FindingFiles(options.SrcDir);
 
-            this.allSources = GetFiles("*.cs").ToArray();
+            this.allSources = GetFiles("*.cs").ToList();
             var allProjects = GetFiles("*.csproj");
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
                 : GetFiles("*.sln");
+            var cshtmls = GetFiles("*.cshtml").ToArray();
+
+            if (cshtmls.Length > 0)
+            {
+                // TODO: use SDK specified in global.json
+                // TODO: add feature flag to control razor generation
+                var sdk = new Sdk(dotnet).GetLatestSdk();
+                if (sdk != null)
+                {
+                    try
+                    {
+                        var razor = new Razor(sdk, dotnet, progressMonitor);
+                        cshtmlWorkingDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "cshtmls"));
+                        var generatedFiles = razor.GenerateFiles(cshtmls, cshtmlWorkingDirectory.ToString());
+                        this.allSources.AddRange(generatedFiles);
+                    }
+                    catch
+                    {
+                        // It's okay, we tried our best to generate source files from cshtml files.
+                    }
+                }
+            }
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
 
@@ -146,7 +170,7 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="srcDir"></param>
         /// <returns>The full path of the temp directory.</returns>
-        private static string ComputeTempDirectory(string srcDir)
+        private static string ComputeTempDirectory(string srcDir, string subfolderName = "packages")
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
             var sha = SHA1.HashData(bytes);
@@ -154,7 +178,7 @@ namespace Semmle.BuildAnalyser
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(Path.GetTempPath(), "GitHub", "packages", sb.ToString());
+            return Path.Combine(Path.GetTempPath(), "GitHub", subfolderName, sb.ToString());
         }
 
         /// <summary>
@@ -260,8 +284,6 @@ namespace Semmle.BuildAnalyser
         {
             unresolvedReferences[id] = projectFile;
         }
-
-        private readonly TemporaryDirectory packageDirectory;
 
         /// <summary>
         /// Reads all the source files and references from the given list of projects.
@@ -437,6 +459,7 @@ namespace Semmle.BuildAnalyser
         public void Dispose()
         {
             packageDirectory?.Dispose();
+            cshtmlWorkingDirectory?.Dispose();
         }
 
         [GeneratedRegex("<PackageReference .*Include=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]

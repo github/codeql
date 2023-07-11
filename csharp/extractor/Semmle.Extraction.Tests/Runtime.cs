@@ -18,6 +18,10 @@ namespace Semmle.Extraction.Tests
         public bool RestoreToDirectory(string project, string directory, string? pathToNugetConfig = null) => true;
 
         public IList<string> GetListedRuntimes() => runtimes;
+
+        public IList<string> GetListedSdks() => new List<string>();
+
+        public bool Exec(string execArgs) => true;
     }
 
     public class RuntimeTests
