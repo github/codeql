@@ -25,5 +25,5 @@ module LdapInjection {
     }
   }
 
-  import TaintTracking::Make<Config>
+  import TaintTracking::Global<Config>
 }
