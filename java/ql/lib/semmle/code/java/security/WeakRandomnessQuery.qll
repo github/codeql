@@ -29,6 +29,21 @@ private class JavaRandomSource extends WeakRandomnessSource {
   }
 }
 
+private class ApacheRandomStringUtilsMethodAccessSource extends WeakRandomnessSource {
+  ApacheRandomStringUtilsMethodAccessSource() {
+    exists(MethodAccess ma | this.asExpr() = ma |
+      ma.getMethod()
+          .hasName([
+              "random", "randomAlphabetic", "randomAlphanumeric", "randomAscii", "randomGraph",
+              "randomNumeric", "randomPrint"
+            ]) and
+      ma.getMethod()
+          .getDeclaringType()
+          .hasQualifiedName("org.apache.commons.lang", "RandomStringUtils")
+    )
+  }
+}
+
 /**
  * The `random` method of `java.lang.Math`.
  */
