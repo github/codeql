@@ -53,12 +53,9 @@ private class GlobalVariablePathInjectionSink extends PathInjectionSink {
 private class EnumConstructorPathInjectionSink extends PathInjectionSink {
   EnumConstructorPathInjectionSink() {
     // first argument to `Connection.Location.uri(_:parameters:)`
-    exists(ApplyExpr ae, EnumElementDecl decl, NominalTypeDecl parent |
+    exists(ApplyExpr ae, EnumElementDecl decl |
       ae.getFunction().(MethodLookupExpr).getMember() = decl and
-      decl.getName() = "uri" and
-      decl.getDeclaringDecl() = parent and
-      parent.getName() = "Location" and
-      parent.getDeclaringDecl().(NominalTypeDecl).(NominalTypeDecl).getName() = "Connection" and
+      decl.hasQualifiedName("Connection.Location", "uri") and
       this.asExpr() = ae.getArgument(0).getExpr()
     )
   }
