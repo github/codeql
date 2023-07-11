@@ -468,6 +468,7 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   // function, while the default value itself will be in the scope that _defines_ the
   // function.
   exists(ParameterDefinition param |
+    // note: we go to the _control-flow node_ of the parameter, and not the ESSA node of the parameter, since for type-tracking, the ESSA node is not a LocalSourceNode, so we would get in trouble.
     nodeFrom.asCfgNode() = param.getDefault() and
     nodeTo.asCfgNode() = param.getDefiningNode()
   )
