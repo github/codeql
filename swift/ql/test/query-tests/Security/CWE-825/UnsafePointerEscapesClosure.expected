@@ -1,4 +1,3 @@
-WARNING: Unused variable c (test.ql:51,73-74)
 edges
 | file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] |
 | file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0, some:0, some:0] |
