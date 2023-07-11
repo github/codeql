@@ -643,6 +643,10 @@ open class KotlinFileExtractor(
                         logger.warnElement("Unrecognised class kind $kind", c)
                     }
 
+                    if (c.origin == IrDeclarationOrigin.FILE_CLASS) {
+                        tw.writeFile_class(id)
+                    }
+
                     if (c.isData) {
                         tw.writeKtDataClasses(id)
                     }
