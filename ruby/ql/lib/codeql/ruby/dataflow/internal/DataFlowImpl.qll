@@ -254,6 +254,11 @@ module Impl<FullStateConfigSig Config> {
     not fullBarrier(node2)
   }
 
+  pragma[nomagic]
+  private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
+    isUnreachableInCallCached(n.asNode(), cc.getCall())
+  }
+
   /**
    * Holds if data can flow in one local step from `node1` to `node2`.
    */
@@ -2108,7 +2113,7 @@ module Impl<FullStateConfigSig Config> {
       NodeEx node1, FlowState state, NodeEx node2, boolean preservesValue, DataFlowType t,
       LocalCallContext cc
     ) {
-      not isUnreachableInCallCached(node2.asNode(), cc.(LocalCallContextSpecificCall).getCall()) and
+      not isUnreachableInCall1(node2, cc) and
       (
         localFlowEntry(node1, pragma[only_bind_into](state)) and
         (
@@ -2123,7 +2128,7 @@ module Impl<FullStateConfigSig Config> {
         ) and
         node1 != node2 and
         cc.relevantFor(node1.getEnclosingCallable()) and
-        not isUnreachableInCallCached(node1.asNode(), cc.(LocalCallContextSpecificCall).getCall())
+        not isUnreachableInCall1(node1, cc)
         or
         exists(NodeEx mid |
           localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue, t, cc) and
@@ -2160,10 +2165,8 @@ module Impl<FullStateConfigSig Config> {
       preservesValue = false and
       t = node2.getDataFlowType() and
       callContext.relevantFor(node1.getEnclosingCallable()) and
-      not exists(DataFlowCall call | call = callContext.(LocalCallContextSpecificCall).getCall() |
-        isUnreachableInCallCached(node1.asNode(), call) or
-        isUnreachableInCallCached(node2.asNode(), call)
-      )
+      not isUnreachableInCall1(node1, callContext) and
+      not isUnreachableInCall1(node2, callContext)
     }
   }
 
