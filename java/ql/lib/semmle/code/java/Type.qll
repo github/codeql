@@ -709,6 +709,12 @@ class Class extends ClassOrInterface {
     )
   }
 
+  /**
+   * Holds if this class is Kotlin "file class", e.g. the class FooKt
+   * for top-level entities in Foo.kt.
+   */
+  predicate isFileClass() { file_class(this) }
+
   override string getAPrimaryQlClass() { result = "Class" }
 }
 
