@@ -5,7 +5,9 @@
 
 import java
 private import semmle.code.java.Serializability
-private import semmle.code.java.security.OgnlInjectionQuery
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.frameworks.struts.StrutsActions
 
 /** A type whose values may be unmarshalled from an Http request by the Struts2 framework. */
 abstract class Struts2DeserializableType extends Type { }
