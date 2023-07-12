@@ -40,7 +40,7 @@ module GoMicro {
         te.getDeclaration().getLocation().getFile() instanceof ProtocGeneratedFile and
         exists(MethodDecl md |
           md.getName() = "ProtoMessage" and
-          this = md.getReceiverDecl().getTypeExpr().getAChild().(TypeName).getType()
+          this = md.getReceiverType().(PointerType).getBaseType()
         )
       )
     }
