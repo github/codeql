@@ -43,8 +43,25 @@ private class ProcessType extends NominalType {
 }
 
 /**
+ * A `DataFlow::Node` that is an expression stored with the Realm database
+ * library.
+ */
+private class ProcessSink extends CommandInjectionSink instanceof DataFlow::Node {
+  ProcessSink() {
+    // any write into a class derived from `Process` is a sink. For
+    // example in `Process.launchPath = sensitive` the post-update node corresponding
+    // with `Process.launchPath` is a sink.
+    exists(NominalType t, Expr e |
+      t.getABaseType*().getUnderlyingType().getName() = "Process" and
+      e.getFullyConverted() = this.asExpr() and
+      e.getFullyConverted().getType() = t
+    )
+  }
+}
+
+/**
  * A sink defined in a CSV model.
  */
 private class DefaultCommandInjectionSink extends CommandInjectionSink {
-  DefaultCommandInjectionSink() { sinkNode(this, "command-injection") }
+  DefaultCommandInjectionSink() { sinkNode(this, "command-line-injection") }
 }
