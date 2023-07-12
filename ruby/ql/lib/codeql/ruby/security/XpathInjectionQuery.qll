@@ -11,7 +11,7 @@ private import codeql.ruby.TaintTracking
 import XpathInjectionCustomizations::XpathInjection
 
 /** Provides a taint-tracking configuration for detecting "Xpath Injection" vulnerabilities. */
-module XPathInjection {
+module XpathInjection {
   /**
    * A taint-tracking configuration for detecting "Xpath Injection" vulnerabilities.
    */
