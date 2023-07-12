@@ -37,8 +37,7 @@ private Function getAServerlessHandler() {
     (runtime = "" or runtime.matches("python%"))
   |
     mod.getFile() = file and
-    mod.getAnExport() = handler and
-    result.getEnclosingModule() = mod and
+    result.getScope() = mod and
     result.getName() = handler
   )
 }
