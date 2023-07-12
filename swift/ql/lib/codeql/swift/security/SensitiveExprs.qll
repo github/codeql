@@ -86,13 +86,33 @@ private string regexpProbablySafe() {
 }
 
 /**
+ * Gets a string that is to be tested for sensitivity.
+ */
+cached
+private string sensitiveCandidateStrings() {
+  result = any(VarDecl v).getName()
+  or
+  result = any(Function f).getShortName()
+  or
+  result = any(Argument a).getLabel()
+}
+
+/**
+ * Gets a string from the candidates that is sensitive.
+ */
+cached
+private string sensitiveStrings(SensitiveDataType sensitiveType) {
+  result = sensitiveCandidateStrings() and
+  result.regexpMatch(sensitiveType.getRegexp())
+}
+
+/**
  * A `VarDecl` that might be used to contain sensitive data.
  */
 private class SensitiveVarDecl extends VarDecl {
   SensitiveDataType sensitiveType;
 
-  cached
-  SensitiveVarDecl() { this.getName().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveVarDecl() { this.getName() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getName() and
@@ -105,16 +125,11 @@ private class SensitiveVarDecl extends VarDecl {
  */
 private class SensitiveFunction extends Function {
   SensitiveDataType sensitiveType;
-  string name; // name of the function, not including the argument list.
 
-  cached
-  SensitiveFunction() {
-    name = this.getShortName() and
-    name.regexpMatch(sensitiveType.getRegexp())
-  }
+  SensitiveFunction() { this.getShortName() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
-    label = name and
+    label = this.getShortName() and
     sensitiveType = type
   }
 }
@@ -125,8 +140,7 @@ private class SensitiveFunction extends Function {
 private class SensitiveArgument extends Argument {
   SensitiveDataType sensitiveType;
 
-  cached
-  SensitiveArgument() { this.getLabel().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveArgument() { this.getLabel() = sensitiveStrings(sensitiveType) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getLabel() and
