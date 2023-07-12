@@ -138,6 +138,8 @@ function RegisterExtractorPack(id)
     end
 
     local windowsMatchers = {
+        CreatePatternMatcher({ '^semmle%.extraction%.csharp%.standalone%.exe$' },
+            MatchCompilerName, nil, { trace = false }),
         DotnetMatcherBuild,
         MsBuildMatcher,
         CreatePatternMatcher({ '^csc.*%.exe$' }, MatchCompilerName, extractor, {
@@ -179,6 +181,9 @@ function RegisterExtractorPack(id)
         end
     }
     local posixMatchers = {
+        -- The compiler name is case sensitive on Linux and lower cased on MacOS
+        CreatePatternMatcher({ '^semmle%.extraction%.csharp%.standalone$', '^Semmle%.Extraction%.CSharp%.Standalone$' },
+            MatchCompilerName, nil, { trace = false }),
         DotnetMatcherBuild,
         CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$' }, MatchCompilerName,
             extractor, {
