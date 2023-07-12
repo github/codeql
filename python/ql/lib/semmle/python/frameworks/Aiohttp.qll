@@ -469,7 +469,7 @@ module AiohttpWebModel {
   }
 
   /**
-   * Heuristic source that considers a method parameter with a type hint of `aiohttp.web.Request`
+   * An heuristic source that considers a method parameter with a type hint of `aiohttp.web.Request`
    * as a parameter that will receive an `aiohttp.web.Request` instance when a request
    * handler is invoked.
    */
