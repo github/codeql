@@ -389,7 +389,7 @@ module InvalidPointerToDerefFlow = DataFlow::Global<InvalidPointerToDerefConfig>
 
 /**
  * Holds if `source1` is dataflow node that represents an allocation that flows to the
- * left-hand side of the pointer-arithmetic `pai`, and `source` is a dataflow node with
+ * left-hand side of the pointer-arithmetic `pai`, and `derefSource` is a dataflow node with
  * a pointer-value that is non-strictly upper bounded by `pai + delta`.
  *
  * For example, if `pai` is a pointer-arithmetic operation `p + size` in an expression such
