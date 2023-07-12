@@ -1,3 +1,3 @@
 lgtm,codescanning
-* Support for the pg-go framework has been improved.
+* Support for the [go-pg framework](https://github.com/go-pg/pg) has been improved.
 
