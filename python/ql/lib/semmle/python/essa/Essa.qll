@@ -501,8 +501,7 @@ class AssignmentDefinition extends EssaNodeDefinition {
   ControlFlowNode value;
 
   AssignmentDefinition() {
-    SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), value) and
-    not this instanceof ParameterDefinition
+    SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), value)
   }
 
   ControlFlowNode getValue() { result = value }
