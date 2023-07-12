@@ -393,7 +393,7 @@ module InvalidPointerToDerefFlow = DataFlow::Global<InvalidPointerToDerefConfig>
  * a pointer-value that is non-strictly upper bounded by `pai + delta`.
  *
  * For example, if `pai` is a pointer-arithmetic operation `p + size` in an expression such
- * as `(p + size) + 1` and `source` is the node representing `(p + size) + 1`. In this
+ * as `(p + size) + 1` and `derefSource` is the node representing `(p + size) + 1`. In this
  * case `delta` is 1.
  */
 predicate invalidPointerToDerefSource(
