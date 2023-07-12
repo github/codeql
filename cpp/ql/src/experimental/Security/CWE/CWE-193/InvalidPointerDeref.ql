@@ -421,7 +421,7 @@ predicate invalidPointerToDerefSource(
 }
 
 newtype TMergedPathNode =
-  // The path nodes computed by the first projection of `AllocToInvalidPointerConfig`
+  // The path from the allocation to the address of the store/load.
   TFinalPathNode(FinalFlow::PathNode p) or
   // The read/write that uses the invalid pointer identified by `InvalidPointerToDerefConfig`.
   // This one is needed because the sink identified by `InvalidPointerToDerefConfig` is the
