@@ -35,13 +35,10 @@ module GoMicro {
    */
   class ProtocMessageType extends Type {
     ProtocMessageType() {
-      exists(TypeEntity te |
-        te.getType() = this and
-        te.getDeclaration().getLocation().getFile() instanceof ProtocGeneratedFile and
-        exists(MethodDecl md |
-          md.getName() = "ProtoMessage" and
-          this = md.getReceiverType().(PointerType).getBaseType()
-        )
+      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _) and
+      exists(MethodDecl md |
+        md.getName() = "ProtoMessage" and
+        this = md.getReceiverDecl().getTypeExpr().getAChild().(TypeName).getType()
       )
     }
 
