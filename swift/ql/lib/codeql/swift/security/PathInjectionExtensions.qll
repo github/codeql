@@ -38,7 +38,7 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
  */
 private class GlobalVariablePathInjectionSink extends PathInjectionSink {
   GlobalVariablePathInjectionSink() {
-    // value assigned to global variable `sqlite3_temp_directory`
+    // value assigned to the sqlite3 global variable `sqlite3_temp_directory`
     // the sink should be the `DeclRefExpr` itself, but we don't currently have taint flow to globals.
     exists(AssignExpr ae |
       ae.getDest().(DeclRefExpr).getDecl().(VarDecl).getName() = "sqlite3_temp_directory" and
@@ -48,11 +48,11 @@ private class GlobalVariablePathInjectionSink extends PathInjectionSink {
 }
 
 /**
- * A sink that is a write to a global variable.
+ * A sink that is an argument to an enum element.
  */
 private class EnumConstructorPathInjectionSink extends PathInjectionSink {
   EnumConstructorPathInjectionSink() {
-    // first argument to `Connection.Location.uri(_:parameters:)`
+    // first argument to SQLite.swift's `Connection.Location.uri(_:parameters:)`
     exists(ApplyExpr ae, EnumElementDecl decl |
       ae.getFunction().(MethodLookupExpr).getMember() = decl and
       decl.hasQualifiedName("Connection.Location", "uri") and

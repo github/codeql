@@ -1,5 +1,5 @@
 private import codeql.swift.generated.decl.EnumElementDecl
-private import codeql.swift.elements.decl.Decl
+private import codeql.swift.elements.decl.EnumDecl
 
 /**
  * An enum element declaration, for example `enumElement` and `anotherEnumElement` in:
@@ -14,25 +14,24 @@ class EnumElementDecl extends Generated::EnumElementDecl {
   override string toString() { result = this.getName() }
 
   /**
-   * Holds if this function is called `funcName` and is a member of a
-   * class, struct, extension, enum or protocol called `typeName`.
+   * Holds if this enum element declaration is called `enumElementName` and is a member of an
+   * enum called `enumName`.
    */
   cached
-  predicate hasQualifiedName(string typeName, string enumElementName) {
+  predicate hasQualifiedName(string enumName, string enumElementName) {
     this.getName() = enumElementName and
-    exists(Decl d |
-      d.asNominalTypeDecl().getFullName() = typeName and
+    exists(EnumDecl d |
+      d.getFullName() = enumName and
       d.getAMember() = this
     )
   }
 
   /**
-   * Holds if this function is called `funcName` and is a member of a
-   * class, struct, extension, enum or protocol called `typeName` in a module
-   * called `moduleName`.
+   * Holds if this enum element declaration is called `enumElementName` and is a member of an
+   * enumcalled `enumName` in a module called `moduleName`.
    */
-  predicate hasQualifiedName(string moduleName, string typeName, string enumElementName) {
-    this.hasQualifiedName(typeName, enumElementName) and
+  predicate hasQualifiedName(string moduleName, string enumName, string enumElementName) {
+    this.hasQualifiedName(enumName, enumElementName) and
     this.getModule().getFullName() = moduleName
   }
 }
