@@ -16,7 +16,7 @@ func main() {
 	// context
 	ctx := context.Background()
 
-	greeterService := pb.NewGreeterService("http://localhost:8000", service.Client())
+	greeterService := pb.NewGreeterService("http://localhost:8000", service.Client()) // $ clientRequest="http:\/\/localhost:8000"
 	// request
 	req := pb.Request{Name: "Mona"}
 	resp, err := greeterService.Hello(ctx, &req)

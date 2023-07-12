@@ -108,11 +108,10 @@ module GoMicro {
    */
   class ServiceHandler extends Method {
     ServiceHandler() {
-      exists(DataFlow::CallNode call, Type handlerType, ServiceInterfaceType i |
+      exists(DataFlow::CallNode call |
         call.getTarget() instanceof ServiceRegisterHandler and
-        call.getArgument(1).getType() = handlerType and
-        this = handlerType.getMethod(_) and
-        this.implements(i.getNamedType().getMethod(_))
+        this = call.getArgument(1).getType().getMethod(_) and
+        this.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
       )
     }
   }
@@ -122,12 +121,10 @@ module GoMicro {
    */
   class ClientService extends Function {
     ClientService() {
-      exists(ClientServiceType c |
-        this.getName().regexpMatch("(?i)new" + c.getName()) and
-        this.getParameterType(0) instanceof StringType and
-        this.getParameterType(1) instanceof GoMicroClientType and
-        this.getDeclaration().getLocation().getFile() instanceof ProtocGeneratedFile
-      )
+      this.getName().regexpMatch("(?i)new" + any(ClientServiceType c).getName()) and
+      this.getParameterType(0) instanceof StringType and
+      this.getParameterType(1) instanceof GoMicroClientType and
+      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
   }
 
@@ -152,8 +149,8 @@ module GoMicro {
    */
   class Request extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
     Request() {
-      exists(FuncDef c, ServiceHandler handler | handler.getFuncDecl() = c |
-        this.asParameter().isParameterOf(c, 1) and
+      exists(ServiceHandler handler |
+        this.asParameter().isParameterOf(handler.getFuncDecl(), 1) and
         handler.getParameterType(0).hasQualifiedName("context", "Context") and
         this.getType().(PointerType).getBaseType() instanceof ProtocMessageType
       )
