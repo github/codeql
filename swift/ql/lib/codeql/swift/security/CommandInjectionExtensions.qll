@@ -62,5 +62,5 @@ private class ProcessSink extends CommandInjectionSink instanceof DataFlow::Node
  * A sink defined in a CSV model.
  */
 private class DefaultCommandInjectionSink extends CommandInjectionSink {
-  DefaultCommandInjectionSink() { sinkNode(this, "command-line-injection") }
+  DefaultCommandInjectionSink() { sinkNode(this, "command-injection") }
 }

@@ -19,6 +19,10 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node instanceof CommandInjectionSink }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof CommandInjectionBarrier }
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(CommandInjectionAdditionalFlowStep s).step(nodeFrom, nodeTo)
+  }
 }
 
 /**

@@ -6,7 +6,7 @@
 <overview>
 <p>
 Constructing a system command with unsanitized user input is dangerous,
-since a malicious user to execute code.
+since a malicious user may be able to craft input that executes arbitrary code.
 </p>
 </overview>
 
@@ -29,7 +29,7 @@ sanitizing it first:
 </p>
 <sample src="CommandInjectionBad.swift" />
 <p>
-If user input is used to construct a regular expression it should be checked
+If user input is used to construct a command it should be checked
 first. This ensures that the user cannot insert characters that have special
 meanings.
 </p>
