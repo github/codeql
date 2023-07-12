@@ -469,6 +469,30 @@ module AiohttpWebModel {
   }
 
   /**
+   * Heuristic source that considers a method parameter with a type hint of `aiohttp.web.Request`
+   * as a parameter that will receive an `aiohttp.web.Request` instance when a request
+   * handler is invoked.
+   */
+  class AiohttpHeuristicRequestHandlerRequestParam extends Request::InstanceSource,
+    DataFlow::ParameterNode, RemoteFlowSource::Range
+  {
+    AiohttpHeuristicRequestHandlerRequestParam() {
+      exists(FunctionExpr fe, int i |
+        // the API::Node is the annotation (type hint), we need to get the annotated parameter
+        fe.getArgs().getAnnotation(i) =
+          API::moduleImport("aiohttp")
+              .getMember("web")
+              .getMember("Request")
+              .getAValueReachableFromSource()
+              .asExpr() and
+        fe.getInnerScope().getArg(i) = this.getParameter()
+      )
+    }
+
+    override string getSourceType() { result = "aiohttp web request parameter" }
+  }
+
+  /**
    * A read of the `request` attribute on an instance of an aiohttp.web View class,
    * which is the request being processed currently.
    */
@@ -505,7 +529,10 @@ module AiohttpWebModel {
     AiohttpWebResponseInstantiation() {
       this = apiNode.getACall() and
       (
-        apiNode = API::moduleImport("aiohttp").getMember("web").getMember("Response")
+        apiNode =
+          API::moduleImport("aiohttp")
+              .getMember("web")
+              .getMember(["FileResponse", "Response", "StreamResponse"])
         or
         exists(string httpExceptionClassName |
           httpExceptionClassName in [
@@ -545,6 +572,14 @@ module AiohttpWebModel {
 
     override DataFlow::Node getMimetypeOrContentTypeArg() {
       result = this.getArgByName("content_type")
+      or
+      exists(DataFlow::Node headers, Dict d |
+        headers = this.getArgByName("headers").getALocalSource()
+      |
+        headers.asExpr() = d and
+        d.getAKey().(StrConst).getText().toLowerCase() = "content-type" and
+        d.getAValue() = result.asExpr()
+      )
     }
 
     override string getMimetypeDefault() {
@@ -554,6 +589,17 @@ module AiohttpWebModel {
       not exists(this.getArgByName("text")) and
       result = "application/octet-stream"
     }
+  }
+
+  /**
+   * A call to the `aiohttp.web.FileResponse` constructor as a sink for Filesystem access.
+   */
+  class FileResponseCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    FileResponseCall() {
+      this = API::moduleImport("aiohttp").getMember("web").getMember("FileResponse").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArg(0) }
   }
 
   /** Gets an HTTP response instance. */
@@ -670,7 +716,7 @@ private module AiohttpClientModel {
       string methodName;
 
       OutgoingRequestCall() {
-        methodName in [Http::httpVerbLower(), "request"] and
+        methodName in [Http::httpVerbLower(), "request", "ws_connect"] and
         this = instance().getMember(methodName).getACall()
       }
 
