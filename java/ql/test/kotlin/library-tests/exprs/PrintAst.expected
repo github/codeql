@@ -3344,15 +3344,18 @@ exprs.kt:
 #  154|         0: [SuperConstructorInvocationStmt] super(...)
 #  154|         1: [BlockStmt] { ... }
 #  174|   6: [Class] Direction
-#    0|     2: [Method] valueOf
+#    0|     2: [Method] getEntries
+#    0|       3: [TypeAccess] EnumEntries<Direction>
+#    0|         0: [TypeAccess] Direction
+#    0|     3: [Method] valueOf
 #    0|       3: [TypeAccess] Direction
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] value
 #    0|           0: [TypeAccess] String
-#    0|     3: [Method] values
+#    0|     4: [Method] values
 #    0|       3: [TypeAccess] Direction[]
 #    0|         0: [TypeAccess] Direction
-#  174|     4: [Constructor] Direction
+#  174|     5: [Constructor] Direction
 #  174|       5: [BlockStmt] { ... }
 #  174|         0: [ExprStmt] <Expr>;
 #  174|           0: [ClassInstanceExpr] new Enum(...)
@@ -3361,32 +3364,35 @@ exprs.kt:
 #  174|             0: [NullLiteral] null
 #  174|             1: [IntegerLiteral] 0
 #  174|         1: [BlockStmt] { ... }
-#  175|     5: [FieldDeclaration] Direction NORTH;
+#  175|     6: [FieldDeclaration] Direction NORTH;
 #  175|       -1: [TypeAccess] Direction
 #  175|       0: [ClassInstanceExpr] new Direction(...)
 #  175|         -3: [TypeAccess] Direction
-#  175|     6: [FieldDeclaration] Direction SOUTH;
+#  175|     7: [FieldDeclaration] Direction SOUTH;
 #  175|       -1: [TypeAccess] Direction
 #  175|       0: [ClassInstanceExpr] new Direction(...)
 #  175|         -3: [TypeAccess] Direction
-#  175|     7: [FieldDeclaration] Direction WEST;
+#  175|     8: [FieldDeclaration] Direction WEST;
 #  175|       -1: [TypeAccess] Direction
 #  175|       0: [ClassInstanceExpr] new Direction(...)
 #  175|         -3: [TypeAccess] Direction
-#  175|     8: [FieldDeclaration] Direction EAST;
+#  175|     9: [FieldDeclaration] Direction EAST;
 #  175|       -1: [TypeAccess] Direction
 #  175|       0: [ClassInstanceExpr] new Direction(...)
 #  175|         -3: [TypeAccess] Direction
 #  178|   7: [Class] Color
-#    0|     2: [Method] valueOf
+#    0|     2: [Method] getEntries
+#    0|       3: [TypeAccess] EnumEntries<Color>
+#    0|         0: [TypeAccess] Color
+#    0|     3: [Method] valueOf
 #    0|       3: [TypeAccess] Color
 #-----|       4: (Parameters)
 #    0|         0: [Parameter] value
 #    0|           0: [TypeAccess] String
-#    0|     3: [Method] values
+#    0|     4: [Method] values
 #    0|       3: [TypeAccess] Color[]
 #    0|         0: [TypeAccess] Color
-#  178|     4: [Constructor] Color
+#  178|     5: [Constructor] Color
 #-----|       4: (Parameters)
 #  178|         0: [Parameter] rgb
 #  178|           0: [TypeAccess] int
@@ -3401,26 +3407,26 @@ exprs.kt:
 #  178|           0: [ExprStmt] <Expr>;
 #  178|             0: [KtInitializerAssignExpr] ...=...
 #  178|               0: [VarAccess] rgb
-#  178|     5: [Method] getRgb
+#  178|     6: [Method] getRgb
 #  178|       3: [TypeAccess] int
 #  178|       5: [BlockStmt] { ... }
 #  178|         0: [ReturnStmt] return ...
 #  178|           0: [VarAccess] this.rgb
 #  178|             -1: [ThisAccess] this
-#  178|     6: [FieldDeclaration] int rgb;
+#  178|     7: [FieldDeclaration] int rgb;
 #  178|       -1: [TypeAccess] int
 #  178|       0: [VarAccess] rgb
-#  179|     7: [FieldDeclaration] Color RED;
+#  179|     8: [FieldDeclaration] Color RED;
 #  179|       -1: [TypeAccess] Color
 #  179|       0: [ClassInstanceExpr] new Color(...)
 #  179|         -3: [TypeAccess] Color
 #  179|         0: [IntegerLiteral] 16711680
-#  180|     8: [FieldDeclaration] Color GREEN;
+#  180|     9: [FieldDeclaration] Color GREEN;
 #  180|       -1: [TypeAccess] Color
 #  180|       0: [ClassInstanceExpr] new Color(...)
 #  180|         -3: [TypeAccess] Color
 #  180|         0: [IntegerLiteral] 65280
-#  181|     9: [FieldDeclaration] Color BLUE;
+#  181|     10: [FieldDeclaration] Color BLUE;
 #  181|       -1: [TypeAccess] Color
 #  181|       0: [ClassInstanceExpr] new Color(...)
 #  181|         -3: [TypeAccess] Color
