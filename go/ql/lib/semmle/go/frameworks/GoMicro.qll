@@ -97,11 +97,9 @@ module GoMicro {
    */
   class ServiceRegisterHandler extends Function {
     ServiceRegisterHandler() {
-      exists(ServiceServerType c, GoMicroServerType s |
-        this.getName().regexpMatch("(?i)register" + c.getName()) and
-        this.getParameterType(0) = s and
-        this.getDeclaration().getLocation().getFile() instanceof ProtocGeneratedFile
-      )
+      this.getName().regexpMatch("(?i)register" + any(ServiceServerType c).getName()) and
+      this.getParameterType(0) instanceof GoMicroServerType and
+      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
   }
 
