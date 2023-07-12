@@ -7,9 +7,13 @@ module Conf implements DataFlow::StateConfigSig {
 
   predicate isSource(DataFlow::Node node, FlowState state) {
     // parameter of closure or function passed to withUnsafeBytes
-    exists(
-      CallExpr call |
-      call.getStaticTarget().hasName("withUnsafeBytes(_:)") and
+    exists(CallExpr call |
+      call.getStaticTarget()
+          .hasName([
+              "withUnsafeBytes(_:)", "withCString(_:)", "withUnsafeMutableBytes(_:)",
+              "withContiguousMutableStorageIfAvailable(_:)", "withContiguousStorageIfAvailable(_:)",
+              "withUTF8(_:)", "withUnsafeBufferPointer(_:)", "withUnsafeBufferPointer(_:)"
+            ]) and
       state = node.(DataFlow::ParameterNode).getDeclaringFunction().getUnderlyingCallable() and
       (
         // if the declaring callable is a closure expr
@@ -29,26 +33,25 @@ module Conf implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node) {
-    none()
-  }
-  predicate isBarrierIn(DataFlow::Node node) {
-    none()
-  }
-  predicate isBarrierOut(DataFlow::Node node) {
-    none()
-  }
-  predicate isBarrier(DataFlow::Node node, FlowState state) {
-    none()
-  }
+  predicate isBarrier(DataFlow::Node node) { none() }
+
+  predicate isBarrierIn(DataFlow::Node node) { none() }
+
+  predicate isBarrierOut(DataFlow::Node node) { none() }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
-  predicate isAdditionalFlowStep(DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2) {
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
     none()
   }
 
   int fieldFlowBranchLimit() { result = 2 }
-  
-  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) { 
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     isSink(node, _) and
     c = any(DataFlow::ContentSet set)
   }
