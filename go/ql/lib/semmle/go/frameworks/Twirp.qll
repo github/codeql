@@ -35,18 +35,14 @@ module Twirp {
     }
   }
 
-  /**
-   * A type representing a protobuf message.
-   */
+  /** A type representing a protobuf message. */
   class ProtobufMessageType extends Type {
     ProtobufMessageType() {
       this.hasLocationInfo(any(ProtobufGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
   }
 
-  /**
-   * An interface type representing a Twirp service.
-   */
+  /** An interface type representing a Twirp service. */
   class ServiceInterfaceType extends InterfaceType {
     NamedType namedType;
 
@@ -55,20 +51,14 @@ module Twirp {
       namedType.hasLocationInfo(any(ServicesGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
 
-    /**
-     * Gets the name of the interface.
-     */
+    /** Gets the name of the interface. */
     override string getName() { result = namedType.getName() }
 
-    /**
-     * Gets the named type on top of this interface type.
-     */
+    /** Gets the named type on top of this interface type. */
     NamedType getNamedType() { result = namedType }
   }
 
-  /**
-   * A Twirp client.
-   */
+  /** A Twirp client. */
   class ServiceClientType extends NamedType {
     ServiceClientType() {
       exists(ServiceInterfaceType i, PointerType p |
@@ -80,9 +70,7 @@ module Twirp {
     }
   }
 
-  /**
-   * A Twirp server.
-   */
+  /** A Twirp server. */
   class ServiceServerType extends NamedType {
     ServiceServerType() {
       exists(ServiceInterfaceType i |
@@ -93,9 +81,7 @@ module Twirp {
     }
   }
 
-  /**
-   * A Twirp function to construct a Client.
-   */
+  /** A Twirp function to construct a Client. */
   class ClientConstructor extends Function {
     ClientConstructor() {
       this.getName().regexpMatch("(?i)new" + any(ServiceClientType c).getName()) and
@@ -118,9 +104,7 @@ module Twirp {
     }
   }
 
-  /**
-   * An SSRF sink for the Client constructor.
-   */
+  /** An SSRF sink for the Client constructor. */
   class ClientRequestUrlAsSink extends RequestForgery::Sink {
     ClientRequestUrlAsSink() {
       exists(DataFlow::CallNode call |
@@ -134,9 +118,7 @@ module Twirp {
     override string getKind() { result = "URL" }
   }
 
-  /**
-   * A service handler.
-   */
+  /** A service handler. */
   class ServiceHandler extends Method {
     ServiceHandler() {
       exists(DataFlow::CallNode call |
@@ -147,9 +129,7 @@ module Twirp {
     }
   }
 
-  /**
-   * A request coming to the service handler.
-   */
+  /** A request coming to the service handler. */
   class Request extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
     Request() {
       exists(ServiceHandler handler |
