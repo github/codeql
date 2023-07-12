@@ -55,11 +55,8 @@ module GoMicro {
     NamedType namedType;
 
     ServiceInterfaceType() {
-      exists(TypeEntity te |
-        te.getType() = namedType and
-        namedType.getUnderlyingType() = this and
-        te.getDeclaration().getLocation().getFile() instanceof ProtocGeneratedFile
-      )
+      this = namedType.getUnderlyingType() and
+      namedType.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
 
     /**
