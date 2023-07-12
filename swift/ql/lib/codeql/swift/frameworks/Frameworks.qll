@@ -6,3 +6,4 @@ private import Alamofire.Alamofire
 private import StandardLibrary.StandardLibrary
 private import UIKit.UIKit
 private import Xml.Xml
+private import Cryptography.Cryptography
