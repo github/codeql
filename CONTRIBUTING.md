@@ -14,7 +14,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
 1. **Directory structure**
 
-    There are seven language-specific query directories in this repository:
+    There are eight language-specific query directories in this repository:
 
       * C/C++: `cpp/ql/src`
       * C#: `csharp/ql/src`
