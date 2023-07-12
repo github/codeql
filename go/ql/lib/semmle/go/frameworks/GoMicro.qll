@@ -86,12 +86,9 @@ module GoMicro {
    */
   class ClientServiceType extends NamedType {
     ClientServiceType() {
-      exists(ServiceInterfaceType i, TypeEntity te |
-        this.implements(i) and
-        this.getName().regexpMatch("(?i).*Service") and
-        te.getType() = this and
-        te.getDeclaration().getLocation().getFile() instanceof ProtocGeneratedFile
-      )
+      this.implements(any(ServiceInterfaceType i)) and
+      this.getName().regexpMatch("(?i).*Service") and
+      this.hasLocationInfo(any(ProtocGeneratedFile f).getAbsolutePath(), _, _, _, _)
     }
   }
 
