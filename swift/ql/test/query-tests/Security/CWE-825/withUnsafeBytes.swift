@@ -17,12 +17,22 @@ func arrayTest() {
     ints.withUnsafeBytes({(p: UnsafeRawBufferPointer) in print(p)}) // GOOD
 
     var v = PointerHolder()
-    ints.withUnsafeBytes({(p: UnsafeRawBufferPointer) in v.field = p}) // BAD
+    ints.withUnsafeBytes({(p: UnsafeRawBufferPointer) in
+      v.field = p
+      return 1
+    }) // BAD
     print(v.field)
 
     ints.withUnsafeBytes(myPrint) // GOOD
 
     myPrint(p: ints.withUnsafeBytes(id)) // BAD
+
+    var v2: UnsafeRawBufferPointer? = nil
+    ints.withUnsafeBytes({(p: UnsafeRawBufferPointer) in
+        v2 = p
+        return 1
+    }) // BAD
+    print(v2)
 }
 
 func id<T>(pointer: T) -> T {

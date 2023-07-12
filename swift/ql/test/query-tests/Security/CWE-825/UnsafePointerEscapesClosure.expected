@@ -1,67 +1,12 @@
 edges
-| file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] |
-| file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0, some:0, some:0] |
-| file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] |
-| file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0, some:0] |
-| file://:0:0:0:0 | [post] self [field, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] |
-| file://:0:0:0:0 | [post] self [field, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0] |
-| file://:0:0:0:0 | [post] self [field, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] |
-| file://:0:0:0:0 | [post] self [field, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0] |
-| file://:0:0:0:0 | [post] self [field] | withUnsafeBytes.swift:33:9:33:9 | self[return] |
-| file://:0:0:0:0 | [post] self [field] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field] |
-| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [field] |
-| file://:0:0:0:0 | value [some:0, some:0, some:0, some:0] | file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0, some:0] |
-| file://:0:0:0:0 | value [some:0, some:0, some:0] | file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0] |
-| file://:0:0:0:0 | value [some:0, some:0] | file://:0:0:0:0 | [post] self [field, some:0, some:0] |
-| file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [field, some:0] |
 | withUnsafeBytes.swift:9:25:9:25 | $0 | withUnsafeBytes.swift:10:16:10:16 | $0 |
 | withUnsafeBytes.swift:13:34:13:37 | p | withUnsafeBytes.swift:13:97:13:97 | p |
 | withUnsafeBytes.swift:15:34:15:37 | p | withUnsafeBytes.swift:15:109:15:109 | p |
 | withUnsafeBytes.swift:15:109:15:109 | p | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) |
-| withUnsafeBytes.swift:15:109:15:109 | p | withUnsafeBytes.swift:28:12:28:21 | pointer |
-| withUnsafeBytes.swift:20:28:20:31 | p | withUnsafeBytes.swift:20:68:20:68 | p |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field] |
-| withUnsafeBytes.swift:20:68:20:68 | p | withUnsafeBytes.swift:20:68:20:68 | p [some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p | withUnsafeBytes.swift:33:9:33:9 | value |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0] | withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0] | withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0] | withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0] |
-| withUnsafeBytes.swift:28:12:28:21 | pointer | withUnsafeBytes.swift:29:12:29:12 | pointer |
-| withUnsafeBytes.swift:28:12:28:21 | pointer | withUnsafeBytes.swift:29:12:29:12 | pointer |
-| withUnsafeBytes.swift:33:9:33:9 | value | file://:0:0:0:0 | value |
-| withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0, some:0] | file://:0:0:0:0 | value [some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0] | file://:0:0:0:0 | value [some:0, some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0] | file://:0:0:0:0 | value [some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | value [some:0] | file://:0:0:0:0 | value [some:0] |
+| withUnsafeBytes.swift:15:109:15:109 | p | withUnsafeBytes.swift:38:12:38:21 | pointer |
+| withUnsafeBytes.swift:38:12:38:21 | pointer | withUnsafeBytes.swift:39:12:39:12 | pointer |
+| withUnsafeBytes.swift:38:12:38:21 | pointer | withUnsafeBytes.swift:39:12:39:12 | pointer |
 nodes
-| file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0, some:0] | semmle.label | [post] self [field, some:0, some:0, some:0, some:0] |
-| file://:0:0:0:0 | [post] self [field, some:0, some:0, some:0] | semmle.label | [post] self [field, some:0, some:0, some:0] |
-| file://:0:0:0:0 | [post] self [field, some:0, some:0] | semmle.label | [post] self [field, some:0, some:0] |
-| file://:0:0:0:0 | [post] self [field, some:0] | semmle.label | [post] self [field, some:0] |
-| file://:0:0:0:0 | [post] self [field] | semmle.label | [post] self [field] |
-| file://:0:0:0:0 | value | semmle.label | value |
-| file://:0:0:0:0 | value [some:0, some:0, some:0, some:0] | semmle.label | value [some:0, some:0, some:0, some:0] |
-| file://:0:0:0:0 | value [some:0, some:0, some:0] | semmle.label | value [some:0, some:0, some:0] |
-| file://:0:0:0:0 | value [some:0, some:0] | semmle.label | value [some:0, some:0] |
-| file://:0:0:0:0 | value [some:0] | semmle.label | value [some:0] |
 | withUnsafeBytes.swift:9:25:9:25 | $0 | semmle.label | $0 |
 | withUnsafeBytes.swift:10:16:10:16 | $0 | semmle.label | $0 |
 | withUnsafeBytes.swift:13:34:13:37 | p | semmle.label | p |
@@ -69,52 +14,14 @@ nodes
 | withUnsafeBytes.swift:15:34:15:37 | p | semmle.label | p |
 | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) | semmle.label | call to id(pointer:) |
 | withUnsafeBytes.swift:15:109:15:109 | p | semmle.label | p |
-| withUnsafeBytes.swift:20:28:20:31 | p | semmle.label | p |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... | semmle.label |  ... = ... |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0, some:0, some:0] | semmle.label |  ... = ... [field, some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0, some:0] | semmle.label |  ... = ... [field, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0] | semmle.label |  ... = ... [field, some:0, some:0] |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0] | semmle.label |  ... = ... [field, some:0] |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field] | semmle.label |  ... = ... [field] |
-| withUnsafeBytes.swift:20:68:20:68 | p | semmle.label | p |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0, some:0] | semmle.label | p [some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0] | semmle.label | p [some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0] | semmle.label | p [some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0] | semmle.label | p [some:0] |
-| withUnsafeBytes.swift:28:12:28:21 | pointer | semmle.label | pointer |
-| withUnsafeBytes.swift:28:12:28:21 | pointer | semmle.label | pointer |
-| withUnsafeBytes.swift:29:12:29:12 | pointer | semmle.label | pointer |
-| withUnsafeBytes.swift:29:12:29:12 | pointer | semmle.label | pointer |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] | semmle.label | self[return] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] | semmle.label | self[return] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] | semmle.label | self[return] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] | semmle.label | self[return] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] | semmle.label | self[return] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0, some:0, some:0] | semmle.label | self[return] [field, some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0, some:0] | semmle.label | self[return] [field, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0] | semmle.label | self[return] [field, some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0] | semmle.label | self[return] [field, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | self[return] [field] | semmle.label | self[return] [field] |
-| withUnsafeBytes.swift:33:9:33:9 | value | semmle.label | value |
-| withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0, some:0] | semmle.label | value [some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0] | semmle.label | value [some:0, some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0] | semmle.label | value [some:0, some:0] |
-| withUnsafeBytes.swift:33:9:33:9 | value [some:0] | semmle.label | value [some:0] |
+| withUnsafeBytes.swift:38:12:38:21 | pointer | semmle.label | pointer |
+| withUnsafeBytes.swift:38:12:38:21 | pointer | semmle.label | pointer |
+| withUnsafeBytes.swift:39:12:39:12 | pointer | semmle.label | pointer |
+| withUnsafeBytes.swift:39:12:39:12 | pointer | semmle.label | pointer |
 subpaths
-| withUnsafeBytes.swift:15:109:15:109 | p | withUnsafeBytes.swift:28:12:28:21 | pointer | withUnsafeBytes.swift:29:12:29:12 | pointer | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) |
-| withUnsafeBytes.swift:20:68:20:68 | p | withUnsafeBytes.swift:33:9:33:9 | value | withUnsafeBytes.swift:33:9:33:9 | self[return] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p | withUnsafeBytes.swift:33:9:33:9 | value | withUnsafeBytes.swift:33:9:33:9 | self[return] [field] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0, some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0, some:0] |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... |
-| withUnsafeBytes.swift:20:68:20:68 | p [some:0] | withUnsafeBytes.swift:33:9:33:9 | value [some:0] | withUnsafeBytes.swift:33:9:33:9 | self[return] [field, some:0] | withUnsafeBytes.swift:20:58:20:68 |  ... = ... [field, some:0] |
+| withUnsafeBytes.swift:15:109:15:109 | p | withUnsafeBytes.swift:38:12:38:21 | pointer | withUnsafeBytes.swift:39:12:39:12 | pointer | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) |
 #select
 | withUnsafeBytes.swift:10:16:10:16 | $0 | withUnsafeBytes.swift:9:25:9:25 | $0 | withUnsafeBytes.swift:10:16:10:16 | $0 | This unsafe parameter may escape its invocation |
 | withUnsafeBytes.swift:13:97:13:97 | p | withUnsafeBytes.swift:13:34:13:37 | p | withUnsafeBytes.swift:13:97:13:97 | p | This unsafe parameter may escape its invocation |
 | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) | withUnsafeBytes.swift:15:34:15:37 | p | withUnsafeBytes.swift:15:97:15:110 | call to id(pointer:) | This unsafe parameter may escape its invocation |
-| withUnsafeBytes.swift:20:58:20:68 |  ... = ... | withUnsafeBytes.swift:20:28:20:31 | p | withUnsafeBytes.swift:20:58:20:68 |  ... = ... | This unsafe parameter may escape its invocation |
-| withUnsafeBytes.swift:29:12:29:12 | pointer | withUnsafeBytes.swift:28:12:28:21 | pointer | withUnsafeBytes.swift:29:12:29:12 | pointer | This unsafe parameter may escape its invocation |
+| withUnsafeBytes.swift:39:12:39:12 | pointer | withUnsafeBytes.swift:38:12:38:21 | pointer | withUnsafeBytes.swift:39:12:39:12 | pointer | This unsafe parameter may escape its invocation |
