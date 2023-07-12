@@ -43,8 +43,7 @@ private class ProcessType extends NominalType {
 }
 
 /**
- * A `DataFlow::Node` that is an expression stored with the Realm database
- * library.
+ * A `DataFlow::Node` that is written into a `Process` object.
  */
 private class ProcessSink extends CommandInjectionSink instanceof DataFlow::Node {
   ProcessSink() {
