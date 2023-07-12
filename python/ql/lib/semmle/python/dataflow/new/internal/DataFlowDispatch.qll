@@ -251,6 +251,9 @@ abstract class LibraryCallable extends string {
   /** Gets a call to this library callable. */
   abstract CallCfgNode getACall();
 
+  /** Same as `getACall` but without referring to the call graph or API graph. */
+  CallCfgNode getACallSimple() { none() }
+
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   abstract ArgumentNode getACallback();
 }
@@ -1224,7 +1227,6 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
  * time the bound method is used, such that the `clear()` call would essentially be
  * translated into `l.clear()`, and we can still have use-use flow.
  */
-pragma[assume_small_delta]
 cached
 predicate getCallArg(CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
   Stages::DataFlow::ref() and

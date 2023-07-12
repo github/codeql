@@ -1,3 +1,21 @@
+## 0.7.0
+
+### New Queries
+
+* Added a new query, `cs/web/missing-function-level-access-control`, to find instances of missing authorization checks.
+
+### Bug Fixes
+
+* The query "Arbitrary file write during zip extraction ("Zip Slip")" (`cs/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+No user-facing changes.
+
 ## 0.6.2
 
 No user-facing changes.

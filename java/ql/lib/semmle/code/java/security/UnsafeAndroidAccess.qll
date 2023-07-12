@@ -5,6 +5,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.frameworks.android.WebView
+private import semmle.code.java.frameworks.kotlin.Kotlin
 
 /**
  * A sink that represents a method that fetches a web resource in Android.
@@ -62,8 +63,24 @@ private class WebViewRef extends Element {
       t.isOwnInstanceAccess() or t.getInstanceAccess().isEnclosingInstanceAccess(this)
     )
     or
-    result = DataFlow::exprNode(this.(Variable).getAnAccess())
+    exists(Variable v | result.asExpr() = v.getAnAccess() |
+      v = this
+      or
+      applyReceiverVariable(this, v)
+    )
   }
+}
+
+/**
+ * Holds if `p` is the lambda parameter that holds the receiver of an `apply` expression in Kotlin,
+ * and `v` is the variable of the receiver in the outer scope.
+ */
+private predicate applyReceiverVariable(Parameter p, Variable v) {
+  exists(LambdaExpr lambda, KotlinApply apply |
+    p.getCallable() = lambda.asMethod() and
+    lambda = apply.getLambdaArg() and
+    v = apply.getReceiver().(VarAccess).getVariable()
+  )
 }
 
 /**

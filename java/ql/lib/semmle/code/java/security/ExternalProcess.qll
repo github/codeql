@@ -1,16 +1,13 @@
 /** Definitions related to external processes. */
 
 import semmle.code.java.Member
-
-private module Instances {
-  private import semmle.code.java.JDK
-  private import semmle.code.java.frameworks.apache.Exec
-}
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.security.CommandLineQuery
 
 /**
- * A callable that executes a command.
+ * DEPRECATED: A callable that executes a command.
  */
-abstract class ExecCallable extends Callable {
+abstract deprecated class ExecCallable extends Callable {
   /**
    * Gets the index of an argument that will be part of the command that is executed.
    */
@@ -23,13 +20,19 @@ abstract class ExecCallable extends Callable {
  * to be executed.
  */
 class ArgumentToExec extends Expr {
-  ArgumentToExec() {
-    exists(Call execCall, ExecCallable execCallable, int i |
-      execCall.getArgument(pragma[only_bind_into](i)) = this and
-      execCallable = execCall.getCallee() and
-      i = execCallable.getAnExecutedArgument()
-    )
-  }
+  ArgumentToExec() { argumentToExec(this, _) }
+}
+
+/**
+ * Holds if `e` is an expression used as an argument to a call that executes an external command.
+ * For calls to varargs method calls, this only includes the first argument, which will be the command
+ * to be executed.
+ */
+predicate argumentToExec(Expr e, CommandInjectionSink s) {
+  s.asExpr() = e
+  or
+  e.(Argument).isNthVararg(0) and
+  s.(DataFlow::ImplicitVarargsArray).getCall() = e.(Argument).getCall()
 }
 
 /**

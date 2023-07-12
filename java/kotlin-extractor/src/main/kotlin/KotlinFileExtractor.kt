@@ -1559,7 +1559,7 @@ open class KotlinFileExtractor(
                 val setter = p.setter
 
                 if (getter == null) {
-                    if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
+                    if (!isExternalDeclaration(p)) {
                         logger.warnElement("IrProperty without a getter", p)
                     }
                 } else if (shouldExtractDecl(getter, extractPrivateMembers)) {

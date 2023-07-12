@@ -1,3 +1,87 @@
+## 0.7.0
+
+### Deprecated APIs
+
+* The `ExecCallable` class in `ExternalProcess.qll` has been deprecated.
+
+### Major Analysis Improvements
+
+* The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
+
+### Minor Analysis Improvements
+
+* Added automatically-generated dataflow models for `javax.portlet`.
+* Added a missing summary model for the method `java.net.URL.toString`.
+* Added automatically-generated dataflow models for the following frameworks and libraries:
+  * `hudson`
+  * `jenkins`
+  * `net.sf.json`
+  * `stapler`
+* Added more models for the Hudson framework.
+* Added more models for the Stapler framework.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### New Features
+
+* Kotlin versions up to 1.9.0 are now supported.
+
+### Minor Analysis Improvements
+
+* Added flow through the block arguments of `kotlin.io.use` and `kotlin.with`.
+* Added models for the following packages:
+
+  * com.alibaba.druid.sql
+  * com.fasterxml.jackson.databind
+  * com.jcraft.jsch
+  * io.netty.handler.ssl
+  * okhttp3
+  * org.antlr.runtime
+  * org.fusesource.leveldbjni
+  * org.influxdb
+  * org.springframework.core.io
+  * org.yaml.snakeyaml
+* Deleted the deprecated `getRHS` predicate from the `LValue` class, use `getRhs` instead.
+* Deleted the deprecated `getCFGNode` predicate from the `SsaVariable` class, use `getCfgNode` instead.
+* Deleted many deprecated predicates and classes with uppercase `XML`, `JSON`, `URL`, `API`, etc. in their names. Use the PascalCased versions instead.
+* Added models for the following packages:
+
+  * java.lang
+  * java.nio.file
+* Added dataflow models for the Gson deserialization library.
+* Added models for the following packages:
+
+  * okhttp3
+* Added more dataflow models for the Play Framework.
+* Modified the models related to `java.nio.file.Files.copy` so that generic `[Input|Output]Stream` arguments are not considered file-related sinks.
+* Dataflow analysis has a new flow step through constructors of transitive subtypes of `java.io.InputStream` that wrap an underlying data source. Previously, the step only existed for direct subtypes of `java.io.InputStream`.
+* Path creation sinks modeled in `PathCreation.qll` have been added to the models-as-data sink kind `path-injection`.
+* Updated the regular expression in the `HostnameSanitizer` sanitizer in the `semmle.code.java.security.RequestForgery` library to better detect strings prefixed with a hostname.
+* Changed the `android-widget` Java source kind to `remote`. Any custom data extensions that use the `android-widget` source kind will need to be updated accordingly in order to continue working.
+* Updated the following Java sink kind names. Any custom data extensions will need to be updated accordingly in order to continue working.
+  * `sql` to `sql-injection`
+  * `url-redirect` to `url-redirection`
+  * `xpath` to `xpath-injection`
+  * `ssti` to `template-injection`
+  * `logging` to `log-injection`
+  * `groovy` to `groovy-injection`
+  * `jexl` to `jexl-injection`
+  * `mvel` to `mvel-injection`
+  * `xslt` to `xslt-injection`
+  * `ldap` to `ldap-injection`
+  * `pending-intent-sent` to `pending-intents`
+  * `intent-start` to `intent-redirection`
+  * `set-hostname-verifier` to `hostname-verification`
+  * `header-splitting` to `response-splitting`
+  * `xss` to `html-injection` and `js-injection`
+  * `write-file` to `file-system-store`
+  * `create-file` and `read-file` to `path-injection`
+  * `open-url` and `jdbc-url` to `request-forgery`
+
 ## 0.6.2
 
 ### Minor Analysis Improvements

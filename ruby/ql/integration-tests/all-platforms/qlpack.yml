@@ -1,3 +1,4 @@
 dependencies:
   codeql/ruby-all: '*'
   codeql/ruby-queries: '*'
+warnOnImplicitThis: true

@@ -410,7 +410,7 @@ module EntityFramework {
     ) {
       this = dbSet.getDbContextClass() and
       this.output(output, mapped, dbSet) and
-      result = dbSet.getFullName() + "#" + SummaryComponentStack::getComponentStack(output)
+      result = dbSet.getFullName() + "#" + output.getMadRepresentation()
     }
   }
 

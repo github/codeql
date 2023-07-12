@@ -1,3 +1,25 @@
+## 0.8.0
+
+### New Features
+
+* The `ProductFlow::StateConfigSig` signature now includes default predicates for `isBarrier1`, `isBarrier2`, `isAdditionalFlowStep1`, and `isAdditionalFlowStep1`. Hence, it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getURL` predicate from the `Container`, `Folder`, and `File` classes. Use the `getLocation` predicate instead.
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `hasCopyConstructor` predicate from the `Class` class in `Class.qll`.
+* Deleted many deprecated predicates and classes with uppercase `AST`, `SSA`, `CFG`, `API`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `CodeDuplication.qll` file.
+
 ## 0.7.2
 
 ### New Features

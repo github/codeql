@@ -1,11 +1,12 @@
 name: codeql/go-all
-version: 0.5.3-dev
+version: 0.6.1-dev
 groups: go
 dbscheme: go.dbscheme
 extractor: go
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/mad: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:

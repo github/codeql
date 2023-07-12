@@ -15,6 +15,7 @@ class SupportedExternalApis {
 
 		Map<String, Object> map = new HashMap<>(); // uninteresting (parameterless constructor)
 		map.put("foo", new Object()); // supported summary
+		map.entrySet().iterator().next().getKey(); // nested class (Map.Entry), supported summaries (entrySet, iterator, next, getKey)
 
 		Duration d = java.time.Duration.ofMillis(1000); // supported neutral
 

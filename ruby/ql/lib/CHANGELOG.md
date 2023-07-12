@@ -1,3 +1,32 @@
+## 0.7.0
+
+### Deprecated APIs
+
+* The `Configuration` taint flow configuration class from `codeql.ruby.security.InsecureDownloadQuery` has been deprecated. Use the `Flow` module instead.
+
+### Minor Analysis Improvements
+
+* More kinds of rack applications are now recognized.
+* Rack::Response instances are now recognized as potential responses from rack applications.
+* HTTP redirect responses from Rack applications are now recognized as a potential sink for open redirect alerts.
+* Additional sinks for `rb/unsafe-deserialization` have been added. This includes various methods from the `yaml` and `plist` gems, which deserialize YAML and Property List data, respectively.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `URL`, `XSS`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getValueText` predicate from the `Expr`, `StringComponent`, and `ExprCfgNode` classes. Use `getConstantValue` instead.
+* Deleted the deprecated `VariableReferencePattern` class, use `ReferencePattern` instead.
+* Deleted all deprecated aliases in `StandardLibrary.qll`, use `codeql.ruby.frameworks.Core` and `codeql.ruby.frameworks.Stdlib` instead.
+* Support for the `sequel` gem has been added. Method calls that execute queries against a database that may be vulnerable to injection attacks will now be recognized.
+* Support for the `mysql2` gem has been added. Method calls that execute queries against an MySQL database that may be vulnerable to injection attacks will now be recognized.
+* Support for the `pg` gem has been added. Method calls that execute queries against a PostgreSQL database that may be vulnerable to injection attacks will now be recognized.
+
 ## 0.6.2
 
 ### Minor Analysis Improvements

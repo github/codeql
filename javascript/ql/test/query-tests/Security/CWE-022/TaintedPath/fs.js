@@ -45,4 +45,12 @@ var fs = {};
  */
 fs.readFileSync = function(filename, encoding) {};
 
+/**
+ * @param {string} filename
+ * @param {string} encoding
+ * @param {(function(NodeJS.ErrnoException, string): void)} callback
+ * @return {void}
+ */
+fs.readFile = function(filename, encoding, callback) {};
+
 module.exports = fs;

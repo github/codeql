@@ -1,11 +1,12 @@
 name: codeql/csharp-all
-version: 0.6.3-dev
+version: 0.7.1-dev
 groups: csharp
 dbscheme: semmlecode.csharp.dbscheme
 extractor: csharp
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/mad: ${workspace}
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}

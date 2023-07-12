@@ -1,3 +1,21 @@
+## 0.6.0
+
+### Deprecated APIs
+
+* The `LogInjection::Configuration` taint flow configuration class has been deprecated. Use the `LogInjection::Flow` module instead.
+
+### Minor Analysis Improvements
+
+* When a result of path query flows through a function modeled using `DataFlow::FunctionModel` or `TaintTracking::FunctionModel`, the path now includes nodes corresponding to the input and output to the function. This brings it in line with functions modeled using Models-as-Data.
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
 ## 0.5.2
 
 ### Minor Analysis Improvements

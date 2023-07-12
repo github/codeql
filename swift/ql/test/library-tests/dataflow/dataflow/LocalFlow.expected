@@ -662,3 +662,26 @@
 | test.swift:613:9:613:9 | f | test.swift:613:9:613:9 | SSA def(f) |
 | test.swift:613:13:613:29 | #keyPath(...) | test.swift:613:9:613:9 | f |
 | test.swift:613:13:613:29 | enter #keyPath(...) | test.swift:613:26:613:26 | KeyPathComponent |
+| test.swift:618:9:618:9 | SSA def(x) | test.swift:622:9:622:9 | x |
+| test.swift:618:9:618:9 | x | test.swift:618:9:618:9 | SSA def(x) |
+| test.swift:618:13:618:20 | call to source() | test.swift:618:9:618:9 | x |
+| test.swift:619:9:619:9 | SSA def(y) | test.swift:623:9:623:9 | y |
+| test.swift:619:9:619:9 | y | test.swift:619:9:619:9 | SSA def(y) |
+| test.swift:619:13:619:13 | 0 | test.swift:619:9:619:9 | y |
+| test.swift:620:9:620:12 | ... as ... | test.swift:620:9:620:9 | t |
+| test.swift:622:5:622:9 | SSA def(t) | test.swift:624:9:624:9 | t |
+| test.swift:622:9:622:9 | x | test.swift:622:5:622:9 | SSA def(t) |
+| test.swift:623:5:623:9 | SSA def(x) | test.swift:625:15:625:15 | x |
+| test.swift:623:9:623:9 | y | test.swift:623:5:623:9 | SSA def(x) |
+| test.swift:624:5:624:9 | SSA def(y) | test.swift:626:15:626:15 | y |
+| test.swift:624:9:624:9 | t | test.swift:624:5:624:9 | SSA def(y) |
+| test.swift:628:5:628:16 | SSA def(x) | test.swift:630:11:630:11 | x |
+| test.swift:628:9:628:16 | call to source() | test.swift:628:5:628:16 | SSA def(x) |
+| test.swift:629:5:629:9 | SSA def(y) | test.swift:630:15:630:15 | y |
+| test.swift:629:9:629:9 | 0 | test.swift:629:5:629:9 | SSA def(y) |
+| test.swift:630:10:630:11 | &... | test.swift:631:15:631:15 | x |
+| test.swift:630:10:630:11 | [post] &... | test.swift:631:15:631:15 | x |
+| test.swift:630:11:630:11 | x | test.swift:630:10:630:11 | &... |
+| test.swift:630:14:630:15 | &... | test.swift:632:15:632:15 | y |
+| test.swift:630:14:630:15 | [post] &... | test.swift:632:15:632:15 | y |
+| test.swift:630:15:630:15 | y | test.swift:630:14:630:15 | &... |

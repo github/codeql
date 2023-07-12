@@ -67,6 +67,8 @@ postWithInFlow
 | ref.cpp:109:9:109:11 | val [post update] | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:113:11:113:13 | val [post update] | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:115:11:115:13 | val [post update] | PostUpdateNode should not be the target of local flow. |
+| self_parameter_flow.cpp:3:4:3:5 | ps [inner post update] | PostUpdateNode should not be the target of local flow. |
+| self_parameter_flow.cpp:8:9:8:9 | s [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:91:3:91:9 | source1 [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:115:3:115:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:115:4:115:6 | out [inner post update] | PostUpdateNode should not be the target of local flow. |
@@ -128,6 +130,10 @@ postWithInFlow
 | test.cpp:690:3:690:3 | s [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:694:4:694:6 | buf [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:704:23:704:25 | buf [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:715:25:715:25 | c [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:728:3:728:4 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:728:4:728:4 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:734:41:734:41 | x [inner post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition

@@ -1,3 +1,17 @@
+## 0.6.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during zip extraction ("zip slip")" (`go/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
 ## 0.5.2
 
 No user-facing changes.

@@ -1,3 +1,29 @@
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Fixed a bug in how `map_filter` calls are analyzed. Previously, such calls would
+  appear to the return the receiver of the call, but now the return value of the callback
+  is properly taken into account.
+
+### Bug Fixes
+
+* The experimental query "Arbitrary file write during zipfile/tarfile extraction" (`ruby/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* Fixed a bug that would occur when an `initialize` method returns `self` or one of its parameters.
+  In such cases, the corresponding calls to `new` would be associated with an incorrect return type.
+  This could result in inaccurate call target resolution and cause false positive alerts.
+* Fixed an issue where calls to `delete` or `assoc` with a constant-valued argument would be analyzed imprecisely,
+  as if the argument value was not a known constant.
+
 ## 0.6.2
 
 No user-facing changes.
