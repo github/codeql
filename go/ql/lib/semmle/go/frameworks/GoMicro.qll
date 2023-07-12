@@ -41,8 +41,6 @@ module GoMicro {
         this = md.getReceiverDecl().getTypeExpr().getAChild().(TypeName).getType()
       )
     }
-
-    override string getName() { result = this.getUnderlyingType().getName() }
   }
 
   /**
