@@ -23,6 +23,7 @@ import semmle.code.cpp.ir.ValueNumbering
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.ir.IR
 import codeql.util.Unit
+import FinalFlow::PathGraph
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -420,64 +421,22 @@ predicate invalidPointerToDerefSource(
   )
 }
 
-newtype TMergedPathNode =
-  // The path from the allocation to the address of the store/load.
-  TFinalPathNode(FinalFlow::PathNode p) or
-  // The read/write that uses the invalid pointer identified by `InvalidPointerToDerefConfig`.
-  // This one is needed because the sink identified by `InvalidPointerToDerefConfig` is the
-  // pointer, but we want to raise an alert at the dereference.
-  TPathNodeSink(Instruction i) {
-    exists(DataFlow::Node n |
-      InvalidPointerToDerefFlow::flowTo(pragma[only_bind_into](n)) and
-      isInvalidPointerDerefSink(n, i, _, _) and
-      i = getASuccessor(n.asInstruction())
-    )
-  }
-
-class MergedPathNode extends TMergedPathNode {
-  string toString() { none() }
-
-  final FinalFlow::PathNode asPathNode() { this = TFinalPathNode(result) }
-
-  final Instruction asSinkNode() { this = TPathNodeSink(result) }
-
-  predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    none()
-  }
-}
-
-class FinalPathNode extends MergedPathNode, TFinalPathNode {
-  override string toString() {
-    exists(FinalFlow::PathNode p |
-      this = TFinalPathNode(p) and
-      result = p.toString()
-    )
-  }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.asPathNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-}
-
-class PathSinkNode extends MergedPathNode, TPathNodeSink {
-  override string toString() {
-    exists(Instruction i |
-      this = TPathNodeSink(i) and
-      result = i.toString()
-    )
-  }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.asSinkNode()
-        .getLocation()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+/**
+ * Holds if `derefSink` is a dataflow node that represents an out-of-bounds address that is about to
+ * be dereferenced by `operation` (which is either a `StoreInstruction` or `LoadInstruction`), and
+ * `pai` is the pointer-arithmetic operation that caused the `derefSink` to be out-of-bounds.
+ */
+predicate derefSinkToOperation(
+  DataFlow::Node derefSink, PointerArithmeticInstruction pai, DataFlow::Node operation
+) {
+  exists(DataFlow::Node source, Instruction i |
+    InvalidPointerToDerefFlow::flow(pragma[only_bind_into](source),
+      pragma[only_bind_into](derefSink)) and
+    invalidPointerToDerefSource(_, pai, source, _) and
+    isInvalidPointerDerefSink(derefSink, i, _, _) and
+    i = getASuccessor(derefSink.asInstruction()) and
+    operation.asInstruction() = i
+  )
 }
 
 /**
@@ -491,8 +450,8 @@ class PathSinkNode extends MergedPathNode, TPathNodeSink {
 module FinalConfig implements DataFlow::StateConfigSig {
   newtype FlowState =
     additional TInitial() or
-    additional TPointerArith(PointerArithmeticInstruction pai, int delta) {
-      invalidPointerToDerefSource(_, pai, _, delta)
+    additional TPointerArith(PointerArithmeticInstruction pai) {
+      invalidPointerToDerefSource(_, pai, _, _)
     }
 
   predicate isSource(DataFlow::Node source, FlowState state) {
@@ -504,10 +463,8 @@ module FinalConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    exists(DataFlow::Node source, PointerArithmeticInstruction pai, int delta |
-      InvalidPointerToDerefFlow::flow(source, sink) and
-      invalidPointerToDerefSource(_, pai, source, delta) and
-      state = TPointerArith(pai, delta)
+    exists(PointerArithmeticInstruction pai |
+      derefSinkToOperation(_, pai, sink) and state = TPointerArith(pai)
     )
   }
 
@@ -516,70 +473,73 @@ module FinalConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
+    // A step from the left-hand side of a pointer-arithmetic operation that has been
+    // identified as creating an out-of-bounds pointer to the result of the pointer-arithmetic
+    // operation.
     exists(
       PointerArithmeticInstruction pai, AllocToInvalidPointerFlow::PathNode1 p1,
-      InvalidPointerToDerefFlow::PathNode p2, int delta
+      InvalidPointerToDerefFlow::PathNode p2
     |
       isSinkImpl(pai, node1, _, _) and
-      invalidPointerToDerefSource(_, pai, node2, delta) and
+      invalidPointerToDerefSource(_, pai, node2, _) and
       node1 = p1.getNode() and
       node2 = p2.getNode() and
       state1 = TInitial() and
-      state2 = TPointerArith(pai, delta)
+      state2 = TPointerArith(pai)
+    )
+    or
+    // A step from an out-of-bounds address to the operation (which is either a `StoreInstruction`
+    // or a `LoadInstruction`) that dereferences the address.
+    // This step exists purely for aesthetic reasons: we want the alert to be placed at the operation
+    // that causes the dereference, and not at the address that flows into the operation.
+    state1 = state2 and
+    exists(DataFlow::Node derefSource, PointerArithmeticInstruction pai |
+      InvalidPointerToDerefFlow::flow(derefSource, node1) and
+      invalidPointerToDerefSource(_, pai, derefSource, _) and
+      state1 = TPointerArith(pai) and
+      derefSinkToOperation(node1, pai, node2)
     )
   }
 }
 
 module FinalFlow = DataFlow::GlobalWithState<FinalConfig>;
 
-query predicate edges(MergedPathNode node1, MergedPathNode node2) {
-  FinalFlow::PathGraph::edges(node1.asPathNode(), node2.asPathNode())
-  or
-  isInvalidPointerDerefSink(node1.asPathNode().getNode(), node2.asSinkNode(), _, _)
-}
-
-query predicate nodes(MergedPathNode n, string key, string val) {
-  FinalFlow::PathGraph::nodes(n.asPathNode(), key, val)
-  or
-  key = "semmle.label" and val = n.asSinkNode().toString()
-}
-
-query predicate subpaths(
-  MergedPathNode arg, MergedPathNode par, MergedPathNode ret, MergedPathNode out
-) {
-  FinalFlow::PathGraph::subpaths(arg.asPathNode(), par.asPathNode(), ret.asPathNode(),
-    out.asPathNode())
-}
-
+/**
+ * Holds if `source` is an allocation that flows into the left-hand side of `pai`, which produces an out-of-bounds
+ * pointer that flows into an address that is dereferenced by `sink` (which is either a `LoadInstruction` or a
+ * `StoreInstruction`). The end result is that `sink` writes to an address that is off-by-`delta` from the end of
+ * the allocation. The string `operation` describes whether the `sink` is a load or a store (which is then used
+ * to produce the alert message).
+ *
+ * Note that multiple `delta`s can exist for a given `(source, pai, sink)` triplet.
+ */
 predicate hasFlowPath(
-  MergedPathNode mergedSource, MergedPathNode mergedSink,
-  InvalidPointerToDerefFlow::PathNode source3, PointerArithmeticInstruction pai, string operation,
-  int delta
+  FinalFlow::PathNode source, FinalFlow::PathNode sink, PointerArithmeticInstruction pai,
+  string operation, int delta
 ) {
-  exists(FinalFlow::PathNode source, FinalFlow::PathNode sink3, int delta0, int delta1 |
-    source = mergedSource.asPathNode() and
-    FinalFlow::flowPath(source, sink3) and
-    invalidPointerToDerefSource(source.getNode(), pai, source3.getNode(), delta0) and
-    sink3.getState() = FinalConfig::TPointerArith(pai, delta0) and
-    isInvalidPointerDerefSink(sink3.getNode(), mergedSink.asSinkNode(), operation, delta1) and
-    delta = delta0 + delta1
+  exists(
+    DataFlow::Node derefSink, DataFlow::Node derefSource, int deltaDerefSourceAndPai,
+    int deltaDerefSinkAndDerefAddress
+  |
+    FinalFlow::flowPath(source, sink) and
+    sink.getState() = FinalConfig::TPointerArith(pai) and
+    invalidPointerToDerefSource(source.getNode(), pai, derefSource, deltaDerefSourceAndPai) and
+    InvalidPointerToDerefFlow::flow(derefSource, derefSink) and
+    derefSinkToOperation(derefSink, pai, sink.getNode()) and
+    isInvalidPointerDerefSink(derefSink, sink.getNode().asInstruction(), operation,
+      deltaDerefSinkAndDerefAddress) and
+    delta = deltaDerefSourceAndPai + deltaDerefSinkAndDerefAddress
   )
 }
 
 from
-  MergedPathNode source, MergedPathNode sink, int k, string kstr, PointerArithmeticInstruction pai,
-  string operation, Expr offset, DataFlow::Node n
+  FinalFlow::PathNode source, FinalFlow::PathNode sink, int k, string kstr,
+  PointerArithmeticInstruction pai, string operation, Expr offset, DataFlow::Node n
 where
-  k =
-    min(int k2, int k3, InvalidPointerToDerefFlow::PathNode source3 |
-      hasFlowPath(source, sink, source3, pai, operation, k3) and
-      invalidPointerToDerefSource(source.asPathNode().getNode(), pai, source3.getNode(), k2)
-    |
-      k2 + k3
-    ) and
+  k = min(int cand | hasFlowPath(source, sink, pai, operation, cand)) and
   offset = pai.getRight().getUnconvertedResultExpression() and
-  n = source.asPathNode().getNode() and
+  n = source.getNode() and
   if k = 0 then kstr = "" else kstr = " + " + k
-select sink, source, sink,
+select sink.getNode().asInstruction(), source, sink,
   "This " + operation + " might be out of bounds, as the pointer might be equal to $@ + $@" + kstr +
     ".", n, n.toString(), offset, offset.toString()
