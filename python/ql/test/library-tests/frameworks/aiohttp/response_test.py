@@ -73,7 +73,7 @@ async def redirect_302(request): # $ requestHandler
 async def file_response(request): # $ requestHandler
     filename = "foo.txt"
     resp = web.FileResponse(filename) # $ HttpResponse mimetype=application/octet-stream getAPathArgument=filename
-    resp = web.FileResponse(path=filename) # $ HttpResponse mimetype=application/octet-stream MISSING: getAPathArgument=filename
+    resp = web.FileResponse(path=filename) # $ HttpResponse mimetype=application/octet-stream getAPathArgument=filename
     return resp
 
 

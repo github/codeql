@@ -518,7 +518,7 @@ module AiohttpWebModel {
    * - https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
    */
   class AiohttpWebResponseInstantiation extends Http::Server::HttpResponse::Range,
-    Response::InstanceSource, DataFlow::CallCfgNode
+    Response::InstanceSource, API::CallNode
   {
     API::Node apiNode;
 
@@ -590,12 +590,32 @@ module AiohttpWebModel {
   /**
    * A call to the `aiohttp.web.FileResponse` constructor as a sink for Filesystem access.
    */
-  class FileResponseCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+  class FileResponseCall extends FileSystemAccess::Range, API::CallNode {
     FileResponseCall() {
       this = API::moduleImport("aiohttp").getMember("web").getMember("FileResponse").getACall()
     }
 
-    override DataFlow::Node getAPathArgument() { result = this.getArg(0) }
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "path").asSink() }
+  }
+
+  /**
+   * An instantiation of `aiohttp.web.StreamResponse`.
+   *
+   * See https://docs.aiohttp.org/en/stable/web_reference.html#aiohttp.web.StreamResponse
+   */
+  class StreamResponse extends AiohttpWebResponseInstantiation {
+    StreamResponse() {
+      this = API::moduleImport("aiohttp").getMember("web").getMember("StreamResponse").getACall()
+    }
+
+    override DataFlow::Node getBody() {
+      result =
+        this.getReturn()
+            .getMember(["write", "write_eof"])
+            .getACall()
+            .getParameter(0, "data")
+            .asSink()
+    }
   }
 
   /** Gets an HTTP response instance. */
