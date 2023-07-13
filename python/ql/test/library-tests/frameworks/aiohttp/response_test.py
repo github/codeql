@@ -76,6 +76,18 @@ async def file_response(request): # $ requestHandler
     resp = web.FileResponse(path=filename) # $ HttpResponse mimetype=application/octet-stream MISSING: getAPathArgument=filename
     return resp
 
+
+@routes.get("/streaming_response") # $ routeSetup="/streaming_response"
+async def streaming_response(request): # $ requestHandler
+    resp = web.StreamResponse() # $ HttpResponse mimetype=application/octet-stream
+    await resp.prepare(request)
+
+    await resp.write(b"foo") # $ MISSING: responseBody=b"foo"
+    await resp.write(data=b"bar") # $ MISSING: responseBody=b"bar"
+    await resp.write_eof(b"baz") # $ MISSING: responseBody=b"bar"
+
+    return resp
+
 ################################################################################
 # Cookies
 ################################################################################
