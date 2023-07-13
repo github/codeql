@@ -20,7 +20,7 @@ class PatternCompileMethod extends Method {
 }
 
 /**
- * The method `matches` of `java.util.regex.Pattern`.
+ * The method `matches` of `java.util.regex.Pattern`, or one of its subtypes.
  */
 class PatternMatchMethod extends Method {
   PatternMatchMethod() {
@@ -30,7 +30,7 @@ class PatternMatchMethod extends Method {
 }
 
 /**
- * The method `matcher` of `java.util.regex.Pattern`.
+ * The method `matcher` of `java.util.regex.Pattern`, or one of its subtypes.
  */
 class PatternMatcherMethod extends Method {
   PatternMatcherMethod() {
@@ -40,7 +40,7 @@ class PatternMatcherMethod extends Method {
 }
 
 /**
- * The methods like `matches` of `java.lang.String`.
+ * The methods like `matches` of `java.lang.String`, or one of its subtypes.
  */
 class StringMethod extends Method {
   StringMethod() {
