@@ -45,14 +45,6 @@ module Config implements DataFlow::StateConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
-
-  predicate isAdditionalFlowStep(
-    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
-  ) {
-    none()
-  }
 }
 
 module Flow = DataFlow::GlobalWithState<Config>;
