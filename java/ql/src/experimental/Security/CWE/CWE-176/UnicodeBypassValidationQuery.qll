@@ -9,6 +9,12 @@ import semmle.code.java.dataflow.FlowSources
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 import RegexAndStrManipulation
 
+private class ComposingUnicodeForm extends Field {
+  ComposingUnicodeForm() {
+    this.hasQualifiedName("java.text", "Normalizer$Form", ["NFKC", "NFC", "NFKD", "NFD"])
+  }
+}
+
 /** A state signifying that a logical validation has not been performed. */
 class PreValidation extends DataFlow::FlowState {
   PreValidation() { this = "PreValidation" }
