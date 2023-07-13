@@ -6549,3 +6549,53 @@ regex.swift:
 
 #  221| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .
+
+#  227| [RegExpGroup] (?i-s)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] i-s
+
+#  227| [RegExpSequence] (?i-s)abc
+#-----| 0 -> [RegExpGroup] (?i-s)
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
+
+#  227| [RegExpConstant, RegExpNormalChar] i-s
+
+#  227| [RegExpConstant, RegExpNormalChar] abc
+
+#  230| [RegExpConstant, RegExpNormalChar] abc
+
+#  230| [RegExpSequence] abc(?i)def
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] abc
+#-----| 1 -> [RegExpGroup] (?i)
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] def
+
+#  230| [RegExpGroup] (?i)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] i
+
+#  230| [RegExpConstant, RegExpNormalChar] i
+
+#  230| [RegExpConstant, RegExpNormalChar] def
+
+#  231| [RegExpConstant, RegExpNormalChar] abc
+
+#  231| [RegExpSequence] abc(?i:def)ghi
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] abc
+#-----| 1 -> [RegExpGroup] (?i:def)
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] ghi
+
+#  231| [RegExpGroup] (?i:def)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] i:def
+
+#  231| [RegExpConstant, RegExpNormalChar] i:def
+
+#  231| [RegExpConstant, RegExpNormalChar] ghi
+
+#  232| [RegExpGroup] (?i)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] i
+
+#  232| [RegExpConstant, RegExpNormalChar] i
+
+#  232| [RegExpConstant, RegExpNormalChar] abc
+
+#  232| [RegExpConstant, RegExpNormalChar] -i
+
+#  232| [RegExpConstant, RegExpNormalChar] def

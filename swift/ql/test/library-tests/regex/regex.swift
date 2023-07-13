@@ -223,4 +223,11 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
     _ = input.replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive]) // $ MISSING: regex=.* input=input modes=IGNORECASE
 
     _ = NSString(string: "abc").replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive], range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS modes=IGNORECASE
+
+    _ = try Regex("(?i-s)abc").firstMatch(in: input) // $ input=input regex=(?i-s)abc MISSING: modes=IGNORECASE SPURIOUS: modes="DOTALL | IGNORECASE"
+
+    // these cases use parse modes on localized areas of the regex, which we don't currently support
+    _ = try Regex("abc(?i)def").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=abc(?i)def
+    _ = try Regex("abc(?i:def)ghi").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=abc(?i:def)ghi
+    _ = try Regex("(?i)abc(?-i)def").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=(?i)abc(?-i)def SPURIOUS: hasParseFailure=
 }
