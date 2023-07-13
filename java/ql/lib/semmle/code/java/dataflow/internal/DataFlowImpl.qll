@@ -2758,12 +2758,21 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
+  private predicate forceUnfold(AccessPathApprox apa) {
+    forceHighPrecision(apa.getHead())
+    or
+    exists(Content c2 |
+      apa = TConsCons(_, _, c2, _) and
+      forceHighPrecision(c2)
+    )
+  }
+
   /**
    * Holds with `unfold = false` if a precise head-tail representation of `apa` is
    * expected to be expensive. Holds with `unfold = true` otherwise.
    */
   private predicate evalUnfold(AccessPathApprox apa, boolean unfold) {
-    if forceHighPrecision(apa.getHead())
+    if forceUnfold(apa)
     then unfold = true
     else
       exists(int aps, int nodes, int apLimit, int tupleLimit |
