@@ -1,2 +1,2 @@
 lgtm,codescanning
-* Support for the gqlgen has been added.
+* Support for [gqlgen](https://github.com/99designs/gqlgen) has been added.
