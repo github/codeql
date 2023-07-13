@@ -1,7 +1,7 @@
 def assign():
     x = SOURCE # $ path-node
 
-    y = x
+    y = x # $ path-node
 
     SINK(y) # $ path-node
 
@@ -10,7 +10,7 @@ def aug_assign():
     x = SOURCE # $ path-node
     z = ""
 
-    z += x
+    z += x # $ path-node
 
     SINK(z) # $ path-node
 
@@ -41,7 +41,7 @@ def attribute():
     x = X()
     x.attr = SOURCE # $ path-node
 
-    y = x
+    y = x # $ path-node
 
     SINK(y.attr) # $ path-node
 
@@ -81,7 +81,7 @@ def test_tuple():
 def test_with():
     x = SOURCE # $ path-node
 
-    with x as y:
+    with x as y: # $ path-node
 
         SINK(y) # $ path-node
 
@@ -91,6 +91,6 @@ def test_match():
 
     match x:
 
-        case y:
+        case y: # $ path-node
 
             SINK(y) # $ path-node
