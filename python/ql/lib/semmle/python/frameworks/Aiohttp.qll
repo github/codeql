@@ -477,19 +477,15 @@ module AiohttpWebModel {
     DataFlow::ParameterNode, RemoteFlowSource::Range
   {
     AiohttpHeuristicRequestHandlerRequestParam() {
-      exists(FunctionExpr fe, int i |
-        // the API::Node is the annotation (type hint), we need to get the annotated parameter
-        fe.getArgs().getAnnotation(i) =
-          API::moduleImport("aiohttp")
-              .getMember("web")
-              .getMember("Request")
-              .getAValueReachableFromSource()
-              .asExpr() and
-        fe.getInnerScope().getArg(i) = this.getParameter()
-      )
+      this.getParameter().getAnnotation() =
+        API::moduleImport("aiohttp")
+            .getMember("web")
+            .getMember("Request")
+            .getAValueReachableFromSource()
+            .asExpr()
     }
 
-    override string getSourceType() { result = "aiohttp web request parameter" }
+    override string getSourceType() { result = "aiohttp.web.Request from type-annotation" }
   }
 
   /**
