@@ -8,6 +8,7 @@ private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
+private import codeql.swift.frameworks.StandardLibrary.ArrayType
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -245,7 +246,8 @@ private module Cached {
   newtype TContent =
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
-    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) }
+    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
+    TArrayContent()
 }
 
 /**
@@ -689,6 +691,19 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2 = node1 and // TODO: again, we should ideally have a separate Node case here, and not reuse the CallExpr
     c instanceof OptionalSomeContentSet and
     init.isFailable()
+  ) or
+  // creation of an array `[v1,v2]`
+  exists(ArrayExpr arr |
+    node1.asExpr() = arr.getAnElement() and
+    node2.asExpr() = arr and
+    c.isSingleton(any(Content::ArrayContent ac))
+  ) or
+  // array assignment `a[n] = x`
+  exists(AssignExpr assign, SubscriptExpr subscript |
+    node1.asExpr() = assign.getSource() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
+    subscript = assign.getDest() and
+    subscript.getBase().getType().(InOutType).getObjectType() instanceof ArrayType
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
@@ -753,6 +768,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     // or the return node, if this is the last component in the chain
     not exists(component.getNextComponent()) and
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
+  )
+  or
+  // read of an array member via subscript operator
+  exists(SubscriptExpr subscript |
+    subscript.getBase() = node1.asExpr() and
+    subscript = node2.asExpr() and
+    subscript.getBase().getType().(InOutType).getObjectType() instanceof ArrayType and
+    c.isSingleton(any(Content::ArrayContent ac))
   )
 }
 

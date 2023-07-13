@@ -1,5 +1,5 @@
 func source() -> Int { return 0; }
-func sink(arg: Int) {}
+func sink<T>(arg: T) {}
 
 func intraprocedural_with_local_flow() -> Void {
     var t2: Int
@@ -630,4 +630,19 @@ func testSwap() {
     swap(&x, &y)
     sink(arg: x) // $ SPURIOUS: flow=628
     sink(arg: y) // $ flow=628
+}
+
+func testArray() {
+    var arr1 = [1,2,3]
+    sink(arg: arr1[0])
+    arr1[1] = source()
+    sink(arg: arr1[0]) // $ flow=638
+    sink(arg: arr1)
+
+    var arr2 = [source()]
+    sink(arg: arr2[0]) // $ flow=642
+
+    var matrix = [[source()]]
+    sink(arg: matrix[0])
+    sink(arg: matrix[0][0]) // $ flow=645
 }

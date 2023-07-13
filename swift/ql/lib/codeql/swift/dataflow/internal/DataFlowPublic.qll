@@ -206,6 +206,10 @@ module Content {
       exists(EnumElementDecl d, int pos | d.getParam(pos) = p | result = d.toString() + ":" + pos)
     }
   }
+
+  class ArrayContent extends Content, TArrayContent {
+    override string toString() { result = "Array element"}
+  }
 }
 
 /**
