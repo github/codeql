@@ -540,6 +540,6 @@ where
   offset = pai.getRight().getUnconvertedResultExpression() and
   n = source.getNode() and
   if k = 0 then kstr = "" else kstr = " + " + k
-select sink.getNode().asInstruction(), source, sink,
+select sink.getNode(), source, sink,
   "This " + operation + " might be out of bounds, as the pointer might be equal to $@ + $@" + kstr +
     ".", n, n.toString(), offset, offset.toString()
