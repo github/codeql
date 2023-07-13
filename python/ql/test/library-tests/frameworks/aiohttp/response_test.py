@@ -25,10 +25,7 @@ async def html_body(request): # $ requestHandler
 
 @routes.get("/html_body_header") # $ routeSetup="/html_body_header"
 async def html_body_header(request): # $ requestHandler
-    return web.Response(
-        headers={"content-type": "text/html"},
-        text="<script>window.close()</script>Success! This window can be closed",
-    )
+    return web.Response(headers={"content-type": "text/html"}, text="foo") # $ HttpResponse mimetype=text/html responseBody="foo"
 
 @routes.get("/html_body_set_later") # $ routeSetup="/html_body_set_later"
 async def html_body_set_later(request): # $ requestHandler
@@ -71,10 +68,13 @@ async def redirect_302(request): # $ requestHandler
     else:
         raise web.HTTPFound(location="/logout") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/logout"
 
-@routes.get("/serve_file") # $ routeSetup="/serve_file"
-async def serve_file(request): # $ requestHandler
-    filename = request.query.getone("filename"),
-    return web.FileResponse(filename) # $ HttpResponse mimetype=application/octet-stream
+
+@routes.get("/file_response") # $ routeSetup="/file_response"
+async def file_response(request): # $ requestHandler
+    filename = "foo.txt"
+    resp = web.FileResponse(filename) # $ HttpResponse mimetype=application/octet-stream getAPathArgument=filename
+    resp = web.FileResponse(path=filename) # $ HttpResponse mimetype=application/octet-stream MISSING: getAPathArgument=filename
+    return resp
 
 ################################################################################
 # Cookies
