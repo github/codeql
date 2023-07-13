@@ -23,6 +23,12 @@ async def html_text(request): # $ requestHandler
 async def html_body(request): # $ requestHandler
     return web.Response(body=b"foo", content_type="text/html") # $ HttpResponse mimetype=text/html responseBody=b"foo"
 
+@routes.get("/html_body_header") # $ routeSetup="/html_body_header"
+async def html_body_header(request): # $ requestHandler
+    return web.Response(
+        headers={"content-type": "text/html"},
+        text="<script>window.close()</script>Success! This window can be closed",
+    )
 
 @routes.get("/html_body_set_later") # $ routeSetup="/html_body_set_later"
 async def html_body_set_later(request): # $ requestHandler
@@ -64,6 +70,11 @@ async def redirect_302(request): # $ requestHandler
         raise web.HTTPFound("/login") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/login"
     else:
         raise web.HTTPFound(location="/logout") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/logout"
+
+@routes.get("/serve_file") # $ routeSetup="/serve_file"
+async def serve_file(request): # $ requestHandler
+    filename = request.query.getone("filename"),
+    return web.FileResponse(filename) # $ HttpResponse mimetype=application/octet-stream
 
 ################################################################################
 # Cookies
