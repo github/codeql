@@ -10,7 +10,7 @@ class Pattern extends RefType {
 }
 
 /**
- * The method `compile` of `java.util.regex.Pattern`.
+ * The method `compile` of `java.util.regex.Pattern`, or one of its subtypes.
  */
 class PatternCompileMethod extends Method {
   PatternCompileMethod() {
