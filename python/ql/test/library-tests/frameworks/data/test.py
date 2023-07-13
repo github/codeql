@@ -60,7 +60,7 @@ class SubClass (ArgPos.MyClass):
     def foo(self, arg, named=2, otherName=3):
         pass
 
-    def secondAndAfter(self, arg1, arg2, arg3, arg4, arg5): 
+    def secondAndAfter(self, arg1, arg2, arg3, arg4, arg5):
         pass
 
 ArgPos.anyParam(arg1, arg2, name=namedThing)
@@ -72,7 +72,7 @@ mySink(Steps.preserveTaint(getSource())) # FLOW
 mySink(Steps.preserveTaint("safe", getSource())) # NO FLOW
 
 Steps.taintIntoCallback(
-    getSource(), 
+    getSource(),
     lambda x: mySink(x), # FLOW
     lambda y: mySink(y), # FLOW
     lambda z: mySink(z) # NO FLOW
