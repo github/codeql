@@ -719,7 +719,7 @@ private module AiohttpClientModel {
       override DataFlow::Node getAUrlPart() {
         result = this.getArgByName("url")
         or
-        not methodName = "request" and
+        methodName in [Http::httpVerbLower(), "ws_connect"] and
         result = this.getArg(0)
         or
         methodName = "request" and
