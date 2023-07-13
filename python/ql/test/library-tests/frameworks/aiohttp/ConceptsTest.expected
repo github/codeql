@@ -1,5 +1,2 @@
 failures
 testFailures
-| response_test.py:82:12:82:31 | ControlFlowNode for Attribute() | Unexpected result: responseBody=b"bar" |
-| response_test.py:82:12:82:31 | ControlFlowNode for Attribute() | Unexpected result: responseBody=b"baz" |
-| response_test.py:82:12:82:31 | ControlFlowNode for Attribute() | Unexpected result: responseBody=b"foo" |

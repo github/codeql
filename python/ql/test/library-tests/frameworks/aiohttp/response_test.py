@@ -82,9 +82,9 @@ async def streaming_response(request): # $ requestHandler
     resp = web.StreamResponse() # $ HttpResponse mimetype=application/octet-stream
     await resp.prepare(request)
 
-    await resp.write(b"foo") # $ MISSING: responseBody=b"foo"
-    await resp.write(data=b"bar") # $ MISSING: responseBody=b"bar"
-    await resp.write_eof(b"baz") # $ MISSING: responseBody=b"bar"
+    await resp.write(b"foo") # $ responseBody=b"foo"
+    await resp.write(data=b"bar") # $ responseBody=b"bar"
+    await resp.write_eof(b"baz") # $ responseBody=b"baz"
 
     return resp
 
