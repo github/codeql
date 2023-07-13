@@ -10,7 +10,7 @@ allows the user to execute malicious code.</p>
 </overview>
 
 <recommendation>
-<p>If possible, use APIs that don't run shell commands and accept command
+<p>If possible, use APIs that don't run shell commands and that accept command
 arguments as an array of strings rather than a single concatenated string. This
 is both safer and more portable.</p>
 
@@ -26,13 +26,13 @@ string is safe before using it.</p>
 <example>
 <p>The following example shows code that extracts a filename from an HTTP query
 parameter that may contain untrusted data, and then embeds it into a shell
-command to count its lines without examining it first.</p>
+command to count its lines without examining it first:</p>
 
 <sample src="examples/command-injection.js" />
 
-<p>A malicious user can take advantage of this code by executing arbitrary shell commands. For instance, by providing a filename like <code>foo.txt; rm -rf .</code>, the user can first count the lines in <code>foo.txt</code> and subsequently delete all files in the current directory. </p>
+<p>A malicious user can take advantage of this code by executing arbitrary shell commands. For example, by providing a filename like <code>foo.txt; rm -rf .</code>, the user can first count the lines in <code>foo.txt</code> and subsequently delete all files in the current directory. </p>
 
-<p>To avoid this catastrophic loophole, use an API such as
+<p>To avoid this catastrophic behavior, use an API such as
 <code>child_process.execFileSync</code> that does not spawn a shell by
 default:</p>
 
