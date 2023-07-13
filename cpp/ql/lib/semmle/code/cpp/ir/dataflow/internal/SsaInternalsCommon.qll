@@ -117,6 +117,16 @@ private int countIndirections(Type t) {
   else (
     result = any(Indirection ind | ind.getType() = t).getNumberOfIndirections()
     or
+    // If there is an indirection for the type, but we cannot count the number of indirections
+    // it means we couldn't reach a non-indirection type by stripping off indirections. This
+    // can occur if an iterator specifies itself as the value type. In this case we default to
+    // 1 indirection fore the type.
+    exists(Indirection ind |
+      ind.getType() = t and
+      not exists(ind.getNumberOfIndirections()) and
+      result = 1
+    )
+    or
     not exists(Indirection ind | ind.getType() = t) and
     result = 0
   )
@@ -263,7 +273,7 @@ private module IteratorIndirections {
         // Taint through `operator+=` and `operator-=` on iterators.
         call.getStaticCallTarget() instanceof Iterator::IteratorAssignArithmeticOperator and
         node2.(IndirectArgumentOutNode).getPreUpdateNode() = node1 and
-        node1.(IndirectOperand).getOperand() = call.getArgumentOperand(0) and
+        node1.(IndirectOperand).hasOperandAndIndirectionIndex(call.getArgumentOperand(0), _) and
         node1.getType().getUnspecifiedType() = this
       )
     }
@@ -578,7 +588,6 @@ private module Cached {
     )
   }
 
-  pragma[assume_small_delta]
   private predicate convertsIntoArgumentRev(Instruction instr) {
     convertsIntoArgumentFwd(instr) and
     (
@@ -796,7 +805,7 @@ private module Cached {
       address.getDef() = instr and
       isDereference(load, address) and
       isUseImpl(address, _, indirectionIndex - 1) and
-      result = instr
+      result = load
     )
   }
 

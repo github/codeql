@@ -380,9 +380,10 @@ edges
 | test.cpp:80:9:80:16 | mk_array indirection [end] | test.cpp:89:19:89:26 | call to mk_array [end] |
 | test.cpp:80:9:80:16 | mk_array indirection [end] | test.cpp:119:18:119:25 | call to mk_array [end] |
 | test.cpp:82:5:82:28 | ... = ... | test.cpp:82:9:82:13 | arr indirection [post update] [begin] |
-| test.cpp:82:9:82:13 | arr indirection [post update] [begin] | test.cpp:80:9:80:16 | mk_array indirection [begin] |
+| test.cpp:82:9:82:13 | arr indirection [post update] [begin] | test.cpp:83:5:83:7 | arr indirection [begin] |
 | test.cpp:82:9:82:13 | arr indirection [post update] [begin] | test.cpp:83:15:83:17 | arr indirection [begin] |
 | test.cpp:82:17:82:22 | call to malloc | test.cpp:82:5:82:28 | ... = ... |
+| test.cpp:83:5:83:7 | arr indirection [begin] | test.cpp:80:9:80:16 | mk_array indirection [begin] |
 | test.cpp:83:5:83:30 | ... = ... | test.cpp:83:9:83:11 | arr indirection [post update] [end] |
 | test.cpp:83:9:83:11 | arr indirection [post update] [end] | test.cpp:80:9:80:16 | mk_array indirection [end] |
 | test.cpp:83:15:83:17 | arr indirection [begin] | test.cpp:83:19:83:23 | begin indirection |
@@ -455,9 +456,10 @@ edges
 | test.cpp:124:15:124:20 | call to malloc | test.cpp:125:5:125:17 | ... = ... |
 | test.cpp:124:15:124:20 | call to malloc | test.cpp:126:15:126:15 | p |
 | test.cpp:125:5:125:17 | ... = ... | test.cpp:125:9:125:13 | arr indirection [post update] [begin] |
-| test.cpp:125:9:125:13 | arr indirection [post update] [begin] | test.cpp:129:11:129:13 | arr indirection [begin] |
-| test.cpp:125:9:125:13 | arr indirection [post update] [begin] | test.cpp:133:11:133:13 | arr indirection [begin] |
-| test.cpp:125:9:125:13 | arr indirection [post update] [begin] | test.cpp:137:11:137:13 | arr indirection [begin] |
+| test.cpp:125:9:125:13 | arr indirection [post update] [begin] | test.cpp:126:5:126:7 | arr indirection [begin] |
+| test.cpp:126:5:126:7 | arr indirection [begin] | test.cpp:129:11:129:13 | arr indirection [begin] |
+| test.cpp:126:5:126:7 | arr indirection [begin] | test.cpp:133:11:133:13 | arr indirection [begin] |
+| test.cpp:126:5:126:7 | arr indirection [begin] | test.cpp:137:11:137:13 | arr indirection [begin] |
 | test.cpp:129:11:129:13 | arr indirection [begin] | test.cpp:129:15:129:19 | begin indirection |
 | test.cpp:129:15:129:19 | begin indirection | test.cpp:129:15:129:19 | begin |
 | test.cpp:133:11:133:13 | arr indirection [begin] | test.cpp:133:15:133:19 | begin indirection |
@@ -469,9 +471,10 @@ edges
 | test.cpp:141:10:141:19 | mk_array_p indirection [end] | test.cpp:150:20:150:29 | call to mk_array_p indirection [end] |
 | test.cpp:141:10:141:19 | mk_array_p indirection [end] | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] |
 | test.cpp:143:5:143:29 | ... = ... | test.cpp:143:10:143:14 | arr indirection [post update] [begin] |
-| test.cpp:143:10:143:14 | arr indirection [post update] [begin] | test.cpp:141:10:141:19 | mk_array_p indirection [begin] |
+| test.cpp:143:10:143:14 | arr indirection [post update] [begin] | test.cpp:144:5:144:7 | arr indirection [begin] |
 | test.cpp:143:10:143:14 | arr indirection [post update] [begin] | test.cpp:144:16:144:18 | arr indirection [begin] |
 | test.cpp:143:18:143:23 | call to malloc | test.cpp:143:5:143:29 | ... = ... |
+| test.cpp:144:5:144:7 | arr indirection [begin] | test.cpp:141:10:141:19 | mk_array_p indirection [begin] |
 | test.cpp:144:5:144:32 | ... = ... | test.cpp:144:10:144:12 | arr indirection [post update] [end] |
 | test.cpp:144:10:144:12 | arr indirection [post update] [end] | test.cpp:141:10:141:19 | mk_array_p indirection [end] |
 | test.cpp:144:16:144:18 | arr indirection [begin] | test.cpp:144:21:144:25 | begin indirection |
@@ -664,11 +667,6 @@ edges
 | test.cpp:338:8:338:15 | * ... | test.cpp:342:8:342:17 | * ... |
 | test.cpp:341:8:341:17 | * ... | test.cpp:342:8:342:17 | * ... |
 | test.cpp:347:14:347:27 | new[] | test.cpp:348:15:348:16 | xs |
-| test.cpp:348:15:348:16 | xs | test.cpp:350:16:350:19 | ... ++ |
-| test.cpp:348:15:348:16 | xs | test.cpp:350:16:350:19 | ... ++ |
-| test.cpp:350:16:350:19 | ... ++ | test.cpp:350:15:350:19 | Load: * ... |
-| test.cpp:350:16:350:19 | ... ++ | test.cpp:350:16:350:19 | ... ++ |
-| test.cpp:350:16:350:19 | ... ++ | test.cpp:350:16:350:19 | ... ++ |
 | test.cpp:355:14:355:27 | new[] | test.cpp:356:15:356:16 | xs |
 | test.cpp:356:15:356:16 | xs | test.cpp:356:15:356:23 | ... + ... |
 | test.cpp:356:15:356:16 | xs | test.cpp:356:15:356:23 | ... + ... |
@@ -722,14 +720,6 @@ edges
 | test.cpp:359:16:359:27 | end_plus_one | test.cpp:359:14:359:32 | Load: * ... |
 | test.cpp:359:16:359:31 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
 | test.cpp:363:14:363:27 | new[] | test.cpp:365:15:365:15 | p |
-| test.cpp:365:15:365:15 | p | test.cpp:368:5:368:10 | ... += ... |
-| test.cpp:365:15:365:15 | p | test.cpp:368:5:368:10 | ... += ... |
-| test.cpp:368:5:368:10 | ... += ... | test.cpp:371:7:371:7 | p |
-| test.cpp:368:5:368:10 | ... += ... | test.cpp:371:7:371:7 | p |
-| test.cpp:368:5:368:10 | ... += ... | test.cpp:372:16:372:16 | p |
-| test.cpp:368:5:368:10 | ... += ... | test.cpp:372:16:372:16 | p |
-| test.cpp:371:7:371:7 | p | test.cpp:372:15:372:16 | Load: * ... |
-| test.cpp:372:16:372:16 | p | test.cpp:372:15:372:16 | Load: * ... |
 | test.cpp:377:14:377:27 | new[] | test.cpp:378:15:378:16 | xs |
 | test.cpp:378:15:378:16 | xs | test.cpp:378:15:378:23 | ... + ... |
 | test.cpp:378:15:378:16 | xs | test.cpp:378:15:378:23 | ... + ... |
@@ -753,6 +743,304 @@ edges
 | test.cpp:381:5:381:9 | ... ++ | test.cpp:384:14:384:16 | end |
 | test.cpp:381:5:381:9 | ... ++ | test.cpp:384:14:384:16 | end |
 | test.cpp:384:14:384:16 | end | test.cpp:384:13:384:16 | Load: * ... |
+| test.cpp:388:14:388:27 | new[] | test.cpp:389:16:389:17 | xs |
+| test.cpp:388:14:388:27 | new[] | test.cpp:392:3:392:4 | xs |
+| test.cpp:399:14:399:27 | new[] | test.cpp:400:16:400:17 | xs |
+| test.cpp:399:14:399:27 | new[] | test.cpp:402:5:402:6 | xs |
+| test.cpp:410:14:410:27 | new[] | test.cpp:411:16:411:17 | xs |
+| test.cpp:410:14:410:27 | new[] | test.cpp:413:5:413:6 | xs |
+| test.cpp:411:15:411:23 | & ... | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:15:411:23 | & ... | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:15:411:23 | & ... | test.cpp:412:12:412:14 | end |
+| test.cpp:411:15:411:23 | & ... | test.cpp:412:12:412:14 | end |
+| test.cpp:411:15:411:23 | & ... | test.cpp:412:12:412:14 | end |
+| test.cpp:411:15:411:23 | & ... | test.cpp:412:12:412:14 | end |
+| test.cpp:411:15:411:23 | & ... | test.cpp:414:14:414:16 | end |
+| test.cpp:411:15:411:23 | & ... | test.cpp:414:14:414:16 | end |
+| test.cpp:411:15:411:23 | & ... | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:411:15:411:23 | & ... | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:411:15:411:23 | & ... | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:411:15:411:23 | & ... | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:411:16:411:17 | xs | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:16:411:17 | xs | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:16:411:17 | xs | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:16:411:17 | xs | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:16:411:17 | xs | test.cpp:411:16:411:23 | access to array |
+| test.cpp:411:16:411:17 | xs | test.cpp:411:16:411:23 | access to array |
+| test.cpp:411:16:411:17 | xs | test.cpp:412:12:412:14 | end |
+| test.cpp:411:16:411:17 | xs | test.cpp:412:12:412:14 | end |
+| test.cpp:411:16:411:17 | xs | test.cpp:413:5:413:8 | ... ++ |
+| test.cpp:411:16:411:17 | xs | test.cpp:413:5:413:8 | ... ++ |
+| test.cpp:411:16:411:17 | xs | test.cpp:413:5:413:8 | ... ++ |
+| test.cpp:411:16:411:17 | xs | test.cpp:413:5:413:8 | ... ++ |
+| test.cpp:411:16:411:17 | xs | test.cpp:414:9:414:10 | xs |
+| test.cpp:411:16:411:17 | xs | test.cpp:414:14:414:16 | end |
+| test.cpp:411:16:411:17 | xs | test.cpp:415:7:415:11 | access to array |
+| test.cpp:411:16:411:23 | access to array | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:16:411:23 | access to array | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:16:411:23 | access to array | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:16:411:23 | access to array | test.cpp:411:15:411:23 | & ... |
+| test.cpp:411:16:411:23 | access to array | test.cpp:412:12:412:14 | end |
+| test.cpp:411:16:411:23 | access to array | test.cpp:412:12:412:14 | end |
+| test.cpp:411:16:411:23 | access to array | test.cpp:414:14:414:16 | end |
+| test.cpp:411:16:411:23 | access to array | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:411:16:411:23 | access to array | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:412:12:412:14 | end | test.cpp:414:14:414:16 | end |
+| test.cpp:412:12:412:14 | end | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:412:12:412:14 | end | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:413:5:413:8 | ... ++ | test.cpp:413:5:413:8 | ... ++ |
+| test.cpp:413:5:413:8 | ... ++ | test.cpp:413:5:413:8 | ... ++ |
+| test.cpp:413:5:413:8 | ... ++ | test.cpp:414:9:414:10 | xs |
+| test.cpp:413:5:413:8 | ... ++ | test.cpp:414:9:414:10 | xs |
+| test.cpp:413:5:413:8 | ... ++ | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:413:5:413:8 | ... ++ | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:413:5:413:8 | ... ++ | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:413:5:413:8 | ... ++ | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:414:9:414:10 | xs | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:414:14:414:16 | end | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:415:7:415:11 | access to array | test.cpp:415:7:415:15 | Store: ... = ... |
+| test.cpp:421:14:421:27 | new[] | test.cpp:422:16:422:17 | xs |
+| test.cpp:421:14:421:27 | new[] | test.cpp:424:5:424:6 | xs |
+| test.cpp:422:15:422:23 | & ... | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:15:422:23 | & ... | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:15:422:23 | & ... | test.cpp:423:12:423:14 | end |
+| test.cpp:422:15:422:23 | & ... | test.cpp:423:12:423:14 | end |
+| test.cpp:422:15:422:23 | & ... | test.cpp:423:12:423:14 | end |
+| test.cpp:422:15:422:23 | & ... | test.cpp:423:12:423:14 | end |
+| test.cpp:422:15:422:23 | & ... | test.cpp:425:18:425:20 | end |
+| test.cpp:422:15:422:23 | & ... | test.cpp:425:18:425:20 | end |
+| test.cpp:422:15:422:23 | & ... | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:422:15:422:23 | & ... | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:422:15:422:23 | & ... | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:422:15:422:23 | & ... | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:422:16:422:17 | xs | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:16:422:17 | xs | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:16:422:17 | xs | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:16:422:17 | xs | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:16:422:17 | xs | test.cpp:422:16:422:23 | access to array |
+| test.cpp:422:16:422:17 | xs | test.cpp:422:16:422:23 | access to array |
+| test.cpp:422:16:422:17 | xs | test.cpp:423:12:423:14 | end |
+| test.cpp:422:16:422:17 | xs | test.cpp:423:12:423:14 | end |
+| test.cpp:422:16:422:17 | xs | test.cpp:424:5:424:8 | ... ++ |
+| test.cpp:422:16:422:17 | xs | test.cpp:424:5:424:8 | ... ++ |
+| test.cpp:422:16:422:17 | xs | test.cpp:424:5:424:8 | ... ++ |
+| test.cpp:422:16:422:17 | xs | test.cpp:424:5:424:8 | ... ++ |
+| test.cpp:422:16:422:17 | xs | test.cpp:425:9:425:10 | xs |
+| test.cpp:422:16:422:17 | xs | test.cpp:425:9:425:10 | xs |
+| test.cpp:422:16:422:17 | xs | test.cpp:425:18:425:20 | end |
+| test.cpp:422:16:422:17 | xs | test.cpp:426:7:426:8 | xs |
+| test.cpp:422:16:422:17 | xs | test.cpp:426:7:426:11 | access to array |
+| test.cpp:422:16:422:23 | access to array | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:16:422:23 | access to array | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:16:422:23 | access to array | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:16:422:23 | access to array | test.cpp:422:15:422:23 | & ... |
+| test.cpp:422:16:422:23 | access to array | test.cpp:423:12:423:14 | end |
+| test.cpp:422:16:422:23 | access to array | test.cpp:423:12:423:14 | end |
+| test.cpp:422:16:422:23 | access to array | test.cpp:425:18:425:20 | end |
+| test.cpp:422:16:422:23 | access to array | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:422:16:422:23 | access to array | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:423:12:423:14 | end | test.cpp:425:18:425:20 | end |
+| test.cpp:423:12:423:14 | end | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:423:12:423:14 | end | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:424:5:424:8 | ... ++ |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:424:5:424:8 | ... ++ |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:425:9:425:10 | xs |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:425:9:425:10 | xs |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:425:9:425:10 | xs |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:425:9:425:10 | xs |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:426:7:426:8 | xs |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:426:7:426:8 | xs |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:424:5:424:8 | ... ++ | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:425:9:425:10 | xs | test.cpp:426:7:426:8 | xs |
+| test.cpp:425:9:425:10 | xs | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:425:9:425:10 | xs | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:425:18:425:20 | end | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:426:7:426:8 | xs | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:426:7:426:11 | access to array | test.cpp:426:7:426:15 | Store: ... = ... |
+| test.cpp:432:14:432:27 | new[] | test.cpp:433:16:433:17 | xs |
+| test.cpp:432:14:432:27 | new[] | test.cpp:436:5:436:6 | xs |
+| test.cpp:433:15:433:23 | & ... | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:15:433:23 | & ... | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:15:433:23 | & ... | test.cpp:434:12:434:14 | end |
+| test.cpp:433:15:433:23 | & ... | test.cpp:434:12:434:14 | end |
+| test.cpp:433:15:433:23 | & ... | test.cpp:434:12:434:14 | end |
+| test.cpp:433:15:433:23 | & ... | test.cpp:434:12:434:14 | end |
+| test.cpp:433:15:433:23 | & ... | test.cpp:435:5:435:7 | end |
+| test.cpp:433:15:433:23 | & ... | test.cpp:435:5:435:7 | end |
+| test.cpp:433:15:433:23 | & ... | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:433:15:433:23 | & ... | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:433:15:433:23 | & ... | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:433:15:433:23 | & ... | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:433:16:433:17 | xs | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:16:433:17 | xs | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:16:433:17 | xs | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:16:433:17 | xs | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:16:433:17 | xs | test.cpp:433:16:433:23 | access to array |
+| test.cpp:433:16:433:17 | xs | test.cpp:433:16:433:23 | access to array |
+| test.cpp:433:16:433:17 | xs | test.cpp:434:12:434:14 | end |
+| test.cpp:433:16:433:17 | xs | test.cpp:434:12:434:14 | end |
+| test.cpp:433:16:433:17 | xs | test.cpp:435:5:435:7 | end |
+| test.cpp:433:16:433:17 | xs | test.cpp:436:5:436:8 | ... ++ |
+| test.cpp:433:16:433:17 | xs | test.cpp:436:5:436:8 | ... ++ |
+| test.cpp:433:16:433:17 | xs | test.cpp:436:5:436:8 | ... ++ |
+| test.cpp:433:16:433:17 | xs | test.cpp:436:5:436:8 | ... ++ |
+| test.cpp:433:16:433:17 | xs | test.cpp:437:9:437:10 | xs |
+| test.cpp:433:16:433:17 | xs | test.cpp:438:7:438:11 | access to array |
+| test.cpp:433:16:433:23 | access to array | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:16:433:23 | access to array | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:16:433:23 | access to array | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:16:433:23 | access to array | test.cpp:433:15:433:23 | & ... |
+| test.cpp:433:16:433:23 | access to array | test.cpp:434:12:434:14 | end |
+| test.cpp:433:16:433:23 | access to array | test.cpp:434:12:434:14 | end |
+| test.cpp:433:16:433:23 | access to array | test.cpp:435:5:435:7 | end |
+| test.cpp:433:16:433:23 | access to array | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:433:16:433:23 | access to array | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:434:12:434:14 | end | test.cpp:435:5:435:7 | end |
+| test.cpp:434:12:434:14 | end | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:434:12:434:14 | end | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:435:5:435:7 | end | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:436:5:436:8 | ... ++ | test.cpp:436:5:436:8 | ... ++ |
+| test.cpp:436:5:436:8 | ... ++ | test.cpp:436:5:436:8 | ... ++ |
+| test.cpp:436:5:436:8 | ... ++ | test.cpp:437:9:437:10 | xs |
+| test.cpp:436:5:436:8 | ... ++ | test.cpp:437:9:437:10 | xs |
+| test.cpp:436:5:436:8 | ... ++ | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:436:5:436:8 | ... ++ | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:436:5:436:8 | ... ++ | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:436:5:436:8 | ... ++ | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:437:9:437:10 | xs | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:438:7:438:11 | access to array | test.cpp:438:7:438:15 | Store: ... = ... |
+| test.cpp:444:14:444:27 | new[] | test.cpp:445:16:445:17 | xs |
+| test.cpp:444:14:444:27 | new[] | test.cpp:448:5:448:6 | xs |
+| test.cpp:445:15:445:23 | & ... | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:15:445:23 | & ... | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:15:445:23 | & ... | test.cpp:446:3:446:5 | end |
+| test.cpp:445:15:445:23 | & ... | test.cpp:446:3:446:5 | end |
+| test.cpp:445:15:445:23 | & ... | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:445:15:445:23 | & ... | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:445:15:445:23 | & ... | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:445:15:445:23 | & ... | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:445:16:445:17 | xs | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:16:445:17 | xs | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:16:445:17 | xs | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:16:445:17 | xs | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:16:445:17 | xs | test.cpp:445:16:445:23 | access to array |
+| test.cpp:445:16:445:17 | xs | test.cpp:445:16:445:23 | access to array |
+| test.cpp:445:16:445:17 | xs | test.cpp:446:3:446:5 | end |
+| test.cpp:445:16:445:17 | xs | test.cpp:448:5:448:8 | ... ++ |
+| test.cpp:445:16:445:17 | xs | test.cpp:448:5:448:8 | ... ++ |
+| test.cpp:445:16:445:17 | xs | test.cpp:448:5:448:8 | ... ++ |
+| test.cpp:445:16:445:17 | xs | test.cpp:448:5:448:8 | ... ++ |
+| test.cpp:445:16:445:17 | xs | test.cpp:449:9:449:10 | xs |
+| test.cpp:445:16:445:17 | xs | test.cpp:450:7:450:11 | access to array |
+| test.cpp:445:16:445:23 | access to array | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:16:445:23 | access to array | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:16:445:23 | access to array | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:16:445:23 | access to array | test.cpp:445:15:445:23 | & ... |
+| test.cpp:445:16:445:23 | access to array | test.cpp:446:3:446:5 | end |
+| test.cpp:445:16:445:23 | access to array | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:445:16:445:23 | access to array | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:446:3:446:5 | end | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:448:5:448:8 | ... ++ | test.cpp:448:5:448:8 | ... ++ |
+| test.cpp:448:5:448:8 | ... ++ | test.cpp:448:5:448:8 | ... ++ |
+| test.cpp:448:5:448:8 | ... ++ | test.cpp:449:9:449:10 | xs |
+| test.cpp:448:5:448:8 | ... ++ | test.cpp:449:9:449:10 | xs |
+| test.cpp:448:5:448:8 | ... ++ | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:448:5:448:8 | ... ++ | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:448:5:448:8 | ... ++ | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:448:5:448:8 | ... ++ | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:449:9:449:10 | xs | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:450:7:450:11 | access to array | test.cpp:450:7:450:15 | Store: ... = ... |
+| test.cpp:456:14:456:31 | new[] | test.cpp:457:16:457:17 | xs |
+| test.cpp:456:14:456:31 | new[] | test.cpp:460:5:460:6 | xs |
+| test.cpp:468:14:468:27 | new[] | test.cpp:469:16:469:17 | xs |
+| test.cpp:468:14:468:27 | new[] | test.cpp:472:5:472:6 | xs |
+| test.cpp:480:14:480:27 | new[] | test.cpp:481:16:481:17 | xs |
+| test.cpp:480:14:480:27 | new[] | test.cpp:484:5:484:6 | xs |
+| test.cpp:481:15:481:23 | & ... | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:15:481:23 | & ... | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:15:481:23 | & ... | test.cpp:482:3:482:5 | end |
+| test.cpp:481:15:481:23 | & ... | test.cpp:482:3:482:5 | end |
+| test.cpp:481:15:481:23 | & ... | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:481:15:481:23 | & ... | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:481:15:481:23 | & ... | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:481:15:481:23 | & ... | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:481:16:481:17 | xs | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:16:481:17 | xs | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:16:481:17 | xs | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:16:481:17 | xs | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:16:481:17 | xs | test.cpp:481:16:481:23 | access to array |
+| test.cpp:481:16:481:17 | xs | test.cpp:481:16:481:23 | access to array |
+| test.cpp:481:16:481:17 | xs | test.cpp:482:3:482:5 | end |
+| test.cpp:481:16:481:17 | xs | test.cpp:484:5:484:8 | ... ++ |
+| test.cpp:481:16:481:17 | xs | test.cpp:484:5:484:8 | ... ++ |
+| test.cpp:481:16:481:17 | xs | test.cpp:484:5:484:8 | ... ++ |
+| test.cpp:481:16:481:17 | xs | test.cpp:484:5:484:8 | ... ++ |
+| test.cpp:481:16:481:17 | xs | test.cpp:485:9:485:10 | xs |
+| test.cpp:481:16:481:17 | xs | test.cpp:486:7:486:11 | access to array |
+| test.cpp:481:16:481:23 | access to array | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:16:481:23 | access to array | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:16:481:23 | access to array | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:16:481:23 | access to array | test.cpp:481:15:481:23 | & ... |
+| test.cpp:481:16:481:23 | access to array | test.cpp:482:3:482:5 | end |
+| test.cpp:481:16:481:23 | access to array | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:481:16:481:23 | access to array | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:482:3:482:5 | end | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:484:5:484:8 | ... ++ | test.cpp:484:5:484:8 | ... ++ |
+| test.cpp:484:5:484:8 | ... ++ | test.cpp:484:5:484:8 | ... ++ |
+| test.cpp:484:5:484:8 | ... ++ | test.cpp:485:9:485:10 | xs |
+| test.cpp:484:5:484:8 | ... ++ | test.cpp:485:9:485:10 | xs |
+| test.cpp:484:5:484:8 | ... ++ | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:484:5:484:8 | ... ++ | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:484:5:484:8 | ... ++ | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:484:5:484:8 | ... ++ | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:485:9:485:10 | xs | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:486:7:486:11 | access to array | test.cpp:486:7:486:15 | Store: ... = ... |
+| test.cpp:499:3:499:25 | ... = ... | test.cpp:499:7:499:8 | val indirection [post update] [xs] |
+| test.cpp:499:7:499:8 | val indirection [post update] [xs] | test.cpp:500:3:500:5 | val indirection [xs] |
+| test.cpp:499:12:499:25 | new[] | test.cpp:499:3:499:25 | ... = ... |
+| test.cpp:500:3:500:5 | val indirection [xs] | test.cpp:500:7:500:8 | xs indirection |
+| test.cpp:500:7:500:8 | xs indirection | test.cpp:500:7:500:8 | xs |
+| test.cpp:510:16:510:33 | new[] | test.cpp:512:7:512:8 | xs |
+| test.cpp:520:14:520:27 | new[] | test.cpp:526:5:526:6 | xs |
+| test.cpp:532:14:532:27 | new[] | test.cpp:537:5:537:6 | xs |
+| test.cpp:543:14:543:27 | new[] | test.cpp:548:5:548:6 | xs |
+| test.cpp:548:5:548:6 | xs | test.cpp:548:5:548:15 | access to array |
+| test.cpp:548:5:548:15 | access to array | test.cpp:548:5:548:19 | Store: ... = ... |
+| test.cpp:554:14:554:27 | new[] | test.cpp:559:5:559:6 | xs |
+| test.cpp:559:5:559:6 | xs | test.cpp:559:5:559:15 | access to array |
+| test.cpp:559:5:559:15 | access to array | test.cpp:559:5:559:19 | Store: ... = ... |
+| test.cpp:565:14:565:27 | new[] | test.cpp:570:5:570:6 | xs |
+| test.cpp:576:14:576:27 | new[] | test.cpp:581:5:581:6 | xs |
+| test.cpp:587:14:587:31 | new[] | test.cpp:592:5:592:6 | xs |
+| test.cpp:598:14:598:31 | new[] | test.cpp:603:5:603:6 | xs |
+| test.cpp:609:14:609:31 | new[] | test.cpp:614:5:614:6 | xs |
+| test.cpp:620:14:620:31 | new[] | test.cpp:625:5:625:6 | xs |
+| test.cpp:631:14:631:31 | new[] | test.cpp:636:5:636:6 | xs |
+| test.cpp:642:14:642:31 | new[] | test.cpp:647:5:647:6 | xs |
+| test.cpp:647:5:647:6 | xs | test.cpp:647:5:647:15 | access to array |
+| test.cpp:647:5:647:15 | access to array | test.cpp:647:5:647:19 | Store: ... = ... |
+| test.cpp:652:14:652:27 | new[] | test.cpp:653:16:653:17 | xs |
+| test.cpp:652:14:652:27 | new[] | test.cpp:656:3:656:4 | xs |
+| test.cpp:653:16:653:17 | xs | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:653:16:653:17 | xs | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:653:16:653:17 | xs | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:653:16:653:17 | xs | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:653:16:653:17 | xs | test.cpp:657:7:657:8 | xs |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:656:3:656:6 | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:657:7:657:8 | xs |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:657:7:657:8 | xs |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:656:3:656:6 | ... ++ | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:657:7:657:8 | xs | test.cpp:662:3:662:11 | Store: ... = ... |
+| test.cpp:667:14:667:31 | new[] | test.cpp:675:7:675:8 | xs |
+| test.cpp:675:7:675:8 | xs | test.cpp:675:7:675:19 | access to array |
+| test.cpp:675:7:675:19 | access to array | test.cpp:675:7:675:23 | Store: ... = ... |
 nodes
 | test.cpp:4:15:4:20 | call to malloc | semmle.label | call to malloc |
 | test.cpp:5:15:5:15 | p | semmle.label | p |
@@ -845,6 +1133,7 @@ nodes
 | test.cpp:82:5:82:28 | ... = ... | semmle.label | ... = ... |
 | test.cpp:82:9:82:13 | arr indirection [post update] [begin] | semmle.label | arr indirection [post update] [begin] |
 | test.cpp:82:17:82:22 | call to malloc | semmle.label | call to malloc |
+| test.cpp:83:5:83:7 | arr indirection [begin] | semmle.label | arr indirection [begin] |
 | test.cpp:83:5:83:30 | ... = ... | semmle.label | ... = ... |
 | test.cpp:83:9:83:11 | arr indirection [post update] [end] | semmle.label | arr indirection [post update] [end] |
 | test.cpp:83:15:83:17 | arr indirection [begin] | semmle.label | arr indirection [begin] |
@@ -904,6 +1193,7 @@ nodes
 | test.cpp:124:15:124:20 | call to malloc | semmle.label | call to malloc |
 | test.cpp:125:5:125:17 | ... = ... | semmle.label | ... = ... |
 | test.cpp:125:9:125:13 | arr indirection [post update] [begin] | semmle.label | arr indirection [post update] [begin] |
+| test.cpp:126:5:126:7 | arr indirection [begin] | semmle.label | arr indirection [begin] |
 | test.cpp:126:15:126:15 | p | semmle.label | p |
 | test.cpp:129:11:129:13 | arr indirection [begin] | semmle.label | arr indirection [begin] |
 | test.cpp:129:15:129:19 | begin | semmle.label | begin |
@@ -919,6 +1209,7 @@ nodes
 | test.cpp:143:5:143:29 | ... = ... | semmle.label | ... = ... |
 | test.cpp:143:10:143:14 | arr indirection [post update] [begin] | semmle.label | arr indirection [post update] [begin] |
 | test.cpp:143:18:143:23 | call to malloc | semmle.label | call to malloc |
+| test.cpp:144:5:144:7 | arr indirection [begin] | semmle.label | arr indirection [begin] |
 | test.cpp:144:5:144:32 | ... = ... | semmle.label | ... = ... |
 | test.cpp:144:10:144:12 | arr indirection [post update] [end] | semmle.label | arr indirection [post update] [end] |
 | test.cpp:144:16:144:18 | arr indirection [begin] | semmle.label | arr indirection [begin] |
@@ -1057,10 +1348,6 @@ nodes
 | test.cpp:342:8:342:17 | * ... | semmle.label | * ... |
 | test.cpp:347:14:347:27 | new[] | semmle.label | new[] |
 | test.cpp:348:15:348:16 | xs | semmle.label | xs |
-| test.cpp:350:15:350:19 | Load: * ... | semmle.label | Load: * ... |
-| test.cpp:350:16:350:19 | ... ++ | semmle.label | ... ++ |
-| test.cpp:350:16:350:19 | ... ++ | semmle.label | ... ++ |
-| test.cpp:350:16:350:19 | ... ++ | semmle.label | ... ++ |
 | test.cpp:355:14:355:27 | new[] | semmle.label | new[] |
 | test.cpp:356:15:356:16 | xs | semmle.label | xs |
 | test.cpp:356:15:356:23 | ... + ... | semmle.label | ... + ... |
@@ -1080,11 +1367,6 @@ nodes
 | test.cpp:359:16:359:31 | ... + ... | semmle.label | ... + ... |
 | test.cpp:363:14:363:27 | new[] | semmle.label | new[] |
 | test.cpp:365:15:365:15 | p | semmle.label | p |
-| test.cpp:368:5:368:10 | ... += ... | semmle.label | ... += ... |
-| test.cpp:368:5:368:10 | ... += ... | semmle.label | ... += ... |
-| test.cpp:371:7:371:7 | p | semmle.label | p |
-| test.cpp:372:15:372:16 | Load: * ... | semmle.label | Load: * ... |
-| test.cpp:372:16:372:16 | p | semmle.label | p |
 | test.cpp:377:14:377:27 | new[] | semmle.label | new[] |
 | test.cpp:378:15:378:16 | xs | semmle.label | xs |
 | test.cpp:378:15:378:23 | ... + ... | semmle.label | ... + ... |
@@ -1096,6 +1378,162 @@ nodes
 | test.cpp:381:5:381:9 | ... ++ | semmle.label | ... ++ |
 | test.cpp:384:13:384:16 | Load: * ... | semmle.label | Load: * ... |
 | test.cpp:384:14:384:16 | end | semmle.label | end |
+| test.cpp:388:14:388:27 | new[] | semmle.label | new[] |
+| test.cpp:389:16:389:17 | xs | semmle.label | xs |
+| test.cpp:392:3:392:4 | xs | semmle.label | xs |
+| test.cpp:399:14:399:27 | new[] | semmle.label | new[] |
+| test.cpp:400:16:400:17 | xs | semmle.label | xs |
+| test.cpp:402:5:402:6 | xs | semmle.label | xs |
+| test.cpp:410:14:410:27 | new[] | semmle.label | new[] |
+| test.cpp:411:15:411:23 | & ... | semmle.label | & ... |
+| test.cpp:411:15:411:23 | & ... | semmle.label | & ... |
+| test.cpp:411:15:411:23 | & ... | semmle.label | & ... |
+| test.cpp:411:15:411:23 | & ... | semmle.label | & ... |
+| test.cpp:411:16:411:17 | xs | semmle.label | xs |
+| test.cpp:411:16:411:23 | access to array | semmle.label | access to array |
+| test.cpp:411:16:411:23 | access to array | semmle.label | access to array |
+| test.cpp:412:12:412:14 | end | semmle.label | end |
+| test.cpp:412:12:412:14 | end | semmle.label | end |
+| test.cpp:413:5:413:6 | xs | semmle.label | xs |
+| test.cpp:413:5:413:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:413:5:413:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:413:5:413:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:413:5:413:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:414:9:414:10 | xs | semmle.label | xs |
+| test.cpp:414:14:414:16 | end | semmle.label | end |
+| test.cpp:415:7:415:11 | access to array | semmle.label | access to array |
+| test.cpp:415:7:415:15 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:421:14:421:27 | new[] | semmle.label | new[] |
+| test.cpp:422:15:422:23 | & ... | semmle.label | & ... |
+| test.cpp:422:15:422:23 | & ... | semmle.label | & ... |
+| test.cpp:422:15:422:23 | & ... | semmle.label | & ... |
+| test.cpp:422:15:422:23 | & ... | semmle.label | & ... |
+| test.cpp:422:16:422:17 | xs | semmle.label | xs |
+| test.cpp:422:16:422:23 | access to array | semmle.label | access to array |
+| test.cpp:422:16:422:23 | access to array | semmle.label | access to array |
+| test.cpp:423:12:423:14 | end | semmle.label | end |
+| test.cpp:423:12:423:14 | end | semmle.label | end |
+| test.cpp:424:5:424:6 | xs | semmle.label | xs |
+| test.cpp:424:5:424:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:424:5:424:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:424:5:424:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:424:5:424:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:425:9:425:10 | xs | semmle.label | xs |
+| test.cpp:425:9:425:10 | xs | semmle.label | xs |
+| test.cpp:425:18:425:20 | end | semmle.label | end |
+| test.cpp:426:7:426:8 | xs | semmle.label | xs |
+| test.cpp:426:7:426:11 | access to array | semmle.label | access to array |
+| test.cpp:426:7:426:15 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:432:14:432:27 | new[] | semmle.label | new[] |
+| test.cpp:433:15:433:23 | & ... | semmle.label | & ... |
+| test.cpp:433:15:433:23 | & ... | semmle.label | & ... |
+| test.cpp:433:15:433:23 | & ... | semmle.label | & ... |
+| test.cpp:433:15:433:23 | & ... | semmle.label | & ... |
+| test.cpp:433:16:433:17 | xs | semmle.label | xs |
+| test.cpp:433:16:433:23 | access to array | semmle.label | access to array |
+| test.cpp:433:16:433:23 | access to array | semmle.label | access to array |
+| test.cpp:434:12:434:14 | end | semmle.label | end |
+| test.cpp:434:12:434:14 | end | semmle.label | end |
+| test.cpp:435:5:435:7 | end | semmle.label | end |
+| test.cpp:436:5:436:6 | xs | semmle.label | xs |
+| test.cpp:436:5:436:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:436:5:436:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:436:5:436:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:436:5:436:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:437:9:437:10 | xs | semmle.label | xs |
+| test.cpp:438:7:438:11 | access to array | semmle.label | access to array |
+| test.cpp:438:7:438:15 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:444:14:444:27 | new[] | semmle.label | new[] |
+| test.cpp:445:15:445:23 | & ... | semmle.label | & ... |
+| test.cpp:445:15:445:23 | & ... | semmle.label | & ... |
+| test.cpp:445:15:445:23 | & ... | semmle.label | & ... |
+| test.cpp:445:15:445:23 | & ... | semmle.label | & ... |
+| test.cpp:445:16:445:17 | xs | semmle.label | xs |
+| test.cpp:445:16:445:23 | access to array | semmle.label | access to array |
+| test.cpp:445:16:445:23 | access to array | semmle.label | access to array |
+| test.cpp:446:3:446:5 | end | semmle.label | end |
+| test.cpp:448:5:448:6 | xs | semmle.label | xs |
+| test.cpp:448:5:448:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:448:5:448:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:448:5:448:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:448:5:448:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:449:9:449:10 | xs | semmle.label | xs |
+| test.cpp:450:7:450:11 | access to array | semmle.label | access to array |
+| test.cpp:450:7:450:15 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:456:14:456:31 | new[] | semmle.label | new[] |
+| test.cpp:457:16:457:17 | xs | semmle.label | xs |
+| test.cpp:460:5:460:6 | xs | semmle.label | xs |
+| test.cpp:468:14:468:27 | new[] | semmle.label | new[] |
+| test.cpp:469:16:469:17 | xs | semmle.label | xs |
+| test.cpp:472:5:472:6 | xs | semmle.label | xs |
+| test.cpp:480:14:480:27 | new[] | semmle.label | new[] |
+| test.cpp:481:15:481:23 | & ... | semmle.label | & ... |
+| test.cpp:481:15:481:23 | & ... | semmle.label | & ... |
+| test.cpp:481:15:481:23 | & ... | semmle.label | & ... |
+| test.cpp:481:15:481:23 | & ... | semmle.label | & ... |
+| test.cpp:481:16:481:17 | xs | semmle.label | xs |
+| test.cpp:481:16:481:23 | access to array | semmle.label | access to array |
+| test.cpp:481:16:481:23 | access to array | semmle.label | access to array |
+| test.cpp:482:3:482:5 | end | semmle.label | end |
+| test.cpp:484:5:484:6 | xs | semmle.label | xs |
+| test.cpp:484:5:484:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:484:5:484:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:484:5:484:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:484:5:484:8 | ... ++ | semmle.label | ... ++ |
+| test.cpp:485:9:485:10 | xs | semmle.label | xs |
+| test.cpp:486:7:486:11 | access to array | semmle.label | access to array |
+| test.cpp:486:7:486:15 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:499:3:499:25 | ... = ... | semmle.label | ... = ... |
+| test.cpp:499:7:499:8 | val indirection [post update] [xs] | semmle.label | val indirection [post update] [xs] |
+| test.cpp:499:12:499:25 | new[] | semmle.label | new[] |
+| test.cpp:500:3:500:5 | val indirection [xs] | semmle.label | val indirection [xs] |
+| test.cpp:500:7:500:8 | xs | semmle.label | xs |
+| test.cpp:500:7:500:8 | xs indirection | semmle.label | xs indirection |
+| test.cpp:510:16:510:33 | new[] | semmle.label | new[] |
+| test.cpp:512:7:512:8 | xs | semmle.label | xs |
+| test.cpp:520:14:520:27 | new[] | semmle.label | new[] |
+| test.cpp:526:5:526:6 | xs | semmle.label | xs |
+| test.cpp:532:14:532:27 | new[] | semmle.label | new[] |
+| test.cpp:537:5:537:6 | xs | semmle.label | xs |
+| test.cpp:543:14:543:27 | new[] | semmle.label | new[] |
+| test.cpp:548:5:548:6 | xs | semmle.label | xs |
+| test.cpp:548:5:548:15 | access to array | semmle.label | access to array |
+| test.cpp:548:5:548:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:554:14:554:27 | new[] | semmle.label | new[] |
+| test.cpp:559:5:559:6 | xs | semmle.label | xs |
+| test.cpp:559:5:559:15 | access to array | semmle.label | access to array |
+| test.cpp:559:5:559:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:565:14:565:27 | new[] | semmle.label | new[] |
+| test.cpp:570:5:570:6 | xs | semmle.label | xs |
+| test.cpp:576:14:576:27 | new[] | semmle.label | new[] |
+| test.cpp:581:5:581:6 | xs | semmle.label | xs |
+| test.cpp:587:14:587:31 | new[] | semmle.label | new[] |
+| test.cpp:592:5:592:6 | xs | semmle.label | xs |
+| test.cpp:598:14:598:31 | new[] | semmle.label | new[] |
+| test.cpp:603:5:603:6 | xs | semmle.label | xs |
+| test.cpp:609:14:609:31 | new[] | semmle.label | new[] |
+| test.cpp:614:5:614:6 | xs | semmle.label | xs |
+| test.cpp:620:14:620:31 | new[] | semmle.label | new[] |
+| test.cpp:625:5:625:6 | xs | semmle.label | xs |
+| test.cpp:631:14:631:31 | new[] | semmle.label | new[] |
+| test.cpp:636:5:636:6 | xs | semmle.label | xs |
+| test.cpp:642:14:642:31 | new[] | semmle.label | new[] |
+| test.cpp:647:5:647:6 | xs | semmle.label | xs |
+| test.cpp:647:5:647:15 | access to array | semmle.label | access to array |
+| test.cpp:647:5:647:19 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:652:14:652:27 | new[] | semmle.label | new[] |
+| test.cpp:653:16:653:17 | xs | semmle.label | xs |
+| test.cpp:656:3:656:4 | xs | semmle.label | xs |
+| test.cpp:656:3:656:6 | ... ++ | semmle.label | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | semmle.label | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | semmle.label | ... ++ |
+| test.cpp:656:3:656:6 | ... ++ | semmle.label | ... ++ |
+| test.cpp:657:7:657:8 | xs | semmle.label | xs |
+| test.cpp:662:3:662:11 | Store: ... = ... | semmle.label | Store: ... = ... |
+| test.cpp:667:14:667:31 | new[] | semmle.label | new[] |
+| test.cpp:675:7:675:8 | xs | semmle.label | xs |
+| test.cpp:675:7:675:19 | access to array | semmle.label | access to array |
+| test.cpp:675:7:675:23 | Store: ... = ... | semmle.label | Store: ... = ... |
 subpaths
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -1118,8 +1556,16 @@ subpaths
 | test.cpp:264:13:264:14 | Load: * ... | test.cpp:260:13:260:24 | new[] | test.cpp:264:13:264:14 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:260:13:260:24 | new[] | new[] | test.cpp:261:19:261:21 | len | len |
 | test.cpp:274:5:274:10 | Store: ... = ... | test.cpp:270:13:270:24 | new[] | test.cpp:274:5:274:10 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:270:13:270:24 | new[] | new[] | test.cpp:271:19:271:21 | len | len |
 | test.cpp:308:5:308:29 | Store: ... = ... | test.cpp:304:15:304:26 | new[] | test.cpp:308:5:308:29 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:304:15:304:26 | new[] | new[] | test.cpp:308:8:308:10 | ... + ... | ... + ... |
-| test.cpp:350:15:350:19 | Load: * ... | test.cpp:347:14:347:27 | new[] | test.cpp:350:15:350:19 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:347:14:347:27 | new[] | new[] | test.cpp:348:20:348:23 | size | size |
 | test.cpp:358:14:358:26 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:358:14:358:26 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
 | test.cpp:359:14:359:32 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:359:14:359:32 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 2. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
-| test.cpp:372:15:372:16 | Load: * ... | test.cpp:363:14:363:27 | new[] | test.cpp:372:15:372:16 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:363:14:363:27 | new[] | new[] | test.cpp:365:19:365:22 | size | size |
 | test.cpp:384:13:384:16 | Load: * ... | test.cpp:377:14:377:27 | new[] | test.cpp:384:13:384:16 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:377:14:377:27 | new[] | new[] | test.cpp:378:20:378:23 | size | size |
+| test.cpp:415:7:415:15 | Store: ... = ... | test.cpp:410:14:410:27 | new[] | test.cpp:415:7:415:15 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:410:14:410:27 | new[] | new[] | test.cpp:411:19:411:22 | size | size |
+| test.cpp:426:7:426:15 | Store: ... = ... | test.cpp:421:14:421:27 | new[] | test.cpp:426:7:426:15 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:421:14:421:27 | new[] | new[] | test.cpp:422:19:422:22 | size | size |
+| test.cpp:438:7:438:15 | Store: ... = ... | test.cpp:432:14:432:27 | new[] | test.cpp:438:7:438:15 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:432:14:432:27 | new[] | new[] | test.cpp:433:19:433:22 | size | size |
+| test.cpp:450:7:450:15 | Store: ... = ... | test.cpp:444:14:444:27 | new[] | test.cpp:450:7:450:15 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:444:14:444:27 | new[] | new[] | test.cpp:445:19:445:22 | size | size |
+| test.cpp:486:7:486:15 | Store: ... = ... | test.cpp:480:14:480:27 | new[] | test.cpp:486:7:486:15 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@ + 498. | test.cpp:480:14:480:27 | new[] | new[] | test.cpp:481:19:481:22 | size | size |
+| test.cpp:548:5:548:19 | Store: ... = ... | test.cpp:543:14:543:27 | new[] | test.cpp:548:5:548:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:543:14:543:27 | new[] | new[] | test.cpp:548:8:548:14 | src_pos | src_pos |
+| test.cpp:559:5:559:19 | Store: ... = ... | test.cpp:554:14:554:27 | new[] | test.cpp:559:5:559:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:554:14:554:27 | new[] | new[] | test.cpp:559:8:559:14 | src_pos | src_pos |
+| test.cpp:647:5:647:19 | Store: ... = ... | test.cpp:642:14:642:31 | new[] | test.cpp:647:5:647:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:642:14:642:31 | new[] | new[] | test.cpp:647:8:647:14 | src_pos | src_pos |
+| test.cpp:662:3:662:11 | Store: ... = ... | test.cpp:652:14:652:27 | new[] | test.cpp:662:3:662:11 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:652:14:652:27 | new[] | new[] | test.cpp:653:19:653:22 | size | size |
+| test.cpp:675:7:675:23 | Store: ... = ... | test.cpp:667:14:667:31 | new[] | test.cpp:675:7:675:23 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:667:14:667:31 | new[] | new[] | test.cpp:675:10:675:18 | ... ++ | ... ++ |

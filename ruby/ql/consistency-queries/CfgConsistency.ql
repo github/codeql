@@ -1,5 +1,6 @@
 import codeql.ruby.controlflow.internal.ControlFlowGraphImplShared::Consistency
 import codeql.ruby.AST
+import codeql.ruby.CFG
 import codeql.ruby.controlflow.internal.Completion
 import codeql.ruby.controlflow.internal.ControlFlowGraphImpl
 
@@ -17,4 +18,9 @@ query predicate nonPostOrderExpr(Expr e, string cls) {
     last != e and
     c instanceof NormalCompletion
   )
+}
+
+query predicate multipleToString(CfgNode n, string s) {
+  s = strictconcat(n.toString(), ",") and
+  strictcount(n.toString()) > 1
 }

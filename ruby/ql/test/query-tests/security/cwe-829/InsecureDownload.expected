@@ -18,6 +18,7 @@ nodes
 | insecure_download.rb:43:22:43:56 | "http://example.org/unsafe.unk..." | semmle.label | "http://example.org/unsafe.unk..." |
 | insecure_download.rb:53:65:53:78 | "/myscript.sh" | semmle.label | "/myscript.sh" |
 subpaths
+testFailures
 #select
 | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | $@ | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | "http://example.org/unsafe.APK" |
 | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | $@ | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | "http://example.org/unsafe.APK" |

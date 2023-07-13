@@ -5,7 +5,6 @@ private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
 import semmle.code.java.frameworks.android.Compose
-import DataFlow
 
 /** A variable that may hold sensitive information, judging by its name. */
 class CredentialExpr extends Expr {
@@ -45,7 +44,7 @@ deprecated class SensitiveLoggerConfiguration extends TaintTracking::Configurati
     sanitizer.getType() instanceof TypeType
   }
 
-  override predicate isSanitizerIn(Node node) { this.isSource(node) }
+  override predicate isSanitizerIn(DataFlow::Node node) { this.isSource(node) }
 }
 
 /** A data-flow configuration for identifying potentially-sensitive data flowing to a log output. */
@@ -62,7 +61,7 @@ module SensitiveLoggerConfig implements DataFlow::ConfigSig {
     sanitizer.getType() instanceof TypeType
   }
 
-  predicate isBarrierIn(Node node) { isSource(node) }
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 module SensitiveLoggerFlow = TaintTracking::Global<SensitiveLoggerConfig>;

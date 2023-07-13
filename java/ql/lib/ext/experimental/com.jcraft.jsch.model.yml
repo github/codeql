@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSinkModel
+    data: 
+      - ["com.jcraft.jsch", "ChannelExec", True, "setCommand", "", "", "Argument[0]", "command-injection", "manual", "jsch-os-injection"]

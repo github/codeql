@@ -1,0 +1,6 @@
+name: codeql/mad
+version: 0.1.0
+groups: shared
+library: true
+dependencies:
+warnOnImplicitThis: true

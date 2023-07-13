@@ -191,7 +191,7 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends LocalSourceNode, TParameterNode instanceof ParameterNodeImpl {
+class ParameterNode extends LocalSourceNode instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   final Parameter getParameter() { result = super.getParameter() }
 
@@ -1284,13 +1284,16 @@ class HashLiteralNode extends LocalSourceNode, ExprNode {
  * into calls to `Array.[]`, so this includes both desugared calls as well as
  * explicit calls.
  */
-class ArrayLiteralNode extends LocalSourceNode, ExprNode {
+class ArrayLiteralNode extends LocalSourceNode, CallNode {
   ArrayLiteralNode() { super.getExprNode() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode }
 
   /**
    * Gets an element of the array.
    */
-  Node getAnElement() { result = this.(CallNode).getPositionalArgument(_) }
+  Node getAnElement() { result = this.getElement(_) }
+
+  /** Gets the `i`th element of the array. */
+  Node getElement(int i) { result = this.getPositionalArgument(i) }
 }
 
 /**
