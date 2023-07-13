@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.3
- * @precision low
+ * @precision medium
  * @id cpp/overrun-write
  * @tags reliability
  *       security
@@ -117,8 +117,6 @@ module ValidState {
       isSinkPairImpl(_, _, sink, _, _) and
       state = [false, true]
     }
-
-    predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
@@ -248,18 +246,8 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrier1(DataFlow::Node node, FlowState1 state) { none() }
-
-  predicate isBarrier2(DataFlow::Node node, FlowState2 state) { none() }
-
   predicate isBarrierOut2(DataFlow::Node node) {
     node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
-  }
-
-  predicate isAdditionalFlowStep1(
-    DataFlow::Node node1, FlowState1 state1, DataFlow::Node node2, FlowState1 state2
-  ) {
-    none()
   }
 
   predicate isAdditionalFlowStep2(

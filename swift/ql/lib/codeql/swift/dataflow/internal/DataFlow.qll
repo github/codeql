@@ -114,7 +114,7 @@ signature module StateConfigSig {
    * Holds if data flow through `node` is prohibited when the flow state is
    * `state`.
    */
-  predicate isBarrier(Node node, FlowState state);
+  default predicate isBarrier(Node node, FlowState state) { none() }
 
   /** Holds if data flow into `node` is prohibited. */
   default predicate isBarrierIn(Node node) { none() }
@@ -131,7 +131,9 @@ signature module StateConfigSig {
    * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
    * This step is only applicable in `state1` and updates the flow state to `state2`.
    */
-  predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2);
+  default predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
+    none()
+  }
 
   /**
    * Holds if an arbitrary number of implicit read steps of content `c` may be

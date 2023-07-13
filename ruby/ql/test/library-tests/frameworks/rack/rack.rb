@@ -73,3 +73,23 @@ class Baz
     [400, {}, "nope"]
   end
 end
+
+class Qux
+  attr_reader :env
+  def self.call(env)
+    new(env).call
+  end
+
+  def initialize(env)
+    @env = env
+  end
+
+  def call
+    do_redirect
+  end
+
+  def do_redirect
+    redirect_to = env['redirect_to']
+    Rack::Response.new(['redirecting'], 302, 'Location' => redirect_to).finish
+  end
+end

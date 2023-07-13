@@ -1,0 +1,4 @@
+| Extraction failed in subdir0/subdir1/test.go with error cannot find package "subdir1/subsubdir1" in any of:\n\t(absolute path) (from $GOROOT)\n\t(absolute path) (from $GOPATH) | 2 |
+| Extraction failed in subdir0/subdir1/test.go with error could not import subdir1/subsubdir1 (invalid package name: "") | 2 |
+| Extraction failed in subdir0/test.go with error cannot find package "test/subdir2" in any of:\n\t(absolute path) (from $GOROOT)\n\t(absolute path) (from $GOPATH) | 2 |
+| Extraction failed in subdir0/test.go with error could not import test/subdir2 (invalid package name: "") | 2 |

@@ -40,6 +40,7 @@ import semmle.go.frameworks.Email
 import semmle.go.frameworks.Encoding
 import semmle.go.frameworks.Gin
 import semmle.go.frameworks.Glog
+import semmle.go.frameworks.GoMicro
 import semmle.go.frameworks.GoRestfulHttp
 import semmle.go.frameworks.K8sIoApimachineryPkgRuntime
 import semmle.go.frameworks.K8sIoApiCoreV1

@@ -453,7 +453,7 @@ module Make<InlineExpectationsTestSig Impl> {
     }
   }
 
-  private module LegacyImpl implements TestSig {
+  deprecated private module LegacyImpl implements TestSig {
     string getARelevantTag() { result = any(InlineExpectationsTest t).getARelevantTag() }
 
     predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
@@ -473,7 +473,7 @@ module Make<InlineExpectationsTestSig Impl> {
    * list of failure messages that point out where the actual results differ from the expected
    * results.
    */
-  abstract class InlineExpectationsTest extends string {
+  abstract deprecated class InlineExpectationsTest extends string {
     bindingset[this]
     InlineExpectationsTest() { any() }
 
@@ -488,19 +488,32 @@ module Make<InlineExpectationsTestSig Impl> {
     }
   }
 
-  import MakeTest<LegacyImpl> as LegacyTest
+  deprecated import MakeTest<LegacyImpl> as LegacyTest
 
-  query predicate failures = LegacyTest::testFailures/2;
+  deprecated query predicate failures = LegacyTest::testFailures/2;
 
-  class ActualResult = LegacyTest::ActualTestResult;
+  deprecated class ActualResult = LegacyTest::ActualTestResult;
 
-  class GoodExpectation = LegacyTest::GoodTestExpectation;
+  deprecated class GoodExpectation = LegacyTest::GoodTestExpectation;
 
-  class FalsePositiveExpectation = LegacyTest::FalsePositiveTestExpectation;
+  deprecated class FalsePositiveExpectation = LegacyTest::FalsePositiveTestExpectation;
 
-  class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
+  deprecated class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
 
-  class InvalidExpectation = LegacyTest::InvalidTestExpectation;
+  deprecated class InvalidExpectation = LegacyTest::InvalidTestExpectation;
+
+  /**
+   * Holds if the expectation `tag=value` is found in one or more expectation comments.
+   *
+   * This can be used when writing tests where the set of possible values must be known in advance,
+   * for example, when testing a predicate for which `value` is part of the binding set.
+   */
+  predicate hasExpectationWithValue(string tag, string value) {
+    exists(string tags |
+      getAnExpectation(_, _, _, tags, value) and
+      tag = tags.splitAt(",")
+    )
+  }
 }
 
 /**

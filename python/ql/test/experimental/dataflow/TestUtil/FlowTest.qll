@@ -9,7 +9,7 @@ signature module FlowTestSig {
   predicate relevantFlow(DataFlow::Node fromNode, DataFlow::Node toNode);
 }
 
-private module FlowTest<FlowTestSig Impl> implements TestSig {
+module MakeTestSig<FlowTestSig Impl> implements TestSig {
   string getARelevantTag() { result = Impl::flowTag() }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -36,12 +36,4 @@ private module FlowTest<FlowTestSig Impl> implements TestSig {
         else result = ", l:" + delta.toString()
     )
   }
-}
-
-module MakeFlowTest<FlowTestSig Impl> {
-  import MakeTest<FlowTest<Impl>>
-}
-
-module MakeFlowTest2<FlowTestSig Impl1, FlowTestSig Impl2> {
-  import MakeTest<MergeTests<FlowTest<Impl1>, FlowTest<Impl2>>>
 }
