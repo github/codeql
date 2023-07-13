@@ -11,7 +11,7 @@ import swift
 import codeql.swift.dataflow.DataFlow
 import Flow::PathGraph
 
-module Conf implements DataFlow::StateConfigSig {
+module Config implements DataFlow::StateConfigSig {
   class FlowState = Callable;
 
   additional predicate isUnsafePointerCall(CallExpr call) {
@@ -19,7 +19,9 @@ module Conf implements DataFlow::StateConfigSig {
     .hasName([
         "withUnsafeBytes(_:)", "withCString(_:)", "withUnsafeMutableBytes(_:)",
         "withContiguousMutableStorageIfAvailable(_:)", "withContiguousStorageIfAvailable(_:)",
-        "withUTF8(_:)", "withUnsafeBufferPointer(_:)", "withUnsafeBufferPointer(_:)"
+        "withUTF8(_:)", "withUnsafeBufferPointer(_:)", "withUnsafeMutableBufferPointer(_:)",
+        "withMemoryRebound(to:_:)", "withUnsafeTemporaryAllocation(of:capacity:_:)",
+        "withUnsafeCurrentTask(body:)", "withCheckedContinuation(function:_:)"
       ])
   }
 
@@ -27,14 +29,14 @@ module Conf implements DataFlow::StateConfigSig {
   additional predicate isUnsafePointerClosure(ClosureExpr expr) {
     exists(CallExpr call |
       isUnsafePointerCall(call) and
-      expr = call.getArgument(0).getExpr()
+      expr = call.getAnArgument().getExpr()
     )
   }
 
   additional predicate isUnsafePointerFunction(Function f) {
     exists(CallExpr call |
       isUnsafePointerCall(call) and
-      f.getAnAccess() = call.getArgument(0).getExpr()
+      f.getAnAccess() = call.getAnArgument().getExpr()
     )
   }
   predicate isSource(DataFlow::Node node, FlowState state) {
@@ -71,7 +73,9 @@ module Conf implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { 
+    node2.asExpr().convertsFrom(node1.asExpr())
+  }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
@@ -83,11 +87,11 @@ module Conf implements DataFlow::StateConfigSig {
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     isSink(node, _) and
-    c = any(DataFlow::ContentSet set)
+    c = any(c)
   }
 }
 
-module Flow = DataFlow::GlobalWithState<Conf>;
+module Flow = DataFlow::GlobalWithState<Config>;
 
 from Flow::PathNode source, Flow::PathNode sink
 where Flow::flowPath(source, sink)
