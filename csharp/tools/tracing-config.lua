@@ -138,8 +138,6 @@ function RegisterExtractorPack(id)
     end
 
     local windowsMatchers = {
-        CreatePatternMatcher({ '^semmle%.extraction%.csharp%.standalone%.exe$' },
-            MatchCompilerName, nil, { trace = false }),
         DotnetMatcherBuild,
         MsBuildMatcher,
         CreatePatternMatcher({ '^csc.*%.exe$' }, MatchCompilerName, extractor, {
@@ -155,8 +153,10 @@ function RegisterExtractorPack(id)
             end
 
             local seenCompilerCall = false
+            local shouldTrace = true
             local argv = NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
             local extractorArgs = { '--compiler' }
+            local replaceArgs = { }
             for _, arg in ipairs(argv) do
                 if arg:match('csc%.dll$') then
                     seenCompilerCall = true
@@ -164,15 +164,33 @@ function RegisterExtractorPack(id)
                 if seenCompilerCall then
                     table.insert(extractorArgs, '"' .. arg .. '"')
                 end
+                if arg == '--do-not-trace' then
+                    Log(1, 'Found "do not trace" special flag for csc, not tracing this invocation')
+                    shouldTrace = false
+                else
+                    table.insert(replaceArgs, arg)
+                end
             end
 
             if seenCompilerCall then
+                if shouldTrace then
+                    return {
+                        order = ORDER_AFTER,
+                        invocation = {
+                            path = AbsolutifyExtractorPath(id, extractor),
+                            arguments = {
+                                commandLineString = table.concat(extractorArgs, " ")
+                            }
+                        }
+                    }
+                end
+
                 return {
-                    order = ORDER_AFTER,
+                    order = ORDER_REPLACE,
                     invocation = {
-                        path = AbsolutifyExtractorPath(id, extractor),
+                        path = AbsolutifyExtractorPath(id, compilerPath),
                         arguments = {
-                            commandLineString = table.concat(extractorArgs, " ")
+                            commandLineString = table.concat(replaceArgs, " ")
                         }
                     }
                 }
@@ -181,9 +199,6 @@ function RegisterExtractorPack(id)
         end
     }
     local posixMatchers = {
-        -- The compiler name is case sensitive on Linux and lower cased on MacOS
-        CreatePatternMatcher({ '^semmle%.extraction%.csharp%.standalone$', '^Semmle%.Extraction%.CSharp%.Standalone$' },
-            MatchCompilerName, nil, { trace = false }),
         DotnetMatcherBuild,
         CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$' }, MatchCompilerName,
             extractor, {
@@ -198,8 +213,10 @@ function RegisterExtractorPack(id)
             end
 
             local seenCompilerCall = false
+            local shouldTrace = true
             local argv = compilerArguments.argv
             local extractorArgs = { '--compiler' }
+            local replaceArgs = { }
             for _, arg in ipairs(argv) do
                 if arg:match('csc%.dll$') or arg:match('csc%.exe$') or arg:match('mcs%.exe$') then
                     seenCompilerCall = true
@@ -207,15 +224,33 @@ function RegisterExtractorPack(id)
                 if seenCompilerCall then
                     table.insert(extractorArgs, arg)
                 end
+                if arg == '--do-not-trace' then
+                    Log(1, 'Found "do not trace" special flag for csc, not tracing this invocation')
+                    shouldTrace = false
+                else
+                    table.insert(replaceArgs, arg)
+                end
             end
 
             if seenCompilerCall then
+                if shouldTrace then
+                    return {
+                        order = ORDER_AFTER,
+                        invocation = {
+                            path = AbsolutifyExtractorPath(id, extractor),
+                            arguments = {
+                                argv = extractorArgs
+                            }
+                        }
+                    }
+                end
+
                 return {
-                    order = ORDER_AFTER,
+                    order = ORDER_REPLACE,
                     invocation = {
-                        path = AbsolutifyExtractorPath(id, extractor),
+                        path = AbsolutifyExtractorPath(id, compilerPath),
                         arguments = {
-                            argv = extractorArgs
+                            argv = replaceArgs
                         }
                     }
                 }

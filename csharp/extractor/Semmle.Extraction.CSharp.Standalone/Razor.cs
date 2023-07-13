@@ -63,7 +63,7 @@ namespace Semmle.BuildAnalyser
                 GenerateAnalyzerConfig(cshtmls, Path.Combine(sourceGeneratorFolder, analyzerConfig));
 
                 var args = new StringBuilder();
-                args.Append($"{cscPath} /target:exe /generatedfilesout:{outputFolder} /out:{dllPath} /analyzerconfig:{analyzerConfig} ");
+                args.Append($"{cscPath} --do-not-trace /target:exe /generatedfilesout:{outputFolder} /out:{dllPath} /analyzerconfig:{analyzerConfig} ");
                 foreach (var f in Directory.GetFiles(sourceGeneratorFolder, "*.dll"))
                 {
                     args.Append($"/analyzer:{f} ");
