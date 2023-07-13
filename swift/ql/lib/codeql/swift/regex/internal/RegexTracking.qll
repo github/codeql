@@ -14,7 +14,7 @@ private import codeql.swift.regex.Regex
  * A data flow configuration for tracking string literals that are used as
  * regular expressions.
  */
-private module RegexUseConfig implements DataFlow::ConfigSig {
+private module StringLiteralUseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof StringLiteralExpr }
 
   predicate isSink(DataFlow::Node node) { node.asExpr() = any(RegexEval eval).getRegexInput() }
@@ -34,4 +34,4 @@ private module RegexUseConfig implements DataFlow::ConfigSig {
   }
 }
 
-module RegexUseFlow = DataFlow::Global<RegexUseConfig>;
+module StringLiteralUseFlow = DataFlow::Global<StringLiteralUseConfig>;

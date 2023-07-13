@@ -19,7 +19,7 @@ private class ParsedStringRegex extends RegExp, StringLiteralExpr {
   RegexEval eval;
 
   ParsedStringRegex() {
-    RegexUseFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(eval.getRegexInput()))
+    StringLiteralUseFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(eval.getRegexInput()))
   }
 
   /**
