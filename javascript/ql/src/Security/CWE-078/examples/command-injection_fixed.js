@@ -5,5 +5,5 @@ var cp = require("child_process"),
 var server = http.createServer(function(req, res) {
     let file = url.parse(req.url, true).query.path;
 
-    cp.execSync(`wc -l ${file}`); // BAD
+    cp.execFileSync('wc', ['-l', file]); // GOOD
 });
