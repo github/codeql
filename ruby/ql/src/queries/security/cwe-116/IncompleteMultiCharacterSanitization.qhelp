@@ -86,6 +86,18 @@ def remove_all_html_tags(input)
 end  
 </sample>
 
+<p>
+Another potential fix is to use the popular <code>sanitize</code> gem. 
+It keeps most of the safe HTML tags while removing all unsafe tags and attributes.
+</p>
+<sample language="javascript">
+require 'sanitize'
+
+def sanitize_html(input)
+  Sanitize.fragment(input)
+end
+</sample>
+
 </example>
 
 <example>
@@ -98,7 +110,10 @@ str.gsub(/\.\.\//, "")
 </sample>
 
 <p>
-This can result in an unsafe path being generated if only a single replacement is done.
+The regular expression attempts to strip out all occurences of <code>/../</code> from <code>str</code>.
+This will not work as expected: for the string <code>/./.././</code>, for example, it will remove the single
+occurrence of <code>/../</code> in the middle, but the remainder of the string then becomes
+<code>/../</code>, which is another instance of the substring we were trying to remove.
 </p>
 
 <p>

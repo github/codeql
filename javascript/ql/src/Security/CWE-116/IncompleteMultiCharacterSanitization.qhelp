@@ -85,6 +85,16 @@ function removeAllHtmlTags(input) {
   return input.replace(/&lt;|&gt;/g, "");  
 }
 </sample>
+<p>
+Another potential fix is to use the popular <code>sanitize-html</code> npm library. 
+It keeps most of the safe HTML tags while removing all unsafe tags and attributes.
+</p>
+<sample language="javascript">
+const sanitizeHtml = require("sanitize-html");
+function removeAllHtmlTags(input) {  
+  return sanitizeHtml(input);  
+}
+</sample>
 
 </example>
 
@@ -98,7 +108,10 @@ str.replace(/\.\.\//g, "");
 </sample>
 
 <p>
-This can result in an unsafe path being generated if only a single replacement is done.
+The regular expression attempts to strip out all occurences of <code>/../</code> from <code>str</code>.
+This will not work as expected: for the string <code>/./.././</code>, for example, it will remove the single
+occurrence of <code>/../</code> in the middle, but the remainder of the string then becomes
+<code>/../</code>, which is another instance of the substring we were trying to remove.
 </p>
 
 <p>
