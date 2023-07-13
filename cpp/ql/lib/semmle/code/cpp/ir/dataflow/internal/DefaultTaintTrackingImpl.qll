@@ -448,6 +448,8 @@ module TaintedWithPath {
     }
 
     predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+
+    predicate neverSkip(Node node) { none() }
   }
 
   private module AdjustedFlow = TaintTracking::Global<AdjustedConfig>;
