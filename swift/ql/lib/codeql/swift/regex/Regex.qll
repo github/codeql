@@ -9,23 +9,22 @@ private import internal.ParseRegex
 private import internal.RegexTracking
 
 /**
- * A string literal that is used as a regular expression in a regular
- * expression evaluation. For example the string literal `"(a|b).*"` in:
+ * A string literal that is used as a regular expression. For example
+ * the string literal `"(a|b).*"` in:
  * ```
  * Regex("(a|b).*").firstMatch(in: myString)
  * ```
  */
 private class ParsedStringRegex extends RegExp, StringLiteralExpr {
-  RegexEval eval;
+  DataFlow::Node use;
 
-  ParsedStringRegex() {
-    StringLiteralUseFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(eval.getRegexInput()))
-  }
+  ParsedStringRegex() { StringLiteralUseFlow::flow(DataFlow::exprNode(this), use) }
 
   /**
-   * Gets a call that evaluates this regular expression.
+   * Gets a dataflow node where this string literal is used as a regular
+   * expression.
    */
-  RegexEval getEval() { result = eval }
+  DataFlow::Node getUse() { result = use }
 }
 
 /**
@@ -69,7 +68,8 @@ private class StandardRegexCreation extends RegexCreation {
  */
 abstract class RegexEval extends CallExpr {
   /**
-   * Gets the input to this call that is the regular expression being evaluated.
+   * Gets the input to this call that is the regular expression being evaluated. This may
+   * be a regular expression object or a string literal.
    */
   abstract Expr getRegexInput();
 
@@ -81,7 +81,16 @@ abstract class RegexEval extends CallExpr {
   /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
-  RegExp getARegex() { result.(ParsedStringRegex).getEval() = this }
+  RegExp getARegex() {
+    // string literal used directly as a regex
+    result.(ParsedStringRegex).getUse().asExpr() = this.getRegexInput()
+    or
+    // string literal -> regex object -> use
+    exists(RegexCreation regexCreation |
+      result.(ParsedStringRegex).getUse() = regexCreation.getStringInput() and
+      RegexUseFlow::flow(regexCreation, DataFlow::exprNode(this.getRegexInput()))
+    )
+  }
 }
 
 /**

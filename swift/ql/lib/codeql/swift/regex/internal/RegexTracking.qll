@@ -11,21 +11,46 @@ private import ParseRegex
 private import codeql.swift.regex.Regex
 
 /**
- * A data flow configuration for tracking string literals that are used as
- * regular expressions.
+ * A data flow configuration for tracking string literals that are used to
+ * create regular expression objects, or are evaluated directly as regular
+ * expressions.
  */
 private module StringLiteralUseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof StringLiteralExpr }
 
-  predicate isSink(DataFlow::Node node) { node.asExpr() = any(RegexEval eval).getRegexInput() }
-
-  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // flow through `Regex` initializer, i.e. from a string to a `Regex` object.
-    exists(RegexCreation regexCreation |
-      nodeFrom = regexCreation.getStringInput() and
-      nodeTo = regexCreation
-    )
+  predicate isSink(DataFlow::Node node) {
+    // evaluated directly as a regular expression
+    node.asExpr() = any(RegexEval eval).getRegexInput()
+    or
+    // used to create a regular expression object
+    node = any(RegexCreation regexCreation).getStringInput()
   }
 }
 
 module StringLiteralUseFlow = DataFlow::Global<StringLiteralUseConfig>;
+
+/**
+ * A data flow configuration for tracking regular expression objects from
+ * creation to the point of use.
+ */
+private module RegexUseConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    // creation of the regex
+    exists(RegexCreation regexCreation |
+      node = regexCreation
+    )
+    // TODO: track parse mode flags.
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    // evaluation of the regex
+    node.asExpr() = any(RegexEval eval).getRegexInput()
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // TODO: flow through regex methods that return a modified regex.
+    none()
+  }
+}
+
+module RegexUseFlow = DataFlow::Global<RegexUseConfig>;
