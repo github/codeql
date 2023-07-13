@@ -21,15 +21,9 @@ private module StringLiteralUseConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // flow through `Regex` initializer, i.e. from a string to a `Regex` object.
-    exists(CallExpr call |
-      (
-        call.getStaticTarget().(Method).hasQualifiedName("Regex", ["init(_:)", "init(_:as:)"]) or
-        call.getStaticTarget()
-            .(Method)
-            .hasQualifiedName("NSRegularExpression", "init(pattern:options:)")
-      ) and
-      nodeFrom.asExpr() = call.getArgument(0).getExpr() and
-      nodeTo.asExpr() = call
+    exists(RegexCreation regexCreation |
+      nodeFrom = regexCreation.getStringInput() and
+      nodeTo = regexCreation
     )
   }
 }

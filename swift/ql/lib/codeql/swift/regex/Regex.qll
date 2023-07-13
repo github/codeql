@@ -29,6 +29,39 @@ private class ParsedStringRegex extends RegExp, StringLiteralExpr {
 }
 
 /**
+ * A data-flow node where a regular expression object is created.
+ */
+abstract class RegexCreation extends DataFlow::Node {
+  /**
+   * Gets a dataflow node for the string that the regular expression object is
+   * created from.
+   */
+  abstract DataFlow::Node getStringInput();
+}
+
+/**
+ * A data-flow node where a `Regex` or `NSRegularExpression` object is created.
+ */
+private class StandardRegexCreation extends RegexCreation {
+  DataFlow::Node input;
+
+  StandardRegexCreation() {
+    exists(CallExpr call |
+      (
+        call.getStaticTarget().(Method).hasQualifiedName("Regex", ["init(_:)", "init(_:as:)"]) or
+        call.getStaticTarget()
+            .(Method)
+            .hasQualifiedName("NSRegularExpression", "init(pattern:options:)")
+      ) and
+      input.asExpr() = call.getArgument(0).getExpr() and
+      this.asExpr() = call
+    )
+  }
+
+  override DataFlow::Node getStringInput() { result = input }
+}
+
+/**
  * A call that evaluates a regular expression. For example, the call to `firstMatch` in:
  * ```
  * Regex("(a|b).*").firstMatch(in: myString)
