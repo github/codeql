@@ -73,11 +73,9 @@ class Configuration extends TaintTracking::Configuration {
 
   /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    exists(MethodAccess ma, Method m, VarAccess v |
-      m = ma.getMethod() and
-      m.getQualifiedName() = "java.text.Normalizer.normalize" and
-      v = ma.getArgument(1) and
-      v.toString() = "Normalizer.Form." + ["NFKC", "NFC"] and
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("java.text", "Normalizer", "normalize") and
+      ma.getArgument(1).(FieldAccess).getField() instanceof ComposingUnicodeForm and
       sink.asExpr() = ma.getArgument(0)
     ) and
     state instanceof PostValidation
