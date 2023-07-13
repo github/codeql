@@ -106,3 +106,14 @@ class OtherSubClass (ArgPos.MyClass):
 
     def anyNamed(self, name1, name2=2): # Parameter[any-named] matches all non-self named parameters
         pass
+
+import testlib as testlib
+import testlib.nestedlib as testlib2
+import otherlib as otherlib
+
+testlib.fuzzyCall(getSource()) # NOT OK
+testlib2.fuzzyCall(getSource()) # NOT OK
+testlib.foo.bar.baz.fuzzyCall(getSource()) # NOT OK
+testlib.foo().bar().fuzzyCall(getSource()) # NOT OK
+testlib.foo(lambda x: x.fuzzyCall(getSource())) # NOT OK
+otherlib.fuzzyCall(getSource()) # OK
