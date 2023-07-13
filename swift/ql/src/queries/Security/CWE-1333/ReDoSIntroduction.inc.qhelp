@@ -31,7 +31,7 @@
     <p>
       Modify the regular expression to remove the ambiguity, or ensure that the
       strings matched with the regular expression are short enough that the
-      time-complexity does not matter.
+      time complexity does not matter.
     </p>
   </recommendation>
 </qhelp>
