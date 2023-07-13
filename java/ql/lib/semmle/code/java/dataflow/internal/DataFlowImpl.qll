@@ -2706,7 +2706,7 @@ module Impl<FullStateConfigSig Config> {
 
     ParamNodeEx getParamNode() { result = p }
 
-    override string toString() { result = p + ": " + ap }
+    override string toString() { result = p + concat(" : " + ppReprType(t)) + " " + ap }
 
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -3092,6 +3092,12 @@ module Impl<FullStateConfigSig Config> {
       result = " <" + this.(PathNodeMid).getCallContext().toString() + ">"
     }
 
+    private string ppSummaryCtx() {
+      this instanceof PathNodeSink and result = ""
+      or
+      result = " <" + this.(PathNodeMid).getSummaryCtx().toString() + ">"
+    }
+
     /** Gets a textual representation of this element. */
     string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
 
@@ -3100,7 +3106,9 @@ module Impl<FullStateConfigSig Config> {
      * representation of the call context.
      */
     string toStringWithContext() {
-      result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
+      result =
+        this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx() +
+          this.ppSummaryCtx()
     }
 
     /**
