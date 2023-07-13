@@ -25,7 +25,7 @@ possible. These libraries are more likely to handle corner cases and ensure effe
 
 <p>
 If a library is not an option, you can consider alternative strategies to fix the issue. For example, 
-applying the regular expression replacement repeatedly until no more replacements can be performed or to rewrite the regular 
+applying the regular expression replacement repeatedly until no more replacements can be performed, or rewriting the regular 
 expression to match single characters instead of the entire unsafe text.
 </p>
 </recommendation>
