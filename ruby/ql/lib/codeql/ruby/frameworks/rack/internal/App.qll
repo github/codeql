@@ -18,16 +18,7 @@ private class PotentialRequestHandler extends DataFlow::CallableNode {
     (
       this.(DataFlow::MethodNode).getMethodName() = "call"
       or
-      not this instanceof DataFlow::MethodNode and
-      exists(DataFlow::CallNode cn | cn.getMethodName() = "run" |
-        this.(DataFlow::LocalSourceNode).flowsTo(cn.getArgument(0))
-        or
-        // TODO: `Proc.new` should automatically propagate flow from its block argument
-        any(DataFlow::CallNode proc |
-          proc = API::getTopLevelMember("Proc").getAnInstantiation() and
-          proc.getBlock() = this
-        ).(DataFlow::LocalSourceNode).flowsTo(cn.getArgument(0))
-      )
+      this = API::getTopLevelCall("run").getArgument(0).asCallable()
     )
   }
 }
