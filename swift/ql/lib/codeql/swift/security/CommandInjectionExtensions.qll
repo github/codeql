@@ -29,6 +29,25 @@ class CommandInjectionAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
+private class ProcessSink2 extends CommandInjectionSink instanceof DataFlow::Node {
+  ProcessSink2() {
+    exists(AssignExpr assign, ProcessHost s |
+      assign.getDest() = s and
+      this.asExpr() = assign.getSource()
+    )
+    or
+    exists(AssignExpr assign, ProcessHost s, ArrayExpr a |
+      assign.getDest() = s and
+      a = assign.getSource() and
+      this.asExpr() = a.getAnElement()
+    )
+  }
+}
+
+private class ProcessHost extends MemberRefExpr {
+  ProcessHost() { this.getBase() instanceof ProcessRef }
+}
+
 /** An expression of type `Process`. */
 private class ProcessRef extends Expr {
   ProcessRef() {
