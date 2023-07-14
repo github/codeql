@@ -1949,7 +1949,15 @@ func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
 	obj1 := getObjectBeingUsed1(tw, ident)
 	obj2 := getObjectBeingUsed2(tw, ident)
 	if obj1 != obj2 {
-		log.Fatalf("different results!\nobj1 = %s\nobj2=%s\n", obj1.String(), obj2.String())
+		string1 := "nil"
+		if obj1 != nil {
+			string1 = obj1.String()
+		}
+		string2 := "nil"
+		if obj1 != nil {
+			string2 = obj1.String()
+		}
+		log.Fatalf("different results!\nobj1 = %s\nobj2 = %s\n", string1, string2)
 	}
 	return obj2
 }
