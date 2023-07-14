@@ -57,6 +57,9 @@ def foo
 	/^http:\/\/(..|...)\.example\.com\/index\.html/; # OK, wildcards are intentional
 	/^http:\/\/.\.example\.com\/index\.html/; # OK, the wildcard is intentional
 	/^(foo.example\.com|whatever)$/; # kinda OK - one disjunction doesn't even look like a hostname
+
+    obj = ClassWithMatch.new
+    obj.match("http://docs.github.com/") # OK, there's no regex matching happening here since it's a custom type with a match method
 end
 def id(e); return e; end
 def convert1(domain)
@@ -64,4 +67,8 @@ def convert1(domain)
 end
 def convert2(domain)
 	return Regexp.new(domain[:hostname]);
+end
+
+class ClassWithMatch
+  def match(foo); end
 end
