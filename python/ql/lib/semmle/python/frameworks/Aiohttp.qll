@@ -469,14 +469,15 @@ module AiohttpWebModel {
   }
 
   /**
-   * An heuristic source that considers a method parameter with a type hint of `aiohttp.web.Request`
-   * as a parameter that will receive an `aiohttp.web.Request` instance when a request
-   * handler is invoked.
+   * A parameter that has a type annotation of `aiohttp.web.Request`, so with all
+   * likelihood will receive an `aiohttp.web.Request` instance at some point when a
+   * request handler is invoked.
    */
-  class AiohttpHeuristicRequestHandlerRequestParam extends Request::InstanceSource,
+  class AiohttpRequestParamFromTypeAnnotation extends Request::InstanceSource,
     DataFlow::ParameterNode, RemoteFlowSource::Range
   {
-    AiohttpHeuristicRequestHandlerRequestParam() {
+    AiohttpRequestParamFromTypeAnnotation() {
+      not this instanceof AiohttpRequestHandlerRequestParam and
       this.getParameter().getAnnotation() =
         API::moduleImport("aiohttp")
             .getMember("web")
