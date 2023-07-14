@@ -71,18 +71,41 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
+    fun useFileClassType(fqName: FqName) = TypeResults(
+        TypeResult(extractFileClass(fqName), "", ""),
+        TypeResult(fakeKotlinType(), "", "")
+    )
+
+    fun useFileClassType(pkg: String, jvmName: String) = TypeResults(
+        TypeResult(extractFileClass(pkg, jvmName), "", ""),
+        TypeResult(fakeKotlinType(), "", "")
+    )
+
     fun extractFileClass(f: IrFile): Label<out DbClassorinterface> {
         val pkg = f.fqName.asString()
         val jvmName = getFileClassName(f)
+        val id = extractFileClass(pkg, jvmName)
+        if (tw.lm.fileClassLocationsExtracted.add(f)) {
+            val fileId = tw.mkFileId(f.path, false)
+            val locId = tw.getWholeFileLocation(fileId)
+            tw.writeHasLocation(id, locId)
+        }
+        return id
+    }
+
+    fun extractFileClass(fqName: FqName): Label<out DbClassorinterface> {
+        val pkg = if (fqName.isRoot()) "" else fqName.parent().asString()
+        val jvmName = fqName.shortName().asString()
+        return extractFileClass(pkg, jvmName)
+    }
+
+    fun extractFileClass(pkg: String, jvmName: String): Label<out DbClassorinterface> {
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
         val id: Label<DbClassorinterface> = tw.getLabelFor(label) {
-            val fileId = tw.mkFileId(f.path, false)
-            val locId = tw.getWholeFileLocation(fileId)
             val pkgId = extractPackage(pkg)
             tw.writeClasses_or_interfaces(it, jvmName, pkgId, it)
             tw.writeFile_class(it)
-            tw.writeHasLocation(it, locId)
 
             addModifiers(it, "public", "final")
         }

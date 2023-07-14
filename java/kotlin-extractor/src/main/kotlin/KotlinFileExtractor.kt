@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
 import org.jetbrains.kotlin.config.JvmAnalysisFlags
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
+import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
@@ -2154,7 +2155,7 @@ open class KotlinFileExtractor(
         if (overriddenCallTarget.isLocalFunction()) {
             extractTypeAccess(getLocallyVisibleFunctionLabels(overriddenCallTarget).type, locId, id, -1, enclosingCallable, enclosingStmt)
         } else {
-            extractStaticTypeAccessQualifierUnchecked(overriddenCallTarget.parent, id, locId, enclosingCallable, enclosingStmt)
+            extractStaticTypeAccessQualifierUnchecked(overriddenCallTarget, id, locId, enclosingCallable, enclosingStmt)
         }
 
         extractDefaultsCallArguments(id, overriddenCallTarget, enclosingCallable, enclosingStmt, valueArguments, dispatchReceiver, extensionReceiver)
@@ -2380,8 +2381,29 @@ open class KotlinFileExtractor(
         extractValueArguments(argParent, idxOffset)
     }
 
-    private fun extractStaticTypeAccessQualifierUnchecked(parent: IrDeclarationParent, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) {
-        if (parent is IrClass) {
+    private fun extractStaticTypeAccessQualifierUnchecked(target: IrDeclaration, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) {
+        val parent = target.parent
+        if (parent is IrExternalPackageFragment) {
+            // This is in a file class.
+            // Get the name in a similar way to the compiler's ExternalPackageParentPatcherLowering
+            // visitMemberAccess/generateOrGetFacadeClass.
+            if (target is IrMemberWithContainerSource) {
+                val containerSource = target.containerSource
+                if (containerSource is FacadeClassSource) {
+                    val facadeClassName = containerSource.facadeClassName
+                    if (facadeClassName != null) {
+                        // TODO: This is really a multifile-class rather than a file-class
+                        extractTypeAccess(useFileClassType(facadeClassName.fqNameForTopLevelClassMaybeWithDollars), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
+                    } else {
+                        extractTypeAccess(useFileClassType(containerSource.className.fqNameForTopLevelClassMaybeWithDollars), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
+                    }
+                } else {
+                    logger.warnElement("Unexpected container source ${containerSource?.javaClass}", target)
+                }
+            } else {
+                logger.warnElement("Element in external package fragment without container source ${target.javaClass}", target)
+            }
+        } else if (parent is IrClass) {
             extractTypeAccessRecursive(parent.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
         } else if (parent is IrFile) {
             extractTypeAccess(useFileClassType(parent), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
@@ -2392,7 +2414,7 @@ open class KotlinFileExtractor(
 
     private fun extractStaticTypeAccessQualifier(target: IrDeclaration, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) {
         if (target.shouldExtractAsStatic) {
-            extractStaticTypeAccessQualifierUnchecked(target.parent, parentExpr, locId, enclosingCallable, enclosingStmt)
+            extractStaticTypeAccessQualifierUnchecked(target, parentExpr, locId, enclosingCallable, enclosingStmt)
         }
     }
 
