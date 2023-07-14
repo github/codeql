@@ -48,7 +48,9 @@ module ReflectedXss {
    * A data flow sink for "reflected cross-site scripting" vulnerabilities.
    */
   private class DefaultReflectedXss extends Sink {
-    DefaultReflectedXss() { this = ModelOutput::getASourceNode(["html-injection", "js-injection"]).asSource() }
+    DefaultReflectedXss() {
+      this = ModelOutput::getASourceNode(["html-injection", "js-injection"]).asSource()
+    }
   }
 
   /**
