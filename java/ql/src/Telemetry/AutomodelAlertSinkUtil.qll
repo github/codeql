@@ -13,8 +13,8 @@ private import AutomodelJavaUtil
 
 private newtype TSinkModel =
   MkSinkModel(
-    string package, string type, boolean subtypes, string name, string signature, string input,
-    string ext, string kind, string provenance
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
   ) {
     ExternalFlow::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
   }
@@ -25,13 +25,13 @@ class SinkModel extends TSinkModel {
   boolean subtypes;
   string name;
   string signature;
-  string input;
   string ext;
+  string input;
   string kind;
   string provenance;
 
   SinkModel() {
-    this = MkSinkModel(package, type, subtypes, name, signature, input, ext, kind, provenance)
+    this = MkSinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
   }
 
   /** Gets the package for this sink model. */
@@ -68,7 +68,7 @@ class SinkModel extends TSinkModel {
   string toString() {
     result =
       "SinkModel(" + package + ", " + type + ", " + subtypes + ", " + name + ", " + signature + ", "
-        + input + ", " + ext + ", " + kind + ", " + provenance + ")"
+        + ext + ", " + input + ", " + kind + ", " + provenance + ")"
   }
 
   /** Gets a string representation of this sink model as it would appear in a Models-as-Data file. */
