@@ -6,6 +6,8 @@
  */
 
 import swift
+private import RegexTracking
+private import codeql.swift.regex.Regex
 
 /**
  * A `Expr` containing a regular expression term, that is, either
@@ -324,7 +326,17 @@ abstract class RegExp extends Expr {
    * MULTILINE
    * UNICODE
    */
-  string getAMode() { result = this.getModeFromPrefix() }
+  string getAMode() {
+    // mode flags from inside the regex string
+    result = this.getModeFromPrefix()
+    or
+    // mode flags applied to the regex object before evaluation
+    exists(RegexEval e |
+      e.getARegex() = this and
+      RegexParseModeFlow::flow(_, DataFlow::exprNode(e.getRegexInput())) and
+      result = "DOTALL" // TODO
+    )
+  }
 
   /**
    * Holds if the `i`th character could not be parsed.

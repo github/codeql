@@ -60,6 +60,65 @@ private class StandardRegexCreation extends RegexCreation {
   override DataFlow::Node getStringInput() { result = input }
 }
 
+newtype TRegexParseMode =
+  MkIgnoreCase() or // case insensitive
+  MkVerbose() or // ignores whitespace and `#` comments within patterns
+  MkDotAll() or // dot matches all characters, including line terminators
+  MkMultiLine() or // `^` and `$` also match beginning and end of lines
+  MkUnicode() // Unicode UAX 29 word boundary mode
+
+class RegexParseMode extends TRegexParseMode {
+  string toString() {
+    (this = MkIgnoreCase() and result = "IGNORECASE") or
+    (this = MkVerbose() and result = "VERBOSE") or
+    (this = MkDotAll() and result = "DOTALL") or
+    (this = MkUnicode() and result = "MULTILINE") or
+    (this = MkIgnoreCase() and result = "UNICODE")
+  }
+}
+
+/**
+ * A unit class for adding additional flow steps for regular expressions.
+ */
+class RegexAdditionalFlowStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step for regular expressions.
+   */
+  abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
+
+  /**
+   * Holds if the step from `node1` to `node2` either sets (`isSet` = true)
+   * or unsets (`isSet` = false) parse mode `mode` for the regular expression.
+   */
+  abstract predicate modifiesParseMode(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet);
+}
+
+/**
+ * An additional flow step for `Regex` or `NSRegularExpression`.
+ */
+class StandardRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    this.modifiesParseMode(nodeFrom, nodeTo, _, _)
+  }
+
+  override predicate modifiesParseMode(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet)
+  {
+    exists(CallExpr ce |
+      ce.getStaticTarget().(Method).hasQualifiedName("Regex", "dotMatchesNewlines(_:)") and
+      nodeFrom.asExpr() = ce.getQualifier() and
+      nodeTo.asExpr() = ce and
+      mode = MkDotAll() and
+      // TODO: other methods
+      // decode the value being set
+      if ce.getArgument(0).getExpr().(BooleanLiteralExpr).getValue() = false then
+        isSet = false // mode is set to false
+      else
+        isSet = true // mode is set to true OR mode is set to default (=true) OR mode is set to an unknown value
+    )
+  }
+}
+
 /**
  * A call that evaluates a regular expression. For example, the call to `firstMatch` in:
  * ```

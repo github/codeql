@@ -210,11 +210,11 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
     _ = try Regex("(?s)abc").firstMatch(in: input) // $ input=input modes=DOTALL regex=(?s)abc
     _ = try Regex("(?is)abc").firstMatch(in: input) // $ input=input modes="DOTALL | IGNORECASE" regex=(?is)abc
 
-    _ = try Regex("abc").dotMatchesNewlines(true).firstMatch(in: input) // $ input=input regex=abc MISSING: modes=DOTALL
+    _ = try Regex("abc").dotMatchesNewlines(true).firstMatch(in: input) // $ input=input regex=abc modes=DOTALL
     _ = try Regex("abc").dotMatchesNewlines(false).firstMatch(in: input) // $ input=input regex=abc
     _ = try Regex("abc").dotMatchesNewlines(true).dotMatchesNewlines(false).firstMatch(in: input) // $ input=input regex=abc
-    _ = try Regex("abc").dotMatchesNewlines(false).dotMatchesNewlines(true).firstMatch(in: input) // $ input=input regex=abc MISSING: modes=DOTALL
-    _ = try Regex("abc").dotMatchesNewlines().ignoresCase().firstMatch(in: input) // $ input=input regex=abc MISSING: modes="DOTALL | IGNORECASE"
+    _ = try Regex("abc").dotMatchesNewlines(false).dotMatchesNewlines(true).firstMatch(in: input) // $ input=input regex=abc modes=DOTALL
+    _ = try Regex("abc").dotMatchesNewlines().ignoresCase().firstMatch(in: input) // $ input=input regex=abc SPURIOUS: modes=DOTALL MISSING: modes="DOTALL | IGNORECASE"
 
     _ = try NSRegularExpression(pattern: ".*", options: .caseInsensitive).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes=IGNORECASE
     _ = try NSRegularExpression(pattern: ".*", options: .dotMatchesLineSeparators).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes=DOTALL

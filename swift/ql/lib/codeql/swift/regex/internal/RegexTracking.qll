@@ -6,7 +6,7 @@
 
 import swift
 import codeql.swift.regex.RegexTreeView
-private import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.DataFlow
 private import ParseRegex
 private import codeql.swift.regex.Regex
 
@@ -37,7 +37,6 @@ private module RegexUseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     // creation of the regex
     node instanceof RegexCreation
-    // TODO: track parse mode flags.
   }
 
   predicate isSink(DataFlow::Node node) {
@@ -46,9 +45,36 @@ private module RegexUseConfig implements DataFlow::ConfigSig {
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // TODO: flow through regex methods that return a modified regex.
-    none()
+    any(RegexAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 
 module RegexUseFlow = DataFlow::Global<RegexUseConfig>;
+
+/**
+ * A data flow configuration for tracking regular expression parse mode
+ * flags from the point they are set to the point of use. The flow state
+ * encodes which parse mode flag was set.
+ */
+private module RegexParseModeConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    // parse mode flag is set
+    any(RegexAdditionalFlowStep s).modifiesParseMode(_, node, MkDotAll(), true)
+  }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    // parse mode flag is set or unset
+    any(RegexAdditionalFlowStep s).modifiesParseMode(_, node, MkDotAll(), _)
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    // evaluation of the regex
+    node.asExpr() = any(RegexEval eval).getRegexInput()
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(RegexAdditionalFlowStep s).step(nodeFrom, nodeTo)
+  }
+}
+
+module RegexParseModeFlow = DataFlow::Global<RegexParseModeConfig>;
