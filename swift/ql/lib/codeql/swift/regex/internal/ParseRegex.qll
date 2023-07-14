@@ -319,7 +319,8 @@ abstract class RegExp extends Expr {
   }
 
   /**
-   * Gets a mode (if any) of this regular expression. Can be any of:
+   * Gets a mode (if any) of this regular expression in any evaluation. Can be
+   * any of:
    * IGNORECASE
    * VERBOSE
    * DOTALL
@@ -333,7 +334,7 @@ abstract class RegExp extends Expr {
     // mode flags applied to the regex object before evaluation
     exists(RegexEval e |
       e.getARegex() = this and
-      result = e.getAParseMode().toString() // TODO: temp toString()
+      result = e.getAParseMode().getName()
     )
   }
 

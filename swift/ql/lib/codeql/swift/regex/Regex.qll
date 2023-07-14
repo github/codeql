@@ -68,13 +68,19 @@ newtype TRegexParseMode =
   MkUnicode() // Unicode UAX 29 word boundary mode
 
 class RegexParseMode extends TRegexParseMode {
-  string toString() {
-    (this = MkIgnoreCase() and result = "IGNORECASE") or
-    (this = MkVerbose() and result = "VERBOSE") or
-    (this = MkDotAll() and result = "DOTALL") or
-    (this = MkMultiLine() and result = "MULTILINE") or
-    (this = MkUnicode() and result = "UNICODE")
+  string getName() {
+    this = MkIgnoreCase() and result = "IGNORECASE"
+    or
+    this = MkVerbose() and result = "VERBOSE"
+    or
+    this = MkDotAll() and result = "DOTALL"
+    or
+    this = MkMultiLine() and result = "MULTILINE"
+    or
+    this = MkUnicode() and result = "UNICODE"
   }
+
+  string toString() { result = this.getName() }
 }
 
 /**
@@ -91,7 +97,9 @@ class RegexAdditionalFlowStep extends Unit {
    * Holds if the step from `node1` to `node2` either sets (`isSet` = true)
    * or unsets (`isSet` = false) parse mode `mode` for the regular expression.
    */
-  abstract predicate modifiesParseMode(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet);
+  abstract predicate modifiesParseMode(
+    DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet
+  );
 }
 
 /**
@@ -102,29 +110,27 @@ class StandardRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
     this.modifiesParseMode(nodeFrom, nodeTo, _, _)
   }
 
-  override predicate modifiesParseMode(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet)
-  {
+  override predicate modifiesParseMode(
+    DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet
+  ) {
     exists(CallExpr ce |
       nodeFrom.asExpr() = ce.getQualifier() and
       nodeTo.asExpr() = ce and
       // decode the parse mode being set
       (
-        (
-          ce.getStaticTarget().(Method).hasQualifiedName("Regex", "ignoresCase(_:)") and
-          mode = MkIgnoreCase()
-        ) or (
-          ce.getStaticTarget().(Method).hasQualifiedName("Regex", "dotMatchesNewlines(_:)") and
-          mode = MkDotAll()
-        ) or (
-          ce.getStaticTarget().(Method).hasQualifiedName("Regex", "anchorsMatchLineEndings(_:)") and
-          mode = MkMultiLine()
-        )
+        ce.getStaticTarget().(Method).hasQualifiedName("Regex", "ignoresCase(_:)") and
+        mode = MkIgnoreCase()
+        or
+        ce.getStaticTarget().(Method).hasQualifiedName("Regex", "dotMatchesNewlines(_:)") and
+        mode = MkDotAll()
+        or
+        ce.getStaticTarget().(Method).hasQualifiedName("Regex", "anchorsMatchLineEndings(_:)") and
+        mode = MkMultiLine()
       ) and
       // decode the value being set
-      if ce.getArgument(0).getExpr().(BooleanLiteralExpr).getValue() = false then
-        isSet = false // mode is set to false
-      else
-        isSet = true // mode is set to true OR mode is set to default (=true) OR mode is set to an unknown value
+      if ce.getArgument(0).getExpr().(BooleanLiteralExpr).getValue() = false
+      then isSet = false // mode is set to false
+      else isSet = true // mode is set to true OR mode is set to default (=true) OR mode is set to an unknown value
     )
   }
 }
@@ -168,9 +174,8 @@ abstract class RegexEval extends CallExpr {
   RegexParseMode getAParseMode() {
     exists(DataFlow::Node setNode |
       // parse mode flag is set
-      any(RegexAdditionalFlowStep s).modifiesParseMode(_, setNode, result, true)
-      and
-      // reaches here
+      any(RegexAdditionalFlowStep s).modifiesParseMode(_, setNode, result, true) and
+      // reaches this eval
       RegexParseModeFlow::flow(setNode, DataFlow::exprNode(this.getRegexInput()))
     )
   }
