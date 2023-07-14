@@ -40,8 +40,8 @@ class PatternMatcherMethod extends Method {
 }
 
 /**
- * The methods like `matches` of `java.lang.String`, or one of its subtypes.
+ * A `java.lang.String` method other than `String.valueOf`.
  */
 class StringMethod extends Method {
-  StringMethod() { this.getDeclaringType().getASupertype*() instanceof TypeString }
+  StringMethod() { this.getDeclaringType() instanceof TypeString }
 }
