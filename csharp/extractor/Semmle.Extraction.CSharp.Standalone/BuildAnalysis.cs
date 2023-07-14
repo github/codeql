@@ -62,28 +62,6 @@ namespace Semmle.BuildAnalyser
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
                 : GetFiles("*.sln");
-            var cshtmls = GetFiles("*.cshtml").ToArray();
-
-            if (cshtmls.Length > 0)
-            {
-                // TODO: use SDK specified in global.json
-                // TODO: add feature flag to control razor generation
-                var sdk = new Sdk(dotnet).GetLatestSdk();
-                if (sdk != null)
-                {
-                    try
-                    {
-                        var razor = new Razor(sdk, dotnet, progressMonitor);
-                        cshtmlWorkingDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "cshtmls"));
-                        var generatedFiles = razor.GenerateFiles(cshtmls, cshtmlWorkingDirectory.ToString());
-                        this.allSources.AddRange(generatedFiles);
-                    }
-                    catch
-                    {
-                        // It's okay, we tried our best to generate source files from cshtml files.
-                    }
-                }
-            }
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
 
@@ -93,6 +71,9 @@ namespace Semmle.BuildAnalyser
                 var runtimeLocation = new Runtime(dotnet).GetRuntime(options.UseSelfContainedDotnet);
                 progressMonitor.Log(Util.Logging.Severity.Debug, $"Runtime location selected: {runtimeLocation}");
                 dllDirNames.Add(runtimeLocation);
+
+                // TODO: fix this temporary hack:
+                dllDirNames.Add(runtimeLocation.Replace("Microsoft.NETCore.App", "Microsoft.AspNetCore.App"));
             }
 
             if (options.UseMscorlib)
@@ -133,6 +114,29 @@ namespace Semmle.BuildAnalyser
             }
 
             ResolveConflicts();
+
+            var cshtmls = GetFiles("*.cshtml").ToArray();
+
+            if (cshtmls.Length > 0)
+            {
+                // TODO: use SDK specified in global.json
+                // TODO: add feature flag to control razor generation
+                var sdk = new Sdk(dotnet).GetLatestSdk();
+                if (sdk != null)
+                {
+                    try
+                    {
+                        var razor = new Razor(sdk, dotnet, progressMonitor);
+                        cshtmlWorkingDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "cshtmls"));
+                        var generatedFiles = razor.GenerateFiles(cshtmls, usedReferences.Keys, cshtmlWorkingDirectory.ToString());
+                        this.allSources.AddRange(generatedFiles);
+                    }
+                    catch
+                    {
+                        // It's okay, we tried our best to generate source files from cshtml files.
+                    }
+                }
+            }
 
             // Output the findings
             foreach (var r in usedReferences.Keys)

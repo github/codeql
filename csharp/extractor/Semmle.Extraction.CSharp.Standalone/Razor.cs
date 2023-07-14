@@ -35,7 +35,7 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        private static void GenerateAnalyzerConfig(string[] cshtmls, string analyzerConfigPath)
+        private static void GenerateAnalyzerConfig(IEnumerable<string> cshtmls, string analyzerConfigPath)
         {
             using var sw = new StreamWriter(analyzerConfigPath);
             sw.WriteLine("is_global = true");
@@ -48,7 +48,7 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        public IEnumerable<string> GenerateFiles(string[] cshtmls, string workingDirectory)
+        public IEnumerable<string> GenerateFiles(IEnumerable<string> cshtmls, IEnumerable<string> references, string workingDirectory)
         {
             // TODO: the below command might be too long. It should be written to a temp file and passed to csc via @.
 
@@ -72,8 +72,12 @@ namespace Semmle.BuildAnalyser
                 {
                     args.Append($"/additionalfile:{f} ");
                 }
+                foreach (var f in references)
+                {
+                    args.Append($"/reference:{f} ");
+                }
 
-                var res = dotNet.Exec(args.ToString());
+                dotNet.Exec(args.ToString());
 
                 return Directory.GetFiles(outputFolder, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
             }
