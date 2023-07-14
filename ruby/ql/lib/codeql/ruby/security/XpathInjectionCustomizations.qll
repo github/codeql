@@ -50,5 +50,6 @@ module XpathInjection {
    * sanitizer-guard.
    */
   private class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
 }
