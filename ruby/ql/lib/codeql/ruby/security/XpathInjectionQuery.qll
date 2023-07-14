@@ -23,5 +23,5 @@ module XpathInjection {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
-  import TaintTracking::Make<Config>
+  import TaintTracking::Global<Config>
 }

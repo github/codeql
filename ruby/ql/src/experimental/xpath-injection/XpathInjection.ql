@@ -16,6 +16,6 @@ import codeql.ruby.security.XpathInjectionQuery
 import XpathInjection::PathGraph
 
 from XpathInjection::PathNode source, XpathInjection::PathNode sink
-where XpathInjection::hasFlowPath(source, sink)
+where XpathInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
   "user-provided value"
