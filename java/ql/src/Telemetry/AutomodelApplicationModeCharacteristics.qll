@@ -329,9 +329,10 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 
   override predicate appliesToEndpoint(Endpoint e) {
     not ApplicationCandidatesImpl::isSink(e, _) and
-    exists(DataFlow::Node otherSink |
+    exists(DataFlow::Node otherSink, Call c |
       ApplicationCandidatesImpl::isSink(otherSink, _) and
-      e.asExpr() = otherSink.asExpr().(Argument).getCall().getAnArgument() and
+      c = otherSink.asExpr().(Argument).getCall() and
+      e.asExpr() in [c.getQualifier(), c.getAnArgument()] and
       e != otherSink
     )
   }
