@@ -29,12 +29,12 @@ module NetLdap {
 
   /** A call that establishes a LDAP Connection */
   private class NetLdapConnection extends DataFlow::CallNode {
-    NetLdapConnection() { this in [ldap().getAnInstantiation(), ldap().getAMethodCall(["open"])] }
+    NetLdapConnection() { this in [ldap().getAnInstantiation(), ldap().getAMethodCall("open")] }
   }
 
   /** A call that constructs a LDAP query */
   private class NetLdapFilter extends LdapConstruction::Range, DataFlow::CallNode {
-    NetLdapFilter() { this = any(ldap().getMember("Filter").getAMethodCall(["eq"])) }
+    NetLdapFilter() { this = any(ldap().getMember("Filter").getAMethodCall("eq")) }
 
     override DataFlow::Node getQuery() { result = this.getArgument([0, 1]) }
   }

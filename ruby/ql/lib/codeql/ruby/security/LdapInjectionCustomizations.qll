@@ -34,8 +34,8 @@ module LdapInjection {
     exists(DataFlow::CallNode filterCall |
       (
         filterCall =
-          API::getTopLevelMember("Net").getMember("LDAP").getMember("Filter").getAMethodCall(["eq"]) or
-        filterCall.getMethodName() = ["[]"]
+          API::getTopLevelMember("Net").getMember("LDAP").getMember("Filter").getAMethodCall("eq") or
+        filterCall.getMethodName() = "[]"
       ) and
       n1 = filterCall.getArgument([0, 1]) and
       n2 = filterCall
@@ -64,5 +64,6 @@ module LdapInjection {
    * sanitizer-guard.
    */
   private class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
 }
