@@ -72,8 +72,8 @@ class RegexParseMode extends TRegexParseMode {
     (this = MkIgnoreCase() and result = "IGNORECASE") or
     (this = MkVerbose() and result = "VERBOSE") or
     (this = MkDotAll() and result = "DOTALL") or
-    (this = MkUnicode() and result = "MULTILINE") or
-    (this = MkIgnoreCase() and result = "UNICODE")
+    (this = MkMultiLine() and result = "MULTILINE") or
+    (this = MkUnicode() and result = "UNICODE")
   }
 }
 
@@ -105,11 +105,21 @@ class StandardRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
   override predicate modifiesParseMode(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet)
   {
     exists(CallExpr ce |
-      ce.getStaticTarget().(Method).hasQualifiedName("Regex", "dotMatchesNewlines(_:)") and
       nodeFrom.asExpr() = ce.getQualifier() and
       nodeTo.asExpr() = ce and
-      mode = MkDotAll() and
-      // TODO: other methods
+      // decode the parse mode being set
+      (
+        (
+          ce.getStaticTarget().(Method).hasQualifiedName("Regex", "ignoresCase(_:)") and
+          mode = MkIgnoreCase()
+        ) or (
+          ce.getStaticTarget().(Method).hasQualifiedName("Regex", "dotMatchesNewlines(_:)") and
+          mode = MkDotAll()
+        ) or (
+          ce.getStaticTarget().(Method).hasQualifiedName("Regex", "anchorsMatchLineEndings(_:)") and
+          mode = MkMultiLine()
+        )
+      ) and
       // decode the value being set
       if ce.getArgument(0).getExpr().(BooleanLiteralExpr).getValue() = false then
         isSet = false // mode is set to false
@@ -148,6 +158,20 @@ abstract class RegexEval extends CallExpr {
     exists(RegexCreation regexCreation |
       result.(ParsedStringRegex).getUse() = regexCreation.getStringInput() and
       RegexUseFlow::flow(regexCreation, DataFlow::exprNode(this.getRegexInput()))
+    )
+  }
+
+  /**
+   * Gets a parse mode that is set at this evaluation (in at least one path
+   * from the creation of the regular expression object).
+   */
+  RegexParseMode getAParseMode() {
+    exists(DataFlow::Node setNode |
+      // parse mode flag is set
+      any(RegexAdditionalFlowStep s).modifiesParseMode(_, setNode, result, true)
+      and
+      // reaches here
+      RegexParseModeFlow::flow(setNode, DataFlow::exprNode(this.getRegexInput()))
     )
   }
 }

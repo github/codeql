@@ -56,25 +56,39 @@ module RegexUseFlow = DataFlow::Global<RegexUseConfig>;
  * flags from the point they are set to the point of use. The flow state
  * encodes which parse mode flag was set.
  */
-private module RegexParseModeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) {
+private module RegexParseModeConfig implements DataFlow::StateConfigSig {
+  class FlowState = RegexParseMode;
+
+  predicate isSource(DataFlow::Node node, FlowState flowstate) {
     // parse mode flag is set
-    any(RegexAdditionalFlowStep s).modifiesParseMode(_, node, MkDotAll(), true)
+    any(RegexAdditionalFlowStep s).modifiesParseMode(_, node, flowstate, true)
   }
 
-  predicate isBarrierIn(DataFlow::Node node) {
-    // parse mode flag is set or unset
-    any(RegexAdditionalFlowStep s).modifiesParseMode(_, node, MkDotAll(), _)
-  }
-
-  predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node, FlowState flowstate) {
     // evaluation of the regex
     node.asExpr() = any(RegexEval eval).getRegexInput()
+    and
+    flowstate = any(FlowState fs)
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    none()
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState flowstate) {
+    // parse mode flag is set or unset
+    any(RegexAdditionalFlowStep s).modifiesParseMode(node, _, flowstate, _)
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(RegexAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node nodeFrom, FlowState flowstateFrom, DataFlow::Node nodeTo, FlowState flowStateTo
+  ) {
+    none()
+  }
 }
 
-module RegexParseModeFlow = DataFlow::Global<RegexParseModeConfig>;
+module RegexParseModeFlow = DataFlow::GlobalWithState<RegexParseModeConfig>;

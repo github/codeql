@@ -333,8 +333,7 @@ abstract class RegExp extends Expr {
     // mode flags applied to the regex object before evaluation
     exists(RegexEval e |
       e.getARegex() = this and
-      RegexParseModeFlow::flow(_, DataFlow::exprNode(e.getRegexInput())) and
-      result = "DOTALL" // TODO
+      result = e.getAParseMode().toString() // TODO: temp toString()
     )
   }
 
