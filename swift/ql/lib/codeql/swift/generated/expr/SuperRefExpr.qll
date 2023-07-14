@@ -10,20 +10,12 @@ module Generated {
 
     /**
      * Gets the self of this super reference expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    VarDecl getImmediateSelf() {
+    VarDecl getSelf() {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertSuperRefExprToRaw(this)
               .(Raw::SuperRefExpr)
               .getSelf())
     }
-
-    /**
-     * Gets the self of this super reference expression.
-     */
-    final VarDecl getSelf() { result = this.getImmediateSelf().resolve() }
   }
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Sensitive actions, such as editing or deleting content, or accessing admin pages, should have authorization checks 
+to ensure that they cannot be used by malicious actors.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Ensure that proper authorization checks are made for sensitive actions. 
+For WebForms applications, the <code>authorization</code> tag in <code>Web.config</code> XML files 
+can be used to implement access control. The <code>System.Web.UI.Page.User</code> property can also be 
+used to verify a user's role. 
+For MVC applications, the <code>Authorize</code> attribute can be used to require authorization on specific 
+action methods.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following WebForms example, the case marked BAD has no authorization checks whereas the 
+case marked GOOD uses <code>User.IsInRole</code> to check for the user's role.
+</p>
+
+<sample src="WebForms.cs" />
+
+<p>
+The following <code>Web.config</code> file uses the <code>authorization</code> tag to deny access to anonymous users,
+in a <code>location</code> tag to have that configuration apply to a specific path.
+</p>
+
+<sample src="Web.config" />
+
+<p>
+In the following MVC example, the case marked BAD has no authorization
+checks whereas the case marked GOOD uses the <code>Authorize</code> attribute.
+</p>
+
+<sample src="MVC.cs" />
+
+</example>
+<references>
+<li><code>Page.User</code> Property - <a href="https://learn.microsoft.com/en-us/dotnet/api/system.web.ui.page.user?view=netframework-4.8.1#system-web-ui-page-user">Microsoft Learn</a>.</li>
+<li>Control authorization permissions in an ASP.NET application - <a href="https://learn.microsoft.com/en-us/troubleshoot/developer/webapps/aspnet/www-authentication-authorization/authorization-permissions">Microsoft Learn</a>.</li>
+<li>Simple authorization in ASP.NET Core - <a href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/simple?view=aspnetcore-7.0">Microsoft Learn</a>.</li>
+</references>
+</qhelp>

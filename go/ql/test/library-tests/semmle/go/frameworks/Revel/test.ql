@@ -15,12 +15,10 @@ class TestConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 }
 
-class MissingDataFlowTest extends InlineExpectationsTest {
-  MissingDataFlowTest() { this = "MissingDataFlow" }
+module MissingDataFlowTest implements TestSig {
+  string getARelevantTag() { result = "noflow" }
 
-  override string getARelevantTag() { result = "noflow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "noflow" and
     value = "" and
     exists(Sink sink |
@@ -32,12 +30,10 @@ class MissingDataFlowTest extends InlineExpectationsTest {
   }
 }
 
-class HttpResponseBodyTest extends InlineExpectationsTest {
-  HttpResponseBodyTest() { this = "HttpResponseBodyTest" }
+module HttpResponseBodyTest implements TestSig {
+  string getARelevantTag() { result = "responsebody" }
 
-  override string getARelevantTag() { result = "responsebody" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "responsebody" and
     exists(Http::ResponseBody rb |
       rb.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -47,3 +43,5 @@ class HttpResponseBodyTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests<MissingDataFlowTest, HttpResponseBodyTest>>

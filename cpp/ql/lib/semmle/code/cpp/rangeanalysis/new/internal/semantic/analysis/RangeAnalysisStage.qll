@@ -729,7 +729,7 @@ module RangeStage<
   ) {
     exists(SemExpr e, D::Delta d1, D::Delta d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
-      boundedUpper(e, b, d1) and
+      boundedUpper(e, b, d2) and
       boundedLower(e, b, d2) and
       delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
     )
@@ -877,7 +877,6 @@ module RangeStage<
     )
   }
 
-  pragma[assume_small_delta]
   pragma[nomagic]
   private predicate boundedPhiRankStep(
     SemSsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,

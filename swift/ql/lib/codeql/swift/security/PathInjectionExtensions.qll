@@ -38,9 +38,9 @@ private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
     // This is a simplified implementation.
     exists(CallExpr starts, CallExpr normalize, DataFlow::Node validated |
       starts.getStaticTarget().getName() = "starts(with:)" and
-      starts.getStaticTarget().getEnclosingDecl() instanceof FilePath and
+      starts.getStaticTarget().getEnclosingDecl().asNominalTypeDecl() instanceof FilePath and
       normalize.getStaticTarget().getName() = "lexicallyNormalized()" and
-      normalize.getStaticTarget().getEnclosingDecl() instanceof FilePath
+      normalize.getStaticTarget().getEnclosingDecl().asNominalTypeDecl() instanceof FilePath
     |
       TaintTracking::localTaint(validated, DataFlow::exprNode(normalize.getQualifier())) and
       DataFlow::localExprFlow(normalize, starts.getQualifier()) and

@@ -4,20 +4,21 @@
  *
  * Note: This query does not actually classify the endpoints using the model.
  *
- * @name Automodel candidates
- * @description A query to extract automodel candidates.
+ * @name Automodel candidates (framework mode)
+ * @description A query to extract automodel candidates in framework mode.
  * @kind problem
- * @severity info
- * @id java/ml/extract-automodel-candidates
- * @tags internal automodel extract candidates
+ * @problem.severity recommendation
+ * @id java/ml/extract-automodel-framework-candidates
+ * @tags internal extract automodel framework-mode candidates
  */
 
 private import AutomodelFrameworkModeCharacteristics
-private import AutomodelSharedUtil
+private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, string message, MetadataExtractor meta, string package, string type,
-  boolean subtypes, string name, string signature, int input
+  Endpoint endpoint, string message, FrameworkModeMetadataExtractor meta, DollarAtString package,
+  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
+  DollarAtString input, DollarAtString parameterName
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
@@ -28,7 +29,7 @@ where
   // overlap between our detected sinks and the pre-existing modeling. We assume that, if a sink has already been
   // modeled in a MaD model, then it doesn't belong to any additional sink types, and we don't need to reexamine it.
   not CharacteristicsImpl::isSink(endpoint, _) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input) and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, parameterName) and
   // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
   // a non-sink, and we surface only endpoints that have at least one such sink type.
   message =
@@ -39,12 +40,13 @@ where
       sinkType, ", "
     )
 select endpoint,
-  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
+  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
-  package.(DollarAtString), "package", //
-  type.(DollarAtString), "type", //
-  subtypes.toString().(DollarAtString), "subtypes", //
-  name.(DollarAtString), "name", //
-  signature.(DollarAtString), "signature", //
-  input.toString().(DollarAtString), "input" //
+  package, "package", //
+  type, "type", //
+  subtypes, "subtypes", //
+  name, "name", //
+  signature, "signature", //
+  input, "input", //
+  parameterName, "parameterName" //

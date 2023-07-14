@@ -7,14 +7,16 @@ import swift
 /** The creation of an `AEXMLParser`. */
 class AexmlParser extends ApplyExpr {
   AexmlParser() {
-    this.getStaticTarget().(Initializer).getEnclosingDecl() instanceof AexmlParserDecl
+    this.getStaticTarget().(Initializer).getEnclosingDecl().asNominalTypeDecl() instanceof
+      AexmlParserDecl
   }
 }
 
 /** The creation of an `AEXMLDocument`. */
 class AexmlDocument extends ApplyExpr {
   AexmlDocument() {
-    this.getStaticTarget().(Initializer).getEnclosingDecl() instanceof AexmlDocumentDecl
+    this.getStaticTarget().(Initializer).getEnclosingDecl().asNominalTypeDecl() instanceof
+      AexmlDocumentDecl
   }
 }
 
@@ -24,7 +26,7 @@ class AexmlDocumentLoadXml extends MethodApplyExpr {
     exists(Method f |
       this.getStaticTarget() = f and
       f.hasName("loadXML(_:)") and
-      f.getEnclosingDecl() instanceof AexmlDocumentDecl
+      f.getEnclosingDecl().asNominalTypeDecl() instanceof AexmlDocumentDecl
     )
   }
 }
@@ -44,7 +46,7 @@ class AexmlShouldResolveExternalEntities extends MemberRefExpr {
   AexmlShouldResolveExternalEntities() {
     exists(FieldDecl f | this.getMember() = f |
       f.getName() = "shouldResolveExternalEntities" and
-      f.getEnclosingDecl().(NominalTypeDecl).getType() instanceof AexmlOptionsParserSettingsType
+      f.getEnclosingDecl().asNominalTypeDecl().getType() instanceof AexmlOptionsParserSettingsType
     )
   }
 }

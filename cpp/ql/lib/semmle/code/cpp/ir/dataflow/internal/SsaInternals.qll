@@ -364,7 +364,25 @@ abstract private class OperandBasedUse extends UseImpl {
   OperandBasedUse() { any() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    operand.getUse() = block.getInstruction(index)
+    // See the comment in `ssa0`'s `OperandBasedUse` for an explanation of this
+    // predicate's implementation.
+    exists(BaseSourceVariableInstruction base | base = this.getBase() |
+      if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
+      then
+        exists(Operand op, int indirectionIndex, int indirection |
+          indirectionIndex = this.getIndirectionIndex() and
+          indirection = this.getIndirection() and
+          op =
+            min(Operand cand, int i |
+              isUse(_, cand, base, indirection, indirectionIndex) and
+              block.getInstruction(i) = cand.getUse()
+            |
+              cand order by i
+            ) and
+          block.getInstruction(index) = op.getUse()
+        )
+      else operand.getUse() = block.getInstruction(index)
+    )
   }
 
   final Operand getOperand() { result = operand }
@@ -657,24 +675,16 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
  * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
  * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
  */
-private predicate adjustForPointerArith(
-  DefOrUse defOrUse, Node nodeFrom, UseOrPhi use, boolean uncertain
-) {
-  nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  exists(Node adjusted |
-    indirectConversionFlowStep*(adjusted, nodeFrom) and
-    nodeToDefOrUse(adjusted, defOrUse, uncertain) and
+private predicate adjustForPointerArith(PostUpdateNode pun, UseOrPhi use) {
+  exists(DefOrUse defOrUse, Node adjusted |
+    indirectConversionFlowStep*(adjusted, pun.getPreUpdateNode()) and
+    nodeToDefOrUse(adjusted, defOrUse, _) and
     adjacentDefRead(defOrUse, use)
   )
 }
 
 private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, boolean uncertain) {
-  // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
   exists(UseOrPhi use |
-    adjustForPointerArith(defOrUse, nodeFrom, use, uncertain) and
-    useToNode(use, nodeTo)
-    or
-    not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
     nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
     adjacentDefRead(defOrUse, use) and
     useToNode(use, nodeTo) and
@@ -719,14 +729,19 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
+private predicate isArgumentOfCallable(DataFlowCall call, ArgumentNode arg) {
+  arg.argumentOf(call, _)
+}
+
+/** Holds if there is def-use or use-use flow from `pun` to `nodeTo`. */
 predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
-  exists(Node preUpdate, Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
+  exists(UseOrPhi use, Node preUpdate |
+    adjustForPointerArith(pun, use) and
+    useToNode(use, nodeTo) and
     preUpdate = pun.getPreUpdateNode() and
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain)
-  |
-    if uncertain = true
-    then preUpdate = [nFrom, getAPriorDefinition(defOrUse)]
-    else preUpdate = nFrom
+    not exists(DataFlowCall call |
+      isArgumentOfCallable(call, preUpdate) and isArgumentOfCallable(call, nodeTo)
+    )
   )
 }
 

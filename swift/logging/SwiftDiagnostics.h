@@ -1,90 +1,112 @@
 #pragma once
 
-#include <binlog/EventStream.hpp>
-#include <binlog/PrettyPrinter.hpp>
+#include <binlog/binlog.hpp>
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <optional>
 #include <cassert>
 #include <fstream>
 #include <filesystem>
 #include <sstream>
 #include <mutex>
+#include <fmt/format.h>
+#include <fmt/chrono.h>
+#include <nlohmann/json.hpp>
+
+#include "swift/logging/Formatters.h"
 
 namespace codeql {
 
 extern const std::string_view programName;
 
+struct SwiftDiagnosticsLocation {
+  std::string_view file;
+  unsigned startLine;
+  unsigned startColumn;
+  unsigned endLine;
+  unsigned endColumn;
+
+  nlohmann::json json() const;
+  std::string str() const;
+};
+
 // Models a diagnostic source for Swift, holding static information that goes out into a diagnostic
 // These are internally stored into a map on id's. A specific error log can use binlog's category
 // as id, which will then be used to recover the diagnostic source while dumping.
-struct SwiftDiagnosticsSource {
+struct SwiftDiagnostic {
+  enum class Visibility : unsigned char {
+    none = 0b000,
+    statusPage = 0b001,
+    cliSummaryTable = 0b010,
+    telemetry = 0b100,
+    all = 0b111,
+  };
+
+  // Notice that Tool Status Page severity is not necessarily the same as log severity, as the
+  // scope is different: TSP's scope is the whole analysis, log's scope is a single run
+  enum class Severity {
+    note,
+    warning,
+    error,
+  };
+
+  static constexpr std::string_view extractorName = "swift";
+
   std::string_view id;
   std::string_view name;
-  static constexpr std::string_view extractorName = "swift";
   std::string_view action;
-  // space separated if more than 1. Not a vector to allow constexpr
-  // TODO(C++20) with vector going constexpr this can be turned to `std::vector<std::string_view>`
-  std::string_view helpLinks;
 
-  // for the moment, we only output errors, so no need to store the severity
+  Visibility visibility{Visibility::all};
+  Severity severity{Severity::error};
 
-  // registers a diagnostics source for later retrieval with get, if not done yet
-  template <const SwiftDiagnosticsSource* Source>
-  static void ensureRegistered() {
-    static std::once_flag once;
-    std::call_once(once, registerImpl, Source);
-  }
+  std::optional<SwiftDiagnosticsLocation> location{};
 
-  // gets a previously inscribed SwiftDiagnosticsSource for the given id. Will abort if none exists
-  static const SwiftDiagnosticsSource& get(const std::string& id) { return *map().at(id); }
+  // create a JSON diagnostics for this source with the given `timestamp` and Markdown `message`
+  // A markdownMessage is emitted that includes both the message and the action to take. The id is
+  // used to construct the source id in the form `swift/<prog name>/<id>`
+  nlohmann::json json(const std::chrono::system_clock::time_point& timestamp,
+                      std::string_view message) const;
 
-  // emit a JSON diagnostics for this source with the given timestamp and message to out
-  // A plaintextMessage is used that includes both the message and the action to take. Dots are
-  // appended to both. The id is used to construct the source id in the form
-  // `swift/<prog name>/<id with '-' replacing '_'>`
-  void emit(std::ostream& out, std::string_view timestamp, std::string_view message) const;
+  // returns <id> or <id>@<location> if a location is present
+  std::string abbreviation() const;
 
- private:
-  static void registerImpl(const SwiftDiagnosticsSource* source);
-
-  std::string sourceId() const;
-  using Map = std::unordered_map<std::string, const SwiftDiagnosticsSource*>;
-
-  static Map& map() {
-    static Map ret;
+  SwiftDiagnostic withLocation(std::string_view file,
+                               unsigned startLine = 0,
+                               unsigned startColumn = 0,
+                               unsigned endLine = 0,
+                               unsigned endColumn = 0) const {
+    auto ret = *this;
+    ret.location = SwiftDiagnosticsLocation{file, startLine, startColumn, endLine, endColumn};
     return ret;
   }
-};
-
-// An output modeling binlog's output stream concept that intercepts binlog entries and translates
-// them to appropriate diagnostics JSON entries
-class SwiftDiagnosticsDumper {
- public:
-  // opens path for writing out JSON entries. Returns whether the operation was successful.
-  bool open(const std::filesystem::path& path) {
-    output.open(path);
-    return output.good();
-  }
-
-  void flush() { output.flush(); }
-
-  // write out binlog entries as corresponding JSON diagnostics entries. Expects all entries to have
-  // a category equal to an id of a previously created SwiftDiagnosticSource.
-  void write(const char* buffer, std::size_t bufferSize);
 
  private:
-  binlog::EventStream events;
-  std::ofstream output;
-  binlog::PrettyPrinter timestampedMessagePrinter{"%u %m", "%Y-%m-%dT%H:%M:%S.%NZ"};
+  bool has(Visibility v) const;
 };
 
+inline constexpr SwiftDiagnostic::Visibility operator|(SwiftDiagnostic::Visibility lhs,
+                                                       SwiftDiagnostic::Visibility rhs) {
+  return static_cast<SwiftDiagnostic::Visibility>(static_cast<unsigned char>(lhs) |
+                                                  static_cast<unsigned char>(rhs));
+}
+
+inline constexpr SwiftDiagnostic::Visibility operator&(SwiftDiagnostic::Visibility lhs,
+                                                       SwiftDiagnostic::Visibility rhs) {
+  return static_cast<SwiftDiagnostic::Visibility>(static_cast<unsigned char>(lhs) &
+                                                  static_cast<unsigned char>(rhs));
+}
+
+constexpr SwiftDiagnostic internalError{
+    .id = "internal-error",
+    .name = "Internal error",
+    .action =
+        "Some or all of the Swift analysis may have failed.\n"
+        "\n"
+        "If the error persists, contact support, quoting the error message and describing what "
+        "happened, or [open an issue in our open source repository][1].\n"
+        "\n"
+        "[1]: https://github.com/github/codeql/issues/new?labels=bug&template=ql---general.md",
+    .severity = SwiftDiagnostic::Severity::warning,
+};
 }  // namespace codeql
-
-namespace codeql_diagnostics {
-constexpr codeql::SwiftDiagnosticsSource internal_error{
-    "internal_error",
-    "Internal error",
-    "Contact us about this issue",
-};
-}  // namespace codeql_diagnostics

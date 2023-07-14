@@ -113,13 +113,6 @@ class ExprCfgNode extends AstCfgNode {
   /** Gets the underlying expression. */
   Expr getExpr() { result = e }
 
-  /**
-   * DEPRECATED: Use `getConstantValue` instead.
-   *
-   * Gets the textual (constant) value of this expression, if any.
-   */
-  deprecated string getValueText() { result = this.getConstantValue().toString() }
-
   /** Gets the constant value of this expression, if any. */
   ConstantValue getConstantValue() { result = getConstantValue(this) }
 }
@@ -936,10 +929,10 @@ module ExprNodes {
   }
 
   /** A control-flow node that wraps a `StringLiteral` AST expression. */
-  class StringLiteralCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "StringLiteralCfgNode" }
+  class StringLiteralCfgNode extends StringlikeLiteralCfgNode {
+    StringLiteralCfgNode() { e instanceof StringLiteral }
 
-    override StringLiteral e;
+    override string getAPrimaryQlClass() { result = "StringLiteralCfgNode" }
 
     final override StringLiteral getExpr() { result = super.getExpr() }
   }

@@ -1,3 +1,32 @@
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* New models have been added for `org.apache.commons.lang`.
+* The query `java/unsafe-deserialization` has been updated to take into account `SerialKiller`, a library used to prevent deserialization of arbitrary classes.
+
+### Bug Fixes
+
+* The query "Arbitrary file write during archive extraction ("Zip Slip")" (`java/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* The `java/summary/lines-of-code` query now only counts lines of Java code. The new `java/summary/lines-of-code-kotlin` counts lines of Kotlin code.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* The query `java/groovy-injection` now recognizes `groovy.text.TemplateEngine.createTemplate` as a sink.
+* The queries `java/xxe` and `java/xxe-local` now recognize the second argument of calls to `XPath.evaluate` as a sink.
+* Experimental sinks for the query "Resolving XML external entity in user-controlled data" (`java/xxe`) have been promoted to the main query pack. These sinks were originally [submitted as part of an experimental query by @haby0](https://github.com/github/codeql/pull/6564).
+
 ## 0.6.1
 
 No user-facing changes.

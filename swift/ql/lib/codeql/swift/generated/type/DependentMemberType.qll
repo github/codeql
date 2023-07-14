@@ -24,26 +24,21 @@ module Generated {
     /**
      * Gets the base type of this dependent member type.
      */
-    final Type getBaseType() { result = this.getImmediateBaseType().resolve() }
-
-    /**
-     * Gets the associated type declaration of this dependent member type.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
-      result =
-        Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
-              .(Raw::DependentMemberType)
-              .getAssociatedTypeDecl())
+    final Type getBaseType() {
+      exists(Type immediate |
+        immediate = this.getImmediateBaseType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets the associated type declaration of this dependent member type.
      */
-    final AssociatedTypeDecl getAssociatedTypeDecl() {
-      result = this.getImmediateAssociatedTypeDecl().resolve()
+    AssociatedTypeDecl getAssociatedTypeDecl() {
+      result =
+        Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
+              .(Raw::DependentMemberType)
+              .getAssociatedTypeDecl())
     }
   }
 }

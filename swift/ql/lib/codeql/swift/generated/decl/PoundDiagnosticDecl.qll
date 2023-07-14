@@ -36,6 +36,11 @@ module Generated {
     /**
      * Gets the message of this pound diagnostic declaration.
      */
-    final StringLiteralExpr getMessage() { result = this.getImmediateMessage().resolve() }
+    final StringLiteralExpr getMessage() {
+      exists(StringLiteralExpr immediate |
+        immediate = this.getImmediateMessage() and
+        result = immediate.resolve()
+      )
+    }
   }
 }

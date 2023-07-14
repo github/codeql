@@ -27,6 +27,11 @@ module Generated {
     /**
      * Gets the expression of this argument.
      */
-    final Expr getExpr() { result = this.getImmediateExpr().resolve() }
+    final Expr getExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateExpr() and
+        result = immediate.resolve()
+      )
+    }
   }
 }

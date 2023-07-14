@@ -55,10 +55,9 @@ private module Cached {
       )
     }
 
-  pragma[nomagic]
-  private TypeTracker noContentTypeTracker(boolean hasCall) {
-    result = MkTypeTracker(hasCall, noContent())
-  }
+  /** Gets a type tracker with no content and the call bit set to the given value. */
+  cached
+  TypeTracker noContentTypeTracker(boolean hasCall) { result = MkTypeTracker(hasCall, noContent()) }
 
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
@@ -224,6 +223,28 @@ private module Cached {
 
 private import Cached
 
+private predicate step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+  stepNoCall(nodeFrom, nodeTo, summary)
+  or
+  stepCall(nodeFrom, nodeTo, summary)
+}
+
+pragma[nomagic]
+private predicate stepProj(TypeTrackingNode nodeFrom, StepSummary summary) {
+  step(nodeFrom, _, summary)
+}
+
+private predicate smallstep(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+  smallstepNoCall(nodeFrom, nodeTo, summary)
+  or
+  smallstepCall(nodeFrom, nodeTo, summary)
+}
+
+pragma[nomagic]
+private predicate smallstepProj(Node nodeFrom, StepSummary summary) {
+  smallstep(nodeFrom, _, summary)
+}
+
 /**
  * Holds if `nodeFrom` is being written to the `content` of the object in `nodeTo`.
  *
@@ -296,17 +317,30 @@ class StepSummary extends TStepSummary {
 
 /** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
+  predicate append = Cached::append/2;
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  predicate stepCall = Cached::stepCall/3;
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  predicate stepNoCall = Cached::stepNoCall/3;
+
   /**
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
-   *
-   * This predicate is inlined, which enables better join-orders when
-   * the call graph construction and type tracking are mutually recursive.
-   * In such cases, non-linear recursion involving `step` will be limited
-   * to non-linear recursion for the parts of `step` that involve the
-   * call graph.
    */
-  pragma[inline]
   predicate step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     stepNoCall(nodeFrom, nodeTo, summary)
     or
@@ -315,12 +349,29 @@ module StepSummary {
 
   /**
    * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  predicate smallstepNoCall = Cached::smallstepNoCall/3;
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  predicate smallstepCall = Cached::smallstepCall/3;
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
    * local, heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    *
    * Unlike `StepSummary::step`, this predicate does not compress
    * type-preserving steps.
    */
-  pragma[inline]
   predicate smallstep(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     smallstepNoCall(nodeFrom, nodeTo, summary)
     or
@@ -328,6 +379,35 @@ module StepSummary {
   }
 
   deprecated predicate localSourceStoreStep = flowsToStoreStep/3;
+
+  /** Gets the step summary for a level step. */
+  StepSummary levelStep() { result = LevelStep() }
+
+  /** Gets the step summary for a call step. */
+  StepSummary callStep() { result = CallStep() }
+
+  /** Gets the step summary for a return step. */
+  StepSummary returnStep() { result = ReturnStep() }
+
+  /** Gets the step summary for storing into `content`. */
+  StepSummary storeStep(TypeTrackerContent content) { result = StoreStep(content) }
+
+  /** Gets the step summary for loading from `content`. */
+  StepSummary loadStep(TypeTrackerContent content) { result = LoadStep(content) }
+
+  /** Gets the step summary for loading from `load` and then storing into `store`. */
+  StepSummary loadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
+    result = LoadStoreStep(load, store)
+  }
+
+  /** Gets the step summary for a step that only permits contents matched by `filter`. */
+  StepSummary withContent(ContentFilter filter) { result = WithContent(filter) }
+
+  /** Gets the step summary for a step that blocks contents matched by `filter`. */
+  StepSummary withoutContent(ContentFilter filter) { result = WithoutContent(filter) }
+
+  /** Gets the step summary for a jump step. */
+  StepSummary jumpStep() { result = JumpStep() }
 }
 
 /**
@@ -429,11 +509,25 @@ class TypeTracker extends TTypeTracker {
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
-  pragma[inline]
+  bindingset[nodeFrom, this]
+  pragma[inline_late]
+  pragma[noopt]
   TypeTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
-      result = this.append(pragma[only_bind_into](summary))
+      stepProj(nodeFrom, summary) and
+      result = this.append(summary) and
+      step(nodeFrom, nodeTo, summary)
+    )
+  }
+
+  bindingset[nodeFrom, this]
+  pragma[inline_late]
+  pragma[noopt]
+  private TypeTracker smallstepNoSimpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(StepSummary summary |
+      smallstepProj(nodeFrom, summary) and
+      result = this.append(summary) and
+      smallstep(nodeFrom, nodeTo, summary)
     )
   }
 
@@ -463,10 +557,7 @@ class TypeTracker extends TTypeTracker {
    */
   pragma[inline]
   TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
-    exists(StepSummary summary |
-      StepSummary::smallstep(nodeFrom, nodeTo, summary) and
-      result = this.append(summary)
-    )
+    result = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)
     or
     simpleLocalFlowStep(nodeFrom, nodeTo) and
     result = this
@@ -479,6 +570,22 @@ module TypeTracker {
    * Gets a valid end point of type tracking.
    */
   TypeTracker end() { result.end() }
+
+  /**
+   * INTERNAL USE ONLY.
+   *
+   * Gets a valid end point of type tracking with the call bit set to the given value.
+   */
+  predicate end = Cached::noContentTypeTracker/1;
+}
+
+pragma[nomagic]
+private predicate backStepProj(TypeTrackingNode nodeTo, StepSummary summary) {
+  step(_, nodeTo, summary)
+}
+
+private predicate backSmallstepProj(TypeTrackingNode nodeTo, StepSummary summary) {
+  smallstep(_, nodeTo, summary)
 }
 
 /**
@@ -562,11 +669,25 @@ class TypeBackTracker extends TTypeBackTracker {
    * Gets the summary that corresponds to having taken a backwards
    * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
    */
-  pragma[inline]
+  bindingset[nodeTo, result]
+  pragma[inline_late]
+  pragma[noopt]
   TypeBackTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(pragma[only_bind_out](nodeFrom), nodeTo, pragma[only_bind_into](summary)) and
-      this = result.prepend(pragma[only_bind_into](summary))
+      backStepProj(nodeTo, summary) and
+      this = result.prepend(summary) and
+      step(nodeFrom, nodeTo, summary)
+    )
+  }
+
+  bindingset[nodeTo, result]
+  pragma[inline_late]
+  pragma[noopt]
+  private TypeBackTracker smallstepNoSimpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(StepSummary summary |
+      backSmallstepProj(nodeTo, summary) and
+      this = result.prepend(summary) and
+      smallstep(nodeFrom, nodeTo, summary)
     )
   }
 
@@ -596,10 +717,7 @@ class TypeBackTracker extends TTypeBackTracker {
    */
   pragma[inline]
   TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
-    exists(StepSummary summary |
-      StepSummary::smallstep(nodeFrom, nodeTo, summary) and
-      this = result.prepend(summary)
-    )
+    this = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)
     or
     simpleLocalFlowStep(nodeFrom, nodeTo) and
     this = result
@@ -613,8 +731,17 @@ class TypeBackTracker extends TTypeBackTracker {
    * also flow to `sink`.
    */
   TypeTracker getACompatibleTypeTracker() {
-    exists(boolean hasCall | result = MkTypeTracker(hasCall, content) |
-      hasCall = false or this.hasReturn() = false
+    exists(boolean hasCall, OptionalTypeTrackerContent c |
+      result = MkTypeTracker(hasCall, c) and
+      (
+        compatibleContents(c, content)
+        or
+        content = noContent() and c = content
+      )
+    |
+      hasCall = false
+      or
+      this.hasReturn() = false
     )
   }
 }
@@ -625,4 +752,170 @@ module TypeBackTracker {
    * Gets a valid end point of type back-tracking.
    */
   TypeBackTracker end() { result.end() }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Provides logic for constructing a call graph in mutual recursion with type tracking.
+ *
+ * When type tracking is used to construct a call graph, we cannot use the join-order
+ * from `stepInlineLate`, because `step` becomes a recursive call, which means that we
+ * will have a conjunct with 3 recursive calls: the call to `step`, the call to `stepProj`,
+ * and the recursive type tracking call itself. The solution is to split the three-way
+ * non-linear recursion into two non-linear predicates: one that first joins with the
+ * projected `stepCall` relation, followed by a predicate that joins with the full
+ * `stepCall` relation (`stepNoCall` not being recursive, can be join-ordered in the
+ * same way as in `stepInlineLate`).
+ */
+module CallGraphConstruction {
+  /** The input to call graph construction. */
+  signature module InputSig {
+    /** A state to track during type tracking. */
+    class State;
+
+    /** Holds if type tracking should start at `start` in state `state`. */
+    predicate start(Node start, State state);
+
+    /**
+     * Holds if type tracking should use the step from `nodeFrom` to `nodeTo`,
+     * which _does not_ depend on the call graph.
+     *
+     * Implementing this predicate using `StepSummary::[small]stepNoCall` yields
+     * standard type tracking.
+     */
+    predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary);
+
+    /**
+     * Holds if type tracking should use the step from `nodeFrom` to `nodeTo`,
+     * which _does_ depend on the call graph.
+     *
+     * Implementing this predicate using `StepSummary::[small]stepCall` yields
+     * standard type tracking.
+     */
+    predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary);
+
+    /** A projection of an element from the state space. */
+    class StateProj;
+
+    /** Gets the projection of `state`. */
+    StateProj stateProj(State state);
+
+    /** Holds if type tracking should stop at `n` when we are tracking projected state `stateProj`. */
+    predicate filter(Node n, StateProj stateProj);
+  }
+
+  /** Provides the `track` predicate for use in call graph construction. */
+  module Make<InputSig Input> {
+    pragma[nomagic]
+    private predicate stepNoCallProj(Node nodeFrom, StepSummary summary) {
+      Input::stepNoCall(nodeFrom, _, summary)
+    }
+
+    pragma[nomagic]
+    private predicate stepCallProj(Node nodeFrom, StepSummary summary) {
+      Input::stepCall(nodeFrom, _, summary)
+    }
+
+    bindingset[nodeFrom, t]
+    pragma[inline_late]
+    pragma[noopt]
+    private TypeTracker stepNoCallInlineLate(
+      TypeTracker t, TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo
+    ) {
+      exists(StepSummary summary |
+        stepNoCallProj(nodeFrom, summary) and
+        result = t.append(summary) and
+        Input::stepNoCall(nodeFrom, nodeTo, summary)
+      )
+    }
+
+    bindingset[state]
+    pragma[inline_late]
+    private Input::StateProj stateProjInlineLate(Input::State state) {
+      result = Input::stateProj(state)
+    }
+
+    pragma[nomagic]
+    private Node track(Input::State state, TypeTracker t) {
+      t.start() and Input::start(result, state)
+      or
+      exists(Input::StateProj stateProj |
+        stateProj = stateProjInlineLate(state) and
+        not Input::filter(result, stateProj)
+      |
+        exists(TypeTracker t2 | t = stepNoCallInlineLate(t2, track(state, t2), result))
+        or
+        exists(StepSummary summary |
+          // non-linear recursion
+          Input::stepCall(trackCall(state, t, summary), result, summary)
+        )
+      )
+    }
+
+    bindingset[t, summary]
+    pragma[inline_late]
+    private TypeTracker appendInlineLate(TypeTracker t, StepSummary summary) {
+      result = t.append(summary)
+    }
+
+    pragma[nomagic]
+    private Node trackCall(Input::State state, TypeTracker t, StepSummary summary) {
+      exists(TypeTracker t2 |
+        // non-linear recursion
+        result = track(state, t2) and
+        stepCallProj(result, summary) and
+        t = appendInlineLate(t2, summary)
+      )
+    }
+
+    /** Gets a node that can be reached from _some_ start node in state `state`. */
+    pragma[nomagic]
+    Node track(Input::State state) { result = track(state, TypeTracker::end()) }
+  }
+
+  /** A simple version of `CallGraphConstruction` that uses standard type tracking. */
+  module Simple {
+    /** The input to call graph construction. */
+    signature module InputSig {
+      /** A state to track during type tracking. */
+      class State;
+
+      /** Holds if type tracking should start at `start` in state `state`. */
+      predicate start(Node start, State state);
+
+      /** Holds if type tracking should stop at `n`. */
+      predicate filter(Node n);
+    }
+
+    /** Provides the `track` predicate for use in call graph construction. */
+    module Make<InputSig Input> {
+      private module I implements CallGraphConstruction::InputSig {
+        private import codeql.util.Unit
+
+        class State = Input::State;
+
+        predicate start(Node start, State state) { Input::start(start, state) }
+
+        predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+          StepSummary::stepNoCall(nodeFrom, nodeTo, summary)
+        }
+
+        predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary) {
+          StepSummary::stepCall(nodeFrom, nodeTo, summary)
+        }
+
+        class StateProj = Unit;
+
+        Unit stateProj(State state) { exists(state) and exists(result) }
+
+        predicate filter(Node n, Unit u) {
+          Input::filter(n) and
+          exists(u)
+        }
+      }
+
+      import CallGraphConstruction::Make<I>
+    }
+  }
 }

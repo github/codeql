@@ -49,14 +49,14 @@ private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
 private class ApplicationWithLaunchOptionsFunc extends Function {
   ApplicationWithLaunchOptionsFunc() {
     this.getName() = "application(_:" + ["did", "will"] + "FinishLaunchingWithOptions:)" and
-    this.getEnclosingDecl().(ClassOrStructDecl).getABaseTypeDecl*().(ProtocolDecl).getName() =
+    this.getEnclosingDecl().asNominalTypeDecl().getABaseTypeDecl*().(ProtocolDecl).getName() =
       "UIApplicationDelegate"
   }
 }
 
 private class LaunchOptionsUrlVarDecl extends VarDecl {
   LaunchOptionsUrlVarDecl() {
-    this.getEnclosingDecl().(StructDecl).getFullName() = "UIApplication.LaunchOptionsKey" and
+    this.getEnclosingDecl().asNominalTypeDecl().getFullName() = "UIApplication.LaunchOptionsKey" and
     this.getName() = "url"
   }
 }
@@ -68,7 +68,7 @@ private class UiOpenUrlContextUrlInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   UiOpenUrlContextUrlInheritTaint() {
-    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "UIOpenURLContext" and
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "UIOpenURLContext" and
     this.getField().getName() = "url"
   }
 }
@@ -80,7 +80,7 @@ private class UserActivityUrlInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   UserActivityUrlInheritTaint() {
-    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "NSUserActivity" and
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "NSUserActivity" and
     this.getField().getName() = "webpageURL"
   }
 }
@@ -93,7 +93,7 @@ private class ConnectionOptionsFieldsInheritTaint extends TaintInheritingContent
   DataFlow::Content::FieldContent
 {
   ConnectionOptionsFieldsInheritTaint() {
-    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "ConnectionOptions" and
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "ConnectionOptions" and
     this.getField().getName() = ["userActivities", "urlContexts"]
   }
 }

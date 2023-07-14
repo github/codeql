@@ -359,7 +359,4 @@ private module RestFramework {
       override string getMimetypeDefault() { none() }
     }
   }
-
-  /** DEPRECATED: Alias for ApiException */
-  deprecated module APIException = ApiException;
 }

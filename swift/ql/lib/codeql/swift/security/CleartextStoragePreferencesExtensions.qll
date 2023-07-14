@@ -74,11 +74,15 @@ private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesS
 }
 
 /**
- * An encryption barrier for cleartext preferences storage vulnerabilities.
+ * An barrier for cleartext preferences storage vulnerabilities.
+ *  - encryption; encrypted values are not cleartext.
+ *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
-private class CleartextStoragePreferencesEncryptionBarrier extends CleartextStoragePreferencesBarrier
-{
-  CleartextStoragePreferencesEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextStoragePreferencesDefaultBarrier extends CleartextStoragePreferencesBarrier {
+  CleartextStoragePreferencesDefaultBarrier() {
+    this.asExpr() instanceof EncryptedExpr or
+    this.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
 }
 
 /**

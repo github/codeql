@@ -10,21 +10,13 @@ module Generated {
 
     /**
      * Gets the element of this enum element pattern.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    EnumElementDecl getImmediateElement() {
+    EnumElementDecl getElement() {
       result =
         Synth::convertEnumElementDeclFromRaw(Synth::convertEnumElementPatternToRaw(this)
               .(Raw::EnumElementPattern)
               .getElement())
     }
-
-    /**
-     * Gets the element of this enum element pattern.
-     */
-    final EnumElementDecl getElement() { result = this.getImmediateElement().resolve() }
 
     /**
      * Gets the sub pattern of this enum element pattern, if it exists.
@@ -42,7 +34,12 @@ module Generated {
     /**
      * Gets the sub pattern of this enum element pattern, if it exists.
      */
-    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
+    final Pattern getSubPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediateSubPattern() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getSubPattern()` exists.

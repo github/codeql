@@ -26,7 +26,12 @@ module Generated {
     /**
      * Gets the pattern of this for each statement.
      */
-    final Pattern getPattern() { result = this.getImmediatePattern().resolve() }
+    final Pattern getPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediatePattern() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the sequence of this for each statement.
@@ -44,7 +49,12 @@ module Generated {
     /**
      * Gets the sequence of this for each statement.
      */
-    final Expr getSequence() { result = this.getImmediateSequence().resolve() }
+    final Expr getSequence() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSequence() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -60,7 +70,12 @@ module Generated {
     /**
      * Gets the where of this for each statement, if it exists.
      */
-    final Expr getWhere() { result = this.getImmediateWhere().resolve() }
+    final Expr getWhere() {
+      exists(Expr immediate |
+        immediate = this.getImmediateWhere() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getWhere()` exists.
@@ -69,20 +84,12 @@ module Generated {
 
     /**
      * Gets the body of this for each statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    BraceStmt getImmediateBody() {
+    BraceStmt getBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertForEachStmtToRaw(this)
               .(Raw::ForEachStmt)
               .getBody())
     }
-
-    /**
-     * Gets the body of this for each statement.
-     */
-    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
   }
 }

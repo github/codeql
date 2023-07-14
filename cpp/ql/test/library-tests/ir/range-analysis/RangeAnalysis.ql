@@ -5,12 +5,10 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
 
-class RangeAnalysisTest extends InlineExpectationsTest {
-  RangeAnalysisTest() { this = "RangeAnalysisTest" }
+module RangeAnalysisTest implements TestSig {
+  string getARelevantTag() { result = "range" }
 
-  override string getARelevantTag() { result = "range" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SemExpr e, IR::CallInstruction call |
       getSemanticExpr(call.getArgument(0)) = e and
       call.getStaticCallTarget().hasName("range") and
@@ -21,6 +19,8 @@ class RangeAnalysisTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<RangeAnalysisTest>
 
 private string getDirectionString(boolean d) {
   result = "<=" and d = true
@@ -40,14 +40,7 @@ bindingset[delta]
 private string getBoundString(SemBound b, float delta) {
   b instanceof SemZeroBound and result = delta.toString()
   or
-  result =
-    strictconcat(b.(SemSsaBound)
-              .getAVariable()
-              .(SemanticExprConfig::SsaVariable)
-              .asInstruction()
-              .getAst()
-              .toString(), ":"
-      ) + getOffsetString(delta)
+  result = strictconcat(b.(SemSsaBound).getAVariable().toString(), " | ") + getOffsetString(delta)
 }
 
 private string getARangeString(SemExpr e) {

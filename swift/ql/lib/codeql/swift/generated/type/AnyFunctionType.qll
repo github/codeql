@@ -21,7 +21,12 @@ module Generated {
     /**
      * Gets the result of this function type.
      */
-    final Type getResult() { result = this.getImmediateResult().resolve() }
+    final Type getResult() {
+      exists(Type immediate |
+        immediate = this.getImmediateResult() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the `index`th parameter type of this function type (0-based).
@@ -39,7 +44,12 @@ module Generated {
     /**
      * Gets the `index`th parameter type of this function type (0-based).
      */
-    final Type getParamType(int index) { result = this.getImmediateParamType(index).resolve() }
+    final Type getParamType(int index) {
+      exists(Type immediate |
+        immediate = this.getImmediateParamType(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the parameter types of this function type.

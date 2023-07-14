@@ -8,34 +8,22 @@ module Generated {
   class Decl extends Synth::TDecl, AstNode {
     /**
      * Gets the module of this declaration.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getImmediateModule() {
+    ModuleDecl getModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertDeclToRaw(this).(Raw::Decl).getModule())
     }
 
     /**
-     * Gets the module of this declaration.
-     */
-    final ModuleDecl getModule() { result = this.getImmediateModule().resolve() }
-
-    /**
      * Gets the `index`th member of this declaration (0-based).
      *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
+     * Prefer to use more specific methods (such as `EnumDecl.getEnumElement`) rather than relying
+     * on the order of members given by `getMember`. In some cases the order of members may not
+     * align with expectations, and could change in future releases.
      */
-    Decl getImmediateMember(int index) {
+    Decl getMember(int index) {
       result = Synth::convertDeclFromRaw(Synth::convertDeclToRaw(this).(Raw::Decl).getMember(index))
     }
-
-    /**
-     * Gets the `index`th member of this declaration (0-based).
-     */
-    final Decl getMember(int index) { result = this.getImmediateMember(index).resolve() }
 
     /**
      * Gets any of the members of this declaration.

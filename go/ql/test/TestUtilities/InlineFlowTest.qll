@@ -3,37 +3,35 @@
  *
  * Example for a test.ql:
  * ```ql
- * import java
+ * import go
  * import TestUtilities.InlineFlowTest
+ * import DefaultFlowTest
+ * import PathGraph
+ *
+ * from PathNode source, PathNode sink
+ * where flowPath(source, sink)
+ * select sink, source, sink, "$@", source, source.toString()
  * ```
  *
- * To declare expecations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
- * Example of the corresponding test file, e.g. Test.java
+ * To declare expectations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
+ * Example of the corresponding test file, e.g. Test.go
  * ```go
- * public class Test {
+ * func source() string { return ""; }
+ * func taint() string { return ""; }
+ * func sink(s string) { }
  *
- * 	Object source() { return null; }
- * 	String taint() { return null; }
- * 	void sink(Object o) { }
- *
- * 	public void test() {
- * 		Object s = source();
- * 		sink(s); //$hasValueFlow
- * 		String t = "foo" + taint();
- * 		sink(t); //$hasTaintFlow
- * 	}
- *
+ * func test() {
+ *   s := source()
+ *   sink(s) // $ hasValueFlow="s"
+ *   t := "foo" + taint()
+ *   sink(t) // $ hasTaintFlow="t"
  * }
  * ```
  *
- * If you're not interested in a specific flow type, you can disable either value or taint flow expectations as follows:
- * ```ql
- * class HasFlowTest extends InlineFlowTest {
- *   override DataFlow::Configuration getTaintFlowConfig() { none() }
- *
- *   override DataFlow::Configuration getValueFlowConfig() { none() }
- * }
- * ```
+ * If you are only interested in value flow, then instead of importing `DefaultFlowTest`, you can import
+ * `ValueFlowTest<DefaultFlowConfig>`. Similarly, if you are only interested in taint flow, then instead of
+ * importing `DefaultFlowTest`, you can import `TaintFlowTest<DefaultFlowConfig>`. In both cases
+ * `DefaultFlowConfig` can be replaced by another implementation of `DataFlow::ConfigSig`.
  *
  * If you need more fine-grained tuning, consider implementing a test using `InlineExpectationsTest`.
  */
@@ -47,57 +45,68 @@ private predicate defaultSource(DataFlow::Node source) {
   )
 }
 
-class DefaultValueFlowConf extends DataFlow::Configuration {
-  DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }
-
-  override predicate isSource(DataFlow::Node source) { defaultSource(source) }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Function fn | fn.hasQualifiedName(_, "sink") | sink = fn.getACall().getAnArgument())
-  }
-
-  override int fieldFlowBranchLimit() { result = 1000 }
+private predicate defaultSink(DataFlow::Node sink) {
+  exists(Function fn | fn.hasQualifiedName(_, "sink") | sink = fn.getACall().getAnArgument())
 }
 
-class DefaultTaintFlowConf extends TaintTracking::Configuration {
-  DefaultTaintFlowConf() { this = "qltest:defaultTaintFlowConf" }
+module DefaultFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { defaultSource(source) }
 
-  override predicate isSource(DataFlow::Node source) { defaultSource(source) }
+  predicate isSink(DataFlow::Node sink) { defaultSink(sink) }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Function fn | fn.hasQualifiedName(_, "sink") | sink = fn.getACall().getAnArgument())
-  }
-
-  override int fieldFlowBranchLimit() { result = 1000 }
+  int fieldFlowBranchLimit() { result = 1000 }
 }
 
-class InlineFlowTest extends InlineExpectationsTest {
-  InlineFlowTest() { this = "HasFlowTest" }
+private module NoFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { none() }
 
-  override string getARelevantTag() { result = ["hasValueFlow", "hasTaintFlow"] }
+  predicate isSink(DataFlow::Node sink) { none() }
+}
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "hasValueFlow" and
-    exists(DataFlow::Node sink | this.getValueFlowConfig().hasFlowTo(sink) |
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-      element = sink.toString() and
-      value = "\"" + sink.toString() + "\""
-    )
-    or
-    tag = "hasTaintFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink |
-      this.getTaintFlowConfig().hasFlow(src, sink) and
-      not this.getValueFlowConfig().hasFlow(src, sink)
-    |
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-      element = sink.toString() and
-      value = "\"" + sink.toString() + "\""
-    )
+module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
+  module ValueFlow = DataFlow::Global<ValueFlowConfig>;
+
+  module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
+
+  private module InlineTest implements TestSig {
+    string getARelevantTag() { result = ["hasValueFlow", "hasTaintFlow"] }
+
+    predicate hasActualResult(Location location, string element, string tag, string value) {
+      tag = "hasValueFlow" and
+      exists(DataFlow::Node sink | ValueFlow::flowTo(sink) |
+        sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+          location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+        element = sink.toString() and
+        value = "\"" + sink.toString() + "\""
+      )
+      or
+      tag = "hasTaintFlow" and
+      exists(DataFlow::Node src, DataFlow::Node sink |
+        TaintFlow::flow(src, sink) and not ValueFlow::flow(src, sink)
+      |
+        sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+          location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+        element = sink.toString() and
+        value = "\"" + sink.toString() + "\""
+      )
+    }
   }
 
-  DataFlow::Configuration getValueFlowConfig() { result = any(DefaultValueFlowConf config) }
+  import MakeTest<InlineTest>
+  import DataFlow::MergePathGraph<ValueFlow::PathNode, TaintFlow::PathNode, ValueFlow::PathGraph, TaintFlow::PathGraph>
 
-  DataFlow::Configuration getTaintFlowConfig() { result = any(DefaultTaintFlowConf config) }
+  predicate flowPath(PathNode source, PathNode sink) {
+    ValueFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) or
+    TaintFlow::flowPath(source.asPathNode2(), sink.asPathNode2())
+  }
+}
+
+module DefaultFlowTest = FlowTest<DefaultFlowConfig, DefaultFlowConfig>;
+
+module ValueFlowTest<DataFlow::ConfigSig ValueFlowConfig> {
+  import FlowTest<ValueFlowConfig, NoFlowConfig>
+}
+
+module TaintFlowTest<DataFlow::ConfigSig TaintFlowConfig> {
+  import FlowTest<NoFlowConfig, TaintFlowConfig>
 }

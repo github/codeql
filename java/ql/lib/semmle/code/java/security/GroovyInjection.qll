@@ -21,7 +21,7 @@ class GroovyInjectionAdditionalTaintStep extends Unit {
 }
 
 private class DefaultGroovyInjectionSink extends GroovyInjectionSink {
-  DefaultGroovyInjectionSink() { sinkNode(this, "groovy") }
+  DefaultGroovyInjectionSink() { sinkNode(this, "groovy-injection") }
 }
 
 /** A set of additional taint steps to consider when taint tracking Groovy related data flows. */

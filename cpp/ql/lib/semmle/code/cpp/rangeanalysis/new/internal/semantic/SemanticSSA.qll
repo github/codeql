@@ -70,6 +70,27 @@ predicate semBackEdge(SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionP
   // Conservatively assume that every edge is a back edge if we don't have dominance information.
   (
     phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
+    irreducibleSccEdge(edge.getOrigBlock(), phi.getBasicBlock()) or
     not edge.getOrigBlock().hasDominanceInformation()
   )
+}
+
+/**
+ * Holds if the edge from b1 to b2 is part of a multiple-entry cycle in an irreducible control flow
+ * graph.
+ *
+ * An ireducible control flow graph is one where the usual dominance-based back edge detection does
+ * not work, because there is a cycle with multiple entry points, meaning there are
+ * mutually-reachable basic blocks where neither dominates the other. For such a graph, we first
+ * remove all detectable back-edges using the normal condition that the predecessor block is
+ * dominated by the successor block, then mark all edges in a cycle in the resulting graph as back
+ * edges.
+ */
+private predicate irreducibleSccEdge(SemBasicBlock b1, SemBasicBlock b2) {
+  trimmedEdge(b1, b2) and trimmedEdge+(b2, b1)
+}
+
+private predicate trimmedEdge(SemBasicBlock pred, SemBasicBlock succ) {
+  pred.getASuccessor() = succ and
+  not succ.bbDominates(pred)
 }

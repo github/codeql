@@ -23,6 +23,11 @@ module Generated {
     /**
      * Gets the sub pattern of this optional some pattern.
      */
-    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
+    final Pattern getSubPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediateSubPattern() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

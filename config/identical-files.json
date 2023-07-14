@@ -511,7 +511,8 @@
   "SensitiveDataHeuristics Python/JS": [
     "javascript/ql/lib/semmle/javascript/security/internal/SensitiveDataHeuristics.qll",
     "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll",
-    "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll"
+    "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll",
+    "swift/ql/lib/codeql/swift/security/internal/SensitiveDataHeuristics.qll"
   ],
   "CFG": [
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
@@ -521,6 +522,10 @@
   "TypeTracker": [
     "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
     "ruby/ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
+  ],
+  "SummaryTypeTracker": [
+    "python/ql/lib/semmle/python/dataflow/new/internal/SummaryTypeTracker.qll",
+    "ruby/ql/lib/codeql/ruby/typetracking/internal/SummaryTypeTracker.qll"
   ],
   "AccessPathSyntax": [
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/AccessPathSyntax.qll",

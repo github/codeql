@@ -25,7 +25,10 @@ module Generated {
      * Gets the `index`th active element of this if config declaration (0-based).
      */
     final AstNode getActiveElement(int index) {
-      result = this.getImmediateActiveElement(index).resolve()
+      exists(AstNode immediate |
+        immediate = this.getImmediateActiveElement(index) and
+        result = immediate.resolve()
+      )
     }
 
     /**

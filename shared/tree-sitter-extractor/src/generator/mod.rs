@@ -23,36 +23,22 @@ pub fn generate(
         e
     })?;
     let mut dbscheme_writer = LineWriter::new(dbscheme_file);
-    write!(
+    writeln!(
         dbscheme_writer,
         "// CodeQL database schema for {}\n\
-         // Automatically generated from the tree-sitter grammar; do not edit\n\n",
+         // Automatically generated from the tree-sitter grammar; do not edit\n",
         languages[0].name
     )?;
 
-    let (diagnostics_case, diagnostics_table) = create_diagnostics();
-    dbscheme::write(
-        &mut dbscheme_writer,
-        &[
-            create_location_union(),
-            create_locations_default_table(),
-            create_files_table(),
-            create_folders_table(),
-            create_container_union(),
-            create_containerparent_table(),
-            create_source_location_prefix_table(),
-            dbscheme::Entry::Table(diagnostics_table),
-            dbscheme::Entry::Case(diagnostics_case),
-        ],
-    )?;
+    writeln!(dbscheme_writer, include_str!("prefix.dbscheme"))?;
 
     let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
-    write!(
+    writeln!(
         ql_writer,
         "/**\n\
           * CodeQL library for {}
           * Automatically generated from the tree-sitter grammar; do not edit\n\
-          */\n\n",
+          */\n",
         languages[0].name
     )?;
     ql::write(
@@ -74,6 +60,7 @@ pub fn generate(
         let nodes = node_types::read_node_types_str(&prefix, language.node_types)?;
         let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
         ast_node_members.insert(&token_name);
+        writeln!(&mut dbscheme_writer, "/*- {} dbscheme -*/", language.name)?;
         dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;
         let token_case = create_token_case(&token_name, token_kinds);
         dbscheme::write(
@@ -388,7 +375,7 @@ fn create_ast_node_info_table<'a>(
                 unique: false,
                 db_type: dbscheme::DbColumnType::Int,
                 name: "loc",
-                ql_type: ql::Type::At("location"),
+                ql_type: ql::Type::At("location_default"),
                 ql_type_is_ref: true,
             },
         ],
@@ -436,214 +423,4 @@ fn create_token_case<'a>(name: &'a str, token_kinds: Map<&'a str, usize>) -> dbs
         column: "kind",
         branches,
     }
-}
-
-fn create_location_union<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Union(dbscheme::Union {
-        name: "location",
-        members: vec!["location_default"].into_iter().collect(),
-    })
-}
-
-fn create_files_table<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Table(dbscheme::Table {
-        name: "files",
-        keysets: None,
-        columns: vec![
-            dbscheme::Column {
-                unique: true,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "id",
-                ql_type: ql::Type::At("file"),
-                ql_type_is_ref: false,
-            },
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "name",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-        ],
-    })
-}
-fn create_folders_table<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Table(dbscheme::Table {
-        name: "folders",
-        keysets: None,
-        columns: vec![
-            dbscheme::Column {
-                unique: true,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "id",
-                ql_type: ql::Type::At("folder"),
-                ql_type_is_ref: false,
-            },
-            dbscheme::Column {
-                db_type: dbscheme::DbColumnType::String,
-                name: "name",
-                unique: false,
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-        ],
-    })
-}
-
-fn create_locations_default_table<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Table(dbscheme::Table {
-        name: "locations_default",
-        keysets: None,
-        columns: vec![
-            dbscheme::Column {
-                unique: true,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "id",
-                ql_type: ql::Type::At("location_default"),
-                ql_type_is_ref: false,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "file",
-                ql_type: ql::Type::At("file"),
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "start_line",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "start_column",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "end_line",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "end_column",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-        ],
-    })
-}
-
-fn create_container_union<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Union(dbscheme::Union {
-        name: "container",
-        members: vec!["folder", "file"].into_iter().collect(),
-    })
-}
-
-fn create_containerparent_table<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Table(dbscheme::Table {
-        name: "containerparent",
-        columns: vec![
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "parent",
-                ql_type: ql::Type::At("container"),
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: true,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "child",
-                ql_type: ql::Type::At("container"),
-                ql_type_is_ref: true,
-            },
-        ],
-        keysets: None,
-    })
-}
-
-fn create_source_location_prefix_table<'a>() -> dbscheme::Entry<'a> {
-    dbscheme::Entry::Table(dbscheme::Table {
-        name: "sourceLocationPrefix",
-        keysets: None,
-        columns: vec![dbscheme::Column {
-            unique: false,
-            db_type: dbscheme::DbColumnType::String,
-            name: "prefix",
-            ql_type: ql::Type::String,
-            ql_type_is_ref: true,
-        }],
-    })
-}
-
-fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
-    let table = dbscheme::Table {
-        name: "diagnostics",
-        keysets: None,
-        columns: vec![
-            dbscheme::Column {
-                unique: true,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "id",
-                ql_type: ql::Type::At("diagnostic"),
-                ql_type_is_ref: false,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "severity",
-                ql_type: ql::Type::Int,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::String,
-                name: "error_tag",
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::String,
-                name: "error_message",
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::String,
-                name: "full_error_message",
-                ql_type: ql::Type::String,
-                ql_type_is_ref: true,
-            },
-            dbscheme::Column {
-                unique: false,
-                db_type: dbscheme::DbColumnType::Int,
-                name: "location",
-                ql_type: ql::Type::At("location_default"),
-                ql_type_is_ref: true,
-            },
-        ],
-    };
-    let severities: Vec<(usize, &str)> = vec![
-        (10, "diagnostic_debug"),
-        (20, "diagnostic_info"),
-        (30, "diagnostic_warning"),
-        (40, "diagnostic_error"),
-    ];
-    let case = dbscheme::Case {
-        name: "diagnostic",
-        column: "severity",
-        branches: severities,
-    };
-    (case, table)
 }

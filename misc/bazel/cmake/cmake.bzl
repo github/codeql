@@ -11,8 +11,7 @@ CmakeInfo = provider(
         "includes": "",
         "quote_includes": "",
         "stripped_includes": "",
-        "imported_static_libs": "",
-        "imported_dynamic_libs": "",
+        "imported_libs": "",
         "copts": "",
         "linkopts": "",
         "force_cxx_compilation": "",
@@ -41,10 +40,8 @@ def _file_kind(file):
         return "src"
     if ext in ("h", "hh", "hpp", "def", "inc"):
         return "hdr"
-    if ext == "a":
-        return "static_lib"
-    if ext in ("so", "dylib"):
-        return "dynamic_lib"
+    if ext in ("a", "so", "dylib"):
+        return "lib"
     return None
 
 def _get_includes(includes):
@@ -70,8 +67,7 @@ def _cmake_aspect_impl(target, ctx):
         by_kind.setdefault(_file_kind(f), []).append(_cmake_file(f))
     hdrs = by_kind.get("hdr", [])
     srcs = by_kind.get("src", [])
-    static_libs = by_kind.get("static_lib", [])
-    dynamic_libs = by_kind.get("dynamic_lib", [])
+    libs = by_kind.get("lib", [])
     if not srcs and is_binary:
         empty = ctx.actions.declare_file(name + "_empty.cpp")
         ctx.actions.write(empty, "")
@@ -134,12 +130,15 @@ def _cmake_aspect_impl(target, ctx):
             system_includes = system_includes,
             quote_includes = quote_includes,
             stripped_includes = stripped_includes,
-            imported_static_libs = static_libs,
-            imported_dynamic_libs = dynamic_libs,
+            imported_libs = libs,
             copts = copts,
             linkopts = linkopts,
             defines = compilation_ctx.defines.to_list(),
-            local_defines = compilation_ctx.local_defines.to_list(),
+            local_defines = [
+                d
+                for d in compilation_ctx.local_defines.to_list()
+                if not d.startswith("BAZEL_CURRENT_REPOSITORY")
+            ],
             force_cxx_compilation = force_cxx_compilation,
             transitive_deps = depset(deps, transitive = [dep.transitive_deps for dep in deps]),
         ),
@@ -156,20 +155,10 @@ def _map_cmake_info(info, is_windows):
     commands = [
         "add_%s(%s)" % (info.kind, args),
     ]
-    if info.imported_static_libs and info.imported_dynamic_libs:
-        commands += [
-            "if(BUILD_SHARED_LIBS)",
-            "  target_link_libraries(%s %s %s)" %
-            (info.name, info.modifier or "PUBLIC", " ".join(info.imported_dynamic_libs)),
-            "else()",
-            "  target_link_libraries(%s %s %s)" %
-            (info.name, info.modifier or "PUBLIC", " ".join(info.imported_static_libs)),
-            "endif()",
-        ]
-    elif info.imported_static_libs or info.imported_dynamic_libs:
+    if info.imported_libs:
         commands += [
             "target_link_libraries(%s %s %s)" %
-            (info.name, info.modifier or "PUBLIC", " ".join(info.imported_dynamic_lib + info.imported_static_libs)),
+            (info.name, info.modifier or "PUBLIC", " ".join(info.imported_libs)),
         ]
     if info.deps:
         libs = {}
@@ -223,7 +212,7 @@ def _map_cmake_info(info, is_windows):
 
 GeneratedCmakeFiles = provider(
     fields = {
-        "files": "",
+        "targets": "",
     },
 )
 
@@ -232,7 +221,11 @@ def _generate_cmake_impl(ctx):
     inputs = []
 
     infos = {}
-    for dep in ctx.attr.targets:
+    targets = list(ctx.attr.targets)
+    for include in ctx.attr.includes:
+        targets += include[GeneratedCmakeFiles].targets.to_list()
+
+    for dep in targets:
         for info in [dep[CmakeInfo]] + dep[CmakeInfo].transitive_deps.to_list():
             if info.name != None:
                 inputs += info.inputs
@@ -244,11 +237,6 @@ def _generate_cmake_impl(ctx):
         commands += _map_cmake_info(info, is_windows)
         commands.append("")
 
-    for include in ctx.attr.includes:
-        for file in include[GeneratedCmakeFiles].files.to_list():
-            inputs.append(file)
-            commands.append("include(${BAZEL_EXEC_ROOT}/%s)" % file.path)
-
     # we want to use a run or run_shell action to register a bunch of files like inputs, but we cannot write all
     # in a shell command as we would hit the command size limit. So we first write the file and then copy it with
     # the dummy inputs
@@ -259,7 +247,7 @@ def _generate_cmake_impl(ctx):
 
     return [
         DefaultInfo(files = depset([output])),
-        GeneratedCmakeFiles(files = depset([output])),
+        GeneratedCmakeFiles(targets = depset(ctx.attr.targets)),
     ]
 
 generate_cmake = rule(

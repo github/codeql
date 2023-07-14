@@ -1911,4 +1911,28 @@ int noreturnTest2(int x) {
     return x;
 }
 
+int static_function(int x) {
+    return x;
+}
+
+void test_static_functions_with_assignments() {
+    C c;
+    int x;
+    x = c.StaticMemberFunction(10);
+    int y;
+    y = C::StaticMemberFunction(10);
+    int z;
+    z = static_function(10);
+}
+
+void test_double_assign() {
+  int i, j;
+  i = j = 40;
+}
+
+void test_assign_with_assign_operation() {
+  int i, j = 0;
+  i = (j += 40);
+}
+
 // semmle-extractor-options: -std=c++17 --clang

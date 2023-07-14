@@ -21,21 +21,13 @@ module Generated {
 
     /**
      * Gets the target of this continue statement, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Stmt getImmediateTarget() {
+    Stmt getTarget() {
       result =
         Synth::convertStmtFromRaw(Synth::convertContinueStmtToRaw(this)
               .(Raw::ContinueStmt)
               .getTarget())
     }
-
-    /**
-     * Gets the target of this continue statement, if it exists.
-     */
-    final Stmt getTarget() { result = this.getImmediateTarget().resolve() }
 
     /**
      * Holds if `getTarget()` exists.

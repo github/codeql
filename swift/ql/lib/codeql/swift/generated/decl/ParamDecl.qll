@@ -16,24 +16,14 @@ module Generated {
     /**
      * Gets the property wrapper local wrapped variable binding of this parameter declaration, if it exists.
      *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
+     * This is the synthesized binding introducing the property wrapper local wrapped projection
+     * variable for this variable, if any.
      */
-    PatternBindingDecl getImmediatePropertyWrapperLocalWrappedVarBinding() {
+    PatternBindingDecl getPropertyWrapperLocalWrappedVarBinding() {
       result =
         Synth::convertPatternBindingDeclFromRaw(Synth::convertParamDeclToRaw(this)
               .(Raw::ParamDecl)
               .getPropertyWrapperLocalWrappedVarBinding())
-    }
-
-    /**
-     * Gets the property wrapper local wrapped variable binding of this parameter declaration, if it exists.
-     *
-     * This is the synthesized binding introducing the property wrapper local wrapped projection
-     * variable for this variable, if any.
-     */
-    final PatternBindingDecl getPropertyWrapperLocalWrappedVarBinding() {
-      result = this.getImmediatePropertyWrapperLocalWrappedVarBinding().resolve()
     }
 
     /**
@@ -46,24 +36,14 @@ module Generated {
     /**
      * Gets the property wrapper local wrapped variable of this parameter declaration, if it exists.
      *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
+     * This is the synthesized local wrapped value, shadowing this parameter declaration in case it
+     * has a property wrapper.
      */
-    VarDecl getImmediatePropertyWrapperLocalWrappedVar() {
+    VarDecl getPropertyWrapperLocalWrappedVar() {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertParamDeclToRaw(this)
               .(Raw::ParamDecl)
               .getPropertyWrapperLocalWrappedVar())
-    }
-
-    /**
-     * Gets the property wrapper local wrapped variable of this parameter declaration, if it exists.
-     *
-     * This is the synthesized local wrapped value, shadowing this parameter declaration in case it
-     * has a property wrapper.
-     */
-    final VarDecl getPropertyWrapperLocalWrappedVar() {
-      result = this.getImmediatePropertyWrapperLocalWrappedVar().resolve()
     }
 
     /**

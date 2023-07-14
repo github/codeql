@@ -25,9 +25,6 @@ class HttpsUrlConnection extends RefType {
   HttpsUrlConnection() { this.hasQualifiedName("javax.net.ssl", "HttpsURLConnection") }
 }
 
-/** DEPRECATED: Alias for HttpsUrlConnection */
-deprecated class HttpsURLConnection = HttpsUrlConnection;
-
 class SslSocketFactory extends RefType {
   SslSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
 }

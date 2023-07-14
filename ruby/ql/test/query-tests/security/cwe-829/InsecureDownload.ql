@@ -1,22 +1,25 @@
 import codeql.ruby.AST
 import codeql.ruby.DataFlow
-import PathGraph
-import TestUtilities.InlineFlowTest
 import codeql.ruby.security.InsecureDownloadQuery
+import Flow::PathGraph
+import TestUtilities.InlineExpectationsTest
+import TestUtilities.InlineFlowTestUtil
 
-class FlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getValueFlowConfig() { result = any(Configuration config) }
+module FlowTest implements TestSig {
+  string getARelevantTag() { result = "BAD" }
 
-  override DataFlow::Configuration getTaintFlowConfig() { none() }
-
-  override string getARelevantTag() { result = "BAD" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "BAD" and
-    super.hasActualResult(location, element, "hasValueFlow", value)
+    exists(DataFlow::Node src, DataFlow::Node sink | Flow::flow(src, sink) |
+      sink.getLocation() = location and
+      element = sink.toString() and
+      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
+    )
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Configuration conf
-where conf.hasFlowPath(source, sink)
+import MakeTest<FlowTest>
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

@@ -90,7 +90,7 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::LazyInitializationExpr translateLazyInitializerExpr(
       const swift::LazyInitializerExpr& expr);
   codeql::ForceValueExpr translateForceValueExpr(const swift::ForceValueExpr& expr);
-  codeql::IfExpr translateIfExpr(const swift::IfExpr& expr);
+  codeql::IfExpr translateTernaryExpr(const swift::TernaryExpr& expr);
   codeql::KeyPathDotExpr translateKeyPathDotExpr(const swift::KeyPathDotExpr& expr);
   codeql::KeyPathApplicationExpr translateKeyPathApplicationExpr(
       const swift::KeyPathApplicationExpr& expr);

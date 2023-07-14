@@ -2,12 +2,12 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import FlowTest
 
-class LocalFlowStepTest extends FlowTest {
-  LocalFlowStepTest() { this = "LocalFlowStepTest" }
+module LocalFlowStepTest implements FlowTestSig {
+  string flowTag() { result = "step" }
 
-  override string flowTag() { result = "step" }
-
-  override predicate relevantFlow(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  predicate relevantFlow(DataFlow::Node fromNode, DataFlow::Node toNode) {
     DataFlow::localFlowStep(fromNode, toNode)
   }
 }
+
+import MakeTest<MakeTestSig<LocalFlowStepTest>>

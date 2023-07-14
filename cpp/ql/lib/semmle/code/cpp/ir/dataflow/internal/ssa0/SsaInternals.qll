@@ -122,7 +122,46 @@ abstract private class OperandBasedUse extends UseImpl {
   override string toString() { result = operand.toString() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    operand.getUse() = block.getInstruction(index)
+    // Ideally, this would just be implemented as:
+    // ```
+    // operand.getUse() = block.getInstruction(index)
+    // ```
+    // but because the IR generated for a snippet such as
+    // ```
+    // int x = *p++;
+    // ```
+    // looks like
+    // ```
+    // r1(glval<int>)   = VariableAddress[x]  :
+    // r2(glval<int *>) = VariableAddress[p]  :
+    // r3(int *)        = Load[p]             : &:r2, m1
+    // r4(int)          = Constant[1]         :
+    // r5(int *)        = PointerAdd[4]       : r3, r4
+    // m3(int *)        = Store[p]            : &:r2, r5
+    // r6(int *)        = CopyValue           : r3
+    // r7(int)          = Load[?]             : &:r6, ~m2
+    // m2(int)          = Store[x]            : &:r1, r7
+    // ```
+    // we need to ensure that the `r3` operand of the `CopyValue` instruction isn't seen as a fresh use
+    // of `p` that happens after the increment. So if the base instruction of this use comes from a
+    // post-fix crement operation we set the index of the SSA use that wraps the `r3` operand at the
+    // `CopyValue` instruction to be the same index as the `r3` operand at the `PointerAdd` instruction.
+    // This ensures that the SSA library doesn't create flow from the `PointerAdd` to `r6`.
+    exists(BaseSourceVariableInstruction base | base = this.getBase() |
+      if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
+      then
+        exists(Operand op |
+          op =
+            min(Operand cand, int i |
+              isUse(_, cand, base, _, _) and
+              block.getInstruction(i) = cand.getUse()
+            |
+              cand order by i
+            ) and
+          block.getInstruction(index) = op.getUse()
+        )
+      else operand.getUse() = block.getInstruction(index)
+    )
   }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }

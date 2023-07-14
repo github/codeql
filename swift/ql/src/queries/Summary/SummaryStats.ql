@@ -11,6 +11,7 @@ import codeql.swift.dataflow.FlowSources
 import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
+import codeql.swift.regex.Regex
 
 /**
  * A taint configuration for tainted data reaching any node.
@@ -37,6 +38,12 @@ float taintReach() { result = (taintedNodesCount() * 1000000.0) / count(DataFlow
 predicate statistic(string what, string value) {
   what = "Files" and value = count(File f).toString()
   or
+  what = "Lines of code" and value = sum(File f | | f.getNumberOfLinesOfCode()).toString()
+  or
+  what = "Compiler errors" and value = count(CompilerError d).toString()
+  or
+  what = "Compiler warnings" and value = count(CompilerWarning d).toString()
+  or
   what = "Expressions" and value = count(Expr e | not e.getFile() instanceof UnknownFile).toString()
   or
   what = "Local flow sources" and value = count(LocalFlowSource s).toString()
@@ -50,6 +57,8 @@ predicate statistic(string what, string value) {
   what = "Dataflow nodes (tainted)" and value = taintedNodesCount().toString()
   or
   what = "Taint reach (per million nodes)" and value = taintReach().toString()
+  or
+  what = "Regular expression evals" and value = count(RegexEval e).toString()
 }
 
 from string what, string value

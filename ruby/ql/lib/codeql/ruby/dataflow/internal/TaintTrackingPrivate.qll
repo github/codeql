@@ -96,7 +96,8 @@ private module Cached {
         )
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false)
     or
     any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
     or
@@ -112,6 +113,13 @@ private module Cached {
     )
   }
 
+  cached
+  predicate summaryThroughStepTaint(
+    DataFlow::Node arg, DataFlow::Node out, FlowSummaryImpl::Public::SummarizedCallable sc
+  ) {
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(arg, out, sc)
+  }
+
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.
@@ -122,7 +130,7 @@ private module Cached {
     defaultAdditionalTaintStep(nodeFrom, nodeTo) or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
-    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
+    summaryThroughStepTaint(nodeFrom, nodeTo, _)
   }
 }
 

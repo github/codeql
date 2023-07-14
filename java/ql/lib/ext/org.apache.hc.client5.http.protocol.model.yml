@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # sink neutrals
+      - ["org.apache.hc.client5.http.protocol", "RedirectLocations", "contains", "", "sink", "hq-manual"]

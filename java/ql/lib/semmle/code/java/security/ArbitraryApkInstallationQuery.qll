@@ -68,8 +68,6 @@ private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
   predicate isSink(DataFlow::Node node, FlowState state) {
     state instanceof HasInstallPackageAction and node.asExpr().getType() instanceof TypeIntent
   }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
 private module InstallPackageActionFlow =
@@ -113,8 +111,6 @@ private module PackageArchiveMimeTypeConfig implements DataFlow::StateConfigSig 
     state instanceof HasPackageArchiveMimeType and
     node instanceof SetDataSink
   }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
 private module PackageArchiveMimeTypeFlow =

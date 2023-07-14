@@ -90,9 +90,6 @@ module LdapQuery {
   }
 }
 
-/** DEPRECATED: Alias for LdapQuery */
-deprecated module LDAPQuery = LdapQuery;
-
 /**
  * A data-flow node that collect methods executing a LDAP query.
  *
@@ -105,9 +102,6 @@ class LdapQuery extends DataFlow::Node instanceof LdapQuery::Range {
    */
   DataFlow::Node getQuery() { result = super.getQuery() }
 }
-
-/** DEPRECATED: Alias for LdapQuery */
-deprecated class LDAPQuery = LdapQuery;
 
 /** Provides classes for modeling LDAP components escape-related APIs. */
 module LdapEscape {
@@ -125,9 +119,6 @@ module LdapEscape {
   }
 }
 
-/** DEPRECATED: Alias for LdapEscape */
-deprecated module LDAPEscape = LdapEscape;
-
 /**
  * A data-flow node that collects functions escaping LDAP components.
  *
@@ -140,9 +131,6 @@ class LdapEscape extends DataFlow::Node instanceof LdapEscape::Range {
    */
   DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
-
-/** DEPRECATED: Alias for LdapEscape */
-deprecated class LDAPEscape = LdapEscape;
 
 /** Provides classes for modeling LDAP bind-related APIs. */
 module LdapBind {
@@ -173,9 +161,6 @@ module LdapBind {
   }
 }
 
-/** DEPRECATED: Alias for LdapBind */
-deprecated module LDAPBind = LdapBind;
-
 /**
  * A data-flow node that collects methods binding a LDAP connection.
  *
@@ -202,9 +187,6 @@ class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
   deprecated predicate useSSL() { this.useSsl() }
 }
 
-/** DEPRECATED: Alias for LdapBind */
-deprecated class LDAPBind = LdapBind;
-
 /** Provides classes for modeling SQL sanitization libraries. */
 module SqlEscape {
   /**
@@ -221,9 +203,6 @@ module SqlEscape {
   }
 }
 
-/** DEPRECATED: Alias for SqlEscape */
-deprecated module SQLEscape = SqlEscape;
-
 /**
  * A data-flow node that collects functions escaping SQL statements.
  *
@@ -236,9 +215,6 @@ class SqlEscape extends DataFlow::Node instanceof SqlEscape::Range {
    */
   DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
-
-/** DEPRECATED: Alias for SqlEscape */
-deprecated class SQLEscape = SqlEscape;
 
 /** Provides a class for modeling NoSql execution APIs. */
 module NoSqlQuery {
@@ -254,9 +230,6 @@ module NoSqlQuery {
   }
 }
 
-/** DEPRECATED: Alias for NoSqlQuery */
-deprecated module NoSQLQuery = NoSqlQuery;
-
 /**
  * A data-flow node that executes NoSQL queries.
  *
@@ -267,9 +240,6 @@ class NoSqlQuery extends DataFlow::Node instanceof NoSqlQuery::Range {
   /** Gets the argument that specifies the NoSql query to be executed. */
   DataFlow::Node getQuery() { result = super.getQuery() }
 }
-
-/** DEPRECATED: Alias for NoSqlQuery */
-deprecated class NoSQLQuery = NoSqlQuery;
 
 /** Provides classes for modeling NoSql sanitization-related APIs. */
 module NoSqlSanitizer {
@@ -285,9 +255,6 @@ module NoSqlSanitizer {
   }
 }
 
-/** DEPRECATED: Alias for NoSqlSanitizer */
-deprecated module NoSQLSanitizer = NoSqlSanitizer;
-
 /**
  * A data-flow node that collects functions sanitizing NoSQL queries.
  *
@@ -298,9 +265,6 @@ class NoSqlSanitizer extends DataFlow::Node instanceof NoSqlSanitizer::Range {
   /** Gets the argument that specifies the NoSql query to be sanitized. */
   DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
-
-/** DEPRECATED: Alias for NoSqlSanitizer */
-deprecated class NoSQLSanitizer = NoSqlSanitizer;
 
 /** Provides classes for modeling HTTP Header APIs. */
 module HeaderDeclaration {
@@ -450,9 +414,6 @@ module JwtEncoding {
   }
 }
 
-/** DEPRECATED: Alias for JwtEncoding */
-deprecated module JWTEncoding = JwtEncoding;
-
 /**
  * A data-flow node that collects methods encoding a JWT token.
  *
@@ -480,9 +441,6 @@ class JwtEncoding extends DataFlow::Node instanceof JwtEncoding::Range {
    */
   string getAlgorithmString() { result = super.getAlgorithmString() }
 }
-
-/** DEPRECATED: Alias for JwtEncoding */
-deprecated class JWTEncoding = JwtEncoding;
 
 /** Provides classes for modeling JWT decoding-related APIs. */
 module JwtDecoding {
@@ -525,9 +483,6 @@ module JwtDecoding {
   }
 }
 
-/** DEPRECATED: Alias for JwtDecoding */
-deprecated module JWTDecoding = JwtDecoding;
-
 /**
  * A data-flow node that collects methods encoding a JWT token.
  *
@@ -565,9 +520,6 @@ class JwtDecoding extends DataFlow::Node instanceof JwtDecoding::Range {
    */
   predicate verifiesSignature() { super.verifiesSignature() }
 }
-
-/** DEPRECATED: Alias for JwtDecoding */
-deprecated class JWTDecoding = JwtDecoding;
 
 /** Provides classes for modeling Email APIs. */
 module EmailSender {
