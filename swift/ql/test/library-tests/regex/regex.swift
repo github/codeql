@@ -17,9 +17,9 @@ struct Regex<Output> : RegexComponent {
 
 	init(_ pattern: String) throws where Output == AnyRegexOutput { }
 
-	func ignoresCase(_ ignoresCase: Bool = true) -> Regex<Regex<Output>.RegexOutput> { return self }
-	func dotMatchesNewlines(_ dotMatchesNewlines: Bool = true) -> Regex<Regex<Output>.RegexOutput> { return self }
-	func anchorsMatchLineEndings(_ matchLineEndings: Bool = true) -> Regex<Regex<Output>.RegexOutput> { return self }
+	func ignoresCase(_ ignoresCase: Bool = true) -> Regex<Regex<Output>.RegexOutput> { return 0 as! Self }
+	func dotMatchesNewlines(_ dotMatchesNewlines: Bool = true) -> Regex<Regex<Output>.RegexOutput> { return 0 as! Self }
+	func anchorsMatchLineEndings(_ matchLineEndings: Bool = true) -> Regex<Regex<Output>.RegexOutput> { return 0 as! Self }
 
 	func firstMatch(in string: String) throws -> Regex<Output>.Match? { return nil }
 	func prefixMatch(in string: String) throws -> Regex<Output>.Match? { return nil }
