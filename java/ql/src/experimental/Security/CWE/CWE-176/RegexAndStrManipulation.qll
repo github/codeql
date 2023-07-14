@@ -43,17 +43,5 @@ class PatternMatcherMethod extends Method {
  * The methods like `matches` of `java.lang.String`, or one of its subtypes.
  */
 class StringMethod extends Method {
-  StringMethod() {
-    this.getDeclaringType().getASupertype*() instanceof TypeString and
-    this.hasName([
-        "charAt", "chars", "codePointAt", "codePointBefore", "codePointCount", "codePoints",
-        "compareTo", "compareToIgnoreCase", "concat", "contains", "contentEquals", "copyValueOf",
-        "endsWith", "equals", "equalsIgnoreCase", "format", "getBytes", "getChars", "hashCode",
-        "indexOf", "intern", "isBlank", "isEmpty", "join", "lastIndexOf", "length", "lines",
-        "matches", "offsetByCodePoints", "regionMatches", "repeat", "replace", "replaceAll",
-        "replaceFirst", "split", "startsWith", "strip", "stripLeading", "stripTrailing",
-        "subSequence", "substring", "toCharArray", "toLowerCase", "toString", "toUpperCase",
-        "toUpperCase", "trim"
-      ])
-  }
+  StringMethod() { this.getDeclaringType().getASupertype*() instanceof TypeString }
 }
