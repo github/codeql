@@ -6,6 +6,10 @@
 private import java
 private import AutomodelAlertSinkUtil
 
+/**
+ * Holds if `alertCount` is the number of alerts for the query with ID `queryId` for which the
+ * sinks correspond to the given `ai-generated` sink model.
+ */
 query predicate sinkModelCountPerQuery(
   string queryId, int alertCount, string package, string type, boolean subtypes, string name,
   string signature, string input, string ext, string kind, string provenance
@@ -25,6 +29,10 @@ query predicate sinkModelCountPerQuery(
   )
 }
 
+/**
+ * Holds if `instanceCount` is the number of instances corresponding to the given `ai-generated`
+ * sink model (as identified by the `package`, `name`, `input`, etc.).
+ */
 query predicate instanceCount(
   int instanceCount, string package, string type, boolean subtypes, string name, string signature,
   string input, string ext, string kind, string provenance
