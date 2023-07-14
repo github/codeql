@@ -1946,6 +1946,18 @@ func populateTypeParamParents(tw *trap.Writer, typeparams *types.TypeParamList, 
 // some changes to the object to avoid returning objects relating to instantiated
 // types.
 func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
+	obj1 := getObjectBeingUsed1(tw, ident)
+	obj2 := getObjectBeingUsed2(tw, ident)
+	if obj1 != obj2 {
+		log.Fatalf("different results!\nobj1 = %s\nobj2=%s\n", obj1.String(), obj2.String())
+	}
+	return obj2
+}
+
+// getobjectBeingUsed looks up `ident` in `tw.Package.TypesInfo.Uses` and makes
+// some changes to the object to avoid returning objects relating to instantiated
+// types.
+func getObjectBeingUsed1(tw *trap.Writer, ident *ast.Ident) types.Object {
 	obj := tw.Package.TypesInfo.Uses[ident]
 	if obj == nil {
 		return nil
@@ -1988,6 +2000,17 @@ func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
 	}
 
 	return obj
+}
+
+func getObjectBeingUsed2(tw *trap.Writer, ident *ast.Ident) types.Object {
+	switch obj := tw.Package.TypesInfo.Uses[ident].(type) {
+	case *types.Var:
+		return obj.Origin()
+	case *types.Func:
+		return obj.Origin()
+	default:
+		return obj
+	}
 }
 
 // tryGetGenericType returns the generic type of `tp`, and a boolean indicating
