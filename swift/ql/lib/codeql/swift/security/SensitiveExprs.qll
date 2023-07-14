@@ -88,7 +88,6 @@ private string regexpProbablySafe() {
 /**
  * Gets a string that is to be tested for sensitivity.
  */
-cached
 private string sensitiveCandidateStrings() {
   result = any(VarDecl v).getName()
   or
@@ -100,7 +99,6 @@ private string sensitiveCandidateStrings() {
 /**
  * Gets a string from the candidates that is sensitive.
  */
-cached
 private string sensitiveStrings(SensitiveDataType sensitiveType) {
   result = sensitiveCandidateStrings() and
   result.regexpMatch(sensitiveType.getRegexp())
