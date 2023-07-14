@@ -116,37 +116,37 @@ nodes
 | react.js:10:56:10:77 | documen ... on.hash |
 | react.js:10:56:10:77 | documen ... on.hash |
 | react.js:10:56:10:77 | documen ... on.hash |
-| template-sinks.js:17:9:17:31 | tainted |
-| template-sinks.js:17:19:17:31 | req.query.foo |
-| template-sinks.js:17:19:17:31 | req.query.foo |
-| template-sinks.js:19:17:19:23 | tainted |
-| template-sinks.js:19:17:19:23 | tainted |
-| template-sinks.js:20:16:20:22 | tainted |
-| template-sinks.js:20:16:20:22 | tainted |
-| template-sinks.js:21:18:21:24 | tainted |
-| template-sinks.js:21:18:21:24 | tainted |
-| template-sinks.js:22:17:22:23 | tainted |
-| template-sinks.js:22:17:22:23 | tainted |
-| template-sinks.js:23:18:23:24 | tainted |
-| template-sinks.js:23:18:23:24 | tainted |
-| template-sinks.js:24:16:24:22 | tainted |
-| template-sinks.js:24:16:24:22 | tainted |
-| template-sinks.js:25:27:25:33 | tainted |
-| template-sinks.js:25:27:25:33 | tainted |
-| template-sinks.js:26:21:26:27 | tainted |
-| template-sinks.js:26:21:26:27 | tainted |
-| template-sinks.js:27:17:27:23 | tainted |
-| template-sinks.js:27:17:27:23 | tainted |
-| template-sinks.js:28:24:28:30 | tainted |
-| template-sinks.js:28:24:28:30 | tainted |
-| template-sinks.js:29:21:29:27 | tainted |
-| template-sinks.js:29:21:29:27 | tainted |
-| template-sinks.js:30:19:30:25 | tainted |
-| template-sinks.js:30:19:30:25 | tainted |
-| template-sinks.js:31:16:31:22 | tainted |
-| template-sinks.js:31:16:31:22 | tainted |
-| template-sinks.js:32:17:32:23 | tainted |
-| template-sinks.js:32:17:32:23 | tainted |
+| template-sinks.js:18:9:18:31 | tainted |
+| template-sinks.js:18:19:18:31 | req.query.foo |
+| template-sinks.js:18:19:18:31 | req.query.foo |
+| template-sinks.js:20:17:20:23 | tainted |
+| template-sinks.js:20:17:20:23 | tainted |
+| template-sinks.js:21:16:21:22 | tainted |
+| template-sinks.js:21:16:21:22 | tainted |
+| template-sinks.js:22:18:22:24 | tainted |
+| template-sinks.js:22:18:22:24 | tainted |
+| template-sinks.js:23:17:23:23 | tainted |
+| template-sinks.js:23:17:23:23 | tainted |
+| template-sinks.js:24:18:24:24 | tainted |
+| template-sinks.js:24:18:24:24 | tainted |
+| template-sinks.js:25:16:25:22 | tainted |
+| template-sinks.js:25:16:25:22 | tainted |
+| template-sinks.js:26:27:26:33 | tainted |
+| template-sinks.js:26:27:26:33 | tainted |
+| template-sinks.js:27:21:27:27 | tainted |
+| template-sinks.js:27:21:27:27 | tainted |
+| template-sinks.js:28:17:28:23 | tainted |
+| template-sinks.js:28:17:28:23 | tainted |
+| template-sinks.js:29:24:29:30 | tainted |
+| template-sinks.js:29:24:29:30 | tainted |
+| template-sinks.js:30:21:30:27 | tainted |
+| template-sinks.js:30:21:30:27 | tainted |
+| template-sinks.js:31:19:31:25 | tainted |
+| template-sinks.js:31:19:31:25 | tainted |
+| template-sinks.js:32:16:32:22 | tainted |
+| template-sinks.js:32:16:32:22 | tainted |
+| template-sinks.js:33:17:33:23 | tainted |
+| template-sinks.js:33:17:33:23 | tainted |
 | tst.js:2:6:2:27 | documen ... on.href |
 | tst.js:2:6:2:27 | documen ... on.href |
 | tst.js:2:6:2:83 | documen ... t=")+8) |
@@ -185,6 +185,24 @@ nodes
 | tst.js:35:28:35:33 | source |
 | tst.js:37:33:37:38 | source |
 | tst.js:37:33:37:38 | source |
+| webix/webix.html:3:16:3:37 | documen ... on.hash |
+| webix/webix.html:3:16:3:37 | documen ... on.hash |
+| webix/webix.html:3:16:3:37 | documen ... on.hash |
+| webix/webix.html:4:26:4:47 | documen ... on.hash |
+| webix/webix.html:4:26:4:47 | documen ... on.hash |
+| webix/webix.html:4:26:4:47 | documen ... on.hash |
+| webix/webix.html:5:47:5:68 | documen ... on.hash |
+| webix/webix.html:5:47:5:68 | documen ... on.hash |
+| webix/webix.html:5:47:5:68 | documen ... on.hash |
+| webix/webix.js:3:12:3:33 | documen ... on.hash |
+| webix/webix.js:3:12:3:33 | documen ... on.hash |
+| webix/webix.js:3:12:3:33 | documen ... on.hash |
+| webix/webix.js:4:22:4:43 | documen ... on.hash |
+| webix/webix.js:4:22:4:43 | documen ... on.hash |
+| webix/webix.js:4:22:4:43 | documen ... on.hash |
+| webix/webix.js:5:43:5:64 | documen ... on.hash |
+| webix/webix.js:5:43:5:64 | documen ... on.hash |
+| webix/webix.js:5:43:5:64 | documen ... on.hash |
 edges
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
@@ -254,36 +272,36 @@ edges
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:19:17:19:23 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:19:17:19:23 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:20:16:20:22 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:20:16:20:22 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:21:18:21:24 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:21:18:21:24 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:22:17:22:23 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:22:17:22:23 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:23:18:23:24 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:23:18:23:24 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:24:16:24:22 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:24:16:24:22 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:25:27:25:33 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:25:27:25:33 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:26:21:26:27 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:26:21:26:27 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:27:17:27:23 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:27:17:27:23 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:28:24:28:30 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:28:24:28:30 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:29:21:29:27 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:29:21:29:27 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:30:19:30:25 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:30:19:30:25 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:31:16:31:22 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:31:16:31:22 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:32:17:32:23 | tainted |
-| template-sinks.js:17:9:17:31 | tainted | template-sinks.js:32:17:32:23 | tainted |
-| template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:17:9:17:31 | tainted |
-| template-sinks.js:17:19:17:31 | req.query.foo | template-sinks.js:17:9:17:31 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:20:17:20:23 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:20:17:20:23 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:21:16:21:22 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:21:16:21:22 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:22:18:22:24 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:22:18:22:24 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:23:17:23:23 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:23:17:23:23 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:24:18:24:24 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:24:18:24:24 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:25:16:25:22 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:25:16:25:22 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:26:27:26:33 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:26:27:26:33 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:27:21:27:27 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:27:21:27:27 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:28:17:28:23 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:28:17:28:23 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:29:24:29:30 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:29:24:29:30 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:30:21:30:27 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:30:21:30:27 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:31:19:31:25 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:31:19:31:25 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:32:16:32:22 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:32:16:32:22 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:33:17:33:23 | tainted |
+| template-sinks.js:18:9:18:31 | tainted | template-sinks.js:33:17:33:23 | tainted |
+| template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:18:9:18:31 | tainted |
+| template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:18:9:18:31 | tainted |
 | tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
 | tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
 | tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
@@ -314,5 +332,11 @@ edges
 | tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
 | tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
 | tst.js:29:18:29:82 | documen ... , "$1") | tst.js:29:9:29:82 | source |
+| webix/webix.html:3:16:3:37 | documen ... on.hash | webix/webix.html:3:16:3:37 | documen ... on.hash |
+| webix/webix.html:4:26:4:47 | documen ... on.hash | webix/webix.html:4:26:4:47 | documen ... on.hash |
+| webix/webix.html:5:47:5:68 | documen ... on.hash | webix/webix.html:5:47:5:68 | documen ... on.hash |
+| webix/webix.js:3:12:3:33 | documen ... on.hash | webix/webix.js:3:12:3:33 | documen ... on.hash |
+| webix/webix.js:4:22:4:43 | documen ... on.hash | webix/webix.js:4:22:4:43 | documen ... on.hash |
+| webix/webix.js:5:43:5:64 | documen ... on.hash | webix/webix.js:5:43:5:64 | documen ... on.hash |
 #select
 | eslint-escope-build.js:21:16:21:16 | c | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c | $@ flows to here and is interpreted as code. | eslint-escope-build.js:20:22:20:22 | c | User-provided value |

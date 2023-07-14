@@ -96,7 +96,7 @@ deprecated class ExternalAPI = ExternalApi;
 /**
  * Gets the limit for the number of results produced by a telemetry query.
  */
-int resultLimit() { result = 1000 }
+int resultLimit() { result = 100 }
 
 /**
  * Holds if it is relevant to count usages of `api`.

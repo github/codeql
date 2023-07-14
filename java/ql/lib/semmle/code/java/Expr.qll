@@ -131,7 +131,6 @@ private predicate primitiveOrString(Type t) {
  * See JLS v8, section 15.28 (Constant Expressions).
  */
 class CompileTimeConstantExpr extends Expr {
-  pragma[assume_small_delta]
   CompileTimeConstantExpr() {
     primitiveOrString(this.getType()) and
     (
@@ -181,7 +180,6 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the string value of this expression, where possible.
    */
-  pragma[assume_small_delta]
   pragma[nomagic]
   string getStringValue() {
     result = this.(StringLiteral).getValue()
@@ -207,7 +205,6 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the boolean value of this expression, where possible.
    */
-  pragma[assume_small_delta]
   pragma[nomagic]
   boolean getBooleanValue() {
     // Literal value.
@@ -1910,7 +1907,6 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }
 
   /** Gets a printable representation of this expression. */
-  pragma[assume_small_delta]
   override string toString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or

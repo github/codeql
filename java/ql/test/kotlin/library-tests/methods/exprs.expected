@@ -225,7 +225,11 @@
 | delegates.kt:10:33:10:35 | new | VarAccess |
 | enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumClass[] | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumEntries<EnumClass> | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumEntries<EnumWithFunctions> | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumWithFunctions[] | TypeAccess |

@@ -22,7 +22,7 @@ def version_string_to_tuple(version):
     return tuple([int(m.group(i)) for i in range(1, 4)] + [m.group(4)])
 
 # Version number used by CI.
-ci_version = '1.8.10'
+ci_version = '1.9.0'
 
 many_versions = [ '1.4.32', '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0', '1.9.0-Beta' ]
 

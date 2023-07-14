@@ -196,8 +196,6 @@ module AllocToInvalidPointerConfig implements ProductFlow::StateConfigSig {
     isSinkImpl(_, sink1, sink2, state2)
   }
 
-  predicate isBarrier1(DataFlow::Node node, FlowState1 state) { none() }
-
   predicate isBarrier2(DataFlow::Node node, FlowState2 state) {
     node = Barrier2::getABarrierNode(state)
   }
@@ -206,18 +204,6 @@ module AllocToInvalidPointerConfig implements ProductFlow::StateConfigSig {
 
   predicate isBarrierOut2(DataFlow::Node node) {
     node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
-  }
-
-  predicate isAdditionalFlowStep1(
-    DataFlow::Node node1, FlowState1 state1, DataFlow::Node node2, FlowState1 state2
-  ) {
-    none()
-  }
-
-  predicate isAdditionalFlowStep2(
-    DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2
-  ) {
-    none()
   }
 }
 

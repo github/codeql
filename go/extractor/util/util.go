@@ -297,3 +297,46 @@ func FindGoFiles(root string) bool {
 	})
 	return found
 }
+
+func FindAllFilesWithName(root string, name string, dirsToSkip ...string) []string {
+	paths := make([]string, 0, 1)
+	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			for _, dirToSkip := range dirsToSkip {
+				if path == dirToSkip {
+					return filepath.SkipDir
+				}
+			}
+		}
+		if d.Name() == name {
+			paths = append(paths, path)
+		}
+		return nil
+	})
+	return paths
+}
+
+func AnyGoFilesOutsideDirs(root string, dirsToSkip ...string) bool {
+	found := false
+	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			for _, dirToSkip := range dirsToSkip {
+				if path == dirToSkip {
+					return filepath.SkipDir
+				}
+			}
+		}
+		if filepath.Ext(d.Name()) == ".go" {
+			found = true
+			return filepath.SkipAll
+		}
+		return nil
+	})
+	return found
+}
