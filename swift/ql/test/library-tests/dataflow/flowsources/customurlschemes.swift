@@ -107,14 +107,14 @@ class SceneDelegate : UISceneDelegate {
       let x = `continue`.webpageURL
       x // $ tainted
       let y = `continue`.referrerURL
-      y // $ MISSING: tainted
+      y // $ tainted
     }
 
     func scene(_: UIScene, didUpdate: NSUserActivity) { // $ source=remote
       let x = didUpdate.webpageURL
       x // $ tainted
       let y = didUpdate.referrerURL
-      y // $ MISSING: tainted
+      y // $ tainted
     }
 
     func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) { // $ source=remote
@@ -146,14 +146,14 @@ extension Extended : UISceneDelegate {
       let x = `continue`.webpageURL
       x // $ tainted
       let y = `continue`.referrerURL
-      y // $ MISSING: tainted
+      y // $ tainted
     }
 
     func scene(_: UIScene, didUpdate: NSUserActivity) { // $ source=remote
       let x = didUpdate.webpageURL
       x // $ tainted
       let y = didUpdate.referrerURL
-      y // $ MISSING: tainted
+      y // $ tainted
     }
 
     func scene(_: UIScene, openURLContexts: Set<UIOpenURLContext>) { // $ source=remote
