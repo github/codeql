@@ -12,6 +12,7 @@ edges
 | BadServlet3.java:45:38:45:48 | text : String | BadServlet3.java:46:10:46:13 | text : String |
 | BadServlet3.java:46:10:46:13 | text : String | BadServlet3.java:46:10:46:13 | text : String |
 | BadServlet3.java:46:10:46:13 | text : String | BadServlet3.java:46:10:46:34 | replace(...) : String |
+| BadServlet4.java:38:25:38:53 | getParameter(...) : String | BadServlet4.java:42:34:42:45 | inputEncoded |
 nodes
 | BadServlet1.java:35:25:35:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | BadServlet1.java:36:20:36:53 | htmlEscape(...) : String | semmle.label | htmlEscape(...) : String |
@@ -29,9 +30,12 @@ nodes
 | BadServlet3.java:46:10:46:13 | text : String | semmle.label | text : String |
 | BadServlet3.java:46:10:46:13 | text : String | semmle.label | text : String |
 | BadServlet3.java:46:10:46:34 | replace(...) : String | semmle.label | replace(...) : String |
+| BadServlet4.java:38:25:38:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| BadServlet4.java:42:34:42:45 | inputEncoded | semmle.label | inputEncoded |
 subpaths
 | BadServlet3.java:36:39:36:50 | inputEncoded : String | BadServlet3.java:45:38:45:48 | text : String | BadServlet3.java:46:10:46:34 | replace(...) : String | BadServlet3.java:36:25:36:51 | encodeForHtml(...) : String |
 #select
 | BadServlet1.java:37:40:37:46 | escaped | BadServlet1.java:35:25:35:53 | getParameter(...) : String | BadServlet1.java:37:40:37:46 | escaped | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | BadServlet1.java:37:40:37:46 | escaped | Unicode transformation (Unicode normalization) | BadServlet1.java:35:25:35:53 | getParameter(...) | remote user-controlled data |
 | BadServlet2.java:40:34:40:45 | inputEncoded | BadServlet2.java:35:25:35:53 | getParameter(...) : String | BadServlet2.java:40:34:40:45 | inputEncoded | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | BadServlet2.java:40:34:40:45 | inputEncoded | Unicode transformation (Unicode normalization) | BadServlet2.java:35:25:35:53 | getParameter(...) | remote user-controlled data |
 | BadServlet3.java:38:40:38:51 | inputEscaped | BadServlet3.java:35:25:35:53 | getParameter(...) : String | BadServlet3.java:38:40:38:51 | inputEscaped | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | BadServlet3.java:38:40:38:51 | inputEscaped | Unicode transformation (Unicode normalization) | BadServlet3.java:35:25:35:53 | getParameter(...) | remote user-controlled data |
+| BadServlet4.java:42:34:42:45 | inputEncoded | BadServlet4.java:38:25:38:53 | getParameter(...) : String | BadServlet4.java:42:34:42:45 | inputEncoded | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | BadServlet4.java:42:34:42:45 | inputEncoded | Unicode transformation (Unicode normalization) | BadServlet4.java:38:25:38:53 | getParameter(...) | remote user-controlled data |
