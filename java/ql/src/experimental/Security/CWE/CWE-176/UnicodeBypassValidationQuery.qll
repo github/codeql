@@ -6,6 +6,7 @@ private import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.controlflow.Guards
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 import RegexAndStrManipulation
 
@@ -24,6 +25,27 @@ class PreValidation extends DataFlow::FlowState {
 /** A state signifying that a logical validation has been performed. */
 class PostValidation extends DataFlow::FlowState {
   PostValidation() { this = "PostValidation" }
+}
+
+private predicate regexMatcherCheck(Guard g, Expr e, boolean outcome) {
+  exists(MethodAccess ma, MethodAccess fma |
+    ma.getMethod().hasQualifiedName("java.util.regex", "Pattern", "matcher") and
+    ma.getArgument(0) = e and
+    DataFlow::localExprFlow(ma, fma.getQualifier()) and
+    fma.getMethod().getName() = "find" and
+    g = fma and
+    outcome = false
+  )
+}
+
+/**
+ * A use of a variable guarded by a call to Regex Matcher find function
+ * in a context suggesting it has been validated to not matches a particular string.
+ */
+class UntrustedUnicodeRegexCheck extends DataFlow::Node {
+  UntrustedUnicodeRegexCheck() {
+    this = DataFlow::BarrierGuard<regexMatcherCheck/3>::getABarrierNode()
+  }
 }
 
 /**
@@ -78,7 +100,11 @@ class Configuration extends TaintTracking::Configuration {
     stateTo instanceof PostValidation
   }
 
-  /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
+  /*
+   * A Unicode Normalization (Unicode tranformation) is considered a sink.
+   * The Unicode normalisation may be guarded by a check that the input does not matches a particular string by Regex matcher.
+   */
+
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     exists(MethodAccess ma |
       ma.getMethod().hasQualifiedName("java.text", "Normalizer", "normalize") and
@@ -86,5 +112,7 @@ class Configuration extends TaintTracking::Configuration {
       sink.asExpr() = ma.getArgument(0)
     ) and
     state instanceof PostValidation
+    or
+    sink instanceof UntrustedUnicodeRegexCheck and state instanceof PreValidation
   }
 }
