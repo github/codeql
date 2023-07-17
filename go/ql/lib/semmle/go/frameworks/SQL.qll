@@ -151,7 +151,7 @@ module SQL {
             arg = 2
             or
             tp = ["DB", "Conn"] and
-            m = ["ExecContext", "ExecOneContext", "PrepareContext", "Query", "QueryOne"] and
+            m = ["ExecContext", "ExecOneContext", "Query", "QueryOne"] and
             arg = 1
             or
             tp = ["DB", "Conn"] and
