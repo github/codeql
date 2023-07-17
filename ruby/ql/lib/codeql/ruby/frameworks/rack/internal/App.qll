@@ -91,12 +91,10 @@ module App {
   /** A read of the query string via `env['QUERY_STRING']`. */
   private class EnvQueryStringRead extends Http::Server::RequestInputAccess::Range {
     EnvQueryStringRead() {
-      exists(RequestHandler handler, DataFlow::ParameterNode env, ConstantValue key |
-        handler.getEnv() = env
-      |
-        this = env.getAnElementRead(key) and
-        key.isStringlikeValue("QUERY_STRING")
-      )
+      this =
+        any(RequestHandler h)
+            .getEnv()
+            .getAnElementRead(ConstantValue::fromStringlikeValue("QUERY_STRING"))
     }
 
     override string getSourceType() { result = "Rack env" }
