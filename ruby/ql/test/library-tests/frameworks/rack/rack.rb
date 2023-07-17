@@ -93,3 +93,24 @@ class Qux
     Rack::Response.new(['redirecting'], 302, 'Location' => redirect_to).finish
   end
 end
+
+class UsesRequest
+  def call(env)
+    req = Rack::Request.new(env)
+    if session = req.cookies['session']
+      reuse_session(session)
+    else
+      name = req.params['name']
+      password = req['password']
+      login(name, password)
+    end
+  end
+
+  def login(name, password)
+    [200, {}, "new session"]
+  end
+
+  def reuse_session(name, password)
+    [200, {}, "reuse session"]
+  end
+end
