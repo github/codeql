@@ -8,7 +8,7 @@ private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
-private import codeql.swift.frameworks.StandardLibrary.ArrayType
+private import codeql.swift.frameworks.StandardLibrary.Array
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }

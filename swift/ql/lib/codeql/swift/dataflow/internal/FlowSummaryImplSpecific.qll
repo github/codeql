@@ -108,6 +108,10 @@ private string getContentSpecific(ContentSet cs) {
   exists(Content::FieldContent c |
     cs.isSingleton(c) and
     result = "Field[" + c.getField().getName() + "]"
+  ) or
+  exists(Content::ArrayContent c |
+    cs.isSingleton(c) and
+    result = "ArrayElement"
   )
 }
 

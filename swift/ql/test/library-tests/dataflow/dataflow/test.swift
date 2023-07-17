@@ -652,9 +652,9 @@ func testArray() {
     sink(arg: arr4) // $ MISSING: flow=642
 
     var arr5 = Array(repeating: source(), count: 2)
-    sink(arg: arr5) // $ MISSING: flow=654
+    sink(arg: arr5[0]) // $ MISSING: flow=654
 
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
-    sink(arg: arr6) // $ MISSING: flow=658
+    sink(arg: arr6[0]) // $ flow=658
 }

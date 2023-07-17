@@ -479,6 +479,9 @@ private predicate parseField(AccessPathToken c, Content::FieldContent f) {
 /** Holds if the specification component parses as a `Content`. */
 predicate parseContent(AccessPathToken component, Content content) {
   parseField(component, content)
+  or
+  component.getName() = "ArrayElement" and
+  content instanceof Content::ArrayContent
 }
 
 cached

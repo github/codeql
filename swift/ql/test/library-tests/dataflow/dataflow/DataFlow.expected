@@ -292,6 +292,9 @@ edges
 | test.swift:647:15:647:15 | &... [Array element, Array element] | test.swift:647:15:647:23 | ...[...] [Array element] |
 | test.swift:647:15:647:23 | &... [Array element] | test.swift:647:15:647:26 | ...[...] |
 | test.swift:647:15:647:23 | ...[...] [Array element] | test.swift:647:15:647:23 | &... [Array element] |
+| test.swift:658:5:658:5 | [post] &... [Array element] | test.swift:659:15:659:15 | &... [Array element] |
+| test.swift:658:17:658:24 | call to source() | test.swift:658:5:658:5 | [post] &... [Array element] |
+| test.swift:659:15:659:15 | &... [Array element] | test.swift:659:15:659:21 | ...[...] |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
@@ -614,6 +617,10 @@ nodes
 | test.swift:647:15:647:23 | &... [Array element] | semmle.label | &... [Array element] |
 | test.swift:647:15:647:23 | ...[...] [Array element] | semmle.label | ...[...] [Array element] |
 | test.swift:647:15:647:26 | ...[...] | semmle.label | ...[...] |
+| test.swift:658:5:658:5 | [post] &... [Array element] | semmle.label | [post] &... [Array element] |
+| test.swift:658:17:658:24 | call to source() | semmle.label | call to source() |
+| test.swift:659:15:659:15 | &... [Array element] | semmle.label | &... [Array element] |
+| test.swift:659:15:659:21 | ...[...] | semmle.label | ...[...] |
 subpaths
 | test.swift:75:21:75:22 | &... | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:31:75:32 | [post] &... |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -733,3 +740,4 @@ subpaths
 | test.swift:639:15:639:21 | ...[...] | test.swift:638:15:638:22 | call to source() | test.swift:639:15:639:21 | ...[...] | result |
 | test.swift:643:15:643:21 | ...[...] | test.swift:642:17:642:24 | call to source() | test.swift:643:15:643:21 | ...[...] | result |
 | test.swift:647:15:647:26 | ...[...] | test.swift:645:20:645:27 | call to source() | test.swift:647:15:647:26 | ...[...] | result |
+| test.swift:659:15:659:21 | ...[...] | test.swift:658:17:658:24 | call to source() | test.swift:659:15:659:21 | ...[...] | result |

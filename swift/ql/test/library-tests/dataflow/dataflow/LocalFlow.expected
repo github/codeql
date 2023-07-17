@@ -721,9 +721,11 @@
 | test.swift:654:9:654:9 | SSA def(arr5) | test.swift:655:15:655:15 | arr5 |
 | test.swift:654:9:654:9 | arr5 | test.swift:654:9:654:9 | SSA def(arr5) |
 | test.swift:654:16:654:51 | call to Array<Element>.init(repeating:count:) | test.swift:654:9:654:9 | arr5 |
+| test.swift:655:15:655:15 | arr5 | test.swift:655:15:655:15 | &... |
 | test.swift:657:9:657:9 | SSA def(arr6) | test.swift:658:5:658:5 | arr6 |
 | test.swift:657:9:657:9 | arr6 | test.swift:657:9:657:9 | SSA def(arr6) |
 | test.swift:657:16:657:22 | [...] | test.swift:657:9:657:9 | arr6 |
 | test.swift:658:5:658:5 | &... | test.swift:659:15:659:15 | arr6 |
 | test.swift:658:5:658:5 | [post] &... | test.swift:659:15:659:15 | arr6 |
 | test.swift:658:5:658:5 | arr6 | test.swift:658:5:658:5 | &... |
+| test.swift:659:15:659:15 | arr6 | test.swift:659:15:659:15 | &... |
