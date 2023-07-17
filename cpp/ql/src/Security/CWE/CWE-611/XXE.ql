@@ -43,6 +43,8 @@ module XxeConfig implements DataFlow::StateConfigSig {
     // flowstate value.
     node.asIndirectExpr().(XxeFlowStateTransformer).transform(flowstate) != flowstate
   }
+
+  predicate neverSkip(DataFlow::Node node) { none() }
 }
 
 module XxeFlow = DataFlow::GlobalWithState<XxeConfig>;
