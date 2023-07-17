@@ -14462,6 +14462,140 @@ ir.cpp:
 # 1911|       getExpr(): [VariableAccess] x
 # 1911|           Type = [IntType] int
 # 1911|           ValueCategory = prvalue(load)
+# 1914| [TopLevelFunction] int static_function(int)
+# 1914|   <params>: 
+# 1914|     getParameter(0): [Parameter] x
+# 1914|         Type = [IntType] int
+# 1914|   getEntryPoint(): [BlockStmt] { ... }
+# 1915|     getStmt(0): [ReturnStmt] return ...
+# 1915|       getExpr(): [VariableAccess] x
+# 1915|           Type = [IntType] int
+# 1915|           ValueCategory = prvalue(load)
+# 1918| [TopLevelFunction] void test_static_functions_with_assignments()
+# 1918|   <params>: 
+# 1918|   getEntryPoint(): [BlockStmt] { ... }
+# 1919|     getStmt(0): [DeclStmt] declaration
+# 1919|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 1919|           Type = [Class] C
+# 1919|         getVariable().getInitializer(): [Initializer] initializer for c
+# 1919|           getExpr(): [ConstructorCall] call to C
+# 1919|               Type = [VoidType] void
+# 1919|               ValueCategory = prvalue
+# 1920|     getStmt(1): [DeclStmt] declaration
+# 1920|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1920|           Type = [IntType] int
+# 1921|     getStmt(2): [ExprStmt] ExprStmt
+# 1921|       getExpr(): [AssignExpr] ... = ...
+# 1921|           Type = [IntType] int
+# 1921|           ValueCategory = lvalue
+# 1921|         getLValue(): [VariableAccess] x
+# 1921|             Type = [IntType] int
+# 1921|             ValueCategory = lvalue
+# 1921|         getRValue(): [FunctionCall] call to StaticMemberFunction
+# 1921|             Type = [IntType] int
+# 1921|             ValueCategory = prvalue
+# 1921|           getQualifier(): [VariableAccess] c
+# 1921|               Type = [Class] C
+# 1921|               ValueCategory = lvalue
+# 1921|           getArgument(0): [Literal] 10
+# 1921|               Type = [IntType] int
+# 1921|               Value = [Literal] 10
+# 1921|               ValueCategory = prvalue
+# 1922|     getStmt(3): [DeclStmt] declaration
+# 1922|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 1922|           Type = [IntType] int
+# 1923|     getStmt(4): [ExprStmt] ExprStmt
+# 1923|       getExpr(): [AssignExpr] ... = ...
+# 1923|           Type = [IntType] int
+# 1923|           ValueCategory = lvalue
+# 1923|         getLValue(): [VariableAccess] y
+# 1923|             Type = [IntType] int
+# 1923|             ValueCategory = lvalue
+# 1923|         getRValue(): [FunctionCall] call to StaticMemberFunction
+# 1923|             Type = [IntType] int
+# 1923|             ValueCategory = prvalue
+# 1923|           getArgument(0): [Literal] 10
+# 1923|               Type = [IntType] int
+# 1923|               Value = [Literal] 10
+# 1923|               ValueCategory = prvalue
+# 1924|     getStmt(5): [DeclStmt] declaration
+# 1924|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 1924|           Type = [IntType] int
+# 1925|     getStmt(6): [ExprStmt] ExprStmt
+# 1925|       getExpr(): [AssignExpr] ... = ...
+# 1925|           Type = [IntType] int
+# 1925|           ValueCategory = lvalue
+# 1925|         getLValue(): [VariableAccess] z
+# 1925|             Type = [IntType] int
+# 1925|             ValueCategory = lvalue
+# 1925|         getRValue(): [FunctionCall] call to static_function
+# 1925|             Type = [IntType] int
+# 1925|             ValueCategory = prvalue
+# 1925|           getArgument(0): [Literal] 10
+# 1925|               Type = [IntType] int
+# 1925|               Value = [Literal] 10
+# 1925|               ValueCategory = prvalue
+# 1926|     getStmt(7): [ReturnStmt] return ...
+# 1928| [TopLevelFunction] void test_double_assign()
+# 1928|   <params>: 
+# 1928|   getEntryPoint(): [BlockStmt] { ... }
+# 1929|     getStmt(0): [DeclStmt] declaration
+# 1929|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 1929|           Type = [IntType] int
+# 1929|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of j
+# 1929|           Type = [IntType] int
+# 1930|     getStmt(1): [ExprStmt] ExprStmt
+# 1930|       getExpr(): [AssignExpr] ... = ...
+# 1930|           Type = [IntType] int
+# 1930|           ValueCategory = lvalue
+# 1930|         getLValue(): [VariableAccess] i
+# 1930|             Type = [IntType] int
+# 1930|             ValueCategory = lvalue
+# 1930|         getRValue(): [AssignExpr] ... = ...
+# 1930|             Type = [IntType] int
+# 1930|             ValueCategory = prvalue
+# 1930|           getLValue(): [VariableAccess] j
+# 1930|               Type = [IntType] int
+# 1930|               ValueCategory = lvalue
+# 1930|           getRValue(): [Literal] 40
+# 1930|               Type = [IntType] int
+# 1930|               Value = [Literal] 40
+# 1930|               ValueCategory = prvalue
+# 1931|     getStmt(2): [ReturnStmt] return ...
+# 1933| [TopLevelFunction] void test_assign_with_assign_operation()
+# 1933|   <params>: 
+# 1933|   getEntryPoint(): [BlockStmt] { ... }
+# 1934|     getStmt(0): [DeclStmt] declaration
+# 1934|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 1934|           Type = [IntType] int
+# 1934|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of j
+# 1934|           Type = [IntType] int
+# 1934|         getVariable().getInitializer(): [Initializer] initializer for j
+# 1934|           getExpr(): [Literal] 0
+# 1934|               Type = [IntType] int
+# 1934|               Value = [Literal] 0
+# 1934|               ValueCategory = prvalue
+# 1935|     getStmt(1): [ExprStmt] ExprStmt
+# 1935|       getExpr(): [AssignExpr] ... = ...
+# 1935|           Type = [IntType] int
+# 1935|           ValueCategory = lvalue
+# 1935|         getLValue(): [VariableAccess] i
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = lvalue
+# 1935|         getRValue(): [AssignAddExpr] ... += ...
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = prvalue
+# 1935|           getLValue(): [VariableAccess] j
+# 1935|               Type = [IntType] int
+# 1935|               ValueCategory = lvalue
+# 1935|           getRValue(): [Literal] 40
+# 1935|               Type = [IntType] int
+# 1935|               Value = [Literal] 40
+# 1935|               ValueCategory = prvalue
+# 1935|         getRValue().getFullyConverted(): [ParenthesisExpr] (...)
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = prvalue
+# 1936|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

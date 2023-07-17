@@ -94,6 +94,27 @@ class Qux
   end
 end
 
+class UsesRequest
+  def call(env)
+    req = Rack::Request.new(env)
+    if session = req.cookies['session']
+      reuse_session(session)
+    else
+      name = req.params['name']
+      password = req['password']
+      login(name, password)
+    end
+  end
+
+  def login(name, password)
+    [200, {}, "new session"]
+  end
+
+  def reuse_session(name, password)
+    [200, {}, "reuse session"]
+  end
+end
+
 class UsesEnvQueryParams
   def call(env)
     params = env['QUERY_STRING']

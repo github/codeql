@@ -168,8 +168,6 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
-
   predicate isBarrierIn(DataFlow::Node node) { isSource(node, _) }
 
   predicate isBarrierOut(DataFlow::Node node) { isSink(node, _) }
