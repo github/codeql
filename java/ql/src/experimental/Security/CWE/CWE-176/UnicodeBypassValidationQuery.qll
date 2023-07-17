@@ -29,7 +29,7 @@ class PostValidation extends DataFlow::FlowState {
 
 private predicate regexMatcherCheck(Guard g, Expr e, boolean outcome) {
   exists(MethodAccess ma, MethodAccess fma |
-    ma.getMethod().hasQualifiedName("java.util.regex", "Pattern", "matcher") and
+    ma.getMethod() instanceof PatternMatcherMethod and
     ma.getArgument(0) = e and
     DataFlow::localExprFlow(ma, fma.getQualifier()) and
     fma.getMethod().getName() = "find" and
