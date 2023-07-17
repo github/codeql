@@ -757,10 +757,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of a component in a key-path expression chain
-  exists(KeyPathComponent component, FieldDecl f |
+  exists(KeyPathComponent component|
     component = node1.(KeyPathComponentNodeImpl).getComponent() and
-    f = component.getDeclRef() and
-    c.isSingleton(any(Content::FieldContent ct | ct.getField() = f))
+    (
+      c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
+      or
+      c.isSingleton(any(Content::ArrayContent ac))
+    )
   |
     // the next node is either the next element in the chain
     node2.(KeyPathComponentNodeImpl).getComponent() = component.getNextComponent()

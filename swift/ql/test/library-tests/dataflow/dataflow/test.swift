@@ -596,7 +596,7 @@ func testNestedKeyPath() {
 func testArrayKeyPath() {
     let array = [source()]
     let f = \[Int].[0]
-    sink(arg: array[keyPath: f]) // $ MISSING: flow=597
+    sink(arg: array[keyPath: f]) // $ flow=597
 }
 
 struct S2_Optional {
@@ -656,5 +656,5 @@ func testArray() {
 
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
-    sink(arg: arr6)
+    sink(arg: arr6) // $ MISSING: flow=658
 }
