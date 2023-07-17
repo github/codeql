@@ -648,8 +648,8 @@ func testArray() {
 
     var arr3 = [1]
     var arr4 = arr2 + arr3
-    sink(arg: arr3)
-    sink(arg: arr4) // $ MISSING: flow=642
+    sink(arg: arr3[0])
+    sink(arg: arr4[0]) // $ MISSING: flow=642
 
     var arr5 = Array(repeating: source(), count: 2)
     sink(arg: arr5[0]) // $ MISSING: flow=654
