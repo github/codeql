@@ -2706,7 +2706,7 @@ module Impl<FullStateConfigSig Config> {
 
     ParamNodeEx getParamNode() { result = p }
 
-    override string toString() { result = p + ": " + ap }
+    override string toString() { result = p + concat(" : " + ppReprType(t)) + " " + ap }
 
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -2758,12 +2758,21 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
+  private predicate forceUnfold(AccessPathApprox apa) {
+    forceHighPrecision(apa.getHead())
+    or
+    exists(Content c2 |
+      apa = TConsCons(_, _, c2, _) and
+      forceHighPrecision(c2)
+    )
+  }
+
   /**
    * Holds with `unfold = false` if a precise head-tail representation of `apa` is
    * expected to be expensive. Holds with `unfold = true` otherwise.
    */
   private predicate evalUnfold(AccessPathApprox apa, boolean unfold) {
-    if forceHighPrecision(apa.getHead())
+    if forceUnfold(apa)
     then unfold = true
     else
       exists(int aps, int nodes, int apLimit, int tupleLimit |
@@ -3092,6 +3101,12 @@ module Impl<FullStateConfigSig Config> {
       result = " <" + this.(PathNodeMid).getCallContext().toString() + ">"
     }
 
+    private string ppSummaryCtx() {
+      this instanceof PathNodeSink and result = ""
+      or
+      result = " <" + this.(PathNodeMid).getSummaryCtx().toString() + ">"
+    }
+
     /** Gets a textual representation of this element. */
     string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
 
@@ -3100,7 +3115,9 @@ module Impl<FullStateConfigSig Config> {
      * representation of the call context.
      */
     string toStringWithContext() {
-      result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
+      result =
+        this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx() +
+          this.ppSummaryCtx()
     }
 
     /**

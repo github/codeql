@@ -12,8 +12,43 @@
  * @tags internal extract automodel application-mode candidates
  */
 
+import java
 private import AutomodelApplicationModeCharacteristics
 private import AutomodelJavaUtil
+
+/**
+ * Gets a sample of endpoints (of at most `limit` samples) with the given method signature.
+ *
+ * The main purpose of this helper predicate is to avoid selecting too many candidates, as this may
+ * cause the SARIF file to exceed the maximum size limit.
+ */
+bindingset[limit]
+private Endpoint getSampleForSignature(
+  int limit, string package, string type, string subtypes, string name, string signature,
+  string input
+) {
+  exists(int n, int num_endpoints, ApplicationModeMetadataExtractor meta |
+    num_endpoints =
+      count(Endpoint e | meta.hasMetadata(e, package, type, subtypes, name, signature, input))
+  |
+    result =
+      rank[n](Endpoint e, Location loc |
+        loc = e.getLocation() and
+        meta.hasMetadata(e, package, type, subtypes, name, signature, input)
+      |
+        e
+        order by
+          loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn(),
+          loc.getEndLine(), loc.getEndColumn()
+      ) and
+    // To avoid selecting samples that are too close together (as the ranking above goes by file
+    // path first), we select `limit` evenly spaced samples from the ranked list of endpoints. By
+    // default this would always include the first sample, so we add a random-chosen prime offset
+    // to the first sample index, and reduce modulo the number of endpoints.
+    // Finally, we add 1 to the result, as ranking results in a 1-indexed relation.
+    n = 1 + (([0 .. limit - 1] * (num_endpoints / limit).floor() + 46337) % num_endpoints)
+  )
+}
 
 from
   Endpoint endpoint, string message, ApplicationModeMetadataExtractor meta, DollarAtString package,
@@ -23,6 +58,7 @@ where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
   ) and
+  endpoint = getSampleForSignature(9, package, type, subtypes, name, signature, input) and
   // If a node is already a known sink for any of our existing ATM queries and is already modeled as a MaD sink, we
   // don't include it as a candidate. Otherwise, we might include it as a candidate for query A, but the model will
   // label it as a sink for one of the sink types of query B, for which it's already a known sink. This would result in
