@@ -7,8 +7,8 @@
 <p>
 Constructing a regular expression with unsanitized user input is dangerous,
 since a malicious user may be able to modify the meaning of the expression. They
-may be able to cause unexpected program behaviour, or perform a Denial of Service
-attack. For example they may provide a regular expression fragment that takes
+may be able to cause unexpected program behaviour, or perform a denial-of-service
+attack. For example, they may provide a regular expression fragment that takes
 exponential time to evaluate in the worst case.
 </p>
 </overview>
