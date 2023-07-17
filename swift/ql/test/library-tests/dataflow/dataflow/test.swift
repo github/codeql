@@ -645,4 +645,16 @@ func testArray() {
     var matrix = [[source()]]
     sink(arg: matrix[0])
     sink(arg: matrix[0][0]) // $ flow=645
+
+    var arr3 = [1]
+    var arr4 = arr2 + arr3
+    sink(arg: arr3)
+    sink(arg: arr4) // $ flow=642
+
+    var arr5 = Array(repeating: source(), count: 2)
+    sink(arg: arr5) // $ flow=654
+
+    var arr6 = [1,2,3]
+    arr6.insert(source(), at: 2)
+    sink(arg: arr6)
 }
