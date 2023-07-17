@@ -27,13 +27,20 @@ class PostValidation extends DataFlow::FlowState {
   PostValidation() { this = "PostValidation" }
 }
 
-private predicate regexMatcherCheck(Guard g, Expr e, boolean outcome) {
+private predicate regexMatchCheck(Guard g, Expr e, boolean outcome) {
   exists(MethodAccess ma, MethodAccess fma |
     ma.getMethod() instanceof PatternMatcherMethod and
     ma.getArgument(0) = e and
     DataFlow::localExprFlow(ma, fma.getQualifier()) and
     fma.getMethod().getName() = "find" and
     g = fma and
+    outcome = false
+  )
+  or
+  exists(MethodAccess ma |
+    ma.getMethod() instanceof PatternMatchMethod and
+    ma.getArgument(1) = e and
+    g = ma and
     outcome = false
   )
 }
@@ -44,7 +51,7 @@ private predicate regexMatcherCheck(Guard g, Expr e, boolean outcome) {
  */
 class UntrustedUnicodeRegexCheck extends DataFlow::Node {
   UntrustedUnicodeRegexCheck() {
-    this = DataFlow::BarrierGuard<regexMatcherCheck/3>::getABarrierNode()
+    this = DataFlow::BarrierGuard<regexMatchCheck/3>::getABarrierNode()
   }
 }
 
@@ -73,23 +80,7 @@ class Configuration extends TaintTracking::Configuration {
         nodeFrom.asExpr() = ma.getArgument(0)
       )
       or
-      exists(MethodAccess ma |
-        (
-          // p = Pattern.compile(regexPattern); p.matcher(input)
-          ma.getMethod() instanceof PatternCompileMethod and
-          exists(MethodAccess pma |
-            pma.getMethod() instanceof PatternMatcherMethod and
-            nodeFrom.asExpr() = pma.getArgument(0) and
-            DataFlow::localExprFlow(ma, pma.getQualifier())
-          )
-          or
-          // p = Pattern.matches(regexPattern, input)
-          ma.getMethod() instanceof PatternMatchMethod and nodeFrom.asExpr() = ma.getArgument(1)
-        ) and
-        nodeTo.asExpr() = ma
-      )
-      or
-      // input.matches(regexPattern)
+      // Matches any string manipulation
       exists(MethodAccess ma |
         ma.getMethod() instanceof StringMethod and
         nodeFrom.asExpr() = ma.getQualifier() and
