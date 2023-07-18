@@ -227,12 +227,12 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
     _ = try Regex("abc").anchorsMatchLineEndings().firstMatch(in: input) // $ input=input regex=abc modes=MULTILINE
 
 	// parse modes set through NSRegularExpression
-    _ = try NSRegularExpression(pattern: ".*", options: .caseInsensitive).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes=IGNORECASE
-    _ = try NSRegularExpression(pattern: ".*", options: .dotMatchesLineSeparators).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes=DOTALL
-    _ = try NSRegularExpression(pattern: ".*", options: [.caseInsensitive, .dotMatchesLineSeparators]).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes="DOTALL | IGNORECASE"
+    _ = try NSRegularExpression(pattern: ".*", options: .caseInsensitive).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input modes=IGNORECASE
+    _ = try NSRegularExpression(pattern: ".*", options: .dotMatchesLineSeparators).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input modes=DOTALL
+    _ = try NSRegularExpression(pattern: ".*", options: [.caseInsensitive, .dotMatchesLineSeparators]).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input modes="DOTALL | IGNORECASE"
 
 	let myOptions1 : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
-    _ = try NSRegularExpression(pattern: ".*", options: myOptions1).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes="DOTALL | IGNORECASE"
+    _ = try NSRegularExpression(pattern: ".*", options: myOptions1).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input modes="DOTALL | IGNORECASE"
 
 	// parse modes set through other methods
 

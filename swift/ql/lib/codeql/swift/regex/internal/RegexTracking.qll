@@ -53,15 +53,15 @@ module RegexUseFlow = DataFlow::Global<RegexUseConfig>;
 
 /**
  * A data flow configuration for tracking regular expression parse mode
- * flags from the point they are set to the point of use. The flow state
- * encodes which parse mode flag was set.
+ * flags from wherever they are created or set through to regular expression
+ * evaluation. The flow state encodes which parse mode flag was set.
  */
 private module RegexParseModeConfig implements DataFlow::StateConfigSig {
   class FlowState = RegexParseMode;
 
   predicate isSource(DataFlow::Node node, FlowState flowstate) {
     // parse mode flag is set
-    any(RegexAdditionalFlowStep s).modifiesParseMode(_, node, flowstate, true)
+    any(RegexAdditionalFlowStep s).setsParseMode(node, flowstate, true)
   }
 
   predicate isSink(DataFlow::Node node, FlowState flowstate) {
@@ -73,11 +73,24 @@ private module RegexParseModeConfig implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node node) { none() }
 
   predicate isBarrier(DataFlow::Node node, FlowState flowstate) {
-    // parse mode flag is set or unset
-    any(RegexAdditionalFlowStep s).modifiesParseMode(node, _, flowstate, _)
+    // parse mode flag is unset
+    any(RegexAdditionalFlowStep s).setsParseMode(node, flowstate, false)
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // flow through array construction
+    exists(ArrayExpr arr |
+      nodeFrom.asExpr() = arr.getAnElement() and
+      nodeTo.asExpr() = arr
+    )
+    or
+    // flow through regex creation
+    exists(RegexCreation create |
+      nodeFrom = create.getOptionsInput() and
+      nodeTo = create
+    )
+    or
+    // additional flow steps for regular expression objects
     any(RegexAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 

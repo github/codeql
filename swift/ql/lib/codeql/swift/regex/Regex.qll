@@ -36,28 +36,52 @@ abstract class RegexCreation extends DataFlow::Node {
    * created from.
    */
   abstract DataFlow::Node getStringInput();
+
+  /**
+   * Gets a dataflow node for the options input that might contain parse mode
+   * flags (if any).
+   */
+  DataFlow::Node getOptionsInput() { none() }
 }
 
 /**
- * A data-flow node where a `Regex` or `NSRegularExpression` object is created.
+ * A data-flow node where a `Regex` object is created.
  */
-private class StandardRegexCreation extends RegexCreation {
+private class RegexRegexCreation extends RegexCreation {
   DataFlow::Node input;
 
-  StandardRegexCreation() {
+  RegexRegexCreation() {
     exists(CallExpr call |
-      (
-        call.getStaticTarget().(Method).hasQualifiedName("Regex", ["init(_:)", "init(_:as:)"]) or
-        call.getStaticTarget()
-            .(Method)
-            .hasQualifiedName("NSRegularExpression", "init(pattern:options:)")
-      ) and
+      call.getStaticTarget().(Method).hasQualifiedName("Regex", ["init(_:)", "init(_:as:)"]) and
       input.asExpr() = call.getArgument(0).getExpr() and
       this.asExpr() = call
     )
   }
 
   override DataFlow::Node getStringInput() { result = input }
+}
+
+/**
+ * A data-flow node where an `NSRegularExpression` object is created.
+ */
+private class NSRegularExpressionRegexCreation extends RegexCreation {
+  DataFlow::Node input;
+
+  NSRegularExpressionRegexCreation() {
+    exists(CallExpr call |
+      call.getStaticTarget()
+          .(Method)
+          .hasQualifiedName("NSRegularExpression", "init(pattern:options:)") and
+      input.asExpr() = call.getArgument(0).getExpr() and
+      this.asExpr() = call
+    )
+  }
+
+  override DataFlow::Node getStringInput() { result = input }
+
+  override DataFlow::Node getOptionsInput() {
+    result.asExpr() = this.asExpr().(CallExpr).getArgument(1).getExpr()
+  }
 }
 
 newtype TRegexParseMode =
@@ -94,25 +118,29 @@ class RegexAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 
   /**
-   * Holds if the step from `node1` to `node2` either sets (`isSet` = true)
-   * or unsets (`isSet` = false) parse mode `mode` for the regular expression.
+   * Holds if a regular expression parse mode is either set (`isSet` = true)
+   * or unset (`isSet` = false) at `node`. Parse modes propagate through
+   * array construction and regex constuction.
    */
-  abstract predicate modifiesParseMode(
-    DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet
-  );
+  abstract predicate setsParseMode(DataFlow::Node node, RegexParseMode mode, boolean isSet);
 }
 
 /**
- * An additional flow step for `Regex` or `NSRegularExpression`.
+ * An additional flow step for `Regex`.
  */
-class StandardRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
+class RegexRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    this.modifiesParseMode(nodeFrom, nodeTo, _, _)
+    this.setsParseModeEdge(nodeFrom, nodeTo, _, _)
   }
 
-  override predicate modifiesParseMode(
+  override predicate setsParseMode(DataFlow::Node node, RegexParseMode mode, boolean isSet) {
+    this.setsParseModeEdge(_, node, mode, isSet)
+  }
+
+  private predicate setsParseModeEdge(
     DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet
   ) {
+    // `Regex` methods that modify parse mode
     exists(CallExpr ce |
       nodeFrom.asExpr() = ce.getQualifier() and
       nodeTo.asExpr() = ce and
@@ -132,6 +160,56 @@ class StandardRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
       then isSet = false // mode is set to false
       else isSet = true // mode is set to true OR mode is set to default (=true) OR mode is set to an unknown value
     )
+  }
+}
+
+/**
+ * An additional flow step for `NSRegularExpression`.
+ */
+class StandardRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
+
+  override predicate setsParseMode(DataFlow::Node node, RegexParseMode mode, boolean isSet) {
+    // `NSRegularExpression.Options` values
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSRegularExpression.Options", "caseInsensitive") and
+    mode = MkIgnoreCase() and
+    isSet = true
+    or
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSRegularExpression.Options", "allowCommentsAndWhitespace") and
+    mode = MkVerbose() and
+    isSet = true
+    or
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSRegularExpression.Options", "dotMatchesLineSeparators") and
+    mode = MkDotAll() and
+    isSet = true
+    or
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSRegularExpression.Options", "anchorsMatchLines") and
+    mode = MkMultiLine() and
+    isSet = true
+    or
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSRegularExpression.Options", "useUnicodeWordBoundaries") and
+    mode = MkUnicode() and
+    isSet = true
   }
 }
 
@@ -174,7 +252,7 @@ abstract class RegexEval extends CallExpr {
   RegexParseMode getAParseMode() {
     exists(DataFlow::Node setNode |
       // parse mode flag is set
-      any(RegexAdditionalFlowStep s).modifiesParseMode(_, setNode, result, true) and
+      any(RegexAdditionalFlowStep s).setsParseMode(setNode, result, true) and
       // reaches this eval
       RegexParseModeFlow::flow(setNode, DataFlow::exprNode(this.getRegexInput()))
     )
