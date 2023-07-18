@@ -17,9 +17,12 @@ struct Regex<Output> : RegexComponent {
 
 	init(_ pattern: String) throws where Output == AnyRegexOutput { }
 
-	func firstMatch(in string: String) throws -> Regex<Output>.Match? { return nil}
-	func prefixMatch(in string: String) throws -> Regex<Output>.Match? { return nil}
-	func wholeMatch(in string: String) throws -> Regex<Output>.Match? { return nil}
+	func ignoresCase(_ ignoresCase: Bool = true) -> Regex<Regex<Output>.RegexOutput> { return self }
+	func dotMatchesNewlines(_ dotMatchesNewlines: Bool = true) -> Regex<Regex<Output>.RegexOutput> { return self }
+
+	func firstMatch(in string: String) throws -> Regex<Output>.Match? { return nil }
+	func prefixMatch(in string: String) throws -> Regex<Output>.Match? { return nil }
+	func wholeMatch(in string: String) throws -> Regex<Output>.Match? { return nil }
 
 	typealias RegexOutput = Output
 }
@@ -49,6 +52,7 @@ class NSString : NSObject {
 	    var rawValue: UInt
 
 		static var regularExpression: NSString.CompareOptions { get { return CompareOptions(rawValue: 1) } }
+		static var caseInsensitive: NSString.CompareOptions { get { return CompareOptions(rawValue: 2) } }
 	}
 
 	convenience init(string aString: String) { self.init() }
@@ -76,6 +80,9 @@ class NSTextCheckingResult : NSObject {
 class NSRegularExpression : NSObject {
 	struct Options : OptionSet {
 	    var rawValue: UInt
+
+		static var caseInsensitive: NSRegularExpression.Options { get { return Options(rawValue: 1) } }
+		static var dotMatchesLineSeparators: NSRegularExpression.Options { get { return Options(rawValue: 2) } }
 	}
 
 	struct MatchingOptions : OptionSet {
@@ -196,4 +203,31 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	// invalid (Swift doesn't like these regexs)
     _ = try Regex("[]a]").firstMatch(in: input) // this is valid in other regex implementations, and is likely harmless to accept
     _ = try Regex("[:aaaaa:]").firstMatch(in: input) // $ hasParseFailure
+
+	// --- parse modes ---
+
+    _ = try Regex("(?i)abc").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=(?i)abc
+    _ = try Regex("(?s)abc").firstMatch(in: input) // $ input=input modes=DOTALL regex=(?s)abc
+    _ = try Regex("(?is)abc").firstMatch(in: input) // $ input=input modes="DOTALL | IGNORECASE" regex=(?is)abc
+
+    _ = try Regex("abc").dotMatchesNewlines(true).firstMatch(in: input) // $ input=input regex=abc MISSING: modes=DOTALL
+    _ = try Regex("abc").dotMatchesNewlines(false).firstMatch(in: input) // $ input=input regex=abc
+    _ = try Regex("abc").dotMatchesNewlines(true).dotMatchesNewlines(false).firstMatch(in: input) // $ input=input regex=abc
+    _ = try Regex("abc").dotMatchesNewlines(false).dotMatchesNewlines(true).firstMatch(in: input) // $ input=input regex=abc MISSING: modes=DOTALL
+    _ = try Regex("abc").dotMatchesNewlines().ignoresCase().firstMatch(in: input) // $ input=input regex=abc MISSING: modes="DOTALL | IGNORECASE"
+
+    _ = try NSRegularExpression(pattern: ".*", options: .caseInsensitive).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes=IGNORECASE
+    _ = try NSRegularExpression(pattern: ".*", options: .dotMatchesLineSeparators).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes=DOTALL
+    _ = try NSRegularExpression(pattern: ".*", options: [.caseInsensitive, .dotMatchesLineSeparators]).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes="DOTALL | IGNORECASE"
+
+    _ = input.replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive]) // $ MISSING: regex=.* input=input modes=IGNORECASE
+
+    _ = NSString(string: "abc").replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive], range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS modes=IGNORECASE
+
+    _ = try Regex("(?i-s)abc").firstMatch(in: input) // $ input=input regex=(?i-s)abc MISSING: modes=IGNORECASE SPURIOUS: modes="DOTALL | IGNORECASE"
+
+    // these cases use parse modes on localized areas of the regex, which we don't currently support
+    _ = try Regex("abc(?i)def").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=abc(?i)def
+    _ = try Regex("abc(?i:def)ghi").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=abc(?i:def)ghi
+    _ = try Regex("(?i)abc(?-i)def").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=(?i)abc(?-i)def SPURIOUS: hasParseFailure=
 }
