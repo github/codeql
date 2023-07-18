@@ -1,0 +1,1 @@
+| Test.qll:8:11:8:25 | ClasslessPredicate missingNoInline | This predicate might be inlined. |
