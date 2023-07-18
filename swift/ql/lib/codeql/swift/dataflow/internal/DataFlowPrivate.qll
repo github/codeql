@@ -764,7 +764,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     (
       c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
       or
-      c.isSingleton(any(Content::ArrayContent ac))
+      c.isSingleton(any(Content::ArrayContent ac)) and
+      component.isSubscript()
     )
   |
     // the next node is either the next element in the chain
