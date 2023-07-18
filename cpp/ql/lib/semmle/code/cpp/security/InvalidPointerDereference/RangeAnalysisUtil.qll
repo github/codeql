@@ -1,11 +1,12 @@
+/**
+ * This file contains the range-analysis specific parts of the `cpp/invalid-pointer-deref` query
+ * that is used by both `AllocationToInvalidPointer.qll` and `InvalidPointerToDereference.qll`.
+ */
+
 private import cpp
-private import semmle.code.cpp.ir.dataflow.internal.ProductFlow
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
-private import semmle.code.cpp.ir.ValueNumbering
-private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.IR
-private import codeql.util.Unit
 
 pragma[nomagic]
 private Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -25,12 +26,23 @@ private predicate boundedImpl(Instruction i, Instruction b, int delta) {
   )
 }
 
+/**
+ * Holds if `i <= b + delta`.
+ *
+ * This predicate enforces a join-order that ensures that `i` has already been bound.
+ */
 bindingset[i]
 pragma[inline_late]
 predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
 
+/**
+ * Holds if `i <= b + delta`.
+ *
+ * This predicate enforces a join-order that ensures that `b` has already been bound.
+ */
 bindingset[b]
 pragma[inline_late]
 predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
 
+/** Holds if `i <= b + delta`. */
 predicate bounded = boundedImpl/3;

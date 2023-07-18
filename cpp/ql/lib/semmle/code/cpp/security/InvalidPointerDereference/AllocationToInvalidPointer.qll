@@ -1,3 +1,8 @@
+/**
+ * This file provides the first phase of the `cpp/invalid-pointer-deref` query that identifies flow
+ * an allocation to a pointer-arithmetic instruction that constructs a pointer that's out of bounds.
+ */
+
 private import cpp
 private import semmle.code.cpp.ir.dataflow.internal.ProductFlow
 private import semmle.code.cpp.ir.ValueNumbering
@@ -85,6 +90,10 @@ module Barrier2 {
     )
   }
 
+  /**
+   * Gets an instruction that is guarded by a guard condition which ensures that
+   * the value of the instruction is upper-bounded by size of some allocation.
+   */
   Instruction getABarrierInstruction(FlowState2 state) {
     exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge |
       use = value.getAUse() and
@@ -95,16 +104,24 @@ module Barrier2 {
     )
   }
 
+  /**
+   * Gets a `DataFlow::Node` that is guarded by a guard condition which ensures that
+   * the value of the node is upper-bounded by size of some allocation.
+   */
   DataFlow::Node getABarrierNode(FlowState2 state) {
     result.asOperand() = getABarrierInstruction(state).getAUse()
   }
 
+  /**
+   * Gets the block of a node that is guarded (see `getABarrierInstruction` or
+   * `getABarrierNode` for the definition of what it means to be guarded).
+   */
   IRBlock getABarrierBlock(FlowState2 state) {
     result.getAnInstruction() = getABarrierInstruction(state)
   }
 }
 
-module InterestingPointerAddInstruction {
+private module InterestingPointerAddInstruction {
   private module PointerAddInstructionConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
       // The sources is the same as in the sources for the second
@@ -119,6 +136,12 @@ module InterestingPointerAddInstruction {
 
   private import DataFlow::Global<PointerAddInstructionConfig>
 
+  /**
+   * Holds if `pai` is a pointer-arithmetic instruction such that the
+   * result of an allocation flows to the left-hand side of `pai`.
+   *
+   * This predicate is used to reduce the set of tuples in `isSinkPair`.
+   */
   predicate isInteresting(PointerAddInstruction pai) {
     exists(DataFlow::Node n |
       n.asInstruction() = pai.getLeft() and
@@ -210,12 +233,18 @@ private predicate pointerAddInstructionHasBounds0(
     pai.getRight() = right and
     pai.getLeft() = sink1.asInstruction() and
     instr2 = sink2.asInstruction() and
+    // pai.getRight() <= sink2 + delta
     bounded1(right, instr2, delta) and
     not right = Barrier2::getABarrierInstruction(delta) and
     not instr2 = Barrier2::getABarrierInstruction(delta)
   )
 }
 
+/**
+ * Holds if `allocation` flows to `sink1` and `sink1` represents the left-hand
+ * side of the pointer-arithmetic instruction `pai`, and the right-hand side of `pai`
+ * is non-strictly upper bounded by the size of `alllocation` + `delta`.
+ */
 pragma[nomagic]
 predicate pointerAddInstructionHasBounds(
   DataFlow::Node allocation, PointerAddInstruction pai, DataFlow::Node sink1, int delta

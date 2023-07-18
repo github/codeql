@@ -1,3 +1,9 @@
+/**
+ * This file provides the second phase of the `cpp/invalid-pointer-deref` query that identifies flow
+ * from the out-of-bounds pointer identified by the `AllocationToInvalidPointer.qll` library to
+ * a dereference of the out-of-bounds pointer.
+ */
+
 private import cpp
 private import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.ir.ValueNumbering
