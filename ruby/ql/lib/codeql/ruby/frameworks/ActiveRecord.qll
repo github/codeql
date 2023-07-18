@@ -301,7 +301,7 @@ private string staticFinderMethodName() {
     result = baseName + ["", "!"]
   )
   or
-  result = ["new", "create"]
+  result = ["new", "create", "where"]
 }
 
 // Gets the "final" receiver in a chain of method calls.
