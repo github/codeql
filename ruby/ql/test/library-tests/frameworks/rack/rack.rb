@@ -63,14 +63,14 @@ class Baz
 
   def run(env)
     if env[:foo] == "foo"
-      [200, {}, "foo"]
+      [200, {}, ["foo"]]
     else
       error
     end
   end
 
   def error
-    [400, {}, "nope"]
+    [400, {}, ["nope"]]
   end
 end
 
@@ -112,5 +112,13 @@ class UsesRequest
 
   def reuse_session(name, password)
     [200, {}, "reuse session"]
+  end
+end
+
+class UsesEnvQueryParams
+  def call(env)
+    params = env['QUERY_STRING']
+    user = Rack::Utils.parse_query(params)["user"]
+    [200, {}, [lookup_user_profile(user)]]
   end
 end
