@@ -8,8 +8,8 @@ module AllocationToInvalidPointerTest implements TestSig {
   string getARelevantTag() { result = "alloc" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node allocation, PointerAddInstruction pai, DataFlow::Node sink1, int delta |
-      pointerAddInstructionHasBounds(allocation, pai, sink1, delta) and
+    exists(DataFlow::Node allocation, PointerAddInstruction pai, int delta |
+      pointerAddInstructionHasBounds(allocation, pai, _, delta) and
       location = pai.getLocation() and
       element = pai.toString() and
       tag = "alloc"

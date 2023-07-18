@@ -48,10 +48,10 @@ module InvalidPointerToDereferenceTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(
-      PointerArithmeticInstruction pai, DataFlow::Node derefSource, DataFlow::Node derefSink,
-      DataFlow::Node operation, int delta, string value1, string value2
+      DataFlow::Node derefSource, DataFlow::Node derefSink, DataFlow::Node operation, int delta,
+      string value1, string value2
     |
-      operationIsOffBy(_, pai, derefSource, derefSink, _, operation, delta) and
+      operationIsOffBy(_, _, derefSource, derefSink, _, operation, delta) and
       location = operation.getLocation() and
       element = operation.toString() and
       tag = "deref" and

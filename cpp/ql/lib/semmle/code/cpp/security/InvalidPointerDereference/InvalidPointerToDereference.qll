@@ -2,7 +2,6 @@ private import cpp
 private import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.controlflow.IRGuards
-private import semmle.code.cpp.ir.IR
 private import AllocationToInvalidPointer as AllocToInvalidPointer
 private import RangeAnalysisUtil
 
@@ -174,7 +173,7 @@ private predicate derefSinkToOperation(
  * Holds if `allocation` is the result of an allocation that flows to the left-hand side of `pai`, and where
  * the right-hand side of `pai` is an offset such that the result of `pai` points to an out-of-bounds pointer.
  *
- * Futhermore, `derefSource` is at least as large as `pai` and flows to `derefSink` before being dereferenced
+ * Furthermore, `derefSource` is at least as large as `pai` and flows to `derefSink` before being dereferenced
  * by `operation` (which is either a `StoreInstruction` or `LoadInstruction`). The result is that `operation`
  * dereferences a pointer that's "off by `delta`" number of elements.
  */

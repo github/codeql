@@ -2,7 +2,6 @@ private import cpp
 private import semmle.code.cpp.ir.dataflow.internal.ProductFlow
 private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.controlflow.IRGuards
-private import semmle.code.cpp.ir.IR
 private import codeql.util.Unit
 private import RangeAnalysisUtil
 
