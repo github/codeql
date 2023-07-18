@@ -100,6 +100,8 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
     node.getEnclosingCallable() instanceof HashCodeMethod or
     exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr())
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /**
