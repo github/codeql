@@ -207,10 +207,18 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 
 	// --- parse modes ---
 
+	// parse modes encoded in the string
     _ = try Regex("(?i)abc").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=(?i)abc
     _ = try Regex("(?s)abc").firstMatch(in: input) // $ input=input modes=DOTALL regex=(?s)abc
     _ = try Regex("(?is)abc").firstMatch(in: input) // $ input=input modes="DOTALL | IGNORECASE" regex=(?is)abc
+    _ = try Regex("(?i-s)abc").firstMatch(in: input) // $ input=input regex=(?i-s)abc MISSING: modes=IGNORECASE SPURIOUS: modes="DOTALL | IGNORECASE"
 
+    // these cases use parse modes on localized areas of the regex, which we don't currently support
+    _ = try Regex("abc(?i)def").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=abc(?i)def
+    _ = try Regex("abc(?i:def)ghi").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=abc(?i:def)ghi
+    _ = try Regex("(?i)abc(?-i)def").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=(?i)abc(?-i)def SPURIOUS: hasParseFailure=
+
+	// parse modes set through Regex
     _ = try Regex("abc").dotMatchesNewlines(true).firstMatch(in: input) // $ input=input regex=abc modes=DOTALL
     _ = try Regex("abc").dotMatchesNewlines(false).firstMatch(in: input) // $ input=input regex=abc
     _ = try Regex("abc").dotMatchesNewlines(true).dotMatchesNewlines(false).firstMatch(in: input) // $ input=input regex=abc
@@ -218,18 +226,19 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
     _ = try Regex("abc").dotMatchesNewlines().ignoresCase().firstMatch(in: input) // $ input=input regex=abc modes="DOTALL | IGNORECASE"
     _ = try Regex("abc").anchorsMatchLineEndings().firstMatch(in: input) // $ input=input regex=abc modes=MULTILINE
 
+	// parse modes set through NSRegularExpression
     _ = try NSRegularExpression(pattern: ".*", options: .caseInsensitive).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes=IGNORECASE
     _ = try NSRegularExpression(pattern: ".*", options: .dotMatchesLineSeparators).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes=DOTALL
     _ = try NSRegularExpression(pattern: ".*", options: [.caseInsensitive, .dotMatchesLineSeparators]).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes="DOTALL | IGNORECASE"
 
+	let myOptions1 : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    _ = try NSRegularExpression(pattern: ".*", options: myOptions1).firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input MISSING: modes="DOTALL | IGNORECASE"
+
+	// parse modes set through other methods
+
+	let myOptions2 : NSString.CompareOptions = [.regularExpression, .caseInsensitive]
     _ = input.replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive]) // $ MISSING: regex=.* input=input modes=IGNORECASE
-
+    _ = input.replacingOccurrences(of: ".*", with: "", options: myOptions2) // $ MISSING: regex=.* input=input modes=IGNORECASE
     _ = NSString(string: "abc").replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive], range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS modes=IGNORECASE
-
-    _ = try Regex("(?i-s)abc").firstMatch(in: input) // $ input=input regex=(?i-s)abc MISSING: modes=IGNORECASE SPURIOUS: modes="DOTALL | IGNORECASE"
-
-    // these cases use parse modes on localized areas of the regex, which we don't currently support
-    _ = try Regex("abc(?i)def").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=abc(?i)def
-    _ = try Regex("abc(?i:def)ghi").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=abc(?i:def)ghi
-    _ = try Regex("(?i)abc(?-i)def").firstMatch(in: input) // $ input=input modes=IGNORECASE regex=(?i)abc(?-i)def SPURIOUS: hasParseFailure=
+    _ = NSString(string: "abc").replacingOccurrences(of: ".*", with: "", options: myOptions2, range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS modes=IGNORECASE
 }
