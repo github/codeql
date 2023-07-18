@@ -207,6 +207,7 @@ module Content {
     }
   }
 
+  /** An element of an array at an unknown index */
   class ArrayContent extends Content, TArrayContent {
     override string toString() { result = "Array element" }
   }

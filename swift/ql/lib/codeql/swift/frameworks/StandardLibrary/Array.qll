@@ -1,6 +1,13 @@
+/**
+ * Provides models for `Array` and related Swift classes.
+ */
+
 import swift
 private import codeql.swift.dataflow.ExternalFlow
 
+/**
+ * An instance of the `Array` type.
+ */
 class ArrayType extends BoundGenericType {
   ArrayType() { this.getName().matches("Array<%") }
 }
