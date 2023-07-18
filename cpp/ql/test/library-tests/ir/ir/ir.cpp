@@ -1970,4 +1970,27 @@ void test_volatile() {
     x;
 }
 
+struct ValCat {
+  static ValCat& lvalue();
+  static ValCat&& xvalue();
+  static ValCat prvalue();
+};
+
+void value_category_test() {
+    ValCat c;
+
+    c.lvalue() = {};
+    c.xvalue() = {};
+    c.prvalue() = {};
+    ValCat::lvalue() = {};
+    ValCat::xvalue() = {};
+    ValCat::prvalue() = {};
+}
+
+void SetStaticFuncPtr() {
+    C c;
+    int (*pfn)(int) = C::StaticMemberFunction;
+    pfn = c.StaticMemberFunction;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

@@ -14731,6 +14731,163 @@ ir.cpp:
 # 1970|           Type = [IntType] int
 # 1970|           ValueCategory = prvalue(load)
 # 1971|     getStmt(2): [ReturnStmt] return ...
+# 1973| [CopyAssignmentOperator] ValCat& ValCat::operator=(ValCat const&)
+# 1973|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ValCat &
+# 1973| [MoveAssignmentOperator] ValCat& ValCat::operator=(ValCat&&)
+# 1973|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ValCat &&
+# 1974| [MemberFunction] ValCat& ValCat::lvalue()
+# 1974|   <params>: 
+# 1975| [MemberFunction] ValCat&& ValCat::xvalue()
+# 1975|   <params>: 
+# 1976| [MemberFunction] ValCat ValCat::prvalue()
+# 1976|   <params>: 
+# 1979| [TopLevelFunction] void value_category_test()
+# 1979|   <params>: 
+# 1979|   getEntryPoint(): [BlockStmt] { ... }
+# 1980|     getStmt(0): [DeclStmt] declaration
+# 1980|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 1980|           Type = [Struct] ValCat
+# 1982|     getStmt(1): [ExprStmt] ExprStmt
+# 1982|       getExpr(): [AssignExpr] ... = ...
+# 1982|           Type = [Struct] ValCat
+# 1982|           ValueCategory = lvalue
+# 1982|         getLValue(): [FunctionCall] call to lvalue
+# 1982|             Type = [LValueReferenceType] ValCat &
+# 1982|             ValueCategory = prvalue
+# 1982|           getQualifier(): [VariableAccess] c
+# 1982|               Type = [Struct] ValCat
+# 1982|               ValueCategory = lvalue
+# 1982|         getRValue(): [ClassAggregateLiteral] {...}
+# 1982|             Type = [Struct] ValCat
+# 1982|             ValueCategory = prvalue
+# 1982|         getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1982|             Type = [Struct] ValCat
+# 1982|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1983|     getStmt(2): [ExprStmt] ExprStmt
+# 1983|       getExpr(): [AssignExpr] ... = ...
+# 1983|           Type = [Struct] ValCat
+# 1983|           ValueCategory = lvalue
+# 1983|         getLValue(): [FunctionCall] call to xvalue
+# 1983|             Type = [RValueReferenceType] ValCat &&
+# 1983|             ValueCategory = prvalue
+# 1983|           getQualifier(): [VariableAccess] c
+# 1983|               Type = [Struct] ValCat
+# 1983|               ValueCategory = lvalue
+# 1983|         getRValue(): [ClassAggregateLiteral] {...}
+# 1983|             Type = [Struct] ValCat
+# 1983|             ValueCategory = prvalue
+# 1983|         getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1983|             Type = [Struct] ValCat
+# 1983|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1984|     getStmt(3): [ExprStmt] ExprStmt
+# 1984|       getExpr(): [AssignExpr] ... = ...
+# 1984|           Type = [Struct] ValCat
+# 1984|           ValueCategory = lvalue
+# 1984|         getLValue(): [FunctionCall] call to prvalue
+# 1984|             Type = [Struct] ValCat
+# 1984|             ValueCategory = prvalue
+# 1984|           getQualifier(): [VariableAccess] c
+# 1984|               Type = [Struct] ValCat
+# 1984|               ValueCategory = lvalue
+# 1984|         getRValue(): [ClassAggregateLiteral] {...}
+# 1984|             Type = [Struct] ValCat
+# 1984|             ValueCategory = prvalue
+# 1984|         getLValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1984|             Type = [Struct] ValCat
+# 1984|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1985|     getStmt(4): [ExprStmt] ExprStmt
+# 1985|       getExpr(): [AssignExpr] ... = ...
+# 1985|           Type = [Struct] ValCat
+# 1985|           ValueCategory = lvalue
+# 1985|         getLValue(): [FunctionCall] call to lvalue
+# 1985|             Type = [LValueReferenceType] ValCat &
+# 1985|             ValueCategory = prvalue
+# 1985|         getRValue(): [ClassAggregateLiteral] {...}
+# 1985|             Type = [Struct] ValCat
+# 1985|             ValueCategory = prvalue
+# 1985|         getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1985|             Type = [Struct] ValCat
+# 1985|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1986|     getStmt(5): [ExprStmt] ExprStmt
+# 1986|       getExpr(): [AssignExpr] ... = ...
+# 1986|           Type = [Struct] ValCat
+# 1986|           ValueCategory = lvalue
+# 1986|         getLValue(): [FunctionCall] call to xvalue
+# 1986|             Type = [RValueReferenceType] ValCat &&
+# 1986|             ValueCategory = prvalue
+# 1986|         getRValue(): [ClassAggregateLiteral] {...}
+# 1986|             Type = [Struct] ValCat
+# 1986|             ValueCategory = prvalue
+# 1986|         getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1986|             Type = [Struct] ValCat
+# 1986|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1987|     getStmt(6): [ExprStmt] ExprStmt
+# 1987|       getExpr(): [AssignExpr] ... = ...
+# 1987|           Type = [Struct] ValCat
+# 1987|           ValueCategory = lvalue
+# 1987|         getLValue(): [FunctionCall] call to prvalue
+# 1987|             Type = [Struct] ValCat
+# 1987|             ValueCategory = prvalue
+# 1987|         getRValue(): [ClassAggregateLiteral] {...}
+# 1987|             Type = [Struct] ValCat
+# 1987|             ValueCategory = prvalue
+# 1987|         getLValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1987|             Type = [Struct] ValCat
+# 1987|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1988|     getStmt(7): [ReturnStmt] return ...
+# 1990| [TopLevelFunction] void SetStaticFuncPtr()
+# 1990|   <params>: 
+# 1990|   getEntryPoint(): [BlockStmt] { ... }
+# 1991|     getStmt(0): [DeclStmt] declaration
+# 1991|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 1991|           Type = [Class] C
+# 1991|         getVariable().getInitializer(): [Initializer] initializer for c
+# 1991|           getExpr(): [ConstructorCall] call to C
+# 1991|               Type = [VoidType] void
+# 1991|               ValueCategory = prvalue
+# 1992|     getStmt(1): [DeclStmt] declaration
+# 1992|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of pfn
+# 1992|           Type = [FunctionPointerType] ..(*)(..)
+# 1992|         getVariable().getInitializer(): [Initializer] initializer for pfn
+# 1992|           getExpr(): [FunctionAccess] StaticMemberFunction
+# 1992|               Type = [FunctionPointerType] ..(*)(..)
+# 1992|               ValueCategory = prvalue(load)
+# 1993|     getStmt(2): [ExprStmt] ExprStmt
+# 1993|       getExpr(): [AssignExpr] ... = ...
+# 1993|           Type = [FunctionPointerType] ..(*)(..)
+# 1993|           ValueCategory = lvalue
+# 1993|         getLValue(): [VariableAccess] pfn
+# 1993|             Type = [FunctionPointerType] ..(*)(..)
+# 1993|             ValueCategory = lvalue
+# 1993|         getRValue(): [FunctionAccess] StaticMemberFunction
+# 1993|             Type = [FunctionPointerType] ..(*)(..)
+# 1993|             ValueCategory = prvalue
+# 1993|           getQualifier(): [VariableAccess] c
+# 1993|               Type = [Class] C
+# 1993|               ValueCategory = lvalue
+# 1994|     getStmt(3): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
