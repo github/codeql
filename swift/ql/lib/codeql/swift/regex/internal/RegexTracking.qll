@@ -36,9 +36,7 @@ module StringLiteralUseFlow = DataFlow::Global<StringLiteralUseConfig>;
 private module RegexUseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     // creation of the regex
-    exists(RegexCreation regexCreation |
-      node = regexCreation
-    )
+    node instanceof RegexCreation
     // TODO: track parse mode flags.
   }
 
