@@ -208,7 +208,7 @@ module Content {
   }
 
   class ArrayContent extends Content, TArrayContent {
-    override string toString() { result = "Array element"}
+    override string toString() { result = "Array element" }
   }
 }
 

@@ -691,13 +691,15 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2 = node1 and // TODO: again, we should ideally have a separate Node case here, and not reuse the CallExpr
     c instanceof OptionalSomeContentSet and
     init.isFailable()
-  ) or
+  )
+  or
   // creation of an array `[v1,v2]`
   exists(ArrayExpr arr |
     node1.asExpr() = arr.getAnElement() and
     node2.asExpr() = arr and
     c.isSingleton(any(Content::ArrayContent ac))
-  ) or
+  )
+  or
   // array assignment `a[n] = x`
   exists(AssignExpr assign, SubscriptExpr subscript |
     node1.asExpr() = assign.getSource() and
@@ -757,7 +759,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of a component in a key-path expression chain
-  exists(KeyPathComponent component|
+  exists(KeyPathComponent component |
     component = node1.(KeyPathComponentNodeImpl).getComponent() and
     (
       c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
