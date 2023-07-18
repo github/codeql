@@ -1935,4 +1935,39 @@ void test_assign_with_assign_operation() {
   i = (j += 40);
 }
 
+class D {
+    static D x;
+
+public:
+    static D& ReferenceStaticMemberFunction() {
+        return x;
+    }
+    static D ObjectStaticMemberFunction() {
+        return x;
+    }
+};
+
+void test_static_member_functions_with_reference_return() {
+    D d;
+
+    d.ReferenceStaticMemberFunction();
+    D::ReferenceStaticMemberFunction();
+    d.ObjectStaticMemberFunction();
+    D::ObjectStaticMemberFunction();
+
+    D x;
+    x = d.ReferenceStaticMemberFunction();
+    D y;
+    y = D::ReferenceStaticMemberFunction();
+    D j;
+    j = d.ObjectStaticMemberFunction();
+    D k;
+    k = D::ObjectStaticMemberFunction();
+}
+
+void test_volatile() {
+    volatile int x;
+    x;
+}
+
 // semmle-extractor-options: -std=c++17 --clang
