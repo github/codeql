@@ -675,3 +675,18 @@ void test33(unsigned size, unsigned src_pos)
       xs[dst_pos++] = 0; // GOOD [FALSE POSITIVE]
   }
 }
+
+int* pointer_arithmetic(int *p, int offset) {
+  return p + offset;
+}
+
+void test_missing_call_context_1(unsigned size) {
+  int* p = new int[size];
+  int* end = pointer_arithmetic(p, size);
+}
+
+void test_missing_call_context_2(unsigned size) {
+  int* p = new int[size];
+  int* end_minus_one = pointer_arithmetic(p, size - 1);
+  *end_minus_one = '0'; // GOOD
+}
