@@ -2,7 +2,7 @@ char *malloc(int size);
 
 void test1(int size) {
     char* p = malloc(size);
-    char* q = p + size;
+    char* q = p + size; // $ alloc=L4
     char a = *q; // BAD
     char b = *(q - 1); // GOOD
     char c = *(q + 1); // BAD
@@ -14,7 +14,7 @@ void test1(int size) {
 
 void test2(int size) {
     char* p = malloc(size);
-    char* q = p + size - 1;
+    char* q = p + size - 1; // $ alloc=L16
     char a = *q; // GOOD
     char b = *(q - 1); // GOOD
     char c = *(q + 1); // BAD
@@ -26,7 +26,7 @@ void test2(int size) {
 
 void test3(int size) {
     char* p = malloc(size + 1);
-    char* q = p + (size + 1);
+    char* q = p + (size + 1); // $ alloc=L28+1
     char a = *q; // BAD
     char b = *(q - 1); // GOOD
     char c = *(q + 1); // BAD
@@ -38,7 +38,7 @@ void test3(int size) {
 
 void test4(int size) {
     char* p = malloc(size - 1);
-    char* q = p + (size - 1);
+    char* q = p + (size - 1); // $ alloc=L40-1
     char a = *q; // BAD
     char b = *(q - 1); // GOOD
     char c = *(q + 1); // BAD
@@ -50,7 +50,7 @@ void test4(int size) {
 
 char* mk_array(int size, char** end) {
     char* begin = malloc(size);
-    *end = begin + size;
+    *end = begin + size; // $ alloc=L52
 
     return begin;
 }
@@ -80,7 +80,7 @@ struct array_t {
 array_t mk_array(int size) {
     array_t arr;
     arr.begin = malloc(size);
-    arr.end = arr.begin + size;
+    arr.end = arr.begin + size; // $ alloc=L82
 
     return arr;
 }
@@ -123,7 +123,7 @@ void test8(int size) {
     array_t arr;
     char* p = malloc(size);
     arr.begin = p;
-    arr.end = p + size;
+    arr.end = p + size; // $ alloc=L124
 
     for (int i = 0; i < arr.end - arr.begin; i++) {
         *(arr.begin + i) = 0; // GOOD
@@ -141,7 +141,7 @@ void test8(int size) {
 array_t *mk_array_p(int size) {
     array_t *arr = (array_t*) malloc(sizeof(array_t));
     arr->begin = malloc(size);
-    arr->end = arr->begin + size;
+    arr->end = arr->begin + size; // $ alloc=L143
 
     return arr;
 }
@@ -186,13 +186,13 @@ void deref_plus_one(char* q) {
 
 void test11(unsigned size) {
     char *p = malloc(size);
-    char *q = p + size - 1;
+    char *q = p + size - 1; // $ alloc=L188
     deref_plus_one(q);
 }
 
 void test12(unsigned len, unsigned index) {
     char* p = (char *)malloc(len);
-    char* end = p + len;
+    char* end = p + len; // $ alloc=L194
     
     if(p + index > end) {
         return;
@@ -203,7 +203,7 @@ void test12(unsigned len, unsigned index) {
 
 void test13(unsigned len, unsigned index) {
     char* p = (char *)malloc(len);
-    char* end = p + len;
+    char* end = p + len; // $ alloc=L205
     
     char* q = p + index;
     if(q > end) {
@@ -229,14 +229,14 @@ void test15(unsigned index) {
     return;
   }
   int* newname = new int[size];
-  newname[index] = 0; // GOOD [FALSE POSITIVE]
+  newname[index] = 0; // $ alloc=L231 // GOOD [FALSE POSITIVE]
 }
 
 void test16(unsigned index) {
   unsigned size = index + 13;
   if(size >= index) {
     int* newname = new int[size];
-    newname[index] = 0; // GOOD [FALSE POSITIVE]
+    newname[index] = 0; // $ alloc=L238 // GOOD [FALSE POSITIVE]
   }
 }
 
@@ -251,14 +251,14 @@ void test17(unsigned *p, unsigned x, unsigned k) {
         // The following access is okay because:
         // n = 3*p[0] + k >= p[0] + k >= p[1] + k > p[1] = i
         // (where p[0] denotes the original value for p[0])
-        p[i] = x; // GOOD [FALSE POSITIVE]
+        p[i] = x; // $ alloc=L248 // GOOD [FALSE POSITIVE]
     }
 }
 
 void test17(unsigned len)
 {
   int *xs = new int[len];
-  int *end = xs + len;
+  int *end = xs + len; // $ alloc=L260
   for (int *x = xs; x <= end; x++)
   {
     int i = *x; // BAD
@@ -268,7 +268,7 @@ void test17(unsigned len)
 void test18(unsigned len)
 {
   int *xs = new int[len];
-  int *end = xs + len;
+  int *end = xs + len; // $ alloc=L270
   for (int *x = xs; x <= end; x++)
   {
     *x = 0; // BAD
@@ -278,7 +278,7 @@ void test18(unsigned len)
 void test19(unsigned len)
 {
   int *xs = new int[len];
-  int *end = xs + len;
+  int *end = xs + len; // $ alloc=L280
   for (int *x = xs; x < end; x++)
   {
     int i = *x; // GOOD
@@ -288,7 +288,7 @@ void test19(unsigned len)
 void test20(unsigned len)
 {
   int *xs = new int[len];
-  int *end = xs + len;
+  int *end = xs + len; // $ alloc=L290
   for (int *x = xs; x < end; x++)
   {
     *x = 0; // GOOD
@@ -305,13 +305,13 @@ void test21() {
 
   for (int i = 0; i < n; i += 2) {
     xs[i] = test21_get(i); // GOOD
-    xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
+    xs[i+1] = test21_get(i+1); // $ alloc=L304 alloc=L304-1 // GOOD [FALSE POSITIVE]
   }
 }
 
 void test22(unsigned size, int val) {
   char *xs = new char[size];
-  char *end = xs + size; // GOOD
+  char *end = xs + size; // $ alloc=L313 // GOOD
   char **current = &end;
   do {
     if (*current - xs < 1) // GOOD
@@ -323,7 +323,7 @@ void test22(unsigned size, int val) {
 
 void test23(unsigned size, int val) {
   char *xs = new char[size];
-  char *end = xs + size;
+  char *end = xs + size; // $ alloc=L325
   char **current = &end;
 
   if (val < 1) {
@@ -345,7 +345,7 @@ void test23(unsigned size, int val) {
 
 void test24(unsigned size) {
   char *xs = new char[size];
-  char *end = xs + size;
+  char *end = xs + size; // $ alloc=L347
   if (xs < end) {
     int val = *xs++; // GOOD
   }
@@ -353,7 +353,7 @@ void test24(unsigned size) {
 
 void test25(unsigned size) {
   char *xs = new char[size];
-  char *end = xs + size;
+  char *end = xs + size; // $ alloc=L355
   char *end_plus_one = end + 1;
   int val1 = *end_plus_one; // BAD
   int val2 = *(end_plus_one + 1); // BAD
@@ -362,7 +362,7 @@ void test25(unsigned size) {
 void test26(unsigned size) {
   char *xs = new char[size];
   char *p = xs;
-  char *end = p + size;
+  char *end = p + size; // $ alloc=L363
 
   if (p + 4 <= end) {
     p += 4;
@@ -375,7 +375,7 @@ void test26(unsigned size) {
 
 void test27(unsigned size, bool b) {
   char *xs = new char[size];
-  char *end = xs + size;
+  char *end = xs + size; // $ alloc=L377
 
   if (b) {
     end++;
@@ -386,7 +386,7 @@ void test27(unsigned size, bool b) {
 
 void test28(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L388
   if (xs >= end)
     return;
   xs++;
@@ -397,7 +397,7 @@ void test28(unsigned size) {
 
 void test28_simple(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L399
   if (xs < end) {
     xs++;
     if (xs < end) {
@@ -408,7 +408,7 @@ void test28_simple(unsigned size) {
 
 void test28_simple2(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L410
   if (xs < end) {
     xs++;
     if (xs < end + 1) {
@@ -419,7 +419,7 @@ void test28_simple2(unsigned size) {
 
 void test28_simple3(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L421
   if (xs < end) {
     xs++;
     if (xs - 1 < end) {
@@ -430,7 +430,7 @@ void test28_simple3(unsigned size) {
 
 void test28_simple4(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L432
   if (xs < end) {
     end++;
     xs++;
@@ -442,7 +442,7 @@ void test28_simple4(unsigned size) {
 
 void test28_simple5(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L444
   end++;
   if (xs < end) {
     xs++;
@@ -466,7 +466,7 @@ void test28_simple6(unsigned size) {
 
 void test28_simple7(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L468
   end++;
   if (xs < end) {
     xs++;
@@ -478,7 +478,7 @@ void test28_simple7(unsigned size) {
 
 void test28_simple8(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L480
   end += 500;
   if (xs < end) {
     xs++;
@@ -545,7 +545,7 @@ void test31_simple2(unsigned size, unsigned src_pos)
     src_pos = size;
   }
   if (src_pos < size + 1) {
-    xs[src_pos] = 0; // BAD
+    xs[src_pos] = 0; // $ alloc=L543 // BAD
   }
 }
 
@@ -556,7 +556,7 @@ void test31_simple3(unsigned size, unsigned src_pos)
     src_pos = size;
   }
   if (src_pos - 1 < size) {
-    xs[src_pos] = 0; // BAD
+    xs[src_pos] = 0; // $ alloc=L554 // BAD
   }
 }
 
@@ -644,13 +644,13 @@ void test31_simple1_sub1(unsigned size, unsigned src_pos)
     src_pos = size;
   }
   if (src_pos < size) {
-    xs[src_pos] = 0; // BAD
+    xs[src_pos] = 0; // $ alloc=L642-1 // BAD
   }
 }
 
 void test32(unsigned size) {
   char *xs = new char[size];
-  char *end = &xs[size];
+  char *end = &xs[size]; // $ alloc=L652
   if (xs >= end)
     return;
   xs++;
@@ -672,12 +672,12 @@ void test33(unsigned size, unsigned src_pos)
   while (dst_pos < size - 1) {
     dst_pos++;
     if (true)
-      xs[dst_pos++] = 0; // GOOD [FALSE POSITIVE]
+      xs[dst_pos++] = 0; // $ alloc=L667+1 // GOOD [FALSE POSITIVE]
   }
 }
 
 int* pointer_arithmetic(int *p, int offset) {
-  return p + offset;
+  return p + offset; // $ alloc=L684
 }
 
 void test_missing_call_context_1(unsigned size) {
