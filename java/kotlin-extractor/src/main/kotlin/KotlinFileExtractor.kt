@@ -157,10 +157,21 @@ open class KotlinFileExtractor(
             else -> false
         }
 
+    @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun isFake(d: IrDeclarationWithVisibility): Boolean {
         val hasFakeVisibility = d.visibility.let { it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake } || d.isFakeOverride
         if (hasFakeVisibility && !isJavaBinaryObjectMethodRedeclaration(d))
             return true
+        try {
+            if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
+                return true
+            }
+        }
+        catch (e: NotImplementedError) {
+            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
+            logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            return false
+        }
         return false
     }
 
@@ -630,6 +641,10 @@ open class KotlinFileExtractor(
                         tw.writeIsEnumType(id)
                     } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                         logger.warnElement("Unrecognised class kind $kind", c)
+                    }
+
+                    if (c.origin == IrDeclarationOrigin.FILE_CLASS) {
+                        tw.writeFile_class(id)
                     }
 
                     if (c.isData) {

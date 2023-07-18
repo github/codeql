@@ -88,14 +88,6 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
         e = any(StoreInstruction store).getDestinationAddress().getUnconvertedResultExpression()
       )
     }
-
-    predicate isBarrier(DataFlow::Node n, FlowState state) { none() }
-
-    predicate isAdditionalFlowStep(
-      DataFlow::Node n1, FlowState state1, DataFlow::Node n2, FlowState state2
-    ) {
-      none()
-    }
   }
 
   import DataFlow::GlobalWithState<FlowFromFreeConfig>

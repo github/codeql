@@ -1333,9 +1333,18 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
     creation.asExpr() =
       any(CfgNodes::ExprNodes::MethodCallCfgNode mc |
         c.asCallable() = mc.getBlock().getExpr() and
-        mc.getExpr().getMethodName() = ["lambda", "proc"]
+        isProcCreationCall(mc.getExpr())
       )
   )
+}
+
+/** Holds if `call` is a call to `lambda`, `proc`, or `Proc.new` */
+pragma[nomagic]
+private predicate isProcCreationCall(MethodCall call) {
+  call.getMethodName() = ["proc", "lambda"]
+  or
+  call.getMethodName() = "new" and
+  call.getReceiver().(ConstantReadAccess).getAQualifiedName() = "Proc"
 }
 
 /**

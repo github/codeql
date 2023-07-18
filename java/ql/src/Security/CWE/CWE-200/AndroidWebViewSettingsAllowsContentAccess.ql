@@ -97,8 +97,6 @@ module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
     state instanceof IsSettings and
     node instanceof WebSettingsDisallowContentAccessSink
   }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
 module WebViewDisallowContentAccessFlow =

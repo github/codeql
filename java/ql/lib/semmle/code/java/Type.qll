@@ -309,7 +309,6 @@ private predicate hasSubtypeStar1(RefType t, RefType sub) {
 /**
  * Holds if `hasSubtype*(t, sub)`, but manual-magic'ed with `getAWildcardLowerBound(sub)`.
  */
-pragma[assume_small_delta]
 pragma[nomagic]
 private predicate hasSubtypeStar2(RefType t, RefType sub) {
   sub = t and getAWildcardLowerBound(sub)
@@ -709,6 +708,12 @@ class Class extends ClassOrInterface {
       result = this.getASupertype().(Class).getAnAnnotation()
     )
   }
+
+  /**
+   * Holds if this class is a Kotlin "file class", e.g. the class FooKt
+   * for top-level entities in Foo.kt.
+   */
+  predicate isFileClass() { file_class(this) }
 
   override string getAPrimaryQlClass() { result = "Class" }
 }

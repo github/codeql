@@ -1,3 +1,17 @@
+## 0.7.0
+
+### Major Analysis Improvements
+
+* The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
+
+### Minor Analysis Improvements
+
+* Additional support for `command-injection`, `ldap-injection`, `log-injection`, and `url-redirection` sink kinds for Models as Data.
+
+## 0.6.4
+
+No user-facing changes.
+
 ## 0.6.3
 
 ### Major Analysis Improvements

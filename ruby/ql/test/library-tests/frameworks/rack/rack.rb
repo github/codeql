@@ -73,3 +73,44 @@ class Baz
     [400, {}, "nope"]
   end
 end
+
+class Qux
+  attr_reader :env
+  def self.call(env)
+    new(env).call
+  end
+
+  def initialize(env)
+    @env = env
+  end
+
+  def call
+    do_redirect
+  end
+
+  def do_redirect
+    redirect_to = env['redirect_to']
+    Rack::Response.new(['redirecting'], 302, 'Location' => redirect_to).finish
+  end
+end
+
+class UsesRequest
+  def call(env)
+    req = Rack::Request.new(env)
+    if session = req.cookies['session']
+      reuse_session(session)
+    else
+      name = req.params['name']
+      password = req['password']
+      login(name, password)
+    end
+  end
+
+  def login(name, password)
+    [200, {}, "new session"]
+  end
+
+  def reuse_session(name, password)
+    [200, {}, "reuse session"]
+  end
+end

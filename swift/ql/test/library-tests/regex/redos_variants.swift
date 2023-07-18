@@ -143,7 +143,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
 
     // BAD
     // attack string: "\n".repeat(100) + "."
-    _ = try Regex(#"(?s)(.|\n)*!"#).firstMatch(in: tainted) // $ hasParseFailure MISSING: redos-vulnerable=
+    _ = try Regex(#"(?s)(.|\n)*!"#).firstMatch(in: tainted) // $ modes=DOTALL redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"([\w.]+)*"#).firstMatch(in: tainted)
