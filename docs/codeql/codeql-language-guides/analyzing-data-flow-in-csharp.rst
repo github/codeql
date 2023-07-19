@@ -200,7 +200,7 @@ Global taint tracking is to global data flow what local taint tracking is to loc
 
    module MyFlow = TaintTracking::Global<MyFlowConfiguration>;
 
-The resulting module is completely similar to the one obtained from ``DataFlow::Global<ConfigSig>``.
+The resulting module has an identical signature to the one obtained from ``DataFlow::Global<ConfigSig>``.
 
 Flow sources
 ~~~~~~~~~~~~

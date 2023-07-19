@@ -281,7 +281,7 @@ The global taint tracking library is used by applying the module ``TaintTracking
 
    module MyFlow = TaintTracking::Global<MyFlowConfiguration>;
 
-The resulting module is completely similar to the one obtained from ``DataFlow::Global<ConfigSig>``.
+The resulting module has an identical signature to the one obtained from ``DataFlow::Global<ConfigSig>``.
 
 Predefined sources and sinks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
