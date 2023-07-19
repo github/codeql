@@ -1,6 +1,56 @@
 /**
  * This file provides the first phase of the `cpp/invalid-pointer-deref` query that identifies flow
  * from an allocation to a pointer-arithmetic instruction that constructs a pointer that is out of bounds.
+ *
+ * Consider the following snippet:
+ * ```cpp
+ * 1. char* begin = (char*)malloc(size);
+ * 2. char* end = begin + size;
+ * 3. for(int *p = begin; p <= end; p++) {
+ * 4.   use(*p);
+ * 5. }
+ * ```
+ * this file identifies the flow from `new int[size]` to `base + size`.
+ *
+ * This is done using the product-flow library. The configuration tracks flow from the pair `(allocation, size of allocation)`
+ * to a pair `(a, b)` where there exists a pointer-arithmetic instruction `pai` such that:
+ *  1. `a` is equal to the left-hand side of `pai`, and
+ *  2. `b` is a dataflow node that represents an operand that _non-strictly_ upper bounds the right-hand side of `pai`.
+ *     See `pointerAddInstructionHasBounds` for the implementation of this.
+ *
+ * In the above example, the pair `(a, b)` is `(base, size)` from the expression `base + size` on line 2. However, it could
+ * also be something more complex like `(base, size)` where `base` is from line 3 and `size` is from line 2, and the
+ * pointer-arithmetic instruction is `base + n` on line 3 in the following example:
+ *  ```cpp
+ *  1. int* base = new int[size];
+ *  2. if(n <= size) {
+ *  3.   int* end = base + n;
+ *  4.   for(int* p = base; p <= end; ++p) {
+ *  5.     *p = 0; // BUG: Should have been bounded by `p < end`.
+ *  6.   }
+ *  7. }
+ *  ```
+ *
+ * Reducing the size of `pointerAddInstructionHasBounds`:
+ * The `pointerAddInstructionHasBounds` can be very large since the `sink2` column is defined as anything that non-strictly
+ * upper bounds the right-hand side of a pointer-arithmetic instruction. In order to reduce the size of this predicate we prune
+ * the set of pointer-arithmetic instructions to only those instructions where the left-hand side flows from an allocation.
+ *
+ * Handling false positives:
+ *
+ * Consider a snippet such as:
+ * ```cpp
+ * 1. int* base = new int[size];
+ * 2. int n = condition() ? size : 0;
+ * 3. if(n >= size) return;
+ * 4. int* end = base + n;
+ * 5. for(int* p = base; p <= end; ++p) {
+ * 6.   *p = 0; // This is fine since `end < base + size`
+ * 7. }
+ * ```
+ * In order to remove this false positive we define a barrier (see `Barrier2::BarrierConfig2`) that finds the possible guards
+ * that compares a value to the size of the allocation. In the above example, that's the `(n >= size)` guard on line 3.
+ * `Barrier2::getABarrierNode` then defines any node that's guarded by such a guard as a barrier in the dataflow configuration.
  */
 
 private import cpp
@@ -151,24 +201,8 @@ private module InterestingPointerAddInstruction {
 }
 
 /**
- * A product-flow configuration for flow from an (allocation, size) pair to a
- * pointer-arithmetic operation that is non-strictly upper-bounded by `allocation + size`.
- *
- * The goal of this query is to find patterns such as:
- * ```cpp
- * 1. char* begin = (char*)malloc(size);
- * 2. char* end = begin + size;
- * 3. for(int *p = begin; p <= end; p++) {
- * 4.   use(*p);
- * 5. }
- * ```
- *
- * We do this by splitting the task up into two configurations:
- * 1. `AllocToInvalidPointerConfig` find flow from `malloc(size)` to `begin + size`, and
- * 2. `InvalidPointerToDerefConfig` finds flow from `begin + size` to an `end` (on line 3).
- *
- * Finally, the range-analysis library will find a load from (or store to) an address that
- * is non-strictly upper-bounded by `end` (which in this case is `*p`).
+ * A product-flow configuration for flow from an `(allocation, size)` pair to a pointer-
+ * arithmetic instruction that is non-strictly upper-bounded by `allocation + size`.
  */
 private module Config implements ProductFlow::StateConfigSig {
   class FlowState1 = Unit;

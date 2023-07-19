@@ -2,6 +2,71 @@
  * This file provides the second phase of the `cpp/invalid-pointer-deref` query that identifies flow
  * from the out-of-bounds pointer identified by the `AllocationToInvalidPointer.qll` library to
  * a dereference of the out-of-bounds pointer.
+ *
+ * Consider the following snippet:
+ * ```cpp
+ * 1. char* begin = (char*)malloc(size);
+ * 2. char* end = begin + size;
+ * 3. for(int *p = begin; p <= end; p++) {
+ * 4.   use(*p);
+ * 5. }
+ * ```
+ * this file identifies the flow from `base + size` to `end`. We call `base + size` the "dereference source" and `end`
+ * the "dereference sink" (even though `end` is not actually dereferenced - it will be used to find the correct
+ * dereference eventually).
+ *
+ * Merely _constructing_ a pointer that's out-of-bounds is fine if the pointer is never dereferenced (in reality, the
+ * standard only guarentees that it's safe to move the pointer one element past the last element. But we ignore that
+ * here). So this step is about identifying which of those out-of-bounds pointers identified from step 1 that are
+ * actually being dereferenced. We do this using a regular dataflow configuration (see `InvalidPointerToDerefConfig`).
+ *
+ * This dataflow traversal defines the set of sources as any dataflow node that is non-strictly upper-bounded by the
+ * pointer-arithmetic instruction identified by `AllocationToInvalidPointer.qll`. (TOOD: I'm pretty sure this is incorrect,
+ * and we should define the set of sources as anything that is non-strictly _lower_ bounded by the pointer-arithmetic
+ * instruction). That is, the set of sources is any dataflow node `source` such that `source.asInstruction <= pai + delta1`
+ * for some `delta1 >= 0`.
+ *
+ * The set of sinks is defined to be any address operand `addr` that is non-strictly upper-bounded by the sink. That is,
+ * any dataflow node `n` such that `addr <= sink.asInstruction() + delta2` for some `delta2`. We call the instruction that
+ * consumes the address operand the "operation".
+ *
+ * For example, consider the flow from `begin + size` to `end` above. The sink is `end` on line 3 because that is a dataflow
+ * node whose underlying instruction non-strictly upper bounds the address operand `p` in `use(*p)`. The load attached to `*p`
+ * is the "operation". To ensure that the path makes intuitive sense, we only pick operations that are control-flow reachable
+ * from the dereference sink.
+ *
+ * To compute the amount of the dereference is away from the final entry of the allocation, we sum the two deltas `delta1` and
+ * `delta2`. This is done in the `operationIsOffBy` predicate (which is the only predicate exposed by this file).
+ *
+ * Handling false positives:
+ *
+ * Consider the following snippet:
+ * ```cpp
+ * 1. char *p = new char[size];
+ * 2. char *end = p + size; // $ alloc=L363
+ * 3. if (p < end) {
+ * 4.   p += 1;
+ * 5. }
+ * 6. if (p < end) {
+ * 7.   int val = *p; // GOOD
+ * 8. }
+ * ```
+ * this is safe because `p` is guarded to be strictly less than `end` on line 6 before the dereference on line 7. However, if we
+ * run the query on the above without further modifications we'd see an alert on line 7. This is because range analysis infers
+ * that `p <= end` after the increment on line 4, and thus the result of `p += 1` is seen as a valid dereference source. This
+ * node then flows to `p` on line 6 (which is a valid dereference sink since it non-strictly upper bounds an address operand), and
+ * range analysis then infers that the address operand of `*p` (i.e., `p`) is non-strictly upper bounded by `p`, and thus reports
+ * an alert on line 7.
+ *
+ * In order to handle this false positive, we define a barrier that identifies guards such as `p < end` that ensures that a value
+ * is less than the pointer-arithmetic instruction that computed the invalid pointer. This is done in the `InvalidPointerToDerefBarrier`
+ * module. Since the node we're tracking isn't necessarily _equal_ to the pointer-arithmetic instruction, but rather satisfies
+ * `node.asInstruction() <= pai + delta`, we need to account for the delta when checking if a guard is sufficiently strong to infer
+ *  that a future dereference is safe. To do this, we check that the guard guarantees that a node `n` satisfies `n < node + d` where
+ * `node` is a node we know is equal to the value of the dereference source (i.e., it satisfies `node.asInstruction() <= pai + delta`)
+ * and  `d <= delta`. Combining this we have `n < node + d <= node + delta <= pai + 2*delta` (TODO: Oops. This math doesn't quite work
+ * out. This is because we need to redefine the `BarrierConfig` to start flow at the pointer-arithmetic instruction instead of at the
+ * dereference source. When combined with TODO above it's easy to show that this guard ensures that the dereference is safe).
  */
 
 private import cpp
