@@ -13,7 +13,7 @@ private import RangeAnalysisUtil
 private VariableAccess getAVariableAccess(Expr e) { e.getAChild*() = result }
 
 /**
- * Holds if `(n, state)` pair represents the source of flow for the size
+ * Holds if the `(n, state)` pair represents the source of flow for the size
  * expression associated with `alloc`.
  */
 predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
