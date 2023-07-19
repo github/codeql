@@ -24,6 +24,8 @@ class TrustBoundaryViolationSink extends DataFlow::Node {
   TrustBoundaryViolationSink() { sinkNode(this, "trust-boundary") }
 }
 
+abstract class TrustBoundaryValidationSanitizer extends DataFlow::Node { }
+
 /**
  * Taint tracking for data that crosses a trust boundary.
  */
@@ -32,6 +34,15 @@ module TrustBoundaryConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     n2.asExpr().(MethodAccess).getQualifier() = n1.asExpr()
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof TrustBoundaryValidationSanitizer or
+    node.getType() instanceof HttpServletSession or
+    node.asExpr()
+        .(MethodAccess)
+        .getMethod()
+        .hasQualifiedName("javax.servlet.http", "HttpServletRequest", "getMethod")
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TrustBoundaryViolationSink }
