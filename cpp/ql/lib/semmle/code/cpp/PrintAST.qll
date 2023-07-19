@@ -2,8 +2,8 @@
  * Provides queries to pretty-print a C++ AST as a graph.
  *
  * By default, this will print the AST for all functions in the database. To change this behavior,
- * extend `PrintASTConfiguration` and override `shouldPrintFunction` to hold for only the functions
- * you wish to view the AST for.
+ * extend `PrintASTConfiguration` and override `shouldPrintDeclaration` to hold for only the
+ * declarations you wish to view the AST for.
  */
 
 import cpp
@@ -12,7 +12,7 @@ private import semmle.code.cpp.Print
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
 /**
- * The query can extend this class to control which functions are printed.
+ * The query can extend this class to control which declarations are printed.
  */
 class PrintAstConfiguration extends TPrintAstConfiguration {
   /**
@@ -21,14 +21,17 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
   string toString() { result = "PrintASTConfiguration" }
 
   /**
-   * Holds if the AST for `func` should be printed. By default, holds for all
-   * functions.
+   * Holds if the AST for `decl` should be printed. By default, holds for all
+   * functions. Currently, does not support any other declaration types.
    */
-  predicate shouldPrintFunction(Function func) { any() }
+  predicate shouldPrintDeclaration(Declaration decl) { any() }
 }
 
-private predicate shouldPrintFunction(Function func) {
-  exists(PrintAstConfiguration config | config.shouldPrintFunction(func))
+private predicate shouldPrintDeclaration(Declaration decl) {
+  exists(PrintAstConfiguration config |
+    config.shouldPrintDeclaration(decl) and
+    decl instanceof Function
+  )
 }
 
 bindingset[s]
@@ -86,21 +89,21 @@ private Function getEnclosingFunction(Locatable ast) {
  * nodes for things like parameter lists and constructor init lists.
  */
 private newtype TPrintAstNode =
-  TAstNode(Locatable ast) { shouldPrintFunction(getEnclosingFunction(ast)) } or
+  TAstNode(Locatable ast) { shouldPrintDeclaration(getEnclosingFunction(ast)) } or
   TDeclarationEntryNode(DeclStmt stmt, DeclarationEntry entry) {
     // We create a unique node for each pair of (stmt, entry), to avoid having one node with
     // multiple parents due to extractor bug CPP-413.
     stmt.getADeclarationEntry() = entry and
-    shouldPrintFunction(stmt.getEnclosingFunction())
+    shouldPrintDeclaration(stmt.getEnclosingFunction())
   } or
-  TParametersNode(Function func) { shouldPrintFunction(func) } or
+  TParametersNode(Function func) { shouldPrintDeclaration(func) } or
   TConstructorInitializersNode(Constructor ctor) {
     ctor.hasEntryPoint() and
-    shouldPrintFunction(ctor)
+    shouldPrintDeclaration(ctor)
   } or
   TDestructorDestructionsNode(Destructor dtor) {
     dtor.hasEntryPoint() and
-    shouldPrintFunction(dtor)
+    shouldPrintDeclaration(dtor)
   }
 
 /**
@@ -159,9 +162,9 @@ class PrintAstNode extends TPrintAstNode {
   /**
    * Holds if this node should be printed in the output. By default, all nodes
    * within a function are printed, but the query can override
-   * `PrintASTConfiguration.shouldPrintFunction` to filter the output.
+   * `PrintASTConfiguration.shouldPrintDeclaration` to filter the output.
    */
-  final predicate shouldPrint() { shouldPrintFunction(this.getEnclosingFunction()) }
+  final predicate shouldPrint() { shouldPrintDeclaration(this.getEnclosingFunction()) }
 
   /**
    * Gets the children of this node.
@@ -628,7 +631,7 @@ class FunctionNode extends AstNode {
 }
 
 private string getChildAccessorWithoutConversions(Locatable parent, Element child) {
-  shouldPrintFunction(getEnclosingFunction(parent)) and
+  shouldPrintDeclaration(getEnclosingFunction(parent)) and
   (
     exists(Stmt s | s = parent |
       namedStmtChildPredicates(s, child, result)
@@ -647,7 +650,7 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
 }
 
 private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) {
-  shouldPrintFunction(getEnclosingFunction(s)) and
+  shouldPrintDeclaration(getEnclosingFunction(s)) and
   (
     exists(int n | s.(BlockStmt).getStmt(n) = e and pred = "getStmt(" + n + ")")
     or
@@ -735,7 +738,7 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
 }
 
 private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) {
-  shouldPrintFunction(expr.getEnclosingFunction()) and
+  shouldPrintDeclaration(expr.getEnclosingFunction()) and
   (
     expr.(Access).getTarget() = ele and pred = "getTarget()"
     or

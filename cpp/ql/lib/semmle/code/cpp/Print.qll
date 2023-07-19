@@ -10,7 +10,7 @@ private predicate shouldPrintDeclaration(Declaration decl) {
   or
   not exists(PrintAstConfiguration c)
   or
-  exists(PrintAstConfiguration config | config.shouldPrintFunction(decl))
+  exists(PrintAstConfiguration config | config.shouldPrintDeclaration(decl))
 }
 
 /**
