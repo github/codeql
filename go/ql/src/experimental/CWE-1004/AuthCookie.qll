@@ -275,11 +275,11 @@ deprecated class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::C
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::MethodCallNode cn |
-      cn.getTarget()
+    exists(DataFlow::MethodCallNode mcn |
+      mcn.getTarget()
           .hasQualifiedName(package("github.com/gorilla/sessions", ""), "CookieStore", "Get") and
-      pred = cn.getReceiver() and
-      succ = cn.getResult(0)
+      pred = mcn.getReceiver() and
+      succ = mcn.getResult(0)
     )
   }
 }

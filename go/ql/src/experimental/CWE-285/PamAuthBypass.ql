@@ -40,7 +40,7 @@ module PamStartToAcctMgmtConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(PamAcctMgmt p | p.getACall().getReceiver() = sink)
+    exists(PamAcctMgmt p | p.getACall().(DataFlow::MethodCallNode).getReceiver() = sink)
   }
 }
 
@@ -53,7 +53,7 @@ module PamStartToAuthenticateConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(PamAuthenticate p | p.getACall().getReceiver() = sink)
+    exists(PamAuthenticate p | p.getACall().(DataFlow::MethodCallNode).getReceiver() = sink)
   }
 }
 

@@ -129,7 +129,7 @@ private module Fiber {
   /**
    * Models HTTP redirects.
    */
-  private class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
+  private class Redirect extends Http::Redirect::Range, DataFlow::MethodCallNode {
     DataFlow::Node urlNode;
 
     Redirect() {
@@ -167,7 +167,7 @@ private module Fiber {
 
   // Holds for a call that sets a header with a key-value combination.
   private predicate setsHeaderDynamicKeyValue(
-    string package, string receiverName, DataFlow::CallNode headerSetterCall,
+    string package, string receiverName, DataFlow::MethodCallNode headerSetterCall,
     DataFlow::Node headerNameNode, DataFlow::Node headerValueNode, DataFlow::Node receiverNode
   ) {
     exists(string methodName, Method met |
@@ -215,7 +215,7 @@ private module Fiber {
     string package, string receiverName, DataFlow::Node bodyNode, string contentTypeString,
     DataFlow::Node receiverNode
   ) {
-    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+    exists(string methodName, Method met, DataFlow::MethodCallNode bodySetterCall |
       met.hasQualifiedName(package, receiverName, methodName) and
       bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
@@ -254,7 +254,7 @@ private module Fiber {
   private predicate setsBody(
     string package, string receiverName, DataFlow::Node receiverNode, DataFlow::Node bodyNode
   ) {
-    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+    exists(string methodName, Method met, DataFlow::MethodCallNode bodySetterCall |
       met.hasQualifiedName(package, receiverName, methodName) and
       bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
