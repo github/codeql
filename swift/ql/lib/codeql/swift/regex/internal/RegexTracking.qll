@@ -67,7 +67,7 @@ private module RegexParseModeConfig implements DataFlow::StateConfigSig {
   predicate isSink(DataFlow::Node node, FlowState flowstate) {
     // evaluation of the regex
     node.asExpr() = any(RegexEval eval).getRegexInput() and
-    flowstate = any(FlowState fs)
+    exists(flowstate)
   }
 
   predicate isBarrier(DataFlow::Node node) { none() }
