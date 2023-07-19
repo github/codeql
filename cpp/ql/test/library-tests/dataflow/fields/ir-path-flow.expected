@@ -12,8 +12,10 @@ edges
 | A.cpp:31:14:31:21 | call to B [c] | A.cpp:29:15:29:18 | make indirection [c] |
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c |
 | A.cpp:31:20:31:20 | c | A.cpp:31:14:31:21 | call to B [c] |
-| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection |
-| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection |
+| A.cpp:41:5:41:6 | insert output argument | A.cpp:43:10:43:12 | & ... indirection |
+| A.cpp:41:15:41:21 | new | A.cpp:41:5:41:6 | insert output argument |
+| A.cpp:41:15:41:21 | new | A.cpp:41:5:41:6 | insert output argument |
+| A.cpp:41:15:41:21 | new | A.cpp:41:15:41:21 | new |
 | A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c |
 | A.cpp:48:12:48:18 | call to make indirection [c] | A.cpp:49:10:49:10 | b indirection [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c |
@@ -1049,6 +1051,7 @@ nodes
 | A.cpp:29:23:29:23 | c | semmle.label | c |
 | A.cpp:31:14:31:21 | call to B [c] | semmle.label | call to B [c] |
 | A.cpp:31:20:31:20 | c | semmle.label | c |
+| A.cpp:41:5:41:6 | insert output argument | semmle.label | insert output argument |
 | A.cpp:41:15:41:21 | new | semmle.label | new |
 | A.cpp:41:15:41:21 | new | semmle.label | new |
 | A.cpp:43:10:43:12 | & ... indirection | semmle.label | & ... indirection |

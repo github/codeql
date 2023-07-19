@@ -313,6 +313,8 @@ private module Config implements FullStateConfigSig {
     any(Configuration config).allowImplicitRead(node, c)
   }
 
+  predicate neverSkip(Node node) { none() }
+
   int fieldFlowBranchLimit() { result = min(any(Configuration config).fieldFlowBranchLimit()) }
 
   FlowFeature getAFeature() { result = any(Configuration config).getAFeature() }
