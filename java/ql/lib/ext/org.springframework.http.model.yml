@@ -3,20 +3,20 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(HttpMethod,URI)", "", "Argument[1]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(MultiValueMap,HttpMethod,URI)", "", "Argument[2]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(Object,HttpMethod,URI)", "", "Argument[2]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(Object,HttpMethod,URI,Type)", "", "Argument[2]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(Object,MultiValueMap,HttpMethod,URI)", "", "Argument[3]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(Object,MultiValueMap,HttpMethod,URI,Type)", "", "Argument[3]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "delete", "", "", "Argument[0]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "get", "", "", "Argument[0]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "head", "", "", "Argument[0]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "method", "", "", "Argument[1]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "options", "", "", "Argument[0]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "patch", "", "", "Argument[0]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "post", "", "", "Argument[0]", "open-url", "manual"]
-      - ["org.springframework.http", "RequestEntity", False, "put", "", "", "Argument[0]", "open-url", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(HttpMethod,URI)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(MultiValueMap,HttpMethod,URI)", "", "Argument[2]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(Object,HttpMethod,URI)", "", "Argument[2]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(Object,HttpMethod,URI,Type)", "", "Argument[2]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(Object,MultiValueMap,HttpMethod,URI)", "", "Argument[3]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "RequestEntity", "(Object,MultiValueMap,HttpMethod,URI,Type)", "", "Argument[3]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "delete", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "get", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "head", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "method", "", "", "Argument[1]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "options", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "patch", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "post", "", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.http", "RequestEntity", False, "put", "", "", "Argument[0]", "request-forgery", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

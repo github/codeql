@@ -13,7 +13,7 @@ import InsecureDownloadCustomizations::InsecureDownload
 /**
  * A taint tracking configuration for download of sensitive file through insecure connection.
  */
-class Configuration extends DataFlow::Configuration {
+deprecated class Configuration extends DataFlow::Configuration {
   Configuration() { this = "InsecureDownload" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState label) {
@@ -29,3 +29,22 @@ class Configuration extends DataFlow::Configuration {
     node instanceof Sanitizer
   }
 }
+
+/**
+ * A taint tracking configuration for download of sensitive file through insecure connection.
+ */
+module Config implements DataFlow::StateConfigSig {
+  class FlowState = string;
+
+  predicate isSource(DataFlow::Node source, DataFlow::FlowState label) {
+    source.(Source).getALabel() = label
+  }
+
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowState label) {
+    sink.(Sink).getALabel() = label
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+module Flow = DataFlow::GlobalWithState<Config>;

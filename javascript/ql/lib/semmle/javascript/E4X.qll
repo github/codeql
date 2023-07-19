@@ -16,9 +16,6 @@ module E4X {
    */
   class XmlAnyName extends Expr, @e4x_xml_anyname { }
 
-  /** DEPRECATED: Alias for XmlAnyName */
-  deprecated class XMLAnyName = XmlAnyName;
-
   /**
    * An E4X qualified identifier.
    *
@@ -57,9 +54,6 @@ module E4X {
     }
   }
 
-  /** DEPRECATED: Alias for XmlQualifiedIdentifier */
-  deprecated class XMLQualifiedIdentifier = XmlQualifiedIdentifier;
-
   /**
    * An E4X attribute selector.
    *
@@ -89,9 +83,6 @@ module E4X {
     }
   }
 
-  /** DEPRECATED: Alias for XmlAttributeSelector */
-  deprecated class XMLAttributeSelector = XmlAttributeSelector;
-
   /**
    * An E4X filter expression.
    *
@@ -117,9 +108,6 @@ module E4X {
     }
   }
 
-  /** DEPRECATED: Alias for XmlFilterExpression */
-  deprecated class XMLFilterExpression = XmlFilterExpression;
-
   /**
    * An E4X "dot-dot" expression.
    *
@@ -144,7 +132,4 @@ module E4X {
       result = this.getBase().getFirstControlFlowNode()
     }
   }
-
-  /** DEPRECATED: Alias for XmlDotDotExpression */
-  deprecated class XMLDotDotExpression = XmlDotDotExpression;
 }

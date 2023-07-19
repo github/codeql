@@ -1,1 +1,1 @@
-| statements_test.py:187:5:187:9 | Delete | Unnecessary deletion of local variable $@ in function $@. | statements_test.py:187:9:187:9 | statements_test.py:187 | x | statements_test.py:185:1:185:31 | statements_test.py:185 | error_unnecessary_delete |
+| statements_test.py:187:5:187:9 | Delete | Unnecessary deletion of local variable $@ in function $@. | statements_test.py:187:9:187:9 | x | x | statements_test.py:185:1:185:31 | Function error_unnecessary_delete | error_unnecessary_delete |

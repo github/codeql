@@ -636,9 +636,6 @@ module API {
 
     /** Gets an API-node for this entry point. */
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
-
-    /** DEPRECATED. Use `getANode()` instead. */
-    deprecated API::Node getNode() { result = this.getANode() }
   }
 
   /**

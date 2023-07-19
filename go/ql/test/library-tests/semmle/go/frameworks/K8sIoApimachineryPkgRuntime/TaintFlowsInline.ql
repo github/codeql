@@ -21,12 +21,10 @@ class TestConfig extends TaintTracking::Configuration {
   }
 }
 
-class K8sIoApimachineryPkgRuntimeTest extends InlineExpectationsTest {
-  K8sIoApimachineryPkgRuntimeTest() { this = "KsIoApimachineryPkgRuntimeTest" }
+module K8sIoApimachineryPkgRuntimeTest implements TestSig {
+  string getARelevantTag() { result = "KsIoApimachineryPkgRuntime" }
 
-  override string getARelevantTag() { result = "KsIoApimachineryPkgRuntime" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TestConfig config, DataFlow::PathNode sink |
       config.hasFlowPath(_, sink) and
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -37,3 +35,5 @@ class K8sIoApimachineryPkgRuntimeTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<K8sIoApimachineryPkgRuntimeTest>

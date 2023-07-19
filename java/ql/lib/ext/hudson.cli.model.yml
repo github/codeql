@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["hudson.cli", "FullDuplexHttpStream", True, "FullDuplexHttpStream", "(URL,String,String)", "", "Argument[0]", "open-url", "ai-manual"]
-      - ["hudson.cli", "FullDuplexHttpStream", True, "FullDuplexHttpStream", "(URL,String,String)", "", "Argument[1]", "open-url", "manual"]
+      - ["hudson.cli", "FullDuplexHttpStream", True, "FullDuplexHttpStream", "(URL,String,String)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["hudson.cli", "FullDuplexHttpStream", True, "FullDuplexHttpStream", "(URL,String,String)", "", "Argument[1]", "request-forgery", "manual"]

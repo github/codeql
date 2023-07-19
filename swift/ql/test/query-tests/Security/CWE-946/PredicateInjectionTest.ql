@@ -3,12 +3,10 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.PredicateInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
-class PredicateInjectionTest extends InlineExpectationsTest {
-  PredicateInjectionTest() { this = "PredicateInjectionTest" }
+module PredicateInjectionTest implements TestSig {
+  string getARelevantTag() { result = "hasPredicateInjection" }
 
-  override string getARelevantTag() { result = "hasPredicateInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node source, DataFlow::Node sink, Expr sinkExpr |
       PredicateInjectionFlow::flow(source, sink) and
       sinkExpr = sink.asExpr() and
@@ -19,3 +17,5 @@ class PredicateInjectionTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<PredicateInjectionTest>

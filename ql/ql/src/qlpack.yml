@@ -8,4 +8,5 @@ extractor: ql
 dependencies:
   codeql/typos: ${workspace}
   codeql/util: ${workspace}
+  codeql/yaml: ${workspace}
 warnOnImplicitThis: true

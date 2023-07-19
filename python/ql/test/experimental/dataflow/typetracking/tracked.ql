@@ -14,12 +14,10 @@ private DataFlow::TypeTrackingNode tracked(TypeTracker t) {
   exists(TypeTracker t2 | result = tracked(t2).track(t2, t))
 }
 
-class TrackedTest extends InlineExpectationsTest {
-  TrackedTest() { this = "TrackedTest" }
+module TrackedTest implements TestSig {
+  string getARelevantTag() { result = "tracked" }
 
-  override string getARelevantTag() { result = "tracked" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node e, TypeTracker t |
       tracked(t).flowsTo(e) and
       // Module variables have no sensible location, and hence can't be annotated.
@@ -54,12 +52,10 @@ private DataFlow::TypeTrackingNode string_type(TypeTracker t) {
   exists(TypeTracker t2 | result = string_type(t2).track(t2, t))
 }
 
-class TrackedIntTest extends InlineExpectationsTest {
-  TrackedIntTest() { this = "TrackedIntTest" }
+module TrackedIntTest implements TestSig {
+  string getARelevantTag() { result = "int" }
 
-  override string getARelevantTag() { result = "int" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node e, TypeTracker t |
       int_type(t).flowsTo(e) and
       tag = "int" and
@@ -70,12 +66,10 @@ class TrackedIntTest extends InlineExpectationsTest {
   }
 }
 
-class TrackedStringTest extends InlineExpectationsTest {
-  TrackedStringTest() { this = "TrackedStringTest" }
+module TrackedStringTest implements TestSig {
+  string getARelevantTag() { result = "str" }
 
-  override string getARelevantTag() { result = "str" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node e, TypeTracker t |
       string_type(t).flowsTo(e) and
       tag = "str" and
@@ -100,12 +94,10 @@ private DataFlow::TypeTrackingNode tracked_self(TypeTracker t) {
   exists(TypeTracker t2 | result = tracked_self(t2).track(t2, t))
 }
 
-class TrackedSelfTest extends InlineExpectationsTest {
-  TrackedSelfTest() { this = "TrackedSelfTest" }
+module TrackedSelfTest implements TestSig {
+  string getARelevantTag() { result = "tracked_self" }
 
-  override string getARelevantTag() { result = "tracked_self" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node e, TypeTracker t |
       tracked_self(t).flowsTo(e) and
       // Module variables have no sensible location, and hence can't be annotated.
@@ -161,12 +153,10 @@ private DataFlow::TypeTrackingNode foo_bar_baz(DataFlow::TypeTracker t) {
 /** Gets a reference to `foo.bar.baz` (fictive attribute on `foo.bar` module). */
 DataFlow::Node foo_bar_baz() { foo_bar_baz(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-class TrackedFooBarBaz extends InlineExpectationsTest {
-  TrackedFooBarBaz() { this = "TrackedFooBarBaz" }
+module TrackedFooBarBaz implements TestSig {
+  string getARelevantTag() { result = "tracked_foo_bar_baz" }
 
-  override string getARelevantTag() { result = "tracked_foo_bar_baz" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node e |
       e = foo_bar_baz() and
       // Module variables have no sensible location, and hence can't be annotated.
@@ -178,3 +168,5 @@ class TrackedFooBarBaz extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests5<TrackedTest, TrackedIntTest, TrackedStringTest, TrackedSelfTest, TrackedFooBarBaz>>

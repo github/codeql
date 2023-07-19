@@ -1,3 +1,19 @@
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* The `cpp/comparison-with-wider-type` query now correctly handles relational operations on signed operators. As a result the query may find more results.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### New Queries
+
+* Added a new query, `cpp/overrun-write`, to detect buffer overflows in C-style functions that manipulate buffers.
+
 ## 0.6.2
 
 No user-facing changes.

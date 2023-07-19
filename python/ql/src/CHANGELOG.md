@@ -1,3 +1,19 @@
+## 0.8.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during archive extraction ("Zip Slip")" (`py/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+### Bug Fixes
+
+* The display name (`@name`) of the `py/unsafe-deserialization` query has been updated in favor of consistency with other languages.
+
 ## 0.7.2
 
 No user-facing changes.

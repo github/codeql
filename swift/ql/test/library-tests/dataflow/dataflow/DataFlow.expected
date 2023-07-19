@@ -1,6 +1,4 @@
 edges
-| file://:0:0:0:0 | [summary param] this in signum() | file://:0:0:0:0 | [summary] to write: return (return) in signum() |
-| file://:0:0:0:0 | [summary param] this in signum() [some:0] | file://:0:0:0:0 | [summary] to write: return (return) in signum() [some:0] |
 | file://:0:0:0:0 | self [a, x] | file://:0:0:0:0 | .a [x] |
 | file://:0:0:0:0 | self [str] | file://:0:0:0:0 | .str |
 | file://:0:0:0:0 | self [x, some:0] | file://:0:0:0:0 | .x [some:0] |
@@ -122,9 +120,7 @@ edges
 | test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:298:11:298:15 | let ...? [some:0] |
 | test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:306:13:306:24 | .some(...) [some:0] |
 | test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:314:10:314:21 | .some(...) [some:0] |
-| test.swift:270:15:270:22 | call to source() | file://:0:0:0:0 | [summary param] this in signum() |
 | test.swift:270:15:270:22 | call to source() | test.swift:270:15:270:31 | call to signum() |
-| test.swift:271:15:271:16 | ...? | file://:0:0:0:0 | [summary param] this in signum() |
 | test.swift:271:15:271:16 | ...? | test.swift:271:15:271:25 | call to signum() |
 | test.swift:271:15:271:25 | call to signum() | test.swift:271:15:271:25 | OptionalEvaluationExpr |
 | test.swift:280:31:280:38 | call to source() | test.swift:280:15:280:38 | ... ? ... : ... |
@@ -133,15 +129,12 @@ edges
 | test.swift:284:12:284:12 | z | test.swift:285:19:285:19 | z |
 | test.swift:291:8:291:12 | let ...? [some:0] | test.swift:291:12:291:12 | z |
 | test.swift:291:12:291:12 | z | test.swift:292:19:292:19 | z |
-| test.swift:291:16:291:17 | ...? | file://:0:0:0:0 | [summary param] this in signum() |
 | test.swift:291:16:291:17 | ...? | test.swift:291:16:291:26 | call to signum() |
-| test.swift:291:16:291:17 | ...? [some:0] | file://:0:0:0:0 | [summary param] this in signum() [some:0] |
 | test.swift:291:16:291:17 | ...? [some:0] | test.swift:291:16:291:26 | call to signum() [some:0] |
 | test.swift:291:16:291:26 | call to signum() | test.swift:291:16:291:26 | call to signum() [some:0] |
 | test.swift:291:16:291:26 | call to signum() [some:0] | test.swift:291:8:291:12 | let ...? [some:0] |
 | test.swift:298:11:298:15 | let ...? [some:0] | test.swift:298:15:298:15 | z1 |
 | test.swift:298:15:298:15 | z1 | test.swift:300:15:300:15 | z1 |
-| test.swift:303:15:303:16 | ...! | file://:0:0:0:0 | [summary param] this in signum() |
 | test.swift:303:15:303:16 | ...! | test.swift:303:15:303:25 | call to signum() |
 | test.swift:306:13:306:24 | .some(...) [some:0] | test.swift:306:23:306:23 | z |
 | test.swift:306:23:306:23 | z | test.swift:307:19:307:19 | z |
@@ -276,6 +269,11 @@ edges
 | test.swift:592:17:592:17 | KeyPathComponent [x] | test.swift:592:11:592:17 | exit #keyPath(...) |
 | test.swift:593:13:593:13 | s2 [s, x] | test.swift:592:11:592:17 | enter #keyPath(...) [s, x] |
 | test.swift:593:13:593:13 | s2 [s, x] | test.swift:593:13:593:26 | \\...[...] |
+| test.swift:618:13:618:20 | call to source() | test.swift:626:15:626:15 | y |
+| test.swift:628:9:628:16 | call to source() | test.swift:630:10:630:11 | &... |
+| test.swift:628:9:628:16 | call to source() | test.swift:631:15:631:15 | x |
+| test.swift:630:10:630:11 | &... | test.swift:630:14:630:15 | [post] &... |
+| test.swift:630:14:630:15 | [post] &... | test.swift:632:15:632:15 | y |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
@@ -283,10 +281,6 @@ nodes
 | file://:0:0:0:0 | .x [some:0] | semmle.label | .x [some:0] |
 | file://:0:0:0:0 | [post] self [x, some:0] | semmle.label | [post] self [x, some:0] |
 | file://:0:0:0:0 | [post] self [x] | semmle.label | [post] self [x] |
-| file://:0:0:0:0 | [summary param] this in signum() | semmle.label | [summary param] this in signum() |
-| file://:0:0:0:0 | [summary param] this in signum() [some:0] | semmle.label | [summary param] this in signum() [some:0] |
-| file://:0:0:0:0 | [summary] to write: return (return) in signum() | semmle.label | [summary] to write: return (return) in signum() |
-| file://:0:0:0:0 | [summary] to write: return (return) in signum() [some:0] | semmle.label | [summary] to write: return (return) in signum() [some:0] |
 | file://:0:0:0:0 | self [a, x] | semmle.label | self [a, x] |
 | file://:0:0:0:0 | self [str] | semmle.label | self [str] |
 | file://:0:0:0:0 | self [x, some:0] | semmle.label | self [x, some:0] |
@@ -573,6 +567,13 @@ nodes
 | test.swift:592:17:592:17 | KeyPathComponent [x] | semmle.label | KeyPathComponent [x] |
 | test.swift:593:13:593:13 | s2 [s, x] | semmle.label | s2 [s, x] |
 | test.swift:593:13:593:26 | \\...[...] | semmle.label | \\...[...] |
+| test.swift:618:13:618:20 | call to source() | semmle.label | call to source() |
+| test.swift:626:15:626:15 | y | semmle.label | y |
+| test.swift:628:9:628:16 | call to source() | semmle.label | call to source() |
+| test.swift:630:10:630:11 | &... | semmle.label | &... |
+| test.swift:630:14:630:15 | [post] &... | semmle.label | [post] &... |
+| test.swift:631:15:631:15 | x | semmle.label | x |
+| test.swift:632:15:632:15 | y | semmle.label | y |
 subpaths
 | test.swift:75:21:75:22 | &... | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:31:75:32 | [post] &... |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -599,11 +600,6 @@ subpaths
 | test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value | test.swift:170:5:170:5 | [post] self [x] | test.swift:218:3:218:5 | [post] getter for .a [x] |
 | test.swift:219:13:219:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | file://:0:0:0:0 | .a [x] | test.swift:219:13:219:15 | .a [x] |
 | test.swift:219:13:219:15 | .a [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:219:13:219:17 | .x |
-| test.swift:270:15:270:22 | call to source() | file://:0:0:0:0 | [summary param] this in signum() | file://:0:0:0:0 | [summary] to write: return (return) in signum() | test.swift:270:15:270:31 | call to signum() |
-| test.swift:271:15:271:16 | ...? | file://:0:0:0:0 | [summary param] this in signum() | file://:0:0:0:0 | [summary] to write: return (return) in signum() | test.swift:271:15:271:25 | call to signum() |
-| test.swift:291:16:291:17 | ...? | file://:0:0:0:0 | [summary param] this in signum() | file://:0:0:0:0 | [summary] to write: return (return) in signum() | test.swift:291:16:291:26 | call to signum() |
-| test.swift:291:16:291:17 | ...? [some:0] | file://:0:0:0:0 | [summary param] this in signum() [some:0] | file://:0:0:0:0 | [summary] to write: return (return) in signum() [some:0] | test.swift:291:16:291:26 | call to signum() [some:0] |
-| test.swift:303:15:303:16 | ...! | file://:0:0:0:0 | [summary param] this in signum() | file://:0:0:0:0 | [summary] to write: return (return) in signum() | test.swift:303:15:303:25 | call to signum() |
 | test.swift:515:12:515:12 | x [some:0] | test.swift:509:9:509:9 | value [some:0] | file://:0:0:0:0 | [post] self [x, some:0] | test.swift:515:5:515:5 | [post] cx [x, some:0] |
 | test.swift:519:20:519:20 | cx [x, some:0] | test.swift:509:9:509:9 | self [x, some:0] | file://:0:0:0:0 | .x [some:0] | test.swift:519:20:519:23 | .x [some:0] |
 | test.swift:543:20:543:28 | call to source3() | test.swift:536:10:536:13 | s | test.swift:537:7:537:7 | [post] self [str] | test.swift:543:7:543:7 | [post] self [str] |
@@ -689,3 +685,6 @@ subpaths
 | test.swift:575:13:575:25 | \\...[...] | test.swift:573:16:573:23 | call to source() | test.swift:575:13:575:25 | \\...[...] | result |
 | test.swift:578:13:578:32 | \\...[...] | test.swift:573:16:573:23 | call to source() | test.swift:578:13:578:32 | \\...[...] | result |
 | test.swift:593:13:593:26 | \\...[...] | test.swift:590:16:590:23 | call to source() | test.swift:593:13:593:26 | \\...[...] | result |
+| test.swift:626:15:626:15 | y | test.swift:618:13:618:20 | call to source() | test.swift:626:15:626:15 | y | result |
+| test.swift:631:15:631:15 | x | test.swift:628:9:628:16 | call to source() | test.swift:631:15:631:15 | x | result |
+| test.swift:632:15:632:15 | y | test.swift:628:9:628:16 | call to source() | test.swift:632:15:632:15 | y | result |

@@ -57,9 +57,6 @@ class XmlRecordedCall extends XmlElement {
   }
 }
 
-/** DEPRECATED: Alias for XmlRecordedCall */
-deprecated class XMLRecordedCall = XmlRecordedCall;
-
 /** The XML data for the call part a recorded call. */
 class XmlCall extends XmlElement {
   XmlCall() { this.hasName("Call") }
@@ -110,14 +107,8 @@ class XmlCall extends XmlElement {
   }
 }
 
-/** DEPRECATED: Alias for XmlCall */
-deprecated class XMLCall = XmlCall;
-
 /** The XML data for the callee part a recorded call. */
 abstract class XmlCallee extends XmlElement { }
-
-/** DEPRECATED: Alias for XmlCallee */
-deprecated class XMLCallee = XmlCallee;
 
 /** The XML data for the callee part a recorded call, when the callee is a Python function. */
 class XmlPythonCallee extends XmlCallee {
@@ -140,9 +131,6 @@ class XmlPythonCallee extends XmlCallee {
   }
 }
 
-/** DEPRECATED: Alias for XmlPythonCallee */
-deprecated class XMLPythonCallee = XmlPythonCallee;
-
 /** The XML data for the callee part a recorded call, when the callee is a C function or builtin. */
 class XmlExternalCallee extends XmlCallee {
   XmlExternalCallee() { this.hasName("ExternalCallee") }
@@ -160,9 +148,6 @@ class XmlExternalCallee extends XmlCallee {
     )
   }
 }
-
-/** DEPRECATED: Alias for XmlExternalCallee */
-deprecated class XMLExternalCallee = XmlExternalCallee;
 
 /**
  * Helper predicate. If parent = `builtins` and qualname = `list.append`, it will

@@ -21,6 +21,7 @@ test_query11
 | tst.js:31:18:31:18 | x | Dead store of local variable. |
 | tst.js:38:7:38:23 | password = "blah" | Dead store of local variable. |
 test_query12
+| tst.js:42:3:42:12 | res.send() |
 test_query20
 test_query3
 | tst.js:27:1:27:4 | <!-- | Do not use HTML comments. |

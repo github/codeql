@@ -51,6 +51,8 @@ module RequestForgeryConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof RequestForgerySanitizer }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 module RequestForgeryFlow = TaintTracking::Global<RequestForgeryConfig>;

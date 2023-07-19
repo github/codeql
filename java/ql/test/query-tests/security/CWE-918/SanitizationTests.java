@@ -116,6 +116,9 @@ public class SanitizationTests extends HttpServlet {
             HttpRequest unsafer9 = HttpRequest.newBuilder(new URI(unsafeUri9)).build(); // $ SSRF
             client.send(unsafer9, null);
 
+            String unsafeUri10 = String.format("%s://%s:%s%s", "http", "myserver.com", "80", request.getParameter("baduri10"));
+            HttpRequest unsafer10 = HttpRequest.newBuilder(new URI(unsafeUri10)).build(); // $ SSRF
+            client.send(unsafer10, null);
         } catch (Exception e) {
             // TODO: handle exception
         }

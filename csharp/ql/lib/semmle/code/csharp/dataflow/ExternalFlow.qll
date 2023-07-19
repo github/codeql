@@ -62,8 +62,8 @@
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
  *
- *    For summaries, `input` and `output` may be prefixed by one of the following,
- *    separated by the "of" keyword:
+ *    For summaries, `input` and `output` may be suffixed by any number of the
+ *    following, separated by ".":
  *    - "Element": Selects an element in a collection.
  *    - "Field[f]": Selects the contents of field `f`.
  *    - "Property[p]": Selects the contents of property `p`.
@@ -95,6 +95,7 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel = Extensions::sourceModel/9;
@@ -204,28 +205,17 @@ module ModelValidation {
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["code", "sql", "xss", "remote", "html"] and
-      not kind.matches("encryption-%") and
-      result = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["local", "remote", "file", "file-write"] and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
-    or
-    exists(string kind | neutralModel(_, _, _, _, kind, _) |
-      not kind = ["summary", "source", "sink"] and
-      result = "Invalid kind \"" + kind + "\" in neutral model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(
@@ -268,7 +258,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelKind()
+        KindVal::getInvalidModelKind()
       ]
   }
 }

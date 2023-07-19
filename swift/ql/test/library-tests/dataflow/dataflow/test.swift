@@ -613,3 +613,21 @@ func testOptionalKeyPath() {
     let f = \S2_Optional.s?.x
     sink(opt: s2[keyPath: f]) // $ MISSING: flow=611
 }
+
+func testSwap() {
+    var x = source()
+    var y = 0
+    var t: Int
+
+    t = x
+    x = y
+    y = t
+    sink(arg: x)
+    sink(arg: y) // $ flow=618
+
+    x = source()
+    y = 0
+    swap(&x, &y)
+    sink(arg: x) // $ SPURIOUS: flow=628
+    sink(arg: y) // $ flow=628
+}

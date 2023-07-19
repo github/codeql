@@ -87,6 +87,7 @@ private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import ExternalFlowExtensions as Extensions
 private import FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A class for activating additional model rows.
@@ -265,37 +266,17 @@ module ModelValidation {
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind =
-        [
-          "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
-          "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent", "url-redirect",
-          "create-file", "read-file", "write-file", "set-hostname-verifier", "header-splitting",
-          "information-leak", "xslt", "jexl", "bean-validation", "ssti", "fragment-injection",
-          "command-injection"
-        ] and
-      not kind.matches("regex-use%") and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["remote", "contentprovider", "android-widget", "android-external-storage-dir"] and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
-    or
-    exists(string kind | neutralModel(_, _, _, _, kind, _) |
-      not kind = ["summary", "source", "sink"] and
-      result = "Invalid kind \"" + kind + "\" in neutral model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(
@@ -338,7 +319,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelKind()
+        KindVal::getInvalidModelKind()
       ]
   }
 }
