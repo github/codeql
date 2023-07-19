@@ -894,7 +894,7 @@ int accessPathLimit() { result = 5 }
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof Content::ArrayContent }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
