@@ -110,6 +110,9 @@ class RegexParseMode extends TRegexParseMode {
     this = MkUnicode() and result = "UNICODE"
   }
 
+  /**
+   * Gets a textual representation of this `RegexParseMode`.
+   */
   string toString() { result = this.getName() }
 }
 
