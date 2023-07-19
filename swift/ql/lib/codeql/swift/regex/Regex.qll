@@ -6,18 +6,45 @@ import swift
 import codeql.swift.regex.RegexTreeView
 private import codeql.swift.dataflow.DataFlow
 private import internal.ParseRegex
+private import internal.RegexTracking
 
 /**
- * A data flow configuration for tracking string literals that are used as
- * regular expressions.
+ * A string literal that is used as a regular expression. For example
+ * the string literal `"(a|b).*"` in:
+ * ```
+ * Regex("(a|b).*").firstMatch(in: myString)
+ * ```
  */
-private module RegexUseConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof StringLiteralExpr }
+private class ParsedStringRegex extends RegExp, StringLiteralExpr {
+  DataFlow::Node use;
 
-  predicate isSink(DataFlow::Node node) { node.asExpr() = any(RegexEval eval).getRegexInput() }
+  ParsedStringRegex() { StringLiteralUseFlow::flow(DataFlow::exprNode(this), use) }
 
-  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // flow through `Regex` initializer, i.e. from a string to a `Regex` object.
+  /**
+   * Gets a dataflow node where this string literal is used as a regular
+   * expression.
+   */
+  DataFlow::Node getUse() { result = use }
+}
+
+/**
+ * A data-flow node where a regular expression object is created.
+ */
+abstract class RegexCreation extends DataFlow::Node {
+  /**
+   * Gets a dataflow node for the string that the regular expression object is
+   * created from.
+   */
+  abstract DataFlow::Node getStringInput();
+}
+
+/**
+ * A data-flow node where a `Regex` or `NSRegularExpression` object is created.
+ */
+private class StandardRegexCreation extends RegexCreation {
+  DataFlow::Node input;
+
+  StandardRegexCreation() {
     exists(CallExpr call |
       (
         call.getStaticTarget().(Method).hasQualifiedName("Regex", ["init(_:)", "init(_:as:)"]) or
@@ -25,32 +52,12 @@ private module RegexUseConfig implements DataFlow::ConfigSig {
             .(Method)
             .hasQualifiedName("NSRegularExpression", "init(pattern:options:)")
       ) and
-      nodeFrom.asExpr() = call.getArgument(0).getExpr() and
-      nodeTo.asExpr() = call
+      input.asExpr() = call.getArgument(0).getExpr() and
+      this.asExpr() = call
     )
   }
-}
 
-private module RegexUseFlow = DataFlow::Global<RegexUseConfig>;
-
-/**
- * A string literal that is used as a regular expression in a regular
- * expression evaluation. For example the string literal `"(a|b).*"` in:
- * ```
- * Regex("(a|b).*").firstMatch(in: myString)
- * ```
- */
-private class ParsedStringRegex extends RegExp, StringLiteralExpr {
-  RegexEval eval;
-
-  ParsedStringRegex() {
-    RegexUseFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(eval.getRegexInput()))
-  }
-
-  /**
-   * Gets a call that evaluates this regular expression.
-   */
-  RegexEval getEval() { result = eval }
+  override DataFlow::Node getStringInput() { result = input }
 }
 
 /**
@@ -61,7 +68,8 @@ private class ParsedStringRegex extends RegExp, StringLiteralExpr {
  */
 abstract class RegexEval extends CallExpr {
   /**
-   * Gets the input to this call that is the regular expression being evaluated.
+   * Gets the input to this call that is the regular expression being evaluated. This may
+   * be a regular expression object or a string literal.
    */
   abstract Expr getRegexInput();
 
@@ -73,7 +81,16 @@ abstract class RegexEval extends CallExpr {
   /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
-  RegExp getARegex() { result.(ParsedStringRegex).getEval() = this }
+  RegExp getARegex() {
+    // string literal used directly as a regex
+    result.(ParsedStringRegex).getUse().asExpr() = this.getRegexInput()
+    or
+    // string literal -> regex object -> use
+    exists(RegexCreation regexCreation |
+      result.(ParsedStringRegex).getUse() = regexCreation.getStringInput() and
+      RegexUseFlow::flow(regexCreation, DataFlow::exprNode(this.getRegexInput()))
+    )
+  }
 }
 
 /**
