@@ -646,15 +646,19 @@ func testArray() {
     sink(arg: matrix[0])
     sink(arg: matrix[0][0]) // $ flow=645
 
+    var matrix2 = [[1]]
+    matrix2[0][0] = source()
+    sink(arg: matrix2[0][0]) // $ MISSING: flow=650
+
     var arr3 = [1]
     var arr4 = arr2 + arr3
     sink(arg: arr3[0])
     sink(arg: arr4[0]) // $ MISSING: flow=642
 
     var arr5 = Array(repeating: source(), count: 2)
-    sink(arg: arr5[0]) // $ MISSING: flow=654
+    sink(arg: arr5[0]) // $ MISSING: flow=658
 
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
-    sink(arg: arr6[0]) // $ flow=658
+    sink(arg: arr6[0]) // $ flow=662
 }

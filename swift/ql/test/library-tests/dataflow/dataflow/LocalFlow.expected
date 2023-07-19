@@ -700,8 +700,8 @@
 | test.swift:642:9:642:9 | SSA def(arr2) | test.swift:643:15:643:15 | arr2 |
 | test.swift:642:9:642:9 | arr2 | test.swift:642:9:642:9 | SSA def(arr2) |
 | test.swift:642:16:642:25 | [...] | test.swift:642:9:642:9 | arr2 |
-| test.swift:643:15:643:15 | &... | test.swift:650:16:650:16 | arr2 |
-| test.swift:643:15:643:15 | [post] &... | test.swift:650:16:650:16 | arr2 |
+| test.swift:643:15:643:15 | &... | test.swift:654:16:654:16 | arr2 |
+| test.swift:643:15:643:15 | [post] &... | test.swift:654:16:654:16 | arr2 |
 | test.swift:643:15:643:15 | arr2 | test.swift:643:15:643:15 | &... |
 | test.swift:645:9:645:9 | SSA def(matrix) | test.swift:646:15:646:15 | matrix |
 | test.swift:645:9:645:9 | matrix | test.swift:645:9:645:9 | SSA def(matrix) |
@@ -711,23 +711,32 @@
 | test.swift:646:15:646:15 | matrix | test.swift:646:15:646:15 | &... |
 | test.swift:647:15:647:15 | matrix | test.swift:647:15:647:15 | &... |
 | test.swift:647:15:647:23 | ...[...] | test.swift:647:15:647:23 | &... |
-| test.swift:649:9:649:9 | SSA def(arr3) | test.swift:650:23:650:23 | arr3 |
-| test.swift:649:9:649:9 | arr3 | test.swift:649:9:649:9 | SSA def(arr3) |
-| test.swift:649:16:649:18 | [...] | test.swift:649:9:649:9 | arr3 |
-| test.swift:650:9:650:9 | SSA def(arr4) | test.swift:652:15:652:15 | arr4 |
-| test.swift:650:9:650:9 | arr4 | test.swift:650:9:650:9 | SSA def(arr4) |
-| test.swift:650:16:650:23 | ... .+(_:_:) ... | test.swift:650:9:650:9 | arr4 |
-| test.swift:650:23:650:23 | arr3 | test.swift:651:15:651:15 | arr3 |
-| test.swift:651:15:651:15 | arr3 | test.swift:651:15:651:15 | &... |
-| test.swift:652:15:652:15 | arr4 | test.swift:652:15:652:15 | &... |
-| test.swift:654:9:654:9 | SSA def(arr5) | test.swift:655:15:655:15 | arr5 |
-| test.swift:654:9:654:9 | arr5 | test.swift:654:9:654:9 | SSA def(arr5) |
-| test.swift:654:16:654:51 | call to Array<Element>.init(repeating:count:) | test.swift:654:9:654:9 | arr5 |
-| test.swift:655:15:655:15 | arr5 | test.swift:655:15:655:15 | &... |
-| test.swift:657:9:657:9 | SSA def(arr6) | test.swift:658:5:658:5 | arr6 |
-| test.swift:657:9:657:9 | arr6 | test.swift:657:9:657:9 | SSA def(arr6) |
-| test.swift:657:16:657:22 | [...] | test.swift:657:9:657:9 | arr6 |
-| test.swift:658:5:658:5 | &... | test.swift:659:15:659:15 | arr6 |
-| test.swift:658:5:658:5 | [post] &... | test.swift:659:15:659:15 | arr6 |
-| test.swift:658:5:658:5 | arr6 | test.swift:658:5:658:5 | &... |
-| test.swift:659:15:659:15 | arr6 | test.swift:659:15:659:15 | &... |
+| test.swift:649:9:649:9 | SSA def(matrix2) | test.swift:650:5:650:5 | matrix2 |
+| test.swift:649:9:649:9 | matrix2 | test.swift:649:9:649:9 | SSA def(matrix2) |
+| test.swift:649:19:649:23 | [...] | test.swift:649:9:649:9 | matrix2 |
+| test.swift:650:5:650:5 | &... | test.swift:651:15:651:15 | matrix2 |
+| test.swift:650:5:650:5 | [post] &... | test.swift:651:15:651:15 | matrix2 |
+| test.swift:650:5:650:5 | matrix2 | test.swift:650:5:650:5 | &... |
+| test.swift:650:5:650:14 | ...[...] | test.swift:650:5:650:14 | &... |
+| test.swift:651:15:651:15 | matrix2 | test.swift:651:15:651:15 | &... |
+| test.swift:651:15:651:24 | ...[...] | test.swift:651:15:651:24 | &... |
+| test.swift:653:9:653:9 | SSA def(arr3) | test.swift:654:23:654:23 | arr3 |
+| test.swift:653:9:653:9 | arr3 | test.swift:653:9:653:9 | SSA def(arr3) |
+| test.swift:653:16:653:18 | [...] | test.swift:653:9:653:9 | arr3 |
+| test.swift:654:9:654:9 | SSA def(arr4) | test.swift:656:15:656:15 | arr4 |
+| test.swift:654:9:654:9 | arr4 | test.swift:654:9:654:9 | SSA def(arr4) |
+| test.swift:654:16:654:23 | ... .+(_:_:) ... | test.swift:654:9:654:9 | arr4 |
+| test.swift:654:23:654:23 | arr3 | test.swift:655:15:655:15 | arr3 |
+| test.swift:655:15:655:15 | arr3 | test.swift:655:15:655:15 | &... |
+| test.swift:656:15:656:15 | arr4 | test.swift:656:15:656:15 | &... |
+| test.swift:658:9:658:9 | SSA def(arr5) | test.swift:659:15:659:15 | arr5 |
+| test.swift:658:9:658:9 | arr5 | test.swift:658:9:658:9 | SSA def(arr5) |
+| test.swift:658:16:658:51 | call to Array<Element>.init(repeating:count:) | test.swift:658:9:658:9 | arr5 |
+| test.swift:659:15:659:15 | arr5 | test.swift:659:15:659:15 | &... |
+| test.swift:661:9:661:9 | SSA def(arr6) | test.swift:662:5:662:5 | arr6 |
+| test.swift:661:9:661:9 | arr6 | test.swift:661:9:661:9 | SSA def(arr6) |
+| test.swift:661:16:661:22 | [...] | test.swift:661:9:661:9 | arr6 |
+| test.swift:662:5:662:5 | &... | test.swift:663:15:663:15 | arr6 |
+| test.swift:662:5:662:5 | [post] &... | test.swift:663:15:663:15 | arr6 |
+| test.swift:662:5:662:5 | arr6 | test.swift:662:5:662:5 | &... |
+| test.swift:663:15:663:15 | arr6 | test.swift:663:15:663:15 | &... |
