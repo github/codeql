@@ -140,7 +140,7 @@ class RegexRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
   private predicate setsParseModeEdge(
     DataFlow::Node nodeFrom, DataFlow::Node nodeTo, RegexParseMode mode, boolean isSet
   ) {
-    // `Regex` methods that modify parse mode
+    // `Regex` methods that modify the parse mode of an existing `Regex` object.
     exists(CallExpr ce |
       nodeFrom.asExpr() = ce.getQualifier() and
       nodeTo.asExpr() = ce and
@@ -166,11 +166,12 @@ class RegexRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
 /**
  * An additional flow step for `NSRegularExpression`.
  */
-class StandardRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
+class NSRegularExpressionRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
 
   override predicate setsParseMode(DataFlow::Node node, RegexParseMode mode, boolean isSet) {
-    // `NSRegularExpression.Options` values
+    // `NSRegularExpression.Options` values (these are typically combined, then passed into
+    // the `NSRegularExpression` initializer).
     node.asExpr()
         .(MemberRefExpr)
         .getMember()
