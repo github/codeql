@@ -174,7 +174,7 @@ private module CleverGo {
   /**
    * Models HTTP redirects.
    */
-  private class HttpRedirect extends Http::Redirect::Range, DataFlow::CallNode {
+  private class HttpRedirect extends Http::Redirect::Range, DataFlow::MethodCallNode {
     DataFlow::Node urlNode;
 
     HttpRedirect() {
@@ -211,7 +211,7 @@ private module CleverGo {
     string package, string receiverName, DataFlow::Node bodyNode, string contentTypeString,
     DataFlow::Node receiverNode
   ) {
-    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+    exists(string methodName, Method met, DataFlow::MethodCallNode bodySetterCall |
       met.hasQualifiedName(package, receiverName, methodName) and
       bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
@@ -317,7 +317,7 @@ private module CleverGo {
     string package, string receiverName, DataFlow::Node bodyNode, DataFlow::Node contentTypeNode,
     DataFlow::Node receiverNode
   ) {
-    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+    exists(string methodName, Method met, DataFlow::MethodCallNode bodySetterCall |
       met.hasQualifiedName(package, receiverName, methodName) and
       bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
@@ -356,7 +356,7 @@ private module CleverGo {
   private predicate setsBody(
     string package, string receiverName, DataFlow::Node receiverNode, DataFlow::Node bodyNode
   ) {
-    exists(string methodName, Method met, DataFlow::CallNode bodySetterCall |
+    exists(string methodName, Method met, DataFlow::MethodCallNode bodySetterCall |
       met.hasQualifiedName(package, receiverName, methodName) and
       bodySetterCall = met.getACall() and
       receiverNode = bodySetterCall.getReceiver()
@@ -400,7 +400,7 @@ private module CleverGo {
 
   // Holds for a call that sets a header with a key-value combination.
   private predicate setsHeaderDynamicKeyValue(
-    string package, string receiverName, DataFlow::CallNode headerSetterCall,
+    string package, string receiverName, DataFlow::MethodCallNode headerSetterCall,
     DataFlow::Node headerNameNode, DataFlow::Node headerValueNode, DataFlow::Node receiverNode
   ) {
     exists(string methodName, Method met |
@@ -446,7 +446,7 @@ private module CleverGo {
 
   // Holds for a call that sets the content-type header (implicit).
   private predicate setsStaticHeaderContentType(
-    string package, string receiverName, DataFlow::CallNode setterCall, string valueString,
+    string package, string receiverName, DataFlow::MethodCallNode setterCall, string valueString,
     DataFlow::Node receiverNode
   ) {
     exists(string methodName, Method met |
@@ -501,8 +501,8 @@ private module CleverGo {
 
   // Holds for a call that sets the content-type header via a parameter.
   private predicate setsDynamicHeaderContentType(
-    string package, string receiverName, DataFlow::CallNode setterCall, DataFlow::Node valueNode,
-    DataFlow::Node receiverNode
+    string package, string receiverName, DataFlow::MethodCallNode setterCall,
+    DataFlow::Node valueNode, DataFlow::Node receiverNode
   ) {
     exists(string methodName, Method met |
       met.hasQualifiedName(package, receiverName, methodName) and
