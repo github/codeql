@@ -23,4 +23,4 @@ where
   // is inlined because it gives a better join-order".
   not decl.getAnAnnotation() instanceof Inline and
   not decl.getAnAnnotation() instanceof BindingSet
-select decl, "This predicate might be inlined."
+select decl, "This predicate should probably be marked pragma[noinline] to prevent inlining."
