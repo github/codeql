@@ -9,22 +9,7 @@ CodeQL for Java
 Setup
 =====
 
-For this example you should download:
-
-- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
-- `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
-
-.. note::
-
-   For this example, we will be analyzing `Apache Struts <https://github.com/apache/struts>`__.
-
-   You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
-
-   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
-
-   .. include:: ../slide-snippets/database-note.rst
-
-   .. resume slides
+For this example you need to set up `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__ and download the CodeQL database for `Apache Struts <https://github.com/apache/struts>`__ from GitHub.
 
 .. rst-class:: agenda
 
