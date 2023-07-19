@@ -1,6 +1,6 @@
 /**
  * This file provides the first phase of the `cpp/invalid-pointer-deref` query that identifies flow
- * an allocation to a pointer-arithmetic instruction that constructs a pointer that's out of bounds.
+ * from an allocation to a pointer-arithmetic instruction that constructs a pointer that is out of bounds.
  */
 
 private import cpp
