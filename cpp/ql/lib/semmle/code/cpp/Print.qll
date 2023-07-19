@@ -6,7 +6,7 @@ private import PrintAST
  * that requests that function, or no `PrintASTConfiguration` exists.
  */
 private predicate shouldPrintDeclaration(Declaration decl) {
-  not decl instanceof Function
+  not (decl instanceof Function or decl instanceof GlobalOrNamespaceVariable)
   or
   not exists(PrintAstConfiguration c)
   or
