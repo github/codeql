@@ -297,6 +297,22 @@ module ProductFlow {
       reachable(source1, source2, sink1, sink2)
     }
 
+    /** Holds if data can flow from `(source1, source2)` to `(sink1, sink2)`. */
+    predicate flow(
+      DataFlow::Node source1, DataFlow::Node source2, DataFlow::Node sink1, DataFlow::Node sink2
+    ) {
+      exists(
+        Flow1::PathNode pSource1, Flow2::PathNode pSource2, Flow1::PathNode pSink1,
+        Flow2::PathNode pSink2
+      |
+        pSource1.getNode() = source1 and
+        pSource2.getNode() = source2 and
+        pSink1.getNode() = sink1 and
+        pSink2.getNode() = sink2 and
+        flowPath(pSource1, pSource2, pSink1, pSink2)
+      )
+    }
+
     private module Config1 implements DataFlow::StateConfigSig {
       class FlowState = FlowState1;
 
