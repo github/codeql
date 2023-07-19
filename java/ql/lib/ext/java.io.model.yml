@@ -84,6 +84,7 @@ extensions:
       - ["java.io", "File", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "FilterOutputStream", True, "FilterOutputStream", "(OutputStream)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.io", "InputStream", True, "read", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[])", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[],int,int)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStream", True, "readAllBytes", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -116,7 +117,6 @@ extensions:
       - ["java.io", "File", "isDirectory", "()", "summary", "manual"]
       - ["java.io", "File", "mkdirs", "()", "summary", "manual"]
       - ["java.io", "FileInputStream", "FileInputStream", "(File)", "summary", "manual"]
-      - ["java.io", "InputStream", "read", "()", "summary", "manual"]
       - ["java.io", "InputStream", "close", "()", "summary", "manual"]
       - ["java.io", "OutputStream", "flush", "()", "summary", "manual"]
       # The below APIs have numeric flow and are currently being stored as neutral models.
