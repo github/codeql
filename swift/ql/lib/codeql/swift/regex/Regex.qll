@@ -84,14 +84,20 @@ private class NSRegularExpressionRegexCreation extends RegexCreation {
   }
 }
 
-newtype TRegexParseMode =
+private newtype TRegexParseMode =
   MkIgnoreCase() or // case insensitive
   MkVerbose() or // ignores whitespace and `#` comments within patterns
   MkDotAll() or // dot matches all characters, including line terminators
   MkMultiLine() or // `^` and `$` also match beginning and end of lines
   MkUnicode() // Unicode UAX 29 word boundary mode
 
+/**
+ * A regular expression parse mode flag.
+ */
 class RegexParseMode extends TRegexParseMode {
+  /**
+   * Gets the name of this parse mode flag.
+   */
   string getName() {
     this = MkIgnoreCase() and result = "IGNORECASE"
     or
@@ -120,7 +126,7 @@ class RegexAdditionalFlowStep extends Unit {
   /**
    * Holds if a regular expression parse mode is either set (`isSet` = true)
    * or unset (`isSet` = false) at `node`. Parse modes propagate through
-   * array construction and regex constuction.
+   * array construction and regex construction.
    */
   abstract predicate setsParseMode(DataFlow::Node node, RegexParseMode mode, boolean isSet);
 }
