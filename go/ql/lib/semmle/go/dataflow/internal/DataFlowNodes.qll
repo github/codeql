@@ -631,9 +631,9 @@ module Public {
 
   /** A data flow node that represents a call to a method. */
   class MethodCallNode extends CallNode {
-    MethodCallNode() { expr.getTarget() instanceof Method }
+    MethodCallNode() { getACalleeSource(this) instanceof MethodReadNode }
 
-    override Method getTarget() { result = expr.getTarget() }
+    override Method getTarget() { result = getACalleeSource(this).(MethodReadNode).getMethod() }
 
     override MethodDecl getACallee() { result = super.getACallee() }
   }
