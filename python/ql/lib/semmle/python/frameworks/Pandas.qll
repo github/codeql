@@ -16,8 +16,8 @@ private import semmle.python.ApiGraphs
 private module Pandas {
   /**
    * A call to `pandas.read_pickle`
-   * See https://pypi.org/project/pandas/ (which currently refers you
-   * to https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_pickle.html)
+   * See https://pypi.org/project/pandas/
+   * https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_pickle.html)
    */
   private class PandasReadPickleCall extends Decoding::Range, DataFlow::CallCfgNode {
     PandasReadPickleCall() {
