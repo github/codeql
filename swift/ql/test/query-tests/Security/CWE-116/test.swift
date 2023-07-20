@@ -79,9 +79,16 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     let re1 = try Regex(#"<script.*?>.*?<\/script>"#).ignoresCase(true)
     _ = try re1.firstMatch(in: tainted)
 
-    // BAD - doesn't match `</script >` [NOT DETECTED]
-    let re2 = try Regex(#"<script.*?>.*?<\/script>/is"#).ignoresCase(true)
-    _ = try re2.firstMatch(in: tainted)
+    // BAD - doesn't match `</script >` [NOT DETECTED - all regexs with mode flags are currently missed by the query]
+    let re2a = try Regex(#"(?is)<script.*?>.*?<\/script>"#)
+    _ = try re2a.firstMatch(in: tainted)
+    // BAD - doesn't match `</script >`
+    let re2b = try Regex(#"<script.*?>.*?<\/script>"#).ignoresCase(true).dotMatchesNewlines(true)
+    _ = try re2b.firstMatch(in: tainted)
+    // BAD - doesn't match `</script >`
+    let options2c: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
+    let ns2c = try NSRegularExpression(pattern: #"<script.*?>.*?<\/script>"#, options: options2c)
+    _ = ns2c.firstMatch(in: tainted, range: NSMakeRange(0, tainted.utf16.count))
 
     // GOOD
     let re3a = try Regex(#"(?is)<script.*?>.*?<\/script[^>]*>"#)
