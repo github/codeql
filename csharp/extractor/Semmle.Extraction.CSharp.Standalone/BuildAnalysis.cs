@@ -8,121 +8,104 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace Semmle.BuildAnalyser
 {
     /// <summary>
-    /// The output of a build analysis.
-    /// </summary>
-    internal interface IBuildAnalysis
-    {
-        /// <summary>
-        /// Full filepaths of external references.
-        /// </summary>
-        IEnumerable<string> ReferenceFiles { get; }
-
-        /// <summary>
-        /// Full filepaths of C# source files from project files.
-        /// </summary>
-        IEnumerable<string> ProjectSourceFiles { get; }
-
-        /// <summary>
-        /// Full filepaths of C# source files in the filesystem.
-        /// </summary>
-        IEnumerable<string> AllSourceFiles { get; }
-
-        /// <summary>
-        /// The assembly IDs which could not be resolved.
-        /// </summary>
-        IEnumerable<string> UnresolvedReferences { get; }
-
-        /// <summary>
-        /// List of source files referenced by projects but
-        /// which were not found in the filesystem.
-        /// </summary>
-        IEnumerable<string> MissingSourceFiles { get; }
-    }
-
-    /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    internal sealed class BuildAnalysis : IBuildAnalysis, IDisposable
+    internal sealed partial class BuildAnalysis : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
-        private readonly IProgressMonitor progressMonitor;
+        private readonly ProgressMonitor progressMonitor;
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
         private readonly IDictionary<string, bool> sources = new ConcurrentDictionary<string, bool>();
         private readonly IDictionary<string, string> unresolvedReferences = new ConcurrentDictionary<string, string>();
-        private int failedProjects, succeededProjects;
+        private int failedProjects;
+        private int succeededProjects;
         private readonly string[] allSources;
         private int conflictedReferences = 0;
+        private readonly Options options;
+        private readonly DirectoryInfo sourceDir;
+        private readonly DotNet dotnet;
 
         /// <summary>
         /// Performs a C# build analysis.
         /// </summary>
         /// <param name="options">Analysis options from the command line.</param>
-        /// <param name="progress">Display of analysis progress.</param>
-        public BuildAnalysis(Options options, IProgressMonitor progress)
+        /// <param name="progressMonitor">Display of analysis progress.</param>
+        public BuildAnalysis(Options options, ProgressMonitor progressMonitor)
         {
             var startTime = DateTime.Now;
 
-            progressMonitor = progress;
-            var sourceDir = new DirectoryInfo(options.SrcDir);
+            this.options = options;
+            this.progressMonitor = progressMonitor;
+            this.sourceDir = new DirectoryInfo(options.SrcDir);
 
-            progressMonitor.FindingFiles(options.SrcDir);
+            try
+            {
+                this.dotnet = new DotNet(progressMonitor);
+            }
+            catch
+            {
+                progressMonitor.MissingDotNet();
+                throw;
+            }
 
-            allSources = sourceDir.GetFiles("*.cs", SearchOption.AllDirectories)
-                .Select(d => d.FullName)
-                .Where(d => !options.ExcludesFile(d))
-                .ToArray();
+            this.progressMonitor.FindingFiles(options.SrcDir);
+
+            this.allSources = GetFiles("*.cs").ToArray();
+            var allProjects = GetFiles("*.csproj");
+            var solutions = options.SolutionFile is not null
+                ? new[] { options.SolutionFile }
+                : GetFiles("*.sln");
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
-            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
-
-            if (options.UseNuGet)
-            {
-                try
-                {
-                    var nuget = new NugetPackages(sourceDir.FullName, packageDirectory);
-                    nuget.InstallPackages(progressMonitor);
-                }
-                catch (FileNotFoundException)
-                {
-                    progressMonitor.MissingNuGet();
-                }
-            }
 
             // Find DLLs in the .Net Framework
             if (options.ScanNetFrameworkDlls)
             {
-                var runtimeLocation = Runtime.GetRuntime(options.UseSelfContainedDotnet);
+                var runtimeLocation = new Runtime(dotnet).GetRuntime(options.UseSelfContainedDotnet);
                 progressMonitor.Log(Util.Logging.Severity.Debug, $"Runtime location selected: {runtimeLocation}");
                 dllDirNames.Add(runtimeLocation);
-            }
-
-            // These files can sometimes prevent `dotnet restore` from working correctly.
-            using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
-            using (new FileRenamer(sourceDir.GetFiles("Directory.Build.props", SearchOption.AllDirectories)))
-            {
-                var solutions = options.SolutionFile is not null ?
-                        new[] { options.SolutionFile } :
-                        sourceDir.GetFiles("*.sln", SearchOption.AllDirectories).Select(d => d.FullName);
-
-                if (options.UseNuGet)
-                {
-                    RestoreSolutions(solutions);
-                }
-                dllDirNames.Add(packageDirectory.DirInfo.FullName);
-                assemblyCache = new BuildAnalyser.AssemblyCache(dllDirNames, progress);
-                AnalyseSolutions(solutions);
-
-                foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
-                    UseReference(filename);
             }
 
             if (options.UseMscorlib)
             {
                 UseReference(typeof(object).Assembly.Location);
+            }
+
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+
+            if (options.UseNuGet)
+            {
+                dllDirNames.Add(packageDirectory.DirInfo.FullName);
+                try
+                {
+                    var nuget = new NugetPackages(sourceDir.FullName, packageDirectory, progressMonitor);
+                    nuget.InstallPackages();
+                }
+                catch (FileNotFoundException)
+                {
+                    progressMonitor.MissingNuGet();
+                }
+
+                // TODO: remove the below when the required SDK is installed
+                using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
+                {
+                    Restore(solutions);
+                    Restore(allProjects);
+                    DownloadMissingPackages(allProjects);
+                }
+            }
+
+            assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
+            AnalyseSolutions(solutions);
+
+            foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
+            {
+                UseReference(filename);
             }
 
             ResolveConflicts();
@@ -150,6 +133,13 @@ namespace Semmle.BuildAnalyser
                 DateTime.Now - startTime);
         }
 
+        private IEnumerable<string> GetFiles(string pattern, bool recurseSubdirectories = true)
+        {
+            return sourceDir.GetFiles(pattern, new EnumerationOptions { RecurseSubdirectories = recurseSubdirectories, MatchCasing = MatchCasing.CaseInsensitive })
+                .Select(d => d.FullName)
+                .Where(d => !options.ExcludesFile(d));
+        }
+
         /// <summary>
         /// Computes a unique temp directory for the packages associated
         /// with this source tree. Use a SHA1 of the directory name.
@@ -159,9 +149,7 @@ namespace Semmle.BuildAnalyser
         private static string ComputeTempDirectory(string srcDir)
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
-
-            using var sha1 = SHA1.Create();
-            var sha = sha1.ComputeHash(bytes);
+            var sha = SHA1.HashData(bytes);
             var sb = new StringBuilder();
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
@@ -196,12 +184,15 @@ namespace Semmle.BuildAnalyser
 
             // Pick the highest version for each assembly name
             foreach (var r in sortedReferences)
+            {
                 finalAssemblyList[r.Name] = r;
-
+            }
             // Update the used references list
             usedReferences.Clear();
             foreach (var r in finalAssemblyList.Select(r => r.Value.Filename))
+            {
                 UseReference(r);
+            }
 
             // Report the results
             foreach (var r in sortedReferences)
@@ -279,7 +270,9 @@ namespace Semmle.BuildAnalyser
         private void AnalyseProjectFiles(IEnumerable<FileInfo> projectFiles)
         {
             foreach (var proj in projectFiles)
+            {
                 AnalyseProject(proj);
+            }
         }
 
         private void AnalyseProject(FileInfo project)
@@ -325,36 +318,106 @@ namespace Semmle.BuildAnalyser
 
         }
 
-        private void Restore(string projectOrSolution)
+        private bool Restore(string target, string? pathToNugetConfig = null)
         {
-            int exit;
-            try
-            {
-                exit = DotNet.RestoreToDirectory(projectOrSolution, packageDirectory.DirInfo.FullName);
-            }
-            catch (FileNotFoundException)
-            {
-                exit = 2;
-            }
+            return dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName, pathToNugetConfig);
+        }
 
-            switch (exit)
+        private void Restore(IEnumerable<string> targets, string? pathToNugetConfig = null)
+        {
+            foreach (var target in targets)
             {
-                case 0:
-                case 1:
-                    // No errors
-                    break;
-                default:
-                    progressMonitor.CommandFailed("dotnet", $"restore \"{projectOrSolution}\"", exit);
-                    break;
+                Restore(target, pathToNugetConfig);
             }
         }
 
-        public void RestoreSolutions(IEnumerable<string> solutions)
+        private void DownloadMissingPackages(IEnumerable<string> restoreTargets)
         {
-            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 }, Restore);
+            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName).Select(d => Path.GetFileName(d).ToLowerInvariant()).ToHashSet();
+            var notYetDownloadedPackages = new HashSet<string>();
+
+            var nugetConfigs = GetFiles("nuget.config", recurseSubdirectories: true).ToArray();
+            string? nugetConfig = null;
+            if (nugetConfigs.Length > 1)
+            {
+                progressMonitor.MultipleNugetConfig(nugetConfigs);
+                nugetConfig = GetFiles("nuget.config", recurseSubdirectories: false).FirstOrDefault();
+                if (nugetConfig == null)
+                {
+                    progressMonitor.NoTopLevelNugetConfig();
+                }
+            }
+            else
+            {
+                nugetConfig = nugetConfigs.FirstOrDefault();
+            }
+
+            var allFiles = GetFiles("*.*");
+            foreach (var file in allFiles)
+            {
+                try
+                {
+                    using var sr = new StreamReader(file);
+                    ReadOnlySpan<char> line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        foreach (var valueMatch in PackageReference().EnumerateMatches(line))
+                        {
+                            // We can't get the group from the ValueMatch, so doing it manually:
+                            var match = line.Slice(valueMatch.Index, valueMatch.Length);
+                            var includeIndex = match.IndexOf("Include", StringComparison.InvariantCultureIgnoreCase);
+                            if (includeIndex == -1)
+                            {
+                                continue;
+                            }
+
+                            match = match.Slice(includeIndex + "Include".Length + 1);
+
+                            var quoteIndex1 = match.IndexOf("\"");
+                            var quoteIndex2 = match.Slice(quoteIndex1 + 1).IndexOf("\"");
+
+                            var packageName = match.Slice(quoteIndex1 + 1, quoteIndex2).ToString().ToLowerInvariant();
+                            if (!alreadyDownloadedPackages.Contains(packageName))
+                            {
+                                notYetDownloadedPackages.Add(packageName);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    progressMonitor.FailedToReadFile(file, ex);
+                    continue;
+                }
+            }
+
+            foreach (var package in notYetDownloadedPackages)
+            {
+                progressMonitor.NugetInstall(package);
+                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
+                var success = dotnet.New(tempDir.DirInfo.FullName);
+                if (!success)
+                {
+                    continue;
+                }
+                success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
+                if (!success)
+                {
+                    continue;
+                }
+
+                success = Restore(tempDir.DirInfo.FullName, nugetConfig);
+
+                // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+
+                if (!success)
+                {
+                    progressMonitor.FailedToRestoreNugetPackage(package);
+                }
+            }
         }
 
-        public void AnalyseSolutions(IEnumerable<string> solutions)
+        private void AnalyseSolutions(IEnumerable<string> solutions)
         {
             Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 }, solutionFile =>
             {
@@ -375,5 +438,8 @@ namespace Semmle.BuildAnalyser
         {
             packageDirectory?.Dispose();
         }
+
+        [GeneratedRegex("<PackageReference .*Include=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex PackageReference();
     }
 }

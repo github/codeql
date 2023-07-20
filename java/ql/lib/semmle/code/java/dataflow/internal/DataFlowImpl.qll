@@ -67,6 +67,12 @@ signature module FullStateConfigSig {
   predicate allowImplicitRead(Node node, ContentSet c);
 
   /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  predicate neverSkip(Node node);
+
+  /**
    * Gets the virtual dispatch branching limit when calculating field flow.
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
@@ -252,6 +258,11 @@ module Impl<FullStateConfigSig Config> {
     not inBarrier(node2) and
     not fullBarrier(node1) and
     not fullBarrier(node2)
+  }
+
+  pragma[nomagic]
+  private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
+    isUnreachableInCallCached(n.asNode(), cc.getCall())
   }
 
   /**
@@ -460,7 +471,6 @@ module Impl<FullStateConfigSig Config> {
      * The Boolean `cc` records whether the node is reached through an
      * argument in a call.
      */
-    pragma[assume_small_delta]
     private predicate fwdFlow(NodeEx node, Cc cc) {
       sourceNode(node, _) and
       if hasSourceCallCtx() then cc = true else cc = false
@@ -570,7 +580,6 @@ module Impl<FullStateConfigSig Config> {
     /**
      * Holds if `c` is the target of a store in the flow covered by `fwdFlow`.
      */
-    pragma[assume_small_delta]
     pragma[nomagic]
     private predicate fwdFlowConsCand(Content c) {
       exists(NodeEx mid, NodeEx node |
@@ -1216,7 +1225,6 @@ module Impl<FullStateConfigSig Config> {
         fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
       }
 
-      pragma[assume_small_delta]
       pragma[nomagic]
       private predicate fwdFlow0(
         NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
@@ -2022,7 +2030,8 @@ module Impl<FullStateConfigSig Config> {
         castNode(this.asNode()) or
         clearsContentCached(this.asNode(), _) or
         expectsContentCached(this.asNode(), _) or
-        neverSkipInPathGraph(this.asNode())
+        neverSkipInPathGraph(this.asNode()) or
+        Config::neverSkip(this.asNode())
       }
     }
 
@@ -2111,7 +2120,7 @@ module Impl<FullStateConfigSig Config> {
       NodeEx node1, FlowState state, NodeEx node2, boolean preservesValue, DataFlowType t,
       LocalCallContext cc
     ) {
-      not isUnreachableInCallCached(node2.asNode(), cc.(LocalCallContextSpecificCall).getCall()) and
+      not isUnreachableInCall1(node2, cc) and
       (
         localFlowEntry(node1, pragma[only_bind_into](state)) and
         (
@@ -2126,7 +2135,7 @@ module Impl<FullStateConfigSig Config> {
         ) and
         node1 != node2 and
         cc.relevantFor(node1.getEnclosingCallable()) and
-        not isUnreachableInCallCached(node1.asNode(), cc.(LocalCallContextSpecificCall).getCall())
+        not isUnreachableInCall1(node1, cc)
         or
         exists(NodeEx mid |
           localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue, t, cc) and
@@ -2163,10 +2172,8 @@ module Impl<FullStateConfigSig Config> {
       preservesValue = false and
       t = node2.getDataFlowType() and
       callContext.relevantFor(node1.getEnclosingCallable()) and
-      not exists(DataFlowCall call | call = callContext.(LocalCallContextSpecificCall).getCall() |
-        isUnreachableInCallCached(node1.asNode(), call) or
-        isUnreachableInCallCached(node2.asNode(), call)
-      )
+      not isUnreachableInCall1(node1, callContext) and
+      not isUnreachableInCall1(node2, callContext)
     }
   }
 
@@ -2706,7 +2713,7 @@ module Impl<FullStateConfigSig Config> {
 
     ParamNodeEx getParamNode() { result = p }
 
-    override string toString() { result = p + ": " + ap }
+    override string toString() { result = p + concat(" : " + ppReprType(t)) + " " + ap }
 
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -2758,12 +2765,21 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
+  private predicate forceUnfold(AccessPathApprox apa) {
+    forceHighPrecision(apa.getHead())
+    or
+    exists(Content c2 |
+      apa = TConsCons(_, _, c2, _) and
+      forceHighPrecision(c2)
+    )
+  }
+
   /**
    * Holds with `unfold = false` if a precise head-tail representation of `apa` is
    * expected to be expensive. Holds with `unfold = true` otherwise.
    */
   private predicate evalUnfold(AccessPathApprox apa, boolean unfold) {
-    if forceHighPrecision(apa.getHead())
+    if forceUnfold(apa)
     then unfold = true
     else
       exists(int aps, int nodes, int apLimit, int tupleLimit |
@@ -2777,7 +2793,6 @@ module Impl<FullStateConfigSig Config> {
   /**
    * Gets the number of `AccessPath`s that correspond to `apa`.
    */
-  pragma[assume_small_delta]
   private int countAps(AccessPathApprox apa) {
     evalUnfold(apa, false) and
     result = 1 and
@@ -2796,7 +2811,6 @@ module Impl<FullStateConfigSig Config> {
    * that it is expanded to a precise head-tail representation.
    */
   language[monotonicAggregates]
-  pragma[assume_small_delta]
   private int countPotentialAps(AccessPathApprox apa) {
     apa instanceof AccessPathApproxNil and result = 1
     or
@@ -2833,7 +2847,6 @@ module Impl<FullStateConfigSig Config> {
     }
 
   private newtype TPathNode =
-    pragma[assume_small_delta]
     TPathNodeMid(
       NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t, AccessPath ap
     ) {
@@ -2918,7 +2931,6 @@ module Impl<FullStateConfigSig Config> {
 
     override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
 
-    pragma[assume_small_delta]
     override AccessPathApproxCons getApprox() {
       result = TConsNil(head_, t) and tail_ = TAccessPathNil()
       or
@@ -2927,7 +2939,6 @@ module Impl<FullStateConfigSig Config> {
       result = TCons1(head_, this.length())
     }
 
-    pragma[assume_small_delta]
     override int length() { result = 1 + tail_.length() }
 
     private string toStringImpl(boolean needsSuffix) {
@@ -3097,6 +3108,12 @@ module Impl<FullStateConfigSig Config> {
       result = " <" + this.(PathNodeMid).getCallContext().toString() + ">"
     }
 
+    private string ppSummaryCtx() {
+      this instanceof PathNodeSink and result = ""
+      or
+      result = " <" + this.(PathNodeMid).getSummaryCtx().toString() + ">"
+    }
+
     /** Gets a textual representation of this element. */
     string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
 
@@ -3105,7 +3122,9 @@ module Impl<FullStateConfigSig Config> {
      * representation of the call context.
      */
     string toStringWithContext() {
-      result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
+      result =
+        this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx() +
+          this.ppSummaryCtx()
     }
 
     /**
@@ -3379,7 +3398,6 @@ module Impl<FullStateConfigSig Config> {
    * Holds if data may flow from `mid` to `node`. The last step in or out of
    * a callable is recorded by `cc`.
    */
-  pragma[assume_small_delta]
   pragma[nomagic]
   private predicate pathStep0(
     PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
@@ -3592,7 +3610,6 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
-  pragma[assume_small_delta]
   pragma[nomagic]
   private predicate pathThroughCallable0(
     DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, FlowState state, CallContext cc,

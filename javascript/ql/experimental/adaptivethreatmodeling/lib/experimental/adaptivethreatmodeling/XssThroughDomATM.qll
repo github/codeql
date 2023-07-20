@@ -23,7 +23,8 @@ class XssThroughDomAtmConfig extends AtmConfig {
 
   override predicate isSanitizer(DataFlow::Node node) {
     super.isSanitizer(node) or
-    node instanceof DomBasedXss::Sanitizer
+    node instanceof DomBasedXss::Sanitizer or
+    DomBasedXss::isOptionallySanitizedNode(node)
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
@@ -33,10 +34,6 @@ class XssThroughDomAtmConfig extends AtmConfig {
     guard instanceof PrefixStringSanitizer or
     guard instanceof QuoteGuard or
     guard instanceof ContainsHtmlGuard
-  }
-
-  override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
-    DomBasedXss::isOptionallySanitizedEdge(pred, succ)
   }
 }
 

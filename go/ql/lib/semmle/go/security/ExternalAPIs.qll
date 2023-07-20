@@ -86,7 +86,7 @@ class ExternalApiDataNode extends DataFlow::Node {
       this = call.getArgument(i)
       or
       // Receiver to a call to a method which returns non trivial value
-      this = call.getReceiver() and
+      this = call.(DataFlow::MethodCallNode).getReceiver() and
       i = -1
     ) and
     // Not defined in the code that is being analyzed

@@ -567,7 +567,7 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
   override predicate isPrivate() { Predicate.super.isPrivate() }
 
   /** Holds if this classless predicate is a signature predicate with no body. */
-  predicate isSignature() { not exists(this.getBody()) }
+  override predicate isSignature() { not exists(this.getBody()) }
 
   override QLDoc getQLDoc() {
     result = any(TopLevel m).getQLDocFor(this)
@@ -836,6 +836,12 @@ class Module extends TModule, ModuleDeclaration {
     toMock(result) = mod.asRight().getMember(i)
   }
 
+  pragma[nomagic]
+  Declaration getDeclaration(string name) {
+    result = this.getAMember() and
+    name = result.getName()
+  }
+
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
   }
@@ -885,6 +891,33 @@ class ModuleMember extends TModuleMember, AstNode {
   predicate isFinal() { this.hasAnnotation("final") }
 }
 
+private newtype TDeclarationKind =
+  TClassKind() or
+  TModuleKind() or
+  TPredicateKind(int arity) { arity = any(Predicate p).getArity() }
+
+private TDeclarationKind getDeclarationKind(Declaration d) {
+  d instanceof Class and result = TClassKind()
+  or
+  d instanceof Module and result = TModuleKind()
+  or
+  d = any(Predicate p | result = TPredicateKind(p.getArity()))
+}
+
+/** Holds if module `m` must implement signature declaration `d` with name `name` and kind `kind`. */
+pragma[nomagic]
+private predicate mustImplement(Module m, string name, TDeclarationKind kind, Declaration d) {
+  d = m.getImplements(_).getResolvedType().getDeclaration().(Module).getAMember() and
+  name = d.getName() and
+  kind = getDeclarationKind(d)
+}
+
+pragma[nomagic]
+private Declaration getDeclaration(Module m, string name, TDeclarationKind kind) {
+  result = m.getDeclaration(name) and
+  kind = getDeclarationKind(result)
+}
+
 /** A declaration. E.g. a class, type, predicate, newtype... */
 class Declaration extends TDeclaration, AstNode {
   /** Gets the name of this declaration. */
@@ -898,6 +931,16 @@ class Declaration extends TDeclaration, AstNode {
     result = any(Module m).getQLDocFor(this)
     or
     result = any(Class c).getQLDocFor(this)
+  }
+
+  predicate isSignature() { this.hasAnnotation("signature") }
+
+  /** Holds if this declaration implements `other`. */
+  predicate implements(Declaration other) {
+    exists(Module m, string name, TDeclarationKind kind |
+      this = getDeclaration(m, name, kind) and
+      mustImplement(m, name, kind, other)
+    )
   }
 }
 

@@ -113,7 +113,7 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     )
   }
 
-  predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
+  predicate isSinkCall(DataFlow::Node sink, DataFlow::MethodCallNode call) {
     exists(AuthCodeUrl m | call = m.getACall() | sink = call.getReceiver())
   }
 

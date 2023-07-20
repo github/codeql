@@ -643,6 +643,10 @@ open class KotlinFileExtractor(
                         logger.warnElement("Unrecognised class kind $kind", c)
                     }
 
+                    if (c.origin == IrDeclarationOrigin.FILE_CLASS) {
+                        tw.writeFile_class(id)
+                    }
+
                     if (c.isData) {
                         tw.writeKtDataClasses(id)
                     }
@@ -1559,7 +1563,7 @@ open class KotlinFileExtractor(
                 val setter = p.setter
 
                 if (getter == null) {
-                    if (p.modality != Modality.FINAL || !isExternalDeclaration(p)) {
+                    if (!isExternalDeclaration(p)) {
                         logger.warnElement("IrProperty without a getter", p)
                     }
                 } else if (shouldExtractDecl(getter, extractPrivateMembers)) {

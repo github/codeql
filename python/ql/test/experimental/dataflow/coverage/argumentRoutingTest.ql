@@ -3,19 +3,22 @@ import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 import experimental.dataflow.TestUtil.RoutingTest
 
-class Argument1RoutingTest extends RoutingTest {
-  Argument1RoutingTest() { this = "Argument1RoutingTest" }
+module Argument1RoutingTest implements RoutingTestSig {
+  class Argument = Unit;
 
-  override string flowTag() { result = "arg1" }
+  string flowTag(Argument arg) { result = "arg1" and exists(arg) }
 
-  override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
-    exists(Argument1ExtraRoutingConfig cfg | cfg.hasFlow(source, sink))
-    or
-    exists(ArgumentRoutingConfig cfg |
-      cfg.hasFlow(source, sink) and
-      cfg.isArgSource(source, 1) and
-      cfg.isGoodSink(sink, 1)
-    )
+  predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink, Argument arg) {
+    (
+      exists(Argument1ExtraRoutingConfig cfg | cfg.hasFlow(source, sink))
+      or
+      exists(ArgumentRoutingConfig cfg |
+        cfg.hasFlow(source, sink) and
+        cfg.isArgSource(source, 1) and
+        cfg.isGoodSink(sink, 1)
+      )
+    ) and
+    exists(arg)
   }
 }
 
@@ -87,59 +90,54 @@ class Argument1ExtraRoutingConfig extends DataFlow::Configuration {
   override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
 }
 
-class RestArgumentRoutingTest extends RoutingTest {
-  ArgNumber argNumber;
+module RestArgumentRoutingTest implements RoutingTestSig {
+  class Argument = ArgNumber;
 
-  RestArgumentRoutingTest() {
-    argNumber > 1 and
-    this = "Argument" + argNumber + "RoutingTest"
-  }
+  string flowTag(Argument arg) { result = "arg" + arg }
 
-  override string flowTag() { result = "arg" + argNumber }
-
-  override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
+  predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink, Argument arg) {
     exists(ArgumentRoutingConfig cfg |
       cfg.hasFlow(source, sink) and
-      cfg.isArgSource(source, argNumber) and
-      cfg.isGoodSink(sink, argNumber)
-    )
+      cfg.isArgSource(source, arg) and
+      cfg.isGoodSink(sink, arg)
+    ) and
+    arg > 1
   }
 }
 
 /** Bad flow from `arg<n>` to `SINK<N>_F` */
-class BadArgumentRoutingTestSinkF extends RoutingTest {
-  ArgNumber argNumber;
+module BadArgumentRoutingTestSinkF implements RoutingTestSig {
+  class Argument = ArgNumber;
 
-  BadArgumentRoutingTestSinkF() { this = "BadArgumentRoutingTestSinkF" + argNumber }
+  string flowTag(Argument arg) { result = "bad" + arg }
 
-  override string flowTag() { result = "bad" + argNumber }
-
-  override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
+  predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink, Argument arg) {
     exists(ArgumentRoutingConfig cfg |
       cfg.hasFlow(source, sink) and
-      cfg.isArgSource(source, argNumber) and
-      cfg.isBadSink(sink, argNumber)
+      cfg.isArgSource(source, arg) and
+      cfg.isBadSink(sink, arg)
     )
   }
 }
 
 /** Bad flow from `arg<n>` to `SINK<M>` or `SINK<M>_F`, where `n != m`. */
-class BadArgumentRoutingTestWrongSink extends RoutingTest {
-  ArgNumber argNumber;
+module BadArgumentRoutingTestWrongSink implements RoutingTestSig {
+  class Argument = ArgNumber;
 
-  BadArgumentRoutingTestWrongSink() { this = "BadArgumentRoutingTestWrongSink" + argNumber }
+  string flowTag(Argument arg) { result = "bad" + arg }
 
-  override string flowTag() { result = "bad" + argNumber }
-
-  override predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
+  predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink, Argument arg) {
     exists(ArgumentRoutingConfig cfg |
       cfg.hasFlow(source, sink) and
-      cfg.isArgSource(source, any(ArgNumber i | not i = argNumber)) and
+      cfg.isArgSource(source, any(ArgNumber i | not i = arg)) and
       (
-        cfg.isGoodSink(sink, argNumber)
+        cfg.isGoodSink(sink, arg)
         or
-        cfg.isBadSink(sink, argNumber)
+        cfg.isBadSink(sink, arg)
       )
     )
   }
 }
+
+import MakeTest<MergeTests4<MakeTestSig<Argument1RoutingTest>, MakeTestSig<RestArgumentRoutingTest>,
+  MakeTestSig<BadArgumentRoutingTestSinkF>, MakeTestSig<BadArgumentRoutingTestWrongSink>>>

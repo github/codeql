@@ -13,22 +13,7 @@ Exercise: Apache Struts
 Setup
 =====
 
-For this example you should download:
-
-- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
-- `Apache Struts database <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
-
-.. note::
-
-   For this example, we will be analyzing `Apache Struts <https://github.com/apache/struts>`__.
-
-   You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
-
-   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
-
-   .. include:: ../slide-snippets/database-note.rst
-
-   .. resume slides
+For this example you need to set up `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__ and download the CodeQL database for `Apache Struts <https://github.com/apache/struts>`__ from GitHub.
 
 Unsafe deserialization in Struts
 ================================
@@ -45,7 +30,7 @@ which is intended to populate the ``target`` object with data from the reader, u
 RCE in Apache Struts
 ====================
 
-- Vulnerable code looked like this (`original <https://lgtm.com/projects/g/apache/struts/snapshot/b434c23f95e0f9d5bde789bfa07f8fc1d5a8951d/files/plugins/rest/src/main/java/org/apache/struts2/rest/handler/XStreamHandler.java?sort=name&dir=ASC&mode=heatmap#L45>`__):
+- Vulnerable code looked like this:
 
    .. code-block:: java
    

@@ -12,7 +12,7 @@ module MaximalFlowTest implements FlowTestSig {
   }
 }
 
-import MakeFlowTest<MaximalFlowTest>
+import MakeTest<MakeTestSig<MaximalFlowTest>>
 
 /**
  * A configuration to find all "maximal" flows.

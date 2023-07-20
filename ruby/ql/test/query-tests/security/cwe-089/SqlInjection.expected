@@ -22,6 +22,7 @@ edges
 | ActiveRecordInjection.rb:70:38:70:50 | ...[...] | ActiveRecordInjection.rb:8:31:8:34 | pass |
 | ActiveRecordInjection.rb:74:41:74:46 | call to params | ActiveRecordInjection.rb:74:41:74:51 | ...[...] |
 | ActiveRecordInjection.rb:74:41:74:51 | ...[...] | ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:79:23:79:28 | call to params | ActiveRecordInjection.rb:79:23:79:35 | ...[...] |
 | ActiveRecordInjection.rb:83:17:83:22 | call to params | ActiveRecordInjection.rb:83:17:83:31 | ...[...] |
 | ActiveRecordInjection.rb:84:19:84:24 | call to params | ActiveRecordInjection.rb:84:19:84:33 | ...[...] |
 | ActiveRecordInjection.rb:88:18:88:23 | call to params | ActiveRecordInjection.rb:88:18:88:35 | ...[...] |
@@ -34,6 +35,7 @@ edges
 | ActiveRecordInjection.rb:103:11:103:12 | ps | ActiveRecordInjection.rb:103:11:103:17 | ...[...] |
 | ActiveRecordInjection.rb:103:11:103:17 | ...[...] | ActiveRecordInjection.rb:103:5:103:7 | uid |
 | ActiveRecordInjection.rb:104:5:104:9 | uidEq | ActiveRecordInjection.rb:108:20:108:32 | ... + ... |
+| ActiveRecordInjection.rb:141:21:141:26 | call to params | ActiveRecordInjection.rb:141:21:141:44 | ...[...] |
 | ActiveRecordInjection.rb:141:21:141:26 | call to params | ActiveRecordInjection.rb:141:21:141:44 | ...[...] |
 | ActiveRecordInjection.rb:141:21:141:44 | ...[...] | ActiveRecordInjection.rb:20:22:20:30 | condition |
 | ActiveRecordInjection.rb:155:59:155:64 | call to params | ActiveRecordInjection.rb:155:59:155:74 | ...[...] |
@@ -102,6 +104,8 @@ nodes
 | ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
 | ActiveRecordInjection.rb:74:41:74:46 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:74:41:74:51 | ...[...] | semmle.label | ...[...] |
+| ActiveRecordInjection.rb:79:23:79:28 | call to params | semmle.label | call to params |
+| ActiveRecordInjection.rb:79:23:79:35 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:83:17:83:22 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:83:17:83:31 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:84:19:84:24 | call to params | semmle.label | call to params |
@@ -122,6 +126,7 @@ nodes
 | ActiveRecordInjection.rb:104:5:104:9 | uidEq | semmle.label | uidEq |
 | ActiveRecordInjection.rb:108:20:108:32 | ... + ... | semmle.label | ... + ... |
 | ActiveRecordInjection.rb:141:21:141:26 | call to params | semmle.label | call to params |
+| ActiveRecordInjection.rb:141:21:141:44 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:141:21:141:44 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:155:27:155:76 | "this is an unsafe annotation:..." | semmle.label | "this is an unsafe annotation:..." |
 | ActiveRecordInjection.rb:155:59:155:64 | call to params | semmle.label | call to params |
@@ -172,6 +177,7 @@ subpaths
 | ActiveRecordInjection.rb:61:16:61:21 | <<-SQL | ActiveRecordInjection.rb:62:21:62:26 | call to params | ActiveRecordInjection.rb:61:16:61:21 | <<-SQL | This SQL query depends on a $@. | ActiveRecordInjection.rb:62:21:62:26 | call to params | user-provided value |
 | ActiveRecordInjection.rb:68:20:68:47 | "user.id = '#{...}'" | ActiveRecordInjection.rb:68:34:68:39 | call to params | ActiveRecordInjection.rb:68:20:68:47 | "user.id = '#{...}'" | This SQL query depends on a $@. | ActiveRecordInjection.rb:68:34:68:39 | call to params | user-provided value |
 | ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" | ActiveRecordInjection.rb:74:41:74:46 | call to params | ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" | This SQL query depends on a $@. | ActiveRecordInjection.rb:74:41:74:46 | call to params | user-provided value |
+| ActiveRecordInjection.rb:79:23:79:35 | ...[...] | ActiveRecordInjection.rb:79:23:79:28 | call to params | ActiveRecordInjection.rb:79:23:79:35 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:79:23:79:28 | call to params | user-provided value |
 | ActiveRecordInjection.rb:83:17:83:31 | ...[...] | ActiveRecordInjection.rb:83:17:83:22 | call to params | ActiveRecordInjection.rb:83:17:83:31 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:83:17:83:22 | call to params | user-provided value |
 | ActiveRecordInjection.rb:84:19:84:33 | ...[...] | ActiveRecordInjection.rb:84:19:84:24 | call to params | ActiveRecordInjection.rb:84:19:84:33 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:84:19:84:24 | call to params | user-provided value |
 | ActiveRecordInjection.rb:88:18:88:35 | ...[...] | ActiveRecordInjection.rb:88:18:88:23 | call to params | ActiveRecordInjection.rb:88:18:88:35 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:88:18:88:23 | call to params | user-provided value |
@@ -179,6 +185,7 @@ subpaths
 | ActiveRecordInjection.rb:94:18:94:35 | ...[...] | ActiveRecordInjection.rb:94:18:94:23 | call to params | ActiveRecordInjection.rb:94:18:94:35 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:94:18:94:23 | call to params | user-provided value |
 | ActiveRecordInjection.rb:96:23:96:47 | ...[...] | ActiveRecordInjection.rb:96:23:96:28 | call to params | ActiveRecordInjection.rb:96:23:96:47 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:96:23:96:28 | call to params | user-provided value |
 | ActiveRecordInjection.rb:108:20:108:32 | ... + ... | ActiveRecordInjection.rb:102:10:102:15 | call to params | ActiveRecordInjection.rb:108:20:108:32 | ... + ... | This SQL query depends on a $@. | ActiveRecordInjection.rb:102:10:102:15 | call to params | user-provided value |
+| ActiveRecordInjection.rb:141:21:141:44 | ...[...] | ActiveRecordInjection.rb:141:21:141:26 | call to params | ActiveRecordInjection.rb:141:21:141:44 | ...[...] | This SQL query depends on a $@. | ActiveRecordInjection.rb:141:21:141:26 | call to params | user-provided value |
 | ActiveRecordInjection.rb:155:27:155:76 | "this is an unsafe annotation:..." | ActiveRecordInjection.rb:155:59:155:64 | call to params | ActiveRecordInjection.rb:155:27:155:76 | "this is an unsafe annotation:..." | This SQL query depends on a $@. | ActiveRecordInjection.rb:155:59:155:64 | call to params | user-provided value |
 | ActiveRecordInjection.rb:168:37:168:41 | query | ActiveRecordInjection.rb:173:5:173:10 | call to params | ActiveRecordInjection.rb:168:37:168:41 | query | This SQL query depends on a $@. | ActiveRecordInjection.rb:173:5:173:10 | call to params | user-provided value |
 | ActiveRecordInjection.rb:177:43:177:104 | "SELECT * FROM users WHERE id ..." | ActiveRecordInjection.rb:173:5:173:10 | call to params | ActiveRecordInjection.rb:177:43:177:104 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ActiveRecordInjection.rb:173:5:173:10 | call to params | user-provided value |

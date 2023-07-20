@@ -41,7 +41,7 @@ class PamStartToAcctMgmtConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(PamAcctMgmt p | p.getACall().getReceiver() = sink)
+    exists(PamAcctMgmt p | p.getACall().(DataFlow::MethodCallNode).getReceiver() = sink)
   }
 }
 
@@ -53,7 +53,7 @@ class PamStartToAuthenticateConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(PamAuthenticate p | p.getACall().getReceiver() = sink)
+    exists(PamAuthenticate p | p.getACall().(DataFlow::MethodCallNode).getReceiver() = sink)
   }
 }
 

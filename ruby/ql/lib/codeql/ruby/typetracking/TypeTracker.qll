@@ -55,10 +55,9 @@ private module Cached {
       )
     }
 
-  pragma[nomagic]
-  private TypeTracker noContentTypeTracker(boolean hasCall) {
-    result = MkTypeTracker(hasCall, noContent())
-  }
+  /** Gets a type tracker with no content and the call bit set to the given value. */
+  cached
+  TypeTracker noContentTypeTracker(boolean hasCall) { result = MkTypeTracker(hasCall, noContent()) }
 
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
@@ -235,17 +234,6 @@ private predicate stepProj(TypeTrackingNode nodeFrom, StepSummary summary) {
   step(nodeFrom, _, summary)
 }
 
-bindingset[nodeFrom, t]
-pragma[inline_late]
-pragma[noopt]
-private TypeTracker stepInlineLate(TypeTracker t, TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
-  exists(StepSummary summary |
-    stepProj(nodeFrom, summary) and
-    result = t.append(summary) and
-    step(nodeFrom, nodeTo, summary)
-  )
-}
-
 private predicate smallstep(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
   smallstepNoCall(nodeFrom, nodeTo, summary)
   or
@@ -255,17 +243,6 @@ private predicate smallstep(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary 
 pragma[nomagic]
 private predicate smallstepProj(Node nodeFrom, StepSummary summary) {
   smallstep(nodeFrom, _, summary)
-}
-
-bindingset[nodeFrom, t]
-pragma[inline_late]
-pragma[noopt]
-private TypeTracker smallstepInlineLate(TypeTracker t, Node nodeFrom, Node nodeTo) {
-  exists(StepSummary summary |
-    smallstepProj(nodeFrom, summary) and
-    result = t.append(summary) and
-    smallstep(nodeFrom, nodeTo, summary)
-  )
 }
 
 /**
@@ -340,6 +317,8 @@ class StepSummary extends TStepSummary {
 
 /** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
+  predicate append = Cached::append/2;
+
   /**
    * Gets the summary that corresponds to having taken a forwards
    * inter-procedural step from `nodeFrom` to `nodeTo`.
@@ -400,6 +379,35 @@ module StepSummary {
   }
 
   deprecated predicate localSourceStoreStep = flowsToStoreStep/3;
+
+  /** Gets the step summary for a level step. */
+  StepSummary levelStep() { result = LevelStep() }
+
+  /** Gets the step summary for a call step. */
+  StepSummary callStep() { result = CallStep() }
+
+  /** Gets the step summary for a return step. */
+  StepSummary returnStep() { result = ReturnStep() }
+
+  /** Gets the step summary for storing into `content`. */
+  StepSummary storeStep(TypeTrackerContent content) { result = StoreStep(content) }
+
+  /** Gets the step summary for loading from `content`. */
+  StepSummary loadStep(TypeTrackerContent content) { result = LoadStep(content) }
+
+  /** Gets the step summary for loading from `load` and then storing into `store`. */
+  StepSummary loadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
+    result = LoadStoreStep(load, store)
+  }
+
+  /** Gets the step summary for a step that only permits contents matched by `filter`. */
+  StepSummary withContent(ContentFilter filter) { result = WithContent(filter) }
+
+  /** Gets the step summary for a step that blocks contents matched by `filter`. */
+  StepSummary withoutContent(ContentFilter filter) { result = WithoutContent(filter) }
+
+  /** Gets the step summary for a jump step. */
+  StepSummary jumpStep() { result = JumpStep() }
 }
 
 /**
@@ -501,9 +509,26 @@ class TypeTracker extends TTypeTracker {
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
-  pragma[inline]
+  bindingset[nodeFrom, this]
+  pragma[inline_late]
+  pragma[noopt]
   TypeTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
-    result = stepInlineLate(this, nodeFrom, nodeTo)
+    exists(StepSummary summary |
+      stepProj(nodeFrom, summary) and
+      result = this.append(summary) and
+      step(nodeFrom, nodeTo, summary)
+    )
+  }
+
+  bindingset[nodeFrom, this]
+  pragma[inline_late]
+  pragma[noopt]
+  private TypeTracker smallstepNoSimpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(StepSummary summary |
+      smallstepProj(nodeFrom, summary) and
+      result = this.append(summary) and
+      smallstep(nodeFrom, nodeTo, summary)
+    )
   }
 
   /**
@@ -532,7 +557,7 @@ class TypeTracker extends TTypeTracker {
    */
   pragma[inline]
   TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
-    result = smallstepInlineLate(this, nodeFrom, nodeTo)
+    result = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)
     or
     simpleLocalFlowStep(nodeFrom, nodeTo) and
     result = this
@@ -545,6 +570,13 @@ module TypeTracker {
    * Gets a valid end point of type tracking.
    */
   TypeTracker end() { result.end() }
+
+  /**
+   * INTERNAL USE ONLY.
+   *
+   * Gets a valid end point of type tracking with the call bit set to the given value.
+   */
+  predicate end = Cached::noContentTypeTracker/1;
 }
 
 pragma[nomagic]
@@ -552,32 +584,8 @@ private predicate backStepProj(TypeTrackingNode nodeTo, StepSummary summary) {
   step(_, nodeTo, summary)
 }
 
-bindingset[nodeTo, t]
-pragma[inline_late]
-pragma[noopt]
-private TypeBackTracker backStepInlineLate(
-  TypeBackTracker t, TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo
-) {
-  exists(StepSummary summary |
-    backStepProj(nodeTo, summary) and
-    result = t.prepend(summary) and
-    step(nodeFrom, nodeTo, summary)
-  )
-}
-
 private predicate backSmallstepProj(TypeTrackingNode nodeTo, StepSummary summary) {
   smallstep(_, nodeTo, summary)
-}
-
-bindingset[nodeTo, t]
-pragma[inline_late]
-pragma[noopt]
-private TypeBackTracker backSmallstepInlineLate(TypeBackTracker t, Node nodeFrom, Node nodeTo) {
-  exists(StepSummary summary |
-    backSmallstepProj(nodeTo, summary) and
-    result = t.prepend(summary) and
-    smallstep(nodeFrom, nodeTo, summary)
-  )
 }
 
 /**
@@ -661,9 +669,26 @@ class TypeBackTracker extends TTypeBackTracker {
    * Gets the summary that corresponds to having taken a backwards
    * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
    */
-  pragma[inline]
+  bindingset[nodeTo, result]
+  pragma[inline_late]
+  pragma[noopt]
   TypeBackTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
-    this = backStepInlineLate(result, nodeFrom, nodeTo)
+    exists(StepSummary summary |
+      backStepProj(nodeTo, summary) and
+      this = result.prepend(summary) and
+      step(nodeFrom, nodeTo, summary)
+    )
+  }
+
+  bindingset[nodeTo, result]
+  pragma[inline_late]
+  pragma[noopt]
+  private TypeBackTracker smallstepNoSimpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(StepSummary summary |
+      backSmallstepProj(nodeTo, summary) and
+      this = result.prepend(summary) and
+      smallstep(nodeFrom, nodeTo, summary)
+    )
   }
 
   /**
@@ -692,7 +717,7 @@ class TypeBackTracker extends TTypeBackTracker {
    */
   pragma[inline]
   TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
-    this = backSmallstepInlineLate(result, nodeFrom, nodeTo)
+    this = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)
     or
     simpleLocalFlowStep(nodeFrom, nodeTo) and
     this = result

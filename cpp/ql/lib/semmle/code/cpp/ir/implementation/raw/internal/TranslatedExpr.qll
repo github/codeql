@@ -991,9 +991,19 @@ class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExp
 class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
   override FunctionAccess expr;
 
-  override TranslatedElement getChild(int id) { none() }
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = this.getQualifier() // Might not exist
+  }
 
-  override Instruction getFirstInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
+  final TranslatedExpr getQualifier() {
+    result = getTranslatedExpr(expr.getQualifier().getFullyConverted())
+  }
+
+  override Instruction getFirstInstruction() {
+    if exists(this.getQualifier())
+    then result = this.getQualifier().getFirstInstruction()
+    else result = this.getInstruction(OnlyInstructionTag())
+  }
 
   override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
 
@@ -1014,7 +1024,9 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
     result = expr.getTarget()
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getQualifier() and result = this.getInstruction(OnlyInstructionTag())
+  }
 }
 
 /**

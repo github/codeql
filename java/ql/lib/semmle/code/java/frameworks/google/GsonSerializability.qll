@@ -45,7 +45,6 @@ private class FieldReferencedGsonDeserializableType extends GsonDeserializableTy
 
 /** A field that may be deserialized using the Gson JSON framework. */
 private class GsonDeserializableField extends DeserializableField {
-  pragma[assume_small_delta]
   GsonDeserializableField() {
     exists(GsonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and

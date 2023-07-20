@@ -10167,6 +10167,295 @@ ir.cpp:
 # 1907|     v1907_9(void)       = AliasedUse               : ~m?
 # 1907|     v1907_10(void)      = ExitFunction             : 
 
+# 1914| int static_function(int)
+# 1914|   Block 0
+# 1914|     v1914_1(void)       = EnterFunction            : 
+# 1914|     mu1914_2(unknown)   = AliasedDefinition        : 
+# 1914|     mu1914_3(unknown)   = InitializeNonLocal       : 
+# 1914|     r1914_4(glval<int>) = VariableAddress[x]       : 
+# 1914|     mu1914_5(int)       = InitializeParameter[x]   : &:r1914_4
+# 1915|     r1915_1(glval<int>) = VariableAddress[#return] : 
+# 1915|     r1915_2(glval<int>) = VariableAddress[x]       : 
+# 1915|     r1915_3(int)        = Load[x]                  : &:r1915_2, ~m?
+# 1915|     mu1915_4(int)       = Store[#return]           : &:r1915_1, r1915_3
+# 1914|     r1914_6(glval<int>) = VariableAddress[#return] : 
+# 1914|     v1914_7(void)       = ReturnValue              : &:r1914_6, ~m?
+# 1914|     v1914_8(void)       = AliasedUse               : ~m?
+# 1914|     v1914_9(void)       = ExitFunction             : 
+
+# 1918| void test_static_functions_with_assignments()
+# 1918|   Block 0
+# 1918|     v1918_1(void)           = EnterFunction                         : 
+# 1918|     mu1918_2(unknown)       = AliasedDefinition                     : 
+# 1918|     mu1918_3(unknown)       = InitializeNonLocal                    : 
+# 1919|     r1919_1(glval<C>)       = VariableAddress[c]                    : 
+# 1919|     mu1919_2(C)             = Uninitialized[c]                      : &:r1919_1
+# 1919|     r1919_3(glval<unknown>) = FunctionAddress[C]                    : 
+# 1919|     v1919_4(void)           = Call[C]                               : func:r1919_3, this:r1919_1
+# 1919|     mu1919_5(unknown)       = ^CallSideEffect                       : ~m?
+# 1919|     mu1919_6(C)             = ^IndirectMayWriteSideEffect[-1]       : &:r1919_1
+# 1920|     r1920_1(glval<int>)     = VariableAddress[x]                    : 
+# 1920|     mu1920_2(int)           = Uninitialized[x]                      : &:r1920_1
+# 1921|     r1921_1(glval<C>)       = VariableAddress[c]                    : 
+# 1921|     r1921_2(glval<unknown>) = FunctionAddress[StaticMemberFunction] : 
+# 1921|     r1921_3(int)            = Constant[10]                          : 
+# 1921|     r1921_4(int)            = Call[StaticMemberFunction]            : func:r1921_2, 0:r1921_3
+# 1921|     mu1921_5(unknown)       = ^CallSideEffect                       : ~m?
+# 1921|     r1921_6(glval<int>)     = VariableAddress[x]                    : 
+# 1921|     mu1921_7(int)           = Store[x]                              : &:r1921_6, r1921_4
+# 1922|     r1922_1(glval<int>)     = VariableAddress[y]                    : 
+# 1922|     mu1922_2(int)           = Uninitialized[y]                      : &:r1922_1
+# 1923|     r1923_1(glval<unknown>) = FunctionAddress[StaticMemberFunction] : 
+# 1923|     r1923_2(int)            = Constant[10]                          : 
+# 1923|     r1923_3(int)            = Call[StaticMemberFunction]            : func:r1923_1, 0:r1923_2
+# 1923|     mu1923_4(unknown)       = ^CallSideEffect                       : ~m?
+# 1923|     r1923_5(glval<int>)     = VariableAddress[y]                    : 
+# 1923|     mu1923_6(int)           = Store[y]                              : &:r1923_5, r1923_3
+# 1924|     r1924_1(glval<int>)     = VariableAddress[z]                    : 
+# 1924|     mu1924_2(int)           = Uninitialized[z]                      : &:r1924_1
+# 1925|     r1925_1(glval<unknown>) = FunctionAddress[static_function]      : 
+# 1925|     r1925_2(int)            = Constant[10]                          : 
+# 1925|     r1925_3(int)            = Call[static_function]                 : func:r1925_1, 0:r1925_2
+# 1925|     mu1925_4(unknown)       = ^CallSideEffect                       : ~m?
+# 1925|     r1925_5(glval<int>)     = VariableAddress[z]                    : 
+# 1925|     mu1925_6(int)           = Store[z]                              : &:r1925_5, r1925_3
+# 1926|     v1926_1(void)           = NoOp                                  : 
+# 1918|     v1918_4(void)           = ReturnVoid                            : 
+# 1918|     v1918_5(void)           = AliasedUse                            : ~m?
+# 1918|     v1918_6(void)           = ExitFunction                          : 
+
+# 1928| void test_double_assign()
+# 1928|   Block 0
+# 1928|     v1928_1(void)       = EnterFunction      : 
+# 1928|     mu1928_2(unknown)   = AliasedDefinition  : 
+# 1928|     mu1928_3(unknown)   = InitializeNonLocal : 
+# 1929|     r1929_1(glval<int>) = VariableAddress[i] : 
+# 1929|     mu1929_2(int)       = Uninitialized[i]   : &:r1929_1
+# 1929|     r1929_3(glval<int>) = VariableAddress[j] : 
+# 1929|     mu1929_4(int)       = Uninitialized[j]   : &:r1929_3
+# 1930|     r1930_1(int)        = Constant[40]       : 
+# 1930|     r1930_2(glval<int>) = VariableAddress[j] : 
+# 1930|     mu1930_3(int)       = Store[j]           : &:r1930_2, r1930_1
+# 1930|     r1930_4(int)        = CopyValue          : r1930_1
+# 1930|     r1930_5(glval<int>) = VariableAddress[i] : 
+# 1930|     mu1930_6(int)       = Store[i]           : &:r1930_5, r1930_4
+# 1931|     v1931_1(void)       = NoOp               : 
+# 1928|     v1928_4(void)       = ReturnVoid         : 
+# 1928|     v1928_5(void)       = AliasedUse         : ~m?
+# 1928|     v1928_6(void)       = ExitFunction       : 
+
+# 1933| void test_assign_with_assign_operation()
+# 1933|   Block 0
+# 1933|     v1933_1(void)       = EnterFunction      : 
+# 1933|     mu1933_2(unknown)   = AliasedDefinition  : 
+# 1933|     mu1933_3(unknown)   = InitializeNonLocal : 
+# 1934|     r1934_1(glval<int>) = VariableAddress[i] : 
+# 1934|     mu1934_2(int)       = Uninitialized[i]   : &:r1934_1
+# 1934|     r1934_3(glval<int>) = VariableAddress[j] : 
+# 1934|     r1934_4(int)        = Constant[0]        : 
+# 1934|     mu1934_5(int)       = Store[j]           : &:r1934_3, r1934_4
+# 1935|     r1935_1(int)        = Constant[40]       : 
+# 1935|     r1935_2(glval<int>) = VariableAddress[j] : 
+# 1935|     r1935_3(int)        = Load[j]            : &:r1935_2, ~m?
+# 1935|     r1935_4(int)        = Add                : r1935_3, r1935_1
+# 1935|     mu1935_5(int)       = Store[j]           : &:r1935_2, r1935_4
+# 1935|     r1935_6(glval<int>) = VariableAddress[i] : 
+# 1935|     mu1935_7(int)       = Store[i]           : &:r1935_6, r1935_4
+# 1936|     v1936_1(void)       = NoOp               : 
+# 1933|     v1933_4(void)       = ReturnVoid         : 
+# 1933|     v1933_5(void)       = AliasedUse         : ~m?
+# 1933|     v1933_6(void)       = ExitFunction       : 
+
+# 1942| D& D::ReferenceStaticMemberFunction()
+# 1942|   Block 0
+# 1942|     v1942_1(void)       = EnterFunction            : 
+# 1942|     mu1942_2(unknown)   = AliasedDefinition        : 
+# 1942|     mu1942_3(unknown)   = InitializeNonLocal       : 
+# 1943|     r1943_1(glval<D &>) = VariableAddress[#return] : 
+# 1943|     r1943_2(glval<D>)   = VariableAddress[x]       : 
+# 1943|     r1943_3(D &)        = CopyValue                : r1943_2
+# 1943|     mu1943_4(D &)       = Store[#return]           : &:r1943_1, r1943_3
+# 1942|     r1942_4(glval<D &>) = VariableAddress[#return] : 
+# 1942|     v1942_5(void)       = ReturnValue              : &:r1942_4, ~m?
+# 1942|     v1942_6(void)       = AliasedUse               : ~m?
+# 1942|     v1942_7(void)       = ExitFunction             : 
+
+# 1945| D D::ObjectStaticMemberFunction()
+# 1945|   Block 0
+# 1945|     v1945_1(void)     = EnterFunction            : 
+# 1945|     mu1945_2(unknown) = AliasedDefinition        : 
+# 1945|     mu1945_3(unknown) = InitializeNonLocal       : 
+# 1946|     r1946_1(glval<D>) = VariableAddress[#return] : 
+# 1946|     r1946_2(glval<D>) = VariableAddress[x]       : 
+# 1946|     r1946_3(D)        = Load[x]                  : &:r1946_2, ~m?
+# 1946|     mu1946_4(D)       = Store[#return]           : &:r1946_1, r1946_3
+# 1945|     r1945_4(glval<D>) = VariableAddress[#return] : 
+# 1945|     v1945_5(void)     = ReturnValue              : &:r1945_4, ~m?
+# 1945|     v1945_6(void)     = AliasedUse               : ~m?
+# 1945|     v1945_7(void)     = ExitFunction             : 
+
+# 1950| void test_static_member_functions_with_reference_return()
+# 1950|   Block 0
+# 1950|     v1950_1(void)           = EnterFunction                                  : 
+# 1950|     mu1950_2(unknown)       = AliasedDefinition                              : 
+# 1950|     mu1950_3(unknown)       = InitializeNonLocal                             : 
+# 1951|     r1951_1(glval<D>)       = VariableAddress[d]                             : 
+# 1951|     mu1951_2(D)             = Uninitialized[d]                               : &:r1951_1
+# 1953|     r1953_1(glval<D>)       = VariableAddress[d]                             : 
+# 1953|     r1953_2(glval<unknown>) = FunctionAddress[ReferenceStaticMemberFunction] : 
+# 1953|     r1953_3(D &)            = Call[ReferenceStaticMemberFunction]            : func:r1953_2
+# 1953|     mu1953_4(unknown)       = ^CallSideEffect                                : ~m?
+# 1953|     r1953_5(glval<D>)       = CopyValue                                      : r1953_3
+# 1954|     r1954_1(glval<unknown>) = FunctionAddress[ReferenceStaticMemberFunction] : 
+# 1954|     r1954_2(D &)            = Call[ReferenceStaticMemberFunction]            : func:r1954_1
+# 1954|     mu1954_3(unknown)       = ^CallSideEffect                                : ~m?
+# 1954|     r1954_4(glval<D>)       = CopyValue                                      : r1954_2
+# 1955|     r1955_1(glval<D>)       = VariableAddress[d]                             : 
+# 1955|     r1955_2(glval<unknown>) = FunctionAddress[ObjectStaticMemberFunction]    : 
+# 1955|     r1955_3(D)              = Call[ObjectStaticMemberFunction]               : func:r1955_2
+# 1955|     mu1955_4(unknown)       = ^CallSideEffect                                : ~m?
+# 1956|     r1956_1(glval<unknown>) = FunctionAddress[ObjectStaticMemberFunction]    : 
+# 1956|     r1956_2(D)              = Call[ObjectStaticMemberFunction]               : func:r1956_1
+# 1956|     mu1956_3(unknown)       = ^CallSideEffect                                : ~m?
+# 1958|     r1958_1(glval<D>)       = VariableAddress[x]                             : 
+# 1958|     mu1958_2(D)             = Uninitialized[x]                               : &:r1958_1
+# 1959|     r1959_1(glval<D>)       = VariableAddress[d]                             : 
+# 1959|     r1959_2(glval<unknown>) = FunctionAddress[ReferenceStaticMemberFunction] : 
+# 1959|     r1959_3(D &)            = Call[ReferenceStaticMemberFunction]            : func:r1959_2
+# 1959|     mu1959_4(unknown)       = ^CallSideEffect                                : ~m?
+# 1959|     r1959_5(D)              = Load[?]                                        : &:r1959_3, ~m?
+# 1959|     r1959_6(glval<D>)       = VariableAddress[x]                             : 
+# 1959|     mu1959_7(D)             = Store[x]                                       : &:r1959_6, r1959_5
+# 1960|     r1960_1(glval<D>)       = VariableAddress[y]                             : 
+# 1960|     mu1960_2(D)             = Uninitialized[y]                               : &:r1960_1
+# 1961|     r1961_1(glval<unknown>) = FunctionAddress[ReferenceStaticMemberFunction] : 
+# 1961|     r1961_2(D &)            = Call[ReferenceStaticMemberFunction]            : func:r1961_1
+# 1961|     mu1961_3(unknown)       = ^CallSideEffect                                : ~m?
+# 1961|     r1961_4(D)              = Load[?]                                        : &:r1961_2, ~m?
+# 1961|     r1961_5(glval<D>)       = VariableAddress[y]                             : 
+# 1961|     mu1961_6(D)             = Store[y]                                       : &:r1961_5, r1961_4
+# 1962|     r1962_1(glval<D>)       = VariableAddress[j]                             : 
+# 1962|     mu1962_2(D)             = Uninitialized[j]                               : &:r1962_1
+# 1963|     r1963_1(glval<D>)       = VariableAddress[d]                             : 
+# 1963|     r1963_2(glval<unknown>) = FunctionAddress[ObjectStaticMemberFunction]    : 
+# 1963|     r1963_3(D)              = Call[ObjectStaticMemberFunction]               : func:r1963_2
+# 1963|     mu1963_4(unknown)       = ^CallSideEffect                                : ~m?
+# 1963|     r1963_5(glval<D>)       = VariableAddress[j]                             : 
+# 1963|     mu1963_6(D)             = Store[j]                                       : &:r1963_5, r1963_3
+# 1964|     r1964_1(glval<D>)       = VariableAddress[k]                             : 
+# 1964|     mu1964_2(D)             = Uninitialized[k]                               : &:r1964_1
+# 1965|     r1965_1(glval<unknown>) = FunctionAddress[ObjectStaticMemberFunction]    : 
+# 1965|     r1965_2(D)              = Call[ObjectStaticMemberFunction]               : func:r1965_1
+# 1965|     mu1965_3(unknown)       = ^CallSideEffect                                : ~m?
+# 1965|     r1965_4(glval<D>)       = VariableAddress[k]                             : 
+# 1965|     mu1965_5(D)             = Store[k]                                       : &:r1965_4, r1965_2
+# 1966|     v1966_1(void)           = NoOp                                           : 
+# 1950|     v1950_4(void)           = ReturnVoid                                     : 
+# 1950|     v1950_5(void)           = AliasedUse                                     : ~m?
+# 1950|     v1950_6(void)           = ExitFunction                                   : 
+
+# 1968| void test_volatile()
+# 1968|   Block 0
+# 1968|     v1968_1(void)       = EnterFunction      : 
+# 1968|     mu1968_2(unknown)   = AliasedDefinition  : 
+# 1968|     mu1968_3(unknown)   = InitializeNonLocal : 
+# 1969|     r1969_1(glval<int>) = VariableAddress[x] : 
+# 1969|     mu1969_2(int)       = Uninitialized[x]   : &:r1969_1
+# 1970|     r1970_1(glval<int>) = VariableAddress[x] : 
+# 1970|     r1970_2(int)        = Load[x]            : &:r1970_1, ~m?
+# 1971|     v1971_1(void)       = NoOp               : 
+# 1968|     v1968_4(void)       = ReturnVoid         : 
+# 1968|     v1968_5(void)       = AliasedUse         : ~m?
+# 1968|     v1968_6(void)       = ExitFunction       : 
+
+# 1979| void value_category_test()
+# 1979|   Block 0
+# 1979|     v1979_1(void)           = EnterFunction                : 
+# 1979|     mu1979_2(unknown)       = AliasedDefinition            : 
+# 1979|     mu1979_3(unknown)       = InitializeNonLocal           : 
+# 1980|     r1980_1(glval<ValCat>)  = VariableAddress[c]           : 
+# 1980|     mu1980_2(ValCat)        = Uninitialized[c]             : &:r1980_1
+#-----|     r0_1(glval<ValCat>)     = VariableAddress[#temp0:0]    : 
+#-----|     mu0_2(ValCat)           = Uninitialized[#temp0:0]      : &:r0_1
+#-----|     r0_3(ValCat)            = Load[#temp0:0]               : &:r0_1, ~m?
+# 1982|     r1982_1(glval<ValCat>)  = VariableAddress[c]           : 
+# 1982|     r1982_2(glval<unknown>) = FunctionAddress[lvalue]      : 
+# 1982|     r1982_3(ValCat &)       = Call[lvalue]                 : func:r1982_2
+# 1982|     mu1982_4(unknown)       = ^CallSideEffect              : ~m?
+# 1982|     r1982_5(glval<ValCat>)  = CopyValue                    : r1982_3
+# 1982|     mu1982_6(ValCat)        = Store[?]                     : &:r1982_5, r0_3
+#-----|     r0_4(glval<ValCat>)     = VariableAddress[#temp0:0]    : 
+#-----|     mu0_5(ValCat)           = Uninitialized[#temp0:0]      : &:r0_4
+#-----|     r0_6(ValCat)            = Load[#temp0:0]               : &:r0_4, ~m?
+# 1983|     r1983_1(glval<ValCat>)  = VariableAddress[c]           : 
+# 1983|     r1983_2(glval<unknown>) = FunctionAddress[xvalue]      : 
+# 1983|     r1983_3(ValCat &&)      = Call[xvalue]                 : func:r1983_2
+# 1983|     mu1983_4(unknown)       = ^CallSideEffect              : ~m?
+# 1983|     r1983_5(glval<ValCat>)  = CopyValue                    : r1983_3
+# 1983|     mu1983_6(ValCat)        = Store[?]                     : &:r1983_5, r0_6
+#-----|     r0_7(glval<ValCat>)     = VariableAddress[#temp0:0]    : 
+#-----|     mu0_8(ValCat)           = Uninitialized[#temp0:0]      : &:r0_7
+#-----|     r0_9(ValCat)            = Load[#temp0:0]               : &:r0_7, ~m?
+# 1984|     r1984_1(glval<ValCat>)  = VariableAddress[#temp1984:5] : 
+# 1984|     r1984_2(glval<ValCat>)  = VariableAddress[c]           : 
+# 1984|     r1984_3(glval<unknown>) = FunctionAddress[prvalue]     : 
+# 1984|     r1984_4(ValCat)         = Call[prvalue]                : func:r1984_3
+# 1984|     mu1984_5(unknown)       = ^CallSideEffect              : ~m?
+# 1984|     mu1984_6(ValCat)        = Store[#temp1984:5]           : &:r1984_1, r1984_4
+# 1984|     mu1984_7(ValCat)        = Store[#temp1984:5]           : &:r1984_1, r0_9
+#-----|     r0_10(glval<ValCat>)    = VariableAddress[#temp0:0]    : 
+#-----|     mu0_11(ValCat)          = Uninitialized[#temp0:0]      : &:r0_10
+#-----|     r0_12(ValCat)           = Load[#temp0:0]               : &:r0_10, ~m?
+# 1985|     r1985_1(glval<unknown>) = FunctionAddress[lvalue]      : 
+# 1985|     r1985_2(ValCat &)       = Call[lvalue]                 : func:r1985_1
+# 1985|     mu1985_3(unknown)       = ^CallSideEffect              : ~m?
+# 1985|     r1985_4(glval<ValCat>)  = CopyValue                    : r1985_2
+# 1985|     mu1985_5(ValCat)        = Store[?]                     : &:r1985_4, r0_12
+#-----|     r0_13(glval<ValCat>)    = VariableAddress[#temp0:0]    : 
+#-----|     mu0_14(ValCat)          = Uninitialized[#temp0:0]      : &:r0_13
+#-----|     r0_15(ValCat)           = Load[#temp0:0]               : &:r0_13, ~m?
+# 1986|     r1986_1(glval<unknown>) = FunctionAddress[xvalue]      : 
+# 1986|     r1986_2(ValCat &&)      = Call[xvalue]                 : func:r1986_1
+# 1986|     mu1986_3(unknown)       = ^CallSideEffect              : ~m?
+# 1986|     r1986_4(glval<ValCat>)  = CopyValue                    : r1986_2
+# 1986|     mu1986_5(ValCat)        = Store[?]                     : &:r1986_4, r0_15
+#-----|     r0_16(glval<ValCat>)    = VariableAddress[#temp0:0]    : 
+#-----|     mu0_17(ValCat)          = Uninitialized[#temp0:0]      : &:r0_16
+#-----|     r0_18(ValCat)           = Load[#temp0:0]               : &:r0_16, ~m?
+# 1987|     r1987_1(glval<ValCat>)  = VariableAddress[#temp1987:5] : 
+# 1987|     r1987_2(glval<unknown>) = FunctionAddress[prvalue]     : 
+# 1987|     r1987_3(ValCat)         = Call[prvalue]                : func:r1987_2
+# 1987|     mu1987_4(unknown)       = ^CallSideEffect              : ~m?
+# 1987|     mu1987_5(ValCat)        = Store[#temp1987:5]           : &:r1987_1, r1987_3
+# 1987|     mu1987_6(ValCat)        = Store[#temp1987:5]           : &:r1987_1, r0_18
+# 1988|     v1988_1(void)           = NoOp                         : 
+# 1979|     v1979_4(void)           = ReturnVoid                   : 
+# 1979|     v1979_5(void)           = AliasedUse                   : ~m?
+# 1979|     v1979_6(void)           = ExitFunction                 : 
+
+# 1990| void SetStaticFuncPtr()
+# 1990|   Block 0
+# 1990|     v1990_1(void)             = EnterFunction                         : 
+# 1990|     mu1990_2(unknown)         = AliasedDefinition                     : 
+# 1990|     mu1990_3(unknown)         = InitializeNonLocal                    : 
+# 1991|     r1991_1(glval<C>)         = VariableAddress[c]                    : 
+# 1991|     mu1991_2(C)               = Uninitialized[c]                      : &:r1991_1
+# 1991|     r1991_3(glval<unknown>)   = FunctionAddress[C]                    : 
+# 1991|     v1991_4(void)             = Call[C]                               : func:r1991_3, this:r1991_1
+# 1991|     mu1991_5(unknown)         = ^CallSideEffect                       : ~m?
+# 1991|     mu1991_6(C)               = ^IndirectMayWriteSideEffect[-1]       : &:r1991_1
+# 1992|     r1992_1(glval<..(*)(..)>) = VariableAddress[pfn]                  : 
+# 1992|     r1992_2(..(*)(..))        = FunctionAddress[StaticMemberFunction] : 
+# 1992|     mu1992_3(..(*)(..))       = Store[pfn]                            : &:r1992_1, r1992_2
+# 1993|     r1993_1(glval<C>)         = VariableAddress[c]                    : 
+# 1993|     r1993_2(..(*)(..))        = FunctionAddress[StaticMemberFunction] : 
+# 1993|     r1993_3(glval<..(*)(..)>) = VariableAddress[pfn]                  : 
+# 1993|     mu1993_4(..(*)(..))       = Store[pfn]                            : &:r1993_3, r1993_2
+# 1994|     v1994_1(void)             = NoOp                                  : 
+# 1990|     v1990_4(void)             = ReturnVoid                            : 
+# 1990|     v1990_5(void)             = AliasedUse                            : ~m?
+# 1990|     v1990_6(void)             = ExitFunction                          : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

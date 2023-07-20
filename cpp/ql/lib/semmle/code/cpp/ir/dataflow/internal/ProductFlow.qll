@@ -192,13 +192,13 @@ module ProductFlow {
      * Holds if data flow through `node` is prohibited through the first projection of the product
      * dataflow graph when the flow state is `state`.
      */
-    predicate isBarrier1(DataFlow::Node node, FlowState1 state);
+    default predicate isBarrier1(DataFlow::Node node, FlowState1 state) { none() }
 
     /**
      * Holds if data flow through `node` is prohibited through the second projection of the product
      * dataflow graph when the flow state is `state`.
      */
-    predicate isBarrier2(DataFlow::Node node, FlowState2 state);
+    default predicate isBarrier2(DataFlow::Node node, FlowState2 state) { none() }
 
     /**
      * Holds if data flow through `node` is prohibited through the first projection of the product
@@ -237,9 +237,11 @@ module ProductFlow {
      *
      * This step is only applicable in `state1` and updates the flow state to `state2`.
      */
-    predicate isAdditionalFlowStep1(
+    default predicate isAdditionalFlowStep1(
       DataFlow::Node node1, FlowState1 state1, DataFlow::Node node2, FlowState1 state2
-    );
+    ) {
+      none()
+    }
 
     /**
      * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps in
@@ -253,9 +255,11 @@ module ProductFlow {
      *
      * This step is only applicable in `state1` and updates the flow state to `state2`.
      */
-    predicate isAdditionalFlowStep2(
+    default predicate isAdditionalFlowStep2(
       DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2
-    );
+    ) {
+      none()
+    }
 
     /**
      * Holds if data flow into `node` is prohibited in the first projection of the product
@@ -291,6 +295,22 @@ module ProductFlow {
       Flow1::PathNode source1, Flow2::PathNode source2, Flow1::PathNode sink1, Flow2::PathNode sink2
     ) {
       reachable(source1, source2, sink1, sink2)
+    }
+
+    /** Holds if data can flow from `(source1, source2)` to `(sink1, sink2)`. */
+    predicate flow(
+      DataFlow::Node source1, DataFlow::Node source2, DataFlow::Node sink1, DataFlow::Node sink2
+    ) {
+      exists(
+        Flow1::PathNode pSource1, Flow2::PathNode pSource2, Flow1::PathNode pSink1,
+        Flow2::PathNode pSink2
+      |
+        pSource1.getNode() = source1 and
+        pSource2.getNode() = source2 and
+        pSink1.getNode() = sink1 and
+        pSink2.getNode() = sink2 and
+        flowPath(pSource1, pSource2, pSink1, pSink2)
+      )
     }
 
     private module Config1 implements DataFlow::StateConfigSig {
@@ -359,7 +379,6 @@ module ProductFlow {
       Config::isSinkPair(node1.getNode(), node1.getState(), node2.getNode(), node2.getState())
     }
 
-    pragma[assume_small_delta]
     pragma[nomagic]
     private predicate fwdReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
       isSourcePair(node1, node2)
@@ -396,7 +415,6 @@ module ProductFlow {
       fwdIsSuccessorExit(pragma[only_bind_into](mid1), pragma[only_bind_into](mid2), succ1, succ2)
     }
 
-    pragma[assume_small_delta]
     private predicate fwdIsSuccessor(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
@@ -406,7 +424,6 @@ module ProductFlow {
       )
     }
 
-    pragma[assume_small_delta]
     pragma[nomagic]
     private predicate revReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
       fwdReachableInterprocEntry(node1, node2) and

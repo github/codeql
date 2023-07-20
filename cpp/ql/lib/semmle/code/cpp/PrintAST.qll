@@ -741,6 +741,8 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(VariableAccess).getQualifier() = ele and pred = "getQualifier()"
     or
+    expr.(FunctionAccess).getQualifier() = ele and pred = "getQualifier()"
+    or
     exists(Field f |
       expr.(ClassAggregateLiteral).getAFieldExpr(f) = ele and
       pred = "getAFieldExpr(" + f.toString() + ")"
