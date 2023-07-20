@@ -439,8 +439,8 @@ module Public {
     CallNode getCallNode() { result = call }
 
     override Type getType() {
-      exists(SignatureType t | t = call.getCall().getCalleeType() |
-        result = t.getParameterType(t.getNumParameter() - 1)
+      exists(Function f | f = call.getTarget() |
+        result = f.getParameterType(f.getNumParameter() - 1)
       )
     }
 
@@ -474,11 +474,7 @@ module Public {
   class CallNode extends ExprNode {
     override CallExpr expr;
 
-    /**
-     * Gets the declared target of this call, if it exists.
-     *
-     * This doesn't exist when a function is called via a variable.
-     */
+    /** Gets the declared target of this call */
     Function getTarget() { result = expr.getTarget() }
 
     private DataFlow::Node getACalleeSource() { result = getACalleeSource(this) }
@@ -626,40 +622,16 @@ module Public {
     /** Gets a result of this call. */
     Node getAResult() { result = this.getResult(_) }
 
-    /**
-     * Gets the data flow node corresponding to the receiver of this call, if any.
-     *
-     * When a method value is assigned to a variable then when it is called it
-     * looks like a function call, as in the following example.
-     * ```go
-     * file, _ := os.Open("test.txt")
-     * f := file.Close
-     * f()
-     * ```
-     * In this case we use local flow to try to find the receiver (`file` in
-     * the  above example).
-     */
+    /** Gets the data flow node corresponding to the receiver of this call, if any. */
     Node getReceiver() { result = this.getACalleeSource().(MethodReadNode).getReceiver() }
 
     /** Holds if this call has an ellipsis after its last argument. */
     predicate hasEllipsis() { expr.hasEllipsis() }
   }
 
-  /**
-   * A data flow node that represents a call to a method.
-   *
-   * When a method value is assigned to a variable then when it is called it
-   * syntactically looks like a function call, as in the following example.
-   * ```go
-   * file, _ := os.Open("test.txt")
-   * f := file.Close
-   * f()
-   * ```
-   * In this case we use local flow to see whether a method is assigned to the
-   * function.
-   */
+  /** A data flow node that represents a call to a method. */
   class MethodCallNode extends CallNode {
-    MethodCallNode() { getACalleeSource(this) instanceof MethodReadNode }
+    MethodCallNode() { expr.getTarget() instanceof Method }
 
     override Method getTarget() { result = expr.getTarget() }
 
