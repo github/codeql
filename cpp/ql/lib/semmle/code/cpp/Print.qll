@@ -8,8 +8,6 @@ private import PrintAST
 private predicate shouldPrintDeclaration(Declaration decl) {
   not (decl instanceof Function or decl instanceof GlobalOrNamespaceVariable)
   or
-  not exists(PrintAstConfiguration c)
-  or
   exists(PrintAstConfiguration config | config.shouldPrintDeclaration(decl))
 }
 
