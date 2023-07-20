@@ -86,6 +86,9 @@ class ExpRedosTest {
         // NOT GOOD; attack: "\n".repeat(100) + "."
         "(?s)(.|\\n)*!", // $ hasExpRedos
 
+        // NOT GOOD; attack: "\n".repeat(100) + "."
+        "(?is)(.|\\n)*!", // $ MISSING: hasExpRedos
+
         // GOOD
         "([\\w.]+)*",
 
@@ -120,7 +123,7 @@ class ExpRedosTest {
         "\"((?:\\\\[\\x00-\\x7f]|[^\\x00-\\x08\\x0a-\\x1f\\x7f\"])*)\"", // $ MISSING: hasExpRedos
 
         // GOOD
-        "\"((?:\\\\[\\x00-\\x7f]|[^\\x00-\\x08\\x0a-\\x1f\\x7f\"\\\\])*)\"", 
+        "\"((?:\\\\[\\x00-\\x7f]|[^\\x00-\\x08\\x0a-\\x1f\\x7f\"\\\\])*)\"",
 
         // NOT GOOD
         "(([a-z]|[d-h])*)\"", // $ hasExpRedos
