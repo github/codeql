@@ -472,6 +472,9 @@ abstract class RegexString extends StringLiteral {
     )
   }
 
+  /**
+   * Holds if a parse mode starts between `start` and `end`.
+   */
   private predicate flagGroupStart(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
@@ -479,6 +482,13 @@ abstract class RegexString extends StringLiteral {
     end = start + 2
   }
 
+  /**
+   * Holds if a parse mode group is between `start` and `end`, and includes the
+   * mode flag `c`. For example the following span, with mode flag `i`:
+   * ```
+   * (?i)
+   * ```
+   */
   private predicate flagGroup(int start, int end, string c) {
     exists(int inStart, int inEnd |
       this.flagGroupStart(start, inStart) and
