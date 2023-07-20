@@ -2155,8 +2155,15 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
         not this.elseIsVoid() and tag = ConditionValueFalseStoreTag()
       ) and
       opcode instanceof Opcode::Store and
-      resultType = this.getResultType()
+      (
+        not expr.hasLValueToRValueConversion() and
+        resultType = this.getResultType()
+        or
+        expr.hasLValueToRValueConversion() and
+        resultType = getTypeForPRValue(expr.getType())
+      )
       or
+      not expr.hasLValueToRValueConversion() and
       tag = ConditionValueResultLoadTag() and
       opcode instanceof Opcode::Load and
       resultType = this.getResultType()
@@ -2186,8 +2193,15 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
       )
       or
       tag = ConditionValueResultTempAddressTag() and
-      result = this.getInstruction(ConditionValueResultLoadTag())
+      (
+        not expr.hasLValueToRValueConversion() and
+        result = this.getInstruction(ConditionValueResultLoadTag())
+        or
+        expr.hasLValueToRValueConversion() and
+        result = this.getParent().getChildSuccessor(this)
+      )
       or
+      not expr.hasLValueToRValueConversion() and
       tag = ConditionValueResultLoadTag() and
       result = this.getParent().getChildSuccessor(this)
     )
@@ -2216,18 +2230,23 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
         result = this.getElse().getResult()
       )
       or
+      not expr.hasLValueToRValueConversion() and
       tag = ConditionValueResultLoadTag() and
-      (
-        operandTag instanceof AddressOperandTag and
-        result = this.getInstruction(ConditionValueResultTempAddressTag())
-      )
+      operandTag instanceof AddressOperandTag and
+      result = this.getInstruction(ConditionValueResultTempAddressTag())
     )
   }
 
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
     not this.resultIsVoid() and
     tag = ConditionValueTempVar() and
-    type = this.getResultType()
+    (
+      not expr.hasLValueToRValueConversion() and
+      type = this.getResultType()
+      or
+      expr.hasLValueToRValueConversion() and
+      type = getTypeForPRValue(expr.getType())
+    )
   }
 
   final override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -2242,7 +2261,13 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
 
   final override Instruction getResult() {
     not this.resultIsVoid() and
-    result = this.getInstruction(ConditionValueResultLoadTag())
+    (
+      expr.hasLValueToRValueConversion() and
+      result = this.getInstruction(ConditionValueResultTempAddressTag())
+      or
+      not expr.hasLValueToRValueConversion() and
+      result = this.getInstruction(ConditionValueResultLoadTag())
+    )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
