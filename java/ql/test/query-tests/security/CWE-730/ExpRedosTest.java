@@ -87,7 +87,7 @@ class ExpRedosTest {
         "(?s)(.|\\n)*!", // $ hasExpRedos
 
         // NOT GOOD; attack: "\n".repeat(100) + "."
-        "(?is)(.|\\n)*!", // $ MISSING: hasExpRedos
+        "(?is)(.|\\n)*!", // $ hasExpRedos
 
         // GOOD
         "([\\w.]+)*",
