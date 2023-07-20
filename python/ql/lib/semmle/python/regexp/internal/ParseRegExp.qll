@@ -679,6 +679,9 @@ class RegExp extends Expr instanceof StrConst {
     end = min(int i | i > start + 4 and this.getChar(i) = "?")
   }
 
+  /**
+   * Holds if a parse mode starts between `start` and `end`.
+   */
   private predicate flag_group_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
@@ -686,6 +689,13 @@ class RegExp extends Expr instanceof StrConst {
     end = start + 2
   }
 
+  /**
+   * Holds if a parse mode group is between `start` and `end`, and includes the
+   * mode flag `c`. For example the following span, with mode flag `i`:
+   * ```
+   * (?i)
+   * ```
+   */
   private predicate flag_group(int start, int end, string c) {
     exists(int inStart, int inEnd |
       this.flag_group_start(start, inStart) and
