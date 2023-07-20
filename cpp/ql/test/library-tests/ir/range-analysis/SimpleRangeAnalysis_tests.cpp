@@ -195,18 +195,18 @@ int test13(char c, int i) {
   int z = i+1;  // $ overflow=+
   range(z); // $ range="==InitializeParameter: i+1"
   range(c + i + uc + x + y + z); // $ overflow=+- overflow=+ overflow=- MISSING: range=>=1
-  range((double)(c + i + uc + x + y + z)); // $ overflow=+ overflow=+- overflow=- MISSING:  range=>=1
+  range((double)(c + i + uc + x + y + z)); // $ overflow=+ overflow=+- overflow=- range=<=4294967295 MISSING: range=>=1
   return (double)(c + i + uc + x + y + z);  // $ overflow=+- overflow=+ overflow=-
 }
 
 // Regression test for ODASA-6013.
 int test14(int x) {
   int x0 = (int)(char)x;
-  range(x0);
+  range(x0); // $ range=<=127 range=>=-128
   int x1 = (int)(unsigned char)x;
-  range(x1);
+  range(x1); // $ range=<=255 range=>=0
   int x2 = (int)(unsigned short)x;
-  range(x2);
+  range(x2); // $ range=<=65535 range=>=0
   int x3 = (int)(unsigned int)x;
   range(x3);
   char c0 = x;
@@ -759,9 +759,9 @@ unsigned long mult_overflow() {
 unsigned long mult_lower_bound(unsigned int ui, unsigned long ul) {
   if (ui >= 10) {
     range(ui); // $ range=>=10
-    range((unsigned long)ui); // $ range=>=10
-    unsigned long result = (unsigned long)ui * ui; // $ overflow=+
-    range(result); // $ MISSING: range=>=100
+    range((unsigned long)ui); // $ range=>=10 range=<=4294967295
+    unsigned long result = (unsigned long)ui * ui; // no overflow
+    range(result); // $ range=>=100 range=<=18446744065119617024
     return result; // BUG: upper bound should be >= 18446744065119617025
   }
   if (ul >= 10) {
@@ -888,7 +888,7 @@ void notequal_variations(short n, float f) {
   }
 
   if (n >= 5) {
-    if (2 * n - 10 == 0) { // $ overflow=+
+    if (2 * n - 10 == 0) { // no overflow
       range(n); // $ range=>=5 MISSING: range===5
       return;
     }
@@ -936,7 +936,7 @@ void two_bounds_from_one_test(short ss, unsigned short us) {
     range(ss); // -32768 .. 32767
   }
 
-  if (ss + 1 < sizeof(int)) {  // $ overflow=+
+  if (ss + 1 < sizeof(int)) { // $ overflow=-
     range(ss); // -1 .. 2
   }
 }
