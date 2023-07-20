@@ -19,6 +19,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 import org.kohsuke.stapler.framework.io.LargeText;
 import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
+import org.springframework.util.FileCopyUtils;
 
 public class Test {
 
@@ -45,13 +46,13 @@ public class Test {
         new FileReader((File) source());
         // "java.io;FileReader;true;FileReader;(String);;Argument[0];read-file;ai-generated"
         new FileReader((String) source());
-        // "java.nio.file;Files;false;copy;;;Argument[0];read-file;manual"
-        Files.copy((Path) source(), (Path) null);
+        // "java.nio.file;Files;false;copy;(Path,OutputStream);;Argument[0];read-file;manual"
         Files.copy((Path) source(), (OutputStream) null);
-        Files.copy((InputStream) source(), null);
-        // "java.nio.file;Files;false;copy;;;Argument[1];create-file;manual"
+        // "java.nio.file;Files;false;copy;(Path,Path,CopyOption[]);;Argument[0];read-file;manual"
+        Files.copy((Path) source(), (Path) null);
+        // "java.nio.file;Files;false;copy;(Path,Path,CopyOption[]);;Argument[1];create-file;manual"
         Files.copy((Path) null, (Path) source());
-        Files.copy((Path) null, (OutputStream) source());
+        // "java.nio.file;Files;false;copy;(InputStream,Path,CopyOption[]);;Argument[1];create-file;manual"
         Files.copy((InputStream) null, (Path) source());
         // "java.nio.file;Files;false;createDirectories;;;Argument[0];create-file;manual"
         Files.createDirectories((Path) source());
@@ -97,6 +98,12 @@ public class Test {
         new ZipURLInstaller((URL) null, (String) source(), "");
         // "org.codehaus.cargo.container.installer;ZipURLInstaller;true;ZipURLInstaller;(URL,String,String);;Argument[2];create-file;ai-generated"
         new ZipURLInstaller((URL) null, "", (String) source());
+        // "org.springframework.util;FileCopyUtils;false;copy;(byte[],File);;Argument[1];create-file;manual"
+        FileCopyUtils.copy((byte[]) null, (File) source());
+        // "org.springframework.util;FileCopyUtils;false;copy;(File,File);;Argument[0];create-file;manual"
+        FileCopyUtils.copy((File) source(), null);
+        // "org.springframework.util;FileCopyUtils;false;copy;(File,File);;Argument[1];create-file;manual"
+        FileCopyUtils.copy((File) null, (File) source());
     }
 
     void test(AntClassLoader acl) {

@@ -42,6 +42,14 @@ private predicate shouldPrintFunction(Language::Declaration decl) {
   exists(PrintIRConfiguration config | config.shouldPrintFunction(decl))
 }
 
+private predicate shouldPrintInstruction(Instruction i) {
+  exists(IRPropertyProvider provider | provider.shouldPrintInstruction(i))
+}
+
+private predicate shouldPrintOperand(Operand operand) {
+  exists(IRPropertyProvider provider | provider.shouldPrintOperand(operand))
+}
+
 private string getAdditionalInstructionProperty(Instruction instr, string key) {
   exists(IRPropertyProvider provider | result = provider.getInstructionProperty(instr, key))
 }
@@ -84,7 +92,9 @@ private string getOperandPropertyString(Operand operand) {
 private newtype TPrintableIRNode =
   TPrintableIRFunction(IRFunction irFunc) { shouldPrintFunction(irFunc.getFunction()) } or
   TPrintableIRBlock(IRBlock block) { shouldPrintFunction(block.getEnclosingFunction()) } or
-  TPrintableInstruction(Instruction instr) { shouldPrintFunction(instr.getEnclosingFunction()) }
+  TPrintableInstruction(Instruction instr) {
+    shouldPrintInstruction(instr) and shouldPrintFunction(instr.getEnclosingFunction())
+  }
 
 /**
  * A node to be emitted in the IR graph.
@@ -127,13 +137,13 @@ abstract private class PrintableIRNode extends TPrintableIRNode {
    * Gets the value of the node property with the specified key.
    */
   string getProperty(string key) {
-    key = "semmle.label" and result = getLabel()
+    key = "semmle.label" and result = this.getLabel()
     or
-    key = "semmle.order" and result = getOrder().toString()
+    key = "semmle.order" and result = this.getOrder().toString()
     or
-    key = "semmle.graphKind" and result = getGraphKind()
+    key = "semmle.graphKind" and result = this.getGraphKind()
     or
-    key = "semmle.forceText" and forceText() and result = "true"
+    key = "semmle.forceText" and this.forceText() and result = "true"
   }
 }
 
@@ -178,7 +188,7 @@ private class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
 
   PrintableIRBlock() { this = TPrintableIRBlock(block) }
 
-  override string toString() { result = getLabel() }
+  override string toString() { result = this.getLabel() }
 
   override Language::Location getLocation() { result = block.getLocation() }
 
@@ -223,7 +233,7 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
       |
         resultString = instr.getResultString() and
         operationString = instr.getOperationString() and
-        operandsString = getOperandsString() and
+        operandsString = this.getOperandsString() and
         columnWidths(block, resultWidth, operationWidth) and
         result =
           resultString + getPaddingString(resultWidth - resultString.length()) + " = " +
@@ -252,7 +262,8 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
   private string getOperandsString() {
     result =
       concat(Operand operand |
-        operand = instr.getAnOperand()
+        operand = instr.getAnOperand() and
+        shouldPrintOperand(operand)
       |
         operand.getDumpString() + getOperandPropertyString(operand), ", "
         order by

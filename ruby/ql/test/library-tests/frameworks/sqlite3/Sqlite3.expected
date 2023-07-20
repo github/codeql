@@ -1,0 +1,10 @@
+sqlite3SqlConstruction
+| sqlite3.rb:5:1:5:17 | call to execute | sqlite3.rb:5:12:5:17 | <<-SQL |
+| sqlite3.rb:12:8:12:41 | call to prepare | sqlite3.rb:12:19:12:41 | "select * from numbers" |
+| sqlite3.rb:17:3:19:5 | call to execute | sqlite3.rb:17:15:17:35 | "select * from table" |
+| sqlite3.rb:29:7:29:40 | call to execute | sqlite3.rb:29:19:29:39 | "select * from table" |
+sqlite3SqlExecution
+| sqlite3.rb:5:1:5:17 | call to execute | sqlite3.rb:5:12:5:17 | <<-SQL |
+| sqlite3.rb:14:1:14:12 | call to execute | sqlite3.rb:12:19:12:41 | "select * from numbers" |
+| sqlite3.rb:17:3:19:5 | call to execute | sqlite3.rb:17:15:17:35 | "select * from table" |
+| sqlite3.rb:29:7:29:40 | call to execute | sqlite3.rb:29:19:29:39 | "select * from table" |

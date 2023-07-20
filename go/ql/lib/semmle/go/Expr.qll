@@ -857,6 +857,24 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the number of argument expressions of this call. */
   int getNumArgument() { result = count(this.getAnArgument()) }
 
+  /** Holds if this call has implicit variadic arguments. */
+  predicate hasImplicitVarargs() {
+    this.getCalleeType().isVariadic() and
+    not this.hasEllipsis()
+  }
+
+  /**
+   * Gets an argument with an ellipsis after it which is passed to a varargs
+   * parameter, as in `f(x...)`.
+   *
+   * Note that if the varargs parameter is `...T` then the type of the argument
+   * must be assignable to the slice type `[]T`.
+   */
+  Expr getExplicitVarargsArgument() {
+    this.hasEllipsis() and
+    result = this.getArgument(this.getNumArgument() - 1)
+  }
+
   /**
    * Gets the name of the invoked function, method or variable if it can be
    * determined syntactically.
@@ -872,6 +890,15 @@ class CallExpr extends CallOrConversionExpr {
       result = callee.(SelectorExpr).getSelector().getName()
     )
   }
+
+  /**
+   * Gets the signature type of the invoked function.
+   *
+   * Note that it avoids calling `getTarget()` so that it works even when that
+   * predicate isn't defined, for example when calling a variable with function
+   * type.
+   */
+  SignatureType getCalleeType() { result = this.getCalleeExpr().getType() }
 
   /** Gets the declared target of this call. */
   Function getTarget() { this.getCalleeExpr() = result.getAReference() }

@@ -15,7 +15,7 @@ newtype TQuery =
 abstract class Query extends TQuery {
   abstract string getName();
 
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 }
 
 class NosqlInjectionQuery extends Query, TNosqlInjectionQuery {

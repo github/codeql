@@ -29,20 +29,10 @@ module StringLengthConflationConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof StringLengthConflationSanitizer
-  }
-
-  predicate isBarrier(DataFlow::Node sanitizer, FlowState flowstate) { none() }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof StringLengthConflationBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(StringLengthConflationAdditionalTaintStep s).step(nodeFrom, nodeTo)
-  }
-
-  predicate isAdditionalFlowStep(
-    DataFlow::Node nodeFrom, FlowState flowstateFrom, DataFlow::Node nodeTo, FlowState flowStateTo
-  ) {
-    none()
+    any(StringLengthConflationAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

@@ -6,25 +6,25 @@ typealias unichar = UInt16
 struct Locale {
 }
 
-struct FilePath {
-  init(_ string: String) {}
 
-  var `extension`: String? { get { "" } set {} }
-  var stem: String? { get { "" } }
-  var string: String { get { "" } }
-  var description: String { get { "" } }
-  var debugDescription: String { get { "" } }
 
-  mutating func append(_ other: String) {}
-  func appending(_ other: String) -> FilePath { return FilePath("") }
 
-  func withCString<Result>(_ body: (UnsafePointer<CChar>) throws -> Result) rethrows -> Result {
-    return 0 as! Result
-  }
-  func withPlatformString<Result>(_ body: (UnsafePointer<CInterop.PlatformChar>) throws -> Result) rethrows -> Result {
-    return 0 as! Result
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 enum CInterop {
   typealias Char = CChar
@@ -59,7 +59,7 @@ extension String : CVarArg {
 
 	init?(data: Data, encoding: Encoding) { self.init() }
 
-  init(decoding path: FilePath) { self.init() }
+
 
   init(format: String, _ arguments: CVarArg...) { self.init() }
   init(format: String, arguments: [CVarArg]) { self.init() }
@@ -78,10 +78,10 @@ extension String : CVarArg {
   init(utf16CodeUnitsNoCopy: UnsafePointer<unichar>, count: Int, freeWhenDone flag: Bool) { self.init() }
 
   init(platformString: UnsafePointer<CInterop.PlatformChar>) { self.init() }
-  init?(validatingPlatformString platformStrinbg: UnsafePointer<CInterop.PlatformChar>) { self.init() }
+
   func withPlatformString<Result>(_ body: (UnsafePointer<CInterop.PlatformChar>) throws -> Result) rethrows -> Result { return 0 as! Result }
 
-  init?(validating path: FilePath) { self.init() }
+
 
   mutating func replaceSubrange<C>(_ subrange: Range<String.Index>, with newElements: C)
     where C : Collection, C.Element == Character {}
@@ -580,67 +580,16 @@ func taintThroughSubstring() {
   sink(arg: String(sub6)) // $ tainted=554
 }
 
-func taintedThroughFilePath() {
-  let clean = FilePath("")
-  let tainted = FilePath(source2())
-
-  sink(arg: clean)
-  sink(arg: tainted) // $ MISSING: tainted=585
-
-  sink(arg: tainted.extension!) // $ MISSING: tainted=585
-  sink(arg: tainted.stem!) // $ MISSING: tainted=585
-  sink(arg: tainted.string) // $ MISSING: tainted=585
-  sink(arg: tainted.description) // $ MISSING: tainted=585
-  sink(arg: tainted.debugDescription) // $ MISSING: tainted=585
-
-  sink(arg: String(decoding: tainted)) // $ MISSING: tainted=585
-  sink(arg: String(validating: tainted)!) // $ MISSING: tainted=585
-
-  let _ = clean.withCString({
-    ptr in
-    sink(arg: ptr)
-  })
-  let _ = tainted.withCString({
-    ptr in
-    sink(arg: ptr) // $ MISSING: tainted=585
-  })
-
-  let _ = clean.withPlatformString({
-    ptr in
-    sink(arg: ptr)
-    sink(arg: String(platformString: ptr))
-    sink(arg: String(validatingPlatformString: ptr)!)
-  })
-  let _ = tainted.withPlatformString({
-    ptr in
-    sink(arg: ptr) // $ MISSING: tainted=585
-    sink(arg: String(platformString: ptr)) // $ MISSING: tainted=585
-    sink(arg: String(validatingPlatformString: ptr)!) // $ MISSING: tainted=585
-  })
-
-  var fp1 = FilePath("")
-  sink(arg: fp1)
-  fp1.append(source2())
-  sink(arg: fp1) // $ MISSING: tainted=623
-  fp1.append("")
-  sink(arg: fp1) // $ MISSING: tainted=623
-
-  sink(arg: clean.appending(""))
-  sink(arg: clean.appending(source2())) // $ MISSING: tainted=629
-  sink(arg: tainted.appending("")) // $ MISSING: tainted=585
-  sink(arg: tainted.appending(source2())) // $ MISSING: tainted=585,631
-}
-
 func taintedThroughConversion() {
   sink(arg: String(0))
-  sink(arg: String(source())) // $ tainted=636
+  sink(arg: String(source())) // $ tainted=585
   sink(arg: Int(0).description)
-  sink(arg: source().description) // $ MISSING: tainted=638
+  sink(arg: source().description) // $ MISSING: tainted=587
   sink(arg: String(describing: 0))
-  sink(arg: String(describing: source())) // $ tainted=640
+  sink(arg: String(describing: source())) // $ tainted=589
 
   sink(arg: Int("123")!)
-  sink(arg: Int(source2())!) // $ MISSING: tainted=643
+  sink(arg: Int(source2())!) // $ MISSING: tainted=592
 }
 
 func untaintedFields() {

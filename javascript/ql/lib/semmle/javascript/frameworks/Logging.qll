@@ -63,11 +63,11 @@ private module Console {
     override DataFlow::Node getAMessageComponent() {
       (
         if name = "assert"
-        then result = getArgument([1 .. getNumArgument()])
-        else result = getAnArgument()
+        then result = this.getArgument([1 .. this.getNumArgument()])
+        else result = this.getAnArgument()
       )
       or
-      result = getASpreadArgument()
+      result = this.getASpreadArgument()
     }
 
     /**
@@ -89,7 +89,7 @@ private module Loglevel {
       this = API::moduleImport("loglevel").getMember(getAStandardLoggerMethodName()).getACall()
     }
 
-    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 }
 
@@ -111,9 +111,9 @@ private module Winston {
     }
 
     override DataFlow::Node getAMessageComponent() {
-      if getMethodName() = "log"
-      then result = getOptionArgument(0, "message")
-      else result = getAnArgument()
+      if this.getMethodName() = "log"
+      then result = this.getOptionArgument(0, "message")
+      else result = this.getAnArgument()
     }
   }
 }
@@ -135,7 +135,7 @@ private module Log4js {
             .getACall()
     }
 
-    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 }
 
@@ -157,11 +157,11 @@ private module Npmlog {
     override DataFlow::Node getAMessageComponent() {
       (
         if name = "log"
-        then result = getArgument([1 .. getNumArgument()])
-        else result = getAnArgument()
+        then result = this.getArgument([1 .. this.getNumArgument()])
+        else result = this.getAnArgument()
       )
       or
-      result = getASpreadArgument()
+      result = this.getASpreadArgument()
     }
   }
 }
@@ -179,7 +179,7 @@ private module Fancylog {
       this = API::moduleImport("fancy-log").getACall()
     }
 
-    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 }
 
@@ -189,7 +189,7 @@ private module Fancylog {
 private class DebugLoggerCall extends LoggerCall, API::CallNode {
   DebugLoggerCall() { this = API::moduleImport("debug").getReturn().getACall() }
 
-  override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+  override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
 }
 
 /**
@@ -293,11 +293,11 @@ class KleurStep extends TaintTracking::SharedTaintStep {
   private API::Node kleurInstance() {
     result = API::moduleImport("kleur")
     or
-    result = kleurInstance().getAMember().getReturn()
+    result = this.kleurInstance().getAMember().getReturn()
   }
 
   override predicate stringManipulationStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(API::CallNode call | call = kleurInstance().getAMember().getACall() |
+    exists(API::CallNode call | call = this.kleurInstance().getAMember().getACall() |
       pred = call.getArgument(0) and
       succ = call
     )
@@ -363,7 +363,7 @@ private module Pino {
       this = pino().getMember(["trace", "debug", "info", "warn", "error", "fatal"]).getACall()
     }
 
-    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 }
 

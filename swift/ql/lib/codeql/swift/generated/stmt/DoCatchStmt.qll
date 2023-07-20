@@ -11,27 +11,16 @@ module Generated {
 
     /**
      * Gets the body of this do catch statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Stmt getImmediateBody() {
+    Stmt getBody() {
       result =
         Synth::convertStmtFromRaw(Synth::convertDoCatchStmtToRaw(this).(Raw::DoCatchStmt).getBody())
     }
 
     /**
-     * Gets the body of this do catch statement.
-     */
-    final Stmt getBody() { result = getImmediateBody().resolve() }
-
-    /**
      * Gets the `index`th catch of this do catch statement (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    CaseStmt getImmediateCatch(int index) {
+    CaseStmt getCatch(int index) {
       result =
         Synth::convertCaseStmtFromRaw(Synth::convertDoCatchStmtToRaw(this)
               .(Raw::DoCatchStmt)
@@ -39,18 +28,13 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th catch of this do catch statement (0-based).
-     */
-    final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }
-
-    /**
      * Gets any of the catches of this do catch statement.
      */
-    final CaseStmt getACatch() { result = getCatch(_) }
+    final CaseStmt getACatch() { result = this.getCatch(_) }
 
     /**
      * Gets the number of catches of this do catch statement.
      */
-    final int getNumberOfCatches() { result = count(int i | exists(getCatch(i))) }
+    final int getNumberOfCatches() { result = count(int i | exists(this.getCatch(i))) }
   }
 }

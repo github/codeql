@@ -30,7 +30,7 @@ For more language-specific information on analyzing data flow, see:
 - ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript-and-typescript>`"
 - ":ref:`Analyzing data flow in Python <analyzing-data-flow-in-python>`"
 - ":ref:`Analyzing data flow in Ruby <analyzing-data-flow-in-ruby>`"
-
+- ":ref:`Analyzing data flow in Swift <analyzing-data-flow-in-swift>`"
 
 Path query examples
 *******************
@@ -56,8 +56,8 @@ You should use the following template:
      */
 
     import <language>
-    // For some languages (Java/C++/Python) you need to explicitly import the data flow library, such as
-    // import semmle.code.java.dataflow.DataFlow
+    // For some languages (Java/C++/Python/Swift) you need to explicitly import the data flow library, such as
+    // import semmle.code.java.dataflow.DataFlow or import codeql.swift.dataflow.DataFlow
     import DataFlow::PathGraph
     ...
 

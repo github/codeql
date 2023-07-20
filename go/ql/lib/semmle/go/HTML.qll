@@ -32,17 +32,19 @@ module HTML {
     /**
      * Holds if this is a toplevel element, that is, if it does not have a parent element.
      */
-    predicate isTopLevel() { not exists(getParent()) }
+    predicate isTopLevel() { not exists(this.getParent()) }
 
     /**
      * Gets the root HTML document element in which this element is contained.
      */
-    DocumentElement getDocument() { result = getRoot() }
+    DocumentElement getDocument() { result = this.getRoot() }
 
     /**
      * Gets the root element in which this element is contained.
      */
-    Element getRoot() { if isTopLevel() then result = this else result = getParent().getRoot() }
+    Element getRoot() {
+      if this.isTopLevel() then result = this else result = this.getParent().getRoot()
+    }
 
     /**
      * Gets the `i`th child element (0-based) of this element.
@@ -52,7 +54,7 @@ module HTML {
     /**
      * Gets a child element of this element.
      */
-    Element getChild() { result = getChild(_) }
+    Element getChild() { result = this.getChild(_) }
 
     /**
      * Gets the `i`th attribute (0-based) of this element.
@@ -62,13 +64,13 @@ module HTML {
     /**
      * Gets an attribute of this element.
      */
-    Attribute getAnAttribute() { result = getAttribute(_) }
+    Attribute getAnAttribute() { result = this.getAttribute(_) }
 
     /**
      * Gets an attribute of this element that has the given name.
      */
     Attribute getAttributeByName(string name) {
-      result = getAnAttribute() and
+      result = this.getAnAttribute() and
       result.getName() = name
     }
 
@@ -77,7 +79,7 @@ module HTML {
      */
     TextNode getTextNode() { result.getParent() = this }
 
-    override string toString() { result = "<" + getName() + ">...</>" }
+    override string toString() { result = "<" + this.getName() + ">...</>" }
   }
 
   /**
@@ -106,7 +108,7 @@ module HTML {
      * Gets the root element in which the element to which this attribute
      * belongs is contained.
      */
-    Element getRoot() { result = getElement().getRoot() }
+    Element getRoot() { result = this.getElement().getRoot() }
 
     /**
      * Gets the name of this attribute.
@@ -121,7 +123,7 @@ module HTML {
      */
     string getValue() { xmlAttrs(this, _, _, result, _, _) }
 
-    override string toString() { result = getName() + "=" + getValue() }
+    override string toString() { result = this.getName() + "=" + this.getValue() }
   }
 
   /**
@@ -138,7 +140,7 @@ module HTML {
    * ```
    */
   class DocumentElement extends Element {
-    DocumentElement() { getName() = "html" }
+    DocumentElement() { this.getName() = "html" }
   }
 
   /**
@@ -155,7 +157,7 @@ module HTML {
   class TextNode extends Locatable, @xmlcharacters {
     TextNode() { exists(HtmlFile f | xmlChars(this, _, _, _, _, f)) }
 
-    override string toString() { result = getText() }
+    override string toString() { result = this.getText() }
 
     /**
      * Gets the content of this text node.
@@ -198,7 +200,7 @@ module HTML {
     Element getParent() { xmlComments(this, _, result, _) }
 
     /** Gets the text of this comment, not including delimiters. */
-    string getText() { result = toString().regexpCapture("(?s)<!--(.*)-->", 1) }
+    string getText() { result = this.toString().regexpCapture("(?s)<!--(.*)-->", 1) }
 
     override string toString() { xmlComments(this, result, _, _) }
 

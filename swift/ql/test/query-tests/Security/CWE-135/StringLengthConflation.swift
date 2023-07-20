@@ -161,6 +161,25 @@ func test(s: String) {
     let _ = s.index(s.startIndex, offsetBy: s_utf16.count) // BAD
     let _ = s_utf16.index(s_utf16.startIndex, offsetBy: scalars.count) // GOOD
     let _ = s_utf16.index(s_utf16.startIndex, offsetBy: s.count) // BAD [NOT DETECTED]
+
+    // --- methods provided by Sequence, Collection etc ---
+
+    let _ = String(s.prefix(s.count - 10)) // GOOD
+    let _ = String(s.prefix(s.utf8.count - 10)) // BAD
+    let _ = String(s.prefix(s.utf16.count - 10)) // BAD
+    let _ = String(s.prefix(s.unicodeScalars.count - 10)) // BAD
+    let _ = String(s.prefix(ns.length - 10)) // BAD
+    let _ = String(s.prefix(nms.length - 10)) // BAD
+    let _ = String(scalars.prefix(s.count - 10)) // BAD
+    let _ = String(scalars.prefix(s.utf8.count - 10)) // BAD
+    let _ = String(scalars.prefix(s.utf16.count - 10)) // BAD
+    let _ = String(scalars.prefix(s.unicodeScalars.count - 10)) // GOOD
+    let _ = String(scalars.prefix(ns.length - 10)) // BAD
+    let _ = String(scalars.prefix(nms.length - 10)) // BAD
+    let _ = String(s.utf8.dropFirst(s.count - 10)) // BAD
+    let _ = String(s.utf8.dropFirst(s.utf8.count - 10)) // GOOD
+    let _ = String(s.utf16.dropLast(s.count - 10)) // BAD
+    let _ = String(s.utf16.dropLast(s.utf16.count - 10)) // GOOD
 }
 
 // `begin :thumbsup: end`, with thumbs up emoji and skin tone modifier

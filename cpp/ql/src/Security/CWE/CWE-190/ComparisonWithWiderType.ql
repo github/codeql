@@ -45,13 +45,20 @@ Element friendlyLoc(Expr e) {
   not e instanceof Access and not e instanceof Call and result = e
 }
 
+int getComparisonSizeAdjustment(Expr e) {
+  if e.getType().(IntegralType).isSigned() then result = 1 else result = 0
+}
+
 from Loop l, RelationalOperation rel, VariableAccess small, Expr large
 where
   small = rel.getLesserOperand() and
   large = rel.getGreaterOperand() and
   rel = l.getCondition().getAChild*() and
   forall(Expr conv | conv = large.getConversion*() |
-    upperBound(conv).log2() > getComparisonSize(small) * 8
+    // We adjust the comparison size in the case of a signed integer type.
+    // This is to exclude the sign bit from the comparison that determines if the small type's size is sufficient to hold
+    // the value of the larger type determined with range analysis.
+    upperBound(conv).log2() > (getComparisonSize(small) * 8 - getComparisonSizeAdjustment(small))
   ) and
   // Ignore cases where the smaller type is int or larger
   // These are still bugs, but you should need a very large string or array to

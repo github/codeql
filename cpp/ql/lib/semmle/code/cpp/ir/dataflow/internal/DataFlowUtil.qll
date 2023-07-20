@@ -274,7 +274,7 @@ class Node extends TIRDataFlowNode {
    * represents the value of `**x` going into `f`.
    */
   Expr asIndirectArgument(int index) {
-    this.(SideEffectOperandNode).getIndirectionIndex() = index and
+    this.(SideEffectOperandNode).hasAddressOperandAndIndirectionIndex(_, index) and
     result = this.(SideEffectOperandNode).getArgument()
   }
 
@@ -317,7 +317,7 @@ class Node extends TIRDataFlowNode {
     index = 0 and
     result = this.(ExplicitParameterNode).getParameter()
     or
-    this.(IndirectParameterNode).getIndirectionIndex() = index and
+    this.(IndirectParameterNode).hasInstructionAndIndirectionIndex(_, index) and
     result = this.(IndirectParameterNode).getParameter()
   }
 
@@ -562,6 +562,14 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   /** Gets the source variable underlying this phi node. */
   Ssa::SourceVariable getSourceVariable() { result = phi.getSourceVariable() }
+
+  /**
+   * Holds if this phi node is a phi-read node.
+   *
+   * Phi-read nodes are like normal phi nodes, but they are inserted based
+   * on reads instead of writes.
+   */
+  predicate isPhiRead() { phi.isPhiRead() }
 }
 
 /**
@@ -569,15 +577,20 @@ class SsaPhiNode extends Node, TSsaPhiNode {
  *
  * A node representing a value after leaving a function.
  */
-class SideEffectOperandNode extends Node, IndirectOperand {
+class SideEffectOperandNode extends Node instanceof IndirectOperand {
   CallInstruction call;
   int argumentIndex;
 
-  SideEffectOperandNode() { operand = call.getArgumentOperand(argumentIndex) }
+  SideEffectOperandNode() {
+    IndirectOperand.super.hasOperandAndIndirectionIndex(call.getArgumentOperand(argumentIndex), _)
+  }
 
   CallInstruction getCallInstruction() { result = call }
 
-  Operand getAddressOperand() { result = operand }
+  /** Gets the underlying operand and the underlying indirection index. */
+  predicate hasAddressOperandAndIndirectionIndex(Operand operand, int indirectionIndex) {
+    IndirectOperand.super.hasOperandAndIndirectionIndex(operand, indirectionIndex)
+  }
 
   int getArgumentIndex() { result = argumentIndex }
 
@@ -657,10 +670,10 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
  *
  * A node representing an indirection of a parameter.
  */
-class IndirectParameterNode extends Node, IndirectInstruction {
+class IndirectParameterNode extends Node instanceof IndirectInstruction {
   InitializeParameterInstruction init;
 
-  IndirectParameterNode() { this.getInstruction() = init }
+  IndirectParameterNode() { IndirectInstruction.super.hasInstructionAndIndirectionIndex(init, _) }
 
   int getArgumentIndex() { init.hasIndex(result) }
 
@@ -669,7 +682,12 @@ class IndirectParameterNode extends Node, IndirectInstruction {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = init.getEnclosingFunction() }
+
+  /** Gets the underlying operand and the underlying indirection index. */
+  predicate hasInstructionAndIndirectionIndex(Instruction instr, int index) {
+    IndirectInstruction.super.hasInstructionAndIndirectionIndex(instr, index)
+  }
 
   override Location getLocationImpl() { result = this.getParameter().getLocation() }
 
@@ -691,7 +709,8 @@ class IndirectReturnNode extends Node {
   IndirectReturnNode() {
     this instanceof FinalParameterNode
     or
-    this.(IndirectOperand).getOperand() = any(ReturnValueInstruction ret).getReturnAddressOperand()
+    this.(IndirectOperand)
+        .hasOperandAndIndirectionIndex(any(ReturnValueInstruction ret).getReturnAddressOperand(), _)
   }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
@@ -714,7 +733,7 @@ class IndirectReturnNode extends Node {
   int getIndirectionIndex() {
     result = this.(FinalParameterNode).getIndirectionIndex()
     or
-    result = this.(IndirectOperand).getIndirectionIndex()
+    this.(IndirectOperand).hasOperandAndIndirectionIndex(_, result)
   }
 }
 
@@ -1098,7 +1117,8 @@ predicate exprNodeShouldBeInstruction(Node node, Expr e) {
 /** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */
 predicate indirectExprNodeShouldBeIndirectInstruction(IndirectInstruction node, Expr e) {
   exists(Instruction instr |
-    instr = node.getInstruction() and not indirectExprNodeShouldBeIndirectOperand(_, e)
+    node.hasInstructionAndIndirectionIndex(instr, _) and
+    not indirectExprNodeShouldBeIndirectOperand(_, e)
   |
     e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
     or
@@ -1299,8 +1319,8 @@ pragma[noinline]
 private predicate indirectParameterNodeHasArgumentIndexAndIndex(
   IndirectParameterNode node, int argumentIndex, int indirectionIndex
 ) {
-  node.getArgumentIndex() = argumentIndex and
-  node.getIndirectionIndex() = indirectionIndex
+  node.hasInstructionAndIndirectionIndex(_, indirectionIndex) and
+  node.getArgumentIndex() = argumentIndex
 }
 
 /** A synthetic parameter to model the pointed-to object of a pointer parameter. */
@@ -1471,18 +1491,14 @@ VariableNode variableNode(Variable v) {
  */
 Node uninitializedNode(LocalVariable v) { none() }
 
-pragma[noinline]
 predicate hasOperandAndIndex(IndirectOperand indirectOperand, Operand operand, int indirectionIndex) {
-  indirectOperand.getOperand() = operand and
-  indirectOperand.getIndirectionIndex() = indirectionIndex
+  indirectOperand.hasOperandAndIndirectionIndex(operand, indirectionIndex)
 }
 
-pragma[noinline]
 predicate hasInstructionAndIndex(
   IndirectInstruction indirectInstr, Instruction instr, int indirectionIndex
 ) {
-  indirectInstr.getInstruction() = instr and
-  indirectInstr.getIndirectionIndex() = indirectionIndex
+  indirectInstr.hasInstructionAndIndirectionIndex(instr, indirectionIndex)
 }
 
 cached
@@ -1540,7 +1556,7 @@ private module Cached {
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     // Post update node -> Node flow
-    Ssa::ssaFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+    Ssa::postUpdateFlow(nodeFrom, nodeTo)
     or
     // Def-use/Use-use flow
     Ssa::ssaFlow(nodeFrom, nodeTo)
@@ -1632,8 +1648,15 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
   localFlow(instructionNode(e1), instructionNode(e2))
 }
 
+/**
+ * INTERNAL: Do not use.
+ *
+ * Ideally this module would be private, but the `asExprInternal` predicate is
+ * needed in `DefaultTaintTrackingImpl`. Once `DefaultTaintTrackingImpl` is gone
+ * we can make this module private.
+ */
 cached
-private module ExprFlowCached {
+module ExprFlowCached {
   /**
    * Holds if `n` is an indirect operand of a `PointerArithmeticInstruction`, and
    * `e` is the result of loading from the `PointerArithmeticInstruction`.
@@ -1641,8 +1664,7 @@ private module ExprFlowCached {
   private predicate isIndirectBaseOfArrayAccess(IndirectOperand n, Expr e) {
     exists(LoadInstruction load, PointerArithmeticInstruction pai |
       pai = load.getSourceAddress() and
-      pai.getLeftOperand() = n.getOperand() and
-      n.getIndirectionIndex() = 1 and
+      n.hasOperandAndIndirectionIndex(pai.getLeftOperand(), 1) and
       e = load.getConvertedResultExpression()
     )
   }
@@ -1684,7 +1706,8 @@ private module ExprFlowCached {
    * `x[i]` steps to the expression `x[i - 1]` without traversing the
    * entire chain.
    */
-  private Expr asExpr(Node n) {
+  cached
+  Expr asExprInternal(Node n) {
     isIndirectBaseOfArrayAccess(n, result)
     or
     not isIndirectBaseOfArrayAccess(n, _) and
@@ -1696,7 +1719,7 @@ private module ExprFlowCached {
    * dataflow step.
    */
   private predicate localStepFromNonExpr(Node n1, Node n2) {
-    not exists(asExpr(n1)) and
+    not exists(asExprInternal(n1)) and
     localFlowStep(n1, n2)
   }
 
@@ -1707,7 +1730,7 @@ private module ExprFlowCached {
   pragma[nomagic]
   private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
     localStepFromNonExpr*(n1, n2) and
-    e2 = asExpr(n2)
+    e2 = asExprInternal(n2)
   }
 
   /**
@@ -1718,7 +1741,7 @@ private module ExprFlowCached {
     exists(Node mid |
       localFlowStep(n1, mid) and
       localStepsToExpr(mid, n2, e2) and
-      e1 = asExpr(n1)
+      e1 = asExprInternal(n1)
     )
   }
 
@@ -1809,6 +1832,20 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
+
+  /** Gets the indirection index of this `Content`. */
+  abstract int getIndirectionIndex();
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if a write to this `Content` implies that `c` is
+   * also cleared.
+   *
+   * For example, a write to a field `f` implies that any content of
+   * the form `*f` is also cleared.
+   */
+  abstract predicate impliesClearOf(Content c);
 }
 
 /** A reference through a non-union instance field. */
@@ -1826,9 +1863,20 @@ class FieldContent extends Content, TFieldContent {
 
   Field getField() { result = f }
 
+  /** Gets the indirection index of this `FieldContent`. */
   pragma[inline]
-  int getIndirectionIndex() {
+  override int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
+
+  override predicate impliesClearOf(Content c) {
+    exists(FieldContent fc |
+      fc = c and
+      fc.getField() = f and
+      // If `this` is `f` then `c` is cleared if it's of the
+      // form `*f`, `**f`, etc.
+      fc.getIndirectionIndex() >= indirectionIndex
+    )
   }
 }
 
@@ -1854,8 +1902,20 @@ class UnionContent extends Content, TUnionContent {
 
   /** Gets the indirection index of this `UnionContent`. */
   pragma[inline]
-  int getIndirectionIndex() {
+  override int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
+
+  override predicate impliesClearOf(Content c) {
+    exists(UnionContent uc |
+      uc = c and
+      uc.getUnion() = u and
+      // If `this` is `u` then `c` is cleared if it's of the
+      // form `*u`, `**u`, etc. (and we ignore `bytes` because
+      // we know the entire union is overwritten because it's a
+      // union).
+      uc.getIndirectionIndex() >= indirectionIndex
+    )
   }
 }
 
@@ -1903,11 +1963,120 @@ signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
-  /** Gets a node that is safely guarded by the given guard check. */
+  /**
+   * Gets an expression node that is safely guarded by the given guard check.
+   *
+   * For example, given the following code:
+   * ```cpp
+   * int x = source();
+   * // ...
+   * if(is_safe_int(x)) {
+   *   sink(x);
+   * }
+   * ```
+   * and the following barrier guard predicate:
+   * ```ql
+   * predicate myGuardChecks(IRGuardCondition g, Expr e, boolean branch) {
+   *   exists(Call call |
+   *     g.getUnconvertedResultExpression() = call and
+   *     call.getTarget().hasName("is_safe_int") and
+   *     e = call.getAnArgument() and
+   *     branch = true
+   *   )
+   * }
+   * ```
+   * implementing `isBarrier` as:
+   * ```ql
+   * predicate isBarrier(DataFlow::Node barrier) {
+   *   barrier = DataFlow::BarrierGuard<myGuardChecks/3>::getABarrierNode()
+   * }
+   * ```
+   * will block flow from `x = source()` to `sink(x)`.
+   *
+   * NOTE: If an indirect expression is tracked, use `getAnIndirectBarrierNode` instead.
+   */
   ExprNode getABarrierNode() {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
       e = value.getAnInstruction().getConvertedResultExpression() and
       result.getConvertedExpr() = e and
+      guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
+      g.controls(result.getBasicBlock(), edge)
+    )
+  }
+
+  /**
+   * Gets an indirect expression node that is safely guarded by the given guard check.
+   *
+   * For example, given the following code:
+   * ```cpp
+   * int* p;
+   * // ...
+   * *p = source();
+   * if(is_safe_pointer(p)) {
+   *   sink(*p);
+   * }
+   * ```
+   * and the following barrier guard check:
+   * ```ql
+   * predicate myGuardChecks(IRGuardCondition g, Expr e, boolean branch) {
+   *   exists(Call call |
+   *     g.getUnconvertedResultExpression() = call and
+   *     call.getTarget().hasName("is_safe_pointer") and
+   *     e = call.getAnArgument() and
+   *     branch = true
+   *   )
+   * }
+   * ```
+   * implementing `isBarrier` as:
+   * ```ql
+   * predicate isBarrier(DataFlow::Node barrier) {
+   *   barrier = DataFlow::BarrierGuard<myGuardChecks/3>::getAnIndirectBarrierNode()
+   * }
+   * ```
+   * will block flow from `x = source()` to `sink(x)`.
+   *
+   * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
+   */
+  IndirectExprNode getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
+
+  /**
+   * Gets an indirect expression node with indirection index `indirectionIndex` that is
+   * safely guarded by the given guard check.
+   *
+   * For example, given the following code:
+   * ```cpp
+   * int* p;
+   * // ...
+   * *p = source();
+   * if(is_safe_pointer(p)) {
+   *   sink(*p);
+   * }
+   * ```
+   * and the following barrier guard check:
+   * ```ql
+   * predicate myGuardChecks(IRGuardCondition g, Expr e, boolean branch) {
+   *   exists(Call call |
+   *     g.getUnconvertedResultExpression() = call and
+   *     call.getTarget().hasName("is_safe_pointer") and
+   *     e = call.getAnArgument() and
+   *     branch = true
+   *   )
+   * }
+   * ```
+   * implementing `isBarrier` as:
+   * ```ql
+   * predicate isBarrier(DataFlow::Node barrier) {
+   *   barrier = DataFlow::BarrierGuard<myGuardChecks/3>::getAnIndirectBarrierNode(1)
+   * }
+   * ```
+   * will block flow from `x = source()` to `sink(x)`.
+   *
+   * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
+   */
+  IndirectExprNode getAnIndirectBarrierNode(int indirectionIndex) {
+    exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
+      e = value.getAnInstruction().getConvertedResultExpression() and
+      result.getConvertedExpr(indirectionIndex) = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
       g.controls(result.getBasicBlock(), edge)
     )

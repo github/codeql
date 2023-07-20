@@ -435,3 +435,41 @@ int test38() {
 
 	return j; // BAD
 }
+
+void test39() {
+	int x;
+
+	x; // GOOD, in void context
+}
+
+void test40() {
+	int x;
+
+	(void)x; // GOOD, explicitly cast to void
+}
+
+void test41() {
+	int x;
+
+	x++; // BAD
+}
+
+void test42() {
+	int x;
+
+	void(x++); // BAD
+}
+
+void test43() {
+	int x;
+	int y = 1;
+
+	x + y; // BAD
+}
+
+void test44() {
+	int x;
+	int y = 1;
+
+	void(x + y); // BAD
+}

@@ -60,7 +60,7 @@ private DataFlow::Node getNodeForSource(Expr source) {
 }
 
 private DataFlow::Node getNodeForExpr(Expr node) {
-  result = DataFlow::exprNode(node)
+  node = DataFlow::ExprFlowCached::asExprInternal(result)
   or
   // Some of the sources in `isUserInput` are intended to match the value of
   // an expression, while others (those modeled below) are intended to match
@@ -221,7 +221,7 @@ private module Cached {
   predicate nodeIsBarrierIn(DataFlow::Node node) {
     // don't use dataflow into taint sources, as this leads to duplicate results.
     exists(Expr source | isUserInput(source, _) |
-      node = DataFlow::exprNode(source)
+      source = DataFlow::ExprFlowCached::asExprInternal(node)
       or
       // This case goes together with the similar (but not identical) rule in
       // `getNodeForSource`.
@@ -448,6 +448,8 @@ module TaintedWithPath {
     }
 
     predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+
+    predicate neverSkip(Node node) { none() }
   }
 
   private module AdjustedFlow = TaintTracking::Global<AdjustedConfig>;

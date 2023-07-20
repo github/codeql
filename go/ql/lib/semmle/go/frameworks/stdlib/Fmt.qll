@@ -30,7 +30,7 @@ module Fmt {
   private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
     PrintCall() { this.getTarget() instanceof Printer }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   /** The `Fprint` function or one of its variants. */
@@ -66,8 +66,6 @@ module Fmt {
     }
 
     override int getFormatStringIndex() { result = argOffset }
-
-    override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
   }
 
   /** The `Sscan` function or one of its variants. */

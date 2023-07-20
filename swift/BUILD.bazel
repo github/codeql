@@ -2,6 +2,7 @@ load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files"
 load("@rules_pkg//:install.bzl", "pkg_install")
 load("//:defs.bzl", "codeql_platform")
 load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
+load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
 
 filegroup(
     name = "schema",
@@ -37,11 +38,15 @@ pkg_files(
 pkg_filegroup(
     name = "extractor-pack-generic",
     srcs = [
-        ":dbscheme_files",
         ":manifest",
-        "//swift/downgrades",
         "//swift/tools",
-    ],
+    ] + select({
+        "@platforms//os:windows": [],
+        "//conditions:default": [
+            ":dbscheme_files",
+            "//swift/downgrades",
+        ],
+    }),
     visibility = ["//visibility:public"],
 )
 
@@ -57,6 +62,19 @@ pkg_runfiles(
     prefix = "tools/" + codeql_platform,
 )
 
+pkg_runfiles(
+    name = "diagnostics",
+    srcs = ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
+    prefix = "tools/" + codeql_platform,
+)
+
+pkg_filegroup(
+    name = "resource-dir-arch",
+    srcs = ["//swift/third_party/swift-llvm-support:swift-resource-dir"],
+    prefix = "resource-dir/" + codeql_platform,
+    visibility = ["//visibility:public"],
+)
+
 pkg_files(
     name = "swift-test-sdk-arch",
     srcs = ["//swift/third_party/swift-llvm-support:swift-test-sdk"],
@@ -66,13 +84,19 @@ pkg_files(
 
 pkg_filegroup(
     name = "extractor-pack-arch",
-    srcs = [
-        ":extractor",
-        ":swift-test-sdk-arch",
-    ] + select({
-        "@platforms//os:linux": [],
+    srcs = select({
+        "@platforms//os:windows": [],
+        "//conditions:default": [
+            ":extractor",
+            ":resource-dir-arch",
+            ":swift-test-sdk-arch",
+        ],
+    }) + select({
         "@platforms//os:macos": [
             ":xcode-autobuilder",
+        ],
+        "//conditions:default": [
+            ":diagnostics",
         ],
     }),
     visibility = ["//visibility:public"],
@@ -97,4 +121,16 @@ py_binary(
     srcs = ["create_extractor_pack.py"],
     main = "create_extractor_pack.py",
     deps = [":_create_extractor_pack"],
+)
+
+generate_cmake(
+    name = "cmake",
+    targets = [
+        "//swift/extractor:extractor.real",
+        "//swift/logging/tests/assertion-diagnostics:assert-false",
+    ] + select({
+        "@platforms//os:linux": ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
+        "@platforms//os:macos": ["//swift/xcode-autobuilder"],
+    }),
+    visibility = ["//visibility:public"],
 )

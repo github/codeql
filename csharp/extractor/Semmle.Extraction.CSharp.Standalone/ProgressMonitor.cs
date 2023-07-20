@@ -3,27 +3,7 @@ using System;
 
 namespace Semmle.BuildAnalyser
 {
-    /// <summary>
-    /// Callback for various events that may happen during the build analysis.
-    /// </summary>
-    internal interface IProgressMonitor
-    {
-        void FindingFiles(string dir);
-        void UnresolvedReference(string id, string project);
-        void AnalysingSolution(string filename);
-        void FailedProjectFile(string filename, string reason);
-        void FailedNugetCommand(string exe, string args, string message);
-        void NugetInstall(string package);
-        void ResolvedReference(string filename);
-        void Summary(int existingSources, int usedSources, int missingSources, int references, int unresolvedReferences, int resolvedConflicts, int totalProjects, int failedProjects, TimeSpan analysisTime);
-        void Log(Severity severity, string message);
-        void ResolvedConflict(string asm1, string asm2);
-        void MissingProject(string projectFile);
-        void CommandFailed(string exe, string arguments, int exitCode);
-        void MissingNuGet();
-    }
-
-    internal class ProgressMonitor : IProgressMonitor
+    internal class ProgressMonitor
     {
         private readonly ILogger logger;
 
@@ -116,6 +96,37 @@ namespace Semmle.BuildAnalyser
         public void MissingNuGet()
         {
             logger.Log(Severity.Error, "Missing nuget.exe");
+        }
+
+        public void MissingDotNet()
+        {
+            logger.Log(Severity.Error, "Missing dotnet CLI");
+        }
+
+        public void RunningProcess(string command)
+        {
+            logger.Log(Severity.Info, $"Running {command}");
+        }
+
+        public void FailedToRestoreNugetPackage(string package)
+        {
+            logger.Log(Severity.Info, $"Failed to restore nuget package {package}");
+        }
+
+        public void FailedToReadFile(string file, Exception ex)
+        {
+            logger.Log(Severity.Info, $"Failed to read file {file}");
+            logger.Log(Severity.Debug, $"Failed to read file {file}, exception: {ex}");
+        }
+
+        public void MultipleNugetConfig(string[] nugetConfigs)
+        {
+            logger.Log(Severity.Info, $"Found multiple nuget.config files: {string.Join(", ", nugetConfigs)}.");
+        }
+
+        internal void NoTopLevelNugetConfig()
+        {
+            logger.Log(Severity.Info, $"Could not find a top-level nuget.config file.");
         }
     }
 }

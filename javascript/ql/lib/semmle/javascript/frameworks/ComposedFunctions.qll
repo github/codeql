@@ -18,7 +18,7 @@ class FunctionCompositionCall extends DataFlow::CallNode instanceof FunctionComp
   DataFlow::Node getOperandNode(int i) { result = super.getOperandNode(i) }
 
   /** Gets a node holding one of the functions to be composed. */
-  final DataFlow::Node getAnOperandNode() { result = getOperandNode(_) }
+  final DataFlow::Node getAnOperandNode() { result = this.getOperandNode(_) }
 
   /**
    * Gets the function flowing into the `i`th function in the composition `f(g(h(...)))`.
@@ -27,11 +27,11 @@ class FunctionCompositionCall extends DataFlow::CallNode instanceof FunctionComp
    * that is, `g` occurs later than `f` in `f(g(...))` but is invoked before `f`.
    */
   final DataFlow::FunctionNode getOperandFunction(int i) {
-    result = getOperandNode(i).getALocalSource()
+    result = this.getOperandNode(i).getALocalSource()
   }
 
   /** Gets any of the functions being composed. */
-  final DataFlow::FunctionNode getAnOperandFunction() { result = getOperandFunction(_) }
+  final DataFlow::FunctionNode getAnOperandFunction() { result = this.getOperandFunction(_) }
 
   /** Gets the number of functions being composed. */
   int getNumOperand() { result = super.getNumOperand() }
@@ -65,17 +65,17 @@ module FunctionCompositionCall {
   abstract private class WithArrayOverloading extends Range {
     /** Gets the `i`th argument to the call or the `i`th array element passed into the call. */
     DataFlow::Node getEffectiveArgument(int i) {
-      result = getArgument(0).(DataFlow::ArrayCreationNode).getElement(i)
+      result = this.getArgument(0).(DataFlow::ArrayCreationNode).getElement(i)
       or
-      not getArgument(0) instanceof DataFlow::ArrayCreationNode and
-      result = getArgument(i)
+      not this.getArgument(0) instanceof DataFlow::ArrayCreationNode and
+      result = this.getArgument(i)
     }
 
     override int getNumOperand() {
-      result = getArgument(0).(DataFlow::ArrayCreationNode).getSize()
+      result = this.getArgument(0).(DataFlow::ArrayCreationNode).getSize()
       or
-      not getArgument(0) instanceof DataFlow::ArrayCreationNode and
-      result = getNumArgument()
+      not this.getArgument(0) instanceof DataFlow::ArrayCreationNode and
+      result = this.getNumArgument()
     }
   }
 
@@ -91,7 +91,7 @@ module FunctionCompositionCall {
       this = LodashUnderscore::member("flowRight").getACall()
     }
 
-    override DataFlow::Node getOperandNode(int i) { result = getEffectiveArgument(i) }
+    override DataFlow::Node getOperandNode(int i) { result = this.getEffectiveArgument(i) }
   }
 
   /** A call whose arguments are functions `f,g,h` which are composed into `h(g(f(...))` */
@@ -103,7 +103,7 @@ module FunctionCompositionCall {
     }
 
     override DataFlow::Node getOperandNode(int i) {
-      result = getEffectiveArgument(getNumOperand() - i - 1)
+      result = this.getEffectiveArgument(this.getNumOperand() - i - 1)
     }
   }
 }

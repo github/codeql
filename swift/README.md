@@ -52,7 +52,7 @@ A log file is produced for each run under `CODEQL_EXTRACTOR_SWIFT_LOG_DIR` (the 
 You can use the environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` to configure levels for
 loggers and outputs. This must have the form of a comma separated `spec:min_level` list, where
 `spec` is either a glob pattern (made up of alphanumeric, `/`, `*` and `.` characters) for
-matching logger names or one of `out:bin`, `out:text` or `out:console`, and `min_level` is one
+matching logger names or one of `out:binary`, `out:text`, `out:console` or `out:diagnostics`, and `min_level` is one
 of `trace`, `debug`, `info`, `warning`, `error`, `critical` or `no_logs` to turn logs completely off.
 
 Current output default levels are no binary logs, `info` logs or higher in the text file and `warning` logs or higher on

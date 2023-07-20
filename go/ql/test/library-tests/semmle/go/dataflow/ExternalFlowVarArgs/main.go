@@ -24,7 +24,7 @@ func main() {
 	sink(test.FunctionWithParameter(sSlice[1]))        // $ taintflow dataflow
 	sink(test.FunctionWithSliceParameter(sSlice))      // $ taintflow dataflow
 	sink(test.FunctionWithVarArgsParameter(sSlice...)) // $ taintflow dataflow
-	sink(test.FunctionWithVarArgsParameter(s0, s1))    // $ MISSING: taintflow dataflow
+	sink(test.FunctionWithVarArgsParameter(s0, s1))    // $ taintflow dataflow
 
 	sliceOfStructs := []test.A{{Field: source()}}
 	sink(sliceOfStructs[0].Field) // $ taintflow dataflow
@@ -34,5 +34,5 @@ func main() {
 	aSlice := []test.A{a0, a1}
 	sink(test.FunctionWithSliceOfStructsParameter(aSlice))      // $ taintflow dataflow
 	sink(test.FunctionWithVarArgsOfStructsParameter(aSlice...)) // $ taintflow dataflow
-	sink(test.FunctionWithVarArgsOfStructsParameter(a0, a1))    // $ MISSING: taintflow dataflow
+	sink(test.FunctionWithVarArgsOfStructsParameter(a0, a1))    // $ taintflow dataflow
 }

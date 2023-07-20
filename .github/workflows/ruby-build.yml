@@ -61,7 +61,7 @@ jobs:
             ruby/extractor/target/release/codeql-extractor-ruby
             ruby/extractor/target/release/codeql-extractor-ruby.exe
             ruby/extractor/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}--${{ hashFiles('ruby/extractor/**/*.rs') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ruby/extractor/**/*.rs') }}
       - uses: actions/cache@v3
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         with:

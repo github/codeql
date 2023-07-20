@@ -33,6 +33,14 @@ extension Realm {
 
 // --- tests ---
 
+class ConfigContainer {
+	init() {
+		config = Realm.Configuration()
+	}
+
+	var config: Realm.Configuration
+}
+
 func test(myVarStr: String) {
 	let myVarKey = Data(myVarStr)
 	let myConstKey = Data("abcdef123456")
@@ -42,5 +50,9 @@ func test(myVarStr: String) {
 
 	var config = Realm.Configuration() // GOOD
 	config.encryptionKey = myVarKey // GOOD
-	config.encryptionKey = myConstKey // BAD [NOT DETECTED]
+	config.encryptionKey = myConstKey // BAD
+
+	var configContainer = ConfigContainer()
+	configContainer.config.encryptionKey = myVarKey // GOOD
+	configContainer.config.encryptionKey = myConstKey // BAD
 }

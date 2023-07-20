@@ -8,8 +8,8 @@ swift_cc_library(
     deps = [
         "//swift/extractor/config",
         "//swift/extractor/infra/file",
-        "//swift/extractor/infra/log",
         "//swift/extractor/trap",
+        "//swift/logging",
         "//swift/third_party/swift-llvm-support",
     ],
 )

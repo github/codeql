@@ -83,10 +83,7 @@ pub enum Storage {
 
 impl Storage {
     pub fn is_column(&self) -> bool {
-        match self {
-            Storage::Column { .. } => true,
-            _ => false,
-        }
+        matches!(self, Storage::Column { .. })
     }
 }
 pub fn read_node_types(prefix: &str, node_types_path: &Path) -> std::io::Result<NodeTypeMap> {

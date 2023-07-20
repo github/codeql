@@ -47,6 +47,14 @@ signature module ConfigSig {
   default predicate allowImplicitRead(Node node, ContentSet c) { none() }
 
   /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  default predicate neverSkip(Node node) {
+    isAdditionalFlowStep(node, _) or isAdditionalFlowStep(_, node)
+  }
+
+  /**
    * Gets the virtual dispatch branching limit when calculating field flow.
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
@@ -114,7 +122,7 @@ signature module StateConfigSig {
    * Holds if data flow through `node` is prohibited when the flow state is
    * `state`.
    */
-  predicate isBarrier(Node node, FlowState state);
+  default predicate isBarrier(Node node, FlowState state) { none() }
 
   /** Holds if data flow into `node` is prohibited. */
   default predicate isBarrierIn(Node node) { none() }
@@ -131,13 +139,26 @@ signature module StateConfigSig {
    * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
    * This step is only applicable in `state1` and updates the flow state to `state2`.
    */
-  predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2);
+  default predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
+    none()
+  }
 
   /**
    * Holds if an arbitrary number of implicit read steps of content `c` may be
    * taken at `node`.
    */
   default predicate allowImplicitRead(Node node, ContentSet c) { none() }
+
+  /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  default predicate neverSkip(Node node) {
+    isAdditionalFlowStep(node, _) or
+    isAdditionalFlowStep(_, node) or
+    isAdditionalFlowStep(node, _, _, _) or
+    isAdditionalFlowStep(_, _, node, _)
+  }
 
   /**
    * Gets the virtual dispatch branching limit when calculating field flow.
@@ -360,4 +381,53 @@ module MergePathGraph<
       Graph2::subpaths(arg.asPathNode2(), par.asPathNode2(), ret.asPathNode2(), out.asPathNode2())
     }
   }
+}
+
+/**
+ * Constructs a `PathGraph` from three `PathGraph`s by disjoint union.
+ */
+module MergePathGraph3<
+  PathNodeSig PathNode1, PathNodeSig PathNode2, PathNodeSig PathNode3,
+  PathGraphSig<PathNode1> Graph1, PathGraphSig<PathNode2> Graph2, PathGraphSig<PathNode3> Graph3>
+{
+  private module MergedInner = MergePathGraph<PathNode1, PathNode2, Graph1, Graph2>;
+
+  private module Merged =
+    MergePathGraph<MergedInner::PathNode, PathNode3, MergedInner::PathGraph, Graph3>;
+
+  /** A node in a graph of path explanations that is formed by disjoint union of the three given graphs. */
+  class PathNode instanceof Merged::PathNode {
+    /** Gets this as a projection on the first given `PathGraph`. */
+    PathNode1 asPathNode1() { result = super.asPathNode1().asPathNode1() }
+
+    /** Gets this as a projection on the second given `PathGraph`. */
+    PathNode2 asPathNode2() { result = super.asPathNode1().asPathNode2() }
+
+    /** Gets this as a projection on the third given `PathGraph`. */
+    PathNode3 asPathNode3() { result = super.asPathNode2() }
+
+    /** Gets a textual representation of this element. */
+    string toString() { result = super.toString() }
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the underlying `Node`. */
+    Node getNode() { result = super.getNode() }
+  }
+
+  /**
+   * Provides the query predicates needed to include a graph in a path-problem query.
+   */
+  module PathGraph = Merged::PathGraph;
 }

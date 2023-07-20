@@ -253,7 +253,7 @@ module Beego {
       this.getTarget().hasQualifiedName([packagePath(), logsPackagePath()], getALogFunctionName())
     }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class BeegoLoggerMethods extends LoggerCall::Range, DataFlow::MethodCallNode {
@@ -261,13 +261,13 @@ module Beego {
       this.getTarget().hasQualifiedName(logsPackagePath(), "BeeLogger", getALogFunctionName())
     }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class UtilLoggers extends LoggerCall::Range, DataFlow::CallNode {
     UtilLoggers() { this.getTarget().hasQualifiedName(utilsPackagePath(), "Display") }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {

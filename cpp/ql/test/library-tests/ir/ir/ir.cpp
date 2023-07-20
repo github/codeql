@@ -1886,4 +1886,111 @@ namespace missing_declaration_entries {
     }
 }
 
+template<typename T> T global_template = 42;
+
+int test_global_template_int() {
+    int local_int = global_template<int>;
+    char local_char = global_template<char>;
+    return local_int + (int)local_char;
+}
+
+[[noreturn]] void noreturnFunc();
+
+int noreturnTest(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        noreturnFunc();
+    }
+}
+
+int noreturnTest2(int x) {
+    if (x < 10) {
+        noreturnFunc();
+    }
+    return x;
+}
+
+int static_function(int x) {
+    return x;
+}
+
+void test_static_functions_with_assignments() {
+    C c;
+    int x;
+    x = c.StaticMemberFunction(10);
+    int y;
+    y = C::StaticMemberFunction(10);
+    int z;
+    z = static_function(10);
+}
+
+void test_double_assign() {
+  int i, j;
+  i = j = 40;
+}
+
+void test_assign_with_assign_operation() {
+  int i, j = 0;
+  i = (j += 40);
+}
+
+class D {
+    static D x;
+
+public:
+    static D& ReferenceStaticMemberFunction() {
+        return x;
+    }
+    static D ObjectStaticMemberFunction() {
+        return x;
+    }
+};
+
+void test_static_member_functions_with_reference_return() {
+    D d;
+
+    d.ReferenceStaticMemberFunction();
+    D::ReferenceStaticMemberFunction();
+    d.ObjectStaticMemberFunction();
+    D::ObjectStaticMemberFunction();
+
+    D x;
+    x = d.ReferenceStaticMemberFunction();
+    D y;
+    y = D::ReferenceStaticMemberFunction();
+    D j;
+    j = d.ObjectStaticMemberFunction();
+    D k;
+    k = D::ObjectStaticMemberFunction();
+}
+
+void test_volatile() {
+    volatile int x;
+    x;
+}
+
+struct ValCat {
+  static ValCat& lvalue();
+  static ValCat&& xvalue();
+  static ValCat prvalue();
+};
+
+void value_category_test() {
+    ValCat c;
+
+    c.lvalue() = {};
+    c.xvalue() = {};
+    c.prvalue() = {};
+    ValCat::lvalue() = {};
+    ValCat::xvalue() = {};
+    ValCat::prvalue() = {};
+}
+
+void SetStaticFuncPtr() {
+    C c;
+    int (*pfn)(int) = C::StaticMemberFunction;
+    pfn = c.StaticMemberFunction;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

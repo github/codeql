@@ -131,7 +131,6 @@ private predicate primitiveOrString(Type t) {
  * See JLS v8, section 15.28 (Constant Expressions).
  */
 class CompileTimeConstantExpr extends Expr {
-  pragma[assume_small_delta]
   CompileTimeConstantExpr() {
     primitiveOrString(this.getType()) and
     (
@@ -181,7 +180,6 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the string value of this expression, where possible.
    */
-  pragma[assume_small_delta]
   pragma[nomagic]
   string getStringValue() {
     result = this.(StringLiteral).getValue()
@@ -207,7 +205,6 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the boolean value of this expression, where possible.
    */
-  pragma[assume_small_delta]
   pragma[nomagic]
   boolean getBooleanValue() {
     // Literal value.
@@ -1644,7 +1641,9 @@ class TypeLiteral extends Expr, @typeliteral {
   Type getReferencedType() { result = this.getTypeName().getType() }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.getTypeName().toString() + ".class" }
+  override string toString() {
+    result = pragma[only_bind_out](this.getTypeName()).toString() + ".class"
+  }
 
   override string getAPrimaryQlClass() { result = "TypeLiteral" }
 }
@@ -1752,7 +1751,7 @@ class VarAccess extends Expr, @varaccess {
     exists(Expr q | q = this.getQualifier() |
       if q.isParenthesized()
       then result = "(...)." + this.getVariable().getName()
-      else result = q.toString() + "." + this.getVariable().getName()
+      else result = pragma[only_bind_out](q).toString() + "." + this.getVariable().getName()
     )
     or
     not this.hasQualifier() and result = this.getVariable().getName()
@@ -1807,9 +1806,6 @@ class LValue extends VarAccess {
    * are source expressions of the assignment.
    */
   Expr getRhs() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
-
-  /** DEPRECATED: Alias for getRhs */
-  deprecated Expr getRHS() { result = this.getRhs() }
 }
 
 /**
@@ -1911,7 +1907,6 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }
 
   /** Gets a printable representation of this expression. */
-  pragma[assume_small_delta]
   override string toString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or

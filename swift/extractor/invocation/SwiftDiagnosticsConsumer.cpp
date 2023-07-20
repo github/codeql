@@ -1,5 +1,5 @@
 #include "swift/extractor/invocation/SwiftDiagnosticsConsumer.h"
-#include "swift/extractor/trap/generated/TrapClasses.h"
+#include "swift/extractor/trap/generated/TrapEntries.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/SwiftDiagnosticKind.h"
 
@@ -13,17 +13,13 @@ using namespace codeql;
 
 void SwiftDiagnosticsConsumer::handleDiagnostic(swift::SourceManager& sourceManager,
                                                 const swift::DiagnosticInfo& diagInfo) {
-  if (diagInfo.IsChildNote) return;
-  Diagnostics diag{trap.createLabel<DiagnosticsTag>()};
+  auto message = getDiagMessage(sourceManager, diagInfo);
+  DiagnosticsTrap diag{};
+  diag.id = trap.createTypedLabel<DiagnosticsTag>();
   diag.kind = translateDiagnosticsKind(diagInfo.Kind);
-  diag.text = getDiagMessage(sourceManager, diagInfo);
+  diag.text = message;
   trap.emit(diag);
-  locationExtractor.attachLocation(sourceManager, diagInfo.Loc, diag.id);
-
-  forwardToLog(sourceManager, diagInfo, diag.text);
-  for (const auto& child : diagInfo.ChildDiagnosticInfo) {
-    forwardToLog(sourceManager, *child);
-  }
+  locationExtractor.attachLocation(sourceManager, diagInfo, diag.id);
 }
 
 std::string SwiftDiagnosticsConsumer::getDiagMessage(swift::SourceManager& sourceManager,
@@ -32,30 +28,4 @@ std::string SwiftDiagnosticsConsumer::getDiagMessage(swift::SourceManager& sourc
   llvm::raw_svector_ostream out(text);
   swift::DiagnosticEngine::formatDiagnosticText(out, diagInfo.FormatString, diagInfo.FormatArgs);
   return text.str().str();
-}
-
-void SwiftDiagnosticsConsumer::forwardToLog(swift::SourceManager& sourceManager,
-                                            const swift::DiagnosticInfo& diagInfo,
-                                            const std::string& message) {
-  auto file = sourceManager.getDisplayNameForLoc(diagInfo.Loc);
-  auto [line, column] = sourceManager.getLineAndColumnInBuffer(diagInfo.Loc);
-  using Kind = swift::DiagnosticKind;
-  switch (diagInfo.Kind) {
-    case Kind::Error:
-      LOG_ERROR("{}:{}:{} {}", file, line, column, message);
-      break;
-    case Kind::Warning:
-      LOG_WARNING("{}:{}:{} {}", file, line, column, message);
-      break;
-    case Kind::Remark:
-      LOG_INFO("{}:{}:{} {}", file, line, column, message);
-      break;
-    case Kind::Note:
-      LOG_DEBUG("{}:{}:{} {}", file, line, column, message);
-      break;
-    default:
-      LOG_ERROR("unknown diagnostic kind {}, {}:{}:{} {}", diagInfo.Kind, file, line, column,
-                message);
-      break;
-  }
 }

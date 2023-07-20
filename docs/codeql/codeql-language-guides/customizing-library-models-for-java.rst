@@ -35,7 +35,7 @@ The CodeQL library for Java exposes the following extensible predicates:
 - **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance). This is used for **source** models.
 - **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance). This is used for **sink** models.
 - **summaryModel**\(package, type, subtypes, name, signature, ext, input, output, kind, provenance). This is used for **summary** models.
-- **neutralModel**\(package, type, name, signature, provenance). This is used for **neutral** models, which only have minor impact on the data flow analysis.
+- **neutralModel**\(package, type, name, signature, kind, provenance). This is used for **neutral** models, which only have minor impact on the data flow analysis.
 
 The extensible predicates are populated using data extensions specified in YAML files.
 
@@ -84,7 +84,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
 - The seventh value **Argument[0]** is the **access path** to the first argument passed to the method, which means that this is the location of the sink.
 - The eighth value **sql** is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.
 - The ninth value **manual** is the provenance of the sink, which is used to identify the origin of the sink.
- 
+
 Example: Taint source from the **java.net** package
 ----------------------------------------------------
 In this example we show how to model the return value from the **getInputStream** method as a **remote** source.
@@ -236,18 +236,18 @@ That is, the first row models that there is value flow from the elements of the 
 
 Example: Add a **neutral** method
 ----------------------------------
-In this example we will show how to model the **now** method as being neutral.
+In this example we will show how to model the **now** method as being neutral with respect to flow.
 A neutral model is used to define that there is no flow through a method.
 Note that the neutral model for the **now** method is already added to the CodeQL Java analysis.
 
 .. code-block:: java
-   
+
    public static void taintflow() {
        Instant t = Instant.now(); // There is no flow from now to t.
        ...
    }
 
-We need to add a tuple to the **neutralModel**\(package, type, name, signature, provenance) extensible predicate. To do this, add the following to a data extension file:
+We need to add a tuple to the **neutralModel**\(package, type, name, signature, kind, provenance) extensible predicate. To do this, add the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -256,17 +256,18 @@ We need to add a tuple to the **neutralModel**\(package, type, name, signature, 
        pack: codeql/java-all
        extensible: neutralModel
      data:
-       - ["java.time", "Instant", "now", "()", "manual"]
+       - ["java.time", "Instant", "now", "()", "summary", "manual"]
 
 
 Since we are adding a neutral model, we need to add tuples to the **neutralModel** extensible predicate.
-The first five values identify the callable (in this case a method) to be modeled as a neutral and the fifth value is the provenance (origin) of the neutral.
+The first four values identify the callable (in this case a method) to be modeled as a neutral, the fifth value is the kind, and the sixth value is the provenance (origin) of the neutral.
 
 - The first value **java.time** is the package name.
 - The second value **Instant** is the class (type) name.
 - The third value **now** is the method name.
 - The fourth value **()** is the method input type signature.
-- The fifth value **manual** is the provenance of the neutral.
+- The fifth value **summary** is the kind of the neutral.
+- The sixth value **manual** is the provenance of the neutral.
 
 .. _reference-material:
 
@@ -314,7 +315,7 @@ The following source kinds are supported:
 
 Below is an enumeration of the remaining source kinds, but they are out of scope for this documentation:
 
-- **contentprovider**, **android-widget**, **android-external-storage-dir**.
+- **contentprovider**, **android-external-storage-dir**.
 
 sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -326,18 +327,31 @@ Taint sink. As opposed to source kinds, there are many different kinds of sinks 
 
 The following sink kinds are supported:
 
-- **sql**: A SQL injection vulnerability sink.
-- **xss**: A cross-site scripting vulnerability sink.
-- **logging**: A log output sink.
-
-Below is an enumeration of the remaining sinks, but they are out of scope for this documentation:
-
-- **open-url**, **jndi-injection**, **ldap**, **jdbc-url**
-- **mvel**, **xpath**, **groovy**, **ognl-injection**
-- **intent-start**, **pending-intent-sent**, **url-open-stream**, **url-redirect**
-- **create-file**, **read-file**, **write-file**, **set-hostname-verifier**
-- **header-splitting**, **information-leak**, **xslt**, **jexl**
-- **bean-validation**, **ssti**, **fragment-injection**, **regex-use[**\ `arg`\ **]**
+- **bean-validation**: A sink that can be used for insecure bean validation, such as in calls to **ConstraintValidatorContext.buildConstraintViolationWithTemplate**.
+- **command-injection**: A sink that can be used to inject shell commands, such as in calls to **Runtime.exec**.
+- **file-content-store**: A sink that can be used to control the contents of a file, such as in a **Files.write** call.
+- **fragment-injection**: A sink that can be used for Android fragment injection, such as in a **FragmentTransaction.replace** call.
+- **groovy-injection**: A sink that can be used for Groovy injection, such as in a **GroovyShell.evaluate** call.
+- **hostname-verification**: A sink that can be used for unsafe hostname verification, such as in calls to **HttpsURLConnection.setHostnameVerifier**.
+- **html-injection**: A sink that can be used for XSS via HTML injection, such as in a **ResponseStream.write** call.
+- **information-leak**: A sink that can be used to leak information to an HTTP response, such as in calls to **HttpServletResponse.sendError**.
+- **intent-redirection**: A sink that can be used for Android intent redirection, such as in a **Context.startActivity** call.
+- **jexl-injection**: A sink that can be used for JEXL expression injection, such as in a **JexlExpression.evaluate** call.
+- **jndi-injection**: A sink that can be used for JNDI injection, such as in a **Context.lookup** call.
+- **js-injection**: A sink that can be used for XSS via JavaScript injection, such as in a **Webview.evaluateJavaScript** call.
+- **ldap-injection**: A sink that can be used for LDAP injection, such as in a **DirContext.search** call.
+- **log-injection**: A sink that can be used for log injection, such as in a **Logger.warn** call.
+- **mvel-injection**: A sink that can be used for MVEL expression injection, such as in a **MVEL.eval** call.
+- **ognl-injection**: A sink that can be used for OGNL injection, such as in an **Ognl.getValue** call.
+- **path-injection**: A sink that can be used for path injection in a file system access, such as in calls to **new FileReader**.
+- **pending-intents**: A sink that can be used to send an implicit and mutable `PendingIntent` to a third party, such as in an **Activity.setResult** call.
+- **request-forgery**: A sink that controls the URL of a request, such as in an **HttpRequest.newBuilder** call.
+- **response-splitting**: A sink that can be used for HTTP response splitting, such as in calls to **HttpServletResponse.setHeader**.
+- **sql-injection**: A sink that can be used for SQL injection, such as in a **Statement.executeQuery** call.
+- **template-injection**: A sink that can be used for server side template injection, such as in a **Velocity.evaluate** call.
+- **url-redirection**: A sink that can be used to redirect the user to a malicious URL, such as in a **Response.temporaryRedirect** call.
+- **xpath-injection**: A sink that can be used for XPath injection, such as in a **XPath.evaluate** call.
+- **xslt-injection**: A sink that can be used for XSLT injection, such as in a **Transformer.transform** call.
 
 summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -354,13 +368,14 @@ The following kinds are supported:
 - **taint**: This means the output is not necessarily equal to the input, but it was derived from the input in an unrestrictive way. An attacker who controls the input will have significant control over the output as well.
 - **value**: This means that the output equals the input or a copy of the input such that all of its properties are preserved.
 
-neutralModel(package, type, name, signature, provenance)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+neutralModel(package, type, name, signature, kind, provenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This extensible predicate is not typically needed externally, but included here for completeness.
 It only has minor impact on the data flow analysis.
 Manual neutrals are considered high confidence dispatch call targets and can reduce the number of dispatch call targets during data flow analysis (a performance optimization).
 
+- **kind**: Kind of the neutral. For neutrals the kind can be **summary**, **source**, or **sink** to indicate that the callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
 - **provenance**: Provenance (origin) of the flow through.
 
 .. _access-paths:

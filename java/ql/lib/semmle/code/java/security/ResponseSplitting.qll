@@ -11,7 +11,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 abstract class HeaderSplittingSink extends DataFlow::Node { }
 
 private class DefaultHeaderSplittingSink extends HeaderSplittingSink {
-  DefaultHeaderSplittingSink() { sinkNode(this, "header-splitting") }
+  DefaultHeaderSplittingSink() { sinkNode(this, "response-splitting") }
 }
 
 /** A source that introduces data considered safe to use by a header splitting source. */

@@ -62,15 +62,6 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
-  // Only translate the initializer of a static local if it uses run-time data.
-  // Otherwise the initializer does not run in function scope.
-  exists(Initializer init, StaticStorageDurationVariable var |
-    init = var.getInitializer() and
-    not var.hasDynamicInitialization() and
-    expr = init.getExpr().getFullyConverted() and
-    not var instanceof GlobalOrNamespaceVariable
-  )
-  or
   // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
   getRealParent(expr) instanceof AssumeExpr
   or
@@ -118,8 +109,8 @@ private predicate ignoreExprOnly(Expr expr) {
   // should not be translated.
   exists(NewOrNewArrayExpr new | expr = new.getAllocatorCall().getArgument(0))
   or
-  not translateFunction(expr.getEnclosingFunction()) and
-  not Raw::varHasIRFunc(expr.getEnclosingVariable())
+  not translateFunction(getEnclosingFunction(expr)) and
+  not Raw::varHasIRFunc(getEnclosingVariable(expr))
   or
   // We do not yet translate destructors properly, so for now we ignore the
   // destructor call. We do, however, translate the expression being
@@ -438,6 +429,17 @@ predicate hasTranslatedSyntheticTemporaryObject(Expr expr) {
   not expr.hasLValueToRValueConversion()
 }
 
+class StaticInitializedStaticLocalVariable extends StaticLocalVariable {
+  StaticInitializedStaticLocalVariable() {
+    this.hasInitializer() and
+    not this.hasDynamicInitialization()
+  }
+}
+
+class RuntimeInitializedStaticLocalVariable extends StaticLocalVariable {
+  RuntimeInitializedStaticLocalVariable() { this.hasDynamicInitialization() }
+}
+
 /**
  * Holds if the specified `DeclarationEntry` needs an IR translation. An IR translation is only
  * necessary for automatic local variables, or for static local variables with dynamic
@@ -453,7 +455,7 @@ private predicate translateDeclarationEntry(IRDeclarationEntry entry) {
       not var.isStatic()
       or
       // Ignore static variables unless they have a dynamic initializer.
-      var.(StaticLocalVariable).hasDynamicInitialization()
+      var instanceof RuntimeInitializedStaticLocalVariable
     )
   )
 }
@@ -755,7 +757,7 @@ newtype TTranslatedElement =
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedGlobalOrNamespaceVarInit(GlobalOrNamespaceVariable var) { Raw::varHasIRFunc(var) }
+  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -819,7 +821,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   abstract Locatable getAst();
 
   /** DEPRECATED: Alias for getAst */
-  deprecated Locatable getAST() { result = getAst() }
+  deprecated Locatable getAST() { result = this.getAst() }
 
   /**
    * Get the first instruction to be executed in the evaluation of this element.
@@ -829,7 +831,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Get the immediate child elements of this element.
    */
-  final TranslatedElement getAChild() { result = getChild(_) }
+  final TranslatedElement getAChild() { result = this.getChild(_) }
 
   /**
    * Gets the immediate child element of this element. The `id` is unique
@@ -842,25 +844,29 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the an identifier string for the element. This id is unique within
    * the scope of the element's function.
    */
-  final int getId() { result = getUniqueId() }
+  final int getId() { result = this.getUniqueId() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
     result =
-      rank[rankIndex + 1](TranslatedElement child, int id | child = getChild(id) | child order by id)
+      rank[rankIndex + 1](TranslatedElement child, int id |
+        child = this.getChild(id)
+      |
+        child order by id
+      )
   }
 
   language[monotonicAggregates]
   private int getDescendantCount() {
     result =
-      1 + sum(TranslatedElement child | child = getChildByRank(_) | child.getDescendantCount())
+      1 + sum(TranslatedElement child | child = this.getChildByRank(_) | child.getDescendantCount())
   }
 
   private int getUniqueId() {
-    if not exists(getParent())
+    if not exists(this.getParent())
     then result = 0
     else
       exists(TranslatedElement parent |
-        parent = getParent() and
+        parent = this.getParent() and
         if this = parent.getChildByRank(0)
         then result = 1 + parent.getUniqueId()
         else
@@ -906,7 +912,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * there is no enclosing `try`.
    */
   Instruction getExceptionSuccessorInstruction() {
-    result = getParent().getExceptionSuccessorInstruction()
+    result = this.getParent().getExceptionSuccessorInstruction()
   }
 
   /**
@@ -1020,14 +1026,14 @@ abstract class TranslatedElement extends TTranslatedElement {
     exists(Locatable ast |
       result.getAst() = ast and
       result.getTag() = tag and
-      hasTempVariableAndAst(tag, ast)
+      this.hasTempVariableAndAst(tag, ast)
     )
   }
 
   pragma[noinline]
   private predicate hasTempVariableAndAst(TempVariableTag tag, Locatable ast) {
-    hasTempVariable(tag, _) and
-    ast = getAst()
+    this.hasTempVariable(tag, _) and
+    ast = this.getAst()
   }
 
   /**
@@ -1043,6 +1049,6 @@ abstract class TranslatedRootElement extends TranslatedElement {
   TranslatedRootElement() {
     this instanceof TTranslatedFunction
     or
-    this instanceof TTranslatedGlobalOrNamespaceVarInit
+    this instanceof TTranslatedStaticStorageDurationVarInit
   }
 }

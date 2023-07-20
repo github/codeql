@@ -76,10 +76,7 @@ abstract class TranslatedExpr extends TranslatedElement {
 
   final override Locatable getAst() { result = expr }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
-  final override Declaration getFunction() { result = expr.getEnclosingDeclaration() }
+  final override Declaration getFunction() { result = getEnclosingDeclaration(expr) }
 
   /**
    * Gets the expression from which this `TranslatedExpr` is generated.
@@ -90,10 +87,55 @@ abstract class TranslatedExpr extends TranslatedElement {
    * Gets the `TranslatedFunction` containing this expression.
    */
   final TranslatedRootElement getEnclosingFunction() {
-    result = getTranslatedFunction(expr.getEnclosingFunction())
+    result = getTranslatedFunction(getEnclosingFunction(expr))
     or
-    result = getTranslatedVarInit(expr.getEnclosingVariable())
+    result = getTranslatedVarInit(getEnclosingVariable(expr))
   }
+}
+
+Function getEnclosingFunction(Expr e) {
+  not exists(getEnclosingVariable(e)) and
+  result = e.getEnclosingFunction()
+}
+
+Declaration getEnclosingDeclaration0(Expr e) {
+  result = getEnclosingDeclaration0(e.getParentWithConversions())
+  or
+  exists(Initializer i, Variable v |
+    i.getExpr().getFullyConverted() = e and
+    v = i.getDeclaration()
+  |
+    if v instanceof StaticInitializedStaticLocalVariable or v instanceof GlobalOrNamespaceVariable
+    then result = v
+    else result = e.getEnclosingDeclaration()
+  )
+}
+
+Declaration getEnclosingDeclaration(Expr e) {
+  result = getEnclosingDeclaration0(e)
+  or
+  not exists(getEnclosingDeclaration0(e)) and
+  result = e.getEnclosingDeclaration()
+}
+
+Variable getEnclosingVariable0(Expr e) {
+  result = getEnclosingVariable0(e.getParentWithConversions())
+  or
+  exists(Initializer i, Variable v |
+    i.getExpr().getFullyConverted() = e and
+    v = i.getDeclaration()
+  |
+    if v instanceof StaticInitializedStaticLocalVariable or v instanceof GlobalOrNamespaceVariable
+    then result = v
+    else result = e.getEnclosingVariable()
+  )
+}
+
+Variable getEnclosingVariable(Expr e) {
+  result = getEnclosingVariable0(e)
+  or
+  not exists(getEnclosingVariable0(e)) and
+  result = e.getEnclosingVariable()
 }
 
 /**
@@ -843,8 +885,19 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getIRUserVariable(expr.getEnclosingDeclaration(), expr.getTarget())
+    exists(Declaration d, Variable v |
+      accessHasEnclosingDeclarationAndVariable(d, v, expr) and
+      result = getIRUserVariable(d, v)
+    )
   }
+}
+
+pragma[nomagic]
+private predicate accessHasEnclosingDeclarationAndVariable(
+  Declaration d, Variable v, VariableAccess va
+) {
+  d = getEnclosingDeclaration(va) and
+  v = va.getTarget()
 }
 
 class TranslatedFieldAccess extends TranslatedVariableAccess {
@@ -938,9 +991,19 @@ class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExp
 class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
   override FunctionAccess expr;
 
-  override TranslatedElement getChild(int id) { none() }
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = this.getQualifier() // Might not exist
+  }
 
-  override Instruction getFirstInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
+  final TranslatedExpr getQualifier() {
+    result = getTranslatedExpr(expr.getQualifier().getFullyConverted())
+  }
+
+  override Instruction getFirstInstruction() {
+    if exists(this.getQualifier())
+    then result = this.getQualifier().getFirstInstruction()
+    else result = this.getInstruction(OnlyInstructionTag())
+  }
 
   override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
 
@@ -961,7 +1024,9 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
     result = expr.getTarget()
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getQualifier() and result = this.getInstruction(OnlyInstructionTag())
+  }
 }
 
 /**
@@ -2000,7 +2065,7 @@ class TranslatedDestructorFieldDestruction extends TranslatedNonConstantExpr, St
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getTranslatedFunction(expr.getEnclosingFunction()).getInitializeThisInstruction()
+    result = getTranslatedFunction(getEnclosingFunction(expr)).getInitializeThisInstruction()
   }
 
   final override Field getInstructionField(InstructionTag tag) {

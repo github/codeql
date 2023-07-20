@@ -75,9 +75,9 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
     fieldWrite.writesField(base, fld, sink)
   }
 
-  override predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { this.intIsSource(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _, _, _) }
 }
 
 /**
@@ -188,9 +188,9 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSource(DataFlow::Node source) {
-    isSourceInsecureCipherSuites(source)
+    this.isSourceInsecureCipherSuites(source)
     or
-    isSourceValueEntity(source, _)
+    this.isSourceValueEntity(source, _)
   }
 
   /**
@@ -201,7 +201,7 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
     fieldWrite.writesField(base, fld, sink)
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _, _, _) }
 
   /**
    * Declare sinks as out-sanitizers in order to avoid producing superfluous paths where a cipher
@@ -209,7 +209,7 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
    * suites.
    */
   override predicate isSanitizerOut(DataFlow::Node node) {
-    super.isSanitizerOut(node) or isSink(node)
+    super.isSanitizerOut(node) or this.isSink(node)
   }
 }
 

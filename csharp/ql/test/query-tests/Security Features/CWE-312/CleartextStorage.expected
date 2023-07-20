@@ -1,20 +1,22 @@
 edges
 nodes
-| CleartextStorage.cs:13:50:13:59 | access to field accountKey | semmle.label | access to field accountKey |
-| CleartextStorage.cs:14:62:14:74 | call to method GetPassword | semmle.label | call to method GetPassword |
-| CleartextStorage.cs:15:69:15:81 | call to method GetPassword | semmle.label | call to method GetPassword |
-| CleartextStorage.cs:16:50:16:63 | call to method GetAccountID | semmle.label | call to method GetAccountID |
-| CleartextStorage.cs:24:21:24:33 | call to method GetPassword | semmle.label | call to method GetPassword |
-| CleartextStorage.cs:72:21:72:33 | access to property Text | semmle.label | access to property Text |
-| CleartextStorage.cs:73:21:73:29 | access to property Text | semmle.label | access to property Text |
-| CleartextStorage.cs:74:21:74:29 | access to property Text | semmle.label | access to property Text |
+| CleartextStorage.cs:15:50:15:59 | access to field accountKey | semmle.label | access to field accountKey |
+| CleartextStorage.cs:16:62:16:74 | call to method GetPassword | semmle.label | call to method GetPassword |
+| CleartextStorage.cs:17:69:17:81 | call to method GetPassword | semmle.label | call to method GetPassword |
+| CleartextStorage.cs:18:50:18:63 | call to method GetAccountID | semmle.label | call to method GetAccountID |
+| CleartextStorage.cs:26:21:26:33 | call to method GetPassword | semmle.label | call to method GetPassword |
+| CleartextStorage.cs:34:26:34:38 | call to method GetPassword | semmle.label | call to method GetPassword |
+| CleartextStorage.cs:94:21:94:33 | access to property Text | semmle.label | access to property Text |
+| CleartextStorage.cs:95:21:95:29 | access to property Text | semmle.label | access to property Text |
+| CleartextStorage.cs:96:21:96:29 | access to property Text | semmle.label | access to property Text |
 subpaths
 #select
-| CleartextStorage.cs:13:50:13:59 | access to field accountKey | CleartextStorage.cs:13:50:13:59 | access to field accountKey | CleartextStorage.cs:13:50:13:59 | access to field accountKey | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:13:50:13:59 | access to field accountKey | access to field accountKey |
-| CleartextStorage.cs:14:62:14:74 | call to method GetPassword | CleartextStorage.cs:14:62:14:74 | call to method GetPassword | CleartextStorage.cs:14:62:14:74 | call to method GetPassword | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:14:62:14:74 | call to method GetPassword | call to method GetPassword |
-| CleartextStorage.cs:15:69:15:81 | call to method GetPassword | CleartextStorage.cs:15:69:15:81 | call to method GetPassword | CleartextStorage.cs:15:69:15:81 | call to method GetPassword | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:15:69:15:81 | call to method GetPassword | call to method GetPassword |
-| CleartextStorage.cs:16:50:16:63 | call to method GetAccountID | CleartextStorage.cs:16:50:16:63 | call to method GetAccountID | CleartextStorage.cs:16:50:16:63 | call to method GetAccountID | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:16:50:16:63 | call to method GetAccountID | call to method GetAccountID |
-| CleartextStorage.cs:24:21:24:33 | call to method GetPassword | CleartextStorage.cs:24:21:24:33 | call to method GetPassword | CleartextStorage.cs:24:21:24:33 | call to method GetPassword | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:24:21:24:33 | call to method GetPassword | call to method GetPassword |
-| CleartextStorage.cs:72:21:72:33 | access to property Text | CleartextStorage.cs:72:21:72:33 | access to property Text | CleartextStorage.cs:72:21:72:33 | access to property Text | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:72:21:72:33 | access to property Text | access to property Text |
-| CleartextStorage.cs:73:21:73:29 | access to property Text | CleartextStorage.cs:73:21:73:29 | access to property Text | CleartextStorage.cs:73:21:73:29 | access to property Text | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:73:21:73:29 | access to property Text | access to property Text |
-| CleartextStorage.cs:74:21:74:29 | access to property Text | CleartextStorage.cs:74:21:74:29 | access to property Text | CleartextStorage.cs:74:21:74:29 | access to property Text | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:74:21:74:29 | access to property Text | access to property Text |
+| CleartextStorage.cs:15:50:15:59 | access to field accountKey | CleartextStorage.cs:15:50:15:59 | access to field accountKey | CleartextStorage.cs:15:50:15:59 | access to field accountKey | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:15:50:15:59 | access to field accountKey | access to field accountKey |
+| CleartextStorage.cs:16:62:16:74 | call to method GetPassword | CleartextStorage.cs:16:62:16:74 | call to method GetPassword | CleartextStorage.cs:16:62:16:74 | call to method GetPassword | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:16:62:16:74 | call to method GetPassword | call to method GetPassword |
+| CleartextStorage.cs:17:69:17:81 | call to method GetPassword | CleartextStorage.cs:17:69:17:81 | call to method GetPassword | CleartextStorage.cs:17:69:17:81 | call to method GetPassword | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:17:69:17:81 | call to method GetPassword | call to method GetPassword |
+| CleartextStorage.cs:18:50:18:63 | call to method GetAccountID | CleartextStorage.cs:18:50:18:63 | call to method GetAccountID | CleartextStorage.cs:18:50:18:63 | call to method GetAccountID | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:18:50:18:63 | call to method GetAccountID | call to method GetAccountID |
+| CleartextStorage.cs:26:21:26:33 | call to method GetPassword | CleartextStorage.cs:26:21:26:33 | call to method GetPassword | CleartextStorage.cs:26:21:26:33 | call to method GetPassword | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:26:21:26:33 | call to method GetPassword | call to method GetPassword |
+| CleartextStorage.cs:34:26:34:38 | call to method GetPassword | CleartextStorage.cs:34:26:34:38 | call to method GetPassword | CleartextStorage.cs:34:26:34:38 | call to method GetPassword | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:34:26:34:38 | call to method GetPassword | call to method GetPassword |
+| CleartextStorage.cs:94:21:94:33 | access to property Text | CleartextStorage.cs:94:21:94:33 | access to property Text | CleartextStorage.cs:94:21:94:33 | access to property Text | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:94:21:94:33 | access to property Text | access to property Text |
+| CleartextStorage.cs:95:21:95:29 | access to property Text | CleartextStorage.cs:95:21:95:29 | access to property Text | CleartextStorage.cs:95:21:95:29 | access to property Text | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:95:21:95:29 | access to property Text | access to property Text |
+| CleartextStorage.cs:96:21:96:29 | access to property Text | CleartextStorage.cs:96:21:96:29 | access to property Text | CleartextStorage.cs:96:21:96:29 | access to property Text | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:96:21:96:29 | access to property Text | access to property Text |

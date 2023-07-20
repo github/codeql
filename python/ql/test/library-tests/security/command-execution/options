@@ -1,1 +1,0 @@
-semmle-extractor-options: --max-import-depth=2 -p ../../../query-tests/Security/lib/

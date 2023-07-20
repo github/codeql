@@ -694,3 +694,20 @@ void test_argument_source_field_to_obj() {
 	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
 }
+
+namespace strings {
+	void test_write_to_read_then_incr_then_deref() {
+		char* s = source();
+		char* p;
+		*p++ = *s;
+		sink(p); // $ ast ir
+	}
+}
+
+char * strncpy (char *, const char *, unsigned long);
+
+void test_strncpy(char* d, char* s) {
+	argument_source(s);
+	strncpy(d, s, 16);
+	sink(d); // $ ast ir
+}

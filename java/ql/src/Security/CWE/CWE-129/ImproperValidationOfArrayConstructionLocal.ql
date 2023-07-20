@@ -12,20 +12,8 @@
  */
 
 import java
-import ArraySizing
-import semmle.code.java.dataflow.FlowSources
-
-module ImproperValidationOfArrayConstructionLocalConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) {
-    any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
-  }
-}
-
-module ImproperValidationOfArrayConstructionLocalFlow =
-  TaintTracking::Global<ImproperValidationOfArrayConstructionLocalConfig>;
-
+import semmle.code.java.security.internal.ArraySizing
+import semmle.code.java.security.ImproperValidationOfArrayConstructionLocalQuery
 import ImproperValidationOfArrayConstructionLocalFlow::PathGraph
 
 from

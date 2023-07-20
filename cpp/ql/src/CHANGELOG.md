@@ -1,3 +1,30 @@
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* The `cpp/comparison-with-wider-type` query now correctly handles relational operations on signed operators. As a result the query may find more results.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### New Queries
+
+* Added a new query, `cpp/overrun-write`, to detect buffer overflows in C-style functions that manipulate buffers.
+
+## 0.6.2
+
+No user-facing changes.
+
+## 0.6.1
+
+### New Queries
+
+* A new query `cpp/double-free` has been added. The query finds possible cases of deallocating the same pointer twice. The precision of the query has been set to "medium".
+* The query `cpp/use-after-free` has been modernized and assigned the precision "medium". The query finds cases of where a pointer is dereferenced after its memory has been deallocated.
+
 ## 0.6.0
 
 ### New Queries

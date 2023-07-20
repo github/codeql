@@ -39,4 +39,8 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
   override predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
     not exists(call.getLocation().getFile().getRelativePath())
   }
+
+  override predicate identityLocalStepExclude(Node n) {
+    not exists(n.getLocation().getFile().getRelativePath())
+  }
 }

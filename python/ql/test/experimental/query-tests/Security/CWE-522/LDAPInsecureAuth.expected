@@ -1,7 +1,6 @@
 edges
-| ldap3_remote.py:0:0:0:0 | ModuleVariableNode for ldap3_remote.request | ldap3_remote.py:138:21:138:27 | ControlFlowNode for request |
 | ldap3_remote.py:2:19:2:25 | ControlFlowNode for ImportMember | ldap3_remote.py:2:19:2:25 | GSSA Variable request |
-| ldap3_remote.py:2:19:2:25 | GSSA Variable request | ldap3_remote.py:0:0:0:0 | ModuleVariableNode for ldap3_remote.request |
+| ldap3_remote.py:2:19:2:25 | GSSA Variable request | ldap3_remote.py:138:21:138:27 | ControlFlowNode for request |
 | ldap3_remote.py:101:12:101:49 | ControlFlowNode for BinaryExpr | ldap3_remote.py:102:18:102:21 | ControlFlowNode for host |
 | ldap3_remote.py:114:12:114:49 | ControlFlowNode for BinaryExpr | ldap3_remote.py:115:18:115:21 | ControlFlowNode for host |
 | ldap3_remote.py:126:12:126:31 | ControlFlowNode for BinaryExpr | ldap3_remote.py:127:18:127:21 | ControlFlowNode for host |
@@ -11,7 +10,6 @@ edges
 nodes
 | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | ldap2_remote.py:56:41:56:60 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| ldap3_remote.py:0:0:0:0 | ModuleVariableNode for ldap3_remote.request | semmle.label | ModuleVariableNode for ldap3_remote.request |
 | ldap3_remote.py:2:19:2:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | ldap3_remote.py:2:19:2:25 | GSSA Variable request | semmle.label | GSSA Variable request |
 | ldap3_remote.py:101:12:101:49 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |

@@ -1,5 +1,10 @@
 private import codeql.swift.generated.type.Type
 
+/**
+ * A Swift type.
+ *
+ * This QL class is the root of the Swift type hierarchy.
+ */
 class Type extends Generated::Type {
   override string toString() { result = this.getName() }
 

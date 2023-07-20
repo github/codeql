@@ -400,3 +400,19 @@ private class AccessLocalsKeySummary extends SummarizedCallable {
     preservesValue = true
   }
 }
+
+/** A call to `render inline: foo`, considered as a ERB template rendering. */
+private class RailsTemplateRendering extends TemplateRendering::Range, DataFlow::CallNode {
+  private DataFlow::Node template;
+
+  RailsTemplateRendering() {
+    (
+      this.asExpr().getExpr() instanceof Rails::RenderCall
+      or
+      this.asExpr().getExpr() instanceof Rails::RenderToCall
+    ) and
+    template = this.getKeywordArgument("inline")
+  }
+
+  override DataFlow::Node getTemplate() { result = template }
+}

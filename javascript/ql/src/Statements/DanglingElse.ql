@@ -17,7 +17,7 @@ import javascript
  * A token that is relevant for this query, that is, an `if`, `else` or `}` token.
  */
 class RelevantToken extends Token {
-  RelevantToken() { exists(string v | v = getValue() | v = "if" or v = "else" or v = "}") }
+  RelevantToken() { exists(string v | v = this.getValue() | v = "if" or v = "else" or v = "}") }
 }
 
 /**

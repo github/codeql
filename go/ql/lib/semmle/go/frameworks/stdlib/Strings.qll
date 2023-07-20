@@ -13,7 +13,7 @@ module Strings {
 
     FunctionModels() {
       // signature: func NewReplacer(oldnew ...string) *Replacer
-      hasQualifiedName("strings", "NewReplacer") and
+      this.hasQualifiedName("strings", "NewReplacer") and
       (inp.isParameter(_) and outp.isResult())
     }
 

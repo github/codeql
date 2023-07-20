@@ -121,7 +121,7 @@ class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
 
 pragma[nomagic]
 private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, ParameterPosition pos) {
-  result = node.getEnclosingCallable().getParameter(pos.getPosition())
+  result = node.(DataFlow::Node).getEnclosingCallable().getParameter(pos.getPosition())
 }
 
 /**

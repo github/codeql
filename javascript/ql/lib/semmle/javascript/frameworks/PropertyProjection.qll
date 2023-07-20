@@ -114,9 +114,9 @@ private class SimplePropertyProjection extends PropertyProjection::Range {
     this = getASimplePropertyProjectionCallee(singleton, selectorIndex, objectIndex).getACall()
   }
 
-  override DataFlow::Node getObject() { result = getArgument(objectIndex) }
+  override DataFlow::Node getObject() { result = this.getArgument(objectIndex) }
 
-  override DataFlow::Node getASelector() { result = getArgument(selectorIndex) }
+  override DataFlow::Node getASelector() { result = this.getArgument(selectorIndex) }
 
   override predicate isSingletonProjection() { singleton = true }
 }
@@ -127,9 +127,9 @@ private class SimplePropertyProjection extends PropertyProjection::Range {
 private class VarArgsPropertyProjection extends PropertyProjection::Range {
   VarArgsPropertyProjection() { this = LodashUnderscore::member("pick").getACall() }
 
-  override DataFlow::Node getObject() { result = getArgument(0) }
+  override DataFlow::Node getObject() { result = this.getArgument(0) }
 
-  override DataFlow::Node getASelector() { result = getArgument(any(int i | i > 0)) }
+  override DataFlow::Node getASelector() { result = this.getArgument(any(int i | i > 0)) }
 
   override predicate isSingletonProjection() { none() }
 }

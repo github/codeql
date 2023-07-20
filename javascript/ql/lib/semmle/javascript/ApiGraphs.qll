@@ -491,6 +491,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
+    pragma[inline]
     predicate refersTo(Node that) { this.asSink() = that.getAValueReachableFromSource() }
 
     /**
@@ -635,9 +636,6 @@ module API {
 
     /** Gets an API-node for this entry point. */
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
-
-    /** DEPRECATED. Use `getANode()` instead. */
-    deprecated API::Node getNode() { result = this.getANode() }
   }
 
   /**

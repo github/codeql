@@ -92,11 +92,11 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.stream", "Collectors", "toList", "()", "manual"]
-      - ["java.util.stream", "Collectors", "toSet", "()", "manual"]
-      - ["java.util.stream", "Stream", "count", "()", "manual"]
+      - ["java.util.stream", "Collectors", "toList", "()", "summary", "manual"]
+      - ["java.util.stream", "Collectors", "toSet", "()", "summary", "manual"]
+      - ["java.util.stream", "Stream", "count", "()", "summary", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.util.stream", "IntStream", "mapToObj", "(IntFunction)", "manual"] # taint-numeric
-      - ["java.util.stream", "IntStream", "range", "(int,int)", "manual"]        # taint-numeric
+      - ["java.util.stream", "IntStream", "mapToObj", "(IntFunction)", "summary", "manual"] # taint-numeric
+      - ["java.util.stream", "IntStream", "range", "(int,int)", "summary", "manual"]        # taint-numeric

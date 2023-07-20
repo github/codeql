@@ -1,0 +1,7 @@
+| ReDoS.swift:64:22:64:22 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:65:22:65:22 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:66:22:66:22 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:69:18:69:18 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:75:46:75:46 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:77:57:77:57 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| ReDoS.swift:80:57:80:57 | a* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |

@@ -43,10 +43,8 @@ module AstTest {
   private import semmle.code.cpp.models.interfaces.Taint
 
   /** Common data flow configuration to be used by tests. */
-  class AstTestAllocationConfig extends TaintTracking::Configuration {
-    AstTestAllocationConfig() { this = "ASTTestAllocationConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
+  module AstTestAllocationConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asParameter().getName().matches("source%")
@@ -60,17 +58,19 @@ module AstTest {
       )
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
         sink.asExpr() = call.getAnArgument()
       )
     }
 
-    override predicate isSanitizer(DataFlow::Node barrier) {
+    predicate isBarrier(DataFlow::Node barrier) {
       barrier.asExpr().(VariableAccess).getTarget().hasName("sanitizer")
     }
   }
+
+  module AstFlow = TaintTracking::Global<AstTestAllocationConfig>;
 }
 
 module IRTest {
@@ -78,10 +78,8 @@ module IRTest {
   private import semmle.code.cpp.ir.dataflow.TaintTracking
 
   /** Common data flow configuration to be used by tests. */
-  class TestAllocationConfig extends TaintTracking::Configuration {
-    TestAllocationConfig() { this = "TestAllocationConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
+  module TestAllocationConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asIndirectExpr().(FunctionCall).getTarget().getName() = "source"
@@ -94,21 +92,25 @@ module IRTest {
       )
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
         [sink.asExpr(), sink.asIndirectExpr()] = call.getAnArgument()
       )
     }
 
-    override predicate isSanitizer(DataFlow::Node barrier) {
+    predicate isBarrier(DataFlow::Node barrier) {
       barrier.asExpr().(VariableAccess).getTarget().hasName("sanitizer")
     }
 
-    override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
       // allow arbitrary reads at sinks
-      this.isSink(node) and
+      isSink(node) and
       c.(DataFlow::FieldContent).getField().getDeclaringType() = node.getType().getUnspecifiedType()
     }
   }
+
+  module IRFlow = TaintTracking::Global<TestAllocationConfig>;
 }
+
+import MakeTest<MergeTests<AstFlowTest<AstTest::AstFlow>, IRFlowTest<IRTest::IRFlow>>>

@@ -12,27 +12,8 @@
  *       external/cwe/cwe-564
  */
 
-import semmle.code.java.Expr
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.SqlInjectionQuery
-
-module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
-
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(AdditionalQueryInjectionTaintStep s).step(node1, node2)
-  }
-}
-
-module LocalUserInputToQueryInjectionFlow =
-  TaintTracking::Global<LocalUserInputToQueryInjectionFlowConfig>;
-
+import java
+import semmle.code.java.security.SqlTaintedLocalQuery
 import LocalUserInputToQueryInjectionFlow::PathGraph
 
 from

@@ -48,13 +48,14 @@ def inParam(tainted):
     captureIn3("")
 
     def captureIn1NotCalled():
-        nonSink0 = tainted
-        SINK_F(nonSink0)
+        nonSink1 = tainted
+        SINK_F(nonSink1)
 
     def captureIn2NotCalled():
+        # notice that `m` is not called
         def m():
-            nonSink0 = tainted
-            SINK_F(nonSink0)
+            nonSink1 = tainted
+            SINK_F(nonSink1)
     captureIn2NotCalled()
 
 @expects(3)
@@ -81,13 +82,14 @@ def inLocal():
     captureIn3("")
 
     def captureIn1NotCalled():
-        nonSink0 = tainted
-        SINK_F(nonSink0)
+        nonSink1 = tainted
+        SINK_F(nonSink1)
 
     def captureIn2NotCalled():
+        # notice that `m` is not called
         def m():
-            nonSink0 = tainted
-            SINK_F(nonSink0)
+            nonSink2 = tainted
+            SINK_F(nonSink2)
     captureIn2NotCalled()
 
 @expects(3)

@@ -26,14 +26,16 @@ DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { result.getReceiver() = receiver }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { result.getReceiver() = receiver }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
+
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  result = getErasedRepr(c.getParameterType(pos))
+}
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
@@ -154,12 +156,12 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(SummarizedCallableBase c, string provenance) {
+predicate neutralSummaryElement(SummarizedCallableBase c, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, provenance) and
+    neutralModel(namespace, type, name, signature, "summary", provenance) and
     c.asCallable() = interpretElement(namespace, type, false, name, signature, "")
   )
 }
@@ -191,8 +193,8 @@ private string getContentSpecific(Content c) {
   c instanceof MapValueContent and result = "MapValue"
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of the content in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
 }
 

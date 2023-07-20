@@ -17,11 +17,8 @@ module Generated {
 
     /**
      * Gets the `index`th parameter of this enum element declaration (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ParamDecl getImmediateParam(int index) {
+    ParamDecl getParam(int index) {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertEnumElementDeclToRaw(this)
               .(Raw::EnumElementDecl)
@@ -29,18 +26,13 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th parameter of this enum element declaration (0-based).
-     */
-    final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
-
-    /**
      * Gets any of the parameters of this enum element declaration.
      */
-    final ParamDecl getAParam() { result = getParam(_) }
+    final ParamDecl getAParam() { result = this.getParam(_) }
 
     /**
      * Gets the number of parameters of this enum element declaration.
      */
-    final int getNumberOfParams() { result = count(int i | exists(getParam(i))) }
+    final int getNumberOfParams() { result = count(int i | exists(this.getParam(i))) }
   }
 }

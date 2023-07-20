@@ -105,15 +105,25 @@ module Sinatra {
    * Gets the template file referred to by `erbCall`.
    * This works on the AST level to avoid non-monotonic reecursion in `ErbLocalsHashSyntheticGlobal`.
    */
+  pragma[nomagic]
   private ErbFile getTemplateFile(MethodCall erbCall) {
     erbCall.getMethodName() = "erb" and
     result.getTemplateName() = erbCall.getArgument(0).getConstantValue().getStringlikeValue() and
     result.getRelativePath().matches("%views/%")
   }
 
+  pragma[nomagic]
+  private predicate erbCallAtLocation(MethodCall erbCall, ErbFile erbFile, Location l) {
+    erbCall.getMethodName() = "erb" and
+    erbFile = getTemplateFile(erbCall) and
+    l = erbCall.getLocation()
+  }
+
   /**
    * Like `Location.toString`, but displays the relative path rather than the full path.
    */
+  bindingset[loc]
+  pragma[inline_late]
   private string locationRelativePathToString(Location loc) {
     result =
       loc.getFile().getRelativePath() + "@" + loc.getStartLine() + ":" + loc.getStartColumn() + ":" +
@@ -121,7 +131,7 @@ module Sinatra {
   }
 
   /**
-   *  A synthetic global representing the hash of local variables passed to an ERB template.
+   * A synthetic global representing the hash of local variables passed to an ERB template.
    */
   class ErbLocalsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
     private string id;
@@ -129,10 +139,11 @@ module Sinatra {
     private ErbFile erbFile;
 
     ErbLocalsHashSyntheticGlobal() {
-      this = "SinatraErbLocalsHash(" + id + ")" and
-      id = erbFile.getRelativePath() + "," + locationRelativePathToString(erbCall.getLocation()) and
-      erbCall.getMethodName() = "erb" and
-      erbFile = getTemplateFile(erbCall)
+      exists(Location l |
+        erbCallAtLocation(erbCall, erbFile, l) and
+        id = erbFile.getRelativePath() + "," + locationRelativePathToString(l) and
+        this = "SinatraErbLocalsHash(" + id + ")"
+      )
     }
 
     /**

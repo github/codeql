@@ -7,7 +7,7 @@ import java.io.Serializable;
 abstract public class Enum<E extends Enum<E>> implements Comparable<E>, Serializable
 {
     protected Enum() {}
-    protected Enum(String p0, int p1){} // manual neutral, Note: this will not be counted in query results since `protected` not `public`
+    protected Enum(String p0, int p1){} // manual neutral
     public String toString(){ return null; } // manual neutral
     public final String name(){ return null; } // manual neutral
     public final boolean equals(Object p0){ return false; } // manual neutral

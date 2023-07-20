@@ -250,9 +250,6 @@ private module JsonFile {
     }
   }
 
-  /** DEPRECATED: Alias for JsonFileReader */
-  deprecated class JSONFileReader = JsonFileReader;
-
   /**
    * A writer for JSON files.
    */
@@ -267,9 +264,6 @@ private module JsonFile {
 
     override DataFlow::Node getADataNode() { result = this.getArgument(1) }
   }
-
-  /** DEPRECATED: Alias for JsonFileWriter */
-  deprecated class JSONFileWriter = JsonFileWriter;
 }
 
 /**

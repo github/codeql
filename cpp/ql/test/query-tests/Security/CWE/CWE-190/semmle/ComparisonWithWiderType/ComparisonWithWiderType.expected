@@ -1,2 +1,3 @@
+| test.c:42:15:42:29 | ... < ... | Comparison between $@ of type short and $@ of wider type int. | test.c:41:9:41:10 | s1 | s1 | test.c:42:20:42:29 | 65535 | 65535 |
 | test.c:91:14:91:23 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type int. | test.c:83:16:83:16 | c | c | test.c:91:18:91:23 | 65280 | 65280 |
 | test.c:93:14:93:25 | ... < ... | Comparison between $@ of type unsigned char and $@ of wider type int. | test.c:83:16:83:16 | c | c | test.c:93:18:93:25 | 16711680 | 16711680 |

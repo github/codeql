@@ -45,7 +45,9 @@ predicate successorTypeIsSimple(SuccessorType t) {
 }
 
 /** Holds if `t` is an abnormal exit type out of a CFG scope. */
-predicate isAbnormalExitType(SuccessorType t) { none() } // TODO
+predicate isAbnormalExitType(SuccessorType t) {
+  t instanceof CFG::SuccessorTypes::ExceptionSuccessor
+}
 
 class Location = S::Location;
 

@@ -33,7 +33,7 @@ class CanonicalName extends @symbol {
    * Gets the child of this canonical name that has the given `name`, if any.
    */
   CanonicalName getChild(string name) {
-    result = getAChild() and
+    result = this.getAChild() and
     result.getName() = name
   }
 
@@ -49,7 +49,7 @@ class CanonicalName extends @symbol {
     symbol_module(this, result)
     or
     exists(PackageJson pkg |
-      getModule() = pkg.getMainModule() and
+      this.getModule() = pkg.getMainModule() and
       result = pkg.getPackageName()
     )
   }
@@ -68,19 +68,19 @@ class CanonicalName extends @symbol {
   /**
    * Holds if this canonical name has a child, i.e. an extension of its qualified name.
    */
-  predicate hasChild() { exists(getAChild()) }
+  predicate hasChild() { exists(this.getAChild()) }
 
   /**
    * True if this has no parent.
    */
-  predicate isRoot() { not exists(getParent()) }
+  predicate isRoot() { not exists(this.getParent()) }
 
   /**
    * Holds if this is the export namespace of a module.
    */
   predicate isModuleRoot() {
-    exists(getModule()) or
-    exists(getExternalModuleName())
+    exists(this.getModule()) or
+    exists(this.getExternalModuleName())
   }
 
   /**
@@ -98,22 +98,22 @@ class CanonicalName extends @symbol {
 
   /** Holds if this has the given qualified name, rooted in the global scope. */
   predicate hasQualifiedName(string globalName) {
-    globalName = getGlobalName()
+    globalName = this.getGlobalName()
     or
     exists(string prefix |
-      getParent().hasQualifiedName(prefix) and
-      globalName = prefix + "." + getName()
+      this.getParent().hasQualifiedName(prefix) and
+      globalName = prefix + "." + this.getName()
     )
   }
 
   /** Holds if this has the given qualified name, rooted in the given external module. */
   predicate hasQualifiedName(string moduleName, string exportedName) {
-    moduleName = getParent().getExternalModuleName() and
-    exportedName = getName()
+    moduleName = this.getParent().getExternalModuleName() and
+    exportedName = this.getName()
     or
     exists(string prefix |
-      getParent().hasQualifiedName(moduleName, prefix) and
-      exportedName = prefix + "." + getName()
+      this.getParent().hasQualifiedName(moduleName, prefix) and
+      exportedName = prefix + "." + this.getName()
     )
   }
 
@@ -121,16 +121,16 @@ class CanonicalName extends @symbol {
    * Gets the qualified name without the root.
    */
   string getRelativeName() {
-    if getParent().isModuleRoot()
-    then result = getName()
+    if this.getParent().isModuleRoot()
+    then result = this.getName()
     else
-      if exists(getGlobalName())
-      then result = min(getGlobalName())
+      if exists(this.getGlobalName())
+      then result = min(this.getGlobalName())
       else
-        if exists(getParent())
-        then result = getParent().getRelativeName() + "." + getName()
+        if exists(this.getParent())
+        then result = this.getParent().getRelativeName() + "." + this.getName()
         else (
-          not isModuleRoot() and result = getName()
+          not this.isModuleRoot() and result = this.getName()
         )
   }
 
@@ -141,20 +141,20 @@ class CanonicalName extends @symbol {
    * this is the container where the type is declared.
    */
   Scope getRootScope() {
-    exists(CanonicalName root | root = getRootName() |
+    exists(CanonicalName root | root = this.getRootName() |
       if exists(root.getModule())
       then result = root.getModule().getScope()
       else
         if exists(root.getGlobalName())
         then result instanceof GlobalScope
-        else result = getADefinition().getContainer().getScope()
+        else result = this.getADefinition().getContainer().getScope()
     )
   }
 
   private CanonicalName getRootName() {
-    if exists(getGlobalName()) or isModuleRoot() or not exists(getParent())
+    if exists(this.getGlobalName()) or this.isModuleRoot() or not exists(this.getParent())
     then result = this
-    else result = getParent().getRootName()
+    else result = this.getParent().getRootName()
   }
 
   /**
@@ -171,7 +171,7 @@ class CanonicalName extends @symbol {
    * Gets a string describing the root scope of this canonical name.
    */
   string describeRoot() {
-    exists(CanonicalName root | root = getRootName() |
+    exists(CanonicalName root | root = this.getRootName() |
       if exists(root.getExternalModuleName())
       then result = "module '" + min(root.getExternalModuleName()) + "'"
       else
@@ -209,9 +209,9 @@ class CanonicalName extends @symbol {
    * ```
    */
   string toString() {
-    if isModuleRoot()
-    then result = describeRoot()
-    else result = getRelativeName() + " in " + describeRoot()
+    if this.isModuleRoot()
+    then result = this.describeRoot()
+    else result = this.getRelativeName() + " in " + this.describeRoot()
   }
 }
 
@@ -263,7 +263,7 @@ class TypeName extends CanonicalName {
  */
 class Namespace extends CanonicalName {
   Namespace() {
-    getAChild().isExportedMember() or
+    this.getAChild().isExportedMember() or
     exists(NamespaceDefinition def | ast_node_symbol(def, this)) or
     exists(NamespaceAccess ref | ast_node_symbol(ref, this))
   }
@@ -334,5 +334,5 @@ class CanonicalFunctionName extends CanonicalName {
   /**
    * Gets the implementation of this function, if it exists.
    */
-  Function getImplementation() { result = getADefinition() and result.hasBody() }
+  Function getImplementation() { result = this.getADefinition() and result.hasBody() }
 }

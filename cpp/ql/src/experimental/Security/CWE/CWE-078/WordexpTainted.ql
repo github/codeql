@@ -21,7 +21,7 @@ import WordexpTaint::PathGraph
  * The `wordexp` function, which can perform command substitution.
  */
 private class WordexpFunction extends Function {
-  WordexpFunction() { hasGlobalName("wordexp") }
+  WordexpFunction() { this.hasGlobalName("wordexp") }
 }
 
 /**

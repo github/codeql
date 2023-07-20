@@ -8,3 +8,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-all: ${workspace}
+warnOnImplicitThis: true

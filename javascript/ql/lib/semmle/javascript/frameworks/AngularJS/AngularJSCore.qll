@@ -507,7 +507,7 @@ class DirectiveTargetName extends string {
    * `:` and `_` count as component delimiters.
    */
   string getRawComponent(int i) {
-    result = toLowerCase().regexpFind("(?<=^|[-:_])[a-zA-Z0-9]+(?=$|[-:_])", i, _)
+    result = this.toLowerCase().regexpFind("(?<=^|[-:_])[a-zA-Z0-9]+(?=$|[-:_])", i, _)
   }
 
   /**

@@ -1,7 +1,4 @@
 {
-  "attributes": {},
-  "helpLinks": [],
-  "internal": false,
   "markdownMessage": "CodeQL found some projects which cannot be built with .NET Core:\n\n- `test.csproj`",
   "severity": "warning",
   "source": {
@@ -16,9 +13,6 @@
   }
 }
 {
-  "attributes": {},
-  "helpLinks": [],
-  "internal": false,
   "markdownMessage": "CodeQL was unable to build the following projects using MSBuild:\n\n- `test.csproj`\n\nSet up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
   "severity": "error",
   "source": {

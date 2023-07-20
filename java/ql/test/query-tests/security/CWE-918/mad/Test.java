@@ -9,6 +9,8 @@ import javafx.scene.web.WebEngine;
 import org.apache.commons.jelly.JellyContext;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 import org.kohsuke.stapler.HttpResponses;
+import play.libs.ws.WSClient;
+import play.libs.ws.StandaloneWSClient;
 
 public class Test {
 
@@ -72,6 +74,16 @@ public class Test {
     public void test(HttpResponses r) {
         // "org.kohsuke.stapler;HttpResponses;true;staticResource;(URL);;Argument[0];open-url;ai-generated"
         r.staticResource((URL) source()); // $ SSRF
+    }
+
+    public void test(WSClient c) {
+        // "play.libs.ws;WSClient;true;url;;;Argument[0];open-url;manual"
+        c.url((String) source()); // $ SSRF
+    }
+
+    public void test(StandaloneWSClient c) {
+        // "play.libs.ws;StandaloneWSClient;true;url;;;Argument[0];open-url;manual"
+        c.url((String) source()); // $ SSRF
     }
 
 }

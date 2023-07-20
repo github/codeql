@@ -4,7 +4,7 @@ private import codeql.swift.elements.expr.DeclRefExpr
 private import codeql.swift.elements.expr.MethodLookupExpr
 private import codeql.swift.elements.expr.DotSyntaxBaseIgnoredExpr
 private import codeql.swift.elements.expr.AutoClosureExpr
-private import codeql.swift.elements.decl.MethodDecl
+private import codeql.swift.elements.decl.Method
 
 class ApplyExpr extends Generated::ApplyExpr {
   Callable getStaticTarget() { result = this.getFunction().(DeclRefExpr).getDecl() }
@@ -33,7 +33,7 @@ class MethodApplyExpr extends ApplyExpr {
 
   MethodApplyExpr() { method = this.getFunction() }
 
-  override MethodDecl getStaticTarget() { result = method.getMethod() }
+  override Method getStaticTarget() { result = method.getMethod() }
 
   override Expr getQualifier() { result = method.getBase() }
 }

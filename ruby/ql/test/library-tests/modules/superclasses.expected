@@ -90,62 +90,62 @@ calls.rb:
 #  325| C1
 #-----|  -> Object
 
-#  331| C2
+#  335| C2
 #-----|  -> C1
 
-#  337| C3
+#  341| C3
 #-----|  -> C2
 
-#  377| SingletonOverride1
+#  385| SingletonOverride1
 #-----|  -> Object
 
-#  412| SingletonOverride2
+#  420| SingletonOverride2
 #-----|  -> SingletonOverride1
 
-#  433| ConditionalInstanceMethods
+#  441| ConditionalInstanceMethods
 #-----|  -> Object
 
-#  496| ExtendSingletonMethod
+#  504| ExtendSingletonMethod
 
-#  506| ExtendSingletonMethod2
+#  514| ExtendSingletonMethod2
 
-#  512| ExtendSingletonMethod3
+#  520| ExtendSingletonMethod3
 
-#  525| ProtectedMethodInModule
+#  533| ProtectedMethodInModule
 
-#  531| ProtectedMethods
+#  539| ProtectedMethods
 #-----|  -> Object
 
-#  550| ProtectedMethodsSub
+#  558| ProtectedMethodsSub
 #-----|  -> ProtectedMethods
 
-#  564| SingletonUpCall_Base
+#  572| SingletonUpCall_Base
 #-----|  -> Object
 
-#  568| SingletonUpCall_Sub
+#  576| SingletonUpCall_Sub
 #-----|  -> SingletonUpCall_Base
 
-#  576| SingletonUpCall_SubSub
+#  584| SingletonUpCall_SubSub
 #-----|  -> SingletonUpCall_Sub
 
-#  583| SingletonA
+#  591| SingletonA
 #-----|  -> Object
 
-#  596| SingletonB
+#  604| SingletonB
 #-----|  -> SingletonA
 
-#  605| SingletonC
+#  613| SingletonC
 #-----|  -> SingletonA
 
-#  618| Included
+#  626| Included
 
-#  626| IncludesIncluded
+#  634| IncludesIncluded
 #-----|  -> Object
 
-#  633| CustomNew1
+#  641| CustomNew1
 #-----|  -> Object
 
-#  641| CustomNew2
+#  649| CustomNew2
 #-----|  -> Object
 
 hello.rb:

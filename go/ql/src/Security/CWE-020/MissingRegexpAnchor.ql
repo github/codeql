@@ -71,7 +71,7 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
+  override predicate isSource(DataFlow::Node source) { this.isSourceString(source, _) }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }

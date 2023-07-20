@@ -8,12 +8,10 @@ string describe(FlowSource source) {
   source instanceof LocalFlowSource and result = "local"
 }
 
-class FlowSourcesTest extends InlineExpectationsTest {
-  FlowSourcesTest() { this = "FlowSourcesTest" }
+module FlowSourcesTest implements TestSig {
+  string getARelevantTag() { result = "source" }
 
-  override string getARelevantTag() { result = "source" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(FlowSource source |
       location = source.getLocation() and
       location.getFile().getBaseName() != "" and
@@ -23,3 +21,5 @@ class FlowSourcesTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<FlowSourcesTest>

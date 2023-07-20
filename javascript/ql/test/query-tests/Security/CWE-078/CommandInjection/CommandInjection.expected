@@ -1,4 +1,16 @@
 nodes
+| actions.js:8:9:8:57 | title |
+| actions.js:8:17:8:57 | github. ... t.title |
+| actions.js:8:17:8:57 | github. ... t.title |
+| actions.js:9:8:9:22 | `echo ${title}` |
+| actions.js:9:8:9:22 | `echo ${title}` |
+| actions.js:9:16:9:20 | title |
+| actions.js:18:9:18:63 | head_ref |
+| actions.js:18:20:18:63 | github. ... ead.ref |
+| actions.js:18:20:18:63 | github. ... ead.ref |
+| actions.js:19:14:19:31 | `echo ${head_ref}` |
+| actions.js:19:14:19:31 | `echo ${head_ref}` |
+| actions.js:19:22:19:29 | head_ref |
 | child_process-test.js:6:9:6:49 | cmd |
 | child_process-test.js:6:15:6:38 | url.par ... , true) |
 | child_process-test.js:6:15:6:44 | url.par ... ).query |
@@ -179,6 +191,16 @@ nodes
 | third-party-command-injection.js:6:21:6:27 | command |
 | third-party-command-injection.js:6:21:6:27 | command |
 edges
+| actions.js:8:9:8:57 | title | actions.js:9:16:9:20 | title |
+| actions.js:8:17:8:57 | github. ... t.title | actions.js:8:9:8:57 | title |
+| actions.js:8:17:8:57 | github. ... t.title | actions.js:8:9:8:57 | title |
+| actions.js:9:16:9:20 | title | actions.js:9:8:9:22 | `echo ${title}` |
+| actions.js:9:16:9:20 | title | actions.js:9:8:9:22 | `echo ${title}` |
+| actions.js:18:9:18:63 | head_ref | actions.js:19:22:19:29 | head_ref |
+| actions.js:18:20:18:63 | github. ... ead.ref | actions.js:18:9:18:63 | head_ref |
+| actions.js:18:20:18:63 | github. ... ead.ref | actions.js:18:9:18:63 | head_ref |
+| actions.js:19:22:19:29 | head_ref | actions.js:19:14:19:31 | `echo ${head_ref}` |
+| actions.js:19:22:19:29 | head_ref | actions.js:19:14:19:31 | `echo ${head_ref}` |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:18:17:18:19 | cmd |
@@ -344,6 +366,8 @@ edges
 | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
 | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command |
 #select
+| actions.js:9:8:9:22 | `echo ${title}` | actions.js:8:17:8:57 | github. ... t.title | actions.js:9:8:9:22 | `echo ${title}` | This command line depends on a $@. | actions.js:8:17:8:57 | github. ... t.title | user-provided value |
+| actions.js:19:14:19:31 | `echo ${head_ref}` | actions.js:18:20:18:63 | github. ... ead.ref | actions.js:19:14:19:31 | `echo ${head_ref}` | This command line depends on a $@. | actions.js:18:20:18:63 | github. ... ead.ref | user-provided value |
 | child_process-test.js:17:13:17:15 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:17:13:17:15 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:18:17:18:19 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:18:17:18:19 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:19:17:19:19 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:19:17:19:19 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
