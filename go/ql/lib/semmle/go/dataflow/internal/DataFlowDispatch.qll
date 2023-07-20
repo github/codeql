@@ -134,10 +134,6 @@ class ArgumentPosition extends int {
 pragma[inline]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
-private predicate isInterfaceMethod(Method c) {
-  c.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
-}
-
 /**
  * Holds if `call` is passing `arg` to param `p` in any circumstance except passing
  * a receiver parameter to a concrete method.
@@ -149,9 +145,8 @@ predicate golangSpecificParamArgFilter(
   // Interface methods calls may be passed strictly to that exact method's model receiver:
   arg.getPosition() != -1
   or
-  exists(Function callTarget | callTarget = call.getNode().(DataFlow::CallNode).getTarget() |
-    not isInterfaceMethod(callTarget)
-    or
-    callTarget = p.getCallable().asSummarizedCallable().asFunction()
-  )
+  p instanceof DataFlow::SummarizedParameterNode
+  or
+  not call.getNode().(DataFlow::CallNode).getReceiver().getType().getUnderlyingType() instanceof
+    InterfaceType
 }
