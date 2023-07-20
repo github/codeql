@@ -362,6 +362,8 @@ predicate ignoreLoad(Expr expr) {
     or
     expr instanceof FunctionAccess
     or
+    expr instanceof ParenthesisExpr
+    or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
       instanceof FunctionPointerType
     or
