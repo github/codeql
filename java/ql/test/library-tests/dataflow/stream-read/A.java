@@ -103,7 +103,24 @@ public class A {
         sink(wrapStream(source())); // $ hasTaintFlow
     }
 
-    public static void testLocalClass() {
+    public static void testLocal() {
+
+        class LocalInputStream extends InputStream {
+            @Override
+            public int read() throws IOException {
+                return 0;
+            }
+
+            @Override
+            public int read(byte[] b) throws IOException {
+                InputStream in = source();
+                return in.read(b);
+            }
+        }
+        sink(new LocalInputStream()); // $ hasTaintFlow
+    }
+
+    public static void testLocalVarCapture() {
         InputStream in = source();
 
         class LocalInputStream extends InputStream {
