@@ -21,7 +21,7 @@
  * actually being dereferenced. We do this using a regular dataflow configuration (see `InvalidPointerToDerefConfig`).
  *
  * This dataflow traversal defines the set of sources as any dataflow node that is non-strictly upper-bounded by the
- * pointer-arithmetic instruction identified by `AllocationToInvalidPointer.qll`. (TOOD: I'm pretty sure this is incorrect,
+ * pointer-arithmetic instruction identified by `AllocationToInvalidPointer.qll`. (TODO: I'm pretty sure this is incorrect,
  * and we should define the set of sources as anything that is non-strictly _lower_ bounded by the pointer-arithmetic
  * instruction). That is, the set of sources is any dataflow node `source` such that `source.asInstruction <= pai + delta1`
  * for some `delta1 >= 0`.
