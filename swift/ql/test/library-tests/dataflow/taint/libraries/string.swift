@@ -626,7 +626,7 @@ func furtherTaintThroughCallbacks() {
     ptr in
     return source()
   })
-  sink(arg: result2!) // $ MISSING: tainted=627
+  sink(arg: result2!) // $ tainted=627
 
   // return values from the closure (2)
   if let result3 = clean.withContiguousStorageIfAvailable({
@@ -646,5 +646,5 @@ func furtherTaintThroughCallbacks() {
   let result5 = try? clean.withContiguousStorageIfAvailable(callbackWithCleanPointer)
   sink(arg: result5!)
   let result6 = try? tainted.withContiguousStorageIfAvailable(callbackWithTaintedPointer)
-  sink(arg: result6!) // $ MISSING: tainted=612
+  sink(arg: result6!) // $ tainted=612
 }
