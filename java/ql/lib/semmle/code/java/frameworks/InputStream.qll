@@ -3,27 +3,36 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.dataflow.TaintTracking
 
 /**
- * A taint step from an update of the `bytes[]` parameter in an override of the `InputStream.read` method
+ * A local taint step from the definition of a captured variable, the capturer of which
+ * updates the `bytes[]` parameter in an override of the `InputStream.read` method,
  * to a class instance expression of the type extending `InputStream`.
  *
- * This models how a subtype of `InputStream` could be tainted by the definition of its methods, which will
- * normally only happen in anonymous classes.
+ * This models how a subtype of `InputStream` could be tainted by capturing tainted variables in
+ * the definition of its methods.
  */
-private class InputStreamWrapperAnonymousStep extends AdditionalTaintStep {
+private class InputStreamWrapperCapturedLocalStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(Method m, NestedClass wrapper |
-      m.hasName("read") and
+    exists(InputStreamRead m, NestedClass wrapper, SsaVariable captured, SsaImplicitInit capturer |
+      wrapper.getASourceSupertype+() instanceof TypeInputStream and
       m.getDeclaringType() = wrapper and
-      wrapper.getASourceSupertype+() instanceof TypeInputStream
-    |
-      n1.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = m.getParameter(0).getAnAccess() and
+      capturer.captures(captured) and
+      TaintTracking::localTaint(DataFlow::exprNode(capturer.getAFirstUse()),
+        any(DataFlow::PostUpdateNode pun |
+          pun.getPreUpdateNode().asExpr() = m.getParameter(0).getAnAccess()
+        )) and
       n2.asExpr()
           .(ClassInstanceExpr)
           .getConstructedType()
           .getASourceSupertype*()
           .getSourceDeclaration() = wrapper
+    |
+      n1.asExpr() = captured.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource()
+      or
+      captured.(SsaImplicitInit).isParameterDefinition(n1.asParameter())
     )
   }
 }
@@ -47,5 +56,12 @@ private class InputStreamWrapperConstructorStep extends AdditionalTaintStep {
       n1.asExpr() = a and
       n2.asExpr() = cc
     )
+  }
+}
+
+private class InputStreamRead extends Method {
+  InputStreamRead() {
+    this.hasName("read") and
+    this.getDeclaringType().getASourceSupertype*() instanceof TypeInputStream
   }
 }
