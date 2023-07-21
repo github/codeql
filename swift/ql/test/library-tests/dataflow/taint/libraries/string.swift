@@ -433,7 +433,7 @@ func taintThroughEncodings() {
 
   clean.withContiguousStorageIfAvailable({
     ptr in
-    sink(arg: ptr) // $ SPURIOUS: tainted=366
+    sink(arg: ptr)
     sink(arg: ptr.baseAddress!)
   })
   tainted.withContiguousStorageIfAvailable({

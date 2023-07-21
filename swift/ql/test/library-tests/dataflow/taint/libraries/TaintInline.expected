@@ -1,3 +1,2 @@
 failures
 testFailures
-| string.swift:436:20:437:1 | // $ SPURIOUS: tainted=366\n | Fixed spurious result:tainted=366 |
