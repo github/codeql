@@ -4,9 +4,9 @@
  *
  * Consider the following snippet:
  * ```cpp
- * 1. char* begin = (char*)malloc(size);
- * 2. char* end = begin + size;
- * 3. for(int *p = begin; p <= end; p++) {
+ * 1. char* base = (char*)malloc(size);
+ * 2. char* end = base + size;
+ * 3. for(int *p = base; p <= end; p++) {
  * 4.   use(*p);
  * 5. }
  * ```
