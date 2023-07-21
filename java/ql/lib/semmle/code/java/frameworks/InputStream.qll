@@ -39,6 +39,7 @@ private class InputStreamWrapperCapturedJumpStep extends AdditionalTaintStep {
  */
 private class InputStreamWrapperCapturedLocalStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    n1.getEnclosingCallable() = n2.getEnclosingCallable() and
     exists(InputStreamRead m, NestedClass wrapper, SsaVariable captured, SsaImplicitInit capturer |
       wrapper.getASourceSupertype+() instanceof TypeInputStream and
       m.getDeclaringType() = wrapper and
