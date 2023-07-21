@@ -67,13 +67,13 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
-  predicate isSink(Endpoint e, string kind) {
+  predicate isSink(Endpoint e, string kind, string provenance) {
     exists(string package, string type, string name, string signature, string ext, string input |
       sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, _)
+      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
     )
     or
-    isCustomSink(e, kind)
+    isCustomSink(e, kind) and provenance = "custom-sink"
   }
 
   predicate isNeutral(Endpoint e) {
@@ -200,7 +200,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not ApplicationCandidatesImpl::isSink(e, _) and
+    not ApplicationCandidatesImpl::isSink(e, _, _) and
     ApplicationModeGetCallable::getCallable(e).getName().matches("is%") and
     ApplicationModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
   }
@@ -218,7 +218,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not ApplicationCandidatesImpl::isSink(e, _) and
+    not ApplicationCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
       callable = ApplicationModeGetCallable::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
@@ -313,7 +313,8 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 
 /**
  * A negative characteristic that indicates that an endpoint is a non-sink argument to a method whose sinks have already
- * been modeled.
+ * been modeled _manually_. This is restricted to manual sinks only, because only during the manual process do we have
+ * the expectation that all sinks present in a method have been considered.
  *
  * WARNING: These endpoints should not be used as negative samples for training, because some sinks may have been missed
  * when the method was modeled. Specifically, as we start using ATM to merge in new declarations, we can be less sure
@@ -324,13 +325,13 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 private class OtherArgumentToModeledMethodCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic
 {
   OtherArgumentToModeledMethodCharacteristic() {
-    this = "other argument to a method that has already been modeled"
+    this = "other argument to a method that has already been modeled manually"
   }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not ApplicationCandidatesImpl::isSink(e, _) and
+    not ApplicationCandidatesImpl::isSink(e, _, _) and
     exists(DataFlow::Node otherSink, Call c |
-      ApplicationCandidatesImpl::isSink(otherSink, _) and
+      ApplicationCandidatesImpl::isSink(otherSink, _, "manual") and
       c = otherSink.asExpr().(Argument).getCall() and
       e.asExpr() in [c.getQualifier(), c.getAnArgument()] and
       e != otherSink
