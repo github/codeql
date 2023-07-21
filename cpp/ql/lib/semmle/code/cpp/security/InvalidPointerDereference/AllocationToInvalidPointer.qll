@@ -42,9 +42,9 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
  * ```
  * In this case, the sink pair identified by the product flow library (without any additional barriers)
  * would be `(p, n)` (where `n` is the `n` in `p[n]`), because there exists a pointer-arithmetic
- * instruction `pai` such that:
- * 1. The left-hand of `pai` flows from the allocation, and
- * 2. The right-hand of `pai` is non-strictly upper bounded by `n` (where `n` is the `n` in `p[n]`)
+ * instruction `pai = a + b` such that:
+ * 1. the allocation flows to `a`, and
+ * 2. `b <= n` where `n` is the `n` in `p[n]`
  * but because there's a strict comparison that compares `n` against the size of the allocation this
  * snippet is fine.
  */
@@ -147,8 +147,8 @@ private module InterestingPointerAddInstruction {
 }
 
 /**
- * A product-flow configuration for flow from an (allocation, size) pair to a
- * pointer-arithmetic operation that is non-strictly upper-bounded by `allocation + size`.
+ * A product-flow configuration for flow from an `(allocation, size)` pair to a
+ * pointer-arithmetic operation `pai` such that `pai <= allocation + size`.
  *
  * The goal of this query is to find patterns such as:
  * ```cpp
@@ -207,7 +207,7 @@ private module Config implements ProductFlow::StateConfigSig {
 private module AllocToInvalidPointerFlow = ProductFlow::GlobalWithState<Config>;
 
 /**
- * Holds if `pai` is non-strictly upper bounded by `sink2 + delta` and `sink1` is the
+ * Holds if `pai` is non-strictly upper bounded by `sizeSink + delta` and `allocSink` is the
  * left operand of the pointer-arithmetic operation.
  *
  * For example in,
@@ -216,8 +216,8 @@ private module AllocToInvalidPointerFlow = ProductFlow::GlobalWithState<Config>;
  * ```
  * We will have:
  * - `pai` is `p + (size + 1)`,
- * - `sink1` is `p`
- * - `sink2` is `size`
+ * - `allocSink` is `p`
+ * - `sizeSink` is `size`
  * - `delta` is `1`.
  */
 pragma[nomagic]
@@ -237,9 +237,9 @@ private predicate pointerAddInstructionHasBounds0(
 }
 
 /**
- * Holds if `allocation` flows to `sink1` and `sink1` represents the left-hand
- * side of the pointer-arithmetic instruction `pai`, and the right-hand side of `pai`
- * is non-strictly upper bounded by the size of `alllocation` + `delta`.
+ * Holds if `allocation` flows to `allocSink` and `allocSink` represents the left operand
+ * of the pointer-arithmetic instruction `pai = a + b` (i.e., `allocSink = a`), and
+ * `b <= allocation + delta`.
  */
 pragma[nomagic]
 predicate pointerAddInstructionHasBounds(

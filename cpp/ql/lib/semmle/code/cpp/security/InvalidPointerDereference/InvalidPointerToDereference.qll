@@ -85,9 +85,8 @@ private module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
 private import DataFlow::Global<InvalidPointerToDerefConfig>
 
 /**
- * Holds if `source1` is dataflow node that represents an allocation that flows to the
- * left-hand side of the pointer-arithmetic `pai`, and `derefSource` is a dataflow node with
- * a pointer-value that is non-strictly upper bounded by `pai + delta`.
+ * Holds if `allocSource` is dataflow node that represents an allocation that flows to the
+ * left-hand side of the pointer-arithmetic `pai`, and `derefSource <= pai + derefSourcePaiDelta`.
  *
  * For example, if `pai` is a pointer-arithmetic operation `p + size` in an expression such
  * as `(p + size) + 1` and `derefSource` is the node representing `(p + size) + 1`. In this
@@ -114,8 +113,8 @@ private predicate invalidPointerToDerefSource(
 
 /**
  * Holds if `sink` is a sink for `InvalidPointerToDerefConfig` and `i` is a `StoreInstruction` that
- * writes to an address that non-strictly upper-bounds `sink`, or `i` is a `LoadInstruction` that
- * reads from an address that non-strictly upper-bounds `sink`.
+ * writes to an address `addr` such that `addr <= sink`, or `i` is a `LoadInstruction` that
+ * reads from an address `addr` such that `addr <= sink`.
  */
 pragma[inline]
 private predicate isInvalidPointerDerefSink(
