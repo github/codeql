@@ -99,7 +99,7 @@ public class A {
     }
 
     public static void testWrapCall() {
-        sink(wrapStream(null)); // no flow
+        sink(wrapStream(null)); // $ SPURIOUS: hasTaintFlow
         sink(wrapStream(source())); // $ hasTaintFlow
     }
 

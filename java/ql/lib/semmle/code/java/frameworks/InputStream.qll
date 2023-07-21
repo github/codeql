@@ -7,6 +7,29 @@ private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TaintTracking
 
 /**
+ * A jump taint step from an update of the `bytes[]` parameter in an override of the `InputStream.read` method
+ * to a class instance expression of the type extending `InputStream`.
+ *
+ * This models how a subtype of `InputStream` could be tainted by the definition of its methods, which will
+ * normally only happen in nested classes.
+ */
+private class InputStreamWrapperCapturedJumpStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(InputStreamRead m, NestedClass wrapper |
+      m.getDeclaringType() = wrapper and
+      wrapper.getASourceSupertype+() instanceof TypeInputStream
+    |
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = m.getParameter(0).getAnAccess() and
+      n2.asExpr()
+          .(ClassInstanceExpr)
+          .getConstructedType()
+          .getASourceSupertype*()
+          .getSourceDeclaration() = wrapper
+    )
+  }
+}
+
+/**
  * A local taint step from the definition of a captured variable, the capturer of which
  * updates the `bytes[]` parameter in an override of the `InputStream.read` method,
  * to a class instance expression of the type extending `InputStream`.
