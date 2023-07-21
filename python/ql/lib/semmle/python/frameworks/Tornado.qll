@@ -64,9 +64,6 @@ module Tornado {
     }
   }
 
-  /** DEPRECATED: Alias for HttpHeaders */
-  deprecated module HTTPHeaders = HttpHeaders;
-
   // ---------------------------------------------------------------------------
   // tornado
   // ---------------------------------------------------------------------------
@@ -200,7 +197,8 @@ module Tornado {
           override string getAsyncMethodName() { none() }
         }
 
-        private class RequestAttrAccess extends TornadoModule::HttpUtil::HttpServerRequest::InstanceSource {
+        private class RequestAttrAccess extends TornadoModule::HttpUtil::HttpServerRequest::InstanceSource
+        {
           RequestAttrAccess() {
             this.(DataFlow::AttrRead).getObject() = instance() and
             this.(DataFlow::AttrRead).getAttributeName() = "request"
@@ -383,12 +381,12 @@ module Tornado {
   /**
    * A regex that is used to set up a route.
    *
-   * Needs this subclass to be considered a RegexString.
+   * Needs this subclass to be considered a RegExpInterpretation.
    */
-  private class TornadoRouteRegex extends RegexString instanceof StrConst {
+  private class TornadoRouteRegex extends RegExpInterpretation::Range {
     TornadoRouteSetup setup;
 
-    TornadoRouteRegex() { setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this) }
+    TornadoRouteRegex() { this = setup.getUrlPatternArg() }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
   }
@@ -422,9 +420,10 @@ module Tornado {
         not result = requestHandler.getArg(0)
       )
       or
-      exists(Function requestHandler, TornadoRouteRegex regex |
+      exists(Function requestHandler, TornadoRouteRegex regexUse, RegExp regex |
+        regex.getAUse() = regexUse and
         requestHandler = this.getARequestHandler() and
-        regex.getRouteSetup() = this
+        regexUse.getRouteSetup() = this
       |
         // first group will have group number 1
         result = requestHandler.getArg(regex.getGroupNumber(_, _))
@@ -463,7 +462,8 @@ module Tornado {
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.redirect
    */
   private class TornadoRequestHandlerRedirectCall extends Http::Server::HttpRedirectResponse::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     TornadoRequestHandlerRedirectCall() {
       this.getFunction() = TornadoModule::Web::RequestHandler::redirectMethod()
     }
@@ -485,7 +485,8 @@ module Tornado {
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.write
    */
   private class TornadoRequestHandlerWriteCall extends Http::Server::HttpResponse::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     TornadoRequestHandlerWriteCall() {
       this.getFunction() = TornadoModule::Web::RequestHandler::writeMethod()
     }
@@ -503,7 +504,8 @@ module Tornado {
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_cookie
    */
   class TornadoRequestHandlerSetCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     TornadoRequestHandlerSetCookieCall() {
       this.calls(TornadoModule::Web::RequestHandler::instance(), "set_cookie")
     }

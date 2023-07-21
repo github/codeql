@@ -24,9 +24,11 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `ResourceInjection` instead.
+ *
  * A taint-tracking configuration for untrusted user input used in resource descriptors.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "ResourceInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -35,6 +37,22 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking configuration for untrusted user input used in resource descriptors.
+ */
+private module ResourceInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * A taint-tracking module for untrusted user input used in resource descriptors.
+ */
+module ResourceInjection = TaintTracking::Global<ResourceInjectionConfig>;
 
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }

@@ -4,7 +4,6 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-private import codeql.ruby.DataFlow2
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
@@ -90,7 +89,8 @@ private module Shared {
    * tag.
    */
   class ArgumentInterpretedAsUrlAsSink extends Sink, ErbOutputMethodCallArgumentNode,
-    ActionView::ArgumentInterpretedAsUrl { }
+    ActionView::ArgumentInterpretedAsUrl
+  { }
 
   /**
    * A argument to a call to the `link_to` method, which does not expect
@@ -129,13 +129,15 @@ private module Shared {
    * An inclusion check against an array of constant strings, considered as a sanitizer-guard.
    */
   class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
 
   /**
    * A `VariableWriteAccessCfgNode` that is not succeeded (locally) by another
    * write to that variable.
    */
-  private class FinalInstanceVarWrite extends CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode {
+  private class FinalInstanceVarWrite extends CfgNodes::ExprNodes::InstanceVariableWriteAccessCfgNode
+  {
     private InstanceVariable var;
 
     FinalInstanceVarWrite() {
@@ -241,9 +243,6 @@ private module Shared {
     or
     isFlowFromHelperMethod(node1, node2)
   }
-
-  /** DEPRECATED: Alias for isAdditionalXssFlowStep */
-  deprecated predicate isAdditionalXSSFlowStep = isAdditionalXssFlowStep/2;
 }
 
 /**
@@ -273,9 +272,6 @@ module ReflectedXss {
    */
   predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
 
-  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
-  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
-
   /**
    * A HTTP request input, considered as a flow source.
    */
@@ -284,27 +280,30 @@ module ReflectedXss {
   }
 }
 
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;
-
 private module OrmTracking {
   /**
    * A data flow configuration to track flow from finder calls to field accesses.
    */
-  class Configuration extends DataFlow2::Configuration {
-    Configuration() { this = "OrmTracking" }
-
-    override predicate isSource(DataFlow2::Node source) { source instanceof OrmInstantiation }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      // We currently only use ORM instances that come from a call site, so restrict the sources
+      // to calls. This works around a performance issue that would arise from using 'self' as a source
+      // in ActiveRecord models. Over time, library models should stop relying on OrmInstantiation and instead
+      // use API graphs or type-tracking the same way we track other types.
+      source instanceof OrmInstantiation and source instanceof DataFlow::CallNode
+    }
 
     // Select any call receiver and narrow down later
-    override predicate isSink(DataFlow2::Node sink) {
-      sink = any(DataFlow2::CallNode c).getReceiver()
-    }
+    predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::CallNode c).getReceiver() }
 
-    override predicate isAdditionalFlowStep(DataFlow2::Node node1, DataFlow2::Node node2) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       Shared::isAdditionalXssFlowStep(node1, node2)
     }
+
+    predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
   }
+
+  import DataFlow::Global<Config>
 }
 
 /** Provides default sources, sinks and sanitizers for detecting stored cross-site scripting (XSS) vulnerabilities. */
@@ -330,13 +329,10 @@ module StoredXss {
    */
   predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
 
-  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
-  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
-
-  private class OrmFieldAsSource extends Source instanceof DataFlow2::CallNode {
+  private class OrmFieldAsSource extends Source instanceof DataFlow::CallNode {
     OrmFieldAsSource() {
-      exists(OrmTracking::Configuration subConfig, DataFlow2::CallNode subSrc |
-        subConfig.hasFlow(subSrc, this.getReceiver()) and
+      exists(DataFlow::CallNode subSrc |
+        OrmTracking::flow(subSrc, this.getReceiver()) and
         subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
       )
     }
@@ -346,6 +342,3 @@ module StoredXss {
   private class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
   // TODO: Consider `FileNameSource` flowing to script tag `src` attributes and similar
 }
-
-/** DEPRECATED: Alias for StoredXss */
-deprecated module StoredXSS = StoredXss;

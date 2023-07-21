@@ -31,16 +31,16 @@ predicate unsafeDataContractTypeCreation(Expr e) {
   e.(TypeofExpr).getTypeAccess().getTarget() instanceof DataSetOrTableRelatedClass
 }
 
-class Conf extends DataFlow::Configuration {
-  Conf() { this = "FlowToDataSerializerConstructor" }
+module FlowToDataSerializerConstructorConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { unsafeDataContractTypeCreation(node.asExpr()) }
 
-  override predicate isSource(DataFlow::Node node) { unsafeDataContractTypeCreation(node.asExpr()) }
-
-  override predicate isSink(DataFlow::Node node) { xmlSerializerConstructorArgument(node.asExpr()) }
+  predicate isSink(DataFlow::Node node) { xmlSerializerConstructorArgument(node.asExpr()) }
 }
 
-from Conf conf, DataFlow::Node source, DataFlow::Node sink
-where conf.hasFlow(source, sink)
+module FlowToDataSerializerConstructor = DataFlow::Global<FlowToDataSerializerConstructorConfig>;
+
+from DataFlow::Node source, DataFlow::Node sink
+where FlowToDataSerializerConstructor::flow(source, sink)
 select sink,
   "Unsafe type is used in data contract serializer. Make sure $@ comes from the trusted source.",
   source, source.toString()

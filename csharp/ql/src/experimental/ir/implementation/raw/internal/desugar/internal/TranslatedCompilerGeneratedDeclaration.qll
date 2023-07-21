@@ -16,13 +16,14 @@ private import experimental.ir.internal.CSharpType
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDeclarationBase,
-  TranslatedCompilerGeneratedElement {
+  TranslatedCompilerGeneratedElement
+{
   final override string toString() {
     result = "compiler generated declaration (" + generatedBy.toString() + ")"
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and result = getInstruction(InitializerStoreTag())
+    child = this.getInitialization() and result = this.getInstruction(InitializerStoreTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
@@ -33,14 +34,14 @@ abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDecla
     // do not have the `Uninitialized` instruction
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
-    resultType = getTypeForPRValue(getVarType())
+    resultType = getTypeForPRValue(this.getVarType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     result = LocalVariableDeclarationBase.super.getInstructionSuccessor(tag, kind)
     or
     tag = InitializerStoreTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
@@ -50,23 +51,23 @@ abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDecla
     tag = InitializerStoreTag() and
     (
       operandTag instanceof AddressOperandTag and
-      result = getInstruction(InitializerVariableAddressTag())
+      result = this.getInstruction(InitializerVariableAddressTag())
       or
       operandTag instanceof StoreValueOperandTag and
-      result = getInitializationResult()
+      result = this.getInitializationResult()
     )
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = InitializerVariableAddressTag() and
-    result = getIRVariable()
+    result = this.getIRVariable()
   }
 
   // A compiler generated declaration does not have an associated `LocalVariable`
   // element
   override LocalVariable getDeclVar() { none() }
 
-  override Type getVarType() { result = getIRVariable().getType() }
+  override Type getVarType() { result = this.getIRVariable().getType() }
 
   /**
    * Gets the IR variable that corresponds to the declaration.

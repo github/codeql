@@ -19,7 +19,7 @@ import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import TaintedPath::PathGraph
 
 /**
  * A function for opening a file.
@@ -47,16 +47,6 @@ class FileFunction extends FunctionWithWrappers {
   override predicate interestingArg(int arg) { arg = 0 }
 }
 
-Expr asSinkExpr(DataFlow::Node node) {
-  result =
-    node.asOperand()
-        .(SideEffectOperand)
-        .getUse()
-        .(ReadSideEffectInstruction)
-        .getArgumentDef()
-        .getUnconvertedResultExpression()
-}
-
 /**
  * Holds for a variable that has any kind of upper-bound check anywhere in the program.
  * This is biased towards being inclusive and being a coarse overapproximation because
@@ -80,18 +70,16 @@ predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-class TaintedPathConfiguration extends TaintTracking::Configuration {
-  TaintedPathConfiguration() { this = "TaintedPathConfiguration" }
+module TaintedPathConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
-
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(FileFunction fileFunction |
-      fileFunction.outermostWrapperFunctionCall(asSinkExpr(node), _)
+      fileFunction.outermostWrapperFunctionCall(node.asIndirectArgument(), _)
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().(Call).getTarget().getUnspecifiedType() instanceof ArithmeticType
     or
     exists(LoadInstruction load, Variable checkedVar |
@@ -102,13 +90,15 @@ class TaintedPathConfiguration extends TaintTracking::Configuration {
   }
 }
 
+module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
+
 from
-  FileFunction fileFunction, Expr taintedArg, FlowSource taintSource, TaintedPathConfiguration cfg,
-  DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode, string callChain
+  FileFunction fileFunction, Expr taintedArg, FlowSource taintSource,
+  TaintedPath::PathNode sourceNode, TaintedPath::PathNode sinkNode, string callChain
 where
-  taintedArg = asSinkExpr(sinkNode.getNode()) and
+  taintedArg = sinkNode.getNode().asIndirectArgument() and
   fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
-  cfg.hasFlowPath(sourceNode, sinkNode) and
+  TaintedPath::flowPath(sourceNode, sinkNode) and
   taintSource = sourceNode.getNode()
 select taintedArg, sourceNode, sinkNode,
   "This argument to a file access function is derived from $@ and then passed to " + callChain + ".",

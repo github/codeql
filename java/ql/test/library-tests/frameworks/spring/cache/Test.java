@@ -46,91 +46,91 @@ public class Test {
 	public void test() {
 
 		{
-			// "org.springframework.cache;Cache$ValueRetrievalException;false;ValueRetrievalException;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "org.springframework.cache;Cache$ValueRetrievalException;false;ValueRetrievalException;;;Argument[0];MapKey of Argument[this];value;manual"
 			Cache.ValueRetrievalException out = null;
 			Object in = source();
 			out = new Cache.ValueRetrievalException(in, null, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache$ValueRetrievalException;false;getKey;;;MapKey of Argument[-1];ReturnValue;value;manual"
+			// "org.springframework.cache;Cache$ValueRetrievalException;false;getKey;;;MapKey of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Cache.ValueRetrievalException in = new Cache.ValueRetrievalException(source(), null, null);
 			out = in.getKey();
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache$ValueWrapper;true;get;;;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "org.springframework.cache;Cache$ValueWrapper;true;get;;;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Cache.ValueWrapper in = new ValueWrapper(source());
 			out = in.get();
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;get;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
+			// "org.springframework.cache;Cache;true;get;(Object);;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			Cache.ValueWrapper out = null;
 			Cache in = new DummyCache(null, source());
 			out = in.get(null);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;get;(Object,Callable);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "org.springframework.cache;Cache;true;get;(Object,Callable);;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Cache in = new DummyCache(null, source());
 			out = in.get(null, (Callable)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;get;(Object,Class);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "org.springframework.cache;Cache;true;get;(Object,Class);;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Cache in = new DummyCache(null, source());
 			out = in.get(null, (Class)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;getNativeCache;;;MapKey of Argument[-1];MapKey of ReturnValue;value;manual"
+			// "org.springframework.cache;Cache;true;getNativeCache;;;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			Object out = null;
 			Cache in = new DummyCache(source(), null);
 			out = in.getNativeCache();
 			sink(getMapKey((Cache)out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;getNativeCache;;;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
+			// "org.springframework.cache;Cache;true;getNativeCache;;;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			Object out = null;
 			Cache in = new DummyCache(null, source());
 			out = in.getNativeCache();
 			sink(getMapValue((Cache)out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;put;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "org.springframework.cache;Cache;true;put;;;Argument[0];MapKey of Argument[this];value;manual"
 			Cache out = null;
 			Object in = source();
 			out.put(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;put;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "org.springframework.cache;Cache;true;put;;;Argument[1];MapValue of Argument[this];value;manual"
 			Cache out = null;
 			Object in = source();
 			out.put(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;putIfAbsent;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "org.springframework.cache;Cache;true;putIfAbsent;;;Argument[0];MapKey of Argument[this];value;manual"
 			Cache out = null;
 			Object in = source();
 			out.putIfAbsent(in, null);
 			sink(getMapKey(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;putIfAbsent;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "org.springframework.cache;Cache;true;putIfAbsent;;;Argument[1];MapValue of Argument[this];value;manual"
 			Cache out = null;
 			Object in = source();
 			out.putIfAbsent(null, in);
 			sink(getMapValue(out)); // $hasValueFlow
 		}
 		{
-			// "org.springframework.cache;Cache;true;putIfAbsent;;;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
+			// "org.springframework.cache;Cache;true;putIfAbsent;;;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			Cache.ValueWrapper out = null;
 			Cache in = new DummyCache(null, source());
 			out = in.putIfAbsent(null, null);

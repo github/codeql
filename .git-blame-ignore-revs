@@ -1,0 +1,21 @@
+# .git-blame-ignore-revs
+# Auto-formatted Java
+730eae952139209fe9fdf598541d608f4c0c0c84
+# Auto-formatted C#
+5ad7ed49dd3de03ec6dcfcb6848758a6a987e11c
+# Auto-formatted C/C++
+ef97e539ec1971494d4bba5cafe82e00bc8217ac
+# Auto-formatted Python
+21d5fa836b3a7d020ba45e8b8168b145a9772131
+# Auto-formatted JavaScript
+8d97fe9ed327a9546ff2eaf515cf0f5214deddd9
+# Auto-formatted Ruby
+a5d229903d2f12d45f2c2c38822f1d0e7504ae7f
+# Auto-formatted Go
+08c658e66bf867090033ea096e244a93d46c0aa7
+# Auto-formatted Swift
+711d7057f79fb7d72fc3b35e010bd018f9009169
+# Auto-formatted shared ql packs
+3640b6d3a8ce9edf8e1d3ed106fe8526cf255bc0
+# Auto-formatted taint tracking files
+159d8e978c51959b380838c080d891b66e763b19

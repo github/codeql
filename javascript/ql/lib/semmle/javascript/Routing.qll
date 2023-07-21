@@ -508,7 +508,8 @@ module Routing {
     /**
      * An array which has been determined to be a route node, seen as a route node with arguments.
      */
-    private class ImpliedArrayRoute extends ValueNode::WithArguments, DataFlow::ArrayCreationNode instanceof ValueNode::UseSite {
+    private class ImpliedArrayRoute extends ValueNode::WithArguments, DataFlow::ArrayCreationNode instanceof ValueNode::UseSite
+    {
       override DataFlow::Node getArgumentNode(int n) { result = this.getElement(n) }
     }
   }

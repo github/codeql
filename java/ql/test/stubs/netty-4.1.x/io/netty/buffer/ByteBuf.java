@@ -1,19 +1,212 @@
-/*
- * Copyright 2012 The Netty Project
- *
- * The Netty Project licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
+// Generated automatically from io.netty.buffer.ByteBuf for testing purposes
+
 package io.netty.buffer;
 
-public abstract class ByteBuf implements Comparable<ByteBuf> {
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.ByteBufConvertible;
+import io.netty.util.ByteProcessor;
+import io.netty.util.ReferenceCounted;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.FileChannel;
+import java.nio.channels.GatheringByteChannel;
+import java.nio.channels.ScatteringByteChannel;
+import java.nio.charset.Charset;
+
+abstract public class ByteBuf implements ByteBufConvertible, Comparable<ByteBuf>, ReferenceCounted
+{
+    public ByteBuf asByteBuf(){ return null; }
+    public ByteBuf setDoubleLE(int p0, double p1){ return null; }
+    public ByteBuf setFloatLE(int p0, float p1){ return null; }
+    public ByteBuf writeDoubleLE(double p0){ return null; }
+    public ByteBuf writeFloatLE(float p0){ return null; }
+    public ByteBuf(){}
+    public abstract ByteBuf asReadOnly();
+    public abstract ByteBuf capacity(int p0);
+    public abstract ByteBuf clear();
+    public abstract ByteBuf copy();
+    public abstract ByteBuf copy(int p0, int p1);
+    public abstract ByteBuf discardReadBytes();
+    public abstract ByteBuf discardSomeReadBytes();
+    public abstract ByteBuf duplicate();
+    public abstract ByteBuf ensureWritable(int p0);
+    public abstract ByteBuf getBytes(int p0, ByteBuf p1);
+    public abstract ByteBuf getBytes(int p0, ByteBuf p1, int p2);
+    public abstract ByteBuf getBytes(int p0, ByteBuf p1, int p2, int p3);
+    public abstract ByteBuf getBytes(int p0, ByteBuffer p1);
+    public abstract ByteBuf getBytes(int p0, OutputStream p1, int p2);
+    public abstract ByteBuf getBytes(int p0, byte[] p1);
+    public abstract ByteBuf getBytes(int p0, byte[] p1, int p2, int p3);
+    public abstract ByteBuf markReaderIndex();
+    public abstract ByteBuf markWriterIndex();
+    public abstract ByteBuf order(ByteOrder p0);
+    public abstract ByteBuf readBytes(ByteBuf p0);
+    public abstract ByteBuf readBytes(ByteBuf p0, int p1);
+    public abstract ByteBuf readBytes(ByteBuf p0, int p1, int p2);
+    public abstract ByteBuf readBytes(ByteBuffer p0);
+    public abstract ByteBuf readBytes(OutputStream p0, int p1);
+    public abstract ByteBuf readBytes(byte[] p0);
+    public abstract ByteBuf readBytes(byte[] p0, int p1, int p2);
+    public abstract ByteBuf readBytes(int p0);
+    public abstract ByteBuf readRetainedSlice(int p0);
+    public abstract ByteBuf readSlice(int p0);
+    public abstract ByteBuf readerIndex(int p0);
+    public abstract ByteBuf resetReaderIndex();
+    public abstract ByteBuf resetWriterIndex();
+    public abstract ByteBuf retain();
+    public abstract ByteBuf retain(int p0);
+    public abstract ByteBuf retainedDuplicate();
+    public abstract ByteBuf retainedSlice();
+    public abstract ByteBuf retainedSlice(int p0, int p1);
+    public abstract ByteBuf setBoolean(int p0, boolean p1);
+    public abstract ByteBuf setByte(int p0, int p1);
+    public abstract ByteBuf setBytes(int p0, ByteBuf p1);
+    public abstract ByteBuf setBytes(int p0, ByteBuf p1, int p2);
+    public abstract ByteBuf setBytes(int p0, ByteBuf p1, int p2, int p3);
+    public abstract ByteBuf setBytes(int p0, ByteBuffer p1);
+    public abstract ByteBuf setBytes(int p0, byte[] p1);
+    public abstract ByteBuf setBytes(int p0, byte[] p1, int p2, int p3);
+    public abstract ByteBuf setChar(int p0, int p1);
+    public abstract ByteBuf setDouble(int p0, double p1);
+    public abstract ByteBuf setFloat(int p0, float p1);
+    public abstract ByteBuf setIndex(int p0, int p1);
+    public abstract ByteBuf setInt(int p0, int p1);
+    public abstract ByteBuf setIntLE(int p0, int p1);
+    public abstract ByteBuf setLong(int p0, long p1);
+    public abstract ByteBuf setLongLE(int p0, long p1);
+    public abstract ByteBuf setMedium(int p0, int p1);
+    public abstract ByteBuf setMediumLE(int p0, int p1);
+    public abstract ByteBuf setShort(int p0, int p1);
+    public abstract ByteBuf setShortLE(int p0, int p1);
+    public abstract ByteBuf setZero(int p0, int p1);
+    public abstract ByteBuf skipBytes(int p0);
+    public abstract ByteBuf slice();
+    public abstract ByteBuf slice(int p0, int p1);
+    public abstract ByteBuf touch();
+    public abstract ByteBuf touch(Object p0);
+    public abstract ByteBuf unwrap();
+    public abstract ByteBuf writeBoolean(boolean p0);
+    public abstract ByteBuf writeByte(int p0);
+    public abstract ByteBuf writeBytes(ByteBuf p0);
+    public abstract ByteBuf writeBytes(ByteBuf p0, int p1);
+    public abstract ByteBuf writeBytes(ByteBuf p0, int p1, int p2);
+    public abstract ByteBuf writeBytes(ByteBuffer p0);
+    public abstract ByteBuf writeBytes(byte[] p0);
+    public abstract ByteBuf writeBytes(byte[] p0, int p1, int p2);
+    public abstract ByteBuf writeChar(int p0);
+    public abstract ByteBuf writeDouble(double p0);
+    public abstract ByteBuf writeFloat(float p0);
+    public abstract ByteBuf writeInt(int p0);
+    public abstract ByteBuf writeIntLE(int p0);
+    public abstract ByteBuf writeLong(long p0);
+    public abstract ByteBuf writeLongLE(long p0);
+    public abstract ByteBuf writeMedium(int p0);
+    public abstract ByteBuf writeMediumLE(int p0);
+    public abstract ByteBuf writeShort(int p0);
+    public abstract ByteBuf writeShortLE(int p0);
+    public abstract ByteBuf writeZero(int p0);
+    public abstract ByteBuf writerIndex(int p0);
+    public abstract ByteBufAllocator alloc();
+    public abstract ByteBuffer internalNioBuffer(int p0, int p1);
+    public abstract ByteBuffer nioBuffer();
+    public abstract ByteBuffer nioBuffer(int p0, int p1);
+    public abstract ByteBuffer[] nioBuffers();
+    public abstract ByteBuffer[] nioBuffers(int p0, int p1);
+    public abstract ByteOrder order();
+    public abstract CharSequence getCharSequence(int p0, int p1, Charset p2);
+    public abstract CharSequence readCharSequence(int p0, Charset p1);
+    public abstract String toString();
+    public abstract String toString(Charset p0);
+    public abstract String toString(int p0, int p1, Charset p2);
+    public abstract boolean equals(Object p0);
+    public abstract boolean getBoolean(int p0);
+    public abstract boolean hasArray();
+    public abstract boolean hasMemoryAddress();
+    public abstract boolean isDirect();
+    public abstract boolean isReadOnly();
+    public abstract boolean isReadable();
+    public abstract boolean isReadable(int p0);
+    public abstract boolean isWritable();
+    public abstract boolean isWritable(int p0);
+    public abstract boolean readBoolean();
+    public abstract byte getByte(int p0);
+    public abstract byte readByte();
+    public abstract byte[] array();
+    public abstract char getChar(int p0);
+    public abstract char readChar();
+    public abstract double getDouble(int p0);
+    public abstract double readDouble();
+    public abstract float getFloat(int p0);
+    public abstract float readFloat();
+    public abstract int arrayOffset();
+    public abstract int bytesBefore(byte p0);
+    public abstract int bytesBefore(int p0, byte p1);
+    public abstract int bytesBefore(int p0, int p1, byte p2);
+    public abstract int capacity();
+    public abstract int compareTo(ByteBuf p0);
+    public abstract int ensureWritable(int p0, boolean p1);
+    public abstract int forEachByte(ByteProcessor p0);
+    public abstract int forEachByte(int p0, int p1, ByteProcessor p2);
+    public abstract int forEachByteDesc(ByteProcessor p0);
+    public abstract int forEachByteDesc(int p0, int p1, ByteProcessor p2);
+    public abstract int getBytes(int p0, FileChannel p1, long p2, int p3);
+    public abstract int getBytes(int p0, GatheringByteChannel p1, int p2);
+    public abstract int getInt(int p0);
+    public abstract int getIntLE(int p0);
+    public abstract int getMedium(int p0);
+    public abstract int getMediumLE(int p0);
+    public abstract int getUnsignedMedium(int p0);
+    public abstract int getUnsignedMediumLE(int p0);
+    public abstract int getUnsignedShort(int p0);
+    public abstract int getUnsignedShortLE(int p0);
+    public abstract int hashCode();
+    public abstract int indexOf(int p0, int p1, byte p2);
+    public abstract int maxCapacity();
+    public abstract int maxWritableBytes();
+    public abstract int nioBufferCount();
+    public abstract int readBytes(FileChannel p0, long p1, int p2);
+    public abstract int readBytes(GatheringByteChannel p0, int p1);
+    public abstract int readInt();
+    public abstract int readIntLE();
+    public abstract int readMedium();
+    public abstract int readMediumLE();
+    public abstract int readUnsignedMedium();
+    public abstract int readUnsignedMediumLE();
+    public abstract int readUnsignedShort();
+    public abstract int readUnsignedShortLE();
+    public abstract int readableBytes();
+    public abstract int readerIndex();
+    public abstract int setBytes(int p0, FileChannel p1, long p2, int p3);
+    public abstract int setBytes(int p0, InputStream p1, int p2);
+    public abstract int setBytes(int p0, ScatteringByteChannel p1, int p2);
+    public abstract int setCharSequence(int p0, CharSequence p1, Charset p2);
+    public abstract int writableBytes();
+    public abstract int writeBytes(FileChannel p0, long p1, int p2);
+    public abstract int writeBytes(InputStream p0, int p1);
+    public abstract int writeBytes(ScatteringByteChannel p0, int p1);
+    public abstract int writeCharSequence(CharSequence p0, Charset p1);
+    public abstract int writerIndex();
+    public abstract long getLong(int p0);
+    public abstract long getLongLE(int p0);
+    public abstract long getUnsignedInt(int p0);
+    public abstract long getUnsignedIntLE(int p0);
+    public abstract long memoryAddress();
+    public abstract long readLong();
+    public abstract long readLongLE();
+    public abstract long readUnsignedInt();
+    public abstract long readUnsignedIntLE();
+    public abstract short getShort(int p0);
+    public abstract short getShortLE(int p0);
+    public abstract short getUnsignedByte(int p0);
+    public abstract short readShort();
+    public abstract short readShortLE();
+    public abstract short readUnsignedByte();
+    public boolean isContiguous(){ return false; }
+    public double getDoubleLE(int p0){ return 0; }
+    public double readDoubleLE(){ return 0; }
+    public float getFloatLE(int p0){ return 0; }
+    public float readFloatLE(){ return 0; }
+    public int maxFastWritableBytes(){ return 0; }
 }

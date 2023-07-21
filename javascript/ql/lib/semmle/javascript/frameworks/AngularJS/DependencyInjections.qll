@@ -22,7 +22,7 @@ private DataFlow::CallNode angularInjector() { result = angular().getAMemberCall
 class InjectorInvokeCall extends DataFlow::CallNode, DependencyInjection {
   InjectorInvokeCall() { this = angularInjector().getAMemberCall("invoke") }
 
-  override DataFlow::Node getAnInjectableFunction() { result = getArgument(0) }
+  override DataFlow::Node getAnInjectableFunction() { result = this.getArgument(0) }
 }
 
 /**
@@ -52,13 +52,13 @@ abstract class InjectableFunction extends DataFlow::ValueNode {
    * Gets a node for the `name` dependency declaration.
    */
   DataFlow::Node getADependencyDeclaration(string name) {
-    result = getDependencyDeclaration(_, name)
+    result = this.getDependencyDeclaration(_, name)
   }
 
   /**
    * Gets the dataflow node for the `i`th dependency declaration.
    */
-  DataFlow::Node getDependencyDeclaration(int i) { result = getDependencyDeclaration(i, _) }
+  DataFlow::Node getDependencyDeclaration(int i) { result = this.getDependencyDeclaration(i, _) }
 
   /** Gets the function underlying this injectable function. */
   abstract DataFlow::FunctionNode asFunction();
@@ -72,7 +72,7 @@ abstract class InjectableFunction extends DataFlow::ValueNode {
   ServiceReference getAResolvedDependency(DataFlow::ParameterNode parameter) {
     exists(string name, InjectableFunctionServiceRequest request |
       this = request.getAnInjectedFunction() and
-      parameter = getDependencyParameter(name) and
+      parameter = this.getDependencyParameter(name) and
       result = request.getAServiceDefinition(name)
     )
   }
@@ -83,7 +83,7 @@ abstract class InjectableFunction extends DataFlow::ValueNode {
    */
   DataFlow::Node getCustomServiceDependency(DataFlow::ParameterNode parameter) {
     exists(CustomServiceDefinition custom |
-      custom.getServiceReference() = getAResolvedDependency(parameter) and
+      custom.getServiceReference() = this.getAResolvedDependency(parameter) and
       result = custom.getAService()
     )
   }
@@ -93,7 +93,8 @@ abstract class InjectableFunction extends DataFlow::ValueNode {
  * An injectable function that does not explicitly list its dependencies,
  * instead relying on implicit matching by parameter names.
  */
-private class FunctionWithImplicitDependencyAnnotation extends InjectableFunction instanceof DataFlow::FunctionNode {
+private class FunctionWithImplicitDependencyAnnotation extends InjectableFunction instanceof DataFlow::FunctionNode
+{
   FunctionWithImplicitDependencyAnnotation() {
     this.(DataFlow::FunctionNode).flowsTo(any(DependencyInjection d).getAnInjectableFunction()) and
     not exists(getAPropertyDependencyInjection(this))
@@ -121,7 +122,8 @@ private DataFlow::PropWrite getAPropertyDependencyInjection(DataFlow::FunctionNo
  * An injectable function with an `$inject` property that lists its
  * dependencies.
  */
-private class FunctionWithInjectProperty extends InjectableFunction instanceof DataFlow::FunctionNode {
+private class FunctionWithInjectProperty extends InjectableFunction instanceof DataFlow::FunctionNode
+{
   DataFlow::ArrayCreationNode dependencies;
 
   FunctionWithInjectProperty() {
@@ -136,7 +138,7 @@ private class FunctionWithInjectProperty extends InjectableFunction instanceof D
   }
 
   override DataFlow::ParameterNode getDependencyParameter(string name) {
-    exists(int i | exists(getDependencyDeclaration(i, name)) | result = super.getParameter(i))
+    exists(int i | exists(this.getDependencyDeclaration(i, name)) | result = super.getParameter(i))
   }
 
   override DataFlow::Node getDependencyDeclaration(int i, string name) {
@@ -154,7 +156,8 @@ private class FunctionWithInjectProperty extends InjectableFunction instanceof D
 /**
  * An injectable function embedded in an array of dependencies.
  */
-private class FunctionWithExplicitDependencyAnnotation extends InjectableFunction instanceof DataFlow::ArrayCreationNode {
+private class FunctionWithExplicitDependencyAnnotation extends InjectableFunction instanceof DataFlow::ArrayCreationNode
+{
   DataFlow::FunctionNode function;
 
   FunctionWithExplicitDependencyAnnotation() {

@@ -310,7 +310,7 @@ private newtype TSsaWithFields =
   TStep(SsaWithFields base, Field f) { exists(accessPathAux(base, f)) }
 
 /**
- * Gets a representation of `nd` as an ssa-with-fields value if there is one.
+ * Gets a representation of `insn` as an ssa-with-fields value if there is one.
  */
 private TSsaWithFields accessPath(IR::Instruction insn) {
   exists(SsaVariable v | insn = v.getAUse() | result = TRoot(v))

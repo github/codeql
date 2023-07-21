@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.StaticFiles, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.DefaultFilesExtensions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class DefaultFilesExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseDefaultFiles(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -14,7 +14,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseDefaultFiles(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string requestPath) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.DefaultFilesOptions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultFilesOptions : Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptionsBase
             {
                 public System.Collections.Generic.IList<string> DefaultFileNames { get => throw null; set => throw null; }
@@ -22,7 +21,6 @@ namespace Microsoft
                 public DefaultFilesOptions(Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptions sharedOptions) : base(default(Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptions)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.DirectoryBrowserExtensions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class DirectoryBrowserExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseDirectoryBrowser(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -30,7 +28,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseDirectoryBrowser(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string requestPath) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.DirectoryBrowserOptions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DirectoryBrowserOptions : Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptionsBase
             {
                 public DirectoryBrowserOptions() : base(default(Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptions)) => throw null;
@@ -38,7 +35,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.StaticFiles.IDirectoryFormatter Formatter { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.FileServerExtensions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class FileServerExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseFileServer(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -47,7 +43,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseFileServer(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string requestPath) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.FileServerOptions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class FileServerOptions : Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptionsBase
             {
                 public Microsoft.AspNetCore.Builder.DefaultFilesOptions DefaultFilesOptions { get => throw null; }
@@ -58,7 +53,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Builder.StaticFileOptions StaticFileOptions { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.StaticFileExtensions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class StaticFileExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseStaticFiles(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -66,7 +60,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseStaticFiles(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string requestPath) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.StaticFileOptions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class StaticFileOptions : Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptionsBase
             {
                 public Microsoft.AspNetCore.StaticFiles.IContentTypeProvider ContentTypeProvider { get => throw null; set => throw null; }
@@ -78,7 +71,6 @@ namespace Microsoft
                 public StaticFileOptions(Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptions sharedOptions) : base(default(Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptions)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.StaticFilesEndpointRouteBuilderExtensions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class StaticFilesEndpointRouteBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder MapFallbackToFile(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string filePath) => throw null;
@@ -90,14 +82,12 @@ namespace Microsoft
         }
         namespace StaticFiles
         {
-            // Generated from `Microsoft.AspNetCore.StaticFiles.DefaultFilesMiddleware` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultFilesMiddleware
             {
                 public DefaultFilesMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.DefaultFilesOptions> options) => throw null;
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.StaticFiles.DirectoryBrowserMiddleware` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DirectoryBrowserMiddleware
             {
                 public DirectoryBrowserMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv, System.Text.Encodings.Web.HtmlEncoder encoder, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.DirectoryBrowserOptions> options) => throw null;
@@ -105,7 +95,6 @@ namespace Microsoft
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class FileExtensionContentTypeProvider : Microsoft.AspNetCore.StaticFiles.IContentTypeProvider
             {
                 public FileExtensionContentTypeProvider() => throw null;
@@ -114,33 +103,28 @@ namespace Microsoft
                 public bool TryGetContentType(string subpath, out string contentType) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.StaticFiles.HtmlDirectoryFormatter` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HtmlDirectoryFormatter : Microsoft.AspNetCore.StaticFiles.IDirectoryFormatter
             {
                 public virtual System.Threading.Tasks.Task GenerateContentAsync(Microsoft.AspNetCore.Http.HttpContext context, System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo> contents) => throw null;
                 public HtmlDirectoryFormatter(System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.StaticFiles.IContentTypeProvider` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IContentTypeProvider
             {
                 bool TryGetContentType(string subpath, out string contentType);
             }
 
-            // Generated from `Microsoft.AspNetCore.StaticFiles.IDirectoryFormatter` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IDirectoryFormatter
             {
                 System.Threading.Tasks.Task GenerateContentAsync(Microsoft.AspNetCore.Http.HttpContext context, System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo> contents);
             }
 
-            // Generated from `Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class StaticFileMiddleware
             {
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                 public StaticFileMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.StaticFileOptions> options, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.StaticFiles.StaticFileResponseContext` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class StaticFileResponseContext
             {
                 public Microsoft.AspNetCore.Http.HttpContext Context { get => throw null; }
@@ -150,7 +134,6 @@ namespace Microsoft
 
             namespace Infrastructure
             {
-                // Generated from `Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class SharedOptions
                 {
                     public Microsoft.Extensions.FileProviders.IFileProvider FileProvider { get => throw null; set => throw null; }
@@ -159,7 +142,6 @@ namespace Microsoft
                     public SharedOptions() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.StaticFiles.Infrastructure.SharedOptionsBase` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class SharedOptionsBase
                 {
                     public Microsoft.Extensions.FileProviders.IFileProvider FileProvider { get => throw null; set => throw null; }
@@ -176,7 +158,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.DirectoryBrowserServiceExtensions` in `Microsoft.AspNetCore.StaticFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class DirectoryBrowserServiceExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddDirectoryBrowser(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

@@ -18,7 +18,8 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "x-frame-options" module.
    */
-  class XFrameOptionsRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof XFrameOptionsRouteHandler {
+  class XFrameOptionsRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof XFrameOptionsRouteHandler
+  {
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
@@ -43,7 +44,8 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "frameguard" module.
    */
-  class FrameGuardRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof FrameGuardRouteHandler {
+  class FrameGuardRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof FrameGuardRouteHandler
+  {
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
@@ -66,7 +68,8 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "helmet" module.
    */
-  class HelmetRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof HelmetRouteHandler {
+  class HelmetRouteHandlerHeader extends Http::ImplicitHeaderDefinition instanceof HelmetRouteHandler
+  {
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
@@ -108,10 +111,10 @@ module ExpressLibraries {
       /**
        * Gets the expression for property `name` of the options object of this call.
        */
-      DataFlow::Node getOption(string name) { result = getOptionArgument(0, name) }
+      DataFlow::Node getOption(string name) { result = this.getOptionArgument(0, name) }
 
       override DataFlow::Node getASecretKey() {
-        exists(DataFlow::Node secret | secret = getOption("secret") |
+        exists(DataFlow::Node secret | secret = this.getOption("secret") |
           if exists(DataFlow::ArrayCreationNode arr | arr.flowsTo(secret))
           then result = any(DataFlow::ArrayCreationNode arr | arr.flowsTo(secret)).getAnElement()
           else result = secret
@@ -135,10 +138,10 @@ module ExpressLibraries {
       /**
        * Gets the expression for property `name` of the options object of this call.
        */
-      DataFlow::Node getOption(string name) { result = getOptionArgument(1, name) }
+      DataFlow::Node getOption(string name) { result = this.getOptionArgument(1, name) }
 
       override DataFlow::Node getASecretKey() {
-        exists(DataFlow::Node arg0 | arg0 = getArgument(0) |
+        exists(DataFlow::Node arg0 | arg0 = this.getArgument(0) |
           if exists(DataFlow::ArrayCreationNode arr | arr.flowsTo(arg0))
           then result = any(DataFlow::ArrayCreationNode arr | arr.flowsTo(arg0)).getAnElement()
           else result = arg0
@@ -164,13 +167,13 @@ module ExpressLibraries {
       /**
        * Gets the expression for property `name` of the options object of this call.
        */
-      DataFlow::Node getOption(string name) { result = getOptionArgument(0, name) }
+      DataFlow::Node getOption(string name) { result = this.getOptionArgument(0, name) }
 
       override DataFlow::Node getASecretKey() {
-        result = getOption("secret")
+        result = this.getOption("secret")
         or
         exists(DataFlow::ArrayCreationNode keys |
-          keys.flowsTo(getOption("keys")) and
+          keys.flowsTo(this.getOption("keys")) and
           result = keys.getAnElement()
         )
       }
@@ -210,14 +213,14 @@ module ExpressLibraries {
      */
     predicate isExtendedUrlEncoded() {
       kind = "urlencoded" and
-      not getOptionArgument(0, "extended").mayHaveBooleanValue(false)
+      not this.getOptionArgument(0, "extended").mayHaveBooleanValue(false)
     }
 
     /**
      * Holds if this parses the input as JSON or extended URL-encoding, resulting
      * in user-controlled objects (as opposed to user-controlled strings).
      */
-    predicate producesUserControlledObjects() { isJson() or isExtendedUrlEncoded() }
+    predicate producesUserControlledObjects() { this.isJson() or this.isExtendedUrlEncoded() }
   }
 }
 
@@ -242,7 +245,7 @@ module FileUpload {
       this = filesRef(_, DataFlow::TypeTracker::end()).getAPropertyRead().getAMethodCall("mv")
     }
 
-    override DataFlow::Node getAPathArgument() { result = getArgument(0) }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 
     override DataFlow::Node getADataNode() { none() }
   }

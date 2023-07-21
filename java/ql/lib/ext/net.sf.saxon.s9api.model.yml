@@ -3,8 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["net.sf.saxon.s9api", "Xslt30Transformer", False, "applyTemplates", "", "", "Argument[-1]", "xslt", "manual"]
-      - ["net.sf.saxon.s9api", "Xslt30Transformer", False, "callFunction", "", "", "Argument[-1]", "xslt", "manual"]
-      - ["net.sf.saxon.s9api", "Xslt30Transformer", False, "callTemplate", "", "", "Argument[-1]", "xslt", "manual"]
-      - ["net.sf.saxon.s9api", "Xslt30Transformer", False, "transform", "", "", "Argument[-1]", "xslt", "manual"]
-      - ["net.sf.saxon.s9api", "XsltTransformer", False, "transform", "", "", "Argument[-1]", "xslt", "manual"]
+      - ["net.sf.saxon.s9api", "Xslt30Transformer", False, "applyTemplates", "", "", "Argument[this]", "xslt-injection", "manual"]
+      - ["net.sf.saxon.s9api", "Xslt30Transformer", False, "callFunction", "", "", "Argument[this]", "xslt-injection", "manual"]
+      - ["net.sf.saxon.s9api", "Xslt30Transformer", False, "callTemplate", "", "", "Argument[this]", "xslt-injection", "manual"]
+      - ["net.sf.saxon.s9api", "Xslt30Transformer", False, "transform", "", "", "Argument[this]", "xslt-injection", "manual"]
+      - ["net.sf.saxon.s9api", "XsltTransformer", False, "transform", "", "", "Argument[this]", "xslt-injection", "manual"]

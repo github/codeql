@@ -7,6 +7,8 @@ namespace codeql {
 
 class StmtTranslator : public AstTranslatorBase<StmtTranslator> {
  public:
+  static constexpr std::string_view name = "stmt";
+
   using AstTranslatorBase<StmtTranslator>::AstTranslatorBase;
   using AstTranslatorBase<StmtTranslator>::translateAndEmit;
 

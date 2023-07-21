@@ -61,7 +61,6 @@ class SsaSourceVariable extends TSsaSourceVariable {
    * accessed from nested callables are therefore associated with several
    * `SsaSourceVariable`s.
    */
-  pragma[assume_small_delta]
   cached
   VarAccess getAnAccess() {
     exists(LocalScopeVariable v, Callable c |
@@ -928,9 +927,6 @@ class SsaVariable extends TSsaVariable {
     this = TSsaEntryDef(_, result) or
     this = TSsaUntracked(_, result)
   }
-
-  /** DEPRECATED: Alias for getCfgNode */
-  deprecated ControlFlowNode getCFGNode() { result = this.getCfgNode() }
 
   /** Gets a textual representation of this SSA variable. */
   string toString() { none() }

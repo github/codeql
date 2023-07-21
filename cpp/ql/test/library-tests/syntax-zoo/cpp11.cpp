@@ -114,7 +114,7 @@ namespace synthetic_dtor_calls {
     }
   }
 
-  void f(int x) {
+  static void f(int x) {
     while (x > 0) {
       C c;
       if (x == 1) {
@@ -138,7 +138,7 @@ namespace synthetic_dtor_calls {
   // This function is interesting because its extractor CFG has unreachable
   // calls to `c2.~C()` and `c3.~C()`. It's the calls that would have come from
   // leaving the block of `c2` by falling off the end, but no path does that.
-  int g(int x) {
+  static int g(int x) {
     do {
       C c1;
       if (x > 0) {

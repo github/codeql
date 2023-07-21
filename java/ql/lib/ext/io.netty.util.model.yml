@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.netty.util", "ReferenceCounted", True, "retain", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.netty.util", "ReferenceCounted", True, "touch", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["io.netty.util", "AsciiString", False, "AsciiString", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "array", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "cached", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "concat", "(CharSequence)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "concat", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "copy", "(int,byte[],int,int)", "", "Argument[this]", "Argument[1]", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "copy", "(int,char[],int,int)", "", "Argument[this]", "Argument[1]", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "of", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "replace", "(char,char)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "split", "(char)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "split", "(String,int)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "split", "(char)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "subSequence", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "toByteArray", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "toCharArray", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "toLowerCase", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "toUpperCase", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "trim", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.util", "AsciiString", False, "trim", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

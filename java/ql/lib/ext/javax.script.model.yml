@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.script", "CompiledScript", False, "eval", "", "", "Argument[-1]", "mvel", "manual"]
+      - ["javax.script", "CompiledScript", False, "eval", "", "", "Argument[this]", "mvel-injection", "manual"]

@@ -31,9 +31,7 @@ class Configuration extends TaintTracking::Configuration {
     node instanceof Sanitizer
   }
 
-  override predicate isSanitizerEdge(DataFlow::Node source, DataFlow::Node sink) {
-    sanitizingPrefixEdge(source, sink)
-  }
+  override predicate isSanitizerOut(DataFlow::Node node) { sanitizingPrefixEdge(node, _) }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     isAdditionalRequestForgeryStep(pred, succ)

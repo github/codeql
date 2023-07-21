@@ -110,7 +110,8 @@ module Ssa {
 
     /** A plain field or property. */
     class PlainFieldOrPropSourceVariable extends FieldOrPropSourceVariable,
-      SsaImpl::TPlainFieldOrProp {
+      SsaImpl::TPlainFieldOrProp
+    {
       override Callable getEnclosingCallable() { this = SsaImpl::TPlainFieldOrProp(result, _) }
 
       override string toString() {
@@ -127,7 +128,8 @@ module Ssa {
 
     /** A qualified field or property. */
     class QualifiedFieldOrPropSourceVariable extends FieldOrPropSourceVariable,
-      SsaImpl::TQualifiedFieldOrProp {
+      SsaImpl::TQualifiedFieldOrProp
+    {
       override Callable getEnclosingCallable() {
         this = SsaImpl::TQualifiedFieldOrProp(result, _, _)
       }

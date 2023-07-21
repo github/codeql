@@ -269,9 +269,6 @@ module SocketIO {
 
     /** Gets the acknowledgment callback, if any. */
     ReceiveCallback getAck() { result.getReceiveNode() = this }
-
-    /** DEPRECATED. Use `getChannel()` instead. */
-    deprecated string getEventName() { result = this.getChannel() }
   }
 
   /** An acknowledgment callback when receiving a message. */
@@ -360,9 +357,6 @@ module SocketIO {
 
     /** Gets the acknowledgment callback, if any. */
     SendCallback getAck() { result.getSendNode() = this }
-
-    /** DEPRECATED. Use `getChannel()` instead. */
-    deprecated string getEventName() { result = this.getChannel() }
   }
 
   /** A socket.io namespace, identified by its server and its path. */
@@ -646,9 +640,6 @@ module SocketIOClient {
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::FunctionNode getAck() { result.(SendCallback).getSendNode() = this }
-
-    /** DEPRECATED. Use `getChannel()` instead. */
-    deprecated string getEventName() { result = this.getChannel() }
   }
 
   /**

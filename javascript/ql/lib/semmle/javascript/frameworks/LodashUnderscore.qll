@@ -178,14 +178,15 @@ module LodashUnderscore {
  * still infer the ordinary abstract value.
  */
 private class LodashCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode::Range,
-  DataFlow::CallNode {
+  DataFlow::CallNode
+{
   int callbackIndex;
   int contextIndex;
 
   LodashCallbackAsPartialInvoke() {
     exists(string name, int argumentCount |
       this = LodashUnderscore::member(name).getACall() and
-      getNumArgument() = argumentCount
+      this.getNumArgument() = argumentCount
     |
       name = ["bind", "callback", "iteratee"] and
       callbackIndex = 0 and
@@ -218,7 +219,7 @@ private class LodashCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode:
   }
 
   override DataFlow::Node getBoundReceiver(DataFlow::Node callback) {
-    callback = getArgument(callbackIndex) and
-    result = getArgument(contextIndex)
+    callback = this.getArgument(callbackIndex) and
+    result = this.getArgument(contextIndex)
   }
 }

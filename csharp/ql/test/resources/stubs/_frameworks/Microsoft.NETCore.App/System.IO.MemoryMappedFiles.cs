@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.MemoryMappedFiles, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace SafeHandles
         {
-            // Generated from `Microsoft.Win32.SafeHandles.SafeMemoryMappedFileHandle` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeMemoryMappedFileHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
             {
                 public override bool IsInvalid { get => throw null; }
@@ -14,7 +14,6 @@ namespace Microsoft
                 public SafeMemoryMappedFileHandle() : base(default(bool)) => throw null;
             }
 
-            // Generated from `Microsoft.Win32.SafeHandles.SafeMemoryMappedViewHandle` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeMemoryMappedViewHandle : System.Runtime.InteropServices.SafeBuffer
             {
                 protected override bool ReleaseHandle() => throw null;
@@ -30,7 +29,6 @@ namespace System
     {
         namespace MemoryMappedFiles
         {
-            // Generated from `System.IO.MemoryMappedFiles.MemoryMappedFile` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemoryMappedFile : System.IDisposable
             {
                 public static System.IO.MemoryMappedFiles.MemoryMappedFile CreateFromFile(System.IO.FileStream fileStream, string mapName, System.Int64 capacity, System.IO.MemoryMappedFiles.MemoryMappedFileAccess access, System.IO.HandleInheritability inheritability, bool leaveOpen) => throw null;
@@ -59,7 +57,6 @@ namespace System
                 public Microsoft.Win32.SafeHandles.SafeMemoryMappedFileHandle SafeMemoryMappedFileHandle { get => throw null; }
             }
 
-            // Generated from `System.IO.MemoryMappedFiles.MemoryMappedFileAccess` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum MemoryMappedFileAccess : int
             {
                 CopyOnWrite = 3,
@@ -70,7 +67,6 @@ namespace System
                 Write = 2,
             }
 
-            // Generated from `System.IO.MemoryMappedFiles.MemoryMappedFileOptions` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum MemoryMappedFileOptions : int
             {
@@ -78,7 +74,6 @@ namespace System
                 None = 0,
             }
 
-            // Generated from `System.IO.MemoryMappedFiles.MemoryMappedFileRights` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum MemoryMappedFileRights : int
             {
@@ -97,7 +92,6 @@ namespace System
                 Write = 2,
             }
 
-            // Generated from `System.IO.MemoryMappedFiles.MemoryMappedViewAccessor` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemoryMappedViewAccessor : System.IO.UnmanagedMemoryAccessor
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -106,7 +100,6 @@ namespace System
                 public Microsoft.Win32.SafeHandles.SafeMemoryMappedViewHandle SafeMemoryMappedViewHandle { get => throw null; }
             }
 
-            // Generated from `System.IO.MemoryMappedFiles.MemoryMappedViewStream` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MemoryMappedViewStream : System.IO.UnmanagedMemoryStream
             {
                 protected override void Dispose(bool disposing) => throw null;

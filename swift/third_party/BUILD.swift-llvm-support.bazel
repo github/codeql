@@ -1,0 +1,52 @@
+load("@rules_pkg//:mappings.bzl", "pkg_files", "strip_prefix")
+
+cc_library(
+    name = "swift-llvm-support",
+    srcs = glob([
+        "*.a",
+        "*.so",
+        "*.dylib",
+    ]),
+    hdrs = glob([
+        "include/**/*",
+        "stdlib/**/*",
+    ]),
+    includes = [
+        "include",
+        "stdlib/public/SwiftShims",
+    ],
+    linkopts = [
+        "-lm",
+        "-lz",
+    ] + select({
+        "@platforms//os:linux": [
+            "-luuid",
+            "-lrt",
+            "-lpthread",
+            "-ldl",
+        ],
+        "@platforms//os:macos": [
+            "-L/usr/lib/swift",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "swift-test-sdk",
+    srcs = glob([
+        "sdk/**/*",
+    ]),
+    strip_prefix = strip_prefix.from_pkg(),
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "swift-resource-dir",
+    srcs = glob([
+        "toolchain/lib/swift/**/*",
+    ]),
+    strip_prefix = "toolchain/lib/swift",
+    visibility = ["//visibility:public"],
+)

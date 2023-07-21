@@ -13,7 +13,7 @@ module Os {
     int pathidx;
 
     OsFileSystemAccess() {
-      exists(string fn | getTarget().hasQualifiedName("os", fn) |
+      exists(string fn | this.getTarget().hasQualifiedName("os", fn) |
         fn = "Chdir" and pathidx = 0
         or
         fn = "Chmod" and pathidx = 0
@@ -68,35 +68,24 @@ module Os {
       )
     }
 
-    override DataFlow::Node getAPathArgument() { result = getArgument(pathidx) }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathidx) }
   }
 
   /** The `os.Exit` function, which ends the process. */
   private class Exit extends Function {
-    Exit() { hasQualifiedName("os", "Exit") }
+    Exit() { this.hasQualifiedName("os", "Exit") }
 
     override predicate mayReturnNormally() { none() }
   }
 
+  // These models are not implemented using Models-as-Data because they represent reverse flow.
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
 
     FunctionModels() {
-      // signature: func Expand(s string, mapping func(string) string) string
-      hasQualifiedName("os", "Expand") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func ExpandEnv(s string) string
-      hasQualifiedName("os", "ExpandEnv") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func NewFile(fd uintptr, name string) *File
-      hasQualifiedName("os", "NewFile") and
-      (inp.isParameter(0) and outp.isResult())
-      or
       // signature: func Pipe() (r *File, w *File, err error)
-      hasQualifiedName("os", "Pipe") and
+      this.hasQualifiedName("os", "Pipe") and
       (inp.isResult(1) and outp.isResult(0))
     }
 
@@ -110,17 +99,9 @@ module Os {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*File) Fd() uintptr
-      hasQualifiedName("os", "File", "Fd") and
-      (inp.isReceiver() and outp.isResult())
-      or
       // signature: func (*File) SyscallConn() (syscall.RawConn, error)
-      hasQualifiedName("os", "File", "SyscallConn") and
-      (
-        inp.isReceiver() and outp.isResult(0)
-        or
-        inp.isResult(0) and outp.isReceiver()
-      )
+      this.hasQualifiedName("os", "File", "SyscallConn") and
+      (inp.isResult(0) and outp.isReceiver())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

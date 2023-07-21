@@ -6,6 +6,7 @@ import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.IR
 import semmle.code.cpp.models.interfaces.FlowSource
+private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 
 /** A data flow source of user input, whether local or remote. */
 abstract class FlowSource extends DataFlow::Node {
@@ -19,68 +20,28 @@ abstract class RemoteFlowSource extends FlowSource { }
 /** A data flow source of local user input. */
 abstract class LocalFlowSource extends FlowSource { }
 
-private class RemoteReturnSource extends RemoteFlowSource {
+private class RemoteModelSource extends RemoteFlowSource {
   string sourceType;
 
-  RemoteReturnSource() {
-    exists(RemoteFlowSourceFunction func, CallInstruction instr, FunctionOutput output |
-      this.asInstruction() = instr and
-      instr.getStaticCallTarget() = func and
+  RemoteModelSource() {
+    exists(CallInstruction call, RemoteFlowSourceFunction func, FunctionOutput output |
+      call.getStaticCallTarget() = func and
       func.hasRemoteFlowSource(output, sourceType) and
-      (
-        output.isReturnValue()
-        or
-        output.isReturnValueDeref()
-      )
+      this = callOutput(call, output)
     )
   }
 
   override string getSourceType() { result = sourceType }
 }
 
-private class RemoteParameterSource extends RemoteFlowSource {
+private class LocalModelSource extends LocalFlowSource {
   string sourceType;
 
-  RemoteParameterSource() {
-    exists(RemoteFlowSourceFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
-      this.asInstruction() = instr and
-      instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
-      func.hasRemoteFlowSource(output, sourceType) and
-      output.isParameterDerefOrQualifierObject(instr.getIndex())
-    )
-  }
-
-  override string getSourceType() { result = sourceType }
-}
-
-private class LocalReturnSource extends LocalFlowSource {
-  string sourceType;
-
-  LocalReturnSource() {
-    exists(LocalFlowSourceFunction func, CallInstruction instr, FunctionOutput output |
-      this.asInstruction() = instr and
-      instr.getStaticCallTarget() = func and
+  LocalModelSource() {
+    exists(CallInstruction call, LocalFlowSourceFunction func, FunctionOutput output |
+      call.getStaticCallTarget() = func and
       func.hasLocalFlowSource(output, sourceType) and
-      (
-        output.isReturnValue()
-        or
-        output.isReturnValueDeref()
-      )
-    )
-  }
-
-  override string getSourceType() { result = sourceType }
-}
-
-private class LocalParameterSource extends LocalFlowSource {
-  string sourceType;
-
-  LocalParameterSource() {
-    exists(LocalFlowSourceFunction func, WriteSideEffectInstruction instr, FunctionOutput output |
-      this.asInstruction() = instr and
-      instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget() = func and
-      func.hasLocalFlowSource(output, sourceType) and
-      output.isParameterDerefOrQualifierObject(instr.getIndex())
+      this = callOutput(call, output)
     )
   }
 
@@ -92,7 +53,7 @@ private class ArgvSource extends LocalFlowSource {
     exists(Function main, Parameter argv |
       main.hasGlobalName("main") and
       main.getParameter(1) = argv and
-      this.asParameter() = argv
+      this.asParameter(_) = argv
     )
   }
 
@@ -109,18 +70,10 @@ private class RemoteParameterSink extends RemoteFlowSink {
   string sourceType;
 
   RemoteParameterSink() {
-    exists(RemoteFlowSinkFunction func, FunctionInput input, CallInstruction call, int index |
-      func.hasRemoteFlowSink(input, sourceType) and call.getStaticCallTarget() = func
-    |
-      exists(ReadSideEffectInstruction read |
-        call = read.getPrimaryInstruction() and
-        read.getIndex() = index and
-        this.asOperand() = read.getSideEffectOperand() and
-        input.isParameterDerefOrQualifierObject(index)
-      )
-      or
-      input.isParameterOrQualifierAddress(index) and
-      this.asOperand() = call.getArgumentOperand(index)
+    exists(CallInstruction call, RemoteFlowSinkFunction func, FunctionInput input |
+      call.getStaticCallTarget() = func and
+      func.hasRemoteFlowSink(input, sourceType) and
+      this = callInput(call, input)
     )
   }
 

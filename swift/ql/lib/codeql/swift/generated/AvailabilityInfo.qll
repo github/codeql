@@ -32,11 +32,8 @@ module Generated {
 
     /**
      * Gets the `index`th spec of this availability info (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    AvailabilitySpec getImmediateSpec(int index) {
+    AvailabilitySpec getSpec(int index) {
       result =
         Synth::convertAvailabilitySpecFromRaw(Synth::convertAvailabilityInfoToRaw(this)
               .(Raw::AvailabilityInfo)
@@ -44,18 +41,13 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th spec of this availability info (0-based).
-     */
-    final AvailabilitySpec getSpec(int index) { result = getImmediateSpec(index).resolve() }
-
-    /**
      * Gets any of the specs of this availability info.
      */
-    final AvailabilitySpec getASpec() { result = getSpec(_) }
+    final AvailabilitySpec getASpec() { result = this.getSpec(_) }
 
     /**
      * Gets the number of specs of this availability info.
      */
-    final int getNumberOfSpecs() { result = count(int i | exists(getSpec(i))) }
+    final int getNumberOfSpecs() { result = count(int i | exists(this.getSpec(i))) }
   }
 }

@@ -52,9 +52,6 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
 
   final override Language::AST getAst() { result = expr }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
-
   /**
    * Gets the expression that is doing the initialization.
    */
@@ -210,9 +207,6 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
 
   final override Language::AST getAst() { result = initList }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
-
   final override Callable getFunction() { result = initList.getEnclosingCallable() }
 
   final override Instruction getFirstInstruction() {
@@ -276,7 +270,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
  * an explicit element in an initializer list.
  */
 class TranslatedExplicitElementInitialization extends TranslatedElementInitialization,
-  TTranslatedExplicitElementInitialization, InitializationContext {
+  TTranslatedExplicitElementInitialization, InitializationContext
+{
   int elementIndex;
 
   TranslatedExplicitElementInitialization() {
@@ -312,13 +307,11 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 
 // TODO: Possibly refactor into something simpler
 abstract class TranslatedConstructorCallFromConstructor extends TranslatedElement,
-  ConstructorCallContext {
+  ConstructorCallContext
+{
   Call call;
 
   final override Language::AST getAst() { result = call }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
 
   final override TranslatedElement getChild(int id) {
     id = 0 and result = this.getConstructorCall()
@@ -344,7 +337,8 @@ TranslatedConstructorInitializer getTranslatedConstructorInitializer(Constructor
  */
 // Review: do we need the conversion instructions in C#?
 class TranslatedConstructorInitializer extends TranslatedConstructorCallFromConstructor,
-  TTranslatedConstructorInitializer {
+  TTranslatedConstructorInitializer
+{
   TranslatedConstructorInitializer() { this = TTranslatedConstructorInitializer(call) }
 
   override string toString() { result = "constructor init: " + call.toString() }

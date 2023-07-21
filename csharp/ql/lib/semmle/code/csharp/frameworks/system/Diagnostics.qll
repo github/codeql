@@ -74,7 +74,8 @@ class SystemDiagnosticsProcessClass extends SystemDiagnosticsClass {
 }
 
 /** The `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute` class. */
-class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass extends SystemDiagnosticsCodeAnalysisClass {
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass extends SystemDiagnosticsCodeAnalysisClass
+{
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass() {
     this.hasName("DoesNotReturnIfAttribute")
   }

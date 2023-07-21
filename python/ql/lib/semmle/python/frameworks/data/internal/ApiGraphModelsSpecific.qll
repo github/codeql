@@ -22,9 +22,6 @@
 private import python as PY
 private import ApiGraphModels
 import semmle.python.ApiGraphs::API as API
-
-class Unit = PY::Unit;
-
 // Re-export libraries needed by ApiGraphModels.qll
 import semmle.python.dataflow.new.internal.AccessPathSyntax as AccessPathSyntax
 import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow

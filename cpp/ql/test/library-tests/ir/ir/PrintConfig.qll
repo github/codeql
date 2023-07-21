@@ -18,5 +18,7 @@ predicate shouldDumpFunction(Declaration decl) {
     decl instanceof Function
     or
     decl.(GlobalOrNamespaceVariable).hasInitializer()
+    or
+    decl.(StaticLocalVariable).hasInitializer()
   )
 }

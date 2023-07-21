@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.SignalR.Common, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace SignalR
         {
-            // Generated from `Microsoft.AspNetCore.SignalR.HubException` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HubException : System.Exception
             {
                 public HubException() => throw null;
@@ -15,15 +15,14 @@ namespace Microsoft
                 public HubException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.SignalR.IInvocationBinder` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IInvocationBinder
             {
                 System.Collections.Generic.IReadOnlyList<System.Type> GetParameterTypes(string methodName);
                 System.Type GetReturnType(string invocationId);
                 System.Type GetStreamItemType(string streamId);
+                string GetTarget(System.ReadOnlySpan<System.Byte> utf8Bytes) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.SignalR.ISignalRBuilder` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISignalRBuilder
             {
                 Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
@@ -31,13 +30,11 @@ namespace Microsoft
 
             namespace Protocol
             {
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.CancelInvocationMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CancelInvocationMessage : Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage
                 {
                     public CancelInvocationMessage(string invocationId) : base(default(string)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.CloseMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CloseMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
                     public bool AllowReconnect { get => throw null; }
@@ -47,7 +44,6 @@ namespace Microsoft
                     public string Error { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.CompletionMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CompletionMessage : Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage
                 {
                     public CompletionMessage(string invocationId, string error, object result, bool hasResult) : base(default(string)) => throw null;
@@ -60,7 +56,6 @@ namespace Microsoft
                     public static Microsoft.AspNetCore.SignalR.Protocol.CompletionMessage WithResult(string invocationId, object payload) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.HandshakeProtocol` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class HandshakeProtocol
                 {
                     public static System.ReadOnlySpan<System.Byte> GetSuccessfulHandshake(Microsoft.AspNetCore.SignalR.Protocol.IHubProtocol protocol) => throw null;
@@ -70,7 +65,6 @@ namespace Microsoft
                     public static void WriteResponseMessage(Microsoft.AspNetCore.SignalR.Protocol.HandshakeResponseMessage responseMessage, System.Buffers.IBufferWriter<System.Byte> output) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.HandshakeRequestMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HandshakeRequestMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
                     public HandshakeRequestMessage(string protocol, int version) => throw null;
@@ -78,7 +72,6 @@ namespace Microsoft
                     public int Version { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.HandshakeResponseMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HandshakeResponseMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
                     public static Microsoft.AspNetCore.SignalR.Protocol.HandshakeResponseMessage Empty;
@@ -86,7 +79,6 @@ namespace Microsoft
                     public HandshakeResponseMessage(string error) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class HubInvocationMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
                     public System.Collections.Generic.IDictionary<string, string> Headers { get => throw null; set => throw null; }
@@ -94,13 +86,11 @@ namespace Microsoft
                     public string InvocationId { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.HubMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class HubMessage
                 {
                     protected HubMessage() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.HubMethodInvocationMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class HubMethodInvocationMessage : Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage
                 {
                     public object[] Arguments { get => throw null; }
@@ -110,7 +100,6 @@ namespace Microsoft
                     public string Target { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.HubProtocolConstants` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class HubProtocolConstants
                 {
                     public const int CancelInvocationMessageType = default;
@@ -122,13 +111,11 @@ namespace Microsoft
                     public const int StreamItemMessageType = default;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.HubProtocolExtensions` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class HubProtocolExtensions
                 {
                     public static System.Byte[] GetMessageBytes(this Microsoft.AspNetCore.SignalR.Protocol.IHubProtocol hubProtocol, Microsoft.AspNetCore.SignalR.Protocol.HubMessage message) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.IHubProtocol` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHubProtocol
                 {
                     System.ReadOnlyMemory<System.Byte> GetMessageBytes(Microsoft.AspNetCore.SignalR.Protocol.HubMessage message);
@@ -140,7 +127,6 @@ namespace Microsoft
                     void WriteMessage(Microsoft.AspNetCore.SignalR.Protocol.HubMessage message, System.Buffers.IBufferWriter<System.Byte> output);
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.InvocationBindingFailureMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InvocationBindingFailureMessage : Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage
                 {
                     public System.Runtime.ExceptionServices.ExceptionDispatchInfo BindingFailure { get => throw null; }
@@ -148,7 +134,6 @@ namespace Microsoft
                     public string Target { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.InvocationMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InvocationMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMethodInvocationMessage
                 {
                     public InvocationMessage(string target, object[] arguments) : base(default(string), default(string), default(object[])) => throw null;
@@ -157,13 +142,17 @@ namespace Microsoft
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.PingMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PingMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
                     public static Microsoft.AspNetCore.SignalR.Protocol.PingMessage Instance;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.StreamBindingFailureMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class RawResult
+                {
+                    public RawResult(System.Buffers.ReadOnlySequence<System.Byte> rawBytes) => throw null;
+                    public System.Buffers.ReadOnlySequence<System.Byte> RawSerializedData { get => throw null; }
+                }
+
                 public class StreamBindingFailureMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
                     public System.Runtime.ExceptionServices.ExceptionDispatchInfo BindingFailure { get => throw null; }
@@ -171,7 +160,6 @@ namespace Microsoft
                     public StreamBindingFailureMessage(string id, System.Runtime.ExceptionServices.ExceptionDispatchInfo bindingFailure) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.StreamInvocationMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class StreamInvocationMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMethodInvocationMessage
                 {
                     public StreamInvocationMessage(string invocationId, string target, object[] arguments) : base(default(string), default(string), default(object[])) => throw null;
@@ -179,7 +167,6 @@ namespace Microsoft
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.StreamItemMessage` in `Microsoft.AspNetCore.SignalR.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class StreamItemMessage : Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage
                 {
                     public object Item { get => throw null; set => throw null; }

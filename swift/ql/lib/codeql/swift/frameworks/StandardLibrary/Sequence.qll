@@ -35,14 +35,7 @@ private class SequenceSummaries extends SummaryModelCsv {
  * tainted.
  */
 private class SequenceFieldsInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
-  SequenceFieldsInheritTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = "Sequence" or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() = "Sequence"
-      ) and
-      f.getName() = "lazy"
-    )
-  }
+  DataFlow::Content::FieldContent
+{
+  SequenceFieldsInheritTaint() { this.getField().hasQualifiedName("Sequence", "lazy") }
 }

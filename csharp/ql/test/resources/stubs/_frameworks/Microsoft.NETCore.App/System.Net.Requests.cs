@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.Requests, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.AuthenticationManager` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AuthenticationManager
         {
             public static System.Net.Authorization Authenticate(string challenge, System.Net.WebRequest request, System.Net.ICredentials credentials) => throw null;
@@ -17,7 +17,6 @@ namespace System
             public static void Unregister(string authenticationScheme) => throw null;
         }
 
-        // Generated from `System.Net.Authorization` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Authorization
         {
             public Authorization(string token) => throw null;
@@ -30,7 +29,6 @@ namespace System
             public string[] ProtectionRealm { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.FileWebRequest` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileWebRequest : System.Net.WebRequest, System.Runtime.Serialization.ISerializable
         {
             public override void Abort() => throw null;
@@ -58,7 +56,6 @@ namespace System
             public override bool UseDefaultCredentials { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.FileWebResponse` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileWebResponse : System.Net.WebResponse, System.Runtime.Serialization.ISerializable
         {
             public override void Close() => throw null;
@@ -73,7 +70,6 @@ namespace System
             public override bool SupportsHeaders { get => throw null; }
         }
 
-        // Generated from `System.Net.FtpStatusCode` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum FtpStatusCode : int
         {
             AccountNeeded = 532,
@@ -115,7 +111,6 @@ namespace System
             Undefined = 0,
         }
 
-        // Generated from `System.Net.FtpWebRequest` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FtpWebRequest : System.Net.WebRequest
         {
             public override void Abort() => throw null;
@@ -148,7 +143,6 @@ namespace System
             public bool UsePassive { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.FtpWebResponse` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FtpWebResponse : System.Net.WebResponse, System.IDisposable
         {
             public string BannerMessage { get => throw null; }
@@ -165,7 +159,6 @@ namespace System
             public string WelcomeMessage { get => throw null; }
         }
 
-        // Generated from `System.Net.GlobalProxySelection` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class GlobalProxySelection
         {
             public static System.Net.IWebProxy GetEmptyWebProxy() => throw null;
@@ -173,10 +166,8 @@ namespace System
             public static System.Net.IWebProxy Select { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.HttpContinueDelegate` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void HttpContinueDelegate(int StatusCode, System.Net.WebHeaderCollection httpHeaders);
 
-        // Generated from `System.Net.HttpWebRequest` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class HttpWebRequest : System.Net.WebRequest, System.Runtime.Serialization.ISerializable
         {
             public override void Abort() => throw null;
@@ -246,7 +237,6 @@ namespace System
             public string UserAgent { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.HttpWebResponse` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class HttpWebResponse : System.Net.WebResponse, System.Runtime.Serialization.ISerializable
         {
             public string CharacterSet { get => throw null; }
@@ -274,7 +264,6 @@ namespace System
             public override bool SupportsHeaders { get => throw null; }
         }
 
-        // Generated from `System.Net.IAuthenticationModule` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IAuthenticationModule
         {
             System.Net.Authorization Authenticate(string challenge, System.Net.WebRequest request, System.Net.ICredentials credentials);
@@ -283,19 +272,16 @@ namespace System
             System.Net.Authorization PreAuthenticate(System.Net.WebRequest request, System.Net.ICredentials credentials);
         }
 
-        // Generated from `System.Net.ICredentialPolicy` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ICredentialPolicy
         {
             bool ShouldSendCredential(System.Uri challengeUri, System.Net.WebRequest request, System.Net.NetworkCredential credential, System.Net.IAuthenticationModule authenticationModule);
         }
 
-        // Generated from `System.Net.IWebRequestCreate` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IWebRequestCreate
         {
             System.Net.WebRequest Create(System.Uri uri);
         }
 
-        // Generated from `System.Net.ProtocolViolationException` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProtocolViolationException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
         {
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
@@ -305,7 +291,6 @@ namespace System
             public ProtocolViolationException(string message) => throw null;
         }
 
-        // Generated from `System.Net.WebException` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class WebException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
         {
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
@@ -320,7 +305,6 @@ namespace System
             public WebException(string message, System.Net.WebExceptionStatus status) => throw null;
         }
 
-        // Generated from `System.Net.WebExceptionStatus` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum WebExceptionStatus : int
         {
             CacheEntryNotFound = 18,
@@ -346,7 +330,6 @@ namespace System
             UnknownError = 16,
         }
 
-        // Generated from `System.Net.WebRequest` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class WebRequest : System.MarshalByRefObject, System.Runtime.Serialization.ISerializable
         {
             public virtual void Abort() => throw null;
@@ -387,10 +370,8 @@ namespace System
             protected WebRequest(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         }
 
-        // Generated from `System.Net.WebRequestMethods` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class WebRequestMethods
         {
-            // Generated from `System.Net.WebRequestMethods+File` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class File
             {
                 public const string DownloadFile = default;
@@ -398,7 +379,6 @@ namespace System
             }
 
 
-            // Generated from `System.Net.WebRequestMethods+Ftp` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Ftp
             {
                 public const string AppendFile = default;
@@ -417,7 +397,6 @@ namespace System
             }
 
 
-            // Generated from `System.Net.WebRequestMethods+Http` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Http
             {
                 public const string Connect = default;
@@ -431,7 +410,6 @@ namespace System
 
         }
 
-        // Generated from `System.Net.WebResponse` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class WebResponse : System.MarshalByRefObject, System.IDisposable, System.Runtime.Serialization.ISerializable
         {
             public virtual void Close() => throw null;
@@ -453,7 +431,6 @@ namespace System
 
         namespace Cache
         {
-            // Generated from `System.Net.Cache.HttpCacheAgeControl` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HttpCacheAgeControl : int
             {
                 MaxAge = 2,
@@ -464,7 +441,6 @@ namespace System
                 None = 0,
             }
 
-            // Generated from `System.Net.Cache.HttpRequestCacheLevel` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum HttpRequestCacheLevel : int
             {
                 BypassCache = 1,
@@ -478,7 +454,6 @@ namespace System
                 Revalidate = 4,
             }
 
-            // Generated from `System.Net.Cache.HttpRequestCachePolicy` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HttpRequestCachePolicy : System.Net.Cache.RequestCachePolicy
             {
                 public System.DateTime CacheSyncDate { get => throw null; }

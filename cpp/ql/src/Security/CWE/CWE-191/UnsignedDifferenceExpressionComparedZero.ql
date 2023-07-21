@@ -16,7 +16,7 @@ import semmle.code.cpp.commons.Exclusions
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  *  Holds if `sub` is guarded by a condition which ensures that

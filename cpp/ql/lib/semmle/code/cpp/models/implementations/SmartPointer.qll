@@ -17,6 +17,8 @@ private class SmartPtr extends Class, PointerWrapper {
   }
 
   override predicate pointsToConst() { this.getTemplateArgument(0).(Type).isConst() }
+
+  override Type getBaseType() { result = this.getTemplateArgument(0) }
 }
 
 /**
@@ -29,7 +31,8 @@ private class SmartPtr extends Class, PointerWrapper {
  * - `std::weak_ptr<T>::operator*()`
  */
 private class PointerUnwrapperFunction extends MemberFunction, TaintFunction, DataFlowFunction,
-  SideEffectFunction, AliasFunction {
+  SideEffectFunction, AliasFunction
+{
   PointerUnwrapperFunction() {
     exists(PointerWrapper wrapper | wrapper.getAnUnwrapperFunction() = this)
   }

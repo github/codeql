@@ -19,5 +19,4 @@
 | unions.c:26:2:26:7 | call to strcpy | This 'call to strcpy' operation requires 21 bytes but the destination is only 16 bytes. |
 | unions.c:27:2:27:7 | call to strcpy | This 'call to strcpy' operation requires 21 bytes but the destination is only 15 bytes. |
 | unions.c:27:2:27:7 | call to strcpy | This 'call to strcpy' operation requires 21 bytes but the destination is only 16 bytes. |
-| unions.c:32:2:32:7 | call to strcpy | This 'call to strcpy' operation requires 31 bytes but the destination is only 25 bytes. |
 | var_size_struct.cpp:22:3:22:8 | call to strcpy | This 'call to strcpy' operation requires 10 bytes but the destination is only 9 bytes. |

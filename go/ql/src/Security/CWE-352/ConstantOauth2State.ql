@@ -106,10 +106,14 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     TaintTracking::referenceStep(pred, succ)
     or
     // Propagate across Sprintf and similar calls
-    any(Fmt::AppenderOrSprinter s).taintStep(pred, succ)
+    exists(DataFlow::CallNode cn |
+      cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinter
+    |
+      pred = cn.getASyntacticArgument() and succ = cn.getResult()
+    )
   }
 
-  predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
+  predicate isSinkCall(DataFlow::Node sink, DataFlow::MethodCallNode call) {
     exists(AuthCodeUrl m | call = m.getACall() | sink = call.getReceiver())
   }
 

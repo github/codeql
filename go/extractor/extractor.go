@@ -10,7 +10,6 @@ import (
 	"go/token"
 	"go/types"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -22,6 +21,7 @@ import (
 	"time"
 
 	"github.com/github/codeql-go/extractor/dbscheme"
+	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/trap"
 	"github.com/github/codeql-go/extractor/util"
@@ -97,6 +97,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	if len(pkgs) == 0 {
 		log.Println("No packages found.")
+
+		wd, err := os.Getwd()
+		if err != nil {
+			log.Printf("Warning: failed to get working directory: %s\n", err.Error())
+		} else if util.FindGoFiles(wd) {
+			diagnostics.EmitGoFilesFoundButNotProcessed()
+		}
 	}
 
 	log.Println("Extracting universe scope.")
@@ -117,6 +124,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		}
 		log.Printf("Done running go list deps: resolved %d packages.", len(pkgInfos))
 	}
+
+	pkgsNotFound := make([]string, 0, len(pkgs))
 
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
@@ -144,12 +153,26 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		if len(pkg.Errors) != 0 {
 			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
 			for i, err := range pkg.Errors {
-				log.Printf("  %s", err.Error())
+				errString := err.Error()
+				log.Printf("  %s", errString)
+
+				if strings.Contains(errString, "build constraints exclude all Go files in ") {
+					// `err` is a NoGoError from the package cmd/go/internal/load, which we cannot access as it is internal
+					diagnostics.EmitPackageDifferentOSArchitecture(pkg.PkgPath)
+				} else if strings.Contains(errString, "cannot find package") ||
+					strings.Contains(errString, "no required module provides package") {
+					pkgsNotFound = append(pkgsNotFound, pkg.PkgPath)
+				}
 				extraction.extractError(tw, err, lbl, i)
 			}
 		}
+
 		log.Printf("Done extracting types for package %s.", pkg.PkgPath)
 	})
+
+	if len(pkgsNotFound) > 0 {
+		diagnostics.EmitCannotFindPackages(pkgsNotFound)
+	}
 
 	for _, pkg := range pkgs {
 		pkgInfo, ok := pkgInfos[pkg.PkgPath]
@@ -1783,7 +1806,7 @@ func extractNumLines(tw *trap.Writer, fileName string, ast *ast.File) {
 
 	// count lines of code by tokenizing
 	linesOfCode := 0
-	src, err := ioutil.ReadFile(fileName)
+	src, err := os.ReadFile(fileName)
 	if err != nil {
 		log.Fatalf("Unable to read file %s.", fileName)
 	}
@@ -1923,48 +1946,14 @@ func populateTypeParamParents(tw *trap.Writer, typeparams *types.TypeParamList, 
 // some changes to the object to avoid returning objects relating to instantiated
 // types.
 func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
-	obj := tw.Package.TypesInfo.Uses[ident]
-	if obj == nil {
-		return nil
+	switch obj := tw.Package.TypesInfo.Uses[ident].(type) {
+	case *types.Var:
+		return obj.Origin()
+	case *types.Func:
+		return obj.Origin()
+	default:
+		return obj
 	}
-	if override, ok := tw.ObjectsOverride[obj]; ok {
-		return override
-	}
-	if funcObj, ok := obj.(*types.Func); ok {
-		sig := funcObj.Type().(*types.Signature)
-		if recv := sig.Recv(); recv != nil {
-			recvType := recv.Type()
-			originType, isSame := tryGetGenericType(recvType)
-
-			if originType == nil {
-				if pointerType, ok := recvType.(*types.Pointer); ok {
-					originType, isSame = tryGetGenericType(pointerType.Elem())
-				}
-			}
-
-			if originType == nil || isSame {
-				return obj
-			}
-
-			for i := 0; i < originType.NumMethods(); i++ {
-				meth := originType.Method(i)
-				if meth.Name() == funcObj.Name() {
-					return meth
-				}
-			}
-			if interfaceType, ok := originType.Underlying().(*types.Interface); ok {
-				for i := 0; i < interfaceType.NumMethods(); i++ {
-					meth := interfaceType.Method(i)
-					if meth.Name() == funcObj.Name() {
-						return meth
-					}
-				}
-			}
-			log.Fatalf("Could not find method %s on type %s", funcObj.Name(), originType)
-		}
-	}
-
-	return obj
 }
 
 // tryGetGenericType returns the generic type of `tp`, and a boolean indicating

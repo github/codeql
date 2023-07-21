@@ -125,3 +125,30 @@ A.java:
 #   55|               1: [LocalVariableDeclExpr] rte
 #   55|             1: [BlockStmt] { ... }
 #   56|               0: [ReturnStmt] return ...
+#   60|     10: [Class] E
+#   64|       3: [FieldDeclaration] E A;
+#-----|         -3: (Javadoc)
+#   61|           1: [Javadoc] /** Javadoc for enum constant */
+#   62|             0: [JavadocText] Javadoc for enum constant
+#   64|         -1: [TypeAccess] E
+#   64|         0: [ClassInstanceExpr] new E(...)
+#   64|           -3: [TypeAccess] E
+#   65|       4: [FieldDeclaration] E B;
+#-----|         -3: (Javadoc)
+#   61|           1: [Javadoc] /** Javadoc for enum constant */
+#   62|             0: [JavadocText] Javadoc for enum constant
+#   65|         -1: [TypeAccess] E
+#   65|         0: [ClassInstanceExpr] new E(...)
+#   65|           -3: [TypeAccess] E
+#   66|       5: [FieldDeclaration] E C;
+#-----|         -3: (Javadoc)
+#   61|           1: [Javadoc] /** Javadoc for enum constant */
+#   62|             0: [JavadocText] Javadoc for enum constant
+#   66|         -1: [TypeAccess] E
+#   66|         0: [ClassInstanceExpr] new E(...)
+#   66|           -3: [TypeAccess] E
+#   72|     11: [FieldDeclaration] int i, ...;
+#-----|       -3: (Javadoc)
+#   69|         1: [Javadoc] /** Javadoc for fields */
+#   70|           0: [JavadocText] Javadoc for fields
+#   72|       -1: [TypeAccess] int

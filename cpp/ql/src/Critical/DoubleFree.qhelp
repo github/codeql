@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Deallocating memory more than once can lead to a double-free vulnerability. This can be exploited to
+corrupt the allocator's internal data structures, which can lead to denial-of-service attacks by crashing
+the program, or security vulnerabilities, by allowing an attacker to overwrite arbitrary memory locations.
+</p>
+
+</overview>
+<recommendation>
+<p>
+Ensure that all execution paths deallocate the allocated memory at most once. If possible, reassign
+the pointer to a null value after deallocating it. This will prevent double-free vulnerabilities since
+most deallocation functions will perform a null-pointer check before attempting to deallocate the memory.
+</p>
+
+</recommendation>
+<example><sample src="DoubleFree.cpp" />
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/vulnerabilities/Doubly_freeing_memory">Doubly freeing memory</a>.
+</li>
+
+</references>
+</qhelp>

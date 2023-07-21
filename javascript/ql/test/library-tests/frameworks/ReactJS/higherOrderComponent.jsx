@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, forwardRef } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import styled from 'styled-components';
@@ -25,4 +25,4 @@ const ConnectedComponent = compose(withConnect, unknownFunction)(StyledComponent
 
 const ConnectedComponent2 = withState('counter', 'setCounter', 0)(ConnectedComponent);
 
-export default hot(module)(memo(ConnectedComponent2));
+export default hot(module)(memo(forwardRef(ConnectedComponent2)));

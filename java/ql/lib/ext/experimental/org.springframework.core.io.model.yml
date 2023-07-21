@@ -3,14 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: experimentalSinkModel
     data:
-      - ["org.springframework.core.io", "ClassPathResource", True, "getFilename", "", "", "Argument[-1]", "get-resource", "manual", "unsafe-url-forward"]
-      - ["org.springframework.core.io", "ClassPathResource", True, "getPath", "", "", "Argument[-1]", "get-resource", "manual", "unsafe-url-forward"]
-      - ["org.springframework.core.io", "ClassPathResource", True, "getURL", "", "", "Argument[-1]", "get-resource", "manual", "unsafe-url-forward"]
-      - ["org.springframework.core.io", "ClassPathResource", True, "resolveURL", "", "", "Argument[-1]", "get-resource", "manual", "unsafe-url-forward"]
+      - ["org.springframework.core.io", "ClassPathResource", True, "getFilename", "", "", "Argument[this]", "get-resource", "manual", "unsafe-url-forward"]
+      - ["org.springframework.core.io", "ClassPathResource", True, "getPath", "", "", "Argument[this]", "get-resource", "manual", "unsafe-url-forward"]
+      - ["org.springframework.core.io", "ClassPathResource", True, "getURL", "", "", "Argument[this]", "get-resource", "manual", "unsafe-url-forward"]
+      - ["org.springframework.core.io", "ClassPathResource", True, "resolveURL", "", "", "Argument[this]", "get-resource", "manual", "unsafe-url-forward"]
   - addsTo:
       pack: codeql/java-all
       extensible: experimentalSummaryModel
     data:
-      - ["org.springframework.core.io", "ClassPathResource", False, "ClassPathResource", "", "", "Argument[0]", "Argument[-1]", "taint", "manual", "unsafe-url-forward"]
+      - ["org.springframework.core.io", "ClassPathResource", False, "ClassPathResource", "", "", "Argument[0]", "Argument[this]", "taint", "manual", "unsafe-url-forward"]
       - ["org.springframework.core.io", "Resource", True, "createRelative", "", "", "Argument[0]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
       - ["org.springframework.core.io", "ResourceLoader", True, "getResource", "", "", "Argument[0]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]

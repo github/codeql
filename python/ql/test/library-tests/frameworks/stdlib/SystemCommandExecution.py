@@ -140,7 +140,7 @@ subprocess.Popen(args)  # $getCommand=args
 args = "<progname>"
 use_shell = False
 exe = "executable"
-subprocess.Popen(args, shell=use_shell, executable=exe)  # $getCommand=exe SPURIOUS: getCommand=args
+subprocess.Popen(args, shell=use_shell, executable=exe)  # $getCommand=exe
 
 
 ################################################################################

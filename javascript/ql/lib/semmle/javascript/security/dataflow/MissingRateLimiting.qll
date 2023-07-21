@@ -40,17 +40,6 @@ abstract class ExpensiveRouteHandler extends DataFlow::Node {
   abstract predicate explain(string explanation, DataFlow::Node reference, string referenceLabel);
 }
 
-/**
- * DEPRECATED. Use `RateLimitingMiddleware` instead.
- *
- * A route handler expression that is guarded by a rate limiter.
- */
-deprecated class RateLimitedRouteHandlerExpr extends Express::RouteHandlerExpr {
-  RateLimitedRouteHandlerExpr() {
-    Routing::getNode(this.flow()).isGuardedBy(any(RateLimitingMiddleware m))
-  }
-}
-
 // default implementations
 /**
  * A route handler that performs an expensive action, and hence should be rate-limited.
@@ -90,24 +79,14 @@ class FileSystemAccessAsExpensiveAction extends ExpensiveAction instanceof FileS
 }
 
 /** A system command execution, considered as an expensive action. */
-class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction instanceof SystemCommandExecution {
+class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction instanceof SystemCommandExecution
+{
   override string describe() { result = "a system command" }
 }
 
 /** A database access, considered as an expensive action. */
 class DatabaseAccessAsExpensiveAction extends ExpensiveAction instanceof DatabaseAccess {
   override string describe() { result = "a database access" }
-}
-
-/**
- * DEPRECATED. Use the `Routing::Node` API instead.
- *
- * A route handler expression that is rate-limited by a rate-limiting middleware.
- */
-deprecated class RouteHandlerExpressionWithRateLimiter extends Expr {
-  RouteHandlerExpressionWithRateLimiter() {
-    Routing::getNode(this.flow()).isGuardedBy(any(RateLimitingMiddleware m))
-  }
 }
 
 /**
@@ -200,8 +179,8 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
 /**
  * A route-handler expression that is rate-limited by the `rate-limiter-flexible` package.
  */
-class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware instanceof RateLimiterFlexibleRateLimiter {
-}
+class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware instanceof RateLimiterFlexibleRateLimiter
+{ }
 
 private class FastifyRateLimiter extends RateLimitingMiddleware {
   FastifyRateLimiter() { this = DataFlow::moduleImport("fastify-rate-limit") }

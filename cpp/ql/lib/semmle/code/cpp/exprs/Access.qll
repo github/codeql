@@ -368,6 +368,11 @@ class FunctionAccess extends Access, @routineexpr {
   /** Gets the accessed function. */
   override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
 
+  /**
+   * Gets the expression generating the function being accessed.
+   */
+  Expr getQualifier() { this.getChild(-1) = result }
+
   /** Gets a textual representation of this function access. */
   override string toString() {
     if exists(this.getTarget())

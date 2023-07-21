@@ -1,6 +1,12 @@
 | java.lang.String#valueOf(Object) | no manual model |
 | java.lang.System#getProperty(String) | no manual model |
+| java.lang.System#setProperty(String,String) | no manual model |
 | java.lang.Throwable#printStackTrace() | no manual model |
+| java.text.Format#format(Object) | no manual model |
+| java.text.MessageFormat#format(String,Object[]) | no manual model |
+| java.util.Comparator#comparing(Function) | no manual model |
+| java.util.function.BiConsumer#accept(Object,Object) | no manual model |
+| java.util.function.BiFunction#apply(Object,Object) | no manual model |
 | java.util.function.Consumer#accept(Object) | no manual model |
 | java.util.function.Function#apply(Object) | no manual model |
 | java.util.function.Supplier#get() | no manual model |

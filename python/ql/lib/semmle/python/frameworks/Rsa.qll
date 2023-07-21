@@ -20,7 +20,8 @@ private module Rsa {
    * See https://stuvel.eu/python-rsa-doc/reference.html#rsa.newkeys
    */
   class RsaNewkeysCall extends Cryptography::PublicKey::KeyGeneration::RsaRange,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     RsaNewkeysCall() { this = API::moduleImport("rsa").getMember("newkeys").getACall() }
 
     override DataFlow::Node getKeySizeArg() {
@@ -116,7 +117,8 @@ private module Rsa {
    * See https://stuvel.eu/python-rsa-doc/reference.html#rsa.compute_hash
    */
   class RsaComputeHashCall extends Cryptography::CryptographicOperation::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     RsaComputeHashCall() { this = API::moduleImport("rsa").getMember("compute_hash").getACall() }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() {

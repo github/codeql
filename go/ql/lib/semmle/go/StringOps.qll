@@ -219,7 +219,7 @@ module StringOps {
        * replaced.
        */
       DataFlow::Node getAReplacedArgument() {
-        exists(int n | n % 2 = 0 and result = this.getArgument(n))
+        exists(int n | n % 2 = 0 and result = this.getSyntacticArgument(n))
       }
     }
 
@@ -228,7 +228,8 @@ module StringOps {
      * the receiver of a call to `strings.Replacer.Replace` or
      * `strings.Replacer.WriteString`.
      */
-    private class StringsNewReplacerConfiguration extends DataFlowForStringsNewReplacer::Configuration {
+    private class StringsNewReplacerConfiguration extends DataFlowForStringsNewReplacer::Configuration
+    {
       StringsNewReplacerConfiguration() { this = "StringsNewReplacerConfiguration" }
 
       override predicate isSource(DataFlow::Node source) {
@@ -303,11 +304,6 @@ module StringOps {
        * Gets the parameter index of the format string.
        */
       abstract int getFormatStringIndex();
-
-      /**
-       * Gets the parameter index of the first parameter to be formatted.
-       */
-      abstract int getFirstFormattedParameterIndex();
     }
 
     /**
@@ -335,7 +331,7 @@ module StringOps {
         formatDirective = this.getComponent(n) and
         formatDirective.charAt(0) = "%" and
         formatDirective.charAt(1) != "%" and
-        result = this.getArgument((n / 2) + f.getFirstFormattedParameterIndex())
+        result = this.getImplicitVarargsArgument(n / 2)
       }
     }
   }
@@ -580,7 +576,7 @@ module StringOps {
   }
 
   /**
-   * One of the operands in a string concatenation.
+   * An operand in a string concatenation.
    *
    * See `ConcatenationElement` for more information.
    */

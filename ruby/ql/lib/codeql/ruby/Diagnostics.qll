@@ -47,6 +47,6 @@ class Diagnostic extends @diagnostic {
 }
 
 /** A diagnostic relating to a particular error in extracting a file. */
-class ExtractionError extends Diagnostic, @diagnostic_error {
+class ExtractionError extends Diagnostic {
   ExtractionError() { this.getTag() = "parse_error" }
 }

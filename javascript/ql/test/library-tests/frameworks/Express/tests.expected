@@ -105,6 +105,8 @@ test_RouteSetup_getLastRouteHandlerExpr
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:6:9:6:14 | router |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:21:1:21:14 | app.use(array) | src/express3.js:21:9:21:13 | array |
 | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:16:19:18:3 | functio ... ");\\n  } |
@@ -745,7 +747,28 @@ test_RouterDefinition_getMiddlewareStackAt
 | src/express2.js:5:11:5:13 | e() | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:6:9:6:14 | router |
 | src/express2.js:5:11:5:13 | e() | src/express2.js:7:1:7:0 | exit node of <toplevel> | src/express2.js:6:9:6:14 | router |
 | src/express3.js:2:11:2:19 | express() | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
-| src/express3.js:2:11:2:19 | express() | src/express3.js:13:1:13:0 | exit node of <toplevel> | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:14:1:16:1 | functio ... es){}\\n} | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:17:1:17:3 | app | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:17:1:17:7 | app.use | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:17:1:17:24 | app.use ... er2()]) | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:17:1:17:25 | app.use ... r2()]); | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:17:5:17:7 | use | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:17:9:17:23 | [getHandler2()] | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:17:10:17:20 | getHandler2 | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:17:10:17:22 | getHandler2() | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:19:1:19:30 | functio ... res) {} | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:20:1:20:23 | let arr ... dler3]; | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:20:5:20:9 | array | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:20:5:20:22 | array = [handler3] | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:20:13:20:22 | [handler3] | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:20:14:20:21 | handler3 | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:21:1:21:3 | app | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:21:1:21:7 | app.use | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:21:1:21:14 | app.use(array) | src/express3.js:21:9:21:13 | array |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:21:1:21:15 | app.use(array); | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:21:5:21:7 | use | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:21:9:21:13 | array | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:22:1:22:0 | exit node of <toplevel> | src/express3.js:21:9:21:13 | array |
 | src/express.js:2:11:2:19 | express() | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:2:11:2:19 | express() | src/express.js:41:1:43:1 | functio ...  f();\\n} | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:2:11:2:19 | express() | src/express.js:44:1:44:3 | app | src/express.js:39:9:39:20 | getHandler() |
@@ -882,6 +905,8 @@ test_isRequest
 | src/express3.js:5:14:5:16 | req |
 | src/express3.js:5:35:5:37 | req |
 | src/express3.js:10:22:10:24 | req |
+| src/express3.js:15:20:15:22 | req |
+| src/express3.js:19:19:19:21 | req |
 | src/express4.js:4:32:4:34 | req |
 | src/express4.js:4:32:4:34 | req |
 | src/express4.js:5:27:5:29 | req |
@@ -965,6 +990,9 @@ test_isRequest
 | src/route-collection.js:3:7:3:9 | req |
 | src/route-collection.js:3:32:3:34 | req |
 | src/route.js:5:21:5:23 | req |
+| typed_src/tst.ts:5:15:5:15 | x |
+| typed_src/tst.ts:5:15:5:15 | x |
+| typed_src/tst.ts:6:3:6:3 | x |
 test_RouteSetup_getRouter
 | src/advanced-routehandler-registration.js:10:3:10:24 | app.get ... es0[p]) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
 | src/advanced-routehandler-registration.js:19:3:19:18 | app.use(handler) | src/advanced-routehandler-registration.js:2:11:2:19 | express() |
@@ -1005,6 +1033,8 @@ test_RouteSetup_getRouter
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:5:11:5:13 | e() |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:2:11:2:19 | express() |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) | src/express3.js:2:11:2:19 | express() |
+| src/express3.js:21:1:21:14 | app.use(array) | src/express3.js:2:11:2:19 | express() |
 | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:2:11:2:19 | express() |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:2:11:2:19 | express() |
@@ -1246,6 +1276,8 @@ test_ResponseExpr
 | src/express3.js:6:3:6:5 | res | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:6:3:6:17 | res.send("val") | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:10:27:10:29 | res | src/express3.js:10:12:10:32 | functio ...  res){} |
+| src/express3.js:15:25:15:27 | res | src/express3.js:15:10:15:30 | functio ...  res){} |
+| src/express3.js:19:24:19:26 | res | src/express3.js:19:1:19:30 | functio ... res) {} |
 | src/express4.js:4:37:4:39 | res | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express4.js:4:37:4:39 | res | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express4.js:8:3:8:5 | res | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
@@ -1464,6 +1496,8 @@ test_RouteHandlerExpr_getNextMiddleware
 | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} |
 | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) | src/csurf-example.js:39:26:39:47 | functio ... res) {} |
 | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) | src/csurf-example.js:40:27:40:48 | functio ... res) {} |
+| src/express3.js:12:9:12:20 | getHandler() | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:17:9:17:23 | [getHandler2()] | src/express3.js:21:9:21:13 | array |
 | src/express.js:39:9:39:20 | getHandler() | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:44:9:44:25 | getArrowHandler() | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:44:9:44:25 | getArrowHandler() | src/express.js:46:22:51:1 | functio ... ame];\\n} |
@@ -1585,6 +1619,8 @@ test_RouteHandlerExpr
 | src/express2.js:6:9:6:14 | router | src/express2.js:6:1:6:15 | app.use(router) | false |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | true |
 | src/express3.js:12:9:12:20 | getHandler() | src/express3.js:12:1:12:21 | app.use ... dler()) | false |
+| src/express3.js:17:9:17:23 | [getHandler2()] | src/express3.js:17:1:17:24 | app.use ... er2()]) | false |
+| src/express3.js:21:9:21:13 | array | src/express3.js:21:1:21:14 | app.use(array) | false |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | true |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:1:9:2 | app.get ... es);\\n}) | true |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:16:3:18:4 | router. ... );\\n  }) | true |
@@ -1633,6 +1669,8 @@ test_RouteSetup_handlesAllRequestMethods
 | src/csurf-example.js:18:1:18:31 | app.use ... rue })) |
 | src/express2.js:6:1:6:15 | app.use(router) |
 | src/express3.js:12:1:12:21 | app.use ... dler()) |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) |
+| src/express3.js:21:1:21:14 | app.use(array) |
 | src/express.js:39:1:39:21 | app.use ... dler()) |
 | src/express.js:44:1:44:26 | app.use ... dler()) |
 | src/middleware-flow.js:13:5:13:25 | router. ... tallDb) |
@@ -1807,6 +1845,8 @@ test_RouteHandler_getAResponseExpr
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:6:3:6:5 | res |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:6:3:6:17 | res.send("val") |
 | src/express3.js:10:12:10:32 | functio ...  res){} | src/express3.js:10:27:10:29 | res |
+| src/express3.js:15:10:15:30 | functio ...  res){} | src/express3.js:15:25:15:27 | res |
+| src/express3.js:19:1:19:30 | functio ... res) {} | src/express3.js:19:24:19:26 | res |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:37:4:39 | res |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:37:4:39 | res |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:8:3:8:5 | res |
@@ -2016,6 +2056,8 @@ test_isResponse
 | src/express3.js:6:3:6:5 | res |
 | src/express3.js:6:3:6:17 | res.send("val") |
 | src/express3.js:10:27:10:29 | res |
+| src/express3.js:15:25:15:27 | res |
+| src/express3.js:19:24:19:26 | res |
 | src/express4.js:4:37:4:39 | res |
 | src/express4.js:4:37:4:39 | res |
 | src/express4.js:8:3:8:5 | res |
@@ -2140,6 +2182,10 @@ test_isResponse
 | src/route-collection.js:2:12:2:14 | res |
 | src/route-collection.js:3:12:3:14 | res |
 | src/route.js:5:26:5:28 | res |
+| typed_src/tst.ts:5:35:5:37 | res |
+| typed_src/tst.ts:5:35:5:37 | res |
+| typed_src/tst.ts:7:3:7:5 | res |
+| typed_src/tst.ts:7:3:7:17 | res.status(404) |
 test_ResponseBody
 | src/csurf-example.js:22:35:22:49 | req.csrfToken() | src/csurf-example.js:20:18:23:1 | functio ... () })\\n} |
 | src/csurf-example.js:26:12:26:42 | 'csrf w ... t here' | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} |
@@ -2248,6 +2294,12 @@ test_RouteSetup_getARouteHandler
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:9:1:11:1 | return of function getHandler |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:10:12:10:32 | functio ...  res){} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) | src/express3.js:14:1:16:1 | return of function getHandler2 |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) | src/express3.js:15:10:15:30 | functio ...  res){} |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) | src/express3.js:17:10:17:22 | getHandler2() |
+| src/express3.js:21:1:21:14 | app.use(array) | src/express3.js:19:1:19:30 | functio ... res) {} |
+| src/express3.js:21:1:21:14 | app.use(array) | src/express3.js:20:13:20:22 | [handler3] |
 | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:16:19:18:3 | functio ... ");\\n  } |
@@ -2479,6 +2531,9 @@ test_RouteHandlerExpr_getAMatchingAncestor
 | src/csurf-example.js:40:27:40:48 | functio ... res) {} | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
 | src/csurf-example.js:40:27:40:48 | functio ... res) {} | src/csurf-example.js:17:9:17:22 | cookieParser() |
 | src/csurf-example.js:40:27:40:48 | functio ... res) {} | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
+| src/express3.js:17:9:17:23 | [getHandler2()] | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:21:9:21:13 | array | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:21:9:21:13 | array | src/express3.js:17:9:17:23 | [getHandler2()] |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:44:9:44:25 | getArrowHandler() | src/express.js:39:9:39:20 | getHandler() |
@@ -2558,6 +2613,8 @@ test_RouteSetup_getRouteHandlerExpr
 | src/express2.js:6:1:6:15 | app.use(router) | 0 | src/express2.js:6:9:6:14 | router |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | 0 | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | 0 | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) | 0 | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:21:1:21:14 | app.use(array) | 0 | src/express3.js:21:9:21:13 | array |
 | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | 0 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | 0 | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | 0 | src/express.js:16:19:18:3 | functio ... ");\\n  } |
@@ -2622,7 +2679,7 @@ test_RouterDefinition_getMiddlewareStack
 | src/auth.js:1:13:1:32 | require('express')() | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
 | src/express2.js:5:11:5:13 | e() | src/express2.js:6:9:6:14 | router |
-| src/express3.js:2:11:2:19 | express() | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:2:11:2:19 | express() | src/express3.js:21:9:21:13 | array |
 | src/express.js:2:11:2:19 | express() | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:5:14:5:28 | makeSubRouter() |
 test_RouteHandler
@@ -2659,6 +2716,8 @@ test_RouteHandler
 | src/express2.js:4:32:4:76 | functio ... esult } | src/express2.js:4:41:4:47 | request | src/express2.js:4:50:4:55 | result |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:4:32:4:34 | req | src/express3.js:4:37:4:39 | res |
 | src/express3.js:10:12:10:32 | functio ...  res){} | src/express3.js:10:22:10:24 | req | src/express3.js:10:27:10:29 | res |
+| src/express3.js:15:10:15:30 | functio ...  res){} | src/express3.js:15:20:15:22 | req | src/express3.js:15:25:15:27 | res |
+| src/express3.js:19:1:19:30 | functio ... res) {} | src/express3.js:19:19:19:21 | req | src/express3.js:19:24:19:26 | res |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:32:4:34 | req | src/express4.js:4:37:4:39 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:4:32:4:34 | req | src/express.js:4:37:4:39 | res |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:16:28:16:30 | req | src/express.js:16:33:16:35 | res |
@@ -2730,6 +2789,8 @@ test_RouteSetup_getARouteHandlerExpr
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:6:9:6:14 | router |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:17:1:17:24 | app.use ... er2()]) | src/express3.js:17:9:17:23 | [getHandler2()] |
+| src/express3.js:21:1:21:14 | app.use(array) | src/express3.js:21:9:21:13 | array |
 | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:16:19:18:3 | functio ... ");\\n  } |
@@ -2800,6 +2861,8 @@ test_RouteHandlerExpr_getPreviousMiddleware
 | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
 | src/csurf-example.js:39:26:39:47 | functio ... res) {} | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
 | src/csurf-example.js:40:27:40:48 | functio ... res) {} | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
+| src/express3.js:17:9:17:23 | [getHandler2()] | src/express3.js:12:9:12:20 | getHandler() |
+| src/express3.js:21:9:21:13 | array | src/express3.js:17:9:17:23 | [getHandler2()] |
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:44:9:44:25 | getArrowHandler() | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:44:9:44:25 | getArrowHandler() |
@@ -2913,6 +2976,8 @@ test_RequestExpr
 | src/express3.js:5:14:5:16 | req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:5:35:5:37 | req | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express3.js:10:22:10:24 | req | src/express3.js:10:12:10:32 | functio ...  res){} |
+| src/express3.js:15:20:15:22 | req | src/express3.js:15:10:15:30 | functio ...  res){} |
+| src/express3.js:19:19:19:21 | req | src/express3.js:19:1:19:30 | functio ... res) {} |
 | src/express4.js:4:32:4:34 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express4.js:4:32:4:34 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
 | src/express4.js:5:27:5:29 | req | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
@@ -3113,6 +3178,8 @@ test_RouteHandler_getARequestExpr
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:14:5:16 | req |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:5:35:5:37 | req |
 | src/express3.js:10:12:10:32 | functio ...  res){} | src/express3.js:10:22:10:24 | req |
+| src/express3.js:15:10:15:30 | functio ...  res){} | src/express3.js:15:20:15:22 | req |
+| src/express3.js:19:1:19:30 | functio ... res) {} | src/express3.js:19:19:19:21 | req |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:32:4:34 | req |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:4:32:4:34 | req |
 | src/express4.js:4:23:9:1 | functio ... ic1);\\n} | src/express4.js:5:27:5:29 | req |
@@ -3227,10 +3294,13 @@ getRouteHandlerContainerStep
 | src/route-collection.js:1:18:4:1 | {\\n  a:  ... (req)\\n} | src/route-collection.js:3:6:3:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:116:14:116:30 | importedRoutes[p] |
 | src/route-collection.js:1:18:4:1 | {\\n  a:  ... (req)\\n} | src/route-collection.js:3:6:3:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:119:14:119:29 | importedRoutes.b |
 dbUse
+| src/middleware-flow.js:6:5:6:10 | req.db |
 | src/middleware-flow.js:6:5:6:21 | req.db = new DB() |
 | src/middleware-flow.js:6:14:6:21 | new DB() |
+| src/middleware-flow.js:7:5:7:15 | req.deep.db |
 | src/middleware-flow.js:7:5:7:26 | req.dee ... ew DB() |
 | src/middleware-flow.js:7:19:7:26 | new DB() |
+| src/middleware-flow.js:8:5:8:22 | req.deep.access.db |
 | src/middleware-flow.js:8:5:8:33 | req.dee ... ew DB() |
 | src/middleware-flow.js:8:26:8:33 | new DB() |
 | src/middleware-flow.js:18:9:18:14 | req.db |

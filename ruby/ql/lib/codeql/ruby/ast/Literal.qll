@@ -165,14 +165,6 @@ class FileLiteral extends Literal instanceof FileLiteralImpl {
  * `StringEscapeSequenceComponent`, or `StringInterpolationComponent`.
  */
 class StringComponent extends AstNode instanceof StringComponentImpl {
-  /**
-   * DEPRECATED: Use `getConstantValue` instead.
-   *
-   * Gets the source text for this string component. Has no result if this is
-   * a `StringInterpolationComponent`.
-   */
-  deprecated string getValueText() { result = this.getConstantValue().toString() }
-
   /** Gets the constant value of this string component, if any. */
   ConstantValue::ConstantStringValue getConstantValue() { result = TString(super.getValue()) }
 }
@@ -199,7 +191,8 @@ class StringTextComponent extends StringComponent instanceof StringTextComponent
 /**
  * An escape sequence component of a string or string-like literal.
  */
-class StringEscapeSequenceComponent extends StringComponent instanceof StringEscapeSequenceComponentImpl {
+class StringEscapeSequenceComponent extends StringComponent instanceof StringEscapeSequenceComponentImpl
+{
   final override string getAPrimaryQlClass() { result = "StringEscapeSequenceComponent" }
 
   /** Gets the text of this component as it appears in the source code. */
@@ -209,14 +202,13 @@ class StringEscapeSequenceComponent extends StringComponent instanceof StringEsc
 /**
  * An interpolation expression component of a string or string-like literal.
  */
-class StringInterpolationComponent extends StringComponent, StmtSequence instanceof StringInterpolationComponentImpl {
+class StringInterpolationComponent extends StringComponent, StmtSequence instanceof StringInterpolationComponentImpl
+{
   private Ruby::Interpolation g;
 
   StringInterpolationComponent() { this = TStringInterpolationComponentNonRegexp(g) }
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-
-  deprecated final override string getValueText() { none() }
 
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = StmtSequence.super.getConstantValue()
@@ -249,21 +241,21 @@ class RegExpTextComponent extends RegExpComponent instanceof RegExpTextComponent
 /**
  * An escape sequence component of a regex literal.
  */
-class RegExpEscapeSequenceComponent extends RegExpComponent instanceof RegExpEscapeSequenceComponentImpl {
+class RegExpEscapeSequenceComponent extends RegExpComponent instanceof RegExpEscapeSequenceComponentImpl
+{
   final override string getAPrimaryQlClass() { result = "RegExpEscapeSequenceComponent" }
 }
 
 /**
  * An interpolation expression component of a regex literal.
  */
-class RegExpInterpolationComponent extends RegExpComponent, StmtSequence instanceof RegExpComponentImpl {
+class RegExpInterpolationComponent extends RegExpComponent, StmtSequence instanceof RegExpComponentImpl
+{
   private Ruby::Interpolation g;
 
   RegExpInterpolationComponent() { this = TStringInterpolationComponentRegexp(g) }
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-
-  deprecated final override string getValueText() { none() }
 
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = StmtSequence.super.getConstantValue()

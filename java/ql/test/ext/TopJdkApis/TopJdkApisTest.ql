@@ -1,5 +1,5 @@
 import java
-import TopJdkApis
+import Metrics.Summaries.TopJdkApis
 
 from string apiName, string message
 where

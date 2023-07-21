@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Numerics
     {
-        // Generated from `System.Numerics.Matrix3x2` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Matrix3x2 : System.IEquatable<System.Numerics.Matrix3x2>
         {
             public static bool operator !=(System.Numerics.Matrix3x2 value1, System.Numerics.Matrix3x2 value2) => throw null;
@@ -34,6 +34,7 @@ namespace System
             public static System.Numerics.Matrix3x2 Identity { get => throw null; }
             public static bool Invert(System.Numerics.Matrix3x2 matrix, out System.Numerics.Matrix3x2 result) => throw null;
             public bool IsIdentity { get => throw null; }
+            public float this[int row, int column] { get => throw null; set => throw null; }
             public static System.Numerics.Matrix3x2 Lerp(System.Numerics.Matrix3x2 matrix1, System.Numerics.Matrix3x2 matrix2, float amount) => throw null;
             public float M11;
             public float M12;
@@ -51,7 +52,6 @@ namespace System
             public System.Numerics.Vector2 Translation { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Numerics.Matrix4x4` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Matrix4x4 : System.IEquatable<System.Numerics.Matrix4x4>
         {
             public static bool operator !=(System.Numerics.Matrix4x4 value1, System.Numerics.Matrix4x4 value2) => throw null;
@@ -98,6 +98,7 @@ namespace System
             public static System.Numerics.Matrix4x4 Identity { get => throw null; }
             public static bool Invert(System.Numerics.Matrix4x4 matrix, out System.Numerics.Matrix4x4 result) => throw null;
             public bool IsIdentity { get => throw null; }
+            public float this[int row, int column] { get => throw null; set => throw null; }
             public static System.Numerics.Matrix4x4 Lerp(System.Numerics.Matrix4x4 matrix1, System.Numerics.Matrix4x4 matrix2, float amount) => throw null;
             public float M11;
             public float M12;
@@ -128,7 +129,6 @@ namespace System
             public static System.Numerics.Matrix4x4 Transpose(System.Numerics.Matrix4x4 matrix) => throw null;
         }
 
-        // Generated from `System.Numerics.Plane` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Plane : System.IEquatable<System.Numerics.Plane>
         {
             public static bool operator !=(System.Numerics.Plane value1, System.Numerics.Plane value2) => throw null;
@@ -152,7 +152,6 @@ namespace System
             public static System.Numerics.Plane Transform(System.Numerics.Plane plane, System.Numerics.Quaternion rotation) => throw null;
         }
 
-        // Generated from `System.Numerics.Quaternion` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Quaternion : System.IEquatable<System.Numerics.Quaternion>
         {
             public static bool operator !=(System.Numerics.Quaternion value1, System.Numerics.Quaternion value2) => throw null;
@@ -177,6 +176,7 @@ namespace System
             public static System.Numerics.Quaternion Identity { get => throw null; }
             public static System.Numerics.Quaternion Inverse(System.Numerics.Quaternion value) => throw null;
             public bool IsIdentity { get => throw null; }
+            public float this[int index] { get => throw null; set => throw null; }
             public float Length() => throw null;
             public float LengthSquared() => throw null;
             public static System.Numerics.Quaternion Lerp(System.Numerics.Quaternion quaternion1, System.Numerics.Quaternion quaternion2, float amount) => throw null;
@@ -194,9 +194,9 @@ namespace System
             public float X;
             public float Y;
             public float Z;
+            public static System.Numerics.Quaternion Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Vector
         {
             public static System.Numerics.Vector<T> Abs<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
@@ -284,6 +284,31 @@ namespace System
             public static System.Numerics.Vector<System.Byte> Narrow(System.Numerics.Vector<System.UInt16> low, System.Numerics.Vector<System.UInt16> high) => throw null;
             public static System.Numerics.Vector<T> Negate<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<T> OnesComplement<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
+            public static System.Numerics.Vector<System.IntPtr> ShiftLeft(System.Numerics.Vector<System.IntPtr> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.UIntPtr> ShiftLeft(System.Numerics.Vector<System.UIntPtr> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.Byte> ShiftLeft(System.Numerics.Vector<System.Byte> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<int> ShiftLeft(System.Numerics.Vector<int> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.Int64> ShiftLeft(System.Numerics.Vector<System.Int64> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.SByte> ShiftLeft(System.Numerics.Vector<System.SByte> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.Int16> ShiftLeft(System.Numerics.Vector<System.Int16> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.UInt32> ShiftLeft(System.Numerics.Vector<System.UInt32> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.UInt64> ShiftLeft(System.Numerics.Vector<System.UInt64> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.UInt16> ShiftLeft(System.Numerics.Vector<System.UInt16> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.IntPtr> ShiftRightArithmetic(System.Numerics.Vector<System.IntPtr> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<int> ShiftRightArithmetic(System.Numerics.Vector<int> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.Int64> ShiftRightArithmetic(System.Numerics.Vector<System.Int64> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.SByte> ShiftRightArithmetic(System.Numerics.Vector<System.SByte> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.Int16> ShiftRightArithmetic(System.Numerics.Vector<System.Int16> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.IntPtr> ShiftRightLogical(System.Numerics.Vector<System.IntPtr> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.UIntPtr> ShiftRightLogical(System.Numerics.Vector<System.UIntPtr> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.Byte> ShiftRightLogical(System.Numerics.Vector<System.Byte> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<int> ShiftRightLogical(System.Numerics.Vector<int> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.Int64> ShiftRightLogical(System.Numerics.Vector<System.Int64> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.SByte> ShiftRightLogical(System.Numerics.Vector<System.SByte> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.Int16> ShiftRightLogical(System.Numerics.Vector<System.Int16> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.UInt32> ShiftRightLogical(System.Numerics.Vector<System.UInt32> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.UInt64> ShiftRightLogical(System.Numerics.Vector<System.UInt64> value, int shiftCount) => throw null;
+            public static System.Numerics.Vector<System.UInt16> ShiftRightLogical(System.Numerics.Vector<System.UInt16> value, int shiftCount) => throw null;
             public static System.Numerics.Vector<T> SquareRoot<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
             public static System.Numerics.Vector<T> Subtract<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
             public static T Sum<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
@@ -297,7 +322,6 @@ namespace System
             public static System.Numerics.Vector<T> Xor<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
         }
 
-        // Generated from `System.Numerics.Vector2` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector2 : System.IEquatable<System.Numerics.Vector2>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector2 left, System.Numerics.Vector2 right) => throw null;
@@ -324,6 +348,7 @@ namespace System
             public bool Equals(System.Numerics.Vector2 other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
+            public float this[int index] { get => throw null; set => throw null; }
             public float Length() => throw null;
             public float LengthSquared() => throw null;
             public static System.Numerics.Vector2 Lerp(System.Numerics.Vector2 value1, System.Numerics.Vector2 value2, float amount) => throw null;
@@ -358,7 +383,6 @@ namespace System
             public static System.Numerics.Vector2 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector3` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector3 : System.IEquatable<System.Numerics.Vector3>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector3 left, System.Numerics.Vector3 right) => throw null;
@@ -386,6 +410,7 @@ namespace System
             public bool Equals(System.Numerics.Vector3 other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
+            public float this[int index] { get => throw null; set => throw null; }
             public float Length() => throw null;
             public float LengthSquared() => throw null;
             public static System.Numerics.Vector3 Lerp(System.Numerics.Vector3 value1, System.Numerics.Vector3 value2, float amount) => throw null;
@@ -421,7 +446,6 @@ namespace System
             public static System.Numerics.Vector3 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector4` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector4 : System.IEquatable<System.Numerics.Vector4>, System.IFormattable
         {
             public static bool operator !=(System.Numerics.Vector4 left, System.Numerics.Vector4 right) => throw null;
@@ -448,6 +472,7 @@ namespace System
             public bool Equals(System.Numerics.Vector4 other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
+            public float this[int index] { get => throw null; set => throw null; }
             public float Length() => throw null;
             public float LengthSquared() => throw null;
             public static System.Numerics.Vector4 Lerp(System.Numerics.Vector4 value1, System.Numerics.Vector4 value2, float amount) => throw null;
@@ -488,7 +513,6 @@ namespace System
             public static System.Numerics.Vector4 Zero { get => throw null; }
         }
 
-        // Generated from `System.Numerics.Vector<>` in `System.Numerics.Vectors, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Vector<T> : System.IEquatable<System.Numerics.Vector<T>>, System.IFormattable where T : struct
         {
             public static bool operator !=(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
@@ -509,6 +533,7 @@ namespace System
             public bool Equals(System.Numerics.Vector<T> other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
+            public static bool IsSupported { get => throw null; }
             public T this[int index] { get => throw null; }
             public static System.Numerics.Vector<T> One { get => throw null; }
             public override string ToString() => throw null;

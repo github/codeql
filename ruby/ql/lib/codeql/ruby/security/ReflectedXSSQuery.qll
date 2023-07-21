@@ -37,6 +37,3 @@ module ReflectedXss {
     }
   }
 }
-
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;

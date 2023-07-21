@@ -67,7 +67,8 @@ class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::Call
 }
 
 /** A configuration to track values that can disable certificate validation for RestClient. */
-private class RestClientDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+private class RestClientDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
+{
   RestClientDisablesCertificateValidationConfiguration() {
     this = "RestClientDisablesCertificateValidationConfiguration"
   }

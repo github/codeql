@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "You should replace relative package paths (that contain `.` or `..`) with absolute paths. Alternatively you can [use a Go module](https://go.dev/blog/using-go-modules).",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/relative-import-paths",
+    "name": "Some imports use unsupported relative package paths"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

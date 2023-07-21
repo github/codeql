@@ -59,7 +59,8 @@ module SqlInjection {
    * For simplicity it's used as a sanitizer for all of `js/sql-injection`.
    */
   class LdapStringSanitizer extends Sanitizer,
-    IncompleteBlacklistSanitizer::StringReplaceCallSequence {
+    IncompleteBlacklistSanitizer::StringReplaceCallSequence
+  {
     LdapStringSanitizer() {
       forall(string char | char = ["*", "(", ")", "\\", "/"] |
         this.getAMember().getAReplacedString() = char

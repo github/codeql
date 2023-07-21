@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Xml.XDocument, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Linq
         {
-            // Generated from `System.Xml.Linq.Extensions` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Extensions
             {
                 public static System.Collections.Generic.IEnumerable<System.Xml.Linq.XElement> Ancestors<T>(this System.Collections.Generic.IEnumerable<T> source) where T : System.Xml.Linq.XNode => throw null;
@@ -29,7 +29,6 @@ namespace System
                 public static void Remove<T>(this System.Collections.Generic.IEnumerable<T> source) where T : System.Xml.Linq.XNode => throw null;
             }
 
-            // Generated from `System.Xml.Linq.LoadOptions` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum LoadOptions : int
             {
@@ -39,7 +38,6 @@ namespace System
                 SetLineInfo = 4,
             }
 
-            // Generated from `System.Xml.Linq.ReaderOptions` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum ReaderOptions : int
             {
@@ -47,7 +45,6 @@ namespace System
                 OmitDuplicateNamespaces = 1,
             }
 
-            // Generated from `System.Xml.Linq.SaveOptions` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum SaveOptions : int
             {
@@ -56,7 +53,6 @@ namespace System
                 OmitDuplicateNamespaces = 2,
             }
 
-            // Generated from `System.Xml.Linq.XAttribute` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XAttribute : System.Xml.Linq.XObject
             {
                 public static System.Collections.Generic.IEnumerable<System.Xml.Linq.XAttribute> EmptySequence { get => throw null; }
@@ -98,7 +94,6 @@ namespace System
                 public static explicit operator string(System.Xml.Linq.XAttribute attribute) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XCData` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XCData : System.Xml.Linq.XText
             {
                 public override System.Xml.XmlNodeType NodeType { get => throw null; }
@@ -108,7 +103,6 @@ namespace System
                 public XCData(string value) : base(default(System.Xml.Linq.XText)) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XComment` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XComment : System.Xml.Linq.XNode
             {
                 public override System.Xml.XmlNodeType NodeType { get => throw null; }
@@ -119,7 +113,6 @@ namespace System
                 public XComment(string value) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XContainer` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XContainer : System.Xml.Linq.XNode
             {
                 public void Add(object content) => throw null;
@@ -142,7 +135,6 @@ namespace System
                 internal XContainer() => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XDeclaration` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XDeclaration
             {
                 public string Encoding { get => throw null; set => throw null; }
@@ -153,7 +145,6 @@ namespace System
                 public XDeclaration(string version, string encoding, string standalone) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XDocument` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XDocument : System.Xml.Linq.XContainer
             {
                 public System.Xml.Linq.XDeclaration Declaration { get => throw null; set => throw null; }
@@ -191,7 +182,6 @@ namespace System
                 public XDocument(params object[] content) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XDocumentType` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XDocumentType : System.Xml.Linq.XNode
             {
                 public string InternalSubset { get => throw null; set => throw null; }
@@ -205,7 +195,6 @@ namespace System
                 public XDocumentType(string name, string publicId, string systemId, string internalSubset) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XElement` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XElement : System.Xml.Linq.XContainer, System.Xml.Serialization.IXmlSerializable
             {
                 public System.Collections.Generic.IEnumerable<System.Xml.Linq.XElement> AncestorsAndSelf() => throw null;
@@ -297,7 +286,6 @@ namespace System
                 public static explicit operator string(System.Xml.Linq.XElement element) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XName` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XName : System.IEquatable<System.Xml.Linq.XName>, System.Runtime.Serialization.ISerializable
             {
                 public static bool operator !=(System.Xml.Linq.XName left, System.Xml.Linq.XName right) => throw null;
@@ -315,7 +303,6 @@ namespace System
                 public static implicit operator System.Xml.Linq.XName(string expandedName) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XNamespace` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XNamespace
             {
                 public static bool operator !=(System.Xml.Linq.XNamespace left, System.Xml.Linq.XNamespace right) => throw null;
@@ -333,7 +320,6 @@ namespace System
                 public static implicit operator System.Xml.Linq.XNamespace(string namespaceName) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XNode` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XNode : System.Xml.Linq.XObject
             {
                 public void AddAfterSelf(object content) => throw null;
@@ -370,7 +356,6 @@ namespace System
                 internal XNode() => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XNodeDocumentOrderComparer` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XNodeDocumentOrderComparer : System.Collections.Generic.IComparer<System.Xml.Linq.XNode>, System.Collections.IComparer
             {
                 public int Compare(System.Xml.Linq.XNode x, System.Xml.Linq.XNode y) => throw null;
@@ -378,7 +363,6 @@ namespace System
                 public XNodeDocumentOrderComparer() => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XNodeEqualityComparer` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XNodeEqualityComparer : System.Collections.Generic.IEqualityComparer<System.Xml.Linq.XNode>, System.Collections.IEqualityComparer
             {
                 public bool Equals(System.Xml.Linq.XNode x, System.Xml.Linq.XNode y) => throw null;
@@ -388,7 +372,6 @@ namespace System
                 public XNodeEqualityComparer() => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XObject` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XObject : System.Xml.IXmlLineInfo
             {
                 public void AddAnnotation(object annotation) => throw null;
@@ -410,7 +393,6 @@ namespace System
                 internal XObject() => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XObjectChange` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum XObjectChange : int
             {
                 Add = 0,
@@ -419,7 +401,6 @@ namespace System
                 Value = 3,
             }
 
-            // Generated from `System.Xml.Linq.XObjectChangeEventArgs` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XObjectChangeEventArgs : System.EventArgs
             {
                 public static System.Xml.Linq.XObjectChangeEventArgs Add;
@@ -430,7 +411,6 @@ namespace System
                 public XObjectChangeEventArgs(System.Xml.Linq.XObjectChange objectChange) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XProcessingInstruction` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XProcessingInstruction : System.Xml.Linq.XNode
             {
                 public string Data { get => throw null; set => throw null; }
@@ -442,7 +422,6 @@ namespace System
                 public XProcessingInstruction(string target, string data) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XStreamingElement` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XStreamingElement
             {
                 public void Add(object content) => throw null;
@@ -463,7 +442,6 @@ namespace System
                 public XStreamingElement(System.Xml.Linq.XName name, params object[] content) => throw null;
             }
 
-            // Generated from `System.Xml.Linq.XText` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XText : System.Xml.Linq.XNode
             {
                 public override System.Xml.XmlNodeType NodeType { get => throw null; }
@@ -477,7 +455,6 @@ namespace System
         }
         namespace Schema
         {
-            // Generated from `System.Xml.Schema.Extensions` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Extensions
             {
                 public static System.Xml.Schema.IXmlSchemaInfo GetSchemaInfo(this System.Xml.Linq.XAttribute source) => throw null;

@@ -1,5 +1,5 @@
 
-int f(int i) {
+static int f(int i) {
     int result = 0;
     if (i != 0) {
         result++;

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.FileProviders.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,13 +7,11 @@ namespace Microsoft
     {
         namespace FileProviders
         {
-            // Generated from `Microsoft.Extensions.FileProviders.IDirectoryContents` in `Microsoft.Extensions.FileProviders.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IDirectoryContents : System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo>, System.Collections.IEnumerable
             {
                 bool Exists { get; }
             }
 
-            // Generated from `Microsoft.Extensions.FileProviders.IFileInfo` in `Microsoft.Extensions.FileProviders.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IFileInfo
             {
                 System.IO.Stream CreateReadStream();
@@ -24,7 +23,6 @@ namespace Microsoft
                 string PhysicalPath { get; }
             }
 
-            // Generated from `Microsoft.Extensions.FileProviders.IFileProvider` in `Microsoft.Extensions.FileProviders.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IFileProvider
             {
                 Microsoft.Extensions.FileProviders.IDirectoryContents GetDirectoryContents(string subpath);
@@ -32,7 +30,6 @@ namespace Microsoft
                 Microsoft.Extensions.Primitives.IChangeToken Watch(string filter);
             }
 
-            // Generated from `Microsoft.Extensions.FileProviders.NotFoundDirectoryContents` in `Microsoft.Extensions.FileProviders.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class NotFoundDirectoryContents : Microsoft.Extensions.FileProviders.IDirectoryContents, System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo>, System.Collections.IEnumerable
             {
                 public bool Exists { get => throw null; }
@@ -42,7 +39,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.FileProviders.NotFoundDirectoryContents Singleton { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.FileProviders.NotFoundFileInfo` in `Microsoft.Extensions.FileProviders.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class NotFoundFileInfo : Microsoft.Extensions.FileProviders.IFileInfo
             {
                 public System.IO.Stream CreateReadStream() => throw null;
@@ -55,7 +51,6 @@ namespace Microsoft
                 public string PhysicalPath { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.FileProviders.NullChangeToken` in `Microsoft.Extensions.FileProviders.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class NullChangeToken : Microsoft.Extensions.Primitives.IChangeToken
             {
                 public bool ActiveChangeCallbacks { get => throw null; }
@@ -64,7 +59,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.FileProviders.NullChangeToken Singleton { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.FileProviders.NullFileProvider` in `Microsoft.Extensions.FileProviders.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class NullFileProvider : Microsoft.Extensions.FileProviders.IFileProvider
             {
                 public Microsoft.Extensions.FileProviders.IDirectoryContents GetDirectoryContents(string subpath) => throw null;

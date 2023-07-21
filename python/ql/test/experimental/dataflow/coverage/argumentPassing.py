@@ -204,6 +204,18 @@ def test_mixed():
     mixed(**args)
 
 
+def kwargs_same_name_as_positional_only(a, /, **kwargs):
+    SINK1(a)
+    SINK2(kwargs["a"])
+
+@expects(2*2)
+def test_kwargs_same_name_as_positional_only():
+    kwargs_same_name_as_positional_only(arg1, a=arg2) # $ arg1 SPURIOUS: bad1="arg2" MISSING: arg2
+
+    kwargs = {"a": arg2} # $ func=kwargs_same_name_as_positional_only SPURIOUS: bad1="arg2" MISSING: arg2
+    kwargs_same_name_as_positional_only(arg1, **kwargs) # $ arg1
+
+
 def starargs_only(*args):
     SINK1(args[0])
     SINK2(args[1])

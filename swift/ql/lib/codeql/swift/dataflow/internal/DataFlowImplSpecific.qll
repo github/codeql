@@ -8,8 +8,6 @@ private import swift as Swift
 module Private {
   import DataFlowPrivate
   import DataFlowDispatch
-
-  class Unit = Swift::Unit;
 }
 
 module Public {

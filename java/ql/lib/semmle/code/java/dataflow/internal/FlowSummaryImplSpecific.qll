@@ -24,16 +24,18 @@ private module SyntheticGlobals {
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition instanceParameterPosition() { result = -1 }
-
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
+ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { result.getReceiver() = receiver }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { result.getReceiver() = receiver }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
+
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  result = getErasedRepr(c.getParameterType(pos))
+}
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
@@ -154,12 +156,12 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(SummarizedCallableBase c, string provenance) {
+predicate neutralSummaryElement(SummarizedCallableBase c, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, provenance) and
+    neutralModel(namespace, type, name, signature, "summary", provenance) and
     c.asCallable() = interpretElement(namespace, type, false, name, signature, "")
   )
 }
@@ -191,16 +193,21 @@ private string getContentSpecific(Content c) {
   c instanceof MapValueContent and result = "MapValue"
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of the content in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
 }
 
+bindingset[pos]
+private string positionToString(int pos) {
+  if pos = -1 then result = "this" else result = pos.toString()
+}
+
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
+string getParameterPosition(ParameterPosition pos) { result = positionToString(pos) }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
+string getArgumentPosition(ArgumentPosition pos) { result = positionToString(pos) }
 
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }
@@ -314,8 +321,16 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
-ArgumentPosition parseParamBody(string s) { result = AccessPath::parseInt(s) }
+ArgumentPosition parseParamBody(string s) {
+  result = AccessPath::parseInt(s)
+  or
+  s = "this" and result = -1
+}
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[s]
-ParameterPosition parseArgBody(string s) { result = AccessPath::parseInt(s) }
+ParameterPosition parseArgBody(string s) {
+  result = AccessPath::parseInt(s)
+  or
+  s = "this" and result = -1
+}

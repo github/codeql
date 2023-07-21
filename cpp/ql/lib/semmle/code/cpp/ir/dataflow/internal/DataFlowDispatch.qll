@@ -1,8 +1,8 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import DataFlowPrivate
+private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
@@ -143,7 +143,7 @@ private module VirtualDispatch {
   private class DataSensitiveExprCall extends DataSensitiveCall {
     DataSensitiveExprCall() { not exists(this.getStaticCallTarget()) }
 
-    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getCallTarget() }
+    override DataFlow::Node getDispatchValue() { result.asOperand() = this.getCallTargetOperand() }
 
     override Function resolve() {
       exists(FunctionInstruction fi |
@@ -271,3 +271,13 @@ Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+/**
+ * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ *
+ * This is a temporary hook to support technical debt in the Go language; do not use.
+ */
+pragma[inline]
+predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
+  any()
+}

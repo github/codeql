@@ -41,7 +41,7 @@ class Config extends DataFlow::Configuration {
     report = "a literal backspace \\b; did you mean \\\\b, a word boundary?"
   }
 
-  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
+  override predicate isSource(DataFlow::Node source) { this.isSourceString(source, _) }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }

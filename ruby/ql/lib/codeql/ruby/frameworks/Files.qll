@@ -81,7 +81,8 @@ module File {
   }
 
   private class FileModulePermissionModification extends FileSystemPermissionModification::Range,
-    DataFlow::CallNode {
+    DataFlow::CallNode
+  {
     private DataFlow::Node permissionArg;
 
     FileModulePermissionModification() {
@@ -164,7 +165,8 @@ module FileUtils {
   }
 
   private class FileUtilsPermissionModification extends FileSystemPermissionModification::Range,
-    DataFlow::CallNode {
+    DataFlow::CallNode
+  {
     private DataFlow::Node permissionArg;
 
     FileUtilsPermissionModification() {

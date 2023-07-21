@@ -69,8 +69,8 @@ module UnsafeUnzipSymlink {
   /** A file name from a zip or tar entry, as a source for unsafe unzipping of symlinks. */
   class FileNameSource extends FilenameWithSymlinks, DataFlow::FieldReadNode {
     FileNameSource() {
-      getField().hasQualifiedName("archive/zip", "File", ["Name", "Data"]) or
-      getField().hasQualifiedName("archive/tar", "Header", ["Name", "Linkname"])
+      this.getField().hasQualifiedName("archive/zip", "File", ["Name", "Data"]) or
+      this.getField().hasQualifiedName("archive/tar", "Header", ["Name", "Linkname"])
     }
   }
 

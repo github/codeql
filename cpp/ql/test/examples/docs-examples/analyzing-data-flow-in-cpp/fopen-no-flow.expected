@@ -1,0 +1,7 @@
+| fopen.cpp:8:26:8:33 | a_file |
+| fopen.cpp:9:26:9:34 | filename1 |
+| fopen.cpp:10:26:10:34 | filename2 |
+| fopen.cpp:18:18:18:25 | filename |
+| fopen.cpp:27:26:27:31 | call to getenv |
+| fopen.cpp:28:26:28:34 | filename1 |
+| fopen.cpp:29:26:29:34 | filename2 |

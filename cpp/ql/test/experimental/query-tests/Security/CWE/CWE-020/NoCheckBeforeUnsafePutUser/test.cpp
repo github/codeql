@@ -19,7 +19,7 @@ void test1(int p)
 {
 	sys_somesystemcall(&p);
 
-	unsafe_put_user(123, &p); // BAD
+	unsafe_put_user(123, &p); // BAD [NOT DETECTED]
 }
 
 void test2(int p)
@@ -40,7 +40,7 @@ void test3()
 
 	sys_somesystemcall(&v);
 
-	unsafe_put_user(123, &v); // BAD
+	unsafe_put_user(123, &v); // BAD [NOT DETECTED]
 }
 
 void test4()
@@ -68,7 +68,7 @@ void test5()
 
 	sys_somesystemcall(&myData);
 
-	unsafe_put_user(123, &(myData.x)); // BAD
+	unsafe_put_user(123, &(myData.x)); // BAD [NOT DETECTED]
 }
 
 void test6()

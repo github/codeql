@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.management.remote", "JMXConnector", True, "connect", "", "", "Argument[-1]", "jndi-injection", "manual"]
+      - ["javax.management.remote", "JMXConnector", True, "connect", "", "", "Argument[this]", "jndi-injection", "manual"]
       - ["javax.management.remote", "JMXConnectorFactory", False, "connect", "", "", "Argument[0]", "jndi-injection", "manual"]

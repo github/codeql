@@ -7,16 +7,16 @@ extern int arbitrary;
 
 namespace withoutFields {
   template<typename T>
-  void assign(T &lhs, T rhs) {
+  void assign(T &lhs, T rhs) { // $ ast-def=lhs ir-def=*lhs ast-def=lhs
     lhs = rhs;
   }
 
   template<typename T>
-  void assignWrapper(T &lhs, T rhs) {
+  void assignWrapper(T &lhs, T rhs) { // $ ast-def=lhs ast-def=lhs
     assign(lhs, rhs);
   }
 
-  void notAssign(int &lhs, int rhs) {
+  void notAssign(int &lhs, int rhs) { // $ ast-def=lhs ir-def=*lhs 
     lhs = rhs;
     if (arbitrary) {
       lhs = 1;
@@ -25,14 +25,14 @@ namespace withoutFields {
     }
   }
 
-  void sourceToParam(int &out) {
+  void sourceToParam(int &out) { // $ ast-def=out ir-def=*out 
     out = source();
     if (arbitrary) {
       out = 1;
     }
   }
 
-  void sourceToParamWrapper(int &out) {
+  void sourceToParamWrapper(int &out) { // $ ast-def=out ir-def=*out 
     if (arbitrary) {
       sourceToParam(out);
     } else {
@@ -40,7 +40,7 @@ namespace withoutFields {
     }
   }
 
-  void notSource(int &out) {
+  void notSource(int &out) { // $ ast-def=out ir-def=*out
     out = source();
     if (arbitrary) {
       out = 1;
@@ -53,16 +53,16 @@ namespace withoutFields {
     int x1, x2, x3, x4;
 
     assignWrapper(x1, source());
-    sink(x1); // $ ast=55:23 ir SPURIOUS: ast=53:9
+    sink(x1); // $ ast,ir=55:23 SPURIOUS: ast,ir=53:9
 
     notAssign(x2, source());
-    sink(x2); // $ SPURIOUS: ast,ir
+    sink(x2); // $ SPURIOUS: ast ir
 
     sourceToParamWrapper(x3);
-    sink(x3); // $ ast=29:11 ir SPURIOUS: ast=53:17
+    sink(x3); // $ ast,ir=29:11 SPURIOUS: ast,ir=53:17
 
     notSource(x4);
-    sink(x4); // $ SPURIOUS: ast,ir
+    sink(x4); // $ SPURIOUS: ast ir
   }
 }
 
@@ -71,15 +71,15 @@ namespace withFields {
     int val;
   };
 
-  void assign(Int &lhs, int rhs) {
+  void assign(Int &lhs, int rhs) { // $ ast-def=lhs 
     lhs.val = rhs;
   }
 
-  void assignWrapper(Int &lhs, int rhs) {
+  void assignWrapper(Int &lhs, int rhs) { // $ ast-def=lhs
     assign(lhs, rhs);
   }
 
-  void notAssign(Int &lhs, int rhs) {
+  void notAssign(Int &lhs, int rhs) { // $ ast-def=lhs
     lhs.val = rhs;
     // Field flow ignores that the field is subsequently overwritten, leading
     // to false flow here.
@@ -90,14 +90,14 @@ namespace withFields {
     }
   }
 
-  void sourceToParam(Int &out) {
+  void sourceToParam(Int &out) { // $ ast-def=out
     out.val = source();
     if (arbitrary) {
       out.val = 1;
     }
   }
 
-  void sourceToParamWrapper(Int &out) {
+  void sourceToParamWrapper(Int &out) { // $ ast-def=out
     if (arbitrary) {
       sourceToParam(out);
     } else {
@@ -105,7 +105,7 @@ namespace withFields {
     }
   }
 
-  void notSource(Int &out) {
+  void notSource(Int &out) { // $ ast-def=out
     out.val = source();
     // Field flow ignores that the field is subsequently overwritten, leading
     // to false flow here.

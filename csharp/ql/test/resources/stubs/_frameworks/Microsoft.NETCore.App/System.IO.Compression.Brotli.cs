@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.Compression.Brotli, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Compression
         {
-            // Generated from `System.IO.Compression.BrotliDecoder` in `System.IO.Compression.Brotli, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public struct BrotliDecoder : System.IDisposable
             {
                 // Stub generator skipped constructor 
@@ -15,7 +15,6 @@ namespace System
                 public static bool TryDecompress(System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.IO.Compression.BrotliEncoder` in `System.IO.Compression.Brotli, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public struct BrotliEncoder : System.IDisposable
             {
                 // Stub generator skipped constructor 
@@ -28,7 +27,6 @@ namespace System
                 public static bool TryCompress(System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten, int quality, int window) => throw null;
             }
 
-            // Generated from `System.IO.Compression.BrotliStream` in `System.IO.Compression.Brotli, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             public class BrotliStream : System.IO.Stream
             {
                 public System.IO.Stream BaseStream { get => throw null; }

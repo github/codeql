@@ -13,36 +13,13 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import NumericCastCommon
-import DataFlow::PathGraph
+import semmle.code.java.security.NumericCastTaintedQuery
+import NumericCastFlow::PathGraph
 
-private class NumericCastFlowConfig extends TaintTracking::Configuration {
-  NumericCastFlowConfig() { this = "NumericCastTainted::RemoteUserInputToNumericNarrowingCastExpr" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
-    sink.asExpr() instanceof VarAccess
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    boundedRead(node.asExpr()) or
-    castCheck(node.asExpr()) or
-    node.getType() instanceof SmallType or
-    smallExpr(node.asExpr()) or
-    node.getEnclosingCallable() instanceof HashCodeMethod or
-    exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr())
-  }
-}
-
-from
-  DataFlow::PathNode source, DataFlow::PathNode sink, NumericNarrowingCastExpr exp,
-  NumericCastFlowConfig conf
+from NumericCastFlow::PathNode source, NumericCastFlow::PathNode sink, NumericNarrowingCastExpr exp
 where
   sink.getNode().asExpr() = exp.getExpr() and
-  conf.hasFlowPath(source, sink)
+  NumericCastFlow::flowPath(source, sink)
 select exp, source, sink,
   "This cast to a narrower type depends on a $@, potentially causing truncation.", source.getNode(),
   "user-provided value"

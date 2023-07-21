@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Components.Authorization, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,17 +9,14 @@ namespace Microsoft
         {
             namespace Authorization
             {
-                // Generated from `Microsoft.AspNetCore.Components.Authorization.AuthenticationState` in `Microsoft.AspNetCore.Components.Authorization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AuthenticationState
                 {
                     public AuthenticationState(System.Security.Claims.ClaimsPrincipal user) => throw null;
                     public System.Security.Claims.ClaimsPrincipal User { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Authorization.AuthenticationStateChangedHandler` in `Microsoft.AspNetCore.Components.Authorization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public delegate void AuthenticationStateChangedHandler(System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> task);
 
-                // Generated from `Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider` in `Microsoft.AspNetCore.Components.Authorization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class AuthenticationStateProvider
                 {
                     public event Microsoft.AspNetCore.Components.Authorization.AuthenticationStateChangedHandler AuthenticationStateChanged;
@@ -27,7 +25,6 @@ namespace Microsoft
                     protected void NotifyAuthenticationStateChanged(System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> task) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Authorization.AuthorizeRouteView` in `Microsoft.AspNetCore.Components.Authorization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AuthorizeRouteView : Microsoft.AspNetCore.Components.RouteView
                 {
                     public AuthorizeRouteView() => throw null;
@@ -37,7 +34,6 @@ namespace Microsoft
                     public object Resource { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Authorization.AuthorizeView` in `Microsoft.AspNetCore.Components.Authorization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AuthorizeView : Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore
                 {
                     public AuthorizeView() => throw null;
@@ -46,7 +42,6 @@ namespace Microsoft
                     public string Roles { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore` in `Microsoft.AspNetCore.Components.Authorization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class AuthorizeViewCore : Microsoft.AspNetCore.Components.ComponentBase
                 {
                     protected AuthorizeViewCore() => throw null;
@@ -60,7 +55,6 @@ namespace Microsoft
                     public object Resource { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState` in `Microsoft.AspNetCore.Components.Authorization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CascadingAuthenticationState : Microsoft.AspNetCore.Components.ComponentBase, System.IDisposable
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) => throw null;
@@ -70,7 +64,6 @@ namespace Microsoft
                     protected override void OnInitialized() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Components.Authorization.IHostEnvironmentAuthenticationStateProvider` in `Microsoft.AspNetCore.Components.Authorization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHostEnvironmentAuthenticationStateProvider
                 {
                     void SetAuthenticationState(System.Threading.Tasks.Task<Microsoft.AspNetCore.Components.Authorization.AuthenticationState> authenticationStateTask);

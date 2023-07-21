@@ -554,7 +554,11 @@ module NodeJSLib {
       t.start()
       or
       t.start() and
-      result = DataFlow::moduleMember("fs", "promises")
+      (
+        result = DataFlow::moduleMember("fs", "promises")
+        or
+        result = DataFlow::moduleImport("fs/promises")
+      )
       or
       exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
         result = pred.track(t2, t)
@@ -840,7 +844,8 @@ module NodeJSLib {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode
+  {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
 
@@ -1163,7 +1168,8 @@ module NodeJSLib {
    * A registration of an event handler on a NodeJS EventEmitter instance.
    */
   private class NodeJSEventRegistration extends EventRegistration::DefaultEventRegistration,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     override NodeJSEventEmitter emitter;
 
     NodeJSEventRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
@@ -1173,7 +1179,8 @@ module NodeJSLib {
    * A dispatch of an event on a NodeJS EventEmitter instance.
    */
   private class NodeJSEventDispatch extends EventDispatch::DefaultEventDispatch,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     override NodeJSEventEmitter emitter;
 
     NodeJSEventDispatch() { this = emitter.ref().getAMethodCall("emit") }
@@ -1223,7 +1230,8 @@ module NodeJSLib {
    * A registration of an event handler on a NodeJS net server instance.
    */
   private class NodeJSNetServerRegistration extends EventRegistration::DefaultEventRegistration,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     override NodeJSNetServerConnection emitter;
 
     NodeJSNetServerRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }

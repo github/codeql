@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["mime", "", False, "FormatMediaType", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["mime", "", False, "ParseMediaType", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"]
+      - ["mime", "WordDecoder", True, "Decode", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["mime", "WordDecoder", True, "DecodeHeader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["mime", "WordEncoder", True, "Encode", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]

@@ -13,6 +13,7 @@ private import semmle.python.frameworks.Stdlib
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.PathInjectionCustomizations
+private import semmle.python.dataflow.new.FlowSummary
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -447,7 +448,8 @@ module Flask {
   // ---------------------------------------------------------------------------
   // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
-  private class FlaskRouteHandlerReturn extends Http::Server::HttpResponse::Range, DataFlow::CfgNode {
+  private class FlaskRouteHandlerReturn extends Http::Server::HttpResponse::Range, DataFlow::CfgNode
+  {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
@@ -471,7 +473,8 @@ module Flask {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.redirect
    */
   private class FlaskRedirectCall extends Http::Server::HttpRedirectResponse::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     FlaskRedirectCall() { this = API::moduleImport("flask").getMember("redirect").getACall() }
 
     override DataFlow::Node getRedirectLocation() {
@@ -499,7 +502,8 @@ module Flask {
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
    */
   class FlaskResponseSetCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     FlaskResponseSetCookieCall() { this.calls(Flask::Response::instance(), "set_cookie") }
 
     override DataFlow::Node getHeaderArg() { none() }
@@ -515,7 +519,8 @@ module Flask {
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.delete_cookie
    */
   class FlaskResponseDeleteCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     FlaskResponseDeleteCookieCall() { this.calls(Flask::Response::instance(), "delete_cookie") }
 
     override DataFlow::Node getHeaderArg() { none() }
@@ -582,5 +587,58 @@ module Flask {
    */
   private class FlaskLogger extends Stdlib::Logger::InstanceSource {
     FlaskLogger() { this = FlaskApp::instance().getMember("logger").asSource() }
+  }
+
+  /**
+   * A flow summary for `flask.render_template_string`.
+   *
+   * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.render_template_string
+   */
+  private class RenderTemplateStringSummary extends SummarizedCallable {
+    RenderTemplateStringSummary() { this = "flask.render_template_string" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("flask").getMember("render_template_string").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("flask")
+            .getMember("render_template_string")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `flask.stream_template_string`.
+   *
+   * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.stream_template_string
+   */
+  private class StreamTemplateStringSummary extends SummarizedCallable {
+    StreamTemplateStringSummary() { this = "flask.stream_template_string" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("flask").getMember("stream_template_string").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("flask")
+            .getMember("stream_template_string")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      // Technically it's `Iterator[str]`, but list will do :)
+      output = "ReturnValue.ListElement" and
+      preservesValue = false
+    }
   }
 }

@@ -75,7 +75,8 @@ class AspNetQueryStringRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow
 
 /** A data flow source of remote user input (ASP.NET unvalidated request data). */
 class AspNetUnvalidatedQueryStringRemoteFlowSource extends AspNetRemoteFlowSource,
-  DataFlow::ExprNode {
+  DataFlow::ExprNode
+{
   AspNetUnvalidatedQueryStringRemoteFlowSource() {
     this.getExpr() = any(SystemWebUnvalidatedRequestValues c).getAProperty().getGetter().getACall() or
     this.getExpr() =

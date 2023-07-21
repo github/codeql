@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.commons.text.lookup", "StringLookup", True, "lookup", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.text.lookup", "StringLookup", True, "lookup", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.text.lookup", "StringLookupFactory", False, "mapStringLookup", "", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]

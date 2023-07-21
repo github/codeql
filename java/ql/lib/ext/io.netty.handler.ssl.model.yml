@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.netty.handler.ssl", "OpenSslServerContext", False, "OpenSslServerContext", "(File,File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["io.netty.handler.ssl", "SslContextBuilder", False, "forServer", "(File,File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["io.netty.handler.ssl", "SslContextBuilder", False, "trustManager", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["io.netty.handler.ssl", "SslContextBuilder", False, "trustManager", "(InputStream)", "", "Argument[0]", "path-injection", "ai-manual"]

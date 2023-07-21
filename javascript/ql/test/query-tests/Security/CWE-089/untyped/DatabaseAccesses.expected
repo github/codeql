@@ -1,3 +1,4 @@
+| html-sanitizer.js:15:5:17:5 | connect ... K\\n    ) |
 | json-schema-validator.js:27:13:27:27 | doc.find(query) |
 | json-schema-validator.js:30:13:30:27 | doc.find(query) |
 | json-schema-validator.js:33:13:33:27 | doc.find(query) |
@@ -26,7 +27,7 @@
 | mongoose.js:63:2:63:34 | Documen ... then(X) |
 | mongoose.js:65:2:65:51 | Documen ... on(){}) |
 | mongoose.js:67:2:68:27 | new Mon ... on(){}) |
-| mongoose.js:71:5:78:9 | Documen ... .exec() |
+| mongoose.js:71:2:78:9 | Documen ... .exec() |
 | mongoose.js:85:2:85:52 | Documen ... query)) |
 | mongoose.js:86:2:86:52 | Documen ... query)) |
 | mongoose.js:87:2:87:57 | Documen ... query)) |
@@ -41,6 +42,8 @@
 | mongoose.js:97:2:97:52 | Documen ... query)) |
 | mongoose.js:99:2:99:50 | Documen ... query)) |
 | mongoose.js:113:2:113:53 | Documen ... () { }) |
+| mongoose.js:134:3:134:52 | Documen ... on(){}) |
+| mongoose.js:136:3:136:52 | Documen ... on(){}) |
 | mysql.js:8:9:11:47 | connect ... ds) {}) |
 | mysql.js:14:9:16:47 | connect ... ds) {}) |
 | mysql.js:19:9:20:48 | connect ... ds) {}) |

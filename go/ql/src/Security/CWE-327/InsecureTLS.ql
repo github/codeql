@@ -52,7 +52,8 @@ int getASecureTlsVersion() {
 int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _, _) }
 
 /**
- * Flow of TLS versions into a `tls.Config` struct, to the `MinVersion` and `MaxVersion` fields.
+ * A taint-tracking configuration for tracking flow from TLS versions to the
+ * `tls.Config.MinVersion` and `tls.Config.MaxVersion` fields.
  */
 class TlsVersionFlowConfig extends TaintTracking::Configuration {
   TlsVersionFlowConfig() { this = "TlsVersionFlowConfig" }
@@ -74,9 +75,9 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
     fieldWrite.writesField(base, fld, sink)
   }
 
-  override predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { this.intIsSource(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _, _, _) }
 }
 
 /**
@@ -152,8 +153,8 @@ predicate isInsecureTlsVersionFlow(
 }
 
 /**
- * Flow of unsecure TLS cipher suites into a `tls.Config` struct,
- * to the `CipherSuites` field.
+ * A taint-tracking configuration for tracking flow from insecure TLS cipher
+ * suites into a `tls.Config` struct, to the `CipherSuites` field.
  */
 class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   TlsInsecureCipherSuitesFlowConfig() { this = "TlsInsecureCipherSuitesFlowConfig" }
@@ -187,9 +188,9 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSource(DataFlow::Node source) {
-    isSourceInsecureCipherSuites(source)
+    this.isSourceInsecureCipherSuites(source)
     or
-    isSourceValueEntity(source, _)
+    this.isSourceValueEntity(source, _)
   }
 
   /**
@@ -200,7 +201,7 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
     fieldWrite.writesField(base, fld, sink)
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _, _, _) }
 
   /**
    * Declare sinks as out-sanitizers in order to avoid producing superfluous paths where a cipher
@@ -208,7 +209,7 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
    * suites.
    */
   override predicate isSanitizerOut(DataFlow::Node node) {
-    super.isSanitizerOut(node) or isSink(node)
+    super.isSanitizerOut(node) or this.isSink(node)
   }
 }
 
@@ -229,7 +230,7 @@ predicate isInsecureTlsCipherFlow(DataFlow::PathNode source, DataFlow::PathNode 
 }
 
 /**
- * Flags suggesting support for an old or legacy TLS version.
+ * A flag suggesting support for an old or legacy TLS version.
  *
  * We accept 'intermediate' because it appears to be common for TLS users
  * to define three profiles: modern, intermediate, legacy/old, perhaps based

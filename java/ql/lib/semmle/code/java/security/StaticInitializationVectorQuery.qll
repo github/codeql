@@ -83,17 +83,15 @@ private class ArrayUpdate extends Expr {
 /**
  * A config that tracks dataflow from creating an array to an operation that updates it.
  */
-private class ArrayUpdateConfig extends DataFlow2::Configuration {
-  ArrayUpdateConfig() { this = "ArrayUpdateConfig" }
+private module ArrayUpdateConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof StaticByteArrayCreation }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof StaticByteArrayCreation
-  }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ArrayUpdate upd).getArray() }
 
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ArrayUpdate upd).getArray() }
-
-  override predicate isBarrierOut(DataFlow::Node node) { this.isSink(node) }
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 }
+
+private module ArrayUpdateFlow = DataFlow::Global<ArrayUpdateConfig>;
 
 /**
  * A source that defines an array that doesn't get updated.
@@ -101,7 +99,7 @@ private class ArrayUpdateConfig extends DataFlow2::Configuration {
 private class StaticInitializationVectorSource extends DataFlow::Node {
   StaticInitializationVectorSource() {
     exists(StaticByteArrayCreation array | array = this.asExpr() |
-      not exists(ArrayUpdateConfig config | config.hasFlow(DataFlow2::exprNode(array), _)) and
+      not ArrayUpdateFlow::flow(DataFlow2::exprNode(array), _) and
       // Reduce FPs from utility methods that return an empty array in an exceptional case
       not exists(ReturnStmt ret |
         array.getADimension().(CompileTimeConstantExpr).getIntValue() = 0 and
@@ -146,9 +144,11 @@ private predicate createInitializationVectorSpecStep(DataFlow::Node fromNode, Da
 }
 
 /**
+ * DEPRECATED: Use `StaticInitializationVectorFlow` instead.
+ *
  * A config that tracks dataflow to initializing a cipher with a static initialization vector.
  */
-class StaticInitializationVectorConfig extends TaintTracking::Configuration {
+deprecated class StaticInitializationVectorConfig extends TaintTracking::Configuration {
   StaticInitializationVectorConfig() { this = "StaticInitializationVectorConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -161,3 +161,19 @@ class StaticInitializationVectorConfig extends TaintTracking::Configuration {
     createInitializationVectorSpecStep(fromNode, toNode)
   }
 }
+
+/**
+ * A config that tracks dataflow to initializing a cipher with a static initialization vector.
+ */
+module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof StaticInitializationVectorSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    createInitializationVectorSpecStep(fromNode, toNode)
+  }
+}
+
+/** Tracks the flow from a static initialization vector to the initialization of a cipher */
+module StaticInitializationVectorFlow = TaintTracking::Global<StaticInitializationVectorConfig>;

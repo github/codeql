@@ -384,12 +384,6 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
    */
   final AstNode getABranch() { result = this.getBranch(_) }
 
-  /** Gets the `n`th `when` branch of this case expression. */
-  deprecated final WhenClause getWhenBranch(int n) { result = this.getBranch(n) }
-
-  /** Gets a `when` branch of this case expression. */
-  deprecated final WhenClause getAWhenBranch() { result = this.getABranch() }
-
   /** Gets the `else` branch of this case expression, if any. */
   final StmtSequence getElseBranch() { result = this.getABranch() }
 
@@ -412,11 +406,6 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
     pred = "getElseBranch" and result = this.getElseBranch()
   }
 }
-
-/**
- * DEPRECATED: Use `WhenClause` instead.
- */
-deprecated class WhenExpr = WhenClause;
 
 /**
  * A `when` branch of a `case` expression.

@@ -455,19 +455,9 @@ class MavenRepoJar extends File {
   }
 
   /**
-   * DEPRECATED: name changed to `getGroupId` for consistent use of camel-case.
-   */
-  deprecated string getGroupID() { result = this.getGroupId() }
-
-  /**
    * Gets the `artifactId` of this jar.
    */
   string getArtifactId() { result = this.getParentContainer().getParentContainer().getBaseName() }
-
-  /**
-   * DEPRECATED: name changed to `getArtifactId` for consistent casing and consistent spelling with Maven.
-   */
-  deprecated string getArtefactID() { result = this.getArtifactId() }
 
   /**
    * Gets the artifact version string of this jar.
@@ -481,11 +471,6 @@ class MavenRepoJar extends File {
     pom.getGroup().getValue() = this.getGroupId() and
     pom.getArtifact().getValue() = this.getArtifactId()
   }
-
-  /**
-   * DEPRECATED: name changed to `artifactMatches` for consistent spelling with Maven.
-   */
-  deprecated predicate artefactMatches(ProtoPom pom) { this.artifactMatches(pom) }
 
   /**
    * Holds if this jar is both an artifact for the POM, and has a version string that matches the POM

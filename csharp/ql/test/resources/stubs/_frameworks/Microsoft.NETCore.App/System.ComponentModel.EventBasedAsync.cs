@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.ComponentModel.EventBasedAsync, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace ComponentModel
     {
-        // Generated from `System.ComponentModel.AsyncCompletedEventArgs` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AsyncCompletedEventArgs : System.EventArgs
         {
             public AsyncCompletedEventArgs(System.Exception error, bool cancelled, object userState) => throw null;
@@ -14,10 +14,8 @@ namespace System
             public object UserState { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.AsyncCompletedEventHandler` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void AsyncCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
 
-        // Generated from `System.ComponentModel.AsyncOperation` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AsyncOperation
         {
             public void OperationCompleted() => throw null;
@@ -28,14 +26,12 @@ namespace System
             // ERR: Stub generator didn't handle member: ~AsyncOperation
         }
 
-        // Generated from `System.ComponentModel.AsyncOperationManager` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class AsyncOperationManager
         {
             public static System.ComponentModel.AsyncOperation CreateOperation(object userSuppliedState) => throw null;
             public static System.Threading.SynchronizationContext SynchronizationContext { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.ComponentModel.BackgroundWorker` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BackgroundWorker : System.ComponentModel.Component
         {
             public BackgroundWorker() => throw null;
@@ -57,7 +53,6 @@ namespace System
             public bool WorkerSupportsCancellation { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.ComponentModel.DoWorkEventArgs` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DoWorkEventArgs : System.ComponentModel.CancelEventArgs
         {
             public object Argument { get => throw null; }
@@ -65,10 +60,8 @@ namespace System
             public object Result { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.ComponentModel.DoWorkEventHandler` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void DoWorkEventHandler(object sender, System.ComponentModel.DoWorkEventArgs e);
 
-        // Generated from `System.ComponentModel.ProgressChangedEventArgs` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProgressChangedEventArgs : System.EventArgs
         {
             public ProgressChangedEventArgs(int progressPercentage, object userState) => throw null;
@@ -76,10 +69,8 @@ namespace System
             public object UserState { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.ProgressChangedEventHandler` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ProgressChangedEventHandler(object sender, System.ComponentModel.ProgressChangedEventArgs e);
 
-        // Generated from `System.ComponentModel.RunWorkerCompletedEventArgs` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RunWorkerCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             public object Result { get => throw null; }
@@ -87,7 +78,6 @@ namespace System
             public object UserState { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.RunWorkerCompletedEventHandler` in `System.ComponentModel.EventBasedAsync, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void RunWorkerCompletedEventHandler(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e);
 
     }

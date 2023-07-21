@@ -5,7 +5,7 @@
 import go
 
 /**
- * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
+ * Holds if `resultNode` comes from a call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
  *
  * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
  *

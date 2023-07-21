@@ -224,6 +224,7 @@ const astProperties: string[] = [
     "argument",
     "argumentExpression",
     "arguments",
+    "assertClause",
     "assertsModifier",
     "asteriskToken",
     "attributes",
@@ -241,7 +242,6 @@ const astProperties: string[] = [
     "constructor",
     "declarationList",
     "declarations",
-    "illegalDecorators",
     "default",
     "delete",
     "dotDotDotToken",
@@ -579,7 +579,6 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     // inverse mapping, nor a way to enumerate all known module names. So we discover all
     // modules on the type roots (usually "node_modules/@types" but this is configurable).
     let typeRoots = ts.getEffectiveTypeRoots(config.options, {
-        directoryExists: (path) => ts.sys.directoryExists(path),
         getCurrentDirectory: () => basePath,
     });
 

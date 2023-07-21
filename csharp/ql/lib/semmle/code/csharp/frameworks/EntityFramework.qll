@@ -4,6 +4,7 @@
 
 import csharp
 private import DataFlow
+private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
@@ -86,33 +87,6 @@ module EntityFramework {
   abstract class EFSummarizedCallable extends SummarizedCallable {
     bindingset[this]
     EFSummarizedCallable() { any() }
-
-    override predicate hasProvenance(string provenance) { provenance = "manual" }
-  }
-
-  private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-      head = SummaryComponent::element() and
-      tail = SummaryComponentStack::argument([-1, 0])
-    }
-  }
-
-  private class DbSetAddOrUpdate extends EFSummarizedCallable {
-    private boolean range;
-
-    DbSetAddOrUpdate() { this = any(DbSet c).getAnAddOrUpdateMethod(range) }
-
-    override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-    ) {
-      (
-        if range = true
-        then input = SummaryComponentStack::elementOf(SummaryComponentStack::argument(0))
-        else input = SummaryComponentStack::argument(0)
-      ) and
-      output = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
-      preservesValue = true
-    }
   }
 
   /** The class `Microsoft.EntityFrameworkCore.DbQuery<>` or `System.Data.Entity.DbQuery<>`. */
@@ -263,7 +237,7 @@ module EntityFramework {
      * }
      * ```
      */
-    private Property getADbSetProperty(Class elementType) {
+    Property getADbSetProperty(Class elementType) {
       exists(ConstructedClass c |
         result.getType() = c and
         c.getUnboundDeclaration() instanceof DbSet and
@@ -378,20 +352,102 @@ module EntityFramework {
 
     /** Holds if component stack `head :: tail` is required for the output specification. */
     predicate requiresComponentStackOut(
-      Content head, Type headType, SummaryComponentStack tail, int dist
+      Content head, Type headType, SummaryComponentStack tail, int dist,
+      DbContextClassSetProperty dbSetProp
     ) {
-      exists(Property dbSetProp, PropertyContent c1 |
+      exists(PropertyContent c1 |
         dbSetProp = this.getADbSetProperty(headType) and
         this.stepRev(c1, _, head, headType, 0) and
         c1.getProperty() = dbSetProp and
-        tail = SummaryComponentStack::jump(dbSetProp.getGetter()) and
+        tail = SummaryComponentStack::return() and
         dist = 0
       )
       or
       exists(Content tailHead, SummaryComponentStack tailTail, Type tailType |
-        this.requiresComponentStackOut(tailHead, tailType, tailTail, dist - 1) and
+        this.requiresComponentStackOut(tailHead, tailType, tailTail, dist - 1, dbSetProp) and
         tail = SummaryComponentStack::push(SummaryComponent::content(tailHead), tailTail) and
         this.stepRev(tailHead, tailType, head, headType, dist)
+      )
+    }
+
+    /**
+     * Holds if `input` is a valid summary component stack for property `mapped` for this.
+     */
+    pragma[noinline]
+    predicate input(SummaryComponentStack input, Property mapped) {
+      exists(PropertyContent head, SummaryComponentStack tail |
+        this.requiresComponentStackIn(head, _, tail, _) and
+        head.getProperty() = mapped and
+        mapped = this.getAColumnProperty(_) and
+        input = SummaryComponentStack::push(SummaryComponent::content(head), tail)
+      )
+    }
+
+    /**
+     * Holds if `output` is a valid summary component stack for the getter of `dbSet`
+     * for property `mapped` for this.
+     */
+    pragma[noinline]
+    private predicate output(
+      SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet
+    ) {
+      exists(PropertyContent head, SummaryComponentStack tail |
+        this.requiresComponentStackOut(head, _, tail, _, dbSet) and
+        head.getProperty() = mapped and
+        mapped = this.getAColumnProperty(_) and
+        output = SummaryComponentStack::push(SummaryComponent::content(head), tail)
+      )
+    }
+
+    /**
+     * Gets the synthetic name for the getter of `dbSet` for property `mapped` for this,
+     * where `output` is a valid summary component stack for the getter of `dbSet`
+     * for the property `mapped`.
+     */
+    pragma[nomagic]
+    string getSyntheticName(
+      SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet
+    ) {
+      this = dbSet.getDbContextClass() and
+      this.output(output, mapped, dbSet) and
+      result = dbSet.getFullName() + "#" + output.getMadRepresentation()
+    }
+  }
+
+  private class DbContextClassSetProperty extends Property {
+    private DbContextClass c;
+
+    DbContextClassSetProperty() { this = c.getADbSetProperty(_) }
+
+    /**
+     * Gets the fully qualified name for this.
+     */
+    string getFullName() {
+      exists(string qualifier, string type, string name |
+        this.hasQualifiedName(qualifier, type, name)
+      |
+        result = getQualifiedName(qualifier, type, name)
+      )
+    }
+
+    /**
+     * Gets the context class where this is a DbSet property.
+     */
+    DbContextClass getDbContextClass() { result = c }
+  }
+
+  private class DbContextClassSetPropertySynthetic extends EFSummarizedCallable {
+    private DbContextClassSetProperty p;
+
+    DbContextClassSetPropertySynthetic() { this = p.getGetter() }
+
+    override predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    ) {
+      exists(string name, DbContextClass c |
+        preservesValue = true and
+        name = c.getSyntheticName(output, _, p) and
+        input = SummaryComponentStack::syntheticGlobal(name)
       )
     }
   }
@@ -401,43 +457,32 @@ module EntityFramework {
 
     DbContextSaveChanges() { this = c.getASaveChanges() }
 
-    pragma[noinline]
-    private predicate input(SummaryComponentStack input, Property mapped) {
-      exists(PropertyContent head, SummaryComponentStack tail |
-        c.requiresComponentStackIn(head, _, tail, _) and
-        head.getProperty() = mapped and
-        mapped = c.getAColumnProperty(_) and
-        input = SummaryComponentStack::push(SummaryComponent::content(head), tail)
-      )
-    }
-
-    pragma[noinline]
-    private predicate output(SummaryComponentStack output, Property mapped) {
-      exists(PropertyContent head, SummaryComponentStack tail |
-        c.requiresComponentStackOut(head, _, tail, _) and
-        head.getProperty() = mapped and
-        mapped = c.getAColumnProperty(_) and
-        output = SummaryComponentStack::push(SummaryComponent::content(head), tail)
-      )
-    }
-
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      exists(Property mapped |
+      exists(string name, Property mapped |
         preservesValue = true and
-        this.input(input, mapped) and
-        this.output(output, mapped)
+        c.input(input, mapped) and
+        name = c.getSyntheticName(_, mapped, _) and
+        output = SummaryComponentStack::syntheticGlobal(name)
       )
     }
   }
 
-  private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+  /**
+   * Add all possible synthetic global names.
+   */
+  private class EFSummarizedCallableSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+    EFSummarizedCallableSyntheticGlobal() { this = any(DbContextClass c).getSyntheticName(_, _, _) }
+  }
+
+  private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack
+  {
     override predicate required(SummaryComponent head, SummaryComponentStack tail) {
       exists(Content c | head = SummaryComponent::content(c) |
         any(DbContextClass cls).requiresComponentStackIn(c, _, tail, _)
         or
-        any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _)
+        any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _, _)
       )
     }
   }

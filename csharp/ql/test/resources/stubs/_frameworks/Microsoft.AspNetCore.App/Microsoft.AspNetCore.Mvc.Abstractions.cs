@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Mvc.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Mvc
         {
-            // Generated from `Microsoft.AspNetCore.Mvc.ActionContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ActionContext
             {
                 public ActionContext() => throw null;
@@ -19,13 +19,11 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Routing.RouteData RouteData { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Mvc.IActionResult` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IActionResult
             {
                 System.Threading.Tasks.Task ExecuteResultAsync(Microsoft.AspNetCore.Mvc.ActionContext context);
             }
 
-            // Generated from `Microsoft.AspNetCore.Mvc.IUrlHelper` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IUrlHelper
             {
                 string Action(Microsoft.AspNetCore.Mvc.Routing.UrlActionContext actionContext);
@@ -38,7 +36,6 @@ namespace Microsoft
 
             namespace Abstractions
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ActionDescriptor
                 {
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata> ActionConstraints { get => throw null; set => throw null; }
@@ -54,21 +51,18 @@ namespace Microsoft
                     public System.Collections.Generic.IDictionary<string, string> RouteValues { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptorExtensions` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class ActionDescriptorExtensions
                 {
                     public static T GetProperty<T>(this Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor) => throw null;
                     public static void SetProperty<T>(this Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, T value) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptorProviderContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ActionDescriptorProviderContext
                 {
                     public ActionDescriptorProviderContext() => throw null;
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor> Results { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Abstractions.ActionInvokerProviderContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ActionInvokerProviderContext
                 {
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
@@ -76,7 +70,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.IActionInvoker Result { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Abstractions.IActionDescriptorProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IActionDescriptorProvider
                 {
                     void OnProvidersExecuted(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptorProviderContext context);
@@ -84,13 +77,11 @@ namespace Microsoft
                     int Order { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Abstractions.IActionInvoker` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IActionInvoker
                 {
                     System.Threading.Tasks.Task InvokeAsync();
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Abstractions.IActionInvokerProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IActionInvokerProvider
                 {
                     void OnProvidersExecuted(Microsoft.AspNetCore.Mvc.Abstractions.ActionInvokerProviderContext context);
@@ -98,7 +89,6 @@ namespace Microsoft
                     int Order { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Abstractions.ParameterDescriptor` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ParameterDescriptor
                 {
                     public Microsoft.AspNetCore.Mvc.ModelBinding.BindingInfo BindingInfo { get => throw null; set => throw null; }
@@ -110,7 +100,6 @@ namespace Microsoft
             }
             namespace ActionConstraints
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ActionConstraintContext
                 {
                     public ActionConstraintContext() => throw null;
@@ -119,7 +108,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Routing.RouteContext RouteContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintItem` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ActionConstraintItem
                 {
                     public ActionConstraintItem(Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata metadata) => throw null;
@@ -128,7 +116,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata Metadata { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintProviderContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ActionConstraintProviderContext
                 {
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor Action { get => throw null; }
@@ -137,7 +124,6 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintItem> Results { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ActionConstraints.ActionSelectorCandidate` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct ActionSelectorCandidate
                 {
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor Action { get => throw null; }
@@ -146,26 +132,22 @@ namespace Microsoft
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraint> Constraints { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraint` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IActionConstraint : Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata
                 {
                     bool Accept(Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintContext context);
                     int Order { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintFactory` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IActionConstraintFactory : Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata
                 {
                     Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraint CreateInstance(System.IServiceProvider services);
                     bool IsReusable { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IActionConstraintMetadata
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IActionConstraintProvider
                 {
                     void OnProvidersExecuted(Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintProviderContext context);
@@ -176,7 +158,6 @@ namespace Microsoft
             }
             namespace ApiExplorer
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApiDescription
                 {
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; set => throw null; }
@@ -190,7 +171,6 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApiExplorer.ApiResponseType> SupportedResponseTypes { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionProviderContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApiDescriptionProviderContext
                 {
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor> Actions { get => throw null; }
@@ -198,7 +178,6 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescription> Results { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiParameterDescription` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApiParameterDescription
                 {
                     public ApiParameterDescription() => throw null;
@@ -213,7 +192,6 @@ namespace Microsoft
                     public System.Type Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiParameterRouteInfo` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApiParameterRouteInfo
                 {
                     public ApiParameterRouteInfo() => throw null;
@@ -222,7 +200,6 @@ namespace Microsoft
                     public bool IsOptional { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiRequestFormat` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApiRequestFormat
                 {
                     public ApiRequestFormat() => throw null;
@@ -230,7 +207,6 @@ namespace Microsoft
                     public string MediaType { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiResponseFormat` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApiResponseFormat
                 {
                     public ApiResponseFormat() => throw null;
@@ -238,7 +214,6 @@ namespace Microsoft
                     public string MediaType { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiResponseType` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApiResponseType
                 {
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApiExplorer.ApiResponseFormat> ApiResponseFormats { get => throw null; set => throw null; }
@@ -249,7 +224,6 @@ namespace Microsoft
                     public System.Type Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDescriptionProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IApiDescriptionProvider
                 {
                     void OnProvidersExecuted(Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionProviderContext context);
@@ -260,7 +234,6 @@ namespace Microsoft
             }
             namespace Authorization
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Authorization.IAllowAnonymousFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAllowAnonymousFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                 }
@@ -268,7 +241,6 @@ namespace Microsoft
             }
             namespace Filters
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ActionExecutedContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public ActionExecutedContext(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata> filters, object controller) : base(default(Microsoft.AspNetCore.Mvc.ActionContext), default(System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata>)) => throw null;
@@ -280,7 +252,6 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ActionExecutingContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public virtual System.Collections.Generic.IDictionary<string, object> ActionArguments { get => throw null; }
@@ -289,17 +260,14 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public delegate System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext> ActionExecutionDelegate();
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AuthorizationFilterContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public AuthorizationFilterContext(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata> filters) : base(default(Microsoft.AspNetCore.Mvc.ActionContext), default(System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata>)) => throw null;
                     public virtual Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ExceptionContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ExceptionContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public virtual System.Exception Exception { get => throw null; set => throw null; }
@@ -309,7 +277,6 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.FilterContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class FilterContext : Microsoft.AspNetCore.Mvc.ActionContext
                 {
                     public FilterContext(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata> filters) => throw null;
@@ -318,7 +285,6 @@ namespace Microsoft
                     public bool IsEffectivePolicy<TMetadata>(TMetadata policy) where TMetadata : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.FilterDescriptor` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FilterDescriptor
                 {
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
@@ -327,7 +293,6 @@ namespace Microsoft
                     public int Scope { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.FilterItem` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FilterItem
                 {
                     public Microsoft.AspNetCore.Mvc.Filters.FilterDescriptor Descriptor { get => throw null; }
@@ -337,7 +302,6 @@ namespace Microsoft
                     public bool IsReusable { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.FilterProviderContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FilterProviderContext
                 {
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; set => throw null; }
@@ -345,84 +309,70 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.FilterItem> Results { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IActionFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IActionFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     void OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext context);
                     void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAlwaysRunResultFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAlwaysRunResultFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IResultFilter
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAsyncActionFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     System.Threading.Tasks.Task OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context, Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate next);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAsyncAlwaysRunResultFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAsyncAlwaysRunResultFilter : Microsoft.AspNetCore.Mvc.Filters.IAsyncResultFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAsyncAuthorizationFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAsyncAuthorizationFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     System.Threading.Tasks.Task OnAuthorizationAsync(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAsyncExceptionFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAsyncExceptionFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     System.Threading.Tasks.Task OnExceptionAsync(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAsyncResourceFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAsyncResourceFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     System.Threading.Tasks.Task OnResourceExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext context, Microsoft.AspNetCore.Mvc.Filters.ResourceExecutionDelegate next);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAsyncResultFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAsyncResultFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     System.Threading.Tasks.Task OnResultExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext context, Microsoft.AspNetCore.Mvc.Filters.ResultExecutionDelegate next);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAuthorizationFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     void OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IExceptionFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IExceptionFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     void OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IFilterContainer` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IFilterContainer
                 {
                     Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata FilterDefinition { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IFilterFactory` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IFilterFactory : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata CreateInstance(System.IServiceProvider serviceProvider);
                     bool IsReusable { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IFilterMetadata
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IFilterProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IFilterProvider
                 {
                     void OnProvidersExecuted(Microsoft.AspNetCore.Mvc.Filters.FilterProviderContext context);
@@ -430,27 +380,23 @@ namespace Microsoft
                     int Order { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IOrderedFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     int Order { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IResourceFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IResourceFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     void OnResourceExecuted(Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext context);
                     void OnResourceExecuting(Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.IResultFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IResultFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     void OnResultExecuted(Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext context);
                     void OnResultExecuting(Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ResourceExecutedContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public virtual bool Canceled { get => throw null; set => throw null; }
@@ -461,7 +407,6 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ResourceExecutingContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public ResourceExecutingContext(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata> filters, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ModelBinding.IValueProviderFactory> valueProviderFactories) : base(default(Microsoft.AspNetCore.Mvc.ActionContext), default(System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata>)) => throw null;
@@ -469,10 +414,8 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ModelBinding.IValueProviderFactory> ValueProviderFactories { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ResourceExecutionDelegate` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public delegate System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext> ResourceExecutionDelegate();
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ResultExecutedContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public virtual bool Canceled { get => throw null; set => throw null; }
@@ -484,7 +427,6 @@ namespace Microsoft
                     public ResultExecutedContext(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata> filters, Microsoft.AspNetCore.Mvc.IActionResult result, object controller) : base(default(Microsoft.AspNetCore.Mvc.ActionContext), default(System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata>)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ResultExecutingContext : Microsoft.AspNetCore.Mvc.Filters.FilterContext
                 {
                     public virtual bool Cancel { get => throw null; set => throw null; }
@@ -493,13 +435,11 @@ namespace Microsoft
                     public ResultExecutingContext(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata> filters, Microsoft.AspNetCore.Mvc.IActionResult result, object controller) : base(default(Microsoft.AspNetCore.Mvc.ActionContext), default(System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata>)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Filters.ResultExecutionDelegate` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public delegate System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext> ResultExecutionDelegate();
 
             }
             namespace Formatters
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.FormatterCollection<>` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FormatterCollection<TFormatter> : System.Collections.ObjectModel.Collection<TFormatter>
                 {
                     public FormatterCollection() => throw null;
@@ -508,27 +448,23 @@ namespace Microsoft
                     public void RemoveType<T>() where T : TFormatter => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.IInputFormatter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IInputFormatter
                 {
                     bool CanRead(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext context);
                     System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.Formatters.InputFormatterResult> ReadAsync(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.IInputFormatterExceptionPolicy` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IInputFormatterExceptionPolicy
                 {
                     Microsoft.AspNetCore.Mvc.Formatters.InputFormatterExceptionPolicy ExceptionPolicy { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IOutputFormatter
                 {
                     bool CanWriteResult(Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterCanWriteContext context);
                     System.Threading.Tasks.Task WriteAsync(Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterWriteContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputFormatterContext
                 {
                     public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; }
@@ -542,7 +478,6 @@ namespace Microsoft
                     public bool TreatEmptyInputAsDefaultValue { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.InputFormatterException` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputFormatterException : System.Exception
                 {
                     public InputFormatterException() => throw null;
@@ -550,14 +485,12 @@ namespace Microsoft
                     public InputFormatterException(string message, System.Exception innerException) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.InputFormatterExceptionPolicy` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum InputFormatterExceptionPolicy : int
                 {
                     AllExceptions = 0,
                     MalformedInputExceptions = 1,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.InputFormatterResult` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputFormatterResult
                 {
                     public static Microsoft.AspNetCore.Mvc.Formatters.InputFormatterResult Failure() => throw null;
@@ -571,7 +504,6 @@ namespace Microsoft
                     public static System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.Formatters.InputFormatterResult> SuccessAsync(object model) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterCanWriteContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class OutputFormatterCanWriteContext
                 {
                     public virtual Microsoft.Extensions.Primitives.StringSegment ContentType { get => throw null; set => throw null; }
@@ -582,7 +514,6 @@ namespace Microsoft
                     protected OutputFormatterCanWriteContext(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterWriteContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OutputFormatterWriteContext : Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterCanWriteContext
                 {
                     public OutputFormatterWriteContext(Microsoft.AspNetCore.Http.HttpContext httpContext, System.Func<System.IO.Stream, System.Text.Encoding, System.IO.TextWriter> writerFactory, System.Type objectType, object @object) : base(default(Microsoft.AspNetCore.Http.HttpContext)) => throw null;
@@ -592,7 +523,6 @@ namespace Microsoft
             }
             namespace ModelBinding
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.BindingInfo` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BindingInfo
                 {
                     public string BinderModelName { get => throw null; set => throw null; }
@@ -608,7 +538,6 @@ namespace Microsoft
                     public bool TryApplyBindingInfo(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata modelMetadata) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BindingSource : System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource>
                 {
                     public static bool operator !=(Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource s1, Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource s2) => throw null;
@@ -634,7 +563,6 @@ namespace Microsoft
                     public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Special;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.CompositeBindingSource` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CompositeBindingSource : Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource
                 {
                     private CompositeBindingSource() : base(default(string), default(string), default(bool), default(bool)) => throw null;
@@ -643,7 +571,6 @@ namespace Microsoft
                     public static Microsoft.AspNetCore.Mvc.ModelBinding.CompositeBindingSource Create(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource> bindingSources, string displayName) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.EmptyBodyBehavior` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum EmptyBodyBehavior : int
                 {
                     Allow = 1,
@@ -651,7 +578,6 @@ namespace Microsoft
                     Disallow = 2,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.EnumGroupAndName` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct EnumGroupAndName
                 {
                     // Stub generator skipped constructor 
@@ -661,75 +587,63 @@ namespace Microsoft
                     public string Name { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IBinderTypeProviderMetadata` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IBinderTypeProviderMetadata : Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata
                 {
                     System.Type BinderType { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IBindingSourceMetadata
                 {
                     Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource BindingSource { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IConfigureEmptyBodyBehavior` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 internal interface IConfigureEmptyBodyBehavior
                 {
                     Microsoft.AspNetCore.Mvc.ModelBinding.EmptyBodyBehavior EmptyBodyBehavior { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinder` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IModelBinder
                 {
                     System.Threading.Tasks.Task BindModelAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext bindingContext);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinderProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IModelBinderProvider
                 {
                     Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinder GetBinder(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IModelMetadataProvider
                 {
                     System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata> GetMetadataForProperties(System.Type modelType);
                     Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata GetMetadataForType(System.Type modelType);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IModelNameProvider
                 {
                     string Name { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IPropertyFilterProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPropertyFilterProvider
                 {
                     System.Func<Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata, bool> PropertyFilter { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IRequestPredicateProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IRequestPredicateProvider
                 {
                     System.Func<Microsoft.AspNetCore.Mvc.ActionContext, bool> RequestPredicate { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IValueProvider
                 {
                     bool ContainsPrefix(string prefix);
                     Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult GetValue(string key);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.IValueProviderFactory` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IValueProviderFactory
                 {
                     System.Threading.Tasks.Task CreateValueProviderAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderFactoryContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelBinderProviderContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ModelBinderProviderContext
                 {
                     public abstract Microsoft.AspNetCore.Mvc.ModelBinding.BindingInfo BindingInfo { get; }
@@ -741,10 +655,8 @@ namespace Microsoft
                     public virtual System.IServiceProvider Services { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ModelBindingContext
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingContext+NestedScope` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct NestedScope : System.IDisposable
                     {
                         public void Dispose() => throw null;
@@ -775,7 +687,6 @@ namespace Microsoft
                     public abstract Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider ValueProvider { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingResult` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct ModelBindingResult : System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingResult>
                 {
                     public static bool operator !=(Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingResult x, Microsoft.AspNetCore.Mvc.ModelBinding.ModelBindingResult y) => throw null;
@@ -791,7 +702,6 @@ namespace Microsoft
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelError` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ModelError
                 {
                     public string ErrorMessage { get => throw null; }
@@ -801,7 +711,6 @@ namespace Microsoft
                     public ModelError(string errorMessage) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelErrorCollection` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ModelErrorCollection : System.Collections.ObjectModel.Collection<Microsoft.AspNetCore.Mvc.ModelBinding.ModelError>
                 {
                     public void Add(System.Exception exception) => throw null;
@@ -809,7 +718,6 @@ namespace Microsoft
                     public ModelErrorCollection() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ModelMetadata : Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider, System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata>
                 {
                     public abstract System.Collections.Generic.IReadOnlyDictionary<object, object> AdditionalValues { get; }
@@ -878,7 +786,6 @@ namespace Microsoft
                     public abstract System.Collections.Generic.IReadOnlyList<object> ValidatorMetadata { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadataProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ModelMetadataProvider : Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider
                 {
                     public virtual Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata GetMetadataForConstructor(System.Reflection.ConstructorInfo constructor, System.Type modelType) => throw null;
@@ -890,17 +797,14 @@ namespace Microsoft
                     protected ModelMetadataProvider() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelPropertyCollection` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ModelPropertyCollection : System.Collections.ObjectModel.ReadOnlyCollection<Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata>
                 {
                     public Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata this[string propertyName] { get => throw null; }
                     public ModelPropertyCollection(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata> properties) : base(default(System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata>)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ModelStateDictionary : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.Generic.IReadOnlyDictionary<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>, System.Collections.IEnumerable
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+Enumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.IEnumerator, System.IDisposable
                     {
                         public System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry> Current { get => throw null; }
@@ -913,7 +817,6 @@ namespace Microsoft
                     }
 
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+KeyEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct KeyEnumerable : System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.KeyEnumerator GetEnumerator() => throw null;
@@ -924,7 +827,6 @@ namespace Microsoft
                     }
 
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+KeyEnumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct KeyEnumerator : System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator, System.IDisposable
                     {
                         public string Current { get => throw null; }
@@ -937,7 +839,6 @@ namespace Microsoft
                     }
 
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+PrefixEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct PrefixEnumerable : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.IEnumerable
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.Enumerator GetEnumerator() => throw null;
@@ -948,7 +849,6 @@ namespace Microsoft
                     }
 
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+ValueEnumerable` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct ValueEnumerable : System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>, System.Collections.IEnumerable
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.ValueEnumerator GetEnumerator() => throw null;
@@ -959,7 +859,6 @@ namespace Microsoft
                     }
 
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary+ValueEnumerator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct ValueEnumerator : System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>, System.Collections.IEnumerator, System.IDisposable
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry Current { get => throw null; }
@@ -1012,7 +911,6 @@ namespace Microsoft
                     System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry> System.Collections.Generic.IReadOnlyDictionary<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>.Values { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ModelStateEntry
                 {
                     public string AttemptedValue { get => throw null; set => throw null; }
@@ -1025,7 +923,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState ValidationState { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum ModelValidationState : int
                 {
                     Invalid = 1,
@@ -1034,20 +931,17 @@ namespace Microsoft
                     Valid = 2,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.TooManyModelErrorsException` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TooManyModelErrorsException : System.Exception
                 {
                     public TooManyModelErrorsException(string message) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderException` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValueProviderException : System.Exception
                 {
                     public ValueProviderException(string message) => throw null;
                     public ValueProviderException(string message, System.Exception innerException) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderFactoryContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValueProviderFactoryContext
                 {
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
@@ -1055,7 +949,6 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider> ValueProviders { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct ValueProviderResult : System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable, System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult>
                 {
                     public static bool operator !=(Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult x, Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult y) => throw null;
@@ -1080,7 +973,6 @@ namespace Microsoft
 
                 namespace Metadata
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ModelBindingMessageProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public abstract class ModelBindingMessageProvider
                     {
                         public virtual System.Func<string, string, string> AttemptedValueIsInvalidAccessor { get => throw null; }
@@ -1097,7 +989,6 @@ namespace Microsoft
                         public virtual System.Func<string, string> ValueMustNotBeNullAccessor { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ModelMetadataIdentity` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct ModelMetadataIdentity : System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ModelMetadataIdentity>
                     {
                         public System.Reflection.ConstructorInfo ConstructorInfo { get => throw null; }
@@ -1119,7 +1010,6 @@ namespace Microsoft
                         public System.Reflection.PropertyInfo PropertyInfo { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ModelMetadataKind` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public enum ModelMetadataKind : int
                     {
                         Constructor = 3,
@@ -1131,14 +1021,12 @@ namespace Microsoft
                 }
                 namespace Validation
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientModelValidationContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ClientModelValidationContext : Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationContextBase
                     {
                         public System.Collections.Generic.IDictionary<string, string> Attributes { get => throw null; }
                         public ClientModelValidationContext(Microsoft.AspNetCore.Mvc.ActionContext actionContext, Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata metadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider metadataProvider, System.Collections.Generic.IDictionary<string, string> attributes) : base(default(Microsoft.AspNetCore.Mvc.ActionContext), default(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata), default(Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider)) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientValidatorItem` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ClientValidatorItem
                     {
                         public ClientValidatorItem() => throw null;
@@ -1148,7 +1036,6 @@ namespace Microsoft
                         public object ValidatorMetadata { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientValidatorProviderContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ClientValidatorProviderContext
                     {
                         public ClientValidatorProviderContext(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata modelMetadata, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientValidatorItem> items) => throw null;
@@ -1157,43 +1044,36 @@ namespace Microsoft
                         public System.Collections.Generic.IReadOnlyList<object> ValidatorMetadata { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IClientModelValidator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IClientModelValidator
                     {
                         void AddValidation(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientModelValidationContext context);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IClientModelValidatorProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IClientModelValidatorProvider
                     {
                         void CreateValidators(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientValidatorProviderContext context);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IModelValidator` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IModelValidator
                     {
                         System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationResult> Validate(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationContext context);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IModelValidatorProvider` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IModelValidatorProvider
                     {
                         void CreateValidators(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidatorProviderContext context);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IPropertyValidationFilter` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IPropertyValidationFilter
                     {
                         bool ShouldValidateEntry(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationEntry entry, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationEntry parentEntry);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IValidationStrategy` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IValidationStrategy
                     {
                         System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationEntry> GetChildren(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata metadata, string key, object model);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ModelValidationContext : Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationContextBase
                     {
                         public object Container { get => throw null; }
@@ -1201,7 +1081,6 @@ namespace Microsoft
                         public ModelValidationContext(Microsoft.AspNetCore.Mvc.ActionContext actionContext, Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata modelMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider metadataProvider, object container, object model) : base(default(Microsoft.AspNetCore.Mvc.ActionContext), default(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata), default(Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider)) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationContextBase` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ModelValidationContextBase
                     {
                         public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
@@ -1210,7 +1089,6 @@ namespace Microsoft
                         public ModelValidationContextBase(Microsoft.AspNetCore.Mvc.ActionContext actionContext, Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata modelMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider metadataProvider) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationResult` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ModelValidationResult
                     {
                         public string MemberName { get => throw null; }
@@ -1218,7 +1096,6 @@ namespace Microsoft
                         public ModelValidationResult(string memberName, string message) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidatorProviderContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ModelValidatorProviderContext
                     {
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata ModelMetadata { get => throw null; set => throw null; }
@@ -1227,7 +1104,6 @@ namespace Microsoft
                         public System.Collections.Generic.IReadOnlyList<object> ValidatorMetadata { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationEntry` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public struct ValidationEntry
                     {
                         public string Key { get => throw null; }
@@ -1238,7 +1114,6 @@ namespace Microsoft
                         public ValidationEntry(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata metadata, string key, object model) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateDictionary` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ValidationStateDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>, System.Collections.Generic.IDictionary<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>, System.Collections.Generic.IReadOnlyDictionary<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>, System.Collections.IEnumerable
                     {
                         public void Add(System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry> item) => throw null;
@@ -1264,7 +1139,6 @@ namespace Microsoft
                         System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry> System.Collections.Generic.IReadOnlyDictionary<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>.Values { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ValidationStateEntry
                     {
                         public string Key { get => throw null; set => throw null; }
@@ -1274,7 +1148,6 @@ namespace Microsoft
                         public ValidationStateEntry() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidatorItem` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ValidatorItem
                     {
                         public bool IsReusable { get => throw null; set => throw null; }
@@ -1288,7 +1161,6 @@ namespace Microsoft
             }
             namespace Routing
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Routing.AttributeRouteInfo` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AttributeRouteInfo
                 {
                     public AttributeRouteInfo() => throw null;
@@ -1299,7 +1171,6 @@ namespace Microsoft
                     public string Template { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Routing.UrlActionContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UrlActionContext
                 {
                     public string Action { get => throw null; set => throw null; }
@@ -1311,7 +1182,6 @@ namespace Microsoft
                     public object Values { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Routing.UrlRouteContext` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UrlRouteContext
                 {
                     public string Fragment { get => throw null; set => throw null; }

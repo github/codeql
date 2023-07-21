@@ -37,7 +37,7 @@ class NestedFieldAccess extends FieldAccess {
 
   NestedFieldAccess() {
     ultimateQualifier = getUltimateQualifier(this) and
-    getTarget() = getANestedField(ultimateQualifier.getType().stripType())
+    this.getTarget() = getANestedField(ultimateQualifier.getType().stripType())
   }
 
   /**

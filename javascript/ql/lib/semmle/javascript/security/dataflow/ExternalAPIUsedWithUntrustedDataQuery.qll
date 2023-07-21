@@ -46,23 +46,16 @@ class Configuration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+  override predicate isSanitizerIn(DataFlow::Node node) {
     // Block flow from the location to its properties, as the relevant properties (hash and search) are taint sources of their own.
     // The location source is only used for propagating through API calls like `new URL(location)` and into external APIs where
     // the whole location object escapes.
-    exists(DataFlow::PropRead read |
-      read = DOM::locationRef().getAPropertyRead() and
-      pred = read.getBase() and
-      succ = read
-    )
+    node = DOM::locationRef().getAPropertyRead()
   }
 }
 
 /** A node representing data being passed to an external API. */
 class ExternalApiDataNode extends DataFlow::Node instanceof Sink { }
-
-/** DEPRECATED: Alias for ExternalApiDataNode */
-deprecated class ExternalAPIDataNode = ExternalApiDataNode;
 
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalApiDataNode extends ExternalApiDataNode {
@@ -71,9 +64,6 @@ class UntrustedExternalApiDataNode extends ExternalApiDataNode {
   /** Gets a source of untrusted data which is passed to this external API data node. */
   DataFlow::Node getAnUntrustedSource() { any(Configuration c).hasFlow(result, this) }
 }
-
-/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
-deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
 
 /**
  * Name of an external API sink, boxed in a newtype for consistency with other languages.
@@ -96,12 +86,9 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = count(getUntrustedDataNode().getAnUntrustedSource())
+    result = count(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */
   string toString() { this = MkExternalApiNode(result) }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

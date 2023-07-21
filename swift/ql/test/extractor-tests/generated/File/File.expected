@@ -1,3 +1,4 @@
-| empty.swift:0:0:0:0 | empty.swift | DbFile | getName: | empty.swift |
-| file://:0:0:0:0 |  | UnknownFile | getName: |  |
-| non_empty.swift:0:0:0:0 | non_empty.swift | DbFile | getName: | non_empty.swift |
+| empty.swift:0:0:0:0 | empty.swift | DbFile | getName: | empty.swift | isSuccessfullyExtracted: | yes |
+| error.swift:0:0:0:0 | error.swift | DbFile | getName: | error.swift | isSuccessfullyExtracted: | no |
+| file://:0:0:0:0 |  | UnknownFile | getName: |  | isSuccessfullyExtracted: | no |
+| non_empty.swift:0:0:0:0 | non_empty.swift | DbFile | getName: | non_empty.swift | isSuccessfullyExtracted: | yes |

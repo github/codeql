@@ -15,31 +15,31 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
-import DataFlow::PathGraph
+import ExposedSystemData::PathGraph
 import SystemData
 
-class ExposedSystemDataConfiguration extends TaintTracking::Configuration {
-  ExposedSystemDataConfiguration() { this = "ExposedSystemDataConfiguration" }
+module ExposedSystemDataConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source = any(SystemData sd).getAnExpr() }
 
-  override predicate isSource(DataFlow::Node source) { source = any(SystemData sd).getAnExpr() }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc, FunctionInput input, int arg |
       fc.getTarget().(RemoteFlowSinkFunction).hasRemoteFlowSink(input, _) and
       input.isParameterDeref(arg) and
-      fc.getArgument(arg).getAChild*() = sink.asExpr()
+      fc.getArgument(arg).getAChild*() = sink.asIndirectExpr()
     )
   }
 }
 
-from ExposedSystemDataConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+module ExposedSystemData = TaintTracking::Global<ExposedSystemDataConfig>;
+
+from ExposedSystemData::PathNode source, ExposedSystemData::PathNode sink
 where
-  config.hasFlowPath(source, sink) and
+  ExposedSystemData::flowPath(source, sink) and
   not exists(
     DataFlow::Node alt // remove duplicate results on conversions
   |
-    config.hasFlow(source.getNode(), alt) and
-    alt.asConvertedExpr() = sink.getNode().asExpr() and
+    ExposedSystemData::flow(source.getNode(), alt) and
+    alt.asConvertedExpr() = sink.getNode().asIndirectExpr() and
     alt != sink.getNode()
   )
 select sink, source, sink, "This operation exposes system data from $@.", source,

@@ -16,11 +16,17 @@ import semmle.python.ApiGraphs
 
 private API::Node unsafe_paramiko_policy(string name) {
   name in ["AutoAddPolicy", "WarningPolicy"] and
-  result = API::moduleImport("paramiko").getMember("client").getMember(name)
+  (
+    result = API::moduleImport("paramiko").getMember("client").getMember(name)
+    or
+    result = API::moduleImport("paramiko").getMember(name)
+  )
 }
 
 private API::Node paramikoSshClientInstance() {
   result = API::moduleImport("paramiko").getMember("client").getMember("SSHClient").getReturn()
+  or
+  result = API::moduleImport("paramiko").getMember("SSHClient").getReturn()
 }
 
 from DataFlow::CallCfgNode call, DataFlow::Node arg, string name

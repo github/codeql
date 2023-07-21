@@ -15,14 +15,14 @@ public class Test {
 	public void test() {
 
 		{
-			// "java.util;Optional;false;filter;;;Element of Argument[-1];Element of ReturnValue;value;manual"
+			// "java.util;Optional;false;filter;;;Element of Argument[this];Element of ReturnValue;value;manual"
 			Optional<Object> out = null;
 			Optional<Object> in = newWithElement(source());
 			out = in.filter(null);
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "java.util;Optional;false;get;;;Element of Argument[-1];ReturnValue;value;manual"
+			// "java.util;Optional;false;get;;;Element of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Optional<Object> in = newWithElement(source());
 			out = in.get();
@@ -43,7 +43,7 @@ public class Test {
 			sink(getElement(out)); // $hasValueFlow
 		}
 		{
-			// "java.util;Optional;false;or;;;Element of Argument[-1];Element of ReturnValue;value;manual"
+			// "java.util;Optional;false;or;;;Element of Argument[this];Element of ReturnValue;value;manual"
 			Optional<Object> out = null;
 			Optional<Object> in = newWithElement(source());
 			out = in.or(null);
@@ -58,35 +58,35 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "java.util;Optional;false;orElse;;;Element of Argument[-1];ReturnValue;value;manual"
+			// "java.util;Optional;false;orElse;;;Element of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Optional<Object> in = newWithElement(source());
 			out = in.orElse(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "java.util;Optional;false;orElseGet;;;Element of Argument[-1];ReturnValue;value;manual"
+			// "java.util;Optional;false;orElseGet;;;Element of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Optional<Object> in = newWithElement(source());
 			out = in.orElseGet(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "java.util;Optional;false;orElseThrow;;;Element of Argument[-1];ReturnValue;value;manual"
+			// "java.util;Optional;false;orElseThrow;;;Element of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Optional<Object> in = newWithElement(source());
 			out = in.orElseThrow(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "java.util;Optional;false;orElseThrow;;;Element of Argument[-1];ReturnValue;value;manual"
+			// "java.util;Optional;false;orElseThrow;;;Element of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Optional<Object> in = newWithElement(source());
 			out = in.orElseThrow();
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "java.util;Optional;false;stream;;;Element of Argument[-1];Element of ReturnValue;value;manual"
+			// "java.util;Optional;false;stream;;;Element of Argument[this];Element of ReturnValue;value;manual"
 			Stream<Object> out = null;
 			Optional<Object> in = newWithElement(source());
 			out = in.stream();

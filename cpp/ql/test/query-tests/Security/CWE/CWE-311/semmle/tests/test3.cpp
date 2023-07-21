@@ -287,7 +287,7 @@ void target2(char *data)
 
 void target3(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password [NOT DETECTED]
+	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
 }
 
 void target4(char *data)

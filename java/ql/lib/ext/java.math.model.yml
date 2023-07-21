@@ -3,10 +3,20 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.math", "BigDecimal", "compareTo", "(BigDecimal)", "manual"]
+      - ["java.math", "BigDecimal", "compareTo", "(BigDecimal)", "summary", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.math", "BigDecimal", "BigDecimal", "(String)", "manual"] # taint-numeric
-      - ["java.math", "BigDecimal", "valueOf", "(double)", "manual"]    # taint-numeric
-      - ["java.math", "BigDecimal", "valueOf", "(long)", "manual"]      # taint-numeric
+      - ["java.math", "BigDecimal", "BigDecimal", "", "summary", "manual"]                 # taint-numeric
+      - ["java.math", "BigDecimal", "add", "(BigDecimal)", "summary", "manual"]            # taint-numeric
+      - ["java.math", "BigDecimal", "doubleValue", "()", "summary", "manual"]              # taint-numeric
+      - ["java.math", "BigDecimal", "intValue", "()", "summary", "manual"]                 # taint-numeric
+      - ["java.math", "BigDecimal", "multiply", "(BigDecimal)", "summary", "manual"]       # taint-numeric
+      - ["java.math", "BigDecimal", "setScale", "(int,RoundingMode)", "summary", "manual"] # taint-numeric
+      - ["java.math", "BigDecimal", "subtract", "(BigDecimal)", "summary", "manual"]       # taint-numeric
+      - ["java.math", "BigDecimal", "toBigInteger", "()", "summary", "manual"]             # taint-numeric
+      - ["java.math", "BigDecimal", "toString", "()", "summary", "manual"]                 # taint-numeric
+      - ["java.math", "BigDecimal", "valueOf", "", "summary", "manual"]                    # taint-numeric
+      - ["java.math", "BigInteger", "BigInteger", "(String)", "summary", "manual"]         # taint-numeric
+      - ["java.math", "BigInteger", "or", "(BigInteger)", "summary", "manual"]             # taint-numeric
+      - ["java.math", "BigInteger", "valueOf", "(long)", "summary", "manual"]              # taint-numeric

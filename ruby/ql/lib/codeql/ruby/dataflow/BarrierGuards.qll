@@ -92,7 +92,8 @@ class StringConstCompareBarrier extends DataFlow::Node {
  * in the `order` call.
  */
 deprecated class StringConstCompare extends DataFlow::BarrierGuard,
-  CfgNodes::ExprNodes::ComparisonOperationCfgNode {
+  CfgNodes::ExprNodes::ComparisonOperationCfgNode
+{
   private CfgNode checkedNode;
   // The value of the condition that results in the node being validated.
   private boolean checkedBranch;
@@ -160,7 +161,8 @@ class StringConstArrayInclusionCallBarrier extends DataFlow::Node {
  * in the `find_by` call.
  */
 deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
-  CfgNodes::ExprNodes::MethodCallCfgNode {
+  CfgNodes::ExprNodes::MethodCallCfgNode
+{
   private CfgNode checkedNode;
 
   StringConstArrayInclusionCall() { stringConstArrayInclusionCall(this, checkedNode, true) }

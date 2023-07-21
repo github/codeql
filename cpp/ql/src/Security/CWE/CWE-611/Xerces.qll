@@ -8,38 +8,32 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 
 /**
- * Gets a valid flow state for `AbstractDOMParser` or `SAXParser` flow.
- *
- * These flow states take the form `Xerces-A-B`, where:
- *  - A is 1 if `setDisableDefaultEntityResolution` is `true`, 0 otherwise.
- *  - B is 1 if `setCreateEntityReferenceNodes` is `true`, 0 otherwise.
- */
-predicate encodeXercesFlowState(
-  string flowstate, int disabledDefaultEntityResolution, int createEntityReferenceNodes
-) {
-  flowstate = "Xerces-0-0" and
-  disabledDefaultEntityResolution = 0 and
-  createEntityReferenceNodes = 0
-  or
-  flowstate = "Xerces-0-1" and
-  disabledDefaultEntityResolution = 0 and
-  createEntityReferenceNodes = 1
-  or
-  flowstate = "Xerces-1-0" and
-  disabledDefaultEntityResolution = 1 and
-  createEntityReferenceNodes = 0
-  or
-  flowstate = "Xerces-1-1" and
-  disabledDefaultEntityResolution = 1 and
-  createEntityReferenceNodes = 1
-}
-
-/**
  * A flow state representing the configuration of an `AbstractDOMParser` or
  * `SAXParser` object.
  */
-class XercesFlowState extends XxeFlowState {
-  XercesFlowState() { encodeXercesFlowState(this, _, _) }
+class XercesFlowState extends TXxeFlowState {
+  int disabledDefaultEntityResolution;
+  int createEntityReferenceNodes;
+
+  XercesFlowState() {
+    this = TXercesFlowState(disabledDefaultEntityResolution, createEntityReferenceNodes)
+  }
+
+  int getDisabledDefaultEntityResolution() { result = disabledDefaultEntityResolution }
+
+  int getCreateEntityReferenceNodes() { result = createEntityReferenceNodes }
+
+  string toString() { result = "XercesFlowState" }
+}
+
+/**
+ * Gets a valid flow state for `AbstractDOMParser` or `SAXParser` flow.
+ */
+predicate encodeXercesFlowState(
+  XercesFlowState flowstate, int disabledDefaultEntityResolution, int createEntityReferenceNodes
+) {
+  flowstate.getDisabledDefaultEntityResolution() = disabledDefaultEntityResolution and
+  flowstate.getCreateEntityReferenceNodes() = createEntityReferenceNodes
 }
 
 /**
@@ -62,22 +56,21 @@ class XercesDomParserClass extends Class {
 class XercesDomParserLibrary extends XmlLibrary {
   XercesDomParserLibrary() { this = "XercesDomParserLibrary" }
 
-  override predicate configurationSource(DataFlow::Node node, string flowstate) {
+  override predicate configurationSource(DataFlow::Node node, TXxeFlowState flowstate) {
     // source is the write on `this` of a call to the `XercesDOMParser`
     // constructor.
-    exists(CallInstruction call |
-      call.getStaticCallTarget() = any(XercesDomParserClass c).getAConstructor() and
-      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-        call.getThisArgument() and
+    exists(Call call |
+      call.getTarget() = any(XercesDomParserClass c).getAConstructor() and
+      node.asExpr() = call and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
   }
 
-  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+  override predicate configurationSink(DataFlow::Node node, TXxeFlowState flowstate) {
     // sink is the read of the qualifier of a call to `AbstractDOMParser.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof AbstractDomParserClass and
-      call.getQualifier() = node.asConvertedExpr()
+      call.getQualifier() = node.asIndirectConvertedExpr()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
@@ -108,20 +101,20 @@ class CreateLSParser extends Function {
 class CreateLSParserLibrary extends XmlLibrary {
   CreateLSParserLibrary() { this = "CreateLSParserLibrary" }
 
-  override predicate configurationSource(DataFlow::Node node, string flowstate) {
+  override predicate configurationSource(DataFlow::Node node, TXxeFlowState flowstate) {
     // source is the result of a call to `createLSParser`.
     exists(Call call |
       call.getTarget() instanceof CreateLSParser and
-      call = node.asExpr() and
+      call = node.asIndirectExpr() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
   }
 
-  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+  override predicate configurationSink(DataFlow::Node node, TXxeFlowState flowstate) {
     // sink is the read of the qualifier of a call to `DOMLSParserClass.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof DomLSParserClass and
-      call.getQualifier() = node.asConvertedExpr()
+      call.getQualifier() = node.asIndirectConvertedExpr()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
@@ -148,22 +141,21 @@ class Sax2XmlReader extends Class {
 class SaxParserLibrary extends XmlLibrary {
   SaxParserLibrary() { this = "SaxParserLibrary" }
 
-  override predicate configurationSource(DataFlow::Node node, string flowstate) {
+  override predicate configurationSource(DataFlow::Node node, TXxeFlowState flowstate) {
     // source is the write on `this` of a call to the `SAXParser`
     // constructor.
-    exists(CallInstruction call |
-      call.getStaticCallTarget() = any(SaxParserClass c).getAConstructor() and
-      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-        call.getThisArgument() and
+    exists(Call call |
+      call.getTarget() = any(SaxParserClass c).getAConstructor() and
+      node.asExpr() = call and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
   }
 
-  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+  override predicate configurationSink(DataFlow::Node node, TXxeFlowState flowstate) {
     // sink is the read of the qualifier of a call to `SAXParser.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof SaxParserClass and
-      call.getQualifier() = node.asConvertedExpr()
+      call.getQualifier() = node.asIndirectConvertedExpr()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
@@ -187,20 +179,20 @@ class CreateXmlReader extends Function {
 class Sax2XmlReaderLibrary extends XmlLibrary {
   Sax2XmlReaderLibrary() { this = "Sax2XmlReaderLibrary" }
 
-  override predicate configurationSource(DataFlow::Node node, string flowstate) {
+  override predicate configurationSource(DataFlow::Node node, TXxeFlowState flowstate) {
     // source is the result of a call to `createXMLReader`.
     exists(Call call |
       call.getTarget() instanceof CreateXmlReader and
-      call = node.asExpr() and
+      call = node.asIndirectExpr() and
       encodeXercesFlowState(flowstate, 0, 1) // default configuration
     )
   }
 
-  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+  override predicate configurationSink(DataFlow::Node node, TXxeFlowState flowstate) {
     // sink is the read of the qualifier of a call to `SAX2XMLReader.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof Sax2XmlReader and
-      call.getQualifier() = node.asConvertedExpr()
+      call.getQualifier() = node.asIndirectConvertedExpr()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
@@ -229,7 +221,7 @@ class DisableDefaultEntityResolutionTransformer extends XxeFlowStateTransformer 
     )
   }
 
-  final override XxeFlowState transform(XxeFlowState flowstate) {
+  final override TXxeFlowState transform(TXxeFlowState flowstate) {
     exists(int createEntityReferenceNodes |
       encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
       (
@@ -260,7 +252,7 @@ class CreateEntityReferenceNodesTransformer extends XxeFlowStateTransformer {
     )
   }
 
-  final override XxeFlowState transform(XxeFlowState flowstate) {
+  final override TXxeFlowState transform(TXxeFlowState flowstate) {
     exists(int disabledDefaultEntityResolution |
       encodeXercesFlowState(flowstate, disabledDefaultEntityResolution, _) and
       (
@@ -303,7 +295,7 @@ class SetFeatureTransformer extends XxeFlowStateTransformer {
     )
   }
 
-  final override XxeFlowState transform(XxeFlowState flowstate) {
+  final override TXxeFlowState transform(TXxeFlowState flowstate) {
     exists(int createEntityReferenceNodes |
       encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
       (
@@ -361,7 +353,7 @@ class DomConfigurationSetParameterTransformer extends XxeFlowStateTransformer {
     )
   }
 
-  final override XxeFlowState transform(XxeFlowState flowstate) {
+  final override TXxeFlowState transform(TXxeFlowState flowstate) {
     exists(int createEntityReferenceNodes |
       encodeXercesFlowState(flowstate, _, createEntityReferenceNodes) and
       (

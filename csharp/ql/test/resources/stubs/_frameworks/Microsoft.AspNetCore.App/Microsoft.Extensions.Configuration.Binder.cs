@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Configuration.Binder, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Configuration
         {
-            // Generated from `Microsoft.Extensions.Configuration.BinderOptions` in `Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class BinderOptions
             {
                 public bool BindNonPublicProperties { get => throw null; set => throw null; }
@@ -14,7 +14,6 @@ namespace Microsoft
                 public bool ErrorOnUnknownConfiguration { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationBinder` in `Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ConfigurationBinder
             {
                 public static void Bind(this Microsoft.Extensions.Configuration.IConfiguration configuration, object instance) => throw null;
@@ -29,21 +28,6 @@ namespace Microsoft
                 public static T GetValue<T>(this Microsoft.Extensions.Configuration.IConfiguration configuration, string key) => throw null;
                 public static T GetValue<T>(this Microsoft.Extensions.Configuration.IConfiguration configuration, string key, T defaultValue) => throw null;
             }
-
-        }
-    }
-}
-namespace System
-{
-    namespace Diagnostics
-    {
-        namespace CodeAnalysis
-        {
-            /* Duplicate type 'DynamicallyAccessedMemberTypes' is not stubbed in this assembly 'Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-            /* Duplicate type 'DynamicallyAccessedMembersAttribute' is not stubbed in this assembly 'Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-            /* Duplicate type 'RequiresUnreferencedCodeAttribute' is not stubbed in this assembly 'Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
 
         }
     }

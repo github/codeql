@@ -14,4 +14,7 @@ abstract class PointerWrapper extends Class {
 
   /** Holds if the type of the data that is pointed to by this pointer wrapper is `const`. */
   abstract predicate pointsToConst();
+
+  /** Gets the type pointed to by this pointer wrapper type. */
+  abstract Type getBaseType();
 }

@@ -87,7 +87,8 @@ class FaradayHttpRequest extends Http::Client::Request::Range, DataFlow::CallNod
 }
 
 /** A configuration to track values that can disable certificate validation for Faraday. */
-private class FaradayDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+private class FaradayDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
+{
   FaradayDisablesCertificateValidationConfiguration() {
     this = "FaradayDisablesCertificateValidationConfiguration"
   }

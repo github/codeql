@@ -875,14 +875,9 @@ class TParameter =
 
 class TSimpleParameter = TSimpleParameterReal or TSimpleParameterSynth;
 
-deprecated class TPatternParameter = TSimpleParameter or TDestructuredParameter;
-
 class TNamedParameter =
   TSimpleParameter or TBlockParameter or THashSplatParameter or TKeywordParameter or
       TOptionalParameter or TSplatParameter;
-
-deprecated class TTuplePattern =
-  TDestructuredParameter or TDestructuredLeftAssignment or TLeftAssignmentList;
 
 class TVariableAccess =
   TLocalVariableAccess or TGlobalVariableAccess or TInstanceVariableAccess or

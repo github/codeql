@@ -482,9 +482,6 @@ class BaseSsaVariable extends TBaseSsaVariable {
     this = TSsaEntryDef(_, result)
   }
 
-  /** DEPRECATED: Alias for getCfgNode */
-  deprecated ControlFlowNode getCFGNode() { result = this.getCfgNode() }
-
   string toString() { none() }
 
   Location getLocation() { result = this.getCfgNode().getLocation() }

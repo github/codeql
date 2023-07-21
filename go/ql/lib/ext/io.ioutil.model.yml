@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["io/ioutil", "", False, "NopCloser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io/ioutil", "", False, "ReadAll", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

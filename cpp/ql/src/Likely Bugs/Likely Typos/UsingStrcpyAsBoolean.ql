@@ -12,7 +12,7 @@
 
 import cpp
 import semmle.code.cpp.models.implementations.Strcpy
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * A string copy function that returns a string, rather than an error code (for
@@ -20,7 +20,7 @@ import semmle.code.cpp.dataflow.DataFlow
  * code).
  */
 class InterestingStrcpyFunction extends StrcpyFunction {
-  InterestingStrcpyFunction() { getType().getUnspecifiedType() instanceof PointerType }
+  InterestingStrcpyFunction() { this.getType().getUnspecifiedType() instanceof PointerType }
 }
 
 predicate isBoolean(Expr e1) {

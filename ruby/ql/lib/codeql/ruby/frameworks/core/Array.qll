@@ -583,7 +583,8 @@ module Array {
 
   private class DeleteUnknownSummary extends DeleteSummary {
     DeleteUnknownSummary() {
-      this = "delete" and
+      // Note: take care to avoid a name clash with the "delete" summary from String.qll
+      this = "delete-unknown-key" and
       not exists(DataFlow::Content::getKnownElementIndex(mc.getArgument(0)))
     }
 
@@ -1183,6 +1184,16 @@ module Array {
       ) and
       output = "ReturnValue.Element[?].Element[?]" and
       preservesValue = true
+    }
+  }
+
+  private class JoinSummary extends SimpleSummarizedCallable {
+    JoinSummary() { this = ["join"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self].Element[any]" and
+      output = "ReturnValue" and
+      preservesValue = false
     }
   }
 
@@ -2056,7 +2067,11 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
-      output = ["Argument[block].Parameter[0]", "ReturnValue.Element[?]"] and
+      output = "Argument[block].Parameter[0]" and
+      preservesValue = true
+      or
+      input = "Argument[block].ReturnValue" and
+      output = "ReturnValue.Element[?]" and
       preservesValue = true
     }
   }

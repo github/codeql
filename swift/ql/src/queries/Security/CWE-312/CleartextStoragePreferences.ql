@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision medium
+ * @precision high
  * @id swift/cleartext-storage-preferences
  * @tags security
  *       external/cwe/cwe-312
@@ -13,7 +13,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.CleartextStoragePreferencesQuery
-import DataFlow::PathGraph
+import CleartextStoragePreferencesFlow::PathGraph
 
 /**
  * Gets a prettier node to use in the results.
@@ -25,10 +25,14 @@ DataFlow::Node cleanupNode(DataFlow::Node n) {
   result = n
 }
 
-from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
-select cleanupNode(sinkNode.getNode()), sourceNode, sinkNode,
-  "This operation stores '" + sinkNode.getNode().toString() + "' in " +
+from
+  CleartextStoragePreferencesFlow::PathNode sourceNode,
+  CleartextStoragePreferencesFlow::PathNode sinkNode, DataFlow::Node cleanSink
+where
+  CleartextStoragePreferencesFlow::flowPath(sourceNode, sinkNode) and
+  cleanSink = cleanupNode(sinkNode.getNode())
+select cleanSink, sourceNode, sinkNode,
+  "This operation stores '" + cleanSink.toString() + "' in " +
     sinkNode.getNode().(CleartextStoragePreferencesSink).getStoreName() +
     ". It may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()

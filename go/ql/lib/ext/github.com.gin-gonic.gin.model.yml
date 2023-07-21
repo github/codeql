@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/gin-gonic/gin", "Params", True, "ByName", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["github.com/gin-gonic/gin", "Params", True, "Get", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]

@@ -4,8 +4,8 @@
 
 import cpp
 private import semmle.code.cpp.controlflow.SSA
-private import semmle.code.cpp.dataflow.internal.SubBasicBlocks
-private import semmle.code.cpp.dataflow.internal.AddressFlow
+private import SubBasicBlocks
+private import AddressFlow
 private import semmle.code.cpp.models.implementations.Iterator
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 

@@ -12,18 +12,18 @@ class NSObject
 {
 }
 
-class NSStringBase : NSObject
-{
-    func substring(from: Int) -> String { return "" }
-}
-
-class NSString : NSStringBase
+class NSString : NSObject
 {
     init(string: String) { length = string.count }
 
     func substring(to: Int) -> String { return "" }
 
     private(set) var length: Int
+}
+
+extension NSString
+{
+    func substring(from: Int) -> String { return "" }
 }
 
 // --- tests ---

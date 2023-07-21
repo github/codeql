@@ -36,14 +36,14 @@ module Connect {
      * Gets the parameter of the route handler that contains the request object.
      */
     override DataFlow::ParameterNode getRequestParameter() {
-      result = getRouteHandlerParameter("request")
+      result = this.getRouteHandlerParameter("request")
     }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
     override DataFlow::ParameterNode getResponseParameter() {
-      result = getRouteHandlerParameter("response")
+      result = this.getRouteHandlerParameter("response")
     }
   }
 
@@ -65,7 +65,7 @@ module Connect {
     ServerDefinition server;
 
     RouteSetup() {
-      getMethodName() = "use" and
+      this.getMethodName() = "use" and
       (
         // app.use(fun)
         server.ref().getAMethodCall() = this
@@ -76,14 +76,14 @@ module Connect {
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = getARouteHandler(DataFlow::TypeBackTracker::end())
+      result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = getARouteHandlerNode().getALocalSource()
+      result = this.getARouteHandlerNode().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
     }
 
     override DataFlow::Node getServer() { result = server }
@@ -92,12 +92,12 @@ module Connect {
      * DEPRECATED: Use `getARouteHandlerNode` instead.
      * Gets an argument that represents a route handler being registered.
      */
-    deprecated Expr getARouteHandlerExpr() { result = getARouteHandlerNode().asExpr() }
+    deprecated Expr getARouteHandlerExpr() { result = this.getARouteHandlerNode().asExpr() }
 
     /**
      * Gets an argument that represents a route handler being registered.
      */
-    DataFlow::Node getARouteHandlerNode() { result = getAnArgument() }
+    DataFlow::Node getARouteHandlerNode() { result = this.getAnArgument() }
   }
 
   /** An expression that is passed as `basicAuthConnect(<user>, <password>)`. */
@@ -125,7 +125,8 @@ module Connect {
   /**
    * An access to a user-controlled Connect request input.
    */
-  private class RequestInputAccess extends Http::RequestInputAccess instanceof DataFlow::MethodCallNode {
+  private class RequestInputAccess extends Http::RequestInputAccess instanceof DataFlow::MethodCallNode
+  {
     RequestNode request;
     string kind;
 

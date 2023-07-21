@@ -15,9 +15,9 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.CleartextStorageQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import ClearTextStorage::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from ClearTextStorage::PathNode source, ClearTextStorage::PathNode sink
+where ClearTextStorage::flowPath(source, sink)
 select sink.getNode(), source, sink, "This stores sensitive data returned by $@ as clear text.",
   source.getNode(), source.toString()

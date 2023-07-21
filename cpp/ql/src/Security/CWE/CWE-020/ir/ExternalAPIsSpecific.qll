@@ -41,11 +41,8 @@ class ExternalApiDataNode extends DataFlow::Node {
   string getFunctionDescription() { result = this.getExternalFunction().toString() }
 }
 
-/** DEPRECATED: Alias for ExternalApiDataNode */
-deprecated class ExternalAPIDataNode = ExternalApiDataNode;
-
 /** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
-class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
+deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
   UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfigIR" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -53,5 +50,11 @@ class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
-/** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
-deprecated class UntrustedDataToExternalAPIConfig = UntrustedDataToExternalApiConfig;
+/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
+private module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+}
+
+module UntrustedDataToExternalApiFlow = TaintTracking::Global<UntrustedDataToExternalApiConfig>;

@@ -1,20 +1,18 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.WebClient, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.DownloadDataCompletedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class DownloadDataCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             internal DownloadDataCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
             public System.Byte[] Result { get => throw null; }
         }
 
-        // Generated from `System.Net.DownloadDataCompletedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void DownloadDataCompletedEventHandler(object sender, System.Net.DownloadDataCompletedEventArgs e);
 
-        // Generated from `System.Net.DownloadProgressChangedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class DownloadProgressChangedEventArgs : System.ComponentModel.ProgressChangedEventArgs
         {
             public System.Int64 BytesReceived { get => throw null; }
@@ -22,60 +20,48 @@ namespace System
             public System.Int64 TotalBytesToReceive { get => throw null; }
         }
 
-        // Generated from `System.Net.DownloadProgressChangedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void DownloadProgressChangedEventHandler(object sender, System.Net.DownloadProgressChangedEventArgs e);
 
-        // Generated from `System.Net.DownloadStringCompletedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class DownloadStringCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             internal DownloadStringCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
             public string Result { get => throw null; }
         }
 
-        // Generated from `System.Net.DownloadStringCompletedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void DownloadStringCompletedEventHandler(object sender, System.Net.DownloadStringCompletedEventArgs e);
 
-        // Generated from `System.Net.OpenReadCompletedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class OpenReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             internal OpenReadCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
             public System.IO.Stream Result { get => throw null; }
         }
 
-        // Generated from `System.Net.OpenReadCompletedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void OpenReadCompletedEventHandler(object sender, System.Net.OpenReadCompletedEventArgs e);
 
-        // Generated from `System.Net.OpenWriteCompletedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class OpenWriteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             internal OpenWriteCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
             public System.IO.Stream Result { get => throw null; }
         }
 
-        // Generated from `System.Net.OpenWriteCompletedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void OpenWriteCompletedEventHandler(object sender, System.Net.OpenWriteCompletedEventArgs e);
 
-        // Generated from `System.Net.UploadDataCompletedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class UploadDataCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             public System.Byte[] Result { get => throw null; }
             internal UploadDataCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
         }
 
-        // Generated from `System.Net.UploadDataCompletedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void UploadDataCompletedEventHandler(object sender, System.Net.UploadDataCompletedEventArgs e);
 
-        // Generated from `System.Net.UploadFileCompletedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class UploadFileCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             public System.Byte[] Result { get => throw null; }
             internal UploadFileCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
         }
 
-        // Generated from `System.Net.UploadFileCompletedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void UploadFileCompletedEventHandler(object sender, System.Net.UploadFileCompletedEventArgs e);
 
-        // Generated from `System.Net.UploadProgressChangedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class UploadProgressChangedEventArgs : System.ComponentModel.ProgressChangedEventArgs
         {
             public System.Int64 BytesReceived { get => throw null; }
@@ -85,30 +71,24 @@ namespace System
             internal UploadProgressChangedEventArgs() : base(default(int), default(object)) => throw null;
         }
 
-        // Generated from `System.Net.UploadProgressChangedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void UploadProgressChangedEventHandler(object sender, System.Net.UploadProgressChangedEventArgs e);
 
-        // Generated from `System.Net.UploadStringCompletedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class UploadStringCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             public string Result { get => throw null; }
             internal UploadStringCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
         }
 
-        // Generated from `System.Net.UploadStringCompletedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void UploadStringCompletedEventHandler(object sender, System.Net.UploadStringCompletedEventArgs e);
 
-        // Generated from `System.Net.UploadValuesCompletedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class UploadValuesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
         {
             public System.Byte[] Result { get => throw null; }
             internal UploadValuesCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) => throw null;
         }
 
-        // Generated from `System.Net.UploadValuesCompletedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void UploadValuesCompletedEventHandler(object sender, System.Net.UploadValuesCompletedEventArgs e);
 
-        // Generated from `System.Net.WebClient` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class WebClient : System.ComponentModel.Component
         {
             public bool AllowReadStreamBuffering { get => throw null; set => throw null; }
@@ -233,14 +213,12 @@ namespace System
             public event System.Net.WriteStreamClosedEventHandler WriteStreamClosed;
         }
 
-        // Generated from `System.Net.WriteStreamClosedEventArgs` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class WriteStreamClosedEventArgs : System.EventArgs
         {
             public System.Exception Error { get => throw null; }
             public WriteStreamClosedEventArgs() => throw null;
         }
 
-        // Generated from `System.Net.WriteStreamClosedEventHandler` in `System.Net.WebClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void WriteStreamClosedEventHandler(object sender, System.Net.WriteStreamClosedEventArgs e);
 
     }

@@ -12,7 +12,7 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.models.interfaces.Allocation
 
 predicate spaceProblem(FunctionCall append, string msg) {

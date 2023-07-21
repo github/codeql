@@ -1,22 +1,25 @@
 import java
+import semmle.code.java.dataflow.TaintTracking
 import TestUtilities.InlineFlowTest
 import semmle.code.java.dataflow.FlowSources
 
-class EnableLegacy extends EnableLegacyConfiguration {
-  EnableLegacy() { exists(this) }
-}
-
-class SliceValueFlowConf extends DefaultValueFlowConf {
-  override predicate isSource(DataFlow::Node source) {
-    super.isSource(source) or source instanceof RemoteFlowSource
+module SliceValueFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    DefaultFlowConfig::isSource(source) or source instanceof RemoteFlowSource
   }
+
+  predicate isSink = DefaultFlowConfig::isSink/1;
 }
 
-class SliceTaintFlowConf extends DefaultTaintFlowConf {
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    super.allowImplicitRead(node, c)
-    or
-    isSink(node) and
+module SliceTaintFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource = DefaultFlowConfig::isSource/1;
+
+  predicate isSink = DefaultFlowConfig::isSink/1;
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    DefaultFlowConfig::isSink(node) and
     c.(DataFlow::SyntheticFieldContent).getField() = "androidx.slice.Slice.action"
   }
 }
+
+import FlowTest<SliceValueFlowConfig, SliceTaintFlowConfig>

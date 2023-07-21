@@ -10,11 +10,8 @@ module Generated {
 
     /**
      * Gets the `index`th element of this enum case declaration (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    EnumElementDecl getImmediateElement(int index) {
+    EnumElementDecl getElement(int index) {
       result =
         Synth::convertEnumElementDeclFromRaw(Synth::convertEnumCaseDeclToRaw(this)
               .(Raw::EnumCaseDecl)
@@ -22,18 +19,13 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th element of this enum case declaration (0-based).
-     */
-    final EnumElementDecl getElement(int index) { result = getImmediateElement(index).resolve() }
-
-    /**
      * Gets any of the elements of this enum case declaration.
      */
-    final EnumElementDecl getAnElement() { result = getElement(_) }
+    final EnumElementDecl getAnElement() { result = this.getElement(_) }
 
     /**
      * Gets the number of elements of this enum case declaration.
      */
-    final int getNumberOfElements() { result = count(int i | exists(getElement(i))) }
+    final int getNumberOfElements() { result = count(int i | exists(this.getElement(i))) }
   }
 }

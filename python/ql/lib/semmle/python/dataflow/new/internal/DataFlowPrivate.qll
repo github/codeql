@@ -110,7 +110,8 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
  * func(1, 2, 3)
  */
 class SynthStarArgsElementParameterNode extends ParameterNodeImpl,
-  TSynthStarArgsElementParameterNode {
+  TSynthStarArgsElementParameterNode
+{
   DataFlowCallable callable;
 
   SynthStarArgsElementParameterNode() { this = TSynthStarArgsElementParameterNode(callable) }
@@ -181,11 +182,7 @@ private predicate synthDictSplatArgumentNodeStoreStep(
 private predicate dictSplatParameterNodeClearStep(ParameterNode n, DictionaryElementContent c) {
   exists(DataFlowCallable callable, ParameterPosition dictSplatPos, ParameterPosition keywordPos |
     dictSplatPos.isDictSplat() and
-    (
-      n.getParameter() = callable.(DataFlowFunction).getScope().getKwarg()
-      or
-      n = TSummaryParameterNode(callable.asLibraryCallable(), dictSplatPos)
-    ) and
+    n = callable.getParameter(dictSplatPos) and
     exists(callable.getParameter(keywordPos)) and
     keywordPos.isKeyword(c.getKey())
   )
@@ -234,28 +231,6 @@ class SynthDictSplatParameterNode extends ParameterNodeImpl, TSynthDictSplatPara
   override Location getLocation() { result = callable.getLocation() }
 
   override Parameter getParameter() { none() }
-}
-
-/**
- * Flow step from the synthetic `**kwargs` parameter to the real `**kwargs` parameter.
- * Due to restriction in dataflow library, we can only give one of them as result for
- * `DataFlowCallable.getParameter`, so this is a workaround to ensure there is flow to
- * _both_ of them.
- */
-private predicate dictSplatParameterNodeFlowStep(
-  ParameterNodeImpl nodeFrom, ParameterNodeImpl nodeTo
-) {
-  exists(DataFlowCallable callable |
-    nodeFrom = TSynthDictSplatParameterNode(callable) and
-    (
-      nodeTo.getParameter() = callable.(DataFlowFunction).getScope().getKwarg()
-      or
-      exists(ParameterPosition pos |
-        nodeTo = TSummaryParameterNode(callable.asLibraryCallable(), pos) and
-        pos.isDictSplat()
-      )
-    )
-  )
 }
 
 /**
@@ -329,8 +304,12 @@ module EssaFlow {
       // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
-      not with.isAsync() and
       contextManager.strictlyDominates(var)
+      // note: we allow this for both `with` and `async with`, since some
+      // implementations do `async def __aenter__(self): return self`, so you can do
+      // both:
+      // * `foo = x.foo(); await foo.async_method(); foo.close()` and
+      // * `async with x.foo() as foo: await foo.async_method()`.
     )
     or
     // Async with var definition
@@ -339,6 +318,12 @@ module EssaFlow {
     //  nodeTo is `x`, essa var
     //
     // This makes the cfg node the local source of the awaited value.
+    //
+    // We have this step in addition to the step above, to handle cases where the QL
+    // modeling of `f(42)` requires a `.getAwaited()` step (in API graphs) when not
+    // using `async with`, so you can do both:
+    // * `foo = await x.foo(); await foo.async_method(); foo.close()` and
+    // * `async with x.foo() as foo: await foo.async_method()`.
     exists(With with, ControlFlowNode var |
       nodeFrom.(CfgNode).getNode() = var and
       nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
@@ -403,8 +388,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
   or
   summaryFlowSteps(nodeFrom, nodeTo)
-  or
-  dictSplatParameterNodeFlowStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -468,14 +451,16 @@ predicate importTimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
   // This will miss statements inside functions called from the top level.
   isTopLevel(nodeFrom) and
   isTopLevel(nodeTo) and
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
 }
 
 predicate runtimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
   // Anything not at the top level can be executed at runtime.
   not isTopLevel(nodeFrom) and
   not isTopLevel(nodeTo) and
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
@@ -488,6 +473,15 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   or
   // Setting the possible values of the variable at the end of import time
   nodeFrom = nodeTo.(ModuleVariableNode).getADefiningWrite()
+  or
+  // a parameter with a default value, since the parameter will be in the scope of the
+  // function, while the default value itself will be in the scope that _defines_ the
+  // function.
+  exists(ParameterDefinition param |
+    // note: we go to the _control-flow node_ of the parameter, and not the ESSA node of the parameter, since for type-tracking, the ESSA node is not a LocalSourceNode, so we would get in trouble.
+    nodeFrom.asCfgNode() = param.getDefault() and
+    nodeTo.asCfgNode() = param.getDefiningNode()
+  )
 }
 
 /**
@@ -511,6 +505,14 @@ class DataFlowType extends TDataFlowType {
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
+  CastNode() { none() }
+}
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) {
   // We include read- and store steps here to force them to be
   // shown in path explanations.
   // This hack is necessary, because we have included some of these
@@ -519,7 +521,7 @@ class CastNode extends Node {
   // We should revert this once, we can remove this steps from the
   // default taint steps; this should be possible once we have
   // implemented flow summaries and recursive content.
-  CastNode() { readStep(_, _, this) or storeStep(_, _, this) }
+  readStep(_, _, n) or storeStep(_, _, n)
 }
 
 /**
@@ -528,6 +530,8 @@ class CastNode extends Node {
  */
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
+
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /**
  * Gets the type of `node`.
@@ -554,7 +558,8 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   or
   jumpStepNotSharedWithTypeTracker(nodeFrom, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -578,9 +583,6 @@ predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
       r.getAttributeName(), nodeFrom) and
     nodeTo = r
   )
-  or
-  // Default value for parameter flows to that parameter
-  defaultValueFlowStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -615,6 +617,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   dictStoreStep(nodeFrom, c, nodeTo)
   or
+  moreDictStoreSteps(nodeFrom, c, nodeTo)
+  or
   comprehensionStoreStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
@@ -625,7 +629,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom, c, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
+    nodeTo.(FlowSummaryNode).getSummaryNode())
   or
   synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
   or
@@ -715,16 +720,45 @@ predicate tupleStoreStep(CfgNode nodeFrom, TupleElementContent c, CfgNode nodeTo
 }
 
 /** Data flows from an element of a dictionary to the dictionary at a specific key. */
-predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, CfgNode nodeTo) {
+predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
   // Dictionary
   //   `{..., "key" = 42, ...}`
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the dict, `{..., "key" = 42, ...}`, cfg node
   //   c denotes element of dictionary and the key `"key"`
   exists(KeyValuePair item |
-    item = nodeTo.getNode().(DictNode).getNode().(Dict).getAnItem() and
+    item = nodeTo.asCfgNode().(DictNode).getNode().(Dict).getAnItem() and
     nodeFrom.getNode().getNode() = item.getValue() and
     c.getKey() = item.getKey().(StrConst).getS()
+  )
+}
+
+/**
+ * This has been made private since `dictStoreStep` is used by taint-tracking, and
+ * adding these extra steps made some alerts very noisy.
+ *
+ * TODO: Once TaintTracking no longer uses `dictStoreStep`, unify the two predicates.
+ */
+private predicate moreDictStoreSteps(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
+  exists(SubscriptNode subscript |
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() = subscript.getObject() and
+    nodeFrom.asCfgNode() = subscript.(DefinitionNode).getValue() and
+    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
+  )
+  or
+  // see https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
+  exists(MethodCallNode call |
+    call.calls(nodeTo.(PostUpdateNode).getPreUpdateNode(), "setdefault") and
+    call.getArg(0).asExpr().(StrConst).getText() = c.getKey() and
+    nodeFrom = call.getArg(1)
+  )
+}
+
+predicate dictClearStep(Node node, DictionaryElementContent c) {
+  exists(SubscriptNode subscript |
+    subscript instanceof DefinitionNode and
+    node.asCfgNode() = subscript.getObject() and
+    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
   )
 }
 
@@ -769,19 +803,6 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode n
   )
 }
 
-predicate defaultValueFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
-  exists(Function f, Parameter p, ParameterDefinition def |
-    // `getArgByName` supports, unlike `getAnArg`, keyword-only parameters
-    p = f.getArgByName(_) and
-    nodeFrom.asExpr() = p.getDefault() and
-    // The following expresses
-    // nodeTo.(ParameterNode).getParameter() = p
-    // without non-monotonic recursion
-    def.getParameter() = p and
-    nodeTo.getNode() = def.getDefiningNode()
-  )
-}
-
 /**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
@@ -792,13 +813,12 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   matchReadStep(nodeFrom, c, nodeTo)
   or
-  popReadStep(nodeFrom, c, nodeTo)
-  or
   forReadStep(nodeFrom, c, nodeTo)
   or
   attributeReadStep(nodeFrom, c, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom, c, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
+    nodeTo.(FlowSummaryNode).getSummaryNode())
   or
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
 }
@@ -823,40 +843,6 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
     or
     c.(DictionaryElementContent).getKey() =
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
-  )
-}
-
-/** Data flows from a sequence to a call to `pop` on the sequence. */
-predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // set.pop or list.pop
-  //   `s.pop()`
-  //   nodeFrom is `s`, cfg node
-  //   nodeTo is `s.pop()`, cfg node
-  //   c denotes element of list or set
-  exists(CallNode call, AttrNode a |
-    call.getFunction() = a and
-    a.getName() = "pop" and // Should match appropriate call since we tracked a sequence here.
-    not exists(call.getAnArg()) and
-    nodeFrom.getNode() = a.getObject() and
-    nodeTo.getNode() = call and
-    (
-      c instanceof ListElementContent
-      or
-      c instanceof SetElementContent
-    )
-  )
-  or
-  // dict.pop
-  //   `d.pop("key")`
-  //   nodeFrom is `d`, cfg node
-  //   nodeTo is `d.pop("key")`, cfg node
-  //   c denotes the key `"key"`
-  exists(CallNode call, AttrNode a |
-    call.getFunction() = a and
-    a.getName() = "pop" and // Should match appropriate call since we tracked a dictionary here.
-    nodeFrom.getNode() = a.getObject() and
-    nodeTo.getNode() = call and
-    c.(DictionaryElementContent).getKey() = call.getArg(0).getNode().(StrConst).getS()
   )
 }
 
@@ -900,7 +886,9 @@ predicate clearsContent(Node n, Content c) {
   or
   attributeClearStep(n, c)
   or
-  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  dictClearStep(n, c)
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
   dictSplatParameterNodeClearStep(n, c)
 }
@@ -955,9 +943,9 @@ predicate forceHighPrecision(Content c) { none() }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
-  n instanceof SummaryNode
+  n instanceof ModuleVariableNode
   or
-  n instanceof SummaryParameterNode
+  n instanceof FlowSummaryNode
   or
   n instanceof SynthStarArgsElementParameterNode
   or
@@ -984,7 +972,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-  receiver = call.(SummaryCall).getReceiver() and
+  receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver() and
   exists(kind)
 }
 
@@ -1008,3 +996,12 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

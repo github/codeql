@@ -28,10 +28,11 @@ private class WKScriptMessageDecl extends ClassDecl {
  * A content implying that, if a `WKScriptMessage` is tainted, its `body` field is tainted.
  */
 private class WKScriptMessageBodyInheritsTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   WKScriptMessageBodyInheritsTaint() {
     exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl() instanceof WKScriptMessageDecl and
+      f.getEnclosingDecl().asNominalTypeDecl() instanceof WKScriptMessageDecl and
       f.getName() = "body"
     )
   }
@@ -56,7 +57,7 @@ private class AdoptsWkNavigationDelegate extends Decl {
  */
 private class WKNavigationDelegateSource extends RemoteFlowSource {
   WKNavigationDelegateSource() {
-    exists(ParamDecl p, FuncDecl f, AdoptsWkNavigationDelegate t |
+    exists(ParamDecl p, Function f, AdoptsWkNavigationDelegate t |
       t.getAMember() = f and
       f.getName() =
         [
@@ -137,7 +138,6 @@ private class JsValueSummaries extends SummaryModelCsv {
         ";JSValue;true;toRange();;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;toRect();;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;toSize();;;Argument[-1];ReturnValue;taint",
-        // TODO: These models could use content flow to be more precise
         ";JSValue;true;atIndex(_:);;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;defineProperty(_:descriptor:);;;Argument[1];Argument[-1];taint",
         ";JSValue;true;forProperty(_:);;;Argument[-1];ReturnValue;taint",
@@ -169,17 +169,17 @@ private class JsExportedType extends ClassOrStructDecl {
  */
 private class JsExportedSource extends RemoteFlowSource {
   JsExportedSource() {
-    exists(MethodDecl adopter, MethodDecl base |
-      base.getEnclosingDecl() instanceof JsExportedProto and
-      adopter.getEnclosingDecl() instanceof JsExportedType
+    exists(Method adopter, Method base |
+      base.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedProto and
+      adopter.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedType
     |
       this.(DataFlow::ParameterNode).getParameter().getDeclaringFunction() = adopter and
       pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
     )
     or
     exists(FieldDecl adopter, FieldDecl base |
-      base.getEnclosingDecl() instanceof JsExportedProto and
-      adopter.getEnclosingDecl() instanceof JsExportedType
+      base.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedProto and
+      adopter.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedType
     |
       this.asExpr().(MemberRefExpr).getMember() = adopter and
       pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
@@ -206,11 +206,7 @@ private class WKUserScriptSummaries extends SummaryModelCsv {
  * A content implying that, if a `WKUserScript` is tainted, its `source` field is tainted.
  */
 private class WKUserScriptInheritsTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
-  WKUserScriptInheritsTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl().(ClassOrStructDecl).getName() = "WKUserScript" and
-      f.getName() = "source"
-    )
-  }
+  DataFlow::Content::FieldContent
+{
+  WKUserScriptInheritsTaint() { this.getField().hasQualifiedName("WKUserScript", "source") }
 }

@@ -1,0 +1,2 @@
+| Test.qll:11:8:11:25 | Module EmptyConfiguration | Modules implementing a data flow configuration should end in `Config`. |
+| Test.qll:18:8:18:16 | Module EmptyFlow | Modules implementing a data flow configuration should end in `Config`. |

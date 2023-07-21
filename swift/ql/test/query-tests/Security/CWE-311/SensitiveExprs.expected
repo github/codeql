@@ -36,14 +36,25 @@
 | testCoreData2.swift:62:30:62:30 | bankAccountNo | label:bankAccountNo, type:private information |
 | testCoreData2.swift:65:3:65:7 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
 | testCoreData2.swift:65:29:65:29 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:79:18:79:28 | .bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:80:18:80:28 | .bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:82:18:82:18 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:83:18:83:18 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:84:18:84:18 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:85:18:85:18 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:87:22:87:32 | .bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:88:22:88:22 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:89:22:89:22 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:91:10:91:10 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:95:10:95:10 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:101:10:101:10 | bankAccountNo | label:bankAccountNo, type:private information |
 | testCoreData.swift:48:15:48:15 | password | label:password, type:credential |
 | testCoreData.swift:51:24:51:24 | password | label:password, type:credential |
 | testCoreData.swift:58:15:58:15 | password | label:password, type:credential |
 | testCoreData.swift:61:25:61:25 | password | label:password, type:credential |
 | testCoreData.swift:64:16:64:16 | password | label:password, type:credential |
-| testCoreData.swift:77:2:77:25 | call to doSomething(password:) | label:doSomething(password:), type:credential |
 | testCoreData.swift:77:24:77:24 | x | label:password, type:credential |
-| testCoreData.swift:80:10:80:22 | call to getPassword() | label:getPassword(), type:credential |
+| testCoreData.swift:80:10:80:22 | call to getPassword() | label:getPassword, type:credential |
 | testCoreData.swift:85:15:85:17 | .password | label:password, type:credential |
 | testCoreData.swift:91:10:91:10 | passwd | label:passwd, type:credential |
 | testCoreData.swift:92:10:92:10 | passwd | label:passwd, type:credential |
@@ -99,18 +110,33 @@
 | testGRDB.swift:208:81:208:81 | password | label:password, type:credential |
 | testGRDB.swift:210:85:210:85 | password | label:password, type:credential |
 | testGRDB.swift:212:99:212:99 | password | label:password, type:credential |
-| testRealm.swift:34:11:34:11 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:42:11:42:11 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:52:12:52:12 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:59:11:59:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:31:20:31:20 | .password | label:password, type:credential |
+| testRealm.swift:41:11:41:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:49:11:49:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:59:12:59:12 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:66:11:66:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:73:2:73:4 | .password | label:password, type:credential |
+| testRealm.swift:73:15:73:15 | myPassword | label:myPassword, type:credential |
 | testSend.swift:29:19:29:19 | passwordPlain | label:passwordPlain, type:credential |
 | testSend.swift:33:19:33:19 | passwordPlain | label:passwordPlain, type:credential |
-| testSend.swift:45:13:45:13 | password | label:password, type:credential |
-| testSend.swift:46:13:46:13 | password | label:password, type:credential |
-| testSend.swift:47:17:47:17 | password | label:password, type:credential |
-| testSend.swift:48:23:48:23 | password | label:password, type:credential |
-| testSend.swift:49:27:49:27 | password | label:password, type:credential |
-| testSend.swift:50:27:50:27 | password | label:password, type:credential |
-| testURL.swift:13:54:13:54 | passwd | label:passwd, type:credential |
-| testURL.swift:16:55:16:55 | credit_card_no | label:credit_card_no, type:private information |
-| testURL.swift:20:22:20:22 | passwd | label:passwd, type:credential |
+| testSend.swift:58:13:58:13 | password | label:password, type:credential |
+| testSend.swift:59:13:59:13 | password | label:password, type:credential |
+| testSend.swift:60:17:60:17 | password | label:password, type:credential |
+| testSend.swift:61:23:61:23 | password | label:password, type:credential |
+| testSend.swift:62:27:62:27 | password | label:password, type:credential |
+| testSend.swift:63:27:63:27 | password | label:password, type:credential |
+| testSend.swift:71:27:71:27 | license_key | label:license_key, type:credential |
+| testSend.swift:72:27:72:30 | .mobileNumber | label:mobileNumber, type:private information |
+| testSend.swift:75:27:75:30 | .passwordFeatureEnabled | label:passwordFeatureEnabled, type:credential |
+| testSend.swift:76:27:76:30 | .Telephone | label:Telephone, type:private information |
+| testSend.swift:77:27:77:30 | .birth_day | label:birth_day, type:private information |
+| testSend.swift:78:27:78:30 | .CarePlanID | label:CarePlanID, type:private information |
+| testSend.swift:79:27:79:30 | .BankCardNo | label:BankCardNo, type:private information |
+| testSend.swift:80:27:80:30 | .MyCreditRating | label:MyCreditRating, type:private information |
+| testURL.swift:17:54:17:54 | passwd | label:passwd, type:credential |
+| testURL.swift:19:55:19:55 | account_no | label:account_no, type:private information |
+| testURL.swift:20:55:20:55 | credit_card_no | label:credit_card_no, type:private information |
+| testURL.swift:24:22:24:22 | passwd | label:passwd, type:credential |
+| testURL.swift:28:55:28:55 | e_mail | label:e_mail, type:private information |
+| testURL.swift:30:57:30:57 | a_homeaddr_z | label:a_homeaddr_z, type:private information |
+| testURL.swift:32:55:32:55 | resident_ID | label:resident_ID, type:private information |

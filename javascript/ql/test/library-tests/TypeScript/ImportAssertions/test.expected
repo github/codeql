@@ -1,0 +1,20 @@
+getImportAssertionFromImport
+| js-import-assertions.js:1:1:1:40 | import  ... son" }; | js-import-assertions.js:1:24:1:39 | { type: "json" } |
+| js-import-assertions.js:2:1:2:53 | import  ... son" }; | js-import-assertions.js:2:37:2:52 | { type: "json" } |
+| js-import-assertions.js:3:1:3:52 | import  ... son" }; | js-import-assertions.js:3:36:3:51 | { type: "json" } |
+| js-import-assertions.js:4:1:4:48 | import  ... son" }; | js-import-assertions.js:4:32:4:47 | { type: "json" } |
+| ts-import-assertions.ts:3:1:3:40 | import  ... son" }; | ts-import-assertions.ts:3:24:3:39 | { type: "json" } |
+| ts-import-assertions.ts:4:1:4:53 | import  ... son" }; | ts-import-assertions.ts:4:37:4:52 | { type: "json" } |
+| ts-import-assertions.ts:5:1:5:52 | import  ... son" }; | ts-import-assertions.ts:5:36:5:51 | { type: "json" } |
+| ts-import-assertions.ts:6:1:6:48 | import  ... son" }; | ts-import-assertions.ts:6:32:6:47 | { type: "json" } |
+getImportAssertionFromExport
+| js-import-assertions.js:6:1:6:52 | export  ... son" }; | js-import-assertions.js:6:36:6:51 | { type: "json" } |
+| js-import-assertions.js:7:1:7:47 | export  ... son" }; | js-import-assertions.js:7:31:7:46 | { type: "json" } |
+| js-import-assertions.js:8:1:8:53 | export  ... son" }; | js-import-assertions.js:8:37:8:52 | { type: "json" } |
+| ts-import-assertions.ts:8:1:8:52 | export  ... son" }; | ts-import-assertions.ts:8:36:8:51 | { type: "json" } |
+| ts-import-assertions.ts:9:1:9:47 | export  ... son" }; | ts-import-assertions.ts:9:31:9:46 | { type: "json" } |
+| ts-import-assertions.ts:10:1:10:53 | export  ... son" }; | ts-import-assertions.ts:10:37:10:52 | { type: "json" } |
+getImportAttributes
+| js-import-assertions.js:10:12:10:57 | import( ... n" } }) | js-import-assertions.js:10:29:10:56 | { asser ... on" } } |
+| ts-import-assertions.ts:12:12:12:57 | import( ... n" } }) | ts-import-assertions.ts:12:29:12:56 | { asser ... on" } } |
+errors

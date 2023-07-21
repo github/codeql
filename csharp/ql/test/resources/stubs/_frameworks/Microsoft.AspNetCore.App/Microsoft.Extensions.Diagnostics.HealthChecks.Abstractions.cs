@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,14 +9,12 @@ namespace Microsoft
         {
             namespace HealthChecks
             {
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HealthCheckContext
                 {
                     public HealthCheckContext() => throw null;
                     public Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistration Registration { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistration` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HealthCheckRegistration
                 {
                     public System.Func<System.IServiceProvider, Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck> Factory { get => throw null; set => throw null; }
@@ -29,7 +28,6 @@ namespace Microsoft
                     public System.TimeSpan Timeout { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct HealthCheckResult
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> Data { get => throw null; }
@@ -43,7 +41,6 @@ namespace Microsoft
                     public static Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult Unhealthy(string description = default(string), System.Exception exception = default(System.Exception), System.Collections.Generic.IReadOnlyDictionary<string, object> data = default(System.Collections.Generic.IReadOnlyDictionary<string, object>)) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthReport` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HealthReport
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, Microsoft.Extensions.Diagnostics.HealthChecks.HealthReportEntry> Entries { get => throw null; }
@@ -53,7 +50,6 @@ namespace Microsoft
                     public System.TimeSpan TotalDuration { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthReportEntry` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct HealthReportEntry
                 {
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> Data { get => throw null; }
@@ -67,7 +63,6 @@ namespace Microsoft
                     public System.Collections.Generic.IEnumerable<string> Tags { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum HealthStatus : int
                 {
                     Degraded = 1,
@@ -75,13 +70,11 @@ namespace Microsoft
                     Unhealthy = 0,
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHealthCheck
                 {
                     System.Threading.Tasks.Task<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult> CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext context, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheckPublisher` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHealthCheckPublisher
                 {
                     System.Threading.Tasks.Task PublishAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthReport report, System.Threading.CancellationToken cancellationToken);

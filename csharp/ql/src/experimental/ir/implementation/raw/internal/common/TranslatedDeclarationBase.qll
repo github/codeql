@@ -15,49 +15,49 @@ private import experimental.ir.internal.CSharpType
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class LocalVariableDeclarationBase extends TranslatedElement {
-  override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
+  override TranslatedElement getChild(int id) { id = 0 and result = this.getInitialization() }
 
-  override Instruction getFirstInstruction() { result = getVarAddress() }
+  override Instruction getFirstInstruction() { result = this.getVarAddress() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getTypeForGLValue(getVarType())
+    resultType = getTypeForGLValue(this.getVarType())
     or
-    hasUninitializedInstruction() and
+    this.hasUninitializedInstruction() and
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Uninitialized and
-    resultType = getTypeForPRValue(getVarType())
+    resultType = getTypeForPRValue(this.getVarType())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     (
       tag = InitializerVariableAddressTag() and
       kind instanceof GotoEdge and
-      if hasUninitializedInstruction()
-      then result = getInstruction(InitializerStoreTag())
-      else result = getInitialization().getFirstInstruction()
+      if this.hasUninitializedInstruction()
+      then result = this.getInstruction(InitializerStoreTag())
+      else result = this.getInitialization().getFirstInstruction()
     )
     or
-    hasUninitializedInstruction() and
+    this.hasUninitializedInstruction() and
     kind instanceof GotoEdge and
     tag = InitializerStoreTag() and
     (
-      result = getInitialization().getFirstInstruction()
+      result = this.getInitialization().getFirstInstruction()
       or
-      not exists(getInitialization()) and result = getParent().getChildSuccessor(this)
+      not exists(this.getInitialization()) and result = this.getParent().getChildSuccessor(this)
     )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and result = getParent().getChildSuccessor(this)
+    child = this.getInitialization() and result = this.getParent().getChildSuccessor(this)
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    hasUninitializedInstruction() and
+    this.hasUninitializedInstruction() and
     tag = InitializerStoreTag() and
     operandTag instanceof AddressOperandTag and
-    result = getVarAddress()
+    result = this.getVarAddress()
   }
 
   /**
@@ -67,11 +67,11 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
    * desugaring process.
    */
   predicate hasUninitializedInstruction() {
-    not exists(getInitialization()) or
-    getInitialization() instanceof TranslatedListInitialization
+    not exists(this.getInitialization()) or
+    this.getInitialization() instanceof TranslatedListInitialization
   }
 
-  Instruction getVarAddress() { result = getInstruction(InitializerVariableAddressTag()) }
+  Instruction getVarAddress() { result = this.getInstruction(InitializerVariableAddressTag()) }
 
   /**
    * Gets the declared variable. For compiler generated elements, this

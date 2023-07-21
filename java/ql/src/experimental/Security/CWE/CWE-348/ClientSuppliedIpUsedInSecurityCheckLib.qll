@@ -81,8 +81,8 @@ private class CompareSink extends ClientSuppliedIpUsedInSecurityCheckSink {
 }
 
 /** A data flow sink for sql operation. */
-private class SqlOperationSink extends ClientSuppliedIpUsedInSecurityCheckSink instanceof QueryInjectionSink {
-}
+private class SqlOperationSink extends ClientSuppliedIpUsedInSecurityCheckSink instanceof QueryInjectionSink
+{ }
 
 /** A method that split string. */
 class SplitMethod extends Method {

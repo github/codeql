@@ -1,13 +1,3 @@
-edges
-| test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | test.cs:71:36:71:48 | access to local variable lastWriteTime |
-| test.cs:71:13:71:71 | call to method CompareTo : Int32 | test.cs:71:13:71:76 | ... >= ... |
-| test.cs:71:36:71:48 | access to local variable lastWriteTime | test.cs:71:36:71:70 | call to method AddHours |
-| test.cs:71:36:71:70 | call to method AddHours | test.cs:71:13:71:71 | call to method CompareTo |
-| test.cs:71:36:71:70 | call to method AddHours | test.cs:71:13:71:71 | call to method CompareTo : Int32 |
-#select
-| test.cs:71:9:74:9 | if (...) ... | test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | test.cs:71:13:71:71 | call to method CompareTo | Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger. | test.cs:71:13:71:71 | call to method CompareTo | call to method CompareTo | test.cs:71:36:71:70 | call to method AddHours | offset | test.cs:69:34:69:76 | call to method GetLastWriteTime | last modification time of a file |
-| test.cs:71:9:74:9 | if (...) ... | test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | test.cs:71:13:71:71 | call to method CompareTo : Int32 | Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger. | test.cs:71:13:71:71 | call to method CompareTo | call to method CompareTo | test.cs:71:36:71:70 | call to method AddHours | offset | test.cs:69:34:69:76 | call to method GetLastWriteTime | last modification time of a file |
-| test.cs:71:9:74:9 | if (...) ... | test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | test.cs:71:13:71:76 | ... >= ... | Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger. | test.cs:71:13:71:71 | call to method CompareTo | call to method CompareTo | test.cs:71:36:71:70 | call to method AddHours | offset | test.cs:69:34:69:76 | call to method GetLastWriteTime | last modification time of a file |
 nodes
 | test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | semmle.label | call to method GetLastWriteTime : DateTime |
 | test.cs:71:13:71:71 | call to method CompareTo | semmle.label | call to method CompareTo |
@@ -15,3 +5,17 @@ nodes
 | test.cs:71:13:71:76 | ... >= ... | semmle.label | ... >= ... |
 | test.cs:71:36:71:48 | access to local variable lastWriteTime | semmle.label | access to local variable lastWriteTime |
 | test.cs:71:36:71:70 | call to method AddHours | semmle.label | call to method AddHours |
+subpaths
+edges
+| test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | test.cs:71:36:71:48 | access to local variable lastWriteTime |
+| test.cs:71:13:71:71 | call to method CompareTo : Int32 | test.cs:71:13:71:76 | ... >= ... |
+| test.cs:71:36:71:48 | access to local variable lastWriteTime | test.cs:71:13:71:71 | call to method CompareTo |
+| test.cs:71:36:71:48 | access to local variable lastWriteTime | test.cs:71:13:71:71 | call to method CompareTo : Int32 |
+| test.cs:71:36:71:48 | access to local variable lastWriteTime | test.cs:71:36:71:70 | call to method AddHours |
+| test.cs:71:36:71:70 | call to method AddHours | test.cs:71:13:71:71 | call to method CompareTo |
+| test.cs:71:36:71:70 | call to method AddHours | test.cs:71:13:71:71 | call to method CompareTo : Int32 |
+| test.cs:71:36:71:70 | call to method AddHours | test.cs:71:36:71:70 | call to method AddHours |
+#select
+| test.cs:71:9:74:9 | if (...) ... | test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | test.cs:71:13:71:71 | call to method CompareTo | Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger. | test.cs:71:13:71:71 | call to method CompareTo | call to method CompareTo | test.cs:71:36:71:70 | call to method AddHours | offset | test.cs:69:34:69:76 | call to method GetLastWriteTime | last modification time of a file |
+| test.cs:71:9:74:9 | if (...) ... | test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | test.cs:71:13:71:71 | call to method CompareTo : Int32 | Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger. | test.cs:71:13:71:71 | call to method CompareTo | call to method CompareTo | test.cs:71:36:71:70 | call to method AddHours | offset | test.cs:69:34:69:76 | call to method GetLastWriteTime | last modification time of a file |
+| test.cs:71:9:74:9 | if (...) ... | test.cs:69:34:69:76 | call to method GetLastWriteTime : DateTime | test.cs:71:13:71:76 | ... >= ... | Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger. | test.cs:71:13:71:71 | call to method CompareTo | call to method CompareTo | test.cs:71:36:71:70 | call to method AddHours | offset | test.cs:69:34:69:76 | call to method GetLastWriteTime | last modification time of a file |

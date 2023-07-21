@@ -19,10 +19,6 @@ private class CustomUrlRemoteFlowSource extends SourceModelCsv {
         ";UIApplicationDelegate;true;application(_:open:options:);;;Parameter[1];remote",
         ";UIApplicationDelegate;true;application(_:handleOpen:);;;Parameter[1];remote",
         ";UIApplicationDelegate;true;application(_:open:sourceApplication:annotation:);;;Parameter[1];remote",
-        // TODO 1: The actual source is the value of `UIApplication.LaunchOptionsKey.url` in the launchOptions dictionary.
-        //       Use dictionary value contents when available.
-        // ";UIApplicationDelegate;true;application(_:didFinishLaunchingWithOptions:);;;Parameter[1].MapValue;remote",
-        // ";UIApplicationDelegate;true;application(_:willFinishLaunchingWithOptions:);;;Parameter[1].MapValue;remote"
         ";UISceneDelegate;true;scene(_:continue:);;;Parameter[1];remote",
         ";UISceneDelegate;true;scene(_:didUpdate:);;;Parameter[1];remote",
         ";UISceneDelegate;true;scene(_:openURLContexts:);;;Parameter[1];remote",
@@ -36,7 +32,6 @@ private class CustomUrlRemoteFlowSource extends SourceModelCsv {
  * `UIApplicationDelegate.application(_:didFinishLaunchingWithOptions:)` or
  * `UIApplicationDelegate.application(_:willFinishLaunchingWithOptions:)`.
  */
-// This is a temporary workaround until the TODO 1 above is addressed.
 private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
   UrlLaunchOptionsRemoteFlowSource() {
     exists(ApplicationWithLaunchOptionsFunc f, SubscriptExpr e |
@@ -51,17 +46,19 @@ private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
   }
 }
 
-private class ApplicationWithLaunchOptionsFunc extends FuncDecl {
+private class ApplicationWithLaunchOptionsFunc extends Function {
   ApplicationWithLaunchOptionsFunc() {
     this.getName() = "application(_:" + ["did", "will"] + "FinishLaunchingWithOptions:)" and
-    this.getEnclosingDecl().(ClassOrStructDecl).getABaseTypeDecl*().(ProtocolDecl).getName() =
+    this.getEnclosingDecl().asNominalTypeDecl().getABaseTypeDecl*().(ProtocolDecl).getName() =
       "UIApplicationDelegate"
   }
 }
 
 private class LaunchOptionsUrlVarDecl extends VarDecl {
   LaunchOptionsUrlVarDecl() {
-    this.getEnclosingDecl().(StructDecl).getFullName() = "UIApplication.LaunchOptionsKey" and
+    // ideally this would be the more accurate, but currently less robust:
+    // this.getEnclosingDecl().asNominalTypeDecl().getFullName() = "UIApplication.LaunchOptionsKey" and
+    this.getType().(NominalType).getFullName() = "UIApplication.LaunchOptionsKey" and
     this.getName() = "url"
   }
 }
@@ -70,9 +67,10 @@ private class LaunchOptionsUrlVarDecl extends VarDecl {
  * A content implying that, if a `UIOpenURLContext` is tainted, then its field `url` is also tainted.
  */
 private class UiOpenUrlContextUrlInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   UiOpenUrlContextUrlInheritTaint() {
-    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "UIOpenURLContext" and
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "UIOpenURLContext" and
     this.getField().getName() = "url"
   }
 }
@@ -81,9 +79,10 @@ private class UiOpenUrlContextUrlInheritTaint extends TaintInheritingContent,
  * A content implying that, if a `NSUserActivity` is tainted, then its field `webpageURL` is also tainted.
  */
 private class UserActivityUrlInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   UserActivityUrlInheritTaint() {
-    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "NSUserActivity" and
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "NSUserActivity" and
     this.getField().getName() = "webpageURL"
   }
 }
@@ -93,9 +92,10 @@ private class UserActivityUrlInheritTaint extends TaintInheritingContent,
  * `userActivities` and `urlContexts` are also tainted.
  */
 private class ConnectionOptionsFieldsInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   ConnectionOptionsFieldsInheritTaint() {
-    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "ConnectionOptions" and
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "ConnectionOptions" and
     this.getField().getName() = ["userActivities", "urlContexts"]
   }
 }

@@ -7,7 +7,6 @@ import java
 import semmle.code.java.Serializability
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.internal.DataFlowForSerializability
 import semmle.code.java.dataflow.FlowSteps
 
 /**
@@ -20,9 +19,6 @@ class JacksonJsonIgnoreAnnotation extends NonReflectiveAnnotation {
     )
   }
 }
-
-/** DEPRECATED: Alias for JacksonJsonIgnoreAnnotation */
-deprecated class JacksonJSONIgnoreAnnotation = JacksonJsonIgnoreAnnotation;
 
 /** A type whose values may be serialized using the Jackson JSON framework. */
 abstract class JacksonSerializableType extends Type { }
@@ -91,14 +87,10 @@ private class FieldReferencedJacksonSerializableType extends JacksonSerializable
 /** A type whose values may be deserialized by the Jackson JSON framework. */
 abstract class JacksonDeserializableType extends Type { }
 
-private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlowForSerializability::Configuration {
-  TypeLiteralToJacksonDatabindFlowConfiguration() {
-    this = "TypeLiteralToJacksonDatabindFlowConfiguration"
-  }
+private module TypeLiteralToJacksonDatabindFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma, Method m, int i |
       ma.getArgument(i) = sink.asExpr() and
       m = ma.getMethod() and
@@ -110,16 +102,19 @@ private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlowForS
       )
     )
   }
+}
 
-  TypeLiteral getSourceWithFlowToJacksonDatabind() { this.hasFlow(DataFlow::exprNode(result), _) }
+private module TypeLiteralToJacksonDatabindFlow =
+  DataFlow::Global<TypeLiteralToJacksonDatabindFlowConfig>;
+
+private TypeLiteral getSourceWithFlowToJacksonDatabind() {
+  TypeLiteralToJacksonDatabindFlow::flow(DataFlow::exprNode(result), _)
 }
 
 /** A type whose values are explicitly deserialized in a call to a Jackson method. */
 private class ExplicitlyReadJacksonDeserializableType extends JacksonDeserializableType {
   ExplicitlyReadJacksonDeserializableType() {
-    exists(TypeLiteralToJacksonDatabindFlowConfiguration conf |
-      usesType(conf.getSourceWithFlowToJacksonDatabind().getReferencedType(), this)
-    )
+    usesType(getSourceWithFlowToJacksonDatabind().getReferencedType(), this)
     or
     exists(MethodAccess ma |
       // A call to a Jackson read method...
@@ -151,7 +146,6 @@ class JacksonSerializableField extends SerializableField {
 
 /** A field that may be deserialized using the Jackson JSON framework. */
 class JacksonDeserializableField extends DeserializableField {
-  pragma[assume_small_delta]
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and

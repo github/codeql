@@ -284,7 +284,8 @@ abstract class ConditionalCompletion extends NormalCompletion {
  * A completion that represents evaluation of an expression
  * with a Boolean value.
  */
-class BooleanCompletion extends ConditionalCompletion, NonNestedNormalCompletion, TBooleanCompletion {
+class BooleanCompletion extends ConditionalCompletion, NonNestedNormalCompletion, TBooleanCompletion
+{
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
   /** Gets the dual Boolean completion. */

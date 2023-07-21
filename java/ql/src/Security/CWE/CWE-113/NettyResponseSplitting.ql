@@ -27,25 +27,29 @@ abstract private class InsecureNettyObjectCreation extends ClassInstanceExpr {
   abstract string splittingType();
 }
 
-abstract private class RequestOrResponseSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation {
+abstract private class RequestOrResponseSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation
+{
   override string splittingType() { result = "Request splitting or response splitting" }
 }
 
 /**
  * Request splitting can allowing an attacker to inject/smuggle an additional HTTP request into the socket connection.
  */
-abstract private class RequestSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation {
+abstract private class RequestSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation
+{
   override string splittingType() { result = "Request splitting" }
 }
 
 /**
  * Response splitting can lead to HTTP vulnerabilities like XSS and cache poisoning.
  */
-abstract private class ResponseSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation {
+abstract private class ResponseSplittingInsecureNettyObjectCreation extends InsecureNettyObjectCreation
+{
   override string splittingType() { result = "Response splitting" }
 }
 
-private class InsecureDefaultHttpHeadersClassInstantiation extends RequestOrResponseSplittingInsecureNettyObjectCreation {
+private class InsecureDefaultHttpHeadersClassInstantiation extends RequestOrResponseSplittingInsecureNettyObjectCreation
+{
   InsecureDefaultHttpHeadersClassInstantiation() {
     this.getConstructedType()
         .hasQualifiedName("io.netty.handler.codec.http",
@@ -54,21 +58,24 @@ private class InsecureDefaultHttpHeadersClassInstantiation extends RequestOrResp
   }
 }
 
-private class InsecureDefaultHttpResponseClassInstantiation extends ResponseSplittingInsecureNettyObjectCreation {
+private class InsecureDefaultHttpResponseClassInstantiation extends ResponseSplittingInsecureNettyObjectCreation
+{
   InsecureDefaultHttpResponseClassInstantiation() {
     this.getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpResponse") and
     vulnerableArgumentIndex = 2
   }
 }
 
-private class InsecureDefaultHttpRequestClassInstantiation extends RequestSplittingInsecureNettyObjectCreation {
+private class InsecureDefaultHttpRequestClassInstantiation extends RequestSplittingInsecureNettyObjectCreation
+{
   InsecureDefaultHttpRequestClassInstantiation() {
     this.getConstructedType().hasQualifiedName("io.netty.handler.codec.http", "DefaultHttpRequest") and
     vulnerableArgumentIndex = 3
   }
 }
 
-private class InsecureDefaultFullHttpResponseClassInstantiation extends ResponseSplittingInsecureNettyObjectCreation {
+private class InsecureDefaultFullHttpResponseClassInstantiation extends ResponseSplittingInsecureNettyObjectCreation
+{
   InsecureDefaultFullHttpResponseClassInstantiation() {
     this.getConstructedType()
         .hasQualifiedName("io.netty.handler.codec.http", "DefaultFullHttpResponse") and
@@ -76,7 +83,8 @@ private class InsecureDefaultFullHttpResponseClassInstantiation extends Response
   }
 }
 
-private class InsecureDefaultFullHttpRequestClassInstantiation extends RequestSplittingInsecureNettyObjectCreation {
+private class InsecureDefaultFullHttpRequestClassInstantiation extends RequestSplittingInsecureNettyObjectCreation
+{
   InsecureDefaultFullHttpRequestClassInstantiation() {
     this.getConstructedType()
         .hasQualifiedName("io.netty.handler.codec.http", "DefaultFullHttpRequest") and

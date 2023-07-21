@@ -64,14 +64,9 @@ module SummaryComponent {
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = return(any(DataFlowDispatch::NormalReturnKind rk)) }
 
-  /** Gets a summary component that represents a jump to `c`. */
-  SummaryComponent jump(Callable c) {
-    result =
-      return(any(DataFlowDispatch::JumpReturnKind jrk |
-          jrk.getTarget() = c.getUnboundDeclaration() and
-          jrk.getTargetReturnKind() instanceof DataFlowDispatch::NormalReturnKind
-        ))
-  }
+  predicate syntheticGlobal = SummaryComponentInternal::syntheticGlobal/1;
+
+  class SyntheticGlobal = SummaryComponentInternal::SyntheticGlobal;
 }
 
 class SummaryComponentStack = Impl::Public::SummaryComponentStack;
@@ -110,8 +105,17 @@ module SummaryComponentStack {
   /** Gets a singleton stack representing the return value of a call. */
   SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
 
-  /** Gets a singleton stack representing a jump to `c`. */
-  SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }
+  /** Gets a singleton stack representing a synthetic global with name `name`. */
+  SummaryComponentStack syntheticGlobal(string synthetic) {
+    result = singleton(SummaryComponent::syntheticGlobal(synthetic))
+  }
+
+  /**
+   * DEPRECATED: Use the member predicate `getMadRepresentation` instead.
+   *
+   * Gets a textual representation of this stack used for flow summaries.
+   */
+  deprecated string getComponentStack(SummaryComponentStack s) { result = s.getMadRepresentation() }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
@@ -137,13 +141,12 @@ private class RecordConstructorFlow extends SummarizedCallable {
       preservesValue = true
     )
   }
-
-  override predicate hasProvenance(string provenance) { provenance = "manual" }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
-private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack
+{
   override predicate required(SummaryComponent head, SummaryComponentStack tail) {
     exists(Property p |
       recordConstructorFlow(_, _, p) and

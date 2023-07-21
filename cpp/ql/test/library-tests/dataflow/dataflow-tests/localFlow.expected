@@ -1,3 +1,6 @@
+WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:4,6-14)
+WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:4,31-39)
+WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:6,3-11)
 | example.c:15:37:15:37 | b | example.c:15:37:15:37 | b |
 | example.c:15:37:15:37 | b | example.c:19:6:19:6 | b |
 | example.c:15:44:15:46 | pos | example.c:24:24:24:26 | pos |
@@ -71,10 +74,10 @@
 | test.cpp:391:11:391:13 | tmp | test.cpp:391:10:391:13 | & ... |
 | test.cpp:391:17:391:23 | source1 | test.cpp:391:10:391:13 | ref arg & ... |
 | test.cpp:391:17:391:23 | source1 | test.cpp:391:16:391:23 | & ... |
-| test.cpp:480:67:480:67 | s | test.cpp:480:67:480:67 | s |
-| test.cpp:480:67:480:67 | s | test.cpp:481:21:481:21 | s |
-| test.cpp:480:67:480:67 | s | test.cpp:482:20:482:20 | s |
-| test.cpp:481:21:481:21 | s [post update] | test.cpp:480:67:480:67 | s |
-| test.cpp:481:21:481:21 | s [post update] | test.cpp:482:20:482:20 | s |
-| test.cpp:481:24:481:30 | ref arg content | test.cpp:482:23:482:29 | content |
-| test.cpp:482:23:482:29 | content | test.cpp:483:9:483:17 | p_content |
+| test.cpp:487:67:487:67 | s | test.cpp:487:67:487:67 | s |
+| test.cpp:487:67:487:67 | s | test.cpp:488:21:488:21 | s |
+| test.cpp:487:67:487:67 | s | test.cpp:489:20:489:20 | s |
+| test.cpp:488:21:488:21 | s [post update] | test.cpp:487:67:487:67 | s |
+| test.cpp:488:21:488:21 | s [post update] | test.cpp:489:20:489:20 | s |
+| test.cpp:488:24:488:30 | ref arg content | test.cpp:489:23:489:29 | content |
+| test.cpp:489:23:489:29 | content | test.cpp:490:9:490:17 | p_content |

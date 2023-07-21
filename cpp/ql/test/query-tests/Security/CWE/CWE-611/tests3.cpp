@@ -22,7 +22,7 @@ public:
 void test3_1(InputSource &data) {
 	SAX2XMLReader *p = XMLReaderFactory::createXMLReader();
 
-	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p->parse(data); // BAD (parser not correctly configured)
 }
 
 void test3_2(InputSource &data) {
@@ -42,7 +42,7 @@ SAX2XMLReader *p_3_4 = XMLReaderFactory::createXMLReader();
 
 void test3_4(InputSource &data) {
 	p_3_4->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, true);
-	p_3_4->parse(data); // GOOD [FALSE POSITIVE]
+	p_3_4->parse(data); // GOOD
 }
 
 SAX2XMLReader *p_3_5 = XMLReaderFactory::createXMLReader();

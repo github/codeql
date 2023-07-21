@@ -45,7 +45,8 @@ module DelegateElements {
  * The translation of the constructor call that happens as part of the delegate creation.
  */
 private class TranslatedDelegateConstructorCall extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override DelegateCreation generatedBy;
 
   TranslatedDelegateConstructorCall() { this = TTranslatedCompilerGeneratedElement(generatedBy, 0) }
@@ -60,7 +61,7 @@ private class TranslatedDelegateConstructorCall extends TranslatedCompilerGenera
 
   override Instruction getQualifierResult() {
     exists(ConstructorCallContext context |
-      context = getParent() and
+      context = this.getParent() and
       result = context.getReceiver()
     )
   }
@@ -80,7 +81,8 @@ private class TranslatedDelegateConstructorCall extends TranslatedCompilerGenera
  * The translation of the invoke call that happens as part of the desugaring of the delegate call.
  */
 private class TranslatedDelegateInvokeCall extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override DelegateCall generatedBy;
 
   TranslatedDelegateInvokeCall() { this = TTranslatedCompilerGeneratedElement(generatedBy, 1) }
@@ -99,7 +101,7 @@ private class TranslatedDelegateInvokeCall extends TranslatedCompilerGeneratedCa
 
   override TranslatedExprBase getQualifier() { result = getTranslatedExpr(generatedBy.getExpr()) }
 
-  override Instruction getQualifierResult() { result = getQualifier().getResult() }
+  override Instruction getQualifierResult() { result = this.getQualifier().getResult() }
 
   override TranslatedExpr getArgument(int index) {
     result = getTranslatedExpr(generatedBy.getArgument(index))

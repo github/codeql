@@ -190,7 +190,8 @@ module LoopBoundInjection {
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `X instanceof Array` check.
    */
   class InstanceofArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode {
+    DataFlow::ValueNode
+  {
     override BinaryExpr astNode;
 
     InstanceofArraySanitizerGuard() {
@@ -211,7 +212,8 @@ module LoopBoundInjection {
    * Also implicitly makes sure that only the first DoS-prone loop is selected by the query (as the .length test has outcome=false when exiting the loop).
    */
   class LengthCheckSanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode {
+    DataFlow::ValueNode
+  {
     override RelationalComparison astNode;
     DataFlow::PropRead propRead;
 

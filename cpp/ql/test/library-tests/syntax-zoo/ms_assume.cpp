@@ -8,7 +8,7 @@ int ignore_return_value();
 #define IGNORE_RETURN_VALUE() ignore_return_value()
 void myIgnoreReturnValue();
 
-int main(int argc, char *argv[])
+static int f(int argc, char *argv[])
 {
 	char *s1 = Xstrdup("Hello, world!");
 	char *s2 = Xstrdup(0);

@@ -1,10 +1,8 @@
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import DataFlow
 
-class IRConf extends Configuration {
-  IRConf() { this = "IRFieldFlowConf" }
-
-  override predicate isSource(Node src) {
+module IRConfig implements ConfigSig {
+  predicate isSource(Node src) {
     src.asExpr() instanceof NewExpr
     or
     src.asExpr().(Call).getTarget().hasName("user_input")
@@ -15,14 +13,14 @@ class IRConf extends Configuration {
     )
   }
 
-  override predicate isSink(Node sink) {
+  predicate isSink(Node sink) {
     exists(Call c |
       c.getTarget().hasName("sink") and
-      c.getAnArgument() = [sink.asExpr(), sink.asConvertedExpr()]
+      c.getAnArgument() = [sink.asExpr(), sink.asIndirectExpr(), sink.asConvertedExpr()]
     )
   }
 
-  override predicate isAdditionalFlowStep(Node a, Node b) {
+  predicate isAdditionalFlowStep(Node a, Node b) {
     b.asPartialDefinition() =
       any(Call c | c.getTarget().hasName("insert") and c.getAnArgument() = a.asExpr())
           .getQualifier()
@@ -30,3 +28,5 @@ class IRConf extends Configuration {
     b.asExpr().(AddressOfExpr).getOperand() = a.asExpr()
   }
 }
+
+module IRFlow = Global<IRConfig>;

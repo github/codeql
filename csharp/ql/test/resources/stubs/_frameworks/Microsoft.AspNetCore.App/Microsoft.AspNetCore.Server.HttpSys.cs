@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Server.HttpSys, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Hosting
         {
-            // Generated from `Microsoft.AspNetCore.Hosting.WebHostBuilderHttpSysExtensions` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class WebHostBuilderHttpSysExtensions
             {
                 public static Microsoft.AspNetCore.Hosting.IWebHostBuilder UseHttpSys(this Microsoft.AspNetCore.Hosting.IWebHostBuilder hostBuilder) => throw null;
@@ -18,7 +18,6 @@ namespace Microsoft
         {
             namespace HttpSys
             {
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.AuthenticationManager` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AuthenticationManager
                 {
                     public bool AllowAnonymous { get => throw null; set => throw null; }
@@ -27,7 +26,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Server.HttpSys.AuthenticationSchemes Schemes { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.AuthenticationSchemes` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 [System.Flags]
                 public enum AuthenticationSchemes : int
                 {
@@ -38,7 +36,6 @@ namespace Microsoft
                     None = 0,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.ClientCertificateMethod` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum ClientCertificateMethod : int
                 {
                     AllowCertificate = 1,
@@ -46,7 +43,6 @@ namespace Microsoft
                     NoCertificate = 0,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.DelegationRule` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DelegationRule : System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -54,7 +50,6 @@ namespace Microsoft
                     public string UrlPrefix { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.Http503VerbosityLevel` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum Http503VerbosityLevel : long
                 {
                     Basic = 0,
@@ -62,19 +57,16 @@ namespace Microsoft
                     Limited = 1,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.HttpSysDefaults` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class HttpSysDefaults
                 {
                     public const string AuthenticationScheme = default;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.HttpSysException` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpSysException : System.ComponentModel.Win32Exception
                 {
                     public override int ErrorCode { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.HttpSysOptions` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpSysOptions
                 {
                     public bool AllowSynchronousIO { get => throw null; set => throw null; }
@@ -96,26 +88,22 @@ namespace Microsoft
                     public bool UseLatin1RequestHeaders { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.IHttpSysRequestDelegationFeature` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHttpSysRequestDelegationFeature
                 {
                     bool CanDelegate { get; }
                     void DelegateRequest(Microsoft.AspNetCore.Server.HttpSys.DelegationRule destination);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.IHttpSysRequestInfoFeature` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHttpSysRequestInfoFeature
                 {
                     System.Collections.Generic.IReadOnlyDictionary<int, System.ReadOnlyMemory<System.Byte>> RequestInfo { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.IServerDelegationFeature` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IServerDelegationFeature
                 {
                     Microsoft.AspNetCore.Server.HttpSys.DelegationRule CreateDelegationRule(string queueName, string urlPrefix);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.RequestQueueMode` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum RequestQueueMode : int
                 {
                     Attach = 1,
@@ -123,7 +111,6 @@ namespace Microsoft
                     CreateOrAttach = 2,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.TimeoutManager` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TimeoutManager
                 {
                     public System.TimeSpan DrainEntityBody { get => throw null; set => throw null; }
@@ -134,7 +121,6 @@ namespace Microsoft
                     public System.TimeSpan RequestQueue { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.UrlPrefix` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UrlPrefix
                 {
                     public static Microsoft.AspNetCore.Server.HttpSys.UrlPrefix Create(string prefix) => throw null;
@@ -152,7 +138,6 @@ namespace Microsoft
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.HttpSys.UrlPrefixCollection` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UrlPrefixCollection : System.Collections.Generic.ICollection<Microsoft.AspNetCore.Server.HttpSys.UrlPrefix>, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Server.HttpSys.UrlPrefix>, System.Collections.IEnumerable
                 {
                     public void Add(Microsoft.AspNetCore.Server.HttpSys.UrlPrefix item) => throw null;

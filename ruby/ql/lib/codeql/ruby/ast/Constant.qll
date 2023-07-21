@@ -235,55 +235,6 @@ class ConstantAccess extends Expr, TConstantAccess {
   }
 }
 
-private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {
-  private Ruby::Constant g;
-
-  TokenConstantAccess() { this = TTokenConstantAccess(g) }
-
-  final override string getName() { result = g.getValue() }
-}
-
-private class ScopeResolutionConstantAccess extends ConstantAccess, TScopeResolutionConstantAccess {
-  private Ruby::ScopeResolution g;
-  private Ruby::Constant constant;
-
-  ScopeResolutionConstantAccess() { this = TScopeResolutionConstantAccess(g, constant) }
-
-  final override string getName() { result = constant.getValue() }
-
-  final override Expr getScopeExpr() { toGenerated(result) = g.getScope() }
-
-  final override predicate hasGlobalScope() { not exists(g.getScope()) }
-}
-
-private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAccessSynth {
-  private string value;
-
-  ConstantReadAccessSynth() { this = TConstantReadAccessSynth(_, _, value) }
-
-  final override string getName() {
-    if this.hasGlobalScope() then result = value.suffix(2) else result = value
-  }
-
-  final override Expr getScopeExpr() { synthChild(this, 0, result) }
-
-  final override predicate hasGlobalScope() { value.matches("::%") }
-}
-
-private class ConstantWriteAccessSynth extends ConstantAccess, TConstantWriteAccessSynth {
-  private string value;
-
-  ConstantWriteAccessSynth() { this = TConstantWriteAccessSynth(_, _, value) }
-
-  final override string getName() {
-    if this.hasGlobalScope() then result = value.suffix(2) else result = value
-  }
-
-  final override Expr getScopeExpr() { synthChild(this, 0, result) }
-
-  final override predicate hasGlobalScope() { value.matches("::%") }
-}
-
 /**
  * A use (read) of a constant.
  *
@@ -398,12 +349,6 @@ class ConstantWriteAccess extends ConstantAccess {
    * constant can be ambiguous from just statically looking at the AST.
    */
   string getAQualifiedName() { result = resolveConstantWrite(this) }
-
-  /**
-   * Gets a qualified name for this constant. Deprecated in favor of
-   * `getAQualifiedName` because this can return more than one value
-   */
-  deprecated string getQualifiedName() { result = this.getAQualifiedName() }
 }
 
 /**

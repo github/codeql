@@ -115,7 +115,8 @@ private class IsWindowsFromApacheCommons extends IsWindowsGuard instanceof Field
   IsWindowsFromApacheCommons() { isOsFromApacheCommons(this, "IS\\_OS\\_WINDOWS") }
 }
 
-private class IsSpecificWindowsVariantFromApacheCommons extends IsSpecificWindowsVariant instanceof FieldAccess {
+private class IsSpecificWindowsVariantFromApacheCommons extends IsSpecificWindowsVariant instanceof FieldAccess
+{
   IsSpecificWindowsVariantFromApacheCommons() {
     isOsFromApacheCommons(this, "IS\\_OS\\_WINDOWS\\_%")
   }
@@ -125,7 +126,8 @@ private class IsUnixFromApacheCommons extends IsUnixGuard instanceof FieldAccess
   IsUnixFromApacheCommons() { isOsFromApacheCommons(this, "IS\\_OS\\_UNIX") }
 }
 
-private class IsSpecificUnixVariantFromApacheCommons extends IsSpecificUnixVariant instanceof FieldAccess {
+private class IsSpecificUnixVariantFromApacheCommons extends IsSpecificUnixVariant instanceof FieldAccess
+{
   IsSpecificUnixVariantFromApacheCommons() {
     isOsFromApacheCommons(this,
       [

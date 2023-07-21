@@ -17,26 +17,24 @@ namespace Semmle.BuildAnalyser
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
-        /// <param name="sourceDir">The source directory.</param>
-        public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory)
+        public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor)
         {
             SourceDirectory = sourceDir;
             PackageDirectory = packageDirectory;
+            this.progressMonitor = progressMonitor;
 
             // Expect nuget.exe to be in a `nuget` directory under the directory containing this exe.
             var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var directory = Path.GetDirectoryName(currentAssembly);
-            if (directory is null)
-                throw new FileNotFoundException($"Directory path '{currentAssembly}' of current assembly is null");
-
+            var directory = Path.GetDirectoryName(currentAssembly)
+                ?? throw new FileNotFoundException($"Directory path '{currentAssembly}' of current assembly is null");
             nugetExe = Path.Combine(directory, "nuget", "nuget.exe");
 
             if (!File.Exists(nugetExe))
                 throw new FileNotFoundException(string.Format("NuGet could not be found at {0}", nugetExe));
 
-            packages = new DirectoryInfo(SourceDirectory).
-                EnumerateFiles("packages.config", SearchOption.AllDirectories).
-                ToArray();
+            packages = new DirectoryInfo(SourceDirectory)
+                .EnumerateFiles("packages.config", SearchOption.AllDirectories)
+                .ToArray();
         }
 
         // List of package files to download.
@@ -51,11 +49,11 @@ namespace Semmle.BuildAnalyser
         /// Download the packages to the temp folder.
         /// </summary>
         /// <param name="pm">The progress monitor used for reporting errors etc.</param>
-        public void InstallPackages(IProgressMonitor pm)
+        public void InstallPackages()
         {
             foreach (var package in packages)
             {
-                RestoreNugetPackage(package.FullName, pm);
+                RestoreNugetPackage(package.FullName);
             }
         }
 
@@ -80,9 +78,9 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="package">The package file.</param>
         /// <param name="pm">Where to log progress/errors.</param>
-        private void RestoreNugetPackage(string package, IProgressMonitor pm)
+        private void RestoreNugetPackage(string package)
         {
-            pm.NugetInstall(package);
+            progressMonitor.NugetInstall(package);
 
             /* Use nuget.exe to install a package.
              * Note that there is a clutch of NuGet assemblies which could be used to
@@ -115,7 +113,7 @@ namespace Semmle.BuildAnalyser
 
                 if (p is null)
                 {
-                    pm.FailedNugetCommand(pi.FileName, pi.Arguments, "Couldn't start process.");
+                    progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, "Couldn't start process.");
                     return;
                 }
 
@@ -125,16 +123,17 @@ namespace Semmle.BuildAnalyser
                 p.WaitForExit();
                 if (p.ExitCode != 0)
                 {
-                    pm.FailedNugetCommand(pi.FileName, pi.Arguments, output + error);
+                    progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, output + error);
                 }
             }
             catch (Exception ex)
                 when (ex is System.ComponentModel.Win32Exception || ex is FileNotFoundException)
             {
-                pm.FailedNugetCommand(pi.FileName, pi.Arguments, ex.Message);
+                progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, ex.Message);
             }
         }
 
         private readonly string nugetExe;
+        private readonly ProgressMonitor progressMonitor;
     }
 }

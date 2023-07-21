@@ -1,11 +1,7 @@
-// Generated automatically from javax.servlet.FilterChain for testing purposes
-
 package javax.servlet;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import java.io.IOException;
 
-public interface FilterChain
-{
-    void doFilter(ServletRequest p0, ServletResponse p1);
+public interface FilterChain {
+   public void doFilter(ServletRequest request, ServletResponse response) throws IOException, ServletException;
 }

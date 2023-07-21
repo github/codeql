@@ -11,10 +11,20 @@ import Libxml2
 /**
  * A flow state representing a possible configuration of an XML object.
  */
-abstract class XxeFlowState extends DataFlow::FlowState {
-  bindingset[this]
-  XxeFlowState() { any() } // required characteristic predicate
-}
+newtype TXxeFlowState =
+  /**
+   * Flow state for `AbstractDOMParser` or `SAXParser`, where:
+   *  - `disabledDefaultEntityResolution` is 1 if `setDisableDefaultEntityResolution`
+   *    is `true`, 0 otherwise.
+   *  - `createEntityReferenceNodes` is 1 if `setCreateEntityReferenceNodes`
+   *    is `true`, 0 otherwise.
+   */
+  TXercesFlowState(int disabledDefaultEntityResolution, int createEntityReferenceNodes) {
+    disabledDefaultEntityResolution in [0, 1] and
+    createEntityReferenceNodes in [0, 1]
+  } or
+  /** Flow state for libxml2 */
+  TLibXml2FlowState()
 
 /**
  * An XML library or interface.
@@ -28,13 +38,13 @@ abstract class XmlLibrary extends string {
    * object for this XML library, along with `flowstate` representing its
    * initial state.
    */
-  abstract predicate configurationSource(DataFlow::Node node, string flowstate);
+  abstract predicate configurationSource(DataFlow::Node node, TXxeFlowState flowstate);
 
   /**
    * Holds if `node` is  the sink node where an unsafe configuration object is
    * used to interpret XML.
    */
-  abstract predicate configurationSink(DataFlow::Node node, string flowstate);
+  abstract predicate configurationSink(DataFlow::Node node, TXxeFlowState flowstate);
 }
 
 /**
@@ -51,5 +61,5 @@ abstract class XxeFlowStateTransformer extends Expr {
    * transform(transform(x)) = transform(x)
    * ```
    */
-  abstract XxeFlowState transform(XxeFlowState flowstate);
+  abstract TXxeFlowState transform(TXxeFlowState flowstate);
 }

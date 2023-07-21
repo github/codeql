@@ -15,7 +15,8 @@ private API::Node digest(Cryptography::HashingAlgorithm algo) {
 }
 
 /** A call that hashes some input using a hashing algorithm from the `Digest` module. */
-private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode {
+private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
+{
   Cryptography::HashingAlgorithm algo;
 
   DigestCall() {

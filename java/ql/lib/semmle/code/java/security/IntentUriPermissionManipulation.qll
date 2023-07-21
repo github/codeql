@@ -45,7 +45,8 @@ class IntentUriPermissionManipulationAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
-private class DefaultIntentUriPermissionManipulationSink extends IntentUriPermissionManipulationSink {
+private class DefaultIntentUriPermissionManipulationSink extends IntentUriPermissionManipulationSink
+{
   DefaultIntentUriPermissionManipulationSink() {
     exists(MethodAccess ma | ma.getMethod() instanceof ActivitySetResultMethod |
       ma.getArgument(1) = this.asExpr()

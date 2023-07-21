@@ -8,10 +8,6 @@
 
 import internal.CaptureModels
 
-class Activate extends ActiveConfiguration {
-  override predicate activateToSinkConfig() { any() }
-}
-
 from DataFlowTargetApi api, string sink
 where sink = captureSink(api)
 select sink order by sink

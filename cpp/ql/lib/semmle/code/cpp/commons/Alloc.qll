@@ -12,7 +12,9 @@ predicate freeFunction(Function f, int argNum) { argNum = f.(DeallocationFunctio
  *
  * DEPRECATED: Use `DeallocationExpr` instead (this also includes `delete` expressions).
  */
-predicate freeCall(FunctionCall fc, Expr arg) { arg = fc.(DeallocationExpr).getFreedExpr() }
+deprecated predicate freeCall(FunctionCall fc, Expr arg) {
+  arg = fc.(DeallocationExpr).getFreedExpr()
+}
 
 /**
  * Is e some kind of allocation or deallocation (`new`, `alloc`, `realloc`, `delete`, `free` etc)?

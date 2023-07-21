@@ -121,7 +121,8 @@ class IteratorCrementNonMemberOperator extends Operator {
 }
 
 private class IteratorCrementNonMemberOperatorModel extends IteratorCrementNonMemberOperator,
-  DataFlowFunction {
+  DataFlowFunction
+{
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input = getIteratorArgumentInput(this, 0) and
     output.isReturnValue()
@@ -143,7 +144,8 @@ class IteratorCrementMemberOperator extends MemberFunction {
 }
 
 private class IteratorCrementMemberOperatorModel extends IteratorCrementMemberOperator,
-  DataFlowFunction, TaintFunction {
+  DataFlowFunction, TaintFunction
+{
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
     output.isReturnValue()
@@ -204,7 +206,8 @@ class IteratorBinaryArithmeticMemberOperator extends MemberFunction {
 }
 
 private class IteratorBinaryArithmeticMemberOperatorModel extends IteratorBinaryArithmeticMemberOperator,
-  TaintFunction {
+  TaintFunction
+{
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
@@ -258,7 +261,8 @@ class IteratorAssignArithmeticNonMemberOperator extends Operator {
 }
 
 private class IteratorAssignArithmeticNonMemberOperatorModel extends IteratorAssignArithmeticNonMemberOperator,
-  DataFlowFunction, TaintFunction {
+  DataFlowFunction, TaintFunction
+{
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and
     output.isReturnValue()
@@ -289,7 +293,8 @@ class IteratorAssignArithmeticMemberOperator extends MemberFunction {
 }
 
 private class IteratorAssignArithmeticMemberOperatorModel extends IteratorAssignArithmeticMemberOperator,
-  DataFlowFunction, TaintFunction {
+  DataFlowFunction, TaintFunction
+{
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
     output.isReturnValue()
@@ -325,7 +330,8 @@ class IteratorAssignArithmeticOperator extends Function {
  * non-member and member versions, use `IteratorPointerDereferenceOperator`.
  */
 class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction,
-  IteratorReferenceFunction {
+  IteratorReferenceFunction
+{
   IteratorPointerDereferenceMemberOperator() {
     this.getClassAndName("operator*") instanceof Iterator
   }
@@ -353,7 +359,8 @@ class IteratorPointerDereferenceNonMemberOperator extends Operator, IteratorRefe
 }
 
 private class IteratorPointerDereferenceNonMemberOperatorModel extends IteratorPointerDereferenceNonMemberOperator,
-  TaintFunction {
+  TaintFunction
+{
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input = getIteratorArgumentInput(this, 0) and
     output.isReturnValue()
@@ -389,7 +396,8 @@ private class IteratorFieldMemberOperator extends Operator, TaintFunction {
  * An `operator[]` member function of an iterator class.
  */
 private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
-  IteratorReferenceFunction {
+  IteratorReferenceFunction
+{
   IteratorArrayMemberOperator() { this.getClassAndName("operator[]") instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -418,7 +426,8 @@ class IteratorAssignmentMemberOperator extends MemberFunction {
  * `operator*` and use their own `operator=` to assign to the container.
  */
 private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMemberOperator,
-  TaintFunction {
+  TaintFunction
+{
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isParameterDeref(0) and
     output.isQualifierObject()

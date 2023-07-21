@@ -105,14 +105,7 @@ newtype TNode =
   // So for now we live with having these synthetic ORM nodes for _all_ classes, which
   // is a bit wasteful, but we don't think it will hurt too much.
   TSyntheticOrmModelNode(Class cls) or
-  TSummaryNode(
-    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state
-  ) {
-    FlowSummaryImpl::Private::summaryNodeRange(c, state)
-  } or
-  TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
-    FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-  } or
+  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   /** A synthetic node to capture positional arguments that are passed to a `*args` parameter. */
   TSynthStarArgsElementParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
@@ -407,7 +400,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Scope getScope() { result = mod }
 
   override string toString() {
-    result = "ModuleVariableNode for " + mod.getName() + "." + var.getId()
+    result = "ModuleVariableNode in " + mod.toString() + " for " + var.getId()
   }
 
   /** Gets the module in which this variable appears. */

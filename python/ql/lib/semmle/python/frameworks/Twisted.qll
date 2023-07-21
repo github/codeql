@@ -143,7 +143,8 @@ private module Twisted {
    * when a twisted request handler is called.
    */
   class TwistedResourceRequestHandlerRequestParam extends RemoteFlowSource::Range,
-    Request::InstanceSource, DataFlow::ParameterNode {
+    Request::InstanceSource, DataFlow::ParameterNode
+  {
     TwistedResourceRequestHandlerRequestParam() {
       this.getParameter() = any(TwistedResourceRequestHandler handler).getRequestParameter()
     }
@@ -156,7 +157,8 @@ private module Twisted {
    * that is also given remote user input. (a bit like RoutedParameter).
    */
   class TwistedResourceRequestHandlerExtraSources extends RemoteFlowSource::Range,
-    DataFlow::ParameterNode {
+    DataFlow::ParameterNode
+  {
     TwistedResourceRequestHandlerExtraSources() {
       exists(TwistedResourceRequestHandler func, int i |
         func.getName() in ["getChild", "getChildWithDefault"] and i = 1
@@ -177,7 +179,8 @@ private module Twisted {
    * Implicit response from returns of render methods.
    */
   private class TwistedResourceRenderMethodReturn extends Http::Server::HttpResponse::Range,
-    DataFlow::CfgNode {
+    DataFlow::CfgNode
+  {
     TwistedResourceRenderMethodReturn() {
       this.asCfgNode() = any(TwistedResourceRenderMethod meth).getAReturnValueFlowNode()
     }
@@ -212,7 +215,8 @@ private module Twisted {
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#redirect
    */
   class TwistedRequestRedirectCall extends Http::Server::HttpRedirectResponse::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     TwistedRequestRedirectCall() { this.calls(Request::instance(), "redirect") }
 
     override DataFlow::Node getBody() { none() }
@@ -232,7 +236,8 @@ private module Twisted {
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#addCookie
    */
   class TwistedRequestAddCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     TwistedRequestAddCookieCall() { this.calls(Twisted::Request::instance(), "addCookie") }
 
     override DataFlow::Node getHeaderArg() { none() }
@@ -248,7 +253,8 @@ private module Twisted {
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#cookies
    */
   class TwistedRequestCookiesAppendCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     TwistedRequestCookiesAppendCall() {
       exists(DataFlow::AttrRead cookiesLookup |
         cookiesLookup.getObject() = Twisted::Request::instance() and

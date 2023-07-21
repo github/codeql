@@ -14,7 +14,7 @@ private import semmle.javascript.dataflow.LocalObjects
 abstract private class AnalyzedThisExpr extends DataFlow::AnalyzedNode, DataFlow::ThisNode {
   DataFlow::FunctionNode binder;
 
-  AnalyzedThisExpr() { binder = getBinder() }
+  AnalyzedThisExpr() { binder = this.getBinder() }
 }
 
 /**
@@ -53,7 +53,7 @@ private class AnalyzedThisInBoundFunction extends AnalyzedThisExpr {
 private class AnalyzedThisAsModuleExports extends DataFlow::AnalyzedNode, DataFlow::ThisNode {
   NodeModule m;
 
-  AnalyzedThisAsModuleExports() { m = getBindingContainer() }
+  AnalyzedThisAsModuleExports() { m = this.getBindingContainer() }
 
   override AbstractValue getALocalValue() { result = TAbstractExportsObject(m) }
 }
@@ -143,7 +143,7 @@ abstract class CallWithAnalyzedReturnFlow extends DataFlow::AnalyzedValueNode {
   abstract AnalyzedFunction getACallee();
 
   override AbstractValue getALocalValue() {
-    result = getACallee().getAReturnValue() and
+    result = this.getACallee().getAReturnValue() and
     not this instanceof DataFlow::NewNode
   }
 }
@@ -160,7 +160,7 @@ abstract class CallWithNonLocalAnalyzedReturnFlow extends DataFlow::AnalyzedValu
   abstract AnalyzedFunction getACallee();
 
   override AbstractValue getAValue() {
-    result = getACallee().getAReturnValue()
+    result = this.getACallee().getAReturnValue()
     or
     // special case from the local layer (could be more precise if it is inferred that the callee is not `null`/`undefined`)
     astNode instanceof OptionalChainRoot and
@@ -213,7 +213,7 @@ class LocalFunction extends Function {
     ) and
     // if the function is non-strict and its `arguments` object is accessed, we
     // also assume that there may be other calls (through `arguments.callee`)
-    (isStrict() or not usesArgumentsObject())
+    (this.isStrict() or not this.usesArgumentsObject())
   }
 
   /** Gets an invocation of this function. */
@@ -307,7 +307,7 @@ private class AnalyzedThisInPartialInvokeCallback extends AnalyzedNode, DataFlow
   AnalyzedThisInPartialInvokeCallback() {
     exists(DataFlow::Node callbackArg |
       receiver = any(DataFlow::PartialInvokeNode call).getBoundReceiver(callbackArg) and
-      getBinder().flowsTo(callbackArg)
+      this.getBinder().flowsTo(callbackArg)
     )
   }
 

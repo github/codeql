@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.codehaus.groovy.control", "CompilationUnit", False, "compile", "", "", "Argument[-1]", "groovy", "manual"]
+      - ["org.codehaus.groovy.control", "CompilationUnit", False, "compile", "", "", "Argument[this]", "groovy-injection", "manual"]

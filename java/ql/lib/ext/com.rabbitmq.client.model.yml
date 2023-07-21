@@ -25,7 +25,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["com.rabbitmq.client", "GetResponse", True, "GetResponse", "", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
-      - ["com.rabbitmq.client", "GetResponse", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["com.rabbitmq.client", "QueueingConsumer$Delivery", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["com.rabbitmq.client", "RpcClient$Response", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client", "GetResponse", True, "GetResponse", "", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+      - ["com.rabbitmq.client", "GetResponse", True, "getBody", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client", "QueueingConsumer$Delivery", True, "getBody", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client", "RpcClient$Response", True, "getBody", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

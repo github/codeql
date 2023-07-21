@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.SignalR.Protocols.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace SignalR
         {
-            // Generated from `Microsoft.AspNetCore.SignalR.JsonHubProtocolOptions` in `Microsoft.AspNetCore.SignalR.Protocols.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class JsonHubProtocolOptions
             {
                 public JsonHubProtocolOptions() => throw null;
@@ -15,7 +15,6 @@ namespace Microsoft
 
             namespace Protocol
             {
-                // Generated from `Microsoft.AspNetCore.SignalR.Protocol.JsonHubProtocol` in `Microsoft.AspNetCore.SignalR.Protocols.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class JsonHubProtocol : Microsoft.AspNetCore.SignalR.Protocol.IHubProtocol
                 {
                     public System.ReadOnlyMemory<System.Byte> GetMessageBytes(Microsoft.AspNetCore.SignalR.Protocol.HubMessage message) => throw null;
@@ -36,7 +35,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.JsonProtocolDependencyInjectionExtensions` in `Microsoft.AspNetCore.SignalR.Protocols.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class JsonProtocolDependencyInjectionExtensions
             {
                 public static TBuilder AddJsonProtocol<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.SignalR.ISignalRBuilder => throw null;

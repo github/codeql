@@ -14,3 +14,7 @@
 | test.cpp:378:9:378:11 | val | The variable $@ may not be initialized at this access. | test.cpp:359:6:359:8 | val | val |
 | test.cpp:417:10:417:10 | j | The variable $@ may not be initialized at this access. | test.cpp:414:9:414:9 | j | j |
 | test.cpp:436:9:436:9 | j | The variable $@ may not be initialized at this access. | test.cpp:431:9:431:9 | j | j |
+| test.cpp:454:2:454:2 | x | The variable $@ may not be initialized at this access. | test.cpp:452:6:452:6 | x | x |
+| test.cpp:460:7:460:7 | x | The variable $@ may not be initialized at this access. | test.cpp:458:6:458:6 | x | x |
+| test.cpp:467:2:467:2 | x | The variable $@ may not be initialized at this access. | test.cpp:464:6:464:6 | x | x |
+| test.cpp:474:7:474:7 | x | The variable $@ may not be initialized at this access. | test.cpp:471:6:471:6 | x | x |

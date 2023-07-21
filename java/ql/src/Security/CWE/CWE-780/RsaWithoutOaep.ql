@@ -12,9 +12,9 @@
 
 import java
 import semmle.code.java.security.RsaWithoutOaepQuery
-import DataFlow::PathGraph
+import RsaWithoutOaepFlow::PathGraph
 
-from RsaWithoutOaepConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
-where conf.hasFlowPath(source, sink)
+from RsaWithoutOaepFlow::PathNode source, RsaWithoutOaepFlow::PathNode sink
+where RsaWithoutOaepFlow::flowPath(source, sink)
 select source, source, sink, "This specification is used to $@ without OAEP padding.", sink,
   "initialize an RSA cipher"

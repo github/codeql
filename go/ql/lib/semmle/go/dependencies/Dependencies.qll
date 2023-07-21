@@ -28,9 +28,7 @@ abstract class Dependency extends Locatable {
    */
   abstract predicate relevantForFile(File file);
 
-  /**
-   * An import of this dependency.
-   */
+  /** Gets an import of this dependency. */
   ImportSpec getAnImport() {
     result.getPath().regexpMatch("\\Q" + this.getDepPath() + "\\E(/.*)?") and
     this.relevantForFile(result.getFile())
@@ -86,7 +84,7 @@ class GoModDependency extends Dependency, GoModRequireLine {
   }
 
   /**
-   * Holds if this require line originally states dependency `path` had version `ver`.
+   * Holds if this require line originally states dependency `path` had version `v`.
    *
    * The actual info of this dependency can change based on `replace` directives in the same go.mod
    * file, which replace a dependency with another one.

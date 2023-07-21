@@ -22,12 +22,12 @@ abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
   abstract predicate reads(AbstractValue base, string propName);
 
   override AbstractValue getAValue() {
-    result = getASourceProperty().getAValue() or
+    result = this.getASourceProperty().getAValue() or
     result = DataFlow::AnalyzedNode.super.getAValue()
   }
 
   override AbstractValue getALocalValue() {
-    result = getASourceProperty().getALocalValue() or
+    result = this.getASourceProperty().getALocalValue() or
     result = DataFlow::AnalyzedNode.super.getALocalValue()
   }
 
@@ -37,7 +37,7 @@ abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
    */
   pragma[noinline]
   private AbstractProperty getASourceProperty() {
-    exists(AbstractValue base, string prop | reads(base, prop) |
+    exists(AbstractValue base, string prop | this.reads(base, prop) |
       result = MkAbstractProperty(base, prop)
     )
   }
@@ -45,7 +45,7 @@ abstract class AnalyzedPropertyRead extends DataFlow::AnalyzedNode {
   override predicate isIncomplete(DataFlow::Incompleteness cause) {
     super.isIncomplete(cause)
     or
-    exists(AbstractValue base | reads(base, _) | base.isIndefinite(cause))
+    exists(AbstractValue base | this.reads(base, _) | base.isIndefinite(cause))
   }
 }
 
@@ -105,7 +105,7 @@ abstract class AnalyzedPropertyWrite extends DataFlow::Node {
    */
   predicate writesValue(AbstractValue baseVal, string propName, AbstractValue val) {
     exists(AnalyzedNode source |
-      writes(baseVal, propName, source) and
+      this.writes(baseVal, propName, source) and
       val = source.getALocalValue()
     )
   }
@@ -120,7 +120,8 @@ abstract class AnalyzedPropertyWrite extends DataFlow::Node {
 /**
  * Flow analysis for property writes.
  */
-private class AnalyzedExplicitPropertyWrite extends AnalyzedPropertyWrite instanceof DataFlow::PropWrite {
+private class AnalyzedExplicitPropertyWrite extends AnalyzedPropertyWrite instanceof DataFlow::PropWrite
+{
   override predicate writes(AbstractValue base, string prop, DataFlow::AnalyzedNode source) {
     explicitPropertyWrite(this, base, prop, source)
   }
@@ -150,7 +151,7 @@ private class AnalyzedArgumentsCallee extends AnalyzedNonNumericPropertyRead {
   AnalyzedArgumentsCallee() { propName = "callee" }
 
   override AbstractValue getALocalValue() {
-    exists(AbstractArguments baseVal | reads(baseVal, _) |
+    exists(AbstractArguments baseVal | this.reads(baseVal, _) |
       result = TAbstractFunction(baseVal.getFunction())
     )
     or

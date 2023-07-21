@@ -7,6 +7,7 @@ import go
 import semmle.go.security.Xss
 private import semmle.go.security.SafeUrlFlowCustomizations
 
+// Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /**
  * Provides classes for working with untrusted flow sources, sinks and taint propagators
  * from the [Beego](https://github.com/beego/beego) package.
@@ -51,13 +52,9 @@ module Beego {
    */
   private class BeegoInputSource extends UntrustedFlowSource::Range {
     string methodName;
-    FunctionOutput output;
 
     BeegoInputSource() {
-      exists(DataFlow::MethodCallNode c | this = output.getExitNode(c) |
-        c.getTarget().hasQualifiedName(contextPackagePath(), "BeegoInput", methodName)
-      ) and
-      (
+      exists(FunctionOutput output |
         methodName = "Bind" and
         output.isParameter(0)
         or
@@ -66,6 +63,10 @@ module Beego {
             "URI", "URL", "UserAgent"
           ] and
         output.isResult(0)
+      |
+        exists(DataFlow::MethodCallNode c | this = output.getExitNode(c) |
+          c.getTarget().hasQualifiedName(contextPackagePath(), "BeegoInput", methodName)
+        )
       )
     }
 
@@ -81,16 +82,8 @@ module Beego {
    * `beego.Controller` sources of untrusted data.
    */
   private class BeegoControllerSource extends UntrustedFlowSource::Range {
-    string methodName;
-    FunctionOutput output;
-
     BeegoControllerSource() {
-      exists(DataFlow::MethodCallNode c |
-        c.getTarget().hasQualifiedName(packagePath(), "Controller", methodName)
-      |
-        this = output.getExitNode(c)
-      ) and
-      (
+      exists(string methodName, FunctionOutput output |
         methodName = "ParseForm" and
         output.isParameter(0)
         or
@@ -99,6 +92,12 @@ module Beego {
         or
         methodName = "GetFile" and
         output.isResult(1)
+      |
+        exists(DataFlow::MethodCallNode c |
+          c.getTarget().hasQualifiedName(packagePath(), "Controller", methodName)
+        |
+          this = output.getExitNode(c)
+        )
       )
     }
   }
@@ -225,10 +224,8 @@ module Beego {
   }
 
   private class ContextResponseBody extends Http::ResponseBody::Range {
-    string name;
-
     ContextResponseBody() {
-      exists(Method m | m.hasQualifiedName(contextPackagePath(), "Context", name) |
+      exists(Method m, string name | m.hasQualifiedName(contextPackagePath(), "Context", name) |
         name = "Abort" and this = m.getACall().getArgument(1)
         or
         name = "WriteString" and this = m.getACall().getArgument(0)
@@ -256,7 +253,7 @@ module Beego {
       this.getTarget().hasQualifiedName([packagePath(), logsPackagePath()], getALogFunctionName())
     }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class BeegoLoggerMethods extends LoggerCall::Range, DataFlow::MethodCallNode {
@@ -264,40 +261,13 @@ module Beego {
       this.getTarget().hasQualifiedName(logsPackagePath(), "BeeLogger", getALogFunctionName())
     }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class UtilLoggers extends LoggerCall::Range, DataFlow::CallNode {
     UtilLoggers() { this.getTarget().hasQualifiedName(utilsPackagePath(), "Display") }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
-  }
-
-  private class TopLevelTaintPropagators extends TaintTracking::FunctionModel {
-    string name;
-
-    TopLevelTaintPropagators() {
-      this.hasQualifiedName(packagePath(), name) and
-      name in ["HTML2str", "Htmlquote", "Htmlunquote", "MapGet", "ParseForm", "Str2html", "Substr"]
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      name in ["HTML2str", "Htmlquote", "Htmlunquote", "MapGet", "Str2html", "Substr"] and
-      input.isParameter(0) and
-      output.isResult(0)
-      or
-      name = "ParseForm" and
-      input.isParameter(0) and
-      output.isParameter(1)
-    }
-  }
-
-  private class ContextTaintPropagators extends TaintTracking::FunctionModel {
-    ContextTaintPropagators() { this.hasQualifiedName(contextPackagePath(), "WriteBody") }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameter(2) and output.isParameter(1)
-    }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
@@ -326,16 +296,17 @@ module Beego {
   }
 
   private class RedirectMethods extends Http::Redirect::Range, DataFlow::CallNode {
-    string package;
     string className;
 
     RedirectMethods() {
-      (
-        package = packagePath() and className = "Controller"
-        or
-        package = contextPackagePath() and className = "Context"
-      ) and
-      this = any(Method m | m.hasQualifiedName(package, className, "Redirect")).getACall()
+      exists(string package |
+        (
+          package = packagePath() and className = "Controller"
+          or
+          package = contextPackagePath() and className = "Context"
+        ) and
+        this = any(Method m | m.hasQualifiedName(package, className, "Redirect")).getACall()
+      )
     }
 
     override DataFlow::Node getUrl() {
@@ -348,42 +319,11 @@ module Beego {
   }
 
   private class UtilsTaintPropagators extends TaintTracking::FunctionModel {
-    string name;
-
-    UtilsTaintPropagators() {
-      this.hasQualifiedName(utilsPackagePath(), name) and
-      name in [
-          "GetDisplayString", "SliceChunk", "SliceDiff", "SliceFilter", "SliceIntersect",
-          "SliceMerge", "SlicePad", "SliceRand", "SliceReduce", "SliceShuffle", "SliceUnique"
-        ]
-    }
+    UtilsTaintPropagators() { this.hasQualifiedName(utilsPackagePath(), "GetDisplayString") }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      name in [
-          "GetDisplayString", "SliceIntersect", "SliceMerge", "SlicePad", "SliceRand",
-          "SliceShuffle", "SliceUnique"
-        ] and
       input.isParameter(_) and
       output.isResult(0)
-      or
-      name in ["SliceChunk", "SliceDiff", "SliceFilter", "SliceReduce"] and
-      input.isParameter(0) and
-      output.isResult(0)
-    }
-  }
-
-  private class BeeMapModels extends TaintTracking::FunctionModel, Method {
-    string name;
-
-    BeeMapModels() {
-      this.hasQualifiedName(utilsPackagePath(), "BeeMap", name) and
-      name in ["Get", "Set", "Items"]
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      name = "Set" and input.isParameter(1) and output.isReceiver()
-      or
-      name in ["Get", "Items"] and input.isReceiver() and output.isResult(0)
     }
   }
 }

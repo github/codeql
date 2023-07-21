@@ -25,7 +25,7 @@ class TaintedPathAtmConfig extends AtmConfig {
     label = sink.(TaintedPath::Sink).getAFlowLabel()
     or
     // Allow effective sinks to have any taint label
-    isEffectiveSink(sink)
+    this.isEffectiveSink(sink)
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof TaintedPath::Sanitizer }
@@ -51,12 +51,13 @@ class TaintedPathAtmConfig extends AtmConfig {
  * of barrier guards, we port the barrier guards for the boosted query from the standard library to
  * sanitizer guards here.
  */
-private class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitizerGuardNode instanceof TaintedPath::BarrierGuardNode {
+private class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitizerGuardNode instanceof TaintedPath::BarrierGuardNode
+{
   override predicate sanitizes(boolean outcome, Expr e) {
-    blocks(outcome, e) or blocks(outcome, e, _)
+    this.blocks(outcome, e) or this.blocks(outcome, e, _)
   }
 
   override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-    sanitizes(outcome, e) and exists(label)
+    this.sanitizes(outcome, e) and exists(label)
   }
 }

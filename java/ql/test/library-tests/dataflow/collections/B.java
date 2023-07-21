@@ -49,67 +49,67 @@ public class B {
 
   void foo() throws InterruptedException {
     {
-      // "java.util;Map$Entry;true;getKey;;;MapKey of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map$Entry;true;getKey;;;MapKey of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapKeyEntry(source()); out = ((Map.Entry)in).getKey(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map$Entry;true;getValue;;;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map$Entry;true;getValue;;;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValueEntry(source()); out = ((Map.Entry)in).getValue(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map$Entry;true;setValue;;;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map$Entry;true;setValue;;;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValueEntry(source()); out = ((Map.Entry)in).setValue(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map$Entry;true;setValue;;;Argument[0];MapValue of Argument[-1];value;manual",
+      // "java.util;Map$Entry;true;setValue;;;Argument[0];MapValue of Argument[this];value;manual",
       Map.Entry out = null;
       Object in = source(); out.setValue(in); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.lang;Iterable;true;iterator;();;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.lang;Iterable;true;iterator;();;Element of Argument[this];Element of ReturnValue;value;manual",
       Iterator out = null;
       Iterable in = storeElementList(source()); out = in.iterator(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.lang;Iterable;true;spliterator;();;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.lang;Iterable;true;spliterator;();;Element of Argument[this];Element of ReturnValue;value;manual",
       Spliterator out = null;
       Iterable in = storeElementList(source()); out = in.spliterator(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Iterator;true;next;;;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Iterator;true;next;;;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Iterator in = storeElementListIterator(source()); out = in.next(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;ListIterator;true;previous;;;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;ListIterator;true;previous;;;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       ListIterator in = storeElementListIterator(source()); out = in.previous(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;ListIterator;true;add;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;ListIterator;true;add;(Object);;Argument[0];Element of Argument[this];value;manual",
       ListIterator out = null;
       Object in = source(); out.add(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;ListIterator;true;set;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;ListIterator;true;set;(Object);;Argument[0];Element of Argument[this];value;manual",
       ListIterator out = null;
       Object in = source(); out.set(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Enumeration;true;asIterator;;;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;Enumeration;true;asIterator;;;Element of Argument[this];Element of ReturnValue;value;manual",
       Iterator out = null;
       Enumeration in = storeElementEnumeration(source()); out = in.asIterator(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Enumeration;true;nextElement;;;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Enumeration;true;nextElement;;;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Enumeration in = storeElementEnumeration(source()); out = in.nextElement(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;computeIfAbsent;;;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map;true;computeIfAbsent;;;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Map)in).computeIfAbsent(null,null); sink(out); // $ hasValueFlow
     }
@@ -118,27 +118,27 @@ public class B {
       Object out = ((Map)null).computeIfAbsent(null,k -> source()); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;computeIfAbsent;;;ReturnValue of Argument[1];MapValue of Argument[-1];value;manual",
+      // "java.util;Map;true;computeIfAbsent;;;ReturnValue of Argument[1];MapValue of Argument[this];value;manual",
       Map out = null;
       out.computeIfAbsent(null,k -> source()); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;entrySet;;;MapValue of Argument[-1];MapValue of Element of ReturnValue;value;manual",
+      // "java.util;Map;true;entrySet;;;MapValue of Argument[this];MapValue of Element of ReturnValue;value;manual",
       Set<Map.Entry> out = null;
       Object in = storeMapValue(source()); out = ((Map)in).entrySet(); sink(readMapValue(readElement(out))); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;entrySet;;;MapKey of Argument[-1];MapKey of Element of ReturnValue;value;manual",
+      // "java.util;Map;true;entrySet;;;MapKey of Argument[this];MapKey of Element of ReturnValue;value;manual",
       Set<Map.Entry> out = null;
       Object in = storeMapKey(source()); out = ((Map)in).entrySet(); sink(readMapKey(readElement(out))); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;get;;;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map;true;get;;;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Map)in).get(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;getOrDefault;;;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map;true;getOrDefault;;;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Map)in).getOrDefault(null,null); sink(out); // $ hasValueFlow
     }
@@ -148,662 +148,662 @@ public class B {
       Object in = source(); out = ((Map)null).getOrDefault(null,in); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;put;;;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map;true;put;;;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Map)in).put(null,null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;put;;;Argument[0];MapKey of Argument[-1];value;manual",
+      // "java.util;Map;true;put;;;Argument[0];MapKey of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.put(in,null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;put;;;Argument[1];MapValue of Argument[-1];value;manual",
+      // "java.util;Map;true;put;;;Argument[1];MapValue of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.put(null,in); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;putIfAbsent;;;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map;true;putIfAbsent;;;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Map)in).putIfAbsent(null,null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;putIfAbsent;;;Argument[0];MapKey of Argument[-1];value;manual",
+      // "java.util;Map;true;putIfAbsent;;;Argument[0];MapKey of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.putIfAbsent(in,null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;putIfAbsent;;;Argument[1];MapValue of Argument[-1];value;manual",
+      // "java.util;Map;true;putIfAbsent;;;Argument[1];MapValue of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.putIfAbsent(null,in); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;remove;(Object);;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map;true;remove;(Object);;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Map)in).remove(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;replace;(Object,Object);;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Map;true;replace;(Object,Object);;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Map)in).replace(null,null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;replace;(Object,Object);;Argument[0];MapKey of Argument[-1];value;manual",
+      // "java.util;Map;true;replace;(Object,Object);;Argument[0];MapKey of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.replace(in,null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;replace;(Object,Object);;Argument[1];MapValue of Argument[-1];value;manual",
+      // "java.util;Map;true;replace;(Object,Object);;Argument[1];MapValue of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.replace(null,in); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;replace;(Object,Object,Object);;Argument[0];MapKey of Argument[-1];value;manual",
+      // "java.util;Map;true;replace;(Object,Object,Object);;Argument[0];MapKey of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.replace(in,null,null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;replace;(Object,Object,Object);;Argument[2];MapValue of Argument[-1];value;manual",
+      // "java.util;Map;true;replace;(Object,Object,Object);;Argument[2];MapValue of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.replace(null,null,in); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;Map;true;keySet;();;MapKey of Argument[this];Element of ReturnValue;value;manual",
       Set out = null;
       Object in = storeMapKey(source()); out = ((Map)in).keySet(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;values;();;MapValue of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;Map;true;values;();;MapValue of Argument[this];Element of ReturnValue;value;manual",
       Iterable out = null;
       Object in = storeMapValue(source()); out = ((Map)in).values(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;merge;(Object,Object,BiFunction);;Argument[1];MapValue of Argument[-1];value;manual",
+      // "java.util;Map;true;merge;(Object,Object,BiFunction);;Argument[1];MapValue of Argument[this];value;manual",
       Map out = null;
       Object in = source(); out.merge(null,in,null); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual",
+      // "java.util;Map;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[this];value;manual",
       Map out = null;
       Object in = storeMapKey(source()); out.putAll((Map)in); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Map;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual",
+      // "java.util;Map;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[this];value;manual",
       Map out = null;
       Object in = storeMapValue(source()); out.putAll((Map)in); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Collection;true;parallelStream;();;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;Collection;true;parallelStream;();;Element of Argument[this];Element of ReturnValue;value;manual",
       Stream out = null;
       Collection in = storeElementList(source()); out = in.parallelStream(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Collection;true;stream;();;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;Collection;true;stream;();;Element of Argument[this];Element of ReturnValue;value;manual",
       Stream out = null;
       Collection in = storeElementList(source()); out = in.stream(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Collection;true;toArray;;;Element of Argument[-1];ArrayElement of ReturnValue;value;manual",
+      // "java.util;Collection;true;toArray;;;Element of Argument[this];ArrayElement of ReturnValue;value;manual",
       Object[] out = null;
       Collection in = storeElementList(source()); out = in.toArray(); sink(readArrayElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Collection;true;toArray;;;Element of Argument[-1];ArrayElement of Argument[0];value;manual",
+      // "java.util;Collection;true;toArray;;;Element of Argument[this];ArrayElement of Argument[0];value;manual",
       Object[] out = null;
       Collection in = storeElementList(source()); in.toArray(out); sink(readArrayElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Collection;true;add;;;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Collection;true;add;;;Argument[0];Element of Argument[this];value;manual",
       Collection out = null;
       Object in = source(); out.add(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Collection;true;addAll;;;Element of Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Collection;true;addAll;;;Element of Argument[0];Element of Argument[this];value;manual",
       Collection out = null;
       Collection in = storeElementList(source()); out.addAll(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;List;true;get;(int);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;List;true;get;(int);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       List in = storeElementList(source()); out = in.get(0); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;List;true;listIterator;;;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;List;true;listIterator;;;Element of Argument[this];Element of ReturnValue;value;manual",
       ListIterator out = null;
       List in = storeElementList(source()); out = in.listIterator(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;List;true;remove;(int);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;List;true;remove;(int);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       List in = storeElementList(source()); out = in.remove(0); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;List;true;set;(int,Object);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;List;true;set;(int,Object);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       List in = storeElementList(source()); out = in.set(0,null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;List;true;set;(int,Object);;Argument[1];Element of Argument[-1];value;manual",
+      // "java.util;List;true;set;(int,Object);;Argument[1];Element of Argument[this];value;manual",
       List out = null;
       Object in = source(); out.set(0,in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;List;true;subList;;;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;List;true;subList;;;Element of Argument[this];Element of ReturnValue;value;manual",
       List out = null;
       List in = storeElementList(source()); out = in.subList(0,0); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;List;true;add;(int,Object);;Argument[1];Element of Argument[-1];value;manual",
+      // "java.util;List;true;add;(int,Object);;Argument[1];Element of Argument[this];value;manual",
       List out = null;
       Object in = source(); out.add(0,in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;List;true;addAll;(int,Collection);;Element of Argument[1];Element of Argument[-1];value;manual",
+      // "java.util;List;true;addAll;(int,Collection);;Element of Argument[1];Element of Argument[this];value;manual",
       List out = null;
       Collection in = storeElementList(source()); out.addAll(0,in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Vector;true;elementAt;(int);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Vector;true;elementAt;(int);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Vector in = storeElementStack(source()); out = in.elementAt(0); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Vector;true;elements;();;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;Vector;true;elements;();;Element of Argument[this];Element of ReturnValue;value;manual",
       Enumeration out = null;
       Vector in = storeElementStack(source()); out = in.elements(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Vector;true;firstElement;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Vector;true;firstElement;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Vector in = storeElementStack(source()); out = in.firstElement(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Vector;true;lastElement;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Vector;true;lastElement;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Vector in = storeElementStack(source()); out = in.lastElement(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Vector;true;addElement;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Vector;true;addElement;(Object);;Argument[0];Element of Argument[this];value;manual",
       Vector out = null;
       Object in = source(); out.addElement(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Vector;true;insertElementAt;(Object,int);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Vector;true;insertElementAt;(Object,int);;Argument[0];Element of Argument[this];value;manual",
       Vector out = null;
       Object in = source(); out.insertElementAt(in,0); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Vector;true;setElementAt;(Object,int);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Vector;true;setElementAt;(Object,int);;Argument[0];Element of Argument[this];value;manual",
       Vector out = null;
       Object in = source(); out.setElementAt(in,0); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Vector;true;copyInto;(Object[]);;Element of Argument[-1];ArrayElement of Argument[0];value;manual",
+      // "java.util;Vector;true;copyInto;(Object[]);;Element of Argument[this];ArrayElement of Argument[0];value;manual",
       Object[] out = null;
       Vector in = storeElementStack(source()); in.copyInto(out); sink(readArrayElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Stack;true;peek;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Stack;true;peek;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Stack in = storeElementStack(source()); out = in.peek(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Stack;true;pop;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Stack;true;pop;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Stack in = storeElementStack(source()); out = in.pop(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Stack;true;push;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Stack;true;push;(Object);;Argument[0];Element of Argument[this];value;manual",
       Stack out = null;
       Object in = source(); out.push(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Queue;true;element;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Queue;true;element;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Queue in = storeElementBlockingDeque(source()); out = in.element(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Queue;true;peek;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Queue;true;peek;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Queue in = storeElementBlockingDeque(source()); out = in.peek(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Queue;true;poll;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Queue;true;poll;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Queue in = storeElementBlockingDeque(source()); out = in.poll(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Queue;true;remove;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Queue;true;remove;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Queue in = storeElementBlockingDeque(source()); out = in.remove(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Queue;true;offer;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Queue;true;offer;(Object);;Argument[0];Element of Argument[this];value;manual",
       Queue out = null;
       Object in = source(); out.offer(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;descendingIterator;();;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;Deque;true;descendingIterator;();;Element of Argument[this];Element of ReturnValue;value;manual",
       Iterator out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.descendingIterator(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;getFirst;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;getFirst;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.getFirst(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;getLast;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;getLast;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.getLast(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;peekFirst;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;peekFirst;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.peekFirst(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;peekLast;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;peekLast;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.peekLast(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;pollFirst;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;pollFirst;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.pollFirst(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;pollLast;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;pollLast;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.pollLast(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;pop;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;pop;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.pop(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;removeFirst;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;removeFirst;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.removeFirst(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;removeLast;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Deque;true;removeLast;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Deque in = storeElementBlockingDeque(source()); out = in.removeLast(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;push;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Deque;true;push;(Object);;Argument[0];Element of Argument[this];value;manual",
       Deque out = null;
       Object in = source(); out.push(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;offerLast;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Deque;true;offerLast;(Object);;Argument[0];Element of Argument[this];value;manual",
       Deque out = null;
       Object in = source(); out.offerLast(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;offerFirst;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Deque;true;offerFirst;(Object);;Argument[0];Element of Argument[this];value;manual",
       Deque out = null;
       Object in = source(); out.offerFirst(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;addLast;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Deque;true;addLast;(Object);;Argument[0];Element of Argument[this];value;manual",
       Deque out = null;
       Object in = source(); out.addLast(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Deque;true;addFirst;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util;Deque;true;addFirst;(Object);;Argument[0];Element of Argument[this];value;manual",
       Deque out = null;
       Object in = source(); out.addFirst(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingDeque;true;pollFirst;(long,TimeUnit);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util.concurrent;BlockingDeque;true;pollFirst;(long,TimeUnit);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       BlockingDeque in = storeElementBlockingDeque(source()); out = in.pollFirst(0,null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingDeque;true;pollLast;(long,TimeUnit);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util.concurrent;BlockingDeque;true;pollLast;(long,TimeUnit);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       BlockingDeque in = storeElementBlockingDeque(source()); out = in.pollLast(0,null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingDeque;true;takeFirst;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util.concurrent;BlockingDeque;true;takeFirst;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       BlockingDeque in = storeElementBlockingDeque(source()); out = in.takeFirst(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingDeque;true;takeLast;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util.concurrent;BlockingDeque;true;takeLast;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       BlockingDeque in = storeElementBlockingDeque(source()); out = in.takeLast(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingQueue;true;poll;(long,TimeUnit);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util.concurrent;BlockingQueue;true;poll;(long,TimeUnit);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       BlockingQueue in = storeElementBlockingDeque(source()); out = in.poll(0,null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingQueue;true;take;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util.concurrent;BlockingQueue;true;take;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       BlockingQueue in = storeElementBlockingDeque(source()); out = in.take(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingQueue;true;offer;(Object,long,TimeUnit);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;BlockingQueue;true;offer;(Object,long,TimeUnit);;Argument[0];Element of Argument[this];value;manual",
       BlockingQueue out = null;
       Object in = source(); out.offer(in,0,null); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingQueue;true;put;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;BlockingQueue;true;put;(Object);;Argument[0];Element of Argument[this];value;manual",
       BlockingQueue out = null;
       Object in = source(); out.put(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingDeque;true;offerLast;(Object,long,TimeUnit);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;BlockingDeque;true;offerLast;(Object,long,TimeUnit);;Argument[0];Element of Argument[this];value;manual",
       BlockingDeque out = null;
       Object in = source(); out.offerLast(in,0,null); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingDeque;true;offerFirst;(Object,long,TimeUnit);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;BlockingDeque;true;offerFirst;(Object,long,TimeUnit);;Argument[0];Element of Argument[this];value;manual",
       BlockingDeque out = null;
       Object in = source(); out.offerFirst(in,0,null); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingDeque;true;putLast;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;BlockingDeque;true;putLast;(Object);;Argument[0];Element of Argument[this];value;manual",
       BlockingDeque out = null;
       Object in = source(); out.putLast(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingDeque;true;putFirst;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;BlockingDeque;true;putFirst;(Object);;Argument[0];Element of Argument[this];value;manual",
       BlockingDeque out = null;
       Object in = source(); out.putFirst(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingQueue;true;drainTo;(Collection,int);;Element of Argument[-1];Element of Argument[0];value;manual",
+      // "java.util.concurrent;BlockingQueue;true;drainTo;(Collection,int);;Element of Argument[this];Element of Argument[0];value;manual",
       Collection out = null;
       BlockingQueue in = storeElementBlockingDeque(source()); in.drainTo(out,0); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;BlockingQueue;true;drainTo;(Collection);;Element of Argument[-1];Element of Argument[0];value;manual",
+      // "java.util.concurrent;BlockingQueue;true;drainTo;(Collection);;Element of Argument[this];Element of Argument[0];value;manual",
       Collection out = null;
       BlockingQueue in = storeElementBlockingDeque(source()); in.drainTo(out); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;ConcurrentHashMap;true;elements;();;MapValue of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util.concurrent;ConcurrentHashMap;true;elements;();;MapValue of Argument[this];Element of ReturnValue;value;manual",
       Enumeration out = null;
       Object in = storeMapValue(source()); out = ((ConcurrentHashMap)in).elements(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Dictionary;true;elements;();;MapValue of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;Dictionary;true;elements;();;MapValue of Argument[this];Element of ReturnValue;value;manual",
       Enumeration out = null;
       Object in = storeMapValue(source()); out = ((Dictionary)in).elements(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Dictionary;true;get;(Object);;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Dictionary;true;get;(Object);;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Dictionary)in).get(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Dictionary;true;put;(Object,Object);;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Dictionary;true;put;(Object,Object);;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Dictionary)in).put(null,null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;Dictionary;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value;manual",
+      // "java.util;Dictionary;true;put;(Object,Object);;Argument[0];MapKey of Argument[this];value;manual",
       Dictionary out = null;
       Object in = source(); out.put(in,null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Dictionary;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value;manual",
+      // "java.util;Dictionary;true;put;(Object,Object);;Argument[1];MapValue of Argument[this];value;manual",
       Dictionary out = null;
       Object in = source(); out.put(null,in); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;Dictionary;true;remove;(Object);;MapValue of Argument[-1];ReturnValue;value;manual",
+      // "java.util;Dictionary;true;remove;(Object);;MapValue of Argument[this];ReturnValue;value;manual",
       Object out = null;
       Object in = storeMapValue(source()); out = ((Dictionary)in).remove(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;ceilingEntry;(Object);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;ceilingEntry;(Object);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).ceilingEntry(null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;ceilingEntry;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;ceilingEntry;(Object);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).ceilingEntry(null); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;descendingMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;descendingMap;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).descendingMap(); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;descendingMap;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;descendingMap;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).descendingMap(); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;firstEntry;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;firstEntry;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).firstEntry(); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;firstEntry;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;firstEntry;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).firstEntry(); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;floorEntry;(Object);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;floorEntry;(Object);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).floorEntry(null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;floorEntry;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;floorEntry;(Object);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).floorEntry(null); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;headMap;(Object,boolean);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;headMap;(Object,boolean);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).headMap(null,true); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;headMap;(Object,boolean);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;headMap;(Object,boolean);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).headMap(null,true); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;higherEntry;(Object);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;higherEntry;(Object);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).higherEntry(null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;higherEntry;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;higherEntry;(Object);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).higherEntry(null); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;lastEntry;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;lastEntry;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).lastEntry(); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;lastEntry;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;lastEntry;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).lastEntry(); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;lowerEntry;(Object);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;lowerEntry;(Object);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).lowerEntry(null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;lowerEntry;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;lowerEntry;(Object);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).lowerEntry(null); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;pollFirstEntry;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;pollFirstEntry;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).pollFirstEntry(); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;pollFirstEntry;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;pollFirstEntry;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).pollFirstEntry(); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;pollLastEntry;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;pollLastEntry;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).pollLastEntry(); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;pollLastEntry;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;pollLastEntry;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map.Entry out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).pollLastEntry(); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;subMap;(Object,boolean,Object,boolean);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;subMap;(Object,boolean,Object,boolean);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).subMap(null,true,null,true); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;subMap;(Object,boolean,Object,boolean);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;subMap;(Object,boolean,Object,boolean);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).subMap(null,true,null,true); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;tailMap;(Object,boolean);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;tailMap;(Object,boolean);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapKey(source()); out = ((NavigableMap)in).tailMap(null,true); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableMap;true;tailMap;(Object,boolean);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;NavigableMap;true;tailMap;(Object,boolean);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapValue(source()); out = ((NavigableMap)in).tailMap(null,true); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;ceiling;(Object);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;ceiling;(Object);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.ceiling(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;descendingIterator;();;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;descendingIterator;();;Element of Argument[this];Element of ReturnValue;value;manual",
       Iterator out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.descendingIterator(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;descendingSet;();;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;descendingSet;();;Element of Argument[this];Element of ReturnValue;value;manual",
       Set out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.descendingSet(); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;floor;(Object);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;floor;(Object);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.floor(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;headSet;(Object,boolean);;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;headSet;(Object,boolean);;Element of Argument[this];Element of ReturnValue;value;manual",
       Set out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.headSet(null,true); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;higher;(Object);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;higher;(Object);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.higher(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;lower;(Object);;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;lower;(Object);;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.lower(null); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;pollFirst;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;pollFirst;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.pollFirst(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;pollLast;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;pollLast;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.pollLast(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;subSet;(Object,boolean,Object,boolean);;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;subSet;(Object,boolean,Object,boolean);;Element of Argument[this];Element of ReturnValue;value;manual",
       Set out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.subSet(null,true,null,true); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;NavigableSet;true;tailSet;(Object,boolean);;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;NavigableSet;true;tailSet;(Object,boolean);;Element of Argument[this];Element of ReturnValue;value;manual",
       Set out = null;
       NavigableSet in = storeElementNavSet(source()); out = in.tailSet(null,true); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedMap;true;headMap;(Object);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;SortedMap;true;headMap;(Object);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapKey(source()); out = ((SortedMap)in).headMap(null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedMap;true;headMap;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;SortedMap;true;headMap;(Object);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapValue(source()); out = ((SortedMap)in).headMap(null); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedMap;true;subMap;(Object,Object);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;SortedMap;true;subMap;(Object,Object);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapKey(source()); out = ((SortedMap)in).subMap(null,null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedMap;true;subMap;(Object,Object);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;SortedMap;true;subMap;(Object,Object);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapValue(source()); out = ((SortedMap)in).subMap(null,null); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedMap;true;tailMap;(Object);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual",
+      // "java.util;SortedMap;true;tailMap;(Object);;MapKey of Argument[this];MapKey of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapKey(source()); out = ((SortedMap)in).tailMap(null); sink(readMapKey(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedMap;true;tailMap;(Object);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual",
+      // "java.util;SortedMap;true;tailMap;(Object);;MapValue of Argument[this];MapValue of ReturnValue;value;manual",
       Map out = null;
       Object in = storeMapValue(source()); out = ((SortedMap)in).tailMap(null); sink(readMapValue(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedSet;true;first;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;SortedSet;true;first;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       SortedSet in = storeElementNavSet(source()); out = in.first(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;SortedSet;true;headSet;(Object);;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;SortedSet;true;headSet;(Object);;Element of Argument[this];Element of ReturnValue;value;manual",
       Set out = null;
       SortedSet in = storeElementNavSet(source()); out = in.headSet(null); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedSet;true;last;();;Element of Argument[-1];ReturnValue;value;manual",
+      // "java.util;SortedSet;true;last;();;Element of Argument[this];ReturnValue;value;manual",
       Object out = null;
       SortedSet in = storeElementNavSet(source()); out = in.last(); sink(out); // $ hasValueFlow
     }
     {
-      // "java.util;SortedSet;true;subSet;(Object,Object);;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;SortedSet;true;subSet;(Object,Object);;Element of Argument[this];Element of ReturnValue;value;manual",
       Set out = null;
       SortedSet in = storeElementNavSet(source()); out = in.subSet(null,null); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util;SortedSet;true;tailSet;(Object);;Element of Argument[-1];Element of ReturnValue;value;manual",
+      // "java.util;SortedSet;true;tailSet;(Object);;Element of Argument[this];Element of ReturnValue;value;manual",
       Set out = null;
       SortedSet in = storeElementNavSet(source()); out = in.tailSet(null); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;TransferQueue;true;tryTransfer;(Object,long,TimeUnit);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;TransferQueue;true;tryTransfer;(Object,long,TimeUnit);;Argument[0];Element of Argument[this];value;manual",
       TransferQueue out = null;
       Object in = source(); out.tryTransfer(in,0,null); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;TransferQueue;true;transfer;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;TransferQueue;true;transfer;(Object);;Argument[0];Element of Argument[this];value;manual",
       TransferQueue out = null;
       Object in = source(); out.transfer(in); sink(readElement(out)); // $ hasValueFlow
     }
     {
-      // "java.util.concurrent;TransferQueue;true;tryTransfer;(Object);;Argument[0];Element of Argument[-1];value;manual",
+      // "java.util.concurrent;TransferQueue;true;tryTransfer;(Object);;Argument[0];Element of Argument[this];value;manual",
       TransferQueue out = null;
       Object in = source(); out.tryTransfer(in); sink(readElement(out)); // $ hasValueFlow
     }

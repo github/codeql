@@ -1,12 +1,11 @@
 edges
 | django_bad.py:5:18:5:58 | ControlFlowNode for Attribute() | django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header |
 | django_bad.py:12:18:12:58 | ControlFlowNode for Attribute() | django_bad.py:14:30:14:39 | ControlFlowNode for rfs_header |
-| flask_bad.py:0:0:0:0 | ModuleVariableNode for flask_bad.request | flask_bad.py:9:18:9:24 | ControlFlowNode for request |
-| flask_bad.py:0:0:0:0 | ModuleVariableNode for flask_bad.request | flask_bad.py:19:18:19:24 | ControlFlowNode for request |
-| flask_bad.py:0:0:0:0 | ModuleVariableNode for flask_bad.request | flask_bad.py:27:18:27:24 | ControlFlowNode for request |
-| flask_bad.py:0:0:0:0 | ModuleVariableNode for flask_bad.request | flask_bad.py:35:18:35:24 | ControlFlowNode for request |
 | flask_bad.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_bad.py:1:29:1:35 | GSSA Variable request |
-| flask_bad.py:1:29:1:35 | GSSA Variable request | flask_bad.py:0:0:0:0 | ModuleVariableNode for flask_bad.request |
+| flask_bad.py:1:29:1:35 | GSSA Variable request | flask_bad.py:9:18:9:24 | ControlFlowNode for request |
+| flask_bad.py:1:29:1:35 | GSSA Variable request | flask_bad.py:19:18:19:24 | ControlFlowNode for request |
+| flask_bad.py:1:29:1:35 | GSSA Variable request | flask_bad.py:27:18:27:24 | ControlFlowNode for request |
+| flask_bad.py:1:29:1:35 | GSSA Variable request | flask_bad.py:35:18:35:24 | ControlFlowNode for request |
 | flask_bad.py:9:18:9:24 | ControlFlowNode for request | flask_bad.py:9:18:9:29 | ControlFlowNode for Attribute |
 | flask_bad.py:9:18:9:29 | ControlFlowNode for Attribute | flask_bad.py:9:18:9:43 | ControlFlowNode for Subscript |
 | flask_bad.py:9:18:9:43 | ControlFlowNode for Subscript | flask_bad.py:12:31:12:40 | ControlFlowNode for rfs_header |
@@ -24,7 +23,6 @@ nodes
 | django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
 | django_bad.py:12:18:12:58 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | django_bad.py:14:30:14:39 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
-| flask_bad.py:0:0:0:0 | ModuleVariableNode for flask_bad.request | semmle.label | ModuleVariableNode for flask_bad.request |
 | flask_bad.py:1:29:1:35 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_bad.py:1:29:1:35 | GSSA Variable request | semmle.label | GSSA Variable request |
 | flask_bad.py:9:18:9:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

@@ -15,6 +15,8 @@ edges
 | passwords.go:107:34:107:41 | password | passwords.go:107:16:107:41 | ...+... |
 | passwords.go:112:33:112:40 | password | passwords.go:112:15:112:40 | ...+... |
 | passwords.go:116:28:116:36 | password1 | passwords.go:116:14:116:45 | ...+... |
+| passwords.go:116:28:116:36 | password1 | passwords.go:116:28:116:45 | call to String |
+| passwords.go:116:28:116:45 | call to String | passwords.go:116:14:116:45 | ...+... |
 | passwords.go:118:12:123:2 | struct literal [x] | passwords.go:126:14:126:19 | config [x] |
 | passwords.go:118:12:123:2 | struct literal [y] | passwords.go:127:14:127:19 | config [y] |
 | passwords.go:119:13:119:13 | x | passwords.go:125:14:125:19 | config |
@@ -77,6 +79,7 @@ nodes
 | passwords.go:112:33:112:40 | password | semmle.label | password |
 | passwords.go:116:14:116:45 | ...+... | semmle.label | ...+... |
 | passwords.go:116:28:116:36 | password1 | semmle.label | password1 |
+| passwords.go:116:28:116:45 | call to String | semmle.label | call to String |
 | passwords.go:118:12:123:2 | struct literal [x] | semmle.label | struct literal [x] |
 | passwords.go:118:12:123:2 | struct literal [y] | semmle.label | struct literal [y] |
 | passwords.go:119:13:119:13 | x | semmle.label | x |

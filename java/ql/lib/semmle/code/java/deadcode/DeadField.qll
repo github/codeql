@@ -138,7 +138,8 @@ class ClassReflectivelyReadField extends ReflectivelyReadField {
  * Consider all `JacksonSerializableField`s as reflectively read.
  */
 class JacksonSerializableReflectivelyReadField extends ReflectivelyReadField,
-  JacksonSerializableField { }
+  JacksonSerializableField
+{ }
 
 /**
  * A field that is used when applying Jackson mixins.

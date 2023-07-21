@@ -1,9 +1,11 @@
+namespace {
 class C {
 	public:
 		int x;
 };
+}
 
-void f() {
+static void f() {
 	C *c;
 	int i;
 	i = c->x;

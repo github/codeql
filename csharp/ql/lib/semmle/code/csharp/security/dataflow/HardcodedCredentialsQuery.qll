@@ -38,9 +38,11 @@ abstract class Sink extends DataFlow::ExprNode {
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `HardcodedCredentials` instead.
+ *
  * A taint-tracking configuration for hard coded credentials.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "HardcodedCredentials" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -73,6 +75,56 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * A taint-tracking configuration for hard coded credentials.
+ */
+private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof Sink and
+    // Ignore values that are ultimately returned by mocks, as they don't represent "real"
+    // credentials.
+    not any(ReturnedByMockObject mock).getAMemberInitializationValue() = sink.asExpr() and
+    not any(ReturnedByMockObject mock).getAnArgument() = sink.asExpr()
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * A taint-tracking module for hard coded credentials.
+ */
+module HardcodedCredentials {
+  import TaintTracking::Global<HardcodedCredentialsConfig> as Super
+  import Super
+
+  /**
+   * Holds if data can flow from `source` to `sink`.
+   *
+   * The corresponding paths are generated from the end-points and the graph
+   * included in the module `PathGraph`.
+   */
+  predicate flowPath(HardcodedCredentials::PathNode source, HardcodedCredentials::PathNode sink) {
+    Super::flowPath(source, sink) and
+    // Exclude hard-coded credentials in tests if they only flow to calls to methods with a name
+    // like "Add*" "Create*" or "Update*". The rationale is that hard-coded credentials within
+    // tests that are only used for creating or setting values within tests are unlikely to
+    // represent credentials to some accessible system.
+    not (
+      source.getNode().asExpr().getFile() instanceof TestFile and
+      exists(MethodCall createOrAddCall, string createOrAddMethodName |
+        createOrAddMethodName.matches("Update%") or
+        createOrAddMethodName.matches("Create%") or
+        createOrAddMethodName.matches("Add%")
+      |
+        createOrAddCall.getTarget().hasName(createOrAddMethodName) and
+        createOrAddCall.getAnArgument() = sink.getNode().asExpr()
+      )
+    )
+  }
 }
 
 /**

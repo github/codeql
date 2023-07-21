@@ -60,11 +60,6 @@ class Class extends ValueOrRefType {
   Class() { this.isClass() }
 }
 
-/** A `record`. */
-deprecated class Record extends Class {
-  Record() { this.isRecord() }
-}
-
 /** An `interface`. */
 class Interface extends ValueOrRefType {
   Interface() { this.isInterface() }
@@ -302,7 +297,8 @@ class SystemType extends ValueOrRefType {
  * ```
  */
 class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
-  @cil_function_pointer_type {
+  @cil_function_pointer_type
+{
   /** Gets the return type of this function pointer. */
   Type getReturnType() { cil_function_pointer_return_type(this, result) }
 

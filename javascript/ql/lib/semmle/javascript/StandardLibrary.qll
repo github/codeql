@@ -50,7 +50,8 @@ class DirectEval extends CallExpr {
  * argument as the receiver to the callback.
  */
 private class ArrayIterationCallbackAsPartialInvoke extends DataFlow::PartialInvokeNode::Range,
-  DataFlow::MethodCallNode {
+  DataFlow::MethodCallNode
+{
   ArrayIterationCallbackAsPartialInvoke() {
     this.getNumArgument() = 2 and
     // Filter out library methods named 'forEach' etc

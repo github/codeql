@@ -23,11 +23,15 @@ abstract class Sink extends DataFlow::Node { }
  */
 abstract private class InstanceMethodSink extends Sink {
   InstanceMethodSink() {
-    not exists(
-      SafeConstructorTrackingConfig safeConstructorTracking, DataFlow::Node safeTypeUsage,
-      MethodCall mc
-    |
-      safeConstructorTracking.hasFlow(_, safeTypeUsage) and
+    not exists(DataFlow::Node safeTypeUsage, MethodCall mc |
+      (
+        DataContractJsonSafeConstructorTracking::flowTo(safeTypeUsage) or
+        JavaScriptSerializerSafeConstructorTracking::flowTo(safeTypeUsage) or
+        XmlObjectSerializerDerivedConstructorTracking::flowTo(safeTypeUsage) or
+        XmlSerializerSafeConstructorTracking::flowTo(safeTypeUsage) or
+        DataContractSerializerSafeConstructorTracking::flowTo(safeTypeUsage) or
+        XmlMessageFormatterSafeConstructorTracking::flowTo(safeTypeUsage)
+      ) and
       mc.getQualifier() = safeTypeUsage.asExpr() and
       mc.getAnArgument() = this.asExpr()
     )
@@ -47,9 +51,11 @@ abstract class Sanitizer extends DataFlow::Node { }
 private class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
+ * DEPRECATED: Use `TaintToObjectMethodTracking` instead.
+ *
  * User input to object method call deserialization flow tracking.
  */
-class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
+deprecated class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
   TaintToObjectMethodTrackingConfig() { this = "TaintToObjectMethodTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -60,9 +66,27 @@ class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
 }
 
 /**
+ * User input to object method call deserialization flow tracking configuration.
+ */
+private module TaintToObjectMethodTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof InstanceMethodSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to object method call deserialization flow tracking module.
+ */
+module TaintToObjectMethodTracking = TaintTracking::Global<TaintToObjectMethodTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `JsonConvertTracking` instead.
+ *
  * User input to `JsonConvert` call deserialization flow tracking.
  */
-class JsonConvertTrackingConfig extends TaintTracking::Configuration {
+deprecated class JsonConvertTrackingConfig extends TaintTracking::Configuration {
   JsonConvertTrackingConfig() { this = "JsonConvertTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -75,9 +99,29 @@ class JsonConvertTrackingConfig extends TaintTracking::Configuration {
 }
 
 /**
+ * User input to `JsonConvert` call deserialization flow tracking configuration.
+ */
+private module JsonConvertTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof NewtonsoftJsonConvertDeserializeObjectMethodSink
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to `JsonConvert` call deserialization flow tracking module.
+ */
+module JsonConvertTracking = TaintTracking::Global<JsonConvertTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `TypeNameTracking` instead.
+ *
  * Tracks unsafe `TypeNameHandling` setting to `JsonConvert` call
  */
-class TypeNameTrackingConfig extends DataFlow::Configuration {
+deprecated class TypeNameTrackingConfig extends DataFlow::Configuration {
   TypeNameTrackingConfig() { this = "TypeNameTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -128,9 +172,68 @@ class TypeNameTrackingConfig extends DataFlow::Configuration {
 }
 
 /**
+ * Configuration module for tracking unsafe `TypeNameHandling` setting to `JsonConvert` calls.
+ */
+private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    (
+      source.asExpr() instanceof MemberConstantAccess and
+      source.getType() instanceof TypeNameHandlingEnum
+      or
+      source.asExpr() instanceof IntegerLiteral
+    ) and
+    source.asExpr().hasValue() and
+    not source.asExpr().getValue() = "0"
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc, Method m, Expr expr |
+      m = mc.getTarget() and
+      (
+        not mc.getArgument(0).hasValue() and
+        m instanceof NewtonsoftJsonConvertClassDeserializeObjectMethod
+      ) and
+      expr = mc.getAnArgument() and
+      sink.asExpr() = expr and
+      expr.getType() instanceof JsonSerializerSettingsClass
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node1.asExpr() instanceof IntegerLiteral and
+    node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
+    or
+    node1.getType() instanceof TypeNameHandlingEnum and
+    exists(PropertyWrite pw, Property p, Assignment a |
+      a.getLValue() = pw and
+      pw.getProperty() = p and
+      p.getDeclaringType() instanceof JsonSerializerSettingsClass and
+      p.hasName("TypeNameHandling") and
+      (
+        node1.asExpr() = a.getRValue() and
+        node2.asExpr() = pw.getQualifier()
+        or
+        exists(ObjectInitializer oi |
+          node1.asExpr() = oi.getAMemberInitializer().getRValue() and
+          node2.asExpr() = oi
+        )
+      )
+    )
+  }
+}
+
+/**
+ * Configuration module for tracking unsafe `TypeNameHandling` setting to `JsonConvert` calls.
+ */
+module TypeNameTracking = DataFlow::Global<TypeNameTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `TaintToConstructorOrStaticMethodTracking` instead.
+ *
  * User input to static method or constructor call deserialization flow tracking.
  */
-class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Configuration {
+deprecated class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Configuration
+{
   TaintToConstructorOrStaticMethodTrackingConfig() {
     this = "TaintToConstructorOrStaticMethodTrackingConfig"
   }
@@ -143,9 +246,28 @@ class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Conf
 }
 
 /**
+ * User input to static method or constructor call deserialization flow tracking configuration.
+ */
+private module TaintToConstructorOrStaticMethodTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ConstructorOrStaticMethodSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to static method or constructor call deserialization flow tracking module.
+ */
+module TaintToConstructorOrStaticMethodTracking =
+  TaintTracking::Global<TaintToConstructorOrStaticMethodTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `TaintToObjectTypeTracking` instead.
+ *
  * User input to instance type flow tracking.
  */
-class TaintToObjectTypeTrackingConfig extends TaintTracking2::Configuration {
+deprecated class TaintToObjectTypeTrackingConfig extends TaintTracking2::Configuration {
   TaintToObjectTypeTrackingConfig() { this = "TaintToObjectTypeTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -176,9 +298,47 @@ class TaintToObjectTypeTrackingConfig extends TaintTracking2::Configuration {
 }
 
 /**
+ * User input to instance type flow tracking config.
+ */
+private module TaintToObjectTypeTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc |
+      mc.getTarget() instanceof UnsafeDeserializer and
+      sink.asExpr() = mc.getQualifier()
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(MethodCall mc, Method m |
+      m = mc.getTarget() and
+      m.getDeclaringType().hasQualifiedName("System", "Type") and
+      m.hasName("GetType") and
+      m.isStatic() and
+      n1.asExpr() = mc.getArgument(0) and
+      n2.asExpr() = mc
+    )
+    or
+    exists(ObjectCreation oc |
+      n1.asExpr() = oc.getAnArgument() and
+      n2.asExpr() = oc and
+      oc.getObjectType() instanceof StrongTypeDeserializer
+    )
+  }
+}
+
+/**
+ * User input to instance type flow tracking module.
+ */
+module TaintToObjectTypeTracking = TaintTracking::Global<TaintToObjectTypeTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `WeakTypeCreationToUsageTracking` instead.
+ *
  * Unsafe deserializer creation to usage tracking config.
  */
-class WeakTypeCreationToUsageTrackingConfig extends TaintTracking2::Configuration {
+deprecated class WeakTypeCreationToUsageTrackingConfig extends TaintTracking2::Configuration {
   WeakTypeCreationToUsageTrackingConfig() { this = "DeserializerCreationToUsageTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -197,12 +357,29 @@ class WeakTypeCreationToUsageTrackingConfig extends TaintTracking2::Configuratio
 }
 
 /**
- * Safe deserializer creation to usage tracking config.
+ * Unsafe deserializer creation to usage tracking config.
  */
-abstract class SafeConstructorTrackingConfig extends TaintTracking2::Configuration {
-  bindingset[this]
-  SafeConstructorTrackingConfig() { any() }
+private module WeakTypeCreationToUsageTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(ObjectCreation oc |
+      oc.getObjectType() instanceof WeakTypeDeserializer and
+      source.asExpr() = oc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc |
+      mc.getTarget() instanceof UnsafeDeserializer and
+      sink.asExpr() = mc.getQualifier()
+    )
+  }
 }
+
+/**
+ * Unsafe deserializer creation to usage tracking module.
+ */
+module WeakTypeCreationToUsageTracking =
+  TaintTracking::Global<WeakTypeCreationToUsageTrackingConfig>;
 
 /** BinaryFormatter */
 private predicate isBinaryFormatterCall(MethodCall mc, Method m) {
@@ -299,7 +476,8 @@ private predicate isDataContractJsonSerializerCall(MethodCall mc, Method m) {
 
 abstract private class DataContractJsonSerializerSink extends InstanceMethodSink { }
 
-private class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink {
+private class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink
+{
   DataContractJsonSerializerDeserializeMethodSink() {
     exists(MethodCall mc |
       isDataContractJsonSerializerCall(mc, _) and
@@ -308,12 +486,8 @@ private class DataContractJsonSerializerDeserializeMethodSink extends DataContra
   }
 }
 
-private class DataContractJsonSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
-  DataContractJsonSafeConstructorTrackingConfiguration() {
-    this = "DataContractJsonSafeConstructorTrackingConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+private module DataContractJsonSafeConstructorTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ObjectCreation oc |
       oc = source.asExpr() and
       exists(Constructor c |
@@ -325,13 +499,16 @@ private class DataContractJsonSafeConstructorTrackingConfiguration extends SafeC
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       isDataContractJsonSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
 }
+
+private module DataContractJsonSafeConstructorTracking =
+  TaintTracking::Global<DataContractJsonSafeConstructorTrackingConfig>;
 
 /** JavaScriptSerializer */
 private predicate isJavaScriptSerializerCall(MethodCall mc, Method m) {
@@ -357,12 +534,8 @@ private class JavaScriptSerializerDeserializeMethodSink extends JavaScriptSerial
   }
 }
 
-private class JavaScriptSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
-  JavaScriptSerializerSafeConstructorTrackingConfiguration() {
-    this = "JavaScriptSerializerSafeConstructorTrackingConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+private module JavaScriptSerializerSafeConstructorTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ObjectCreation oc |
       oc = source.asExpr() and
       exists(Constructor c |
@@ -373,13 +546,16 @@ private class JavaScriptSerializerSafeConstructorTrackingConfiguration extends S
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       isJavaScriptSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
 }
+
+private module JavaScriptSerializerSafeConstructorTracking =
+  TaintTracking::Global<JavaScriptSerializerSafeConstructorTrackingConfig>;
 
 /** XmlObjectSerializer */
 private predicate isXmlObjectSerializerCall(MethodCall mc, Method m) {
@@ -400,12 +576,8 @@ private class XmlObjectSerializerDeserializeMethodSink extends XmlObjectSerializ
   }
 }
 
-private class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
-  XmlObjectSerializerDerivedConstructorTrackingConfiguration() {
-    this = "XmlObjectSerializerDerivedConstructorTrackingConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+private module XmlObjectSerializerDerivedConstructorTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ObjectCreation oc |
       oc = source.asExpr() and
       exists(ValueOrRefType declaringType |
@@ -419,13 +591,16 @@ private class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       isXmlObjectSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
 }
+
+private module XmlObjectSerializerDerivedConstructorTracking =
+  TaintTracking::Global<XmlObjectSerializerDerivedConstructorTrackingConfig>;
 
 /** XmlSerializer */
 private predicate isXmlSerializerCall(MethodCall mc, Method m) {
@@ -445,12 +620,8 @@ private class XmlSerializerDeserializeMethodSink extends XmlSerializerSink {
   }
 }
 
-private class XmlSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
-  XmlSerializerSafeConstructorTrackingConfiguration() {
-    this = "XmlSerializerSafeConstructorTrackingConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+private module XmlSerializerSafeConstructorTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ObjectCreation oc |
       oc = source.asExpr() and
       exists(Constructor c |
@@ -462,13 +633,16 @@ private class XmlSerializerSafeConstructorTrackingConfiguration extends SafeCons
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       isXmlSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
 }
+
+private module XmlSerializerSafeConstructorTracking =
+  TaintTracking::Global<XmlSerializerSafeConstructorTrackingConfig>;
 
 /** DataContractSerializer */
 private predicate isDataContractSerializerCall(MethodCall mc, Method m) {
@@ -492,12 +666,8 @@ private class DataContractSerializerDeserializeMethodSink extends DataContractSe
   }
 }
 
-private class DataContractSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
-  DataContractSerializerSafeConstructorTrackingConfiguration() {
-    this = "DataContractSerializerSafeConstructorTrackingConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+private module DataContractSerializerSafeConstructorTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ObjectCreation oc |
       oc = source.asExpr() and
       exists(Constructor c |
@@ -509,13 +679,16 @@ private class DataContractSerializerSafeConstructorTrackingConfiguration extends
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       isDataContractSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
 }
+
+private module DataContractSerializerSafeConstructorTracking =
+  TaintTracking::Global<DataContractSerializerSafeConstructorTrackingConfig>;
 
 /** XmlMessageFormatter */
 private predicate isXmlMessageFormatterCall(MethodCall mc, Method m) {
@@ -535,12 +708,8 @@ private class XmlMessageFormatterDeserializeMethodSink extends XmlMessageFormatt
   }
 }
 
-private class XmlMessageFormatterSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
-  XmlMessageFormatterSafeConstructorTrackingConfiguration() {
-    this = "XmlMessageFormatterSafeConstructorTrackingConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+private module XmlMessageFormatterSafeConstructorTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ObjectCreation oc |
       oc = source.asExpr() and
       exists(Constructor c |
@@ -552,13 +721,16 @@ private class XmlMessageFormatterSafeConstructorTrackingConfiguration extends Sa
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       isXmlMessageFormatterCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
 }
+
+private module XmlMessageFormatterSafeConstructorTracking =
+  TaintTracking::Global<XmlMessageFormatterSafeConstructorTrackingConfig>;
 
 /** LosFormatter */
 private predicate isLosFormatterCall(MethodCall mc, Method m) {
@@ -717,7 +889,8 @@ private class SweetJaysonDeserializeMethodSink extends SweetJaysonSink {
 /** ServiceStack.Text.JsonSerializer */
 abstract private class ServiceStackTextJsonSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink {
+private class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink
+{
   ServiceStackTextJsonSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -741,7 +914,8 @@ private class ServiceStackTextJsonSerializerDeserializeMethodSink extends Servic
 /** ServiceStack.Text.TypeSerializer */
 abstract private class ServiceStackTextTypeSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink {
+private class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink
+{
   ServiceStackTextTypeSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -765,7 +939,8 @@ private class ServiceStackTextTypeSerializerDeserializeMethodSink extends Servic
 /** ServiceStack.Text.CsvSerializer */
 abstract private class ServiceStackTextCsvSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink {
+private class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink
+{
   ServiceStackTextCsvSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -789,7 +964,8 @@ private class ServiceStackTextCsvSerializerDeserializeMethodSink extends Service
 /** ServiceStack.Text.XmlSerializer */
 abstract private class ServiceStackTextXmlSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink {
+private class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink
+{
   ServiceStackTextXmlSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and

@@ -16,16 +16,19 @@ private import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IRDataFlow
 private import semmle.code.cpp.dataflow.DataFlow::DataFlow as AstDataFlow
 import TestUtilities.InlineExpectationsTest
 
-class IRFlowTest extends InlineExpectationsTest {
-  IRFlowTest() { this = "IRFlowTest" }
+module IRFlowTest<IRDataFlow::GlobalFlowSig Flow> implements TestSig {
+  string getARelevantTag() { result = "ir" }
 
-  override string getARelevantTag() { result = "ir" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(IRDataFlow::Node source, IRDataFlow::Node sink, IRDataFlow::Configuration conf, int n |
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(IRDataFlow::Node source, IRDataFlow::Node sink, int n |
       tag = "ir" and
-      conf.hasFlow(source, sink) and
-      n = strictcount(IRDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
+      Flow::flow(source, sink) and
+      n =
+        strictcount(int line, int column |
+          Flow::flow(any(IRDataFlow::Node otherSource |
+              otherSource.hasLocationInfo(_, line, column, _, _)
+            ), sink)
+        ) and
       (
         n = 1 and value = ""
         or
@@ -42,18 +45,19 @@ class IRFlowTest extends InlineExpectationsTest {
   }
 }
 
-class AstFlowTest extends InlineExpectationsTest {
-  AstFlowTest() { this = "ASTFlowTest" }
+module AstFlowTest<AstDataFlow::GlobalFlowSig Flow> implements TestSig {
+  string getARelevantTag() { result = "ast" }
 
-  override string getARelevantTag() { result = "ast" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(
-      AstDataFlow::Node source, AstDataFlow::Node sink, AstDataFlow::Configuration conf, int n
-    |
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(AstDataFlow::Node source, AstDataFlow::Node sink, int n |
       tag = "ast" and
-      conf.hasFlow(source, sink) and
-      n = strictcount(AstDataFlow::Node otherSource | conf.hasFlow(otherSource, sink)) and
+      Flow::flow(source, sink) and
+      n =
+        strictcount(int line, int column |
+          Flow::flow(any(AstDataFlow::Node otherSource |
+              otherSource.hasLocationInfo(_, line, column, _, _)
+            ), sink)
+        ) and
       (
         n = 1 and value = ""
         or
@@ -69,6 +73,3 @@ class AstFlowTest extends InlineExpectationsTest {
     )
   }
 }
-
-/** DEPRECATED: Alias for AstFlowTest */
-deprecated class ASTFlowTest = AstFlowTest;

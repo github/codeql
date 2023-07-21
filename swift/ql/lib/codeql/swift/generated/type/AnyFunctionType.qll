@@ -21,7 +21,12 @@ module Generated {
     /**
      * Gets the result of this function type.
      */
-    final Type getResult() { result = getImmediateResult().resolve() }
+    final Type getResult() {
+      exists(Type immediate |
+        immediate = this.getImmediateResult() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the `index`th parameter type of this function type (0-based).
@@ -39,34 +44,22 @@ module Generated {
     /**
      * Gets the `index`th parameter type of this function type (0-based).
      */
-    final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
+    final Type getParamType(int index) {
+      exists(Type immediate |
+        immediate = this.getImmediateParamType(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the parameter types of this function type.
      */
-    final Type getAParamType() { result = getParamType(_) }
+    final Type getAParamType() { result = this.getParamType(_) }
 
     /**
      * Gets the number of parameter types of this function type.
      */
-    final int getNumberOfParamTypes() { result = count(int i | exists(getParamType(i))) }
-
-    /**
-     * Gets the `index`th parameter label of this function type (0-based), if it exists.
-     */
-    string getParamLabel(int index) {
-      result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)
-    }
-
-    /**
-     * Holds if `getParamLabel(index)` exists.
-     */
-    final predicate hasParamLabel(int index) { exists(getParamLabel(index)) }
-
-    /**
-     * Gets any of the parameter labels of this function type.
-     */
-    final string getAParamLabel() { result = getParamLabel(_) }
+    final int getNumberOfParamTypes() { result = count(int i | exists(this.getParamType(i))) }
 
     /**
      * Holds if this type refers to a throwing function.

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace Formatters
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerInputFormatter` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class XmlDataContractSerializerInputFormatter : Microsoft.AspNetCore.Mvc.Formatters.TextInputFormatter, Microsoft.AspNetCore.Mvc.Formatters.IInputFormatterExceptionPolicy
                 {
                     protected override bool CanReadType(System.Type type) => throw null;
@@ -25,7 +25,6 @@ namespace Microsoft
                     public System.Xml.XmlDictionaryReaderQuotas XmlDictionaryReaderQuotas { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class XmlDataContractSerializerOutputFormatter : Microsoft.AspNetCore.Mvc.Formatters.TextOutputFormatter
                 {
                     protected override bool CanWriteType(System.Type type) => throw null;
@@ -44,7 +43,6 @@ namespace Microsoft
                     public XmlDataContractSerializerOutputFormatter(System.Xml.XmlWriterSettings writerSettings, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.XmlSerializerInputFormatter` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class XmlSerializerInputFormatter : Microsoft.AspNetCore.Mvc.Formatters.TextInputFormatter, Microsoft.AspNetCore.Mvc.Formatters.IInputFormatterExceptionPolicy
                 {
                     protected override bool CanReadType(System.Type type) => throw null;
@@ -61,7 +59,6 @@ namespace Microsoft
                     public XmlSerializerInputFormatter(Microsoft.AspNetCore.Mvc.MvcOptions options) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Formatters.XmlSerializerOutputFormatter` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class XmlSerializerOutputFormatter : Microsoft.AspNetCore.Mvc.Formatters.TextOutputFormatter
                 {
                     protected override bool CanWriteType(System.Type type) => throw null;
@@ -82,7 +79,6 @@ namespace Microsoft
 
                 namespace Xml
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.DelegatingEnumerable<,>` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class DelegatingEnumerable<TWrapped, TDeclared> : System.Collections.Generic.IEnumerable<TWrapped>, System.Collections.IEnumerable
                     {
                         public void Add(object item) => throw null;
@@ -92,7 +88,6 @@ namespace Microsoft
                         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.DelegatingEnumerator<,>` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class DelegatingEnumerator<TWrapped, TDeclared> : System.Collections.Generic.IEnumerator<TWrapped>, System.Collections.IEnumerator, System.IDisposable
                     {
                         public TWrapped Current { get => throw null; }
@@ -103,7 +98,6 @@ namespace Microsoft
                         public void Reset() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.EnumerableWrapperProvider` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class EnumerableWrapperProvider : Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider
                     {
                         public EnumerableWrapperProvider(System.Type sourceEnumerableOfT, Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider elementWrapperProvider) => throw null;
@@ -111,33 +105,28 @@ namespace Microsoft
                         public System.Type WrappingType { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.EnumerableWrapperProviderFactory` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class EnumerableWrapperProviderFactory : Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProviderFactory
                     {
                         public EnumerableWrapperProviderFactory(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProviderFactory> wrapperProviderFactories) => throw null;
                         public Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider GetProvider(Microsoft.AspNetCore.Mvc.Formatters.Xml.WrapperProviderContext context) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IUnwrappable
                     {
                         object Unwrap(System.Type declaredType);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IWrapperProvider
                     {
                         object Wrap(object original);
                         System.Type WrappingType { get; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProviderFactory` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IWrapperProviderFactory
                     {
                         Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider GetProvider(Microsoft.AspNetCore.Mvc.Formatters.Xml.WrapperProviderContext context);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.MvcXmlOptions` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class MvcXmlOptions : System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.ICompatibilitySwitch>, System.Collections.IEnumerable
                     {
                         System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Mvc.Infrastructure.ICompatibilitySwitch> System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.ICompatibilitySwitch>.GetEnumerator() => throw null;
@@ -145,7 +134,6 @@ namespace Microsoft
                         public MvcXmlOptions() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.ProblemDetailsWrapper` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ProblemDetailsWrapper : Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable, System.Xml.Serialization.IXmlSerializable
                     {
                         protected static string EmptyKey;
@@ -158,7 +146,6 @@ namespace Microsoft
                         public virtual void WriteXml(System.Xml.XmlWriter writer) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.SerializableErrorWrapper` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class SerializableErrorWrapper : Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable, System.Xml.Serialization.IXmlSerializable
                     {
                         public System.Xml.Schema.XmlSchema GetSchema() => throw null;
@@ -170,7 +157,6 @@ namespace Microsoft
                         public void WriteXml(System.Xml.XmlWriter writer) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.SerializableErrorWrapperProvider` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class SerializableErrorWrapperProvider : Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider
                     {
                         public SerializableErrorWrapperProvider() => throw null;
@@ -178,14 +164,12 @@ namespace Microsoft
                         public System.Type WrappingType { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.SerializableErrorWrapperProviderFactory` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class SerializableErrorWrapperProviderFactory : Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProviderFactory
                     {
                         public Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider GetProvider(Microsoft.AspNetCore.Mvc.Formatters.Xml.WrapperProviderContext context) => throw null;
                         public SerializableErrorWrapperProviderFactory() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.ValidationProblemDetailsWrapper` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ValidationProblemDetailsWrapper : Microsoft.AspNetCore.Mvc.Formatters.Xml.ProblemDetailsWrapper, Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable
                     {
                         protected override void ReadValue(System.Xml.XmlReader reader, string name) => throw null;
@@ -195,7 +179,6 @@ namespace Microsoft
                         public override void WriteXml(System.Xml.XmlWriter writer) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.WrapperProviderContext` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class WrapperProviderContext
                     {
                         public System.Type DeclaredType { get => throw null; }
@@ -203,7 +186,6 @@ namespace Microsoft
                         public WrapperProviderContext(System.Type declaredType, bool isSerialization) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Formatters.Xml.WrapperProviderFactoriesExtensions` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public static class WrapperProviderFactoriesExtensions
                     {
                         public static Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider GetWrapperProvider(this System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProviderFactory> wrapperProviderFactories, Microsoft.AspNetCore.Mvc.Formatters.Xml.WrapperProviderContext wrapperProviderContext) => throw null;
@@ -215,7 +197,6 @@ namespace Microsoft
             {
                 namespace Metadata
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.DataMemberRequiredBindingMetadataProvider` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class DataMemberRequiredBindingMetadataProvider : Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IBindingMetadataProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IMetadataDetailsProvider
                     {
                         public void CreateBindingMetadata(Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.BindingMetadataProviderContext context) => throw null;
@@ -230,7 +211,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcXmlMvcBuilderExtensions` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcXmlMvcBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddXmlDataContractSerializerFormatters(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder) => throw null;
@@ -240,7 +220,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddXmlSerializerFormatters(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder, System.Action<Microsoft.AspNetCore.Mvc.Formatters.Xml.MvcXmlOptions> setupAction) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcXmlMvcCoreBuilderExtensions` in `Microsoft.AspNetCore.Mvc.Formatters.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcXmlMvcCoreBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder AddXmlDataContractSerializerFormatters(this Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder builder) => throw null;

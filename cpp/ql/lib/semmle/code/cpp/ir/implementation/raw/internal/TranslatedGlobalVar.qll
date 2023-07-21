@@ -1,4 +1,5 @@
 import semmle.code.cpp.ir.implementation.raw.internal.TranslatedElement
+private import TranslatedExpr
 private import cpp
 private import semmle.code.cpp.ir.implementation.IRType
 private import semmle.code.cpp.ir.implementation.Opcode
@@ -8,15 +9,16 @@ private import TranslatedInitialization
 private import InstructionTag
 private import semmle.code.cpp.ir.internal.IRUtilities
 
-class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
-  TTranslatedGlobalOrNamespaceVarInit, InitializationContext {
-  GlobalOrNamespaceVariable var;
+class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
+  TTranslatedStaticStorageDurationVarInit, InitializationContext
+{
+  Variable var;
 
-  TranslatedGlobalOrNamespaceVarInit() { this = TTranslatedGlobalOrNamespaceVarInit(var) }
+  TranslatedStaticStorageDurationVarInit() { this = TTranslatedStaticStorageDurationVarInit(var) }
 
   override string toString() { result = var.toString() }
 
-  final override GlobalOrNamespaceVariable getAst() { result = var }
+  final override Variable getAst() { result = var }
 
   final override Declaration getFunction() { result = var }
 
@@ -110,11 +112,13 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
       (
         varUsed instanceof GlobalOrNamespaceVariable
         or
+        varUsed instanceof StaticLocalVariable
+        or
         varUsed instanceof MemberVariable and not varUsed instanceof Field
       ) and
       exists(VariableAccess access |
         access.getTarget() = varUsed and
-        access.getEnclosingVariable() = var
+        getEnclosingVariable(access) = var
       )
       or
       var = varUsed
@@ -127,6 +131,4 @@ class TranslatedGlobalOrNamespaceVarInit extends TranslatedRootElement,
   }
 }
 
-TranslatedGlobalOrNamespaceVarInit getTranslatedVarInit(GlobalOrNamespaceVariable var) {
-  result.getAst() = var
-}
+TranslatedStaticStorageDurationVarInit getTranslatedVarInit(Variable var) { result.getAst() = var }

@@ -117,8 +117,6 @@ class Expr = CSharp::Expr;
 
 class Class = CSharp::ValueOrRefType; // Used for inheritance conversions
 
-string getIdentityString(Function func) { result = func.getLabel() }
-
 predicate hasCaseEdge(string minValue, string maxValue) {
   // TODO: Need to handle pattern matching
   hasCaseEdge(_, minValue, maxValue)

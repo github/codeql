@@ -220,7 +220,8 @@ module MembershipCandidate {
    * A candidate that may be a property name of an object.
    */
   class ObjectPropertyNameMembershipCandidate extends MembershipCandidate::Range,
-    DataFlow::ValueNode {
+    DataFlow::ValueNode
+  {
     Expr test;
     Expr membersNode;
 

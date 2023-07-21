@@ -1,3 +1,5 @@
+failures
+testFailures
 | test.kt:28:14:28:21 | getSecond(...) | Unexpected result: hasTaintFlow=a |
 | test.kt:35:14:35:27 | component1(...) | Unexpected result: hasTaintFlow=d |
 | test.kt:41:14:41:22 | getSecond(...) | Unexpected result: hasTaintFlow=e |

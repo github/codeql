@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.Pipelines, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Pipelines
         {
-            // Generated from `System.IO.Pipelines.FlushResult` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct FlushResult
             {
                 // Stub generator skipped constructor 
@@ -15,14 +15,12 @@ namespace System
                 public bool IsCompleted { get => throw null; }
             }
 
-            // Generated from `System.IO.Pipelines.IDuplexPipe` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public interface IDuplexPipe
             {
                 System.IO.Pipelines.PipeReader Input { get; }
                 System.IO.Pipelines.PipeWriter Output { get; }
             }
 
-            // Generated from `System.IO.Pipelines.Pipe` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class Pipe
             {
                 public Pipe() => throw null;
@@ -32,7 +30,6 @@ namespace System
                 public System.IO.Pipelines.PipeWriter Writer { get => throw null; }
             }
 
-            // Generated from `System.IO.Pipelines.PipeOptions` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class PipeOptions
             {
                 public static System.IO.Pipelines.PipeOptions Default { get => throw null; }
@@ -46,7 +43,6 @@ namespace System
                 public System.IO.Pipelines.PipeScheduler WriterScheduler { get => throw null; }
             }
 
-            // Generated from `System.IO.Pipelines.PipeReader` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class PipeReader
             {
                 public abstract void AdvanceTo(System.SequencePosition consumed);
@@ -67,7 +63,6 @@ namespace System
                 public abstract bool TryRead(out System.IO.Pipelines.ReadResult result);
             }
 
-            // Generated from `System.IO.Pipelines.PipeScheduler` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class PipeScheduler
             {
                 public static System.IO.Pipelines.PipeScheduler Inline { get => throw null; }
@@ -76,7 +71,6 @@ namespace System
                 public static System.IO.Pipelines.PipeScheduler ThreadPool { get => throw null; }
             }
 
-            // Generated from `System.IO.Pipelines.PipeWriter` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class PipeWriter : System.Buffers.IBufferWriter<System.Byte>
             {
                 public abstract void Advance(int bytes);
@@ -96,7 +90,6 @@ namespace System
                 public virtual System.Threading.Tasks.ValueTask<System.IO.Pipelines.FlushResult> WriteAsync(System.ReadOnlyMemory<System.Byte> source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
 
-            // Generated from `System.IO.Pipelines.ReadResult` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct ReadResult
             {
                 public System.Buffers.ReadOnlySequence<System.Byte> Buffer { get => throw null; }
@@ -106,13 +99,11 @@ namespace System
                 public ReadResult(System.Buffers.ReadOnlySequence<System.Byte> buffer, bool isCanceled, bool isCompleted) => throw null;
             }
 
-            // Generated from `System.IO.Pipelines.StreamPipeExtensions` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class StreamPipeExtensions
             {
                 public static System.Threading.Tasks.Task CopyToAsync(this System.IO.Stream source, System.IO.Pipelines.PipeWriter destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
 
-            // Generated from `System.IO.Pipelines.StreamPipeReaderOptions` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class StreamPipeReaderOptions
             {
                 public int BufferSize { get => throw null; }
@@ -124,7 +115,6 @@ namespace System
                 public bool UseZeroByteReads { get => throw null; }
             }
 
-            // Generated from `System.IO.Pipelines.StreamPipeWriterOptions` in `System.IO.Pipelines, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class StreamPipeWriterOptions
             {
                 public bool LeaveOpen { get => throw null; }

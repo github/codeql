@@ -19,9 +19,12 @@ class TokenValidationParametersPropertySensitiveValidation extends Property {
 }
 
 /**
+ * DEPRECATED: Use `FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation` instead.
+ *
  * A dataflow from a `false` value to a write sensitive property for `TokenValidationParameters`.
  */
-class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration {
+deprecated class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration
+{
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation() {
     this = "FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation"
   }
@@ -35,6 +38,25 @@ class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation 
     sink.asExpr() = any(TokenValidationParametersPropertySensitiveValidation p).getAnAssignedValue()
   }
 }
+
+/**
+ * A dataflow configuration from a `false` value to a write sensitive property for `TokenValidationParameters`.
+ */
+private module FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidationConfig
+  implements DataFlow::ConfigSig
+{
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr().getValue() = "false" and
+    source.asExpr().getType() instanceof BoolType
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(TokenValidationParametersPropertySensitiveValidation p).getAnAssignedValue()
+  }
+}
+
+module FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation =
+  DataFlow::Global<FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidationConfig>;
 
 /**
  * Holds if `assemblyName` is older than version `ver`
@@ -77,21 +99,6 @@ private class TokenValidationResultIsValidCall extends PropertyRead {
       p.hasName("IsValid") or
       p.hasName("Exception")
     )
-  }
-}
-
-/**
- * Dataflow from the output of `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken` call to access the `IsValid` or `Exception` property
- */
-private class FlowsToTokenValidationResultIsValidCall extends DataFlow::Configuration {
-  FlowsToTokenValidationResultIsValidCall() { this = "FlowsToTokenValidationResultIsValidCall" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof JsonWebTokenHandlerValidateTokenCall
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(TokenValidationResultIsValidCall call | sink.asExpr() = call.getQualifier())
   }
 }
 
@@ -219,7 +226,8 @@ class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsStri
 /**
  * A Callable that always return the 1st argument, both of `string` type. Higher precision
  */
-class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString {
+class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString
+{
   CallableAlwaysReturnsParameter0MayThrowExceptions() {
     forex(Expr ret | this.canReturn(ret) |
       ret = this.getParameter(0).getAnAccess()

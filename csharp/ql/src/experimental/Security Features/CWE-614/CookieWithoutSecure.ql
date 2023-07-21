@@ -30,15 +30,15 @@ where
         getAValueForCookiePolicyProp("Secure").getValue() = "1"
       ) and
       // there is no callback `OnAppendCookie` that sets `Secure` to true
-      not exists(OnAppendCookieSecureTrackingConfig config | config.hasFlowTo(_)) and
+      not OnAppendCookieSecureTracking::flowTo(_) and
       (
         // `Secure` property in `CookieOptions` passed to IResponseCookies.Append(...) wasn't set
         exists(ObjectCreation oc |
           oc = c and
           oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
           not isPropertySet(oc, "Secure") and
-          exists(CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation |
-            cookieTracking.hasFlow(creation, _) and
+          exists(DataFlow::Node creation |
+            CookieOptionsTracking::flow(creation, _) and
             creation.asExpr() = oc
           )
         )
@@ -80,10 +80,10 @@ where
           or
           oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
           // there is no callback `OnAppendCookie` that sets `Secure` to true
-          not exists(OnAppendCookieSecureTrackingConfig config | config.hasFlowTo(_)) and
+          not OnAppendCookieSecureTracking::flowTo(_) and
           // the cookie option is passed to `Append`
-          exists(CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation |
-            cookieTracking.hasFlow(creation, _) and
+          exists(DataFlow::Node creation |
+            CookieOptionsTracking::flow(creation, _) and
             creation.asExpr() = oc
           )
         )

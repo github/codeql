@@ -625,6 +625,7 @@ void CallMethods(String& r, String* p, String s) {
     s.c_str();
 }
 
+namespace {
 class C {
 public:
     static int StaticMemberFunction(int x) {
@@ -671,6 +672,7 @@ private:
     void* m_e;
     String m_f;
 };
+}
 
 int DerefReference(int& r) {
     return r;

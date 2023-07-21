@@ -607,7 +607,8 @@ private class GlobalVariableAccessReal extends GlobalVariableAccessImpl, TGlobal
   final override string toString() { result = g.getValue() }
 }
 
-private class GlobalVariableAccessSynth extends GlobalVariableAccessImpl, TGlobalVariableAccessSynth {
+private class GlobalVariableAccessSynth extends GlobalVariableAccessImpl, TGlobalVariableAccessSynth
+{
   private GlobalVariable v;
 
   GlobalVariableAccessSynth() { this = TGlobalVariableAccessSynth(_, _, v) }
@@ -624,7 +625,8 @@ module InstanceVariableAccess {
 abstract class InstanceVariableAccessImpl extends VariableAccessImpl, TInstanceVariableAccess { }
 
 private class InstanceVariableAccessReal extends InstanceVariableAccessImpl,
-  TInstanceVariableAccessReal {
+  TInstanceVariableAccessReal
+{
   private Ruby::InstanceVariable g;
   private InstanceVariable v;
 
@@ -636,7 +638,8 @@ private class InstanceVariableAccessReal extends InstanceVariableAccessImpl,
 }
 
 private class InstanceVariableAccessSynth extends InstanceVariableAccessImpl,
-  TInstanceVariableAccessSynth {
+  TInstanceVariableAccessSynth
+{
   private InstanceVariable v;
 
   InstanceVariableAccessSynth() { this = TInstanceVariableAccessSynth(_, _, v) }
@@ -664,7 +667,8 @@ private class ClassVariableAccessReal extends ClassVariableAccessRealImpl, TClas
 }
 
 private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
-  TClassVariableAccessSynth {
+  TClassVariableAccessSynth
+{
   private ClassVariable v;
 
   ClassVariableAccessSynth() { this = TClassVariableAccessSynth(_, _, v) }

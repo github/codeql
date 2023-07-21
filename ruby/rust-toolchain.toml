@@ -1,7 +1,0 @@
-# This file specifies the Rust version used to develop and test the Ruby
-# extractor. It is set to the lowest version of Rust we want to support.
-
-[toolchain]
-channel = "1.54"
-profile = "minimal"
-components = [ "rustfmt" ]

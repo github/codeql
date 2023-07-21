@@ -108,21 +108,7 @@ module DatabaseSql {
     }
   }
 
-  private class SqlFunctionModels extends TaintTracking::FunctionModel {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    SqlFunctionModels() {
-      // signature: func Named(name string, value interface{}) NamedArg
-      this.hasQualifiedName("database/sql", "Named") and
-      (inp.isParameter(_) and outp.isResult())
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
-  }
-
+  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
   private class SqlMethodModels extends TaintTracking::FunctionModel, Method {
     FunctionInput inp;
     FunctionOutput outp;
@@ -135,53 +121,6 @@ module DatabaseSql {
       // signature: func (*Rows) Scan(dest ...interface{}) error
       this.hasQualifiedName("database/sql", "Rows", "Scan") and
       (inp.isReceiver() and outp.isParameter(_))
-      or
-      // signature: func (Scanner) Scan(src interface{}) error
-      this.implements("database/sql", "Scanner", "Scan") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // Prepare methods
-      this.hasQualifiedName("database/sql", ["Tx", "DB"], "Prepare") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // PrepareContext methods
-      this.hasQualifiedName("database/sql", ["Tx", "DB", "Conn"], "PrepareContext") and
-      (inp.isParameter(1) and outp.isResult(0))
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
-  }
-
-  private class SqlDriverMethodModels extends TaintTracking::FunctionModel, Method {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    SqlDriverMethodModels() {
-      // signature: func (NotNull) ConvertValue(v interface{}) (Value, error)
-      this.hasQualifiedName("database/sql/driver", "NotNull", "ConvertValue") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // signature: func (Null) ConvertValue(v interface{}) (Value, error)
-      this.hasQualifiedName("database/sql/driver", "Null", "ConvertValue") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // signature: func (ValueConverter) ConvertValue(v interface{}) (Value, error)
-      this.implements("database/sql/driver", "ValueConverter", "ConvertValue") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // signature: func (Conn) Prepare(query string) (Stmt, error)
-      this.implements("database/sql/driver", "Conn", "Prepare") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // signature: func (ConnPrepareContext) PrepareContext(ctx context.Context, query string) (Stmt, error)
-      this.implements("database/sql/driver", "ConnPrepareContext", "PrepareContext") and
-      (inp.isParameter(1) and outp.isResult(0))
-      or
-      // signature: func (Valuer) Value() (Value, error)
-      this.implements("database/sql/driver", "Valuer", "Value") and
-      (inp.isReceiver() and outp.isResult(0))
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

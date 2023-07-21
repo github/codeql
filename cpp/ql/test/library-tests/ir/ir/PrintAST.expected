@@ -4879,13 +4879,13 @@ ir.cpp:
 #  504|           getExpr(): [ClassAggregateLiteral] {...}
 #  504|               Type = [Struct] Point
 #  504|               ValueCategory = prvalue
-#  504|             getFieldExpr(x): [VariableAccess] x
+#  504|             getAFieldExpr(x): [VariableAccess] x
 #  504|                 Type = [IntType] int
 #  504|                 ValueCategory = prvalue(load)
-#  504|             getFieldExpr(y): [VariableAccess] f
+#  504|             getAFieldExpr(y): [VariableAccess] f
 #  504|                 Type = [FloatType] float
 #  504|                 ValueCategory = prvalue(load)
-#  504|             getFieldExpr(y).getFullyConverted(): [CStyleCast] (int)...
+#  504|             getAFieldExpr(y).getFullyConverted(): [CStyleCast] (int)...
 #  504|                 Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  504|                 Type = [IntType] int
 #  504|                 ValueCategory = prvalue
@@ -4896,7 +4896,7 @@ ir.cpp:
 #  505|           getExpr(): [ClassAggregateLiteral] {...}
 #  505|               Type = [Struct] Point
 #  505|               ValueCategory = prvalue
-#  505|             getFieldExpr(x): [VariableAccess] x
+#  505|             getAFieldExpr(x): [VariableAccess] x
 #  505|                 Type = [IntType] int
 #  505|                 ValueCategory = prvalue(load)
 #  506|     getStmt(2): [DeclStmt] declaration
@@ -4944,16 +4944,16 @@ ir.cpp:
 #  514|           getExpr(): [ClassAggregateLiteral] {...}
 #  514|               Type = [Struct] Rect
 #  514|               ValueCategory = prvalue
-#  514|             getFieldExpr(topLeft): [ClassAggregateLiteral] {...}
+#  514|             getAFieldExpr(topLeft): [ClassAggregateLiteral] {...}
 #  514|                 Type = [Struct] Point
 #  514|                 ValueCategory = prvalue
-#  514|               getFieldExpr(x): [VariableAccess] x
+#  514|               getAFieldExpr(x): [VariableAccess] x
 #  514|                   Type = [IntType] int
 #  514|                   ValueCategory = prvalue(load)
-#  514|               getFieldExpr(y): [VariableAccess] f
+#  514|               getAFieldExpr(y): [VariableAccess] f
 #  514|                   Type = [FloatType] float
 #  514|                   ValueCategory = prvalue(load)
-#  514|               getFieldExpr(y).getFullyConverted(): [CStyleCast] (int)...
+#  514|               getAFieldExpr(y).getFullyConverted(): [CStyleCast] (int)...
 #  514|                   Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  514|                   Type = [IntType] int
 #  514|                   ValueCategory = prvalue
@@ -4964,29 +4964,29 @@ ir.cpp:
 #  515|           getExpr(): [ClassAggregateLiteral] {...}
 #  515|               Type = [Struct] Rect
 #  515|               ValueCategory = prvalue
-#  515|             getFieldExpr(topLeft): [ClassAggregateLiteral] {...}
+#  515|             getAFieldExpr(topLeft): [ClassAggregateLiteral] {...}
 #  515|                 Type = [Struct] Point
 #  515|                 ValueCategory = prvalue
-#  515|               getFieldExpr(x): [VariableAccess] x
+#  515|               getAFieldExpr(x): [VariableAccess] x
 #  515|                   Type = [IntType] int
 #  515|                   ValueCategory = prvalue(load)
-#  515|               getFieldExpr(y): [VariableAccess] f
+#  515|               getAFieldExpr(y): [VariableAccess] f
 #  515|                   Type = [FloatType] float
 #  515|                   ValueCategory = prvalue(load)
-#  515|               getFieldExpr(y).getFullyConverted(): [CStyleCast] (int)...
+#  515|               getAFieldExpr(y).getFullyConverted(): [CStyleCast] (int)...
 #  515|                   Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  515|                   Type = [IntType] int
 #  515|                   ValueCategory = prvalue
-#  515|             getFieldExpr(bottomRight): [ClassAggregateLiteral] {...}
+#  515|             getAFieldExpr(bottomRight): [ClassAggregateLiteral] {...}
 #  515|                 Type = [Struct] Point
 #  515|                 ValueCategory = prvalue
-#  515|               getFieldExpr(x): [VariableAccess] x
+#  515|               getAFieldExpr(x): [VariableAccess] x
 #  515|                   Type = [IntType] int
 #  515|                   ValueCategory = prvalue(load)
-#  515|               getFieldExpr(y): [VariableAccess] f
+#  515|               getAFieldExpr(y): [VariableAccess] f
 #  515|                   Type = [FloatType] float
 #  515|                   ValueCategory = prvalue(load)
-#  515|               getFieldExpr(y).getFullyConverted(): [CStyleCast] (int)...
+#  515|               getAFieldExpr(y).getFullyConverted(): [CStyleCast] (int)...
 #  515|                   Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  515|                   Type = [IntType] int
 #  515|                   ValueCategory = prvalue
@@ -4997,16 +4997,16 @@ ir.cpp:
 #  516|           getExpr(): [ClassAggregateLiteral] {...}
 #  516|               Type = [Struct] Rect
 #  516|               ValueCategory = prvalue
-#  516|             getFieldExpr(topLeft): [ClassAggregateLiteral] {...}
+#  516|             getAFieldExpr(topLeft): [ClassAggregateLiteral] {...}
 #  516|                 Type = [Struct] Point
 #  516|                 ValueCategory = prvalue
-#  516|               getFieldExpr(x): [VariableAccess] x
+#  516|               getAFieldExpr(x): [VariableAccess] x
 #  516|                   Type = [IntType] int
 #  516|                   ValueCategory = prvalue(load)
-#  516|             getFieldExpr(bottomRight): [ClassAggregateLiteral] {...}
+#  516|             getAFieldExpr(bottomRight): [ClassAggregateLiteral] {...}
 #  516|                 Type = [Struct] Point
 #  516|                 ValueCategory = prvalue
-#  516|               getFieldExpr(x): [VariableAccess] x
+#  516|               getAFieldExpr(x): [VariableAccess] x
 #  516|                   Type = [IntType] int
 #  516|                   ValueCategory = prvalue(load)
 #  517|     getStmt(4): [ReturnStmt] return ...
@@ -5031,17 +5031,17 @@ ir.cpp:
 #  521|           getExpr(): [ArrayAggregateLiteral] {...}
 #  521|               Type = [ArrayType] int[3]
 #  521|               ValueCategory = prvalue
-#  521|             getElementExpr(0): [VariableAccess] x
+#  521|             getAnElementExpr(0): [VariableAccess] x
 #  521|                 Type = [IntType] int
 #  521|                 ValueCategory = prvalue(load)
-#  521|             getElementExpr(1): [VariableAccess] f
+#  521|             getAnElementExpr(1): [VariableAccess] f
 #  521|                 Type = [FloatType] float
 #  521|                 ValueCategory = prvalue(load)
-#  521|             getElementExpr(2): [Literal] 0
+#  521|             getAnElementExpr(2): [Literal] 0
 #  521|                 Type = [IntType] int
 #  521|                 Value = [Literal] 0
 #  521|                 ValueCategory = prvalue
-#  521|             getElementExpr(1).getFullyConverted(): [CStyleCast] (int)...
+#  521|             getAnElementExpr(1).getFullyConverted(): [CStyleCast] (int)...
 #  521|                 Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  521|                 Type = [IntType] int
 #  521|                 ValueCategory = prvalue
@@ -5052,7 +5052,7 @@ ir.cpp:
 #  522|           getExpr(): [ArrayAggregateLiteral] {...}
 #  522|               Type = [ArrayType] int[3]
 #  522|               ValueCategory = prvalue
-#  522|             getElementExpr(0): [VariableAccess] x
+#  522|             getAnElementExpr(0): [VariableAccess] x
 #  522|                 Type = [IntType] int
 #  522|                 ValueCategory = prvalue(load)
 #  523|     getStmt(3): [ReturnStmt] return ...
@@ -5078,10 +5078,10 @@ ir.cpp:
 #  531|           getExpr(): [ClassAggregateLiteral] {...}
 #  531|               Type = [Union] U
 #  531|               ValueCategory = prvalue
-#  531|             getFieldExpr(d): [VariableAccess] f
+#  531|             getAFieldExpr(d): [VariableAccess] f
 #  531|                 Type = [FloatType] float
 #  531|                 ValueCategory = prvalue(load)
-#  531|             getFieldExpr(d).getFullyConverted(): [CStyleCast] (double)...
+#  531|             getAFieldExpr(d).getFullyConverted(): [CStyleCast] (double)...
 #  531|                 Conversion = [FloatingPointConversion] floating point conversion
 #  531|                 Type = [DoubleType] double
 #  531|                 ValueCategory = prvalue
@@ -5262,11 +5262,11 @@ ir.cpp:
 #  577|           getExpr(): [ArrayAggregateLiteral] {...}
 #  577|               Type = [ArrayType] char[2]
 #  577|               ValueCategory = prvalue
-#  577|             getElementExpr(0): [Literal] 0
+#  577|             getAnElementExpr(0): [Literal] 0
 #  577|                 Type = [IntType] int
 #  577|                 Value = [Literal] 0
 #  577|                 ValueCategory = prvalue
-#  577|             getElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
+#  577|             getAnElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
 #  577|                 Conversion = [IntegralConversion] integral conversion
 #  577|                 Type = [PlainCharType] char
 #  577|                 Value = [CStyleCast] 0
@@ -5278,20 +5278,20 @@ ir.cpp:
 #  578|           getExpr(): [ArrayAggregateLiteral] {...}
 #  578|               Type = [ArrayType] char[2]
 #  578|               ValueCategory = prvalue
-#  578|             getElementExpr(0): [Literal] 0
+#  578|             getAnElementExpr(0): [Literal] 0
 #  578|                 Type = [IntType] int
 #  578|                 Value = [Literal] 0
 #  578|                 ValueCategory = prvalue
-#  578|             getElementExpr(1): [Literal] 1
+#  578|             getAnElementExpr(1): [Literal] 1
 #  578|                 Type = [IntType] int
 #  578|                 Value = [Literal] 1
 #  578|                 ValueCategory = prvalue
-#  578|             getElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
+#  578|             getAnElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
 #  578|                 Conversion = [IntegralConversion] integral conversion
 #  578|                 Type = [PlainCharType] char
 #  578|                 Value = [CStyleCast] 0
 #  578|                 ValueCategory = prvalue
-#  578|             getElementExpr(1).getFullyConverted(): [CStyleCast] (char)...
+#  578|             getAnElementExpr(1).getFullyConverted(): [CStyleCast] (char)...
 #  578|                 Conversion = [IntegralConversion] integral conversion
 #  578|                 Type = [PlainCharType] char
 #  578|                 Value = [CStyleCast] 1
@@ -5303,11 +5303,11 @@ ir.cpp:
 #  579|           getExpr(): [ArrayAggregateLiteral] {...}
 #  579|               Type = [ArrayType] char[3]
 #  579|               ValueCategory = prvalue
-#  579|             getElementExpr(0): [Literal] 0
+#  579|             getAnElementExpr(0): [Literal] 0
 #  579|                 Type = [IntType] int
 #  579|                 Value = [Literal] 0
 #  579|                 ValueCategory = prvalue
-#  579|             getElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
+#  579|             getAnElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
 #  579|                 Conversion = [IntegralConversion] integral conversion
 #  579|                 Type = [PlainCharType] char
 #  579|                 Value = [CStyleCast] 0
@@ -8036,7 +8036,7 @@ ir.cpp:
 #  963|         getInitializer(): [ArrayAggregateLiteral] {...}
 #  963|             Type = [ArrayType] String[]
 #  963|             ValueCategory = prvalue
-#  963|           getElementExpr(0): [ConstructorCall] call to String
+#  963|           getAnElementExpr(0): [ConstructorCall] call to String
 #  963|               Type = [VoidType] void
 #  963|               ValueCategory = prvalue
 #  963|         getExtent(): [VariableAccess] n
@@ -8078,7 +8078,7 @@ ir.cpp:
 #  966|         getInitializer(): [ArrayAggregateLiteral] {...}
 #  966|             Type = [ArrayType] DefaultCtorWithDefaultParam[]
 #  966|             ValueCategory = prvalue
-#  966|           getElementExpr(0): [ConstructorCall] call to DefaultCtorWithDefaultParam
+#  966|           getAnElementExpr(0): [ConstructorCall] call to DefaultCtorWithDefaultParam
 #  966|               Type = [VoidType] void
 #  966|               ValueCategory = prvalue
 #  966|         getExtent(): [VariableAccess] n
@@ -8091,15 +8091,15 @@ ir.cpp:
 #  967|         getInitializer(): [ArrayAggregateLiteral] {...}
 #  967|             Type = [ArrayType] int[3]
 #  967|             ValueCategory = prvalue
-#  967|           getElementExpr(0): [Literal] 0
+#  967|           getAnElementExpr(0): [Literal] 0
 #  967|               Type = [IntType] int
 #  967|               Value = [Literal] 0
 #  967|               ValueCategory = prvalue
-#  967|           getElementExpr(1): [Literal] 1
+#  967|           getAnElementExpr(1): [Literal] 1
 #  967|               Type = [IntType] int
 #  967|               Value = [Literal] 1
 #  967|               ValueCategory = prvalue
-#  967|           getElementExpr(2): [Literal] 2
+#  967|           getAnElementExpr(2): [Literal] 2
 #  967|               Type = [IntType] int
 #  967|               Value = [Literal] 2
 #  967|               ValueCategory = prvalue
@@ -8117,11 +8117,11 @@ ir.cpp:
 #  971|           getExpr(): [ArrayAggregateLiteral] {...}
 #  971|               Type = [ArrayType] int[1000]
 #  971|               ValueCategory = prvalue
-#  971|             getElementExpr(2): [Literal] 10002
+#  971|             getAnElementExpr(2): [Literal] 10002
 #  971|                 Type = [IntType] int
 #  971|                 Value = [Literal] 10002
 #  971|                 ValueCategory = prvalue
-#  971|             getElementExpr(900): [Literal] 10900
+#  971|             getAnElementExpr(900): [Literal] 10900
 #  971|                 Type = [IntType] int
 #  971|                 Value = [Literal] 10900
 #  971|                 ValueCategory = prvalue
@@ -8601,19 +8601,19 @@ ir.cpp:
 # 1043|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1043|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1043|                 ValueCategory = prvalue
-# 1043|               getFieldExpr(s): [VariableAccess] s
+# 1043|               getAFieldExpr(s): [VariableAccess] s
 # 1043|                   Type = [LValueReferenceType] const String &
 # 1043|                   ValueCategory = prvalue(load)
-# 1043|               getFieldExpr(x): [VariableAccess] x
+# 1043|               getAFieldExpr(x): [VariableAccess] x
 # 1043|                   Type = [IntType] int
 # 1043|                   ValueCategory = lvalue
-# 1043|               getFieldExpr(s).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1043|               getAFieldExpr(s).getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1043|                   Type = [LValueReferenceType] const String &
 # 1043|                   ValueCategory = prvalue
 # 1043|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 # 1043|                     Type = [SpecifiedType] const String
 # 1043|                     ValueCategory = lvalue
-#-----|               getFieldExpr(x).getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|               getAFieldExpr(x).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|                   Type = [LValueReferenceType] int &
 #-----|                   ValueCategory = prvalue
 # 1044|     getStmt(3): [ExprStmt] ExprStmt
@@ -8646,10 +8646,10 @@ ir.cpp:
 # 1045|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1045|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1045|                 ValueCategory = prvalue
-# 1045|               getFieldExpr(s): [ConstructorCall] call to String
+# 1045|               getAFieldExpr(s): [ConstructorCall] call to String
 # 1045|                   Type = [VoidType] void
 # 1045|                   ValueCategory = prvalue
-# 1045|               getFieldExpr(x): [VariableAccess] x
+# 1045|               getAFieldExpr(x): [VariableAccess] x
 # 1045|                   Type = [IntType] int
 # 1045|                   ValueCategory = prvalue(load)
 # 1046|     getStmt(5): [ExprStmt] ExprStmt
@@ -8682,10 +8682,10 @@ ir.cpp:
 # 1047|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1047|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1047|                 ValueCategory = prvalue
-# 1047|               getFieldExpr(s): [VariableAccess] s
+# 1047|               getAFieldExpr(s): [VariableAccess] s
 # 1047|                   Type = [LValueReferenceType] const String &
 # 1047|                   ValueCategory = prvalue(load)
-# 1047|               getFieldExpr(s).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1047|               getAFieldExpr(s).getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1047|                   Type = [LValueReferenceType] const String &
 # 1047|                   ValueCategory = prvalue
 # 1047|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
@@ -8721,7 +8721,7 @@ ir.cpp:
 # 1049|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1049|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1049|                 ValueCategory = prvalue
-# 1049|               getFieldExpr(s): [ConstructorCall] call to String
+# 1049|               getAFieldExpr(s): [ConstructorCall] call to String
 # 1049|                   Type = [VoidType] void
 # 1049|                   ValueCategory = prvalue
 # 1050|     getStmt(9): [ExprStmt] ExprStmt
@@ -8754,13 +8754,13 @@ ir.cpp:
 # 1051|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1051|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1051|                 ValueCategory = prvalue
-# 1051|               getFieldExpr(s): [VariableAccess] s
+# 1051|               getAFieldExpr(s): [VariableAccess] s
 # 1051|                   Type = [LValueReferenceType] const String &
 # 1051|                   ValueCategory = prvalue(load)
-# 1051|               getFieldExpr(x): [VariableAccess] x
+# 1051|               getAFieldExpr(x): [VariableAccess] x
 # 1051|                   Type = [IntType] int
 # 1051|                   ValueCategory = prvalue(load)
-# 1051|               getFieldExpr(s).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1051|               getAFieldExpr(s).getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1051|                   Type = [LValueReferenceType] const String &
 # 1051|                   ValueCategory = prvalue
 # 1051|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
@@ -8810,13 +8810,13 @@ ir.cpp:
 # 1054|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1054|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1054|                 ValueCategory = prvalue
-# 1054|               getFieldExpr(s): [VariableAccess] s
+# 1054|               getAFieldExpr(s): [VariableAccess] s
 # 1054|                   Type = [LValueReferenceType] const String &
 # 1054|                   ValueCategory = prvalue(load)
-# 1054|               getFieldExpr(x): [VariableAccess] x
+# 1054|               getAFieldExpr(x): [VariableAccess] x
 # 1054|                   Type = [IntType] int
 # 1054|                   ValueCategory = prvalue(load)
-# 1054|               getFieldExpr(i): [AddExpr] ... + ...
+# 1054|               getAFieldExpr(i): [AddExpr] ... + ...
 # 1054|                   Type = [IntType] int
 # 1054|                   ValueCategory = prvalue
 # 1054|                 getLeftOperand(): [VariableAccess] x
@@ -8826,16 +8826,16 @@ ir.cpp:
 # 1054|                     Type = [IntType] int
 # 1054|                     Value = [Literal] 1
 # 1054|                     ValueCategory = prvalue
-# 1054|               getFieldExpr(j): [VariableAccess] r
+# 1054|               getAFieldExpr(j): [VariableAccess] r
 # 1054|                   Type = [IntType] int
 # 1054|                   ValueCategory = lvalue
-# 1054|               getFieldExpr(s).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1054|               getAFieldExpr(s).getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1054|                   Type = [LValueReferenceType] const String &
 # 1054|                   ValueCategory = prvalue
 # 1054|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 # 1054|                     Type = [SpecifiedType] const String
 # 1054|                     ValueCategory = lvalue
-# 1054|               getFieldExpr(j).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1054|               getAFieldExpr(j).getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1054|                   Type = [LValueReferenceType] int &
 # 1054|                   ValueCategory = prvalue
 # 1055|     getStmt(14): [ExprStmt] ExprStmt
@@ -9551,19 +9551,19 @@ ir.cpp:
 # 1163|           getExpr(): [VectorAggregateLiteral] {...}
 # 1163|               Type = [GNUVectorType] __attribute((vector_size(16UL))) int
 # 1163|               ValueCategory = prvalue
-# 1163|             getElementExpr(0): [Literal] 0
+# 1163|             getAnElementExpr(0): [Literal] 0
 # 1163|                 Type = [IntType] int
 # 1163|                 Value = [Literal] 0
 # 1163|                 ValueCategory = prvalue
-# 1163|             getElementExpr(1): [Literal] 1
+# 1163|             getAnElementExpr(1): [Literal] 1
 # 1163|                 Type = [IntType] int
 # 1163|                 Value = [Literal] 1
 # 1163|                 ValueCategory = prvalue
-# 1163|             getElementExpr(2): [Literal] 2
+# 1163|             getAnElementExpr(2): [Literal] 2
 # 1163|                 Type = [IntType] int
 # 1163|                 Value = [Literal] 2
 # 1163|                 ValueCategory = prvalue
-# 1163|             getElementExpr(3): [Literal] 3
+# 1163|             getAnElementExpr(3): [Literal] 3
 # 1163|                 Type = [IntType] int
 # 1163|                 Value = [Literal] 3
 # 1163|                 ValueCategory = prvalue
@@ -10077,11 +10077,11 @@ ir.cpp:
 # 1252|           getExpr(): [ArrayAggregateLiteral] {...}
 # 1252|               Type = [ArrayType] char[1024]
 # 1252|               ValueCategory = prvalue
-# 1252|             getElementExpr(0): [Literal] 0
+# 1252|             getAnElementExpr(0): [Literal] 0
 # 1252|                 Type = [IntType] int
 # 1252|                 Value = [Literal] 0
 # 1252|                 ValueCategory = prvalue
-# 1252|             getElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
+# 1252|             getAnElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
 # 1252|                 Conversion = [IntegralConversion] integral conversion
 # 1252|                 Type = [PlainCharType] char
 # 1252|                 Value = [CStyleCast] 0
@@ -11413,11 +11413,11 @@ ir.cpp:
 # 1463|           getExpr(): [ArrayAggregateLiteral] {...}
 # 1463|               Type = [ArrayType] int[2]
 # 1463|               ValueCategory = prvalue
-# 1463|             getElementExpr(0): [Literal] 1
+# 1463|             getAnElementExpr(0): [Literal] 1
 # 1463|                 Type = [IntType] int
 # 1463|                 Value = [Literal] 1
 # 1463|                 ValueCategory = prvalue
-# 1463|             getElementExpr(1): [Literal] 2
+# 1463|             getAnElementExpr(1): [Literal] 2
 # 1463|                 Type = [IntType] int
 # 1463|                 Value = [Literal] 2
 # 1463|                 ValueCategory = prvalue
@@ -12909,11 +12909,11 @@ ir.cpp:
 # 1673|           getExpr(): [ArrayAggregateLiteral] {...}
 # 1673|               Type = [ArrayType] int[2]
 # 1673|               ValueCategory = prvalue
-# 1673|             getElementExpr(0): [Literal] 1
+# 1673|             getAnElementExpr(0): [Literal] 1
 # 1673|                 Type = [IntType] int
 # 1673|                 Value = [Literal] 1
 # 1673|                 ValueCategory = prvalue
-# 1673|             getElementExpr(1): [Literal] 2
+# 1673|             getAnElementExpr(1): [Literal] 2
 # 1673|                 Type = [IntType] int
 # 1673|                 Value = [Literal] 2
 # 1673|                 ValueCategory = prvalue
@@ -13021,28 +13021,28 @@ ir.cpp:
 # 1688|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1688|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1688|                 ValueCategory = prvalue
-# 1688|               getFieldExpr(obj1): [VariableAccess] obj1
+# 1688|               getAFieldExpr(obj1): [VariableAccess] obj1
 # 1688|                   Type = [LValueReferenceType] const CapturedLambdaMyObj &
 # 1688|                   ValueCategory = prvalue(load)
-# 1688|               getFieldExpr(obj2): [VariableAccess] obj2
+# 1688|               getAFieldExpr(obj2): [VariableAccess] obj2
 # 1688|                   Type = [Class] CapturedLambdaMyObj
 # 1688|                   ValueCategory = prvalue(load)
-# 1688|               getFieldExpr(x): [VariableAccess] x
+# 1688|               getAFieldExpr(x): [VariableAccess] x
 # 1688|                   Type = [IntType] int
 # 1688|                   ValueCategory = prvalue(load)
-# 1688|               getFieldExpr(y): [VariableAccess] y
+# 1688|               getAFieldExpr(y): [VariableAccess] y
 # 1688|                   Type = [LValueReferenceType] int &
 # 1688|                   ValueCategory = prvalue(load)
-# 1688|               getFieldExpr(z): [VariableAccess] z
+# 1688|               getAFieldExpr(z): [VariableAccess] z
 # 1688|                   Type = [RValueReferenceType] int &&
 # 1688|                   ValueCategory = prvalue(load)
-#-----|               getFieldExpr(obj1).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|               getAFieldExpr(obj1).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [SpecifiedType] const CapturedLambdaMyObj
 #-----|                   ValueCategory = prvalue(load)
-# 1690|               getFieldExpr(y).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1690|               getAFieldExpr(y).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1690|                   Type = [IntType] int
 # 1690|                   ValueCategory = prvalue(load)
-# 1690|               getFieldExpr(z).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1690|               getAFieldExpr(z).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1690|                   Type = [IntType] int
 # 1690|                   ValueCategory = prvalue(load)
 # 1691|     getStmt(3): [ReturnStmt] return ...
@@ -13073,31 +13073,31 @@ ir.cpp:
 # 1689|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1689|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1689|                 ValueCategory = prvalue
-# 1689|               getFieldExpr(obj1): [PointerFieldAccess] obj1
+# 1689|               getAFieldExpr(obj1): [PointerFieldAccess] obj1
 # 1689|                   Type = [SpecifiedType] const CapturedLambdaMyObj
 # 1689|                   ValueCategory = prvalue(load)
 # 1689|                 getQualifier(): [ThisExpr] this
 # 1689|                     Type = [PointerType] lambda [] type at line 1689, col. 29 *
 # 1689|                     ValueCategory = prvalue(load)
-# 1689|               getFieldExpr(obj2): [PointerFieldAccess] obj2
+# 1689|               getAFieldExpr(obj2): [PointerFieldAccess] obj2
 # 1689|                   Type = [Class] CapturedLambdaMyObj
 # 1689|                   ValueCategory = prvalue(load)
 # 1689|                 getQualifier(): [ThisExpr] this
 # 1689|                     Type = [PointerType] lambda [] type at line 1689, col. 29 *
 # 1689|                     ValueCategory = prvalue(load)
-# 1689|               getFieldExpr(x): [PointerFieldAccess] x
+# 1689|               getAFieldExpr(x): [PointerFieldAccess] x
 # 1689|                   Type = [IntType] int
 # 1689|                   ValueCategory = prvalue(load)
 # 1689|                 getQualifier(): [ThisExpr] this
 # 1689|                     Type = [PointerType] const lambda [] type at line 1688, col. 25 *
 # 1689|                     ValueCategory = prvalue(load)
-# 1689|               getFieldExpr(y): [PointerFieldAccess] y
+# 1689|               getAFieldExpr(y): [PointerFieldAccess] y
 # 1689|                   Type = [IntType] int
 # 1689|                   ValueCategory = prvalue(load)
 # 1689|                 getQualifier(): [ThisExpr] this
 # 1689|                     Type = [PointerType] const lambda [] type at line 1688, col. 25 *
 # 1689|                     ValueCategory = prvalue(load)
-# 1689|               getFieldExpr(z): [PointerFieldAccess] z
+# 1689|               getAFieldExpr(z): [PointerFieldAccess] z
 # 1689|                   Type = [IntType] int
 # 1689|                   ValueCategory = prvalue(load)
 # 1689|                 getQualifier(): [ThisExpr] this
@@ -13161,7 +13161,7 @@ ir.cpp:
 # 1702|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1702|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1702|                 ValueCategory = prvalue
-# 1702|               getFieldExpr((captured this)): [PointerDereferenceExpr] * ...
+# 1702|               getAFieldExpr((captured this)): [PointerDereferenceExpr] * ...
 # 1702|                   Type = [SpecifiedType] const TrivialLambdaClass
 # 1702|                   ValueCategory = prvalue(load)
 # 1702|                 getOperand(): [ThisExpr] this
@@ -13208,7 +13208,7 @@ ir.cpp:
 # 1705|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1705|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1705|                 ValueCategory = prvalue
-# 1705|               getFieldExpr((captured this)): [PointerFieldAccess] (captured this)
+# 1705|               getAFieldExpr((captured this)): [PointerFieldAccess] (captured this)
 # 1705|                   Type = [SpecifiedType] const TrivialLambdaClass
 # 1705|                   ValueCategory = prvalue(load)
 # 1705|                 getQualifier(): [ThisExpr] this
@@ -13289,28 +13289,28 @@ ir.cpp:
 # 1716|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1716|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1716|                 ValueCategory = prvalue
-# 1716|               getFieldExpr(p1): [VariableAccess] p1
+# 1716|               getAFieldExpr(p1): [VariableAccess] p1
 # 1716|                   Type = [Class] TrivialLambdaClass
 # 1716|                   ValueCategory = prvalue(load)
-# 1716|               getFieldExpr(p2): [VariableAccess] p2
+# 1716|               getAFieldExpr(p2): [VariableAccess] p2
 # 1716|                   Type = [LValueReferenceType] TrivialLambdaClass &
 # 1716|                   ValueCategory = prvalue(load)
-# 1716|               getFieldExpr(p3): [VariableAccess] p3
+# 1716|               getAFieldExpr(p3): [VariableAccess] p3
 # 1716|                   Type = [RValueReferenceType] TrivialLambdaClass &&
 # 1716|                   ValueCategory = prvalue(load)
-# 1716|               getFieldExpr(l1): [VariableAccess] l1
+# 1716|               getAFieldExpr(l1): [VariableAccess] l1
 # 1716|                   Type = [SpecifiedType] const TrivialLambdaClass
 # 1716|                   ValueCategory = prvalue(load)
-# 1716|               getFieldExpr(l2): [VariableAccess] l2
+# 1716|               getAFieldExpr(l2): [VariableAccess] l2
 # 1716|                   Type = [LValueReferenceType] const TrivialLambdaClass &
 # 1716|                   ValueCategory = prvalue(load)
-#-----|               getFieldExpr(p2).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|               getAFieldExpr(p2).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [Class] TrivialLambdaClass
 #-----|                   ValueCategory = prvalue(load)
-#-----|               getFieldExpr(p3).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|               getAFieldExpr(p3).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [Class] TrivialLambdaClass
 #-----|                   ValueCategory = prvalue(load)
-#-----|               getFieldExpr(l2).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|               getAFieldExpr(l2).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [SpecifiedType] const TrivialLambdaClass
 #-----|                   ValueCategory = prvalue(load)
 # 1719|     getStmt(3): [ReturnStmt] return ...
@@ -13341,7 +13341,7 @@ ir.cpp:
 # 1717|             getInitializer(): [ClassAggregateLiteral] {...}
 # 1717|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1717|                 ValueCategory = prvalue
-# 1717|               getFieldExpr(p1): [PointerFieldAccess] p1
+# 1717|               getAFieldExpr(p1): [PointerFieldAccess] p1
 # 1717|                   Type = [Class] TrivialLambdaClass
 # 1717|                   ValueCategory = prvalue(load)
 # 1717|                 getQualifier(): [ThisExpr] this
@@ -14377,6 +14377,517 @@ ir.cpp:
 # 1885|             Type = [ClassTemplateInstantiation,Struct] Bar2<int>
 # 1885|             ValueCategory = lvalue
 # 1886|     getStmt(2): [ReturnStmt] return ...
+# 1891| [TopLevelFunction] int test_global_template_int()
+# 1891|   <params>: 
+# 1891|   getEntryPoint(): [BlockStmt] { ... }
+# 1892|     getStmt(0): [DeclStmt] declaration
+# 1892|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of local_int
+# 1892|           Type = [IntType] int
+# 1892|         getVariable().getInitializer(): [Initializer] initializer for local_int
+# 1892|           getExpr(): [VariableAccess] global_template
+# 1892|               Type = [IntType] int
+# 1892|               ValueCategory = prvalue(load)
+# 1893|     getStmt(1): [DeclStmt] declaration
+# 1893|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of local_char
+# 1893|           Type = [PlainCharType] char
+# 1893|         getVariable().getInitializer(): [Initializer] initializer for local_char
+# 1893|           getExpr(): [VariableAccess] global_template
+# 1893|               Type = [PlainCharType] char
+# 1893|               ValueCategory = prvalue(load)
+# 1894|     getStmt(2): [ReturnStmt] return ...
+# 1894|       getExpr(): [AddExpr] ... + ...
+# 1894|           Type = [IntType] int
+# 1894|           ValueCategory = prvalue
+# 1894|         getLeftOperand(): [VariableAccess] local_int
+# 1894|             Type = [IntType] int
+# 1894|             ValueCategory = prvalue(load)
+# 1894|         getRightOperand(): [VariableAccess] local_char
+# 1894|             Type = [PlainCharType] char
+# 1894|             ValueCategory = prvalue(load)
+# 1894|         getRightOperand().getFullyConverted(): [CStyleCast] (int)...
+# 1894|             Conversion = [IntegralConversion] integral conversion
+# 1894|             Type = [IntType] int
+# 1894|             ValueCategory = prvalue
+# 1897| [TopLevelFunction] void noreturnFunc()
+# 1897|   <params>: 
+# 1899| [TopLevelFunction] int noreturnTest(int)
+# 1899|   <params>: 
+# 1899|     getParameter(0): [Parameter] x
+# 1899|         Type = [IntType] int
+# 1899|   getEntryPoint(): [BlockStmt] { ... }
+# 1900|     getStmt(0): [IfStmt] if (...) ... 
+# 1900|       getCondition(): [LTExpr] ... < ...
+# 1900|           Type = [BoolType] bool
+# 1900|           ValueCategory = prvalue
+# 1900|         getLesserOperand(): [VariableAccess] x
+# 1900|             Type = [IntType] int
+# 1900|             ValueCategory = prvalue(load)
+# 1900|         getGreaterOperand(): [Literal] 10
+# 1900|             Type = [IntType] int
+# 1900|             Value = [Literal] 10
+# 1900|             ValueCategory = prvalue
+# 1900|       getThen(): [BlockStmt] { ... }
+# 1901|         getStmt(0): [ReturnStmt] return ...
+# 1901|           getExpr(): [VariableAccess] x
+# 1901|               Type = [IntType] int
+# 1901|               ValueCategory = prvalue(load)
+# 1902|       getElse(): [BlockStmt] { ... }
+# 1903|         getStmt(0): [ExprStmt] ExprStmt
+# 1903|           getExpr(): [FunctionCall] call to noreturnFunc
+# 1903|               Type = [VoidType] void
+# 1903|               ValueCategory = prvalue
+# 1905|     getStmt(1): [ReturnStmt] return ...
+# 1907| [TopLevelFunction] int noreturnTest2(int)
+# 1907|   <params>: 
+# 1907|     getParameter(0): [Parameter] x
+# 1907|         Type = [IntType] int
+# 1907|   getEntryPoint(): [BlockStmt] { ... }
+# 1908|     getStmt(0): [IfStmt] if (...) ... 
+# 1908|       getCondition(): [LTExpr] ... < ...
+# 1908|           Type = [BoolType] bool
+# 1908|           ValueCategory = prvalue
+# 1908|         getLesserOperand(): [VariableAccess] x
+# 1908|             Type = [IntType] int
+# 1908|             ValueCategory = prvalue(load)
+# 1908|         getGreaterOperand(): [Literal] 10
+# 1908|             Type = [IntType] int
+# 1908|             Value = [Literal] 10
+# 1908|             ValueCategory = prvalue
+# 1908|       getThen(): [BlockStmt] { ... }
+# 1909|         getStmt(0): [ExprStmt] ExprStmt
+# 1909|           getExpr(): [FunctionCall] call to noreturnFunc
+# 1909|               Type = [VoidType] void
+# 1909|               ValueCategory = prvalue
+# 1911|     getStmt(1): [ReturnStmt] return ...
+# 1911|       getExpr(): [VariableAccess] x
+# 1911|           Type = [IntType] int
+# 1911|           ValueCategory = prvalue(load)
+# 1914| [TopLevelFunction] int static_function(int)
+# 1914|   <params>: 
+# 1914|     getParameter(0): [Parameter] x
+# 1914|         Type = [IntType] int
+# 1914|   getEntryPoint(): [BlockStmt] { ... }
+# 1915|     getStmt(0): [ReturnStmt] return ...
+# 1915|       getExpr(): [VariableAccess] x
+# 1915|           Type = [IntType] int
+# 1915|           ValueCategory = prvalue(load)
+# 1918| [TopLevelFunction] void test_static_functions_with_assignments()
+# 1918|   <params>: 
+# 1918|   getEntryPoint(): [BlockStmt] { ... }
+# 1919|     getStmt(0): [DeclStmt] declaration
+# 1919|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 1919|           Type = [Class] C
+# 1919|         getVariable().getInitializer(): [Initializer] initializer for c
+# 1919|           getExpr(): [ConstructorCall] call to C
+# 1919|               Type = [VoidType] void
+# 1919|               ValueCategory = prvalue
+# 1920|     getStmt(1): [DeclStmt] declaration
+# 1920|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1920|           Type = [IntType] int
+# 1921|     getStmt(2): [ExprStmt] ExprStmt
+# 1921|       getExpr(): [AssignExpr] ... = ...
+# 1921|           Type = [IntType] int
+# 1921|           ValueCategory = lvalue
+# 1921|         getLValue(): [VariableAccess] x
+# 1921|             Type = [IntType] int
+# 1921|             ValueCategory = lvalue
+# 1921|         getRValue(): [FunctionCall] call to StaticMemberFunction
+# 1921|             Type = [IntType] int
+# 1921|             ValueCategory = prvalue
+# 1921|           getQualifier(): [VariableAccess] c
+# 1921|               Type = [Class] C
+# 1921|               ValueCategory = lvalue
+# 1921|           getArgument(0): [Literal] 10
+# 1921|               Type = [IntType] int
+# 1921|               Value = [Literal] 10
+# 1921|               ValueCategory = prvalue
+# 1922|     getStmt(3): [DeclStmt] declaration
+# 1922|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 1922|           Type = [IntType] int
+# 1923|     getStmt(4): [ExprStmt] ExprStmt
+# 1923|       getExpr(): [AssignExpr] ... = ...
+# 1923|           Type = [IntType] int
+# 1923|           ValueCategory = lvalue
+# 1923|         getLValue(): [VariableAccess] y
+# 1923|             Type = [IntType] int
+# 1923|             ValueCategory = lvalue
+# 1923|         getRValue(): [FunctionCall] call to StaticMemberFunction
+# 1923|             Type = [IntType] int
+# 1923|             ValueCategory = prvalue
+# 1923|           getArgument(0): [Literal] 10
+# 1923|               Type = [IntType] int
+# 1923|               Value = [Literal] 10
+# 1923|               ValueCategory = prvalue
+# 1924|     getStmt(5): [DeclStmt] declaration
+# 1924|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 1924|           Type = [IntType] int
+# 1925|     getStmt(6): [ExprStmt] ExprStmt
+# 1925|       getExpr(): [AssignExpr] ... = ...
+# 1925|           Type = [IntType] int
+# 1925|           ValueCategory = lvalue
+# 1925|         getLValue(): [VariableAccess] z
+# 1925|             Type = [IntType] int
+# 1925|             ValueCategory = lvalue
+# 1925|         getRValue(): [FunctionCall] call to static_function
+# 1925|             Type = [IntType] int
+# 1925|             ValueCategory = prvalue
+# 1925|           getArgument(0): [Literal] 10
+# 1925|               Type = [IntType] int
+# 1925|               Value = [Literal] 10
+# 1925|               ValueCategory = prvalue
+# 1926|     getStmt(7): [ReturnStmt] return ...
+# 1928| [TopLevelFunction] void test_double_assign()
+# 1928|   <params>: 
+# 1928|   getEntryPoint(): [BlockStmt] { ... }
+# 1929|     getStmt(0): [DeclStmt] declaration
+# 1929|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 1929|           Type = [IntType] int
+# 1929|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of j
+# 1929|           Type = [IntType] int
+# 1930|     getStmt(1): [ExprStmt] ExprStmt
+# 1930|       getExpr(): [AssignExpr] ... = ...
+# 1930|           Type = [IntType] int
+# 1930|           ValueCategory = lvalue
+# 1930|         getLValue(): [VariableAccess] i
+# 1930|             Type = [IntType] int
+# 1930|             ValueCategory = lvalue
+# 1930|         getRValue(): [AssignExpr] ... = ...
+# 1930|             Type = [IntType] int
+# 1930|             ValueCategory = prvalue
+# 1930|           getLValue(): [VariableAccess] j
+# 1930|               Type = [IntType] int
+# 1930|               ValueCategory = lvalue
+# 1930|           getRValue(): [Literal] 40
+# 1930|               Type = [IntType] int
+# 1930|               Value = [Literal] 40
+# 1930|               ValueCategory = prvalue
+# 1931|     getStmt(2): [ReturnStmt] return ...
+# 1933| [TopLevelFunction] void test_assign_with_assign_operation()
+# 1933|   <params>: 
+# 1933|   getEntryPoint(): [BlockStmt] { ... }
+# 1934|     getStmt(0): [DeclStmt] declaration
+# 1934|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 1934|           Type = [IntType] int
+# 1934|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of j
+# 1934|           Type = [IntType] int
+# 1934|         getVariable().getInitializer(): [Initializer] initializer for j
+# 1934|           getExpr(): [Literal] 0
+# 1934|               Type = [IntType] int
+# 1934|               Value = [Literal] 0
+# 1934|               ValueCategory = prvalue
+# 1935|     getStmt(1): [ExprStmt] ExprStmt
+# 1935|       getExpr(): [AssignExpr] ... = ...
+# 1935|           Type = [IntType] int
+# 1935|           ValueCategory = lvalue
+# 1935|         getLValue(): [VariableAccess] i
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = lvalue
+# 1935|         getRValue(): [AssignAddExpr] ... += ...
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = prvalue
+# 1935|           getLValue(): [VariableAccess] j
+# 1935|               Type = [IntType] int
+# 1935|               ValueCategory = lvalue
+# 1935|           getRValue(): [Literal] 40
+# 1935|               Type = [IntType] int
+# 1935|               Value = [Literal] 40
+# 1935|               ValueCategory = prvalue
+# 1935|         getRValue().getFullyConverted(): [ParenthesisExpr] (...)
+# 1935|             Type = [IntType] int
+# 1935|             ValueCategory = prvalue
+# 1936|     getStmt(2): [ReturnStmt] return ...
+# 1938| [CopyAssignmentOperator] D& D::operator=(D const&)
+# 1938|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const D &
+# 1938| [MoveAssignmentOperator] D& D::operator=(D&&)
+# 1938|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] D &&
+# 1942| [MemberFunction] D& D::ReferenceStaticMemberFunction()
+# 1942|   <params>: 
+# 1942|   getEntryPoint(): [BlockStmt] { ... }
+# 1943|     getStmt(0): [ReturnStmt] return ...
+# 1943|       getExpr(): [VariableAccess] x
+# 1943|           Type = [Class] D
+# 1943|           ValueCategory = lvalue
+# 1943|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1943|           Type = [LValueReferenceType] D &
+# 1943|           ValueCategory = prvalue
+# 1945| [MemberFunction] D D::ObjectStaticMemberFunction()
+# 1945|   <params>: 
+# 1945|   getEntryPoint(): [BlockStmt] { ... }
+# 1946|     getStmt(0): [ReturnStmt] return ...
+# 1946|       getExpr(): [VariableAccess] x
+# 1946|           Type = [Class] D
+# 1946|           ValueCategory = prvalue(load)
+# 1950| [TopLevelFunction] void test_static_member_functions_with_reference_return()
+# 1950|   <params>: 
+# 1950|   getEntryPoint(): [BlockStmt] { ... }
+# 1951|     getStmt(0): [DeclStmt] declaration
+# 1951|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 1951|           Type = [Class] D
+# 1953|     getStmt(1): [ExprStmt] ExprStmt
+# 1953|       getExpr(): [FunctionCall] call to ReferenceStaticMemberFunction
+# 1953|           Type = [LValueReferenceType] D &
+# 1953|           ValueCategory = prvalue
+# 1953|         getQualifier(): [VariableAccess] d
+# 1953|             Type = [Class] D
+# 1953|             ValueCategory = lvalue
+# 1953|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1953|           Type = [Class] D
+# 1953|           ValueCategory = lvalue
+# 1954|     getStmt(2): [ExprStmt] ExprStmt
+# 1954|       getExpr(): [FunctionCall] call to ReferenceStaticMemberFunction
+# 1954|           Type = [LValueReferenceType] D &
+# 1954|           ValueCategory = prvalue
+# 1954|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1954|           Type = [Class] D
+# 1954|           ValueCategory = lvalue
+# 1955|     getStmt(3): [ExprStmt] ExprStmt
+# 1955|       getExpr(): [FunctionCall] call to ObjectStaticMemberFunction
+# 1955|           Type = [Class] D
+# 1955|           ValueCategory = prvalue
+# 1955|         getQualifier(): [VariableAccess] d
+# 1955|             Type = [Class] D
+# 1955|             ValueCategory = lvalue
+# 1956|     getStmt(4): [ExprStmt] ExprStmt
+# 1956|       getExpr(): [FunctionCall] call to ObjectStaticMemberFunction
+# 1956|           Type = [Class] D
+# 1956|           ValueCategory = prvalue
+# 1958|     getStmt(5): [DeclStmt] declaration
+# 1958|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1958|           Type = [Class] D
+# 1959|     getStmt(6): [ExprStmt] ExprStmt
+# 1959|       getExpr(): [AssignExpr] ... = ...
+# 1959|           Type = [Class] D
+# 1959|           ValueCategory = lvalue
+# 1959|         getLValue(): [VariableAccess] x
+# 1959|             Type = [Class] D
+# 1959|             ValueCategory = lvalue
+# 1959|         getRValue(): [FunctionCall] call to ReferenceStaticMemberFunction
+# 1959|             Type = [LValueReferenceType] D &
+# 1959|             ValueCategory = prvalue
+# 1959|           getQualifier(): [VariableAccess] d
+# 1959|               Type = [Class] D
+# 1959|               ValueCategory = lvalue
+# 1959|         getRValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1959|             Type = [Class] D
+# 1959|             ValueCategory = prvalue(load)
+# 1960|     getStmt(7): [DeclStmt] declaration
+# 1960|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 1960|           Type = [Class] D
+# 1961|     getStmt(8): [ExprStmt] ExprStmt
+# 1961|       getExpr(): [AssignExpr] ... = ...
+# 1961|           Type = [Class] D
+# 1961|           ValueCategory = lvalue
+# 1961|         getLValue(): [VariableAccess] y
+# 1961|             Type = [Class] D
+# 1961|             ValueCategory = lvalue
+# 1961|         getRValue(): [FunctionCall] call to ReferenceStaticMemberFunction
+# 1961|             Type = [LValueReferenceType] D &
+# 1961|             ValueCategory = prvalue
+# 1961|         getRValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1961|             Type = [Class] D
+# 1961|             ValueCategory = prvalue(load)
+# 1962|     getStmt(9): [DeclStmt] declaration
+# 1962|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of j
+# 1962|           Type = [Class] D
+# 1963|     getStmt(10): [ExprStmt] ExprStmt
+# 1963|       getExpr(): [AssignExpr] ... = ...
+# 1963|           Type = [Class] D
+# 1963|           ValueCategory = lvalue
+# 1963|         getLValue(): [VariableAccess] j
+# 1963|             Type = [Class] D
+# 1963|             ValueCategory = lvalue
+# 1963|         getRValue(): [FunctionCall] call to ObjectStaticMemberFunction
+# 1963|             Type = [Class] D
+# 1963|             ValueCategory = prvalue
+# 1963|           getQualifier(): [VariableAccess] d
+# 1963|               Type = [Class] D
+# 1963|               ValueCategory = lvalue
+# 1964|     getStmt(11): [DeclStmt] declaration
+# 1964|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of k
+# 1964|           Type = [Class] D
+# 1965|     getStmt(12): [ExprStmt] ExprStmt
+# 1965|       getExpr(): [AssignExpr] ... = ...
+# 1965|           Type = [Class] D
+# 1965|           ValueCategory = lvalue
+# 1965|         getLValue(): [VariableAccess] k
+# 1965|             Type = [Class] D
+# 1965|             ValueCategory = lvalue
+# 1965|         getRValue(): [FunctionCall] call to ObjectStaticMemberFunction
+# 1965|             Type = [Class] D
+# 1965|             ValueCategory = prvalue
+# 1966|     getStmt(13): [ReturnStmt] return ...
+# 1968| [TopLevelFunction] void test_volatile()
+# 1968|   <params>: 
+# 1968|   getEntryPoint(): [BlockStmt] { ... }
+# 1969|     getStmt(0): [DeclStmt] declaration
+# 1969|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1969|           Type = [SpecifiedType] volatile int
+# 1970|     getStmt(1): [ExprStmt] ExprStmt
+# 1970|       getExpr(): [VariableAccess] x
+# 1970|           Type = [IntType] int
+# 1970|           ValueCategory = prvalue(load)
+# 1971|     getStmt(2): [ReturnStmt] return ...
+# 1973| [CopyAssignmentOperator] ValCat& ValCat::operator=(ValCat const&)
+# 1973|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ValCat &
+# 1973| [MoveAssignmentOperator] ValCat& ValCat::operator=(ValCat&&)
+# 1973|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ValCat &&
+# 1974| [MemberFunction] ValCat& ValCat::lvalue()
+# 1974|   <params>: 
+# 1975| [MemberFunction] ValCat&& ValCat::xvalue()
+# 1975|   <params>: 
+# 1976| [MemberFunction] ValCat ValCat::prvalue()
+# 1976|   <params>: 
+# 1979| [TopLevelFunction] void value_category_test()
+# 1979|   <params>: 
+# 1979|   getEntryPoint(): [BlockStmt] { ... }
+# 1980|     getStmt(0): [DeclStmt] declaration
+# 1980|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 1980|           Type = [Struct] ValCat
+# 1982|     getStmt(1): [ExprStmt] ExprStmt
+# 1982|       getExpr(): [AssignExpr] ... = ...
+# 1982|           Type = [Struct] ValCat
+# 1982|           ValueCategory = lvalue
+# 1982|         getLValue(): [FunctionCall] call to lvalue
+# 1982|             Type = [LValueReferenceType] ValCat &
+# 1982|             ValueCategory = prvalue
+# 1982|           getQualifier(): [VariableAccess] c
+# 1982|               Type = [Struct] ValCat
+# 1982|               ValueCategory = lvalue
+# 1982|         getRValue(): [ClassAggregateLiteral] {...}
+# 1982|             Type = [Struct] ValCat
+# 1982|             ValueCategory = prvalue
+# 1982|         getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1982|             Type = [Struct] ValCat
+# 1982|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1983|     getStmt(2): [ExprStmt] ExprStmt
+# 1983|       getExpr(): [AssignExpr] ... = ...
+# 1983|           Type = [Struct] ValCat
+# 1983|           ValueCategory = lvalue
+# 1983|         getLValue(): [FunctionCall] call to xvalue
+# 1983|             Type = [RValueReferenceType] ValCat &&
+# 1983|             ValueCategory = prvalue
+# 1983|           getQualifier(): [VariableAccess] c
+# 1983|               Type = [Struct] ValCat
+# 1983|               ValueCategory = lvalue
+# 1983|         getRValue(): [ClassAggregateLiteral] {...}
+# 1983|             Type = [Struct] ValCat
+# 1983|             ValueCategory = prvalue
+# 1983|         getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1983|             Type = [Struct] ValCat
+# 1983|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1984|     getStmt(3): [ExprStmt] ExprStmt
+# 1984|       getExpr(): [AssignExpr] ... = ...
+# 1984|           Type = [Struct] ValCat
+# 1984|           ValueCategory = lvalue
+# 1984|         getLValue(): [FunctionCall] call to prvalue
+# 1984|             Type = [Struct] ValCat
+# 1984|             ValueCategory = prvalue
+# 1984|           getQualifier(): [VariableAccess] c
+# 1984|               Type = [Struct] ValCat
+# 1984|               ValueCategory = lvalue
+# 1984|         getRValue(): [ClassAggregateLiteral] {...}
+# 1984|             Type = [Struct] ValCat
+# 1984|             ValueCategory = prvalue
+# 1984|         getLValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1984|             Type = [Struct] ValCat
+# 1984|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1985|     getStmt(4): [ExprStmt] ExprStmt
+# 1985|       getExpr(): [AssignExpr] ... = ...
+# 1985|           Type = [Struct] ValCat
+# 1985|           ValueCategory = lvalue
+# 1985|         getLValue(): [FunctionCall] call to lvalue
+# 1985|             Type = [LValueReferenceType] ValCat &
+# 1985|             ValueCategory = prvalue
+# 1985|         getRValue(): [ClassAggregateLiteral] {...}
+# 1985|             Type = [Struct] ValCat
+# 1985|             ValueCategory = prvalue
+# 1985|         getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1985|             Type = [Struct] ValCat
+# 1985|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1986|     getStmt(5): [ExprStmt] ExprStmt
+# 1986|       getExpr(): [AssignExpr] ... = ...
+# 1986|           Type = [Struct] ValCat
+# 1986|           ValueCategory = lvalue
+# 1986|         getLValue(): [FunctionCall] call to xvalue
+# 1986|             Type = [RValueReferenceType] ValCat &&
+# 1986|             ValueCategory = prvalue
+# 1986|         getRValue(): [ClassAggregateLiteral] {...}
+# 1986|             Type = [Struct] ValCat
+# 1986|             ValueCategory = prvalue
+# 1986|         getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1986|             Type = [Struct] ValCat
+# 1986|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1987|     getStmt(6): [ExprStmt] ExprStmt
+# 1987|       getExpr(): [AssignExpr] ... = ...
+# 1987|           Type = [Struct] ValCat
+# 1987|           ValueCategory = lvalue
+# 1987|         getLValue(): [FunctionCall] call to prvalue
+# 1987|             Type = [Struct] ValCat
+# 1987|             ValueCategory = prvalue
+# 1987|         getRValue(): [ClassAggregateLiteral] {...}
+# 1987|             Type = [Struct] ValCat
+# 1987|             ValueCategory = prvalue
+# 1987|         getLValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 1987|             Type = [Struct] ValCat
+# 1987|             ValueCategory = lvalue
+#-----|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [Struct] ValCat
+#-----|             ValueCategory = prvalue(load)
+# 1988|     getStmt(7): [ReturnStmt] return ...
+# 1990| [TopLevelFunction] void SetStaticFuncPtr()
+# 1990|   <params>: 
+# 1990|   getEntryPoint(): [BlockStmt] { ... }
+# 1991|     getStmt(0): [DeclStmt] declaration
+# 1991|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 1991|           Type = [Class] C
+# 1991|         getVariable().getInitializer(): [Initializer] initializer for c
+# 1991|           getExpr(): [ConstructorCall] call to C
+# 1991|               Type = [VoidType] void
+# 1991|               ValueCategory = prvalue
+# 1992|     getStmt(1): [DeclStmt] declaration
+# 1992|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of pfn
+# 1992|           Type = [FunctionPointerType] ..(*)(..)
+# 1992|         getVariable().getInitializer(): [Initializer] initializer for pfn
+# 1992|           getExpr(): [FunctionAccess] StaticMemberFunction
+# 1992|               Type = [FunctionPointerType] ..(*)(..)
+# 1992|               ValueCategory = prvalue(load)
+# 1993|     getStmt(2): [ExprStmt] ExprStmt
+# 1993|       getExpr(): [AssignExpr] ... = ...
+# 1993|           Type = [FunctionPointerType] ..(*)(..)
+# 1993|           ValueCategory = lvalue
+# 1993|         getLValue(): [VariableAccess] pfn
+# 1993|             Type = [FunctionPointerType] ..(*)(..)
+# 1993|             ValueCategory = lvalue
+# 1993|         getRValue(): [FunctionAccess] StaticMemberFunction
+# 1993|             Type = [FunctionPointerType] ..(*)(..)
+# 1993|             ValueCategory = prvalue
+# 1993|           getQualifier(): [VariableAccess] c
+# 1993|               Type = [Class] C
+# 1993|               ValueCategory = lvalue
+# 1994|     getStmt(3): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
@@ -14685,33 +15196,33 @@ struct_init.cpp:
 #   21|           getExpr(): [ArrayAggregateLiteral] {...}
 #   21|               Type = [ArrayType] Info[2]
 #   21|               ValueCategory = prvalue
-#   22|             getElementExpr(0): [ClassAggregateLiteral] {...}
+#   22|             getAnElementExpr(0): [ClassAggregateLiteral] {...}
 #   22|                 Type = [Struct] Info
 #   22|                 ValueCategory = prvalue
-#   22|               getFieldExpr(name): 1
+#   22|               getAFieldExpr(name): 1
 #   22|                   Type = [ArrayType] const char[2]
 #   22|                   Value = [StringLiteral] "1"
 #   22|                   ValueCategory = lvalue
-#   22|               getFieldExpr(handler): [FunctionAccess] handler1
+#   22|               getAFieldExpr(handler): [FunctionAccess] handler1
 #   22|                   Type = [FunctionPointerType] ..(*)(..)
 #   22|                   ValueCategory = prvalue(load)
-#   22|               getFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   22|               getAFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   22|                   Type = [PointerType] const char *
 #   22|                   ValueCategory = prvalue
-#   23|             getElementExpr(1): [ClassAggregateLiteral] {...}
+#   23|             getAnElementExpr(1): [ClassAggregateLiteral] {...}
 #   23|                 Type = [Struct] Info
 #   23|                 ValueCategory = prvalue
-#   23|               getFieldExpr(name): 2
+#   23|               getAFieldExpr(name): 2
 #   23|                   Type = [ArrayType] const char[2]
 #   23|                   Value = [StringLiteral] "2"
 #   23|                   ValueCategory = lvalue
-#   23|               getFieldExpr(handler): [AddressOfExpr] & ...
+#   23|               getAFieldExpr(handler): [AddressOfExpr] & ...
 #   23|                   Type = [FunctionPointerType] ..(*)(..)
 #   23|                   ValueCategory = prvalue
 #   23|                 getOperand(): [FunctionAccess] handler2
 #   23|                     Type = [RoutineType] ..()(..)
 #   23|                     ValueCategory = lvalue
-#   23|               getFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   23|               getAFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   23|                   Type = [PointerType] const char *
 #   23|                   ValueCategory = prvalue
 #   25|     getStmt(1): [ExprStmt] ExprStmt
@@ -14735,33 +15246,33 @@ struct_init.cpp:
 #   29|           getExpr(): [ArrayAggregateLiteral] {...}
 #   29|               Type = [ArrayType] Info[2]
 #   29|               ValueCategory = prvalue
-#   30|             getElementExpr(0): [ClassAggregateLiteral] {...}
+#   30|             getAnElementExpr(0): [ClassAggregateLiteral] {...}
 #   30|                 Type = [Struct] Info
 #   30|                 ValueCategory = prvalue
-#   30|               getFieldExpr(name): 1
+#   30|               getAFieldExpr(name): 1
 #   30|                   Type = [ArrayType] const char[2]
 #   30|                   Value = [StringLiteral] "1"
 #   30|                   ValueCategory = lvalue
-#   30|               getFieldExpr(handler): [FunctionAccess] handler1
+#   30|               getAFieldExpr(handler): [FunctionAccess] handler1
 #   30|                   Type = [FunctionPointerType] ..(*)(..)
 #   30|                   ValueCategory = prvalue(load)
-#   30|               getFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   30|               getAFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   30|                   Type = [PointerType] const char *
 #   30|                   ValueCategory = prvalue
-#   31|             getElementExpr(1): [ClassAggregateLiteral] {...}
+#   31|             getAnElementExpr(1): [ClassAggregateLiteral] {...}
 #   31|                 Type = [Struct] Info
 #   31|                 ValueCategory = prvalue
-#   31|               getFieldExpr(name): 2
+#   31|               getAFieldExpr(name): 2
 #   31|                   Type = [ArrayType] const char[2]
 #   31|                   Value = [StringLiteral] "2"
 #   31|                   ValueCategory = lvalue
-#   31|               getFieldExpr(handler): [AddressOfExpr] & ...
+#   31|               getAFieldExpr(handler): [AddressOfExpr] & ...
 #   31|                   Type = [FunctionPointerType] ..(*)(..)
 #   31|                   ValueCategory = prvalue
 #   31|                 getOperand(): [FunctionAccess] handler2
 #   31|                     Type = [RoutineType] ..()(..)
 #   31|                     ValueCategory = lvalue
-#   31|               getFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   31|               getAFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   31|                   Type = [PointerType] const char *
 #   31|                   ValueCategory = prvalue
 #   33|     getStmt(1): [ExprStmt] ExprStmt
@@ -14787,29 +15298,29 @@ struct_init.cpp:
 #   37|           getExpr(): [ArrayAggregateLiteral] {...}
 #   37|               Type = [ArrayType] Info[2]
 #   37|               ValueCategory = prvalue
-#   38|             getElementExpr(0): [ClassAggregateLiteral] {...}
+#   38|             getAnElementExpr(0): [ClassAggregateLiteral] {...}
 #   38|                 Type = [Struct] Info
 #   38|                 ValueCategory = prvalue
-#   38|               getFieldExpr(name): [VariableAccess] name1
+#   38|               getAFieldExpr(name): [VariableAccess] name1
 #   38|                   Type = [PointerType] const char *
 #   38|                   ValueCategory = prvalue(load)
-#   38|               getFieldExpr(handler): [FunctionAccess] handler1
+#   38|               getAFieldExpr(handler): [FunctionAccess] handler1
 #   38|                   Type = [FunctionPointerType] ..(*)(..)
 #   38|                   ValueCategory = prvalue(load)
-#   39|             getElementExpr(1): [ClassAggregateLiteral] {...}
+#   39|             getAnElementExpr(1): [ClassAggregateLiteral] {...}
 #   39|                 Type = [Struct] Info
 #   39|                 ValueCategory = prvalue
-#   39|               getFieldExpr(name): 2
+#   39|               getAFieldExpr(name): 2
 #   39|                   Type = [ArrayType] const char[2]
 #   39|                   Value = [StringLiteral] "2"
 #   39|                   ValueCategory = lvalue
-#   39|               getFieldExpr(handler): [AddressOfExpr] & ...
+#   39|               getAFieldExpr(handler): [AddressOfExpr] & ...
 #   39|                   Type = [FunctionPointerType] ..(*)(..)
 #   39|                   ValueCategory = prvalue
 #   39|                 getOperand(): [FunctionAccess] handler2
 #   39|                     Type = [RoutineType] ..()(..)
 #   39|                     ValueCategory = lvalue
-#   39|               getFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   39|               getAFieldExpr(name).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 #   39|                   Type = [PointerType] const char *
 #   39|                   ValueCategory = prvalue
 #   41|     getStmt(1): [ExprStmt] ExprStmt

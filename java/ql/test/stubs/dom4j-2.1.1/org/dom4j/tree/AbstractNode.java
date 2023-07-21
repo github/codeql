@@ -1,183 +1,53 @@
-/*
- * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * This software is open source.
- * See the bottom of this file for the licence.
- */
-
-/*
-* Adapted from DOM4J version 2.1.1 as available at
-*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
-* Only relevant stubs of this file have been retained for test purposes.
-*/
+// Generated automatically from org.dom4j.tree.AbstractNode for testing purposes
 
 package org.dom4j.tree;
 
-import org.dom4j.*;
-import org.dom4j.rule.Pattern;
-import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.List;
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.NodeFilter;
+import org.dom4j.XPath;
+import org.dom4j.rule.Pattern;
 
-public abstract class AbstractNode implements Node, Cloneable, Serializable {
-  public AbstractNode() {
-  }
-
-  public short getNodeType() {
-    return 0;
-  }
-
-  public String getNodeTypeName() {
-    return null;
-  }
-
-  public Document getDocument() {
-    return null;
-  }
-
-  public void setDocument(Document document) {
-  }
-
-  public Element getParent() {
-    return null;
-  }
-
-  public void setParent(Element parent) {
-  }
-
-  public boolean supportsParent() {
-    return false;
-  }
-
-  public boolean isReadOnly() {
-    return false;
-  }
-
-  public boolean hasContent() {
-    return false;
-  }
-
-  public String getPath() {
-    return null;
-  }
-
-  public String getUniquePath() {
-    return null;
-  }
-
-  public Object clone() {
-    return null;
-  }
-
-  public Node detach() {
-    return null;
-  }
-
-  public String getName() {
-    return null;
-  }
-
-  public void setName(String name) {
-  }
-
-  public String getText() {
-    return null;
-  }
-
-  public String getStringValue() {
-    return null;
-  }
-
-  public void setText(String text) {
-  }
-
-  public void write(Writer writer) throws IOException {
-  }
-
-  public Object selectObject(String xpathExpression) {
-    return null;
-  }
-
-  public List<Node> selectNodes(String xpathExpression) {
-    return null;
-  }
-
-  public List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression) {
-    return null;
-  }
-
-  public List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression, boolean removeDuplicates) {
-    return null;
-  }
-
-  public Node selectSingleNode(String xpathExpression) {
-    return null;
-  }
-
-  public String valueOf(String xpathExpression) {
-    return null;
-  }
-
-  public Number numberValueOf(String xpathExpression) {
-    return null;
-  }
-
-  public boolean matches(String patternText) {
-    return false;
-  }
-
-  public XPath createXPath(String xpathExpression) {
-    return null;
-  }
-
-  public NodeFilter createXPathFilter(String patternText) {
-    return null;
-  }
-
-  public Pattern createPattern(String patternText) {
-    return null;
-  }
-
-  public Node asXPathResult(Element parent) {
-    return null;
-  }
-
+abstract public class AbstractNode implements Cloneable, Node, Serializable
+{
+    protected DocumentFactory getDocumentFactory(){ return null; }
+    protected Node createXPathResult(Element p0){ return null; }
+    protected static String[] NODE_TYPE_NAMES = null;
+    public AbstractNode(){}
+    public Document getDocument(){ return null; }
+    public Element getParent(){ return null; }
+    public List selectNodes(String p0){ return null; }
+    public List selectNodes(String p0, String p1){ return null; }
+    public List selectNodes(String p0, String p1, boolean p2){ return null; }
+    public Node asXPathResult(Element p0){ return null; }
+    public Node detach(){ return null; }
+    public Node selectSingleNode(String p0){ return null; }
+    public NodeFilter createXPathFilter(String p0){ return null; }
+    public Number numberValueOf(String p0){ return null; }
+    public Object clone(){ return null; }
+    public Object selectObject(String p0){ return null; }
+    public Pattern createPattern(String p0){ return null; }
+    public String getName(){ return null; }
+    public String getNodeTypeName(){ return null; }
+    public String getPath(){ return null; }
+    public String getStringValue(){ return null; }
+    public String getText(){ return null; }
+    public String getUniquePath(){ return null; }
+    public String valueOf(String p0){ return null; }
+    public XPath createXPath(String p0){ return null; }
+    public boolean hasContent(){ return false; }
+    public boolean isReadOnly(){ return false; }
+    public boolean matches(String p0){ return false; }
+    public boolean supportsParent(){ return false; }
+    public short getNodeType(){ return 0; }
+    public void setDocument(Document p0){}
+    public void setName(String p0){}
+    public void setParent(Element p0){}
+    public void setText(String p0){}
+    public void write(Writer p0){}
 }
-
-/*
- * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided that the
- * following conditions are met:
- * 
- * 1. Redistributions of source code must retain copyright statements and
- * notices. Redistributions must also contain a copy of this document.
- * 
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- * 
- * 3. The name "DOM4J" must not be used to endorse or promote products derived
- * from this Software without prior written permission of MetaStuff, Ltd. For
- * written permission, please contact dom4j-info@metastuff.com.
- * 
- * 4. Products derived from this Software may not be called "DOM4J" nor may
- * "DOM4J" appear in their names without prior written permission of MetaStuff,
- * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
- * 
- * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
- * 
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- * 
- * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
- */

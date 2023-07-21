@@ -1,10 +1,10 @@
 void printf(char *format, ...);
 
-int g(void) {
+static int g(void) {
     return 5;
 }
 
-void f(int i = g()) {
+static void f(int i = g()) {
     printf("Got %d\n", i);
 }
 
@@ -15,7 +15,7 @@ public:
 	void method(int k = g()) {};
 };
 
-int main(void) {
+static int h(void) {
     f(3);
     f();
     f(4);

@@ -1,4 +1,4 @@
-/target
+extractor/target
 extractor-pack
 .vscode/launch.json
 .cache

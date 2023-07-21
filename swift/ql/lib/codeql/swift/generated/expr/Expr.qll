@@ -22,11 +22,16 @@ module Generated {
     /**
      * Gets the type of this expression, if it exists.
      */
-    final Type getType() { result = getImmediateType().resolve() }
+    final Type getType() {
+      exists(Type immediate |
+        immediate = this.getImmediateType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getType()` exists.
      */
-    final predicate hasType() { exists(getType()) }
+    final predicate hasType() { exists(this.getType()) }
   }
 }

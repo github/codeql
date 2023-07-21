@@ -128,9 +128,6 @@ class HttpServletRequestGetRequestUrlMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUrlMethod */
-deprecated class HttpServletRequestGetRequestURLMethod = HttpServletRequestGetRequestUrlMethod;
-
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
@@ -338,9 +335,6 @@ class ServletWebXmlListenerType extends RefType {
     //  - `HttpSessionBindingListener`
   }
 }
-
-/** DEPRECATED: Alias for ServletWebXmlListenerType */
-deprecated class ServletWebXMLListenerType = ServletWebXmlListenerType;
 
 /** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
 predicate isServletRequestMethod(Method m) {

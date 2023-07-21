@@ -841,6 +841,28 @@ module TaintedPath {
       dst = call and
       srclabel = dstlabel
     )
+    or
+    exists(HtmlSanitizerCall call |
+      src = call.getInput() and
+      dst = call and
+      srclabel = dstlabel
+    )
+    or
+    exists(DataFlow::CallNode join |
+      // path.join() with spread argument
+      join = NodeJSLib::Path::moduleMember("join").getACall() and
+      src = join.getASpreadArgument() and
+      dst = join and
+      (
+        srclabel.(Label::PosixPath).canContainDotDotSlash()
+        or
+        srclabel instanceof Label::SplitPath
+      ) and
+      dstlabel.(Label::PosixPath).isNormalized() and
+      if isRelative(join.getArgument(0).getStringValue())
+      then dstlabel.(Label::PosixPath).isRelative()
+      else dstlabel.(Label::PosixPath).isAbsolute()
+    )
   }
 
   /**

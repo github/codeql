@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["flexjson", "JSONDeserializer", True, "use", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["flexjson", "JSONDeserializer", True, "use", "", "", "Argument[this]", "ReturnValue", "value", "manual"]

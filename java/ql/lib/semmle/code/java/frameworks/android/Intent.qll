@@ -123,7 +123,8 @@ class StartServiceMethod extends Method {
 
 /** Specifies that if an `Intent` is tainted, then so are its synthetic fields. */
 private class IntentFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
-  TaintInheritingContent {
+  TaintInheritingContent
+{
   IntentFieldsInheritTaint() { this.getField().matches("android.content.Intent.%") }
 }
 

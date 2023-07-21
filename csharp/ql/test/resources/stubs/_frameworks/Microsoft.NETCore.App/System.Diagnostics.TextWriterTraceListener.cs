@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Diagnostics.TextWriterTraceListener, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.ConsoleTraceListener` in `System.Diagnostics.TextWriterTraceListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ConsoleTraceListener : System.Diagnostics.TextWriterTraceListener
         {
             public override void Close() => throw null;
@@ -12,7 +12,6 @@ namespace System
             public ConsoleTraceListener(bool useErrorStream) => throw null;
         }
 
-        // Generated from `System.Diagnostics.DelimitedListTraceListener` in `System.Diagnostics.TextWriterTraceListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DelimitedListTraceListener : System.Diagnostics.TextWriterTraceListener
         {
             public DelimitedListTraceListener(System.IO.Stream stream) => throw null;
@@ -29,7 +28,6 @@ namespace System
             public override void TraceEvent(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, string format, params object[] args) => throw null;
         }
 
-        // Generated from `System.Diagnostics.TextWriterTraceListener` in `System.Diagnostics.TextWriterTraceListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TextWriterTraceListener : System.Diagnostics.TraceListener
         {
             public override void Close() => throw null;
@@ -47,7 +45,6 @@ namespace System
             public System.IO.TextWriter Writer { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.XmlWriterTraceListener` in `System.Diagnostics.TextWriterTraceListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlWriterTraceListener : System.Diagnostics.TextWriterTraceListener
         {
             public override void Close() => throw null;

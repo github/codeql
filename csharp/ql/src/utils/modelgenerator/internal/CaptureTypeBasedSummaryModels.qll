@@ -4,7 +4,7 @@ private import semmle.code.csharp.frameworks.system.collections.Generic as Gener
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import CaptureModelsSpecific as Specific
-private import CaptureModels
+private import CaptureModelsPrinting
 
 /**
  * Holds if `t` is a subtype (reflexive/transitive) of `IEnumerable<T>`, where `T` = `tp`.
@@ -178,6 +178,14 @@ private predicate output(DotNet::Callable callable, TypeParameter tp, string out
   delegateSink(callable, tp, output)
 }
 
+private module Printing implements PrintingSig {
+  class Api = TypeBasedFlowTargetApi;
+
+  string getProvenance() { result = "tb-generated" }
+}
+
+private module ModelPrinting = PrintingImpl<Printing>;
+
 /**
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
@@ -214,7 +222,7 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
       output(this, tp, output) and
       input != output
     |
-      result = asValueModel(this, input, output)
+      result = ModelPrinting::asValueModel(this, input, output)
     )
   }
 }

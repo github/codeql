@@ -206,7 +206,6 @@ private predicate relevantNodeBack(ObjNode n) {
   exists(ObjNode mid | objStep(n, mid) and relevantNodeBack(mid))
 }
 
-pragma[assume_small_delta]
 private predicate relevantNode(ObjNode n) {
   source(_, n) and relevantNodeBack(n)
   or
@@ -235,6 +234,12 @@ private predicate objType(ObjNode n, RefType t) {
 private VirtualMethodAccess objectToString(ObjNode n) {
   result.getQualifier() = n.asExpr() and sink(n)
 }
+
+/**
+ * Holds if `ma` is an `Object.toString()` call taking possibly improved type
+ * bounds into account.
+ */
+predicate objectToStringCall(VirtualMethodAccess ma) { ma = objectToString(_) }
 
 /**
  * Holds if the qualifier of the `Object.toString()` call `ma` might have type `t`.

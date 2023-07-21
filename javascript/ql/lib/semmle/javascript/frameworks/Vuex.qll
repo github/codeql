@@ -87,11 +87,11 @@ module Vuex {
     /** Gets the namespace prefix to use, or an empty string if no namespace was given. */
     pragma[noinline]
     string getNamespace() {
-      getNumArgument() = 2 and
+      this.getNumArgument() = 2 and
       result =
-        appendToNamespace(namespace, getParameter(0).getAValueReachingSink().getStringValue())
+        appendToNamespace(namespace, this.getParameter(0).getAValueReachingSink().getStringValue())
       or
-      getNumArgument() = 1 and
+      this.getNumArgument() = 1 and
       result = namespace
     }
 
@@ -100,24 +100,25 @@ module Vuex {
      */
     predicate hasMapping(string localName, string storeName) {
       // mapGetters('foo')
-      getLastParameter().getAValueReachingSink().getStringValue() = localName and
-      storeName = getNamespace() + localName
+      this.getLastParameter().getAValueReachingSink().getStringValue() = localName and
+      storeName = this.getNamespace() + localName
       or
       // mapGetters(['foo', 'bar'])
-      getLastParameter().getUnknownMember().getAValueReachingSink().getStringValue() = localName and
-      storeName = getNamespace() + localName
+      this.getLastParameter().getUnknownMember().getAValueReachingSink().getStringValue() =
+        localName and
+      storeName = this.getNamespace() + localName
       or
       // mapGetters({foo: 'bar'})
       storeName =
-        getNamespace() +
-          getLastParameter().getMember(localName).getAValueReachingSink().getStringValue() and
+        this.getNamespace() +
+          this.getLastParameter().getMember(localName).getAValueReachingSink().getStringValue() and
       localName != "*" // ignore special API graph member named "*"
     }
 
     /** Gets the Vue component in which the generated functions are installed. */
     Vue::Component getVueComponent() {
       exists(DataFlow::ObjectLiteralNode obj |
-        obj.getASpreadProperty() = getReturn().getAValueReachableFromSource() and
+        obj.getASpreadProperty() = this.getReturn().getAValueReachableFromSource() and
         result.getOwnOptions().getAMember().asSink() = obj
       )
       or
@@ -288,7 +289,8 @@ module Vuex {
     or
     exists(string base, string prop |
       result = stateRefByAccessPath(base).getMember(prop) and
-      path = appendToNamespace(base, prop)
+      path = appendToNamespace(base, prop) and
+      path.length() < 100
     )
   }
 

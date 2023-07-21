@@ -1,6 +1,56 @@
-| RedundantNullCheckSimple.cpp:4:7:4:7 | Load: p | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:3:7:3:8 | Load: * ... | the value is dereferenced |
-| RedundantNullCheckSimple.cpp:13:8:13:8 | Load: p | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:10:11:10:12 | Load: * ... | the value is dereferenced |
-| RedundantNullCheckSimple.cpp:20:7:20:8 | Load: * ... | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:19:7:19:9 | Load: * ... | the value is dereferenced |
-| RedundantNullCheckSimple.cpp:48:12:48:12 | Load: p | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:51:10:51:11 | Load: * ... | the value is dereferenced |
-| RedundantNullCheckSimple.cpp:79:7:79:9 | Load: * ... | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:78:7:78:10 | Load: * ... | the value is dereferenced |
-| RedundantNullCheckSimple.cpp:93:13:93:13 | Load: p | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:92:13:92:18 | Load: * ... | the value is dereferenced |
+nodes
+| RedundantNullCheckSimple.cpp:3:3:3:3 | VariableAddress: x | semmle.label | x |
+| RedundantNullCheckSimple.cpp:3:3:3:8 | Store: ... = ... | semmle.label | ... = ... |
+| RedundantNullCheckSimple.cpp:3:7:3:8 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:3:8:3:8 | Load: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:4:7:4:7 | Load: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:4:7:4:7 | VariableAddress: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:10:11:10:12 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:10:11:10:12 | Store: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:10:12:10:12 | Load: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:11:7:11:7 | Load: x | semmle.label | x |
+| RedundantNullCheckSimple.cpp:11:7:11:7 | VariableAddress: x | semmle.label | x |
+| RedundantNullCheckSimple.cpp:11:7:11:13 | CompareGT: ... > ... | semmle.label | ... > ... |
+| RedundantNullCheckSimple.cpp:11:7:11:13 | ConditionalBranch: ... > ... | semmle.label | ... > ... |
+| RedundantNullCheckSimple.cpp:11:11:11:13 | Constant: 100 | semmle.label | 100 |
+| RedundantNullCheckSimple.cpp:13:8:13:8 | Load: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:13:8:13:8 | VariableAddress: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:19:3:19:3 | VariableAddress: x | semmle.label | x |
+| RedundantNullCheckSimple.cpp:19:3:19:9 | Store: ... = ... | semmle.label | ... = ... |
+| RedundantNullCheckSimple.cpp:19:7:19:9 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:19:8:19:9 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:20:7:20:8 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:20:8:20:8 | Load: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:20:8:20:8 | VariableAddress: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:78:3:78:3 | VariableAddress: x | semmle.label | x |
+| RedundantNullCheckSimple.cpp:78:3:78:10 | Store: ... = ... | semmle.label | ... = ... |
+| RedundantNullCheckSimple.cpp:78:7:78:10 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:78:8:78:10 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:79:7:79:9 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:79:8:79:9 | Load: pp | semmle.label | pp |
+| RedundantNullCheckSimple.cpp:79:8:79:9 | VariableAddress: pp | semmle.label | pp |
+| RedundantNullCheckSimple.cpp:92:13:92:18 | Load: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:92:13:92:18 | Store: * ... | semmle.label | * ... |
+| RedundantNullCheckSimple.cpp:92:18:92:18 | Load: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:93:9:93:10 | Load: sp | semmle.label | sp |
+| RedundantNullCheckSimple.cpp:93:9:93:10 | VariableAddress: sp | semmle.label | sp |
+| RedundantNullCheckSimple.cpp:93:13:93:13 | FieldAddress: p | semmle.label | p |
+| RedundantNullCheckSimple.cpp:93:13:93:13 | Load: p | semmle.label | p |
+edges
+| RedundantNullCheckSimple.cpp:3:7:3:8 | Load: * ... | RedundantNullCheckSimple.cpp:4:7:4:7 | Load: p |
+| RedundantNullCheckSimple.cpp:3:8:3:8 | Load: p | RedundantNullCheckSimple.cpp:4:7:4:7 | Load: p |
+| RedundantNullCheckSimple.cpp:10:11:10:12 | Load: * ... | RedundantNullCheckSimple.cpp:13:8:13:8 | Load: p |
+| RedundantNullCheckSimple.cpp:10:12:10:12 | Load: p | RedundantNullCheckSimple.cpp:13:8:13:8 | Load: p |
+| RedundantNullCheckSimple.cpp:19:7:19:9 | Load: * ... | RedundantNullCheckSimple.cpp:20:7:20:8 | Load: * ... |
+| RedundantNullCheckSimple.cpp:19:8:19:9 | Load: * ... | RedundantNullCheckSimple.cpp:20:7:20:8 | Load: * ... |
+| RedundantNullCheckSimple.cpp:78:7:78:10 | Load: * ... | RedundantNullCheckSimple.cpp:79:7:79:9 | Load: * ... |
+| RedundantNullCheckSimple.cpp:78:8:78:10 | Load: * ... | RedundantNullCheckSimple.cpp:79:7:79:9 | Load: * ... |
+| RedundantNullCheckSimple.cpp:92:13:92:18 | Load: * ... | RedundantNullCheckSimple.cpp:93:13:93:13 | Load: p |
+| RedundantNullCheckSimple.cpp:92:18:92:18 | Load: p | RedundantNullCheckSimple.cpp:93:13:93:13 | Load: p |
+#select
+| RedundantNullCheckSimple.cpp:4:7:4:7 | Load: p | RedundantNullCheckSimple.cpp:3:7:3:8 | Load: * ... | RedundantNullCheckSimple.cpp:4:7:4:7 | Load: p | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:3:7:3:8 | Load: * ... | the value is dereferenced |
+| RedundantNullCheckSimple.cpp:13:8:13:8 | Load: p | RedundantNullCheckSimple.cpp:10:11:10:12 | Load: * ... | RedundantNullCheckSimple.cpp:13:8:13:8 | Load: p | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:10:11:10:12 | Load: * ... | the value is dereferenced |
+| RedundantNullCheckSimple.cpp:20:7:20:8 | Load: * ... | RedundantNullCheckSimple.cpp:19:7:19:9 | Load: * ... | RedundantNullCheckSimple.cpp:20:7:20:8 | Load: * ... | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:19:7:19:9 | Load: * ... | the value is dereferenced |
+| RedundantNullCheckSimple.cpp:48:12:48:12 | Load: p | RedundantNullCheckSimple.cpp:51:10:51:11 | Load: * ... | RedundantNullCheckSimple.cpp:48:12:48:12 | Load: p | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:51:10:51:11 | Load: * ... | the value is dereferenced |
+| RedundantNullCheckSimple.cpp:79:7:79:9 | Load: * ... | RedundantNullCheckSimple.cpp:78:7:78:10 | Load: * ... | RedundantNullCheckSimple.cpp:79:7:79:9 | Load: * ... | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:78:7:78:10 | Load: * ... | the value is dereferenced |
+| RedundantNullCheckSimple.cpp:93:13:93:13 | Load: p | RedundantNullCheckSimple.cpp:92:13:92:18 | Load: * ... | RedundantNullCheckSimple.cpp:93:13:93:13 | Load: p | This null check is redundant because $@ in any case. | RedundantNullCheckSimple.cpp:92:13:92:18 | Load: * ... | the value is dereferenced |

@@ -20,7 +20,7 @@ public class JdbcUrlSSRF extends HttpServlet {
     
         String jdbcUrl = request.getParameter("jdbcUrl");
         Driver driver = new org.postgresql.Driver();
-        DataSourceBuilder dsBuilder = new DataSourceBuilder();
+        DataSourceBuilder dsBuilder = DataSourceBuilder.create();
         
         try {
             driver.connect(jdbcUrl, null); // $ SSRF

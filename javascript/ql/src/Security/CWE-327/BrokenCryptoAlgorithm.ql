@@ -21,4 +21,4 @@ where
   cfg.hasFlowPath(source, sink) and
   not source.getNode() instanceof CleartextPasswordExpr // flagged by js/insufficient-password-hash
 select sink.getNode(), source, sink, "A broken or weak cryptographic algorithm depends on $@.",
-  source.getNode(), "sensitive data from" + source.getNode().(Source).describe()
+  source.getNode(), "sensitive data from " + source.getNode().(Source).describe()

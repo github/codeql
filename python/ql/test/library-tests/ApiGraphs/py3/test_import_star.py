@@ -32,5 +32,5 @@ def func1():
 def func3():
     var2 = print #$ use=moduleImport("builtins").getMember("print")
     def func4():
-        var2() #$ MISSING: use=moduleImport("builtins").getMember("print").getReturn()
+        var2() #$ use=moduleImport("builtins").getMember("print").getReturn()
     func4()

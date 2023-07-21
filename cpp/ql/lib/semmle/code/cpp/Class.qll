@@ -177,20 +177,6 @@ class Class extends UserType {
   predicate hasConstructor() { exists(this.getAConstructor()) }
 
   /**
-   * Holds if this class has a copy constructor that is either explicitly
-   * declared (though possibly `= delete`) or is auto-generated, non-trivial
-   * and called from somewhere.
-   *
-   * DEPRECATED: There is more than one reasonable definition of what it means
-   * to have a copy constructor, and we do not want to promote one particular
-   * definition by naming it with this predicate. Having a copy constructor
-   * could mean that such a member is declared or defined in the source or that
-   * it is callable by a particular caller. For C++11, there's also a question
-   * of whether to include members that are defaulted or deleted.
-   */
-  deprecated predicate hasCopyConstructor() { this.getAMemberFunction() instanceof CopyConstructor }
-
-  /**
    * Like accessOfBaseMember but returns multiple results if there are multiple
    * paths to `base` through the inheritance graph.
    */
@@ -226,18 +212,6 @@ class Class extends UserType {
   AccessSpecifier accessOfBaseMember(Declaration member) {
     result = this.accessOfBaseMember(member.getDeclaringType(), member.getASpecifier())
   }
-
-  /**
-   * DEPRECATED: name changed to `hasImplicitCopyConstructor` to reflect that
-   * `= default` members are no longer included.
-   */
-  deprecated predicate hasGeneratedCopyConstructor() { this.hasImplicitCopyConstructor() }
-
-  /**
-   * DEPRECATED: name changed to `hasImplicitCopyAssignmentOperator` to
-   * reflect that `= default` members are no longer included.
-   */
-  deprecated predicate hasGeneratedCopyAssignmentOperator() { this.hasImplicitCopyConstructor() }
 
   /**
    * Holds if this class, struct or union has an implicitly-declared copy

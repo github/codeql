@@ -1,3 +1,81 @@
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Added models for the Webix Framework.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.1.
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `XML`, `JSON`, `URL`, `API`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `localTaintStep` predicate from `DataFlow.qll`.
+* Deleted the deprecated `stringStep`, and `localTaintStep` predicates from `TaintTracking.qll`.
+* Deleted many modules that started with a lowercase letter. Use the versions that start with an uppercase letter instead.
+* Deleted the deprecated `HtmlInjectionConfiguration` and `JQueryHtmlOrSelectorInjectionConfiguration` classes from `DomBasedXssQuery.qll`, use `Configuration` instead.
+* Deleted the deprecated `DefiningIdentifier` class and the `Definitions.qll` file it was in. Use `SsaDefinition` instead.
+* Deleted the deprecated `definitionReaches`, `localDefinitionReaches`, `getAPseudoDefinitionInput`, `nextDefAfter`, and `localDefinitionOverwrites` predicates from `DefUse.qll`.
+* Updated the following JavaScript sink kind names. Any custom data extensions that use these sink kinds will need to be updated accordingly in order to continue working.
+  * `command-line-injection` to `command-injection`
+  * `credentials[kind]` to `credentials-kind`
+* Added a support of sub modules in `node_modules`.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Improved the queries for injection vulnerabilities in GitHub Actions workflows (`js/actions/command-injection` and `js/actions/pull-request-target`) and the associated library `semmle.javascript.Actions`. These now support steps defined in composite actions, in addition to steps defined in Actions workflow files. It supports more potentially untrusted input values. Additionally to the shell injections it now also detects injections in `actions/github-script`. It also detects simple injections from user controlled `${{ env.name }}`. Additionally to the `yml` extension now it also supports workflows with the `yaml` extension.
+
+## 0.6.1
+
+### Major Analysis Improvements
+
+* The Yaml.qll library was moved into a shared library pack named `codeql/yaml` to make it possible for other languages to re-use it. This change should be backwards compatible for existing JavaScript queries.
+
+## 0.6.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.0.
+
+### Minor Analysis Improvements
+
+* `router.push` and `router.replace` in `Next.js` are now considered as XSS sink.
+* The crypto-js module in `CryptoLibraries.qll` now supports progressive hashing with algo.update().
+
+## 0.5.2
+
+No user-facing changes.
+
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getId` from the `Function`, `NamespaceDefinition`, and `ImportEqualsDeclaration` classes.
+* Deleted the deprecated `flowsTo` predicate from the `HTTP::Servers::RequestSource` and `HTTP::Servers::ResponseSource` class.
+* Deleted the deprecated `getEventName` predicate from the `SocketIO::ReceiveNode`, `SocketIO::SendNode`, `SocketIOClient::SendNode` classes.
+* Deleted the deprecated `RateLimitedRouteHandlerExpr` and `RouteHandlerExpressionWithRateLimiter` classes.
+* [Import assertions](https://github.com/tc39/proposal-import-assertions) are now supported.
+  Previously this feature was only supported in TypeScript code, but is now supported for plain JavaScript as well and is also accessible in the AST.
+
+## 0.5.0
+
+### Breaking Changes
+
+* The `CryptographicOperation` concept has been changed to use a range pattern. This is a breaking change and existing implementations of `CryptographicOperation` will need to be updated in order to compile. These implementations can be updated by:
+  1. Extending `CryptographicOperation::Range` rather than `CryptographicOperation`
+  2. Renaming the `getInput()` member predicate as `getAnInput()`
+  3. Implementing the `BlockMode getBlockMode()` member predicate. The implementation for this can be `none()` if the operation is a hashing operation or an encryption operation using a stream cipher.
+
 ## 0.4.3
 
 ### Minor Analysis Improvements

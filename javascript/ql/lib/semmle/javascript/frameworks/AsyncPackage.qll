@@ -37,22 +37,22 @@ module AsyncPackage {
     /**
      * Gets the array of tasks, if it can be found.
      */
-    DataFlow::ArrayCreationNode getTaskArray() { result.flowsTo(getArgument(0)) }
+    DataFlow::ArrayCreationNode getTaskArray() { result.flowsTo(this.getArgument(0)) }
 
     /**
      * Gets the callback to invoke after the last task in the array completes.
      */
-    DataFlow::FunctionNode getFinalCallback() { result.flowsTo(getArgument(1)) }
+    DataFlow::FunctionNode getFinalCallback() { result.flowsTo(this.getArgument(1)) }
 
     /**
      * Gets the `n`th task, if it can be found.
      */
-    DataFlow::FunctionNode getTask(int n) { result.flowsTo(getTaskArray().getElement(n)) }
+    DataFlow::FunctionNode getTask(int n) { result.flowsTo(this.getTaskArray().getElement(n)) }
 
     /**
      * Gets the number of tasks.
      */
-    int getNumTasks() { result = strictcount(getTaskArray().getAnElement()) }
+    int getNumTasks() { result = strictcount(this.getTaskArray().getAnElement()) }
   }
 
   /**
@@ -70,7 +70,8 @@ module AsyncPackage {
    * to the first parameter of the final callback, while `result1, result2, ...` are propagated to
    * the parameters of the following task.
    */
-  private class WaterfallNextTaskCall extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
+  private class WaterfallNextTaskCall extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode
+  {
     Waterfall waterfall;
     int n;
 
@@ -79,18 +80,18 @@ module AsyncPackage {
     override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
       // Pass results to next task
       index >= 0 and
-      argument = getArgument(index + 1) and
+      argument = this.getArgument(index + 1) and
       callback = waterfall.getTask(n + 1)
       or
       // For the last task, pass results to the final callback
       index >= 1 and
       n = waterfall.getNumTasks() - 1 and
-      argument = getArgument(index) and
+      argument = this.getArgument(index) and
       callback = waterfall.getFinalCallback()
       or
       // Always pass error to the final callback
       index = 0 and
-      argument = getArgument(0) and
+      argument = this.getArgument(0) and
       callback = waterfall.getFinalCallback()
     }
   }
@@ -119,17 +120,17 @@ module AsyncPackage {
     /**
      * Gets the node holding the collection being iterated over.
      */
-    DataFlow::Node getCollection() { result = getArgument(0) }
+    DataFlow::Node getCollection() { result = this.getArgument(0) }
 
     /**
      * Gets the node holding the function being called for each element in the collection.
      */
-    DataFlow::Node getIteratorCallback() { result = getArgument(getNumArgument() - 2) }
+    DataFlow::Node getIteratorCallback() { result = this.getArgument(this.getNumArgument() - 2) }
 
     /**
      * Gets the node holding the function being invoked after iteration is complete.
      */
-    DataFlow::Node getFinalCallback() { result = getArgument(getNumArgument() - 1) }
+    DataFlow::Node getFinalCallback() { result = this.getArgument(this.getNumArgument() - 1) }
   }
 
   /**

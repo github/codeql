@@ -1,28 +1,25 @@
 // This file contains auto-generated code.
+// Generated from `System.Linq.Queryable, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Linq
     {
-        // Generated from `System.Linq.EnumerableExecutor` in `System.Linq.Queryable, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EnumerableExecutor
         {
             internal EnumerableExecutor() => throw null;
         }
 
-        // Generated from `System.Linq.EnumerableExecutor<>` in `System.Linq.Queryable, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EnumerableExecutor<T> : System.Linq.EnumerableExecutor
         {
             public EnumerableExecutor(System.Linq.Expressions.Expression expression) => throw null;
         }
 
-        // Generated from `System.Linq.EnumerableQuery` in `System.Linq.Queryable, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EnumerableQuery
         {
             internal EnumerableQuery() => throw null;
         }
 
-        // Generated from `System.Linq.EnumerableQuery<>` in `System.Linq.Queryable, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EnumerableQuery<T> : System.Linq.EnumerableQuery, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Linq.IOrderedQueryable, System.Linq.IOrderedQueryable<T>, System.Linq.IQueryProvider, System.Linq.IQueryable, System.Linq.IQueryable<T>
         {
             System.Linq.IQueryable System.Linq.IQueryProvider.CreateQuery(System.Linq.Expressions.Expression expression) => throw null;
@@ -39,7 +36,6 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Linq.Queryable` in `System.Linq.Queryable, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Queryable
         {
             public static TResult Aggregate<TSource, TAccumulate, TResult>(this System.Linq.IQueryable<TSource> source, TAccumulate seed, System.Linq.Expressions.Expression<System.Func<TAccumulate, TSource, TAccumulate>> func, System.Linq.Expressions.Expression<System.Func<TAccumulate, TResult>> selector) => throw null;
@@ -133,10 +129,14 @@ namespace System
             public static TSource MinBy<TSource, TKey>(this System.Linq.IQueryable<TSource> source, System.Linq.Expressions.Expression<System.Func<TSource, TKey>> keySelector) => throw null;
             public static TSource MinBy<TSource, TKey>(this System.Linq.IQueryable<TSource> source, System.Linq.Expressions.Expression<System.Func<TSource, TKey>> keySelector, System.Collections.Generic.IComparer<TSource> comparer) => throw null;
             public static System.Linq.IQueryable<TResult> OfType<TResult>(this System.Linq.IQueryable source) => throw null;
+            public static System.Linq.IOrderedQueryable<T> Order<T>(this System.Linq.IQueryable<T> source) => throw null;
+            public static System.Linq.IOrderedQueryable<T> Order<T>(this System.Linq.IQueryable<T> source, System.Collections.Generic.IComparer<T> comparer) => throw null;
             public static System.Linq.IOrderedQueryable<TSource> OrderBy<TSource, TKey>(this System.Linq.IQueryable<TSource> source, System.Linq.Expressions.Expression<System.Func<TSource, TKey>> keySelector) => throw null;
             public static System.Linq.IOrderedQueryable<TSource> OrderBy<TSource, TKey>(this System.Linq.IQueryable<TSource> source, System.Linq.Expressions.Expression<System.Func<TSource, TKey>> keySelector, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
             public static System.Linq.IOrderedQueryable<TSource> OrderByDescending<TSource, TKey>(this System.Linq.IQueryable<TSource> source, System.Linq.Expressions.Expression<System.Func<TSource, TKey>> keySelector) => throw null;
             public static System.Linq.IOrderedQueryable<TSource> OrderByDescending<TSource, TKey>(this System.Linq.IQueryable<TSource> source, System.Linq.Expressions.Expression<System.Func<TSource, TKey>> keySelector, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
+            public static System.Linq.IOrderedQueryable<T> OrderDescending<T>(this System.Linq.IQueryable<T> source) => throw null;
+            public static System.Linq.IOrderedQueryable<T> OrderDescending<T>(this System.Linq.IQueryable<T> source, System.Collections.Generic.IComparer<T> comparer) => throw null;
             public static System.Linq.IQueryable<TSource> Prepend<TSource>(this System.Linq.IQueryable<TSource> source, TSource element) => throw null;
             public static System.Linq.IQueryable<TSource> Reverse<TSource>(this System.Linq.IQueryable<TSource> source) => throw null;
             public static System.Linq.IQueryable<TResult> Select<TSource, TResult>(this System.Linq.IQueryable<TSource> source, System.Linq.Expressions.Expression<System.Func<TSource, TResult>> selector) => throw null;

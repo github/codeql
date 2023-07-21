@@ -1,9 +1,0 @@
-| sql.py:13:24:13:64 | db.connection.execute | externally controlled string |
-| sql.py:14:26:14:66 | django.models.QuerySet.raw(sink,...) | externally controlled string |
-| sql.py:17:24:17:77 | db.connection.execute | externally controlled string |
-| sql.py:20:38:20:95 | django.db.models.expressions.RawSQL(sink,...) | externally controlled string |
-| sql.py:21:26:21:83 | django.models.QuerySet.raw(sink,...) | externally controlled string |
-| sql.py:22:28:22:85 | django.models.QuerySet.extra(sink,...) | externally controlled string |
-| sql.py:36:26:36:68 | django.models.QuerySet.raw(sink,...) | externally controlled string |
-| sql.py:42:11:42:52 | django.models.QuerySet.raw(sink,...) | externally controlled string |
-| sql.py:47:13:47:54 | django.models.QuerySet.extra(sink,...) | externally controlled string |

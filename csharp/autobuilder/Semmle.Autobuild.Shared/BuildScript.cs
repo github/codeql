@@ -46,6 +46,33 @@ namespace Semmle.Autobuild.Shared
         /// <returns>The exit code from this build script.</returns>
         public abstract int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, out IList<string> stdout);
 
+        /// <summary>
+        /// Runs this build command.
+        /// </summary>
+        /// <param name="actions">
+        /// The interface used to implement the build actions.
+        /// </param>
+        /// <param name="startCallback">
+        /// A call back that is called every time a new process is started. The
+        /// argument to the call back is a textual representation of the process.
+        /// </param>
+        /// <param name="exitCallBack">
+        /// A call back that is called every time a new process exits. The first
+        /// argument to the call back is the exit code, and the second argument is
+        /// an exit message.
+        /// </param>
+        /// <param name="onOutput">
+        /// A handler for data read from stdout.
+        /// </param>
+        /// <param name="onError">
+        /// A handler for data read from stderr.
+        /// </param>
+        /// <returns>The exit code from this build script.</returns>
+        public abstract int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, BuildOutputHandler onOutput, BuildOutputHandler onError);
+
+        /// <summary>
+        /// A build script which executes an external program or script.
+        /// </summary>
         private class BuildCommand : BuildScript
         {
             private readonly string exe, arguments;
@@ -110,8 +137,29 @@ namespace Semmle.Autobuild.Shared
                 return ret;
             }
 
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, BuildOutputHandler onOutput, BuildOutputHandler onError)
+            {
+                startCallback(this.ToString(), silent);
+                var ret = 1;
+                var retMessage = "";
+                try
+                {
+                    ret = actions.RunProcess(exe, arguments, workingDirectory, environment, onOutput, onError);
+                }
+                catch (Exception ex)
+                    when (ex is System.ComponentModel.Win32Exception || ex is FileNotFoundException)
+                {
+                    retMessage = ex.Message;
+                }
+                exitCallBack(ret, retMessage, silent);
+                return ret;
+            }
+
         }
 
+        /// <summary>
+        /// A build script which runs a C# function.
+        /// </summary>
         private class ReturnBuildCommand : BuildScript
         {
             private readonly Func<IBuildActions, int> func;
@@ -127,8 +175,13 @@ namespace Semmle.Autobuild.Shared
                 stdout = Array.Empty<string>();
                 return func(actions);
             }
+
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, BuildOutputHandler onOutput, BuildOutputHandler onError) => func(actions);
         }
 
+        /// <summary>
+        /// Allows two build scripts to be composed sequentially.
+        /// </summary>
         private class BindBuildScript : BuildScript
         {
             private readonly BuildScript s1;
@@ -174,6 +227,32 @@ namespace Semmle.Autobuild.Shared
                 @out.AddRange(stdout2);
                 stdout = @out;
                 return ret2;
+            }
+
+            public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack, BuildOutputHandler onOutput, BuildOutputHandler onError)
+            {
+                int ret1;
+                if (s2a is not null)
+                {
+                    var stdout1 = new List<string>();
+                    var onOutputWrapper = new BuildOutputHandler(data =>
+                    {
+                        if (data is not null)
+                            stdout1.Add(data);
+
+                        onOutput(data);
+                    });
+                    ret1 = s1.Run(actions, startCallback, exitCallBack, onOutputWrapper, onError);
+                    return s2a(stdout1, ret1).Run(actions, startCallback, exitCallBack, onOutput, onError);
+                }
+
+                if (s2b is not null)
+                {
+                    ret1 = s1.Run(actions, startCallback, exitCallBack, onOutput, onError);
+                    return s2b(ret1).Run(actions, startCallback, exitCallBack, onOutput, onError);
+                }
+
+                throw new InvalidOperationException("Unexpected error");
             }
         }
 
@@ -259,6 +338,23 @@ namespace Semmle.Autobuild.Shared
         /// always returning a successful exit code.
         /// </summary>
         public static BuildScript Try(BuildScript s) => s | Success;
+
+        /// <summary>
+        /// Creates a build script that runs the build script <paramref name="s" />. If
+        /// running <paramref name="s" /> fails, <paramref name="k" /> is invoked with
+        /// the exit code.
+        /// </summary>
+        /// <param name="s">The build script to run.</param>
+        /// <param name="k">
+        /// The callback that is invoked if <paramref name="s" /> failed.
+        /// </param>
+        /// <returns>The build script which implements this.</returns>
+        public static BuildScript OnFailure(BuildScript s, Action<int> k) =>
+            new BindBuildScript(s, ret => Create(actions =>
+            {
+                if (!Succeeded(ret)) k(ret);
+                return ret;
+            }));
 
         /// <summary>
         /// Creates a build script that deletes the given directory.

@@ -5,7 +5,8 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 module Generated {
   class DifferentiableFunctionExtractOriginalExpr extends Synth::TDifferentiableFunctionExtractOriginalExpr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string getAPrimaryQlClass() { result = "DifferentiableFunctionExtractOriginalExpr" }
   }
 }

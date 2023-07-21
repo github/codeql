@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Reflection.Emit.ILGeneration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Emit
         {
-            // Generated from `System.Reflection.Emit.CustomAttributeBuilder` in `System.Reflection.Emit.ILGeneration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CustomAttributeBuilder
             {
                 public CustomAttributeBuilder(System.Reflection.ConstructorInfo con, object[] constructorArgs) => throw null;
@@ -15,7 +15,6 @@ namespace System
                 public CustomAttributeBuilder(System.Reflection.ConstructorInfo con, object[] constructorArgs, System.Reflection.PropertyInfo[] namedProperties, object[] propertyValues, System.Reflection.FieldInfo[] namedFields, object[] fieldValues) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.ILGenerator` in `System.Reflection.Emit.ILGeneration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ILGenerator
             {
                 public virtual void BeginCatchBlock(System.Type exceptionType) => throw null;
@@ -58,7 +57,6 @@ namespace System
                 public virtual void UsingNamespace(string usingNamespace) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.Label` in `System.Reflection.Emit.ILGeneration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct Label : System.IEquatable<System.Reflection.Emit.Label>
             {
                 public static bool operator !=(System.Reflection.Emit.Label a, System.Reflection.Emit.Label b) => throw null;
@@ -69,7 +67,6 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Emit.LocalBuilder` in `System.Reflection.Emit.ILGeneration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LocalBuilder : System.Reflection.LocalVariableInfo
             {
                 public override bool IsPinned { get => throw null; }
@@ -77,7 +74,6 @@ namespace System
                 public override System.Type LocalType { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Emit.ParameterBuilder` in `System.Reflection.Emit.ILGeneration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ParameterBuilder
             {
                 public virtual int Attributes { get => throw null; }
@@ -91,7 +87,6 @@ namespace System
                 public void SetCustomAttribute(System.Reflection.Emit.CustomAttributeBuilder customBuilder) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.SignatureHelper` in `System.Reflection.Emit.ILGeneration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SignatureHelper
             {
                 public void AddArgument(System.Type clsArgument) => throw null;

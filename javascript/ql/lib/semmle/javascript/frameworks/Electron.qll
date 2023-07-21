@@ -120,7 +120,8 @@ module Electron {
      * except that values can be returned through the `event.returnValue` property.
      */
     class IpcSendRegistration extends EventRegistration::DefaultEventRegistration,
-      DataFlow::MethodCallNode {
+      DataFlow::MethodCallNode
+    {
       override Process emitter;
 
       IpcSendRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
@@ -178,8 +179,8 @@ module Electron {
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest instanceof ElectronClientRequest::Range {
-  }
+  class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest instanceof ElectronClientRequest::Range
+  { }
 
   module ElectronClientRequest {
     /**

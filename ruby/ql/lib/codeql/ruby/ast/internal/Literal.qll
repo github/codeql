@@ -326,7 +326,8 @@ private string unescapeTextComponent(string text) {
 }
 
 class StringTextComponentStringOrHeredocContent extends StringTextComponentImpl,
-  TStringTextComponentNonRegexpStringOrHeredocContent {
+  TStringTextComponentNonRegexpStringOrHeredocContent
+{
   private Ruby::Token g;
 
   StringTextComponentStringOrHeredocContent() {
@@ -341,7 +342,8 @@ class StringTextComponentStringOrHeredocContent extends StringTextComponentImpl,
 }
 
 private class StringTextComponentSimpleSymbol extends StringTextComponentImpl,
-  TStringTextComponentNonRegexpSimpleSymbol {
+  TStringTextComponentNonRegexpSimpleSymbol
+{
   private Ruby::SimpleSymbol g;
 
   StringTextComponentSimpleSymbol() { this = TStringTextComponentNonRegexpSimpleSymbol(g) }
@@ -355,7 +357,8 @@ private class StringTextComponentSimpleSymbol extends StringTextComponentImpl,
 }
 
 private class StringTextComponentHashKeySymbol extends StringTextComponentImpl,
-  TStringTextComponentNonRegexpHashKeySymbol {
+  TStringTextComponentNonRegexpHashKeySymbol
+{
   private Ruby::HashKeySymbol g;
 
   StringTextComponentHashKeySymbol() { this = TStringTextComponentNonRegexpHashKeySymbol(g) }
@@ -424,7 +427,8 @@ private string unescapeEscapeSequence(string escaped) {
  * An escape sequence component of a string or string-like literal.
  */
 class StringEscapeSequenceComponentImpl extends StringComponentImpl,
-  TStringEscapeSequenceComponentNonRegexp {
+  TStringEscapeSequenceComponentNonRegexp
+{
   private Ruby::EscapeSequence g;
 
   StringEscapeSequenceComponentImpl() { this = TStringEscapeSequenceComponentNonRegexp(g) }
@@ -439,7 +443,8 @@ class StringEscapeSequenceComponentImpl extends StringComponentImpl,
 }
 
 class StringInterpolationComponentImpl extends StringComponentImpl,
-  TStringInterpolationComponentNonRegexp {
+  TStringInterpolationComponentNonRegexp
+{
   private Ruby::Interpolation g;
 
   StringInterpolationComponentImpl() { this = TStringInterpolationComponentNonRegexp(g) }
@@ -472,7 +477,8 @@ class RegExpTextComponentImpl extends RegExpComponentImpl, TStringTextComponentR
 }
 
 class RegExpEscapeSequenceComponentImpl extends RegExpComponentImpl,
-  TStringEscapeSequenceComponentRegexp {
+  TStringEscapeSequenceComponentRegexp
+{
   private Ruby::EscapeSequence g;
 
   RegExpEscapeSequenceComponentImpl() { this = TStringEscapeSequenceComponentRegexp(g) }
@@ -488,7 +494,8 @@ class RegExpEscapeSequenceComponentImpl extends RegExpComponentImpl,
 }
 
 class RegExpInterpolationComponentImpl extends RegExpComponentImpl,
-  TStringInterpolationComponentRegexp {
+  TStringInterpolationComponentRegexp
+{
   private Ruby::Interpolation g;
 
   RegExpInterpolationComponentImpl() { this = TStringInterpolationComponentRegexp(g) }

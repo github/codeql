@@ -13,9 +13,9 @@
 
 import java
 import semmle.code.java.security.StaticInitializationVectorQuery
-import DataFlow::PathGraph
+import StaticInitializationVectorFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, StaticInitializationVectorConfig conf
-where conf.hasFlowPath(source, sink)
+from StaticInitializationVectorFlow::PathNode source, StaticInitializationVectorFlow::PathNode sink
+where StaticInitializationVectorFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "A $@ should not be used for encryption.", source.getNode(),
   "static initialization vector"

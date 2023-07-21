@@ -5,78 +5,6 @@ private import internal.TreeSitter
 private import internal.Variable
 private import internal.Parameter
 
-/**
- * DEPRECATED
- *
- * A pattern.
- */
-deprecated class Pattern extends AstNode {
-  Pattern() {
-    explicitAssignmentNode(toGenerated(this), _)
-    or
-    implicitAssignmentNode(toGenerated(this))
-    or
-    implicitParameterAssignmentNode(toGenerated(this), _)
-    or
-    this = getSynthChild(any(AssignExpr ae), 0)
-    or
-    this instanceof SimpleParameterImpl
-  }
-
-  /** Gets a variable used in (or introduced by) this pattern. */
-  Variable getAVariable() { none() }
-}
-
-/**
- * DEPRECATED
- *
- * A simple variable pattern.
- */
-deprecated class VariablePattern extends Pattern, LhsExpr, TVariableAccess {
-  override Variable getAVariable() { result = this.(VariableAccess).getVariable() }
-}
-
-/**
- * DEPRECATED
- *
- * A tuple pattern.
- *
- * This includes both tuple patterns in parameters and assignments. Example patterns:
- * ```rb
- * a, self.b = value
- * (a, b), c[3] = value
- * a, b, *rest, c, d = value
- * ```
- */
-deprecated class TuplePattern extends Pattern, TTuplePattern {
-  private TuplePatternImpl getImpl() { result = toGenerated(this) }
-
-  private Ruby::AstNode getChild(int i) { result = this.getImpl().getChildNode(i) }
-
-  /** Gets the `i`th pattern in this tuple pattern. */
-  final Pattern getElement(int i) {
-    exists(Ruby::AstNode c | c = this.getChild(i) |
-      toGenerated(result) = c.(Ruby::RestAssignment).getChild()
-      or
-      toGenerated(result) = c
-    )
-  }
-
-  /** Gets a sub pattern in this tuple pattern. */
-  final Pattern getAnElement() { result = this.getElement(_) }
-
-  /**
-   * Gets the index of the pattern with the `*` marker on it, if it exists.
-   * In the example below the index is `2`.
-   * ```rb
-   * a, b, *rest, c, d = value
-   * ```
-   */
-  final int getRestIndex() { result = this.getImpl().getRestIndex() }
-
-  override Variable getAVariable() { result = this.getElement(_).getAVariable() }
-}
-
 private class TPatternNode =
   TArrayPattern or TFindPattern or THashPattern or TAlternativePattern or TAsPattern or
       TParenthesizedPattern or TExpressionReferencePattern or TVariableReferencePattern;
@@ -434,20 +362,4 @@ class ReferencePattern extends CasePattern, TReferencePattern {
     or
     pred = "getExpr" and result = this.getExpr()
   }
-}
-
-/**
- * DEPRECATED: Use `ReferencePattern` instead.
- *
- * A variable reference in a pattern, i.e. `^x` in the following example:
- * ```rb
- * x = 10
- * case expr
- *   in ^x then puts "ok"
- * end
- * ```
- */
-deprecated class VariableReferencePattern extends ReferencePattern, TVariableReferencePattern {
-  /** Gets the variable access corresponding to this variable reference pattern. */
-  final VariableReadAccess getVariableAccess() { result = this.getExpr() }
 }

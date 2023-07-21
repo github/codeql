@@ -1,0 +1,15 @@
+{
+    "timestamp": "2023-03-23T12:04:41.317+00:00",
+    "source": {
+        "id": "js/internal-error",
+        "name": "Internal error",
+        "extractorName": "javascript"
+    },
+    "markdownMessage": "Internal error: com.semmle.util.exception.CatastrophicError: The TypeScript parser wrapper crashed with exit code 1",
+    "severity": "unknown",
+    "visibility": {
+        "cliSummaryTable": true,
+        "statusPage": false,
+        "telemetry": true
+    }
+}

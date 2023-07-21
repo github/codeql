@@ -17,3 +17,6 @@ unknownCipher.update(secretText, 'utf8', 'hex'); // OK: unknown algorithm
 desCipher.write(o.trusted, 'utf8', 'hex'); // BAD
 
 desCipher.write(password, 'utf8', 'hex'); // OK (flagged by js/insufficient-password-hash)
+
+const aesEcbCipher = crypto.createCipher('aes-128-ecb', key);
+aesEcbCipher.update(secretText, 'utf8', 'hex'); // BAD

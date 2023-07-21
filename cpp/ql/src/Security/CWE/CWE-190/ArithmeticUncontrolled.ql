@@ -17,7 +17,7 @@ import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import UncontrolledArith::PathGraph
 import Bounded
 
 /**
@@ -90,10 +90,8 @@ predicate missingGuard(VariableAccess va, string effect) {
   )
 }
 
-class UncontrolledArithConfiguration extends TaintTracking::Configuration {
-  UncontrolledArithConfiguration() { this = "UncontrolledArithConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module UncontrolledArithConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(RandomFunction rand, Call call | call.getTarget() = rand |
       rand.getFunctionOutput().isReturnValue() and
       source.asExpr() = call
@@ -105,9 +103,9 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr(), _) }
+  predicate isSink(DataFlow::Node sink) { missingGuard(sink.asExpr(), _) }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     bounded(node.asExpr())
     or
     // If this expression is part of bitwise 'and' or 'or' operation it's likely that the value is
@@ -124,14 +122,16 @@ class UncontrolledArithConfiguration extends TaintTracking::Configuration {
   }
 }
 
+module UncontrolledArith = TaintTracking::Global<UncontrolledArithConfig>;
+
 /** Gets the expression that corresponds to `node`, if any. */
 Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgument()] }
 
 from
-  UncontrolledArithConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  VariableAccess va, string effect
+  UncontrolledArith::PathNode source, UncontrolledArith::PathNode sink, VariableAccess va,
+  string effect
 where
-  config.hasFlowPath(source, sink) and
+  UncontrolledArith::flowPath(source, sink) and
   sink.getNode().asExpr() = va and
   missingGuard(va, effect)
 select sink.getNode(), source, sink,

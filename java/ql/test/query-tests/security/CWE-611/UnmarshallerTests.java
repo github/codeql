@@ -16,15 +16,16 @@ public class UnmarshallerTests {
     spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
     JAXBContext jc = JAXBContext.newInstance(Object.class);
-    Source xmlSource = new SAXSource(spf.newSAXParser().getXMLReader(), new InputSource(sock.getInputStream()));
+    Source xmlSource =
+        new SAXSource(spf.newSAXParser().getXMLReader(), new InputSource(sock.getInputStream()));
     Unmarshaller um = jc.createUnmarshaller();
-    um.unmarshal(xmlSource); //safe
+    um.unmarshal(xmlSource); // safe
   }
 
   public void unsafeUnmarshal(Socket sock) throws Exception {
     SAXParserFactory spf = SAXParserFactory.newInstance();
     JAXBContext jc = JAXBContext.newInstance(Object.class);
     Unmarshaller um = jc.createUnmarshaller();
-    um.unmarshal(sock.getInputStream()); //unsafe
+    um.unmarshal(sock.getInputStream()); // $ hasTaintFlow
   }
 }

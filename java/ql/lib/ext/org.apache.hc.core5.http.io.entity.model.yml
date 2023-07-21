@@ -5,7 +5,7 @@ extensions:
     data:
       - ["org.apache.hc.core5.http.io.entity", "BasicHttpEntity", True, "BasicHttpEntity", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http.io.entity", "BufferedHttpEntity", True, "BufferedHttpEntity", "(HttpEntity)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.hc.core5.http.io.entity", "ByteArrayEntity", True, "ByteArrayEntity", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.apache.hc.core5.http.io.entity", "ByteArrayEntity", True, "ByteArrayEntity", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["org.apache.hc.core5.http.io.entity", "EntityUtils", True, "parse", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http.io.entity", "EntityUtils", True, "toByteArray", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http.io.entity", "EntityUtils", True, "toString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
@@ -16,4 +16,4 @@ extensions:
       - ["org.apache.hc.core5.http.io.entity", "HttpEntities", True, "withTrailers", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http.io.entity", "HttpEntityWrapper", True, "HttpEntityWrapper", "(HttpEntity)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http.io.entity", "InputStreamEntity", True, "InputStreamEntity", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.hc.core5.http.io.entity", "StringEntity", True, "StringEntity", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.apache.hc.core5.http.io.entity", "StringEntity", True, "StringEntity", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]

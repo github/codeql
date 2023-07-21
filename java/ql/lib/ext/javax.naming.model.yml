@@ -9,3 +9,9 @@ extensions:
       - ["javax.naming", "Context", True, "lookupLink", "", "", "Argument[0]", "jndi-injection", "manual"]
       - ["javax.naming", "Context", True, "rename", "", "", "Argument[0]", "jndi-injection", "manual"]
       - ["javax.naming", "InitialContext", True, "doLookup", "", "", "Argument[0]", "jndi-injection", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.naming", "StringRefAddr", True, "StringRefAddr", "(String,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-manual"]

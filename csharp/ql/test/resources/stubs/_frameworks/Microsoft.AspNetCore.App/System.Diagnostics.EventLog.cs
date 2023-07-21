@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.Diagnostics.EventLog, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.EntryWrittenEventArgs` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class EntryWrittenEventArgs : System.EventArgs
         {
             public System.Diagnostics.EventLogEntry Entry { get => throw null; }
@@ -12,10 +12,8 @@ namespace System
             public EntryWrittenEventArgs(System.Diagnostics.EventLogEntry entry) => throw null;
         }
 
-        // Generated from `System.Diagnostics.EntryWrittenEventHandler` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void EntryWrittenEventHandler(object sender, System.Diagnostics.EntryWrittenEventArgs e);
 
-        // Generated from `System.Diagnostics.EventInstance` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class EventInstance
         {
             public int CategoryId { get => throw null; set => throw null; }
@@ -25,7 +23,6 @@ namespace System
             public System.Int64 InstanceId { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.EventLog` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class EventLog : System.ComponentModel.Component, System.ComponentModel.ISupportInitialize
         {
             public void BeginInit() => throw null;
@@ -80,7 +77,6 @@ namespace System
             public static void WriteEvent(string source, System.Diagnostics.EventInstance instance, params object[] values) => throw null;
         }
 
-        // Generated from `System.Diagnostics.EventLogEntry` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class EventLogEntry : System.ComponentModel.Component, System.Runtime.Serialization.ISerializable
         {
             public string Category { get => throw null; }
@@ -101,7 +97,6 @@ namespace System
             public string UserName { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.EventLogEntryCollection` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class EventLogEntryCollection : System.Collections.ICollection, System.Collections.IEnumerable
         {
             void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -113,7 +108,6 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.EventLogEntryType` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum EventLogEntryType : int
         {
             Error = 1,
@@ -123,7 +117,6 @@ namespace System
             Warning = 2,
         }
 
-        // Generated from `System.Diagnostics.EventLogTraceListener` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class EventLogTraceListener : System.Diagnostics.TraceListener
         {
             public override void Close() => throw null;
@@ -141,7 +134,6 @@ namespace System
             public override void WriteLine(string message) => throw null;
         }
 
-        // Generated from `System.Diagnostics.EventSourceCreationData` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class EventSourceCreationData
         {
             public int CategoryCount { get => throw null; set => throw null; }
@@ -154,7 +146,6 @@ namespace System
             public string Source { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.OverflowAction` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public enum OverflowAction : int
         {
             DoNotOverwrite = -1,
@@ -166,12 +157,12 @@ namespace System
         {
             namespace Reader
             {
-                // Generated from `System.Diagnostics.Eventing.Reader.EventBookmark` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventBookmark
                 {
+                    public string BookmarkXml { get => throw null; }
+                    public EventBookmark(string bookmarkXml) => throw null;
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventKeyword` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventKeyword
                 {
                     public string DisplayName { get => throw null; }
@@ -179,7 +170,6 @@ namespace System
                     public System.Int64 Value { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLevel` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLevel
                 {
                     public string DisplayName { get => throw null; }
@@ -187,7 +177,6 @@ namespace System
                     public int Value { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogConfiguration` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogConfiguration : System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -215,7 +204,6 @@ namespace System
                     public string SecurityDescriptor { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogException` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogException : System.Exception
                 {
                     public EventLogException() => throw null;
@@ -227,7 +215,6 @@ namespace System
                     public override string Message { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogInformation` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogInformation
                 {
                     public int? Attributes { get => throw null; }
@@ -240,7 +227,6 @@ namespace System
                     public System.Int64? RecordCount { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogInvalidDataException` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogInvalidDataException : System.Diagnostics.Eventing.Reader.EventLogException
                 {
                     public EventLogInvalidDataException() => throw null;
@@ -249,7 +235,6 @@ namespace System
                     public EventLogInvalidDataException(string message, System.Exception innerException) => throw null;
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogIsolation` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum EventLogIsolation : int
                 {
                     Application = 0,
@@ -257,7 +242,6 @@ namespace System
                     System = 1,
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogLink` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogLink
                 {
                     public string DisplayName { get => throw null; }
@@ -265,7 +249,6 @@ namespace System
                     public string LogName { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogMode` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum EventLogMode : int
                 {
                     AutoBackup = 1,
@@ -273,7 +256,6 @@ namespace System
                     Retain = 2,
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogNotFoundException` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogNotFoundException : System.Diagnostics.Eventing.Reader.EventLogException
                 {
                     public EventLogNotFoundException() => throw null;
@@ -282,7 +264,6 @@ namespace System
                     public EventLogNotFoundException(string message, System.Exception innerException) => throw null;
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogPropertySelector` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogPropertySelector : System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -290,7 +271,6 @@ namespace System
                     public EventLogPropertySelector(System.Collections.Generic.IEnumerable<string> propertyQueries) => throw null;
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogProviderDisabledException` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogProviderDisabledException : System.Diagnostics.Eventing.Reader.EventLogException
                 {
                     public EventLogProviderDisabledException() => throw null;
@@ -299,7 +279,6 @@ namespace System
                     public EventLogProviderDisabledException(string message, System.Exception innerException) => throw null;
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogQuery` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogQuery
                 {
                     public EventLogQuery(string path, System.Diagnostics.Eventing.Reader.PathType pathType) => throw null;
@@ -309,7 +288,6 @@ namespace System
                     public bool TolerateQueryErrors { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogReader` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogReader : System.IDisposable
                 {
                     public int BatchSize { get => throw null; set => throw null; }
@@ -328,7 +306,6 @@ namespace System
                     public void Seek(System.IO.SeekOrigin origin, System.Int64 offset) => throw null;
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogReadingException` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogReadingException : System.Diagnostics.Eventing.Reader.EventLogException
                 {
                     public EventLogReadingException() => throw null;
@@ -337,7 +314,6 @@ namespace System
                     public EventLogReadingException(string message, System.Exception innerException) => throw null;
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogRecord` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogRecord : System.Diagnostics.Eventing.Reader.EventRecord
                 {
                     public override System.Guid? ActivityId { get => throw null; }
@@ -373,7 +349,6 @@ namespace System
                     public override System.Byte? Version { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogSession` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogSession : System.IDisposable
                 {
                     public void CancelCurrentOperations() => throw null;
@@ -394,14 +369,12 @@ namespace System
                     public static System.Diagnostics.Eventing.Reader.EventLogSession GlobalSession { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogStatus` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogStatus
                 {
                     public string LogName { get => throw null; }
                     public int StatusCode { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogType` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum EventLogType : int
                 {
                     Administrative = 0,
@@ -410,7 +383,6 @@ namespace System
                     Operational = 1,
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventLogWatcher` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventLogWatcher : System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -423,7 +395,6 @@ namespace System
                     public event System.EventHandler<System.Diagnostics.Eventing.Reader.EventRecordWrittenEventArgs> EventRecordWritten;
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventMetadata` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventMetadata
                 {
                     public string Description { get => throw null; }
@@ -437,7 +408,6 @@ namespace System
                     public System.Byte Version { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventOpcode` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventOpcode
                 {
                     public string DisplayName { get => throw null; }
@@ -445,13 +415,11 @@ namespace System
                     public int Value { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventProperty` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventProperty
                 {
                     public object Value { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventRecord` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class EventRecord : System.IDisposable
                 {
                     public abstract System.Guid? ActivityId { get; }
@@ -486,14 +454,12 @@ namespace System
                     public abstract System.Byte? Version { get; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventRecordWrittenEventArgs` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventRecordWrittenEventArgs : System.EventArgs
                 {
                     public System.Exception EventException { get => throw null; }
                     public System.Diagnostics.Eventing.Reader.EventRecord EventRecord { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.EventTask` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EventTask
                 {
                     public string DisplayName { get => throw null; }
@@ -502,14 +468,12 @@ namespace System
                     public int Value { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.PathType` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum PathType : int
                 {
                     FilePath = 2,
                     LogName = 1,
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.ProviderMetadata` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class ProviderMetadata : System.IDisposable
                 {
                     public string DisplayName { get => throw null; }
@@ -531,7 +495,6 @@ namespace System
                     public System.Collections.Generic.IList<System.Diagnostics.Eventing.Reader.EventTask> Tasks { get => throw null; }
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.SessionAuthentication` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum SessionAuthentication : int
                 {
                     Default = 0,
@@ -540,7 +503,6 @@ namespace System
                     Ntlm = 3,
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.StandardEventKeywords` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 [System.Flags]
                 public enum StandardEventKeywords : long
                 {
@@ -556,7 +518,6 @@ namespace System
                     WdiDiagnostic = 1125899906842624,
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.StandardEventLevel` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum StandardEventLevel : int
                 {
                     Critical = 1,
@@ -567,7 +528,6 @@ namespace System
                     Warning = 3,
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.StandardEventOpcode` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum StandardEventOpcode : int
                 {
                     DataCollectionStart = 3,
@@ -583,7 +543,6 @@ namespace System
                     Suspend = 8,
                 }
 
-                // Generated from `System.Diagnostics.Eventing.Reader.StandardEventTask` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public enum StandardEventTask : int
                 {
                     None = 0,

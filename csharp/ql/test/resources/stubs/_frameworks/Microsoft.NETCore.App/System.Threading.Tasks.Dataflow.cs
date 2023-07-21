@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Threading.Tasks.Dataflow, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -8,7 +9,6 @@ namespace System
         {
             namespace Dataflow
             {
-                // Generated from `System.Threading.Tasks.Dataflow.ActionBlock<>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ActionBlock<TInput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.ITargetBlock<TInput>
                 {
                     public ActionBlock(System.Action<TInput> action) => throw null;
@@ -24,7 +24,6 @@ namespace System
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.BatchBlock<>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class BatchBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T[]>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T[]>, System.Threading.Tasks.Dataflow.ISourceBlock<T[]>, System.Threading.Tasks.Dataflow.ITargetBlock<T>
                 {
                     public BatchBlock(int batchSize) => throw null;
@@ -45,7 +44,6 @@ namespace System
                     public bool TryReceiveAll(out System.Collections.Generic.IList<T[]> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.BatchedJoinBlock<,,>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class BatchedJoinBlock<T1, T2, T3> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>, System.Collections.Generic.IList<T3>>>, System.Threading.Tasks.Dataflow.ISourceBlock<System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>, System.Collections.Generic.IList<T3>>>
                 {
                     public int BatchSize { get => throw null; }
@@ -67,7 +65,6 @@ namespace System
                     public bool TryReceiveAll(out System.Collections.Generic.IList<System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>, System.Collections.Generic.IList<T3>>> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.BatchedJoinBlock<,>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class BatchedJoinBlock<T1, T2> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>>>, System.Threading.Tasks.Dataflow.ISourceBlock<System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>>>
                 {
                     public int BatchSize { get => throw null; }
@@ -88,7 +85,6 @@ namespace System
                     public bool TryReceiveAll(out System.Collections.Generic.IList<System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>>> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.BroadcastBlock<>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class BroadcastBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>
                 {
                     public BroadcastBlock(System.Func<T, T> cloningFunction) => throw null;
@@ -106,7 +102,6 @@ namespace System
                     bool System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>.TryReceiveAll(out System.Collections.Generic.IList<T> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.BufferBlock<>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class BufferBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>
                 {
                     public BufferBlock() => throw null;
@@ -125,7 +120,6 @@ namespace System
                     public bool TryReceiveAll(out System.Collections.Generic.IList<T> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.DataflowBlock` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class DataflowBlock
                 {
                     public static System.IObservable<TOutput> AsObservable<TOutput>(this System.Threading.Tasks.Dataflow.ISourceBlock<TOutput> source) => throw null;
@@ -156,7 +150,6 @@ namespace System
                     public static bool TryReceive<TOutput>(this System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput> source, out TOutput item) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.DataflowBlockOptions` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DataflowBlockOptions
                 {
                     public int BoundedCapacity { get => throw null; set => throw null; }
@@ -169,7 +162,6 @@ namespace System
                     public const int Unbounded = default;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.DataflowLinkOptions` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DataflowLinkOptions
                 {
                     public bool Append { get => throw null; set => throw null; }
@@ -178,7 +170,6 @@ namespace System
                     public bool PropagateCompletion { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.DataflowMessageHeader` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct DataflowMessageHeader : System.IEquatable<System.Threading.Tasks.Dataflow.DataflowMessageHeader>
                 {
                     public static bool operator !=(System.Threading.Tasks.Dataflow.DataflowMessageHeader left, System.Threading.Tasks.Dataflow.DataflowMessageHeader right) => throw null;
@@ -192,7 +183,6 @@ namespace System
                     public bool IsValid { get => throw null; }
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.DataflowMessageStatus` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public enum DataflowMessageStatus : int
                 {
                     Accepted = 0,
@@ -202,7 +192,6 @@ namespace System
                     Postponed = 2,
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ExecutionDataflowBlockOptions : System.Threading.Tasks.Dataflow.DataflowBlockOptions
                 {
                     public ExecutionDataflowBlockOptions() => throw null;
@@ -210,7 +199,6 @@ namespace System
                     public bool SingleProducerConstrained { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.GroupingDataflowBlockOptions` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class GroupingDataflowBlockOptions : System.Threading.Tasks.Dataflow.DataflowBlockOptions
                 {
                     public bool Greedy { get => throw null; set => throw null; }
@@ -218,7 +206,6 @@ namespace System
                     public System.Int64 MaxNumberOfGroups { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.IDataflowBlock` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IDataflowBlock
                 {
                     void Complete();
@@ -226,19 +213,16 @@ namespace System
                     void Fault(System.Exception exception);
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.IPropagatorBlock<,>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IPropagatorBlock<TInput, TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ITargetBlock<TInput>
                 {
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.IReceivableSourceBlock<>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IReceivableSourceBlock<TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>
                 {
                     bool TryReceive(System.Predicate<TOutput> filter, out TOutput item);
                     bool TryReceiveAll(out System.Collections.Generic.IList<TOutput> items);
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.ISourceBlock<>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface ISourceBlock<TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock
                 {
                     TOutput ConsumeMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader messageHeader, System.Threading.Tasks.Dataflow.ITargetBlock<TOutput> target, out bool messageConsumed);
@@ -247,13 +231,11 @@ namespace System
                     bool ReserveMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader messageHeader, System.Threading.Tasks.Dataflow.ITargetBlock<TOutput> target);
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.ITargetBlock<>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface ITargetBlock<TInput> : System.Threading.Tasks.Dataflow.IDataflowBlock
                 {
                     System.Threading.Tasks.Dataflow.DataflowMessageStatus OfferMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader messageHeader, TInput messageValue, System.Threading.Tasks.Dataflow.ISourceBlock<TInput> source, bool consumeToAccept);
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.JoinBlock<,,>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JoinBlock<T1, T2, T3> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<System.Tuple<T1, T2, T3>>, System.Threading.Tasks.Dataflow.ISourceBlock<System.Tuple<T1, T2, T3>>
                 {
                     public void Complete() => throw null;
@@ -274,7 +256,6 @@ namespace System
                     public bool TryReceiveAll(out System.Collections.Generic.IList<System.Tuple<T1, T2, T3>> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.JoinBlock<,>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class JoinBlock<T1, T2> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<System.Tuple<T1, T2>>, System.Threading.Tasks.Dataflow.ISourceBlock<System.Tuple<T1, T2>>
                 {
                     public void Complete() => throw null;
@@ -294,7 +275,6 @@ namespace System
                     public bool TryReceiveAll(out System.Collections.Generic.IList<System.Tuple<T1, T2>> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.TransformBlock<,>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class TransformBlock<TInput, TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<TInput, TOutput>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ITargetBlock<TInput>
                 {
                     public void Complete() => throw null;
@@ -316,7 +296,6 @@ namespace System
                     public bool TryReceiveAll(out System.Collections.Generic.IList<TOutput> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.TransformManyBlock<,>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class TransformManyBlock<TInput, TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<TInput, TOutput>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ITargetBlock<TInput>
                 {
                     public void Complete() => throw null;
@@ -330,6 +309,8 @@ namespace System
                     void System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>.ReleaseReservation(System.Threading.Tasks.Dataflow.DataflowMessageHeader messageHeader, System.Threading.Tasks.Dataflow.ITargetBlock<TOutput> target) => throw null;
                     bool System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>.ReserveMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader messageHeader, System.Threading.Tasks.Dataflow.ITargetBlock<TOutput> target) => throw null;
                     public override string ToString() => throw null;
+                    public TransformManyBlock(System.Func<TInput, System.Collections.Generic.IAsyncEnumerable<TOutput>> transform) => throw null;
+                    public TransformManyBlock(System.Func<TInput, System.Collections.Generic.IAsyncEnumerable<TOutput>> transform, System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions dataflowBlockOptions) => throw null;
                     public TransformManyBlock(System.Func<TInput, System.Collections.Generic.IEnumerable<TOutput>> transform) => throw null;
                     public TransformManyBlock(System.Func<TInput, System.Collections.Generic.IEnumerable<TOutput>> transform, System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions dataflowBlockOptions) => throw null;
                     public TransformManyBlock(System.Func<TInput, System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<TOutput>>> transform) => throw null;
@@ -338,7 +319,6 @@ namespace System
                     public bool TryReceiveAll(out System.Collections.Generic.IList<TOutput> items) => throw null;
                 }
 
-                // Generated from `System.Threading.Tasks.Dataflow.WriteOnceBlock<>` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class WriteOnceBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>
                 {
                     public void Complete() => throw null;

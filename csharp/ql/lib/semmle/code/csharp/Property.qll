@@ -15,7 +15,8 @@ private import TypeRef
  * (`Property`), or an indexer (`Indexer`).
  */
 class DeclarationWithAccessors extends AssignableMember, Virtualizable, Attributable,
-  @declaration_with_accessors {
+  @declaration_with_accessors
+{
   /** Gets an accessor of this declaration. */
   Accessor getAnAccessor() { result.getDeclaration() = this }
 
@@ -49,7 +50,8 @@ class DeclarationWithAccessors extends AssignableMember, Virtualizable, Attribut
  * property (`Property`) or an indexer (`Indexer`).
  */
 class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelExprParent,
-  @assignable_with_accessors {
+  @assignable_with_accessors
+{
   /** Gets the `get` accessor of this declaration, if any. */
   Getter getGetter() { result = this.getAnAccessor() }
 

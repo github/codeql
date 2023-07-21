@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,8 +7,7 @@ namespace Microsoft
     {
         namespace Logging
         {
-            // Generated from `Microsoft.Extensions.Logging.EventId` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public struct EventId
+            public struct EventId : System.IEquatable<Microsoft.Extensions.Logging.EventId>
             {
                 public static bool operator !=(Microsoft.Extensions.Logging.EventId left, Microsoft.Extensions.Logging.EventId right) => throw null;
                 public static bool operator ==(Microsoft.Extensions.Logging.EventId left, Microsoft.Extensions.Logging.EventId right) => throw null;
@@ -22,14 +22,12 @@ namespace Microsoft
                 public static implicit operator Microsoft.Extensions.Logging.EventId(int i) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Logging.IExternalScopeProvider` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IExternalScopeProvider
             {
                 void ForEachScope<TState>(System.Action<object, TState> callback, TState state);
                 System.IDisposable Push(object state);
             }
 
-            // Generated from `Microsoft.Extensions.Logging.ILogger` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ILogger
             {
                 System.IDisposable BeginScope<TState>(TState state);
@@ -37,38 +35,32 @@ namespace Microsoft
                 void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter);
             }
 
-            // Generated from `Microsoft.Extensions.Logging.ILogger<>` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ILogger<TCategoryName> : Microsoft.Extensions.Logging.ILogger
             {
             }
 
-            // Generated from `Microsoft.Extensions.Logging.ILoggerFactory` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ILoggerFactory : System.IDisposable
             {
                 void AddProvider(Microsoft.Extensions.Logging.ILoggerProvider provider);
                 Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName);
             }
 
-            // Generated from `Microsoft.Extensions.Logging.ILoggerProvider` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ILoggerProvider : System.IDisposable
             {
                 Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName);
             }
 
-            // Generated from `Microsoft.Extensions.Logging.ISupportExternalScope` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISupportExternalScope
             {
                 void SetScopeProvider(Microsoft.Extensions.Logging.IExternalScopeProvider scopeProvider);
             }
 
-            // Generated from `Microsoft.Extensions.Logging.LogDefineOptions` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class LogDefineOptions
             {
                 public LogDefineOptions() => throw null;
                 public bool SkipEnabledCheck { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Logging.LogLevel` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum LogLevel : int
             {
                 Critical = 5,
@@ -80,7 +72,6 @@ namespace Microsoft
                 Warning = 3,
             }
 
-            // Generated from `Microsoft.Extensions.Logging.Logger<>` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class Logger<T> : Microsoft.Extensions.Logging.ILogger, Microsoft.Extensions.Logging.ILogger<T>
             {
                 System.IDisposable Microsoft.Extensions.Logging.ILogger.BeginScope<TState>(TState state) => throw null;
@@ -89,7 +80,6 @@ namespace Microsoft
                 public Logger(Microsoft.Extensions.Logging.ILoggerFactory factory) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Logging.LoggerExtensions` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class LoggerExtensions
             {
                 public static System.IDisposable BeginScope(this Microsoft.Extensions.Logging.ILogger logger, string messageFormat, params object[] args) => throw null;
@@ -123,7 +113,6 @@ namespace Microsoft
                 public static void LogWarning(this Microsoft.Extensions.Logging.ILogger logger, string message, params object[] args) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Logging.LoggerExternalScopeProvider` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class LoggerExternalScopeProvider : Microsoft.Extensions.Logging.IExternalScopeProvider
             {
                 public void ForEachScope<TState>(System.Action<object, TState> callback, TState state) => throw null;
@@ -131,14 +120,12 @@ namespace Microsoft
                 public System.IDisposable Push(object state) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Logging.LoggerFactoryExtensions` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class LoggerFactoryExtensions
             {
                 public static Microsoft.Extensions.Logging.ILogger CreateLogger(this Microsoft.Extensions.Logging.ILoggerFactory factory, System.Type type) => throw null;
                 public static Microsoft.Extensions.Logging.ILogger<T> CreateLogger<T>(this Microsoft.Extensions.Logging.ILoggerFactory factory) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Logging.LoggerMessage` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class LoggerMessage
             {
                 public static System.Action<Microsoft.Extensions.Logging.ILogger, System.Exception> Define(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, string formatString) => throw null;
@@ -164,7 +151,6 @@ namespace Microsoft
                 public static System.Func<Microsoft.Extensions.Logging.ILogger, T1, System.IDisposable> DefineScope<T1>(string formatString) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Logging.LoggerMessageAttribute` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class LoggerMessageAttribute : System.Attribute
             {
                 public int EventId { get => throw null; set => throw null; }
@@ -178,7 +164,6 @@ namespace Microsoft
 
             namespace Abstractions
             {
-                // Generated from `Microsoft.Extensions.Logging.Abstractions.LogEntry<>` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct LogEntry<TState>
                 {
                     public string Category { get => throw null; }
@@ -191,7 +176,6 @@ namespace Microsoft
                     public TState State { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Abstractions.NullLogger` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NullLogger : Microsoft.Extensions.Logging.ILogger
                 {
                     public System.IDisposable BeginScope<TState>(TState state) => throw null;
@@ -200,7 +184,6 @@ namespace Microsoft
                     public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Abstractions.NullLogger<>` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NullLogger<T> : Microsoft.Extensions.Logging.ILogger, Microsoft.Extensions.Logging.ILogger<T>
                 {
                     public System.IDisposable BeginScope<TState>(TState state) => throw null;
@@ -210,7 +193,6 @@ namespace Microsoft
                     public NullLogger() => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NullLoggerFactory : Microsoft.Extensions.Logging.ILoggerFactory, System.IDisposable
                 {
                     public void AddProvider(Microsoft.Extensions.Logging.ILoggerProvider provider) => throw null;
@@ -220,7 +202,6 @@ namespace Microsoft
                     public NullLoggerFactory() => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Logging.Abstractions.NullLoggerProvider` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class NullLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, System.IDisposable
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => throw null;

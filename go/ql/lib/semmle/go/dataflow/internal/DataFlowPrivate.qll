@@ -3,6 +3,8 @@ private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.go.dataflow.FlowSummary as FlowSummary
+private import codeql.util.Unit
 import DataFlowNodes::Private
 
 private newtype TReturnKind =
@@ -127,7 +129,8 @@ predicate jumpStep(Node n1, Node n2) {
     n2 = recvRead
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1, n2)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
+    n2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -151,7 +154,8 @@ predicate storeStep(Node node1, Content c, Node node2) {
   node1 = node2.(AddressOperationNode).getOperand() and
   c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
   or
   containerStoreStep(node1, node2, c)
 }
@@ -171,7 +175,8 @@ predicate readStep(Node node1, Content c, Node node2) {
     c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
   or
   containerReadStep(node1, node2, c)
 }
@@ -195,8 +200,10 @@ predicate clearsContent(Node n, Content c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
-  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
+
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
@@ -221,6 +228,16 @@ class CastNode extends ExprNode {
   override ConversionExpr expr;
 }
 
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) {
+  exists(DataFlow::FunctionModel fm | fm.getAnInputNode(_) = n or fm.getAnOutputNode(_) = n)
+  or
+  exists(TaintTracking::FunctionModel fm | fm.getAnInputNode(_) = n or fm.getAnOutputNode(_) = n)
+}
+
 class DataFlowExpr = Expr;
 
 private newtype TDataFlowType =
@@ -236,31 +253,55 @@ class DataFlowLocation = Location;
 
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
-  TFileScope(File f)
+  TFileScope(File f) or
+  TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
+  /**
+   * Gets the `Callable` corresponding to this `DataFlowCallable`, if any.
+   */
   Callable asCallable() { this = TCallable(result) }
 
+  /**
+   * Gets the `File` whose root scope corresponds to this `DataFlowCallable`, if any.
+   */
   File asFileScope() { this = TFileScope(result) }
 
-  FuncDef getFuncDef() { result = this.asCallable().getFuncDef() }
+  /**
+   * Gets the `SummarizedCallable` corresponding to this `DataFlowCallable`, if any.
+   */
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
-  Function asFunction() { result = this.asCallable().asFunction() }
+  /**
+   * Gets the type of this callable.
+   *
+   * If this is a `File` root scope, this has no value.
+   */
+  SignatureType getType() { result = [this.asCallable(), this.asSummarizedCallable()].getType() }
 
-  FuncLit asFuncLit() { result = this.asCallable().asFuncLit() }
-
-  SignatureType getType() { result = this.asCallable().getType() }
-
+  /**
+   * Gets a string representation of this callable.
+   */
   string toString() {
     result = this.asCallable().toString() or
-    result = "File scope: " + this.asFileScope().toString()
+    result = "File scope: " + this.asFileScope().toString() or
+    result = "Summary: " + this.asSummarizedCallable().toString()
   }
 
+  /**
+   * Holds if this callable is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.asCallable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+    this.asSummarizedCallable()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -280,6 +321,7 @@ class DataFlowCall extends Expr {
 
   /** Gets the enclosing callable of this call. */
   DataFlowCallable getEnclosingCallable() {
+    // NB. At present calls cannot occur inside summarized callables-- this will change if we implement advanced lambda support.
     result.asCallable().getFuncDef() = this.getEnclosingFunction()
     or
     not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
@@ -339,15 +381,6 @@ predicate forceHighPrecision(Content c) {
   c instanceof ArrayContent or c instanceof CollectionContent
 }
 
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
-
 /**
  * Gets the `i`th argument of call `c`, where the receiver of a method call
  * counts as argument -1.
@@ -360,7 +393,7 @@ Node getArgument(CallNode c, int i) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 
 class LambdaCallKind = Unit;
 
@@ -390,3 +423,12 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

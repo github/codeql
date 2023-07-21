@@ -83,7 +83,8 @@ module Werkzeug {
     // possible to do storage.read() instead of the long form storage.stream.read(). So
     // that's why InstanceSource also extends `Stdlib::FileLikeObject::InstanceSource`
     abstract class InstanceSource extends Stdlib::FileLikeObject::InstanceSource,
-      DataFlow::LocalSourceNode { }
+      DataFlow::LocalSourceNode
+    { }
 
     /** Gets a reference to an instance of `werkzeug.datastructures.FileStorage`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {

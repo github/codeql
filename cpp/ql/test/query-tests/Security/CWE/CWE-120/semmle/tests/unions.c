@@ -29,5 +29,5 @@ void unions_test(MyUnion *mu)
 	mu->ptr = buffer;
 	strcpy(mu->ptr, "1234567890"); // GOOD
 	strcpy(mu->ptr, "12345678901234567890"); // GOOD
-	strcpy(mu->ptr, "123456789012345678901234567890"); // BAD
+	strcpy(mu->ptr, "123456789012345678901234567890"); // BAD [NOT DETECTED]
 }

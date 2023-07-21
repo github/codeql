@@ -4,7 +4,7 @@ import TestUtils
 
 from
   ParamDecl x, ModuleDecl getModule, int getNumberOfMembers, Type getInterfaceType,
-  int getNumberOfAccessorDecls, string getName, Type getType, string hasAttachedPropertyWrapperType,
+  int getNumberOfAccessors, string getName, Type getType, string hasAttachedPropertyWrapperType,
   string hasParentPattern, string hasParentInitializer, string hasPropertyWrapperBackingVarBinding,
   string hasPropertyWrapperBackingVar, string hasPropertyWrapperProjectionVarBinding,
   string hasPropertyWrapperProjectionVar, string isInout,
@@ -15,7 +15,7 @@ where
   getModule = x.getModule() and
   getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType() and
-  getNumberOfAccessorDecls = x.getNumberOfAccessorDecls() and
+  getNumberOfAccessors = x.getNumberOfAccessors() and
   getName = x.getName() and
   getType = x.getType() and
   (
@@ -55,9 +55,9 @@ where
   then hasPropertyWrapperLocalWrappedVar = "yes"
   else hasPropertyWrapperLocalWrappedVar = "no"
 select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:",
-  getInterfaceType, "getNumberOfAccessorDecls:", getNumberOfAccessorDecls, "getName:", getName,
-  "getType:", getType, "hasAttachedPropertyWrapperType:", hasAttachedPropertyWrapperType,
-  "hasParentPattern:", hasParentPattern, "hasParentInitializer:", hasParentInitializer,
+  getInterfaceType, "getNumberOfAccessors:", getNumberOfAccessors, "getName:", getName, "getType:",
+  getType, "hasAttachedPropertyWrapperType:", hasAttachedPropertyWrapperType, "hasParentPattern:",
+  hasParentPattern, "hasParentInitializer:", hasParentInitializer,
   "hasPropertyWrapperBackingVarBinding:", hasPropertyWrapperBackingVarBinding,
   "hasPropertyWrapperBackingVar:", hasPropertyWrapperBackingVar,
   "hasPropertyWrapperProjectionVarBinding:", hasPropertyWrapperProjectionVarBinding,

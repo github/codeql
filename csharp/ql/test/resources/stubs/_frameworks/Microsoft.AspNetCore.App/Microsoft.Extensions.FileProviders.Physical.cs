@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.FileProviders.Physical, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace FileProviders
         {
-            // Generated from `Microsoft.Extensions.FileProviders.PhysicalFileProvider` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class PhysicalFileProvider : Microsoft.Extensions.FileProviders.IFileProvider, System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -24,7 +24,6 @@ namespace Microsoft
 
             namespace Internal
             {
-                // Generated from `Microsoft.Extensions.FileProviders.Internal.PhysicalDirectoryContents` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PhysicalDirectoryContents : Microsoft.Extensions.FileProviders.IDirectoryContents, System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo>, System.Collections.IEnumerable
                 {
                     public bool Exists { get => throw null; }
@@ -37,7 +36,6 @@ namespace Microsoft
             }
             namespace Physical
             {
-                // Generated from `Microsoft.Extensions.FileProviders.Physical.ExclusionFilters` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 [System.Flags]
                 public enum ExclusionFilters : int
                 {
@@ -48,7 +46,6 @@ namespace Microsoft
                     System = 4,
                 }
 
-                // Generated from `Microsoft.Extensions.FileProviders.Physical.PhysicalDirectoryInfo` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PhysicalDirectoryInfo : Microsoft.Extensions.FileProviders.IFileInfo
                 {
                     public System.IO.Stream CreateReadStream() => throw null;
@@ -61,7 +58,6 @@ namespace Microsoft
                     public string PhysicalPath { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.FileProviders.Physical.PhysicalFileInfo` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PhysicalFileInfo : Microsoft.Extensions.FileProviders.IFileInfo
                 {
                     public System.IO.Stream CreateReadStream() => throw null;
@@ -74,7 +70,6 @@ namespace Microsoft
                     public string PhysicalPath { get => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.FileProviders.Physical.PhysicalFilesWatcher` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PhysicalFilesWatcher : System.IDisposable
                 {
                     public Microsoft.Extensions.Primitives.IChangeToken CreateFileChangeToken(string filter) => throw null;
@@ -85,7 +80,6 @@ namespace Microsoft
                     // ERR: Stub generator didn't handle member: ~PhysicalFilesWatcher
                 }
 
-                // Generated from `Microsoft.Extensions.FileProviders.Physical.PollingFileChangeToken` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PollingFileChangeToken : Microsoft.Extensions.Primitives.IChangeToken
                 {
                     public bool ActiveChangeCallbacks { get => throw null; }
@@ -94,7 +88,6 @@ namespace Microsoft
                     public System.IDisposable RegisterChangeCallback(System.Action<object> callback, object state) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.FileProviders.Physical.PollingWildCardChangeToken` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PollingWildCardChangeToken : Microsoft.Extensions.Primitives.IChangeToken
                 {
                     public bool ActiveChangeCallbacks { get => throw null; }

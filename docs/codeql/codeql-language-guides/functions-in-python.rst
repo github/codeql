@@ -75,12 +75,12 @@ This query uses ``Call`` and ``Name`` to find calls to the function ``eval`` - w
    select call, "call to 'eval'."
 
 The ``Call`` class represents calls in Python. The ``Call.getFunc()`` predicate gets the expression being called. ``Name.getId()`` gets the identifier (as a string) of the ``Name`` expression.
-Due to the dynamic nature of Python, this query will select any call of the form ``eval(...)`` regardless of whether it is a call to the built-in function ``eval`` or not.
-In a later tutorial we will see how to use the type-inference library to find calls to the built-in function ``eval`` regardless of name of the variable called.
+This query will select any call of the form ``eval(...)`` regardless of whether it is a call to the built-in function ``eval`` or not.
+Due to the dynamic nature of Python, such syntactic queries can be inaccurate. If one is looking for invocations of the built-in function ``eval``,
+it is preferred to use the API graph, see ":doc:`Using API graphs in Python <using-api-graphs-in-python>`."
 
 Further reading
 ---------------
 
 .. include:: ../reusables/python-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
-

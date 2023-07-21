@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.commons.compress.archivers.tar", "TarArchiveEntry", True, "TarArchiveEntry", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.commons.compress.archivers.tar", "TarArchiveEntry", True, "TarArchiveEntry", "(String,boolean)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.commons.compress.archivers.tar", "TarArchiveEntry", True, "TarArchiveEntry", "(String,byte)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
+      - ["org.apache.commons.compress.archivers.tar", "TarArchiveEntry", True, "setLinkName", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]

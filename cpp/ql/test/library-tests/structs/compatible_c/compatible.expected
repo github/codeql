@@ -1,6 +1,6 @@
-| a1.c:6:16:6:16 | struct <unnamed> | 0 members | 2 locations | -1 | <none> |
-| a1.c:10:16:10:16 | struct <unnamed> | 1 members | 2 locations | 0 | x |
-| a1.c:17:16:17:16 | struct <unnamed> | 1 members | 2 locations | 0 | x |
+| a1.c:6:16:6:16 | (unnamed class/struct/union) | 0 members | 2 locations | -1 | <none> |
+| a1.c:10:16:10:16 | (unnamed class/struct/union) | 1 members | 2 locations | 0 | x |
+| a1.c:17:16:17:16 | (unnamed class/struct/union) | 1 members | 2 locations | 0 | x |
 | a1.c:24:8:24:10 | Foo | 3 members | 2 locations | 0 | empty |
 | a1.c:24:8:24:10 | Foo | 3 members | 2 locations | 1 | nonempty |
 | a1.c:24:8:24:10 | Foo | 3 members | 2 locations | 2 | i |
@@ -9,9 +9,9 @@
 | a1.c:36:8:36:10 | Bar | 3 members | 2 locations | 0 | empty |
 | a1.c:36:8:36:10 | Bar | 3 members | 2 locations | 1 | nonempty |
 | a1.c:36:8:36:10 | Bar | 3 members | 2 locations | 2 | i |
-| a2.c:6:16:6:16 | struct <unnamed> | 0 members | 2 locations | -1 | <none> |
-| a2.c:10:16:10:16 | struct <unnamed> | 1 members | 2 locations | 0 | x |
-| a2.c:17:16:17:16 | struct <unnamed> | 1 members | 2 locations | 0 | x |
+| a2.c:6:16:6:16 | (unnamed class/struct/union) | 0 members | 2 locations | -1 | <none> |
+| a2.c:10:16:10:16 | (unnamed class/struct/union) | 1 members | 2 locations | 0 | x |
+| a2.c:17:16:17:16 | (unnamed class/struct/union) | 1 members | 2 locations | 0 | x |
 | a2.c:24:8:24:10 | Foo | 3 members | 2 locations | 0 | empty |
 | a2.c:24:8:24:10 | Foo | 3 members | 2 locations | 1 | nonempty |
 | a2.c:24:8:24:10 | Foo | 3 members | 2 locations | 2 | i |

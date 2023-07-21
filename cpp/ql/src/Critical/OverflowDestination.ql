@@ -17,7 +17,7 @@ import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.security.FlowSources
-import DataFlow::PathGraph
+import OverflowDestination::PathGraph
 
 /**
  * Holds if `fc` is a call to a copy operation where the size argument contains
@@ -66,14 +66,12 @@ predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Va
   any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
 }
 
-class OverflowDestinationConfig extends TaintTracking::Configuration {
-  OverflowDestinationConfig() { this = "OverflowDestinationConfig" }
+module OverflowDestinationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
+  predicate isSink(DataFlow::Node sink) { sourceSized(_, sink.asIndirectConvertedExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) { sourceSized(_, sink.asConvertedExpr()) }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(Variable checkedVar |
       readsVariable(node.asInstruction(), checkedVar) and
       hasUpperBoundsCheck(checkedVar)
@@ -86,11 +84,11 @@ class OverflowDestinationConfig extends TaintTracking::Configuration {
   }
 }
 
-from
-  FunctionCall fc, OverflowDestinationConfig conf, DataFlow::PathNode source,
-  DataFlow::PathNode sink
+module OverflowDestination = TaintTracking::Global<OverflowDestinationConfig>;
+
+from FunctionCall fc, OverflowDestination::PathNode source, OverflowDestination::PathNode sink
 where
-  conf.hasFlowPath(source, sink) and
-  sourceSized(fc, sink.getNode().asConvertedExpr())
+  OverflowDestination::flowPath(source, sink) and
+  sourceSized(fc, sink.getNode().asIndirectConvertedExpr())
 select fc, source, sink,
   "To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size."

@@ -194,7 +194,7 @@ class NoReason extends Reason, TNoReason {
 class CondReason extends Reason, TCondReason {
   IRGuardCondition getCond() { this = TCondReason(result) }
 
-  override string toString() { result = getCond().toString() }
+  override string toString() { result = this.getCond().toString() }
 }
 
 /**
@@ -222,10 +222,10 @@ private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
 
 private class SafeCastInstruction extends ConvertInstruction {
   SafeCastInstruction() {
-    safeCast(getResultType(), getUnary().getResultType())
+    safeCast(this.getResultType(), this.getUnary().getResultType())
     or
-    getResultType() instanceof PointerType and
-    getUnary().getResultType() instanceof PointerType
+    this.getResultType() instanceof PointerType and
+    this.getUnary().getResultType() instanceof PointerType
   }
 }
 
@@ -260,14 +260,14 @@ private predicate typeBound(IntegralType typ, int lowerbound, int upperbound) {
 private class NarrowingCastInstruction extends ConvertInstruction {
   NarrowingCastInstruction() {
     not this instanceof SafeCastInstruction and
-    typeBound(getResultType(), _, _)
+    typeBound(this.getResultType(), _, _)
   }
 
   /** Gets the lower bound of the resulting type. */
-  int getLowerBound() { typeBound(getResultType(), result, _) }
+  int getLowerBound() { typeBound(this.getResultType(), result, _) }
 
   /** Gets the upper bound of the resulting type. */
-  int getUpperBound() { typeBound(getResultType(), _, result) }
+  int getUpperBound() { typeBound(this.getResultType(), _, result) }
 }
 
 /**

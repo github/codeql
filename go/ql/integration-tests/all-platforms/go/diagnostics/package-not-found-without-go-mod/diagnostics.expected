@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "1 package could not be found:\n\n`github.com/linode/linode-docs-theme`.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-not-found",
+    "name": "Some packages could not be found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

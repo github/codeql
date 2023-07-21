@@ -295,7 +295,8 @@ module NestJS {
    * as a source of untrusted data.
    */
   private class NestJSRequestInputAsRequestInputAccess extends NestJSRequestInput,
-    Http::RequestInputAccess {
+    Http::RequestInputAccess
+  {
     NestJSRequestInputAsRequestInputAccess() {
       not this.isSanitizedByPipe() and
       not this = any(CustomPipeClass cls).getAnAffectedParameter()
@@ -316,7 +317,8 @@ module NestJS {
   }
 
   private class NestJSHeaderAccess extends NestJSRequestInputAsRequestInputAccess,
-    Http::RequestHeaderAccess {
+    Http::RequestHeaderAccess
+  {
     NestJSHeaderAccess() { decoratorName = "Headers" and decorator.getNumArgument() > 0 }
 
     override string getAHeaderName() {

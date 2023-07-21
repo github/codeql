@@ -123,7 +123,13 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSinkWithBitSize(sink, sinkBitSize) }
+  override predicate isSink(DataFlow::Node sink) {
+    // We use the argument of the type conversion as the configuration sink so that we
+    // can sanitize the result of the conversion to prevent flow on to further sinks
+    // without needing to use `isSanitizerOut`, which doesn't work with flow states
+    // (and therefore the legacy `TaintTracking::Configuration` class).
+    this.isSinkWithBitSize(sink.getASuccessor(), sinkBitSize)
+  }
 
   override predicate isSanitizer(DataFlow::Node node) {
     // To catch flows that only happen on 32-bit architectures we
@@ -135,10 +141,9 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
       g.isBoundFor(bitSize, sinkIsSigned)
     )
     or
-    exists(DataFlow::Node sink, int bitSize |
+    exists(int bitSize |
       isIncorrectIntegerConversion(sourceBitSize, bitSize) and
-      this.isSinkWithBitSize(sink, bitSize) and
-      TaintTracking::localTaintStep(sink, node)
+      this.isSinkWithBitSize(node, bitSize)
     )
   }
 }

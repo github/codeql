@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Configuration.UserSecrets, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Configuration
         {
-            // Generated from `Microsoft.Extensions.Configuration.UserSecretsConfigurationExtensions` in `Microsoft.Extensions.Configuration.UserSecrets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class UserSecretsConfigurationExtensions
             {
                 public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddUserSecrets(this Microsoft.Extensions.Configuration.IConfigurationBuilder configuration, System.Reflection.Assembly assembly) => throw null;
@@ -21,14 +21,12 @@ namespace Microsoft
 
             namespace UserSecrets
             {
-                // Generated from `Microsoft.Extensions.Configuration.UserSecrets.PathHelper` in `Microsoft.Extensions.Configuration.UserSecrets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PathHelper
                 {
                     public static string GetSecretsPathFromSecretsId(string userSecretsId) => throw null;
                     public PathHelper() => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute` in `Microsoft.Extensions.Configuration.UserSecrets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UserSecretsIdAttribute : System.Attribute
                 {
                     public string UserSecretsId { get => throw null; }

@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hc.core5.http.support", "AbstractRequestBuilder", True, "setHttpHost", "(HttpHost)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "AbstractRequestBuilder", True, "setUri", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "AbstractRequestBuilder", True, "setUri", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "delete", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "delete", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "get", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "get", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "head", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "head", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "options", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "options", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "patch", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "patch", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "post", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "post", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "put", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "put", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "trace", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.support", "BasicRequestBuilder", True, "trace", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]

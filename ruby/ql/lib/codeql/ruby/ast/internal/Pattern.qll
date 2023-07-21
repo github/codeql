@@ -4,25 +4,6 @@ private import codeql.ruby.ast.internal.Parameter
 private import AST
 private import TreeSitter
 
-deprecated class TuplePatternImpl extends Ruby::AstNode {
-  TuplePatternImpl() {
-    this instanceof DestructuredParameterImpl or
-    this instanceof DestructuredLhsExprImpl
-  }
-
-  Ruby::AstNode getChildNode(int i) {
-    result =
-      [
-        this.(DestructuredParameterImpl).getChildNode(i),
-        this.(DestructuredLhsExprImpl).getChildNode(i)
-      ]
-  }
-
-  final int getRestIndex() {
-    result = unique(int i | this.getChildNode(i) instanceof Ruby::RestAssignment)
-  }
-}
-
 /**
  * Holds if `node` is a case pattern.
  */

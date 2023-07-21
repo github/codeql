@@ -6,7 +6,8 @@ import codeql.swift.elements.expr.IdentityExpr
 
 module Generated {
   class UnresolvedMemberChainResultExpr extends Synth::TUnresolvedMemberChainResultExpr,
-    IdentityExpr, ErrorElement {
+    IdentityExpr, ErrorElement
+  {
     override string getAPrimaryQlClass() { result = "UnresolvedMemberChainResultExpr" }
   }
 }

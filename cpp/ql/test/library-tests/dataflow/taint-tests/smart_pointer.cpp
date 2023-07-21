@@ -35,16 +35,16 @@ void test_reverse_taint_shared() {
     std::shared_ptr<int> p = std::make_shared<int>();
 
     *p = source();
-    sink(p); // $ ast MISSING: ir
-    sink(*p); // $ ast MISSING: ir
+    sink(p); // $ ast,ir
+    sink(*p); // $ ast,ir
 }
 
 void test_reverse_taint_unique() {
     std::unique_ptr<int> p = std::unique_ptr<int>();
 
     *p = source();
-    sink(p); // $ ast MISSING: ir
-    sink(*p); // $ ast MISSING: ir
+    sink(p); // $ ast,ir
+    sink(*p); // $ ast,ir
 }
 
 void test_shared_get() {
@@ -85,11 +85,11 @@ struct B {
 
 void test_operator_arrow(std::unique_ptr<A> p, std::unique_ptr<B> q) {
   p->x = source();
-  sink(p->x); // $ ast MISSING: ir
+  sink(p->x); // $ ast,ir
   sink(p->y);
 
   q->a1.x = source();
-  sink(q->a1.x); // $ ast MISSING: ir
+  sink(q->a1.x); // $ ast,ir
   sink(q->a1.y);
   sink(q->a2.x);
 }
@@ -101,7 +101,7 @@ void taint_x(A* pa) {
 void reverse_taint_smart_pointer() {
   std::unique_ptr<A> p = std::unique_ptr<A>(new A);
   taint_x(p.get());
-  sink(p->x); // $ ast MISSING: ir
+  sink(p->x); // $ ast,ir
 }
 
 struct C {
@@ -131,8 +131,8 @@ int nested_shared_ptr_taint(std::shared_ptr<C> p1, std::unique_ptr<std::shared_p
 
 int nested_shared_ptr_taint_cref(std::shared_ptr<C> p1, std::unique_ptr<std::shared_ptr<int>> p2) {
   taint_x_shared_cref(p1->q);
-  sink(p1->q->x); // $ ast MISSING: ir
+  sink(p1->q->x); // $ ast,ir
 
   getNumberCRef(*p2);
-  sink(**p2); // $ ast MISSING: ir
+  sink(**p2); // $ ast,ir
 }

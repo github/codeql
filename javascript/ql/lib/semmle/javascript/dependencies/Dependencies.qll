@@ -39,9 +39,6 @@ abstract class NpmDependency extends Dependency {
   /** Gets the name of the NPM package this module belongs to. */
   abstract string getNpmPackageName();
 
-  /** DEPRECATED: Alias for getNpmPackageName */
-  deprecated string getNPMPackageName() { result = this.getNpmPackageName() }
-
   /** Gets the version of the NPM package this module belongs to. */
   abstract string getVersion();
 
@@ -61,9 +58,6 @@ abstract class NpmDependency extends Dependency {
     )
   }
 }
-
-/** DEPRECATED: Alias for NpmDependency */
-deprecated class NPMDependency = NpmDependency;
 
 /**
  * Gets a variable into which something is imported by `i`.
@@ -105,9 +99,6 @@ class BundledNpmDependency extends NpmDependency {
 
   override string getNpmPackageName() { result = this.getPackageJson().getPackageName() }
 
-  /** DEPRECATED: Alias for getNpmPackageName */
-  deprecated override string getNPMPackageName() { result = this.getNpmPackageName() }
-
   override string getVersion() { result = this.getPackageJson().getVersion() }
 
   override Import getAnImport() {
@@ -116,9 +107,6 @@ class BundledNpmDependency extends NpmDependency {
     not result.getEnclosingModule() = this.getPackage().getAModule()
   }
 }
-
-/** DEPRECATED: Alias for BundledNpmDependency */
-deprecated class BundledNPMDependency = BundledNpmDependency;
 
 /**
  * An NPM package referenced in a `package.json` file.
@@ -138,9 +126,6 @@ class ExternalNpmDependency extends NpmDependency {
   override string getNpmPackageName() {
     exists(PackageDependencies pkgdeps | this = pkgdeps.getPropValue(result))
   }
-
-  /** DEPRECATED: Alias for getNpmPackageName */
-  deprecated override string getNPMPackageName() { result = this.getNpmPackageName() }
 
   private string getVersionNumber() {
     exists(string versionRange | versionRange = this.(JsonString).getValue() |
@@ -165,9 +150,6 @@ class ExternalNpmDependency extends NpmDependency {
     )
   }
 }
-
-/** DEPRECATED: Alias for ExternalNpmDependency */
-deprecated class ExternalNPMDependency = ExternalNpmDependency;
 
 /**
  * Holds if import `i` may refer to the declared dependency `dep` of package `pkg`,
@@ -226,7 +208,8 @@ abstract class ScriptDependency extends Dependency {
 /**
  * An embedded JavaScript library included inside a `<script>` tag.
  */
-class InlineScriptDependency extends ScriptDependency, @toplevel instanceof FrameworkLibraryInstance {
+class InlineScriptDependency extends ScriptDependency, @toplevel instanceof FrameworkLibraryInstance
+{
   override predicate info(string id, string v) {
     exists(FrameworkLibrary fl |
       FrameworkLibraryInstance.super.info(fl, v) and
@@ -248,7 +231,8 @@ class InlineScriptDependency extends ScriptDependency, @toplevel instanceof Fram
  * An external JavaScript library referenced via the `src` attribute
  * of a `<script>` tag.
  */
-class ExternalScriptDependency extends ScriptDependency, @xmlattribute instanceof FrameworkLibraryReference {
+class ExternalScriptDependency extends ScriptDependency, @xmlattribute instanceof FrameworkLibraryReference
+{
   override predicate info(string id, string v) {
     exists(FrameworkLibrary fl |
       FrameworkLibraryReference.super.info(fl, v) and

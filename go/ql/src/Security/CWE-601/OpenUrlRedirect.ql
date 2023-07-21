@@ -24,5 +24,5 @@ where
   // this excludes flow from safe parts of request URLs, for example the full URL when the
   // doing a redirect from `http://<path>` to `https://<path>`
   not scfg.hasFlow(_, sink.getNode())
-select sink.getNode(), source, sink, "Untrusted URL redirection depends on a $@.", source.getNode(),
-  "user-provided value"
+select sink.getNode(), source, sink, "This path to an untrusted URL redirection depends on a $@.",
+  source.getNode(), "user-provided value"

@@ -13,7 +13,7 @@ void stream_it(vector<T>& t)
   }
 }
 
-int main()
+static int f()
 {
   vector<int> xs;
   stream_it(xs);

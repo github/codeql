@@ -36,11 +36,14 @@ class Property:
     first: bool = False
     is_optional: bool = False
     is_predicate: bool = False
+    is_unordered: bool = False
     prev_child: Optional[str] = None
     qltest_skip: bool = False
     description: List[str] = field(default_factory=list)
     doc: Optional[str] = None
     doc_plural: Optional[str] = None
+    synth: bool = False
+    type_is_hideable: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -49,7 +52,11 @@ class Property:
 
     @property
     def getter(self):
-        return f"get{self.singular}" if not self.is_predicate else self.singular
+        if self.is_predicate:
+            return self.singular
+        if self.is_unordered:
+            return self.indefinite_getter
+        return f"get{self.singular}"
 
     @property
     def indefinite_getter(self):
@@ -77,6 +84,10 @@ class Property:
     def has_description(self) -> bool:
         return bool(self.description)
 
+    @property
+    def is_indexed(self) -> bool:
+        return self.is_repeated and not self.is_unordered
+
 
 @dataclass
 class Base:
@@ -102,8 +113,8 @@ class Class:
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
     ql_internal: bool = False
-    ipa: bool = False
     doc: List[str] = field(default_factory=list)
+    hideable: bool = False
 
     def __post_init__(self):
         self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]
@@ -136,7 +147,7 @@ class Class:
 
 
 @dataclass
-class IpaUnderlyingAccessor:
+class SynthUnderlyingAccessor:
     argument: str
     type: str
     constructorparams: List[Param]
@@ -154,11 +165,11 @@ class Stub:
     name: str
     base_import: str
     import_prefix: str
-    ipa_accessors: List[IpaUnderlyingAccessor] = field(default_factory=list)
+    synth_accessors: List[SynthUnderlyingAccessor] = field(default_factory=list)
 
     @property
-    def has_ipa_accessors(self) -> bool:
-        return bool(self.ipa_accessors)
+    def has_synth_accessors(self) -> bool:
+        return bool(self.synth_accessors)
 
 
 @dataclass
@@ -188,7 +199,7 @@ class PropertyForTest:
     getter: str
     is_total: bool = True
     type: Optional[str] = None
-    is_repeated: bool = False
+    is_indexed: bool = False
 
 
 @dataclass
@@ -234,8 +245,8 @@ class Synth:
     @dataclass
     class FinalClass(Class):
         is_final: ClassVar = True
-        is_derived_ipa: ClassVar = False
-        is_fresh_ipa: ClassVar = False
+        is_derived_synth: ClassVar = False
+        is_fresh_synth: ClassVar = False
         is_db: ClassVar = False
 
         params: List["Synth.Param"] = field(default_factory=list)
@@ -245,37 +256,37 @@ class Synth:
                 self.params[0].first = True
 
         @property
-        def is_ipa(self):
-            return self.is_fresh_ipa or self.is_derived_ipa
+        def is_synth(self):
+            return self.is_fresh_synth or self.is_derived_synth
 
         @property
         def has_params(self) -> bool:
             return bool(self.params)
 
     @dataclass
-    class FinalClassIpa(FinalClass):
+    class FinalClassSynth(FinalClass):
         pass
 
     @dataclass
-    class FinalClassDerivedIpa(FinalClassIpa):
-        is_derived_ipa: ClassVar = True
+    class FinalClassDerivedSynth(FinalClassSynth):
+        is_derived_synth: ClassVar = True
 
     @dataclass
-    class FinalClassFreshIpa(FinalClassIpa):
-        is_fresh_ipa: ClassVar = True
+    class FinalClassFreshSynth(FinalClassSynth):
+        is_fresh_synth: ClassVar = True
 
     @dataclass
     class FinalClassDb(FinalClass):
         is_db: ClassVar = True
 
-        subtracted_ipa_types: List["Synth.Class"] = field(default_factory=list)
+        subtracted_synth_types: List["Synth.Class"] = field(default_factory=list)
 
         def subtract_type(self, type: str):
-            self.subtracted_ipa_types.append(Synth.Class(type, first=not self.subtracted_ipa_types))
+            self.subtracted_synth_types.append(Synth.Class(type, first=not self.subtracted_synth_types))
 
         @property
-        def has_subtracted_ipa_types(self) -> bool:
-            return bool(self.subtracted_ipa_types)
+        def has_subtracted_synth_types(self) -> bool:
+            return bool(self.subtracted_synth_types)
 
         @property
         def db_id(self) -> str:
@@ -293,7 +304,7 @@ class Synth:
 
     @dataclass
     class Types:
-        template: ClassVar = "ql_ipa_types"
+        template: ClassVar = "ql_synth_types"
 
         root: str
         import_prefix: str
@@ -306,7 +317,7 @@ class Synth:
 
     @dataclass
     class ConstructorStub:
-        template: ClassVar = "ql_ipa_constructor_stub"
+        template: ClassVar = "ql_synth_constructor_stub"
 
         cls: "Synth.FinalClass"
         import_prefix: str

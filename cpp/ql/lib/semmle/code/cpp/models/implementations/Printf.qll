@@ -15,10 +15,10 @@ private class Printf extends FormattingFunction, AliasFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdOrBslName(["printf", "wprintf"]) or
-      hasGlobalName(["printf_s", "wprintf_s", "g_printf"])
+      this.hasGlobalOrStdOrBslName(["printf", "wprintf"]) or
+      this.hasGlobalName(["printf_s", "wprintf_s", "g_printf"])
     ) and
-    not exists(getDefinition().getFile().getRelativePath())
+    not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() { result = 0 }
@@ -39,10 +39,10 @@ private class Fprintf extends FormattingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdOrBslName(["fprintf", "fwprintf"]) or
-      hasGlobalName("g_fprintf")
+      this.hasGlobalOrStdOrBslName(["fprintf", "fwprintf"]) or
+      this.hasGlobalName("g_fprintf")
     ) and
-    not exists(getDefinition().getFile().getRelativePath())
+    not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() { result = 1 }
@@ -57,12 +57,12 @@ private class Sprintf extends FormattingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdOrBslName([
+      this.hasGlobalOrStdOrBslName([
           "sprintf", // sprintf(dst, format, args...)
           "wsprintf" // wsprintf(dst, format, args...)
         ])
       or
-      hasGlobalName([
+      this.hasGlobalName([
           "_sprintf_l", // _sprintf_l(dst, format, locale, args...)
           "__swprintf_l", // __swprintf_l(dst, format, locale, args...)
           "g_strdup_printf", // g_strdup_printf(format, ...)
@@ -70,24 +70,26 @@ private class Sprintf extends FormattingFunction {
           "__builtin___sprintf_chk" // __builtin___sprintf_chk(dst, flag, os, format, ...)
         ])
     ) and
-    not exists(getDefinition().getFile().getRelativePath())
+    not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
-    hasName("g_strdup_printf") and result = 0
+    this.hasName("g_strdup_printf") and result = 0
     or
-    hasName("__builtin___sprintf_chk") and result = 3
+    this.hasName("__builtin___sprintf_chk") and result = 3
     or
-    not getName() = ["g_strdup_printf", "__builtin___sprintf_chk"] and
+    not this.getName() = ["g_strdup_printf", "__builtin___sprintf_chk"] and
     result = 1
   }
 
   override int getOutputParameterIndex(boolean isStream) {
-    not hasName("g_strdup_printf") and result = 0 and isStream = false
+    not this.hasName("g_strdup_printf") and result = 0 and isStream = false
   }
 
   override int getFirstFormatArgumentIndex() {
-    if hasName("__builtin___sprintf_chk") then result = 4 else result = getNumberOfParameters()
+    if this.hasName("__builtin___sprintf_chk")
+    then result = 4
+    else result = this.getNumberOfParameters()
   }
 }
 
@@ -98,46 +100,46 @@ private class SnprintfImpl extends Snprintf {
   SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
-      hasGlobalOrStdOrBslName([
+      this.hasGlobalOrStdOrBslName([
           "snprintf", // C99 defines snprintf
           "swprintf" // The s version of wide-char printf is also always the n version
         ])
       or
       // Microsoft has _snprintf as well as several other variations
-      hasGlobalName([
+      this.hasGlobalName([
           "sprintf_s", "snprintf_s", "swprintf_s", "_snprintf", "_snprintf_s", "_snprintf_l",
           "_snprintf_s_l", "_snwprintf", "_snwprintf_s", "_snwprintf_l", "_snwprintf_s_l",
           "_sprintf_s_l", "_swprintf_l", "_swprintf_s_l", "g_snprintf", "wnsprintf",
           "__builtin___snprintf_chk"
         ])
     ) and
-    not exists(getDefinition().getFile().getRelativePath())
+    not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
-    if getName().matches("%\\_l")
-    then result = getFirstFormatArgumentIndex() - 2
-    else result = getFirstFormatArgumentIndex() - 1
+    if this.getName().matches("%\\_l")
+    then result = this.getFirstFormatArgumentIndex() - 2
+    else result = this.getFirstFormatArgumentIndex() - 1
   }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
 
   override int getFirstFormatArgumentIndex() {
     exists(string name |
-      name = getQualifiedName() and
+      name = this.getQualifiedName() and
       (
         name = "__builtin___snprintf_chk" and
         result = 5
         or
         name != "__builtin___snprintf_chk" and
-        result = getNumberOfParameters()
+        result = this.getNumberOfParameters()
       )
     )
   }
 
   override predicate returnsFullFormatLength() {
-    hasName(["snprintf", "g_snprintf", "__builtin___snprintf_chk", "snprintf_s"]) and
-    not exists(getDefinition().getFile().getRelativePath())
+    this.hasName(["snprintf", "g_snprintf", "__builtin___snprintf_chk", "snprintf_s"]) and
+    not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getSizeParameterIndex() { result = 1 }
@@ -149,15 +151,15 @@ private class SnprintfImpl extends Snprintf {
 private class StringCchPrintf extends FormattingFunction {
   StringCchPrintf() {
     this instanceof TopLevelFunction and
-    hasGlobalName([
+    this.hasGlobalName([
         "StringCchPrintf", "StringCchPrintfEx", "StringCchPrintf_l", "StringCchPrintf_lEx",
         "StringCbPrintf", "StringCbPrintfEx", "StringCbPrintf_l", "StringCbPrintf_lEx"
       ]) and
-    not exists(getDefinition().getFile().getRelativePath())
+    not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
-    if getName().matches("%Ex") then result = 5 else result = 2
+    if this.getName().matches("%Ex") then result = 5 else result = 2
   }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
@@ -171,8 +173,8 @@ private class StringCchPrintf extends FormattingFunction {
 private class Syslog extends FormattingFunction {
   Syslog() {
     this instanceof TopLevelFunction and
-    hasGlobalName("syslog") and
-    not exists(getDefinition().getFile().getRelativePath())
+    this.hasGlobalName("syslog") and
+    not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() { result = 1 }

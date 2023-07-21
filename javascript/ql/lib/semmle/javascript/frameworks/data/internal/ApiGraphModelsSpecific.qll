@@ -22,8 +22,6 @@
 private import javascript as JS
 private import ApiGraphModels
 
-class Unit = JS::Unit;
-
 // Re-export libraries needed by ApiGraphModels.qll
 module API = JS::API;
 

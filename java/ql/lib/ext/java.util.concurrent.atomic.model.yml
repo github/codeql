@@ -3,14 +3,25 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.util.concurrent.atomic", "AtomicReference", False, "AtomicReference", "(Object)", "", "Argument[0]", "Argument[-1].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "value", "manual"]
-      - ["java.util.concurrent.atomic", "AtomicReference", False, "get", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicReference", False, "AtomicReference", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "value", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicReference", False, "get", "()", "", "Argument[this].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicReference", False, "set", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "value", "manual"]
 
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.util.concurrent.atomic", "AtomicBoolean", "AtomicBoolean", "(boolean)", "summary", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicBoolean", "compareAndSet", "(boolean,boolean)", "summary", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicBoolean", "get", "()", "summary", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicBoolean", "set", "(boolean)", "summary", "manual"]
+
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.util.concurrent.atomic", "AtomicInteger", "AtomicInteger", "(int)", "manual"] # value-numeric
-      - ["java.util.concurrent.atomic", "AtomicInteger", "get", "()", "manual"]              # value-numeric
+      - ["java.util.concurrent.atomic", "AtomicInteger", "AtomicInteger", "(int)", "summary", "manual"] # value-numeric
+      - ["java.util.concurrent.atomic", "AtomicInteger", "get", "()", "summary", "manual"]              # value-numeric
+      - ["java.util.concurrent.atomic", "AtomicInteger", "incrementAndGet", "()", "summary", "manual"]  # taint-numeric
+      - ["java.util.concurrent.atomic", "AtomicLong", "AtomicLong", "(long)", "summary", "manual"]      # value-numeric
+      - ["java.util.concurrent.atomic", "AtomicLong", "addAndGet", "(long)", "summary", "manual"]       # taint-numeric
+      - ["java.util.concurrent.atomic", "AtomicLong", "get", "()", "summary", "manual"]                 # value-numeric
+      - ["java.util.concurrent.atomic", "AtomicLong", "incrementAndGet", "()", "summary", "manual"]     # taint-numeric

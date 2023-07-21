@@ -1,9 +1,11 @@
+namespace {
 class C {
 	public:
 		void (C::*g)();
 };
+}
 
-void f() {
+static void f() {
 	C *c, *d;
 	(c->*(d->g))();
 	;

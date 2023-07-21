@@ -48,7 +48,7 @@ int main()
 		int i = 0;
 
 		scanf("%d", &i);
-		use(i); // BAD. Design choice: already initialized variables shouldn't make a difference.
+		use(i); // GOOD. Design choice: already initialized variables are fine.
 	}
 
 	{
@@ -261,7 +261,7 @@ int main()
 		i = 0;
 
 		scanf("%d", &i);
-		use(i); // BAD
+		use(i); // GOOD
 	}
 
 	{
@@ -269,7 +269,7 @@ int main()
 
 		set_by_ref(i);
 		scanf("%d", &i);
-		use(i); // BAD
+		use(i); // GOOD [FALSE POSITIVE]
 	}
 
 	{
@@ -277,7 +277,7 @@ int main()
 
 		set_by_ptr(&i);
 		scanf("%d", &i);
-		use(i); // BAD
+		use(i); // GOOD [FALSE POSITIVE]
 	}
 
 	{
@@ -299,7 +299,7 @@ int main()
 		int *ptr_i = &i;
 
 		scanf("%d", &i);
-		use(*ptr_i); // BAD: may not have written `i`
+		use(*ptr_i); // BAD [NOT DETECTED]: may not have written `i`
 	}
 
 	{
@@ -307,7 +307,7 @@ int main()
 		int *ptr_i = &i;
 
 		scanf("%d", ptr_i);
-		use(i); // BAD: may not have written `*ptr_i`
+		use(i); // BAD [NOT DETECTED]: may not have written `*ptr_i`
 	}
 
 	{
@@ -405,4 +405,27 @@ char *my_string_copy() {
     }
 	*ptr++ = 0;
 	return DST_STRING;
+}
+
+void scan_and_write() {
+	{
+		int i;
+		if (scanf("%d", &i) < 1) {
+			i = 0;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+	}
+	{
+		int i;
+		if (scanf("%d", &i) != 1) {
+			i = 0;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+	}
+}
+
+void scan_and_static_variable() {
+	static int i;
+	scanf("%d", &i);
+	use(i);  // GOOD: static variables are always 0-initialized
 }

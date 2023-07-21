@@ -507,7 +507,7 @@ class DirectiveTargetName extends string {
    * `:` and `_` count as component delimiters.
    */
   string getRawComponent(int i) {
-    result = toLowerCase().regexpFind("(?<=^|[-:_])[a-zA-Z0-9]+(?=$|[-:_])", i, _)
+    result = this.toLowerCase().regexpFind("(?<=^|[-:_])[a-zA-Z0-9]+(?=$|[-:_])", i, _)
   }
 
   /**
@@ -1013,7 +1013,8 @@ private class RouteInstantiatedController extends Controller instanceof RouteSet
 /**
  * Dataflow for the arguments of AngularJS dependency-injected functions.
  */
-private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedNode instanceof DataFlow::ParameterNode {
+private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedNode instanceof DataFlow::ParameterNode
+{
   DataFlow::AnalyzedNode service;
 
   DependencyInjectedArgumentInitializer() {

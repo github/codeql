@@ -121,13 +121,11 @@ func UntrustedFlowSources_GithubComGofiberFiberV1146() {
 		// Untrusted flow sources from github.com/gofiber/fiber.Cookie struct fields.
 		{
 			structCookie322 := new(fiber.Cookie)
-			sink(
-				structCookie322.Domain,   // $ untrustedFlowSource
-				structCookie322.Name,     // $ untrustedFlowSource
-				structCookie322.Path,     // $ untrustedFlowSource
-				structCookie322.SameSite, // $ untrustedFlowSource
-				structCookie322.Value,    // $ untrustedFlowSource
-			)
+			sink(structCookie322.Domain)   // $ untrustedFlowSource
+			sink(structCookie322.Name)     // $ untrustedFlowSource
+			sink(structCookie322.Path)     // $ untrustedFlowSource
+			sink(structCookie322.SameSite) // $ untrustedFlowSource
+			sink(structCookie322.Value)    // $ untrustedFlowSource
 		}
 		// Untrusted flow sources from github.com/gofiber/fiber.Error struct fields.
 		{

@@ -19,7 +19,8 @@ module Kernel {
    */
   class KernelMethodCall extends DataFlow::CallNode {
     KernelMethodCall() {
-      this = API::getTopLevelMember("Kernel").getAMethodCall(_)
+      // Match Kernel calls using local flow, to avoid finding singleton calls on subclasses
+      this = DataFlow::getConstant("Kernel").getAMethodCall(_)
       or
       this.asExpr().getExpr() instanceof UnknownMethodCall and
       (
@@ -195,6 +196,40 @@ module Kernel {
       or
       result = super.getArgument(1) and
       super.getMethodName() = ["autoload", "autoload?"]
+    }
+  }
+
+  private import codeql.ruby.ast.internal.Module as Module
+
+  /**
+   * A call to `Array()`, that converts it's singular argument to an array.
+   * This summary is based on https://ruby-doc.org/3.2.1/Kernel.html#method-i-Array
+   */
+  private class KernelArraySummary extends SummarizedCallable {
+    KernelArraySummary() { this = "Array()" }
+
+    override MethodCall getACallSimple() {
+      result.getMethodName() = "Array" and
+      // I have to have a simplified "KernelMethodCall" implementation inlined here, because relying on `UnknownMethodCall` results in non-monotonic recursion (even if using `getACall`).
+      (
+        // similar to `getAStaticArrayCall` from Array.qll
+        Module::resolveConstantReadAccess(result.getReceiver()) = Module::TResolved("Kernel")
+        or
+        result.getReceiver() instanceof SelfVariableAccess
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        // already an array
+        input = "Argument[0].WithElement[0..]" and
+        output = "ReturnValue"
+        or
+        // not already an array
+        input = "Argument[0].WithoutElement[0..]" and
+        output = "ReturnValue.Element[0]"
+      ) and
+      preservesValue = true
     }
   }
 }

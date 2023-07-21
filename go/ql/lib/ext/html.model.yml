@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["html", "", False, "EscapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["html", "", False, "UnescapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -1,7 +1,6 @@
 using Semmle.Util.Logging;
-using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -31,6 +30,11 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public class MsBuildRule : IBuildRule<AutobuildOptionsShared>
     {
+        /// <summary>
+        /// A list of solutions or projects which failed to build.
+        /// </summary>
+        public readonly List<IProjectOrSolution> FailedProjectsOrSolutions = new();
+
         public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
@@ -128,7 +132,13 @@ namespace Semmle.Autobuild.Shared
 
                 command.Argument(builder.Options.MsBuildArguments);
 
-                ret &= command.Script;
+                // append the build script which invokes msbuild to the overall build script `ret`;
+                // we insert a check that building the current project or solution was successful:
+                // if it was not successful, we add it to `FailedProjectsOrSolutions`
+                ret &= BuildScript.OnFailure(command.Script, ret =>
+                {
+                    FailedProjectsOrSolutions.Add(projectOrSolution);
+                });
             }
 
             return ret;

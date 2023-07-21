@@ -1,0 +1,46 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(Path,Charset,boolean,boolean)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["hudson.util", "ClasspathBuilder", True, "add", "(FilePath)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["hudson.util", "FormValidation", True, "errorWithMarkup", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["hudson.util", "FormValidation", True, "okWithMarkup", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["hudson.util", "FormValidation", True, "respond", "", "", "Argument[1]", "html-injection", "manual"]
+      - ["hudson.util", "FormValidation", True, "warningWithMarkup", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["hudson.util", "IOUtils", True, "mkdirs", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["hudson.util", "StreamTaskListener", True, "StreamTaskListener", "(File,boolean,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["hudson.util", "TextFile", True, "delete", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["hudson.util", "TextFile", True, "fastTail", "", "", "Argument[this]", "path-injection", "manual"]
+      - ["hudson.util", "TextFile", True, "head", "", "", "Argument[this]", "path-injection", "manual"]
+      - ["hudson.util", "TextFile", True, "lines", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["hudson.util", "TextFile", True, "read", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["hudson.util", "TextFile", True, "readTrim", "()", "", "Argument[this]", "path-injection", "manual"]
+      - ["hudson.util", "TextFile", True, "write", "(String)", "", "Argument[this]", "path-injection", "manual"]
+      - ["hudson.util", "TextFile", True, "write", "(String)", "", "Argument[0]", "file-content-store", "manual"]
+      - ["hudson.util", "HttpResponses", True, "staticResource", "(File)", "", "Argument[0]", "path-injection", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["hudson.util", "ArgumentListBuilder", True, "ArgumentListBuilder", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "add", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "clone", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "prepend", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "toCommandArray", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "toList", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "toWindowsCommand", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      # ArgumentListBuilder fluent methods
+      - ["hudson.util", "ArgumentListBuilder", True, "add", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "addKeyValuePair", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "addKeyValuePairs", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "addKeyValuePairsFromPropertyString", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "addMasked", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "addQuoted", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "addTokenized", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["hudson.util", "ArgumentListBuilder", True, "prepend", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["hudson.util", "QuotedStringTokenizer", True, "tokenize", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
+      - ["hudson.util", "TextFile", True, "TextFile", "(File)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]

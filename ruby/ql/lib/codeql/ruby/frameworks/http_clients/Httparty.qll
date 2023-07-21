@@ -66,7 +66,8 @@ class HttpartyRequest extends Http::Client::Request::Range, DataFlow::CallNode {
 }
 
 /** A configuration to track values that can disable certificate validation for Httparty. */
-private class HttpartyDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+private class HttpartyDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
+{
   HttpartyDisablesCertificateValidationConfiguration() {
     this = "HttpartyDisablesCertificateValidationConfiguration"
   }

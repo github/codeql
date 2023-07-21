@@ -19,17 +19,17 @@ class Properties extends Storable, ClassInstanceExpr {
 
   /** Gets an input, for example `input` in `props.setProperty("password", input);`. */
   override Expr getAnInput() {
-    exists(PropertiesFlowConfig conf, DataFlow::Node n |
+    exists(DataFlow::Node n |
       propertiesInput(n, result) and
-      conf.hasFlow(DataFlow::exprNode(this), n)
+      PropertiesFlow::flow(DataFlow::exprNode(this), n)
     )
   }
 
   /** Gets a store, for example `props.store(outputStream, "...")`. */
   override Expr getAStore() {
-    exists(PropertiesFlowConfig conf, DataFlow::Node n |
+    exists(DataFlow::Node n |
       propertiesStore(n, result) and
-      conf.hasFlow(DataFlow::exprNode(this), n)
+      PropertiesFlow::flow(DataFlow::exprNode(this), n)
     )
   }
 }
@@ -50,13 +50,13 @@ private predicate propertiesStore(DataFlow::Node prop, Expr store) {
   )
 }
 
-private class PropertiesFlowConfig extends DataFlow::Configuration {
-  PropertiesFlowConfig() { this = "PropertiesFlowConfig" }
+private module PropertiesFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof Properties }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof Properties }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     propertiesInput(sink, _) or
     propertiesStore(sink, _)
   }
 }
+
+private module PropertiesFlow = DataFlow::Global<PropertiesFlowConfig>;

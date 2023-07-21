@@ -11,7 +11,7 @@ abstract class ConfigLocatable extends @configLocatable {
   Location getLocation() { configLocations(this, result) }
 
   /** Gets the file associated with this element. */
-  File getFile() { result = getLocation().getFile() }
+  File getFile() { result = this.getLocation().getFile() }
 
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -33,7 +33,7 @@ class ConfigPair extends @config, ConfigLocatable {
    * it exists and the empty string if it doesn't.
    */
   string getEffectiveName() {
-    if exists(getNameElement()) then result = getNameElement().getName() else result = ""
+    if exists(this.getNameElement()) then result = this.getNameElement().getName() else result = ""
   }
 
   /**
@@ -41,11 +41,13 @@ class ConfigPair extends @config, ConfigLocatable {
    * it exists and the empty string if it doesn't.
    */
   string getEffectiveValue() {
-    if exists(getValueElement()) then result = getValueElement().getValue() else result = ""
+    if exists(this.getValueElement())
+    then result = this.getValueElement().getValue()
+    else result = ""
   }
 
   /** Gets a printable representation of this `ConfigPair`. */
-  override string toString() { result = getEffectiveName() + "=" + getEffectiveValue() }
+  override string toString() { result = this.getEffectiveName() + "=" + this.getEffectiveValue() }
 }
 
 /** The name element of a `ConfigPair`. */
@@ -54,7 +56,7 @@ class ConfigName extends @configName, ConfigLocatable {
   string getName() { configNames(this, _, result) }
 
   /** Gets a printable representation of this `ConfigName`. */
-  override string toString() { result = getName() }
+  override string toString() { result = this.getName() }
 }
 
 /** The value element of a `ConfigPair`. */
@@ -63,10 +65,10 @@ class ConfigValue extends @configValue, ConfigLocatable {
   string getValue() { configValues(this, _, result) }
 
   /** Gets a printable representation of this `ConfigValue`. */
-  override string toString() { result = getValue() }
+  override string toString() { result = this.getValue() }
 }
 
 /** A Java property is a name-value pair in a `.properties` file. */
 class JavaProperty extends ConfigPair {
-  JavaProperty() { getFile().getExtension() = "properties" }
+  JavaProperty() { this.getFile().getExtension() = "properties" }
 }

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # The below models may be changed to taint steps for an unsafe reflection query in the future.
+      - ["java.lang.reflect", "Constructor", "newInstance", "(Object[])", "summary", "manual"]
+      - ["java.lang.reflect", "Field", "get", "(Object)", "summary", "manual"]
+      - ["java.lang.reflect", "Method", "getName", "()", "summary", "manual"]
+      - ["java.lang.reflect", "Method", "invoke", "(Object,Object[])", "summary", "manual"]

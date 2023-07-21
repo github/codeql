@@ -56,3 +56,8 @@ void f3() {
         }
     }
 }
+
+int unevaluated_test() {
+	char buffer[100];
+	return sizeof(buffer) / sizeof(buffer[101]); // GOOD
+}

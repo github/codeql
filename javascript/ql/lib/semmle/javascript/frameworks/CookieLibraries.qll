@@ -150,7 +150,8 @@ private module JsCookie {
   }
 
   class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode,
-    CookieWrites::ClientSideCookieWrite {
+    CookieWrites::ClientSideCookieWrite
+  {
     WriteAccess() { this = libMemberCall("set") }
 
     string getKey() { this.getArgument(0).mayHaveStringValue(result) }
@@ -192,7 +193,8 @@ private module BrowserCookies {
   }
 
   class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode,
-    CookieWrites::ClientSideCookieWrite {
+    CookieWrites::ClientSideCookieWrite
+  {
     WriteAccess() { this = libMemberCall("set") }
 
     string getKey() { this.getArgument(0).mayHaveStringValue(result) }
@@ -242,7 +244,8 @@ private module LibCookie {
   }
 
   class WriteAccess extends PersistentWriteAccess, DataFlow::CallNode,
-    CookieWrites::ClientSideCookieWrite {
+    CookieWrites::ClientSideCookieWrite
+  {
     WriteAccess() { this = libMemberCall("serialize") }
 
     string getKey() { this.getArgument(0).mayHaveStringValue(result) }
@@ -271,7 +274,8 @@ private module ExpressCookies {
   /**
    * A cookie set using `response.cookie` from `express` module (https://expressjs.com/en/api.html#res.cookie).
    */
-  private class InsecureExpressCookieResponse extends CookieWrites::CookieWrite instanceof Express::SetCookie {
+  private class InsecureExpressCookieResponse extends CookieWrites::CookieWrite instanceof Express::SetCookie
+  {
     override predicate isSecure() {
       // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
       // The default is `false`.
@@ -299,7 +303,8 @@ private module ExpressCookies {
    * A cookie set using the `express` module `cookie-session` (https://github.com/expressjs/cookie-session).
    */
   class InsecureCookieSession extends ExpressLibraries::CookieSession::MiddlewareInstance,
-    CookieWrites::CookieWrite {
+    CookieWrites::CookieWrite
+  {
     private DataFlow::Node getCookieFlagValue(string flag) {
       result = this.getOptionArgument(0, flag)
     }
@@ -327,7 +332,8 @@ private module ExpressCookies {
    * A cookie set using the `express` module `express-session` (https://github.com/expressjs/session).
    */
   class InsecureExpressSessionCookie extends ExpressLibraries::ExpressSession::MiddlewareInstance,
-    CookieWrites::CookieWrite {
+    CookieWrites::CookieWrite
+  {
     private DataFlow::Node getCookieFlagValue(string flag) {
       result = this.getOption("cookie").getALocalSource().getAPropertyWrite(flag).getRhs()
     }

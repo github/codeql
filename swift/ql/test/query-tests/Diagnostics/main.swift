@@ -1,0 +1,6 @@
+
+
+// a comment
+
+
+func foo() {}

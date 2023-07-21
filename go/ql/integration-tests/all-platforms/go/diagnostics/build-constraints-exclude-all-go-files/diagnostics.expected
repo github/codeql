@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "A single `go.mod` file was found.\n\n`go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/single-root-go-mod-found",
+    "name": "A single `go.mod` file was found in the root"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "`syscall/js` could not be imported. Make sure the `GOOS` and `GOARCH` [environment variables are correctly set](https://docs.github.com/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow). Alternatively, [change your OS and architecture](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#using-a-github-hosted-runner).",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/package-different-os-architecture",
+    "name": "An imported package is intended for a different OS or architecture"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

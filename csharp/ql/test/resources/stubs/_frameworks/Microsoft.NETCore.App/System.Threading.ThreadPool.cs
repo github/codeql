@@ -1,22 +1,20 @@
 // This file contains auto-generated code.
+// Generated from `System.Threading.ThreadPool, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace Threading
     {
-        // Generated from `System.Threading.IThreadPoolWorkItem` in `System.Threading.ThreadPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IThreadPoolWorkItem
         {
             void Execute();
         }
 
-        // Generated from `System.Threading.RegisteredWaitHandle` in `System.Threading.ThreadPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RegisteredWaitHandle : System.MarshalByRefObject
         {
             public bool Unregister(System.Threading.WaitHandle waitObject) => throw null;
         }
 
-        // Generated from `System.Threading.ThreadPool` in `System.Threading.ThreadPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class ThreadPool
         {
             public static bool BindHandle(System.IntPtr osHandle) => throw null;
@@ -46,10 +44,8 @@ namespace System
             public static System.Threading.RegisteredWaitHandle UnsafeRegisterWaitForSingleObject(System.Threading.WaitHandle waitObject, System.Threading.WaitOrTimerCallback callBack, object state, System.UInt32 millisecondsTimeOutInterval, bool executeOnlyOnce) => throw null;
         }
 
-        // Generated from `System.Threading.WaitCallback` in `System.Threading.ThreadPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void WaitCallback(object state);
 
-        // Generated from `System.Threading.WaitOrTimerCallback` in `System.Threading.ThreadPool, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void WaitOrTimerCallback(object state, bool timedOut);
 
     }

@@ -5,7 +5,8 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 module Generated {
   class CollectionUpcastConversionExpr extends Synth::TCollectionUpcastConversionExpr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string getAPrimaryQlClass() { result = "CollectionUpcastConversionExpr" }
   }
 }

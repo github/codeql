@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Html.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Html
         {
-            // Generated from `Microsoft.AspNetCore.Html.HtmlContentBuilder` in `Microsoft.AspNetCore.Html.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HtmlContentBuilder : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentBuilder, Microsoft.AspNetCore.Html.IHtmlContentContainer
             {
                 public Microsoft.AspNetCore.Html.IHtmlContentBuilder Append(string unencoded) => throw null;
@@ -22,7 +22,6 @@ namespace Microsoft
                 public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Html.HtmlContentBuilderExtensions` in `Microsoft.AspNetCore.Html.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HtmlContentBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Html.IHtmlContentBuilder AppendFormat(this Microsoft.AspNetCore.Html.IHtmlContentBuilder builder, System.IFormatProvider formatProvider, string format, params object[] args) => throw null;
@@ -36,7 +35,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Html.IHtmlContentBuilder SetHtmlContent(this Microsoft.AspNetCore.Html.IHtmlContentBuilder builder, string encoded) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Html.HtmlFormattableString` in `Microsoft.AspNetCore.Html.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HtmlFormattableString : Microsoft.AspNetCore.Html.IHtmlContent
             {
                 public HtmlFormattableString(System.IFormatProvider formatProvider, string format, params object[] args) => throw null;
@@ -44,7 +42,6 @@ namespace Microsoft
                 public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Html.HtmlString` in `Microsoft.AspNetCore.Html.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HtmlString : Microsoft.AspNetCore.Html.IHtmlContent
             {
                 public static Microsoft.AspNetCore.Html.HtmlString Empty;
@@ -55,13 +52,11 @@ namespace Microsoft
                 public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Html.IHtmlContent` in `Microsoft.AspNetCore.Html.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHtmlContent
             {
                 void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder);
             }
 
-            // Generated from `Microsoft.AspNetCore.Html.IHtmlContentBuilder` in `Microsoft.AspNetCore.Html.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHtmlContentBuilder : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentContainer
             {
                 Microsoft.AspNetCore.Html.IHtmlContentBuilder Append(string unencoded);
@@ -70,7 +65,6 @@ namespace Microsoft
                 Microsoft.AspNetCore.Html.IHtmlContentBuilder Clear();
             }
 
-            // Generated from `Microsoft.AspNetCore.Html.IHtmlContentContainer` in `Microsoft.AspNetCore.Html.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHtmlContentContainer : Microsoft.AspNetCore.Html.IHtmlContent
             {
                 void CopyTo(Microsoft.AspNetCore.Html.IHtmlContentBuilder builder);

@@ -9,13 +9,13 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["jodd.json", "JsonParser", False, "allowAllClasses", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "allowClass", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "lazy", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "looseMode", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "map", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "setClassMetadataName", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "strictTypes", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "useAltPaths", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "withClassMetadata", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["jodd.json", "JsonParser", False, "withValueConverter", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "allowAllClasses", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "allowClass", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "lazy", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "looseMode", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "map", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "setClassMetadataName", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "strictTypes", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "useAltPaths", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "withClassMetadata", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["jodd.json", "JsonParser", False, "withValueConverter", "", "", "Argument[this]", "ReturnValue", "value", "manual"]

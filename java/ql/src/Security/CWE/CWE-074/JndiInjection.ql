@@ -13,9 +13,9 @@
 
 import java
 import semmle.code.java.security.JndiInjectionQuery
-import DataFlow::PathGraph
+import JndiInjectionFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, JndiInjectionFlowConfig conf
-where conf.hasFlowPath(source, sink)
+from JndiInjectionFlow::PathNode source, JndiInjectionFlow::PathNode sink
+where JndiInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "JNDI lookup might include name from $@.", source.getNode(),
   "this user input"

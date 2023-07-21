@@ -43,6 +43,9 @@ function isTypeAlwaysSafeToExpand(type: ts.Type): boolean {
       return false;
     }
   }
+  if (type.aliasSymbol != null) {
+    return false;
+  }
   return true;
 }
 
@@ -447,7 +450,7 @@ export class TypeTable {
         this.isInShallowTypeContext ? TypeExtractionState.PendingShallow : TypeExtractionState.PendingFull);
       // If the type is the self-type for a named type (not a generic instantiation of it),
       // emit the self-type binding for that type.
-      if (content.startsWith("reference;") && !(isTypeReference(type) && type.target !== type)) {
+      if (content.startsWith("reference;") && isTypeSelfReference(type)) {
         this.selfTypes.symbols.push(this.getSymbolId(type.aliasSymbol || type.symbol));
         this.selfTypes.selfTypes.push(id);
       }
@@ -533,7 +536,7 @@ export class TypeTable {
         let enclosingType = getEnclosingTypeOfThisType(type);
         if (enclosingType != null) {
           return "this;" + this.getId(enclosingType, false);
-        } else if (symbol.parent == null) {
+        } else if (symbol.parent == null || isFunctionTypeOrTypeAlias(symbol.declarations?.[0])) {
           // The type variable is bound on a call signature. Only extract it by name.
           return "lextypevar;" + symbol.name;
         } else {
@@ -614,14 +617,14 @@ export class TypeTable {
         // cannot be written using TypeScript syntax - so we ignore them entirely.
         return null;
       }
-      return this.makeTypeStringVector("union", unionType.types);
+      return this.makeDeduplicatedTypeStringVector("union", unionType.types);
     }
     if (flags & ts.TypeFlags.Intersection) {
       let intersectionType = type as ts.IntersectionType;
       if (intersectionType.types.length === 0) {
         return null; // Ignore malformed type.
       }
-      return this.makeTypeStringVector("intersection", intersectionType.types);
+      return this.makeDeduplicatedTypeStringVector("intersection", intersectionType.types);
     }
     if (isTypeReference(type) && (type.target.objectFlags & ts.ObjectFlags.Tuple)) {
       // Encode the minimum length and presence of rest element in the first two parts of the type string.
@@ -780,6 +783,27 @@ export class TypeTable {
       let id = this.getId(types[i], false);
       if (id == null) return null;
       hash += ";" + id;
+    }
+    return hash;
+  }
+
+  /**
+   * Returns the given string with the IDs of the given types appended,
+   * ignoring duplicates, and each separated by `;`.
+   */
+  private makeDeduplicatedTypeStringVector(tag: string, types: ReadonlyArray<ts.Type>, length = types.length): string | null {
+    let seenIds = new Set<number>();
+    let numberOfSeenIds = 0;
+    let hash = tag;
+    for (let i = 0; i < length; ++i) {
+      let id = this.getId(types[i], false);
+      if (id == null) return null;
+      seenIds.add(id);
+      if (seenIds.size > numberOfSeenIds) {
+        // This ID was not seen before
+        ++numberOfSeenIds;
+        hash += ";" + id;
+      }
     }
     return hash;
   }
@@ -947,7 +971,7 @@ export class TypeTable {
    * Returns a unique string for the given call/constructor signature.
    */
   private getSignatureString(kind: ts.SignatureKind, signature: AugmentedSignature): string {
-    let modifiers  = signature.getDeclaration()?.modifiers;
+    let modifiers = signature.getDeclaration() ? ts.getModifiers(signature.getDeclaration() as ts.MethodSignature) : [];
     let isAbstract = modifiers && modifiers.filter(modifier => modifier.kind == ts.SyntaxKind.AbstractKeyword).length > 0
 
     let parameters = signature.getParameters();
@@ -1326,5 +1350,37 @@ export class TypeTable {
         callback(constraint);
       }
     }
+  }
+}
+
+function isFunctionTypeOrTypeAlias(declaration: ts.Declaration | undefined) {
+  if (declaration == null) return false;
+  return declaration.kind === ts.SyntaxKind.FunctionType || declaration.kind === ts.SyntaxKind.TypeAliasDeclaration;
+}
+
+/**
+ * Given a `type` whose type-string is known to be a `reference`, returns true if this is the self-type for the referenced type.
+ *
+ * For example, for `type Foo<R> = ...` this returns true if `type` is `Foo<R>`.
+ */
+function isTypeSelfReference(type: ts.Type) {
+  if (type.aliasSymbol != null) {
+    const { aliasTypeArguments } = type;
+    if (aliasTypeArguments == null) return true;
+    let declaration = type.aliasSymbol.declarations?.[0];
+    if (declaration == null || declaration.kind !== ts.SyntaxKind.TypeAliasDeclaration) return false;
+    let alias = declaration as ts.TypeAliasDeclaration;
+    for (let i = 0; i < aliasTypeArguments.length; ++i) {
+      if (aliasTypeArguments[i].symbol?.declarations?.[0] !== alias.typeParameters[i]) {
+        return false;
+      }
+    }
+    return true;
+  } else if (isTypeReference(type)) {
+    return type.target === type;
+  } else {
+    // Return true because we know we have mapped this type to kind `reference`, and in the cases
+    // not covered above (i.e. generic types) it is always a self-reference.
+    return true;
   }
 }

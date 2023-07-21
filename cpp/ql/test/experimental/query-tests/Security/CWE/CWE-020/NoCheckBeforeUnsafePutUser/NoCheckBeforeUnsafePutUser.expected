@@ -1,3 +1,0 @@
-| test.cpp:20:21:20:22 | ref arg & ... | This 'unsafe_put_user' writes a user-mode pointer without a security check. |
-| test.cpp:41:21:41:22 | ref arg & ... | This 'unsafe_put_user' writes a user-mode pointer without a security check. |
-| test.cpp:69:21:69:27 | ref arg & ... | This 'unsafe_put_user' writes a user-mode pointer without a security check. |

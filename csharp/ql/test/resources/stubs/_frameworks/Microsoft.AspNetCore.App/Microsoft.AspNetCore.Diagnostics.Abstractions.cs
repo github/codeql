@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Diagnostics
         {
-            // Generated from `Microsoft.AspNetCore.Diagnostics.CompilationFailure` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CompilationFailure
             {
                 public CompilationFailure(string sourceFilePath, string sourceFileContent, string compiledContent, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Diagnostics.DiagnosticMessage> messages) => throw null;
@@ -18,7 +18,6 @@ namespace Microsoft
                 public string SourceFilePath { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Diagnostics.DiagnosticMessage` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DiagnosticMessage
             {
                 public DiagnosticMessage(string message, string formattedMessage, string filePath, int startLine, int startColumn, int endLine, int endColumn) => throw null;
@@ -31,7 +30,6 @@ namespace Microsoft
                 public int StartLine { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Diagnostics.ErrorContext` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ErrorContext
             {
                 public ErrorContext(Microsoft.AspNetCore.Http.HttpContext httpContext, System.Exception exception) => throw null;
@@ -39,19 +37,16 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Diagnostics.ICompilationException` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ICompilationException
             {
                 System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Diagnostics.CompilationFailure> CompilationFailures { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Diagnostics.IDeveloperPageExceptionFilter` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IDeveloperPageExceptionFilter
             {
                 System.Threading.Tasks.Task HandleExceptionAsync(Microsoft.AspNetCore.Diagnostics.ErrorContext errorContext, System.Func<Microsoft.AspNetCore.Diagnostics.ErrorContext, System.Threading.Tasks.Task> next);
             }
 
-            // Generated from `Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IExceptionHandlerFeature
             {
                 Microsoft.AspNetCore.Http.Endpoint Endpoint { get => throw null; }
@@ -60,24 +55,23 @@ namespace Microsoft
                 Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IExceptionHandlerPathFeature : Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature
             {
                 string Path { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Diagnostics.IStatusCodePagesFeature` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStatusCodePagesFeature
             {
                 bool Enabled { get; set; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Diagnostics.IStatusCodeReExecuteFeature` in `Microsoft.AspNetCore.Diagnostics.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStatusCodeReExecuteFeature
             {
+                Microsoft.AspNetCore.Http.Endpoint Endpoint { get => throw null; }
                 string OriginalPath { get; set; }
                 string OriginalPathBase { get; set; }
                 string OriginalQueryString { get; set; }
+                Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; }
             }
 
         }

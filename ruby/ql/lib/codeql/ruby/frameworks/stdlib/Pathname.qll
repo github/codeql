@@ -100,7 +100,8 @@ module Pathname {
   }
 
   private class PathnamePermissionModification extends FileSystemPermissionModification::Range,
-    PathnameCall {
+    PathnameCall
+  {
     private DataFlow::Node permissionArg;
 
     PathnamePermissionModification() {

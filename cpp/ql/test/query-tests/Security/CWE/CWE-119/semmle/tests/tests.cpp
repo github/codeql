@@ -576,7 +576,7 @@ void test21(bool cond)
 	} else {
 		if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1]
 	}
-	if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1] or buffer[0]
+	if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1] or buffer[0] [NOT DETECTED]
 
 	ptr = buffer;
 	for (i = 0; i < 2; i++)
@@ -603,6 +603,11 @@ void test22(bool b, const char* source) {
   memcpy(dest, source, n); // GOOD
 }
 
+int test23() {
+	char buffer[100];
+	return sizeof(buffer) / sizeof(buffer[101]); // GOOD
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -627,6 +632,7 @@ int tests_main(int argc, char *argv[])
 	test20();
 	test21(argc == 0);
 	test22(argc == 0, argv[0]);
+	test23();
 
 	return 0;
 }

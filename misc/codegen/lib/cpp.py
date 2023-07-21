@@ -36,6 +36,7 @@ class Field:
     base_type: str
     is_optional: bool = False
     is_repeated: bool = False
+    is_unordered: bool = False
     is_predicate: bool = False
     trap_name: str = None
     first: bool = False

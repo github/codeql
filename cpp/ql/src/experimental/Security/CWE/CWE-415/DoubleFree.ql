@@ -2,7 +2,7 @@
  * @name Errors When Double Free
  * @description Freeing a previously allocated resource twice can lead to various vulnerabilities in the program.
  * @kind problem
- * @id cpp/double-free
+ * @id cpp/experimental-double-free
  * @problem.severity warning
  * @precision medium
  * @tags security
@@ -14,8 +14,8 @@ import cpp
 
 from FunctionCall fc, FunctionCall fc2, LocalScopeVariable v
 where
-  freeCall(fc, v.getAnAccess()) and
-  freeCall(fc2, v.getAnAccess()) and
+  fc.(DeallocationExpr).getFreedExpr() = v.getAnAccess() and
+  fc2.(DeallocationExpr).getFreedExpr() = v.getAnAccess() and
   fc != fc2 and
   fc.getASuccessor*() = fc2 and
   not exists(Expr exptmp |

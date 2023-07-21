@@ -13,8 +13,8 @@
  */
 
 import java
-import semmle.code.java.security.ExternalProcess
 import semmle.code.java.security.CommandLineQuery
+import semmle.code.java.security.ExternalProcess
 
 /**
  * Strings that are known to be sane by some simple local analysis. Such strings
@@ -48,5 +48,5 @@ predicate builtFromUncontrolledConcat(Expr expr) {
 from StringArgumentToExec argument
 where
   builtFromUncontrolledConcat(argument) and
-  not execTainted(_, _, argument)
+  not execIsTainted(_, _, argument)
 select argument, "Command line is built with string concatenation."

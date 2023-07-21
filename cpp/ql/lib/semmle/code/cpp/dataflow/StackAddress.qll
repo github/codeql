@@ -95,6 +95,11 @@ predicate stackPointerFlowsToUse(Expr use, Type useType, Expr source, boolean is
 cached
 private PointerType getExprPtrType(Expr use) { result = use.getUnspecifiedType() }
 
+/**
+ * Holds if `use` has type `useType` and `source` is an access to a stack variable
+ * that flows to `use`. `isLocal` is `true` if `use` is accessed via a parameter, and
+ * `false` otherwise.
+ */
 predicate stackReferenceFlowsToUse(Expr use, Type useType, Expr source, boolean isLocal) {
   // Stack variables
   exists(StackVariable var |

@@ -235,7 +235,8 @@ abstract class CustomServiceDefinition extends DataFlow::Node {
  * A definition of a custom AngularJS dependency injection service using a "recipe".
  */
 abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinition,
-  DependencyInjection {
+  DependencyInjection
+{
   string methodName;
   string name;
 
@@ -268,7 +269,8 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
  * (used through `ng-controller` directives).
  */
 abstract private class CustomSpecialServiceDefinition extends CustomServiceDefinition,
-  DependencyInjection {
+  DependencyInjection
+{
   override DataFlow::Node getAnInjectableFunction() { result = this.getAFactoryFunction() }
 }
 
@@ -625,7 +627,8 @@ class ProviderRecipeDefinition extends RecipeDefinition {
   }
 }
 
-private class ProviderRecipeServiceInjection extends DependencyInjection instanceof ProviderRecipeDefinition {
+private class ProviderRecipeServiceInjection extends DependencyInjection instanceof ProviderRecipeDefinition
+{
   override DataFlow::Node getAnInjectableFunction() { result = super.getAService() }
 }
 

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Connections.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,14 +7,12 @@ namespace Microsoft
     {
         namespace Connections
         {
-            // Generated from `Microsoft.AspNetCore.Connections.AddressInUseException` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AddressInUseException : System.InvalidOperationException
             {
                 public AddressInUseException(string message) => throw null;
                 public AddressInUseException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.BaseConnectionContext` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class BaseConnectionContext : System.IAsyncDisposable
             {
                 public abstract void Abort();
@@ -28,7 +27,6 @@ namespace Microsoft
                 public virtual System.Net.EndPoint RemoteEndPoint { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.ConnectionAbortedException` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConnectionAbortedException : System.OperationCanceledException
             {
                 public ConnectionAbortedException() => throw null;
@@ -36,7 +34,6 @@ namespace Microsoft
                 public ConnectionAbortedException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.ConnectionBuilder` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConnectionBuilder : Microsoft.AspNetCore.Connections.IConnectionBuilder
             {
                 public System.IServiceProvider ApplicationServices { get => throw null; }
@@ -45,7 +42,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Connections.IConnectionBuilder Use(System.Func<Microsoft.AspNetCore.Connections.ConnectionDelegate, Microsoft.AspNetCore.Connections.ConnectionDelegate> middleware) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.ConnectionBuilderExtensions` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ConnectionBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Connections.IConnectionBuilder Run(this Microsoft.AspNetCore.Connections.IConnectionBuilder connectionBuilder, System.Func<Microsoft.AspNetCore.Connections.ConnectionContext, System.Threading.Tasks.Task> middleware) => throw null;
@@ -53,7 +49,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Connections.IConnectionBuilder UseConnectionHandler<TConnectionHandler>(this Microsoft.AspNetCore.Connections.IConnectionBuilder connectionBuilder) where TConnectionHandler : Microsoft.AspNetCore.Connections.ConnectionHandler => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.ConnectionContext` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class ConnectionContext : Microsoft.AspNetCore.Connections.BaseConnectionContext, System.IAsyncDisposable
             {
                 public override void Abort() => throw null;
@@ -62,17 +57,14 @@ namespace Microsoft
                 public abstract System.IO.Pipelines.IDuplexPipe Transport { get; set; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.ConnectionDelegate` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public delegate System.Threading.Tasks.Task ConnectionDelegate(Microsoft.AspNetCore.Connections.ConnectionContext connection);
 
-            // Generated from `Microsoft.AspNetCore.Connections.ConnectionHandler` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class ConnectionHandler
             {
                 protected ConnectionHandler() => throw null;
                 public abstract System.Threading.Tasks.Task OnConnectedAsync(Microsoft.AspNetCore.Connections.ConnectionContext connection);
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.ConnectionItems` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConnectionItems : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object, object>>, System.Collections.Generic.IDictionary<object, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object, object>>, System.Collections.IEnumerable
             {
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object, object>>.Add(System.Collections.Generic.KeyValuePair<object, object> item) => throw null;
@@ -96,14 +88,12 @@ namespace Microsoft
                 System.Collections.Generic.ICollection<object> System.Collections.Generic.IDictionary<object, object>.Values { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.ConnectionResetException` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConnectionResetException : System.IO.IOException
             {
                 public ConnectionResetException(string message) => throw null;
                 public ConnectionResetException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.DefaultConnectionContext` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultConnectionContext : Microsoft.AspNetCore.Connections.ConnectionContext, Microsoft.AspNetCore.Connections.Features.IConnectionEndPointFeature, Microsoft.AspNetCore.Connections.Features.IConnectionIdFeature, Microsoft.AspNetCore.Connections.Features.IConnectionItemsFeature, Microsoft.AspNetCore.Connections.Features.IConnectionLifetimeFeature, Microsoft.AspNetCore.Connections.Features.IConnectionTransportFeature, Microsoft.AspNetCore.Connections.Features.IConnectionUserFeature
             {
                 public override void Abort(Microsoft.AspNetCore.Connections.ConnectionAbortedException abortReason) => throw null;
@@ -122,7 +112,6 @@ namespace Microsoft
                 public System.Security.Claims.ClaimsPrincipal User { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.FileHandleEndPoint` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class FileHandleEndPoint : System.Net.EndPoint
             {
                 public System.UInt64 FileHandle { get => throw null; }
@@ -130,7 +119,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Connections.FileHandleType FileHandleType { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.FileHandleType` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum FileHandleType : int
             {
                 Auto = 0,
@@ -138,7 +126,6 @@ namespace Microsoft
                 Tcp = 1,
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.IConnectionBuilder` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConnectionBuilder
             {
                 System.IServiceProvider ApplicationServices { get; }
@@ -146,13 +133,11 @@ namespace Microsoft
                 Microsoft.AspNetCore.Connections.IConnectionBuilder Use(System.Func<Microsoft.AspNetCore.Connections.ConnectionDelegate, Microsoft.AspNetCore.Connections.ConnectionDelegate> middleware);
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.IConnectionFactory` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConnectionFactory
             {
                 System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.ConnectionContext> ConnectAsync(System.Net.EndPoint endpoint, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.IConnectionListener` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConnectionListener : System.IAsyncDisposable
             {
                 System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.ConnectionContext> AcceptAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -160,13 +145,11 @@ namespace Microsoft
                 System.Threading.Tasks.ValueTask UnbindAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.IConnectionListenerFactory` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConnectionListenerFactory
             {
                 System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.IConnectionListener> BindAsync(System.Net.EndPoint endpoint, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IMultiplexedConnectionBuilder
             {
                 System.IServiceProvider ApplicationServices { get; }
@@ -174,13 +157,11 @@ namespace Microsoft
                 Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder Use(System.Func<Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate, Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate> middleware);
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.IMultiplexedConnectionFactory` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IMultiplexedConnectionFactory
             {
                 System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.MultiplexedConnectionContext> ConnectAsync(System.Net.EndPoint endpoint, Microsoft.AspNetCore.Http.Features.IFeatureCollection features = default(Microsoft.AspNetCore.Http.Features.IFeatureCollection), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.IMultiplexedConnectionListener` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IMultiplexedConnectionListener : System.IAsyncDisposable
             {
                 System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.MultiplexedConnectionContext> AcceptAsync(Microsoft.AspNetCore.Http.Features.IFeatureCollection features = default(Microsoft.AspNetCore.Http.Features.IFeatureCollection), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -188,13 +169,11 @@ namespace Microsoft
                 System.Threading.Tasks.ValueTask UnbindAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.IMultiplexedConnectionListenerFactory` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IMultiplexedConnectionListenerFactory
             {
                 System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.IMultiplexedConnectionListener> BindAsync(System.Net.EndPoint endpoint, Microsoft.AspNetCore.Http.Features.IFeatureCollection features = default(Microsoft.AspNetCore.Http.Features.IFeatureCollection), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.MultiplexedConnectionBuilder` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class MultiplexedConnectionBuilder : Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder
             {
                 public System.IServiceProvider ApplicationServices { get => throw null; }
@@ -203,7 +182,6 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder Use(System.Func<Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate, Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate> middleware) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.MultiplexedConnectionContext` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class MultiplexedConnectionContext : Microsoft.AspNetCore.Connections.BaseConnectionContext, System.IAsyncDisposable
             {
                 public abstract System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.ConnectionContext> AcceptAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -211,10 +189,24 @@ namespace Microsoft
                 protected MultiplexedConnectionContext() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public delegate System.Threading.Tasks.Task MultiplexedConnectionDelegate(Microsoft.AspNetCore.Connections.MultiplexedConnectionContext connection);
 
-            // Generated from `Microsoft.AspNetCore.Connections.TransferFormat` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public class TlsConnectionCallbackContext
+            {
+                public System.Net.Security.SslClientHelloInfo ClientHelloInfo { get => throw null; set => throw null; }
+                public Microsoft.AspNetCore.Connections.BaseConnectionContext Connection { get => throw null; set => throw null; }
+                public object State { get => throw null; set => throw null; }
+                public TlsConnectionCallbackContext() => throw null;
+            }
+
+            public class TlsConnectionCallbackOptions
+            {
+                public System.Collections.Generic.List<System.Net.Security.SslApplicationProtocol> ApplicationProtocols { get => throw null; set => throw null; }
+                public System.Func<Microsoft.AspNetCore.Connections.TlsConnectionCallbackContext, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<System.Net.Security.SslServerAuthenticationOptions>> OnConnection { get => throw null; set => throw null; }
+                public object OnConnectionState { get => throw null; set => throw null; }
+                public TlsConnectionCallbackOptions() => throw null;
+            }
+
             [System.Flags]
             public enum TransferFormat : int
             {
@@ -222,7 +214,6 @@ namespace Microsoft
                 Text = 2,
             }
 
-            // Generated from `Microsoft.AspNetCore.Connections.UriEndPoint` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class UriEndPoint : System.Net.EndPoint
             {
                 public override string ToString() => throw null;
@@ -232,114 +223,101 @@ namespace Microsoft
 
             namespace Features
             {
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionCompleteFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionCompleteFeature
                 {
                     void OnCompleted(System.Func<object, System.Threading.Tasks.Task> callback, object state);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionEndPointFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionEndPointFeature
                 {
                     System.Net.EndPoint LocalEndPoint { get; set; }
                     System.Net.EndPoint RemoteEndPoint { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionHeartbeatFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionHeartbeatFeature
                 {
                     void OnHeartbeat(System.Action<object> action, object state);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionIdFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionIdFeature
                 {
                     string ConnectionId { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionInherentKeepAliveFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionInherentKeepAliveFeature
                 {
                     bool HasInherentKeepAlive { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionItemsFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionItemsFeature
                 {
                     System.Collections.Generic.IDictionary<object, object> Items { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionLifetimeFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionLifetimeFeature
                 {
                     void Abort();
                     System.Threading.CancellationToken ConnectionClosed { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionLifetimeNotificationFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionLifetimeNotificationFeature
                 {
                     System.Threading.CancellationToken ConnectionClosedRequested { get; set; }
                     void RequestClose();
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionSocketFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionSocketFeature
                 {
                     System.Net.Sockets.Socket Socket { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionTransportFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionTransportFeature
                 {
                     System.IO.Pipelines.IDuplexPipe Transport { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IConnectionUserFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IConnectionUserFeature
                 {
                     System.Security.Claims.ClaimsPrincipal User { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IMemoryPoolFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IMemoryPoolFeature
                 {
                     System.Buffers.MemoryPool<System.Byte> MemoryPool { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IPersistentStateFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IPersistentStateFeature
                 {
                     System.Collections.Generic.IDictionary<object, object> State { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IProtocolErrorCodeFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IProtocolErrorCodeFeature
                 {
                     System.Int64 Error { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IStreamAbortFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IStreamAbortFeature
                 {
                     void AbortRead(System.Int64 errorCode, Microsoft.AspNetCore.Connections.ConnectionAbortedException abortReason);
                     void AbortWrite(System.Int64 errorCode, Microsoft.AspNetCore.Connections.ConnectionAbortedException abortReason);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IStreamDirectionFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public interface IStreamClosedFeature
+                {
+                    void OnClosed(System.Action<object> callback, object state);
+                }
+
                 public interface IStreamDirectionFeature
                 {
                     bool CanRead { get; }
                     bool CanWrite { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.IStreamIdFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IStreamIdFeature
                 {
                     System.Int64 StreamId { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.ITlsHandshakeFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ITlsHandshakeFeature
                 {
                     System.Security.Authentication.CipherAlgorithmType CipherAlgorithm { get; }
@@ -351,7 +329,6 @@ namespace Microsoft
                     System.Security.Authentication.SslProtocols Protocol { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Connections.Features.ITransferFormatFeature` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ITransferFormatFeature
                 {
                     Microsoft.AspNetCore.Connections.TransferFormat ActiveFormat { get; set; }

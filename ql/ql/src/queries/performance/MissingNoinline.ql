@@ -17,7 +17,10 @@ where
   not decl.getAnAnnotation() instanceof NoInline and
   not decl.getAnAnnotation() instanceof NoMagic and
   not decl.getAnAnnotation() instanceof NoOpt and
-  // If it's marked as inline it's probably because the QLDoc says something like
-  // "this predicate is inlined because it gives a better join-order".
-  not decl.getAnAnnotation() instanceof Inline
-select decl, "This predicate might be inlined."
+  not decl.getAnAnnotation().getName() = "cached" and
+  // If it's marked as inline (or has at least one bindingset annotation)
+  // it's probably because the QLDoc says something like "this predicate
+  // is inlined because it gives a better join-order".
+  not decl.getAnAnnotation() instanceof Inline and
+  not decl.getAnAnnotation() instanceof BindingSet
+select decl, "This predicate should probably be marked pragma[noinline] to prevent inlining."

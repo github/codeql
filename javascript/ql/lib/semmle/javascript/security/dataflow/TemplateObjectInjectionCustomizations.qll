@@ -47,7 +47,7 @@ module TemplateObjectInjection {
       exists(
         Express::RouteSetup setup, Express::RouterDefinition router, Express::RouterDefinition top
       |
-        setup.getARouteHandler() = getRouteHandler() and
+        setup.getARouteHandler() = this.getRouteHandler() and
         setup.getRouter() = router and
         top.getASubRouter*() = router and
         usesVulnerableTemplateEngine(top)

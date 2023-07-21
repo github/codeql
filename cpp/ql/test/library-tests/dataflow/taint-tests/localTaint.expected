@@ -1,3 +1,7 @@
+WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:4,6-14)
+WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:4,31-39)
+WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:7,6-14)
+WARNING: Module TaintTracking has been deprecated and may be removed in future (localTaint.ql:6,3-16)
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:10:14:10:14 | x |  |
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:11:15:11:15 | x |  |
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:12:13:12:13 | x |  |
@@ -6584,6 +6588,27 @@
 | taint.cpp:691:18:691:18 | s [post update] | taint.cpp:695:7:695:7 | s |  |
 | taint.cpp:691:20:691:20 | ref arg x | taint.cpp:694:9:694:9 | x |  |
 | taint.cpp:694:7:694:7 | s [post update] | taint.cpp:695:7:695:7 | s |  |
+| taint.cpp:700:13:700:18 | call to source | taint.cpp:702:11:702:11 | s |  |
+| taint.cpp:701:9:701:9 | p | taint.cpp:702:4:702:4 | p |  |
+| taint.cpp:702:4:702:4 | p | taint.cpp:702:4:702:6 | ... ++ |  |
+| taint.cpp:702:4:702:6 | ... ++ | taint.cpp:702:3:702:6 | * ... | TAINT |
+| taint.cpp:702:4:702:6 | ... ++ | taint.cpp:703:8:703:8 | p | TAINT |
+| taint.cpp:702:10:702:11 | * ... | taint.cpp:702:3:702:11 | ... = ... |  |
+| taint.cpp:702:11:702:11 | s | taint.cpp:702:10:702:11 | * ... | TAINT |
+| taint.cpp:709:25:709:25 | d | taint.cpp:709:25:709:25 | d |  |
+| taint.cpp:709:25:709:25 | d | taint.cpp:711:10:711:10 | d |  |
+| taint.cpp:709:25:709:25 | d | taint.cpp:712:7:712:7 | d |  |
+| taint.cpp:709:34:709:34 | s | taint.cpp:709:34:709:34 | s |  |
+| taint.cpp:709:34:709:34 | s | taint.cpp:710:18:710:18 | s |  |
+| taint.cpp:709:34:709:34 | s | taint.cpp:711:13:711:13 | s |  |
+| taint.cpp:710:18:710:18 | ref arg s | taint.cpp:709:34:709:34 | s |  |
+| taint.cpp:710:18:710:18 | ref arg s | taint.cpp:711:13:711:13 | s |  |
+| taint.cpp:711:10:711:10 | d | taint.cpp:711:2:711:8 | call to strncpy |  |
+| taint.cpp:711:10:711:10 | ref arg d | taint.cpp:709:25:709:25 | d |  |
+| taint.cpp:711:10:711:10 | ref arg d | taint.cpp:712:7:712:7 | d |  |
+| taint.cpp:711:13:711:13 | s | taint.cpp:711:2:711:8 | call to strncpy | TAINT |
+| taint.cpp:711:13:711:13 | s | taint.cpp:711:10:711:10 | ref arg d | TAINT |
+| taint.cpp:712:7:712:7 | ref arg d | taint.cpp:709:25:709:25 | d |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

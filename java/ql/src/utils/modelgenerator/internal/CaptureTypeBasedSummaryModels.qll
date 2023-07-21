@@ -2,7 +2,7 @@ private import java
 private import semmle.code.java.Collections
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import CaptureModelsSpecific as Specific
-private import CaptureModels
+private import CaptureModelsPrinting
 
 /**
  * A type representing instantiations of class types
@@ -283,6 +283,14 @@ private predicate output(Callable callable, TypeVariable tv, string output) {
   functionalSink(callable, tv, output)
 }
 
+module Printing implements PrintingSig {
+  class Api = TypeBasedFlowTargetApi;
+
+  string getProvenance() { result = "tb-generated" }
+}
+
+private module ModelPrinting = PrintingImpl<Printing>;
+
 /**
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
@@ -319,7 +327,7 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
       output(this, tv, output) and
       input != output
     |
-      result = asValueModel(this, input, output)
+      result = ModelPrinting::asValueModel(this, input, output)
     )
   }
 }

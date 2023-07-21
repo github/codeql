@@ -1,11 +1,13 @@
 // semmle-extractor-options: --microsoft
 #define EXCEPTION_EXECUTE_HANDLER 1
 
+namespace {
 class C {
     public:
         C(int x);
         ~C();
 };
+}
 
 void ms_except_mix(int b1) {
     C c101(101);

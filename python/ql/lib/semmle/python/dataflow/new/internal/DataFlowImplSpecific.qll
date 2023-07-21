@@ -7,9 +7,6 @@ private import python as Python
 
 module Private {
   import DataFlowPrivate
-
-  //   import DataFlowDispatch
-  class Unit = Python::Unit;
 }
 
 module Public {

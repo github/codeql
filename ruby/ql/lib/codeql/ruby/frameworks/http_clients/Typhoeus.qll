@@ -47,7 +47,8 @@ class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNo
 }
 
 /** A configuration to track values that can disable certificate validation for Typhoeus. */
-private class TyphoeusDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+private class TyphoeusDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
+{
   TyphoeusDisablesCertificateValidationConfiguration() {
     this = "TyphoeusDisablesCertificateValidationConfiguration"
   }

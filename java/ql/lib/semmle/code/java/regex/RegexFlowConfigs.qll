@@ -136,23 +136,21 @@ private class GuavaRegexFlowStep extends RegexAdditionalFlowStep {
   }
 }
 
-private class RegexFlowConf extends DataFlow2::Configuration {
-  RegexFlowConf() { this = "RegexFlowConfig" }
+private module RegexFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof ExploitableStringLiteral }
 
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr() instanceof ExploitableStringLiteral
-  }
+  predicate isSink(DataFlow::Node node) { node instanceof RegexFlowSink }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof RegexFlowSink }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(RegexAdditionalFlowStep s).step(node1, node2)
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
   }
 }
+
+private module RegexFlow = DataFlow::Global<RegexFlowConfig>;
 
 /**
  * Holds if `regex` is used as a regex, with the mode `mode` (if known).
@@ -162,7 +160,7 @@ private class RegexFlowConf extends DataFlow2::Configuration {
  * and therefore may be relevant for ReDoS queries are considered.
  */
 predicate usedAsRegex(StringLiteral regex, string mode, boolean match_full_string) {
-  any(RegexFlowConf c).hasFlow(DataFlow2::exprNode(regex), _) and
+  RegexFlow::flow(DataFlow::exprNode(regex), _) and
   mode = "None" and // TODO: proper mode detection
   (if matchesFullString(regex) then match_full_string = true else match_full_string = false)
 }
@@ -172,9 +170,9 @@ predicate usedAsRegex(StringLiteral regex, string mode, boolean match_full_strin
  * as though it was implicitly surrounded by ^ and $.
  */
 private predicate matchesFullString(StringLiteral regex) {
-  exists(RegexFlowConf c, RegexFlowSink sink |
+  exists(RegexFlowSink sink |
     sink.matchesFullString() and
-    c.hasFlow(DataFlow2::exprNode(regex), sink)
+    RegexFlow::flow(DataFlow::exprNode(regex), sink)
   )
 }
 
@@ -185,8 +183,8 @@ private predicate matchesFullString(StringLiteral regex) {
  * and therefore may be relevant for ReDoS queries are considered.
  */
 predicate regexMatchedAgainst(StringLiteral regex, Expr str) {
-  exists(RegexFlowConf c, RegexFlowSink sink |
+  exists(RegexFlowSink sink |
     str = sink.getStringArgument() and
-    c.hasFlow(DataFlow2::exprNode(regex), sink)
+    RegexFlow::flow(DataFlow::exprNode(regex), sink)
   )
 }

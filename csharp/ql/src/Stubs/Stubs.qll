@@ -120,15 +120,6 @@ abstract private class GeneratedType extends Type, GeneratedElement {
     else result = ""
   }
 
-  private string stubComment() {
-    exists(string qualifier, string name |
-      this.hasQualifiedName(qualifier, name) and
-      result =
-        "// Generated from `" + getQualifiedName(qualifier, name) + "` in `" +
-          concat(this.getALocation().toString(), "; ") + "`\n"
-    )
-  }
-
   /** Gets the entire C# stub code for this type. */
   pragma[nomagic]
   final string getStub(Assembly assembly) {
@@ -141,17 +132,16 @@ abstract private class GeneratedType extends Type, GeneratedElement {
     else (
       not this instanceof DelegateType and
       result =
-        this.stubComment() + this.stubAttributes() + stubAccessibility(this) +
+        this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) +
           this.stubAbstractModifier() + this.stubStaticModifier() + this.stubPartialModifier() +
           this.stubKeyword() + " " + this.getUndecoratedName() + stubGenericArguments(this) +
           this.stubBaseTypesString() + stubTypeParametersConstraints(this) + "\n{\n" +
           this.stubPrivateConstructor() + this.stubMembers(assembly) + "}\n\n"
       or
       result =
-        this.stubComment() + this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) +
-          this.stubKeyword() + " " + stubClassName(this.(DelegateType).getReturnType()) + " " +
-          this.getUndecoratedName() + stubGenericArguments(this) + "(" + stubParameters(this) +
-          ");\n\n"
+        this.stubAttributes() + stubUnsafe(this) + stubAccessibility(this) + this.stubKeyword() +
+          " " + stubClassName(this.(DelegateType).getReturnType()) + " " + this.getUndecoratedName()
+          + stubGenericArguments(this) + "(" + stubParameters(this) + ");\n\n"
     )
   }
 
@@ -400,7 +390,7 @@ private string stubAccessibility(Member m) {
   if
     m.getDeclaringType() instanceof Interface
     or
-    exists(m.(Virtualizable).getExplicitlyImplementedInterface())
+    exists(getExplicitImplementedInterface(m))
     or
     m instanceof Constructor and m.isStatic()
   then result = ""
@@ -443,7 +433,7 @@ private string stubStaticOrConst(Member m) {
 }
 
 private string stubOverride(Member m) {
-  if m.getDeclaringType() instanceof Interface
+  if m.getDeclaringType() instanceof Interface and not m.isStatic()
   then result = ""
   else
     if m.(Virtualizable).isVirtual()
@@ -713,9 +703,49 @@ private string stubEventAccessors(Event e) {
   else result = ";"
 }
 
+/**
+ * Returns an interface that `c` explicitly implements, if either of the
+ * following also holds.
+ * (1) `c` is not static.
+ * (2) `c` is static and an implementation of a generic with type constraints.
+ * (3) `c` is static and there is another member with the same name
+ * but different return type.
+ *
+ * We use these rules as explicit interfaces are needed in some cases
+ * for compilation purposes (both to distinguish members but also to ensure
+ * type constraints are satisfied). We can't always use explicit interface
+ * implementation due to the generic math support, because then in some cases
+ * we will only be able to access a static via a type variable with type
+ * constraints (C# 11 language feature).
+ */
+private Interface getExplicitImplementedInterface(Virtualizable c) {
+  result = unique(Interface i | i = c.getExplicitlyImplementedInterface()) and
+  (
+    not c.isStatic()
+    or
+    c.isStatic() and
+    (
+      not c instanceof Method
+      or
+      c instanceof Method and
+      (
+        exists(TypeParameter t | t = c.getImplementee().(UnboundGeneric).getATypeParameter() |
+          exists(t.getConstraints().getATypeConstraint())
+        )
+        or
+        exists(Member m |
+          (not m.isStatic() or m.(Method).getReturnType() != c.(Method).getReturnType()) and
+          m.getName() = c.getName() and
+          m.getDeclaringType() = c.getDeclaringType()
+        )
+      )
+    )
+  )
+}
+
 private string stubExplicitImplementation(Member c) {
-  if exists(c.(Virtualizable).getExplicitlyImplementedInterface())
-  then result = stubClassName(c.(Virtualizable).getExplicitlyImplementedInterface()) + "."
+  if exists(getExplicitImplementedInterface(c))
+  then result = stubClassName(getExplicitImplementedInterface(c)) + "."
   else result = ""
 }
 
@@ -740,14 +770,16 @@ private string stubOperator(Operator o, Assembly assembly) {
   if o instanceof ConversionOperator
   then
     result =
-      "    " + stubModifiers(o) + stubExplicit(o) + "operator " + stubClassName(o.getReturnType()) +
-        "(" + stubParameters(o) + ") => throw null;\n"
+      "    " + stubModifiers(o) + stubExplicit(o) + stubExplicitImplementation(o) + "operator " +
+        stubChecked(o) + stubClassName(o.getReturnType()) + "(" + stubParameters(o) + ")" +
+        stubImplementation(o) + ";\n"
   else
     if not o.getDeclaringType() instanceof Enum
     then
       result =
-        "    " + stubModifiers(o) + stubClassName(o.getReturnType()) + " operator " + o.getName() +
-          "(" + stubParameters(o) + ") => throw null;\n"
+        "    " + stubModifiers(o) + stubClassName(o.getReturnType()) + " " +
+          stubExplicitImplementation(o) + "operator " + o.getName() + "(" + stubParameters(o) + ")" +
+          stubImplementation(o) + ";\n"
     else result = "    // Stub generator skipped operator: " + o.getName() + "\n"
 }
 
@@ -888,7 +920,16 @@ private string stubConstructorInitializer(Constructor c) {
 private string stubExplicit(ConversionOperator op) {
   op instanceof ImplicitConversionOperator and result = "implicit "
   or
-  op instanceof ExplicitConversionOperator and result = "explicit "
+  (
+    op instanceof ExplicitConversionOperator
+    or
+    op instanceof CheckedExplicitConversionOperator
+  ) and
+  result = "explicit "
+}
+
+private string stubChecked(Operator o) {
+  if o instanceof CheckedExplicitConversionOperator then result = "checked " else result = ""
 }
 
 private string stubGetter(DeclarationWithGetSetAccessors p) {
@@ -917,6 +958,8 @@ private string stubSemmleExtractorOptions() {
 /** Gets the generated C# code. */
 string generatedCode(Assembly assembly) {
   result =
-    "// This file contains auto-generated code.\n" + stubSemmleExtractorOptions() + "\n" +
-      any(GeneratedNamespace ns | ns.isGlobalNamespace()).getStubs(assembly)
+    "// This file contains auto-generated code.\n" //
+      + "// Generated from `" + assembly.getFullName() + "`.\n" //
+      + stubSemmleExtractorOptions() + "\n" //
+      + any(GeneratedNamespace ns | ns.isGlobalNamespace()).getStubs(assembly)
 }

@@ -1,6 +1,6 @@
 private import cpp
-private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
-private import semmle.code.cpp.dataflow.internal.DataFlowUtil
+private import DataFlowPrivate
+private import DataFlowUtil
 
 /**
  * Gets a function that might be called by `call`.
@@ -79,3 +79,13 @@ class ArgumentPosition extends int {
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+/**
+ * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ *
+ * This is a temporary hook to support technical debt in the Go language; do not use.
+ */
+pragma[inline]
+predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
+  any()
+}

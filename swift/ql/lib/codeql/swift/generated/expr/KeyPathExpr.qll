@@ -2,19 +2,20 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.type.TypeRepr
 
 module Generated {
+  /**
+   * A key-path expression.
+   */
   class KeyPathExpr extends Synth::TKeyPathExpr, Expr {
     override string getAPrimaryQlClass() { result = "KeyPathExpr" }
 
     /**
      * Gets the root of this key path expression, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    TypeRepr getImmediateRoot() {
+    TypeRepr getRoot() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertKeyPathExprToRaw(this)
               .(Raw::KeyPathExpr)
@@ -22,36 +23,28 @@ module Generated {
     }
 
     /**
-     * Gets the root of this key path expression, if it exists.
-     */
-    final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
-
-    /**
      * Holds if `getRoot()` exists.
      */
-    final predicate hasRoot() { exists(getRoot()) }
+    final predicate hasRoot() { exists(this.getRoot()) }
 
     /**
-     * Gets the parsed path of this key path expression, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
+     * Gets the `index`th component of this key path expression (0-based).
      */
-    Expr getImmediateParsedPath() {
+    KeyPathComponent getComponent(int index) {
       result =
-        Synth::convertExprFromRaw(Synth::convertKeyPathExprToRaw(this)
+        Synth::convertKeyPathComponentFromRaw(Synth::convertKeyPathExprToRaw(this)
               .(Raw::KeyPathExpr)
-              .getParsedPath())
+              .getComponent(index))
     }
 
     /**
-     * Gets the parsed path of this key path expression, if it exists.
+     * Gets any of the components of this key path expression.
      */
-    final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }
+    final KeyPathComponent getAComponent() { result = this.getComponent(_) }
 
     /**
-     * Holds if `getParsedPath()` exists.
+     * Gets the number of components of this key path expression.
      */
-    final predicate hasParsedPath() { exists(getParsedPath()) }
+    final int getNumberOfComponents() { result = count(int i | exists(this.getComponent(i))) }
   }
 }

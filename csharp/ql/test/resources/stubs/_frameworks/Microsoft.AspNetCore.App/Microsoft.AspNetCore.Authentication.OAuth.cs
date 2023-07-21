@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Authentication.OAuth, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Authentication
         {
-            // Generated from `Microsoft.AspNetCore.Authentication.ClaimActionCollectionMapExtensions` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ClaimActionCollectionMapExtensions
             {
                 public static void DeleteClaim(this Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimActionCollection collection, string claimType) => throw null;
@@ -23,7 +23,6 @@ namespace Microsoft
 
             namespace OAuth
             {
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthChallengeProperties` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OAuthChallengeProperties : Microsoft.AspNetCore.Authentication.AuthenticationProperties
                 {
                     public OAuthChallengeProperties() => throw null;
@@ -34,7 +33,6 @@ namespace Microsoft
                     public virtual void SetScope(params string[] scopes) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthCodeExchangeContext` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OAuthCodeExchangeContext
                 {
                     public string Code { get => throw null; }
@@ -43,7 +41,6 @@ namespace Microsoft
                     public string RedirectUri { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthConstants` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class OAuthConstants
                 {
                     public static string CodeChallengeKey;
@@ -52,7 +49,6 @@ namespace Microsoft
                     public static string CodeVerifierKey;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthCreatingTicketContext` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OAuthCreatingTicketContext : Microsoft.AspNetCore.Authentication.ResultContext<Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions>
                 {
                     public string AccessToken { get => throw null; }
@@ -68,13 +64,11 @@ namespace Microsoft
                     public System.Text.Json.JsonElement User { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthDefaults` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class OAuthDefaults
                 {
                     public static string DisplayName;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthEvents` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OAuthEvents : Microsoft.AspNetCore.Authentication.RemoteAuthenticationEvents
                 {
                     public virtual System.Threading.Tasks.Task CreatingTicket(Microsoft.AspNetCore.Authentication.OAuth.OAuthCreatingTicketContext context) => throw null;
@@ -84,7 +78,6 @@ namespace Microsoft
                     public virtual System.Threading.Tasks.Task RedirectToAuthorizationEndpoint(Microsoft.AspNetCore.Authentication.RedirectContext<Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions> context) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthHandler<>` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OAuthHandler<TOptions> : Microsoft.AspNetCore.Authentication.RemoteAuthenticationHandler<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions, new()
                 {
                     protected System.Net.Http.HttpClient Backchannel { get => throw null; }
@@ -100,7 +93,6 @@ namespace Microsoft
                     public OAuthHandler(Microsoft.Extensions.Options.IOptionsMonitor<TOptions> options, Microsoft.Extensions.Logging.ILoggerFactory logger, System.Text.Encodings.Web.UrlEncoder encoder, Microsoft.AspNetCore.Authentication.ISystemClock clock) : base(default(Microsoft.Extensions.Options.IOptionsMonitor<TOptions>), default(Microsoft.Extensions.Logging.ILoggerFactory), default(System.Text.Encodings.Web.UrlEncoder), default(Microsoft.AspNetCore.Authentication.ISystemClock)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OAuthOptions : Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions
                 {
                     public string AuthorizationEndpoint { get => throw null; set => throw null; }
@@ -117,7 +109,6 @@ namespace Microsoft
                     public override void Validate() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Authentication.OAuth.OAuthTokenResponse` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OAuthTokenResponse : System.IDisposable
                 {
                     public string AccessToken { get => throw null; set => throw null; }
@@ -133,7 +124,6 @@ namespace Microsoft
 
                 namespace Claims
                 {
-                    // Generated from `Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimAction` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public abstract class ClaimAction
                     {
                         public ClaimAction(string claimType, string valueType) => throw null;
@@ -142,7 +132,6 @@ namespace Microsoft
                         public string ValueType { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimActionCollection` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ClaimActionCollection : System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimAction>, System.Collections.IEnumerable
                     {
                         public void Add(Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimAction action) => throw null;
@@ -153,7 +142,6 @@ namespace Microsoft
                         public void Remove(string claimType) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Authentication.OAuth.Claims.CustomJsonClaimAction` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class CustomJsonClaimAction : Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimAction
                     {
                         public CustomJsonClaimAction(string claimType, string valueType, System.Func<System.Text.Json.JsonElement, string> resolver) : base(default(string), default(string)) => throw null;
@@ -161,14 +149,12 @@ namespace Microsoft
                         public override void Run(System.Text.Json.JsonElement userData, System.Security.Claims.ClaimsIdentity identity, string issuer) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Authentication.OAuth.Claims.DeleteClaimAction` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class DeleteClaimAction : Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimAction
                     {
                         public DeleteClaimAction(string claimType) : base(default(string), default(string)) => throw null;
                         public override void Run(System.Text.Json.JsonElement userData, System.Security.Claims.ClaimsIdentity identity, string issuer) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Authentication.OAuth.Claims.JsonKeyClaimAction` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class JsonKeyClaimAction : Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimAction
                     {
                         public string JsonKey { get => throw null; }
@@ -176,7 +162,6 @@ namespace Microsoft
                         public override void Run(System.Text.Json.JsonElement userData, System.Security.Claims.ClaimsIdentity identity, string issuer) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Authentication.OAuth.Claims.JsonSubKeyClaimAction` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class JsonSubKeyClaimAction : Microsoft.AspNetCore.Authentication.OAuth.Claims.JsonKeyClaimAction
                     {
                         public JsonSubKeyClaimAction(string claimType, string valueType, string jsonKey, string subKey) : base(default(string), default(string), default(string)) => throw null;
@@ -184,7 +169,6 @@ namespace Microsoft
                         public string SubKey { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Authentication.OAuth.Claims.MapAllClaimsAction` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class MapAllClaimsAction : Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimAction
                     {
                         public MapAllClaimsAction() : base(default(string), default(string)) => throw null;
@@ -199,7 +183,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.OAuthExtensions` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class OAuthExtensions
             {
                 public static Microsoft.AspNetCore.Authentication.AuthenticationBuilder AddOAuth(this Microsoft.AspNetCore.Authentication.AuthenticationBuilder builder, string authenticationScheme, System.Action<Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions> configureOptions) => throw null;
@@ -208,7 +191,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Authentication.AuthenticationBuilder AddOAuth<TOptions, THandler>(this Microsoft.AspNetCore.Authentication.AuthenticationBuilder builder, string authenticationScheme, string displayName, System.Action<TOptions> configureOptions) where THandler : Microsoft.AspNetCore.Authentication.OAuth.OAuthHandler<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions, new() => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.OAuthPostConfigureOptions<,>` in `Microsoft.AspNetCore.Authentication.OAuth, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class OAuthPostConfigureOptions<TOptions, THandler> : Microsoft.Extensions.Options.IPostConfigureOptions<TOptions> where THandler : Microsoft.AspNetCore.Authentication.OAuth.OAuthHandler<TOptions> where TOptions : Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions, new()
             {
                 public OAuthPostConfigureOptions(Microsoft.AspNetCore.DataProtection.IDataProtectionProvider dataProtection) => throw null;

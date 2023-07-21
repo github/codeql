@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Mvc.TagHelpers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace Rendering
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Rendering.ValidationSummary` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum ValidationSummary : int
                 {
                     All = 2,
@@ -19,7 +19,6 @@ namespace Microsoft
             }
             namespace TagHelpers
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AnchorTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public string Action { get => throw null; set => throw null; }
@@ -39,7 +38,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CacheTagHelper : Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperBase
                 {
                     public static string CacheKeyPrefix;
@@ -49,7 +47,6 @@ namespace Microsoft
                     public override System.Threading.Tasks.Task ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperBase` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class CacheTagHelperBase : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public CacheTagHelperBase(System.Text.Encodings.Web.HtmlEncoder htmlEncoder) => throw null;
@@ -70,21 +67,18 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperMemoryCacheFactory` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CacheTagHelperMemoryCacheFactory
                 {
                     public Microsoft.Extensions.Caching.Memory.IMemoryCache Cache { get => throw null; }
                     public CacheTagHelperMemoryCacheFactory(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions> options) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperOptions` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CacheTagHelperOptions
                 {
                     public CacheTagHelperOptions() => throw null;
                     public System.Int64 SizeLimit { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.ComponentTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ComponentTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public ComponentTagHelper() => throw null;
@@ -95,7 +89,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.DistributedCacheTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DistributedCacheTagHelper : Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperBase
                 {
                     public static string CacheKeyPrefix;
@@ -105,7 +98,6 @@ namespace Microsoft
                     public override System.Threading.Tasks.Task ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.EnvironmentTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EnvironmentTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public EnvironmentTagHelper(Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment) => throw null;
@@ -117,7 +109,6 @@ namespace Microsoft
                     public override void Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.FormActionTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FormActionTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public string Action { get => throw null; set => throw null; }
@@ -135,7 +126,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.FormTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FormTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public string Action { get => throw null; set => throw null; }
@@ -155,7 +145,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.GlobbingUrlBuilder` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class GlobbingUrlBuilder
                 {
                     public virtual System.Collections.Generic.IReadOnlyList<string> BuildUrlList(string staticUrl, string includePattern, string excludePattern) => throw null;
@@ -165,7 +154,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Http.PathString RequestPathBase { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.ImageTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ImageTagHelper : Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper
                 {
                     public bool AppendVersion { get => throw null; set => throw null; }
@@ -178,7 +166,6 @@ namespace Microsoft
                     public string Src { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class InputTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression For { get => throw null; set => throw null; }
@@ -194,7 +181,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.LabelTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LabelTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression For { get => throw null; set => throw null; }
@@ -205,7 +191,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.LinkTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LinkTagHelper : Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper
                 {
                     public bool? AppendVersion { get => throw null; set => throw null; }
@@ -228,7 +213,6 @@ namespace Microsoft
                     public bool SuppressFallbackIntegrity { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class OptionTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     protected Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator Generator { get => throw null; }
@@ -239,7 +223,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.PartialTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PartialTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public string FallbackName { get => throw null; set => throw null; }
@@ -253,7 +236,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary ViewData { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.PersistComponentStateTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class PersistComponentStateTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public PersistComponentStateTagHelper() => throw null;
@@ -262,14 +244,12 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.PersistenceMode` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum PersistenceMode : int
                 {
                     Server = 0,
                     WebAssembly = 1,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.RenderAtEndOfFormTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RenderAtEndOfFormTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public override void Init(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context) => throw null;
@@ -279,7 +259,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.ScriptTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ScriptTagHelper : Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper
                 {
                     public bool? AppendVersion { get => throw null; set => throw null; }
@@ -300,7 +279,6 @@ namespace Microsoft
                     public bool SuppressFallbackIntegrity { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.SelectTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class SelectTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression For { get => throw null; set => throw null; }
@@ -314,7 +292,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.TagHelperOutputExtensions` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class TagHelperOutputExtensions
                 {
                     public static void AddClass(this Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput tagHelperOutput, string classValue, System.Text.Encodings.Web.HtmlEncoder htmlEncoder) => throw null;
@@ -324,7 +301,6 @@ namespace Microsoft
                     public static void RemoveRange(this Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput tagHelperOutput, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute> attributes) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.TextAreaTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TextAreaTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression For { get => throw null; set => throw null; }
@@ -336,7 +312,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.ValidationMessageTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationMessageTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression For { get => throw null; set => throw null; }
@@ -347,7 +322,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.ValidationSummaryTagHelper` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationSummaryTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     protected Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator Generator { get => throw null; }
@@ -360,7 +334,6 @@ namespace Microsoft
 
                 namespace Cache
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.Cache.CacheTagKey` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class CacheTagKey : System.IEquatable<Microsoft.AspNetCore.Mvc.TagHelpers.Cache.CacheTagKey>
                     {
                         public CacheTagKey(Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelper tagHelper, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context) => throw null;
@@ -372,7 +345,6 @@ namespace Microsoft
                         public override int GetHashCode() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.Cache.DistributedCacheTagHelperFormatter` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class DistributedCacheTagHelperFormatter : Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperFormatter
                     {
                         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Html.HtmlString> DeserializeAsync(System.Byte[] value) => throw null;
@@ -380,21 +352,18 @@ namespace Microsoft
                         public System.Threading.Tasks.Task<System.Byte[]> SerializeAsync(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.DistributedCacheTagHelperFormattingContext context) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.Cache.DistributedCacheTagHelperFormattingContext` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class DistributedCacheTagHelperFormattingContext
                     {
                         public DistributedCacheTagHelperFormattingContext() => throw null;
                         public Microsoft.AspNetCore.Html.HtmlString Html { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.Cache.DistributedCacheTagHelperService` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class DistributedCacheTagHelperService : Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperService
                     {
                         public DistributedCacheTagHelperService(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperStorage storage, Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperFormatter formatter, System.Text.Encodings.Web.HtmlEncoder HtmlEncoder, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
                         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Html.IHtmlContent> ProcessContentAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output, Microsoft.AspNetCore.Mvc.TagHelpers.Cache.CacheTagKey key, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.Cache.DistributedCacheTagHelperStorage` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class DistributedCacheTagHelperStorage : Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperStorage
                     {
                         public DistributedCacheTagHelperStorage(Microsoft.Extensions.Caching.Distributed.IDistributedCache distributedCache) => throw null;
@@ -402,20 +371,17 @@ namespace Microsoft
                         public System.Threading.Tasks.Task SetAsync(string key, System.Byte[] value, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperFormatter` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IDistributedCacheTagHelperFormatter
                     {
                         System.Threading.Tasks.Task<Microsoft.AspNetCore.Html.HtmlString> DeserializeAsync(System.Byte[] value);
                         System.Threading.Tasks.Task<System.Byte[]> SerializeAsync(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.DistributedCacheTagHelperFormattingContext context);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperService` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IDistributedCacheTagHelperService
                     {
                         System.Threading.Tasks.Task<Microsoft.AspNetCore.Html.IHtmlContent> ProcessContentAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output, Microsoft.AspNetCore.Mvc.TagHelpers.Cache.CacheTagKey key, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperStorage` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IDistributedCacheTagHelperStorage
                     {
                         System.Threading.Tasks.Task<System.Byte[]> GetAsync(string key);
@@ -430,7 +396,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.TagHelperServicesExtensions` in `Microsoft.AspNetCore.Mvc.TagHelpers, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class TagHelperServicesExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder AddCacheTagHelper(this Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder builder) => throw null;

@@ -30,5 +30,10 @@ class Configuration extends TaintTracking::Configuration {
       pred = filter.getInput() and
       succ = filter.getOutput()
     )
+    or
+    exists(HtmlSanitizerCall call |
+      pred = call.getInput() and
+      succ = call
+    )
   }
 }

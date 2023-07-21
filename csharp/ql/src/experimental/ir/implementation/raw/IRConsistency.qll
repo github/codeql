@@ -1,6 +1,7 @@
 private import IR
 import InstructionConsistency // module is below
 import IRTypeConsistency // module is in IRType.qll
+import internal.IRConsistencyImports
 
 module InstructionConsistency {
   private import internal.InstructionImports as Imports
@@ -28,7 +29,7 @@ module InstructionConsistency {
     PresentIRFunction() { this = TPresentIRFunction(irFunc) }
 
     override string toString() {
-      result = concat(Language::getIdentityString(irFunc.getFunction()), "; ")
+      result = concat(LanguageDebug::getIdentityString(irFunc.getFunction()), "; ")
     }
 
     override Language::Location getLocation() {

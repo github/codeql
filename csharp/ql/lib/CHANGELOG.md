@@ -1,3 +1,98 @@
+## 0.7.0
+
+### Major Analysis Improvements
+
+* The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
+
+### Minor Analysis Improvements
+
+* Additional support for `command-injection`, `ldap-injection`, `log-injection`, and `url-redirection` sink kinds for Models as Data.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Major Analysis Improvements
+
+* The extractor has been changed to run after the traced compiler call. This allows inspecting compiler generated files, such as the output of source generators. With this change, `.cshtml` files and their generated `.cshtml.g.cs` counterparts are extracted on dotnet 6 and above.
+
+### Minor Analysis Improvements
+
+* C#: Analysis of the `dotnet test` command supplied with a `dll` or `exe` file as argument no longer fails due to the addition of an erroneous `-p:SharedCompilation=false` argument.
+* Deleted the deprecated `WebConfigXML`, `ConfigurationXMLElement`, `LocationXMLElement`, `SystemWebXMLElement`, `SystemWebServerXMLElement`, `CustomErrorsXMLElement`, and `HttpRuntimeXMLElement` classes from `WebConfig.qll`. The non-deprecated names with PascalCased Xml suffixes should be used instead.
+* Deleted the deprecated `Record` class from both `Types.qll` and `Type.qll`.
+* Deleted the deprecated `StructuralComparisonConfiguration` class from `StructuralComparison.qll`, use `sameGvn` instead.
+* Deleted the deprecated `isParameterOf` predicate from the `ParameterNode` class.
+* Deleted the deprecated `SafeExternalAPICallable`, `ExternalAPIDataNode`, `UntrustedDataToExternalAPIConfig`, `UntrustedExternalAPIDataNode`, and `ExternalAPIUsedWithUntrustedData` classes from `ExternalAPIsQuery.qll`. The non-deprecated names with PascalCased Api suffixes should be used instead.
+* Updated the following C# sink kind names. Any custom data extensions that use these sink kinds will need to be updated accordingly in order to continue working.
+  * `code` to `code-injection`
+  * `sql` to `sql-injection`
+  * `html` to `html-injection`
+  * `xss` to `js-injection`
+  * `remote` to `file-content-store`
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* The `cs/log-forging`, `cs/cleartext-storage`, and `cs/exposure-of-sensitive-information` queries now correctly handle unsanitized arguments to `ILogger` extension methods.
+* Updated the `neutralModel` extensible predicate to include a `kind` column.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getAssertionIndex`, and `getAssertedParameter` predicates from the `AssertMethod` class.
+* Deleted the deprecated `OverridableMethod` and `OverridableAccessor` classes.
+* The `unsafe` predicate for `Modifiable` has been extended to cover delegate return types and identify pointer-like types at any nest level. This is relevant for `unsafe` declarations extracted from assemblies.
+
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* The query `cs/static-field-written-by-instance` is updated to handle properties.
+* C# 11: Support for explicit interface member implementation of operators.
+* The extraction of member modifiers has been generalized, which could lead to the extraction of more modifiers.
+* C# 11: Added extractor and library support for `file` scoped types.
+* C# 11: Added extractor support for `required` fields and properties.
+* C# 11: Added library support for `checked` operators.
+
 ## 0.5.3
 
 ### Minor Analysis Improvements

@@ -4,23 +4,18 @@ import TlsLibraryModel
 
 /**
  * Configuration to determine the state of a context being used to create
- * a connection. There is one configuration for each pair of `TlsLibrary` and `ProtocolVersion`,
- * such that a single configuration only tracks contexts where a specific `ProtocolVersion` is allowed.
+ * a connection. The configuration uses a flow state to track the `TlsLibrary`
+ * and the insecure `ProtocolVersion`s that are allowed.
  *
  * The state is in terms of whether a specific protocol is allowed. This is
  * either true or false when the context is created and can then be modified
- * later by either restricting or unrestricting the protocol (see the predicates
- * `isRestriction` and `isUnrestriction`).
+ * later by either restricting or unrestricting the protocol (see the predicate
+ * `isAdditionalFlowStep`).
  *
- * Since we are interested in the final state, we want the flow to start from
- * the last unrestriction, so we disallow flow into unrestrictions. We also
- * model the creation as an unrestriction of everything it allows, to account
- * for the common case where the creation plays the role of "last unrestriction".
- *
- * Since we really want "the last unrestriction, not nullified by a restriction",
- * we also disallow flow into restrictions.
+ * The state is represented as a bit vector, where each bit corresponds to a
+ * protocol version. The bit is set if the protocol is allowed.
  */
-module InsecureContextConfiguration2 implements DataFlow::StateConfigSig {
+module InsecureContextConfiguration implements DataFlow::StateConfigSig {
   private newtype TFlowState =
     TMkFlowState(TlsLibrary library, int bits) {
       bits in [0 .. max(any(ProtocolVersion v).getBit()) * 2 - 1]
@@ -61,9 +56,14 @@ module InsecureContextConfiguration2 implements DataFlow::StateConfigSig {
   }
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    exists(ProtocolFamily family |
-      source = state.getLibrary().unspecific_context_creation(family) and
-      state.getBits() = family.getBits()
+    exists(ContextCreation creation | source = creation |
+      creation = state.getLibrary().unspecific_context_creation() and
+      state.getBits() =
+        sum(ProtocolVersion version |
+          version = creation.getProtocol() and version.isInsecure()
+        |
+          version.getBit()
+        )
     )
   }
 
@@ -112,7 +112,7 @@ module InsecureContextConfiguration2 implements DataFlow::StateConfigSig {
   }
 }
 
-private module InsecureContextFlow = DataFlow::MakeWithState<InsecureContextConfiguration2>;
+private module InsecureContextFlow = DataFlow::GlobalWithState<InsecureContextConfiguration>;
 
 /**
  * Holds if `conectionCreation` marks the creation of a connection based on the contex
@@ -127,7 +127,7 @@ predicate unsafe_connection_creation_with_context(
 ) {
   // Connection created from a context allowing `insecure_version`.
   exists(InsecureContextFlow::PathNode src, InsecureContextFlow::PathNode sink |
-    InsecureContextFlow::hasFlowPath(src, sink) and
+    InsecureContextFlow::flowPath(src, sink) and
     src.getNode() = contextOrigin and
     sink.getNode() = connectionCreation and
     sink.getState().allowsInsecureVersion(insecure_version) and

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Mvc
         {
-            // Generated from `Microsoft.AspNetCore.Mvc.HiddenInputAttribute` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HiddenInputAttribute : System.Attribute
             {
                 public bool DisplayValue { get => throw null; set => throw null; }
@@ -15,26 +15,22 @@ namespace Microsoft
 
             namespace DataAnnotations
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations.AttributeAdapterBase<>` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class AttributeAdapterBase<TAttribute> : Microsoft.AspNetCore.Mvc.DataAnnotations.ValidationAttributeAdapter<TAttribute>, Microsoft.AspNetCore.Mvc.DataAnnotations.IAttributeAdapter, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IClientModelValidator where TAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
                 {
                     public AttributeAdapterBase(TAttribute attribute, Microsoft.Extensions.Localization.IStringLocalizer stringLocalizer) : base(default(TAttribute), default(Microsoft.Extensions.Localization.IStringLocalizer)) => throw null;
                     public abstract string GetErrorMessage(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationContextBase validationContext);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations.IAttributeAdapter` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAttributeAdapter : Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IClientModelValidator
                 {
                     string GetErrorMessage(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ModelValidationContextBase validationContext);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations.IValidationAttributeAdapterProvider` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IValidationAttributeAdapterProvider
                 {
                     Microsoft.AspNetCore.Mvc.DataAnnotations.IAttributeAdapter GetAttributeAdapter(System.ComponentModel.DataAnnotations.ValidationAttribute attribute, Microsoft.Extensions.Localization.IStringLocalizer stringLocalizer);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MvcDataAnnotationsLocalizationOptions : System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.ICompatibilitySwitch>, System.Collections.IEnumerable
                 {
                     public System.Func<System.Type, Microsoft.Extensions.Localization.IStringLocalizerFactory, Microsoft.Extensions.Localization.IStringLocalizer> DataAnnotationLocalizerProvider;
@@ -43,7 +39,6 @@ namespace Microsoft
                     public MvcDataAnnotationsLocalizationOptions() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations.RequiredAttributeAdapter` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RequiredAttributeAdapter : Microsoft.AspNetCore.Mvc.DataAnnotations.AttributeAdapterBase<System.ComponentModel.DataAnnotations.RequiredAttribute>
                 {
                     public override void AddValidation(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientModelValidationContext context) => throw null;
@@ -51,7 +46,6 @@ namespace Microsoft
                     public RequiredAttributeAdapter(System.ComponentModel.DataAnnotations.RequiredAttribute attribute, Microsoft.Extensions.Localization.IStringLocalizer stringLocalizer) : base(default(System.ComponentModel.DataAnnotations.RequiredAttribute), default(Microsoft.Extensions.Localization.IStringLocalizer)) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations.ValidationAttributeAdapter<>` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ValidationAttributeAdapter<TAttribute> : Microsoft.AspNetCore.Mvc.ModelBinding.Validation.IClientModelValidator where TAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
                 {
                     public abstract void AddValidation(Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ClientModelValidationContext context);
@@ -61,14 +55,12 @@ namespace Microsoft
                     public ValidationAttributeAdapter(TAttribute attribute, Microsoft.Extensions.Localization.IStringLocalizer stringLocalizer) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations.ValidationAttributeAdapterProvider` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ValidationAttributeAdapterProvider : Microsoft.AspNetCore.Mvc.DataAnnotations.IValidationAttributeAdapterProvider
                 {
                     public Microsoft.AspNetCore.Mvc.DataAnnotations.IAttributeAdapter GetAttributeAdapter(System.ComponentModel.DataAnnotations.ValidationAttribute attribute, Microsoft.Extensions.Localization.IStringLocalizer stringLocalizer) => throw null;
                     public ValidationAttributeAdapterProvider() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.DataAnnotations.ValidationProviderAttribute` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class ValidationProviderAttribute : System.Attribute
                 {
                     public abstract System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationAttribute> GetValidationAttributes();
@@ -82,14 +74,12 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcDataAnnotationsMvcBuilderExtensions` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcDataAnnotationsMvcBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddDataAnnotationsLocalization(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddDataAnnotationsLocalization(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder, System.Action<Microsoft.AspNetCore.Mvc.DataAnnotations.MvcDataAnnotationsLocalizationOptions> setupAction) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcDataAnnotationsMvcCoreBuilderExtensions` in `Microsoft.AspNetCore.Mvc.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcDataAnnotationsMvcCoreBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder AddDataAnnotations(this Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder builder) => throw null;

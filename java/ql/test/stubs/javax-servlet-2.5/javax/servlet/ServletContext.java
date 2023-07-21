@@ -1,83 +1,57 @@
-// Generated automatically from javax.servlet.ServletContext for testing purposes
+/**
+ *
+ * Copyright 2003-2004 The Apache Software Foundation
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+/*
+ * Adapted from the Java Servlet API version 2.4 as available at
+ *   http://search.maven.org/remotecontent?filepath=javax/servlet/servlet-api/2.4/servlet-api-2.4-sources.jar
+ * Only relevant stubs of this file have been retained for test purposes.
+ */
 
 package javax.servlet;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.EventListener;
-import java.util.Map;
 import java.util.Set;
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletRegistration;
-import javax.servlet.SessionCookieConfig;
-import javax.servlet.SessionTrackingMode;
-import javax.servlet.descriptor.JspConfigDescriptor;
 
-public interface ServletContext
-{
-    <T extends EventListener> T createListener(Class<T> p0);
-    <T extends EventListener> void addListener(T p0);
-    <T extends Filter> T createFilter(Class<T> p0);
-    <T extends Servlet> T createServlet(Class<T> p0);
-    ClassLoader getClassLoader();
-    Enumeration<Servlet> getServlets();
-    Enumeration<String> getAttributeNames();
-    Enumeration<String> getInitParameterNames();
-    Enumeration<String> getServletNames();
-    FilterRegistration getFilterRegistration(String p0);
-    FilterRegistration.Dynamic addFilter(String p0, Class<? extends Filter> p1);
-    FilterRegistration.Dynamic addFilter(String p0, Filter p1);
-    FilterRegistration.Dynamic addFilter(String p0, String p1);
-    InputStream getResourceAsStream(String p0);
-    JspConfigDescriptor getJspConfigDescriptor();
-    Map<String, ? extends FilterRegistration> getFilterRegistrations();
-    Map<String, ? extends ServletRegistration> getServletRegistrations();
-    Object getAttribute(String p0);
-    RequestDispatcher getNamedDispatcher(String p0);
-    RequestDispatcher getRequestDispatcher(String p0);
-    Servlet getServlet(String p0);
-    ServletContext getContext(String p0);
-    ServletRegistration getServletRegistration(String p0);
-    ServletRegistration.Dynamic addJspFile(String p0, String p1);
-    ServletRegistration.Dynamic addServlet(String p0, Class<? extends Servlet> p1);
-    ServletRegistration.Dynamic addServlet(String p0, Servlet p1);
-    ServletRegistration.Dynamic addServlet(String p0, String p1);
-    SessionCookieConfig getSessionCookieConfig();
-    Set<SessionTrackingMode> getDefaultSessionTrackingModes();
-    Set<SessionTrackingMode> getEffectiveSessionTrackingModes();
-    Set<String> getResourcePaths(String p0);
-    String getContextPath();
-    String getInitParameter(String p0);
-    String getMimeType(String p0);
-    String getRealPath(String p0);
-    String getRequestCharacterEncoding();
-    String getResponseCharacterEncoding();
-    String getServerInfo();
-    String getServletContextName();
-    String getVirtualServerName();
-    URL getResource(String p0);
-    boolean setInitParameter(String p0, String p1);
-    int getEffectiveMajorVersion();
-    int getEffectiveMinorVersion();
-    int getMajorVersion();
-    int getMinorVersion();
-    int getSessionTimeout();
-    static String ORDERED_LIBS = null;
-    static String TEMPDIR = null;
-    void addListener(Class<? extends EventListener> p0);
-    void addListener(String p0);
-    void declareRoles(String... p0);
-    void log(Exception p0, String p1);
-    void log(String p0);
-    void log(String p0, Throwable p1);
-    void removeAttribute(String p0);
-    void setAttribute(String p0, Object p1);
-    void setRequestCharacterEncoding(String p0);
-    void setResponseCharacterEncoding(String p0);
-    void setSessionTimeout(int p0);
-    void setSessionTrackingModes(Set<SessionTrackingMode> p0);
+public interface ServletContext {
+    public ServletContext getContext(String uripath);
+    public int getMajorVersion();
+    public int getMinorVersion();
+    public String getMimeType(String file);
+    public Set getResourcePaths(String path);
+    public URL getResource(String path) throws MalformedURLException;
+    public InputStream getResourceAsStream(String path);
+    public RequestDispatcher getRequestDispatcher(String path);
+    public RequestDispatcher getNamedDispatcher(String name);
+    public Servlet getServlet(String name) throws ServletException;
+    public Enumeration getServlets();
+    public Enumeration getServletNames();
+    public void log(String msg);
+    public void log(Exception exception, String msg);
+    public void log(String message, Throwable throwable);
+    public String getRealPath(String path);
+    public String getServerInfo();
+    public String getInitParameter(String name);
+    public Enumeration getInitParameterNames();
+    public Object getAttribute(String name);
+    public Enumeration getAttributeNames();
+    public void setAttribute(String name, Object object);
+    public void removeAttribute(String name);
+    public String getServletContextName();
 }
