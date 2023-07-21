@@ -35,14 +35,5 @@ bindingset[i]
 pragma[inline_late]
 predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
 
-/**
- * Holds if `i <= b + delta`.
- *
- * This predicate enforces a join-order that ensures that `b` has already been bound.
- */
-bindingset[b]
-pragma[inline_late]
-predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
-
 /** Holds if `i <= b + delta`. */
 predicate bounded = boundedImpl/3;
