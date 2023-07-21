@@ -504,11 +504,11 @@ func testEnums() {
     let e5 = mkOptional2(0)
     let e6 = mkOptional2(source())
     sink(arg: e1!)
-    sink(arg: e2!) // $ MISSING: flow=501
+    sink(arg: e2!) // $ flow=501
     sink(arg: e3!)
-    sink(arg: e4!) // $ MISSING: flow=503
+    sink(arg: e4!) // $ flow=503
     sink(arg: e5!)
-    sink(arg: e6!) // $ MISSING: flow=505
+    sink(arg: e6!) // $ flow=505
 }
 
 func source2() -> (Int, Int)? { return nil }
