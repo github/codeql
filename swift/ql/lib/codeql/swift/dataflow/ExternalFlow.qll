@@ -477,8 +477,11 @@ private predicate parseField(AccessPathToken c, Content::FieldContent f) {
 }
 
 private predicate parseEnum(AccessPathToken c, Content::EnumContent f) {
-  c.getName() = "Enum" and
+  c.getName() = "EnumElement" and
   c.getAnArgument() = f.getSignature()
+  or
+  c.getName() = "OptionalSome" and
+  f.getSignature() = "some:0"
 }
 
 /** Holds if the specification component parses as a `Content`. */
