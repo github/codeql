@@ -84,4 +84,22 @@ public class A {
         sink(wrapper); // $ hasTaintFlow
     }
 
+    public static InputStream wrapStream(InputStream in) {
+        return new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return 0;
+            }
+
+            @Override
+            public int read(byte[] b) throws IOException {
+                return in.read(b);
+            }
+        };
+    }
+
+    public static void testWrapCall() {
+        sink(wrapStream(null)); // no flow
+        sink(wrapStream(source())); // $ hasTaintFlow
+    }
 }

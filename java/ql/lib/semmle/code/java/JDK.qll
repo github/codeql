@@ -232,10 +232,10 @@ private class InputStreamWrapperAnonymousStep extends AdditionalTaintStep {
  */
 private class InputStreamWrapperConstructorStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(ClassInstanceExpr cc, Argument a, AssignExpr ae |
+    exists(ClassInstanceExpr cc, Argument a, AssignExpr ae, int pos |
       cc.getConstructedType().getASourceSupertype+() instanceof TypeInputStream and
-      cc.getAnArgument() = a and
-      cc.getCallee().getParameter(a.getParameterPos()).getAnAccess() = ae.getRhs() and
+      cc.getArgument(pragma[only_bind_into](pos)) = a and
+      cc.getCallee().getParameter(pragma[only_bind_into](pos)).getAnAccess() = ae.getRhs() and
       ae.getDest().(FieldWrite).getField().getType().(RefType).getASourceSupertype*() instanceof
         TypeInputStream
     |
