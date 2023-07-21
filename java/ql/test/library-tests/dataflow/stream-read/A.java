@@ -102,4 +102,21 @@ public class A {
         sink(wrapStream(null)); // no flow
         sink(wrapStream(source())); // $ hasTaintFlow
     }
+
+    public static void testLocalClass() {
+        InputStream in = source();
+
+        class LocalInputStream extends InputStream {
+            @Override
+            public int read() throws IOException {
+                return 0;
+            }
+
+            @Override
+            public int read(byte[] b) throws IOException {
+                return in.read(b);
+            }
+        }
+        sink(new LocalInputStream()); // $ hasTaintFlow
+    }
 }
