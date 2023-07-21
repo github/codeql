@@ -13,13 +13,17 @@ private import semmle.code.java.dataflow.FlowSteps
  */
 private class InputStreamWrapperAnonymousStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(Method m, AnonymousClass wrapper |
+    exists(Method m, NestedClass wrapper |
       m.hasName("read") and
       m.getDeclaringType() = wrapper and
       wrapper.getASourceSupertype+() instanceof TypeInputStream
     |
       n1.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = m.getParameter(0).getAnAccess() and
-      n2.asExpr() = wrapper.getClassInstanceExpr()
+      n2.asExpr()
+          .(ClassInstanceExpr)
+          .getConstructedType()
+          .getASourceSupertype*()
+          .getSourceDeclaration() = wrapper
     )
   }
 }
