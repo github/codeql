@@ -495,7 +495,7 @@ func testEnums() {
     if case MyEnum.mySingle(let d3) = c3 { sink(arg: d3) }
     if case MyEnum.mySingle(let d4) = c4 { sink(arg: d4) } // $ flow=490
     if case MyEnum.mySingle(let d5) = c5 { sink(arg: d5) }
-    if case MyEnum.mySingle(let d6) = c6 { sink(arg: d6) } // $ MISSING: flow=492
+    if case MyEnum.mySingle(let d6) = c6 { sink(arg: d6) } // $ flow=492
 
     let e1 = Optional.some(0)
     let e2 = Optional.some(source())

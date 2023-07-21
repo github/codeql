@@ -210,10 +210,14 @@ edges
 | test.swift:490:14:490:32 | call to mkMyEnum1(_:) [mySingle:0] | test.swift:496:13:496:35 | .mySingle(...) [mySingle:0] |
 | test.swift:490:24:490:31 | call to source() | test.swift:375:16:375:21 | v |
 | test.swift:490:24:490:31 | call to source() | test.swift:490:14:490:32 | call to mkMyEnum1(_:) [mySingle:0] |
+| test.swift:492:14:492:32 | call to mkMyEnum2(_:) [mySingle:0] | test.swift:498:13:498:35 | .mySingle(...) [mySingle:0] |
+| test.swift:492:24:492:31 | call to source() | test.swift:492:14:492:32 | call to mkMyEnum2(_:) [mySingle:0] |
 | test.swift:494:13:494:35 | .mySingle(...) [mySingle:0] | test.swift:494:33:494:33 | d2 |
 | test.swift:494:33:494:33 | d2 | test.swift:494:54:494:54 | d2 |
 | test.swift:496:13:496:35 | .mySingle(...) [mySingle:0] | test.swift:496:33:496:33 | d4 |
 | test.swift:496:33:496:33 | d4 | test.swift:496:54:496:54 | d4 |
+| test.swift:498:13:498:35 | .mySingle(...) [mySingle:0] | test.swift:498:33:498:33 | d6 |
+| test.swift:498:33:498:33 | d6 | test.swift:498:54:498:54 | d6 |
 | test.swift:517:13:517:28 | call to optionalSource() [some:0] | test.swift:519:8:519:12 | let ...? [some:0] |
 | test.swift:517:13:517:28 | call to optionalSource() [some:0] | test.swift:524:19:524:19 | x [some:0] |
 | test.swift:519:8:519:12 | let ...? [some:0] | test.swift:519:12:519:12 | a |
@@ -517,12 +521,17 @@ nodes
 | test.swift:488:30:488:37 | call to source() | semmle.label | call to source() |
 | test.swift:490:14:490:32 | call to mkMyEnum1(_:) [mySingle:0] | semmle.label | call to mkMyEnum1(_:) [mySingle:0] |
 | test.swift:490:24:490:31 | call to source() | semmle.label | call to source() |
+| test.swift:492:14:492:32 | call to mkMyEnum2(_:) [mySingle:0] | semmle.label | call to mkMyEnum2(_:) [mySingle:0] |
+| test.swift:492:24:492:31 | call to source() | semmle.label | call to source() |
 | test.swift:494:13:494:35 | .mySingle(...) [mySingle:0] | semmle.label | .mySingle(...) [mySingle:0] |
 | test.swift:494:33:494:33 | d2 | semmle.label | d2 |
 | test.swift:494:54:494:54 | d2 | semmle.label | d2 |
 | test.swift:496:13:496:35 | .mySingle(...) [mySingle:0] | semmle.label | .mySingle(...) [mySingle:0] |
 | test.swift:496:33:496:33 | d4 | semmle.label | d4 |
 | test.swift:496:54:496:54 | d4 | semmle.label | d4 |
+| test.swift:498:13:498:35 | .mySingle(...) [mySingle:0] | semmle.label | .mySingle(...) [mySingle:0] |
+| test.swift:498:33:498:33 | d6 | semmle.label | d6 |
+| test.swift:498:54:498:54 | d6 | semmle.label | d6 |
 | test.swift:517:13:517:28 | call to optionalSource() [some:0] | semmle.label | call to optionalSource() [some:0] |
 | test.swift:519:8:519:12 | let ...? [some:0] | semmle.label | let ...? [some:0] |
 | test.swift:519:12:519:12 | a | semmle.label | a |
@@ -701,6 +710,7 @@ subpaths
 | test.swift:482:19:482:19 | e | test.swift:425:26:425:33 | call to source() | test.swift:482:19:482:19 | e | result |
 | test.swift:494:54:494:54 | d2 | test.swift:488:30:488:37 | call to source() | test.swift:494:54:494:54 | d2 | result |
 | test.swift:496:54:496:54 | d4 | test.swift:490:24:490:31 | call to source() | test.swift:496:54:496:54 | d4 | result |
+| test.swift:498:54:498:54 | d6 | test.swift:492:24:492:31 | call to source() | test.swift:498:54:498:54 | d6 | result |
 | test.swift:520:19:520:19 | a | test.swift:259:12:259:19 | call to source() | test.swift:520:19:520:19 | a | result |
 | test.swift:527:19:527:19 | a | test.swift:259:12:259:19 | call to source() | test.swift:527:19:527:19 | a | result |
 | test.swift:551:15:551:15 | z1 | test.swift:259:12:259:19 | call to source() | test.swift:551:15:551:15 | z1 | result |
