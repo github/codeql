@@ -30,7 +30,7 @@
  * any dataflow node `n` such that `addr <= sink.asInstruction() + delta2` for some `delta2`. We call the instruction that
  * consumes the address operand the "operation".
  *
- * For example, consider the flow from `begin + size` to `end` above. The sink is `end` on line 3 because that is a dataflow
+ * For example, consider the flow from `base + size` to `end` above. The sink is `end` on line 3 because that is a dataflow
  * node whose underlying instruction non-strictly upper bounds the address operand `p` in `use(*p)`. The load attached to `*p`
  * is the "operation". To ensure that the path makes intuitive sense, we only pick operations that are control-flow reachable
  * from the dereference sink.
