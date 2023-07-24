@@ -217,9 +217,7 @@ module Content {
       exists(EnumElementDecl d, int pos | d.getParam(pos) = p | result = d.toString() + ":" + pos)
     }
 
-    override string toString() {
-      result = this.getSignature()
-    }
+    override string toString() { result = this.getSignature() }
   }
 }
 
