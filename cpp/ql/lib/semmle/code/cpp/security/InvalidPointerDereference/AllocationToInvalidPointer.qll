@@ -16,7 +16,7 @@
  * `(allocation, size of allocation)` to a pair `(a, b)` where there exists a pointer-arithmetic instruction
  * `pai = a + r` such that `b` is a dataflow node where `b <= r`. Because there will be a dataflow-path from
  * `allocation` to `a` this means that the `pai` will compute a pointer that is some number of elements beyond
- * the end position in the allocation. See `pointerAddInstructionHasBounds` for the implementation of this.
+ * the end position of the allocation. See `pointerAddInstructionHasBounds` for the implementation of this.
  *
  * In the above example, the pair `(a, b)` is `(base, size)` with `base` and `size` coming from the expression
  * `base + size` on line 2, which is also the pointer-arithmetic instruction. In general, the pair does not necessarily
