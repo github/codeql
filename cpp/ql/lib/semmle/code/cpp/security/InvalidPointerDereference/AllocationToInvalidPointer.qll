@@ -18,9 +18,9 @@
  * `allocation` to `a` this means that the `pai` will compute a pointer that is some number of elements beyond
  * the end position in the allocation. See `pointerAddInstructionHasBounds` for the implementation of this.
  *
- * In the above example, the pair `(a, b)` is `(base, size)` from the expression `base + size` on line 2. However, it could
- * also be something more complex like `(base, size)` where `base` is from line 3 and `size` is from line 2, and the
- * pointer-arithmetic instruction is `base + n` on line 3 in the following example:
+ * In the above example, the pair `(a, b)` is `(base, size)` with `base` and `size` coming from the expression `base + size` on line 2, which is also the pointer-arithmetic instruction. In general, the pair does not necessarily correspond directly to the operands of the pointer-arithmetic instruction.
+ * In the following example, the pair is again `(base, size)`, but with `base` coming from line 3 and `size` from line 2, and the
+ * pointer-arithmetic instruction being `base + n` on line 3:
  *  ```cpp
  *  1. int* base = new int[size];
  *  2. if(n <= size) {
