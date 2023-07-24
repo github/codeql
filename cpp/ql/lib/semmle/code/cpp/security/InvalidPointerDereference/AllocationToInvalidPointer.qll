@@ -15,8 +15,8 @@
  * This is done using the product-flow library. The configuration tracks flow from the pair
  * `(allocation, size of allocation)` to a pair `(a, b)` where there exists a pointer-arithmetic instruction
  * `pai = a + r` such that `b` is a dataflow node where `b <= r`. Because there will be a dataflow-path from
- * `allocation` to `a` this means that the `pai` will compute a pointer that's some number of elements away
- * from the end position in the allocation. See `pointerAddInstructionHasBounds` for the implementation of this.
+ * `allocation` to `a` this means that the `pai` will compute a pointer that is some number of elements beyond
+ * the end position in the allocation. See `pointerAddInstructionHasBounds` for the implementation of this.
  *
  * In the above example, the pair `(a, b)` is `(base, size)` from the expression `base + size` on line 2. However, it could
  * also be something more complex like `(base, size)` where `base` is from line 3 and `size` is from line 2, and the
