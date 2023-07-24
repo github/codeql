@@ -5,4 +5,4 @@ from diagnostics_test_utils import *
 # and they should therefore run successfully
 run_codeql_database_init(lang="csharp")
 run_codeql_database_trace_command(['dotnet', 'tool', 'search', 'publish'])
-run_codeql_database_trace_command(['dotnet', 'new', 'console', '--name', 'build', '--output', '.'])
+run_codeql_database_trace_command(['dotnet', 'new', 'console', '--force', '--name', 'build', '--output', '.'])
