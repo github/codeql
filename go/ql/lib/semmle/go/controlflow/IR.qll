@@ -744,7 +744,7 @@ module IR {
 
     override Type getResultType() {
       exists(CallExpr c | this.getBase() = evalExprInstruction(c) |
-        result = c.getCalleeType().getResultType(i)
+        result = c.getTarget().getResultType(i)
       )
       or
       exists(Expr e | this.getBase() = evalExprInstruction(e) |

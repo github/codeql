@@ -92,16 +92,14 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
  * ```
  * In this case, the sink pair identified by the product flow library (without any additional barriers)
  * would be `(p, n)` (where `n` is the `n` in `p[n]`), because there exists a pointer-arithmetic
- * instruction `pai` such that:
- * 1. The left-hand of `pai` flows from the allocation, and
- * 2. The right-hand of `pai` is non-strictly upper bounded by `n` (where `n` is the `n` in `p[n]`)
+ * instruction `pai = a + b` such that:
+ * 1. the allocation flows to `a`, and
+ * 2. `b <= n` where `n` is the `n` in `p[n]`
  * but because there's a strict comparison that compares `n` against the size of the allocation this
  * snippet is fine.
  */
-module Barrier2 {
-  private class FlowState2 = int;
-
-  private module BarrierConfig2 implements DataFlow::ConfigSig {
+module SizeBarrier {
+  private module SizeBarrierConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
       // The sources is the same as in the sources for the second
       // projection in the `AllocToInvalidPointerConfig` module.
@@ -109,19 +107,19 @@ module Barrier2 {
     }
 
     additional predicate isSink(
-      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, FlowState2 state,
-      boolean testIsTrue
+      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int k, boolean testIsTrue
     ) {
-      // The sink is any "large" side of a relational comparison.
-      g.comparesLt(left.asOperand(), right.asOperand(), state, true, testIsTrue)
+      // The sink is any "large" side of a relational comparison. i.e., the `right` expression
+      // in a guard such as `left < right + k`.
+      g.comparesLt(left.asOperand(), right.asOperand(), k, true, testIsTrue)
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
   }
 
-  private import DataFlow::Global<BarrierConfig2>
+  private import DataFlow::Global<SizeBarrierConfig>
 
-  private FlowState2 getAFlowStateForNode(DataFlow::Node node) {
+  private int getAFlowStateForNode(DataFlow::Node node) {
     exists(DataFlow::Node source |
       flow(source, node) and
       hasSize(_, source, result)
@@ -129,14 +127,14 @@ module Barrier2 {
   }
 
   private predicate operandGuardChecks(
-    IRGuardCondition g, Operand left, Operand right, FlowState2 state, boolean edge
+    IRGuardCondition g, Operand left, Operand right, int state, boolean edge
   ) {
-    exists(DataFlow::Node nLeft, DataFlow::Node nRight, FlowState2 state0 |
+    exists(DataFlow::Node nLeft, DataFlow::Node nRight, int k |
       nRight.asOperand() = right and
       nLeft.asOperand() = left and
-      BarrierConfig2::isSink(nLeft, nRight, g, state0, edge) and
+      SizeBarrierConfig::isSink(nLeft, nRight, g, k, edge) and
       state = getAFlowStateForNode(nRight) and
-      state0 <= state
+      k <= state
     )
   }
 
@@ -144,7 +142,7 @@ module Barrier2 {
    * Gets an instruction that is guarded by a guard condition which ensures that
    * the value of the instruction is upper-bounded by size of some allocation.
    */
-  Instruction getABarrierInstruction(FlowState2 state) {
+  Instruction getABarrierInstruction(int state) {
     exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge |
       use = value.getAUse() and
       operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](use), _,
@@ -158,7 +156,7 @@ module Barrier2 {
    * Gets a `DataFlow::Node` that is guarded by a guard condition which ensures that
    * the value of the node is upper-bounded by size of some allocation.
    */
-  DataFlow::Node getABarrierNode(FlowState2 state) {
+  DataFlow::Node getABarrierNode(int state) {
     result.asOperand() = getABarrierInstruction(state).getAUse()
   }
 
@@ -166,9 +164,7 @@ module Barrier2 {
    * Gets the block of a node that is guarded (see `getABarrierInstruction` or
    * `getABarrierNode` for the definition of what it means to be guarded).
    */
-  IRBlock getABarrierBlock(FlowState2 state) {
-    result.getAnInstruction() = getABarrierInstruction(state)
-  }
+  IRBlock getABarrierBlock(int state) { result.getAnInstruction() = getABarrierInstruction(state) }
 }
 
 private module InterestingPointerAddInstruction {
@@ -201,8 +197,8 @@ private module InterestingPointerAddInstruction {
 }
 
 /**
- * A product-flow configuration for flow from an `(allocation, size)` pair to a pointer-
- * arithmetic instruction that is non-strictly upper-bounded by `allocation + size`.
+ * A product-flow configuration for flow from an `(allocation, size)` pair to a
+ * pointer-arithmetic operation `pai` such that `pai <= allocation + size`.
  */
 private module Config implements ProductFlow::StateConfigSig {
   class FlowState1 = Unit;
@@ -210,7 +206,7 @@ private module Config implements ProductFlow::StateConfigSig {
   class FlowState2 = int;
 
   predicate isSourcePair(
-    DataFlow::Node source1, FlowState1 state1, DataFlow::Node source2, FlowState2 state2
+    DataFlow::Node allocSource, FlowState1 unit, DataFlow::Node sizeSource, FlowState2 sizeAddend
   ) {
     // In the case of an allocation like
     // ```cpp
@@ -218,21 +214,21 @@ private module Config implements ProductFlow::StateConfigSig {
     // ```
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
-    exists(state1) and
-    hasSize(source1.asConvertedExpr(), source2, state2)
+    exists(unit) and
+    hasSize(allocSource.asConvertedExpr(), sizeSource, sizeAddend)
   }
 
   predicate isSinkPair(
-    DataFlow::Node sink1, FlowState1 state1, DataFlow::Node sink2, FlowState2 state2
+    DataFlow::Node allocSink, FlowState1 unit, DataFlow::Node sizeSink, FlowState2 sizeAddend
   ) {
-    exists(state1) and
+    exists(unit) and
     // We check that the delta computed by the range analysis matches the
     // state value that we set in `isSourcePair`.
-    pointerAddInstructionHasBounds0(_, sink1, sink2, state2)
+    pointerAddInstructionHasBounds0(_, allocSink, sizeSink, sizeAddend)
   }
 
   predicate isBarrier2(DataFlow::Node node, FlowState2 state) {
-    node = Barrier2::getABarrierNode(state)
+    node = SizeBarrier::getABarrierNode(state)
   }
 
   predicate isBarrierIn1(DataFlow::Node node) { isSourcePair(node, _, _, _) }
@@ -245,7 +241,7 @@ private module Config implements ProductFlow::StateConfigSig {
 private module AllocToInvalidPointerFlow = ProductFlow::GlobalWithState<Config>;
 
 /**
- * Holds if `pai` is non-strictly upper bounded by `sink2 + delta` and `sink1` is the
+ * Holds if `pai` is non-strictly upper bounded by `sizeSink + delta` and `allocSink` is the
  * left operand of the pointer-arithmetic operation.
  *
  * For example in,
@@ -254,37 +250,37 @@ private module AllocToInvalidPointerFlow = ProductFlow::GlobalWithState<Config>;
  * ```
  * We will have:
  * - `pai` is `p + (size + 1)`,
- * - `sink1` is `p`
- * - `sink2` is `size`
+ * - `allocSink` is `p`
+ * - `sizeSink` is `size`
  * - `delta` is `1`.
  */
 pragma[nomagic]
 private predicate pointerAddInstructionHasBounds0(
-  PointerAddInstruction pai, DataFlow::Node sink1, DataFlow::Node sink2, int delta
+  PointerAddInstruction pai, DataFlow::Node allocSink, DataFlow::Node sizeSink, int delta
 ) {
   InterestingPointerAddInstruction::isInteresting(pragma[only_bind_into](pai)) and
-  exists(Instruction right, Instruction instr2 |
+  exists(Instruction right, Instruction sizeInstr |
     pai.getRight() = right and
-    pai.getLeft() = sink1.asInstruction() and
-    instr2 = sink2.asInstruction() and
-    // pai.getRight() <= sink2 + delta
-    bounded1(right, instr2, delta) and
-    not right = Barrier2::getABarrierInstruction(delta) and
-    not instr2 = Barrier2::getABarrierInstruction(delta)
+    pai.getLeft() = allocSink.asInstruction() and
+    sizeInstr = sizeSink.asInstruction() and
+    // pai.getRight() <= sizeSink + delta
+    bounded1(right, sizeInstr, delta) and
+    not right = SizeBarrier::getABarrierInstruction(delta) and
+    not sizeInstr = SizeBarrier::getABarrierInstruction(delta)
   )
 }
 
 /**
- * Holds if `allocation` flows to `sink1` and `sink1` represents the left-hand
- * side of the pointer-arithmetic instruction `pai`, and the right-hand side of `pai`
- * is non-strictly upper bounded by the size of `alllocation` + `delta`.
+ * Holds if `allocation` flows to `allocSink` and `allocSink` represents the left operand
+ * of the pointer-arithmetic instruction `pai = a + b` (i.e., `allocSink = a`), and
+ * `b <= allocation + delta`.
  */
 pragma[nomagic]
 predicate pointerAddInstructionHasBounds(
-  DataFlow::Node allocation, PointerAddInstruction pai, DataFlow::Node sink1, int delta
+  DataFlow::Node allocation, PointerAddInstruction pai, DataFlow::Node allocSink, int delta
 ) {
-  exists(DataFlow::Node sink2 |
-    AllocToInvalidPointerFlow::flow(allocation, _, sink1, sink2) and
-    pointerAddInstructionHasBounds0(pai, sink1, sink2, delta)
+  exists(DataFlow::Node sizeSink |
+    AllocToInvalidPointerFlow::flow(allocation, _, allocSink, sizeSink) and
+    pointerAddInstructionHasBounds0(pai, allocSink, sizeSink, delta)
   )
 }

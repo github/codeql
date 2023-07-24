@@ -9,4 +9,4 @@ nodes
 | Dsn.go:50:29:50:33 | dbDSN | semmle.label | dbDSN |
 subpaths
 #select
-| Dsn.go:50:29:50:33 | dbDSN | Dsn.go:47:10:47:30 | call to FormValue | Dsn.go:50:29:50:33 | dbDSN | This query depends on a $@. | Dsn.go:47:10:47:30 | call to FormValue | user-provided value |
+| Dsn.go:50:29:50:33 | dbDSN | Dsn.go:47:10:47:30 | call to FormValue | Dsn.go:50:29:50:33 | dbDSN | Data-Source Name is built using $@. | Dsn.go:47:10:47:30 | call to FormValue | untrusted user input |
