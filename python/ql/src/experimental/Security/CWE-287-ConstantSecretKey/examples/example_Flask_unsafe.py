@@ -15,6 +15,7 @@ app.config.from_object('settings')
 
 @app.route('/')
 def CheckForSecretKeyValue():
+    # debugging whether secret_key is secure or not
     return app.secret_key, session.get('logged_in')
 
 
