@@ -172,7 +172,7 @@ private module Config implements ProductFlow::StateConfigSig {
   class FlowState2 = int;
 
   predicate isSourcePair(
-    DataFlow::Node allocSource, FlowState1 unit, DataFlow::Node sizeSource, FlowState2 extra
+    DataFlow::Node allocSource, FlowState1 unit, DataFlow::Node sizeSource, FlowState2 sizeAddend
   ) {
     // In the case of an allocation like
     // ```cpp
@@ -181,16 +181,16 @@ private module Config implements ProductFlow::StateConfigSig {
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
     exists(unit) and
-    hasSize(allocSource.asConvertedExpr(), sizeSource, extra)
+    hasSize(allocSource.asConvertedExpr(), sizeSource, sizeAddend)
   }
 
   predicate isSinkPair(
-    DataFlow::Node allocSink, FlowState1 unit, DataFlow::Node sizeSink, FlowState2 extra
+    DataFlow::Node allocSink, FlowState1 unit, DataFlow::Node sizeSink, FlowState2 sizeAddend
   ) {
     exists(unit) and
     // We check that the delta computed by the range analysis matches the
     // state value that we set in `isSourcePair`.
-    pointerAddInstructionHasBounds0(_, allocSink, sizeSink, extra)
+    pointerAddInstructionHasBounds0(_, allocSink, sizeSink, sizeAddend)
   }
 
   predicate isBarrier2(DataFlow::Node node, FlowState2 state) {
