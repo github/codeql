@@ -12,8 +12,7 @@ class AutomodelApplicationModeExtractCandidates {
 	public static void main(String[] args) throws Exception {
 		AtomicReference<String> reference = new AtomicReference<>(); // uninteresting (parameterless constructor)
 		reference.set(args[0]); // arg[0] is not a candidate (modeled as value flow step)
-		// ^^^^^^ Argument[this] is a candidate (should no longer be, once a recent PR
-		// is merged)
+		// ^^^^^^ Argument[this] is a candidate
 	}
 
 	public static void callSupplier(Supplier<String> supplier) {
