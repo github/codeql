@@ -5,12 +5,11 @@ from django.conf import global_settings
 from django.urls import path
 from django.http import HttpResponse
 
-
 env = environ.Env(
     SECRET_KEY=(str, "AConstantKey")
 )
 env.read_env(env_file='.env')
-# following is not safe if there is a call to read_env or if there is default value in Env(..)
+# following is not safe if there is default value in Env(..)
 settings.SECRET_KEY = env('SECRET_KEY')
 
 settings.configure(

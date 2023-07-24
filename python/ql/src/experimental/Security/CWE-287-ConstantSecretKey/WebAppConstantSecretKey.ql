@@ -20,6 +20,26 @@ import semmle.python.dataflow.new.TaintTracking
 import WebAppConstantSecretKeyDjango
 import WebAppConstantSecretKeyFlask
 
+private predicate stringConstCompare(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+  exists(CompareNode cn | cn = g |
+    exists(StrConst str_const, Cmpop op |
+      op = any(Eq eq) and branch = false
+      or
+      op = any(NotEq ne) and branch = true
+    |
+      cn.operands(str_const.getAFlowNode(), op, node)
+      or
+      cn.operands(node, op, str_const.getAFlowNode())
+    )
+  )
+}
+
+class StringConstCompareBarrier extends DataFlow::Node {
+  StringConstCompareBarrier() {
+    this = DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode()
+  }
+}
+
 newtype TFrameWork =
   Flask() or
   Django()
@@ -39,7 +59,10 @@ module WebAppConstantSecretKeyConfig implements DataFlow::StateConfigSig {
     state = Django() and DjangoConstantSecretKeyConfig::isSink(sink)
   }
 
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
+  predicate isBarrier(DataFlow::Node sanitizer, FlowState state) {
+    (state = Flask() or state = Django()) and
+    sanitizer instanceof StringConstCompareBarrier
+  }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2

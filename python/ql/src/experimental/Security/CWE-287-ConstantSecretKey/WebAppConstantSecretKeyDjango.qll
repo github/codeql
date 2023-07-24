@@ -41,8 +41,7 @@ module DjangoConstantSecretKeyConfig {
               .asSink()
       )
       or
-      exists(API::Node n, DataFlow::AttrWrite attr |
-        attr.getObject().getALocalSource() = n.asSource() and
+      exists(DataFlow::AttrWrite attr |
         attr.getAttributeName() = ["SECRET_KEY_FALLBACKS", "SECRET_KEY"] and
         sink = attr.getValue()
       )

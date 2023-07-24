@@ -10,7 +10,7 @@ app.config.from_pyfile("config3.py")
 def DEB_EX():
     if 'logged_in' not in session:
         session['logged_in'] = 'value'
-    # debugging whether secret_key is secure or not
+    # debuggin whether secret_key is secure or not
     return app.secret_key
 
 

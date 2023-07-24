@@ -1,5 +1,4 @@
 """Flask App configuration."""
-import environ
 
 aConstant = 'CHANGEME2'
 

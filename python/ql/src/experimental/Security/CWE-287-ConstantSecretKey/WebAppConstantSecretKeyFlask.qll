@@ -57,8 +57,8 @@ module FlaskConstantSecretKeyConfig {
           ]
       )
       or
-      exists(API::Node n, DataFlow::AttrWrite attr | n = flaskInstance() |
-        attr.getObject().getALocalSource() = n.getACall() and
+      exists(DataFlow::AttrWrite attr |
+        attr.getObject().getALocalSource() = flaskInstance().getACall() and
         attr.getAttributeName() = ["secret_key", "jwt_secret_key"] and
         sink = attr.getValue()
       )
