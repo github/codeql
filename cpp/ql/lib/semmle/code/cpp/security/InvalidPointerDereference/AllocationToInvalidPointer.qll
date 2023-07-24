@@ -49,7 +49,7 @@
  * 7. }
  * ```
  * In order to remove this false positive we define a barrier (see `Barrier2::BarrierConfig2`) that finds the possible guards
- * that compares a value to the size of the allocation. In the above example, that's the `(n >= size)` guard on line 3.
+ * that compares a value to the size of the allocation. In the above example, this is the `(n >= size)` guard on line 3.
  * `Barrier2::getABarrierNode` then defines any node that is guarded by such a guard as a barrier in the dataflow configuration.
  */
 
