@@ -14888,6 +14888,432 @@ ir.cpp:
 # 1993|               Type = [Class] C
 # 1993|               ValueCategory = lvalue
 # 1994|     getStmt(3): [ReturnStmt] return ...
+# 1996| [TopLevelFunction] void TernaryTestInt(bool, int, int, int)
+# 1996|   <params>: 
+# 1996|     getParameter(0): [Parameter] a
+# 1996|         Type = [BoolType] bool
+# 1996|     getParameter(1): [Parameter] x
+# 1996|         Type = [IntType] int
+# 1996|     getParameter(2): [Parameter] y
+# 1996|         Type = [IntType] int
+# 1996|     getParameter(3): [Parameter] z
+# 1996|         Type = [IntType] int
+# 1996|   getEntryPoint(): [BlockStmt] { ... }
+# 1997|     getStmt(0): [ExprStmt] ExprStmt
+# 1997|       getExpr(): [AssignExpr] ... = ...
+# 1997|           Type = [IntType] int
+# 1997|           ValueCategory = lvalue
+# 1997|         getLValue(): [VariableAccess] z
+# 1997|             Type = [IntType] int
+# 1997|             ValueCategory = lvalue
+# 1997|         getRValue(): [ConditionalExpr] ... ? ... : ...
+# 1997|             Type = [IntType] int
+# 1997|             ValueCategory = prvalue
+# 1997|           getCondition(): [VariableAccess] a
+# 1997|               Type = [BoolType] bool
+# 1997|               ValueCategory = prvalue(load)
+# 1997|           getThen(): [VariableAccess] x
+# 1997|               Type = [IntType] int
+# 1997|               ValueCategory = prvalue(load)
+# 1997|           getElse(): [VariableAccess] y
+# 1997|               Type = [IntType] int
+# 1997|               ValueCategory = prvalue(load)
+# 1998|     getStmt(1): [ExprStmt] ExprStmt
+# 1998|       getExpr(): [AssignExpr] ... = ...
+# 1998|           Type = [IntType] int
+# 1998|           ValueCategory = lvalue
+# 1998|         getLValue(): [VariableAccess] z
+# 1998|             Type = [IntType] int
+# 1998|             ValueCategory = lvalue
+# 1998|         getRValue(): [ConditionalExpr] ... ? ... : ...
+# 1998|             Type = [IntType] int
+# 1998|             ValueCategory = prvalue
+# 1998|           getCondition(): [VariableAccess] a
+# 1998|               Type = [BoolType] bool
+# 1998|               ValueCategory = prvalue(load)
+# 1998|           getThen(): [VariableAccess] x
+# 1998|               Type = [IntType] int
+# 1998|               ValueCategory = prvalue(load)
+# 1998|           getElse(): [Literal] 5
+# 1998|               Type = [IntType] int
+# 1998|               Value = [Literal] 5
+# 1998|               ValueCategory = prvalue
+# 1999|     getStmt(2): [ExprStmt] ExprStmt
+# 1999|       getExpr(): [AssignExpr] ... = ...
+# 1999|           Type = [IntType] int
+# 1999|           ValueCategory = lvalue
+# 1999|         getLValue(): [VariableAccess] z
+# 1999|             Type = [IntType] int
+# 1999|             ValueCategory = lvalue
+# 1999|         getRValue(): [ConditionalExpr] ... ? ... : ...
+# 1999|             Type = [IntType] int
+# 1999|             ValueCategory = prvalue
+# 1999|           getCondition(): [VariableAccess] a
+# 1999|               Type = [BoolType] bool
+# 1999|               ValueCategory = prvalue(load)
+# 1999|           getThen(): [Literal] 3
+# 1999|               Type = [IntType] int
+# 1999|               Value = [Literal] 3
+# 1999|               ValueCategory = prvalue
+# 1999|           getElse(): [Literal] 5
+# 1999|               Type = [IntType] int
+# 1999|               Value = [Literal] 5
+# 1999|               ValueCategory = prvalue
+# 2000|     getStmt(3): [ExprStmt] ExprStmt
+# 2000|       getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2000|           Type = [IntType] int
+# 2000|           ValueCategory = lvalue
+# 2000|         getCondition(): [VariableAccess] a
+# 2000|             Type = [BoolType] bool
+# 2000|             ValueCategory = prvalue(load)
+# 2000|         getThen(): [VariableAccess] x
+# 2000|             Type = [IntType] int
+# 2000|             ValueCategory = lvalue
+# 2000|         getElse(): [AssignExpr] ... = ...
+# 2000|             Type = [IntType] int
+# 2000|             ValueCategory = lvalue
+# 2000|           getLValue(): [VariableAccess] y
+# 2000|               Type = [IntType] int
+# 2000|               ValueCategory = lvalue
+# 2000|           getRValue(): [Literal] 7
+# 2000|               Type = [IntType] int
+# 2000|               Value = [Literal] 7
+# 2000|               ValueCategory = prvalue
+# 2001|     getStmt(4): [ReturnStmt] return ...
+# 2003| [CopyAssignmentOperator] TernaryPodObj& TernaryPodObj::operator=(TernaryPodObj const&)
+# 2003|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const TernaryPodObj &
+# 2003| [MoveAssignmentOperator] TernaryPodObj& TernaryPodObj::operator=(TernaryPodObj&&)
+# 2003|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] TernaryPodObj &&
+# 2006| [TopLevelFunction] void TernaryTestPodObj(bool, TernaryPodObj, TernaryPodObj, TernaryPodObj)
+# 2006|   <params>: 
+# 2006|     getParameter(0): [Parameter] a
+# 2006|         Type = [BoolType] bool
+# 2006|     getParameter(1): [Parameter] x
+# 2006|         Type = [Struct] TernaryPodObj
+# 2006|     getParameter(2): [Parameter] y
+# 2006|         Type = [Struct] TernaryPodObj
+# 2006|     getParameter(3): [Parameter] z
+# 2006|         Type = [Struct] TernaryPodObj
+# 2006|   getEntryPoint(): [BlockStmt] { ... }
+# 2007|     getStmt(0): [ExprStmt] ExprStmt
+# 2007|       getExpr(): [AssignExpr] ... = ...
+# 2007|           Type = [Struct] TernaryPodObj
+# 2007|           ValueCategory = lvalue
+# 2007|         getLValue(): [VariableAccess] z
+# 2007|             Type = [Struct] TernaryPodObj
+# 2007|             ValueCategory = lvalue
+# 2007|         getRValue(): [ConditionalExpr] ... ? ... : ...
+# 2007|             Type = [Struct] TernaryPodObj
+# 2007|             ValueCategory = prvalue
+# 2007|           getCondition(): [VariableAccess] a
+# 2007|               Type = [BoolType] bool
+# 2007|               ValueCategory = prvalue(load)
+# 2007|           getThen(): [VariableAccess] x
+# 2007|               Type = [Struct] TernaryPodObj
+# 2007|               ValueCategory = prvalue(load)
+# 2007|           getElse(): [VariableAccess] y
+# 2007|               Type = [Struct] TernaryPodObj
+# 2007|               ValueCategory = prvalue(load)
+# 2008|     getStmt(1): [ExprStmt] ExprStmt
+# 2008|       getExpr(): [AssignExpr] ... = ...
+# 2008|           Type = [Struct] TernaryPodObj
+# 2008|           ValueCategory = lvalue
+# 2008|         getLValue(): [VariableAccess] z
+# 2008|             Type = [Struct] TernaryPodObj
+# 2008|             ValueCategory = lvalue
+# 2008|         getRValue(): [ConditionalExpr] ... ? ... : ...
+# 2008|             Type = [Struct] TernaryPodObj
+# 2008|             ValueCategory = prvalue
+# 2008|           getCondition(): [VariableAccess] a
+# 2008|               Type = [BoolType] bool
+# 2008|               ValueCategory = prvalue(load)
+# 2008|           getThen(): [VariableAccess] x
+# 2008|               Type = [Struct] TernaryPodObj
+# 2008|               ValueCategory = prvalue(load)
+# 2008|           getElse(): [Literal] 0
+# 2008|               Type = [Struct] TernaryPodObj
+# 2008|               Value = [Literal] 0
+# 2008|               ValueCategory = prvalue
+# 2008|           getThen().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2008|               Type = [Struct] TernaryPodObj
+# 2008|               ValueCategory = prvalue(load)
+# 2008|           getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2008|               Type = [Struct] TernaryPodObj
+# 2008|               ValueCategory = prvalue(load)
+# 2008|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2008|             Type = [Struct] TernaryPodObj
+# 2008|             ValueCategory = prvalue(load)
+# 2009|     getStmt(2): [ExprStmt] ExprStmt
+# 2009|       getExpr(): [AssignExpr] ... = ...
+# 2009|           Type = [Struct] TernaryPodObj
+# 2009|           ValueCategory = lvalue
+# 2009|         getLValue(): [VariableAccess] z
+# 2009|             Type = [Struct] TernaryPodObj
+# 2009|             ValueCategory = lvalue
+# 2009|         getRValue(): [ConditionalExpr] ... ? ... : ...
+# 2009|             Type = [Struct] TernaryPodObj
+# 2009|             ValueCategory = prvalue
+# 2009|           getCondition(): [VariableAccess] a
+# 2009|               Type = [BoolType] bool
+# 2009|               ValueCategory = prvalue(load)
+# 2009|           getThen(): [Literal] 0
+# 2009|               Type = [Struct] TernaryPodObj
+# 2009|               Value = [Literal] 0
+# 2009|               ValueCategory = prvalue
+# 2009|           getElse(): [Literal] 0
+# 2009|               Type = [Struct] TernaryPodObj
+# 2009|               Value = [Literal] 0
+# 2009|               ValueCategory = prvalue
+# 2009|           getThen().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2009|               Type = [Struct] TernaryPodObj
+# 2009|               ValueCategory = prvalue(load)
+# 2009|           getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2009|               Type = [Struct] TernaryPodObj
+# 2009|               ValueCategory = prvalue(load)
+# 2009|         getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2009|             Type = [Struct] TernaryPodObj
+# 2009|             ValueCategory = prvalue(load)
+# 2010|     getStmt(3): [ExprStmt] ExprStmt
+# 2010|       getExpr(): [AssignExpr] ... = ...
+# 2010|           Type = [Struct] TernaryPodObj
+# 2010|           ValueCategory = lvalue
+# 2010|         getLValue(): [VariableAccess] z
+# 2010|             Type = [Struct] TernaryPodObj
+# 2010|             ValueCategory = lvalue
+# 2010|         getRValue(): [ConditionalExpr] ... ? ... : ...
+# 2010|             Type = [Struct] TernaryPodObj
+# 2010|             ValueCategory = prvalue
+# 2010|           getCondition(): [VariableAccess] a
+# 2010|               Type = [BoolType] bool
+# 2010|               ValueCategory = prvalue(load)
+# 2010|           getThen(): [VariableAccess] x
+# 2010|               Type = [Struct] TernaryPodObj
+# 2010|               ValueCategory = prvalue(load)
+# 2010|           getElse(): [AssignExpr] ... = ...
+# 2010|               Type = [Struct] TernaryPodObj
+# 2010|               ValueCategory = prvalue
+# 2010|             getLValue(): [VariableAccess] y
+# 2010|                 Type = [Struct] TernaryPodObj
+# 2010|                 ValueCategory = lvalue
+# 2010|             getRValue(): [Literal] 0
+# 2010|                 Type = [Struct] TernaryPodObj
+# 2010|                 Value = [Literal] 0
+# 2010|                 ValueCategory = prvalue
+# 2010|             getRValue().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2010|                 Type = [Struct] TernaryPodObj
+# 2010|                 ValueCategory = prvalue(load)
+# 2011|     getStmt(4): [ReturnStmt] return ...
+# 2013| [CopyAssignmentOperator] TernaryNonPodObj& TernaryNonPodObj::operator=(TernaryNonPodObj const&)
+# 2013|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const TernaryNonPodObj &
+#-----|   getEntryPoint(): [BlockStmt] { ... }
+#-----|     getStmt(0): [ReturnStmt] return ...
+#-----|       getExpr(): [PointerDereferenceExpr] * ...
+#-----|           Type = [Struct] TernaryNonPodObj
+#-----|           ValueCategory = lvalue
+#-----|         getOperand(): [ThisExpr] this
+#-----|             Type = [PointerType] TernaryNonPodObj *
+#-----|             ValueCategory = prvalue(load)
+#-----|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|           Type = [LValueReferenceType] TernaryNonPodObj &
+#-----|           ValueCategory = prvalue
+# 2013| [Constructor] void TernaryNonPodObj::TernaryNonPodObj()
+# 2013|   <params>: 
+# 2013|   <initializations>: 
+# 2013|   getEntryPoint(): [BlockStmt] { ... }
+# 2013|     getStmt(0): [ReturnStmt] return ...
+# 2013| [CopyConstructor] void TernaryNonPodObj::TernaryNonPodObj(TernaryNonPodObj const&)
+# 2013|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const TernaryNonPodObj &
+# 2013|   <initializations>: 
+# 2013|   getEntryPoint(): [BlockStmt] { ... }
+# 2013|     getStmt(0): [ReturnStmt] return ...
+# 2014| [Destructor,VirtualFunction] void TernaryNonPodObj::~TernaryNonPodObj()
+# 2014|   <params>: 
+# 2014|   getEntryPoint(): [BlockStmt] { ... }
+# 2014|     getStmt(0): [ReturnStmt] return ...
+# 2014|   <destructions>: 
+# 2017| [TopLevelFunction] void TernaryTestNonPodObj(bool, TernaryNonPodObj, TernaryNonPodObj, TernaryNonPodObj)
+# 2017|   <params>: 
+# 2017|     getParameter(0): [Parameter] a
+# 2017|         Type = [BoolType] bool
+# 2017|     getParameter(1): [Parameter] x
+# 2017|         Type = [Struct] TernaryNonPodObj
+# 2017|     getParameter(2): [Parameter] y
+# 2017|         Type = [Struct] TernaryNonPodObj
+# 2017|     getParameter(3): [Parameter] z
+# 2017|         Type = [Struct] TernaryNonPodObj
+# 2017|   getEntryPoint(): [BlockStmt] { ... }
+# 2018|     getStmt(0): [ExprStmt] ExprStmt
+# 2018|       getExpr(): [FunctionCall] call to operator=
+# 2018|           Type = [LValueReferenceType] TernaryNonPodObj &
+# 2018|           ValueCategory = prvalue
+# 2018|         getQualifier(): [VariableAccess] z
+# 2018|             Type = [Struct] TernaryNonPodObj
+# 2018|             ValueCategory = lvalue
+# 2018|         getArgument(0): [ConditionalExpr] ... ? ... : ...
+# 2018|             Type = [Struct] TernaryNonPodObj
+# 2018|             ValueCategory = lvalue
+# 2018|           getCondition(): [VariableAccess] a
+# 2018|               Type = [BoolType] bool
+# 2018|               ValueCategory = prvalue(load)
+# 2018|           getThen(): [VariableAccess] x
+# 2018|               Type = [Struct] TernaryNonPodObj
+# 2018|               ValueCategory = lvalue
+# 2018|           getElse(): [VariableAccess] y
+# 2018|               Type = [Struct] TernaryNonPodObj
+# 2018|               ValueCategory = lvalue
+# 2018|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2018|             Type = [LValueReferenceType] const TernaryNonPodObj &
+# 2018|             ValueCategory = prvalue
+# 2018|           getExpr(): [CStyleCast] (const TernaryNonPodObj)...
+# 2018|               Conversion = [GlvalueConversion] glvalue conversion
+# 2018|               Type = [SpecifiedType] const TernaryNonPodObj
+# 2018|               ValueCategory = lvalue
+# 2018|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2018|           Type = [Struct] TernaryNonPodObj
+# 2018|           ValueCategory = lvalue
+# 2019|     getStmt(1): [ExprStmt] ExprStmt
+# 2019|       getExpr(): [FunctionCall] call to operator=
+# 2019|           Type = [LValueReferenceType] TernaryNonPodObj &
+# 2019|           ValueCategory = prvalue
+# 2019|         getQualifier(): [VariableAccess] z
+# 2019|             Type = [Struct] TernaryNonPodObj
+# 2019|             ValueCategory = lvalue
+# 2019|         getArgument(0): [ConditionalExpr] ... ? ... : ...
+# 2019|             Type = [Struct] TernaryNonPodObj
+# 2019|             ValueCategory = prvalue
+# 2019|           getCondition(): [VariableAccess] a
+# 2019|               Type = [BoolType] bool
+# 2019|               ValueCategory = prvalue(load)
+# 2019|           getThen(): [ConstructorCall] call to TernaryNonPodObj
+# 2019|               Type = [VoidType] void
+# 2019|               ValueCategory = prvalue
+# 2019|             getArgument(0): [VariableAccess] x
+# 2019|                 Type = [Struct] TernaryNonPodObj
+# 2019|                 ValueCategory = lvalue
+# 2019|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2019|                 Type = [LValueReferenceType] const TernaryNonPodObj &
+# 2019|                 ValueCategory = prvalue
+# 2019|               getExpr(): [CStyleCast] (const TernaryNonPodObj)...
+# 2019|                   Conversion = [GlvalueConversion] glvalue conversion
+# 2019|                   Type = [SpecifiedType] const TernaryNonPodObj
+# 2019|                   ValueCategory = lvalue
+# 2019|           getElse(): [ConstructorCall] call to TernaryNonPodObj
+# 2019|               Type = [VoidType] void
+# 2019|               ValueCategory = prvalue
+# 2019|           getThen().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2019|               Type = [Struct] TernaryNonPodObj
+# 2019|               ValueCategory = prvalue(load)
+# 2019|           getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2019|               Type = [Struct] TernaryNonPodObj
+# 2019|               ValueCategory = prvalue(load)
+# 2019|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2019|             Type = [LValueReferenceType] const TernaryNonPodObj &
+# 2019|             ValueCategory = prvalue
+# 2019|           getExpr(): [CStyleCast] (const TernaryNonPodObj)...
+# 2019|               Conversion = [GlvalueConversion] glvalue conversion
+# 2019|               Type = [SpecifiedType] const TernaryNonPodObj
+# 2019|               ValueCategory = lvalue
+# 2019|             getExpr(): [TemporaryObjectExpr] temporary object
+# 2019|                 Type = [Struct] TernaryNonPodObj
+# 2019|                 ValueCategory = lvalue
+# 2019|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2019|           Type = [Struct] TernaryNonPodObj
+# 2019|           ValueCategory = lvalue
+# 2020|     getStmt(2): [ExprStmt] ExprStmt
+# 2020|       getExpr(): [FunctionCall] call to operator=
+# 2020|           Type = [LValueReferenceType] TernaryNonPodObj &
+# 2020|           ValueCategory = prvalue
+# 2020|         getQualifier(): [VariableAccess] z
+# 2020|             Type = [Struct] TernaryNonPodObj
+# 2020|             ValueCategory = lvalue
+# 2020|         getArgument(0): [ConditionalExpr] ... ? ... : ...
+# 2020|             Type = [Struct] TernaryNonPodObj
+# 2020|             ValueCategory = prvalue
+# 2020|           getCondition(): [VariableAccess] a
+# 2020|               Type = [BoolType] bool
+# 2020|               ValueCategory = prvalue(load)
+# 2020|           getThen(): [ConstructorCall] call to TernaryNonPodObj
+# 2020|               Type = [VoidType] void
+# 2020|               ValueCategory = prvalue
+# 2020|           getElse(): [ConstructorCall] call to TernaryNonPodObj
+# 2020|               Type = [VoidType] void
+# 2020|               ValueCategory = prvalue
+# 2020|           getThen().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2020|               Type = [Struct] TernaryNonPodObj
+# 2020|               ValueCategory = prvalue(load)
+# 2020|           getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2020|               Type = [Struct] TernaryNonPodObj
+# 2020|               ValueCategory = prvalue(load)
+# 2020|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2020|             Type = [LValueReferenceType] const TernaryNonPodObj &
+# 2020|             ValueCategory = prvalue
+# 2020|           getExpr(): [CStyleCast] (const TernaryNonPodObj)...
+# 2020|               Conversion = [GlvalueConversion] glvalue conversion
+# 2020|               Type = [SpecifiedType] const TernaryNonPodObj
+# 2020|               ValueCategory = lvalue
+# 2020|             getExpr(): [TemporaryObjectExpr] temporary object
+# 2020|                 Type = [Struct] TernaryNonPodObj
+# 2020|                 ValueCategory = lvalue
+# 2020|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2020|           Type = [Struct] TernaryNonPodObj
+# 2020|           ValueCategory = lvalue
+# 2021|     getStmt(3): [ExprStmt] ExprStmt
+# 2021|       getExpr(): [FunctionCall] call to operator=
+# 2021|           Type = [LValueReferenceType] TernaryNonPodObj &
+# 2021|           ValueCategory = prvalue
+# 2021|         getQualifier(): [VariableAccess] z
+# 2021|             Type = [Struct] TernaryNonPodObj
+# 2021|             ValueCategory = lvalue
+# 2021|         getArgument(0): [ConditionalExpr] ... ? ... : ...
+# 2021|             Type = [Struct] TernaryNonPodObj
+# 2021|             ValueCategory = lvalue
+# 2021|           getCondition(): [VariableAccess] a
+# 2021|               Type = [BoolType] bool
+# 2021|               ValueCategory = prvalue(load)
+# 2021|           getThen(): [VariableAccess] x
+# 2021|               Type = [Struct] TernaryNonPodObj
+# 2021|               ValueCategory = lvalue
+# 2021|           getElse(): [FunctionCall] call to operator=
+# 2021|               Type = [LValueReferenceType] TernaryNonPodObj &
+# 2021|               ValueCategory = prvalue
+# 2021|             getQualifier(): [VariableAccess] y
+# 2021|                 Type = [Struct] TernaryNonPodObj
+# 2021|                 ValueCategory = lvalue
+# 2021|             getArgument(0): [ConstructorCall] call to TernaryNonPodObj
+# 2021|                 Type = [VoidType] void
+# 2021|                 ValueCategory = prvalue
+# 2021|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2021|                 Type = [LValueReferenceType] const TernaryNonPodObj &
+# 2021|                 ValueCategory = prvalue
+# 2021|               getExpr(): [CStyleCast] (const TernaryNonPodObj)...
+# 2021|                   Conversion = [GlvalueConversion] glvalue conversion
+# 2021|                   Type = [SpecifiedType] const TernaryNonPodObj
+# 2021|                   ValueCategory = lvalue
+# 2021|                 getExpr(): [TemporaryObjectExpr] temporary object
+# 2021|                     Type = [Struct] TernaryNonPodObj
+# 2021|                     ValueCategory = lvalue
+# 2021|           getElse().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2021|               Type = [Struct] TernaryNonPodObj
+# 2021|               ValueCategory = lvalue
+# 2021|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2021|             Type = [LValueReferenceType] const TernaryNonPodObj &
+# 2021|             ValueCategory = prvalue
+# 2021|           getExpr(): [CStyleCast] (const TernaryNonPodObj)...
+# 2021|               Conversion = [GlvalueConversion] glvalue conversion
+# 2021|               Type = [SpecifiedType] const TernaryNonPodObj
+# 2021|               ValueCategory = lvalue
+# 2021|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2021|           Type = [Struct] TernaryNonPodObj
+# 2021|           ValueCategory = lvalue
+# 2022|     getStmt(4): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
