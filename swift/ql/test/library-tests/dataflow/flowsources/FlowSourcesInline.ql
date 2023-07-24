@@ -4,13 +4,18 @@ import FlowConfig
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.dataflow.DataFlow
 
-module TaintReachConfiguration implements DataFlow::ConfigSig {
+module TestConfiguration implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof FlowSource }
 
-  predicate isSink(DataFlow::Node sink) { any() }
+  predicate isSink(DataFlow::Node sink) {
+    exists(CallExpr sinkCall |
+      sinkCall.getStaticTarget().getName().matches("sink%") and
+      sinkCall.getAnArgument().getExpr() = sink.asExpr()
+    )
+  }
 }
 
-module TaintReachFlow = TaintTracking::Global<TaintReachConfiguration>;
+module TestFlow = TaintTracking::Global<TestConfiguration>;
 
 string describe(FlowSource source) {
   source instanceof RemoteFlowSource and result = "remote"
@@ -29,16 +34,13 @@ module FlowSourcesTest implements TestSig {
       tag = "source" and
       value = describe(source)
     )
-  }
-
-  predicate hasOptionalResult(Location location, string element, string tag, string value) {
-    // this is not really what the "flowsources" test is about, but sometimes it's helpful to
-    // confirm that taint reaches certain obvious points in the flow source test code.
-    exists(DataFlow::Node n |
-      TaintReachFlow::flowTo(n) and
-      location = n.getLocation() and
-      location.getFile().getBaseName() != "" and
-      element = n.toString() and
+    or
+    exists(DataFlow::Node source, DataFlow::Node sink |
+      // this is not really what the "flowsources" test is about, but sometimes it's helpful to
+      // have sinks and confirm that taint reaches obvious points in the flow source test code.
+      TestFlow::flow(source, sink) and
+      location = sink.getLocation() and
+      element = sink.toString() and
       tag = "tainted" and
       value = ""
     )
