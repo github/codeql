@@ -102,9 +102,11 @@ private predicate invalidPointerToDerefSource(
     // `deltaDerefSourceAndPai` is the constant difference between the pointer-arithmetic instruction
     // and the instruction computing the address for which we will search for a dereference.
     AllocToInvalidPointer::pointerAddInstructionHasBounds(allocSource, pai, _, rhsSizeDelta) and
-    bounded2(derefSource.asInstruction(), pai, deltaDerefSourceAndPai) and
-    deltaDerefSourceAndPai >= 0 and
-    // TODO: This condition will go away once #13725 is merged, and then we can make `SizeBarrier`
+    // pai <= derefSource + deltaDerefSourceAndPai and deltaDerefSourceAndPai <= 0 is equivalent to
+    // derefSource >= pai + deltaDerefSourceAndPai and deltaDerefSourceAndPai >= 0
+    bounded1(pai, derefSource.asInstruction(), deltaDerefSourceAndPai) and
+    deltaDerefSourceAndPai <= 0 and
+    // TODO: This condition will go away once #13725 is merged, and then we can make `Barrier2`
     // private to `AllocationToInvalidPointer.qll`.
     not derefSource.getBasicBlock() =
       AllocToInvalidPointer::SizeBarrier::getABarrierBlock(rhsSizeDelta)
