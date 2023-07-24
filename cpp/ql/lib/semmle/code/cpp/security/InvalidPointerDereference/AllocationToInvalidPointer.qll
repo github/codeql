@@ -33,11 +33,6 @@
  *  7. }
  *  ```
  *
- * Reducing the size of `pointerAddInstructionHasBounds`:
- * The `pointerAddInstructionHasBounds` can be very large since the `sink2` column is defined as anything that non-strictly
- * upper bounds the right-hand side of a pointer-arithmetic instruction. In order to reduce the size of this predicate we prune
- * the set of pointer-arithmetic instructions to only those instructions where the left-hand side flows from an allocation.
- *
  * Handling false positives:
  *
  * Consider a snippet such as:
