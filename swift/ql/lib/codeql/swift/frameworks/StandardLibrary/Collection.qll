@@ -8,7 +8,7 @@ private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSteps
 
 /**
- * A model for `Collection` members that permit taint flow.
+ * A model for `Collection` and related Swift class members that permit taint flow.
  */
 private class CollectionSummaries extends SummaryModelCsv {
   override predicate row(string row) {
@@ -35,6 +35,9 @@ private class CollectionSummaries extends SummaryModelCsv {
         ";BidirectionalCollection;true;joined(separator:);;;Argument[-1..0];ReturnValue;taint",
         ";BidirectionalCollection;true;last(where:);;;Argument[-1];ReturnValue;taint",
         ";BidirectionalCollection;true;popLast();;;Argument[-1];ReturnValue;taint",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[0].Parameter[0];Argument[-1];taint",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[0].ReturnValue;ReturnValue.OptionalSome;value",
       ]
   }
 }

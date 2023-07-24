@@ -480,7 +480,7 @@ func taintFromUInt8Array() {
   })
   try! taintedUInt8Values.withUnsafeBufferPointer({
     (buffer: UnsafeBufferPointer<UInt8>) throws in
-    sink(arg: buffer) // $ MISSING: tainted=450
+    sink(arg: buffer) // $ tainted=450
     sink(arg: buffer.baseAddress!) // $ MISSING: tainted=450
     sink(arg: String(cString: buffer.baseAddress!)) // $ MISSING: tainted=450
   })
@@ -493,7 +493,7 @@ func taintFromUInt8Array() {
   })
   try! taintedUInt8Values.withUnsafeMutableBytes({
     (buffer: UnsafeMutableRawBufferPointer) throws in
-    sink(arg: buffer) // $ MISSING: tainted=450
+    sink(arg: buffer) // $ tainted=450
     sink(arg: buffer.baseAddress!) // $ MISSING: tainted=450
     sink(arg: String(bytesNoCopy: buffer.baseAddress!, length: buffer.count, encoding: String.Encoding.utf8, freeWhenDone: false)!) // $ MISSING: tainted=450
   })
@@ -515,7 +515,7 @@ func taintThroughCCharArray() {
   })
   taintedCCharValues.withUnsafeBufferPointer({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=506
+    sink(arg: ptr) // $ tainted=506
     sink(arg: ptr.baseAddress!) // $ MISSING: tainted=506
     sink(arg: String(utf8String: ptr.baseAddress!)!) // $ MISSING: tainted=506
     sink(arg: String(validatingUTF8: ptr.baseAddress!)!) // $ MISSING: tainted=506
@@ -541,7 +541,7 @@ func taintThroughUnicharArray() {
   })
   taintedUnicharValues.withUnsafeBufferPointer({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=533
+    sink(arg: ptr) // $ tainted=533
     sink(arg: ptr.baseAddress!) // $ MISSING: tainted=533
     sink(arg: String(utf16CodeUnits: ptr.baseAddress!, count: ptr.count)) // $ MISSING: tainted=533
     sink(arg: String(utf16CodeUnitsNoCopy: ptr.baseAddress!, count: ptr.count, freeWhenDone: false)) // $ MISSING: tainted=533

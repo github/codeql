@@ -13,14 +13,32 @@ class ArrayType extends Type {
 }
 
 /**
- * A model for `Array` and related class members that permit data flow.
+ * A model for `Array` and related Swift class members that permit taint flow.
  */
 private class ArraySummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
         ";Array;true;insert(_:at:);;;Argument[0];Argument[-1].ArrayElement;value",
-        ";Array;true;insert(_:at:);;;Argument[1];Argument[-1];taint"
+        ";Array;true;insert(_:at:);;;Argument[1];Argument[-1];taint",
+        ";Array;true;withUnsafeBufferPointer(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";Array;true;withUnsafeBufferPointer(_:);;;Argument[0].ReturnValue;ReturnValue;value",
+        ";Array;true;withUnsafeMutableBufferPointer(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";Array;true;withUnsafeMutableBufferPointer(_:);;;Argument[0].Parameter[0];Argument[-1];taint",
+        ";Array;true;withUnsafeMutableBufferPointer(_:);;;Argument[0].ReturnValue;ReturnValue;value",
+        ";Array;true;withUnsafeMutableBytes(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";Array;true;withUnsafeMutableBytes(_:);;;Argument[0].Parameter[0];Argument[-1];taint",
+        ";Array;true;withUnsafeMutableBytes(_:);;;Argument[0].ReturnValue;ReturnValue;value",
+        ";ContiguousArray;true;withUnsafeBufferPointer(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";ContiguousArray;true;withUnsafeBufferPointer(_:);;;Argument[0].ReturnValue;ReturnValue;value",
+        ";ContiguousArray;true;withUnsafeMutableBufferPointer(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";ContiguousArray;true;withUnsafeMutableBufferPointer(_:);;;Argument[0].Parameter[0];Argument[-1];taint",
+        ";ContiguousArray;true;withUnsafeMutableBufferPointer(_:);;;Argument[0].ReturnValue;ReturnValue;value",
+        ";ContiguousArray;true;withUnsafeMutableBytes(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";ContiguousArray;true;withUnsafeMutableBytes(_:);;;Argument[0].Parameter[0];Argument[-1];taint",
+        ";ContiguousArray;true;withUnsafeMutableBytes(_:);;;Argument[0].ReturnValue;ReturnValue;value",
+        ";ContiguousBytes;true;withUnsafeBytes(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
+        ";ContiguousBytes;true;withUnsafeBytes(_:);;;Argument[0].ReturnValue;ReturnValue;value",
       ]
   }
 }

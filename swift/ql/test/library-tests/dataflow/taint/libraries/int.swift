@@ -34,7 +34,7 @@ func taintThroughClosurePointer() {
     sink(arg: ptr2[0]) // $ MISSING: tainted=28
     return source()
   })
-  sink(arg: return2) // $ MISSING: tainted=35
+  sink(arg: return2) // $ tainted=35
 }
 
 func taintThroughMutablePointer() {
@@ -45,14 +45,14 @@ func taintThroughMutablePointer() {
   let return1 = myArray1.withUnsafeMutableBufferPointer({
     buffer in
     buffer.update(repeating: source())
-    sink(arg: buffer) // $ tainted=47
+    sink(arg: buffer) // $ SPURIOUS: tainted=47
     sink(arg: buffer[0]) // $ tainted=47
     sink(arg: buffer.baseAddress!.pointee) // $ MISSING: tainted=47
     return source()
   })
-  sink(arg: return1) // $ MISSING: tainted=47
-  sink(arg: myArray1)
-  sink(arg: myArray1[0]) // $ MISSING: tainted=47
+  sink(arg: return1) // $ tainted=51
+  sink(arg: myArray1) // $ tainted=47
+  sink(arg: myArray1[0]) // $ tainted=47
 
   // ---
 
@@ -68,7 +68,7 @@ func taintThroughMutablePointer() {
     sink(arg: buffer.baseAddress!.pointee) // $ MISSING: tainted=65
     return source()
   })
-  sink(arg: return2) // $ MISSING: tainted=65
+  sink(arg: return2) // $ tainted=69
   sink(arg: myArray2)
   sink(arg: myArray2[0]) // $ MISSING: tainted=65
 
@@ -81,13 +81,13 @@ func taintThroughMutablePointer() {
   let return3 = myArray3.withContiguousMutableStorageIfAvailable({
     ptr in
     ptr.update(repeating: source())
-    sink(arg: ptr) // $ tainted=83
+    sink(arg: ptr) // $ SPURIOUS: tainted=83
     sink(arg: ptr[0]) // $ tainted=83
     return source()
   })
-  sink(arg: return3!) // $ MISSING: tainted=83
-  sink(arg: myArray3)
-  sink(arg: myArray3[0]) // $ MISSING: tainted=83
+  sink(arg: return3!) // $ tainted=86
+  sink(arg: myArray3) // $ SPURIOUS: tainted=83
+  sink(arg: myArray3[0]) // $ tainted=83
 
   // ---
 
@@ -113,7 +113,7 @@ func taintThroughMutablePointer() {
     sink(arg: return5) // $ MISSING: tainted=111
     return source()
   })
-  sink(arg: return4) // $ MISSING: tainted=114
+  sink(arg: return4) // $ tainted=114
   sink(arg: myArray4)
   sink(arg: myArray4[0]) // $ MISSING: tainted=97
   sink(arg: myArray5)
@@ -133,9 +133,9 @@ func taintThroughMutablePointer() {
     sink(arg: ptr[0]) // $ tainted=131
     return source()
   })
-  sink(arg: return6!) // $ MISSING: tainted=134
-  sink(arg: myMutableBuffer)
-  sink(arg: myMutableBuffer[0]) // $ MISSING: tainted=131
+  sink(arg: return6!) // $ tainted=134
+  sink(arg: myMutableBuffer) // $ SPURIOUS: tainted=131
+  sink(arg: myMutableBuffer[0]) // $ tainted=131
 }
 
 func taintCollections(array: inout Array<Int>, contiguousArray: inout ContiguousArray<Int>, dictionary: inout Dictionary<Int, Int>) {
