@@ -36,7 +36,7 @@ module FlaskConstantSecretKeyConfig {
    *    app.config.update(SECRET_KEY="CHANGEME3")
    *    app.config.from_mapping(SECRET_KEY="CHANGEME4")
    * ```
-   * other Sinks are SECRET_KEY Constants Variables that are defined in seperate files or a class in those files like:
+   * other Sinks are SECRET_KEY Constants Variables that are defined in separate files or a class in those files like:
    * ```python
    *    app.config.from_pyfile("config.py")
    *    app.config.from_object('config.Config')
@@ -84,7 +84,7 @@ module FlaskConstantSecretKeyConfig {
   }
 
   /**
-   * Assignments like `SECRET_KEY = ConstantValue`
+   * An Assignments like `SECRET_KEY = ConstantValue`
    * and `SECRET_KEY` file must be the Location that is specified in argument of `from_object` or `from_pyfile` methods
    */
   class SecretKeyAssignStmt extends AssignStmt {
@@ -119,7 +119,7 @@ module FlaskConstantSecretKeyConfig {
   }
 
   /**
-   * A helper predicate that specify where the Flask `SECRET_KEY` variable location is defined.
+   * Holds if there is a helper predicate that specify where the Flask `SECRET_KEY` variable location is defined.
    * In Flask we have config files that specify the location of `SECRET_KEY` variable initialization
    * and the name of these files are determined by
    * `app.config.from_pyfile("configFileName.py")`

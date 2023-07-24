@@ -14,7 +14,7 @@ module DjangoConstantSecretKeyConfig {
   predicate isSource(DataFlow::Node source) { source instanceof WebAppConstantSecretKeySource }
 
   /**
-   * A sink like following SECRET_KEY Assignments
+   * Holds if There is a sink like following SECRET_KEY Assignments
    * ```python
    *from django.conf import settings
    *settings.configure(
