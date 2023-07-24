@@ -145,6 +145,66 @@ class ZLibStreamSink extends DecompressionSink, DecompressionSource {
   }
 }
 
+class SharpZipLibType extends RefType {
+  SharpZipLibType() {
+    this.hasQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream") or
+    this.hasQualifiedName("ICSharpCode.SharpZipLib.BZip2", "BZip2InputStream") or
+    this.hasQualifiedName("ICSharpCode.SharpZipLib.GZip", "GZipInputStream") or
+    this.hasQualifiedName("ICSharpCode.SharpZipLib.Lzw", "LzwInputStream") or
+    this.hasQualifiedName("ICSharpCode.SharpZipLib.Tar", "TarInputStream") or
+    this.hasQualifiedName("ICSharpCode.SharpZipLib.Zip.Compression.Streams", "InflaterInputStream")
+  }
+}
+
+class SharpZipLibSource extends DecompressionSource {
+  SharpZipLibSource() {
+    exists(Constructor c |
+      c.getDeclaringType() instanceof SharpZipLibType and
+      this.asExpr() = c.getACall() and
+      not c.getDeclaringType().hasQualifiedName("ICSharpCode.SharpZipLib.Tar", "TarInputStream")
+    )
+  }
+}
+
+class SharpZipLibDecompressionMethod extends MethodCall {
+  SharpZipLibDecompressionMethod() {
+    exists(string methodName |
+      methodName =
+        [
+          "Read", "ReadAsync", "ReadAtLeast", "CopyToAsync", "CopyTo", "CopyEntryContentsAsync",
+          "CopyEntryContents"
+        ]
+    |
+      this.getTarget().hasQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream", methodName) or
+      this.getTarget()
+          .hasQualifiedName("ICSharpCode.SharpZipLib.BZip2", "BZip2InputStream", methodName) or
+      this.getTarget()
+          .hasQualifiedName("ICSharpCode.SharpZipLib.GZip", "GZipInputStream", methodName) or
+      this.getTarget().hasQualifiedName("ICSharpCode.SharpZipLib.Lzw", "LzwInputStream", methodName) or
+      this.getTarget().hasQualifiedName("ICSharpCode.SharpZipLib.Tar", "TarInputStream", methodName) or
+      this.getTarget()
+          .hasQualifiedName("ICSharpCode.SharpZipLib.Zip.Compression.Streams",
+            "InflaterInputStream", methodName) or
+      this.getTarget().hasQualifiedName("System.IO", "Stream", methodName)
+    )
+  }
+}
+
+class SharpZipLibSink extends DecompressionSink {
+  SharpZipLibSink() {
+    exists(SharpZipLibDecompressionMethod mc | this.asExpr() = mc.getArgument(0))
+  }
+}
+
+class SharpZipLibFastZipSink extends DecompressionSink {
+  SharpZipLibFastZipSink() {
+    exists(MethodCall mc |
+      mc.getTarget().hasQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream", "ExtractZip") and
+      this.asExpr() = mc.getArgument(0)
+    )
+  }
+}
+
 /**
  * A taint tracking configuration for Decompression Bomb.
  */
@@ -155,7 +215,10 @@ private module DecompressionBombConfig implements DataFlow::ConfigSig {
     source instanceof RemoteFlowSource
   }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof DecompressionSink
+    // sink instanceof DataFlow::Node
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // var node2 = node1.ExtractToFile("./output.txt", true)
@@ -176,6 +239,27 @@ private module DecompressionBombConfig implements DataFlow::ConfigSig {
       mc.getTarget().hasQualifiedName("Microsoft.AspNetCore.Http", "IFormFile", "OpenReadStream") and
       node2.asExpr() = mc and
       node1.asExpr() = mc.getQualifier()
+    )
+    or
+    exists(MethodCall mc, string methodName |
+      methodName =
+        [
+          "Read", "ReadAsync", "ReadAtLeast", "CopyToAsync", "CopyTo", "CopyEntryContentsAsync",
+          "CopyEntryContents"
+        ]
+    |
+      (
+        mc.getTarget().getDeclaringType() instanceof SharpZipLibType or
+        mc.getTarget().hasQualifiedName("System.IO", "Stream", methodName)
+      ) and
+      node1.asExpr() = mc.getQualifier() and
+      node2.asExpr() = mc.getArgument(0)
+    )
+    or
+    exists(Constructor c |
+      c.getDeclaringType() instanceof SharpZipLibType and
+      node1.asExpr() = c.getACall().getArgument(0) and
+      node2.asExpr() = c.getACall()
     )
   }
 }
