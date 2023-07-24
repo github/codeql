@@ -19,10 +19,10 @@ private module InvalidPointerToDerefBarrier {
     }
 
     additional predicate isSink(
-      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int state, boolean testIsTrue
+      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int k, boolean testIsTrue
     ) {
       // The sink is any "large" side of a relational comparison.
-      g.comparesLt(left.asOperand(), right.asOperand(), state, true, testIsTrue)
+      g.comparesLt(left.asOperand(), right.asOperand(), k, true, testIsTrue)
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
@@ -40,12 +40,12 @@ private module InvalidPointerToDerefBarrier {
   private predicate operandGuardChecks(
     IRGuardCondition g, Operand left, Operand right, int state, boolean edge
   ) {
-    exists(DataFlow::Node nLeft, DataFlow::Node nRight, int state0 |
+    exists(DataFlow::Node nLeft, DataFlow::Node nRight, int k |
       nRight.asOperand() = right and
       nLeft.asOperand() = left and
-      BarrierConfig::isSink(nLeft, nRight, g, state0, edge) and
+      BarrierConfig::isSink(nLeft, nRight, g, k, edge) and
       state = getInvalidPointerToDerefSourceDelta(nRight) and
-      state0 <= state
+      k <= state
     )
   }
 
@@ -85,49 +85,50 @@ private module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
 private import DataFlow::Global<InvalidPointerToDerefConfig>
 
 /**
- * Holds if `source1` is dataflow node that represents an allocation that flows to the
- * left-hand side of the pointer-arithmetic `pai`, and `derefSource` is a dataflow node with
- * a pointer-value that is non-strictly upper bounded by `pai + delta`.
+ * Holds if `allocSource` is dataflow node that represents an allocation that flows to the
+ * left-hand side of the pointer-arithmetic `pai`, and `derefSource <= pai + derefSourcePaiDelta`.
  *
  * For example, if `pai` is a pointer-arithmetic operation `p + size` in an expression such
  * as `(p + size) + 1` and `derefSource` is the node representing `(p + size) + 1`. In this
- * case `delta` is 1.
+ * case `derefSourcePaiDelta` is 1.
  */
 private predicate invalidPointerToDerefSource(
-  DataFlow::Node source1, PointerArithmeticInstruction pai, DataFlow::Node derefSource, int delta
+  DataFlow::Node allocSource, PointerArithmeticInstruction pai, DataFlow::Node derefSource,
+  int deltaDerefSourceAndPai
 ) {
-  exists(int delta0 |
-    // Note that `delta` is not necessarily equal to `delta0`:
-    // `delta0` is the constant offset added to the size of the allocation, and
-    // delta is the constant difference between the pointer-arithmetic instruction
+  exists(int rhsSizeDelta |
+    // Note that `deltaDerefSourceAndPai` is not necessarily equal to `rhsSizeDelta`:
+    // `rhsSizeDelta` is the constant offset added to the size of the allocation, and
+    // `deltaDerefSourceAndPai` is the constant difference between the pointer-arithmetic instruction
     // and the instruction computing the address for which we will search for a dereference.
-    AllocToInvalidPointer::pointerAddInstructionHasBounds(source1, pai, _, delta0) and
-    // pai <= derefSource + delta and delta <= 0 is equivalent to
-    // derefSource >= pai + delta and delta >= 0
-    bounded1(pai, derefSource.asInstruction(), delta) and
-    delta <= 0 and
+    AllocToInvalidPointer::pointerAddInstructionHasBounds(allocSource, pai, _, rhsSizeDelta) and
+    // pai <= derefSource + deltaDerefSourceAndPai and deltaDerefSourceAndPai <= 0 is equivalent to
+    // derefSource >= pai + deltaDerefSourceAndPai and deltaDerefSourceAndPai >= 0
+    bounded1(pai, derefSource.asInstruction(), deltaDerefSourceAndPai) and
+    deltaDerefSourceAndPai <= 0 and
     // TODO: This condition will go away once #13725 is merged, and then we can make `Barrier2`
     // private to `AllocationToInvalidPointer.qll`.
-    not derefSource.getBasicBlock() = AllocToInvalidPointer::Barrier2::getABarrierBlock(delta0)
+    not derefSource.getBasicBlock() =
+      AllocToInvalidPointer::SizeBarrier::getABarrierBlock(rhsSizeDelta)
   )
 }
 
 /**
  * Holds if `sink` is a sink for `InvalidPointerToDerefConfig` and `i` is a `StoreInstruction` that
- * writes to an address that non-strictly upper-bounds `sink`, or `i` is a `LoadInstruction` that
- * reads from an address that non-strictly upper-bounds `sink`.
+ * writes to an address `addr` such that `addr <= sink`, or `i` is a `LoadInstruction` that
+ * reads from an address `addr` such that `addr <= sink`.
  */
 pragma[inline]
 private predicate isInvalidPointerDerefSink(
-  DataFlow::Node sink, Instruction i, string operation, int delta
+  DataFlow::Node sink, Instruction i, string operation, int deltaDerefSinkAndDerefAddress
 ) {
   exists(AddressOperand addr, Instruction s, IRBlock b |
     s = sink.asInstruction() and
-    bounded(addr.getDef(), s, delta) and
-    delta >= 0 and
+    bounded(addr.getDef(), s, deltaDerefSinkAndDerefAddress) and
+    deltaDerefSinkAndDerefAddress >= 0 and
     i.getAnOperand() = addr and
     b = i.getBlock() and
-    not b = InvalidPointerToDerefBarrier::getABarrierBlock(delta)
+    not b = InvalidPointerToDerefBarrier::getABarrierBlock(deltaDerefSinkAndDerefAddress)
   |
     i instanceof StoreInstruction and
     operation = "write"
@@ -167,13 +168,13 @@ private predicate paiForDereferenceSink(PointerArithmeticInstruction pai, DataFl
  */
 private predicate derefSinkToOperation(
   DataFlow::Node derefSink, PointerArithmeticInstruction pai, DataFlow::Node operation,
-  string description, int delta
+  string description, int deltaDerefSinkAndDerefAddress
 ) {
-  exists(Instruction i |
+  exists(Instruction operationInstr |
     paiForDereferenceSink(pai, pragma[only_bind_into](derefSink)) and
-    isInvalidPointerDerefSink(derefSink, i, description, delta) and
-    i = getASuccessor(derefSink.asInstruction()) and
-    operation.asInstruction() = i
+    isInvalidPointerDerefSink(derefSink, operationInstr, description, deltaDerefSinkAndDerefAddress) and
+    operationInstr = getASuccessor(derefSink.asInstruction()) and
+    operation.asInstruction() = operationInstr
   )
 }
 
