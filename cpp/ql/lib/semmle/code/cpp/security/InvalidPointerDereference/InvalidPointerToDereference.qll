@@ -8,7 +8,7 @@
  * 1. char* base = (char*)malloc(size);
  * 2. char* end = base + size;
  * 3. for(int *p = base; p <= end; p++) {
- * 4.   use(*p);
+ * 4.   use(*p); // BUG: Should have been bounded by `p < end`.
  * 5. }
  * ```
  * this file identifies the flow from `base + size` to `end`. We call `base + size` the "dereference source" and `end`
