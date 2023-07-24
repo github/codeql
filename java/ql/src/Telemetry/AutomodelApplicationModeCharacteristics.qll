@@ -25,7 +25,17 @@ newtype JavaRelatedLocationType = CallContext()
  * A class representing nodes that are arguments to calls.
  */
 private class ArgumentNode extends DataFlow::Node {
-  ArgumentNode() { this.asExpr() = [any(Call c).getAnArgument(), any(Call c).getQualifier()] }
+  Call c;
+
+  ArgumentNode() {
+    exists(Argument arg | this.asExpr() = arg and not arg.isVararg() and c = arg.getCall())
+    or
+    this.(DataFlow::ImplicitVarargsArray).getCall() = c
+    or
+    this = DataFlow::getInstanceArgument(c)
+  }
+
+  Call getCall() { result = c }
 }
 
 /**
@@ -325,10 +335,9 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 
   override predicate appliesToEndpoint(Endpoint e) {
     not ApplicationCandidatesImpl::isSink(e, _, _) and
-    exists(DataFlow::Node otherSink, Call c |
+    exists(Endpoint otherSink |
       ApplicationCandidatesImpl::isSink(otherSink, _, "manual") and
-      c = otherSink.asExpr().(Argument).getCall() and
-      e.asExpr() in [c.getQualifier(), c.getAnArgument()] and
+      e.getCall() = otherSink.getCall() and
       e != otherSink
     )
   }
