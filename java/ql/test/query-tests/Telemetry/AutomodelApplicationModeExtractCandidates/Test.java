@@ -33,4 +33,10 @@ class AutomodelApplicationModeExtractCandidates {
 			openPath // no candidate (known sink)
 		);
 	}
+
+	public static InputStream getInputStream(String openPath) throws Exception {
+		return AutomodelApplicationModeExtractCandidates.getInputStream(
+			Paths.get(openPath) // no candidate (argument to local call)
+		);
+	}
 }
