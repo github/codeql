@@ -1,6 +1,6 @@
 /**
  * @name Bad HTML filtering regexp
- * @description Matching HTML tags using regular expressions is hard to do right, and can easily lead to security issues.
+ * @description Matching HTML tags using regular expressions is hard to do right, and can lead to security issues.
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.8
