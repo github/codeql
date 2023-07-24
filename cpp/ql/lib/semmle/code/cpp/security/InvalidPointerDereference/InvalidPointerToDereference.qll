@@ -7,13 +7,14 @@
  * ```cpp
  * 1. char* base = (char*)malloc(size);
  * 2. char* end = base + size;
- * 3. for(int *p = base; p <= end; p++) {
+ * 3. for(char *p = base; p <= end; p++) {
  * 4.   use(*p); // BUG: Should have been bounded by `p < end`.
  * 5. }
  * ```
  * this file identifies the flow from `base + size` to `end`. We call `base + size` the "dereference source" and `end`
- * the "dereference sink" (even though `end` is not actually dereferenced - it will be used to find the correct
- * dereference eventually).
+ * the "dereference sink" (even though `end` is not actually dereferenced we will use this term because we will perform
+ * dataflow to find a use of a pointer `x` such that `x <= end` which is dereferenced. In the above example, `x` is `p`
+ * on line 4).
  *
  * Merely _constructing_ a pointer that's out-of-bounds is fine if the pointer is never dereferenced (in reality, the
  * standard only guarentees that it's safe to move the pointer one element past the last element. But we ignore that
