@@ -110,10 +110,63 @@ class UsersController < ActionController::Base
     hash = Hash.from_trusted_xml(xml)
   end
 
-  # BAD
+  # BAD before psych version 4.0.0
   def route15
     yaml_data = params[:key]
     object = Psych.load yaml_data
+    object = Psych.load_file yaml_data
+  end
+
+  # GOOD In psych version 4.0.0 and above
+  def route16
+    yaml_data = params[:key]
+    object = Psych.load yaml_data
+    object = Psych.load_file yaml_data2
+  end
+
+  # GOOD
+  def route17
+    yaml_data = params[:key]
+    object = Psych.parse_stream(yaml_data) 
+    object = Psych.parse(yaml_data)
+    object = Psych.parse_file(yaml_data)
+  end
+
+  # BAD
+  def route18
+    yaml_data = params[:key]
+    object = Psych.unsafe_load(plist_data)
+    object = Psych.unsafe_load_file(plist_data)
+    object = Psych.load_stream(plist_data)
+    parse_output = Psych.parse_stream(plist_data)
+    object = parse_output.to_ruby
+    object = Psych.parse(plist_data).to_ruby
+    object = Psych.parse_file(plist_data).to_ruby
+    parsed_yaml = Psych.parse_stream(plist_data)
+    parsed_yaml.children.each do |child|
+      object = child.to_ruby
+    end
+    Psych.parse_stream(plist_data)  do |document|
+      object = document.to_ruby
+    end
+    object = parsed_yaml.children.first.to_ruby
+    content = parsed_yaml.children[0].children[0].children
+    object = parsed_yaml.to_ruby[0]
+    object = content.to_ruby[0]
+    object = Psych.parse(plist_data).children[0].to_ruby
+  end
+
+  # BAD
+  def route19
+    plist_data = params[:key]
+    result = Plist.parse_xml(plist_data)
+    result = Plist.parse_xml(plist_data, marshal: true)
+  end
+
+  # GOOD
+  def route20
+    plist_data = params[:key]
+    result = Plist.parse_xml(plist_data, marshal: false)
   end
 
   def stdin
