@@ -1,12 +1,8 @@
 import os
 import subprocess
-import shlex
 
 def unsafe_shell_one(name):
     os.system("ping " + name) # $result=BAD
-
-    # shlex.quote sanitizer
-    os.system("ping " + shlex.quote(name)) # $result=OK
 
     # f-strings
     os.system(f"ping {name}") # $result=BAD
@@ -51,3 +47,7 @@ def subprocess_flag (name):
 
 def intentional(command): 
     os.system("fish -ic " + command) # $result=OK - intentional
+
+import shlex
+def unsafe_shell_sanitized(name): 
+    os.system("ping " + shlex.quote(name)) # $result=OK - sanitized
