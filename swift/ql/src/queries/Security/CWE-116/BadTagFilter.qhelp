@@ -6,8 +6,8 @@
 <overview>
 <p>
 It is possible to match some single HTML tags using regular expressions (parsing general HTML using
-regular expressions is impossible). However, if the regular expression is not written well it might
-be possible to circumvent it, which can lead to cross-site scripting or other security issues.
+regular expressions is impossible). However, if the regular expression is not written well, it might
+be possible to circumvent it. This can lead to cross-site scripting or other security issues.
 </p>
 <p>
 Some of these mistakes are caused by browsers having very forgiving HTML parsers, and
