@@ -59,6 +59,17 @@ module ServerLess<Input I> {
   }
 
   /**
+   * Gets the looked up value if it exists or
+   * the empty string if it does not.
+   */
+  pragma[inline]
+  private string lookupValueOrEmpty(YamlMapping mapping, string property) {
+    if exists(mapping.lookup(property))
+    then result = mapping.lookup(property).(YamlScalar).getValue()
+    else result = ""
+  }
+
+  /**
    * Gets a string where an ending "/." is simplified to "/" (if it exists).
    */
   bindingset[base]
@@ -78,9 +89,13 @@ module ServerLess<Input I> {
 
   /**
    * Gets a string suitable as part of a file path.
+   *
+   * Maps the empty string to the empty string.
    */
   bindingset[base]
-  private string normalise(string base) { result = removeLeadingDotSlash(removeTrailingDot(base)) }
+  private string normalizePath(string base) {
+    result = removeLeadingDotSlash(removeTrailingDot(base))
+  }
 
   /**
    * Holds if the `.yml` file `ymlFile` contains a serverless configuration from `framework` with
@@ -99,16 +114,8 @@ module ServerLess<Input I> {
       exists(YamlMapping properties | properties = resource.lookup("Properties") |
         (
           handler = lookupValue(properties, "Handler") and
-          (
-            if exists(properties.lookup("CodeUri"))
-            then codeUri = normalise(lookupValue(properties, "CodeUri"))
-            else codeUri = ""
-          ) and
-          (
-            if exists(properties.lookup("Runtime"))
-            then runtime = lookupValue(properties, "Runtime")
-            else runtime = ""
-          )
+          codeUri = normalizePath(lookupValueOrEmpty(properties, "CodeUri")) and
+          runtime = lookupValueOrEmpty(properties, "Runtime")
         )
       )
       or
@@ -119,11 +126,7 @@ module ServerLess<Input I> {
         not exists(resource.getParentNode()) and
         handler = lookupValue(functions.getValue(_), "handler") and
         codeUri = "" and
-        (
-          if exists(functions.lookup("Runtime"))
-          then runtime = lookupValue(functions, "Runtime")
-          else runtime = ""
-        )
+        runtime = lookupValueOrEmpty(functions, "Runtime")
       )
     )
   }
