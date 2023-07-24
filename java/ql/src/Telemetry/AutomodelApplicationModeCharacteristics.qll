@@ -12,7 +12,6 @@ private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummary
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
 private import semmle.code.java.security.QueryInjection
-private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 private import AutomodelJavaUtil as AutomodelJavaUtil
 private import semmle.code.java.security.PathSanitizer as PathSanitizer
@@ -136,10 +135,6 @@ private module ApplicationModeGetCallable implements AutomodelSharedGetCallable:
  * should be empty.
  */
 private predicate isCustomSink(Endpoint e, string kind) {
-  e.asExpr() instanceof ArgumentToExec and kind = "command injection"
-  or
-  e instanceof RequestForgerySink and kind = "request forgery"
-  or
   e instanceof QueryInjectionSink and kind = "sql"
 }
 
