@@ -117,15 +117,6 @@ private class DefaultUnsafeJsEvalAdditionalFlowStep extends UnsafeJsEvalAddition
       nodeTo.asExpr() = arg.getApplyExpr()
     )
     or
-    exists(CallExpr ce, Expr self, ClosureExpr closure |
-      ce.getStaticTarget().getName().matches("withUnsafeBufferPointer(%)") and
-      self = ce.getQualifier() and
-      ce.getArgument(0).getExpr() = closure
-    |
-      nodeFrom.asExpr() = self and
-      nodeTo.(DataFlow::ParameterNode).getParameter() = closure.getParam(0)
-    )
-    or
     exists(MemberRefExpr e, Expr self, VarDecl member |
       self.getType().getName().matches(["Unsafe%Buffer%", "Unsafe%Pointer%"]) and
       member.getName() = "baseAddress"
