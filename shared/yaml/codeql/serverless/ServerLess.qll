@@ -83,7 +83,7 @@ module ServerLess<Input I> {
   private string normalise(string base) { result = removeLeadingDotSlash(removeTrailingDot(base)) }
 
   /**
-   * Holds if the `.yml` file `ymlFile` contains a serverless configuration fro `framework` with
+   * Holds if the `.yml` file `ymlFile` contains a serverless configuration from `framework` with
    * `handler`, `codeURI`, and `runtime` properties.
    * `codeURI` and `runtime` default to the empty string if no explicit value is set in the configuration.
    *

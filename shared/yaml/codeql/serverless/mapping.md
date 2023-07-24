@@ -28,14 +28,14 @@ See [documentation](https://docs.aws.amazon.com/lambda/latest/dg/java-handler.ht
 
 You can express the hander in the following formats:
 
-- `package.Class::method` – Full format. For example: example.Handler::handleRequest.
+- `package.Class::method` – Full format. For example: `example.Handler::handleRequest`.
 
-- `package.Class` – Abbreviated format for functions that implement a handler interface. For example: example.Handler.
+- `package.Class` – Abbreviated format for functions that implement a handler interface. For example: `example.Handler`.
 
 ### Go
 See [documentation](https://docs.aws.amazon.com/lambda/latest/dg/golang-handler.html)
 
-When you configure a function in Go, the value of the handler setting is the executable file name. For example, if you set the value of the handler to Handler, Lambda will call the main() function in the Handler executable file.
+When you configure a function in Go, the value of the handler setting is the executable file name. For example, if you set the value of the handler to `Handler`, Lambda will call the `main()` function in the `Handler` executable file.
 
 ### C#
 See [documentation](https://docs.aws.amazon.com/lambda/latest/dg/csharp-handler.html)
