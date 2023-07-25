@@ -33,7 +33,7 @@
  * instruction that consumes the address operand the "operation".
  *
  * For example, consider the flow from `base + size` to `end` above. The sink is `end` on line 3 because
- * `p <= end.asInstruction() + deltaDerefSinkAndDerefAddress` where `p` is the address operand in `use(*p)` and
+ * `p <= end.asInstruction() + deltaDerefSinkAndDerefAddress`, where `p` is the address operand in `use(*p)` and
  * `deltaDerefSinkAndDerefAddress >= 0`. The load attached to `*p` is the "operation". To ensure that the path makes
  * intuitive sense, we only pick operations that are control-flow reachable from the dereference sink.
  *
