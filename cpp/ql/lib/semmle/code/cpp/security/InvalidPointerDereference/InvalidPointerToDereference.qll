@@ -27,9 +27,10 @@
  * Here, `deltaDerefSourceAndPai` is the constant difference between the source we track for finding a dereference and the
  * pointer-arithmetic instruction.
  *
- * The set of sinks is defined to be any address operand `addr` that is non-strictly upper-bounded by the sink. That is,
- * any dataflow node `n` such that `addr <= sink.asInstruction() + delta2` for some `delta2`. We call the instruction that
- * consumes the address operand the "operation".
+ * The set of sinks is defined as any dataflow node `n` such that `addr <= n.asInstruction() + deltaDerefSinkAndDerefAddress`
+ * for some address operand `addr` and constant difference `deltaDerefSinkAndDerefAddress`. Since an address operand is
+ * always consumed by an instruction that performs a dereference this lets us identify a "bad dereference". We call the
+ * instruction that consumes the address operand the "operation".
  *
  * For example, consider the flow from `base + size` to `end` above. The sink is `end` on line 3 because that is a dataflow
  * node whose underlying instruction non-strictly upper bounds the address operand `p` in `use(*p)`. The load attached to `*p`
