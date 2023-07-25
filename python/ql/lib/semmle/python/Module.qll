@@ -195,7 +195,7 @@ private predicate isPotentialPackage(Folder f) {
 }
 
 private string moduleNameFromBase(Container file) {
-  isPotentialPackage(file) and result = file.getBaseName()
+  result = file.getBaseName()
   or
   file instanceof File and result = file.getStem()
 }
