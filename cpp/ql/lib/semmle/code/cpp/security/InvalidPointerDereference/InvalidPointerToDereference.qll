@@ -45,7 +45,7 @@
  * Consider the following snippet:
  * ```cpp
  * 1. char *p = new char[size];
- * 2. char *end = p + size; // $ alloc=L363
+ * 2. char *end = p + size;
  * 3. if (p < end) {
  * 4.   p += 1;
  * 5. }
