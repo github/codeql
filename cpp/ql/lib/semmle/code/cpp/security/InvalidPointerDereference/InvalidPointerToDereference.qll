@@ -18,8 +18,9 @@
  *
  * Merely _constructing_ a pointer that's out-of-bounds is fine if the pointer is never dereferenced (in reality, the
  * standard only guarentees that it's safe to move the pointer one element past the last element. But we ignore that
- * here). So this step is about identifying which of those out-of-bounds pointers identified from step 1 that are
- * actually being dereferenced. We do this using a regular dataflow configuration (see `InvalidPointerToDerefConfig`).
+ * here). So this step is about identifying which of those out-of-bounds pointers found by `pointerAddInstructionHasBounds`
+ * in `AllocationToInvalidPointer.qll` that are actually being dereferenced. We do this using a regular dataflow
+ * configuration (see `InvalidPointerToDerefConfig`).
  *
  * This dataflow traversal defines the set of sources as any dataflow node that is non-strictly lower-bounded by the
  * pointer-arithmetic instruction identified by `AllocationToInvalidPointer.qll`. That is, the set of sources is any
