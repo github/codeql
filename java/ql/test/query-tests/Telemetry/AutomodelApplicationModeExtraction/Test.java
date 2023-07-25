@@ -7,8 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.nio.ByteBuffer;
 
-class AutomodelApplicationModeExtractCandidates {
+
+class Test {
 	public static void main(String[] args) throws Exception {
 		AtomicReference<String> reference = new AtomicReference<>(); // uninteresting (parameterless constructor)
 		reference.set(args[0]); // arg[0] is not a candidate (modeled as value flow step)
@@ -21,21 +23,27 @@ class AutomodelApplicationModeExtractCandidates {
 
 	public static void copyFiles(Path source, Path target, CopyOption option) throws Exception {
 		Files.copy(
-			source, // no candidate (modeled)
-			target, // no candidate (modeled)
+			source, // positive example (known sink)
+			target, // positive example (known sink)
 			option // no candidate (not modeled, but source and target are modeled)
 		);
 	}
 
 	public static InputStream getInputStream(Path openPath) throws Exception {
 		return Files.newInputStream(
-			openPath // no candidate (known sink)
+			openPath // positive example (known sink)
 		);
 	}
 
 	public static InputStream getInputStream(String openPath) throws Exception {
-		return AutomodelApplicationModeExtractCandidates.getInputStream(
+		return Test.getInputStream(
 			Paths.get(openPath) // no candidate (argument to local call)
 		);
 	}
+
+	public static ByteBuffer getBuffer(int size) {
+		return ByteBuffer // negative example, modeled as a neutral model
+		  .allocate(size); // negative example, modeled as a neutral model
+	}
 }
+
