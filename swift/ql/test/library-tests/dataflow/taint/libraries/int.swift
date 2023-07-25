@@ -137,3 +137,32 @@ func taintThroughMutablePointer() {
   sink(arg: myMutableBuffer)
   sink(arg: myMutableBuffer[0]) // $ MISSING: tainted=131
 }
+
+func taintCollections(array: inout Array<Int>, contiguousArray: inout ContiguousArray<Int>, dictionary: inout Dictionary<Int, Int>) {
+  array[0] = source2()
+  sink(arg: array)
+  sink(arg: array[0]) // $ tainted=142
+  array.withContiguousStorageIfAvailable({
+    buffer in
+    sink(arg: array)
+    sink(arg: array[0]) // $ MISSING: tainted=142
+  })
+
+  contiguousArray[0] = source2()
+  sink(arg: contiguousArray)
+  sink(arg: contiguousArray[0]) // $ MISSING: tainted=151
+  contiguousArray.withContiguousStorageIfAvailable({
+    buffer in
+    sink(arg: buffer)
+    sink(arg: buffer[0]) // $ MISSING: tainted=151
+  })
+
+  dictionary[0] = source2()
+  sink(arg: dictionary)
+  sink(arg: dictionary[0]!) // $ MISSING: tainted=160
+  dictionary.withContiguousStorageIfAvailable({
+    buffer in
+    sink(arg: buffer)
+    sink(arg: buffer[0]) // $ MISSING: tainted=160
+  })
+}
