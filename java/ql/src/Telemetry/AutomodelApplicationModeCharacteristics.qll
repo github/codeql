@@ -88,7 +88,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
       sinkSpec(e, package, type, name, signature, _, _) and
-      ExternalFlow::neutralModel(package, type, name, [signature, ""], _, _)
+      ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
     )
   }
 
