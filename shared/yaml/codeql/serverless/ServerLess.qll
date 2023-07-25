@@ -63,6 +63,7 @@ module ServerLess<Input I> {
    * the empty string if it does not.
    */
   pragma[inline]
+  bindingset[property]
   private string lookupValueOrEmpty(YamlMapping mapping, string property) {
     if exists(mapping.lookup(property))
     then result = mapping.lookup(property).(YamlScalar).getValue()
