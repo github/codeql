@@ -36,25 +36,12 @@ module Generated {
 
     /**
      * Gets the declaration of this any generic type.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    GenericTypeDecl getImmediateDeclaration() {
+    GenericTypeDecl getDeclaration() {
       result =
         Synth::convertGenericTypeDeclFromRaw(Synth::convertAnyGenericTypeToRaw(this)
               .(Raw::AnyGenericType)
               .getDeclaration())
-    }
-
-    /**
-     * Gets the declaration of this any generic type.
-     */
-    final GenericTypeDecl getDeclaration() {
-      exists(GenericTypeDecl immediate |
-        immediate = this.getImmediateDeclaration() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }

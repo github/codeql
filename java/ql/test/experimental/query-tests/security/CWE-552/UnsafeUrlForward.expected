@@ -3,19 +3,30 @@ edges
 | UnsafeLoadSpringResource.java:31:27:31:57 | new ClassPathResource(...) : ClassPathResource | UnsafeLoadSpringResource.java:35:31:35:33 | clr |
 | UnsafeLoadSpringResource.java:31:49:31:56 | fileName : String | UnsafeLoadSpringResource.java:31:27:31:57 | new ClassPathResource(...) : ClassPathResource |
 | UnsafeLoadSpringResource.java:68:32:68:77 | fileName : String | UnsafeLoadSpringResource.java:76:38:76:45 | fileName |
+| UnsafeLoadSpringResource.java:108:32:108:77 | fileName : String | UnsafeLoadSpringResource.java:116:51:116:58 | fileName |
 | UnsafeRequestPath.java:20:17:20:63 | getServletPath(...) : String | UnsafeRequestPath.java:23:33:23:36 | path |
 | UnsafeResourceGet2.java:16:32:16:79 | getRequestParameterMap(...) : Map | UnsafeResourceGet2.java:17:20:17:25 | params : Map |
-| UnsafeResourceGet2.java:17:20:17:25 | params : Map | UnsafeResourceGet2.java:17:20:17:40 | get(...) : Object |
-| UnsafeResourceGet2.java:17:20:17:40 | get(...) : Object | UnsafeResourceGet2.java:19:93:19:99 | loadUrl |
+| UnsafeResourceGet2.java:17:20:17:25 | params : Map | UnsafeResourceGet2.java:17:20:17:40 | get(...) : String |
+| UnsafeResourceGet2.java:17:20:17:40 | get(...) : String | UnsafeResourceGet2.java:19:93:19:99 | loadUrl |
 | UnsafeResourceGet2.java:32:32:32:79 | getRequestParameterMap(...) : Map | UnsafeResourceGet2.java:33:20:33:25 | params : Map |
-| UnsafeResourceGet2.java:33:20:33:25 | params : Map | UnsafeResourceGet2.java:33:20:33:40 | get(...) : Object |
-| UnsafeResourceGet2.java:33:20:33:40 | get(...) : Object | UnsafeResourceGet2.java:37:20:37:22 | url |
-| UnsafeResourceGet.java:32:23:32:56 | getParameter(...) : String | UnsafeResourceGet.java:41:20:41:22 | url |
+| UnsafeResourceGet2.java:33:20:33:25 | params : Map | UnsafeResourceGet2.java:33:20:33:40 | get(...) : String |
+| UnsafeResourceGet2.java:33:20:33:40 | get(...) : String | UnsafeResourceGet2.java:35:49:35:55 | loadUrl : String |
+| UnsafeResourceGet2.java:35:13:35:56 | getResource(...) : URL | UnsafeResourceGet2.java:37:20:37:22 | url |
+| UnsafeResourceGet2.java:35:49:35:55 | loadUrl : String | UnsafeResourceGet2.java:35:13:35:56 | getResource(...) : URL |
+| UnsafeResourceGet.java:32:23:32:56 | getParameter(...) : String | UnsafeResourceGet.java:39:28:39:37 | requestUrl : String |
+| UnsafeResourceGet.java:39:13:39:38 | getResource(...) : URL | UnsafeResourceGet.java:41:20:41:22 | url |
+| UnsafeResourceGet.java:39:28:39:37 | requestUrl : String | UnsafeResourceGet.java:39:13:39:38 | getResource(...) : URL |
 | UnsafeResourceGet.java:111:24:111:58 | getParameter(...) : String | UnsafeResourceGet.java:115:68:115:78 | requestPath |
-| UnsafeResourceGet.java:143:23:143:56 | getParameter(...) : String | UnsafeResourceGet.java:150:20:150:22 | url |
+| UnsafeResourceGet.java:143:23:143:56 | getParameter(...) : String | UnsafeResourceGet.java:148:36:148:45 | requestUrl : String |
+| UnsafeResourceGet.java:148:13:148:46 | getResource(...) : URL | UnsafeResourceGet.java:150:20:150:22 | url |
+| UnsafeResourceGet.java:148:36:148:45 | requestUrl : String | UnsafeResourceGet.java:148:13:148:46 | getResource(...) : URL |
 | UnsafeResourceGet.java:181:24:181:58 | getParameter(...) : String | UnsafeResourceGet.java:189:68:189:78 | requestPath |
-| UnsafeResourceGet.java:219:23:219:56 | getParameter(...) : String | UnsafeResourceGet.java:226:20:226:22 | url |
-| UnsafeResourceGet.java:237:24:237:58 | getParameter(...) : String | UnsafeResourceGet.java:245:21:245:22 | rs : Resource |
+| UnsafeResourceGet.java:219:23:219:56 | getParameter(...) : String | UnsafeResourceGet.java:224:53:224:62 | requestUrl : String |
+| UnsafeResourceGet.java:224:13:224:63 | getResource(...) : URL | UnsafeResourceGet.java:226:20:226:22 | url |
+| UnsafeResourceGet.java:224:53:224:62 | requestUrl : String | UnsafeResourceGet.java:224:13:224:63 | getResource(...) : URL |
+| UnsafeResourceGet.java:237:24:237:58 | getParameter(...) : String | UnsafeResourceGet.java:241:33:241:43 | requestPath : String |
+| UnsafeResourceGet.java:241:18:241:44 | getResource(...) : Resource | UnsafeResourceGet.java:245:21:245:22 | rs : Resource |
+| UnsafeResourceGet.java:241:33:241:43 | requestPath : String | UnsafeResourceGet.java:241:18:241:44 | getResource(...) : Resource |
 | UnsafeResourceGet.java:245:21:245:22 | rs : Resource | UnsafeResourceGet.java:245:21:245:32 | getPath(...) |
 | UnsafeServletRequestDispatch.java:23:22:23:54 | getParameter(...) : String | UnsafeServletRequestDispatch.java:32:51:32:59 | returnURL |
 | UnsafeServletRequestDispatch.java:42:22:42:54 | getParameter(...) : String | UnsafeServletRequestDispatch.java:48:56:48:64 | returnURL |
@@ -35,27 +46,39 @@ nodes
 | UnsafeLoadSpringResource.java:35:31:35:33 | clr | semmle.label | clr |
 | UnsafeLoadSpringResource.java:68:32:68:77 | fileName : String | semmle.label | fileName : String |
 | UnsafeLoadSpringResource.java:76:38:76:45 | fileName | semmle.label | fileName |
+| UnsafeLoadSpringResource.java:108:32:108:77 | fileName : String | semmle.label | fileName : String |
+| UnsafeLoadSpringResource.java:116:51:116:58 | fileName | semmle.label | fileName |
 | UnsafeRequestPath.java:20:17:20:63 | getServletPath(...) : String | semmle.label | getServletPath(...) : String |
 | UnsafeRequestPath.java:23:33:23:36 | path | semmle.label | path |
 | UnsafeResourceGet2.java:16:32:16:79 | getRequestParameterMap(...) : Map | semmle.label | getRequestParameterMap(...) : Map |
 | UnsafeResourceGet2.java:17:20:17:25 | params : Map | semmle.label | params : Map |
-| UnsafeResourceGet2.java:17:20:17:40 | get(...) : Object | semmle.label | get(...) : Object |
+| UnsafeResourceGet2.java:17:20:17:40 | get(...) : String | semmle.label | get(...) : String |
 | UnsafeResourceGet2.java:19:93:19:99 | loadUrl | semmle.label | loadUrl |
 | UnsafeResourceGet2.java:32:32:32:79 | getRequestParameterMap(...) : Map | semmle.label | getRequestParameterMap(...) : Map |
 | UnsafeResourceGet2.java:33:20:33:25 | params : Map | semmle.label | params : Map |
-| UnsafeResourceGet2.java:33:20:33:40 | get(...) : Object | semmle.label | get(...) : Object |
+| UnsafeResourceGet2.java:33:20:33:40 | get(...) : String | semmle.label | get(...) : String |
+| UnsafeResourceGet2.java:35:13:35:56 | getResource(...) : URL | semmle.label | getResource(...) : URL |
+| UnsafeResourceGet2.java:35:49:35:55 | loadUrl : String | semmle.label | loadUrl : String |
 | UnsafeResourceGet2.java:37:20:37:22 | url | semmle.label | url |
 | UnsafeResourceGet.java:32:23:32:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeResourceGet.java:39:13:39:38 | getResource(...) : URL | semmle.label | getResource(...) : URL |
+| UnsafeResourceGet.java:39:28:39:37 | requestUrl : String | semmle.label | requestUrl : String |
 | UnsafeResourceGet.java:41:20:41:22 | url | semmle.label | url |
 | UnsafeResourceGet.java:111:24:111:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | UnsafeResourceGet.java:115:68:115:78 | requestPath | semmle.label | requestPath |
 | UnsafeResourceGet.java:143:23:143:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeResourceGet.java:148:13:148:46 | getResource(...) : URL | semmle.label | getResource(...) : URL |
+| UnsafeResourceGet.java:148:36:148:45 | requestUrl : String | semmle.label | requestUrl : String |
 | UnsafeResourceGet.java:150:20:150:22 | url | semmle.label | url |
 | UnsafeResourceGet.java:181:24:181:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | UnsafeResourceGet.java:189:68:189:78 | requestPath | semmle.label | requestPath |
 | UnsafeResourceGet.java:219:23:219:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeResourceGet.java:224:13:224:63 | getResource(...) : URL | semmle.label | getResource(...) : URL |
+| UnsafeResourceGet.java:224:53:224:62 | requestUrl : String | semmle.label | requestUrl : String |
 | UnsafeResourceGet.java:226:20:226:22 | url | semmle.label | url |
 | UnsafeResourceGet.java:237:24:237:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| UnsafeResourceGet.java:241:18:241:44 | getResource(...) : Resource | semmle.label | getResource(...) : Resource |
+| UnsafeResourceGet.java:241:33:241:43 | requestPath : String | semmle.label | requestPath : String |
 | UnsafeResourceGet.java:245:21:245:22 | rs : Resource | semmle.label | rs : Resource |
 | UnsafeResourceGet.java:245:21:245:32 | getPath(...) | semmle.label | getPath(...) |
 | UnsafeServletRequestDispatch.java:23:22:23:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -83,6 +106,7 @@ subpaths
 #select
 | UnsafeLoadSpringResource.java:35:31:35:33 | clr | UnsafeLoadSpringResource.java:27:32:27:77 | fileName : String | UnsafeLoadSpringResource.java:35:31:35:33 | clr | Potentially untrusted URL forward due to $@. | UnsafeLoadSpringResource.java:27:32:27:77 | fileName | user-provided value |
 | UnsafeLoadSpringResource.java:76:38:76:45 | fileName | UnsafeLoadSpringResource.java:68:32:68:77 | fileName : String | UnsafeLoadSpringResource.java:76:38:76:45 | fileName | Potentially untrusted URL forward due to $@. | UnsafeLoadSpringResource.java:68:32:68:77 | fileName | user-provided value |
+| UnsafeLoadSpringResource.java:116:51:116:58 | fileName | UnsafeLoadSpringResource.java:108:32:108:77 | fileName : String | UnsafeLoadSpringResource.java:116:51:116:58 | fileName | Potentially untrusted URL forward due to $@. | UnsafeLoadSpringResource.java:108:32:108:77 | fileName | user-provided value |
 | UnsafeRequestPath.java:23:33:23:36 | path | UnsafeRequestPath.java:20:17:20:63 | getServletPath(...) : String | UnsafeRequestPath.java:23:33:23:36 | path | Potentially untrusted URL forward due to $@. | UnsafeRequestPath.java:20:17:20:63 | getServletPath(...) | user-provided value |
 | UnsafeResourceGet2.java:19:93:19:99 | loadUrl | UnsafeResourceGet2.java:16:32:16:79 | getRequestParameterMap(...) : Map | UnsafeResourceGet2.java:19:93:19:99 | loadUrl | Potentially untrusted URL forward due to $@. | UnsafeResourceGet2.java:16:32:16:79 | getRequestParameterMap(...) | user-provided value |
 | UnsafeResourceGet2.java:37:20:37:22 | url | UnsafeResourceGet2.java:32:32:32:79 | getRequestParameterMap(...) : Map | UnsafeResourceGet2.java:37:20:37:22 | url | Potentially untrusted URL forward due to $@. | UnsafeResourceGet2.java:32:32:32:79 | getRequestParameterMap(...) | user-provided value |

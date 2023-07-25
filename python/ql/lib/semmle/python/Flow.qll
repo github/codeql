@@ -640,12 +640,23 @@ class DefinitionNode extends ControlFlowNode {
     exists(Assign a | list_or_tuple_nested_element(a.getATarget()).getAFlowNode() = this)
     or
     exists(For for | for.getTarget().getAFlowNode() = this)
+    or
+    exists(Parameter param | this = param.asName().getAFlowNode() and exists(param.getDefault()))
   }
 
   /** flow node corresponding to the value assigned for the definition corresponding to this flow node */
   ControlFlowNode getValue() {
     result = assigned_value(this.getNode()).getAFlowNode() and
-    (result.getBasicBlock().dominates(this.getBasicBlock()) or result.isImport())
+    (
+      result.getBasicBlock().dominates(this.getBasicBlock())
+      or
+      result.isImport()
+      or
+      // since the default value for a parameter is evaluated in the same basic block as
+      // the function definition, but the parameter belongs to the basic block of the function,
+      // there is no dominance relationship between the two.
+      exists(Parameter param | this = param.asName().getAFlowNode())
+    )
   }
 }
 
@@ -795,6 +806,8 @@ private AstNode assigned_value(Expr lhs) {
   or
   /* for lhs in seq: => `result` is the `for` node, representing the `iter(next(seq))` operation. */
   result.(For).getTarget() = lhs
+  or
+  exists(Parameter param | lhs = param.asName() and result = param.getDefault())
 }
 
 predicate nested_sequence_assign(

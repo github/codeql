@@ -5,6 +5,7 @@
 
 import codeql.ruby.AST
 import TestUtilities.InlineFlowTest
+import DefaultFlowTest
 import PathGraph
 private import codeql.ruby.dataflow.FlowSummary
 

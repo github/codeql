@@ -375,11 +375,6 @@ Locatable getInstructionAst(TStageInstruction instr) {
   )
 }
 
-/** DEPRECATED: Alias for getInstructionAst */
-deprecated Locatable getInstructionAST(TStageInstruction instr) {
-  result = getInstructionAst(instr)
-}
-
 CppType getInstructionResultType(TStageInstruction instr) {
   getInstructionTranslatedElement(instr).hasInstruction(_, getInstructionTag(instr), result)
   or

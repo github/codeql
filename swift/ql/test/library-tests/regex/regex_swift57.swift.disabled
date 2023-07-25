@@ -1,0 +1,72 @@
+// these tests require Swift 5.7 or so, and currently require the
+// `-enable-bare-slash-regex` compiler flag.
+
+// --- stubs ---
+
+struct AnyRegexOutput {
+}
+
+protocol RegexComponent<RegexOutput> {
+	associatedtype RegexOutput
+}
+
+struct Regex<Output> : RegexComponent {
+	struct Match {
+	}
+
+	init(_ pattern: String) throws where Output == AnyRegexOutput { }
+
+	func firstMatch(in string: String) throws -> Regex<Output>.Match? { return nil }
+
+	typealias RegexOutput = Output
+}
+
+extension BidirectionalCollection {
+	func contains(_ regex: some RegexComponent) -> Bool { return false }
+	func firstMatch<Output>(of r: some RegexComponent<Output>) -> Regex<Output>.Match? { return nil } // slightly simplified
+	func firstMatch<Output>(of r: some RegexComponent) -> Regex<Output>.Match? where SubSequence == Substring { return nil }
+	func firstRange(of regex: some RegexComponent) -> Range<Self.Index>? { return nil }
+	func matches<Output>(of r: some RegexComponent<Output>) -> [Regex<Output>.Match] { return [] } // slightly simplified
+	func prefixMatch<R>(of regex: R) -> Regex<R.RegexOutput>.Match? where R: RegexComponent { return nil }
+	func ranges(of regex: some RegexComponent) -> [Range<Self.Index>] { return [] }
+	func starts(with regex: some RegexComponent) -> Bool { return false }
+	func trimmingPrefix(_ regex: some RegexComponent) -> Self.SubSequence { return self.suffix(0) }
+	func split(separator: some RegexComponent, maxSplits: Int = .max, omittingEmptySubsequences: Bool = true) -> [Self.SubSequence] { return [] }
+}
+
+extension String : RegexComponent {
+	typealias Output = Substring
+	typealias RegexOutput = String.Output
+}
+
+// --- tests ---
+
+func myRegexpMethodsTests() throws {
+	let input = "abcdef"
+	let regex = try Regex(".*")
+
+	// --- BidirectionalCollection ---
+
+	_ = input.contains(regex)
+	_ = input.firstMatch(of: regex)
+	_ = input.firstRange(of: regex)
+	_ = input.matches(of: regex)
+	_ = input.prefixMatch(of: regex)
+	_ = input.ranges(of: regex)
+	_ = input.starts(with: regex)
+	_ = input.trimmingPrefix(regex)
+	_ = input.split(separator: regex)
+
+	// --- compile time regexps ---
+
+	let regex2 = /a*b*/
+	_ = try regex2.firstMatch(in: input)
+
+	let regex3 = /(?<varname>a*)*b/
+	_ = try regex3.firstMatch(in: input)
+
+	let regex4 = #/a*b*/#
+	_ = try regex4.firstMatch(in: input)
+
+	_ = input.contains(/a*b*/)
+}

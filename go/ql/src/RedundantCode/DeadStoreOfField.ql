@@ -36,7 +36,10 @@ predicate escapes(DataFlow::Node nd) {
   exists(SendStmt s | nd.asExpr() = s.getValue())
   or
   // if `nd` is passed to a function, then it escapes
-  nd instanceof DataFlow::ArgumentNode
+  nd = any(DataFlow::CallNode c).getASyntacticArgument()
+  or
+  // if `nd` is the receiver of a function, then it escapes
+  nd = any(DataFlow::MethodCallNode c).getReceiver()
   or
   // if `nd` has its address taken, then it escapes
   exists(AddressExpr ae | nd.asExpr() = ae.getOperand())

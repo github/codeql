@@ -29,7 +29,7 @@ module Generated {
     final Pattern getPattern() {
       exists(Pattern immediate |
         immediate = this.getImmediatePattern() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 
@@ -52,7 +52,7 @@ module Generated {
     final Expr getSequence() {
       exists(Expr immediate |
         immediate = this.getImmediateSequence() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 
@@ -73,7 +73,7 @@ module Generated {
     final Expr getWhere() {
       exists(Expr immediate |
         immediate = this.getImmediateWhere() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 
@@ -84,25 +84,12 @@ module Generated {
 
     /**
      * Gets the body of this for each statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    BraceStmt getImmediateBody() {
+    BraceStmt getBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertForEachStmtToRaw(this)
               .(Raw::ForEachStmt)
               .getBody())
-    }
-
-    /**
-     * Gets the body of this for each statement.
-     */
-    final BraceStmt getBody() {
-      exists(BraceStmt immediate |
-        immediate = this.getImmediateBody() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }

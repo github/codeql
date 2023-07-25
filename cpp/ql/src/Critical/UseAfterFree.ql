@@ -135,17 +135,23 @@ module ParameterSinks {
   }
 }
 
-predicate isUse(DataFlow::Node n, Expr e) {
-  isUse0(n, e)
-  or
-  exists(CallInstruction call, int i, InitializeParameterInstruction init |
-    n.asOperand().getDef().getUnconvertedResultExpression() = e and
-    init = ParameterSinks::getAnAlwaysDereferencedParameter() and
-    call.getArgumentOperand(i) = n.asOperand() and
-    init.hasIndex(i) and
-    init.getEnclosingFunction() = call.getStaticCallTarget()
-  )
+module IsUse {
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
+
+  predicate isUse(DataFlow::Node n, Expr e) {
+    isUse0(n, e)
+    or
+    exists(CallInstruction call, InitializeParameterInstruction init |
+      n.asOperand().getDef().getUnconvertedResultExpression() = e and
+      pragma[only_bind_into](init) = ParameterSinks::getAnAlwaysDereferencedParameter() and
+      viableParamArg(call, DataFlow::instructionNode(init), n) and
+      pragma[only_bind_out](init.getEnclosingFunction()) =
+        pragma[only_bind_out](call.getStaticCallTarget())
+    )
+  }
 }
+
+import IsUse
 
 /**
  * `dealloc1` is a deallocation expression, `e` is an expression that dereferences a

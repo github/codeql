@@ -55,4 +55,8 @@ android {
     }
 
     variantFilter { variant -> if (variant.buildType.name == "debug") { setIgnore(true) } }
+
+    lintOptions {
+        disable "Instantiatable"
+    }
 }

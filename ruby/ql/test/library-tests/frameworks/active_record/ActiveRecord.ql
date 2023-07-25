@@ -9,9 +9,19 @@ query predicate activeRecordInstances(ActiveRecordInstance i) { any() }
 
 query predicate activeRecordSqlExecutionRanges(ActiveRecordSqlExecutionRange range) { any() }
 
-query predicate activeRecordModelClassMethodCalls(ActiveRecordModelClassMethodCall call) { any() }
+deprecated query predicate activeRecordModelClassMethodCalls(ActiveRecordModelClassMethodCall call) {
+  any()
+}
 
-query predicate potentiallyUnsafeSqlExecutingMethodCall(PotentiallyUnsafeSqlExecutingMethodCall call) {
+query predicate activeRecordModelClassMethodCallsReplacement(
+  ActiveRecordModelClass cls, DataFlow::CallNode call
+) {
+  call = cls.getClassNode().trackModule().getAMethodCall(_)
+}
+
+deprecated query predicate potentiallyUnsafeSqlExecutingMethodCall(
+  PotentiallyUnsafeSqlExecutingMethodCall call
+) {
   any()
 }
 

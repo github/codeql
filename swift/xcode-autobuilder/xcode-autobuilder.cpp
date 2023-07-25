@@ -7,26 +7,28 @@
 #include "swift/logging/SwiftLogging.h"
 #include "swift/xcode-autobuilder/CustomizingBuildLink.h"
 
-static const char* uiTest = "com.apple.product-type.bundle.ui-testing";
-static const char* unitTest = "com.apple.product-type.bundle.unit-test";
+static constexpr std::string_view uiTest = "com.apple.product-type.bundle.ui-testing";
+static constexpr std::string_view unitTest = "com.apple.product-type.bundle.unit-test";
+static constexpr std::string_view unknownType = "<unknown_target_type>";
 
 const std::string_view codeql::programName = "autobuilder";
 
-constexpr codeql::SwiftDiagnostic noProjectFound{"no-project-found",
-                                                 "No Xcode project or workspace found",
-                                                 "Set up a [manual build command][1].\n"
-                                                 "\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
+constexpr codeql::SwiftDiagnostic noProjectFound{
+    .id = "no-project-found",
+    .name = "No Xcode project or workspace found",
+    .action = "Set up a [manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
 constexpr codeql::SwiftDiagnostic noSwiftTarget{
-    "no-swift-target", "No Swift compilation target found",
-    "To analyze a custom set of source files, set up a [manual build command][1].\n"
-    "\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
+    .id = "no-swift-target",
+    .name = "No Swift compilation target found",
+    .action = "To analyze a custom set of source files, set up a [manual build "
+              "command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
 constexpr codeql::SwiftDiagnostic spmNotSupported{
-    "spm-not-supported", "Swift Package Manager is not supported",
-    "Swift Package Manager builds are not currently supported by `autobuild`. Set up a [manual "
-    "build command][1].\n"
-    "\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
+    .id = "spm-not-supported",
+    .name = "Swift Package Manager is not supported",
+    .action = "Swift Package Manager builds are not currently supported by `autobuild`. Set up a "
+              "[manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};
@@ -38,6 +40,16 @@ struct CLIArgs {
   bool dryRun;
 };
 
+static bool endsWith(std::string_view s, std::string_view suffix) {
+  return s.size() >= suffix.size() && s.substr(s.size() - suffix.size()) == suffix;
+}
+
+static bool isNonSwiftOrTestTarget(const Target& t) {
+  return t.fileCount == 0 || t.type == uiTest || t.type == unitTest ||
+         // unknown target types can be legitimate, let's do a name-based heuristic then
+         (t.type == unknownType && (endsWith(t.name, "Tests") || endsWith(t.name, "Test")));
+}
+
 static void autobuild(const CLIArgs& args) {
   auto collected = collectTargets(args.workingDir);
   auto& targets = collected.targets;
@@ -45,10 +57,7 @@ static void autobuild(const CLIArgs& args) {
     LOG_INFO("{}", t);
   }
   // Filter out targets that are tests or have no swift source files
-  targets.erase(std::remove_if(std::begin(targets), std::end(targets),
-                               [&](Target& t) -> bool {
-                                 return t.fileCount == 0 || t.type == uiTest || t.type == unitTest;
-                               }),
+  targets.erase(std::remove_if(std::begin(targets), std::end(targets), isNonSwiftOrTestTarget),
                 std::end(targets));
 
   // Sort targets by the amount of files in each

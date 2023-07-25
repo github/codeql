@@ -16,6 +16,7 @@ on:
     branches:
       - main
       - rc/*
+      - codeql-cli-*
   push:
     paths:
       - "swift/**"
@@ -30,6 +31,7 @@ on:
     branches:
       - main
       - rc/*
+      - codeql-cli-*
 
 jobs:
   # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks

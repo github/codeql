@@ -32,25 +32,12 @@ module Generated {
 
     /**
      * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Argument getImmediateSubscriptArgument(int index) {
+    Argument getSubscriptArgument(int index) {
       result =
         Synth::convertArgumentFromRaw(Synth::convertKeyPathComponentToRaw(this)
               .(Raw::KeyPathComponent)
               .getSubscriptArgument(index))
-    }
-
-    /**
-     * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
-     */
-    final Argument getSubscriptArgument(int index) {
-      exists(Argument immediate |
-        immediate = this.getImmediateSubscriptArgument(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
@@ -79,25 +66,12 @@ module Generated {
 
     /**
      * Gets the property or subscript operator, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ValueDecl getImmediateDeclRef() {
+    ValueDecl getDeclRef() {
       result =
         Synth::convertValueDeclFromRaw(Synth::convertKeyPathComponentToRaw(this)
               .(Raw::KeyPathComponent)
               .getDeclRef())
-    }
-
-    /**
-     * Gets the property or subscript operator, if it exists.
-     */
-    final ValueDecl getDeclRef() {
-      exists(ValueDecl immediate |
-        immediate = this.getImmediateDeclRef() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
@@ -128,7 +102,7 @@ module Generated {
     final Type getComponentType() {
       exists(Type immediate |
         immediate = this.getImmediateComponentType() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
   }

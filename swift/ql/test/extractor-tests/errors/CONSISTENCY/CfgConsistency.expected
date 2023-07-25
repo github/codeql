@@ -1,0 +1,5 @@
+deadEnd
+| file://:0:0:0:0 |  ... = ... |
+| file://:0:0:0:0 |  ... = ... |
+| unspecified.swift:12:20:12:21 | (...) |
+| unspecified.swift:25:9:28:9 | switch ErrorExpr { ... } |

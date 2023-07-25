@@ -39,7 +39,7 @@ module Generated {
     final StringLiteralExpr getMessage() {
       exists(StringLiteralExpr immediate |
         immediate = this.getImmediateMessage() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
   }

@@ -1,0 +1,33 @@
+
+// stress test for global access path computation
+var MyObject = {}
+MyObject.Foo1 = { inner: MyObject };
+MyObject.Foo2 = { inner: MyObject };
+MyObject.Foo3 = { inner: MyObject };
+MyObject.Foo4 = { inner: MyObject };
+MyObject.Foo5 = { inner: MyObject };
+MyObject.Foo6 = { inner: MyObject };
+MyObject.Foo7 = { inner: MyObject };
+MyObject.Foo8 = { inner: MyObject };
+MyObject.Foo9 = { inner: MyObject };
+MyObject.Fooa = { inner: MyObject };
+MyObject.Foob = { inner: MyObject };
+MyObject.Fooc = { inner: MyObject };
+MyObject.Food = { inner: MyObject };
+MyObject.Fooe = { inner: MyObject };
+MyObject.Foof = { inner: MyObject };
+MyObject.Foog = { inner: MyObject };
+MyObject.Fooh = { inner: MyObject };
+MyObject.Fooi = { inner: MyObject };
+MyObject.Fooj = { inner: MyObject };
+MyObject.Fook = { inner: MyObject };
+MyObject.Fool = { inner: MyObject };
+MyObject.Foom = { inner: MyObject };
+MyObject.Foon = { inner: MyObject };
+MyObject.Fooo = { inner: MyObject };
+MyObject.Foop = { inner: MyObject };
+MyObject.Fooq = { inner: MyObject };
+MyObject.Foor = { inner: MyObject };
+MyObject.Foos = { inner: MyObject };
+MyObject.Foot = { inner: MyObject };
+exports.MyObject = MyObject;

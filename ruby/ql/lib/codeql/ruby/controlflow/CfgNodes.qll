@@ -113,13 +113,6 @@ class ExprCfgNode extends AstCfgNode {
   /** Gets the underlying expression. */
   Expr getExpr() { result = e }
 
-  /**
-   * DEPRECATED: Use `getConstantValue` instead.
-   *
-   * Gets the textual (constant) value of this expression, if any.
-   */
-  deprecated string getValueText() { result = this.getConstantValue().toString() }
-
   /** Gets the constant value of this expression, if any. */
   ConstantValue getConstantValue() { result = getConstantValue(this) }
 }

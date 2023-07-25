@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 9.3
  * @precision high
- * @id py/command-injection
+ * @id py/paramiko-command-injection
  * @tags security
  *       experimental
  *       external/cwe/cwe-074
