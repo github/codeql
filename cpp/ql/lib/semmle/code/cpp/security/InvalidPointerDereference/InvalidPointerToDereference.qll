@@ -32,10 +32,10 @@
  * always consumed by an instruction that performs a dereference this lets us identify a "bad dereference". We call the
  * instruction that consumes the address operand the "operation".
  *
- * For example, consider the flow from `base + size` to `end` above. The sink is `end` on line 3 because that is a dataflow
- * node whose underlying instruction non-strictly upper bounds the address operand `p` in `use(*p)`. The load attached to `*p`
- * is the "operation". To ensure that the path makes intuitive sense, we only pick operations that are control-flow reachable
- * from the dereference sink.
+ * For example, consider the flow from `base + size` to `end` above. The sink is `end` on line 3 because
+ * `p <= end.asInstruction() + deltaDerefSinkAndDerefAddress` where `p` is the address operand in `use(*p)` and
+ * `deltaDerefSinkAndDerefAddress >= 0`. The load attached to `*p` is the "operation". To ensure that the path makes
+ * intuitive sense, we only pick operations that are control-flow reachable from the dereference sink.
  *
  * To compute the amount of the dereference is away from the final entry of the allocation, we sum the two deltas `delta1` and
  * `delta2`. This is done in the `operationIsOffBy` predicate (which is the only predicate exposed by this file).
