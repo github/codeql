@@ -2,6 +2,7 @@
 
 # This script generates a data extensions model for a given library in codeql database form
 # Currently only typeModels are generated
+# Requires `pyyaml`
 
 import sys
 import argparse
@@ -9,6 +10,7 @@ import subprocess
 from pathlib import Path
 import tempfile
 import json
+import yaml
 
 
 def parse_args():
@@ -55,9 +57,9 @@ def main():
     check_database_exists(database_path)
 
     codeql_command = args.codeql.split(" ")
-    with tempfile.NamedTemporaryFile() as json_file:
-        run_codeql_query(codeql_command, database_path, json_file)
-        generate_output(json_file, output_path)
+    with tempfile.NamedTemporaryFile() as query_output_json_file:
+        run_codeql_query(codeql_command, database_path, query_output_json_file)
+        generate_output(query_output_json_file, output_path)
 
 
 def check_output_path(output_path, overwrite):
@@ -79,7 +81,7 @@ def check_database_exists(database_path):
         die("directory: " + str(database_path) + " doesn't look like a Ruby database")
 
 
-def run_codeql_query(codeql_command, database_path, json_file):
+def run_codeql_query(codeql_command, database_path, query_output_json_file):
     query_path = (
         Path(__file__)
         .parent.parent.joinpath("ql/src/queries/modeling/GenerateModel.ql")
@@ -98,49 +100,48 @@ def run_codeql_query(codeql_command, database_path, json_file):
                 "--format",
                 "json",
                 "--output",
-                json_file.name,
+                query_output_json_file.name,
                 bqrs_file.name,
             ]
         )
 
 
-def generate_output(json_file, output_path):
-    output_string = format_query_output(json_file)
+def generate_output(query_output_json_file, output_path):
+    output_string = serialize_output(query_output_json_file)
     if not output_path == None:
         Path(output_path).write_text(output_string)
     else:
         print(output_string)
 
-def model_kinds():
-    return ["typeModel", "sourceModel", "sinkModel", "summaryModel", "typeVariableModel"]
 
-# TODO: replace all of this formatting code
-def format_query_output(json_file):
-    result = "extensions:"
-    parsed_json = json.load(json_file)
+def model_kinds():
+    return [
+        "typeModel",
+        "sourceModel",
+        "sinkModel",
+        "summaryModel",
+        "typeVariableModel",
+    ]
+
+
+def serialize_output(query_output_json_file):
+    parsed_json = json.load(query_output_json_file)
+    serialized_tuples = []
     for extensible_type in model_kinds():
         if not extensible_type in parsed_json:
             continue
         tuples = parsed_json[extensible_type]["tuples"]
-        result += "\n".join([format_entry(extensible_type, tuple) for tuple in tuples])
-    return result + "\n"
+        serialized_tuples += [
+            serialize_tuple(tuple, extensible_type) for tuple in tuples
+        ]
+    return yaml.dump({"extensions": serialized_tuples}, default_style='"')
 
 
-def format_tuple(tuple):
-    return "\n".join([f'          "{data}",' for data in tuple])
-
-
-def format_entry(extensible_type, tuple):
-    return """
-  - addsTo:
-      pack: codeql/ruby-all
-      extensible: {extensible_type}
-    data:
-      - [
-{tuple_data}
-        ]""".format(
-        extensible_type=extensible_type, tuple_data=format_tuple(tuple)
-    )
+def serialize_tuple(tuple, extensible_type):
+    return {
+        "addsTo": {"pack": "codeql/ruby-all", "extensible": extensible_type},
+        "data": [tuple],
+    }
 
 
 main()
