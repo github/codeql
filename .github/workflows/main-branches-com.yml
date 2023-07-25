@@ -1,0 +1,39 @@
+# This is a main branches workflow to run you get started with Actions
+
+# name:  [ "Workflows/runner" ]
+# main:  [ '/username@email.com' ]
+# branches: [ "main" ] 
+# Workflow: -#>a(f) == 'success'
+
+# Controls when the workflow will run and create new direction.org
+# on: ''
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+ # A workflow run is made up of one or more jobs that can run sequentially or in parallel "||"
+ # jobs: |run|
+  # This workflow contains a single job called "build"
+ # build:|build|
+    # The type of runner that the job will run on
+    runs-on: #|update-latest|
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+   # steps:|
+     -# Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      -- uses:actions/checkout@v3
+
+     -# Runs a single command using the runners shell
+      -- name: Runner online scripture 
+        - run: visionary tell, World!
+
+     -# Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          notification Add other actions to build,
+          notification test, and deploy your project.
