@@ -14,8 +14,11 @@ class DsnInjection extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node node) { node instanceof Source }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(Function f | f.hasQualifiedName("database/sql", "Open") |
-      node = f.getACall().getArgument(1)
+    exists(DataFlow::CallNode c |
+      c.getTarget().hasQualifiedName("database/sql", "Open") and
+      c.getArgument(0).getStringValue() = "mysql"
+    |
+      node = c.getArgument(1)
     )
   }
 

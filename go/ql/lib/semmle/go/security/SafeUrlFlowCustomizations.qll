@@ -33,9 +33,7 @@ module SafeUrlFlow {
 
   /** A function model step using `UnsafeUrlMethod`, considered as a sanitizer for safe URL flow. */
   private class UnsafeUrlMethodEdge extends SanitizerEdge {
-    UnsafeUrlMethodEdge() {
-      this = any(UnsafeUrlMethod um).getACall().(DataFlow::MethodCallNode).getReceiver()
-    }
+    UnsafeUrlMethodEdge() { this = any(UnsafeUrlMethod um).getACall().getReceiver() }
   }
 
   /** Any slicing of the URL, considered as a sanitizer for safe URL flow. */

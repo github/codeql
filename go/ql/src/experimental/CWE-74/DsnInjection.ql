@@ -6,7 +6,7 @@
  * @id go/dsn-injection
  * @tags security
  *       experimental
- *       external/cwe/cwe-134
+ *       external/cwe/cwe-74
  */
 
 import go
@@ -18,5 +18,5 @@ private class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSourc
 
 from DsnInjection cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
-  "user-provided value"
+select sink.getNode(), source, sink, "Data-Source Name is built using $@.", source.getNode(),
+  "untrusted user input"

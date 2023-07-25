@@ -13,10 +13,9 @@ DataFlow::CallNode getAYamlCall() {
 
 predicate isSourceSinkPair(DataFlow::Node inNode, DataFlow::Node outNode) {
   exists(DataFlow::CallNode cn | cn = getAYamlCall() |
-    inNode = [cn.getAnArgument(), cn.(DataFlow::MethodCallNode).getReceiver()] and
+    inNode = [cn.getAnArgument(), cn.getReceiver()] and
     (
-      outNode.(DataFlow::PostUpdateNode).getPreUpdateNode() =
-        [cn.getAnArgument(), cn.(DataFlow::MethodCallNode).getReceiver()]
+      outNode.(DataFlow::PostUpdateNode).getPreUpdateNode() = [cn.getAnArgument(), cn.getReceiver()]
       or
       outNode = cn.getAResult()
     )

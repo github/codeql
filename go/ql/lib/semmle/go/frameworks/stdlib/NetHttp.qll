@@ -131,7 +131,7 @@ module NetHttp {
     )
     or
     stack = SummaryComponentStack::argument(-1) and
-    result = call.(DataFlow::MethodCallNode).getReceiver()
+    result = call.getReceiver()
   }
 
   private class ResponseBody extends Http::ResponseBody::Range {

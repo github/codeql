@@ -6,7 +6,7 @@
 
 import swift
 import codeql.swift.regex.RegexTreeView
-private import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.DataFlow
 private import ParseRegex
 private import codeql.swift.regex.Regex
 
@@ -37,7 +37,6 @@ private module RegexUseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     // creation of the regex
     node instanceof RegexCreation
-    // TODO: track parse mode flags.
   }
 
   predicate isSink(DataFlow::Node node) {
@@ -46,9 +45,60 @@ private module RegexUseConfig implements DataFlow::ConfigSig {
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // TODO: flow through regex methods that return a modified regex.
-    none()
+    any(RegexAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 
 module RegexUseFlow = DataFlow::Global<RegexUseConfig>;
+
+/**
+ * A data flow configuration for tracking regular expression parse mode
+ * flags from wherever they are created or set through to regular expression
+ * evaluation. The flow state encodes which parse mode flag was set.
+ */
+private module RegexParseModeConfig implements DataFlow::StateConfigSig {
+  class FlowState = RegexParseMode;
+
+  predicate isSource(DataFlow::Node node, FlowState flowstate) {
+    // parse mode flag is set
+    any(RegexAdditionalFlowStep s).setsParseMode(node, flowstate, true)
+  }
+
+  predicate isSink(DataFlow::Node node, FlowState flowstate) {
+    // evaluation of the regex
+    node.asExpr() = any(RegexEval eval).getRegexInput() and
+    exists(flowstate)
+  }
+
+  predicate isBarrier(DataFlow::Node node) { none() }
+
+  predicate isBarrier(DataFlow::Node node, FlowState flowstate) {
+    // parse mode flag is unset
+    any(RegexAdditionalFlowStep s).setsParseMode(node, flowstate, false)
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // flow through array construction
+    exists(ArrayExpr arr |
+      nodeFrom.asExpr() = arr.getAnElement() and
+      nodeTo.asExpr() = arr
+    )
+    or
+    // flow through regex creation
+    exists(RegexCreation create |
+      nodeFrom = create.getOptionsInput() and
+      nodeTo = create
+    )
+    or
+    // additional flow steps for regular expression objects
+    any(RegexAdditionalFlowStep s).step(nodeFrom, nodeTo)
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node nodeFrom, FlowState flowstateFrom, DataFlow::Node nodeTo, FlowState flowStateTo
+  ) {
+    none()
+  }
+}
+
+module RegexParseModeFlow = DataFlow::GlobalWithState<RegexParseModeConfig>;

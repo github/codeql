@@ -6,6 +6,8 @@
  */
 
 import swift
+private import RegexTracking
+private import codeql.swift.regex.Regex
 
 /**
  * A `Expr` containing a regular expression term, that is, either
@@ -317,14 +319,24 @@ abstract class RegExp extends Expr {
   }
 
   /**
-   * Gets a mode (if any) of this regular expression. Can be any of:
+   * Gets a mode (if any) of this regular expression in any evaluation. Can be
+   * any of:
    * IGNORECASE
    * VERBOSE
    * DOTALL
    * MULTILINE
    * UNICODE
    */
-  string getAMode() { result = this.getModeFromPrefix() }
+  string getAMode() {
+    // mode flags from inside the regex string
+    result = this.getModeFromPrefix()
+    or
+    // mode flags applied to the regex object before evaluation
+    exists(RegexEval e |
+      e.getARegex() = this and
+      result = e.getAParseMode().getName()
+    )
+  }
 
   /**
    * Holds if the `i`th character could not be parsed.
