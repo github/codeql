@@ -118,9 +118,7 @@ private class DefaultUnsafeJsEvalAdditionalFlowStep extends UnsafeJsEvalAddition
     )
     or
     exists(CallExpr ce, Expr self, ClosureExpr closure |
-      ce.getStaticTarget()
-          .getName()
-          .matches(["withContiguousStorageIfAvailable(%)", "withUnsafeBufferPointer(%)"]) and
+      ce.getStaticTarget().getName().matches("withUnsafeBufferPointer(%)") and
       self = ce.getQualifier() and
       ce.getArgument(0).getExpr() = closure
     |
