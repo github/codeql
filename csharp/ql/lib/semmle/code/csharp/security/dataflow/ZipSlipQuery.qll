@@ -29,16 +29,13 @@ class PathCombinerViaMethodCall extends UnsanitizedPathCombiner {
 /**
  * A Path Combining operation by String interpolation.
  */
-class PathCombinerViaStringInterpolation
-  extends UnsanitizedPathCombiner
-  instanceof InterpolatedStringExpr {}
+class PathCombinerViaStringInterpolation extends UnsanitizedPathCombiner instanceof InterpolatedStringExpr
+{ }
 
 /**
  * A Path combining operation by String concatenation.
  */
-class PathCombinerViaStringConcatenation
-  extends UnsanitizedPathCombiner
-  instanceof AddExpr {}
+class PathCombinerViaStringConcatenation extends UnsanitizedPathCombiner instanceof AddExpr { }
 
 /**
  * A call to System.IO.Path.GetFullPath
@@ -50,8 +47,7 @@ class MethodCallGetFullPath extends MethodCall {
 /**
  * A taint tracking module for GetFullPath to String.StartsWith.
  */
-module GetFullPathToQualifierTT =
-  TaintTracking::Global<GetFullPathToQualifierTaintTrackingConfig>;
+module GetFullPathToQualifierTT = TaintTracking::Global<GetFullPathToQualifierTaintTrackingConfig>;
 
 private module GetFullPathToQualifierTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
@@ -125,7 +121,7 @@ module PathCombinerToGetFullPathTT =
   TaintTracking::Global<PathCombinerToGetFullPathTaintTrackingConfig>;
 
 /**
- * A Taint Tracking configuration that tracks a File path combining expression 
+ * A Taint Tracking configuration that tracks a File path combining expression
  * (Such as string concatenation, Path.Combine, or string interpolation),
  * to a Path.GetFullPath method call's argument.
  *
@@ -200,9 +196,7 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
  *      Path.GetFullPath - it is not simply enough for the qualifier of String.StartsWith
  *      to pass through Path.Combine without also passing through GetFullPath.
  */
-class ZipSlipGuard
-  extends Guard
-  instanceof SanitizerMethodCall {
+class ZipSlipGuard extends Guard instanceof SanitizerMethodCall {
   /**
    * Gets the expression corresponding to the FilePath that this Sanitizer checks
    */
