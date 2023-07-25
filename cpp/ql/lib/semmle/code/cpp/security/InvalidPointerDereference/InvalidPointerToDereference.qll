@@ -17,7 +17,7 @@
  * on line 4).
  *
  * Merely _constructing_ a pointer that's out-of-bounds is fine if the pointer is never dereferenced (in reality, the
- * standard only guarentees that it's safe to move the pointer one element past the last element. But we ignore that
+ * standard only guarantees that it is safe to move the pointer one element past the last element, but we ignore that
  * here). So this step is about identifying which of those out-of-bounds pointers found by `pointerAddInstructionHasBounds`
  * in `AllocationToInvalidPointer.qll` that are actually being dereferenced. We do this using a regular dataflow
  * configuration (see `InvalidPointerToDerefConfig`).
