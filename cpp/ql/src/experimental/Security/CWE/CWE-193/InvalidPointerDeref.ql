@@ -57,7 +57,7 @@
  *
  * The set of pointer-arithmetic instructions that define the `TPointerArith` flow state is restricted to be the pointer-
  * arithmetic instructions that both receive flow from the allocation (as identified by `AllocationToInvalidPointer.qll`),
- * and further flows to a dereference (as identified by `InvalidPointerToDereference.qll`).
+ * and further flow to a dereference (as identified by `InvalidPointerToDereference.qll`).
  */
 
 import cpp
