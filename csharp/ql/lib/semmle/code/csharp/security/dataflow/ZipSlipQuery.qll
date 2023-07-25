@@ -29,16 +29,16 @@ class PathCombinerViaMethodCall extends UnsanitizedPathCombiner {
 /**
  * A Path Combining operation by String interpolation.
  */
-class PathCombinerViaStringInterpolation extends UnsanitizedPathCombiner {
-  PathCombinerViaStringInterpolation() { this instanceof InterpolatedStringExpr }
-}
+class PathCombinerViaStringInterpolation
+  extends UnsanitizedPathCombiner
+  instanceof InterpolatedStringExpr {}
 
 /**
  * A Path combining operation by String concatenation.
  */
-class PathCombinerViaStringConcatenation extends UnsanitizedPathCombiner {
-  PathCombinerViaStringConcatenation() { this instanceof AddExpr }
-}
+class PathCombinerViaStringConcatenation
+  extends UnsanitizedPathCombiner
+  instanceof AddExpr {}
 
 /**
  * A call to System.IO.Path.GetFullPath
@@ -185,7 +185,7 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
     exists(Expr q, AbstractValue v |
       this.getQualifier() = q and
       v.(AbstractValues::BooleanValue).getValue() = true and
-      exists(MethodCallGetFullPath mcGetFullPath | safeCombineGetFullPathSequence(mcGetFullPath, q))
+      safeCombineGetFullPathSequence(_, q)
     )
   }
 
@@ -200,9 +200,9 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
  *      Path.GetFullPath - it is not simply enough for the qualifier of String.StartsWith
  *      to pass through Path.Combine without also passing through GetFullPath.
  */
-class ZipSlipGuard extends Guard {
-  ZipSlipGuard() { this instanceof SanitizerMethodCall }
-
+class ZipSlipGuard
+  extends Guard
+  instanceof SanitizerMethodCall {
   /**
    * Gets the expression corresponding to the FilePath that this Sanitizer checks
    */
@@ -215,6 +215,9 @@ class ZipSlipGuard extends Guard {
  * sanitized (whether it is a qualifier or function argument)
  */
 abstract private class SanitizerMethodCall extends MethodCall {
+  /**
+   * Gets the expression corresponding to the FilePath that this Sanitizer checks
+   */
   abstract Expr getFilePathArgument();
 }
 
