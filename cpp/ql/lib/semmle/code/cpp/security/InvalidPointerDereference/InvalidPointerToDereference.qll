@@ -22,7 +22,7 @@
  * in `AllocationToInvalidPointer.qll` are actually being dereferenced. We do this using a regular dataflow
  * configuration (see `InvalidPointerToDerefConfig`).
  *
- * This dataflow traversal defines the set of sources as any dataflow node `n` such that there exists a pointer-arithmetic
+ * The dataflow traversal defines the set of sources as any dataflow node `n` such that there exists a pointer-arithmetic
  * instruction `pai` found by `AllocationToInvalidPointer.qll` and `n.asInstruction() >= pai + deltaDerefSourceAndPai`.
  * Here, `deltaDerefSourceAndPai` is the constant difference between the source we track for finding a dereference and the
  * pointer-arithmetic instruction.
