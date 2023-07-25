@@ -62,7 +62,7 @@
  *
  * In order to handle the above false positive, we define a barrier that identifies guards such as `p < end` that ensures that a value
  * is less than the pointer-arithmetic instruction that computed the invalid pointer. This is done in the `InvalidPointerToDerefBarrier`
- * module. Since the node we're tracking isn't necessarily _equal_ to the pointer-arithmetic instruction, but rather satisfies
+ * module. Since the node we are tracking is not necessarily _equal_ to the pointer-arithmetic instruction, but rather satisfies
  * `node.asInstruction() <= pai + delta`, we need to account for the delta when checking if a guard is sufficiently strong to infer
  *  that a future dereference is safe. To do this, we check that the guard guarantees that a node `n` satisfies `n < node + d` where
  * `node` is a node we know is equal to the value of the dereference source (i.e., it satisfies `node.asInstruction() <= pai + delta`)
