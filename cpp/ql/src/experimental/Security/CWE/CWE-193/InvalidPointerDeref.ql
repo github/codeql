@@ -49,7 +49,7 @@
  * The path can be described in 3 "chunks":
  * 1. One path from the allocation to the construction of the invalid pointer
  * 2. Another path from the construction of the invalid pointer to the final pointer that's about to be dereferenced.
- * 3. Finally, there's a single step from the dataflow node that represents the final pointer to the dereference.
+ * 3. Finally, a single step from the dataflow node that represents the final pointer to the dereference.
  *
  * Step 1 happens when the flow state is `TInitial`, and step 2 and 3 happens when the flow state is `TPointerArith(pai)`
  * where the pointer-arithmetic instruction `pai` tracks the instruction that generated the out-of-bounds pointer. This
