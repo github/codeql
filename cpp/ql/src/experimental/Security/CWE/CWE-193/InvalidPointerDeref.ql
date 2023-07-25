@@ -34,7 +34,7 @@
  * Step 1 is implemented in `AllocationToInvalidPointer.qll`, and step 2 is implemented by
  * `InvalidPointerToDereference.qll`. See those files for the description of these.
  *
- * This file imports both libraries and define a final dataflow configuration that constructs the full path from
+ * This file imports both libraries and defines a final dataflow configuration that constructs the full path from
  * the allocation to the dereference of the out-of-bounds pointer. This is done for several reasons:
  * 1. It means the user is able to inspect the entire path from the allocation to the dereference, which can be useful
  *    to understand the problem highlighted.
