@@ -29,7 +29,7 @@
  * In order to do this, we split the problem into three subtasks:
  * 1. First, we find flow from `new int[size]` to `base + size`.
  * 2. Then, we find flow from `base + size` to `end` (on line 3).
- * 3. Finally, we use range-analysis to find a write to (or read from) a pointer that may be equal to `end`.
+ * 3. Finally, we use range-analysis to find a write to (or read from) a pointer that may be greater than or equal to `end`.
  *
  * Step 1 is implemented in `AllocationToInvalidPointer.qll`, and step 2 is implemented by
  * `InvalidPointerToDereference.qll`. See those files for the description of these.
