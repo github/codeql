@@ -66,11 +66,11 @@
  * module. Since the node we are tracking is not necessarily _equal_ to the pointer-arithmetic instruction, but rather satisfies
  * `node.asInstruction() <= pai + deltaDerefSourceAndPai`, we need to account for the delta when checking if a guard is sufficiently
  * strong to infer that a future dereference is safe. To do this, we check that the guard guarantees that a node `n` satisfies
- * `n < node + d` where `node` is a node we know is equal to the value of the dereference source (i.e., it satisfies
- * `node.asInstruction() <= pai + deltaDerefSourceAndPai`) and `d <= delta`. Combining this we have
- * `n < node + d <= node + delta <= pai + 2*delta` (TODO: Oops. This math doesn't quite work out. This is because we need to
- * redefine the `BarrierConfig` to start flow at the pointer-arithmetic instruction instead of at the dereference source. When
- * combined with TODO above it's easy to show that this guard ensures that the dereference is safe).
+ * `n < node + k` where `node` is a node we know is equal to the value of the dereference source (i.e., it satisfies
+ * `node.asInstruction() <= pai + deltaDerefSourceAndPai`) and `k <= deltaDerefSourceAndPai`. Combining this we have
+ * `n < node + k <= node + deltaDerefSourceAndPai <= pai + 2*deltaDerefSourceAndPai` (TODO: Oops. This math doesn't quite work out.
+ * I think this is because we need to redefine the `BarrierConfig` to start flow at the pointer-arithmetic instruction instead of
+ * at the dereference source. When combined with TODO above it's easy to show that this guard ensures that the dereference is safe).
  */
 
 private import cpp
