@@ -54,7 +54,7 @@
  * 8. }
  * ```
  * this is safe because `p` is guarded to be strictly less than `end` on line 6 before the dereference on line 7. However, if we
- * run the query on the above without further modifications we'd see an alert on line 7. This is because range analysis infers
+ * run the query on the above without further modifications we would see an alert on line 7. This is because range analysis infers
  * that `p <= end` after the increment on line 4, and thus the result of `p += 1` is seen as a valid dereference source. This
  * node then flows to `p` on line 6 (which is a valid dereference sink since it non-strictly upper bounds an address operand), and
  * range analysis then infers that the address operand of `*p` (i.e., `p`) is non-strictly upper bounded by `p`, and thus reports
