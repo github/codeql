@@ -37,7 +37,7 @@
  * `deltaDerefSinkAndDerefAddress >= 0`. The load attached to `*p` is the "operation". To ensure that the path makes
  * intuitive sense, we only pick operations that are control-flow reachable from the dereference sink.
  *
- * To compute the amount of the dereference is away from the final entry of the allocation, we sum the two deltas
+ * To compute how many elements the dereference is beyond the end position of the allocation, we sum the two deltas
  * `deltaDerefSourceAndPai` and `deltaDerefSinkAndDerefAddress`. This is done in the `operationIsOffBy` predicate
  * (which is the only predicate exposed by this file).
  *
