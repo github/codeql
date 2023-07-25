@@ -648,7 +648,7 @@ func testArray() {
 
     var matrix2 = [[1]]
     matrix2[0][0] = source()
-    sink(arg: matrix2[0][0]) // $ MISSING: flow=650
+    sink(arg: matrix2[0][0]) // $ flow=650
 
     var arr3 = [1]
     var arr4 = arr2 + arr3

@@ -111,7 +111,8 @@ private module Cached {
       hasExprNode(n,
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
-          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr()
+          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr(),
+          any(SubscriptExpr se).getBase(), any(InOutExpr ioe).getSubExpr()
         ])
     }
 
@@ -166,6 +167,9 @@ private module Cached {
     or
     // flow through `&` (inout argument)
     nodeFrom.asExpr() = nodeTo.asExpr().(InOutExpr).getSubExpr()
+    or
+    // reverse flow through `&` (inout argument)
+    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr().(InOutExpr).getSubExpr() = nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
     // flow through `try!` and similar constructs
     nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
@@ -705,7 +709,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
     subscript = assign.getDest() and
-    subscript.getBase().getType().(InOutType).getObjectType() instanceof ArrayType and
+//    subscript.getBase().getType().(InOutType).getObjectType() instanceof ArrayType and
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or

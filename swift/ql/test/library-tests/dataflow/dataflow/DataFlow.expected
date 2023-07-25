@@ -18,10 +18,16 @@ edges
 | test.swift:54:11:54:18 | call to source() | test.swift:53:1:56:1 | arg[return] |
 | test.swift:61:22:61:23 | [post] &... | test.swift:62:15:62:15 | x |
 | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] |
+| test.swift:65:33:65:45 | arg2 | test.swift:65:1:70:1 | arg1[return] |
 | test.swift:73:18:73:25 | call to source() | test.swift:75:21:75:22 | &... |
 | test.swift:73:18:73:25 | call to source() | test.swift:76:15:76:15 | x |
 | test.swift:75:21:75:22 | &... | test.swift:65:16:65:28 | arg1 |
 | test.swift:75:21:75:22 | &... | test.swift:75:31:75:32 | [post] &... |
+| test.swift:75:21:75:22 | [post] &... | test.swift:75:21:75:22 | &... |
+| test.swift:75:21:75:22 | [post] &... | test.swift:76:15:76:15 | x |
+| test.swift:75:31:75:32 | &... | test.swift:65:33:65:45 | arg2 |
+| test.swift:75:31:75:32 | &... | test.swift:75:21:75:22 | [post] &... |
+| test.swift:75:31:75:32 | [post] &... | test.swift:75:31:75:32 | &... |
 | test.swift:75:31:75:32 | [post] &... | test.swift:77:15:77:15 | y |
 | test.swift:80:1:82:1 | arg[return] | test.swift:97:39:97:40 | [post] &... |
 | test.swift:81:11:81:18 | call to source() | test.swift:80:1:82:1 | arg[return] |
@@ -279,6 +285,10 @@ edges
 | test.swift:628:9:628:16 | call to source() | test.swift:630:10:630:11 | &... |
 | test.swift:628:9:628:16 | call to source() | test.swift:631:15:631:15 | x |
 | test.swift:630:10:630:11 | &... | test.swift:630:14:630:15 | [post] &... |
+| test.swift:630:10:630:11 | [post] &... | test.swift:630:10:630:11 | &... |
+| test.swift:630:10:630:11 | [post] &... | test.swift:631:15:631:15 | x |
+| test.swift:630:14:630:15 | &... | test.swift:630:10:630:11 | [post] &... |
+| test.swift:630:14:630:15 | [post] &... | test.swift:630:14:630:15 | &... |
 | test.swift:630:14:630:15 | [post] &... | test.swift:632:15:632:15 | y |
 | test.swift:638:5:638:5 | [post] &... [Array element] | test.swift:639:15:639:15 | &... [Array element] |
 | test.swift:638:15:638:22 | call to source() | test.swift:638:5:638:5 | [post] &... [Array element] |
@@ -292,6 +302,13 @@ edges
 | test.swift:647:15:647:15 | &... [Array element, Array element] | test.swift:647:15:647:23 | ...[...] [Array element] |
 | test.swift:647:15:647:23 | &... [Array element] | test.swift:647:15:647:26 | ...[...] |
 | test.swift:647:15:647:23 | ...[...] [Array element] | test.swift:647:15:647:23 | &... [Array element] |
+| test.swift:650:5:650:5 | [post] &... [Array element, Array element] | test.swift:651:15:651:15 | &... [Array element, Array element] |
+| test.swift:650:5:650:14 | [post] &... [Array element] | test.swift:650:5:650:14 | [post] getter for ...[...] [Array element] |
+| test.swift:650:5:650:14 | [post] getter for ...[...] [Array element] | test.swift:650:5:650:5 | [post] &... [Array element, Array element] |
+| test.swift:650:21:650:28 | call to source() | test.swift:650:5:650:14 | [post] &... [Array element] |
+| test.swift:651:15:651:15 | &... [Array element, Array element] | test.swift:651:15:651:24 | ...[...] [Array element] |
+| test.swift:651:15:651:24 | &... [Array element] | test.swift:651:15:651:27 | ...[...] |
+| test.swift:651:15:651:24 | ...[...] [Array element] | test.swift:651:15:651:24 | &... [Array element] |
 | test.swift:662:5:662:5 | [post] &... [Array element] | test.swift:663:15:663:15 | &... [Array element] |
 | test.swift:662:17:662:24 | call to source() | test.swift:662:5:662:5 | [post] &... [Array element] |
 | test.swift:663:15:663:15 | &... [Array element] | test.swift:663:15:663:21 | ...[...] |
@@ -326,10 +343,14 @@ nodes
 | test.swift:54:11:54:18 | call to source() | semmle.label | call to source() |
 | test.swift:61:22:61:23 | [post] &... | semmle.label | [post] &... |
 | test.swift:62:15:62:15 | x | semmle.label | x |
+| test.swift:65:1:70:1 | arg1[return] | semmle.label | arg1[return] |
 | test.swift:65:1:70:1 | arg2[return] | semmle.label | arg2[return] |
 | test.swift:65:16:65:28 | arg1 | semmle.label | arg1 |
+| test.swift:65:33:65:45 | arg2 | semmle.label | arg2 |
 | test.swift:73:18:73:25 | call to source() | semmle.label | call to source() |
 | test.swift:75:21:75:22 | &... | semmle.label | &... |
+| test.swift:75:21:75:22 | [post] &... | semmle.label | [post] &... |
+| test.swift:75:31:75:32 | &... | semmle.label | &... |
 | test.swift:75:31:75:32 | [post] &... | semmle.label | [post] &... |
 | test.swift:76:15:76:15 | x | semmle.label | x |
 | test.swift:77:15:77:15 | y | semmle.label | y |
@@ -599,6 +620,8 @@ nodes
 | test.swift:626:15:626:15 | y | semmle.label | y |
 | test.swift:628:9:628:16 | call to source() | semmle.label | call to source() |
 | test.swift:630:10:630:11 | &... | semmle.label | &... |
+| test.swift:630:10:630:11 | [post] &... | semmle.label | [post] &... |
+| test.swift:630:14:630:15 | &... | semmle.label | &... |
 | test.swift:630:14:630:15 | [post] &... | semmle.label | [post] &... |
 | test.swift:631:15:631:15 | x | semmle.label | x |
 | test.swift:632:15:632:15 | y | semmle.label | y |
@@ -617,12 +640,21 @@ nodes
 | test.swift:647:15:647:23 | &... [Array element] | semmle.label | &... [Array element] |
 | test.swift:647:15:647:23 | ...[...] [Array element] | semmle.label | ...[...] [Array element] |
 | test.swift:647:15:647:26 | ...[...] | semmle.label | ...[...] |
+| test.swift:650:5:650:5 | [post] &... [Array element, Array element] | semmle.label | [post] &... [Array element, Array element] |
+| test.swift:650:5:650:14 | [post] &... [Array element] | semmle.label | [post] &... [Array element] |
+| test.swift:650:5:650:14 | [post] getter for ...[...] [Array element] | semmle.label | [post] getter for ...[...] [Array element] |
+| test.swift:650:21:650:28 | call to source() | semmle.label | call to source() |
+| test.swift:651:15:651:15 | &... [Array element, Array element] | semmle.label | &... [Array element, Array element] |
+| test.swift:651:15:651:24 | &... [Array element] | semmle.label | &... [Array element] |
+| test.swift:651:15:651:24 | ...[...] [Array element] | semmle.label | ...[...] [Array element] |
+| test.swift:651:15:651:27 | ...[...] | semmle.label | ...[...] |
 | test.swift:662:5:662:5 | [post] &... [Array element] | semmle.label | [post] &... [Array element] |
 | test.swift:662:17:662:24 | call to source() | semmle.label | call to source() |
 | test.swift:663:15:663:15 | &... [Array element] | semmle.label | &... [Array element] |
 | test.swift:663:15:663:21 | ...[...] | semmle.label | ...[...] |
 subpaths
 | test.swift:75:21:75:22 | &... | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:31:75:32 | [post] &... |
+| test.swift:75:31:75:32 | &... | test.swift:65:33:65:45 | arg2 | test.swift:65:1:70:1 | arg1[return] | test.swift:75:21:75:22 | [post] &... |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
 | test.swift:114:19:114:19 | arg | test.swift:123:10:123:13 | i | test.swift:124:16:124:16 | i | test.swift:114:12:114:22 | call to ... |
 | test.swift:119:31:119:31 | x | test.swift:113:14:113:19 | arg | test.swift:114:12:114:22 | call to ... | test.swift:119:18:119:44 | call to forward(arg:lambda:) |
@@ -740,4 +772,5 @@ subpaths
 | test.swift:639:15:639:21 | ...[...] | test.swift:638:15:638:22 | call to source() | test.swift:639:15:639:21 | ...[...] | result |
 | test.swift:643:15:643:21 | ...[...] | test.swift:642:17:642:24 | call to source() | test.swift:643:15:643:21 | ...[...] | result |
 | test.swift:647:15:647:26 | ...[...] | test.swift:645:20:645:27 | call to source() | test.swift:647:15:647:26 | ...[...] | result |
+| test.swift:651:15:651:27 | ...[...] | test.swift:650:21:650:28 | call to source() | test.swift:651:15:651:27 | ...[...] | result |
 | test.swift:663:15:663:21 | ...[...] | test.swift:662:17:662:24 | call to source() | test.swift:663:15:663:21 | ...[...] | result |
