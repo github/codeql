@@ -26,7 +26,7 @@ private class SequenceSummaries extends SummaryModelCsv {
         ";Sequence;true;joined(separator:);;;Argument[-1..0];ReturnValue;taint",
         ";Sequence;true;first(where:);;;Argument[-1];ReturnValue;taint",
         ";Sequence;true;withContiguousStorageIfAvailable(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
-        ";Sequence;true;withContiguousStorageIfAvailable(_:);;;Argument[0].ReturnValue;ReturnValue;taint",
+        ";Sequence;true;withContiguousStorageIfAvailable(_:);;;Argument[0].ReturnValue;ReturnValue.OptionalSome;taint",
       ]
   }
 }

@@ -639,7 +639,7 @@ func furtherTaintThroughCallbacks() {
     ptr in
     return source()
   }) {
-    sink(arg: result4) // $ MISSING: tainted=640
+    sink(arg: result4) // $ tainted=640
   }
 
   // using a non-closure function
