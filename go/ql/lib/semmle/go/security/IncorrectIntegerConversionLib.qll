@@ -158,8 +158,14 @@ newtype IntegerConversionFlowState =
     isIncorrectIntegerConversion(sourceBitSize, sinkBitSize)
   }
 
+/** Gets whether the sink is signed. */
+boolean getSinkIsSigned(IntegerConversionFlowState state) { state = TFlowstate(result, _, _) }
+
 /** Gets the bit size of the source. */
 int getSourceBitSize(IntegerConversionFlowState state) { state = TFlowstate(_, result, _) }
+
+/** Gets the bit size of the sink. */
+int getSinkBitSize(IntegerConversionFlowState state) { state = TFlowstate(_, _, result) }
 
 private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConfigSig {
   class FlowState = IntegerConversionFlowState;
@@ -189,11 +195,7 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
       // `effectiveBitSize` could be any value between 0 and 64, but we
       // can round it up to the nearest size of an integer type without
       // changing behavior.
-      exists(int sourceBitSize |
-        sourceBitSize = min(int b | b in [0, 8, 16, 32, 64] and b >= effectiveBitSize)
-      |
-        state = TFlowstate(_, sourceBitSize, _)
-      )
+      getSourceBitSize(state) = min(int b | b in [0, 8, 16, 32, 64] and b >= effectiveBitSize)
     )
   }
 
@@ -229,28 +231,25 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
     // can sanitize the result of the conversion to prevent flow on to further sinks
     // without needing to use `isSanitizerOut`, which doesn't work with flow states
     // (and therefore the legacy `TaintTracking::Configuration` class).
-    exists(boolean sinkIsSigned, int sinkBitSize |
-      state = TFlowstate(sinkIsSigned, _, sinkBitSize)
-    |
-      isSinkWithBitSize(sink.getASuccessor(), sinkIsSigned, sinkBitSize)
-    )
+    isSinkWithBitSize(sink.getASuccessor(), getSinkIsSigned(state), getSinkBitSize(state))
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
-    exists(boolean sinkIsSigned, int sourceBitSize, int sinkBitSize |
-      state = TFlowstate(sinkIsSigned, sourceBitSize, sinkBitSize)
+    exists(boolean sinkIsSigned, int sinkBitSize |
+      sinkIsSigned = getSinkIsSigned(state) and
+      sinkBitSize = getSinkBitSize(state)
     |
       // To catch flows that only happen on 32-bit architectures we
       // consider an architecture-dependent sink bit size to be 32.
-      exists(UpperBoundCheckGuard g, int bitSize |
-        if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32
+      exists(UpperBoundCheckGuard g, int effectiveSinkBitSize |
+        if sinkBitSize != 0 then effectiveSinkBitSize = sinkBitSize else effectiveSinkBitSize = 32
       |
         node = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g) and
-        g.isBoundFor(bitSize, sinkIsSigned)
+        g.isBoundFor(effectiveSinkBitSize, sinkIsSigned)
       )
       or
       exists(int bitSize |
-        isIncorrectIntegerConversion(sourceBitSize, bitSize) and
+        isIncorrectIntegerConversion(getSourceBitSize(state), bitSize) and
         isSinkWithBitSize(node, sinkIsSigned, bitSize)
       )
     )
