@@ -42,7 +42,7 @@
  *    `test_missing_call_context_1` and `test_missing_call_context_2` tests for how this may flag false positives
  *    without this final configuration.
  *
- * The source of the final path is an allocation that's:
+ * The source of the final path is an allocation that is:
  * 1. identified as flowing to an invalid pointer (by `AllocationToInvalidPointer`), and
  * 2. for which the invalid pointer flows to a dereference (as identified by `InvalidPointerToDereference`).
  *
