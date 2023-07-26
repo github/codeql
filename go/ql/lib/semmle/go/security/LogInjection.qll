@@ -15,6 +15,8 @@ module LogInjection {
   import LogInjectionCustomizations::LogInjection
 
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A taint-tracking configuration for reasoning about log injection vulnerabilities.
    */
   deprecated class Configuration extends TaintTracking::Configuration {
