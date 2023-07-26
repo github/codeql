@@ -8,8 +8,8 @@ private import codeql.swift.dataflow.ExternalFlow
 /**
  * An instance of the `Array` type.
  */
-class ArrayType extends BoundGenericType {
-  ArrayType() { this.getName().matches("Array<%") }
+class ArrayType extends Type {
+  ArrayType() { this.getName().matches("Array<%") or this.getName().matches("[%]") }
 }
 
 /**

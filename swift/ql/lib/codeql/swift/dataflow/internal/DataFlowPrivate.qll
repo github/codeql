@@ -112,7 +112,7 @@ private module Cached {
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
           any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr(),
-          any(SubscriptExpr se).getBase(), any(InOutExpr ioe).getSubExpr()
+          any(SubscriptExpr se).getBase()
         ])
     }
 
@@ -709,7 +709,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
     subscript = assign.getDest() and
-    subscript.getBase().getType().(InOutType).getObjectType() instanceof ArrayType and
+    subscript.getBase().getType() instanceof ArrayType and
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or
@@ -785,7 +785,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    subscript.getBase().getType().(InOutType).getObjectType() instanceof ArrayType and
+    subscript.getBase().getType() instanceof ArrayType and
     c.isSingleton(any(Content::ArrayContent ac))
   )
 }
