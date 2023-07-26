@@ -45,8 +45,8 @@ func taintThroughMutablePointer() {
   let return1 = myArray1.withUnsafeMutableBufferPointer({
     buffer in
     buffer.update(repeating: source())
-    sink(arg: buffer)
-    sink(arg: buffer[0]) // $ MISSING: tainted=47
+    sink(arg: buffer) // $ tainted=47
+    sink(arg: buffer[0]) // $ tainted=47
     sink(arg: buffer.baseAddress!.pointee) // $ MISSING: tainted=47
     return source()
   })
@@ -81,8 +81,8 @@ func taintThroughMutablePointer() {
   let return3 = myArray3.withContiguousMutableStorageIfAvailable({
     ptr in
     ptr.update(repeating: source())
-    sink(arg: ptr)
-    sink(arg: ptr[0]) // $ MISSING: tainted=83
+    sink(arg: ptr) // $ tainted=83
+    sink(arg: ptr[0]) // $ tainted=83
     return source()
   })
   sink(arg: return3!) // $ MISSING: tainted=83
@@ -129,8 +129,8 @@ func taintThroughMutablePointer() {
   let return6 = myMutableBuffer.withContiguousMutableStorageIfAvailable({
     ptr in
     ptr.update(repeating: source2())
-    sink(arg: ptr)
-    sink(arg: ptr[0]) // $ MISSING: tainted=131
+    sink(arg: ptr) // $ tainted=131
+    sink(arg: ptr[0]) // $ tainted=131
     return source()
   })
   sink(arg: return6!) // $ MISSING: tainted=134
