@@ -372,6 +372,11 @@ indirect enum MyEnum {
     case myCons(Int, MyEnum)
 }
 
+func mkMyEnum1(_ v: Int) -> MyEnum { return MyEnum.mySingle(v) }
+func mkMyEnum2(_ v: Int) -> MyEnum { return MyEnum.myNone } // modelled flow
+func mkOptional1(_ v: Int) -> Int? { return Optional.some(v) }
+func mkOptional2(_ v: Int) -> Int? { return nil } // modelled flow
+
 func testEnums() {
     var a : MyEnum = .myNone
 
@@ -401,7 +406,7 @@ func testEnums() {
     case .myNone:
         ()
     case .mySingle(let a):
-        sink(arg: a) // $ flow=398
+        sink(arg: a) // $ flow=403
     case .myPair(let a, let b):
         sink(arg: a)
         sink(arg: b)
@@ -410,7 +415,7 @@ func testEnums() {
     }
 
     if case .mySingle(let x) = a {
-        sink(arg: x) // $ flow=398
+        sink(arg: x) // $ flow=403
     }
     if case .myPair(let x, let y) = a {
         sink(arg: x)
@@ -426,7 +431,7 @@ func testEnums() {
         sink(arg: a)
     case .myPair(let a, let b):
         sink(arg: a)
-        sink(arg: b) // $ flow=420
+        sink(arg: b) // $ flow=425
     case let .myCons(a, _):
         sink(arg: a)
     }
@@ -436,7 +441,7 @@ func testEnums() {
     }
     if case .myPair(let x, let y) = a {
         sink(arg: x)
-        sink(arg: y) // $ flow=420
+        sink(arg: y) // $ flow=425
     }
 
     let b: MyEnum = .myCons(42, a)
@@ -452,7 +457,7 @@ func testEnums() {
     case let .myCons(a, .myPair(b, c)):
         sink(arg: a)
         sink(arg: b)
-        sink(arg: c) // $ flow=420
+        sink(arg: c) // $ flow=425
     case let .myCons(a, _):
         sink(arg: a)
     }
@@ -461,23 +466,49 @@ func testEnums() {
         sink(arg: x)
     }
     if case MyEnum.myPair(let x, let y) = .myPair(source(), 0) {
-        sink(arg: x) // $ flow=463
+        sink(arg: x) // $ flow=468
         sink(arg: y)
     }
     if case let .myCons(_, .myPair(_, c)) = b {
-        sink(arg: c) // $ flow=420
+        sink(arg: c) // $ flow=425
     }
 
     switch (a, b) {
     case let (.myPair(a, b), .myCons(c, .myPair(d, e))):
         sink(arg: a)
-        sink(arg: b) // $ flow=420
+        sink(arg: b) // $ flow=425
         sink(arg: c)
         sink(arg: d)
-        sink(arg: e) // $ flow=420
+        sink(arg: e) // $ flow=425
     default:
         ()
     }
+
+    let c1 = MyEnum.mySingle(0)
+    let c2 = MyEnum.mySingle(source())
+    let c3 = mkMyEnum1(0)
+    let c4 = mkMyEnum1(source())
+    let c5 = mkMyEnum2(0)
+    let c6 = mkMyEnum2(source())
+    if case MyEnum.mySingle(let d1) = c1 { sink(arg: d1) }
+    if case MyEnum.mySingle(let d2) = c2 { sink(arg: d2) } // $ flow=488
+    if case MyEnum.mySingle(let d3) = c3 { sink(arg: d3) }
+    if case MyEnum.mySingle(let d4) = c4 { sink(arg: d4) } // $ flow=490
+    if case MyEnum.mySingle(let d5) = c5 { sink(arg: d5) }
+    if case MyEnum.mySingle(let d6) = c6 { sink(arg: d6) } // $ flow=492
+
+    let e1 = Optional.some(0)
+    let e2 = Optional.some(source())
+    let e3 = mkOptional1(0)
+    let e4 = mkOptional1(source())
+    let e5 = mkOptional2(0)
+    let e6 = mkOptional2(source())
+    sink(arg: e1!)
+    sink(arg: e2!) // $ flow=501
+    sink(arg: e3!)
+    sink(arg: e4!) // $ flow=503
+    sink(arg: e5!)
+    sink(arg: e6!) // $ flow=505
 }
 
 func source2() -> (Int, Int)? { return nil }
@@ -523,8 +554,8 @@ func testOptionalPropertyAccess(y: Int?) {
 }
 
 func testIdentityArithmetic() {
-  sink(arg: +source()) // $ flow=526
-  sink(arg: (source())) // $ flow=527
+  sink(arg: +source()) // $ flow=557
+  sink(arg: (source())) // $ flow=558
 }
 
 func sink(str: String) {}
@@ -541,13 +572,13 @@ class MyClass {
 extension MyClass {
     convenience init(contentsOfFile: String) {
       self.init(s: source3())
-      sink(str: str) // $ flow=543
+      sink(str: str) // $ flow=574
     }
 }
 
 func extensionInits(path: String) {
-  sink(str: MyClass(s: source3()).str) // $ flow=549
-  sink(str: MyClass(contentsOfFile: path).str) // $ flow=543
+  sink(str: MyClass(s: source3()).str) // $ flow=580
+  sink(str: MyClass(contentsOfFile: path).str) // $ flow=574
 }
 
 class InoutConstructorClass {
@@ -572,10 +603,10 @@ struct S {
 func testKeyPath() {
   let s = S(x: source())
   let f = \S.x
-  sink(arg: s[keyPath: f]) // $ flow=573
+  sink(arg: s[keyPath: f]) // $ flow=604
 
   let inferred : KeyPath<S, Int> = \.x
-  sink(arg: s[keyPath: inferred]) // $ flow=573
+  sink(arg: s[keyPath: inferred]) // $ flow=604
 }
 
 struct S2 {
@@ -590,13 +621,13 @@ func testNestedKeyPath() {
   let s = S(x: source())
   let s2 = S2(s: s)
   let f = \S2.s.x
-  sink(arg: s2[keyPath: f]) // $ flow=590
+  sink(arg: s2[keyPath: f]) // $ flow=621
 }
 
 func testArrayKeyPath() {
     let array = [source()]
     let f = \[Int].[0]
-    sink(arg: array[keyPath: f]) // $ MISSING: flow=597
+    sink(arg: array[keyPath: f]) // $ MISSING: flow=628
 }
 
 struct S2_Optional {
@@ -611,7 +642,7 @@ func testOptionalKeyPath() {
     let s = S(x: source())
     let s2 = S2_Optional(s: s)
     let f = \S2_Optional.s?.x
-    sink(opt: s2[keyPath: f]) // $ MISSING: flow=611
+    sink(opt: s2[keyPath: f]) // $ MISSING: flow=642
 }
 
 func testSwap() {
@@ -623,11 +654,11 @@ func testSwap() {
     x = y
     y = t
     sink(arg: x)
-    sink(arg: y) // $ flow=618
+    sink(arg: y) // $ flow=649
 
     x = source()
     y = 0
     swap(&x, &y)
-    sink(arg: x) // $ SPURIOUS: flow=628
-    sink(arg: y) // $ flow=628
+    sink(arg: x) // $ SPURIOUS: flow=659
+    sink(arg: y) // $ flow=659
 }

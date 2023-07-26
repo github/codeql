@@ -701,3 +701,16 @@ void test34(unsigned size) {
     int val = *p; // GOOD
   }
 }
+
+void deref(char* q) {
+  char x = *q; // $ MISSING: deref=L712->L706 deref=L713->L706
+}
+
+void test35(unsigned long size, char* q)
+{
+  char* p = new char[size];
+  char* end = p + size; // $ alloc=L711
+  if(q <= end) {
+    deref(q);
+  }
+}
