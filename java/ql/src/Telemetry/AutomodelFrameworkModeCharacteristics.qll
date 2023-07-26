@@ -125,13 +125,19 @@ class FrameworkModeMetadataExtractor extends string {
     string input, string parameterName
   ) {
     exists(Callable callable, int paramIdx |
-      e.asParameter() = callable.getParameter(paramIdx) and
+      (
+        e.(DataFlow::ExplicitParameterNode).asParameter() = callable.getParameter(paramIdx) and
+        parameterName = e.asParameter().getName()
+        or
+        e.(DataFlow::InstanceParameterNode).getCallable() = callable and
+        paramIdx = -1 and
+        parameterName = "this"
+      ) and
       input = AutomodelJavaUtil::getArgumentForIndex(paramIdx) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
       name = callable.getName() and
-      parameterName = e.asParameter().getName() and
       signature = ExternalFlow::paramsString(callable)
     )
   }
