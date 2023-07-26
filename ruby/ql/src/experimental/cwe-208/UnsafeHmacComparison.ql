@@ -42,7 +42,7 @@ class OpenSslHmacbase64digest extends DataFlow::Node {
 }
 
 class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "UnsafeHMACComparison" }
+  Configuration() { this = "UnsafeHmacComparison" }
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof OpenSslHmacHexdigest or
