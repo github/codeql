@@ -186,13 +186,12 @@ query predicate typeModel(string type1, string type2, string path) {
   or
   typeModelBlockArgumentParameters(type1, type2, path)
 }
+
 // TODO: path-problem versions of these queries to track how types flow to a particular return node or argument
+query predicate sourceModel(string type, string path, string kind) { none() }
 
+query predicate sinkModel(string type1, string type2, string path) { none() }
 
-query predicate sinkModel(string type1, string type2, string path) {
-  none()
-}
+query predicate summaryModel(string type1, string type2, string path) { none() }
 
-query predicate summaryModel(string type1, string type2, string path) {
-  none()
-}
+query predicate typeVariableModel(string name, string path) { none() }
