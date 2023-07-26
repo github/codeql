@@ -30,12 +30,12 @@
     <p>
       In the first (bad) example, the server accepts a parameter from the user and uses it to set the username without validation.
     </p>
-    <sample src="examples/TrustBoundaryVulnerable.java" />
+    <sample src="TrustBoundaryVulnerable.java" />
 
     <p>
       In the second (good) example, the server validates the parameter before using it to set the username.
     </p>
-    <sample src="examples/TrustBoundaryFixed.java" />
+    <sample src="TrustBoundaryFixed.java" />
 
   </example>
 
