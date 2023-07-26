@@ -88,7 +88,9 @@ class ConfigInjection extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     exists(MethodCallNode replace, StrConst s |
-      replace.calls(sanitizer, "replace") and s = replace.getArg(0).asExpr() and s.getText() = "\r"
+      replace.calls(sanitizer, "replace") and
+      s = replace.getArg(0).asExpr() and
+      s.getText() = ["\r", "\n", "\r\n"]
     )
     or
     exists(MethodCallNode sub, StrConst s |
