@@ -3,31 +3,26 @@ import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.ApiGraphs
 import codeql.ruby.dataflow.RemoteFlowSources
-import codeql.ruby.ast.Operation
 import codeql.ruby.TaintTracking
 import ruby
 
-/**
- * @kind problem
- */
-
 // A call to OpenSSL::HMAC.hexdigest
-class OpenSSLHMACHexdigest extends DataFlow::Node {
-  OpenSSLHMACHexdigest() {
+class OpenSslHmacHexdigest extends DataFlow::Node {
+  OpenSslHmacHexdigest() {
     this = API::getTopLevelMember("OpenSSL").getMember("HMAC").getAMethodCall("hexdigest")
   }
 }
 
 // A call to OpenSSL::HMAC.to_s (which is an alias for OpenSSL::HMAC.hexdigest)
-class OpenSSLHMACtos extends DataFlow::Node {
-  OpenSSLHMACtos() {
+class OpenSslHmactos extends DataFlow::Node {
+  OpenSslHmactos() {
     this = API::getTopLevelMember("OpenSSL").getMember("HMAC").getAMethodCall("to_s")
   }
 }
 
 // A call to OpenSSL::HMAC.digest
-class OpenSSLHMACdigest extends DataFlow::Node {
-  OpenSSLHMACdigest() {
+class OpenSslHmacdigest extends DataFlow::Node {
+  OpenSslHmacdigest() {
     this = API::getTopLevelMember("OpenSSL").getMember("HMAC").getAMethodCall("digest")
   }
 }
@@ -40,8 +35,8 @@ class OpenSSLnewHMAC extends DataFlow::Node {
 }
 
 // A call to OpenSSL::HMAC.base64digest
-class OpenSSLHmacbase64digest extends DataFlow::Node {
-  OpenSSLHmacbase64digest() {
+class OpenSslHmacbase64digest extends DataFlow::Node {
+  OpenSslHmacbase64digest() {
     this = API::getTopLevelMember("OpenSSL").getMember("HMAC").getAMethodCall("base64digest")
   }
 }
@@ -50,11 +45,11 @@ class Configuration extends DataFlow::Configuration {
   Configuration() { this = "UnsafeHMACComparison" }
 
   override predicate isSource(DataFlow::Node source) {
-    source instanceof OpenSSLHMACHexdigest or
+    source instanceof OpenSslHmacHexdigest or
     source instanceof OpenSSLnewHMAC or
-    source instanceof OpenSSLHmacbase64digest or
-    source instanceof OpenSSLHMACdigest or
-    source instanceof OpenSSLHMACtos
+    source instanceof OpenSslHmacbase64digest or
+    source instanceof OpenSslHmacdigest or
+    source instanceof OpenSslHmactos
   }
 
   // Holds if a given sink is an Equality Operation (== or !=)
