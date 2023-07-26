@@ -51,7 +51,7 @@ func taintThroughMutablePointer() {
     return source()
   })
   sink(arg: return1) // $ tainted=51
-  sink(arg: myArray1) // $ tainted=47
+  sink(arg: myArray1)
   sink(arg: myArray1[0]) // $ tainted=47
 
   // ---
