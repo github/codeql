@@ -3,7 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["ratpack.exec", "Operation", True, "of", "(Block)", "", "Argument[0]", "Argument[0].Parameter[this]", "value", "manual"]
       - ["ratpack.exec", "Promise", True, "apply", "", "", "Argument[this].Element", "Argument[0].Parameter[0].Element", "value", "manual"]
       - ["ratpack.exec", "Promise", True, "apply", "", "", "Argument[0].ReturnValue.Element", "ReturnValue.Element", "value", "manual"]
       - ["ratpack.exec", "Promise", True, "blockingMap", "", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
