@@ -106,7 +106,7 @@ class ConfigInjection extends TaintTracking::Configuration {
    */
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodCallNode set, Node obj, ConfigParser configparser |
-      TaintTracking::localTaint(configparser.getACall(), obj) and
+      obj = configparser.getReturn().getAValueReachableFromSource() and
       set.calls(obj, ["set", "add_section"]) and
       sink = set.getArg(_)
     ) and
