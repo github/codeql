@@ -29,7 +29,7 @@ class OpenSslHmacdigest extends DataFlow::Node {
 
 // A call to OpenSSL::HMAC.new
 class OpenSslnewHmac extends DataFlow::Node {
-  OpenSsslnewHmac() {
+  OpenSslnewHmac() {
     this = API::getTopLevelMember("OpenSSL").getMember("HMAC").getAnInstantiation()
   }
 }
