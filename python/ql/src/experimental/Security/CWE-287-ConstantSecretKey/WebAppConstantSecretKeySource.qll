@@ -6,7 +6,6 @@ import semmle.python.ApiGraphs
 class WebAppConstantSecretKeySource extends DataFlow::Node {
   WebAppConstantSecretKeySource() {
     (
-      // because Env return an Exeption if there isan't any value
       // we should check whether there is a default value or not
       exists(API::Node env |
         env = API::moduleImport("environ").getMember("Env") and

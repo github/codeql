@@ -65,24 +65,11 @@ module FlaskConstantSecretKeyConfig {
       or
       exists(SecretKeyAssignStmt e |
         sink.asExpr() = e.getValue()
-        //  | sameAsHardCodedConstantSanitizer(e.getTarget(0))
       )
     ) and
     exists(sink.getScope().getLocation().getFile().getRelativePath()) and
     not sink.getScope().getLocation().getFile().inStdlib()
   }
-
-  // for case check whether SECRECT_KEY is empty or not or whether it is == to a hardcoded constant value
-  // i don't know why I can't reach from an expression to an If subExpression node
-  predicate sameAsHardCodedConstantSanitizer(
-    DataFlow::Node source, DataFlow::Node sink, SecretKeyAssignStmt e, If i
-  ) {
-    source.asExpr() = e.getTarget(0).getAChildNode() and
-    // source.getLocation().toString().matches("%config3.py%")and
-    DataFlow::localFlow(source, sink) and
-    sink.asExpr() = i.getASubExpression().getAChildNode*().(Compare)
-  }
-
   /**
    * An Assignments like `SECRET_KEY = ConstantValue`
    * and `SECRET_KEY` file must be the Location that is specified in argument of `from_object` or `from_pyfile` methods
