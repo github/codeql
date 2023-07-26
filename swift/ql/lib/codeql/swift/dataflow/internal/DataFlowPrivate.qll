@@ -709,7 +709,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
     subscript = assign.getDest() and
-//    subscript.getBase().getType().(InOutType).getObjectType() instanceof ArrayType and
+    subscript.getBase().getType().(InOutType).getObjectType() instanceof ArrayType and
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or
