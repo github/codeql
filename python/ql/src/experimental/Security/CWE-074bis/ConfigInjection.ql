@@ -94,7 +94,7 @@ class ConfigInjection extends TaintTracking::Configuration {
     exists(MethodCallNode sub, StrConst s |
       sub = API::moduleImport("re").getMember("sub").getACall() and
       s = sub.getArg(0).asExpr() and
-      s.getText() = "\r" and
+      s.getText() = ["\r", "\n", "\r\n"] and
       sanitizer = sub.getArg(2)
     )
   }
