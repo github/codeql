@@ -28,8 +28,8 @@ class OpenSslHmacdigest extends DataFlow::Node {
 }
 
 // A call to OpenSSL::HMAC.new
-class OpenSSLnewHMAC extends DataFlow::Node {
-  OpenSSLnewHMAC() {
+class OpenSsslnewHmac extends DataFlow::Node {
+  OpenSsslnewHmac() {
     this = API::getTopLevelMember("OpenSSL").getMember("HMAC").getAnInstantiation()
   }
 }
@@ -46,7 +46,7 @@ class Configuration extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof OpenSslHmacHexdigest or
-    source instanceof OpenSSLnewHMAC or
+    source instanceof OpenSsslnewHmac or
     source instanceof OpenSslHmacbase64digest or
     source instanceof OpenSslHmacdigest or
     source instanceof OpenSslHmactos
