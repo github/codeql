@@ -71,7 +71,7 @@ private predicate locationSortKeys(Locatable ast, string file, int line, int col
   )
 }
 
-private Declaration getEnclosingDeclaration(Locatable ast) {
+private Declaration getAnEnclosingDeclaration(Locatable ast) {
   result = ast.(Expr).getEnclosingFunction()
   or
   result = ast.(Stmt).getEnclosingFunction()
@@ -92,7 +92,7 @@ private Declaration getEnclosingDeclaration(Locatable ast) {
  * nodes for things like parameter lists and constructor init lists.
  */
 private newtype TPrintAstNode =
-  TAstNode(Locatable ast) { shouldPrintDeclaration(getEnclosingDeclaration(ast)) } or
+  TAstNode(Locatable ast) { shouldPrintDeclaration(getAnEnclosingDeclaration(ast)) } or
   TDeclarationEntryNode(DeclStmt stmt, DeclarationEntry entry) {
     // We create a unique node for each pair of (stmt, entry), to avoid having one node with
     // multiple parents due to extractor bug CPP-413.
@@ -655,7 +655,7 @@ class FunctionNode extends FunctionOrGlobalOrNamespaceVariableNode {
 }
 
 private string getChildAccessorWithoutConversions(Locatable parent, Element child) {
-  shouldPrintDeclaration(getEnclosingDeclaration(parent)) and
+  shouldPrintDeclaration(getAnEnclosingDeclaration(parent)) and
   (
     exists(Stmt s | s = parent |
       namedStmtChildPredicates(s, child, result)
@@ -674,7 +674,7 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
 }
 
 private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) {
-  shouldPrintDeclaration(getEnclosingDeclaration(s)) and
+  shouldPrintDeclaration(getAnEnclosingDeclaration(s)) and
   (
     exists(int n | s.(BlockStmt).getStmt(n) = e and pred = "getStmt(" + n + ")")
     or
