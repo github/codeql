@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.nio.ByteBuffer;
+import java.io.File;
 
 
 class Test {
@@ -41,9 +41,10 @@ class Test {
 		);
 	}
 
-	public static ByteBuffer getBuffer(int size) {
-		return ByteBuffer // negative example, modeled as a neutral model
-		  .allocate(size); // negative example, modeled as a neutral model
+	public static int compareFiles(File f1, File f2) {
+		return f1.compareTo(
+			f2 // negative example (modeled as not a sink)
+		);
 	}
 }
 
