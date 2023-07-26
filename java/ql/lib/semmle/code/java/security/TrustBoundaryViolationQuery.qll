@@ -26,6 +26,9 @@ class TrustBoundaryViolationSink extends DataFlow::Node {
   TrustBoundaryViolationSink() { sinkNode(this, "trust-boundary") }
 }
 
+/**
+ * A sanitizer for data that crosses a trust boundary.
+ */
 abstract class TrustBoundaryValidationSanitizer extends DataFlow::Node { }
 
 /**

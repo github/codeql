@@ -22,12 +22,21 @@
 
   <recommendation>
     <p>
-      Validate input coming from a user. For example, if a web application accepts a cookie from a user, then the
-      application should validate the cookie before using it.
+      In order to maintain a trust boundary, data from less trusted sources should be validated before being used.
     </p>
   </recommendation>
 
   <example>
+    <p>
+      In the first (bad) example, the server accepts a parameter from the user and uses it to set the username without validation.
+    </p>
+    <sample src="examples/TrustBoundaryVulnerable.java" />
+
+    <p>
+      In the second (good) example, the server validates the parameter before using it to set the username.
+    </p>
+    <sample src="examples/TrustBoundaryFixed.java" />
+
   </example>
 
   <references>
