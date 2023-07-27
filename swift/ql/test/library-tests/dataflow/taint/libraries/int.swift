@@ -19,7 +19,7 @@ func taintThroughClosurePointer() {
     sink(arg: ptr1[0]) // $ MISSING: tainted=13
     return source()
   })
-  sink(arg: return1) // $ MISSING: tainted=20
+  sink(arg: return1) // $ tainted=20
 
   // ---
 
@@ -110,7 +110,7 @@ func taintThroughMutablePointer() {
       sink(arg: ptr4[0]) // $ MISSING: tainted=97
       return source()
     })
-    sink(arg: return5) // $ MISSING: tainted=111
+    sink(arg: return5) // $ tainted=111
     return source()
   })
   sink(arg: return4) // $ tainted=114
