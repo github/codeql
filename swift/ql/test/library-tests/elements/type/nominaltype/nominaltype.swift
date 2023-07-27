@@ -31,6 +31,25 @@ typealias C1_alias = C1
 
 typealias C2_alias = C2
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 func test() {
 	var a : A
 	var a_alias : A_alias
