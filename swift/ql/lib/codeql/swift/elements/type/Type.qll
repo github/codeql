@@ -12,14 +12,11 @@ class Type extends Generated::Type {
    * Gets the name of this type.
    */
   override string getName() {
-    /*exists(string name, int lastDotPos |
+    exists(string name, int lastDotPos |
       name = super.getName() and
       lastDotPos = max([-1, name.indexOf(".")]) and
       result = name.suffix(lastDotPos + 1)
-    )*/
-    // match as many characters as possible at the end that are not `.`.
-    // (`*?` is lazy matching)
-    result = super.getName().regexpCapture(".*?([^\\.]*)", 1)
+    )
   }
 
   /**
