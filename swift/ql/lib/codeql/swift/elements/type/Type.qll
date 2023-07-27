@@ -33,9 +33,7 @@ class Type extends Generated::Type {
    * The name and full name of `A` is `A`. The name of `B` is `B`, but the
    * full name of `B` is `A.B`.
    */
-  string getFullName() {
-    result = super.getName()
-  }
+  string getFullName() { result = super.getName() }
 
   /**
    * Gets this type after any type aliases have been resolved. For example in
