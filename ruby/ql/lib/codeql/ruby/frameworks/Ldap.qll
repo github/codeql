@@ -34,7 +34,16 @@ module NetLdap {
 
   /** A call that constructs a LDAP query */
   private class NetLdapFilter extends LdapConstruction::Range, DataFlow::CallNode {
-    NetLdapFilter() { this = any(ldap().getMember("Filter").getAMethodCall("eq")) }
+    NetLdapFilter() {
+      this =
+        any(ldap()
+                .getMember("Filter")
+                .getAMethodCall([
+                    "begins", "bineq", "contains", "ends", "eq", "equals", "ex", "ge", "le", "ne",
+                    "present"
+                  ])
+        )
+    }
 
     override DataFlow::Node getQuery() { result = this.getArgument([0, 1]) }
   }

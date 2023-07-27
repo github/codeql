@@ -34,7 +34,13 @@ module LdapInjection {
     exists(DataFlow::CallNode filterCall |
       (
         filterCall =
-          API::getTopLevelMember("Net").getMember("LDAP").getMember("Filter").getAMethodCall("eq") or
+          API::getTopLevelMember("Net")
+              .getMember("LDAP")
+              .getMember("Filter")
+              .getAMethodCall([
+                  "begins", "bineq", "contains", "ends", "eq", "equals", "ex", "ge", "le", "ne",
+                  "present"
+                ]) or
         filterCall.getMethodName() = "[]"
       ) and
       n1 = filterCall.getArgument([0, 1]) and
