@@ -167,6 +167,12 @@ signature module OutputSig<InputSig I> {
 
     /** Gets the enclosing callable. */
     I::Callable getEnclosingCallable();
+
+    /** Holds if this node is a synthesized access of `v`. */
+    predicate isVariableAccess(I::CapturedVariable v);
+
+    /** Holds if this node is a synthesized instance access. */
+    predicate isInstanceAccess();
   }
 
   /** A data flow node for an expression. */
@@ -738,6 +744,22 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       or
       exists(CaptureSsa::DefinitionExt phi, BasicBlock bb |
         this = TSynthPhi(phi) and phi.definesAt(_, bb, _, _) and result = bb.getEnclosingCallable()
+      )
+    }
+
+    predicate isVariableAccess(CapturedVariable v) {
+      this = TSynthRead(v, _, _, _)
+      or
+      exists(CaptureSsa::DefinitionExt phi |
+        this = TSynthPhi(phi) and phi.definesAt(TVariable(v), _, _, _)
+      )
+    }
+
+    predicate isInstanceAccess() {
+      this instanceof TSynthThisQualifier
+      or
+      exists(CaptureSsa::DefinitionExt phi |
+        this = TSynthPhi(phi) and phi.definesAt(TThis(_), _, _, _)
       )
     }
   }

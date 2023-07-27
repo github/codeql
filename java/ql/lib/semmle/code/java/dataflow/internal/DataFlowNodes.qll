@@ -503,14 +503,21 @@ module Private {
    * captured variables.
    */
   class CaptureNode extends Node, TCaptureNode {
-    CaptureFlow::SynthesizedCaptureNode getSynthesizedCaptureNode() { this = TCaptureNode(result) }
+    private CaptureFlow::SynthesizedCaptureNode cn;
 
-    override Location getLocation() { result = this.getSynthesizedCaptureNode().getLocation() }
+    CaptureNode() { this = TCaptureNode(cn) }
 
-    override string toString() { result = this.getSynthesizedCaptureNode().toString() }
+    CaptureFlow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
 
-    // TODO: expose hasTypeProxy(var / callable)
-    Type getTypeImpl() { result instanceof TypeObject }
+    override Location getLocation() { result = cn.getLocation() }
+
+    override string toString() { result = cn.toString() }
+
+    Type getTypeImpl() {
+      exists(Variable v | cn.isVariableAccess(v) and result = v.getType())
+      or
+      cn.isInstanceAccess() and result = cn.getEnclosingCallable().getDeclaringType()
+    }
   }
 }
 
