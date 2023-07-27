@@ -3,7 +3,7 @@ import swift
 string describe(Type t) {
   result = "getName:" + t.getName()
   or
-  result = "getFullName:" + t.(NominalType).getFullName()
+  result = "getFullName:" + t.getFullName()
   or
   result = "getUnderlyingType:" + t.getUnderlyingType().toString()
   or

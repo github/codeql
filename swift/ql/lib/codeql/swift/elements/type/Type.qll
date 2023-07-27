@@ -22,6 +22,22 @@ class Type extends Generated::Type {
   }
 
   /**
+   * Gets the full name of this `Type`. For example in:
+   * ```swift
+   * struct A {
+   *   struct B {
+   *     // ...
+   *   }
+   * }
+   * ```
+   * The name and full name of `A` is `A`. The name of `B` is `B`, but the
+   * full name of `B` is `A.B`.
+   */
+  string getFullName() {
+    result = super.getName()
+  }
+
+  /**
    * Gets this type after any type aliases have been resolved. For example in
    * the following code, the underlying type of `MyInt` is `Int`:
    * ```
