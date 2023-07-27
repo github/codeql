@@ -45,6 +45,10 @@ edges
 | summaries.rb:1:1:1:7 | tainted | summaries.rb:147:16:147:22 | tainted |
 | summaries.rb:1:1:1:7 | tainted | summaries.rb:150:39:150:45 | tainted |
 | summaries.rb:1:1:1:7 | tainted | summaries.rb:150:39:150:45 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:154:5:154:11 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:154:5:154:11 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:155:10:155:16 | ... = ... |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:155:10:155:16 | ... = ... |
 | summaries.rb:1:11:1:36 | call to identity | summaries.rb:1:1:1:7 | tainted |
 | summaries.rb:1:11:1:36 | call to identity | summaries.rb:1:1:1:7 | tainted |
 | summaries.rb:1:20:1:36 | call to source | summaries.rb:1:11:1:36 | call to identity |
@@ -232,6 +236,8 @@ edges
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:145:26:145:32 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:147:16:147:22 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:150:39:150:45 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:154:5:154:11 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:155:10:155:16 | ... = ... |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:16:122:22 | [post] tainted |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:25:122:25 | [post] y |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:33:122:33 | [post] z |
@@ -475,6 +481,10 @@ nodes
 | summaries.rb:147:16:147:22 | tainted | semmle.label | tainted |
 | summaries.rb:150:39:150:45 | tainted | semmle.label | tainted |
 | summaries.rb:150:39:150:45 | tainted | semmle.label | tainted |
+| summaries.rb:154:5:154:11 | tainted | semmle.label | tainted |
+| summaries.rb:154:5:154:11 | tainted | semmle.label | tainted |
+| summaries.rb:155:10:155:16 | ... = ... | semmle.label | ... = ... |
+| summaries.rb:155:10:155:16 | ... = ... | semmle.label | ... = ... |
 subpaths
 invalidSpecComponent
 #select
@@ -574,6 +584,10 @@ invalidSpecComponent
 | summaries.rb:147:16:147:22 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:147:16:147:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:150:39:150:45 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:150:39:150:45 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:150:39:150:45 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:150:39:150:45 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:154:5:154:11 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:154:5:154:11 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:154:5:154:11 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:154:5:154:11 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:155:10:155:16 | ... = ... | summaries.rb:1:20:1:36 | call to source | summaries.rb:155:10:155:16 | ... = ... | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:155:10:155:16 | ... = ... | summaries.rb:1:20:1:36 | call to source | summaries.rb:155:10:155:16 | ... = ... | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 warning
 | CSV type row should have 3 columns but has 1: TooFewColumns |
 | CSV type row should have 3 columns but has 6: TooManyColumns;;Member[Foo].Instance;too;many;columns |
