@@ -402,9 +402,9 @@ func taintThroughEncodings() {
   })
   let arrayString2 = tainted.cString(using: String.Encoding.utf8)!
   sink(arg: arrayString2) // $ tainted=366
-  arrayString1.withUnsafeBufferPointer({
+  arrayString2.withUnsafeBufferPointer({
     buffer in
-    sink(arg: buffer) // $ MISSING: tainted=366
+    sink(arg: buffer) // $ tainted=366
     sink(arg: String(cString: buffer.baseAddress!)) // $ MISSING: tainted=366
   })
 
