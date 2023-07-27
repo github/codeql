@@ -35,10 +35,10 @@ module FlowSourcesTest implements TestSig {
       value = describe(source)
     )
     or
-    exists(DataFlow::Node source, DataFlow::Node sink |
+    exists(DataFlow::Node sink |
       // this is not really what the "flowsources" test is about, but sometimes it's helpful to
       // have sinks and confirm that taint reaches obvious points in the flow source test code.
-      TestFlow::flow(source, sink) and
+      TestFlow::flow(_, sink) and
       location = sink.getLocation() and
       element = sink.toString() and
       tag = "tainted" and
