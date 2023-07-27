@@ -169,23 +169,33 @@ signature module OutputSig<InputSig I> {
     I::Callable getEnclosingCallable();
   }
 
+  /** A data flow node for an expression. */
   class ExprNode extends ClosureNode {
+    /** Gets the expression corresponding to this node. */
     I::Expr getExpr();
   }
 
+  /** A data flow node for the `PostUpdateNode` of an expression. */
   class ExprPostUpdateNode extends ClosureNode {
+    /** Gets the expression corresponding to this node. */
     I::Expr getExpr();
   }
 
+  /** A data flow node for a parameter. */
   class ParameterNode extends ClosureNode {
+    /** Gets the parameter corresponding to this node. */
     I::CapturedParameter getParameter();
   }
 
+  /** A data flow node for an instance parameter. */
   class ThisParameterNode extends ClosureNode {
+    /** Gets the callable this instance parameter belongs to. */
     I::Callable getCallable();
   }
 
+  /** A data flow node for the instance parameter argument of a constructor call. */
   class MallocNode extends ClosureNode {
+    /** Gets closure construction that is the post-update of this node. */
     I::ClosureExpr getClosureExpr();
   }
 
@@ -195,10 +205,13 @@ signature module OutputSig<InputSig I> {
   /** Holds if there is a local flow step from `node1` to `node2`. */
   predicate localFlowStep(ClosureNode node1, ClosureNode node2);
 
+  /** Holds if there is a store step from `node1` to `node2`. */
   predicate storeStep(ClosureNode node1, I::CapturedVariable v, ClosureNode node2);
 
+  /** Holds if there is a read step from `node1` to `node2`. */
   predicate readStep(ClosureNode node1, I::CapturedVariable v, ClosureNode node2);
 
+  /** Holds if this-to-this summaries are expected for `c`. */
   predicate heuristicAllowInstanceParameterReturnInSelf(I::Callable c);
 }
 
