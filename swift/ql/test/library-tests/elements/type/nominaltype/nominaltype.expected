@@ -12,8 +12,8 @@
 | nominaltype.swift:65:6:65:6 | c1_alias | C1_alias | getABaseType:P, getAliasedType:C1, getName:C1_alias, getUnderlyingType:C1 |
 | nominaltype.swift:66:6:66:6 | c2_alias | C2_alias | getABaseType:P_alias, getAliasedType:C2, getName:C2_alias, getUnderlyingType:C2 |
 | nominaltype.swift:67:6:67:6 | o | Outer | getFullName:Outer, getName:Outer, getUnderlyingType:Outer |
-| nominaltype.swift:68:6:68:6 | oi | Outer.Inner | getFullName:Outer.Inner, getName:Outer.Inner, getUnderlyingType:Outer.Inner |
-| nominaltype.swift:69:6:69:6 | oia | Outer.Inner.InnerAlias | getABaseType:FixedWidthInteger, getABaseType:SignedInteger, getABaseType:_ExpressibleByBuiltinIntegerLiteral, getAliasedType:Int, getName:Outer.Inner.InnerAlias, getUnderlyingType:Int |
+| nominaltype.swift:68:6:68:6 | oi | Inner | getFullName:Outer.Inner, getName:Inner, getUnderlyingType:Inner |
+| nominaltype.swift:69:6:69:6 | oia | InnerAlias | getABaseType:FixedWidthInteger, getABaseType:SignedInteger, getABaseType:_ExpressibleByBuiltinIntegerLiteral, getAliasedType:Int, getName:InnerAlias, getUnderlyingType:Int |
 | nominaltype.swift:70:6:70:6 | aa | Any? | getName:Any?, getUnderlyingType:Any? |
 | nominaltype.swift:71:6:71:6 | p1p2 | P1P2 | getName:P1P2, getUnderlyingType:P1P2 |
 | nominaltype.swift:72:6:72:6 | boxInt | Box<Int> | getName:Box<Int>, getUnderlyingType:Box<Int> |
