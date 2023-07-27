@@ -1,8 +1,8 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import DataFlowPrivate
-private import codeql.ruby.typetracking.TypeTracker
-private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+private import codeql.ruby.dataflow.internal.TypeTrackerImpl
+private import codeql.ruby.dataflow.internal.TypeTrackerSpecific as TypeTrackerSpecific
 private import codeql.ruby.ast.internal.Module
 private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific

@@ -347,7 +347,7 @@ predicate isNonLocal(SummaryComponent component) {
   component = SC::withContent(_)
 }
 
-private import internal.SummaryTypeTracker as SummaryTypeTracker
+private import SummaryTypeTracker as SummaryTypeTracker
 private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 
 private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {

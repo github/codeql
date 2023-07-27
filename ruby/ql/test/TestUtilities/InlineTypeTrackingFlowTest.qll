@@ -1,18 +1,17 @@
 import ruby
 import TestUtilities.InlineExpectationsTest
 import TestUtilities.InlineFlowTestUtil
-private import codeql.ruby.typetracking.TypeTracker
 
-private DataFlow::LocalSourceNode track(TypeTracker t, DataFlow::CallNode source) {
+private DataFlow::LocalSourceNode track(DataFlow::TypeTracker t, DataFlow::CallNode source) {
   t.start() and
   defaultSource(source) and
   result = source
   or
-  exists(TypeTracker t2 | result = track(t2, source).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = track(t2, source).track(t2, t))
 }
 
 DataFlow::LocalSourceNode track(DataFlow::CallNode source) {
-  result = track(TypeTracker::end(), source)
+  result = track(DataFlow::TypeTracker::end(), source)
 }
 
 module TypeTrackingFlowTest implements TestSig {

@@ -17,7 +17,6 @@ private import codeql.ruby.AST as Ast
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
-private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -56,7 +55,7 @@ DataFlow::Node stringSink() {
 DataFlow::Node regSink() { result = any(RegexExecution exec).getRegex() }
 
 private signature module TypeTrackInputSig {
-  DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start);
+  DataFlow::LocalSourceNode start(DataFlow::TypeTracker t, DataFlow::Node start);
 
   predicate end(DataFlow::Node n);
 
@@ -76,19 +75,19 @@ private module TypeTrack<TypeTrackInputSig Input> {
 
   /** Gets a node that is forwards reachable by type-tracking. */
   pragma[nomagic]
-  private DataFlow::LocalSourceNode forward(TypeTracker t) {
+  private DataFlow::LocalSourceNode forward(DataFlow::TypeTracker t) {
     result = Input::start(t, _)
     or
-    exists(TypeTracker t2 | result = forward(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = forward(t2).track(t2, t))
     or
-    exists(TypeTracker t2 | t2 = t.continue() | additionalStep(forward(t2), result))
+    exists(DataFlow::TypeTracker t2 | t2 = t.continue() | additionalStep(forward(t2), result))
   }
 
   bindingset[result, tbt]
   pragma[inline_late]
   pragma[noopt]
-  private DataFlow::LocalSourceNode forwardLateInline(TypeBackTracker tbt) {
-    exists(TypeTracker tt |
+  private DataFlow::LocalSourceNode forwardLateInline(DataFlow::TypeBackTracker tbt) {
+    exists(DataFlow::TypeTracker tt |
       result = forward(tt) and
       tt = tbt.getACompatibleTypeTracker()
     )
@@ -96,23 +95,25 @@ private module TypeTrack<TypeTrackInputSig Input> {
 
   /** Gets a node that is backwards reachable by type-tracking. */
   pragma[nomagic]
-  private DataFlow::LocalSourceNode backwards(TypeBackTracker t) {
+  private DataFlow::LocalSourceNode backwards(DataFlow::TypeBackTracker t) {
     result = forwardLateInline(t) and
     (
       t.start() and
       Input::end(result.getALocalUse())
       or
-      exists(TypeBackTracker t2 | result = backwards(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2 | result = backwards(t2).backtrack(t2, t))
       or
-      exists(TypeBackTracker t2 | t2 = t.continue() | additionalStep(result, backwards(t2)))
+      exists(DataFlow::TypeBackTracker t2 | t2 = t.continue() |
+        additionalStep(result, backwards(t2))
+      )
     )
   }
 
   bindingset[result, tt]
   pragma[inline_late]
   pragma[noopt]
-  private DataFlow::LocalSourceNode backwardsInlineLate(TypeTracker tt) {
-    exists(TypeBackTracker tbt |
+  private DataFlow::LocalSourceNode backwardsInlineLate(DataFlow::TypeTracker tt) {
+    exists(DataFlow::TypeBackTracker tbt |
       result = backwards(tbt) and
       tt = tbt.getACompatibleTypeTracker()
     )
@@ -120,17 +121,17 @@ private module TypeTrack<TypeTrackInputSig Input> {
 
   /** Holds if `n` is forwards and backwards reachable with type tracker `t`. */
   pragma[nomagic]
-  private predicate reached(DataFlow::LocalSourceNode n, TypeTracker t) {
+  private predicate reached(DataFlow::LocalSourceNode n, DataFlow::TypeTracker t) {
     n = forward(t) and
     n = backwardsInlineLate(t)
   }
 
   pragma[nomagic]
-  private TypeTracker stepReached(
-    TypeTracker t, DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
+  private DataFlow::TypeTracker stepReached(
+    DataFlow::TypeTracker t, DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
   ) {
-    exists(StepSummary summary |
-      StepSummary::step(nodeFrom, nodeTo, summary) and
+    exists(DataFlow::StepSummary summary |
+      DataFlow::StepSummary::step(nodeFrom, nodeTo, summary) and
       reached(nodeFrom, t) and
       reached(nodeTo, result) and
       result = t.append(summary)
@@ -143,12 +144,12 @@ private module TypeTrack<TypeTrackInputSig Input> {
   }
 
   /** Gets a node that has been tracked from the start node `start`. */
-  DataFlow::LocalSourceNode track(DataFlow::Node start, TypeTracker t) {
+  DataFlow::LocalSourceNode track(DataFlow::Node start, DataFlow::TypeTracker t) {
     t.start() and
     result = Input::start(t, start) and
     reached(result, t)
     or
-    exists(TypeTracker t2 | t = stepReached(t2, track(start, t2), result))
+    exists(DataFlow::TypeTracker t2 | t = stepReached(t2, track(start, t2), result))
   }
 }
 
@@ -163,7 +164,7 @@ private predicate regFromString(DataFlow::LocalSourceNode inputStr, DataFlow::Ca
 }
 
 private module StringTypeTrackInput implements TypeTrackInputSig {
-  DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start) {
+  DataFlow::LocalSourceNode start(DataFlow::TypeTracker t, DataFlow::Node start) {
     start = strStart() and t.start() and result = start
   }
 
@@ -199,13 +200,15 @@ private predicate trackStrings = TypeTrack<StringTypeTrackInput>::track/2;
 
 /** Holds if `strConst` flows to a regex compilation (tracked by `t`), where the resulting regular expression is stored in `reg`. */
 pragma[nomagic]
-private predicate regFromStringStart(DataFlow::Node strConst, TypeTracker t, DataFlow::CallNode reg) {
+private predicate regFromStringStart(
+  DataFlow::Node strConst, DataFlow::TypeTracker t, DataFlow::CallNode reg
+) {
   regFromString(trackStrings(strConst, t), reg) and
   exists(t.continue())
 }
 
 private module RegTypeTrackInput implements TypeTrackInputSig {
-  DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start) {
+  DataFlow::LocalSourceNode start(DataFlow::TypeTracker t, DataFlow::Node start) {
     start = regStart() and
     t.start() and
     result = start
@@ -225,27 +228,27 @@ private module RegTypeTrackInput implements TypeTrackInputSig {
 private predicate trackRegs = TypeTrack<RegTypeTrackInput>::track/2;
 
 /** Gets a node that references a regular expression. */
-private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {
+private DataFlow::LocalSourceNode trackRegexpType(DataFlow::TypeTracker t) {
   t.start() and
   (
     result = regStart() or
     result = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"])
   )
   or
-  exists(TypeTracker t2 | result = trackRegexpType(t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = trackRegexpType(t2).track(t2, t))
 }
 
 /** Gets a node that references a regular expression. */
-DataFlow::Node trackRegexpType() { trackRegexpType(TypeTracker::end()).flowsTo(result) }
+DataFlow::Node trackRegexpType() { trackRegexpType(DataFlow::TypeTracker::end()).flowsTo(result) }
 
 /** Gets a node holding a value for the regular expression that is evaluated at `re`. */
 cached
 DataFlow::Node regExpSource(DataFlow::Node re) {
-  exists(DataFlow::LocalSourceNode end | end = trackStrings(result, TypeTracker::end()) |
+  exists(DataFlow::LocalSourceNode end | end = trackStrings(result, DataFlow::TypeTracker::end()) |
     end.getALocalUse() = re and re = stringSink()
   )
   or
-  exists(DataFlow::LocalSourceNode end | end = trackRegs(result, TypeTracker::end()) |
+  exists(DataFlow::LocalSourceNode end | end = trackRegs(result, DataFlow::TypeTracker::end()) |
     end.getALocalUse() = re and re = regSink()
   )
 }

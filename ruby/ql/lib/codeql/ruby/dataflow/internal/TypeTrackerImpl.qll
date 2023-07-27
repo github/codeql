@@ -421,7 +421,7 @@ module StepSummary {
  * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
  * ```ql
- * DataFlow::TypeTrackingNode myType(DataFlow::TypeTracker t) {
+ * DataFlow::LocalSourceNode myType(DataFlow::TypeTracker t) {
  *   t.start() and
  *   result = < source of myType >
  *   or
@@ -602,7 +602,7 @@ private predicate backSmallstepProj(TypeTrackingNode nodeTo, StepSummary summary
  * for back-tracking some callback type `myCallback`:
  *
  * ```ql
- * DataFlow::TypeTrackingNode myCallback(DataFlow::TypeBackTracker t) {
+ * DataFlow::LocalSourceNode myCallback(DataFlow::TypeBackTracker t) {
  *   t.start() and
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or

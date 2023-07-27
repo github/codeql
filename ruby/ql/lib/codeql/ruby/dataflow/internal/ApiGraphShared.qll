@@ -5,7 +5,7 @@
  */
 
 private import codeql.Locations
-private import codeql.ruby.typetracking.TypeTracker
+private import TypeTrackerImpl
 private import TypeTrackerSpecific
 
 /**

@@ -37,19 +37,17 @@ module UnsafeHtmlConstruction {
 
   /** Gets a node that eventually ends up in the XSS `sink`. */
   private DataFlow::Node getANodeThatEndsInXssSink(ReflectedXss::Sink sink) {
-    result = getANodeThatEndsInXssSink(TypeTracker::TypeBackTracker::end(), sink)
+    result = getANodeThatEndsInXssSink(DataFlow::TypeBackTracker::end(), sink)
   }
-
-  private import codeql.ruby.typetracking.TypeTracker as TypeTracker
 
   /** Gets a node that is eventually ends up in the XSS `sink`, type-tracked with `t`. */
   private DataFlow::LocalSourceNode getANodeThatEndsInXssSink(
-    TypeTracker::TypeBackTracker t, ReflectedXss::Sink sink
+    DataFlow::TypeBackTracker t, ReflectedXss::Sink sink
   ) {
     t.start() and
     result = sink.getALocalSource()
     or
-    exists(TypeTracker::TypeBackTracker t2 |
+    exists(DataFlow::TypeBackTracker t2 |
       result = getANodeThatEndsInXssSink(t2, sink).backtrack(t2, t)
     )
   }
