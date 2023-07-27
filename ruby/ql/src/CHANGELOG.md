@@ -1,3 +1,13 @@
+## 0.7.1
+
+### New Queries
+
+* Added a new experimental query, `rb/xpath-injection`, to detect cases where XPath statements are constructed from user input in an unsafe manner.
+
+### Minor Analysis Improvements
+
+* Improved resolution of calls performed on an object created with `Proc.new`.
+
 ## 0.7.0
 
 ### Minor Analysis Improvements

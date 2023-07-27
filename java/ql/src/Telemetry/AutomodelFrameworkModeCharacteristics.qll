@@ -50,10 +50,10 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
-  predicate isSink(Endpoint e, string kind) {
+  predicate isSink(Endpoint e, string kind, string provenance) {
     exists(string package, string type, string name, string signature, string ext, string input |
       sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, _)
+      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
     )
   }
 
@@ -154,7 +154,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
+    not FrameworkCandidatesImpl::isSink(e, _, _) and
     FrameworkModeGetCallable::getCallable(e).getName().matches("is%") and
     FrameworkModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
   }
@@ -172,7 +172,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
+    not FrameworkCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
       callable = FrameworkModeGetCallable::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and

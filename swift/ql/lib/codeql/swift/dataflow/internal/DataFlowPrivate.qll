@@ -175,6 +175,10 @@ private module Cached {
     nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
     or
     // flow through `!`
+    // note: there's a case in `readStep` that handles when the source is the
+    //   `OptionalSomeContentSet` within the RHS. This case is for when the
+    //   `Optional` itself is tainted (which it usually shouldn't be, but
+    //   retaining this case increases robustness of flow).
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
     // flow through `?` and `?.`
@@ -746,6 +750,10 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       enumPat.getSubPattern(idx) = subPat
     )
   )
+  or
+  // read of an enum (`Optional.Some`) member via `!`
+  node1.asExpr() = node2.asExpr().(ForceValueExpr).getSubExpr() and
+  c instanceof OptionalSomeContentSet
   or
   // read of a tuple member via `case let (v1, v2)` pattern matching
   exists(TuplePattern tupPat, int idx, Pattern subPat |

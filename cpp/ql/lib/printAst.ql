@@ -18,10 +18,10 @@ external string selectedSourceFile();
 
 class Cfg extends PrintAstConfiguration {
   /**
-   * Holds if the AST for `func` should be printed.
-   * Print All functions from the selected file.
+   * Holds if the AST for `decl` should be printed.
+   * Print All declarations from the selected file.
    */
-  override predicate shouldPrintFunction(Function func) {
-    func.getFile() = getFileBySourceArchiveName(selectedSourceFile())
+  override predicate shouldPrintDeclaration(Declaration decl) {
+    decl.getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
 }

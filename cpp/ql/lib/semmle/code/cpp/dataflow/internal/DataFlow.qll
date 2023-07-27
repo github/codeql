@@ -47,6 +47,14 @@ signature module ConfigSig {
   default predicate allowImplicitRead(Node node, ContentSet c) { none() }
 
   /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  default predicate neverSkip(Node node) {
+    isAdditionalFlowStep(node, _) or isAdditionalFlowStep(_, node)
+  }
+
+  /**
    * Gets the virtual dispatch branching limit when calculating field flow.
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
@@ -140,6 +148,17 @@ signature module StateConfigSig {
    * taken at `node`.
    */
   default predicate allowImplicitRead(Node node, ContentSet c) { none() }
+
+  /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  default predicate neverSkip(Node node) {
+    isAdditionalFlowStep(node, _) or
+    isAdditionalFlowStep(_, node) or
+    isAdditionalFlowStep(node, _, _, _) or
+    isAdditionalFlowStep(_, _, node, _)
+  }
 
   /**
    * Gets the virtual dispatch branching limit when calculating field flow.
