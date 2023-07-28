@@ -1193,7 +1193,7 @@ open class KotlinFileExtractor(
             // n + o'th parameter, where `o` is the parameter offset caused by adding any dispatch receiver to the parameter list.
             // Note we don't need to add the extension receiver here because `useValueParameter` always assumes an extension receiver
             // will be prepended if one exists.
-            val realFunctionId = useFunction<DbCallable>(f)
+            val realFunctionId = useFunction<DbCallable>(f, parentId, null)
             DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams, typeParameters = listOf(), isStatic = true)).use {
                 val realParamsVarId = getValueParameterLabel(id, parameterTypes.size - 2)
                 val intType = pluginContext.irBuiltIns.intType
