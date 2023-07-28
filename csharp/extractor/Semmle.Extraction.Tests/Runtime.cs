@@ -22,6 +22,8 @@ namespace Semmle.Extraction.Tests
 
     public class RuntimeTests
     {
+        private static string FixExpectedPathOnWindows(string path) => path.Replace('\\', '/');
+
         [Fact]
         public void TestRuntime1()
         {
@@ -46,10 +48,10 @@ namespace Semmle.Extraction.Tests
             Assert.Equal(2, runtimes.Count);
 
             Assert.True(runtimes.TryGetValue("Microsoft.AspNetCore.App", out var aspNetCoreApp));
-            Assert.Equal("/path/dotnet/shared/Microsoft.AspNetCore.App/7.0.2", aspNetCoreApp.FullPath);
+            Assert.Equal("/path/dotnet/shared/Microsoft.AspNetCore.App/7.0.2", FixExpectedPathOnWindows(aspNetCoreApp.FullPath));
 
             Assert.True(runtimes.TryGetValue("Microsoft.NETCore.App", out var netCoreApp));
-            Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/7.0.2", netCoreApp.FullPath);
+            Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/7.0.2", FixExpectedPathOnWindows(netCoreApp.FullPath));
         }
 
         [Fact]
@@ -72,7 +74,7 @@ namespace Semmle.Extraction.Tests
             Assert.Single(runtimes);
 
             Assert.True(runtimes.TryGetValue("Microsoft.NETCore.App", out var netCoreApp));
-            Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/8.0.0-preview.5.43280.8", netCoreApp.FullPath);
+            Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/8.0.0-preview.5.43280.8", FixExpectedPathOnWindows(netCoreApp.FullPath));
         }
 
         [Fact]
@@ -95,7 +97,7 @@ namespace Semmle.Extraction.Tests
             Assert.Single(runtimes);
 
             Assert.True(runtimes.TryGetValue("Microsoft.NETCore.App", out var netCoreApp));
-            Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/8.0.0-rc.4.43280.8", netCoreApp.FullPath);
+            Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/8.0.0-rc.4.43280.8", FixExpectedPathOnWindows(netCoreApp.FullPath));
         }
 
     }

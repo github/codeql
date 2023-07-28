@@ -67,6 +67,12 @@ signature module FullStateConfigSig {
   predicate allowImplicitRead(Node node, ContentSet c);
 
   /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  predicate neverSkip(Node node);
+
+  /**
    * Gets the virtual dispatch branching limit when calculating field flow.
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
@@ -252,6 +258,11 @@ module Impl<FullStateConfigSig Config> {
     not inBarrier(node2) and
     not fullBarrier(node1) and
     not fullBarrier(node2)
+  }
+
+  pragma[nomagic]
+  private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
+    isUnreachableInCallCached(n.asNode(), cc.getCall())
   }
 
   /**
@@ -2019,7 +2030,8 @@ module Impl<FullStateConfigSig Config> {
         castNode(this.asNode()) or
         clearsContentCached(this.asNode(), _) or
         expectsContentCached(this.asNode(), _) or
-        neverSkipInPathGraph(this.asNode())
+        neverSkipInPathGraph(this.asNode()) or
+        Config::neverSkip(this.asNode())
       }
     }
 
@@ -2108,7 +2120,7 @@ module Impl<FullStateConfigSig Config> {
       NodeEx node1, FlowState state, NodeEx node2, boolean preservesValue, DataFlowType t,
       LocalCallContext cc
     ) {
-      not isUnreachableInCallCached(node2.asNode(), cc.(LocalCallContextSpecificCall).getCall()) and
+      not isUnreachableInCall1(node2, cc) and
       (
         localFlowEntry(node1, pragma[only_bind_into](state)) and
         (
@@ -2123,7 +2135,7 @@ module Impl<FullStateConfigSig Config> {
         ) and
         node1 != node2 and
         cc.relevantFor(node1.getEnclosingCallable()) and
-        not isUnreachableInCallCached(node1.asNode(), cc.(LocalCallContextSpecificCall).getCall())
+        not isUnreachableInCall1(node1, cc)
         or
         exists(NodeEx mid |
           localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue, t, cc) and
@@ -2160,10 +2172,8 @@ module Impl<FullStateConfigSig Config> {
       preservesValue = false and
       t = node2.getDataFlowType() and
       callContext.relevantFor(node1.getEnclosingCallable()) and
-      not exists(DataFlowCall call | call = callContext.(LocalCallContextSpecificCall).getCall() |
-        isUnreachableInCallCached(node1.asNode(), call) or
-        isUnreachableInCallCached(node2.asNode(), call)
-      )
+      not isUnreachableInCall1(node1, callContext) and
+      not isUnreachableInCall1(node2, callContext)
     }
   }
 
@@ -2703,7 +2713,7 @@ module Impl<FullStateConfigSig Config> {
 
     ParamNodeEx getParamNode() { result = p }
 
-    override string toString() { result = p + ": " + ap }
+    override string toString() { result = p + concat(" : " + ppReprType(t)) + " " + ap }
 
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -2755,12 +2765,21 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
+  private predicate forceUnfold(AccessPathApprox apa) {
+    forceHighPrecision(apa.getHead())
+    or
+    exists(Content c2 |
+      apa = TConsCons(_, _, c2, _) and
+      forceHighPrecision(c2)
+    )
+  }
+
   /**
    * Holds with `unfold = false` if a precise head-tail representation of `apa` is
    * expected to be expensive. Holds with `unfold = true` otherwise.
    */
   private predicate evalUnfold(AccessPathApprox apa, boolean unfold) {
-    if forceHighPrecision(apa.getHead())
+    if forceUnfold(apa)
     then unfold = true
     else
       exists(int aps, int nodes, int apLimit, int tupleLimit |
@@ -3089,6 +3108,12 @@ module Impl<FullStateConfigSig Config> {
       result = " <" + this.(PathNodeMid).getCallContext().toString() + ">"
     }
 
+    private string ppSummaryCtx() {
+      this instanceof PathNodeSink and result = ""
+      or
+      result = " <" + this.(PathNodeMid).getSummaryCtx().toString() + ">"
+    }
+
     /** Gets a textual representation of this element. */
     string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
 
@@ -3097,7 +3122,9 @@ module Impl<FullStateConfigSig Config> {
      * representation of the call context.
      */
     string toStringWithContext() {
-      result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
+      result =
+        this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx() +
+          this.ppSummaryCtx()
     }
 
     /**

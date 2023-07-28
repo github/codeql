@@ -978,6 +978,12 @@ module API {
         pred = Impl::MkModuleInstanceUp(mod) and
         succ = getBackwardEndNode(mod.getOwnInstanceMethod("call"))
       )
+      or
+      // Step through callable wrappers like `proc` and `lambda` calls.
+      exists(DataFlow::Node node |
+        pred = getBackwardEndNode(node) and
+        succ = getBackwardStartNode(node.asCallable())
+      )
     }
 
     pragma[nomagic]

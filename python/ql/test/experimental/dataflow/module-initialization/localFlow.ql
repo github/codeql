@@ -31,4 +31,4 @@ module RuntimeLocalFlowTest implements FlowTestSig {
   }
 }
 
-import MakeFlowTest2<ImportTimeLocalFlowTest, RuntimeLocalFlowTest>
+import MakeTest<MergeTests<MakeTestSig<ImportTimeLocalFlowTest>, MakeTestSig<RuntimeLocalFlowTest>>>

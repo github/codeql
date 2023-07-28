@@ -202,9 +202,22 @@ module Content {
     /** Gets the declaration of the enum parameter. */
     ParamDecl getParam() { result = p }
 
-    override string toString() {
+    /**
+     * Gets a string describing this enum content, of the form: `EnumElementName:N` where `EnumElementName`
+     * is the name of the enum element declaration within the enum, and `N` is the 0-based index of the
+     * parameter that this content is for. For example in the following code there is only one `EnumContent`
+     * and it's signature is `myValue:0`:
+     * ```
+     * enum MyEnum {
+     *   case myValue(Int)
+     * }
+     * ```
+     */
+    string getSignature() {
       exists(EnumElementDecl d, int pos | d.getParam(pos) = p | result = d.toString() + ":" + pos)
     }
+
+    override string toString() { result = this.getSignature() }
   }
 }
 

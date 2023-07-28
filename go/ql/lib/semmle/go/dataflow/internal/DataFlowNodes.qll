@@ -681,6 +681,24 @@ module Public {
   }
 
   /** A representation of a parameter initialization, defined in source via an SSA node. */
+  class UnusedParameterNode extends ParameterNode, InstructionNode {
+    override IR::InitParameterInstruction insn;
+    Parameter parm;
+
+    UnusedParameterNode() {
+      insn = IR::initParamInstruction(parm) and
+      not exists(SsaExplicitDefinition ssa | ssa.getInstruction() = insn)
+    }
+
+    /** Gets the parameter this node initializes. */
+    override Parameter asParameter() { result = parm }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.asCallable().getFuncDef(), i)
+    }
+  }
+
+  /** A representation of a parameter initialization, defined in source via an SSA node. */
   class SsaParameterNode extends ParameterNode, SsaNode {
     override SsaExplicitDefinition ssa;
     Parameter parm;
