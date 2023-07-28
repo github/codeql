@@ -36,7 +36,12 @@ private class Struts2ActionField extends DeserializableField {
     exists(Struts2DeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and
       not superType instanceof TypeObject and
-      superType.fromSource()
+      superType.fromSource() and
+      (
+        this.isPublic()
+        or
+        exists(SetterMethod setter | setter.getField() = this and setter.isPublic())
+      )
     )
   }
 }
