@@ -121,6 +121,7 @@ and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/
    JDBC, Database
    Protobuf, Serialization
    Kryo deserialization, Serialization
+   Project Lombok, Utility library
    SnakeYaml, Serialization
    Spring JDBC, Database
    Spring MVC, Web application framework
