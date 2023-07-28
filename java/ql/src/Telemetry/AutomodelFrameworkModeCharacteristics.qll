@@ -48,16 +48,12 @@ abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
 
   abstract Top asTop();
 
-  string toString() {
-    result = this.asTop().toString()
-  }
+  string toString() { result = this.asTop().toString() }
 
-  Location getLocation() {
-    result = this.asTop().getLocation()
-  }
+  Location getLocation() { result = this.asTop().getLocation() }
 }
 
-class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParameter  {
+class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParameter {
   Parameter param;
 
   ExplicitParameterEndpoint() { this = TExplicitParameter(param) }
@@ -68,9 +64,7 @@ class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParamete
 
   override Callable getEnclosingCallable() { result = param.getCallable() }
 
-  override Top asTop() {
-    result = param 
-  }
+  override Top asTop() { result = param }
 }
 
 class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
@@ -84,9 +78,7 @@ class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
 
   override Callable getEnclosingCallable() { result = callable }
 
-  override Top asTop() {
-    result = callable
-  }
+  override Top asTop() { result = callable }
 }
 
 /**
