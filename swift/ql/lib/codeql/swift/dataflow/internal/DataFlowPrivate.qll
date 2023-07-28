@@ -169,7 +169,8 @@ private module Cached {
     nodeFrom.asExpr() = nodeTo.asExpr().(InOutExpr).getSubExpr()
     or
     // reverse flow through `&` (inout argument)
-    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr().(InOutExpr).getSubExpr() = nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
+    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr().(InOutExpr).getSubExpr() =
+      nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
     or
     // flow through `try!` and similar constructs
     nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
