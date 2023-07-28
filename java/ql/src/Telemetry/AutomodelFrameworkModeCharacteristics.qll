@@ -70,7 +70,9 @@ class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParamete
 class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
   Callable callable;
 
-  QualifierEndpoint() { this = TQualifier(callable) and not callable.isStatic() and callable.fromSource() }
+  QualifierEndpoint() {
+    this = TQualifier(callable) and not callable.isStatic() and callable.fromSource()
+  }
 
   override int getIndex() { result = -1 }
 
