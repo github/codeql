@@ -4,6 +4,7 @@ import java
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.security.SensitiveActions
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.RandomQuery
 
 /**
@@ -106,6 +107,10 @@ private class CookieSink extends WeakRandomnessSink {
 
 private class SensitiveActionSink extends WeakRandomnessSink {
   SensitiveActionSink() { this.asExpr() instanceof SensitiveExpr }
+}
+
+private class CryptographicSink extends WeakRandomnessSink {
+  CryptographicSink() { sinkNode(this, "crypto-parameter") }
 }
 
 /**
