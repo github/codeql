@@ -703,15 +703,18 @@ cfg.swift:
 #  155|         Type = Int?
 #  138|     getElement(0): [ForEachStmt] for ... in ... { ... }
 #  138|       getPattern(): [AnyPattern] _
-#  138|       getSequence(): [BinaryExpr] ... ....(_:_:) ...
-#  138|         getFunction(): [MethodLookupExpr] ....(_:_:)
-#  138|           getBase(): [TypeExpr] Int.Type
-#  138|             getTypeRepr(): [TypeRepr] Int
-#  138|           getMethodRef(): [DeclRefExpr] ...(_:_:)
-#  138|         getArgument(0): [Argument] : 0
-#  138|           getExpr(): [IntegerLiteralExpr] 0
-#  138|         getArgument(1): [Argument] : 10
-#  138|           getExpr(): [IntegerLiteralExpr] 10
+#  138|       getSequence(): [CallExpr] call to makeIterator()
+#  138|         getFunction(): [MethodLookupExpr] .makeIterator()
+#  138|           getBase(): [BinaryExpr] ... ....(_:_:) ...
+#  138|             getFunction(): [MethodLookupExpr] ....(_:_:)
+#  138|               getBase(): [TypeExpr] Int.Type
+#  138|                 getTypeRepr(): [TypeRepr] Int
+#  138|               getMethodRef(): [DeclRefExpr] ...(_:_:)
+#  138|             getArgument(0): [Argument] : 0
+#  138|               getExpr(): [IntegerLiteralExpr] 0
+#  138|             getArgument(1): [Argument] : 10
+#  138|               getExpr(): [IntegerLiteralExpr] 10
+#-----|           getMethodRef(): [DeclRefExpr] makeIterator()
 #  138|       getBody(): [BraceStmt] { ... }
 #  140|     getElement(1): [SwitchStmt] switch x { ... }
 #  140|       getExpr(): [DeclRefExpr] x
@@ -6493,15 +6496,18 @@ statements.swift:
 #    9|         Type = Int
 #    2|     getElement(0): [ForEachStmt] for ... in ... { ... }
 #    2|       getPattern(): [NamedPattern] i
-#    2|       getSequence(): [BinaryExpr] ... ....(_:_:) ...
-#    2|         getFunction(): [MethodLookupExpr] ....(_:_:)
-#    2|           getBase(): [TypeExpr] Int.Type
-#    2|             getTypeRepr(): [TypeRepr] Int
-#    2|           getMethodRef(): [DeclRefExpr] ...(_:_:)
-#    2|         getArgument(0): [Argument] : 1
-#    2|           getExpr(): [IntegerLiteralExpr] 1
-#    2|         getArgument(1): [Argument] : 5
-#    2|           getExpr(): [IntegerLiteralExpr] 5
+#    2|       getSequence(): [CallExpr] call to makeIterator()
+#    2|         getFunction(): [MethodLookupExpr] .makeIterator()
+#    2|           getBase(): [BinaryExpr] ... ....(_:_:) ...
+#    2|             getFunction(): [MethodLookupExpr] ....(_:_:)
+#    2|               getBase(): [TypeExpr] Int.Type
+#    2|                 getTypeRepr(): [TypeRepr] Int
+#    2|               getMethodRef(): [DeclRefExpr] ...(_:_:)
+#    2|             getArgument(0): [Argument] : 1
+#    2|               getExpr(): [IntegerLiteralExpr] 1
+#    2|             getArgument(1): [Argument] : 5
+#    2|               getExpr(): [IntegerLiteralExpr] 5
+#-----|           getMethodRef(): [DeclRefExpr] makeIterator()
 #    2|       getBody(): [BraceStmt] { ... }
 #    3|         getElement(0): [IfStmt] if ... then { ... } else { ... }
 #    3|           getCondition(): [StmtCondition] StmtCondition
@@ -6914,7 +6920,10 @@ statements.swift:
 #   71|   getBody(): [BraceStmt] { ... }
 #   71|     getElement(0): [ForEachStmt] for ... in ... where ... { ... }
 #   71|       getPattern(): [NamedPattern] number
-#   71|       getSequence(): [DeclRefExpr] numbers
+#   71|       getSequence(): [CallExpr] call to makeIterator()
+#   71|         getFunction(): [MethodLookupExpr] .makeIterator()
+#   71|           getBase(): [DeclRefExpr] numbers
+#-----|           getMethodRef(): [DeclRefExpr] makeIterator()
 #   71|       getWhere(): [BinaryExpr] ... .==(_:_:) ...
 #   71|         getFunction(): [MethodLookupExpr] .==(_:_:)
 #   71|           getBase(): [TypeExpr] Int.Type
