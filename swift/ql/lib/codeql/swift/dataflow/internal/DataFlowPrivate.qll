@@ -256,7 +256,8 @@ private module Cached {
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
     TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
-    TArrayContent()
+    TArrayContent() or
+    TSetContent()
 }
 
 /**
@@ -898,7 +899,7 @@ class DataFlowExpr = Expr;
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { c instanceof Content::ArrayContent }
+predicate forceHighPrecision(Content c) { c instanceof Content::ArrayContent or c instanceof Content::SetContent }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.

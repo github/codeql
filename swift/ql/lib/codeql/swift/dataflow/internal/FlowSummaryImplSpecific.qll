@@ -114,6 +114,11 @@ private string getContentSpecific(ContentSet cs) {
     cs.isSingleton(c) and
     result = "ArrayElement"
   )
+  or
+  exists(Content::SetContent c |
+    cs.isSingleton(c) and
+    result = "SetElement"
+  )
 }
 
 /** Gets the textual representation of a summary component in the format used for MaD models. */

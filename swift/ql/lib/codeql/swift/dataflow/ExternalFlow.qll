@@ -492,6 +492,9 @@ predicate parseContent(AccessPathToken component, Content content) {
   or
   component.getName() = "ArrayElement" and
   content instanceof Content::ArrayContent
+  or
+  component.getName() = "SetElement" and
+  content instanceof Content::SetContent
 }
 
 cached

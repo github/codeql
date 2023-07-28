@@ -224,6 +224,11 @@ module Content {
   class ArrayContent extends Content, TArrayContent {
     override string toString() { result = "Array element" }
   }
+
+  /** An element of a set */
+  class SetContent extends Content, TSetContent {
+    override string toString() { result = "Set element" }
+  }
 }
 
 /**
