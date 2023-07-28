@@ -18,7 +18,7 @@ private class RemoteSource extends TrustBoundaryViolationSource instanceof Remot
  * A sink for data that crosses a trust boundary.
  */
 class TrustBoundaryViolationSink extends DataFlow::Node {
-  TrustBoundaryViolationSink() { sinkNode(this, "trust-boundary") }
+  TrustBoundaryViolationSink() { sinkNode(this, "trust-boundary-violation") }
 }
 
 /**

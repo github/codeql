@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-    - ["org.apache.struts2.dispatcher", "SessionMap", False, "put", "", "", "Argument[0..1]", "trust-boundary", "manual"]
+    - ["org.apache.struts2.dispatcher", "SessionMap", False, "put", "", "", "Argument[0..1]", "trust-boundary-violation", "manual"]

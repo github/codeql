@@ -20,7 +20,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["play.mvc", "Result", False, "addingToSession", "", "", "Argument[1..2]", "trust-boundary", "manual"]
+      - ["play.mvc", "Result", False, "addingToSession", "", "", "Argument[1..2]", "trust-boundary-violation", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
