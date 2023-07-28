@@ -65,6 +65,19 @@ def to_inner_scope():
     also_x = foo() # $ tracked
     print(also_x) # $ tracked
 
+
+def from_parameter_default():
+    x_alias = tracked # $tracked
+    def outer(x=tracked): # $tracked
+        print(x) # $tracked
+        def inner():
+            print(x) # $ tracked
+            print(x_alias) # $tracked
+        return x # $tracked
+    also_x = outer() # $tracked
+    print(also_x) # $tracked
+
+
 # ------------------------------------------------------------------------------
 # Function decorator
 # ------------------------------------------------------------------------------

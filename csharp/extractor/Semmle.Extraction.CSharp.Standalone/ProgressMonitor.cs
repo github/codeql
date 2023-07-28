@@ -118,5 +118,15 @@ namespace Semmle.BuildAnalyser
             logger.Log(Severity.Info, $"Failed to read file {file}");
             logger.Log(Severity.Debug, $"Failed to read file {file}, exception: {ex}");
         }
+
+        public void MultipleNugetConfig(string[] nugetConfigs)
+        {
+            logger.Log(Severity.Info, $"Found multiple nuget.config files: {string.Join(", ", nugetConfigs)}.");
+        }
+
+        internal void NoTopLevelNugetConfig()
+        {
+            logger.Log(Severity.Info, $"Could not find a top-level nuget.config file.");
+        }
     }
 }

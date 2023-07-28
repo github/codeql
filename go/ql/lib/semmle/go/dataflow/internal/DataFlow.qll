@@ -47,6 +47,14 @@ signature module ConfigSig {
   default predicate allowImplicitRead(Node node, ContentSet c) { none() }
 
   /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  default predicate neverSkip(Node node) {
+    isAdditionalFlowStep(node, _) or isAdditionalFlowStep(_, node)
+  }
+
+  /**
    * Gets the virtual dispatch branching limit when calculating field flow.
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
@@ -114,7 +122,7 @@ signature module StateConfigSig {
    * Holds if data flow through `node` is prohibited when the flow state is
    * `state`.
    */
-  predicate isBarrier(Node node, FlowState state);
+  default predicate isBarrier(Node node, FlowState state) { none() }
 
   /** Holds if data flow into `node` is prohibited. */
   default predicate isBarrierIn(Node node) { none() }
@@ -131,13 +139,26 @@ signature module StateConfigSig {
    * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
    * This step is only applicable in `state1` and updates the flow state to `state2`.
    */
-  predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2);
+  default predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
+    none()
+  }
 
   /**
    * Holds if an arbitrary number of implicit read steps of content `c` may be
    * taken at `node`.
    */
   default predicate allowImplicitRead(Node node, ContentSet c) { none() }
+
+  /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  default predicate neverSkip(Node node) {
+    isAdditionalFlowStep(node, _) or
+    isAdditionalFlowStep(_, node) or
+    isAdditionalFlowStep(node, _, _, _) or
+    isAdditionalFlowStep(_, _, node, _)
+  }
 
   /**
    * Gets the virtual dispatch branching limit when calculating field flow.

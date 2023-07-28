@@ -86,13 +86,9 @@ class Configuration extends TaintTracking::Configuration {
     // we assume that `.join()` calls have a prefix, and thus block the prefix label.
     node = any(DataFlow::MethodCallNode call | call.getMethodName() = "join") and
     lbl = prefixLabel()
-  }
-
-  override predicate isSanitizerEdge(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel label
-  ) {
-    isOptionallySanitizedEdge(pred, succ) and
-    label = [DataFlow::FlowLabel::taint(), prefixLabel(), TaintedUrlSuffix::label()]
+    or
+    isOptionallySanitizedNode(node) and
+    lbl = [DataFlow::FlowLabel::taint(), prefixLabel(), TaintedUrlSuffix::label()]
   }
 
   override predicate isAdditionalFlowStep(

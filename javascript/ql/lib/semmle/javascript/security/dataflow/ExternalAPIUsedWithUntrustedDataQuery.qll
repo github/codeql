@@ -46,15 +46,11 @@ class Configuration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+  override predicate isSanitizerIn(DataFlow::Node node) {
     // Block flow from the location to its properties, as the relevant properties (hash and search) are taint sources of their own.
     // The location source is only used for propagating through API calls like `new URL(location)` and into external APIs where
     // the whole location object escapes.
-    exists(DataFlow::PropRead read |
-      read = DOM::locationRef().getAPropertyRead() and
-      pred = read.getBase() and
-      succ = read
-    )
+    node = DOM::locationRef().getAPropertyRead()
   }
 }
 
