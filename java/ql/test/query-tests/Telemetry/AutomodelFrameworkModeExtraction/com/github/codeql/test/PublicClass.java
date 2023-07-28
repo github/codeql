@@ -13,4 +13,9 @@ public class PublicClass {
   protected void nonPublicStuff(String arg) {
     System.out.println(arg);
   }
+
+  // arg is not a candidate because the method is not public:
+  void packagePrivateStuff(String arg) {
+    System.out.println(arg);
+  }
 }
