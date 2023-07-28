@@ -131,16 +131,15 @@ def serialize_output(query_output_json_file):
         if not extensible_type in parsed_json:
             continue
         tuples = parsed_json[extensible_type]["tuples"]
-        serialized_tuples += [
-            serialize_tuple(tuple, extensible_type) for tuple in tuples
-        ]
+        if tuples:
+            serialized_tuples.append(serialize_type(tuples, extensible_type))
     return yaml.dump({"extensions": serialized_tuples}, default_style='"')
 
 
-def serialize_tuple(tuple, extensible_type):
+def serialize_type(tuples, extensible_type):
     return {
         "addsTo": {"pack": "codeql/ruby-all", "extensible": extensible_type},
-        "data": [tuple],
+        "data": tuples,
     }
 
 
