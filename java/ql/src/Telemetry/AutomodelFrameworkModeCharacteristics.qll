@@ -24,6 +24,42 @@ newtype JavaRelatedLocationType =
   ClassDoc()
 
 /**
+ * A framework mode endpoint.
+ */
+abstract class FrameworkModeEndpoint extends Top {
+  /**
+   * Returns the parameter index of the endpoint.
+   */
+  abstract int getIndex();
+
+  /**
+   * Returns the name of the parameter of the endpoint.
+   */
+  abstract string getParamName();
+
+  /**
+   * Returns the callable that contains the endpoint.
+   */
+  abstract Callable getEnclosingCallable();
+}
+
+class ParameterEndpoint extends FrameworkModeEndpoint instanceof Parameter {
+  override int getIndex() { result = this.(Parameter).getPosition() }
+
+  override string getParamName() { result = this.(Parameter).getName() }
+
+  override Callable getEnclosingCallable() { result = this.(Parameter).getCallable() }
+}
+
+class QualifierEndpoint extends FrameworkModeEndpoint instanceof Callable {
+  override int getIndex() { result = -1 }
+
+  override string getParamName() { result = "this" }
+
+  override Callable getEnclosingCallable() { result = this }
+}
+
+/**
  * A candidates implementation for framework mode.
  *
  * Some important notes:
@@ -33,7 +69,7 @@ newtype JavaRelatedLocationType =
  */
 module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
-  class Endpoint = DataFlow::ParameterNode;
+  class Endpoint = FrameworkModeEndpoint;
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
 
@@ -46,7 +82,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) { none() }
 
-  RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
+  RelatedLocation asLocation(Endpoint e) { result = e }
 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
@@ -70,9 +106,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     FrameworkModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
     ext = "" and
-    exists(int paramIdx | e.isParameterOf(_, paramIdx) |
-      input = AutomodelJavaUtil::getArgumentForIndex(paramIdx)
-    )
+    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex())
   }
 
   /**
@@ -124,22 +158,13 @@ class FrameworkModeMetadataExtractor extends string {
     Endpoint e, string package, string type, string subtypes, string name, string signature,
     string input, string parameterName
   ) {
-    exists(Callable callable, int paramIdx |
-      (
-        e.(DataFlow::ExplicitParameterNode).asParameter() = callable.getParameter(paramIdx) and
-        parameterName = e.asParameter().getName()
-        or
-        e.(DataFlow::InstanceParameterNode).getCallable() = callable and
-        paramIdx = -1 and
-        parameterName = "this"
-      ) and
-      input = AutomodelJavaUtil::getArgumentForIndex(paramIdx) and
-      package = callable.getDeclaringType().getPackage().getName() and
-      type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
-      subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
-      name = callable.getName() and
-      signature = ExternalFlow::paramsString(callable)
-    )
+    parameterName = e.getParamName() and
+    name = e.getEnclosingCallable().getName() and
+    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex()) and
+    package = e.getEnclosingCallable().getDeclaringType().getPackage().getName() and
+    type = e.getEnclosingCallable().getDeclaringType().getErasure().(RefType).nestedName() and
+    subtypes = AutomodelJavaUtil::considerSubtypes(e.getEnclosingCallable()).toString() and
+    signature = ExternalFlow::paramsString(e.getEnclosingCallable())
   }
 }
 
@@ -207,7 +232,7 @@ private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingTo
   NotAModelApiParameter() { this = "not a model API parameter" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not exists(ModelExclusions::ModelApi api | api.getAParameter() = e.asParameter())
+    not exists(ModelExclusions::ModelApi api | api.getAParameter() = e)
   }
 }
 
