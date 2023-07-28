@@ -307,7 +307,15 @@ SwiftMangledName SwiftMangler::visitTypeAliasType(const swift::TypeAliasType* ty
 }
 
 SwiftMangledName SwiftMangler::visitArchetypeType(const swift::ArchetypeType* type) {
-  return initMangled(type) << fetch(type->getInterfaceType());
+  auto ret = initMangled(type) << fetch(type->getInterfaceType());
+  for (const auto* protocol : type->getConformsTo()) {
+    // Including the protocols in the mangled name allows us to distinguish the "same" type in
+    // different extensions, where it might have different constraints. Mangling the context (i.e.
+    // which ExtensionDecl or ValueDecl it's mentioned in) might be more robust, but there doesn't
+    // seem to be a clean way to get it.
+    ret << ':' << fetch(protocol);
+  }
+  return ret;
 }
 
 SwiftMangledName SwiftMangler::visitOpaqueTypeArchetypeType(
