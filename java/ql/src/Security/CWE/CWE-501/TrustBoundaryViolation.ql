@@ -1,7 +1,7 @@
 /**
  * @id java/trust-boundary-violation
  * @name Trust boundary violation
- * @description A user-provided value is used to set a session attribute.
+ * @description Modifying the HTTP session attributes based on data from an untrusted source may violate a trust boundary.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.8
