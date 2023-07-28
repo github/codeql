@@ -254,7 +254,7 @@ private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingTo
   NotAModelApiParameter() { this = "not a model API parameter" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not exists(ModelExclusions::ModelApi api | api = e.getEnclosingCallable())
+    not e.getEnclosingCallable() instanceof ModelExclusions::ModelApi
   }
 }
 
