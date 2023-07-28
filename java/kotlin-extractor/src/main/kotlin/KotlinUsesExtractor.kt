@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
+import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
 import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
@@ -784,6 +785,55 @@ open class KotlinUsesExtractor(
         }
     }
 
+    fun parentOf(d: IrDeclaration): IrDeclarationParent {
+        if (d is IrField) {
+            return getFieldParent(d)
+        }
+        return d.parent
+    }
+
+    fun useDeclarationParentOf(
+        // The declaration
+        d: IrDeclaration,
+        // Whether the type of entity whose parent this is can be a
+        // top-level entity in the JVM's eyes. If so, then its parent may
+        // be a file; otherwise, if dp is a file foo.kt, then the parent
+        // is really the JVM class FooKt.
+        canBeTopLevel: Boolean,
+        classTypeArguments: List<IrTypeArgument>? = null,
+        inReceiverContext: Boolean = false):
+        Label<out DbElement>? {
+
+        val parent = parentOf(d)
+        if (parent is IrExternalPackageFragment) {
+            // This is in a file class.
+            // Get the name in a similar way to the compiler's ExternalPackageParentPatcherLowering
+            // visitMemberAccess/generateOrGetFacadeClass.
+            if (d is IrMemberWithContainerSource) {
+                val containerSource = d.containerSource
+                if (containerSource is FacadeClassSource) {
+                    val facadeClassName = containerSource.facadeClassName
+                    if (facadeClassName != null) {
+                        // TODO: This is really a multifile-class rather than a file-class
+                        return extractFileClass(facadeClassName.fqNameForTopLevelClassMaybeWithDollars)
+                    } else {
+                        return extractFileClass(containerSource.className.fqNameForTopLevelClassMaybeWithDollars)
+                    }
+                } else {
+                    logger.error("Unexpected container source ${containerSource?.javaClass}")
+                    return null
+                }
+            } else {
+                logger.error("Element in external package fragment without container source ${d.javaClass}")
+                return null
+            }
+        }
+        return useDeclarationParent(parent, canBeTopLevel, classTypeArguments, inReceiverContext)
+    }
+
+    // Generally, useDeclarationParentOf should be used instead of
+    // calling this directly, as this cannot handle
+    // IrExternalPackageFragment
     fun useDeclarationParent(
         // The declaration parent according to Kotlin
         dp: IrDeclarationParent,
@@ -815,8 +865,7 @@ open class KotlinUsesExtractor(
                 }
             is IrFunction -> useFunction(dp)
             is IrExternalPackageFragment -> {
-                // TODO
-                logger.error("Unhandled IrExternalPackageFragment")
+                logger.error("Unable to handle IrExternalPackageFragment as an IrDeclarationParent")
                 null
             }
             else -> {
@@ -1058,7 +1107,7 @@ open class KotlinUsesExtractor(
      * in.
      */
     fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): String? {
-        val parentId = useDeclarationParent(f.parent, false, classTypeArgsIncludingOuterClasses, true)
+        val parentId = useDeclarationParentOf(f, false, classTypeArgsIncludingOuterClasses, true)
         if (parentId == null) {
             logger.error("Couldn't get parent ID for function label")
             return null
@@ -1355,7 +1404,7 @@ open class KotlinUsesExtractor(
             return ids.function.cast<T>()
         }
         val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
-        val parentId = useDeclarationParent(javaFun.parent, false, classTypeArgsIncludingOuterClasses, true)
+        val parentId = useDeclarationParentOf(javaFun, false, classTypeArgsIncludingOuterClasses, true)
         if (parentId == null) {
             logger.error("Couldn't find parent ID for function ${f.name.asString()}")
             return null
@@ -1662,7 +1711,7 @@ open class KotlinUsesExtractor(
         val overriddenParentAttributes = (declarationParent as? IrFunction)?.let {
             (this as? KotlinFileExtractor)?.declarationStack?.findOverriddenAttributes(it)
         }
-        val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParent(declarationParent, false)
+        val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParentOf(vp, false)
 
         val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: vp.index
         val idxOffset = if (declarationParent is IrFunction && declarationParent.extensionReceiverParameter != null)
@@ -1707,7 +1756,7 @@ open class KotlinUsesExtractor(
         }
 
     fun getFieldLabel(f: IrField): String {
-        val parentId = useDeclarationParent(getFieldParent(f), false)
+        val parentId = useDeclarationParentOf(f, false)
         // Distinguish backing fields of properties based on their extension receiver type;
         // otherwise two extension properties declared in the same enclosing context will get
         // clashing trap labels. These are always private, so we can just make up a label without
@@ -1720,7 +1769,7 @@ open class KotlinUsesExtractor(
         tw.getLabelFor<DbField>(getFieldLabel(f)).also { extractFieldLaterIfExternalFileMember(f) }
 
     fun getPropertyLabel(p: IrProperty): String? {
-        val parentId = useDeclarationParent(p.parent, false)
+        val parentId = useDeclarationParentOf(p, false)
         if (parentId == null) {
             return null
         } else {
@@ -1752,7 +1801,7 @@ open class KotlinUsesExtractor(
         }
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
-        val parentId = useDeclarationParent(ee.parent, false)
+        val parentId = useDeclarationParentOf(ee, false)
         return "@\"field;{$parentId};${ee.name.asString()}\""
     }
 
@@ -1760,7 +1809,7 @@ open class KotlinUsesExtractor(
         tw.getLabelFor(getEnumEntryLabel(ee))
 
     fun getTypeAliasLabel(ta: IrTypeAlias): String {
-        val parentId = useDeclarationParent(ta.parent, true)
+        val parentId = useDeclarationParentOf(ta, true)
         return "@\"type_alias;{$parentId};${ta.name.asString()}\""
     }
 

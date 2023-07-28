@@ -192,7 +192,7 @@ open class KotlinFileExtractor(
                     }
                 }
                 is IrFunction -> {
-                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractFunction(declaration, parentId, extractBody = extractFunctionBodies, extractMethodAndParameterTypeAccesses = extractFunctionBodies, extractAnnotations = extractAnnotations, null, listOf())
                     }
@@ -202,21 +202,21 @@ open class KotlinFileExtractor(
                     // Leaving this intentionally empty. init blocks are extracted during class extraction.
                 }
                 is IrProperty -> {
-                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractProperty(declaration, parentId, extractBackingField = true, extractFunctionBodies = extractFunctionBodies, extractPrivateMembers = extractPrivateMembers, extractAnnotations = extractAnnotations, null, listOf())
                     }
                     Unit
                 }
                 is IrEnumEntry -> {
-                    val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
+                    val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractEnumEntry(declaration, parentId, extractPrivateMembers, extractFunctionBodies)
                     }
                     Unit
                 }
                 is IrField -> {
-                    val parentId = useDeclarationParent(getFieldParent(declaration), false)?.cast<DbReftype>()
+                    val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
                         // For consistency with the Java extractor, enum entries get type accesses only if we're extracting from .kt source (i.e., when `extractFunctionBodies` is set)
                         extractField(declaration, parentId, extractAnnotationEnumTypeAccesses = extractFunctionBodies)
@@ -1286,7 +1286,7 @@ open class KotlinFileExtractor(
             val sourceParentId =
                 maybeSourceParentId ?:
                     if (typeSubstitution != null)
-                        useDeclarationParent(f.parent, false)
+                        useDeclarationParentOf(f, false)
                     else
                         parentId
             if (sourceParentId == null) {
@@ -1618,7 +1618,7 @@ open class KotlinFileExtractor(
                 }
 
                 if (bf != null && extractBackingField) {
-                    val fieldParentId = useDeclarationParent(getFieldParent(bf), false)
+                    val fieldParentId = useDeclarationParentOf(bf, false)
                     if (fieldParentId != null) {
                         val fieldId = extractField(bf, fieldParentId.cast(), extractFunctionBodies)
                         tw.writeKtPropertyBackingFields(id, fieldId)
@@ -2092,7 +2092,7 @@ open class KotlinFileExtractor(
 
     private fun getDefaultsMethodLabel(f: IrFunction): Label<out DbCallable>? {
         val classTypeArgsIncludingOuterClasses = null
-        val parentId = useDeclarationParent(f.parent, false, classTypeArgsIncludingOuterClasses, true)
+        val parentId = useDeclarationParentOf(f, false, classTypeArgsIncludingOuterClasses, true)
         if (parentId == null) {
             logger.errorElement("Couldn't get parent ID for defaults method", f)
             return null
@@ -3863,7 +3863,7 @@ open class KotlinFileExtractor(
                         val type = useType(pluginContext.irBuiltIns.unitType)
                         val locId = tw.getLocation(e)
                         val parentClass = irConstructor.parentAsClass
-                        val parentId = useDeclarationParent(parentClass, false, null, true)
+                        val parentId = useDeclarationParentOf(irConstructor, false, null, true)
                         if (parentId == null) {
                             logger.errorElement("Cannot get parent ID for obinit", e)
                             return
