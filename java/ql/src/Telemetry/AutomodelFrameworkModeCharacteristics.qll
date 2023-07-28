@@ -23,10 +23,14 @@ newtype JavaRelatedLocationType =
   MethodDoc() or
   ClassDoc()
 
+newtype TFrameworkModeEndpoint =
+  TExplicitParameter(Parameter p) or
+  TQualifier(Callable c)
+
 /**
  * A framework mode endpoint.
  */
-abstract class FrameworkModeEndpoint extends Top {
+abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
   /**
    * Returns the parameter index of the endpoint.
    */
@@ -41,22 +45,48 @@ abstract class FrameworkModeEndpoint extends Top {
    * Returns the callable that contains the endpoint.
    */
   abstract Callable getEnclosingCallable();
+
+  abstract Top asTop();
+
+  string toString() {
+    result = this.asTop().toString()
+  }
+
+  Location getLocation() {
+    result = this.asTop().getLocation()
+  }
 }
 
-class ParameterEndpoint extends FrameworkModeEndpoint instanceof Parameter {
-  override int getIndex() { result = this.(Parameter).getPosition() }
+class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParameter  {
+  Parameter param;
 
-  override string getParamName() { result = this.(Parameter).getName() }
+  ExplicitParameterEndpoint() { this = TExplicitParameter(param) }
 
-  override Callable getEnclosingCallable() { result = this.(Parameter).getCallable() }
+  override int getIndex() { result = param.getPosition() }
+
+  override string getParamName() { result = param.getName() }
+
+  override Callable getEnclosingCallable() { result = param.getCallable() }
+
+  override Top asTop() {
+    result = param 
+  }
 }
 
-class QualifierEndpoint extends FrameworkModeEndpoint instanceof Callable {
+class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
+  Callable callable;
+
+  QualifierEndpoint() { this = TQualifier(callable) }
+
   override int getIndex() { result = -1 }
 
   override string getParamName() { result = "this" }
 
-  override Callable getEnclosingCallable() { result = this }
+  override Callable getEnclosingCallable() { result = callable }
+
+  override Top asTop() {
+    result = callable
+  }
 }
 
 /**
@@ -82,7 +112,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) { none() }
 
-  RelatedLocation asLocation(Endpoint e) { result = e }
+  RelatedLocation asLocation(Endpoint e) { result = e.asTop() }
 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
@@ -232,7 +262,7 @@ private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingTo
   NotAModelApiParameter() { this = "not a model API parameter" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not exists(ModelExclusions::ModelApi api | api.getAParameter() = e)
+    not exists(ModelExclusions::ModelApi api | api.getAParameter() = e.asTop())
   }
 }
 
