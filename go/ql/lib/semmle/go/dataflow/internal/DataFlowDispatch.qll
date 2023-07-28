@@ -156,12 +156,3 @@ predicate golangSpecificParamArgFilter(
         .getACalleeWithoutVirtualDispatch()
         .asFunction())
 }
-
-predicate foo(DataFlowCall call, DataFlow::Node rec0) {
-  exists(DataFlow::Node rec | rec = call.getNode().(DataFlow::CallNode).getReceiver() |
-    rec = rec0 and rec.getType().getUnderlyingType() instanceof InterfaceType
-  ) and
-  not exists(Function callTarget | callTarget = call.getNode().(DataFlow::CallNode).getTarget() |
-    not isInterfaceMethod(callTarget)
-  )
-}
