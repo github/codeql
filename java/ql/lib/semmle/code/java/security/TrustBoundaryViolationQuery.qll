@@ -55,17 +55,9 @@ private predicate esapiIsValidData(Guard g, Expr e, boolean branch) {
 module TrustBoundaryConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof TrustBoundaryViolationSource }
 
-  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    n2.asExpr().(MethodAccess).getQualifier() = n1.asExpr()
-  }
-
   predicate isBarrier(DataFlow::Node node) {
     node instanceof TrustBoundaryValidationSanitizer or
-    node.getType() instanceof HttpServletSession or
-    node.asExpr()
-        .(MethodAccess)
-        .getMethod()
-        .hasQualifiedName("javax.servlet.http", "HttpServletRequest", "getMethod")
+    node.getType() instanceof HttpServletSession
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TrustBoundaryViolationSink }
