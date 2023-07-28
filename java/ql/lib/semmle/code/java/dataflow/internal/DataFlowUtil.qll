@@ -139,6 +139,10 @@ private predicate capturedVariableRead(Node n) {
   n.asExpr().(RValue).getVariable() instanceof CapturedVariable
 }
 
+/**
+ * Holds if there is a data flow step from `e1` to `e2` that only steps from
+ * child to parent in the AST.
+ */
 predicate simpleAstFlowStep(Expr e1, Expr e2) {
   e2.(CastingExpr).getExpr() = e1
   or

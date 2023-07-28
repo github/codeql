@@ -570,7 +570,14 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       pragma[only_bind_out](closureExprGetCallable(ce))
   }
 
-  /** Holds if we need an additional read of `v` TODO */
+  /**
+   * Holds if we need an additional read of `v` in the `i`th node of `bb` in
+   * order to synchronize the value stored on `closure`.
+   * `topScope` is true if the read is in the defining callable of `v`.
+   *
+   * Side-effects of potentially calling `closure` at this point will be
+   * observed in a similarly synthesized post-update node for this read of `v`.
+   */
   private predicate synthRead(
     CapturedVariable v, BasicBlock bb, int i, boolean topScope, Expr closure
   ) {
@@ -582,6 +589,10 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     if v.getCallable() != bb.getEnclosingCallable() then topScope = false else topScope = true
   }
 
+  /**
+   * Holds if there is an access of a captured variable inside a closure in the
+   * `i`th node of `bb`, such that we need to synthesize a `this.` qualifier.
+   */
   private predicate synthThisQualifier(BasicBlock bb, int i) {
     synthRead(_, bb, i, false, _) or
     captureRead(_, bb, i, false, _) or
@@ -592,6 +603,11 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     TVariable(CapturedVariable v) or
     TThis(Callable c) { captureAccess(_, c) }
 
+  /**
+   * A storage location for a captured variable in a specific callable. This is
+   * either the variable itself (in its defining scope) or an instance variable
+   * `this` (in a capturing scope).
+   */
   private class CaptureContainer extends TCaptureContainer {
     string toString() {
       exists(CapturedVariable v | this = TVariable(v) and result = v.toString())
@@ -600,6 +616,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     }
   }
 
+  /** Holds if `cc` needs a definition at the entry of its callable scope. */
   private predicate entryDef(CaptureContainer cc, BasicBlock bb, int i) {
     exists(Callable c |
       entryBlock(bb) and
@@ -681,6 +698,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     TMallocNode(ClosureExpr ce) { hasConstructorCapture(ce, _) }
 
   class ClosureNode extends TClosureNode {
+    /** Gets a textual representation of this node. */
     string toString() {
       exists(CapturedVariable v | this = TSynthRead(v, _, _, _) and result = v.toString())
       or
@@ -705,6 +723,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       result = "malloc" and this = TMallocNode(_)
     }
 
+    /** Gets the location of this node. */
     Location getLocation() {
       exists(CapturedVariable v, BasicBlock bb, int i, Expr closure |
         this = TSynthRead(v, bb, i, _) and
@@ -893,6 +912,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     |
       post = true
       or
+      // for a constructor call the regulare ExprNode is the post-update for the MallocNode
       post = false and hasConstructorCapture(closure, v)
     )
     or

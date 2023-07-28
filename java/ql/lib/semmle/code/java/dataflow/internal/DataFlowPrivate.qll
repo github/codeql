@@ -337,19 +337,29 @@ private newtype TDataFlowCallable =
   TSummarizedCallable(SummarizedCallable c) or
   TFieldScope(Field f)
 
+/**
+ * A callable or scope enclosing some number of data flow nodes. This can either
+ * be a source callable, a synthesized callable for which we have a summary
+ * model, or a synthetic scope for a field value node.
+ */
 class DataFlowCallable extends TDataFlowCallable {
+  /** Gets the source callable corresponding to this callable, if any. */
   Callable asCallable() { this = TSrcCallable(result) }
 
+  /** Gets the summary model callable corresponding to this callable, if any. */
   SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
+  /** Gets the field corresponding to this callable, if it is a field value scope. */
   Field asFieldScope() { this = TFieldScope(result) }
 
+  /** Gets a textual representation of this callable. */
   string toString() {
     result = this.asCallable().toString() or
     result = "Synthetic: " + this.asSummarizedCallable().toString() or
     result = "Field scope: " + this.asFieldScope().toString()
   }
 
+  /** Gets the location of this callable. */
   Location getLocation() {
     result = this.asCallable().getLocation() or
     result = this.asSummarizedCallable().getLocation() or
