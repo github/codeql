@@ -12,11 +12,8 @@ private import semmle.code.java.frameworks.owasp.Esapi
  */
 abstract class TrustBoundaryViolationSource extends DataFlow::Node { }
 
-/**
- * A node representing a servlet request.
- */
-private class ServletRequestSource extends TrustBoundaryViolationSource {
-  ServletRequestSource() { this.asExpr().getType() instanceof HttpServletRequest }
+private class RemoteSource extends TrustBoundaryViolationSource {
+  RemoteSource() { this instanceof RemoteFlowSource }
 }
 
 /**
