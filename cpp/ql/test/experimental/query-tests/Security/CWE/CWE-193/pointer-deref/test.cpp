@@ -703,7 +703,7 @@ void test34(unsigned size) {
 }
 
 void deref(char* q) {
-  char x = *q; // $ MISSING: deref=L712->L706 deref=L713->L706
+  char x = *q; // $ deref=L714->L705->L706 // BAD
 }
 
 void test35(unsigned long size, char* q)
