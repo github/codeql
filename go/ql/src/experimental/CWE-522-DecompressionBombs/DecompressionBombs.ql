@@ -20,15 +20,23 @@ import CmdLineFlowSource
 class DecompressionBombs extends TaintTracking::Configuration {
   DecompressionBombs() { this = "DecompressionBombs" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof UntrustedFlowSource
-    or
-    source instanceof CmdLineFlowSource
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+    (
+      source instanceof UntrustedFlowSource
+      or
+      source instanceof CmdLineFlowSource
+    ) and
+    state =
+      [
+        "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
+        "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "IOMethods",
+        "ZipKlauspost"
+      ]
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     (
-      exists(DataFlow::Function f | f.hasQualifiedName(["io", "bufio"], _) |
+      exists(DataFlow::Function f | f.hasQualifiedName(["io", "bufio", "io/ioutil"], _) |
         sink = f.getACall().getArgument(_)
       )
       or
