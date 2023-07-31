@@ -20,23 +20,39 @@ import CmdLineFlowSource
 class DecompressionBombs extends TaintTracking::Configuration {
   DecompressionBombs() { this = "DecompressionBombs" }
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    (
-      source instanceof UntrustedFlowSource
-      or
-      source instanceof CmdLineFlowSource
-    ) and
-    state =
-      [
-        "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
-        "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "IOMethods",
-        "ZipKlauspost"
-      ]
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof UntrustedFlowSource
+    or
+    source instanceof CmdLineFlowSource
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     (
-      exists(DataFlow::Function f | f.hasQualifiedName(["io", "bufio", "io/ioutil"], _) |
+      exists(DataFlow::Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer", "CopyN"]) |
+        sink = f.getACall().getArgument(1)
+      )
+      or
+      exists(DataFlow::Function f |
+        f.hasQualifiedName("io", ["Pipe", "ReadAll", "ReadAtLeast", "ReadFull"])
+      |
+        sink = f.getACall().getArgument(0)
+      )
+      or
+      exists(DataFlow::Function f |
+        f.hasQualifiedName("bufio.Reader",
+          ["Read", "ReadBytes", "ReadByte", "ReadLine", "ReadRune", "ReadSlice", "ReadString"])
+      |
+        sink = f.getACall().getReceiver()
+      )
+      or
+      exists(DataFlow::Function f |
+        f.hasQualifiedName("bufio.Scanner",
+          ["Text", "Bytes", "ReadByte", "ReadLine", "ReadRune", "ReadSlice", "ReadString"])
+      |
+        sink = f.getACall().getReceiver()
+      )
+      or
+      exists(DataFlow::Function f | f.hasQualifiedName("ioutil", "ReadAll") |
         sink = f.getACall().getArgument(_)
       )
       or
@@ -73,8 +89,25 @@ class DecompressionBombs extends TaintTracking::Configuration {
     state =
       [
         "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
-        "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "IOMethods",
-        "ZipKlauspost"
+        "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost"
+      ]
+  }
+
+  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
+    //here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
+    // exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
+    //   node = f.getACall().getArgument([0, 1]) and
+    //   TaintTracking::localExprTaint(f.getACall().getResult(_).asExpr(),
+    //     any(RelationalComparisonExpr e).getAChildExpr*())
+    // )
+    // or
+    exists(DataFlow::Function f | f.hasQualifiedName("io", "LimitReader") |
+      node = f.getACall().getArgument(0) and f.getACall().getArgument(1).isConst()
+    ) and
+    state =
+      [
+        "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
+        "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost"
       ]
   }
 
@@ -93,25 +126,6 @@ class DecompressionBombs extends TaintTracking::Configuration {
       fromNode = call.getReceiver() and
       toNode = call
     )
-  }
-
-  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
-    //here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
-    // exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
-    //   node = f.getACall().getArgument([0, 1]) and
-    //   TaintTracking::localExprTaint(f.getACall().getResult(_).asExpr(),
-    //     any(RelationalComparisonExpr e).getAChildExpr*())
-    // )
-    // or
-    exists(DataFlow::Function f | f.hasQualifiedName("io", "LimitReader") |
-      node = f.getACall().getArgument(0) and f.getACall().getArgument(1).isConst()
-    ) and
-    state =
-      [
-        "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
-        "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "IOMethods",
-        "ZipKlauspost"
-      ]
   }
 
   override predicate isAdditionalTaintStep(
@@ -154,8 +168,8 @@ class DecompressionBombs extends TaintTracking::Configuration {
     |
       fromNode = call.getArgument(0) and
       toNode = call.getResult(0) and
-      fromState = "" and
-      toState = "GzipNewReader"
+      fromState = "GzipNewReader" and
+      toState = ""
     )
     or
     exists(DataFlow::Function f, DataFlow::CallNode call |
@@ -190,8 +204,8 @@ class DecompressionBombs extends TaintTracking::Configuration {
     |
       fromNode = call.getArgument(0) and
       toNode = call.getResult(0) and
-      fromState = "" and
-      toState = "ZlibNewReader"
+      fromState = "ZlibNewReader" and
+      toState = ""
     )
     or
     exists(DataFlow::Function f, DataFlow::CallNode call |
@@ -228,21 +242,17 @@ class DecompressionBombs extends TaintTracking::Configuration {
   }
 }
 
-// here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
-predicate test(DataFlow::Node n2) { any(Test testconfig).hasFlowTo(n2) }
-
-class Test extends DataFlow::Configuration {
-  Test() { this = "test" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
-      f.getACall().getResult(0) = source
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof DataFlow::Node }
-}
-
+// // here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
+// predicate test(DataFlow::Node n2) { any(Test testconfig).hasFlowTo(n2) }
+// class Test extends DataFlow::Configuration {
+//   Test() { this = "test" }
+//   override predicate isSource(DataFlow::Node source) {
+//     exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
+//       f.getACall().getResult(0) = source
+//     )
+//   }
+//   override predicate isSink(DataFlow::Node sink) { sink instanceof DataFlow::Node }
+// }
 from
   DecompressionBombs cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node request
 where
