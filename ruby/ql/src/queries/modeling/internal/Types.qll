@@ -13,7 +13,17 @@ module Types {
       // TODO: construction of type values not using a "new" call
       returnedValue.flowsTo(methodNode.getAReturnNode()) and
       returnedValue.getMethodName() = "new" and
-      classNode.getAnImmediateReference().getAMethodCall() = returnedValue
+      classNode.getAnImmediateReference().getAMethodCall() = returnedValue and
+      // constructed object does not have a type declared in test code
+      /*
+       * TODO: this may be too restrictive, e.g.
+       * - if a type is declared in both production and test code
+       * - if a built-in type is extended in test code
+       */
+
+      forall(Ast::ModuleBase classDecl | classDecl = classNode.getADeclaration() |
+        classDecl.getLocation().getFile() instanceof Util::RelevantFile
+      )
     )
   }
 
@@ -49,6 +59,7 @@ module Types {
   // the method node in type2 constructs an instance of classNode
   private predicate typeModelReturns(string type1, string type2, string path) {
     exists(DataFlow::MethodNode methodNode, DataFlow::ClassNode classNode |
+      methodNode.getLocation().getFile() instanceof Util::RelevantFile and
       methodReturnsType(methodNode, classNode)
     |
       type1 = classNode.getQualifiedName() and
@@ -96,6 +107,7 @@ module Types {
       DataFlow::MethodNode methodNode, DataFlow::ClassNode classNode,
       DataFlow::ParameterNode parameterNode
     |
+      methodNode.getLocation().getFile() instanceof Util::RelevantFile and
       methodTakesParameterOfType(methodNode, classNode, parameterNode)
     |
       type1 = classNode.getQualifiedName() and
@@ -152,6 +164,7 @@ module Types {
 
   private predicate typeModelBlockArgumentParameters(string type1, string type2, string path) {
     exists(DataFlow::MethodNode methodNode, DataFlow::ClassNode classNode, int argIdx |
+      methodNode.getLocation().getFile() instanceof Util::RelevantFile and
       methodYieldsType(methodNode, argIdx, classNode)
     |
       type1 = classNode.getQualifiedName() and
