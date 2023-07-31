@@ -20,11 +20,11 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Guice
   private import semmle.code.java.frameworks.IoJsonWebToken
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
+  private import semmle.code.java.frameworks.InputStream
   private import semmle.code.java.frameworks.Properties
   private import semmle.code.java.frameworks.Protobuf
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.stapler.Stapler
-  private import semmle.code.java.JDK
 }
 
 /**
