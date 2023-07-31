@@ -1194,7 +1194,7 @@ module LdapExecution {
    * extend `LdapExecution` instead.
    */
   abstract class Range extends DataFlow::Node {
-    //** Gets the argument that specifies the query to be executed. */
+    /** Gets the argument that specifies the query to be executed. */
     abstract DataFlow::Node getQuery();
   }
 }
