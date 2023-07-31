@@ -29,26 +29,16 @@ class CommandInjectionAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
-private class ProcessSink2 extends CommandInjectionSink instanceof DataFlow::Node {
-  ProcessSink2() {
-    exists(AssignExpr assign, ProcessHost s |
-      assign.getDest() = s and
-      this.asExpr() = assign.getSource()
-    )
-    or
-    exists(AssignExpr assign, ProcessHost s, ArrayExpr a |
-      assign.getDest() = s and
-      a = assign.getSource() and
-      this.asExpr() = a.getAnElement()
-    )
-  }
-}
-
+/**
+ * A reference to any member of `Process`.
+ */
 private class ProcessHost extends MemberRefExpr {
   ProcessHost() { this.getBase() instanceof ProcessRef }
 }
 
-/** An expression of type `Process`. */
+/**
+ * An expression of type `Process`.
+ */
 private class ProcessRef extends Expr {
   ProcessRef() {
     this.getType() instanceof ProcessType or
@@ -56,7 +46,9 @@ private class ProcessRef extends Expr {
   }
 }
 
-/** The type `Process`. */
+/**
+ * The type `Process`.
+ */
 private class ProcessType extends NominalType {
   ProcessType() { this.getFullName() = "Process" }
 }
@@ -73,6 +65,24 @@ private class ProcessSink extends CommandInjectionSink instanceof DataFlow::Node
       t.getABaseType*().getUnderlyingType().getName() = "Process" and
       e.getFullyConverted() = this.asExpr() and
       e.getFullyConverted().getType() = t
+    )
+  }
+}
+
+/**
+ * A `DataFlow::Node` that is written into a field of a `Process` object.
+ */
+private class ProcessSink2 extends CommandInjectionSink instanceof DataFlow::Node {
+  ProcessSink2() {
+    exists(AssignExpr assign, ProcessHost s |
+      assign.getDest() = s and
+      this.asExpr() = assign.getSource()
+    )
+    or
+    exists(AssignExpr assign, ProcessHost s, ArrayExpr a |
+      assign.getDest() = s and
+      a = assign.getSource() and
+      this.asExpr() = a.getAnElement()
     )
   }
 }
