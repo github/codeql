@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Added support for Model as Data for Log-injection query
+* Added `log-injection` as a customizable sink kind for log injection.
