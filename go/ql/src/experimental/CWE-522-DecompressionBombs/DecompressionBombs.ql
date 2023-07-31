@@ -168,8 +168,8 @@ class DecompressionBombs extends TaintTracking::Configuration {
     |
       fromNode = call.getArgument(0) and
       toNode = call.getResult(0) and
-      fromState = "GzipNewReader" and
-      toState = ""
+      fromState = "" and
+      toState = "GzipNewReader"
     )
     or
     exists(DataFlow::Function f, DataFlow::CallNode call |
@@ -204,8 +204,8 @@ class DecompressionBombs extends TaintTracking::Configuration {
     |
       fromNode = call.getArgument(0) and
       toNode = call.getResult(0) and
-      fromState = "ZlibNewReader" and
-      toState = ""
+      fromState = "" and
+      toState = "ZlibNewReader"
     )
     or
     exists(DataFlow::Function f, DataFlow::CallNode call |
