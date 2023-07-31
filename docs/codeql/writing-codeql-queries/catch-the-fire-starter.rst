@@ -168,16 +168,16 @@ Exercise 1
    predicate isSouthern(Person p) { p.getLocation() = "south" }
 
    class Southerner extends Person {
-   /* the characteristic predicate */
-   Southerner() { isSouthern(this) }
+     /* the characteristic predicate */
+     Southerner() { isSouthern(this) }
    }
 
    class Child extends Person {
-   /* the characteristic predicate */
-   Child() { this.getAge() < 10 }
+     /* the characteristic predicate */
+     Child() { this.getAge() < 10 }
 
-   /* a member predicate */
-   override predicate isAllowedIn(string region) { region = this.getLocation() }
+     /* a member predicate */
+     override predicate isAllowedIn(string region) { region = this.getLocation() }
    }
 
    from Southerner s
@@ -194,16 +194,16 @@ Exercise 2
    predicate isSouthern(Person p) { p.getLocation() = "south" }
 
    class Southerner extends Person {
-   /* the characteristic predicate */
-   Southerner() { isSouthern(this) }
+     /* the characteristic predicate */
+     Southerner() { isSouthern(this) }
    }
 
    class Child extends Person {
-   /* the characteristic predicate */
-   Child() { this.getAge() < 10 }
+     /* the characteristic predicate */
+     Child() { this.getAge() < 10 }
 
-   /* a member predicate */
-   override predicate isAllowedIn(string region) { region = this.getLocation() }
+     /* a member predicate */
+     override predicate isAllowedIn(string region) { region = this.getLocation() }
    }
 
    predicate isBald(Person p) { not exists(string c | p.getHairColor() = c) }

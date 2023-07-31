@@ -46,12 +46,22 @@ class LogMessage(private val kind: String, private val message: String) {
     private fun escape(str: String): String {
         return str.replace("\\", "\\\\")
                   .replace("\"", "\\\"")
-                  .replace("/", "\\/")
-                  .replace("\b", "\\b")
+                  .replace("\u0000", "\\u0000")
+                  .replace("\u0001", "\\u0001")
+                  .replace("\u0002", "\\u0002")
+                  .replace("\u0003", "\\u0003")
+                  .replace("\u0004", "\\u0004")
+                  .replace("\u0005", "\\u0005")
+                  .replace("\u0006", "\\u0006")
+                  .replace("\u0007", "\\u0007")
+                  .replace("\u0008", "\\b")
+                  .replace("\u0009", "\\t")
+                  .replace("\u000A", "\\n")
+                  .replace("\u000B", "\\u000B")
                   .replace("\u000C", "\\f")
-                  .replace("\n", "\\n")
-                  .replace("\r", "\\r")
-                  .replace("\t", "\\t")
+                  .replace("\u000D", "\\r")
+                  .replace("\u000E", "\\u000E")
+                  .replace("\u000F", "\\u000F")
     }
 
     fun toJsonLine(): String {

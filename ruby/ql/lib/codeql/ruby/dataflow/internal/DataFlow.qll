@@ -47,6 +47,14 @@ signature module ConfigSig {
   default predicate allowImplicitRead(Node node, ContentSet c) { none() }
 
   /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  default predicate neverSkip(Node node) {
+    isAdditionalFlowStep(node, _) or isAdditionalFlowStep(_, node)
+  }
+
+  /**
    * Gets the virtual dispatch branching limit when calculating field flow.
    * This can be overridden to a smaller value to improve performance (a
    * value of 0 disables field flow), or a larger value to get more results.
@@ -140,6 +148,17 @@ signature module StateConfigSig {
    * taken at `node`.
    */
   default predicate allowImplicitRead(Node node, ContentSet c) { none() }
+
+  /**
+   * Holds if `node` should never be skipped over in the `PathGraph` and in path
+   * explanations.
+   */
+  default predicate neverSkip(Node node) {
+    isAdditionalFlowStep(node, _) or
+    isAdditionalFlowStep(_, node) or
+    isAdditionalFlowStep(node, _, _, _) or
+    isAdditionalFlowStep(_, _, node, _)
+  }
 
   /**
    * Gets the virtual dispatch branching limit when calculating field flow.
@@ -410,5 +429,22 @@ module MergePathGraph3<
   /**
    * Provides the query predicates needed to include a graph in a path-problem query.
    */
-  module PathGraph = Merged::PathGraph;
+  module PathGraph implements PathGraphSig<PathNode> {
+    /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+    query predicate edges(PathNode a, PathNode b) { Merged::PathGraph::edges(a, b) }
+
+    /** Holds if `n` is a node in the graph of data flow path explanations. */
+    query predicate nodes(PathNode n, string key, string val) {
+      Merged::PathGraph::nodes(n, key, val)
+    }
+
+    /**
+     * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+     * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+     * `ret -> out` is summarized as the edge `arg -> out`.
+     */
+    query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
+      Merged::PathGraph::subpaths(arg, par, ret, out)
+    }
+  }
 }

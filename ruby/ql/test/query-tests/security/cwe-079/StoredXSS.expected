@@ -1,7 +1,7 @@
 edges
 | app/controllers/foo/stores_controller.rb:8:5:8:6 | dt | app/controllers/foo/stores_controller.rb:9:22:9:23 | dt |
-| app/controllers/foo/stores_controller.rb:8:5:8:6 | dt | app/controllers/foo/stores_controller.rb:13:55:13:56 | dt |
 | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | app/controllers/foo/stores_controller.rb:8:5:8:6 | dt |
+| app/controllers/foo/stores_controller.rb:9:22:9:23 | dt | app/controllers/foo/stores_controller.rb:13:55:13:56 | dt |
 | app/controllers/foo/stores_controller.rb:9:22:9:23 | dt | app/views/foo/stores/show.html.erb:37:3:37:16 | @instance_text |
 | app/controllers/foo/stores_controller.rb:13:55:13:56 | dt | app/views/foo/stores/show.html.erb:2:9:2:20 | call to display_text |
 | app/controllers/foo/stores_controller.rb:13:55:13:56 | dt | app/views/foo/stores/show.html.erb:5:9:5:21 | call to local_assigns [element :display_text] |
