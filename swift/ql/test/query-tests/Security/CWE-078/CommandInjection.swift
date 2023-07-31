@@ -53,13 +53,13 @@ func testCommandInjectionQhelpExamples() {
 	let task1 = Process()
 	task1.launchPath = "/bin/bash" // GOOD
 	task1.arguments = ["-c", userControlledString] // BAD
-	task1.launch()
+	task1.launch() // [FALSE POSITIVE]
 
 	if let validatedString = validateCommand(userControlledString) {
     	let task2 = Process()
     	task2.launchPath = "/bin/bash" // GOOD
     	task2.arguments = ["-c", validatedString] // GOOD [FALSE POSITIVE]
-	    task2.launch()
+	    task2.launch() // [FALSE POSITIVE]
 	}
 }
 
@@ -93,12 +93,12 @@ func testCommandInjectionMore(mySafeString: String) {
 	let task3 = Process()
 	task3.executableURL = URL(string: userControlledString)! // BAD
 	task3.arguments = ["abc", userControlledString] // BAD
-	try! task3.run()
+	try! task3.run() // [FALSE POSITIVE]
 
 	let task4 = Process()
 	task4.executableURL = URL(fileURLWithPath: userControlledString) // BAD
 	task4.arguments = ["abc", "def" + userControlledString] // BAD
-	try! task4.run()
+	try! task4.run() // [FALSE POSITIVE]
 
 	let task5 = mkProcess()
 	task5?.executableURL = URL(fileURLWithPath: userControlledString) // BAD
@@ -109,8 +109,8 @@ func testCommandInjectionMore(mySafeString: String) {
 	task6.executableURL = URL(string: userControlledString)! // BAD [NOT DETECTED]
 	task6.arguments = [userControlledString] // BAD [NOT DETECTED]
 	task6.setArguments([userControlledString]) // BAD [NOT DETECTED]
-	task6.harmlessField = userControlledString // GOOD
-	try! task6.run()
+	task6.harmlessField = userControlledString // GOOD [FALSE POSITIVE]
+	try! task6.run() // [FALSE POSITIVE]
 
 	let task7 = Process()
 	task7.executableURL = URL(fileURLWithPath: mySafeString) // GOOD

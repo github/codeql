@@ -30,27 +30,16 @@ class CommandInjectionAdditionalFlowStep extends Unit {
 }
 
 /**
- * A reference to any member of `Process`.
+ * An additional taint step for command injection vulnerabilities.
  */
-private class ProcessHost extends MemberRefExpr {
-  ProcessHost() { this.getBase() instanceof ProcessRef }
-}
-
-/**
- * An expression of type `Process`.
- */
-private class ProcessRef extends Expr {
-  ProcessRef() {
-    this.getType() instanceof ProcessType or
-    this.getType() = any(OptionalType t | t.getBaseType() instanceof ProcessType)
+private class CommandInjectionArrayAdditionalFlowStep extends CommandInjectionAdditionalFlowStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // needed until we have proper content flow through arrays.
+    exists(ArrayExpr arr |
+      nodeFrom.asExpr() = arr.getAnElement() and
+      nodeTo.asExpr() = arr
+    )
   }
-}
-
-/**
- * The type `Process`.
- */
-private class ProcessType extends NominalType {
-  ProcessType() { this.getFullName() = "Process" }
 }
 
 /**
@@ -63,26 +52,9 @@ private class ProcessSink extends CommandInjectionSink instanceof DataFlow::Node
     // with `Process.launchPath` is a sink.
     exists(NominalType t, Expr e |
       t.getABaseType*().getUnderlyingType().getName() = "Process" and
-      e.getFullyConverted() = this.asExpr() and
-      e.getFullyConverted().getType() = t
-    )
-  }
-}
-
-/**
- * A `DataFlow::Node` that is written into a field of a `Process` object.
- */
-private class ProcessSink2 extends CommandInjectionSink instanceof DataFlow::Node {
-  ProcessSink2() {
-    exists(AssignExpr assign, ProcessHost s |
-      assign.getDest() = s and
-      this.asExpr() = assign.getSource()
-    )
-    or
-    exists(AssignExpr assign, ProcessHost s, ArrayExpr a |
-      assign.getDest() = s and
-      a = assign.getSource() and
-      this.asExpr() = a.getAnElement()
+      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
+      e.getFullyConverted().getType() = t and
+      not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
 }
