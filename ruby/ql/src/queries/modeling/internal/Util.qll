@@ -19,3 +19,7 @@ string getAnAccessPathPrefix(Ast::MethodBase method) {
     method.getEnclosingModule().(Ast::ConstantWriteAccess).getAQualifiedName() +
       getAccessPathSuffix(method)
 }
+
+class RelevantFile extends File {
+  RelevantFile() { not this.getRelativePath().regexpMatch(".*/?test(case)?s?/.*") }
+}
