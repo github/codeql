@@ -233,7 +233,7 @@ In this example, we'll show how to add the following SQL injection sink using a 
     conn.query(q, (err, rows) => {...}); // <-- add 'q' as a SQL injection sink
   });
 
-We can recognize this using a fuzzy model, as showin in the following extension:
+We can recognize this using a fuzzy model, as shown in the following extension:
 
 .. code-block:: yaml
 
@@ -244,13 +244,13 @@ We can recognize this using a fuzzy model, as showin in the following extension:
       data:
         - ["mysql", "Fuzzy.Member[query].Argument[0]", "sql-injection"]
 
-- The first column, **"mysql"**, begins the search at at places where the `mysql` package is imported.
+- The first column, **"mysql"**, begins the search at places where the `mysql` package is imported.
 - **Fuzzy** selects all objects that appear to originate from the `mysql` package, such as the `pool`, `conn`, `err`, and `rows` objects.
 - **Member[query]** selects the **query** member from any of those objects. In this case, the only such member is `conn.query`.
   In principle, this would also find expressions such as `pool.query` and `err.query`, but in practice such expressions
   are not likely to occur, because the `pool` and `err` objects do not have a member named `query`.
 - **Argument[0]** selects the first argument of a call to the selected member, that is, the `q` argument to `conn.query`.
-- **sql-injection** indicates that this is considered a sink for the SQL injection query.
+- **sql-injection** indicates that this is considered as a sink for the SQL injection query.
 
 For reference, a more detailed model might look like this, as described in the preceding examples:
 
@@ -485,7 +485,7 @@ The following components are supported:
 - **Awaited** selects the value of a promise.
 - **Instance** selects instances of a class.
 - **Fuzzy** selects all values that are derived from the current value through a combination of the other operations described in this list.
-  For example, this can be used to find all values the appear to originate from a particular package. This can be useful for finding method calls
+  For example, this can be used to find all values that appear to originate from a particular package. This can be useful for finding method calls
   from a known package, but where the receiver type is not known or is difficult to model.
 
 The following components are called "call site filters". They select a subset of the previously-selected calls, if the call fits certain criteria:
