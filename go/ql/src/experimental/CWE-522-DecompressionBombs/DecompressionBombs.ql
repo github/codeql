@@ -24,6 +24,9 @@ class DecompressionBombs extends TaintTracking::Configuration {
     source instanceof UntrustedFlowSource
     or
     source instanceof CmdLineFlowSource
+    // uncomment following source to be able to detect https://github.com/advisories/GHSA-jpxj-2jvg-6jv9
+    // or
+    // source.asParameter() = any(Parameter p)
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
