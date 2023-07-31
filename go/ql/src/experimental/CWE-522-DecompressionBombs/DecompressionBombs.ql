@@ -48,10 +48,7 @@ class DecompressionBombs extends TaintTracking::Configuration {
         sink = f.getACall().getReceiver()
       )
       or
-      exists(DataFlow::Function f |
-        f.hasQualifiedName("bufio.Scanner",
-          ["Text", "Bytes", "ReadByte", "ReadLine", "ReadRune", "ReadSlice", "ReadString"])
-      |
+      exists(DataFlow::Function f | f.hasQualifiedName("bufio.Scanner", ["Text", "Bytes"]) |
         sink = f.getACall().getReceiver()
       )
       or
