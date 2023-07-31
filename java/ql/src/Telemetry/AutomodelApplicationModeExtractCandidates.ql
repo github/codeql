@@ -66,6 +66,7 @@ where
   // modeled in a MaD model, then it doesn't belong to any additional sink types, and we don't need to reexamine it.
   not CharacteristicsImpl::isSink(endpoint, _, _) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input) and
+  automodelCandidateFilter(package) and
   // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
   // a non-sink, and we surface only endpoints that have at least one such sink type.
   message =

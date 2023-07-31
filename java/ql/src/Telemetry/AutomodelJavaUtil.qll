@@ -66,3 +66,22 @@ boolean considerSubtypes(Callable callable) {
   then result = false
   else result = true
 }
+
+/**
+ * Holds if the given package is a candidate for automodeling.
+ *
+ * This predicate is extensible, so that different packages can be selected at runtime.
+ */
+extensible predicate automodelCandidatePackageFilter(string package);
+
+/**
+ * Holds if the given package is a candidate for automodeling.
+ *
+ * This relies on an extensible predicate, and if that is not supplied then
+ * all packages are considered candidates.
+ */
+bindingset[package]
+predicate automodelCandidateFilter(string package) {
+  not automodelCandidatePackageFilter(_) or
+  automodelCandidatePackageFilter(package)
+}
