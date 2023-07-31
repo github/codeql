@@ -14,12 +14,10 @@
 import CommandInjectionRuntimeExec
 import ExecUserFlow::PathGraph
 
-class RemoteSource extends Source instanceof RemoteFlowSource { }
-
 from
-  ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, MethodAccess call,
-  DataFlow::Node sourceCmd, DataFlow::Node sinkCmd
-where callIsTaintedByUserInputAndDangerousCommand(call, source, sink, sourceCmd, sinkCmd)
+  ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd,
+  DataFlow::Node sinkCmd
+where callIsTaintedByUserInputAndDangerousCommand(source, sink, sourceCmd, sinkCmd)
 select sink, source, sink,
   "Call to dangerous java.lang.Runtime.exec() with command '$@' with arg from untrusted input '$@'",
   sourceCmd, sourceCmd.toString(), source.getNode(), source.toString()
