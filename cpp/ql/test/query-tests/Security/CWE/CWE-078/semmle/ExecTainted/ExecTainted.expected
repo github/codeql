@@ -22,7 +22,8 @@ edges
 | test.cpp:113:20:113:25 | call to getenv | test.cpp:114:19:114:22 | path indirection |
 | test.cpp:113:20:113:38 | call to getenv indirection | test.cpp:114:19:114:22 | path indirection |
 | test.cpp:114:10:114:23 | call to operator+ | test.cpp:114:25:114:29 | call to c_str indirection |
-| test.cpp:114:17:114:17 | call to operator+ | test.cpp:114:25:114:29 | call to c_str indirection |
+| test.cpp:114:10:114:23 | call to operator+ | test.cpp:114:25:114:29 | call to c_str indirection |
+| test.cpp:114:17:114:17 | call to operator+ | test.cpp:114:10:114:23 | call to operator+ |
 | test.cpp:114:19:114:22 | path indirection | test.cpp:114:10:114:23 | call to operator+ |
 | test.cpp:114:19:114:22 | path indirection | test.cpp:114:17:114:17 | call to operator+ |
 | test.cpp:119:20:119:25 | call to getenv | test.cpp:120:19:120:22 | path indirection |
@@ -33,18 +34,23 @@ edges
 | test.cpp:142:11:142:17 | sprintf output argument | test.cpp:143:10:143:16 | command indirection |
 | test.cpp:142:31:142:33 | str indirection | test.cpp:142:11:142:17 | sprintf output argument |
 | test.cpp:174:9:174:16 | fread output argument | test.cpp:177:20:177:27 | filename indirection |
-| test.cpp:174:9:174:16 | fread output argument | test.cpp:178:22:178:26 | flags indirection |
 | test.cpp:174:9:174:16 | fread output argument | test.cpp:180:22:180:29 | filename indirection |
-| test.cpp:177:13:177:17 | strncat output argument | test.cpp:183:32:183:38 | command indirection |
+| test.cpp:177:13:177:17 | strncat output argument | test.cpp:178:22:178:26 | flags indirection |
+| test.cpp:177:13:177:17 | strncat output argument | test.cpp:178:22:178:26 | flags indirection |
+| test.cpp:177:20:177:27 | filename indirection | test.cpp:177:13:177:17 | strncat output argument |
 | test.cpp:177:20:177:27 | filename indirection | test.cpp:177:13:177:17 | strncat output argument |
 | test.cpp:178:13:178:19 | strncat output argument | test.cpp:183:32:183:38 | command indirection |
+| test.cpp:178:13:178:19 | strncat output argument | test.cpp:183:32:183:38 | command indirection |
+| test.cpp:178:22:178:26 | flags indirection | test.cpp:178:13:178:19 | strncat output argument |
 | test.cpp:178:22:178:26 | flags indirection | test.cpp:178:13:178:19 | strncat output argument |
 | test.cpp:180:13:180:19 | strncat output argument | test.cpp:183:32:183:38 | command indirection |
 | test.cpp:180:22:180:29 | filename indirection | test.cpp:180:13:180:19 | strncat output argument |
 | test.cpp:186:47:186:54 | filename indirection | test.cpp:187:18:187:25 | filename indirection |
-| test.cpp:186:47:186:54 | filename indirection | test.cpp:188:20:188:24 | flags indirection |
-| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:11:188:17 | strncat output argument |
+| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | flags indirection |
+| test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | flags indirection |
 | test.cpp:187:18:187:25 | filename indirection | test.cpp:187:11:187:15 | strncat output argument |
+| test.cpp:187:18:187:25 | filename indirection | test.cpp:187:11:187:15 | strncat output argument |
+| test.cpp:188:20:188:24 | flags indirection | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:188:20:188:24 | flags indirection | test.cpp:188:11:188:17 | strncat output argument |
 | test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | filename indirection |
 | test.cpp:196:10:196:16 | concat output argument | test.cpp:198:32:198:38 | command indirection |
@@ -53,11 +59,16 @@ edges
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:218:9:218:16 | fread output argument | test.cpp:220:19:220:26 | filename indirection |
-| test.cpp:218:9:218:16 | fread output argument | test.cpp:220:19:220:26 | filename indirection |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | command indirection |
+| test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | command indirection |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | command indirection |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | command indirection |
 | test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
 | test.cpp:220:19:220:26 | filename indirection | test.cpp:220:10:220:16 | strncat output argument |
+| test.cpp:220:19:220:26 | filename indirection | test.cpp:220:19:220:26 | filename indirection |
 nodes
 | test.cpp:15:27:15:30 | argv indirection | semmle.label | argv indirection |
 | test.cpp:15:27:15:30 | argv indirection | semmle.label | argv indirection |
@@ -88,6 +99,7 @@ nodes
 | test.cpp:113:20:113:25 | call to getenv | semmle.label | call to getenv |
 | test.cpp:113:20:113:38 | call to getenv indirection | semmle.label | call to getenv indirection |
 | test.cpp:114:10:114:23 | call to operator+ | semmle.label | call to operator+ |
+| test.cpp:114:10:114:23 | call to operator+ | semmle.label | call to operator+ |
 | test.cpp:114:17:114:17 | call to operator+ | semmle.label | call to operator+ |
 | test.cpp:114:19:114:22 | path indirection | semmle.label | path indirection |
 | test.cpp:114:25:114:29 | call to c_str indirection | semmle.label | call to c_str indirection |
@@ -103,8 +115,11 @@ nodes
 | test.cpp:143:10:143:16 | command indirection | semmle.label | command indirection |
 | test.cpp:174:9:174:16 | fread output argument | semmle.label | fread output argument |
 | test.cpp:177:13:177:17 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:177:13:177:17 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:177:20:177:27 | filename indirection | semmle.label | filename indirection |
 | test.cpp:178:13:178:19 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:178:13:178:19 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:178:22:178:26 | flags indirection | semmle.label | flags indirection |
 | test.cpp:178:22:178:26 | flags indirection | semmle.label | flags indirection |
 | test.cpp:180:13:180:19 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:180:22:180:29 | filename indirection | semmle.label | filename indirection |
@@ -113,9 +128,11 @@ nodes
 | test.cpp:183:32:183:38 | command indirection | semmle.label | command indirection |
 | test.cpp:186:47:186:54 | filename indirection | semmle.label | filename indirection |
 | test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:187:18:187:25 | filename indirection | semmle.label | filename indirection |
 | test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:188:11:188:17 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:188:20:188:24 | flags indirection | semmle.label | flags indirection |
 | test.cpp:188:20:188:24 | flags indirection | semmle.label | flags indirection |
 | test.cpp:194:9:194:16 | fread output argument | semmle.label | fread output argument |
 | test.cpp:196:10:196:16 | concat output argument | semmle.label | concat output argument |
@@ -124,6 +141,8 @@ nodes
 | test.cpp:198:32:198:38 | command indirection | semmle.label | command indirection |
 | test.cpp:198:32:198:38 | command indirection | semmle.label | command indirection |
 | test.cpp:218:9:218:16 | fread output argument | semmle.label | fread output argument |
+| test.cpp:220:10:220:16 | strncat output argument | semmle.label | strncat output argument |
+| test.cpp:220:10:220:16 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:220:10:220:16 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:220:10:220:16 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:220:19:220:26 | filename indirection | semmle.label | filename indirection |

@@ -56,6 +56,7 @@ string getArgumentForIndex(int index) {
  * It would technically be ok to always use the value 'true', but this would
  * break convention.
  */
+pragma[nomagic]
 boolean considerSubtypes(Callable callable) {
   if
     callable.isStatic() or

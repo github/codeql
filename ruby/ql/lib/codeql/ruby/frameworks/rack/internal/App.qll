@@ -4,6 +4,7 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
 private import Response::Private as RP
@@ -76,5 +77,21 @@ module App {
 
     /** Gets a response returned from this request handler. */
     RP::PotentialResponseNode getAResponse() { result = resp }
+  }
+
+  /** A read of the query string via `env['QUERY_STRING']`. */
+  private class EnvQueryStringRead extends Http::Server::RequestInputAccess::Range {
+    EnvQueryStringRead() {
+      this =
+        any(RequestHandler h)
+            .getEnv()
+            .getAnElementRead(ConstantValue::fromStringlikeValue("QUERY_STRING"))
+    }
+
+    override string getSourceType() { result = "Rack env" }
+
+    override Http::Server::RequestInputKind getKind() {
+      result = Http::Server::parameterInputKind()
+    }
   }
 }

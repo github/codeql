@@ -33,17 +33,17 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` through a static field.
+ * Holds if data can flow from `node1` to `node2` through a field.
  */
-private predicate staticFieldStep(Node node1, Node node2) {
+private predicate fieldStep(Node node1, Node node2) {
   exists(Field f |
+    // Taint fields through assigned values only if they're static
     f.isStatic() and
     f.getAnAssignedValue() = node1.asExpr() and
     node2.(FieldValueNode).getField() = f
   )
   or
   exists(Field f, FieldRead fr |
-    f.isStatic() and
     node1.(FieldValueNode).getField() = f and
     fr.getField() = f and
     fr = node2.asExpr() and
@@ -72,11 +72,11 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` through a static field or
+ * Holds if data can flow from `node1` to `node2` through a field or
  * variable capture.
  */
 predicate jumpStep(Node node1, Node node2) {
-  staticFieldStep(node1, node2)
+  fieldStep(node1, node2)
   or
   variableCaptureStep(node1, node2)
   or
