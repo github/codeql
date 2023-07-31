@@ -53,7 +53,7 @@ class DecompressionBombs extends TaintTracking::Configuration {
       )
       or
       exists(DataFlow::Function f | f.hasQualifiedName("ioutil", "ReadAll") |
-        sink = f.getACall().getArgument(_)
+        sink = f.getACall().getArgument(0)
       )
       or
       exists(DataFlow::Function f |
