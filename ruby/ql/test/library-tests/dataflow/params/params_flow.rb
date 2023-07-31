@@ -48,7 +48,7 @@ positional(*args)
 
 def posargs(p1, *posargs)
     sink p1 # $ hasValueFlow=20 $ hasValueFlow=23 $ hasValueFlow=24
-    sink (posargs[0]) # $ hasValueFlow=22 $ MISSING: hasValueFlow=21 $ MISSING: hasValueFlow=25
+    sink (posargs[0]) # $ hasValueFlow=22 $ hasValueFlow=21 $ MISSING: hasValueFlow=25
     sink (posargs[1])
 end
 
@@ -107,7 +107,7 @@ splatmidsmall(taint(55), taint(56), taint(57))
 
 def splat_followed_by_keyword_param(a, *b, c:)
     sink a # $ hasValueFlow=58
-    sink b[0] # $ MISSING: hasValueFlow=59
+    sink b[0] # $ hasValueFlow=59
     sink c # $ hasValueFlow=60
 end
 
