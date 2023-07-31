@@ -12,15 +12,14 @@
  */
 
 import go
-import DataFlow::PathGraph
 import semmle.go.dataflow.Properties
 import semmle.go.security.FlowSources
 import CmdLineFlowSource
 
-class DecompressionBombs extends TaintTracking::Configuration {
-  DecompressionBombs() { this = "DecompressionBombs" }
+module DecompressionBombs implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowState;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+  predicate isSource(DataFlow::Node source, FlowState state) {
     (
       source instanceof UntrustedFlowSource
       or
@@ -37,7 +36,7 @@ class DecompressionBombs extends TaintTracking::Configuration {
       ]
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node sink, FlowState state) {
     (
       exists(DataFlow::Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer", "CopyN"]) |
         sink = f.getACall().getArgument(1)
@@ -101,7 +100,7 @@ class DecompressionBombs extends TaintTracking::Configuration {
       ]
   }
 
-  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
     //here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
     // exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
     //   node = f.getACall().getArgument([0, 1]) and
@@ -119,7 +118,7 @@ class DecompressionBombs extends TaintTracking::Configuration {
       ]
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     exists(DataFlow::FieldReadNode fi |
       fi.getType().hasQualifiedName("github.com/klauspost/compress/zip", "Reader")
     |
@@ -136,9 +135,8 @@ class DecompressionBombs extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node fromNode, DataFlow::FlowState fromState, DataFlow::Node toNode,
-    DataFlow::FlowState toState
+  predicate isAdditionalFlowStep(
+    DataFlow::Node fromNode, FlowState fromState, DataFlow::Node toNode, FlowState toState
   ) {
     exists(DataFlow::Function f, DataFlow::CallNode call |
       f.hasQualifiedName("archive/zip", ["OpenReader", "NewReader"]) and call = f.getACall()
@@ -261,10 +259,11 @@ class DecompressionBombs extends TaintTracking::Configuration {
 //   }
 //   override predicate isSink(DataFlow::Node sink) { sink instanceof DataFlow::Node }
 // }
-from
-  DecompressionBombs cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node request
-where
-  cfg.hasFlowPath(source, sink) and
-  request = sink.getNode()
+module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombs>;
+
+import DecompressionBombsFlow::PathGraph
+
+from DecompressionBombsFlow::PathNode source, DecompressionBombsFlow::PathNode sink
+where DecompressionBombsFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This file extraction depends on a $@.", source.getNode(),
   "potentially untrusted source"

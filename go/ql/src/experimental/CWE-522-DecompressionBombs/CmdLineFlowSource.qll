@@ -1,5 +1,4 @@
 import go
-import DataFlow::PathGraph
 import semmle.go.dataflow.Properties
 import semmle.go.security.FlowSources
 
