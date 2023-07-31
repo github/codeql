@@ -266,7 +266,7 @@ complex.c:
 #    3|     getStmt(1): [ExprStmt] ExprStmt
 #    3|       getExpr(): [AssignExpr] ... = ...
 #    3|           Type = [ArithmeticType] _Complex float
-#    3|           ValueCategory = prvalue
+#    3|           ValueCategory = prvalue(load)
 #    3|         getLValue(): [VariableAccess] cf
 #    3|             Type = [ArithmeticType] _Complex float
 #    3|             ValueCategory = lvalue
@@ -293,7 +293,7 @@ complex.c:
 #    5|     getStmt(3): [ExprStmt] ExprStmt
 #    5|       getExpr(): [AssignExpr] ... = ...
 #    5|           Type = [ArithmeticType] _Complex double
-#    5|           ValueCategory = prvalue
+#    5|           ValueCategory = prvalue(load)
 #    5|         getLValue(): [VariableAccess] cd
 #    5|             Type = [ArithmeticType] _Complex double
 #    5|             ValueCategory = lvalue
@@ -320,7 +320,7 @@ complex.c:
 #    7|     getStmt(5): [ExprStmt] ExprStmt
 #    7|       getExpr(): [AssignExpr] ... = ...
 #    7|           Type = [ArithmeticType] _Complex long double
-#    7|           ValueCategory = prvalue
+#    7|           ValueCategory = prvalue(load)
 #    7|         getLValue(): [VariableAccess] cld
 #    7|             Type = [ArithmeticType] _Complex long double
 #    7|             ValueCategory = lvalue
@@ -446,7 +446,7 @@ complex.c:
 #   26|     getStmt(9): [ExprStmt] ExprStmt
 #   26|       getExpr(): [AssignExpr] ... = ...
 #   26|           Type = [ArithmeticType] _Complex float
-#   26|           ValueCategory = prvalue
+#   26|           ValueCategory = prvalue(load)
 #   26|         getLValue(): [VariableAccess] cf3
 #   26|             Type = [ArithmeticType] _Complex float
 #   26|             ValueCategory = lvalue
@@ -459,7 +459,7 @@ complex.c:
 #   27|     getStmt(10): [ExprStmt] ExprStmt
 #   27|       getExpr(): [AssignExpr] ... = ...
 #   27|           Type = [ArithmeticType] _Complex float
-#   27|           ValueCategory = prvalue
+#   27|           ValueCategory = prvalue(load)
 #   27|         getLValue(): [VariableAccess] cf3
 #   27|             Type = [ArithmeticType] _Complex float
 #   27|             ValueCategory = lvalue
@@ -472,7 +472,7 @@ complex.c:
 #   30|     getStmt(11): [ExprStmt] ExprStmt
 #   30|       getExpr(): [AssignExpr] ... = ...
 #   30|           Type = [ArithmeticType] _Complex float
-#   30|           ValueCategory = prvalue
+#   30|           ValueCategory = prvalue(load)
 #   30|         getLValue(): [VariableAccess] cf3
 #   30|             Type = [ArithmeticType] _Complex float
 #   30|             ValueCategory = lvalue
@@ -488,7 +488,7 @@ complex.c:
 #   31|     getStmt(12): [ExprStmt] ExprStmt
 #   31|       getExpr(): [AssignExpr] ... = ...
 #   31|           Type = [ArithmeticType] _Complex float
-#   31|           ValueCategory = prvalue
+#   31|           ValueCategory = prvalue(load)
 #   31|         getLValue(): [VariableAccess] cf3
 #   31|             Type = [ArithmeticType] _Complex float
 #   31|             ValueCategory = lvalue
@@ -504,7 +504,7 @@ complex.c:
 #   32|     getStmt(13): [ExprStmt] ExprStmt
 #   32|       getExpr(): [AssignExpr] ... = ...
 #   32|           Type = [ArithmeticType] _Complex float
-#   32|           ValueCategory = prvalue
+#   32|           ValueCategory = prvalue(load)
 #   32|         getLValue(): [VariableAccess] cf3
 #   32|             Type = [ArithmeticType] _Complex float
 #   32|             ValueCategory = lvalue
@@ -520,7 +520,7 @@ complex.c:
 #   33|     getStmt(14): [ExprStmt] ExprStmt
 #   33|       getExpr(): [AssignExpr] ... = ...
 #   33|           Type = [ArithmeticType] _Complex float
-#   33|           ValueCategory = prvalue
+#   33|           ValueCategory = prvalue(load)
 #   33|         getLValue(): [VariableAccess] cf3
 #   33|             Type = [ArithmeticType] _Complex float
 #   33|             ValueCategory = lvalue
@@ -536,7 +536,7 @@ complex.c:
 #   36|     getStmt(15): [ExprStmt] ExprStmt
 #   36|       getExpr(): [AssignExpr] ... = ...
 #   36|           Type = [ArithmeticType] _Imaginary float
-#   36|           ValueCategory = prvalue
+#   36|           ValueCategory = prvalue(load)
 #   36|         getLValue(): [VariableAccess] jf3
 #   36|             Type = [ArithmeticType] _Imaginary float
 #   36|             ValueCategory = lvalue
@@ -549,7 +549,7 @@ complex.c:
 #   37|     getStmt(16): [ExprStmt] ExprStmt
 #   37|       getExpr(): [AssignExpr] ... = ...
 #   37|           Type = [ArithmeticType] _Imaginary float
-#   37|           ValueCategory = prvalue
+#   37|           ValueCategory = prvalue(load)
 #   37|         getLValue(): [VariableAccess] jf3
 #   37|             Type = [ArithmeticType] _Imaginary float
 #   37|             ValueCategory = lvalue
@@ -562,7 +562,7 @@ complex.c:
 #   40|     getStmt(17): [ExprStmt] ExprStmt
 #   40|       getExpr(): [AssignExpr] ... = ...
 #   40|           Type = [ArithmeticType] _Imaginary float
-#   40|           ValueCategory = prvalue
+#   40|           ValueCategory = prvalue(load)
 #   40|         getLValue(): [VariableAccess] jf3
 #   40|             Type = [ArithmeticType] _Imaginary float
 #   40|             ValueCategory = lvalue
@@ -578,7 +578,7 @@ complex.c:
 #   41|     getStmt(18): [ExprStmt] ExprStmt
 #   41|       getExpr(): [AssignExpr] ... = ...
 #   41|           Type = [ArithmeticType] _Imaginary float
-#   41|           ValueCategory = prvalue
+#   41|           ValueCategory = prvalue(load)
 #   41|         getLValue(): [VariableAccess] jf3
 #   41|             Type = [ArithmeticType] _Imaginary float
 #   41|             ValueCategory = lvalue
@@ -594,7 +594,7 @@ complex.c:
 #   42|     getStmt(19): [ExprStmt] ExprStmt
 #   42|       getExpr(): [AssignExpr] ... = ...
 #   42|           Type = [FloatType] float
-#   42|           ValueCategory = prvalue
+#   42|           ValueCategory = prvalue(load)
 #   42|         getLValue(): [VariableAccess] f3
 #   42|             Type = [FloatType] float
 #   42|             ValueCategory = lvalue
@@ -610,7 +610,7 @@ complex.c:
 #   43|     getStmt(20): [ExprStmt] ExprStmt
 #   43|       getExpr(): [AssignExpr] ... = ...
 #   43|           Type = [FloatType] float
-#   43|           ValueCategory = prvalue
+#   43|           ValueCategory = prvalue(load)
 #   43|         getLValue(): [VariableAccess] f3
 #   43|             Type = [FloatType] float
 #   43|             ValueCategory = lvalue
@@ -626,7 +626,7 @@ complex.c:
 #   46|     getStmt(21): [ExprStmt] ExprStmt
 #   46|       getExpr(): [AssignExpr] ... = ...
 #   46|           Type = [ArithmeticType] _Complex float
-#   46|           ValueCategory = prvalue
+#   46|           ValueCategory = prvalue(load)
 #   46|         getLValue(): [VariableAccess] cf3
 #   46|             Type = [ArithmeticType] _Complex float
 #   46|             ValueCategory = lvalue
@@ -642,7 +642,7 @@ complex.c:
 #   47|     getStmt(22): [ExprStmt] ExprStmt
 #   47|       getExpr(): [AssignExpr] ... = ...
 #   47|           Type = [ArithmeticType] _Complex float
-#   47|           ValueCategory = prvalue
+#   47|           ValueCategory = prvalue(load)
 #   47|         getLValue(): [VariableAccess] cf3
 #   47|             Type = [ArithmeticType] _Complex float
 #   47|             ValueCategory = lvalue
@@ -658,7 +658,7 @@ complex.c:
 #   48|     getStmt(23): [ExprStmt] ExprStmt
 #   48|       getExpr(): [AssignExpr] ... = ...
 #   48|           Type = [ArithmeticType] _Imaginary float
-#   48|           ValueCategory = prvalue
+#   48|           ValueCategory = prvalue(load)
 #   48|         getLValue(): [VariableAccess] jf3
 #   48|             Type = [ArithmeticType] _Imaginary float
 #   48|             ValueCategory = lvalue
@@ -674,7 +674,7 @@ complex.c:
 #   49|     getStmt(24): [ExprStmt] ExprStmt
 #   49|       getExpr(): [AssignExpr] ... = ...
 #   49|           Type = [ArithmeticType] _Imaginary float
-#   49|           ValueCategory = prvalue
+#   49|           ValueCategory = prvalue(load)
 #   49|         getLValue(): [VariableAccess] jf3
 #   49|             Type = [ArithmeticType] _Imaginary float
 #   49|             ValueCategory = lvalue
@@ -690,7 +690,7 @@ complex.c:
 #   52|     getStmt(25): [ExprStmt] ExprStmt
 #   52|       getExpr(): [AssignExpr] ... = ...
 #   52|           Type = [ArithmeticType] _Complex float
-#   52|           ValueCategory = prvalue
+#   52|           ValueCategory = prvalue(load)
 #   52|         getLValue(): [VariableAccess] cf3
 #   52|             Type = [ArithmeticType] _Complex float
 #   52|             ValueCategory = lvalue
@@ -706,7 +706,7 @@ complex.c:
 #   53|     getStmt(26): [ExprStmt] ExprStmt
 #   53|       getExpr(): [AssignExpr] ... = ...
 #   53|           Type = [ArithmeticType] _Complex float
-#   53|           ValueCategory = prvalue
+#   53|           ValueCategory = prvalue(load)
 #   53|         getLValue(): [VariableAccess] cf3
 #   53|             Type = [ArithmeticType] _Complex float
 #   53|             ValueCategory = lvalue
@@ -722,7 +722,7 @@ complex.c:
 #   54|     getStmt(27): [ExprStmt] ExprStmt
 #   54|       getExpr(): [AssignExpr] ... = ...
 #   54|           Type = [ArithmeticType] _Imaginary float
-#   54|           ValueCategory = prvalue
+#   54|           ValueCategory = prvalue(load)
 #   54|         getLValue(): [VariableAccess] jf3
 #   54|             Type = [ArithmeticType] _Imaginary float
 #   54|             ValueCategory = lvalue
@@ -738,7 +738,7 @@ complex.c:
 #   55|     getStmt(28): [ExprStmt] ExprStmt
 #   55|       getExpr(): [AssignExpr] ... = ...
 #   55|           Type = [ArithmeticType] _Imaginary float
-#   55|           ValueCategory = prvalue
+#   55|           ValueCategory = prvalue(load)
 #   55|         getLValue(): [VariableAccess] jf3
 #   55|             Type = [ArithmeticType] _Imaginary float
 #   55|             ValueCategory = lvalue
@@ -860,7 +860,7 @@ complex.c:
 #   70|     getStmt(9): [ExprStmt] ExprStmt
 #   70|       getExpr(): [AssignExpr] ... = ...
 #   70|           Type = [ArithmeticType] _Complex float
-#   70|           ValueCategory = prvalue
+#   70|           ValueCategory = prvalue(load)
 #   70|         getLValue(): [VariableAccess] cf
 #   70|             Type = [ArithmeticType] _Complex float
 #   70|             ValueCategory = lvalue
@@ -870,7 +870,7 @@ complex.c:
 #   71|     getStmt(10): [ExprStmt] ExprStmt
 #   71|       getExpr(): [AssignExpr] ... = ...
 #   71|           Type = [ArithmeticType] _Complex float
-#   71|           ValueCategory = prvalue
+#   71|           ValueCategory = prvalue(load)
 #   71|         getLValue(): [VariableAccess] cf
 #   71|             Type = [ArithmeticType] _Complex float
 #   71|             ValueCategory = lvalue
@@ -884,7 +884,7 @@ complex.c:
 #   72|     getStmt(11): [ExprStmt] ExprStmt
 #   72|       getExpr(): [AssignExpr] ... = ...
 #   72|           Type = [ArithmeticType] _Complex float
-#   72|           ValueCategory = prvalue
+#   72|           ValueCategory = prvalue(load)
 #   72|         getLValue(): [VariableAccess] cf
 #   72|             Type = [ArithmeticType] _Complex float
 #   72|             ValueCategory = lvalue
@@ -898,7 +898,7 @@ complex.c:
 #   73|     getStmt(12): [ExprStmt] ExprStmt
 #   73|       getExpr(): [AssignExpr] ... = ...
 #   73|           Type = [ArithmeticType] _Complex double
-#   73|           ValueCategory = prvalue
+#   73|           ValueCategory = prvalue(load)
 #   73|         getLValue(): [VariableAccess] cd
 #   73|             Type = [ArithmeticType] _Complex double
 #   73|             ValueCategory = lvalue
@@ -912,7 +912,7 @@ complex.c:
 #   74|     getStmt(13): [ExprStmt] ExprStmt
 #   74|       getExpr(): [AssignExpr] ... = ...
 #   74|           Type = [ArithmeticType] _Complex double
-#   74|           ValueCategory = prvalue
+#   74|           ValueCategory = prvalue(load)
 #   74|         getLValue(): [VariableAccess] cd
 #   74|             Type = [ArithmeticType] _Complex double
 #   74|             ValueCategory = lvalue
@@ -922,7 +922,7 @@ complex.c:
 #   75|     getStmt(14): [ExprStmt] ExprStmt
 #   75|       getExpr(): [AssignExpr] ... = ...
 #   75|           Type = [ArithmeticType] _Complex double
-#   75|           ValueCategory = prvalue
+#   75|           ValueCategory = prvalue(load)
 #   75|         getLValue(): [VariableAccess] cd
 #   75|             Type = [ArithmeticType] _Complex double
 #   75|             ValueCategory = lvalue
@@ -936,7 +936,7 @@ complex.c:
 #   76|     getStmt(15): [ExprStmt] ExprStmt
 #   76|       getExpr(): [AssignExpr] ... = ...
 #   76|           Type = [ArithmeticType] _Complex long double
-#   76|           ValueCategory = prvalue
+#   76|           ValueCategory = prvalue(load)
 #   76|         getLValue(): [VariableAccess] cld
 #   76|             Type = [ArithmeticType] _Complex long double
 #   76|             ValueCategory = lvalue
@@ -950,7 +950,7 @@ complex.c:
 #   77|     getStmt(16): [ExprStmt] ExprStmt
 #   77|       getExpr(): [AssignExpr] ... = ...
 #   77|           Type = [ArithmeticType] _Complex long double
-#   77|           ValueCategory = prvalue
+#   77|           ValueCategory = prvalue(load)
 #   77|         getLValue(): [VariableAccess] cld
 #   77|             Type = [ArithmeticType] _Complex long double
 #   77|             ValueCategory = lvalue
@@ -964,7 +964,7 @@ complex.c:
 #   78|     getStmt(17): [ExprStmt] ExprStmt
 #   78|       getExpr(): [AssignExpr] ... = ...
 #   78|           Type = [ArithmeticType] _Complex long double
-#   78|           ValueCategory = prvalue
+#   78|           ValueCategory = prvalue(load)
 #   78|         getLValue(): [VariableAccess] cld
 #   78|             Type = [ArithmeticType] _Complex long double
 #   78|             ValueCategory = lvalue
@@ -974,7 +974,7 @@ complex.c:
 #   81|     getStmt(18): [ExprStmt] ExprStmt
 #   81|       getExpr(): [AssignExpr] ... = ...
 #   81|           Type = [ArithmeticType] _Complex float
-#   81|           ValueCategory = prvalue
+#   81|           ValueCategory = prvalue(load)
 #   81|         getLValue(): [VariableAccess] cf
 #   81|             Type = [ArithmeticType] _Complex float
 #   81|             ValueCategory = lvalue
@@ -988,7 +988,7 @@ complex.c:
 #   82|     getStmt(19): [ExprStmt] ExprStmt
 #   82|       getExpr(): [AssignExpr] ... = ...
 #   82|           Type = [ArithmeticType] _Complex float
-#   82|           ValueCategory = prvalue
+#   82|           ValueCategory = prvalue(load)
 #   82|         getLValue(): [VariableAccess] cf
 #   82|             Type = [ArithmeticType] _Complex float
 #   82|             ValueCategory = lvalue
@@ -1002,7 +1002,7 @@ complex.c:
 #   83|     getStmt(20): [ExprStmt] ExprStmt
 #   83|       getExpr(): [AssignExpr] ... = ...
 #   83|           Type = [ArithmeticType] _Complex float
-#   83|           ValueCategory = prvalue
+#   83|           ValueCategory = prvalue(load)
 #   83|         getLValue(): [VariableAccess] cf
 #   83|             Type = [ArithmeticType] _Complex float
 #   83|             ValueCategory = lvalue
@@ -1016,7 +1016,7 @@ complex.c:
 #   84|     getStmt(21): [ExprStmt] ExprStmt
 #   84|       getExpr(): [AssignExpr] ... = ...
 #   84|           Type = [ArithmeticType] _Complex double
-#   84|           ValueCategory = prvalue
+#   84|           ValueCategory = prvalue(load)
 #   84|         getLValue(): [VariableAccess] cd
 #   84|             Type = [ArithmeticType] _Complex double
 #   84|             ValueCategory = lvalue
@@ -1030,7 +1030,7 @@ complex.c:
 #   85|     getStmt(22): [ExprStmt] ExprStmt
 #   85|       getExpr(): [AssignExpr] ... = ...
 #   85|           Type = [ArithmeticType] _Complex double
-#   85|           ValueCategory = prvalue
+#   85|           ValueCategory = prvalue(load)
 #   85|         getLValue(): [VariableAccess] cd
 #   85|             Type = [ArithmeticType] _Complex double
 #   85|             ValueCategory = lvalue
@@ -1044,7 +1044,7 @@ complex.c:
 #   86|     getStmt(23): [ExprStmt] ExprStmt
 #   86|       getExpr(): [AssignExpr] ... = ...
 #   86|           Type = [ArithmeticType] _Complex double
-#   86|           ValueCategory = prvalue
+#   86|           ValueCategory = prvalue(load)
 #   86|         getLValue(): [VariableAccess] cd
 #   86|             Type = [ArithmeticType] _Complex double
 #   86|             ValueCategory = lvalue
@@ -1058,7 +1058,7 @@ complex.c:
 #   87|     getStmt(24): [ExprStmt] ExprStmt
 #   87|       getExpr(): [AssignExpr] ... = ...
 #   87|           Type = [ArithmeticType] _Complex long double
-#   87|           ValueCategory = prvalue
+#   87|           ValueCategory = prvalue(load)
 #   87|         getLValue(): [VariableAccess] cld
 #   87|             Type = [ArithmeticType] _Complex long double
 #   87|             ValueCategory = lvalue
@@ -1072,7 +1072,7 @@ complex.c:
 #   88|     getStmt(25): [ExprStmt] ExprStmt
 #   88|       getExpr(): [AssignExpr] ... = ...
 #   88|           Type = [ArithmeticType] _Complex long double
-#   88|           ValueCategory = prvalue
+#   88|           ValueCategory = prvalue(load)
 #   88|         getLValue(): [VariableAccess] cld
 #   88|             Type = [ArithmeticType] _Complex long double
 #   88|             ValueCategory = lvalue
@@ -1086,7 +1086,7 @@ complex.c:
 #   89|     getStmt(26): [ExprStmt] ExprStmt
 #   89|       getExpr(): [AssignExpr] ... = ...
 #   89|           Type = [ArithmeticType] _Complex long double
-#   89|           ValueCategory = prvalue
+#   89|           ValueCategory = prvalue(load)
 #   89|         getLValue(): [VariableAccess] cld
 #   89|             Type = [ArithmeticType] _Complex long double
 #   89|             ValueCategory = lvalue
@@ -1100,7 +1100,7 @@ complex.c:
 #   92|     getStmt(27): [ExprStmt] ExprStmt
 #   92|       getExpr(): [AssignExpr] ... = ...
 #   92|           Type = [FloatType] float
-#   92|           ValueCategory = prvalue
+#   92|           ValueCategory = prvalue(load)
 #   92|         getLValue(): [VariableAccess] f
 #   92|             Type = [FloatType] float
 #   92|             ValueCategory = lvalue
@@ -1114,7 +1114,7 @@ complex.c:
 #   93|     getStmt(28): [ExprStmt] ExprStmt
 #   93|       getExpr(): [AssignExpr] ... = ...
 #   93|           Type = [FloatType] float
-#   93|           ValueCategory = prvalue
+#   93|           ValueCategory = prvalue(load)
 #   93|         getLValue(): [VariableAccess] f
 #   93|             Type = [FloatType] float
 #   93|             ValueCategory = lvalue
@@ -1128,7 +1128,7 @@ complex.c:
 #   94|     getStmt(29): [ExprStmt] ExprStmt
 #   94|       getExpr(): [AssignExpr] ... = ...
 #   94|           Type = [FloatType] float
-#   94|           ValueCategory = prvalue
+#   94|           ValueCategory = prvalue(load)
 #   94|         getLValue(): [VariableAccess] f
 #   94|             Type = [FloatType] float
 #   94|             ValueCategory = lvalue
@@ -1142,7 +1142,7 @@ complex.c:
 #   95|     getStmt(30): [ExprStmt] ExprStmt
 #   95|       getExpr(): [AssignExpr] ... = ...
 #   95|           Type = [DoubleType] double
-#   95|           ValueCategory = prvalue
+#   95|           ValueCategory = prvalue(load)
 #   95|         getLValue(): [VariableAccess] d
 #   95|             Type = [DoubleType] double
 #   95|             ValueCategory = lvalue
@@ -1156,7 +1156,7 @@ complex.c:
 #   96|     getStmt(31): [ExprStmt] ExprStmt
 #   96|       getExpr(): [AssignExpr] ... = ...
 #   96|           Type = [DoubleType] double
-#   96|           ValueCategory = prvalue
+#   96|           ValueCategory = prvalue(load)
 #   96|         getLValue(): [VariableAccess] d
 #   96|             Type = [DoubleType] double
 #   96|             ValueCategory = lvalue
@@ -1170,7 +1170,7 @@ complex.c:
 #   97|     getStmt(32): [ExprStmt] ExprStmt
 #   97|       getExpr(): [AssignExpr] ... = ...
 #   97|           Type = [DoubleType] double
-#   97|           ValueCategory = prvalue
+#   97|           ValueCategory = prvalue(load)
 #   97|         getLValue(): [VariableAccess] d
 #   97|             Type = [DoubleType] double
 #   97|             ValueCategory = lvalue
@@ -1184,7 +1184,7 @@ complex.c:
 #   98|     getStmt(33): [ExprStmt] ExprStmt
 #   98|       getExpr(): [AssignExpr] ... = ...
 #   98|           Type = [LongDoubleType] long double
-#   98|           ValueCategory = prvalue
+#   98|           ValueCategory = prvalue(load)
 #   98|         getLValue(): [VariableAccess] ld
 #   98|             Type = [LongDoubleType] long double
 #   98|             ValueCategory = lvalue
@@ -1198,7 +1198,7 @@ complex.c:
 #   99|     getStmt(34): [ExprStmt] ExprStmt
 #   99|       getExpr(): [AssignExpr] ... = ...
 #   99|           Type = [LongDoubleType] long double
-#   99|           ValueCategory = prvalue
+#   99|           ValueCategory = prvalue(load)
 #   99|         getLValue(): [VariableAccess] ld
 #   99|             Type = [LongDoubleType] long double
 #   99|             ValueCategory = lvalue
@@ -1212,7 +1212,7 @@ complex.c:
 #  100|     getStmt(35): [ExprStmt] ExprStmt
 #  100|       getExpr(): [AssignExpr] ... = ...
 #  100|           Type = [LongDoubleType] long double
-#  100|           ValueCategory = prvalue
+#  100|           ValueCategory = prvalue(load)
 #  100|         getLValue(): [VariableAccess] ld
 #  100|             Type = [LongDoubleType] long double
 #  100|             ValueCategory = lvalue
@@ -1226,7 +1226,7 @@ complex.c:
 #  103|     getStmt(36): [ExprStmt] ExprStmt
 #  103|       getExpr(): [AssignExpr] ... = ...
 #  103|           Type = [ArithmeticType] _Complex float
-#  103|           ValueCategory = prvalue
+#  103|           ValueCategory = prvalue(load)
 #  103|         getLValue(): [VariableAccess] cf
 #  103|             Type = [ArithmeticType] _Complex float
 #  103|             ValueCategory = lvalue
@@ -1240,7 +1240,7 @@ complex.c:
 #  104|     getStmt(37): [ExprStmt] ExprStmt
 #  104|       getExpr(): [AssignExpr] ... = ...
 #  104|           Type = [ArithmeticType] _Complex float
-#  104|           ValueCategory = prvalue
+#  104|           ValueCategory = prvalue(load)
 #  104|         getLValue(): [VariableAccess] cf
 #  104|             Type = [ArithmeticType] _Complex float
 #  104|             ValueCategory = lvalue
@@ -1254,7 +1254,7 @@ complex.c:
 #  105|     getStmt(38): [ExprStmt] ExprStmt
 #  105|       getExpr(): [AssignExpr] ... = ...
 #  105|           Type = [ArithmeticType] _Complex float
-#  105|           ValueCategory = prvalue
+#  105|           ValueCategory = prvalue(load)
 #  105|         getLValue(): [VariableAccess] cf
 #  105|             Type = [ArithmeticType] _Complex float
 #  105|             ValueCategory = lvalue
@@ -1268,7 +1268,7 @@ complex.c:
 #  106|     getStmt(39): [ExprStmt] ExprStmt
 #  106|       getExpr(): [AssignExpr] ... = ...
 #  106|           Type = [ArithmeticType] _Complex double
-#  106|           ValueCategory = prvalue
+#  106|           ValueCategory = prvalue(load)
 #  106|         getLValue(): [VariableAccess] cd
 #  106|             Type = [ArithmeticType] _Complex double
 #  106|             ValueCategory = lvalue
@@ -1282,7 +1282,7 @@ complex.c:
 #  107|     getStmt(40): [ExprStmt] ExprStmt
 #  107|       getExpr(): [AssignExpr] ... = ...
 #  107|           Type = [ArithmeticType] _Complex double
-#  107|           ValueCategory = prvalue
+#  107|           ValueCategory = prvalue(load)
 #  107|         getLValue(): [VariableAccess] cd
 #  107|             Type = [ArithmeticType] _Complex double
 #  107|             ValueCategory = lvalue
@@ -1296,7 +1296,7 @@ complex.c:
 #  108|     getStmt(41): [ExprStmt] ExprStmt
 #  108|       getExpr(): [AssignExpr] ... = ...
 #  108|           Type = [ArithmeticType] _Complex double
-#  108|           ValueCategory = prvalue
+#  108|           ValueCategory = prvalue(load)
 #  108|         getLValue(): [VariableAccess] cd
 #  108|             Type = [ArithmeticType] _Complex double
 #  108|             ValueCategory = lvalue
@@ -1310,7 +1310,7 @@ complex.c:
 #  109|     getStmt(42): [ExprStmt] ExprStmt
 #  109|       getExpr(): [AssignExpr] ... = ...
 #  109|           Type = [ArithmeticType] _Complex long double
-#  109|           ValueCategory = prvalue
+#  109|           ValueCategory = prvalue(load)
 #  109|         getLValue(): [VariableAccess] cld
 #  109|             Type = [ArithmeticType] _Complex long double
 #  109|             ValueCategory = lvalue
@@ -1324,7 +1324,7 @@ complex.c:
 #  110|     getStmt(43): [ExprStmt] ExprStmt
 #  110|       getExpr(): [AssignExpr] ... = ...
 #  110|           Type = [ArithmeticType] _Complex long double
-#  110|           ValueCategory = prvalue
+#  110|           ValueCategory = prvalue(load)
 #  110|         getLValue(): [VariableAccess] cld
 #  110|             Type = [ArithmeticType] _Complex long double
 #  110|             ValueCategory = lvalue
@@ -1338,7 +1338,7 @@ complex.c:
 #  111|     getStmt(44): [ExprStmt] ExprStmt
 #  111|       getExpr(): [AssignExpr] ... = ...
 #  111|           Type = [ArithmeticType] _Complex long double
-#  111|           ValueCategory = prvalue
+#  111|           ValueCategory = prvalue(load)
 #  111|         getLValue(): [VariableAccess] cld
 #  111|             Type = [ArithmeticType] _Complex long double
 #  111|             ValueCategory = lvalue
@@ -1352,7 +1352,7 @@ complex.c:
 #  114|     getStmt(45): [ExprStmt] ExprStmt
 #  114|       getExpr(): [AssignExpr] ... = ...
 #  114|           Type = [ArithmeticType] _Imaginary float
-#  114|           ValueCategory = prvalue
+#  114|           ValueCategory = prvalue(load)
 #  114|         getLValue(): [VariableAccess] jf
 #  114|             Type = [ArithmeticType] _Imaginary float
 #  114|             ValueCategory = lvalue
@@ -1366,7 +1366,7 @@ complex.c:
 #  115|     getStmt(46): [ExprStmt] ExprStmt
 #  115|       getExpr(): [AssignExpr] ... = ...
 #  115|           Type = [ArithmeticType] _Imaginary float
-#  115|           ValueCategory = prvalue
+#  115|           ValueCategory = prvalue(load)
 #  115|         getLValue(): [VariableAccess] jf
 #  115|             Type = [ArithmeticType] _Imaginary float
 #  115|             ValueCategory = lvalue
@@ -1380,7 +1380,7 @@ complex.c:
 #  116|     getStmt(47): [ExprStmt] ExprStmt
 #  116|       getExpr(): [AssignExpr] ... = ...
 #  116|           Type = [ArithmeticType] _Imaginary float
-#  116|           ValueCategory = prvalue
+#  116|           ValueCategory = prvalue(load)
 #  116|         getLValue(): [VariableAccess] jf
 #  116|             Type = [ArithmeticType] _Imaginary float
 #  116|             ValueCategory = lvalue
@@ -1394,7 +1394,7 @@ complex.c:
 #  117|     getStmt(48): [ExprStmt] ExprStmt
 #  117|       getExpr(): [AssignExpr] ... = ...
 #  117|           Type = [ArithmeticType] _Imaginary double
-#  117|           ValueCategory = prvalue
+#  117|           ValueCategory = prvalue(load)
 #  117|         getLValue(): [VariableAccess] jd
 #  117|             Type = [ArithmeticType] _Imaginary double
 #  117|             ValueCategory = lvalue
@@ -1408,7 +1408,7 @@ complex.c:
 #  118|     getStmt(49): [ExprStmt] ExprStmt
 #  118|       getExpr(): [AssignExpr] ... = ...
 #  118|           Type = [ArithmeticType] _Imaginary double
-#  118|           ValueCategory = prvalue
+#  118|           ValueCategory = prvalue(load)
 #  118|         getLValue(): [VariableAccess] jd
 #  118|             Type = [ArithmeticType] _Imaginary double
 #  118|             ValueCategory = lvalue
@@ -1422,7 +1422,7 @@ complex.c:
 #  119|     getStmt(50): [ExprStmt] ExprStmt
 #  119|       getExpr(): [AssignExpr] ... = ...
 #  119|           Type = [ArithmeticType] _Imaginary double
-#  119|           ValueCategory = prvalue
+#  119|           ValueCategory = prvalue(load)
 #  119|         getLValue(): [VariableAccess] jd
 #  119|             Type = [ArithmeticType] _Imaginary double
 #  119|             ValueCategory = lvalue
@@ -1436,7 +1436,7 @@ complex.c:
 #  120|     getStmt(51): [ExprStmt] ExprStmt
 #  120|       getExpr(): [AssignExpr] ... = ...
 #  120|           Type = [ArithmeticType] _Imaginary long double
-#  120|           ValueCategory = prvalue
+#  120|           ValueCategory = prvalue(load)
 #  120|         getLValue(): [VariableAccess] jld
 #  120|             Type = [ArithmeticType] _Imaginary long double
 #  120|             ValueCategory = lvalue
@@ -1450,7 +1450,7 @@ complex.c:
 #  121|     getStmt(52): [ExprStmt] ExprStmt
 #  121|       getExpr(): [AssignExpr] ... = ...
 #  121|           Type = [ArithmeticType] _Imaginary long double
-#  121|           ValueCategory = prvalue
+#  121|           ValueCategory = prvalue(load)
 #  121|         getLValue(): [VariableAccess] jld
 #  121|             Type = [ArithmeticType] _Imaginary long double
 #  121|             ValueCategory = lvalue
@@ -1464,7 +1464,7 @@ complex.c:
 #  122|     getStmt(53): [ExprStmt] ExprStmt
 #  122|       getExpr(): [AssignExpr] ... = ...
 #  122|           Type = [ArithmeticType] _Imaginary long double
-#  122|           ValueCategory = prvalue
+#  122|           ValueCategory = prvalue(load)
 #  122|         getLValue(): [VariableAccess] jld
 #  122|             Type = [ArithmeticType] _Imaginary long double
 #  122|             ValueCategory = lvalue
@@ -1478,7 +1478,7 @@ complex.c:
 #  125|     getStmt(54): [ExprStmt] ExprStmt
 #  125|       getExpr(): [AssignExpr] ... = ...
 #  125|           Type = [ArithmeticType] _Imaginary float
-#  125|           ValueCategory = prvalue
+#  125|           ValueCategory = prvalue(load)
 #  125|         getLValue(): [VariableAccess] jf
 #  125|             Type = [ArithmeticType] _Imaginary float
 #  125|             ValueCategory = lvalue
@@ -1492,7 +1492,7 @@ complex.c:
 #  126|     getStmt(55): [ExprStmt] ExprStmt
 #  126|       getExpr(): [AssignExpr] ... = ...
 #  126|           Type = [ArithmeticType] _Imaginary float
-#  126|           ValueCategory = prvalue
+#  126|           ValueCategory = prvalue(load)
 #  126|         getLValue(): [VariableAccess] jf
 #  126|             Type = [ArithmeticType] _Imaginary float
 #  126|             ValueCategory = lvalue
@@ -1506,7 +1506,7 @@ complex.c:
 #  127|     getStmt(56): [ExprStmt] ExprStmt
 #  127|       getExpr(): [AssignExpr] ... = ...
 #  127|           Type = [ArithmeticType] _Imaginary float
-#  127|           ValueCategory = prvalue
+#  127|           ValueCategory = prvalue(load)
 #  127|         getLValue(): [VariableAccess] jf
 #  127|             Type = [ArithmeticType] _Imaginary float
 #  127|             ValueCategory = lvalue
@@ -1520,7 +1520,7 @@ complex.c:
 #  128|     getStmt(57): [ExprStmt] ExprStmt
 #  128|       getExpr(): [AssignExpr] ... = ...
 #  128|           Type = [ArithmeticType] _Imaginary double
-#  128|           ValueCategory = prvalue
+#  128|           ValueCategory = prvalue(load)
 #  128|         getLValue(): [VariableAccess] jd
 #  128|             Type = [ArithmeticType] _Imaginary double
 #  128|             ValueCategory = lvalue
@@ -1534,7 +1534,7 @@ complex.c:
 #  129|     getStmt(58): [ExprStmt] ExprStmt
 #  129|       getExpr(): [AssignExpr] ... = ...
 #  129|           Type = [ArithmeticType] _Imaginary double
-#  129|           ValueCategory = prvalue
+#  129|           ValueCategory = prvalue(load)
 #  129|         getLValue(): [VariableAccess] jd
 #  129|             Type = [ArithmeticType] _Imaginary double
 #  129|             ValueCategory = lvalue
@@ -1548,7 +1548,7 @@ complex.c:
 #  130|     getStmt(59): [ExprStmt] ExprStmt
 #  130|       getExpr(): [AssignExpr] ... = ...
 #  130|           Type = [ArithmeticType] _Imaginary double
-#  130|           ValueCategory = prvalue
+#  130|           ValueCategory = prvalue(load)
 #  130|         getLValue(): [VariableAccess] jd
 #  130|             Type = [ArithmeticType] _Imaginary double
 #  130|             ValueCategory = lvalue
@@ -1562,7 +1562,7 @@ complex.c:
 #  131|     getStmt(60): [ExprStmt] ExprStmt
 #  131|       getExpr(): [AssignExpr] ... = ...
 #  131|           Type = [ArithmeticType] _Imaginary long double
-#  131|           ValueCategory = prvalue
+#  131|           ValueCategory = prvalue(load)
 #  131|         getLValue(): [VariableAccess] jld
 #  131|             Type = [ArithmeticType] _Imaginary long double
 #  131|             ValueCategory = lvalue
@@ -1576,7 +1576,7 @@ complex.c:
 #  132|     getStmt(61): [ExprStmt] ExprStmt
 #  132|       getExpr(): [AssignExpr] ... = ...
 #  132|           Type = [ArithmeticType] _Imaginary long double
-#  132|           ValueCategory = prvalue
+#  132|           ValueCategory = prvalue(load)
 #  132|         getLValue(): [VariableAccess] jld
 #  132|             Type = [ArithmeticType] _Imaginary long double
 #  132|             ValueCategory = lvalue
@@ -1590,7 +1590,7 @@ complex.c:
 #  133|     getStmt(62): [ExprStmt] ExprStmt
 #  133|       getExpr(): [AssignExpr] ... = ...
 #  133|           Type = [ArithmeticType] _Imaginary long double
-#  133|           ValueCategory = prvalue
+#  133|           ValueCategory = prvalue(load)
 #  133|         getLValue(): [VariableAccess] jld
 #  133|             Type = [ArithmeticType] _Imaginary long double
 #  133|             ValueCategory = lvalue
@@ -1604,7 +1604,7 @@ complex.c:
 #  136|     getStmt(63): [ExprStmt] ExprStmt
 #  136|       getExpr(): [AssignExpr] ... = ...
 #  136|           Type = [FloatType] float
-#  136|           ValueCategory = prvalue
+#  136|           ValueCategory = prvalue(load)
 #  136|         getLValue(): [VariableAccess] f
 #  136|             Type = [FloatType] float
 #  136|             ValueCategory = lvalue
@@ -1618,7 +1618,7 @@ complex.c:
 #  137|     getStmt(64): [ExprStmt] ExprStmt
 #  137|       getExpr(): [AssignExpr] ... = ...
 #  137|           Type = [FloatType] float
-#  137|           ValueCategory = prvalue
+#  137|           ValueCategory = prvalue(load)
 #  137|         getLValue(): [VariableAccess] f
 #  137|             Type = [FloatType] float
 #  137|             ValueCategory = lvalue
@@ -1632,7 +1632,7 @@ complex.c:
 #  138|     getStmt(65): [ExprStmt] ExprStmt
 #  138|       getExpr(): [AssignExpr] ... = ...
 #  138|           Type = [FloatType] float
-#  138|           ValueCategory = prvalue
+#  138|           ValueCategory = prvalue(load)
 #  138|         getLValue(): [VariableAccess] f
 #  138|             Type = [FloatType] float
 #  138|             ValueCategory = lvalue
@@ -1646,7 +1646,7 @@ complex.c:
 #  139|     getStmt(66): [ExprStmt] ExprStmt
 #  139|       getExpr(): [AssignExpr] ... = ...
 #  139|           Type = [DoubleType] double
-#  139|           ValueCategory = prvalue
+#  139|           ValueCategory = prvalue(load)
 #  139|         getLValue(): [VariableAccess] d
 #  139|             Type = [DoubleType] double
 #  139|             ValueCategory = lvalue
@@ -1660,7 +1660,7 @@ complex.c:
 #  140|     getStmt(67): [ExprStmt] ExprStmt
 #  140|       getExpr(): [AssignExpr] ... = ...
 #  140|           Type = [DoubleType] double
-#  140|           ValueCategory = prvalue
+#  140|           ValueCategory = prvalue(load)
 #  140|         getLValue(): [VariableAccess] d
 #  140|             Type = [DoubleType] double
 #  140|             ValueCategory = lvalue
@@ -1674,7 +1674,7 @@ complex.c:
 #  141|     getStmt(68): [ExprStmt] ExprStmt
 #  141|       getExpr(): [AssignExpr] ... = ...
 #  141|           Type = [DoubleType] double
-#  141|           ValueCategory = prvalue
+#  141|           ValueCategory = prvalue(load)
 #  141|         getLValue(): [VariableAccess] d
 #  141|             Type = [DoubleType] double
 #  141|             ValueCategory = lvalue
@@ -1688,7 +1688,7 @@ complex.c:
 #  142|     getStmt(69): [ExprStmt] ExprStmt
 #  142|       getExpr(): [AssignExpr] ... = ...
 #  142|           Type = [LongDoubleType] long double
-#  142|           ValueCategory = prvalue
+#  142|           ValueCategory = prvalue(load)
 #  142|         getLValue(): [VariableAccess] ld
 #  142|             Type = [LongDoubleType] long double
 #  142|             ValueCategory = lvalue
@@ -1702,7 +1702,7 @@ complex.c:
 #  143|     getStmt(70): [ExprStmt] ExprStmt
 #  143|       getExpr(): [AssignExpr] ... = ...
 #  143|           Type = [LongDoubleType] long double
-#  143|           ValueCategory = prvalue
+#  143|           ValueCategory = prvalue(load)
 #  143|         getLValue(): [VariableAccess] ld
 #  143|             Type = [LongDoubleType] long double
 #  143|             ValueCategory = lvalue
@@ -1716,7 +1716,7 @@ complex.c:
 #  144|     getStmt(71): [ExprStmt] ExprStmt
 #  144|       getExpr(): [AssignExpr] ... = ...
 #  144|           Type = [LongDoubleType] long double
-#  144|           ValueCategory = prvalue
+#  144|           ValueCategory = prvalue(load)
 #  144|         getLValue(): [VariableAccess] ld
 #  144|             Type = [LongDoubleType] long double
 #  144|             ValueCategory = lvalue
@@ -1752,7 +1752,7 @@ ir.c:
 #    9|     getStmt(1): [ExprStmt] ExprStmt
 #    9|       getExpr(): [AssignExpr] ... = ...
 #    9|           Type = [IntType] int
-#    9|           ValueCategory = prvalue
+#    9|           ValueCategory = prvalue(load)
 #    9|         getLValue(): [ValueFieldAccess] x
 #    9|             Type = [IntType] int
 #    9|             ValueCategory = lvalue
@@ -1761,7 +1761,7 @@ ir.c:
 #    9|               ValueCategory = lvalue
 #    9|         getRValue(): [AssignExpr] ... = ...
 #    9|             Type = [IntType] int
-#    9|             ValueCategory = prvalue
+#    9|             ValueCategory = prvalue(load)
 #    9|           getLValue(): [ValueFieldAccess] y
 #    9|               Type = [IntType] int
 #    9|               ValueCategory = lvalue
@@ -1781,7 +1781,7 @@ ir.c:
 #   10|     getStmt(2): [ExprStmt] ExprStmt
 #   10|       getExpr(): [AssignExpr] ... = ...
 #   10|           Type = [IntType] int
-#   10|           ValueCategory = prvalue
+#   10|           ValueCategory = prvalue(load)
 #   10|         getLValue(): [ValueFieldAccess] x
 #   10|             Type = [IntType] int
 #   10|             ValueCategory = lvalue
@@ -2675,7 +2675,7 @@ ir.cpp:
 #  101|             ValueCategory = lvalue
 #  101|         getRValue(): [PrefixIncrExpr] ++ ...
 #  101|             Type = [IntType] int
-#  101|             ValueCategory = prvalue
+#  101|             ValueCategory = prvalue(load)
 #  101|           getOperand(): [VariableAccess] x
 #  101|               Type = [IntType] int
 #  101|               ValueCategory = lvalue
@@ -2688,7 +2688,7 @@ ir.cpp:
 #  102|             ValueCategory = lvalue
 #  102|         getRValue(): [PrefixDecrExpr] -- ...
 #  102|             Type = [IntType] int
-#  102|             ValueCategory = prvalue
+#  102|             ValueCategory = prvalue(load)
 #  102|           getOperand(): [VariableAccess] x
 #  102|               Type = [IntType] int
 #  102|               ValueCategory = lvalue
@@ -3041,7 +3041,7 @@ ir.cpp:
 #  147|             ValueCategory = lvalue
 #  147|         getRValue(): [PrefixIncrExpr] ++ ...
 #  147|             Type = [FloatType] float
-#  147|             ValueCategory = prvalue
+#  147|             ValueCategory = prvalue(load)
 #  147|           getOperand(): [VariableAccess] x
 #  147|               Type = [FloatType] float
 #  147|               ValueCategory = lvalue
@@ -3054,7 +3054,7 @@ ir.cpp:
 #  148|             ValueCategory = lvalue
 #  148|         getRValue(): [PrefixDecrExpr] -- ...
 #  148|             Type = [FloatType] float
-#  148|             ValueCategory = prvalue
+#  148|             ValueCategory = prvalue(load)
 #  148|           getOperand(): [VariableAccess] x
 #  148|               Type = [FloatType] float
 #  148|               ValueCategory = lvalue
@@ -3557,7 +3557,7 @@ ir.cpp:
 #  207|             ValueCategory = lvalue
 #  207|         getRValue(): [PrefixIncrExpr] ++ ...
 #  207|             Type = [IntPointerType] int *
-#  207|             ValueCategory = prvalue
+#  207|             ValueCategory = prvalue(load)
 #  207|           getOperand(): [VariableAccess] p
 #  207|               Type = [IntPointerType] int *
 #  207|               ValueCategory = lvalue
@@ -3570,7 +3570,7 @@ ir.cpp:
 #  208|             ValueCategory = lvalue
 #  208|         getRValue(): [PrefixDecrExpr] -- ...
 #  208|             Type = [IntPointerType] int *
-#  208|             ValueCategory = prvalue
+#  208|             ValueCategory = prvalue(load)
 #  208|           getOperand(): [VariableAccess] p
 #  208|               Type = [IntPointerType] int *
 #  208|               ValueCategory = lvalue
@@ -4825,7 +4825,7 @@ ir.cpp:
 #  483|         getVariable().getInitializer(): [Initializer] initializer for z
 #  483|           getExpr(): [ConditionalExpr] ... ? ... : ...
 #  483|               Type = [IntType] int
-#  483|               ValueCategory = prvalue
+#  483|               ValueCategory = prvalue(load)
 #  483|             getCondition(): [VariableAccess] a
 #  483|                 Type = [BoolType] bool
 #  483|                 ValueCategory = prvalue(load)
@@ -6025,7 +6025,7 @@ ir.cpp:
 #  705|     getStmt(0): [ReturnStmt] return ...
 #  705|       getExpr(): [ConditionalExpr] ... ? ... : ...
 #  705|           Type = [UnknownType] unknown
-#  705|           ValueCategory = prvalue(load)
+#  705|           ValueCategory = prvalue
 #  705|         getCondition(): [LTExpr] ... < ...
 #  705|             Type = [UnknownType] unknown
 #  705|             ValueCategory = prvalue
@@ -6058,7 +6058,7 @@ ir.cpp:
 #  705|     getStmt(0): [ReturnStmt] return ...
 #  705|       getExpr(): [ConditionalExpr] ... ? ... : ...
 #  705|           Type = [IntType] int
-#  705|           ValueCategory = prvalue
+#  705|           ValueCategory = prvalue(load)
 #  705|         getCondition(): [LTExpr] ... < ...
 #  705|             Type = [BoolType] bool
 #  705|             ValueCategory = prvalue
@@ -7864,7 +7864,7 @@ ir.cpp:
 #  915|         getVariable().getInitializer(): [Initializer] initializer for b
 #  915|           getExpr(): [ConditionalExpr] ... ? ... : ...
 #  915|               Type = [IntType] int
-#  915|               ValueCategory = prvalue
+#  915|               ValueCategory = prvalue(load)
 #  915|             getCondition(): [Literal] 1
 #  915|                 Type = [BoolType] bool
 #  915|                 Value = [Literal] 1
@@ -8633,6 +8633,9 @@ ir.cpp:
 # 1038|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1038, col. 12 &&
+# 1038|   <initializations>: 
+# 1038|   getEntryPoint(): [BlockStmt] { ... }
+# 1038|     getStmt(0): [ReturnStmt] return ...
 # 1038| [Constructor] void (lambda [] type at line 1038, col. 12)::(unnamed constructor)()
 # 1038|   <params>: 
 # 1038| [MemberFunction] void (lambda [] type at line 1038, col. 12)::_FUN()
@@ -8963,6 +8966,9 @@ ir.cpp:
 # 1041|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1041, col. 23 &&
+# 1041|   <initializations>: 
+# 1041|   getEntryPoint(): [BlockStmt] { ... }
+# 1041|     getStmt(0): [ReturnStmt] return ...
 # 1041| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::(unnamed constructor)()
 # 1041|   <params>: 
 # 1041| [MemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::_FUN(float)
@@ -10456,7 +10462,7 @@ ir.cpp:
 # 1301|             ValueCategory = lvalue
 # 1301|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1301|             Type = [IntType] int
-# 1301|             ValueCategory = prvalue
+# 1301|             ValueCategory = prvalue(load)
 # 1301|           getCondition(): [VariableAccess] b
 # 1301|               Type = [BoolType] bool
 # 1301|               ValueCategory = prvalue(load)
@@ -10472,7 +10478,7 @@ ir.cpp:
 # 1302|             ValueCategory = lvalue
 # 1302|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1302|             Type = [LongType] long
-# 1302|             ValueCategory = prvalue
+# 1302|             ValueCategory = prvalue(load)
 # 1302|           getCondition(): [VariableAccess] b
 # 1302|               Type = [BoolType] bool
 # 1302|               ValueCategory = prvalue(load)
@@ -10492,7 +10498,7 @@ ir.cpp:
 # 1303|             ValueCategory = lvalue
 # 1303|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1303|             Type = [IntType] int
-# 1303|             ValueCategory = prvalue
+# 1303|             ValueCategory = prvalue(load)
 # 1303|           getCondition(): [VariableAccess] x
 # 1303|               Type = [IntType] int
 # 1303|               ValueCategory = prvalue(load)
@@ -10512,7 +10518,7 @@ ir.cpp:
 # 1304|             ValueCategory = lvalue
 # 1304|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1304|             Type = [LongType] long
-# 1304|             ValueCategory = prvalue
+# 1304|             ValueCategory = prvalue(load)
 # 1304|           getCondition(): [VariableAccess] x
 # 1304|               Type = [IntType] int
 # 1304|               ValueCategory = prvalue(load)
@@ -10536,7 +10542,7 @@ ir.cpp:
 # 1305|             ValueCategory = lvalue
 # 1305|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1305|             Type = [LongType] long
-# 1305|             ValueCategory = prvalue
+# 1305|             ValueCategory = prvalue(load)
 # 1305|           getCondition(): [VariableAccess] y
 # 1305|               Type = [LongType] long
 # 1305|               ValueCategory = prvalue(load)
@@ -10564,7 +10570,7 @@ ir.cpp:
 # 1306|             ValueCategory = lvalue
 # 1306|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1306|             Type = [LongType] long
-# 1306|             ValueCategory = prvalue
+# 1306|             ValueCategory = prvalue(load)
 # 1306|           getCondition(): [VariableAccess] y
 # 1306|               Type = [LongType] long
 # 1306|               ValueCategory = prvalue(load)
@@ -10588,7 +10594,7 @@ ir.cpp:
 # 1308|             ValueCategory = lvalue
 # 1308|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1308|             Type = [IntType] int
-# 1308|             ValueCategory = prvalue
+# 1308|             ValueCategory = prvalue(load)
 # 1308|           getCondition(): [LogicalOrExpr] ... || ...
 # 1308|               Type = [BoolType] bool
 # 1308|               ValueCategory = prvalue
@@ -10633,7 +10639,7 @@ ir.cpp:
 # 1315|     getStmt(0): [ReturnStmt] return ...
 # 1315|       getExpr(): [ConditionalExpr] ... ? ... : ...
 # 1315|           Type = [IntType] int
-# 1315|           ValueCategory = prvalue
+# 1315|           ValueCategory = prvalue(load)
 # 1315|         getCondition(): [LogicalAndExpr] ... && ...
 # 1315|             Type = [BoolType] bool
 # 1315|             ValueCategory = prvalue
@@ -13368,9 +13374,6 @@ ir.cpp:
 # 1714|               getExpr(): [TemporaryObjectExpr] temporary object
 # 1714|                   Type = [Class] TrivialLambdaClass
 # 1714|                   ValueCategory = lvalue
-# 1714|                 getExpr(): [TemporaryObjectExpr] temporary object
-# 1714|                     Type = [Class] TrivialLambdaClass
-# 1714|                     ValueCategory = prvalue(load)
 # 1716|     getStmt(2): [DeclStmt] declaration
 # 1716|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of l_outer1
 # 1716|           Type = [Closure,LocalClass] decltype([...](...){...})
@@ -14710,7 +14713,7 @@ ir.cpp:
 # 1930|             ValueCategory = lvalue
 # 1930|         getRValue(): [AssignExpr] ... = ...
 # 1930|             Type = [IntType] int
-# 1930|             ValueCategory = prvalue
+# 1930|             ValueCategory = prvalue(load)
 # 1930|           getLValue(): [VariableAccess] j
 # 1930|               Type = [IntType] int
 # 1930|               ValueCategory = lvalue
@@ -14741,7 +14744,7 @@ ir.cpp:
 # 1935|             ValueCategory = lvalue
 # 1935|         getRValue(): [AssignAddExpr] ... += ...
 # 1935|             Type = [IntType] int
-# 1935|             ValueCategory = prvalue
+# 1935|             ValueCategory = prvalue(load)
 # 1935|           getLValue(): [VariableAccess] j
 # 1935|               Type = [IntType] int
 # 1935|               ValueCategory = lvalue
@@ -14751,7 +14754,7 @@ ir.cpp:
 # 1935|               ValueCategory = prvalue
 # 1935|         getRValue().getFullyConverted(): [ParenthesisExpr] (...)
 # 1935|             Type = [IntType] int
-# 1935|             ValueCategory = prvalue
+# 1935|             ValueCategory = prvalue(load)
 # 1936|     getStmt(2): [ReturnStmt] return ...
 # 1938| [CopyAssignmentOperator] D& D::operator=(D const&)
 # 1938|   <params>: 
@@ -15040,7 +15043,7 @@ ir.cpp:
 # 1993|             ValueCategory = lvalue
 # 1993|         getRValue(): [FunctionAccess] StaticMemberFunction
 # 1993|             Type = [FunctionPointerType] ..(*)(..)
-# 1993|             ValueCategory = prvalue
+# 1993|             ValueCategory = prvalue(load)
 # 1993|           getQualifier(): [VariableAccess] c
 # 1993|               Type = [Class] C
 # 1993|               ValueCategory = lvalue
@@ -15065,7 +15068,7 @@ ir.cpp:
 # 1997|             ValueCategory = lvalue
 # 1997|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1997|             Type = [IntType] int
-# 1997|             ValueCategory = prvalue
+# 1997|             ValueCategory = prvalue(load)
 # 1997|           getCondition(): [VariableAccess] a
 # 1997|               Type = [BoolType] bool
 # 1997|               ValueCategory = prvalue(load)
@@ -15084,7 +15087,7 @@ ir.cpp:
 # 1998|             ValueCategory = lvalue
 # 1998|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 1998|             Type = [IntType] int
-# 1998|             ValueCategory = prvalue
+# 1998|             ValueCategory = prvalue(load)
 # 1998|           getCondition(): [VariableAccess] a
 # 1998|               Type = [BoolType] bool
 # 1998|               ValueCategory = prvalue(load)
@@ -15168,7 +15171,7 @@ ir.cpp:
 # 2007|             ValueCategory = lvalue
 # 2007|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 2007|             Type = [Struct] TernaryPodObj
-# 2007|             ValueCategory = prvalue
+# 2007|             ValueCategory = prvalue(load)
 # 2007|           getCondition(): [VariableAccess] a
 # 2007|               Type = [BoolType] bool
 # 2007|               ValueCategory = prvalue(load)
@@ -15187,7 +15190,7 @@ ir.cpp:
 # 2008|             ValueCategory = lvalue
 # 2008|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 2008|             Type = [Struct] TernaryPodObj
-# 2008|             ValueCategory = prvalue
+# 2008|             ValueCategory = prvalue(load)
 # 2008|           getCondition(): [VariableAccess] a
 # 2008|               Type = [BoolType] bool
 # 2008|               ValueCategory = prvalue(load)
@@ -15216,7 +15219,7 @@ ir.cpp:
 # 2009|             ValueCategory = lvalue
 # 2009|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 2009|             Type = [Struct] TernaryPodObj
-# 2009|             ValueCategory = prvalue
+# 2009|             ValueCategory = prvalue(load)
 # 2009|           getCondition(): [VariableAccess] a
 # 2009|               Type = [BoolType] bool
 # 2009|               ValueCategory = prvalue(load)
@@ -15249,7 +15252,7 @@ ir.cpp:
 # 2010|               ValueCategory = lvalue
 # 2010|           getRValue(): [ConditionalExpr] ... ? ... : ...
 # 2010|               Type = [Struct] TernaryPodObj
-# 2010|               ValueCategory = prvalue
+# 2010|               ValueCategory = prvalue(load)
 # 2010|             getCondition(): [VariableAccess] a
 # 2010|                 Type = [BoolType] bool
 # 2010|                 ValueCategory = prvalue(load)
@@ -15351,7 +15354,7 @@ ir.cpp:
 # 2019|             ValueCategory = lvalue
 # 2019|         getArgument(0): [ConditionalExpr] ... ? ... : ...
 # 2019|             Type = [Struct] TernaryNonPodObj
-# 2019|             ValueCategory = prvalue
+# 2019|             ValueCategory = prvalue(load)
 # 2019|           getCondition(): [VariableAccess] a
 # 2019|               Type = [BoolType] bool
 # 2019|               ValueCategory = prvalue(load)
@@ -15399,7 +15402,7 @@ ir.cpp:
 # 2020|             ValueCategory = lvalue
 # 2020|         getArgument(0): [ConditionalExpr] ... ? ... : ...
 # 2020|             Type = [Struct] TernaryNonPodObj
-# 2020|             ValueCategory = prvalue
+# 2020|             ValueCategory = prvalue(load)
 # 2020|           getCondition(): [VariableAccess] a
 # 2020|               Type = [BoolType] bool
 # 2020|               ValueCategory = prvalue(load)
@@ -16446,7 +16449,7 @@ try_except.c:
 #   10|         getStmt(1): [ExprStmt] ExprStmt
 #   10|           getExpr(): [AssignExpr] ... = ...
 #   10|               Type = [IntType] int
-#   10|               ValueCategory = prvalue
+#   10|               ValueCategory = prvalue(load)
 #   10|             getLValue(): [VariableAccess] x
 #   10|                 Type = [IntType] int
 #   10|                 ValueCategory = lvalue
@@ -16500,7 +16503,7 @@ try_except.c:
 #   22|         getStmt(1): [ExprStmt] ExprStmt
 #   22|           getExpr(): [AssignExpr] ... = ...
 #   22|               Type = [IntType] int
-#   22|               ValueCategory = prvalue
+#   22|               ValueCategory = prvalue(load)
 #   22|             getLValue(): [VariableAccess] x
 #   22|                 Type = [IntType] int
 #   22|                 ValueCategory = lvalue
