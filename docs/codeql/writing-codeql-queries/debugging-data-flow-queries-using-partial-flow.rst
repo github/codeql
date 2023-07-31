@@ -3,6 +3,8 @@
 Debugging data-flow queries using partial flow
 ==============================================
 
+.. include:: ../reusables/new-data-flow-api.rst
+
 If a data-flow query doesn't produce the results you expect to see, you can use partial flow to debug the problem.
 
 In CodeQL, you can use :ref:`data flow analysis <about-data-flow-analysis>` to compute the possible values that a variable can hold at various points in a program.

@@ -17,6 +17,8 @@ The following sections describe how to use the libraries for local data flow, gl
 
 For a more general introduction to modeling data flow, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
 
+.. include:: ../reusables/new-data-flow-api.rst
+
 Local data flow
 ---------------
 

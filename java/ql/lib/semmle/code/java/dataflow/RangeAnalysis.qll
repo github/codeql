@@ -757,7 +757,7 @@ private predicate baseBound(Expr e, int b, boolean upper) {
   or
   exists(Method read |
     e.(MethodAccess).getMethod().overrides*(read) and
-    read.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
+    read.getDeclaringType() instanceof TypeInputStream and
     read.hasName("read") and
     read.getNumberOfParameters() = 0
   |
