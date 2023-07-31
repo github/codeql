@@ -7,8 +7,8 @@ def sink x
 end
 
 def positional(p1, p2)
-    sink p1 # $ hasValueFlow=1 $ hasValueFlow=16 $ MISSING: hasValueFlow=18
-    sink p2 # $ hasValueFlow=2 $ MISSING: hasValueFlow=17 $ MISSING: hasValueFlow=19
+    sink p1 # $ hasValueFlow=1 $ hasValueFlow=16 $ hasValueFlow=18
+    sink p2 # $ hasValueFlow=2 $ hasValueFlow=19 $ MISSING: hasValueFlow=17
 end
 
 positional(taint(1), taint(2))
@@ -47,8 +47,9 @@ args = [taint(18), taint(19)]
 positional(*args)
 
 def posargs(p1, *posargs)
-    sink p1 # $ hasValueFlow=20 $ hasValueFlow=23 $ MISSING: hasValueFlow=24
-    sink (posargs[0]) # $ MISSING: hasValueFlow=21 $ MISSING: hasValueFlow=22 $ MISSING: hasValueFlow=25
+    sink p1 # $ hasValueFlow=20 $ hasValueFlow=23 $ hasValueFlow=24
+    sink (posargs[0]) # $ hasValueFlow=22 $ MISSING: hasValueFlow=21 $ MISSING: hasValueFlow=25
+    sink (posargs[1])
 end
 
 posargs(taint(20), taint(21))
@@ -64,3 +65,30 @@ def splatstuff(*x)
     sink x[0] # $ hasValueFlow=26
 end
 splatstuff(*args)
+
+def splatmid(x, y, *z, w, r)
+    sink x # $ hasValueFlow=27 $ hasValueFlow=32
+    sink y # $ hasValueFlow=28 $ MISSING: hasValueFlow=33
+    sink z[0] # $ MISSING: hasValueFlow=29 $ MISSING: hasValueFlow=34
+    sink z[1] # $ MISSING: hasValueFlow=35
+    sink w # $ hasValueFlow=30 $ MISSING: hasValueFlow=36
+    sink r # $ hasValueFlow=31 $ MISSING: hasValueFlow=37
+end
+
+splatmid(taint(27), taint(28), taint(29), taint(30), taint(31))
+
+args = [taint(33), taint(34), taint(35), taint(36)]
+splatmid(taint(32), *args, taint(37))
+
+def pos_many(t, u, v, w, x, y, z)
+    sink t # $ hasValueFlow=38
+    sink u # $ hasValueFlow=39
+    sink v # $ MISSING: hasValueFlow=40
+    sink w # $ MISSING: hasValueFlow=41 $ SPURIOUS: hasValueFlow=44
+    sink x # $ MISSING: hasValueFlow=42
+    sink y # $ MISSING: hasValueFlow=43
+    sink z # $ MISSING: hasValueFlow=44
+end
+
+args = [taint(40), taint(41), taint(42), taint(43)]
+pos_many(taint(38), taint(39), *args, taint(44))
