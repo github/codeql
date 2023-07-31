@@ -12,7 +12,6 @@ private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummary
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
 private import semmle.code.java.security.QueryInjection
-private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 private import AutomodelJavaUtil as AutomodelJavaUtil
 private import semmle.code.java.security.PathSanitizer as PathSanitizer
@@ -26,7 +25,17 @@ newtype JavaRelatedLocationType = CallContext()
  * A class representing nodes that are arguments to calls.
  */
 private class ArgumentNode extends DataFlow::Node {
-  ArgumentNode() { this.asExpr() = [any(Call c).getAnArgument(), any(Call c).getQualifier()] }
+  Call c;
+
+  ArgumentNode() {
+    exists(Argument arg | this.asExpr() = arg and not arg.isVararg() and c = arg.getCall())
+    or
+    this.(DataFlow::ImplicitVarargsArray).getCall() = c
+    or
+    this = DataFlow::getInstanceArgument(c)
+  }
+
+  Call getCall() { result = c }
 }
 
 /**
@@ -67,13 +76,13 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
-  predicate isSink(Endpoint e, string kind) {
+  predicate isSink(Endpoint e, string kind, string provenance) {
     exists(string package, string type, string name, string signature, string ext, string input |
       sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, _)
+      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
     )
     or
-    isCustomSink(e, kind)
+    isCustomSink(e, kind) and provenance = "custom-sink"
   }
 
   predicate isNeutral(Endpoint e) {
@@ -136,10 +145,6 @@ private module ApplicationModeGetCallable implements AutomodelSharedGetCallable:
  * should be empty.
  */
 private predicate isCustomSink(Endpoint e, string kind) {
-  e.asExpr() instanceof ArgumentToExec and kind = "command injection"
-  or
-  e instanceof RequestForgerySink and kind = "request forgery"
-  or
   e instanceof QueryInjectionSink and kind = "sql"
 }
 
@@ -200,7 +205,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not ApplicationCandidatesImpl::isSink(e, _) and
+    not ApplicationCandidatesImpl::isSink(e, _, _) and
     ApplicationModeGetCallable::getCallable(e).getName().matches("is%") and
     ApplicationModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
   }
@@ -218,7 +223,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not ApplicationCandidatesImpl::isSink(e, _) and
+    not ApplicationCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
       callable = ApplicationModeGetCallable::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
@@ -313,7 +318,8 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 
 /**
  * A negative characteristic that indicates that an endpoint is a non-sink argument to a method whose sinks have already
- * been modeled.
+ * been modeled _manually_. This is restricted to manual sinks only, because only during the manual process do we have
+ * the expectation that all sinks present in a method have been considered.
  *
  * WARNING: These endpoints should not be used as negative samples for training, because some sinks may have been missed
  * when the method was modeled. Specifically, as we start using ATM to merge in new declarations, we can be less sure
@@ -324,14 +330,14 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 private class OtherArgumentToModeledMethodCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic
 {
   OtherArgumentToModeledMethodCharacteristic() {
-    this = "other argument to a method that has already been modeled"
+    this = "other argument to a method that has already been modeled manually"
   }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not ApplicationCandidatesImpl::isSink(e, _) and
-    exists(DataFlow::Node otherSink |
-      ApplicationCandidatesImpl::isSink(otherSink, _) and
-      e.asExpr() = otherSink.asExpr().(Argument).getCall().getAnArgument() and
+    not ApplicationCandidatesImpl::isSink(e, _, _) and
+    exists(Endpoint otherSink |
+      ApplicationCandidatesImpl::isSink(otherSink, _, "manual") and
+      e.getCall() = otherSink.getCall() and
       e != otherSink
     )
   }

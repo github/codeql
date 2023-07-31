@@ -145,9 +145,25 @@ module SQL {
           f.hasQualifiedName(gopgorm(), "Q") and
           arg = 0
           or
-          exists(string tp, string m | f.(Method).hasQualifiedName(gopgorm(), tp, m) |
+          exists(string tp, string m | f.(Method).hasQualifiedName([gopgorm(), gopg()], tp, m) |
+            tp = ["DB", "Conn"] and
+            m = ["QueryContext", "QueryOneContext"] and
+            arg = 2
+            or
+            tp = ["DB", "Conn"] and
+            m = ["ExecContext", "ExecOneContext", "Query", "QueryOne"] and
+            arg = 1
+            or
+            tp = ["DB", "Conn"] and
+            m = ["Exec", "ExecOne", "Prepare"] and
+            arg = 0
+            or
             tp = "Query" and
-            m = ["ColumnExpr", "For", "Having", "Where", "WhereIn", "WhereInMulti", "WhereOr"] and
+            m =
+              [
+                "ColumnExpr", "For", "GroupExpr", "Having", "Join", "OrderExpr", "TableExpr",
+                "Where", "WhereIn", "WhereInMulti", "WhereOr"
+              ] and
             arg = 0
             or
             tp = "Query" and

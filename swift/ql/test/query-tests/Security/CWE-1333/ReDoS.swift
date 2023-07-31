@@ -61,7 +61,7 @@ func myRegexpTests(myUrl: URL) throws {
     // Regex
 
     _ = "((a*)*b)" // GOOD (never used)
-    _ = try Regex("((a*)*b)") // DUBIOUS (never used)
+    _ = try Regex("((a*)*b)") // DUBIOUS (never used) [FLAGGED]
     _ = try Regex("((a*)*b)").firstMatch(in: untainted) // DUBIOUS (never used on tainted input) [FLAGGED]
     _ = try Regex("((a*)*b)").firstMatch(in: tainted) // BAD
     _ = try Regex(".*").firstMatch(in: tainted) // GOOD (safe regex)
@@ -72,7 +72,7 @@ func myRegexpTests(myUrl: URL) throws {
 
     // NSRegularExpression
 
-    _ = try? NSRegularExpression(pattern: "((a*)*b)") // DUBIOUS (never used)
+    _ = try? NSRegularExpression(pattern: "((a*)*b)") // DUBIOUS (never used) [FLAGGED]
 
     let nsregex1 = try? NSRegularExpression(pattern: "((a*)*b)") // DUBIOUS (never used on tainted input) [FLAGGED]
     _ = nsregex1?.stringByReplacingMatches(in: untainted, range: NSRange(location: 0, length: untainted.utf16.count), withTemplate: "")
