@@ -63,8 +63,8 @@ module Types {
       methodReturnsType(methodNode, classNode)
     |
       type1 = classNode.getQualifiedName() and
-      type2 = Util::getAnAccessPathPrefix(methodNode.asExpr().getExpr()) and
-      path = "Method[" + Util::getNormalizedMethodName(methodNode) + "].ReturnValue"
+      type2 = Util::getAnAccessPathPrefix(methodNode) and
+      path = Util::getMethodPath(methodNode) + ".ReturnValue"
     )
   }
 
@@ -111,25 +111,8 @@ module Types {
       methodTakesParameterOfType(methodNode, classNode, parameterNode)
     |
       type1 = classNode.getQualifiedName() and
-      type2 = Util::getAnAccessPathPrefix(methodNode.asExpr().getExpr()) and
-      (
-        exists(int paramIdx | paramIdx = parameterNode.getParameter().getPosition() |
-          path =
-            "Method[" + Util::getNormalizedMethodName(methodNode) + "].Parameter[" + paramIdx + "]"
-        )
-        or
-        // TODO: verify that this works
-        exists(string kwName |
-          kwName = parameterNode.getParameter().(Ast::KeywordParameter).getName()
-        |
-          path =
-            "Method[" + Util::getNormalizedMethodName(methodNode) + "].Parameter[" + kwName + ":]"
-        )
-        or
-        // TODO: verify that this works
-        parameterNode.getParameter() instanceof Ast::BlockParameter and
-        path = "Method[" + Util::getNormalizedMethodName(methodNode) + "].Parameter[block]"
-      )
+      type2 = Util::getAnAccessPathPrefix(methodNode) and
+      path = Util::getMethodPath(methodNode) + "." + Util::getParameterPath(parameterNode)
     )
   }
 
@@ -168,10 +151,8 @@ module Types {
       methodYieldsType(methodNode, argIdx, classNode)
     |
       type1 = classNode.getQualifiedName() and
-      type2 = Util::getAnAccessPathPrefix(methodNode.asExpr().getExpr()) and
-      path =
-        "Method[" + Util::getNormalizedMethodName(methodNode) + "].Argument[block].Parameter[" +
-          argIdx + "]"
+      type2 = Util::getAnAccessPathPrefix(methodNode) and
+      path = Util::getMethodPath(methodNode) + ".Argument[block].Parameter[" + argIdx + "]"
     )
   }
 
