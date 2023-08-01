@@ -471,6 +471,7 @@ Unlike sources, sinks tend to be highly query-specific, rarely affecting more th
 - **request-forgery**: A sink that controls the URL of a request, such as in a **fetch** call.
 - **url-redirection**: A sink that can be used to redirect the user to a malicious URL.
 - **unsafe-deserialization**: A deserialization sink that can lead to code execution or other unsafe behaviour, such as an unsafe YAML parser.
+- **log-injection**: A sink that can be used for log injection, such as in a **console.log** call.
 
 Summary kinds
 ~~~~~~~~~~~~~
