@@ -13,10 +13,6 @@ private import Util as Util
 
 // TODO: there is probably a more sensible central location for this module
 module Sinks {
-  private class RelevantFile extends File {
-    RelevantFile() { not this.getRelativePath().regexpMatch(".*/test(case)?s?/.*") }
-  }
-
   private module SinkKinds {
     class Kind extends string {
       Kind() {
@@ -49,7 +45,7 @@ module Sinks {
   }
 
   private DataFlow::Node getTaintSinkOfKind(SinkKinds::Kind kind) {
-    result.getLocation().getFile() instanceof RelevantFile and
+    result.getLocation().getFile() instanceof Util::RelevantFile and
     (
       kind = SinkKinds::codeInjection() and result instanceof CodeInjection::Sink
       or
@@ -84,13 +80,33 @@ module Sinks {
     knownSink != param
   }
 
-  predicate sinkModel(string type, string path, string kind) {
-    exists(DataFlow::MethodNode methodNode, int paramIdx, DataFlow::ParameterNode param |
-      param = methodNode.getParameter(paramIdx) and
+  predicate sinkModelFlowToKnownSink(string type, string path, string kind) {
+    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode param |
+      param = methodNode.getParameter(_) and
       flowFromParameterToSink(param, _, kind)
     |
-      type = Util::getAnAccessPathPrefix(methodNode.asExpr().getExpr()) and
-      path = "Method[" + Util::getNormalizedMethodName(methodNode) + "].Parameter[" + paramIdx + "]"
+      type = Util::getAnAccessPathPrefix(methodNode) and
+      path = Util::getMethodPath(methodNode) + "." + Util::getParameterPath(param)
     )
+  }
+
+  predicate parameterIsSuspicious(DataFlow::ParameterNode param, string kind) {
+    param.getName() = "sql" and kind = SinkKinds::sqlInjection()
+  }
+
+  predicate sinkModelAny(string type, string path, string kind) {
+    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode param |
+      param = methodNode.getParameter(_) and
+      parameterIsSuspicious(param, kind) and
+      methodNode.getLocation().getFile() instanceof Util::RelevantFile
+    |
+      type = Util::getAnAccessPathPrefix(methodNode) and
+      path = "(!!)" + Util::getMethodPath(methodNode) + "." + Util::getParameterPath(param)
+    )
+  }
+
+  predicate sinkModel(string type, string path, string kind) {
+    sinkModelFlowToKnownSink(type, path, kind) or
+    sinkModelAny(type, path, kind)
   }
 }
