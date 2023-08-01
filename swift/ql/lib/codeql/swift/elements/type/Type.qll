@@ -12,13 +12,10 @@ class Type extends Generated::Type {
    * Gets the name of this type.
    */
   override string getName() {
-    // note that `Generated::Type.getName()` gets the full name of the type, so
-    // we have to compute a short name.
-    exists(string name, int lastDotPos |
-      name = super.getName() and
-      lastDotPos = max([-1, name.indexOf(".")]) and
-      result = name.suffix(lastDotPos + 1)
-    )
+    // replace anything that looks like a full name `a.b.c` with just the
+    // short name `c`, by removing the `a.` and `b.` parts. Note that this
+    // has to be robust for tuple type names such as `(a, b.c)`.
+    result = super.getName().regexpReplaceAll("[^(), ]*\\.", "")
   }
 
   /**
