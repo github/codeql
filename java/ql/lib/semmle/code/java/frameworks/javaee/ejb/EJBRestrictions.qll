@@ -317,7 +317,7 @@ class SystemSetInputStreamMethod extends Method {
   SystemSetInputStreamMethod() {
     this.hasName("setIn") and
     this.getNumberOfParameters() = 1 and
-    this.getParameter(0).getType().(RefType).hasQualifiedName("java.io", "InputStream") and
+    this.getParameter(0).getType() instanceof TypeInputStream and
     this.getDeclaringType()
         .getAnAncestor()
         .getSourceDeclaration()

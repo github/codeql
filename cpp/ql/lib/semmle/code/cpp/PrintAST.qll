@@ -1,9 +1,9 @@
 /**
  * Provides queries to pretty-print a C++ AST as a graph.
  *
- * By default, this will print the AST for all functions in the database. To change this behavior,
- * extend `PrintASTConfiguration` and override `shouldPrintFunction` to hold for only the functions
- * you wish to view the AST for.
+ * By default, this will print the AST for all functions and global and namespace variables in
+ * the database. To change this behavior, extend `PrintASTConfiguration` and override
+ * `shouldPrintDeclaration` to hold for only the declarations you wish to view the AST for.
  */
 
 import cpp
@@ -12,7 +12,7 @@ private import semmle.code.cpp.Print
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
 /**
- * The query can extend this class to control which functions are printed.
+ * The query can extend this class to control which declarations are printed.
  */
 class PrintAstConfiguration extends TPrintAstConfiguration {
   /**
@@ -21,14 +21,16 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
   string toString() { result = "PrintASTConfiguration" }
 
   /**
-   * Holds if the AST for `func` should be printed. By default, holds for all
-   * functions.
+   * Holds if the AST for `decl` should be printed. By default, holds for all
+   * functions and global and namespace variables. Currently, does not support any
+   * other declaration types.
    */
-  predicate shouldPrintFunction(Function func) { any() }
+  predicate shouldPrintDeclaration(Declaration decl) { any() }
 }
 
-private predicate shouldPrintFunction(Function func) {
-  exists(PrintAstConfiguration config | config.shouldPrintFunction(func))
+private predicate shouldPrintDeclaration(Declaration decl) {
+  exists(PrintAstConfiguration config | config.shouldPrintDeclaration(decl)) and
+  (decl instanceof Function or decl instanceof GlobalOrNamespaceVariable)
 }
 
 bindingset[s]
@@ -69,7 +71,7 @@ private predicate locationSortKeys(Locatable ast, string file, int line, int col
   )
 }
 
-private Function getEnclosingFunction(Locatable ast) {
+private Declaration getAnEnclosingDeclaration(Locatable ast) {
   result = ast.(Expr).getEnclosingFunction()
   or
   result = ast.(Stmt).getEnclosingFunction()
@@ -77,6 +79,10 @@ private Function getEnclosingFunction(Locatable ast) {
   result = ast.(Initializer).getExpr().getEnclosingFunction()
   or
   result = ast.(Parameter).getFunction()
+  or
+  result = ast.(Expr).getEnclosingDeclaration()
+  or
+  result = ast.(Initializer).getDeclaration()
   or
   result = ast
 }
@@ -86,21 +92,21 @@ private Function getEnclosingFunction(Locatable ast) {
  * nodes for things like parameter lists and constructor init lists.
  */
 private newtype TPrintAstNode =
-  TAstNode(Locatable ast) { shouldPrintFunction(getEnclosingFunction(ast)) } or
+  TAstNode(Locatable ast) { shouldPrintDeclaration(getAnEnclosingDeclaration(ast)) } or
   TDeclarationEntryNode(DeclStmt stmt, DeclarationEntry entry) {
     // We create a unique node for each pair of (stmt, entry), to avoid having one node with
     // multiple parents due to extractor bug CPP-413.
     stmt.getADeclarationEntry() = entry and
-    shouldPrintFunction(stmt.getEnclosingFunction())
+    shouldPrintDeclaration(stmt.getEnclosingFunction())
   } or
-  TParametersNode(Function func) { shouldPrintFunction(func) } or
+  TParametersNode(Function func) { shouldPrintDeclaration(func) } or
   TConstructorInitializersNode(Constructor ctor) {
     ctor.hasEntryPoint() and
-    shouldPrintFunction(ctor)
+    shouldPrintDeclaration(ctor)
   } or
   TDestructorDestructionsNode(Destructor dtor) {
     dtor.hasEntryPoint() and
-    shouldPrintFunction(dtor)
+    shouldPrintDeclaration(dtor)
   }
 
 /**
@@ -158,10 +164,10 @@ class PrintAstNode extends TPrintAstNode {
 
   /**
    * Holds if this node should be printed in the output. By default, all nodes
-   * within a function are printed, but the query can override
-   * `PrintASTConfiguration.shouldPrintFunction` to filter the output.
+   * within functions and global and namespace variables are printed, but the query
+   * can override `PrintASTConfiguration.shouldPrintDeclaration` to filter the output.
    */
-  final predicate shouldPrint() { shouldPrintFunction(this.getEnclosingFunction()) }
+  final predicate shouldPrint() { shouldPrintDeclaration(this.getEnclosingDeclaration()) }
 
   /**
    * Gets the children of this node.
@@ -229,10 +235,15 @@ class PrintAstNode extends TPrintAstNode {
   abstract string getChildAccessorPredicateInternal(int childIndex);
 
   /**
-   * Gets the `Function` that contains this node.
+   * Gets the `Declaration` that contains this node.
    */
-  private Function getEnclosingFunction() {
-    result = this.getParent*().(FunctionNode).getFunction()
+  private Declaration getEnclosingDeclaration() { result = this.getParent*().getDeclaration() }
+
+  /**
+   * Gets the `Declaration` this node represents.
+   */
+  private Declaration getDeclaration() {
+    result = this.(AstNode).getAst() and shouldPrintDeclaration(result)
   }
 }
 
@@ -571,15 +582,52 @@ class DestructorDestructionsNode extends PrintAstNode, TDestructorDestructionsNo
   final Destructor getDestructor() { result = dtor }
 }
 
+abstract private class FunctionOrGlobalOrNamespaceVariableNode extends AstNode {
+  override string toString() { result = qlClass(ast) + getIdentityString(ast) }
+
+  private int getOrder() {
+    this =
+      rank[result](FunctionOrGlobalOrNamespaceVariableNode node, Declaration decl, string file,
+        int line, int column |
+        node.getAst() = decl and
+        locationSortKeys(decl, file, line, column)
+      |
+        node order by file, line, column, getIdentityString(decl)
+      )
+  }
+
+  override string getProperty(string key) {
+    result = super.getProperty(key)
+    or
+    key = "semmle.order" and result = this.getOrder().toString()
+  }
+}
+
+/**
+ * A node representing a `GlobalOrNamespaceVariable`.
+ */
+class GlobalOrNamespaceVariableNode extends FunctionOrGlobalOrNamespaceVariableNode {
+  GlobalOrNamespaceVariable var;
+
+  GlobalOrNamespaceVariableNode() { var = ast }
+
+  override PrintAstNode getChildInternal(int childIndex) {
+    childIndex = 0 and
+    result.(AstNode).getAst() = var.getInitializer()
+  }
+
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    childIndex = 0 and result = "getInitializer()"
+  }
+}
+
 /**
  * A node representing a `Function`.
  */
-class FunctionNode extends AstNode {
+class FunctionNode extends FunctionOrGlobalOrNamespaceVariableNode {
   Function func;
 
   FunctionNode() { func = ast }
-
-  override string toString() { result = qlClass(func) + getIdentityString(func) }
 
   override PrintAstNode getChildInternal(int childIndex) {
     childIndex = 0 and
@@ -604,31 +652,10 @@ class FunctionNode extends AstNode {
     or
     childIndex = 3 and result = "<destructions>"
   }
-
-  private int getOrder() {
-    this =
-      rank[result](FunctionNode node, Function function, string file, int line, int column |
-        node.getAst() = function and
-        locationSortKeys(function, file, line, column)
-      |
-        node order by file, line, column, getIdentityString(function)
-      )
-  }
-
-  override string getProperty(string key) {
-    result = super.getProperty(key)
-    or
-    key = "semmle.order" and result = this.getOrder().toString()
-  }
-
-  /**
-   * Gets the `Function` this node represents.
-   */
-  final Function getFunction() { result = func }
 }
 
 private string getChildAccessorWithoutConversions(Locatable parent, Element child) {
-  shouldPrintFunction(getEnclosingFunction(parent)) and
+  shouldPrintDeclaration(getAnEnclosingDeclaration(parent)) and
   (
     exists(Stmt s | s = parent |
       namedStmtChildPredicates(s, child, result)
@@ -647,7 +674,7 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
 }
 
 private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) {
-  shouldPrintFunction(getEnclosingFunction(s)) and
+  shouldPrintDeclaration(getAnEnclosingDeclaration(s)) and
   (
     exists(int n | s.(BlockStmt).getStmt(n) = e and pred = "getStmt(" + n + ")")
     or
@@ -735,7 +762,7 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
 }
 
 private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) {
-  shouldPrintFunction(expr.getEnclosingFunction()) and
+  shouldPrintDeclaration(expr.getEnclosingDeclaration()) and
   (
     expr.(Access).getTarget() = ele and pred = "getTarget()"
     or

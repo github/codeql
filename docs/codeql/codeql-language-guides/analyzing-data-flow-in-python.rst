@@ -12,6 +12,8 @@ This article describes how data flow analysis is implemented in the CodeQL libra
 The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
 For a more general introduction to modeling data flow, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
 
+.. include:: ../reusables/new-data-flow-api.rst
+
 Local data flow
 ---------------
 
