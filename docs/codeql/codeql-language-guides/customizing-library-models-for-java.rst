@@ -1,8 +1,5 @@
 .. _customizing-library-models-for-java:
 
-:orphan:
-:nosearch:
-
 Customizing Library Models for Java
 ===================================
 
@@ -12,10 +9,10 @@ The Java analysis can be customized by adding library models (summaries, sinks a
 A model is a definition of a behavior of a library element, such as a method, that is used to improve the data flow analysis precision by identifying more results.
 Most of the security related queries are taint tracking queries that try to find paths from a source of untrusted input to a sink that represents a vulnerability. Sources are the starting points of a taint tracking data flow analysis, and sinks are the end points of a taint tracking data flow analysis.
 
-Furthermore, the taint tracking queries also need to know how data can flow through elements that are not included in the source code. These are named summaries: they are models of elements that allow us to synthesize the elements flow behavior without having them in the source code. This is especially helpful when using a third party (or the standard) library.
+Furthermore, the taint tracking queries also need to know how data can flow through elements that are not included in the source code. These are named summaries: They are models of elements that allow us to synthesize the elements flow behavior without having them in the source code. This is especially helpful when using a third party (or the standard) library.
 
 The models are defined using data extensions where each tuple constitutes a model.
-A data extension file for Java is a YAML file in the form:
+A data extension file containing models for Java is a YAML file in the form:
 
 .. code-block:: yaml
 
@@ -66,7 +63,7 @@ We need to add a tuple to the **sinkModel**\(package, type, subtypes, name, sign
          pack: codeql/java-all
          extensible: sinkModel
        data:
-         - ["java.sql", "Statement", True, "execute", "(String)", "", "Argument[0]", "sql", "manual"]
+         - ["java.sql", "Statement", True, "execute", "(String)", "", "Argument[0]", "sql-injection", "manual"]
 
 
 Since we are adding a new sink, we need to add a tuple to the **sinkModel** extensible predicate.
@@ -81,8 +78,8 @@ The first five values identify the callable (in this case a method) to be modele
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the sink.
 
-- The seventh value **Argument[0]** is the **access path** to the first argument passed to the method, which means that this is the location of the sink.
-- The eighth value **sql** is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.
+- The seventh value **Argument[0]** is the **access path** to the first argument to the method, which means that this is the location of the sink.
+- The eighth value **sql-injection** is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.
 - The ninth value **manual** is the provenance of the sink, which is used to identify the origin of the sink.
 
 Example: Taint source from the **java.net** package
@@ -306,7 +303,6 @@ Taint source. Most taint tracking queries will use all sources added to this ext
 
 - **output**: Access path to the source, where the possibly tainted data flows from.
 - **kind**: Kind of the source.
-- **provenance**: Provenance (origin) of the source definition.
 
 As most sources are used by all taint tracking queries there are only a few different source kinds.
 The following source kinds are supported:
@@ -361,7 +357,6 @@ Flow through (summary). This extensible predicate is used to model flow through 
 - **input**: Access path to the input of the element (where data will flow from to the output).
 - **output**: Access path to the output of the element (where data will flow to from the input).
 - **kind**: Kind of the flow through.
-- **provenance**: Provenance (origin) of the flow through.
 
 The following kinds are supported:
 
@@ -376,7 +371,6 @@ It only has minor impact on the data flow analysis.
 Manual neutrals are considered high confidence dispatch call targets and can reduce the number of dispatch call targets during data flow analysis (a performance optimization).
 
 - **kind**: Kind of the neutral. For neutrals the kind can be **summary**, **source**, or **sink** to indicate that the callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
-- **provenance**: Provenance (origin) of the flow through.
 
 .. _access-paths:
 
