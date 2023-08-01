@@ -127,7 +127,7 @@ private class DefaultUnsafeJsEvalAdditionalFlowStep extends UnsafeJsEvalAddition
     )
     or
     exists(MemberRefExpr e, Expr self, VarDecl member |
-      self.getType().getName().matches(["Unsafe%Buffer%", "Unsafe%Pointer%"]) and
+      self.getType().getFullName().matches(["Unsafe%Buffer%", "Unsafe%Pointer%"]) and
       member.getName() = "baseAddress"
     |
       e.getBase() = self and
