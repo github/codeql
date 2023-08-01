@@ -724,6 +724,48 @@ complex.c:
 #   58|     v58_5(void)                           = AliasedUse           : ~m?
 #   58|     v58_6(void)                           = ExitFunction         : 
 
+ir.c:
+#    7| void MyCoordsTest(int)
+#    7|   Block 0
+#    7|     v7_1(void)                                 = EnterFunction                : 
+#    7|     mu7_2(unknown)                             = AliasedDefinition            : 
+#    7|     mu7_3(unknown)                             = InitializeNonLocal           : 
+#    7|     r7_4(glval<int>)                           = VariableAddress[pos]         : 
+#    7|     mu7_5(int)                                 = InitializeParameter[pos]     : &:r7_4
+#    8|     r8_1(glval<(unnamed class/struct/union)>)  = VariableAddress[coords]      : 
+#    8|     mu8_2((unnamed class/struct/union))        = Uninitialized[coords]        : &:r8_1
+#    8|     r8_3(glval<int>)                           = FieldAddress[x]              : r8_1
+#    8|     r8_4(int)                                  = Constant[0]                  : 
+#    8|     mu8_5(int)                                 = Store[?]                     : &:r8_3, r8_4
+#    8|     r8_6(glval<int>)                           = FieldAddress[y]              : r8_1
+#    8|     r8_7(int)                                  = Constant[0]                  : 
+#    8|     mu8_8(int)                                 = Store[?]                     : &:r8_6, r8_7
+#    9|     r9_1(glval<int>)                           = VariableAddress[pos]         : 
+#    9|     r9_2(int)                                  = Load[pos]                    : &:r9_1, ~m?
+#    9|     r9_3(int)                                  = Constant[1]                  : 
+#    9|     r9_4(int)                                  = Add                          : r9_2, r9_3
+#    9|     r9_5(glval<(unnamed class/struct/union)>)  = VariableAddress[coords]      : 
+#    9|     r9_6(glval<int>)                           = FieldAddress[y]              : r9_5
+#    9|     mu9_7(int)                                 = Store[?]                     : &:r9_6, r9_4
+#    9|     r9_8(int)                                  = CopyValue                    : r9_4
+#    9|     r9_9(glval<(unnamed class/struct/union)>)  = VariableAddress[coords]      : 
+#    9|     r9_10(glval<int>)                          = FieldAddress[x]              : r9_9
+#    9|     mu9_11(int)                                = Store[?]                     : &:r9_10, r9_8
+#   10|     r10_1(glval<unknown>)                      = FunctionAddress[getX]        : 
+#   10|     r10_2(glval<(unnamed class/struct/union)>) = VariableAddress[coords]      : 
+#   10|     r10_3(struct <unnamed> *)                  = CopyValue                    : r10_2
+#   10|     r10_4(int)                                 = Call[getX]                   : func:r10_1, 0:r10_3
+#   10|     mu10_5(unknown)                            = ^CallSideEffect              : ~m?
+#   10|     v10_6(void)                                = ^BufferReadSideEffect[0]     : &:r10_3, ~m?
+#   10|     mu10_7(unknown)                            = ^BufferMayWriteSideEffect[0] : &:r10_3
+#   10|     r10_8(glval<(unnamed class/struct/union)>) = VariableAddress[coords]      : 
+#   10|     r10_9(glval<int>)                          = FieldAddress[x]              : r10_8
+#   10|     mu10_10(int)                               = Store[?]                     : &:r10_9, r10_4
+#   11|     v11_1(void)                                = NoOp                         : 
+#    7|     v7_6(void)                                 = ReturnVoid                   : 
+#    7|     v7_7(void)                                 = AliasedUse                   : ~m?
+#    7|     v7_8(void)                                 = ExitFunction                 : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0
