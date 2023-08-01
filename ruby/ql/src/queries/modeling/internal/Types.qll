@@ -112,7 +112,7 @@ module Types {
     |
       type1 = classNode.getQualifiedName() and
       type2 = Util::getAnAccessPathPrefix(methodNode) and
-      path = Util::getMethodPath(methodNode) + "." + Util::getParameterPath(parameterNode)
+      path = Util::getMethodParameterPath(methodNode, parameterNode)
     )
   }
 
