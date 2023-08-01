@@ -18,10 +18,9 @@ import ExecUserFlow::PathGraph
 class LocalSource extends Source instanceof LocalUserInput { }
 
 from
-  ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink,
-  MethodAccess call, DataFlow::Node sourceCmd, DataFlow::Node sinkCmd
-where
-  callIsTaintedByUserInputAndDangerousCommand(call, source, sink, sourceCmd, sinkCmd)
+  ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, MethodAccess call,
+  DataFlow::Node sourceCmd, DataFlow::Node sinkCmd
+where callIsTaintedByUserInputAndDangerousCommand(call, source, sink, sourceCmd, sinkCmd)
 select sink, source, sink,
   "Call to dangerous java.lang.Runtime.exec() with command '$@' with arg from untrusted input '$@'",
   sourceCmd, sourceCmd.toString(), source.getNode(), source.toString()

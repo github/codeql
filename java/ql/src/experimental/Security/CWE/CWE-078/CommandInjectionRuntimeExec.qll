@@ -89,9 +89,7 @@ deprecated class ExecTaintConfiguration2 extends TaintTracking::Configuration {
 }
 
 module ExecUserFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source instanceof Source
-  }
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) {
     exists(RuntimeExecMethod method, MethodAccess call |
@@ -155,7 +153,10 @@ class UnSafeExecutable extends string {
   }
 }
 
-predicate callIsTaintedByUserInputAndDangerousCommand(MethodAccess call, ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd, DataFlow::Node sinkCmd) {
+predicate callIsTaintedByUserInputAndDangerousCommand(
+  MethodAccess call, ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink,
+  DataFlow::Node sourceCmd, DataFlow::Node sinkCmd
+) {
   call.getMethod() instanceof RuntimeExecMethod and
   // this is a command-accepting call to exec, e.g. rt.exec(new String[]{"/bin/sh", ...})
   (
