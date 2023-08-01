@@ -507,8 +507,7 @@ module Public {
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 
     /**
-     * As `getACalleeIncludingExternals`, except excluding external functions (those for which
-     * we lack a definition, such as standard library functions).
+     * Gets the definition of a possible target of this call, excluding targets reachable via virtual dispatch.
      */
     Callable getACalleeWithoutVirtualDispatch() {
       result.asFunction() = this.getTarget()
