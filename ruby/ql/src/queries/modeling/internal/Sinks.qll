@@ -81,12 +81,12 @@ module Sinks {
   }
 
   predicate sinkModelFlowToKnownSink(string type, string path, string kind) {
-    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode param |
-      param = methodNode.getParameter(_) and
-      flowFromParameterToSink(param, _, kind)
+    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
+      paramNode = methodNode.getParameter(_) and
+      flowFromParameterToSink(paramNode, _, kind)
     |
       type = Util::getAnAccessPathPrefix(methodNode) and
-      path = Util::getMethodPath(methodNode) + "." + Util::getParameterPath(param)
+      path = Util::getMethodParameterPath(methodNode, paramNode)
     )
   }
 
@@ -94,19 +94,19 @@ module Sinks {
     param.getName() = "sql" and kind = SinkKinds::sqlInjection()
   }
 
-  predicate sinkModelAny(string type, string path, string kind) {
-    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode param |
-      param = methodNode.getParameter(_) and
-      parameterIsSuspicious(param, kind) and
+  predicate sinkModelSuspiciousParameterName(string type, string path, string kind) {
+    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
+      paramNode = methodNode.getParameter(_) and
+      parameterIsSuspicious(paramNode, kind) and
       methodNode.getLocation().getFile() instanceof Util::RelevantFile
     |
       type = Util::getAnAccessPathPrefix(methodNode) and
-      path = "(!!)" + Util::getMethodPath(methodNode) + "." + Util::getParameterPath(param)
+      path = "(!!)" + Util::getMethodParameterPath(methodNode, paramNode)
     )
   }
 
   predicate sinkModel(string type, string path, string kind) {
     sinkModelFlowToKnownSink(type, path, kind) or
-    sinkModelAny(type, path, kind)
+    sinkModelSuspiciousParameterName(type, path, kind)
   }
 }
