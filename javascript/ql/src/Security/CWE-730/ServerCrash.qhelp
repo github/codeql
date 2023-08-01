@@ -43,9 +43,9 @@
 	<p>
 
 		The following server code checks if a client-provided file path is valid
-		before saving data to it. It would be reasonable to expect that the
-		server responds with an error response to client requests with invalid
-		file paths. However, the server instead throws an exception, which is
+		before saving data to that path. It would be reasonable to expect that the
+		server responds with an error in case the request contains an invalid
+		file path. However, the server instead throws an exception, which is
 		uncaught in the context of the asynchronous callback invocation
 		(<code>fs.access(...)</code>). This causes the entire server to
 		terminate abruptly.
