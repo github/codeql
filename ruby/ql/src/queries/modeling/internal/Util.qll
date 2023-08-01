@@ -30,7 +30,7 @@ string getMethodPath(DataFlow::MethodNode methodNode) {
   result = "Method[" + getNormalizedMethodName(methodNode) + "]"
 }
 
-string getParameterPath(DataFlow::ParameterNode paramNode) {
+private string getParameterPath(DataFlow::ParameterNode paramNode) {
   exists(Ast::Parameter param, string paramSpec |
     param = paramNode.asParameter() and
     (
@@ -44,4 +44,8 @@ string getParameterPath(DataFlow::ParameterNode paramNode) {
   |
     result = "Parameter[" + paramSpec + "]"
   )
+}
+
+string getMethodParameterPath(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode) {
+  result = getMethodPath(methodNode) + "." + getParameterPath(paramNode)
 }
