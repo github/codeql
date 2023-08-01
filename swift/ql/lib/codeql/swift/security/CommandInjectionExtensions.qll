@@ -43,25 +43,27 @@ private class CommandInjectionArrayAdditionalFlowStep extends CommandInjectionAd
 }
 
 /**
- * A `DataFlow::Node` that is written into a `Process` object.
- */
-private class ProcessSink extends CommandInjectionSink instanceof DataFlow::Node {
-  ProcessSink() {
-    // any write into a class derived from `Process` is a sink. For
-    // example in `Process.launchPath = sensitive` the post-update node corresponding
-    // with `Process.launchPath` is a sink.
-    exists(NominalType t, Expr e |
-      t.getABaseType*().getUnderlyingType().getName() = "Process" and
-      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
-      e.getFullyConverted().getType() = t and
-      not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
-    )
-  }
-}
-
-/**
  * A sink defined in a CSV model.
  */
 private class DefaultCommandInjectionSink extends CommandInjectionSink {
   DefaultCommandInjectionSink() { sinkNode(this, "command-injection") }
+}
+
+private class CommandInjectionSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";Process;true;run(_:arguments:terminationHandler:);;;Argument[0..1];command-injection",
+        ";Process;true;launchedProcess(launchPath:arguments:);;;Argument[0..1];command-injection",
+        ";Process;true;arguments;;;PostUpdate;command-injection",
+        ";Process;true;currentDirectory;;;PostUpdate;command-injection",
+        ";Process;true;environment;;;PostUpdate;command-injection",
+        ";Process;true;executableURL;;;PostUpdate;command-injection",
+        ";Process;true;standardError;;;PostUpdate;command-injection",
+        ";Process;true;standardInput;;;PostUpdate;command-injection",
+        ";Process;true;standardOutput;;;PostUpdate;command-injection",
+        ";Process;true;currentDirectoryPath;;;PostUpdate;command-injection",
+        ";Process;true;launchPath;;;PostUpdate;command-injection",
+      ]
+  }
 }

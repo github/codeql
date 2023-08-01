@@ -53,13 +53,13 @@ func testCommandInjectionQhelpExamples() {
 	let task1 = Process()
 	task1.launchPath = "/bin/bash" // GOOD
 	task1.arguments = ["-c", userControlledString] // BAD
-	task1.launch() // [FALSE POSITIVE]
+	task1.launch()
 
 	if let validatedString = validateCommand(userControlledString) {
     	let task2 = Process()
     	task2.launchPath = "/bin/bash" // GOOD
     	task2.arguments = ["-c", validatedString] // GOOD [FALSE POSITIVE]
-	    task2.launch() // [FALSE POSITIVE]
+	    task2.launch()
 	}
 }
 
@@ -93,12 +93,12 @@ func testCommandInjectionMore(mySafeString: String) {
 	let task3 = Process()
 	task3.executableURL = URL(string: userControlledString)! // BAD
 	task3.arguments = ["abc", userControlledString] // BAD
-	try! task3.run() // [FALSE POSITIVE]
+	try! task3.run()
 
 	let task4 = Process()
 	task4.executableURL = URL(fileURLWithPath: userControlledString) // BAD
 	task4.arguments = ["abc", "def" + userControlledString] // BAD
-	try! task4.run() // [FALSE POSITIVE]
+	try! task4.run()
 
 	let task5 = mkProcess()
 	task5?.executableURL = URL(fileURLWithPath: userControlledString) // BAD
@@ -109,8 +109,8 @@ func testCommandInjectionMore(mySafeString: String) {
 	task6.executableURL = URL(string: userControlledString)! // BAD [NOT DETECTED]
 	task6.arguments = [userControlledString] // BAD [NOT DETECTED]
 	task6.setArguments([userControlledString]) // BAD [NOT DETECTED]
-	task6.harmlessField = userControlledString // GOOD [FALSE POSITIVE]
-	try! task6.run() // [FALSE POSITIVE]
+	task6.harmlessField = userControlledString // GOOD
+	try! task6.run()
 
 	let task7 = Process()
 	task7.executableURL = URL(fileURLWithPath: mySafeString) // GOOD
@@ -119,10 +119,10 @@ func testCommandInjectionMore(mySafeString: String) {
 	try! task7.run()
 
 	_ = Process.launchedProcess(launchPath: mySafeString, arguments: ["abc", mySafeString]) // GOOD
-	_ = Process.launchedProcess(launchPath: userControlledString, arguments: ["abc", mySafeString]) // BAD [NOT DETECTED]
-	_ = Process.launchedProcess(launchPath: mySafeString, arguments: ["abc", userControlledString]) // BAD [NOT DETECTED]
+	_ = Process.launchedProcess(launchPath: userControlledString, arguments: ["abc", mySafeString]) // BAD
+	_ = Process.launchedProcess(launchPath: mySafeString, arguments: ["abc", userControlledString]) // BAD
 
 	_ = try? Process.run(URL(string: mySafeString)!, arguments: ["abc", mySafeString]) // GOOD
-	_ = try? Process.run(URL(string: userControlledString)!, arguments: ["abc", mySafeString]) // BAD [NOT DETECTED]
-	_ = try? Process.run(URL(string: mySafeString)!, arguments: ["abc", userControlledString]) // BAD [NOT DETECTED]
+	_ = try? Process.run(URL(string: userControlledString)!, arguments: ["abc", mySafeString]) // BAD
+	_ = try? Process.run(URL(string: mySafeString)!, arguments: ["abc", userControlledString]) // BAD
 }
