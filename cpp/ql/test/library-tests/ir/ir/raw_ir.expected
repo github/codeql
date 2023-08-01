@@ -724,6 +724,48 @@ complex.c:
 #   58|     v58_5(void)                           = AliasedUse           : ~m?
 #   58|     v58_6(void)                           = ExitFunction         : 
 
+ir.c:
+#    7| void MyCoordsTest(int)
+#    7|   Block 0
+#    7|     v7_1(void)                                 = EnterFunction                : 
+#    7|     mu7_2(unknown)                             = AliasedDefinition            : 
+#    7|     mu7_3(unknown)                             = InitializeNonLocal           : 
+#    7|     r7_4(glval<int>)                           = VariableAddress[pos]         : 
+#    7|     mu7_5(int)                                 = InitializeParameter[pos]     : &:r7_4
+#    8|     r8_1(glval<(unnamed class/struct/union)>)  = VariableAddress[coords]      : 
+#    8|     mu8_2((unnamed class/struct/union))        = Uninitialized[coords]        : &:r8_1
+#    8|     r8_3(glval<int>)                           = FieldAddress[x]              : r8_1
+#    8|     r8_4(int)                                  = Constant[0]                  : 
+#    8|     mu8_5(int)                                 = Store[?]                     : &:r8_3, r8_4
+#    8|     r8_6(glval<int>)                           = FieldAddress[y]              : r8_1
+#    8|     r8_7(int)                                  = Constant[0]                  : 
+#    8|     mu8_8(int)                                 = Store[?]                     : &:r8_6, r8_7
+#    9|     r9_1(glval<int>)                           = VariableAddress[pos]         : 
+#    9|     r9_2(int)                                  = Load[pos]                    : &:r9_1, ~m?
+#    9|     r9_3(int)                                  = Constant[1]                  : 
+#    9|     r9_4(int)                                  = Add                          : r9_2, r9_3
+#    9|     r9_5(glval<(unnamed class/struct/union)>)  = VariableAddress[coords]      : 
+#    9|     r9_6(glval<int>)                           = FieldAddress[y]              : r9_5
+#    9|     mu9_7(int)                                 = Store[?]                     : &:r9_6, r9_4
+#    9|     r9_8(int)                                  = CopyValue                    : r9_4
+#    9|     r9_9(glval<(unnamed class/struct/union)>)  = VariableAddress[coords]      : 
+#    9|     r9_10(glval<int>)                          = FieldAddress[x]              : r9_9
+#    9|     mu9_11(int)                                = Store[?]                     : &:r9_10, r9_8
+#   10|     r10_1(glval<unknown>)                      = FunctionAddress[getX]        : 
+#   10|     r10_2(glval<(unnamed class/struct/union)>) = VariableAddress[coords]      : 
+#   10|     r10_3(struct <unnamed> *)                  = CopyValue                    : r10_2
+#   10|     r10_4(int)                                 = Call[getX]                   : func:r10_1, 0:r10_3
+#   10|     mu10_5(unknown)                            = ^CallSideEffect              : ~m?
+#   10|     v10_6(void)                                = ^BufferReadSideEffect[0]     : &:r10_3, ~m?
+#   10|     mu10_7(unknown)                            = ^BufferMayWriteSideEffect[0] : &:r10_3
+#   10|     r10_8(glval<(unnamed class/struct/union)>) = VariableAddress[coords]      : 
+#   10|     r10_9(glval<int>)                          = FieldAddress[x]              : r10_8
+#   10|     mu10_10(int)                               = Store[?]                     : &:r10_9, r10_4
+#   11|     v11_1(void)                                = NoOp                         : 
+#    7|     v7_6(void)                                 = ReturnVoid                   : 
+#    7|     v7_7(void)                                 = AliasedUse                   : ~m?
+#    7|     v7_8(void)                                 = ExitFunction                 : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0
@@ -10529,9 +10571,10 @@ ir.cpp:
 # 1999|     r1999_5(int)         = Load[#temp1999:9]            : &:r1999_4, ~m?
 # 1999|     r1999_6(glval<int>)  = VariableAddress[z]           : 
 # 1999|     mu1999_7(int)        = Store[z]                     : &:r1999_6, r1999_5
-# 2000|     r2000_1(glval<bool>) = VariableAddress[a]           : 
-# 2000|     r2000_2(bool)        = Load[a]                      : &:r2000_1, ~m?
-# 2000|     v2000_3(void)        = ConditionalBranch            : r2000_2
+# 2000|     r2000_1(int)         = Constant[7]                  : 
+# 2000|     r2000_2(glval<bool>) = VariableAddress[a]           : 
+# 2000|     r2000_3(bool)        = Load[a]                      : &:r2000_2, ~m?
+# 2000|     v2000_4(void)        = ConditionalBranch            : r2000_3
 #-----|   False -> Block 12
 #-----|   True -> Block 11
 
@@ -10548,26 +10591,24 @@ ir.cpp:
 #-----|   Goto -> Block 7
 
 # 2000|   Block 10
-# 2000|     r2000_4(glval<unknown>) = VariableAddress[#temp2000:5] : 
-# 2000|     r2000_5(glval<int>)     = Load[#temp2000:5]            : &:r2000_4, ~m?
+# 2000|     r2000_5(glval<unknown>) = VariableAddress[#temp2000:6] : 
+# 2000|     r2000_6(glval<int>)     = Load[#temp2000:6]            : &:r2000_5, ~m?
+# 2000|     mu2000_7(int)           = Store[?]                     : &:r2000_6, r2000_1
 # 2001|     v2001_1(void)           = NoOp                         : 
 # 1996|     v1996_12(void)          = ReturnVoid                   : 
 # 1996|     v1996_13(void)          = AliasedUse                   : ~m?
 # 1996|     v1996_14(void)          = ExitFunction                 : 
 
 # 2000|   Block 11
-# 2000|     r2000_6(glval<int>)     = VariableAddress[x]           : 
-# 2000|     r2000_7(glval<unknown>) = VariableAddress[#temp2000:5] : 
-# 2000|     mu2000_8(glval<int>)    = Store[#temp2000:5]           : &:r2000_7, r2000_6
+# 2000|     r2000_8(glval<int>)     = VariableAddress[x]           : 
+# 2000|     r2000_9(glval<unknown>) = VariableAddress[#temp2000:6] : 
+# 2000|     mu2000_10(glval<int>)   = Store[#temp2000:6]           : &:r2000_9, r2000_8
 #-----|   Goto -> Block 10
 
 # 2000|   Block 12
-# 2000|     r2000_9(int)             = Constant[7]                  : 
-# 2000|     r2000_10(glval<int>)     = VariableAddress[y]           : 
-# 2000|     mu2000_11(int)           = Store[y]                     : &:r2000_10, r2000_9
-# 2000|     r2000_12(glval<int>)     = CopyValue                    : r2000_10
-# 2000|     r2000_13(glval<unknown>) = VariableAddress[#temp2000:5] : 
-# 2000|     mu2000_14(glval<int>)    = Store[#temp2000:5]           : &:r2000_13, r2000_12
+# 2000|     r2000_11(glval<int>)     = VariableAddress[y]           : 
+# 2000|     r2000_12(glval<unknown>) = VariableAddress[#temp2000:6] : 
+# 2000|     mu2000_13(glval<int>)    = Store[#temp2000:6]           : &:r2000_12, r2000_11
 #-----|   Goto -> Block 10
 
 # 2006| void TernaryTestPodObj(bool, TernaryPodObj, TernaryPodObj, TernaryPodObj)
@@ -10649,15 +10690,19 @@ ir.cpp:
 #-----|   Goto -> Block 4
 
 # 2009|   Block 7
-# 2009|     r2009_5(glval<TernaryPodObj>) = VariableAddress[#temp2009:9] : 
-# 2009|     r2009_6(TernaryPodObj)        = Load[#temp2009:9]            : &:r2009_5, ~m?
-# 2009|     mu2009_7(TernaryPodObj)       = Store[#temp2009:9]           : &:r2009_1, r2009_6
-# 2009|     r2009_8(TernaryPodObj)        = Load[#temp2009:9]            : &:r2009_1, ~m?
-# 2009|     r2009_9(glval<TernaryPodObj>) = VariableAddress[z]           : 
-# 2009|     mu2009_10(TernaryPodObj)      = Store[z]                     : &:r2009_9, r2009_8
-# 2010|     r2010_1(glval<bool>)          = VariableAddress[a]           : 
-# 2010|     r2010_2(bool)                 = Load[a]                      : &:r2010_1, ~m?
-# 2010|     v2010_3(void)                 = ConditionalBranch            : r2010_2
+# 2009|     r2009_5(glval<TernaryPodObj>) = VariableAddress[#temp2009:9]  : 
+# 2009|     r2009_6(TernaryPodObj)        = Load[#temp2009:9]             : &:r2009_5, ~m?
+# 2009|     mu2009_7(TernaryPodObj)       = Store[#temp2009:9]            : &:r2009_1, r2009_6
+# 2009|     r2009_8(TernaryPodObj)        = Load[#temp2009:9]             : &:r2009_1, ~m?
+# 2009|     r2009_9(glval<TernaryPodObj>) = VariableAddress[z]            : 
+# 2009|     mu2009_10(TernaryPodObj)      = Store[z]                      : &:r2009_9, r2009_8
+# 2010|     r2010_1(glval<TernaryPodObj>) = VariableAddress[#temp2010:23] : 
+# 2010|     r2010_2(TernaryPodObj)        = Constant[0]                   : 
+# 2010|     mu2010_3(TernaryPodObj)       = Store[#temp2010:23]           : &:r2010_1, r2010_2
+# 2010|     r2010_4(TernaryPodObj)        = Load[#temp2010:23]            : &:r2010_1, ~m?
+# 2010|     r2010_5(glval<bool>)          = VariableAddress[a]            : 
+# 2010|     r2010_6(bool)                 = Load[a]                       : &:r2010_5, ~m?
+# 2010|     v2010_7(void)                 = ConditionalBranch             : r2010_6
 #-----|   False -> Block 12
 #-----|   True -> Block 11
 
@@ -10680,32 +10725,29 @@ ir.cpp:
 #-----|   Goto -> Block 7
 
 # 2010|   Block 10
-# 2010|     r2010_4(glval<TernaryPodObj>) = VariableAddress[#temp2010:9] : 
-# 2010|     r2010_5(TernaryPodObj)        = Load[#temp2010:9]            : &:r2010_4, ~m?
-# 2010|     r2010_6(glval<TernaryPodObj>) = VariableAddress[z]           : 
-# 2010|     mu2010_7(TernaryPodObj)       = Store[z]                     : &:r2010_6, r2010_5
-# 2011|     v2011_1(void)                 = NoOp                         : 
-# 2006|     v2006_12(void)                = ReturnVoid                   : 
-# 2006|     v2006_13(void)                = AliasedUse                   : ~m?
-# 2006|     v2006_14(void)                = ExitFunction                 : 
+# 2010|     r2010_8(glval<TernaryPodObj>)  = VariableAddress[#temp2010:10] : 
+# 2010|     r2010_9(TernaryPodObj)         = Load[#temp2010:10]            : &:r2010_8, ~m?
+# 2010|     r2010_10(glval<TernaryPodObj>) = VariableAddress[z]            : 
+# 2010|     mu2010_11(TernaryPodObj)       = Store[z]                      : &:r2010_10, r2010_9
+# 2010|     r2010_12(glval<TernaryPodObj>) = CopyValue                     : r2010_10
+# 2010|     mu2010_13(TernaryPodObj)       = Store[?]                      : &:r2010_12, r2010_4
+# 2011|     v2011_1(void)                  = NoOp                          : 
+# 2006|     v2006_12(void)                 = ReturnVoid                    : 
+# 2006|     v2006_13(void)                 = AliasedUse                    : ~m?
+# 2006|     v2006_14(void)                 = ExitFunction                  : 
 
 # 2010|   Block 11
-# 2010|     r2010_8(glval<TernaryPodObj>)  = VariableAddress[x]           : 
-# 2010|     r2010_9(TernaryPodObj)         = Load[x]                      : &:r2010_8, ~m?
-# 2010|     r2010_10(glval<TernaryPodObj>) = VariableAddress[#temp2010:9] : 
-# 2010|     mu2010_11(TernaryPodObj)       = Store[#temp2010:9]           : &:r2010_10, r2010_9
+# 2010|     r2010_14(glval<TernaryPodObj>) = VariableAddress[x]            : 
+# 2010|     r2010_15(TernaryPodObj)        = Load[x]                       : &:r2010_14, ~m?
+# 2010|     r2010_16(glval<TernaryPodObj>) = VariableAddress[#temp2010:10] : 
+# 2010|     mu2010_17(TernaryPodObj)       = Store[#temp2010:10]           : &:r2010_16, r2010_15
 #-----|   Goto -> Block 10
 
 # 2010|   Block 12
-# 2010|     r2010_12(glval<TernaryPodObj>) = VariableAddress[#temp2010:21] : 
-# 2010|     r2010_13(TernaryPodObj)        = Constant[0]                   : 
-# 2010|     mu2010_14(TernaryPodObj)       = Store[#temp2010:21]           : &:r2010_12, r2010_13
-# 2010|     r2010_15(TernaryPodObj)        = Load[#temp2010:21]            : &:r2010_12, ~m?
-# 2010|     r2010_16(glval<TernaryPodObj>) = VariableAddress[y]            : 
-# 2010|     mu2010_17(TernaryPodObj)       = Store[y]                      : &:r2010_16, r2010_15
-# 2010|     r2010_18(TernaryPodObj)        = CopyValue                     : r2010_15
-# 2010|     r2010_19(glval<TernaryPodObj>) = VariableAddress[#temp2010:9]  : 
-# 2010|     mu2010_20(TernaryPodObj)       = Store[#temp2010:9]            : &:r2010_19, r2010_18
+# 2010|     r2010_18(glval<TernaryPodObj>) = VariableAddress[y]            : 
+# 2010|     r2010_19(TernaryPodObj)        = Load[y]                       : &:r2010_18, ~m?
+# 2010|     r2010_20(glval<TernaryPodObj>) = VariableAddress[#temp2010:10] : 
+# 2010|     mu2010_21(TernaryPodObj)       = Store[#temp2010:10]           : &:r2010_20, r2010_19
 #-----|   Goto -> Block 10
 
 # 2013| TernaryNonPodObj& TernaryNonPodObj::operator=(TernaryNonPodObj const&)
@@ -10931,46 +10973,46 @@ ir.cpp:
 #-----|   Goto -> Block 7
 
 # 2021|   Block 10
-# 2021|     r2021_6(glval<unknown>)           = VariableAddress[#temp2021:9]    : 
-# 2021|     r2021_7(glval<TernaryNonPodObj>)  = Load[#temp2021:9]               : &:r2021_6, ~m?
-# 2021|     r2021_8(glval<TernaryNonPodObj>)  = Convert                         : r2021_7
-# 2021|     r2021_9(TernaryNonPodObj &)       = CopyValue                       : r2021_8
-# 2021|     r2021_10(TernaryNonPodObj &)      = Call[operator=]                 : func:r2021_2, this:r2021_1, 0:r2021_9
-# 2021|     mu2021_11(unknown)                = ^CallSideEffect                 : ~m?
-# 2021|     v2021_12(void)                    = ^IndirectReadSideEffect[-1]     : &:r2021_1, ~m?
-# 2021|     v2021_13(void)                    = ^BufferReadSideEffect[0]        : &:r2021_9, ~m?
-# 2021|     mu2021_14(TernaryNonPodObj)       = ^IndirectMayWriteSideEffect[-1] : &:r2021_1
-# 2021|     r2021_15(glval<TernaryNonPodObj>) = CopyValue                       : r2021_10
-# 2022|     v2022_1(void)                     = NoOp                            : 
-# 2017|     v2017_12(void)                    = ReturnVoid                      : 
-# 2017|     v2017_13(void)                    = AliasedUse                      : ~m?
-# 2017|     v2017_14(void)                    = ExitFunction                    : 
+# 2021|     r2021_6(glval<unknown>)           = VariableAddress[#temp2021:10]     : 
+# 2021|     r2021_7(glval<TernaryNonPodObj>)  = Load[#temp2021:10]                : &:r2021_6, ~m?
+# 2021|     r2021_8(glval<TernaryNonPodObj>)  = Convert                           : r2021_7
+# 2021|     r2021_9(TernaryNonPodObj &)       = CopyValue                         : r2021_8
+# 2021|     r2021_10(TernaryNonPodObj &)      = Call[operator=]                   : func:r2021_2, this:r2021_1, 0:r2021_9
+# 2021|     mu2021_11(unknown)                = ^CallSideEffect                   : ~m?
+# 2021|     v2021_12(void)                    = ^IndirectReadSideEffect[-1]       : &:r2021_1, ~m?
+# 2021|     v2021_13(void)                    = ^BufferReadSideEffect[0]          : &:r2021_9, ~m?
+# 2021|     mu2021_14(TernaryNonPodObj)       = ^IndirectMayWriteSideEffect[-1]   : &:r2021_1
+# 2021|     r2021_15(glval<TernaryNonPodObj>) = CopyValue                         : r2021_10
+# 2021|     r2021_16(glval<unknown>)          = FunctionAddress[operator=]        : 
+# 2021|     r2021_17(glval<TernaryNonPodObj>) = VariableAddress[#temp2021:23]     : 
+# 2021|     mu2021_18(TernaryNonPodObj)       = Uninitialized[#temp2021:23]       : &:r2021_17
+# 2021|     r2021_19(glval<unknown>)          = FunctionAddress[TernaryNonPodObj] : 
+# 2021|     v2021_20(void)                    = Call[TernaryNonPodObj]            : func:r2021_19, this:r2021_17
+# 2021|     mu2021_21(unknown)                = ^CallSideEffect                   : ~m?
+# 2021|     mu2021_22(TernaryNonPodObj)       = ^IndirectMayWriteSideEffect[-1]   : &:r2021_17
+# 2021|     r2021_23(glval<TernaryNonPodObj>) = Convert                           : r2021_17
+# 2021|     r2021_24(TernaryNonPodObj &)      = CopyValue                         : r2021_23
+# 2021|     r2021_25(TernaryNonPodObj &)      = Call[operator=]                   : func:r2021_16, this:r2021_15, 0:r2021_24
+# 2021|     mu2021_26(unknown)                = ^CallSideEffect                   : ~m?
+# 2021|     v2021_27(void)                    = ^IndirectReadSideEffect[-1]       : &:r2021_15, ~m?
+# 2021|     v2021_28(void)                    = ^BufferReadSideEffect[0]          : &:r2021_24, ~m?
+# 2021|     mu2021_29(TernaryNonPodObj)       = ^IndirectMayWriteSideEffect[-1]   : &:r2021_15
+# 2021|     r2021_30(glval<TernaryNonPodObj>) = CopyValue                         : r2021_25
+# 2022|     v2022_1(void)                     = NoOp                              : 
+# 2017|     v2017_12(void)                    = ReturnVoid                        : 
+# 2017|     v2017_13(void)                    = AliasedUse                        : ~m?
+# 2017|     v2017_14(void)                    = ExitFunction                      : 
 
 # 2021|   Block 11
-# 2021|     r2021_16(glval<TernaryNonPodObj>)  = VariableAddress[x]           : 
-# 2021|     r2021_17(glval<unknown>)           = VariableAddress[#temp2021:9] : 
-# 2021|     mu2021_18(glval<TernaryNonPodObj>) = Store[#temp2021:9]           : &:r2021_17, r2021_16
+# 2021|     r2021_31(glval<TernaryNonPodObj>)  = VariableAddress[x]            : 
+# 2021|     r2021_32(glval<unknown>)           = VariableAddress[#temp2021:10] : 
+# 2021|     mu2021_33(glval<TernaryNonPodObj>) = Store[#temp2021:10]           : &:r2021_32, r2021_31
 #-----|   Goto -> Block 10
 
 # 2021|   Block 12
-# 2021|     r2021_19(glval<TernaryNonPodObj>)  = VariableAddress[y]                : 
-# 2021|     r2021_20(glval<unknown>)           = FunctionAddress[operator=]        : 
-# 2021|     r2021_21(glval<TernaryNonPodObj>)  = VariableAddress[#temp2021:21]     : 
-# 2021|     mu2021_22(TernaryNonPodObj)        = Uninitialized[#temp2021:21]       : &:r2021_21
-# 2021|     r2021_23(glval<unknown>)           = FunctionAddress[TernaryNonPodObj] : 
-# 2021|     v2021_24(void)                     = Call[TernaryNonPodObj]            : func:r2021_23, this:r2021_21
-# 2021|     mu2021_25(unknown)                 = ^CallSideEffect                   : ~m?
-# 2021|     mu2021_26(TernaryNonPodObj)        = ^IndirectMayWriteSideEffect[-1]   : &:r2021_21
-# 2021|     r2021_27(glval<TernaryNonPodObj>)  = Convert                           : r2021_21
-# 2021|     r2021_28(TernaryNonPodObj &)       = CopyValue                         : r2021_27
-# 2021|     r2021_29(TernaryNonPodObj &)       = Call[operator=]                   : func:r2021_20, this:r2021_19, 0:r2021_28
-# 2021|     mu2021_30(unknown)                 = ^CallSideEffect                   : ~m?
-# 2021|     v2021_31(void)                     = ^IndirectReadSideEffect[-1]       : &:r2021_19, ~m?
-# 2021|     v2021_32(void)                     = ^BufferReadSideEffect[0]          : &:r2021_28, ~m?
-# 2021|     mu2021_33(TernaryNonPodObj)        = ^IndirectMayWriteSideEffect[-1]   : &:r2021_19
-# 2021|     r2021_34(glval<TernaryNonPodObj>)  = CopyValue                         : r2021_29
-# 2021|     r2021_35(glval<unknown>)           = VariableAddress[#temp2021:9]      : 
-# 2021|     mu2021_36(glval<TernaryNonPodObj>) = Store[#temp2021:9]                : &:r2021_35, r2021_34
+# 2021|     r2021_34(glval<TernaryNonPodObj>)  = VariableAddress[y]            : 
+# 2021|     r2021_35(glval<unknown>)           = VariableAddress[#temp2021:10] : 
+# 2021|     mu2021_36(glval<TernaryNonPodObj>) = Store[#temp2021:10]           : &:r2021_35, r2021_34
 #-----|   Goto -> Block 10
 
 perf-regression.cpp:

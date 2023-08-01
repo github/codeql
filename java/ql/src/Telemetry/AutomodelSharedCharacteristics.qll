@@ -303,7 +303,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
      * analyzed.
      */
     private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
-      IsSanitizerCharacteristic() { this = "external" }
+      IsSanitizerCharacteristic() { this = "known sanitizer" }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSanitizer(e, _) }
     }

@@ -1997,7 +1997,7 @@ void TernaryTestInt(bool a, int x, int y, int z) {
     z = a ? x : y;
     z = a ? x : 5;
     z = a ? 3 : 5;
-    a ? x : y = 7;
+    (a ? x : y) = 7;
 }
 
 struct TernaryPodObj {
@@ -2007,7 +2007,7 @@ void TernaryTestPodObj(bool a, TernaryPodObj x, TernaryPodObj y, TernaryPodObj z
     z = a ? x : y;
     z = a ? x : TernaryPodObj();
     z = a ? TernaryPodObj() : TernaryPodObj();
-    z = a ? x : y = TernaryPodObj();
+    (z = a ? x : y) = TernaryPodObj();
 }
 
 struct TernaryNonPodObj {
@@ -2018,7 +2018,7 @@ void TernaryTestNonPodObj(bool a, TernaryNonPodObj x, TernaryNonPodObj y, Ternar
     z = a ? x : y;
     z = a ? x : TernaryNonPodObj();
     z = a ? TernaryNonPodObj() : TernaryNonPodObj();
-    z = a ? x : y = TernaryNonPodObj();
+    (z = a ? x : y) = TernaryNonPodObj();
 }
 
 // semmle-extractor-options: -std=c++17 --clang
