@@ -159,8 +159,8 @@ deprecated class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Confi
     exists(DataFlow::MethodCallNode mcn |
       mcn.getTarget() instanceof GinContextSetCookieMethod and
       mcn.getArgument(6) = sink and
-      exists(DataFlow::Node nameArg |
-        NameToGinSetCookieTrackingFlow::flowTo(nameArg) and
+      exists(NameToGinSetCookieTrackingConfiguration cfg, DataFlow::Node nameArg |
+        cfg.hasFlowTo(nameArg) and
         mcn.getArgument(0) = nameArg
       )
     )
@@ -183,6 +183,25 @@ private module BoolToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
 }
 
 module BoolToGinSetCookieTrackingFlow = DataFlow::Global<BoolToGinSetCookieTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `NameToGinSetCookieTrackingConfig` instead.
+ *
+ * A taint-tracking configuration for tracking flow from sensitive names to
+ * `gin-gonic/gin.Context.SetCookie`.
+ */
+deprecated private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configuration {
+  NameToGinSetCookieTrackingConfiguration() { this = "NameToGinSetCookieTrackingConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(DataFlow::MethodCallNode mcn |
+      mcn.getTarget() instanceof GinContextSetCookieMethod and
+      mcn.getArgument(0) = sink
+    )
+  }
+}
 
 /**
  * A taint-tracking configuration for tracking flow from sensitive names to
