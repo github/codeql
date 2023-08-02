@@ -201,7 +201,7 @@ signature module OutputSig<InputSig I> {
 
   /** A data flow node for the instance parameter argument of a constructor call. */
   class MallocNode extends ClosureNode {
-    /** Gets closure construction that is the post-update of this node. */
+    /** Gets the closure construction that is the post-update of this node. */
     I::ClosureExpr getClosureExpr();
   }
 
@@ -912,7 +912,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     |
       post = true
       or
-      // for a constructor call the regulare ExprNode is the post-update for the MallocNode
+      // for a constructor call the regular ExprNode is the post-update for the MallocNode
       post = false and hasConstructorCapture(closure, v)
     )
     or
