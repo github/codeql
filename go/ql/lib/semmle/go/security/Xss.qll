@@ -108,6 +108,15 @@ module SharedXss {
       )
     }
   }
+/**
+ * A http.Error function returns with the ContentType of text/plain, and is not a valid XSS sink
+ */
+  class ErrorSanitizer extends Sanitizer{
+    ErrorSanitizer() {
+    exists(Function f, DataFlow::CallNode call | f = call.getCall().getTarget() | f.hasQualifiedName("net/http", "Error")
+    and call.getArgument(1) = this)
+    }
+  }
 
   /**
    * A regexp replacement involving an HTML meta-character, or a call to an escape
