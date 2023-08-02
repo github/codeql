@@ -16,26 +16,29 @@
 import go
 import AuthCookie
 
-module MergedFlow1 =
+module NetHttpCookieTrackingFlow =
   DataFlow::MergePathGraph<NameToNetHttpCookieTrackingFlow::PathNode,
     BoolToNetHttpCookieTrackingFlow::PathNode, NameToNetHttpCookieTrackingFlow::PathGraph,
     BoolToNetHttpCookieTrackingFlow::PathGraph>;
 
-module MergedFlow2 =
+module GorillaTrackingFlow =
   DataFlow::MergePathGraph3<GorillaCookieStoreSaveTrackingFlow::PathNode,
     GorillaSessionOptionsTrackingFlow::PathNode, BoolToGorillaSessionOptionsTrackingFlow::PathNode,
     GorillaCookieStoreSaveTrackingFlow::PathGraph, GorillaSessionOptionsTrackingFlow::PathGraph,
     BoolToGorillaSessionOptionsTrackingFlow::PathGraph>;
 
 module MergedFlow =
-  DataFlow::MergePathGraph3<MergedFlow1::PathNode, BoolToGinSetCookieTrackingFlow::PathNode,
-    MergedFlow2::PathNode, MergedFlow1::PathGraph, BoolToGinSetCookieTrackingFlow::PathGraph,
-    MergedFlow2::PathGraph>;
+  DataFlow::MergePathGraph3<NetHttpCookieTrackingFlow::PathNode,
+    BoolToGinSetCookieTrackingFlow::PathNode, GorillaTrackingFlow::PathNode,
+    NetHttpCookieTrackingFlow::PathGraph, BoolToGinSetCookieTrackingFlow::PathGraph,
+    GorillaTrackingFlow::PathGraph>;
 
 import MergedFlow::PathGraph
 
 /** Holds if `HttpOnly` of `net/http.SetCookie` is set to `false` or not set (default value is used). */
-predicate isNetHttpCookieFlow(MergedFlow1::PathNode source, MergedFlow1::PathNode sink) {
+predicate isNetHttpCookieFlow(
+  NetHttpCookieTrackingFlow::PathNode source, NetHttpCookieTrackingFlow::PathNode sink
+) {
   exists(
     NameToNetHttpCookieTrackingFlow::PathNode sensitiveName,
     NameToNetHttpCookieTrackingFlow::PathNode setCookieSink
@@ -57,7 +60,9 @@ predicate isNetHttpCookieFlow(MergedFlow1::PathNode source, MergedFlow1::PathNod
  * Holds if there is gorilla cookie store creation to `Save` path and
  * `HttpOnly` is set to `false` or not set (default value is used).
  */
-predicate isGorillaSessionsCookieFlow(MergedFlow2::PathNode source, MergedFlow2::PathNode sink) {
+predicate isGorillaSessionsCookieFlow(
+  GorillaTrackingFlow::PathNode source, GorillaTrackingFlow::PathNode sink
+) {
   exists(
     GorillaCookieStoreSaveTrackingFlow::PathNode cookieStoreCreate,
     GorillaCookieStoreSaveTrackingFlow::PathNode sessionSave
@@ -68,7 +73,7 @@ predicate isGorillaSessionsCookieFlow(MergedFlow2::PathNode source, MergedFlow2:
       source.asPathNode1() = cookieStoreCreate and
       sink.asPathNode1() = sessionSave
       or
-      exists(MergedFlow2::PathNode options, MergedFlow2::PathNode sessionSave2 |
+      exists(GorillaTrackingFlow::PathNode options, GorillaTrackingFlow::PathNode sessionSave2 |
         GorillaSessionOptionsTrackingFlow::flowPath(options.asPathNode2(),
           sessionSave2.asPathNode2()) and
         (
