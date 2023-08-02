@@ -114,6 +114,11 @@ module Configs<DataFlowParameter Lang> {
     predicate isSink(Node sink, FlowState state);
 
     /**
+     * Holds if `sink` is a relevant data flow sink.
+     */
+    default predicate isSink(Node sink) { none() }
+
+    /**
      * Holds if data flow through `node` is prohibited. This completely removes
      * `node` from the data flow graph.
      */
