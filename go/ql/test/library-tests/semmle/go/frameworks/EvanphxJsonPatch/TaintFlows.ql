@@ -13,8 +13,6 @@ module Config implements DataFlow::ConfigSig {
       sink = fn.getACall().getAnArgument()
     )
   }
-
-  int fieldFlowBranchLimit() { result = 1000 }
 }
 
 import TaintFlowTest<Config>
