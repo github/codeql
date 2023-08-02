@@ -25,9 +25,7 @@ abstract class WeakRandomnessSource extends DataFlow::Node { }
  * A node representing a call to a constructor of `java.util.Random`.
  */
 private class JavaRandomSource extends WeakRandomnessSource {
-  JavaRandomSource() {
-    this.asExpr().getType() instanceof TypeRandom and this.asExpr() instanceof ConstructorCall
-  }
+  JavaRandomSource() { this.asExpr().(ClassInstanceExpr).getType() instanceof TypeRandom }
 }
 
 /**
@@ -35,27 +33,23 @@ private class JavaRandomSource extends WeakRandomnessSource {
  */
 private class ApacheRandomStringUtilsMethodAccessSource extends WeakRandomnessSource {
   ApacheRandomStringUtilsMethodAccessSource() {
-    exists(MethodAccess ma | this.asExpr() = ma |
-      ma.getMethod()
-          .hasName([
-              "random", "randomAlphabetic", "randomAlphanumeric", "randomAscii", "randomGraph",
-              "randomNumeric", "randomPrint"
-            ]) and
-      ma.getMethod()
-          .getDeclaringType()
-          .hasQualifiedName("org.apache.commons.lang", "RandomStringUtils")
-    )
+    this.asExpr()
+        .(MethodAccess)
+        .getMethod()
+        .hasQualifiedName("org.apache.commons.lang", "RandomStringUtils",
+          [
+            "random", "randomAlphabetic", "randomAlphanumeric", "randomAscii", "randomGraph",
+            "randomNumeric", "randomPrint"
+          ])
   }
 }
 
 private class ThreadLocalRandomSource extends WeakRandomnessSource {
   ThreadLocalRandomSource() {
-    exists(MethodAccess ma | this.asExpr() = ma |
-      ma.getMethod().hasName("current") and
-      ma.getMethod()
-          .getDeclaringType()
-          .hasQualifiedName("java.util.concurrent", "ThreadLocalRandom")
-    )
+    this.asExpr()
+        .(MethodAccess)
+        .getMethod()
+        .hasQualifiedName("java.util.concurrent", "ThreadLocalRandom", "current")
   }
 }
 
@@ -64,10 +58,7 @@ private class ThreadLocalRandomSource extends WeakRandomnessSource {
  */
 private class MathRandomMethodAccess extends WeakRandomnessSource {
   MathRandomMethodAccess() {
-    exists(MethodAccess ma | this.asExpr() = ma |
-      ma.getMethod().hasName("random") and
-      ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Math")
-    )
+    this.asExpr().(MethodAccess).getMethod().hasQualifiedName("java.lang", "Math", "random")
   }
 }
 
@@ -98,7 +89,7 @@ abstract class WeakRandomnessSink extends DataFlow::Node { }
  */
 private class CookieSink extends WeakRandomnessSink {
   CookieSink() {
-    this.asExpr().getType() instanceof TypeCookie and
+    this.getType() instanceof TypeCookie and
     exists(MethodAccess ma | ma.getMethod().hasName("addCookie") |
       ma.getArgument(0) = this.asExpr()
     )
@@ -142,14 +133,13 @@ module WeakRandomnessConfig implements DataFlow::ConfigSig {
     exists(MethodAccess ma, Method m |
       n1.asExpr() = ma.getQualifier() and
       ma.getMethod() = m and
-      m.getDeclaringType().getAnAncestor() instanceof TypeRandom and
-      (
-        m.hasName(["nextInt", "nextLong", "nextFloat", "nextDouble", "nextBoolean", "nextGaussian"]) and
-        n2.asExpr() = ma
-        or
-        m.hasName("nextBytes") and
-        n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getArgument(0)
-      )
+      m.getDeclaringType().getAnAncestor() instanceof TypeRandom
+    |
+      m.hasName(["nextInt", "nextLong", "nextFloat", "nextDouble", "nextBoolean", "nextGaussian"]) and
+      n2.asExpr() = ma
+      or
+      m.hasName("nextBytes") and
+      n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getArgument(0)
     )
     or
     covertsBytesToString(n1, n2)
