@@ -151,7 +151,7 @@ deprecated class ConversionWithoutBoundsCheckConfig extends TaintTracking::Confi
 }
 
 /** Flow state for ConversionWithoutBoundsCheckConfig. */
-newtype MyFlowState =
+newtype IntegerConversionFlowState =
   /** Keep track of info about the source and potential sinks. */
   TFlowstate(boolean sinkIsSigned, int sourceBitSize, int sinkBitSize) {
     sinkIsSigned in [true, false] and
@@ -159,10 +159,10 @@ newtype MyFlowState =
   }
 
 /** Gets the bit size of the source. */
-int getSourceBitSize(MyFlowState state) { state = TFlowstate(_, result, _) }
+int getSourceBitSize(IntegerConversionFlowState state) { state = TFlowstate(_, result, _) }
 
 private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConfigSig {
-  class FlowState = MyFlowState;
+  class FlowState = IntegerConversionFlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     exists(
