@@ -723,17 +723,32 @@ cfg.swift:
 #  143|             getResult(): [BooleanLiteralExpr] true
 #  141|         getLabel(0): [CaseLabelItem] =~ ...
 #  141|           getPattern(): [ExprPattern] =~ ...
-#  141|             getSubExpr(): [IntegerLiteralExpr] 0
+#  141|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#  141|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#  141|               getArgument(0): [Argument] : 0
+#  141|                 getExpr(): [IntegerLiteralExpr] 0
+#  141|               getArgument(1): [Argument] : $match
+#  141|                 getExpr(): [DeclRefExpr] $match
 #  141|         getLabel(1): [CaseLabelItem] =~ ...
 #  141|           getPattern(): [ExprPattern] =~ ...
-#  141|             getSubExpr(): [IntegerLiteralExpr] 1
+#  141|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#  141|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#  141|               getArgument(0): [Argument] : 1
+#  141|                 getExpr(): [IntegerLiteralExpr] 1
+#  141|               getArgument(1): [Argument] : $match
+#  141|                 getExpr(): [DeclRefExpr] $match
 #  144|       getCase(1): [CaseStmt] case ...
 #  145|         getBody(): [BraceStmt] { ... }
 #  145|           getElement(0): [ReturnStmt] return ...
 #  145|             getResult(): [BooleanLiteralExpr] true
 #  144|         getLabel(0): [CaseLabelItem] =~ ... where ...
 #  144|           getPattern(): [ExprPattern] =~ ...
-#  144|             getSubExpr(): [DeclRefExpr] x
+#  144|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#  144|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#  144|               getArgument(0): [Argument] : x
+#  144|                 getExpr(): [DeclRefExpr] x
+#  144|               getArgument(1): [Argument] : $match
+#  144|                 getExpr(): [DeclRefExpr] $match
 #  144|           getGuard(): [BinaryExpr] ... .&&(_:_:) ...
 #  144|             getFunction(): [MethodLookupExpr] .&&(_:_:)
 #  144|               getBase(): [TypeExpr] Bool.Type
@@ -819,6 +834,12 @@ cfg.swift:
 #  158|       getElse(): [BraceStmt] { ... }
 #  159|         getElement(0): [ReturnStmt] return ...
 #  159|           getResult(): [BooleanLiteralExpr] false
+#  141| [ConcreteVarDecl] $match
+#  141|     Type = Int
+#  141| [ConcreteVarDecl] $match
+#  141|     Type = Int
+#  144| [ConcreteVarDecl] $match
+#  144|     Type = Int
 #  156| [ConcreteVarDecl] x
 #  156|     Type = (Int)
 #  163| [NamedFunction] testDefer(x:)
@@ -5652,10 +5673,20 @@ patterns.swift:
 #   16|           getElement(0): [StringLiteralExpr] expr
 #   16|         getLabel(0): [CaseLabelItem] =~ ...
 #   16|           getPattern(): [ExprPattern] =~ ...
-#   16|             getSubExpr(): [SequenceExpr] SequenceExpr
-#   16|               getElement(0): [IntegerLiteralExpr] 1
-#   16|               getElement(1): [OverloadedDeclRefExpr] OverloadedDeclRefExpr
-#   16|               getElement(2): [IntegerLiteralExpr] 2
+#   16|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#   16|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#   16|               getArgument(0): [Argument] : ... .+(_:_:) ...
+#   16|                 getExpr(): [BinaryExpr] ... .+(_:_:) ...
+#   16|                   getFunction(): [MethodLookupExpr] .+(_:_:)
+#   16|                     getBase(): [TypeExpr] Int.Type
+#   16|                       getTypeRepr(): [TypeRepr] Int
+#   16|                     getMethodRef(): [DeclRefExpr] +(_:_:)
+#   16|                   getArgument(0): [Argument] : 1
+#   16|                     getExpr(): [IntegerLiteralExpr] 1
+#   16|                   getArgument(1): [Argument] : 2
+#   16|                     getExpr(): [IntegerLiteralExpr] 2
+#   16|               getArgument(1): [Argument] : $match
+#   16|                 getExpr(): [DeclRefExpr] $match
 #   17|       getCase(1): [CaseStmt] case ...
 #   17|         getBody(): [BraceStmt] { ... }
 #   17|           getElement(0): [StringLiteralExpr] 
@@ -5758,6 +5789,8 @@ patterns.swift:
 #   12|     Type = Int
 #   12| [ConcreteVarDecl] yy
 #   12|     Type = Int
+#   16| [ConcreteVarDecl] $match
+#   16|     Type = Int
 #   28| [ConcreteVarDecl] i
 #   28|     Type = Int
 #   28| [ConcreteVarDecl] s
@@ -5814,7 +5847,12 @@ patterns.swift:
 #   58|         getElement(0): [ConditionElement] (...) = ... 
 #   58|           getPattern(): [TuplePattern] (...)
 #   58|             getElement(0): [ExprPattern] =~ ...
-#   58|               getSubExpr(): [DeclRefExpr] a
+#   58|               getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#   58|                 getFunction(): [DeclRefExpr] ~=(_:_:)
+#   58|                 getArgument(0): [Argument] : a
+#   58|                   getExpr(): [DeclRefExpr] a
+#   58|                 getArgument(1): [Argument] : $match
+#   58|                   getExpr(): [DeclRefExpr] $match
 #   58|             getElement(1): [NamedPattern] b
 #   58|             getElement(1).getFullyUnresolved(): [BindingPattern] let ...
 #   58|             getElement(2): [NamedPattern] c
@@ -5835,7 +5873,12 @@ patterns.swift:
 #   61|           getElement(0): [StringLiteralExpr] equals c
 #   61|         getLabel(0): [CaseLabelItem] =~ ...
 #   61|           getPattern(): [ExprPattern] =~ ...
-#   61|             getSubExpr(): [DeclRefExpr] c
+#   61|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#   61|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#   61|               getArgument(0): [Argument] : c
+#   61|                 getExpr(): [DeclRefExpr] c
+#   61|               getArgument(1): [Argument] : $match
+#   61|                 getExpr(): [DeclRefExpr] $match
 #   62|       getCase(1): [CaseStmt] case ...
 #   62|         getBody(): [BraceStmt] { ... }
 #   62|           getElement(0): [StringLiteralExpr] binds c
@@ -5851,8 +5894,12 @@ patterns.swift:
 #   57|     Type = Int
 #   57| [ConcreteVarDecl] c
 #   57|     Type = Int
+#   58| [ConcreteVarDecl] $match
+#   58|     Type = Int
 #   58| [ConcreteVarDecl] b
 #   58|     Type = Int
+#   61| [ConcreteVarDecl] $match
+#   61|     Type = Int
 #   62| [ConcreteVarDecl] c
 #   62|     Type = Int
 #   67| [NamedFunction] source()
@@ -6766,7 +6813,12 @@ statements.swift:
 #   56|           getElement(1): [FallthroughStmt] fallthrough
 #   54|         getLabel(0): [CaseLabelItem] =~ ...
 #   54|           getPattern(): [ExprPattern] =~ ...
-#   54|             getSubExpr(): [IntegerLiteralExpr] 1
+#   54|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#   54|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#   54|               getArgument(0): [Argument] : 1
+#   54|                 getExpr(): [IntegerLiteralExpr] 1
+#   54|               getArgument(1): [Argument] : $match
+#   54|                 getExpr(): [DeclRefExpr] $match
 #   57|       getCase(1): [CaseStmt] case ...
 #   58|         getBody(): [BraceStmt] { ... }
 #   58|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
@@ -6783,10 +6835,20 @@ statements.swift:
 #   59|           getElement(1): [BreakStmt] break
 #   57|         getLabel(0): [CaseLabelItem] =~ ...
 #   57|           getPattern(): [ExprPattern] =~ ...
-#   57|             getSubExpr(): [IntegerLiteralExpr] 5
+#   57|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#   57|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#   57|               getArgument(0): [Argument] : 5
+#   57|                 getExpr(): [IntegerLiteralExpr] 5
+#   57|               getArgument(1): [Argument] : $match
+#   57|                 getExpr(): [DeclRefExpr] $match
 #   57|         getLabel(1): [CaseLabelItem] =~ ...
 #   57|           getPattern(): [ExprPattern] =~ ...
-#   57|             getSubExpr(): [IntegerLiteralExpr] 10
+#   57|             getSubExpr(): [BinaryExpr] ... ~=(_:_:) ...
+#   57|               getFunction(): [DeclRefExpr] ~=(_:_:)
+#   57|               getArgument(0): [Argument] : 10
+#   57|                 getExpr(): [IntegerLiteralExpr] 10
+#   57|               getArgument(1): [Argument] : $match
+#   57|                 getExpr(): [DeclRefExpr] $match
 #   60|       getCase(2): [CaseStmt] case ...
 #   61|         getBody(): [BraceStmt] { ... }
 #   61|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
@@ -6802,6 +6864,12 @@ statements.swift:
 #   61|               getExpr(): [DefaultArgumentExpr] default terminator
 #   60|         getLabel(0): [CaseLabelItem] _
 #   60|           getPattern(): [AnyPattern] _
+#   54| [ConcreteVarDecl] $match
+#   54|     Type = Int
+#   57| [ConcreteVarDecl] $match
+#   57|     Type = Int
+#   57| [ConcreteVarDecl] $match
+#   57|     Type = Int
 #   64| [TopLevelCodeDecl] { ... }
 #   64|   getBody(): [BraceStmt] { ... }
 #   64|     getElement(0): [PatternBindingDecl] var ... = ...
