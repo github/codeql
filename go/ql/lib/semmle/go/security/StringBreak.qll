@@ -35,7 +35,7 @@ module StringBreak {
   }
 
   private module Config implements DataFlow::StateConfigSig {
-    /** The type of quote being tracked by this configuration. */
+    /** The flow state that we track is the type of quote used. */
     class FlowState = Quote;
 
     predicate isSource(DataFlow::Node source, FlowState state) {
