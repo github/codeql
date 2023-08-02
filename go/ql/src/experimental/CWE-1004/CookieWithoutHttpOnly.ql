@@ -78,8 +78,8 @@ predicate isGorillaSessionsCookieFlow(
           sessionSave2.asPathNode2()) and
         (
           not BoolToGorillaSessionOptionsTrackingFlow::flowTo(sink.getNode()) and
-          source = options and
           sink = sessionSave2 and
+          source = options and
           sessionSave.getNode() = sessionSave2.getNode()
           or
           BoolToGorillaSessionOptionsTrackingFlow::flowPath(source.asPathNode3(), sink.asPathNode3()) and
