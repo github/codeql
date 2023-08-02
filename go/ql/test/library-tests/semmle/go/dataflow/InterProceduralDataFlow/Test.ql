@@ -1,5 +1,4 @@
 import go
-import TestUtilities.InlineFlowTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node nd) {
