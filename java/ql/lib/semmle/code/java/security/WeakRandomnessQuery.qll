@@ -1,11 +1,11 @@
 /** Provides classes and predicates for reasoning about weak randomness. */
 
 import java
-import semmle.code.java.frameworks.Servlets
-import semmle.code.java.security.SensitiveActions
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.security.RandomQuery
+private import semmle.code.java.frameworks.Servlets
+private import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.security.RandomQuery
 
 /**
  * The `java.util.Random` class.
