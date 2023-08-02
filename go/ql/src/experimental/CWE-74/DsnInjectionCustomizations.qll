@@ -32,8 +32,11 @@ private module DsnInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(Function f | f.hasQualifiedName("database/sql", "Open") |
-      sink = f.getACall().getArgument(1)
+    exists(DataFlow::CallNode c |
+      c.getTarget().hasQualifiedName("database/sql", "Open") and
+      c.getArgument(0).getStringValue() = "mysql"
+    |
+      sink = c.getArgument(1)
     )
   }
 
