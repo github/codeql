@@ -149,9 +149,10 @@ predicate golangSpecificParamArgFilter(
   // Interface methods calls may be passed strictly to that exact method's model receiver:
   arg.getPosition() != -1
   or
-  exists(Function callTarget | callTarget = call.getNode().(DataFlow::CallNode).getTarget() |
-    not isInterfaceMethod(callTarget)
-    or
-    callTarget = p.getCallable().asSummarizedCallable().asFunction()
-  )
+  p instanceof DataFlow::SummarizedParameterNode
+  or
+  not isInterfaceMethod(call.getNode()
+        .(DataFlow::CallNode)
+        .getACalleeWithoutVirtualDispatch()
+        .asFunction())
 }
