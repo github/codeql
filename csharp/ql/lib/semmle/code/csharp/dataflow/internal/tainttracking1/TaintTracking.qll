@@ -24,6 +24,7 @@ private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> imp
     Config::allowImplicitRead(node, c)
     or
     (
+      Config::isSink(node) or
       Config::isSink(node, _) or
       Config::isAdditionalFlowStep(node, _) or
       Config::isAdditionalFlowStep(node, _, _, _)
