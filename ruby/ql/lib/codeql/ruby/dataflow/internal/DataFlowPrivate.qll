@@ -12,7 +12,7 @@ private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.frameworks.data.ModelsAsData
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
@@ -1232,7 +1232,7 @@ class DataFlowType extends TDataFlowType {
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) { result = TTodoDataFlowType() and exists(n) }
+DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { none() }
@@ -1303,8 +1303,6 @@ predicate neverSkipInPathGraph(Node n) {
 }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

@@ -10,11 +10,11 @@ private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c, pos)
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.(ParameterNodeImpl).isParameterOf(c, pos)
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -804,7 +804,7 @@ class DataFlowType extends TDataFlowType {
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) {
+DataFlowType getNodeType(Node n) {
   any() // return the singleton DataFlowType until we support type pruning for Swift
 }
 
@@ -857,17 +857,7 @@ class CastNode extends Node {
   CastNode() { none() }
 }
 
-/**
- * Holds if `n` should never be skipped over in the `PathGraph` and in path
- * explanations.
- */
-predicate neverSkipInPathGraph(Node n) { none() }
-
 class DataFlowExpr = Expr;
-
-class DataFlowParameter = ParamDecl;
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

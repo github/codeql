@@ -92,7 +92,7 @@ private DataFlowCallable getRestrictedInterfaceTarget(DataFlow::CallNode call) {
 /**
  * Gets a function that might be called by `call`.
  */
-DataFlowCallable viableCallable(CallExpr ma) {
+DataFlowCallable viableCallable(DataFlowCall ma) {
   exists(DataFlow::CallNode call | call.asExpr() = ma |
     if isConcreteInterfaceCall(call, _, _)
     then result = getConcreteTarget(call)

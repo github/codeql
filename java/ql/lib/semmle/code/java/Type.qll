@@ -1261,6 +1261,7 @@ predicate notHaveIntersection(RefType t1, RefType t2) {
  * Holds if there is a common (reflexive, transitive) subtype of the erased
  * types `t1` and `t2`.
  */
+pragma[nomagic]
 predicate erasedHaveIntersection(RefType t1, RefType t2) {
   exists(SrcRefType commonSub |
     commonSub.getASourceSupertype*() = t1 and commonSub.getASourceSupertype*() = t2

@@ -9,7 +9,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
  * Gets a function that might be called by `call`.
  */
 cached
-Function viableCallable(CallInstruction call) {
+DataFlowCallable viableCallable(DataFlowCall call) {
   DataFlowImplCommon::forceCachingInSameStage() and
   result = call.getStaticCallTarget()
   or
@@ -235,7 +235,7 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(CallInstruction call, Function f) {
+predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) {
   mayBenefitFromCallContext(call, f, _)
 }
 
@@ -259,7 +259,7 @@ private predicate mayBenefitFromCallContext(
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
   result = viableCallable(call) and
   exists(int i, Function f |
     mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and

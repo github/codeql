@@ -1416,6 +1416,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
  * This is a temporary hook to support technical debt in the Go language; do not use.
  */
 pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, DataFlow::Node p, ArgumentNode arg) {
+predicate golangSpecificParamArgFilter(
+  DataFlowCall call, DataFlow::ParameterNode p, ArgumentNode arg
+) {
   any()
 }

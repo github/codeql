@@ -1,6 +1,5 @@
 private import java
 private import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
-private import semmle.code.java.dataflow.internal.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.RequestForgeryConfig
 private import semmle.code.java.security.CommandLineQuery
