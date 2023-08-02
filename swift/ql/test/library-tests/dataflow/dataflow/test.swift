@@ -1,5 +1,5 @@
 func source() -> Int { return 0; }
-func sink(arg: Int) {}
+func sink<T>(arg: T) {}
 
 func intraprocedural_with_local_flow() -> Void {
     var t2: Int
@@ -627,7 +627,7 @@ func testNestedKeyPath() {
 func testArrayKeyPath() {
     let array = [source()]
     let f = \[Int].[0]
-    sink(arg: array[keyPath: f]) // $ MISSING: flow=628
+    sink(arg: array[keyPath: f]) // $ flow=628
 }
 
 struct S2_Optional {
@@ -661,4 +661,35 @@ func testSwap() {
     swap(&x, &y)
     sink(arg: x) // $ SPURIOUS: flow=659
     sink(arg: y) // $ flow=659
+}
+
+func testArray() {
+    var arr1 = [1,2,3]
+    sink(arg: arr1[0])
+    arr1[1] = source()
+    sink(arg: arr1[0]) // $ flow=669
+    sink(arg: arr1)
+
+    var arr2 = [source()]
+    sink(arg: arr2[0]) // $ flow=673
+
+    var matrix = [[source()]]
+    sink(arg: matrix[0])
+    sink(arg: matrix[0][0]) // $ flow=676
+
+    var matrix2 = [[1]]
+    matrix2[0][0] = source()
+    sink(arg: matrix2[0][0]) // $ flow=681
+
+    var arr3 = [1]
+    var arr4 = arr2 + arr3
+    sink(arg: arr3[0])
+    sink(arg: arr4[0]) // $ MISSING: flow=673
+
+    var arr5 = Array(repeating: source(), count: 2)
+    sink(arg: arr5[0]) // $ MISSING: flow=689
+
+    var arr6 = [1,2,3]
+    arr6.insert(source(), at: 2)
+    sink(arg: arr6[0]) // $ flow=693
 }
