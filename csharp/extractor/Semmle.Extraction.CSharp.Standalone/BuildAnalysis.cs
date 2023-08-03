@@ -352,7 +352,7 @@ namespace Semmle.BuildAnalyser
             foreach (var valueMatch in regex.EnumerateMatches(line))
             {
                 // We can't get the group from the ValueMatch, so doing it manually:
-                if (GetGroup(line, valueMatch, groupPrefix) == value)
+                if (GetGroup(line, valueMatch, groupPrefix) == value.ToLowerInvariant())
                 {
                     return true;
                 }
@@ -486,13 +486,13 @@ namespace Semmle.BuildAnalyser
         public void Dispose() =>
             packageDirectory?.Dispose();
 
-        [GeneratedRegex("<PackageReference .*Include=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("<PackageReference\\s+Include=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex PackageReference();
 
-        [GeneratedRegex("<FrameworkReference .*Include=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("<FrameworkReference\\s+Include=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex FrameworkReference();
 
-        [GeneratedRegex("<Project .*Sdk=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("<Project\\s+Sdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex ProjectSdk();
 
     }
