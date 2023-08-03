@@ -25,9 +25,7 @@ private module CfgInput implements CfgShared::InputSig<Location> {
   private import Splitting as Splitting
   private import codeql.ruby.CFG as Cfg
 
-  class ControlFlowTreeBase = Impl::AstNode;
-
-  class AstNode = ControlFlowTreeBase;
+  class AstNode = Impl::AstNode;
 
   class Completion = Comp::Completion;
 

@@ -7,17 +7,14 @@ private import codeql.util.Location
 
 /** Provides the language-specific input specification. */
 signature module InputSig<LocationSig Location> {
-  /** The base class for `ControlFlowTree`. */
-  class ControlFlowTreeBase {
+  /** An AST node. */
+  class AstNode {
     /** Gets a textual representation of this element. */
     string toString();
 
     /** Gets the location of this element. */
     Location getLocation();
   }
-
-  /** An AST node. */
-  class AstNode extends ControlFlowTreeBase;
 
   /** A control-flow completion. */
   class Completion {
@@ -127,10 +124,10 @@ signature module InputSig<LocationSig Location> {
 module Make<LocationSig Location, InputSig<Location> Input> {
   private import Input
 
-  final private class ControlFlowTreeBaseFinal = ControlFlowTreeBase;
+  final private class AstNodeFinal = AstNode;
 
   /** An element with associated control flow. */
-  abstract class ControlFlowTree extends ControlFlowTreeBaseFinal {
+  abstract class ControlFlowTree extends AstNodeFinal {
     /** Holds if `first` is the first element executed within this element. */
     pragma[nomagic]
     abstract predicate first(AstNode first);
@@ -808,8 +805,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     private predicate splitsBlockContains(AstNode start, AstNode n) =
       fastTC(intraSplitsSucc/2)(start, n)
-
-    final private class AstNodeFinal = AstNode;
 
     /**
      * A block of control flow elements where the set of splits is guaranteed
