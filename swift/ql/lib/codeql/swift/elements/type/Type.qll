@@ -15,7 +15,7 @@ class Type extends Generated::Type {
     // replace anything that looks like a full name `a.b.c` with just the
     // short name `c`, by removing the `a.` and `b.` parts. Note that this
     // has to be robust for tuple type names such as `(a, b.c)`.
-    result = super.getName().regexpReplaceAll("[^(),. ]+\\.(?!\\.)", "")
+    result = super.getName().regexpReplaceAll("[^(),. ]++\\.(?!\\.)", "")
   }
 
   /**
