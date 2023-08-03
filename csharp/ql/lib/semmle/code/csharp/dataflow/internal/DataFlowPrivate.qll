@@ -22,11 +22,13 @@ private import semmle.code.cil.internal.SsaImpl as CilSsaImpl
 private import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallableImpl() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) {
+  result = n.(NodeImpl).getEnclosingCallableImpl()
+}
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c, pos)
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.(ParameterNodeImpl).isParameterOf(c, pos)
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -1739,7 +1741,7 @@ private PropertyContent getResultContent() {
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
  */
-predicate storeStep(Node node1, Content c, Node node2) {
+predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(StoreStepConfiguration x, ExprNode node, boolean postUpdate |
     hasNodePath(x, node1, node) and
     if postUpdate = true then node = node2.(PostUpdateNode).getPreUpdateNode() else node = node2
@@ -1840,7 +1842,7 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
 /**
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
-predicate readStep(Node node1, Content c, Node node2) {
+predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(ReadStepConfiguration x |
     hasNodePath(x, node1, node2) and
     fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
@@ -1901,7 +1903,7 @@ predicate readStep(Node node1, Content c, Node node2) {
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   fieldOrPropertyStore(_, c, _, n.asExpr(), true)
   or
   fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
@@ -1949,10 +1951,7 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
 class DataFlowType = Gvn::GvnType;
 
 /** Gets the type of `n` used for type pruning. */
-pragma[inline]
-Gvn::GvnType getNodeType(NodeImpl n) {
-  pragma[only_bind_into](result) = pragma[only_bind_out](n).getDataFlowType()
-}
+Gvn::GvnType getNodeType(Node n) { result = n.(NodeImpl).getDataFlowType() }
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
@@ -2140,12 +2139,6 @@ class CastNode extends Node {
   }
 }
 
-/**
- * Holds if `n` should never be skipped over in the `PathGraph` and in path
- * explanations.
- */
-predicate neverSkipInPathGraph(Node n) { none() }
-
 class DataFlowExpr = DotNet::Expr;
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
@@ -2188,8 +2181,8 @@ predicate forceHighPrecision(Content c) { c instanceof ElementContent }
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
-predicate lambdaCreation(ExprNode creation, LambdaCallKind kind, DataFlowCallable c) {
-  exists(Expr e | e = creation.getExpr() |
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  exists(Expr e | e = creation.asExpr() |
     c.asCallable() =
       [
         e.(AnonymousFunctionExpr), e.(CallableAccess).getTarget().getUnboundDeclaration(),

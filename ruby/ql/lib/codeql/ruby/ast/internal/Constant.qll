@@ -214,7 +214,7 @@ private module Propagation {
         any(StringComponentCfgNode c |
           isString(c, result)
           or
-          result = c.getNode().(StringComponentImpl).getValue()
+          result = c.getAstNode().(StringComponentImpl).getValue()
         )
     }
 

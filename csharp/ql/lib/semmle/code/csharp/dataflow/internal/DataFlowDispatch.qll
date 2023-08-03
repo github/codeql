@@ -154,17 +154,17 @@ private module DispatchImpl {
    * call is a delegate call, or if the qualifier accesses a parameter of
    * the enclosing callable `c` (including the implicit `this` parameter).
    */
-  predicate mayBenefitFromCallContext(NonDelegateDataFlowCall call, DataFlowCallable c) {
+  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
     c = call.getEnclosingCallable() and
-    call.getDispatchCall().mayBenefitFromCallContext()
+    call.(NonDelegateDataFlowCall).getDispatchCall().mayBenefitFromCallContext()
   }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
-  DataFlowCallable viableImplInCallContext(NonDelegateDataFlowCall call, DataFlowCall ctx) {
-    exists(DispatchCall dc | dc = call.getDispatchCall() |
+  DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+    exists(DispatchCall dc | dc = call.(NonDelegateDataFlowCall).getDispatchCall() |
       result.getUnderlyingCallable() =
         getCallableForDataFlow(dc.getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall)
                 .getDispatchCall()).getUnboundDeclaration())

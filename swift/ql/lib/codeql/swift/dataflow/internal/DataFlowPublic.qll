@@ -137,7 +137,7 @@ ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(DataFlowParameter p) { result.getParameter() = p }
+ParameterNode parameterNode(ParamDecl p) { result.getParameter() = p }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -218,6 +218,11 @@ module Content {
     }
 
     override string toString() { result = this.getSignature() }
+  }
+
+  /** An element of an array at an unknown index */
+  class ArrayContent extends Content, TArrayContent {
+    override string toString() { result = "Array element" }
   }
 }
 

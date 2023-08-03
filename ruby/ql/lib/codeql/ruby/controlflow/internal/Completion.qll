@@ -8,7 +8,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.Control
 private import codeql.ruby.controlflow.ControlFlowGraph
-private import ControlFlowGraphImpl
+private import ControlFlowGraphImpl as CfgImpl
 private import NonReturning
 private import SuccessorTypes
 
@@ -53,7 +53,7 @@ private predicate nestedEnsureCompletion(TCompletion outer, int nestLevel) {
     or
     outer = TExitCompletion()
   ) and
-  nestLevel = any(Trees::BodyStmtTree t).getNestLevel()
+  nestLevel = any(CfgImpl::Trees::BodyStmtTree t).getNestLevel()
 }
 
 pragma[noinline]
@@ -72,7 +72,7 @@ private predicate completionIsValidForStmt(AstNode n, Completion c) {
 }
 
 private AstNode getARescuableBodyChild() {
-  exists(Trees::BodyStmtTree bst | result = bst.getBodyChild(_, true) |
+  exists(CfgImpl::Trees::BodyStmtTree bst | result = bst.getBodyChild(_, true) |
     exists(bst.getARescue())
     or
     exists(bst.getEnsure())
@@ -247,7 +247,7 @@ private predicate inMatchingContext(AstNode n) {
   or
   n = any(ReferencePattern p).getExpr()
   or
-  n.(Trees::DefaultValueParameterTree).hasDefaultValue()
+  n.(CfgImpl::Trees::DefaultValueParameterTree).hasDefaultValue()
 }
 
 /**

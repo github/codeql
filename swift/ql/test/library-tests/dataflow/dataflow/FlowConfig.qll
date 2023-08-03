@@ -5,6 +5,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.ExternalFlow
+import codeql.swift.frameworks.Frameworks
 
 module TestConfiguration implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {

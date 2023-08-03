@@ -150,3 +150,19 @@ Foo.secondArrayElementIsSink([tainted, "safe", "safe"])
 Foo.secondArrayElementIsSink(["safe", tainted, "safe"]) # $ hasValueFlow=tainted
 Foo.secondArrayElementIsSink(["safe", "safe", tainted])
 Foo.secondArrayElementIsSink([tainted] * 10) # $ MISSING: hasValueFlow=tainted
+
+FuzzyLib.fuzzyCall(tainted) # $ hasValueFlow=tainted
+FuzzyLib.foo.bar.fuzzyCall(tainted) # $ hasValueFlow=tainted
+FuzzyLib.foo[0].fuzzyCall(tainted) # $ hasValueFlow=tainted
+FuzzyLib.foo do |x|
+  x.fuzzyCall(tainted) # $ hasValueFlow=tainted
+  x.otherCall(tainted)
+end
+class FuzzySub < FuzzyLib::Foo
+  def blah
+    self.fuzzyCall(source("tainted")) # $ hasValueFlow=tainted
+  end
+  def self.blah
+    self.fuzzyCall(source("tainted")) # $ hasValueFlow=tainted
+  end
+end

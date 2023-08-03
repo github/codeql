@@ -264,7 +264,7 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getNode() =
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getAstNode() =
       ap.getVariableAccess()
   )
 }
@@ -1416,6 +1416,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
  * This is a temporary hook to support technical debt in the Go language; do not use.
  */
 pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, DataFlow::Node p, ArgumentNode arg) {
+predicate golangSpecificParamArgFilter(
+  DataFlowCall call, DataFlow::ParameterNode p, ArgumentNode arg
+) {
   any()
 }

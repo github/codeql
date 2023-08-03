@@ -6,6 +6,7 @@ dbscheme: swift.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
+  codeql/dataflow: ${workspace}
   codeql/regex: ${workspace}
   codeql/mad: ${workspace}
   codeql/ssa: ${workspace}
