@@ -4,7 +4,7 @@ class FooController < ActionController::Base
     # (i.e a remote flow source)
     pass = params[:pass]
 
-    # BAD: user input is not sanetized
+    # BAD: user input is not sanitized
     ldap = Net::LDAP.new(
         host: 'ldap.example.com',
         port: 636,
