@@ -340,6 +340,52 @@ namespace Semmle.BuildAnalyser
             return match.Slice(quoteIndex1 + 1, quoteIndex2).ToString().ToLowerInvariant();
         }
 
+        private static bool IsGroupMatch(ReadOnlySpan<char> line, Regex regex, string groupPrefix, string value)
+        {
+            foreach (var valueMatch in regex.EnumerateMatches(line))
+            {
+                // We can't get the group from the ValueMatch, so doing it manually:
+                if (GetGroup(line, valueMatch, groupPrefix) == value)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the given project uses the ASP.NET components.
+        /// The following heuristic is used to decide, if ASP.NET is used:
+        /// If any file in the project contains either of (this will most like be a .csproj file)
+        ///     <Project Sdk="Microsoft.NET.Sdk.Web" ...
+        ///     <FrameworkReference Include="Microsoft.AspNetCore.App" ...
+        /// </summary>
+        private bool UseAspNetDlls()
+        {
+            var allFiles = GetFiles("*.*");
+            foreach (var file in allFiles)
+            {
+                try
+                {
+                    using var sr = new StreamReader(file);
+                    ReadOnlySpan<char> line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web") ||
+                            IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    progressMonitor.FailedToReadFile(file, ex);
+                }
+            }
+            return false;
+        }
+
         private void DownloadMissingPackages(IEnumerable<string> restoreTargets)
         {
             var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName).Select(d => Path.GetFileName(d).ToLowerInvariant()).ToHashSet();
