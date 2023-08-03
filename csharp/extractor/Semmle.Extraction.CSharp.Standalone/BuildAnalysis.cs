@@ -63,12 +63,19 @@ namespace Semmle.BuildAnalyser
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
 
-            // Find DLLs in the .Net Framework
+            // Find DLLs in the .Net / Asp.Net Framework
             if (options.ScanNetFrameworkDlls)
             {
-                var runtimeLocation = new Runtime(dotnet).GetRuntime(options.UseSelfContainedDotnet);
-                progressMonitor.Log(Util.Logging.Severity.Info, $"Runtime location selected: {runtimeLocation}");
+                var runtime = new Runtime(dotnet);
+                var runtimeLocation = runtime.GetRuntime(options.UseSelfContainedDotnet);
+                progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
                 dllDirNames.Add(runtimeLocation);
+
+                if (UseAspNetDlls() && runtime.GetAspRuntime() is string aspRuntime)
+                {
+                    progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspRuntime}");
+                    dllDirNames.Add(aspRuntime);
+                }
             }
 
             if (options.UseMscorlib)

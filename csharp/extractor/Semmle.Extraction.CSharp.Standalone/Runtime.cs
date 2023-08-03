@@ -159,12 +159,6 @@ namespace Semmle.Extraction.CSharp.Standalone
                 return netCoreVersion.FullPath;
             }
 
-            // Location of the newest ASP.NET Core Runtime.
-            if (newestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
-            {
-                return aspNetCoreVersion.FullPath;
-            }
-
             if (DesktopRuntimes.Any())
             {
                 return DesktopRuntimes.First();
@@ -172,6 +166,18 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             // A bad choice if it's the self-contained runtime distributed in codeql dist.
             return ExecutingRuntime;
+        }
+
+        public string? GetAspRuntime()
+        {
+            var newestRuntimes = GetNewestRuntimes();
+
+            // Location of the newest ASP.NET Core Runtime.
+            if (newestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
+            {
+                return aspNetCoreVersion.FullPath;
+            }
+            return null;
         }
     }
 }
