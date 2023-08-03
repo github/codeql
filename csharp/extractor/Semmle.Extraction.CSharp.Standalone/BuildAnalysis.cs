@@ -323,6 +323,23 @@ namespace Semmle.BuildAnalyser
             }
         }
 
+        private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix)
+        {
+            var match = input.Slice(valueMatch.Index, valueMatch.Length);
+            var includeIndex = match.IndexOf(groupPrefix, StringComparison.InvariantCultureIgnoreCase);
+            if (includeIndex == -1)
+            {
+                return string.Empty;
+            }
+
+            match = match.Slice(includeIndex + groupPrefix.Length + 1);
+
+            var quoteIndex1 = match.IndexOf("\"");
+            var quoteIndex2 = match.Slice(quoteIndex1 + 1).IndexOf("\"");
+
+            return match.Slice(quoteIndex1 + 1, quoteIndex2).ToString().ToLowerInvariant();
+        }
+
         private void DownloadMissingPackages(IEnumerable<string> restoreTargets)
         {
             var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName).Select(d => Path.GetFileName(d).ToLowerInvariant()).ToHashSet();
@@ -356,20 +373,8 @@ namespace Semmle.BuildAnalyser
                         foreach (var valueMatch in PackageReference().EnumerateMatches(line))
                         {
                             // We can't get the group from the ValueMatch, so doing it manually:
-                            var match = line.Slice(valueMatch.Index, valueMatch.Length);
-                            var includeIndex = match.IndexOf("Include", StringComparison.InvariantCultureIgnoreCase);
-                            if (includeIndex == -1)
-                            {
-                                continue;
-                            }
-
-                            match = match.Slice(includeIndex + "Include".Length + 1);
-
-                            var quoteIndex1 = match.IndexOf("\"");
-                            var quoteIndex2 = match.Slice(quoteIndex1 + 1).IndexOf("\"");
-
-                            var packageName = match.Slice(quoteIndex1 + 1, quoteIndex2).ToString().ToLowerInvariant();
-                            if (!alreadyDownloadedPackages.Contains(packageName))
+                            var packageName = GetGroup(line, valueMatch, "Include");
+                            if (!string.IsNullOrEmpty(packageName) && !alreadyDownloadedPackages.Contains(packageName))
                             {
                                 notYetDownloadedPackages.Add(packageName);
                             }
@@ -379,7 +384,6 @@ namespace Semmle.BuildAnalyser
                 catch (Exception ex)
                 {
                     progressMonitor.FailedToReadFile(file, ex);
-                    continue;
                 }
             }
 
