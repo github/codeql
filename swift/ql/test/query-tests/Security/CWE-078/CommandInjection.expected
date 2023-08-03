@@ -31,11 +31,9 @@ edges
 | CommandInjection.swift:79:40:79:94 | call to String.init(contentsOf:) | CommandInjection.swift:79:40:79:94 | call to String.init(contentsOf:) [some:0] |
 | CommandInjection.swift:79:40:79:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:79:8:79:12 | let ...? [some:0] |
 | CommandInjection.swift:94:2:94:2 | [post] task3 [executableURL] | CommandInjection.swift:94:2:94:2 | [post] task3 |
-| CommandInjection.swift:94:24:94:56 | call to URL.init(string:) | CommandInjection.swift:94:24:94:56 | call to URL.init(string:) [some:0] |
-| CommandInjection.swift:94:24:94:56 | call to URL.init(string:) | CommandInjection.swift:94:24:94:57 | ...! |
 | CommandInjection.swift:94:24:94:56 | call to URL.init(string:) [some:0] | CommandInjection.swift:94:24:94:57 | ...! |
 | CommandInjection.swift:94:24:94:57 | ...! | CommandInjection.swift:94:2:94:2 | [post] task3 [executableURL] |
-| CommandInjection.swift:94:36:94:36 | userControlledString | CommandInjection.swift:94:24:94:56 | call to URL.init(string:) |
+| CommandInjection.swift:94:36:94:36 | userControlledString | CommandInjection.swift:94:24:94:56 | call to URL.init(string:) [some:0] |
 | CommandInjection.swift:95:2:95:2 | [post] task3 [arguments] | CommandInjection.swift:95:2:95:2 | [post] task3 |
 | CommandInjection.swift:95:20:95:48 | [...] | CommandInjection.swift:95:2:95:2 | [post] task3 [arguments] |
 | CommandInjection.swift:95:28:95:28 | userControlledString | CommandInjection.swift:95:20:95:48 | [...] |
@@ -62,10 +60,8 @@ edges
 | CommandInjection.swift:123:75:123:75 | userControlledString | CommandInjection.swift:123:67:123:95 | [...] |
 | CommandInjection.swift:123:75:123:75 | userControlledString | CommandInjection.swift:126:35:126:35 | userControlledString |
 | CommandInjection.swift:123:75:123:75 | userControlledString | CommandInjection.swift:127:70:127:70 | userControlledString |
-| CommandInjection.swift:126:23:126:55 | call to URL.init(string:) | CommandInjection.swift:126:23:126:55 | call to URL.init(string:) [some:0] |
-| CommandInjection.swift:126:23:126:55 | call to URL.init(string:) | CommandInjection.swift:126:23:126:56 | ...! |
 | CommandInjection.swift:126:23:126:55 | call to URL.init(string:) [some:0] | CommandInjection.swift:126:23:126:56 | ...! |
-| CommandInjection.swift:126:35:126:35 | userControlledString | CommandInjection.swift:126:23:126:55 | call to URL.init(string:) |
+| CommandInjection.swift:126:35:126:35 | userControlledString | CommandInjection.swift:126:23:126:55 | call to URL.init(string:) [some:0] |
 | CommandInjection.swift:127:70:127:70 | userControlledString | CommandInjection.swift:127:62:127:90 | [...] |
 nodes
 | CommandInjection.swift:38:22:38:33 | command | semmle.label | command |
@@ -100,7 +96,6 @@ nodes
 | CommandInjection.swift:79:40:79:94 | call to String.init(contentsOf:) [some:0] | semmle.label | call to String.init(contentsOf:) [some:0] |
 | CommandInjection.swift:94:2:94:2 | [post] task3 | semmle.label | [post] task3 |
 | CommandInjection.swift:94:2:94:2 | [post] task3 [executableURL] | semmle.label | [post] task3 [executableURL] |
-| CommandInjection.swift:94:24:94:56 | call to URL.init(string:) | semmle.label | call to URL.init(string:) |
 | CommandInjection.swift:94:24:94:56 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
 | CommandInjection.swift:94:24:94:57 | ...! | semmle.label | ...! |
 | CommandInjection.swift:94:36:94:36 | userControlledString | semmle.label | userControlledString |
@@ -129,7 +124,6 @@ nodes
 | CommandInjection.swift:122:42:122:42 | userControlledString | semmle.label | userControlledString |
 | CommandInjection.swift:123:67:123:95 | [...] | semmle.label | [...] |
 | CommandInjection.swift:123:75:123:75 | userControlledString | semmle.label | userControlledString |
-| CommandInjection.swift:126:23:126:55 | call to URL.init(string:) | semmle.label | call to URL.init(string:) |
 | CommandInjection.swift:126:23:126:55 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
 | CommandInjection.swift:126:23:126:56 | ...! | semmle.label | ...! |
 | CommandInjection.swift:126:35:126:35 | userControlledString | semmle.label | userControlledString |

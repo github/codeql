@@ -85,8 +85,8 @@ private class UrlSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";URL;true;init(string:);(String);;Argument[0];ReturnValue;taint",
-        ";URL;true;init(string:relativeTo:);(String,URL?);;Argument[0..1];ReturnValue;taint",
+        ";URL;true;init(string:);(String);;Argument[0];ReturnValue.OptionalSome;taint",
+        ";URL;true;init(string:relativeTo:);(String,URL?);;Argument[0..1];ReturnValue.OptionalSome;taint",
         ";URL;true;init(fileURLWithPath:);;;Argument[0];ReturnValue;taint",
         ";URL;true;init(fileURLWithPath:isDirectory:);;;Argument[0];ReturnValue;taint",
         ";URL;true;init(fileURLWithPath:relativeTo:);;;Argument[0..1];ReturnValue;taint",
@@ -95,8 +95,8 @@ private class UrlSummaries extends SummaryModelCsv {
         ";URL;true;init(fileURLWithFileSystemRepresentation:isDirectory:relativeTo:);;;Argument[0];ReturnValue;taint",
         ";URL;true;init(fileURLWithFileSystemRepresentation:isDirectory:relativeTo:);;;Argument[2];ReturnValue;taint",
         ";URL;true;init(fileReferenceLiteralResourceName:);;;Argument[0];ReturnValue;taint",
-        ";URL;true;init(_:);;;Argument[0];ReturnValue;taint",
-        ";URL;true;init(_:isDirectory:);;;Argument[0];ReturnValue;taint",
+        ";URL;true;init(_:);;;Argument[0];ReturnValue.OptionalSome;taint",
+        ";URL;true;init(_:isDirectory:);;;Argument[0];ReturnValue.OptionalSome;taint",
         ";URL;true;init(resolvingBookmarkData:options:relativeTo:bookmarkDataIsStale:);;;Argument[0];ReturnValue;taint",
         ";URL;true;init(resolvingBookmarkData:options:relativeTo:bookmarkDataIsStale:);;;Argument[2];ReturnValue;taint",
         ";URL;true;init(resolvingAliasFileAt:options:);;;Argument[0];ReturnValue;taint",

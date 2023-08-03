@@ -10,6 +10,6 @@ private import codeql.swift.dataflow.ExternalFlow
  */
 private class NsUrlSummaries extends SummaryModelCsv {
   override predicate row(string row) {
-    row = ";NSURL;true;init(string:);(String);;Argument[0];ReturnValue;taint"
+    row = ";NSURL;true;init(string:);(String);;Argument[0];ReturnValue.OptionalSome;taint"
   }
 }
