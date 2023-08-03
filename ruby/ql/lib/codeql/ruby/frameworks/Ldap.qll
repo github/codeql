@@ -32,17 +32,10 @@ module NetLdap {
     NetLdapConnection() { this in [ldap().getAnInstantiation(), ldap().getAMethodCall(["open"])] }
 
     predicate usesSsl() {
-      this.getKeywordArgument("encryption").getConstantValue().isStringlikeValue("simple_tls")
-      or
-      this.getAMethodCall("encryption")
-          .getArgument(0)
-          .getConstantValue()
-          .isStringlikeValue(":simple_tls")
-      or
-      this.getAMethodCall("encryption")
-          .getKeywordArgument("method")
-          .getConstantValue()
-          .isStringlikeValue("simple_tls")
+      [
+        this.getKeywordArgument("encryption"), this.getAMethodCall("encryption").getArgument(0),
+        this.getAMethodCall("encryption").getKeywordArgument("method")
+      ].getConstantValue().isStringlikeValue("simple_tls")
     }
 
     DataFlow::Node getAuthValue(string arg) {
