@@ -336,6 +336,19 @@ edges
 | test.swift:693:5:693:5 | [post] arr6 [Array element] | test.swift:694:15:694:15 | arr6 [Array element] |
 | test.swift:693:17:693:24 | call to source() | test.swift:693:5:693:5 | [post] arr6 [Array element] |
 | test.swift:694:15:694:15 | arr6 [Array element] | test.swift:694:15:694:21 | ...[...] |
+| test.swift:696:16:696:25 | [...] [Array element] | test.swift:697:15:697:15 | arr7 [Array element] |
+| test.swift:696:17:696:24 | call to source() | test.swift:696:16:696:25 | [...] [Array element] |
+| test.swift:697:15:697:15 | arr7 [Array element] | test.swift:697:15:697:34 | call to randomElement() [some:0] |
+| test.swift:697:15:697:34 | call to randomElement() [some:0] | test.swift:697:15:697:35 | ...! |
+| test.swift:703:5:703:5 | [post] set1 [Set element] | test.swift:704:15:704:15 | set1 [Set element] |
+| test.swift:703:17:703:24 | call to source() | test.swift:703:5:703:5 | [post] set1 [Set element] |
+| test.swift:704:15:704:15 | set1 [Set element] | test.swift:704:15:704:34 | call to randomElement() [some:0] |
+| test.swift:704:15:704:34 | call to randomElement() [some:0] | test.swift:704:15:704:35 | ...! |
+| test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Set element] | test.swift:707:15:707:15 | set2 [Set element] |
+| test.swift:706:20:706:29 | [...] [Array element] | test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Set element] |
+| test.swift:706:21:706:28 | call to source() | test.swift:706:20:706:29 | [...] [Array element] |
+| test.swift:707:15:707:15 | set2 [Set element] | test.swift:707:15:707:34 | call to randomElement() [some:0] |
+| test.swift:707:15:707:34 | call to randomElement() [some:0] | test.swift:707:15:707:35 | ...! |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
@@ -706,6 +719,22 @@ nodes
 | test.swift:693:17:693:24 | call to source() | semmle.label | call to source() |
 | test.swift:694:15:694:15 | arr6 [Array element] | semmle.label | arr6 [Array element] |
 | test.swift:694:15:694:21 | ...[...] | semmle.label | ...[...] |
+| test.swift:696:16:696:25 | [...] [Array element] | semmle.label | [...] [Array element] |
+| test.swift:696:17:696:24 | call to source() | semmle.label | call to source() |
+| test.swift:697:15:697:15 | arr7 [Array element] | semmle.label | arr7 [Array element] |
+| test.swift:697:15:697:34 | call to randomElement() [some:0] | semmle.label | call to randomElement() [some:0] |
+| test.swift:697:15:697:35 | ...! | semmle.label | ...! |
+| test.swift:703:5:703:5 | [post] set1 [Set element] | semmle.label | [post] set1 [Set element] |
+| test.swift:703:17:703:24 | call to source() | semmle.label | call to source() |
+| test.swift:704:15:704:15 | set1 [Set element] | semmle.label | set1 [Set element] |
+| test.swift:704:15:704:34 | call to randomElement() [some:0] | semmle.label | call to randomElement() [some:0] |
+| test.swift:704:15:704:35 | ...! | semmle.label | ...! |
+| test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Set element] | semmle.label | call to Set<Element>.init(_:) [Set element] |
+| test.swift:706:20:706:29 | [...] [Array element] | semmle.label | [...] [Array element] |
+| test.swift:706:21:706:28 | call to source() | semmle.label | call to source() |
+| test.swift:707:15:707:15 | set2 [Set element] | semmle.label | set2 [Set element] |
+| test.swift:707:15:707:34 | call to randomElement() [some:0] | semmle.label | call to randomElement() [some:0] |
+| test.swift:707:15:707:35 | ...! | semmle.label | ...! |
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -835,3 +864,6 @@ subpaths
 | test.swift:678:15:678:26 | ...[...] | test.swift:676:20:676:27 | call to source() | test.swift:678:15:678:26 | ...[...] | result |
 | test.swift:682:15:682:27 | ...[...] | test.swift:681:21:681:28 | call to source() | test.swift:682:15:682:27 | ...[...] | result |
 | test.swift:694:15:694:21 | ...[...] | test.swift:693:17:693:24 | call to source() | test.swift:694:15:694:21 | ...[...] | result |
+| test.swift:697:15:697:35 | ...! | test.swift:696:17:696:24 | call to source() | test.swift:697:15:697:35 | ...! | result |
+| test.swift:704:15:704:35 | ...! | test.swift:703:17:703:24 | call to source() | test.swift:704:15:704:35 | ...! | result |
+| test.swift:707:15:707:35 | ...! | test.swift:706:21:706:28 | call to source() | test.swift:707:15:707:35 | ...! | result |

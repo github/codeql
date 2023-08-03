@@ -798,6 +798,9 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     subscript.getBase().getType() instanceof ArrayType and
     c.isSingleton(any(Content::ArrayContent ac))
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
