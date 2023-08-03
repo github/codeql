@@ -31,7 +31,7 @@ module NetLdap {
   private class NetLdapConnection extends DataFlow::CallNode {
     NetLdapConnection() { this in [ldap().getAnInstantiation(), ldap().getAMethodCall(["open"])] }
 
-    predicate useSsl() {
+    predicate usesSsl() {
       this.getKeywordArgument("encryption").getConstantValue().isStringlikeValue("simple_tls")
       or
       this.getAMethodCall("encryption")
@@ -84,6 +84,6 @@ module NetLdap {
       result = l.getAMethodCall("auth").getArgument(1)
     }
 
-    override predicate useSsl() { l.useSsl() }
+    override predicate usesSsl() { l.usesSsl() }
   }
 }

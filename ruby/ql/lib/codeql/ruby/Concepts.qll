@@ -1220,7 +1220,7 @@ class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
   }
 
   /** Holds if the binding process use SSL. */
-  predicate useSsl() { super.useSsl() }
+  predicate usesSsl() { super.usesSsl() }
 }
 
 /** Provides classes for modeling LDAP bind-related APIs. */
@@ -1239,6 +1239,6 @@ module LdapBind {
     abstract DataFlow::Node getPassword();
 
     /** Holds if the binding process use SSL. */
-    abstract predicate useSsl();
+    abstract predicate usesSsl();
   }
 }
