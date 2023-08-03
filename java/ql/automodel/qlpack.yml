@@ -1,0 +1,7 @@
+name: codeql/java-automodel-queries
+version: 0.0.1
+dependencies:
+  codeql/java-all: ${workspace}
+extractor: java
+tests: test
+warnOnImplicitThis: true
