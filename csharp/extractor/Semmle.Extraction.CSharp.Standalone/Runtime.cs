@@ -140,33 +140,38 @@ namespace Semmle.Extraction.CSharp.Standalone
             }
         }
 
-        private IEnumerable<string> GetRuntimes()
+        /// <summary>
+        /// Gets the .NET runtime location to use for extraction.
+        /// </summary>
+        public string GetRuntime(bool useSelfContained)
         {
+            if (useSelfContained)
+            {
+                return ExecutingRuntime;
+            }
+
             // Gets the newest version of the installed runtimes.
             var newestRuntimes = GetNewestRuntimes();
 
             // Location of the newest .NET Core Runtime.
             if (newestRuntimes.TryGetValue(netCoreApp, out var netCoreVersion))
             {
-                yield return netCoreVersion.FullPath;
+                return netCoreVersion.FullPath;
             }
 
             // Location of the newest ASP.NET Core Runtime.
             if (newestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
             {
-                yield return aspNetCoreVersion.FullPath;
+                return aspNetCoreVersion.FullPath;
             }
 
-            foreach (var r in DesktopRuntimes)
-                yield return r;
+            if (DesktopRuntimes.Any())
+            {
+                return DesktopRuntimes.First();
+            }
 
             // A bad choice if it's the self-contained runtime distributed in codeql dist.
-            yield return ExecutingRuntime;
+            return ExecutingRuntime;
         }
-
-        /// <summary>
-        /// Gets the .NET runtime location to use for extraction
-        /// </summary>
-        public string GetRuntime(bool useSelfContained) => useSelfContained ? ExecutingRuntime : GetRuntimes().First();
     }
 }
