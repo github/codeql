@@ -64,12 +64,11 @@ module NetLdap {
     NetLdapBind() { this = l.getAMethodCall("bind") }
 
     override DataFlow::Node getHost() {
-      (
-        result = l.getKeywordArgument("encryption")
-        or
-        result = l.getAMethodCall("encryption").getArgument(0)
-      ) and
-      result.getConstantValue().isStringlikeValue(":simple_tls")
+      result =
+        [
+          l.getKeywordArgument("host"), l.getAMethodCall("host").getArgument(0),
+          l.getAMethodCall("host").getKeywordArgument("method")
+        ]
     }
 
     override DataFlow::Node getPassword() {
