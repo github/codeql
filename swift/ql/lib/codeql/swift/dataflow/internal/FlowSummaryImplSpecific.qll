@@ -110,6 +110,11 @@ private string getContentSpecific(ContentSet cs) {
     result = "Field[" + c.getField().getName() + "]"
   )
   or
+  exists(Content::EnumContent c |
+    cs.isSingleton(c) and
+    result = "EnumElement[" +  c.getSignature() + "]"
+  )
+  or
   exists(Content::ArrayContent c |
     cs.isSingleton(c) and
     result = "ArrayElement"
@@ -129,6 +134,15 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
     sc = TReturnSummaryComponent(rk) and
     not rk = getReturnValueKind() and
     result = "ReturnValue" + "[" + rk + "]"
+  )
+  or
+  exists(ContentSet c |
+    sc = TWithoutContentSummaryComponent(c) and
+    result = "WithoutContent" + c.toString()
+  ) or
+  exists(ContentSet c |
+    sc = TWithContentSummaryComponent(c) and
+    result = "WithContent" + c.toString()
   )
 }
 
