@@ -210,19 +210,15 @@ namespace Semmle.BuildAnalyser
         /// Store that a particular reference file is used.
         /// </summary>
         /// <param name="reference">The filename of the reference.</param>
-        private void UseReference(string reference)
-        {
+        private void UseReference(string reference) =>
             usedReferences[reference] = true;
-        }
 
         /// <summary>
         /// Store that a particular source file is used (by a project file).
         /// </summary>
         /// <param name="sourceFile">The source file.</param>
-        private void UseSource(FileInfo sourceFile)
-        {
+        private void UseSource(FileInfo sourceFile) =>
             sources[sourceFile.FullName] = sourceFile.Exists;
-        }
 
         /// <summary>
         /// The list of resolved reference files.
@@ -256,10 +252,8 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="id">The assembly ID.</param>
         /// <param name="projectFile">The project file making the reference.</param>
-        private void UnresolvedReference(string id, string projectFile)
-        {
+        private void UnresolvedReference(string id, string projectFile) =>
             unresolvedReferences[id] = projectFile;
-        }
 
         private readonly TemporaryDirectory packageDirectory;
 
@@ -318,10 +312,8 @@ namespace Semmle.BuildAnalyser
 
         }
 
-        private bool Restore(string target, string? pathToNugetConfig = null)
-        {
-            return dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName, pathToNugetConfig);
-        }
+        private bool Restore(string target, string? pathToNugetConfig = null) =>
+            dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName, pathToNugetConfig);
 
         private void Restore(IEnumerable<string> targets, string? pathToNugetConfig = null)
         {
@@ -434,12 +426,17 @@ namespace Semmle.BuildAnalyser
             });
         }
 
-        public void Dispose()
-        {
+        public void Dispose() =>
             packageDirectory?.Dispose();
-        }
 
         [GeneratedRegex("<PackageReference .*Include=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex PackageReference();
+
+        [GeneratedRegex("<FrameworkReference .*Include=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex FrameworkReference();
+
+        [GeneratedRegex("<Project .*Sdk=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex ProjectSdk();
+
     }
 }

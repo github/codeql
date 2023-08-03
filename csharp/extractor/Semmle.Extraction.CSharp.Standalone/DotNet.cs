@@ -10,7 +10,7 @@ namespace Semmle.BuildAnalyser
         bool RestoreToDirectory(string project, string directory, string? pathToNugetConfig = null);
         bool New(string folder);
         bool AddPackage(string folder, string package);
-        public IList<string> GetListedRuntimes();
+        IList<string> GetListedRuntimes();
     }
 
     /// <summary>
