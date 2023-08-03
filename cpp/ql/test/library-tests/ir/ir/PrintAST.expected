@@ -15463,6 +15463,79 @@ ir.cpp:
 # 2021|           Type = [Struct] TernaryNonPodObj
 # 2021|           ValueCategory = lvalue
 # 2022|     getStmt(4): [ReturnStmt] return ...
+# 2024| [TopLevelFunction] void CommaTestHelper(unsigned int)
+# 2024|   <params>: 
+# 2024|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2024|         Type = [IntType] unsigned int
+# 2026| [TopLevelFunction] unsigned int CommaTest(unsigned int)
+# 2026|   <params>: 
+# 2026|     getParameter(0): [Parameter] x
+# 2026|         Type = [IntType] unsigned int
+# 2026|   getEntryPoint(): [BlockStmt] { ... }
+# 2027|     getStmt(0): [DeclStmt] declaration
+# 2027|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2027|           Type = [IntType] unsigned int
+# 2028|     getStmt(1): [ExprStmt] ExprStmt
+# 2028|       getExpr(): [AssignExpr] ... = ...
+# 2028|           Type = [IntType] unsigned int
+# 2028|           ValueCategory = lvalue
+# 2028|         getLValue(): [VariableAccess] y
+# 2028|             Type = [IntType] unsigned int
+# 2028|             ValueCategory = lvalue
+# 2028|         getRValue(): [ConditionalExpr] ... ? ... : ...
+# 2028|             Type = [IntType] unsigned int
+# 2028|             ValueCategory = prvalue
+# 2028|           getCondition(): [LTExpr] ... < ...
+# 2028|               Type = [BoolType] bool
+# 2028|               ValueCategory = prvalue
+# 2028|             getLesserOperand(): [VariableAccess] x
+# 2028|                 Type = [IntType] unsigned int
+# 2028|                 ValueCategory = prvalue(load)
+# 2028|             getGreaterOperand(): [Literal] 100
+# 2028|                 Type = [IntType] int
+# 2028|                 Value = [Literal] 100
+# 2028|                 ValueCategory = prvalue
+# 2028|             getGreaterOperand().getFullyConverted(): [CStyleCast] (unsigned int)...
+# 2028|                 Conversion = [IntegralConversion] integral conversion
+# 2028|                 Type = [IntType] unsigned int
+# 2028|                 Value = [CStyleCast] 100
+# 2028|                 ValueCategory = prvalue
+# 2029|           getThen(): [CommaExpr] ... , ...
+# 2029|               Type = [IntType] unsigned int
+# 2029|               ValueCategory = prvalue
+# 2029|             getLeftOperand(): [FunctionCall] call to CommaTestHelper
+# 2029|                 Type = [VoidType] void
+# 2029|                 ValueCategory = prvalue
+# 2029|               getArgument(0): [VariableAccess] x
+# 2029|                   Type = [IntType] unsigned int
+# 2029|                   ValueCategory = prvalue(load)
+# 2029|             getRightOperand(): [VariableAccess] x
+# 2029|                 Type = [IntType] unsigned int
+# 2029|                 ValueCategory = prvalue(load)
+# 2030|           getElse(): [CommaExpr] ... , ...
+# 2030|               Type = [IntType] int
+# 2030|               ValueCategory = prvalue
+# 2030|             getLeftOperand(): [FunctionCall] call to CommaTestHelper
+# 2030|                 Type = [VoidType] void
+# 2030|                 ValueCategory = prvalue
+# 2030|               getArgument(0): [VariableAccess] x
+# 2030|                   Type = [IntType] unsigned int
+# 2030|                   ValueCategory = prvalue(load)
+# 2030|             getRightOperand(): [Literal] 10
+# 2030|                 Type = [IntType] int
+# 2030|                 Value = [Literal] 10
+# 2030|                 ValueCategory = prvalue
+# 2029|           getThen().getFullyConverted(): [ParenthesisExpr] (...)
+# 2029|               Type = [IntType] unsigned int
+# 2029|               ValueCategory = prvalue
+# 2030|           getElse().getFullyConverted(): [CStyleCast] (unsigned int)...
+# 2030|               Conversion = [IntegralConversion] integral conversion
+# 2030|               Type = [IntType] unsigned int
+# 2030|               ValueCategory = prvalue
+# 2030|             getExpr(): [ParenthesisExpr] (...)
+# 2030|                 Type = [IntType] int
+# 2030|                 ValueCategory = prvalue
+# 2031|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
