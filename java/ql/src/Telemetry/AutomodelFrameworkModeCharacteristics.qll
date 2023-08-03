@@ -14,26 +14,74 @@ private import semmle.code.java.Expr as Expr
 private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
+private import AutomodelJavaUtil as AutomodelJavaUtil
+private import AutomodelSharedGetCallable as AutomodelSharedGetCallable
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
-
-/**
- * A meta data extractor. Any Java extraction mode needs to implement exactly
- * one instance of this class.
- */
-abstract class MetadataExtractor extends string {
-  bindingset[this]
-  MetadataExtractor() { any() }
-
-  abstract predicate hasMetadata(
-    DataFlow::ParameterNode e, string package, string type, boolean subtypes, string name,
-    string signature, int input
-  );
-}
 
 newtype JavaRelatedLocationType =
   MethodDoc() or
   ClassDoc()
+
+newtype TFrameworkModeEndpoint =
+  TExplicitParameter(Parameter p) or
+  TQualifier(Callable c)
+
+/**
+ * A framework mode endpoint.
+ */
+abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
+  /**
+   * Returns the parameter index of the endpoint.
+   */
+  abstract int getIndex();
+
+  /**
+   * Returns the name of the parameter of the endpoint.
+   */
+  abstract string getParamName();
+
+  /**
+   * Returns the callable that contains the endpoint.
+   */
+  abstract Callable getEnclosingCallable();
+
+  abstract Top asTop();
+
+  string toString() { result = this.asTop().toString() }
+
+  Location getLocation() { result = this.asTop().getLocation() }
+}
+
+class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParameter {
+  Parameter param;
+
+  ExplicitParameterEndpoint() { this = TExplicitParameter(param) and param.fromSource() }
+
+  override int getIndex() { result = param.getPosition() }
+
+  override string getParamName() { result = param.getName() }
+
+  override Callable getEnclosingCallable() { result = param.getCallable() }
+
+  override Top asTop() { result = param }
+}
+
+class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
+  Callable callable;
+
+  QualifierEndpoint() {
+    this = TQualifier(callable) and not callable.isStatic() and callable.fromSource()
+  }
+
+  override int getIndex() { result = -1 }
+
+  override string getParamName() { result = "this" }
+
+  override Callable getEnclosingCallable() { result = callable }
+
+  override Top asTop() { result = callable }
+}
 
 /**
  * A candidates implementation for framework mode.
@@ -45,7 +93,7 @@ newtype JavaRelatedLocationType =
  */
 module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
-  class Endpoint = DataFlow::ParameterNode;
+  class Endpoint = FrameworkModeEndpoint;
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
 
@@ -58,78 +106,60 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) { none() }
 
-  RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
+  RelatedLocation asLocation(Endpoint e) { result = e.asTop() }
 
-  predicate isKnownKind(string kind, string humanReadableKind, EndpointType type) {
-    kind = "read-file" and
-    humanReadableKind = "read file" and
-    type instanceof AutomodelEndpointTypes::TaintedPathSinkType
-    or
-    kind = "create-file" and
-    humanReadableKind = "create file" and
-    type instanceof AutomodelEndpointTypes::TaintedPathSinkType
-    or
-    kind = "sql" and
-    humanReadableKind = "mad modeled sql" and
-    type instanceof AutomodelEndpointTypes::SqlSinkType
-    or
-    kind = "open-url" and
-    humanReadableKind = "open url" and
-    type instanceof AutomodelEndpointTypes::RequestForgerySinkType
-    or
-    kind = "jdbc-url" and
-    humanReadableKind = "jdbc url" and
-    type instanceof AutomodelEndpointTypes::RequestForgerySinkType
-    or
-    kind = "command-injection" and
-    humanReadableKind = "command injection" and
-    type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
-  }
+  predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
-  predicate isSink(Endpoint e, string kind) {
+  predicate isSink(Endpoint e, string kind, string provenance) {
     exists(string package, string type, string name, string signature, string ext, string input |
       sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, _)
+      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
     )
   }
 
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
       sinkSpec(e, package, type, name, signature, _, _) and
-      ExternalFlow::neutralModel(package, type, name, [signature, ""], _, _)
+      ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
     )
   }
 
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    FrameworkCandidatesImpl::getCallable(e).hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(getCallable(e)) and
+    FrameworkModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
     ext = "" and
-    exists(int paramIdx | e.isParameterOf(_, paramIdx) |
-      if paramIdx = -1 then input = "Argument[this]" else input = "Argument[" + paramIdx + "]"
-    )
+    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex())
   }
 
   /**
-   * Returns the related location for the given endpoint.
+   * Gets the related location for the given endpoint.
    *
    * Related locations can be JavaDoc comments of the class or the method.
    */
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
     type = MethodDoc() and
-    result = FrameworkCandidatesImpl::getCallable(e).(Documentable).getJavadoc()
+    result = FrameworkModeGetCallable::getCallable(e).(Documentable).getJavadoc()
     or
     type = ClassDoc() and
-    result = FrameworkCandidatesImpl::getCallable(e).getDeclaringType().(Documentable).getJavadoc()
+    result = FrameworkModeGetCallable::getCallable(e).getDeclaringType().(Documentable).getJavadoc()
   }
+}
+
+private class JavaCallable = Callable;
+
+private module FrameworkModeGetCallable implements AutomodelSharedGetCallable::GetCallableSig {
+  class Callable = JavaCallable;
+
+  class Endpoint = FrameworkCandidatesImpl::Endpoint;
 
   /**
    * Returns the callable that contains the given endpoint.
    *
    * Each Java mode should implement this predicate.
    */
-  additional Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
+  Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
 }
 
 module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<FrameworkCandidatesImpl>;
@@ -145,38 +175,20 @@ class Endpoint = FrameworkCandidatesImpl::Endpoint;
 /**
  * A MetadataExtractor that extracts metadata for framework mode.
  */
-class FrameworkModeMetadataExtractor extends MetadataExtractor {
+class FrameworkModeMetadataExtractor extends string {
   FrameworkModeMetadataExtractor() { this = "FrameworkModeMetadataExtractor" }
 
-  /**
-   * By convention, the subtypes property of the MaD declaration should only be
-   * true when there _can_ exist any subtypes with a different implementation.
-   *
-   * It would technically be ok to always use the value 'true', but this would
-   * break convention.
-   */
-  boolean considerSubtypes(Callable callable) {
-    if
-      callable.isStatic() or
-      callable.getDeclaringType().isStatic() or
-      callable.isFinal() or
-      callable.getDeclaringType().isFinal()
-    then result = false
-    else result = true
-  }
-
-  override predicate hasMetadata(
-    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
-    int input
+  predicate hasMetadata(
+    Endpoint e, string package, string type, string subtypes, string name, string signature,
+    string input, string parameterName
   ) {
-    exists(Callable callable |
-      e.asParameter() = callable.getParameter(input) and
-      package = callable.getDeclaringType().getPackage().getName() and
-      type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
-      subtypes = this.considerSubtypes(callable) and
-      name = e.toString() and
-      signature = ExternalFlow::paramsString(callable)
-    )
+    parameterName = e.getParamName() and
+    name = e.getEnclosingCallable().getName() and
+    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex()) and
+    package = e.getEnclosingCallable().getDeclaringType().getPackage().getName() and
+    type = e.getEnclosingCallable().getDeclaringType().getErasure().(RefType).nestedName() and
+    subtypes = AutomodelJavaUtil::considerSubtypes(e.getEnclosingCallable()).toString() and
+    signature = ExternalFlow::paramsString(e.getEnclosingCallable())
   }
 }
 
@@ -197,9 +209,9 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
-    FrameworkCandidatesImpl::getCallable(e).getName().matches("is%") and
-    FrameworkCandidatesImpl::getCallable(e).getReturnType() instanceof BooleanType
+    not FrameworkCandidatesImpl::isSink(e, _, _) and
+    FrameworkModeGetCallable::getCallable(e).getName().matches("is%") and
+    FrameworkModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
   }
 }
 
@@ -215,9 +227,9 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
+    not FrameworkCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
-      callable = FrameworkCandidatesImpl::getCallable(e) and
+      callable = FrameworkModeGetCallable::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
     )
@@ -231,7 +243,7 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    FrameworkCandidatesImpl::getCallable(e).getDeclaringType().getASupertype*() instanceof
+    FrameworkModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
       TypeThrowable
   }
 }
@@ -244,7 +256,7 @@ private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingTo
   NotAModelApiParameter() { this = "not a model API parameter" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not exists(ModelExclusions::ModelApi api | api.getAParameter() = e.asParameter())
+    not e.getEnclosingCallable() instanceof ModelExclusions::ModelApi
   }
 }
 
@@ -257,7 +269,7 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::getCallable(e).isPublic()
+    not FrameworkModeGetCallable::getCallable(e).isPublic()
   }
 }
 

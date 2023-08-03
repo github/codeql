@@ -2,3 +2,4 @@ name: ql-other-pack-thing
 version: 0.1.0
 dependencies:
   ql-testing-src-pack: '*'
+warnOnImplicitThis: true

@@ -23,7 +23,12 @@ module Generated {
     /**
      * Gets the sub expression of this tap expression, if it exists.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getSubExpr()` exists.
@@ -32,34 +37,18 @@ module Generated {
 
     /**
      * Gets the body of this tap expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    BraceStmt getImmediateBody() {
+    BraceStmt getBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getBody())
     }
 
     /**
-     * Gets the body of this tap expression.
-     */
-    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
-
-    /**
      * Gets the variable of this tap expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    VarDecl getImmediateVar() {
+    VarDecl getVar() {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getVar())
     }
-
-    /**
-     * Gets the variable of this tap expression.
-     */
-    final VarDecl getVar() { result = this.getImmediateVar().resolve() }
   }
 }

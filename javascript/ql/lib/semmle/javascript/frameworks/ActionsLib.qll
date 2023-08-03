@@ -78,5 +78,10 @@ private class ExecActionsCall extends SystemCommandExecution, DataFlow::CallNode
 
   override DataFlow::Node getOptionsArg() { result = this.getArgument(2) }
 
+  override predicate isShellInterpreted(DataFlow::Node arg) {
+    arg = this.getACommandArgument() and
+    not this.getArgumentList().getALocalSource() instanceof DataFlow::ArrayCreationNode
+  }
+
   override predicate isSync() { none() }
 }

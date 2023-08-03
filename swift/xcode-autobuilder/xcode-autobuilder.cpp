@@ -5,26 +5,30 @@
 #include "swift/xcode-autobuilder/XcodeBuildRunner.h"
 #include "swift/xcode-autobuilder/XcodeProjectParser.h"
 #include "swift/logging/SwiftLogging.h"
-#include "swift/xcode-autobuilder/CustomizingBuildDiagnostics.h"
+#include "swift/xcode-autobuilder/CustomizingBuildLink.h"
 
-static const char* uiTest = "com.apple.product-type.bundle.ui-testing";
-static const char* unitTest = "com.apple.product-type.bundle.unit-test";
+static constexpr std::string_view uiTest = "com.apple.product-type.bundle.ui-testing";
+static constexpr std::string_view unitTest = "com.apple.product-type.bundle.unit-test";
+static constexpr std::string_view unknownType = "<unknown_target_type>";
 
 const std::string_view codeql::programName = "autobuilder";
 
-namespace codeql_diagnostics {
-constexpr codeql::SwiftDiagnosticsSource no_project_found{
-    "no_project_found", "No Xcode project or workspace detected", customizingBuildAction,
-    customizingBuildHelpLinks};
+constexpr codeql::SwiftDiagnostic noProjectFound{
+    .id = "no-project-found",
+    .name = "No Xcode project or workspace found",
+    .action = "Set up a [manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
-constexpr codeql::SwiftDiagnosticsSource no_swift_target{
-    "no_swift_target", "No Swift compilation target found", customizingBuildAction,
-    customizingBuildHelpLinks};
+constexpr codeql::SwiftDiagnostic noSwiftTarget{
+    .id = "no-swift-target",
+    .name = "No Swift compilation target found",
+    .action = "To analyze a custom set of source files, set up a [manual build "
+              "command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
-constexpr codeql::SwiftDiagnosticsSource spm_not_supported{
-    "spm_not_supported", "Swift Package Manager build unsupported by autobuild",
-    customizingBuildAction, customizingBuildHelpLinks};
-}  // namespace codeql_diagnostics
+constexpr codeql::SwiftDiagnostic spmNotSupported{
+    .id = "spm-not-supported",
+    .name = "Swift Package Manager is not supported",
+    .action = "Swift Package Manager builds are not currently supported by `autobuild`. Set up a "
+              "[manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};
@@ -36,6 +40,16 @@ struct CLIArgs {
   bool dryRun;
 };
 
+static bool endsWith(std::string_view s, std::string_view suffix) {
+  return s.size() >= suffix.size() && s.substr(s.size() - suffix.size()) == suffix;
+}
+
+static bool isNonSwiftOrTestTarget(const Target& t) {
+  return t.fileCount == 0 || t.type == uiTest || t.type == unitTest ||
+         // unknown target types can be legitimate, let's do a name-based heuristic then
+         (t.type == unknownType && (endsWith(t.name, "Tests") || endsWith(t.name, "Test")));
+}
+
 static void autobuild(const CLIArgs& args) {
   auto collected = collectTargets(args.workingDir);
   auto& targets = collected.targets;
@@ -43,24 +57,20 @@ static void autobuild(const CLIArgs& args) {
     LOG_INFO("{}", t);
   }
   // Filter out targets that are tests or have no swift source files
-  targets.erase(std::remove_if(std::begin(targets), std::end(targets),
-                               [&](Target& t) -> bool {
-                                 return t.fileCount == 0 || t.type == uiTest || t.type == unitTest;
-                               }),
+  targets.erase(std::remove_if(std::begin(targets), std::end(targets), isNonSwiftOrTestTarget),
                 std::end(targets));
 
   // Sort targets by the amount of files in each
   std::sort(std::begin(targets), std::end(targets),
             [](Target& lhs, Target& rhs) { return lhs.fileCount > rhs.fileCount; });
   if ((!collected.xcodeEncountered || targets.empty()) && collected.swiftPackageEncountered) {
-    DIAGNOSE_ERROR(spm_not_supported,
-                   "No viable Swift Xcode target was found but a Swift package was detected. Swift "
-                   "Package Manager builds are not yet supported by the autobuilder");
+    DIAGNOSE_ERROR(spmNotSupported,
+                   "A Swift package was detected, but no viable Xcode target was found.");
   } else if (!collected.xcodeEncountered) {
-    DIAGNOSE_ERROR(no_project_found, "No Xcode project or workspace was found");
+    DIAGNOSE_ERROR(noProjectFound, "`autobuild` could not detect an Xcode project or workspace.");
   } else if (targets.empty()) {
-    DIAGNOSE_ERROR(no_swift_target, "All targets found within Xcode projects or workspaces either "
-                                    "have no Swift sources or are tests");
+    DIAGNOSE_ERROR(noSwiftTarget, "All targets found within Xcode projects or workspaces either "
+                                  "contain no Swift source files, or are tests.");
   } else {
     LOG_INFO("Selected {}", targets.front());
     buildTarget(targets.front(), args.dryRun);

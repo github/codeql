@@ -27,8 +27,9 @@ class ExternalApi extends Callable {
    */
   string getApiName() {
     result =
-      this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
-        "#" + this.getName() + paramsString(this)
+      this.getDeclaringType().getPackage() + "." +
+        this.getDeclaringType().getSourceDeclaration().nestedName() + "#" + this.getName() +
+        paramsString(this)
   }
 
   private string getJarName() {
@@ -95,7 +96,7 @@ deprecated class ExternalAPI = ExternalApi;
 /**
  * Gets the limit for the number of results produced by a telemetry query.
  */
-int resultLimit() { result = 1000 }
+int resultLimit() { result = 100 }
 
 /**
  * Holds if it is relevant to count usages of `api`.

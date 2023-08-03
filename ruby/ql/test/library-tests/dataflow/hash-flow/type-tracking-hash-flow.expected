@@ -1,3 +1,5 @@
+failures
+testFailures
 | hash_flow.rb:65:21:65:40 | # $ hasValueFlow=3.3 | Missing result:hasValueFlow=3.3 |
 | hash_flow.rb:66:21:66:49 | # $ SPURIOUS hasValueFlow=3.3 | Missing result:hasValueFlow=3.3 |
 | hash_flow.rb:114:10:114:17 | ...[...] | Unexpected result: hasValueFlow=7.2 |

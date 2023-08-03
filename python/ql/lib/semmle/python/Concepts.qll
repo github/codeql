@@ -680,6 +680,9 @@ module Escaping {
   /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
   string getHtmlKind() { result = "html" }
 
+  /** Gets the escape-kind for escaping a string so it can safely be included in XML. */
+  string getXmlKind() { result = "xml" }
+
   /** Gets the escape-kind for escaping a string so it can safely be included in a regular expression. */
   string getRegexKind() { result = "regex" }
 
@@ -708,6 +711,15 @@ module Escaping {
  */
 class HtmlEscaping extends Escaping {
   HtmlEscaping() { super.getKind() = Escaping::getHtmlKind() }
+}
+
+/**
+ * An escape of a string so it can be safely included in
+ * the body of an XML element, for example, replacing `&` and `<>` in
+ * `<foo>&xxe;<foo>`.
+ */
+class XmlEscaping extends Escaping {
+  XmlEscaping() { super.getKind() = Escaping::getXmlKind() }
 }
 
 /**

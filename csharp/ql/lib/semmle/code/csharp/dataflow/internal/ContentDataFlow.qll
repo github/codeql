@@ -107,8 +107,6 @@ module Global<ConfigSig ContentConfig> {
 
     predicate isBarrier = ContentConfig::isBarrier/1;
 
-    predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
-
     DataFlow::FlowFeature getAFeature() { result = ContentConfig::getAFeature() }
 
     // needed to record reads/stores inside summarized callables

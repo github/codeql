@@ -26,18 +26,20 @@ module LdapInjection {
   /**
    * Additional taint steps for "LDAP Injection" vulnerabilities.
    */
-  predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    filterTaintStep(nodeFrom, nodeTo)
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    attributeArrayTaintStep(nodeFrom, nodeTo)
   }
 
-  private predicate filterTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+  /**
+   * Additional taint step to handle elements inside an array,
+   * specifically in the context of the following LDAP search function:
+   *
+   * ldap.search(base: "", filter: "", attributes: [name])
+   */
+  private predicate attributeArrayTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(DataFlow::CallNode filterCall |
-      (
-        filterCall =
-          API::getTopLevelMember("Net").getMember("LDAP").getMember("Filter").getAMethodCall(["eq"]) or
-        filterCall.getMethodName() = ["[]"]
-      ) and
-      n1 = filterCall.getArgument([0, 1]) and
+      filterCall.getMethodName() = "[]" and
+      n1 = filterCall.getArgument(_) and
       n2 = filterCall
     )
   }
@@ -64,5 +66,16 @@ module LdapInjection {
    * sanitizer-guard.
    */
   private class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
+
+  /**
+   * A call to `Net::LDAP::Filter.escape`, considered as a sanitizer.
+   */
+  class NetLdapFilterEscapeSanitization extends Sanitizer {
+    NetLdapFilterEscapeSanitization() {
+      this =
+        API::getTopLevelMember("Net").getMember("LDAP").getMember("Filter").getAMethodCall("escape")
+    }
+  }
 }

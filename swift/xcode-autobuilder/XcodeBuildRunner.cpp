@@ -6,13 +6,13 @@
 #include "absl/strings/str_join.h"
 
 #include "swift/logging/SwiftLogging.h"
-#include "swift/xcode-autobuilder/CustomizingBuildDiagnostics.h"
+#include "swift/xcode-autobuilder/CustomizingBuildLink.h"
 
-namespace codeql_diagnostics {
-constexpr codeql::SwiftDiagnosticsSource build_command_failed{
-    "build_command_failed", "Detected build command failed", customizingBuildAction,
-    customizingBuildHelpLinks};
-}
+constexpr codeql::SwiftDiagnostic buildCommandFailed{
+    .id = "build-command-failed",
+    .name = "Detected build command failed",
+    .action = "Set up a [manual build command][1] or [check the logs of the autobuild step][2].\n"
+              "\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK "\n[2]: " CHECK_LOGS_HELP_LINK};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"build"};
@@ -70,7 +70,8 @@ void buildTarget(Target& target, bool dryRun) {
     std::cout << absl::StrJoin(argv, " ") << "\n";
   } else {
     if (!exec(argv)) {
-      DIAGNOSE_ERROR(build_command_failed, "The detected build command failed (tried {})",
+      DIAGNOSE_ERROR(buildCommandFailed,
+                     "`autobuild` failed to run the detected build command:\n\n```\n{}\n```",
                      absl::StrJoin(argv, " "));
       codeql::Log::flush();
       exit(1);

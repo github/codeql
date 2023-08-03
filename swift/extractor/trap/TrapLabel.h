@@ -1,11 +1,11 @@
 #pragma once
 
+#include <bit>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "absl/numeric/bits.h"
 #include <binlog/binlog.hpp>
 #include <cmath>
 #include <charconv>
@@ -40,6 +40,7 @@ class UntypedTrapLabel {
   }
 
   std::string str() const {
+    assert(valid() && "outputting an undefined label!");
     std::string ret(strSize(), '\0');
     ret[0] = '#';
     std::to_chars(ret.data() + 1, ret.data() + ret.size(), id_, 16);
@@ -52,7 +53,7 @@ class UntypedTrapLabel {
   size_t strSize() const {
     if (id_ == 0) return 2;  // #0
     // Number of hex digits is ceil(bit_width(id) / 4), but C++ integer division can only do floor.
-    return /* # */ 1 + /* hex digits */ 1 + (absl::bit_width(id_) - 1) / 4;
+    return /* # */ 1 + /* hex digits */ 1 + (std::bit_width(id_) - 1) / 4;
   }
 
   friend bool operator!=(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ != rhs.id_; }

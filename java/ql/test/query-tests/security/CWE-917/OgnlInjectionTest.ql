@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.OgnlInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
-class OgnlInjectionTest extends InlineExpectationsTest {
-  OgnlInjectionTest() { this = "HasOgnlInjection" }
+module OgnlInjectionTest implements TestSig {
+  string getARelevantTag() { result = "hasOgnlInjection" }
 
-  override string getARelevantTag() { result = "hasOgnlInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasOgnlInjection" and
     exists(DataFlow::Node sink | OgnlInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -16,3 +14,5 @@ class OgnlInjectionTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<OgnlInjectionTest>

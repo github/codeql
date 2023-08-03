@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <regex>
@@ -30,32 +31,38 @@
 #define LOG_DEBUG(...) LOG_WITH_LEVEL(debug, __VA_ARGS__)
 #define LOG_TRACE(...) LOG_WITH_LEVEL(trace, __VA_ARGS__)
 
+#define LOG_WITH_LEVEL(LEVEL, ...) LOG_WITH_LEVEL_AND_TIME(LEVEL, ::binlog::clockNow(), __VA_ARGS__)
 // only do the actual logging if the picked up `Logger` instance is configured to handle the
 // provided log level. `LEVEL` must be a compile-time constant. `logger()` is evaluated once
-#define LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, CATEGORY, ...)                                      \
-  do {                                                                                         \
-    constexpr codeql::Log::Level _level = ::codeql::Log::Level::LEVEL;                         \
-    ::codeql::Logger& _logger = logger();                                                      \
-    if (_level >= _logger.level()) {                                                           \
-      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, CATEGORY, ::binlog::clockNow(), \
-                                     __VA_ARGS__);                                             \
-    }                                                                                          \
-    if (_level >= ::codeql::Log::Level::error) {                                               \
-      ::codeql::Log::flush();                                                                  \
-    }                                                                                          \
+#define LOG_WITH_LEVEL_AND_TIME(LEVEL, TIME, ...)                                                \
+  do {                                                                                           \
+    constexpr auto _level = ::codeql::Log::Level::LEVEL;                                         \
+    ::codeql::Logger& _logger = logger();                                                        \
+    if (_level >= _logger.level()) {                                                             \
+      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, /*category*/, TIME, __VA_ARGS__); \
+    }                                                                                            \
+    if (_level >= ::codeql::Log::Level::error) {                                                 \
+      ::codeql::Log::flush();                                                                    \
+    }                                                                                            \
   } while (false)
 
-#define LOG_WITH_LEVEL(LEVEL, ...) LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, , __VA_ARGS__)
-
-// Emit errors with a specified diagnostics ID. This must be the name of a `SwiftDiagnosticsSource`
-// defined in the `codeql_diagnostics` namespace, which must have `id` equal to its name.
-#define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
+// Emit errors with a specified SwiftDiagnostic object. These will be both logged and outputted as
+// JSON DB diagnostics. The format must be appliable to the following arguments both as binlog and
+// as fmt::format formatting.
+// Beware that contrary to LOG_* macros, arguments right of the format will be evaluated twice. ID
+// is evaluated once though.
 #define DIAGNOSE_ERROR(ID, ...) DIAGNOSE_WITH_LEVEL(error, ID, __VA_ARGS__)
+#define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
 
-#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)                                          \
+#define CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX "[{}] "
+#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, FORMAT, ...)                                  \
   do {                                                                               \
-    ::codeql::SwiftDiagnosticsSource::ensureRegistered<&::codeql_diagnostics::ID>(); \
-    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__);                             \
+    auto _now = ::binlog::clockNow();                                                \
+    const ::codeql::SwiftDiagnostic& _id = ID;                                       \
+    ::codeql::Log::diagnose(_id, std::chrono::nanoseconds{_now},                     \
+                            fmt::format(FORMAT __VA_OPT__(, ) __VA_ARGS__));         \
+    LOG_WITH_LEVEL_AND_TIME(LEVEL, _now, CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX FORMAT, \
+                            _id.abbreviation() __VA_OPT__(, ) __VA_ARGS__);          \
   } while (false)
 
 // avoid calling into binlog's original macros
@@ -125,6 +132,12 @@ class Log {
     return instance().getLoggerConfigurationImpl(name);
   }
 
+  static void diagnose(const SwiftDiagnostic& source,
+                       const std::chrono::nanoseconds& elapsed,
+                       std::string_view message) {
+    instance().diagnoseImpl(source, elapsed, message);
+  }
+
  private:
   static constexpr const char* format = "%u %S [%n] %m (%G:%L)\n";
   static bool initialized;
@@ -140,13 +153,15 @@ class Log {
 
   void configure();
   void flushImpl();
+  void diagnoseImpl(const SwiftDiagnostic& source,
+                    const std::chrono::nanoseconds& elapsed,
+                    std::string_view message);
+
   LoggerConfiguration getLoggerConfigurationImpl(std::string_view name);
 
   // make `session.consume(*this)` work, which requires access to `write`
   friend binlog::Session;
   Log& write(const char* buffer, std::streamsize size);
-
-  struct OnlyWithCategory {};
 
   // Output filtered according to a configured log level
   template <typename Output>
@@ -159,12 +174,6 @@ class Log {
     FilteredOutput(Level level, Args&&... args)
         : level{level}, output{std::forward<Args>(args)...}, filter{filterOnLevel()} {}
 
-    template <typename... Args>
-    FilteredOutput(OnlyWithCategory, Level level, Args&&... args)
-        : level{level},
-          output{std::forward<Args>(args)...},
-          filter{filterOnLevelAndNonEmptyCategory()} {}
-
     FilteredOutput& write(const char* buffer, std::streamsize size) {
       filter.writeAllowed(buffer, size, output);
       return *this;
@@ -172,12 +181,6 @@ class Log {
 
     binlog::EventFilter::Predicate filterOnLevel() const {
       return [this](const binlog::EventSource& src) { return src.severity >= level; };
-    }
-
-    binlog::EventFilter::Predicate filterOnLevelAndNonEmptyCategory() const {
-      return [this](const binlog::EventSource& src) {
-        return !src.category.empty() && src.severity >= level;
-      };
     }
 
     // if configured as `no_logs`, the output is effectively disabled
@@ -192,7 +195,7 @@ class Log {
   FilteredOutput<std::ofstream> binary{Level::no_logs};
   FilteredOutput<binlog::TextOutputStream> text{Level::info, textFile, format};
   FilteredOutput<binlog::TextOutputStream> console{Level::warning, std::cerr, format};
-  FilteredOutput<SwiftDiagnosticsDumper> diagnostics{OnlyWithCategory{}, Level::error};
+  std::ofstream diagnostics{};
   LevelRules sourceRules;
   std::vector<std::string> collectLevelRulesAndReturnProblems(const char* envVar);
 };

@@ -32,22 +32,12 @@ module Generated {
 
     /**
      * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Argument getImmediateSubscriptArgument(int index) {
+    Argument getSubscriptArgument(int index) {
       result =
         Synth::convertArgumentFromRaw(Synth::convertKeyPathComponentToRaw(this)
               .(Raw::KeyPathComponent)
               .getSubscriptArgument(index))
-    }
-
-    /**
-     * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
-     */
-    final Argument getSubscriptArgument(int index) {
-      result = this.getImmediateSubscriptArgument(index).resolve()
     }
 
     /**
@@ -76,21 +66,13 @@ module Generated {
 
     /**
      * Gets the property or subscript operator, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ValueDecl getImmediateDeclRef() {
+    ValueDecl getDeclRef() {
       result =
         Synth::convertValueDeclFromRaw(Synth::convertKeyPathComponentToRaw(this)
               .(Raw::KeyPathComponent)
               .getDeclRef())
     }
-
-    /**
-     * Gets the property or subscript operator, if it exists.
-     */
-    final ValueDecl getDeclRef() { result = this.getImmediateDeclRef().resolve() }
 
     /**
      * Holds if `getDeclRef()` exists.
@@ -117,6 +99,11 @@ module Generated {
      * path; an optional-wrapping component is inserted if required to produce an optional type
      * as the final output.
      */
-    final Type getComponentType() { result = this.getImmediateComponentType().resolve() }
+    final Type getComponentType() {
+      exists(Type immediate |
+        immediate = this.getImmediateComponentType() and
+        result = immediate.resolve()
+      )
+    }
   }
 }

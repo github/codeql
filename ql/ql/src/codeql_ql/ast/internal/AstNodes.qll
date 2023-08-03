@@ -61,11 +61,6 @@ newtype TAstNode =
   TPredicateExpr(QL::PredicateExpr pe) or
   TAnnotation(QL::Annotation annot) or
   TAnnotationArg(QL::AnnotArg arg) or
-  TYamlComment(Yaml::Comment yc) or
-  TYamlEntry(Yaml::Entry ye) or
-  TYamlKey(Yaml::Key yk) or
-  TYamlListitem(Yaml::Listitem yli) or
-  TYamlValue(Yaml::Value yv) or
   TBuiltinClassless(string ret, string name, string args) { isBuiltinClassless(ret, name, args) } or
   TBuiltinMember(string qual, string ret, string name, string args) {
     isBuiltinMember(qual, ret, name, args)
@@ -87,14 +82,9 @@ class TCall = TPredicateCall or TMemberCall or TNoneCall or TAnyCall;
 
 class TTypeRef = TImport or TModuleExpr or TType;
 
-class TYamlNode = TYamlComment or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
-
 class TSignatureExpr = TPredicateExpr or TType or TModuleExpr;
 
 class TComment = TQLDoc or TBlockComment or TLineComment;
-
-/** DEPRECATED: Alias for TYamlNode */
-deprecated class TYAMLNode = TYamlNode;
 
 private QL::AstNode toQLFormula(AST::AstNode n) {
   n = TConjunction(result) or
@@ -123,14 +113,6 @@ private QL::AstNode toQLExpr(AST::AstNode n) {
   n = TIdentifier(result) or
   n = TUnaryExpr(result) or
   n = TDontCare(result)
-}
-
-Yaml::AstNode toGenerateYaml(AST::AstNode n) {
-  n = TYamlComment(result) or
-  n = TYamlEntry(result) or
-  n = TYamlKey(result) or
-  n = TYamlListitem(result) or
-  n = TYamlValue(result)
 }
 
 Dbscheme::AstNode toDbscheme(AST::AstNode n) { n = TDBRelation(result) }

@@ -21,12 +21,10 @@ class TestConfig extends TaintTracking::Configuration {
   }
 }
 
-class K8sIoApiCoreV1Test extends InlineExpectationsTest {
-  K8sIoApiCoreV1Test() { this = "K8sIoApiCoreV1Test" }
+module K8sIoApiCoreV1Test implements TestSig {
+  string getARelevantTag() { result = "KsIoApiCoreV" }
 
-  override string getARelevantTag() { result = "KsIoApiCoreV" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TestConfig config, DataFlow::PathNode sink |
       config.hasFlowPath(_, sink) and
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -37,3 +35,5 @@ class K8sIoApiCoreV1Test extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<K8sIoApiCoreV1Test>

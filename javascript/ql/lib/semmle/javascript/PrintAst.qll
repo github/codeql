@@ -391,9 +391,6 @@ private module PrintJavaScript {
     }
   }
 
-  /** DEPRECATED: Alias for JsxNodeNode */
-  deprecated class JSXNodeNode = JsxNodeNode;
-
   /**
    * An aggregate node representing all the attributes in a `JSXNode`.
    */
@@ -409,16 +406,10 @@ private module PrintJavaScript {
      */
     JsxElement getJsxElement() { result = n }
 
-    /** DEPRECATED: Alias for getJsxElement */
-    deprecated JSXElement getJSXElement() { result = this.getJsxElement() }
-
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = n.getAttribute(childIndex)
     }
   }
-
-  /** DEPRECATED: Alias for JsxAttributesNode */
-  deprecated class JSXAttributesNode = JsxAttributesNode;
 
   /**
    * An aggregate node representing all the body elements in a `JSXNode`.
@@ -435,16 +426,10 @@ private module PrintJavaScript {
      */
     JsxNode getJsxNode() { result = n }
 
-    /** DEPRECATED: Alias for getJsxNode */
-    deprecated JSXNode getJSXNode() { result = this.getJsxNode() }
-
     override PrintAstNode getChild(int childIndex) {
       result.(ElementNode).getElement() = n.getBodyElement(childIndex)
     }
   }
-
-  /** DEPRECATED: Alias for JsxBodyElementsNode */
-  deprecated class JSXBodyElementsNode = JsxBodyElementsNode;
 
   /**
    * A node representing any `ASTNode` that has type-parameters.
@@ -582,9 +567,6 @@ private module PrintJson {
     }
   }
 
-  /** DEPRECATED: Alias for JsonNode */
-  deprecated class JSONNode = JsonNode;
-
   /** Provied predicates for pretty printing JSON. */
   private module PrettyPrinting {
     /**
@@ -655,9 +637,6 @@ module PrintYaml {
     }
   }
 
-  /** DEPRECATED: Alias for YamlNodeNode */
-  deprecated class YAMLNodeNode = YamlNodeNode;
-
   /**
    * A print node representing a `YAMLMapping`.
    *
@@ -670,9 +649,6 @@ module PrintYaml {
       exists(YamlMappingMapNode map | map = result | map.maps(node, childIndex))
     }
   }
-
-  /** DEPRECATED: Alias for YamlMappingNode */
-  deprecated class YAMLMappingNode = YamlMappingNode;
 
   /**
    * A print node representing the `i`th mapping in `mapping`.
@@ -703,13 +679,7 @@ module PrintYaml {
       childIndex = 1 and result.(YamlNodeNode).getValue() = mapping.getValueNode(i)
     }
   }
-
-  /** DEPRECATED: Alias for YamlMappingMapNode */
-  deprecated class YAMLMappingMapNode = YamlMappingMapNode;
 }
-
-/** DEPRECATED: Alias for PrintYaml */
-deprecated module PrintYAML = PrintYaml;
 
 /**
  * Classes for printing HTML AST.
@@ -741,9 +711,6 @@ module PrintHtml {
     }
   }
 
-  /** DEPRECATED: Alias for HtmlElementNode */
-  deprecated class HTMLElementNode = HtmlElementNode;
-
   /**
    * A print node representing an HTML node in a .html file.
    */
@@ -756,9 +723,6 @@ module PrintHtml {
       result = super.getChild(childIndex)
     }
   }
-
-  /** DEPRECATED: Alias for HtmlScriptElementNode */
-  deprecated class HTMLScriptElementNode = HtmlScriptElementNode;
 
   /**
    * A print node representing the code inside a `<script>` element.
@@ -785,9 +749,6 @@ module PrintHtml {
     }
   }
 
-  /** DEPRECATED: Alias for HtmlScript */
-  deprecated class HTMLScript = HtmlScript;
-
   /**
    * A print node representing the code inside an attribute.
    */
@@ -813,9 +774,6 @@ module PrintHtml {
     }
   }
 
-  /** DEPRECATED: Alias for HtmlCodeInAttr */
-  deprecated class HTMLCodeInAttr = HtmlCodeInAttr;
-
   /**
    * An aggregate node representing all the attributes of an HTMLElement.
    */
@@ -838,9 +796,6 @@ module PrintHtml {
     }
   }
 
-  /** DEPRECATED: Alias for HtmlAttributesNodes */
-  deprecated class HTMLAttributesNodes = HtmlAttributesNodes;
-
   /**
    * A print node representing an HTML attribute in a .html file.
    */
@@ -862,13 +817,7 @@ module PrintHtml {
       childIndex = 0 and result.(HtmlCodeInAttr).getCode() = attr.getCodeInAttribute()
     }
   }
-
-  /** DEPRECATED: Alias for HtmlAttributeNode */
-  deprecated class HTMLAttributeNode = HtmlAttributeNode;
 }
-
-/** DEPRECATED: Alias for PrintHtml */
-deprecated module PrintHTML = PrintHtml;
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
 query predicate nodes(PrintAstNode node, string key, string value) { value = node.getProperty(key) }

@@ -60,19 +60,19 @@ module Generated {
     {{/final}}
     {{#properties}}
 
-    {{#type_is_class}}
+    {{#type_is_hideable}}
     /**
      * {{>ql_property_doc}}     *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     {{type}} get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}int index{{/is_indexed}}) {
-      {{^ipa}}
+      {{^synth}}
       result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}))
-      {{/ipa}}
-      {{#ipa}}
+      {{/synth}}
+      {{#synth}}
       none()
-      {{/ipa}}
+      {{/synth}}
     }
 
     /**
@@ -84,11 +84,12 @@ module Generated {
     {{/has_description}}
      */
     final {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
-      result = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}).resolve()
+      exists({{type}} immediate | immediate = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}) and
+        {{#hideable}}if exists(this.getResolveStep()) then result = immediate else {{/hideable}}result = immediate.resolve())
     }
 
-    {{/type_is_class}}
-    {{^type_is_class}}
+    {{/type_is_hideable}}
+    {{^type_is_hideable}}
     /**
      * {{>ql_property_doc}}     *
     {{#has_description}}
@@ -98,15 +99,15 @@ module Generated {
     {{/has_description}}
      */
     {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
-      {{^ipa}}
-      {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}})
-      {{/ipa}}
-      {{#ipa}}
+      {{^synth}}
+      {{^is_predicate}}result = {{/is_predicate}}{{#type_is_class}}Synth::convert{{type}}FromRaw({{/type_is_class}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}){{#type_is_class}}){{/type_is_class}}
+      {{/synth}}
+      {{#synth}}
       none()
-      {{/ipa}}
+      {{/synth}}
     }
 
-    {{/type_is_class}}
+    {{/type_is_hideable}}
     {{#is_optional}}
     /**
      * Holds if `{{getter}}({{#is_repeated}}index{{/is_repeated}})` exists.

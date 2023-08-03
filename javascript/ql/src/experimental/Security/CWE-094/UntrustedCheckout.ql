@@ -17,7 +17,7 @@ import javascript
 import semmle.javascript.Actions
 
 /**
- * An action step that doesn't contain `actor` or `label` check in `if:` or
+ * An action step that doesn't contain `actor` check in `if:` or
  * the check requires manual analysis.
  */
 class ProbableStep extends Actions::Step {
@@ -29,25 +29,13 @@ class ProbableStep extends Actions::Step {
     // needs manual analysis if there is OR
     this.getIf().getValue().matches("%||%")
     or
-    // labels can be assigned by owners only
-    not exists(
-      this.getIf()
-          .getValue()
-          .regexpFind("\\bcontains\\s*\\(\\s*github\\s*\\.\\s*event\\s*\\.\\s*(?:issue|pull_request)\\s*\\.\\s*labels\\b",
-            _, _)
-    ) and
-    not exists(
-      this.getIf()
-          .getValue()
-          .regexpFind("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*label\\s*\\.\\s*name\\s*==", _, _)
-    ) and
     // actor check means only the user is able to run it
     not exists(this.getIf().getValue().regexpFind("\\bgithub\\s*\\.\\s*actor\\s*==", _, _))
   }
 }
 
 /**
- * An action job that doesn't contain `actor` or `label` check in `if:` or
+ * An action job that doesn't contain `actor` check in `if:` or
  * the check requires manual analysis.
  */
 class ProbableJob extends Actions::Job {
@@ -59,46 +47,18 @@ class ProbableJob extends Actions::Job {
     // needs manual analysis if there is OR
     this.getIf().getValue().matches("%||%")
     or
-    // labels can be assigned by owners only
-    not exists(
-      this.getIf()
-          .getValue()
-          .regexpFind("\\bcontains\\s*\\(\\s*github\\s*\\.\\s*event\\s*\\.\\s*(?:issue|pull_request)\\s*\\.\\s*labels\\b",
-            _, _)
-    ) and
-    not exists(
-      this.getIf()
-          .getValue()
-          .regexpFind("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*label\\s*\\.\\s*name\\s*==", _, _)
-    ) and
     // actor check means only the user is able to run it
     not exists(this.getIf().getValue().regexpFind("\\bgithub\\s*\\.\\s*actor\\s*==", _, _))
   }
 }
 
 /**
- * An action step that doesn't contain `actor` or `label` check in `if:` or
+ * The `on: pull_request_target`.
  */
 class ProbablePullRequestTarget extends Actions::On, YamlMappingLikeNode {
   ProbablePullRequestTarget() {
-    exists(YamlNode prtNode |
-      // The `on:` is triggered on `pull_request_target`
-      this.getNode("pull_request_target") = prtNode and
-      (
-        // and either doesn't contain `types` filter
-        not exists(prtNode.getAChild())
-        or
-        // or has the filter, that is something else than just [labeled]
-        exists(YamlMappingLikeNode prt, YamlMappingLikeNode types |
-          types = prt.getNode("types") and
-          prtNode = prt and
-          (
-            not types.getElementCount() = 1 or
-            not exists(types.getNode("labeled"))
-          )
-        )
-      )
-    )
+    // The `on:` is triggered on `pull_request_target`
+    exists(this.getNode("pull_request_target"))
   }
 }
 

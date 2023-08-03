@@ -10,6 +10,8 @@ module Generated {
   class Callable extends Synth::TCallable, Element {
     /**
      * Gets the name of this callable, if it exists.
+     *
+     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
      */
     string getName() { result = Synth::convertCallableToRaw(this).(Raw::Callable).getName() }
 
@@ -20,21 +22,13 @@ module Generated {
 
     /**
      * Gets the self parameter of this callable, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ParamDecl getImmediateSelfParam() {
+    ParamDecl getSelfParam() {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
               .(Raw::Callable)
               .getSelfParam())
     }
-
-    /**
-     * Gets the self parameter of this callable, if it exists.
-     */
-    final ParamDecl getSelfParam() { result = this.getImmediateSelfParam().resolve() }
 
     /**
      * Holds if `getSelfParam()` exists.
@@ -43,21 +37,13 @@ module Generated {
 
     /**
      * Gets the `index`th parameter of this callable (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ParamDecl getImmediateParam(int index) {
+    ParamDecl getParam(int index) {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
               .(Raw::Callable)
               .getParam(index))
     }
-
-    /**
-     * Gets the `index`th parameter of this callable (0-based).
-     */
-    final ParamDecl getParam(int index) { result = this.getImmediateParam(index).resolve() }
 
     /**
      * Gets any of the parameters of this callable.
@@ -72,20 +58,12 @@ module Generated {
     /**
      * Gets the body of this callable, if it exists.
      *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
+     * The body is absent within protocol declarations.
      */
-    BraceStmt getImmediateBody() {
+    BraceStmt getBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertCallableToRaw(this).(Raw::Callable).getBody())
     }
-
-    /**
-     * Gets the body of this callable, if it exists.
-     *
-     * The body is absent within protocol declarations.
-     */
-    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
 
     /**
      * Holds if `getBody()` exists.
@@ -94,21 +72,13 @@ module Generated {
 
     /**
      * Gets the `index`th capture of this callable (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    CapturedDecl getImmediateCapture(int index) {
+    CapturedDecl getCapture(int index) {
       result =
         Synth::convertCapturedDeclFromRaw(Synth::convertCallableToRaw(this)
               .(Raw::Callable)
               .getCapture(index))
     }
-
-    /**
-     * Gets the `index`th capture of this callable (0-based).
-     */
-    final CapturedDecl getCapture(int index) { result = this.getImmediateCapture(index).resolve() }
 
     /**
      * Gets any of the captures of this callable.

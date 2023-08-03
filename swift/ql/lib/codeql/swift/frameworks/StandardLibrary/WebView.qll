@@ -32,7 +32,7 @@ private class WKScriptMessageBodyInheritsTaint extends TaintInheritingContent,
 {
   WKScriptMessageBodyInheritsTaint() {
     exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl() instanceof WKScriptMessageDecl and
+      f.getEnclosingDecl().asNominalTypeDecl() instanceof WKScriptMessageDecl and
       f.getName() = "body"
     )
   }
@@ -170,16 +170,16 @@ private class JsExportedType extends ClassOrStructDecl {
 private class JsExportedSource extends RemoteFlowSource {
   JsExportedSource() {
     exists(Method adopter, Method base |
-      base.getEnclosingDecl() instanceof JsExportedProto and
-      adopter.getEnclosingDecl() instanceof JsExportedType
+      base.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedProto and
+      adopter.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedType
     |
       this.(DataFlow::ParameterNode).getParameter().getDeclaringFunction() = adopter and
       pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
     )
     or
     exists(FieldDecl adopter, FieldDecl base |
-      base.getEnclosingDecl() instanceof JsExportedProto and
-      adopter.getEnclosingDecl() instanceof JsExportedType
+      base.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedProto and
+      adopter.getEnclosingDecl().asNominalTypeDecl() instanceof JsExportedType
     |
       this.asExpr().(MemberRefExpr).getMember() = adopter and
       pragma[only_bind_out](adopter.getName()) = pragma[only_bind_out](base.getName())
@@ -208,10 +208,5 @@ private class WKUserScriptSummaries extends SummaryModelCsv {
 private class WKUserScriptInheritsTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
-  WKUserScriptInheritsTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl().(ClassOrStructDecl).getName() = "WKUserScript" and
-      f.getName() = "source"
-    )
-  }
+  WKUserScriptInheritsTaint() { this.getField().hasQualifiedName("WKUserScript", "source") }
 }

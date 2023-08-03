@@ -8,12 +8,10 @@ class TestSource extends RemoteFlowSource {
   override string getSourceType() { result = "test" }
 }
 
-class ResultReceiverTest extends InlineExpectationsTest {
-  ResultReceiverTest() { this = "ResultReceiverTest" }
+module ResultReceiverTest implements TestSig {
+  string getARelevantTag() { result = "hasSensitiveResultReceiver" }
 
-  override string getARelevantTag() { result = "hasSensitiveResultReceiver" }
-
-  override predicate hasActualResult(Location loc, string element, string tag, string value) {
+  predicate hasActualResult(Location loc, string element, string tag, string value) {
     exists(SensitiveResultReceiverFlow::PathNode sink |
       isSensitiveResultReceiver(_, sink, _) and
       element = sink.toString() and
@@ -23,3 +21,5 @@ class ResultReceiverTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<ResultReceiverTest>

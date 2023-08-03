@@ -23,7 +23,12 @@ module Generated {
     /**
      * Gets the interface type of this archetype type.
      */
-    final Type getInterfaceType() { result = this.getImmediateInterfaceType().resolve() }
+    final Type getInterfaceType() {
+      exists(Type immediate |
+        immediate = this.getImmediateInterfaceType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the superclass of this archetype type, if it exists.
@@ -41,7 +46,12 @@ module Generated {
     /**
      * Gets the superclass of this archetype type, if it exists.
      */
-    final Type getSuperclass() { result = this.getImmediateSuperclass().resolve() }
+    final Type getSuperclass() {
+      exists(Type immediate |
+        immediate = this.getImmediateSuperclass() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getSuperclass()` exists.
@@ -50,22 +60,12 @@ module Generated {
 
     /**
      * Gets the `index`th protocol of this archetype type (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ProtocolDecl getImmediateProtocol(int index) {
+    ProtocolDecl getProtocol(int index) {
       result =
         Synth::convertProtocolDeclFromRaw(Synth::convertArchetypeTypeToRaw(this)
               .(Raw::ArchetypeType)
               .getProtocol(index))
-    }
-
-    /**
-     * Gets the `index`th protocol of this archetype type (0-based).
-     */
-    final ProtocolDecl getProtocol(int index) {
-      result = this.getImmediateProtocol(index).resolve()
     }
 
     /**

@@ -26,7 +26,12 @@ module Generated {
     /**
      * Gets the boolean of this condition element, if it exists.
      */
-    final Expr getBoolean() { result = this.getImmediateBoolean().resolve() }
+    final Expr getBoolean() {
+      exists(Expr immediate |
+        immediate = this.getImmediateBoolean() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getBoolean()` exists.
@@ -49,7 +54,12 @@ module Generated {
     /**
      * Gets the pattern of this condition element, if it exists.
      */
-    final Pattern getPattern() { result = this.getImmediatePattern().resolve() }
+    final Pattern getPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediatePattern() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getPattern()` exists.
@@ -72,7 +82,12 @@ module Generated {
     /**
      * Gets the initializer of this condition element, if it exists.
      */
-    final Expr getInitializer() { result = this.getImmediateInitializer().resolve() }
+    final Expr getInitializer() {
+      exists(Expr immediate |
+        immediate = this.getImmediateInitializer() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getInitializer()` exists.
@@ -81,21 +96,13 @@ module Generated {
 
     /**
      * Gets the availability of this condition element, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    AvailabilityInfo getImmediateAvailability() {
+    AvailabilityInfo getAvailability() {
       result =
         Synth::convertAvailabilityInfoFromRaw(Synth::convertConditionElementToRaw(this)
               .(Raw::ConditionElement)
               .getAvailability())
     }
-
-    /**
-     * Gets the availability of this condition element, if it exists.
-     */
-    final AvailabilityInfo getAvailability() { result = this.getImmediateAvailability().resolve() }
 
     /**
      * Holds if `getAvailability()` exists.

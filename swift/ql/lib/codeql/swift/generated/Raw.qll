@@ -21,6 +21,8 @@ module Raw {
   class Callable extends @callable, Element {
     /**
      * Gets the name of this callable, if it exists.
+     *
+     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
      */
     string getName() { callable_names(this, result) }
 
@@ -310,6 +312,10 @@ module Raw {
 
     /**
      * Gets the `index`th member of this declaration (0-based).
+     *
+     * Prefer to use more specific methods (such as `EnumDecl.getEnumElement`) rather than relying
+     * on the order of members given by `getMember`. In some cases the order of members may not
+     * align with expectations, and could change in future releases.
      */
     Decl getMember(int index) { decl_members(this, index, result) }
   }
@@ -1090,7 +1096,7 @@ module Raw {
     /**
      * Gets the closure body of this capture list expression.
      */
-    ExplicitClosureExpr getClosureBody() { capture_list_exprs(this, result) }
+    ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
   }
 
   /**
@@ -1434,22 +1440,35 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An implicit expression created by the compiler when a method is called on a protocol. For example in
+   * ```
+   * protocol P {
+   *   func foo() -> Int
+   * }
+   * func bar(x: P) -> Int {
+   *   return x.foo()
+   * }
+   * `x.foo()` is actually wrapped in an `OpenExistentialExpr` that "opens" `x` replacing it in its subexpression with
+   * an `OpaqueValueExpr`.
+   * ```
    */
   class OpenExistentialExpr extends @open_existential_expr, Expr {
     override string toString() { result = "OpenExistentialExpr" }
 
     /**
      * Gets the sub expression of this open existential expression.
+     *
+     * This wrapped subexpression is where the opaque value and the dynamic type under the protocol type may be used.
      */
     Expr getSubExpr() { open_existential_exprs(this, result, _, _) }
 
     /**
-     * Gets the existential of this open existential expression.
+     * Gets the protocol-typed expression opened by this expression.
      */
     Expr getExistential() { open_existential_exprs(this, _, result, _) }
 
     /**
-     * Gets the opaque expression of this open existential expression.
+     * Gets the opaque value expression embedded within `getSubExpr()`.
      */
     OpaqueValueExpr getOpaqueExpr() { open_existential_exprs(this, _, _, result) }
   }
@@ -1959,20 +1978,6 @@ module Raw {
      */
     OpaqueValueExpr getInterpolationExpr() {
       interpolated_string_literal_expr_interpolation_exprs(this, result)
-    }
-
-    /**
-     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getInterpolationCountExpr() {
-      interpolated_string_literal_expr_interpolation_count_exprs(this, result)
-    }
-
-    /**
-     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getLiteralCapacityExpr() {
-      interpolated_string_literal_expr_literal_capacity_exprs(this, result)
     }
 
     /**

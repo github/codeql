@@ -3,7 +3,11 @@
 #include <filesystem>
 #include <stdlib.h>
 #include <optional>
+#ifdef _WIN32
+#include <process.h>
+#else
 #include <unistd.h>
+#endif
 #include "absl/strings/str_cat.h"
 
 #define LEVEL_REGEX_PATTERN "trace|debug|info|warning|error|critical|no_logs"
@@ -60,7 +64,7 @@ std::vector<std::string> Log::collectLevelRulesAndReturnProblems(const char* env
     // expect comma-separated <glob pattern>:<log severity>
     std::regex comma{","};
     std::regex levelAssignment{
-        R"((?:([*./\w]+)|(?:out:(binary|text|console|diagnostics))):()" LEVEL_REGEX_PATTERN ")"};
+        R"((?:([*./\w]+)|(?:out:(binary|text|console))):()" LEVEL_REGEX_PATTERN ")"};
     std::cregex_token_iterator begin{levels, levels + strlen(levels), comma, -1};
     std::cregex_token_iterator end{};
     for (auto it = begin; it != end; ++it) {
@@ -84,8 +88,6 @@ std::vector<std::string> Log::collectLevelRulesAndReturnProblems(const char* env
             text.level = level;
           } else if (out == "console") {
             console.level = level;
-          } else if (out == "diagnostics") {
-            diagnostics.level = level;
           }
         }
       } else {
@@ -132,30 +134,28 @@ void Log::configure() {
       text.level = Level::no_logs;
     }
   }
-  if (diagnostics) {
-    std::filesystem::path diagFile =
-        getEnvOr("CODEQL_EXTRACTOR_SWIFT_DIAGNOSTIC_DIR", "extractor-out/diagnostics");
+  if (auto diagDir = getEnvOr("CODEQL_EXTRACTOR_SWIFT_DIAGNOSTIC_DIR", nullptr)) {
+    std::filesystem::path diagFile = diagDir;
     diagFile /= programName;
     diagFile /= logBaseName;
     diagFile.replace_extension(".jsonl");
     std::error_code ec;
     std::filesystem::create_directories(diagFile.parent_path(), ec);
     if (!ec) {
-      if (!diagnostics.output.open(diagFile)) {
+      diagnostics.open(diagFile);
+      if (!diagnostics) {
         problems.emplace_back("Unable to open diagnostics json file " + diagFile.string());
-        diagnostics.level = Level::no_logs;
       }
     } else {
       problems.emplace_back("Unable to create diagnostics directory " +
                             diagFile.parent_path().string() + ": " + ec.message());
-      diagnostics.level = Level::no_logs;
     }
   }
   for (const auto& problem : problems) {
     LOG_ERROR("{}", problem);
   }
   LOG_INFO("Logging configured (binary: {}, text: {}, console: {}, diagnostics: {})", binary.level,
-           text.level, console.level, diagnostics.level);
+           text.level, console.level, diagnostics.good());
   initialized = true;
   flushImpl();
 }
@@ -169,7 +169,17 @@ void Log::flushImpl() {
     binary.output.flush();
   }
   if (diagnostics) {
-    diagnostics.output.flush();
+    diagnostics.flush();
+  }
+}
+
+void Log::diagnoseImpl(const SwiftDiagnostic& source,
+                       const std::chrono::nanoseconds& elapsed,
+                       std::string_view message) {
+  using Clock = std::chrono::system_clock;
+  Clock::time_point time{std::chrono::duration_cast<Clock::duration>(elapsed)};
+  if (diagnostics) {
+    diagnostics << source.json(time, message) << '\n';
   }
 }
 
@@ -190,7 +200,6 @@ Log& Log::write(const char* buffer, std::streamsize size) {
   if (text) text.write(buffer, size);
   if (binary) binary.write(buffer, size);
   if (console) console.write(buffer, size);
-  if (diagnostics) diagnostics.write(buffer, size);
   return *this;
 }
 
@@ -198,5 +207,4 @@ Logger& Log::logger() {
   static Logger ret{getLoggerConfigurationImpl("logging")};
   return ret;
 }
-
 }  // namespace codeql

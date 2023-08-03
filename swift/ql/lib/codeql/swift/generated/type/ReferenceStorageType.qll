@@ -21,6 +21,11 @@ module Generated {
     /**
      * Gets the referent type of this reference storage type.
      */
-    final Type getReferentType() { result = this.getImmediateReferentType().resolve() }
+    final Type getReferentType() {
+      exists(Type immediate |
+        immediate = this.getImmediateReferentType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }
