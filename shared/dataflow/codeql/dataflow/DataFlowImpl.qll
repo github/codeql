@@ -4003,7 +4003,7 @@ module MakeImpl<DataFlowParameter Lang> {
 
       private predicate relevantState(FlowState state) {
         sourceNode(_, state) or
-        sinkNode(_, state) or
+        sinkNodeWithState(_, state) or
         additionalLocalStateStep(_, state, _, _) or
         additionalLocalStateStep(_, _, _, state) or
         additionalJumpStateStep(_, state, _, _) or
@@ -4060,7 +4060,7 @@ module MakeImpl<DataFlowParameter Lang> {
           NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
           TRevSummaryCtx3 sc3, PartialAccessPath ap
         ) {
-          sinkNode(node, state) and
+          sinkNodeWithState(node, state) and
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
           sc3 = TRevSummaryCtx3None() and
@@ -4278,7 +4278,7 @@ module MakeImpl<DataFlowParameter Lang> {
         }
 
         predicate isSink() {
-          sinkNode(node, state) and
+          sinkNodeWithState(node, state) and
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
           sc3 = TRevSummaryCtx3None() and
