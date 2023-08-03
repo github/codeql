@@ -11,7 +11,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.auth.InsecureDirectObjectRefrerenceQuery
+import semmle.code.csharp.security.auth.InsecureDirectObjectReferenceQuery
 
 from ActionMethod m
 where hasInsecureDirectObjectReference(m)
