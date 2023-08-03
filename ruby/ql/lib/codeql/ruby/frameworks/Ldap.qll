@@ -87,7 +87,7 @@ module NetLdap {
 
   /** A call considered as a LDAP bind. */
   private class NetLdapBind extends LdapBind::Range, DataFlow::CallNode {
-    NetLdapConnection l;
+    private NetLdapConnection l;
 
     NetLdapBind() { this = l.getAMethodCall("bind") }
 
