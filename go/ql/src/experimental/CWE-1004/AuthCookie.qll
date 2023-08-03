@@ -185,7 +185,7 @@ private module BoolToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
 module BoolToGinSetCookieTrackingFlow = DataFlow::Global<BoolToGinSetCookieTrackingConfig>;
 
 /**
- * DEPRECATED: Use `NameToGinSetCookieTrackingConfig` instead.
+ * DEPRECATED: Use `NameToGinSetCookieTrackingFlow` instead.
  *
  * A taint-tracking configuration for tracking flow from sensitive names to
  * `gin-gonic/gin.Context.SetCookie`.

@@ -14,7 +14,7 @@ module AllocationSizeOverflow {
   import AllocationSizeOverflowCustomizations::AllocationSizeOverflow
 
   /**
-   * DEPRECATED: Use `FindLargeLensFlow` instead.
+   * DEPRECATED: Use a copy of `FindLargeLensConfig` and `FindLargeLensFlow` instead.
    *
    * A taint-tracking configuration for identifying `len(...)` calls whose argument may be large.
    */
