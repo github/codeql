@@ -53,7 +53,11 @@ module NetLdap {
     }
 
     DataFlow::Node getAuthValue(string arg) {
-      result = this.getKeywordArgument("auth").(DataFlow::CallNode).getKeywordArgument(arg)
+      result =
+        this.getKeywordArgument("auth")
+            .(DataFlow::HashLiteralNode)
+            .getElementFromKey(any(Ast::ConstantValue cv | cv.isStringlikeValue(arg)))
+    }
     }
 
   }
