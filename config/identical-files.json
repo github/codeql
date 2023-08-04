@@ -34,8 +34,6 @@
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl1.qll"
   ],
   "TaintTracking Java/C++/C#/Go/Python/Ruby/Swift": [
-    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTracking.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTracking.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTracking.qll",
     "go/ql/lib/semmle/go/dataflow/internal/tainttracking1/TaintTracking.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTracking.qll",
