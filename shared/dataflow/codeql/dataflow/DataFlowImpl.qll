@@ -4003,11 +4003,20 @@ module MakeImpl<DataFlowParameter Lang> {
 
       private predicate relevantState(FlowState state) {
         sourceNode(_, state) or
-        sinkNodeWithState(_, state) or
+        revSinkNode(_, state) or
         additionalLocalStateStep(_, state, _, _) or
         additionalLocalStateStep(_, _, _, state) or
         additionalJumpStateStep(_, state, _, _) or
         additionalJumpStateStep(_, _, _, state)
+      }
+
+      private predicate revSinkNode(NodeEx node, FlowState state) {
+        sinkNodeWithState(node, state)
+        or
+        Config::isSink(node.asNode()) and
+        relevantState(state) and
+        not fullBarrier(node) and
+        not stateBarrier(node, state)
       }
 
       private newtype TSummaryCtx1 =
