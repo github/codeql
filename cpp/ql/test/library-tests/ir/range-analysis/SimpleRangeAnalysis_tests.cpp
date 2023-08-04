@@ -672,7 +672,7 @@ void test17() {
   range(i); // $ range===50
 
   i = 20 + (j -= 10);
-  range(i); // $ range="==Store: ... += ... | Store: ... = ...+10" range===60
+  range(i); // $ range="==Store: ... += ... | Store: ... = ...+10" range===60 range="==Store: ... -= ...+20"
 }
 
 // Tests for unsigned multiplication.
