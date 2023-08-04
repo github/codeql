@@ -15504,7 +15504,7 @@ ir.cpp:
 # 2028|             ValueCategory = lvalue
 # 2028|         getRValue(): [ConditionalExpr] ... ? ... : ...
 # 2028|             Type = [IntType] unsigned int
-# 2028|             ValueCategory = prvalue
+# 2028|             ValueCategory = prvalue(load)
 # 2028|           getCondition(): [LTExpr] ... < ...
 # 2028|               Type = [BoolType] bool
 # 2028|               ValueCategory = prvalue
@@ -15522,7 +15522,7 @@ ir.cpp:
 # 2028|                 ValueCategory = prvalue
 # 2029|           getThen(): [CommaExpr] ... , ...
 # 2029|               Type = [IntType] unsigned int
-# 2029|               ValueCategory = prvalue
+# 2029|               ValueCategory = prvalue(load)
 # 2029|             getLeftOperand(): [FunctionCall] call to CommaTestHelper
 # 2029|                 Type = [VoidType] void
 # 2029|                 ValueCategory = prvalue
@@ -15547,7 +15547,7 @@ ir.cpp:
 # 2030|                 ValueCategory = prvalue
 # 2029|           getThen().getFullyConverted(): [ParenthesisExpr] (...)
 # 2029|               Type = [IntType] unsigned int
-# 2029|               ValueCategory = prvalue
+# 2029|               ValueCategory = prvalue(load)
 # 2030|           getElse().getFullyConverted(): [CStyleCast] (unsigned int)...
 # 2030|               Conversion = [IntegralConversion] integral conversion
 # 2030|               Type = [IntType] unsigned int
