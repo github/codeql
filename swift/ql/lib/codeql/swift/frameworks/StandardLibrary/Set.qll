@@ -1,3 +1,7 @@
+/**
+ * Provides models for `Set` and related Swift classes.
+ */
+
 private import codeql.swift.dataflow.ExternalFlow
 
 /**
