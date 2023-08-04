@@ -30,6 +30,8 @@ namespace Semmle.BuildAnalyser
         private readonly DirectoryInfo sourceDir;
         private readonly DotNet dotnet;
         private readonly Lazy<IEnumerable<string>> allFiles;
+        private readonly TemporaryDirectory packageDirectory;
+
 
         /// <summary>
         /// Performs a C# build analysis.
@@ -196,6 +198,7 @@ namespace Semmle.BuildAnalyser
             {
                 finalAssemblyList[r.Name] = r;
             }
+
             // Update the used references list
             usedReferences.Clear();
             foreach (var r in finalAssemblyList.Select(r => r.Value.Filename))
@@ -219,25 +222,23 @@ namespace Semmle.BuildAnalyser
         /// Store that a particular reference file is used.
         /// </summary>
         /// <param name="reference">The filename of the reference.</param>
-        private void UseReference(string reference) =>
-            usedReferences[reference] = true;
+        private void UseReference(string reference) => usedReferences[reference] = true;
 
         /// <summary>
         /// Store that a particular source file is used (by a project file).
         /// </summary>
         /// <param name="sourceFile">The source file.</param>
-        private void UseSource(FileInfo sourceFile) =>
-            sources[sourceFile.FullName] = sourceFile.Exists;
+        private void UseSource(FileInfo sourceFile) => sources[sourceFile.FullName] = sourceFile.Exists;
 
         /// <summary>
         /// All files in the source directory.
         /// </summary>
-        private IEnumerable<string> AllFiles => this.allFiles.Value;
+        private IEnumerable<string> AllFiles => allFiles.Value;
 
         /// <summary>
         /// The list of resolved reference files.
         /// </summary>
-        public IEnumerable<string> ReferenceFiles => this.usedReferences.Keys;
+        public IEnumerable<string> ReferenceFiles => usedReferences.Keys;
 
         /// <summary>
         /// The list of source files used in projects.
@@ -252,7 +253,7 @@ namespace Semmle.BuildAnalyser
         /// <summary>
         /// List of assembly IDs which couldn't be resolved.
         /// </summary>
-        public IEnumerable<string> UnresolvedReferences => this.unresolvedReferences.Select(r => r.Key);
+        public IEnumerable<string> UnresolvedReferences => unresolvedReferences.Select(r => r.Key);
 
         /// <summary>
         /// List of source files which were mentioned in project files but
@@ -266,10 +267,7 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="id">The assembly ID.</param>
         /// <param name="projectFile">The project file making the reference.</param>
-        private void UnresolvedReference(string id, string projectFile) =>
-            unresolvedReferences[id] = projectFile;
-
-        private readonly TemporaryDirectory packageDirectory;
+        private void UnresolvedReference(string id, string projectFile) => unresolvedReferences[id] = projectFile;
 
         /// <summary>
         /// Reads all the source files and references from the given list of projects.
@@ -368,11 +366,11 @@ namespace Semmle.BuildAnalyser
         }
 
         /// <summary>
-        /// Returns true if the given project uses the ASP.NET components.
+        /// Returns true if any file in the source directory indicates that ASP.NET is used.
         /// The following heuristic is used to decide, if ASP.NET is used:
-        /// If any file in the project contains either of (this will most like be a .csproj file)
-        ///     <Project Sdk="Microsoft.NET.Sdk.Web" ...
-        ///     <FrameworkReference Include="Microsoft.AspNetCore.App" ...
+        /// If any file in the source directory contains something like (this will most like be a .csproj file)
+        ///     <Project Sdk="Microsoft.NET.Sdk.Web">
+        ///     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
         /// </summary>
         private bool UseAspNetDlls()
         {
@@ -488,8 +486,7 @@ namespace Semmle.BuildAnalyser
             });
         }
 
-        public void Dispose() =>
-            packageDirectory?.Dispose();
+        public void Dispose() => packageDirectory?.Dispose();
 
         [GeneratedRegex("<PackageReference\\s+Include=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex PackageReference();
