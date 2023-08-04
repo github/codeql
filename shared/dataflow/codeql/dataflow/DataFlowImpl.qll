@@ -4003,7 +4003,7 @@ module MakeImpl<DataFlowParameter Lang> {
 
       private predicate relevantState(FlowState state) {
         sourceNode(_, state) or
-        revSinkNode(_, state) or
+        sinkNodeWithState(_, state) or
         additionalLocalStateStep(_, state, _, _) or
         additionalLocalStateStep(_, _, _, state) or
         additionalJumpStateStep(_, state, _, _) or
