@@ -18,9 +18,15 @@ namespace Semmle.Extraction.CSharp.Standalone
         private const string aspNetCoreApp = "Microsoft.AspNetCore.App";
 
         private readonly IDotNet dotNet;
+        private readonly Lazy<Dictionary<string, RuntimeVersion>> newestRuntimes;
+        private Dictionary<string, RuntimeVersion> NewestRuntimes => newestRuntimes.Value;
         private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
-        public Runtime(IDotNet dotNet) => this.dotNet = dotNet;
+        public Runtime(IDotNet dotNet)
+        {
+            this.dotNet = dotNet;
+            this.newestRuntimes = new(GetNewestRuntimes);
+        }
 
         internal record RuntimeVersion : IComparable<RuntimeVersion>
         {
@@ -150,11 +156,8 @@ namespace Semmle.Extraction.CSharp.Standalone
                 return ExecutingRuntime;
             }
 
-            // Gets the newest version of the installed runtimes.
-            var newestRuntimes = GetNewestRuntimes();
-
             // Location of the newest .NET Core Runtime.
-            if (newestRuntimes.TryGetValue(netCoreApp, out var netCoreVersion))
+            if (NewestRuntimes.TryGetValue(netCoreApp, out var netCoreVersion))
             {
                 return netCoreVersion.FullPath;
             }
@@ -168,12 +171,13 @@ namespace Semmle.Extraction.CSharp.Standalone
             return ExecutingRuntime;
         }
 
+        /// <summary>
+        /// Gets the ASP.NET runtime location to use for extraction, if one exists.
+        /// </summary>
         public string? GetAspRuntime()
         {
-            var newestRuntimes = GetNewestRuntimes();
-
             // Location of the newest ASP.NET Core Runtime.
-            if (newestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
+            if (NewestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
             {
                 return aspNetCoreVersion.FullPath;
             }

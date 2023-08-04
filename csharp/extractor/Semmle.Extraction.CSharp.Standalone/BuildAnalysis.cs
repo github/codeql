@@ -29,6 +29,7 @@ namespace Semmle.BuildAnalyser
         private readonly Options options;
         private readonly DirectoryInfo sourceDir;
         private readonly DotNet dotnet;
+        private readonly Lazy<IEnumerable<string>> allFiles;
 
         /// <summary>
         /// Performs a C# build analysis.
@@ -55,6 +56,7 @@ namespace Semmle.BuildAnalyser
 
             this.progressMonitor.FindingFiles(options.SrcDir);
 
+            this.allFiles = new(() => GetFiles("*.*"));
             this.allSources = GetFiles("*.cs").ToArray();
             var allProjects = GetFiles("*.csproj");
             var solutions = options.SolutionFile is not null
@@ -228,6 +230,11 @@ namespace Semmle.BuildAnalyser
             sources[sourceFile.FullName] = sourceFile.Exists;
 
         /// <summary>
+        /// All files in the source directory.
+        /// </summary>
+        private IEnumerable<string> AllFiles => this.allFiles.Value;
+
+        /// <summary>
         /// The list of resolved reference files.
         /// </summary>
         public IEnumerable<string> ReferenceFiles => this.usedReferences.Keys;
@@ -369,8 +376,7 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         private bool UseAspNetDlls()
         {
-            var allFiles = GetFiles("*.*");
-            foreach (var file in allFiles)
+            foreach (var file in AllFiles)
             {
                 try
                 {
@@ -414,8 +420,7 @@ namespace Semmle.BuildAnalyser
                 nugetConfig = nugetConfigs.FirstOrDefault();
             }
 
-            var allFiles = GetFiles("*.*");
-            foreach (var file in allFiles)
+            foreach (var file in AllFiles)
             {
                 try
                 {
