@@ -116,7 +116,7 @@ signature module LangSig<DeltaSig D> {
   /** A reason for an inferred bound. */
   class SemReason {
     /**
-     * Returns `this` if `reason` is not an `SemTypeReason`. Otherwise,
+     * Returns `this` if `reason` is not a `SemTypeReason`. Otherwise,
      * this predicate returns `SemTypeReason`.
      *
      * This predicate ensures that we propagate `SemTypeReason` all the way
