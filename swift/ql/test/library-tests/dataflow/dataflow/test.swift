@@ -693,3 +693,37 @@ func testArray() {
     arr6.insert(source(), at: 2)
     sink(arg: arr6[0]) // $ flow=693
 }
+
+struct MyOptionals {
+    var v1 : Int? = 0
+    var v2 : Int? = 0
+    var v3 : Int! = 0
+}
+
+func testWriteOptional() {
+    var v1 : Int? = 0
+    var v2 : Int? = 0
+    var v3 : Int! = 0
+    var mo1 = MyOptionals()
+    var mo2 : MyOptionals! = MyOptionals()
+
+    v1! = source()
+    v2 = source()
+    v3 = source()
+    mo1.v1! = source()
+    mo1.v2 = source()
+    mo1.v3 = source()
+    mo2!.v1! = source()
+    mo2!.v2 = source()
+    mo2!.v3 = source()
+
+    sink(arg: v1!) // $ MISSING:flow=710
+    sink(arg: v2!) // $ flow=711
+    sink(arg: v3) // $ flow=712
+    sink(arg: mo1.v1!) // $ MISSING:flow=713
+    sink(arg: mo1.v2!) // $ flow=714
+    sink(arg: mo1.v3) // $ flow=715
+    sink(arg: mo2!.v1!) // $ MISSING:flow=716
+    sink(arg: mo2!.v2!) // $ MISSING:flow=717
+    sink(arg: mo2!.v3) // $ MISSING:flow=718
+}
