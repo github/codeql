@@ -61,18 +61,23 @@ private newtype TSemReason =
     guard = any(ConstantStage::SemCondReason reason).getCond()
     or
     guard = any(RelativeStage::SemCondReason reason).getCond()
-  }
+  } or
+  TSemTypeReason()
 
-ConstantStage::SemReason constantReason(SemReason reason) {
+private ConstantStage::SemReason constantReason(SemReason reason) {
   result instanceof ConstantStage::SemNoReason and reason instanceof SemNoReason
   or
   result.(ConstantStage::SemCondReason).getCond() = reason.(SemCondReason).getCond()
+  or
+  result instanceof ConstantStage::SemTypeReason and reason instanceof SemTypeReason
 }
 
-RelativeStage::SemReason relativeReason(SemReason reason) {
+private RelativeStage::SemReason relativeReason(SemReason reason) {
   result instanceof RelativeStage::SemNoReason and reason instanceof SemNoReason
   or
   result.(RelativeStage::SemCondReason).getCond() = reason.(SemCondReason).getCond()
+  or
+  result instanceof RelativeStage::SemTypeReason and reason instanceof SemTypeReason
 }
 
 import Public
@@ -110,5 +115,13 @@ module Public {
     SemGuard getCond() { this = TSemCondReason(result) }
 
     override string toString() { result = this.getCond().toString() }
+  }
+
+  /**
+   * A reason for an inferred bound that indicates that the bound is inferred
+   * based on type-information.
+   */
+  class SemTypeReason extends SemReason, TSemTypeReason {
+    override string toString() { result = "TypeReason" }
   }
 }
