@@ -118,7 +118,7 @@ module Public {
   }
 
   /**
-   * A reason for an inferred boudn that indicates that the bound is inferred
+   * A reason for an inferred bound that indicates that the bound is inferred
    * based on type-information.
    */
   class SemTypeReason extends SemReason, TSemTypeReason {
