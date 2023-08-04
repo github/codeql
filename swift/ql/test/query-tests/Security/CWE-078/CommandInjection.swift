@@ -149,13 +149,13 @@ func testCommandInjectionMore(mySafeString: String) {
 	let task8 = try! NSUserScriptTask(url: URL(string: mySafeString)!) // GOOD
 	task8.execute()
 
-	let task9 = try! NSUserScriptTask(url: URL(string: userControlledString)!) // BAD [NOT DETECTED]
+	let task9 = try! NSUserScriptTask(url: URL(string: userControlledString)!) // BAD
 	task9.execute()
 
-	let task10 = try! NSUserUnixTask(url: URL(string: userControlledString)!) // BAD [NOT DETECTED]
-	task10.execute(withArguments: [userControlledString]) // BAD [NOT DETECTED]
+	let task10 = try! NSUserUnixTask(url: URL(string: userControlledString)!) // BAD
+	task10.execute(withArguments: [userControlledString]) // BAD
 
-	let task11 = try! NSUserAutomatorTask(url: URL(string: userControlledString)!) // BAD [NOT DETECTED]
+	let task11 = try! NSUserAutomatorTask(url: URL(string: userControlledString)!) // BAD
 	task11.variables = ["abc": userControlledString] // BAD [NOT DETECTED]
 	task11.execute(withInput: nil)
 }

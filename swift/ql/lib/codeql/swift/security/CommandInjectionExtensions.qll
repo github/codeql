@@ -64,6 +64,8 @@ private class CommandInjectionSinks extends SinkModelCsv {
         ";Process;true;standardOutput;;;PostUpdate;command-injection",
         ";Process;true;currentDirectoryPath;;;PostUpdate;command-injection",
         ";Process;true;launchPath;;;PostUpdate;command-injection",
+        ";NSUserScriptTask;true;init(url:);;;Argument[0];command-injection",
+        ";NSUserUnixTask;true;execute(withArguments:completionHandler:);;;Argument[0];command-injection",
       ]
   }
 }

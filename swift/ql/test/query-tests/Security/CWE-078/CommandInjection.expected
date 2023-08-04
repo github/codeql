@@ -63,6 +63,23 @@ edges
 | CommandInjection.swift:146:23:146:55 | call to URL.init(string:) [some:0] | CommandInjection.swift:146:23:146:56 | ...! |
 | CommandInjection.swift:146:35:146:35 | userControlledString | CommandInjection.swift:146:23:146:55 | call to URL.init(string:) [some:0] |
 | CommandInjection.swift:147:70:147:70 | userControlledString | CommandInjection.swift:147:62:147:90 | [...] |
+| CommandInjection.swift:147:70:147:70 | userControlledString | CommandInjection.swift:152:53:152:53 | userControlledString |
+| CommandInjection.swift:147:70:147:70 | userControlledString | CommandInjection.swift:155:52:155:52 | userControlledString |
+| CommandInjection.swift:147:70:147:70 | userControlledString | CommandInjection.swift:156:33:156:33 | userControlledString |
+| CommandInjection.swift:152:41:152:73 | call to URL.init(string:) [some:0] | CommandInjection.swift:152:41:152:74 | ...! |
+| CommandInjection.swift:152:53:152:53 | userControlledString | CommandInjection.swift:152:41:152:73 | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:155:40:155:72 | call to URL.init(string:) [some:0] | CommandInjection.swift:155:40:155:73 | ...! |
+| CommandInjection.swift:155:40:155:72 | call to URL.init(string:) [some:0] | CommandInjection.swift:155:40:155:73 | ...! |
+| CommandInjection.swift:155:40:155:73 | ...! | file://:0:0:0:0 | url |
+| CommandInjection.swift:155:52:155:52 | userControlledString | CommandInjection.swift:155:40:155:72 | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:156:33:156:33 | userControlledString | CommandInjection.swift:156:32:156:53 | [...] |
+| CommandInjection.swift:156:33:156:33 | userControlledString | CommandInjection.swift:158:57:158:57 | userControlledString |
+| CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] | CommandInjection.swift:158:45:158:78 | ...! |
+| CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] | CommandInjection.swift:158:45:158:78 | ...! |
+| CommandInjection.swift:158:45:158:78 | ...! | file://:0:0:0:0 | url |
+| CommandInjection.swift:158:57:158:57 | userControlledString | CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] |
+| file://:0:0:0:0 | url | file://:0:0:0:0 | url |
+| file://:0:0:0:0 | url | file://:0:0:0:0 | url |
 nodes
 | CommandInjection.swift:58:22:58:33 | command | semmle.label | command |
 | CommandInjection.swift:58:22:58:33 | command [some:0] | semmle.label | command [some:0] |
@@ -129,6 +146,23 @@ nodes
 | CommandInjection.swift:146:35:146:35 | userControlledString | semmle.label | userControlledString |
 | CommandInjection.swift:147:62:147:90 | [...] | semmle.label | [...] |
 | CommandInjection.swift:147:70:147:70 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:152:41:152:73 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:152:41:152:74 | ...! | semmle.label | ...! |
+| CommandInjection.swift:152:53:152:53 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:155:40:155:72 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:155:40:155:73 | ...! | semmle.label | ...! |
+| CommandInjection.swift:155:40:155:73 | ...! | semmle.label | ...! |
+| CommandInjection.swift:155:52:155:52 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:156:32:156:53 | [...] | semmle.label | [...] |
+| CommandInjection.swift:156:33:156:33 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:158:45:158:78 | ...! | semmle.label | ...! |
+| CommandInjection.swift:158:45:158:78 | ...! | semmle.label | ...! |
+| CommandInjection.swift:158:57:158:57 | userControlledString | semmle.label | userControlledString |
+| file://:0:0:0:0 | url | semmle.label | url |
+| file://:0:0:0:0 | url | semmle.label | url |
+| file://:0:0:0:0 | url | semmle.label | url |
+| file://:0:0:0:0 | url | semmle.label | url |
 subpaths
 | CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:58:22:58:33 | command | CommandInjection.swift:62:16:62:16 | command [some:0] | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
 | CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | CommandInjection.swift:58:22:58:33 | command [some:0] | CommandInjection.swift:62:16:62:16 | command [some:0] | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
@@ -145,3 +179,9 @@ subpaths
 | CommandInjection.swift:143:67:143:95 | [...] | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:143:67:143:95 | [...] | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:146:23:146:56 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:146:23:146:56 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:147:62:147:90 | [...] | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:147:62:147:90 | [...] | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:152:41:152:74 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:152:41:152:74 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:155:40:155:73 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:155:40:155:73 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:156:32:156:53 | [...] | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:156:32:156:53 | [...] | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:158:45:158:78 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:158:45:158:78 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| file://:0:0:0:0 | url | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | file://:0:0:0:0 | url | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| file://:0:0:0:0 | url | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | file://:0:0:0:0 | url | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
