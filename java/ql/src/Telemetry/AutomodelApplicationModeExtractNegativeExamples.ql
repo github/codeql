@@ -24,7 +24,7 @@ Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
   exists(int n, int num_endpoints | num_endpoints = count(Endpoint e | c.appliesToEndpoint(e)) |
     result =
       rank[n](Endpoint e, Location loc |
-        loc = e.getLocation() and c.appliesToEndpoint(e)
+        loc = e.asTop().getLocation() and c.appliesToEndpoint(e)
       |
         e
         order by
@@ -63,7 +63,8 @@ where
     characteristic2.hasImplications(positiveType, true, confidence2)
   ) and
   message = characteristic
-select endpoint, message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
+select endpoint.asNode(),
+  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   package, "package", //
   type, "type", //

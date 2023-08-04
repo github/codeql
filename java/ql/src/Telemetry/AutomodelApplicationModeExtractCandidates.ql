@@ -33,7 +33,7 @@ private Endpoint getSampleForSignature(
   |
     result =
       rank[n](Endpoint e, Location loc |
-        loc = e.getLocation() and
+        loc = e.asTop().getLocation() and
         meta.hasMetadata(e, package, type, subtypes, name, signature, input)
       |
         e
@@ -75,7 +75,8 @@ where
     |
       sinkType, ", "
     )
-select endpoint, message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
+select endpoint.asNode(),
+  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   package, "package", //
   type, "type", //
