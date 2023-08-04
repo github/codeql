@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: experimentalSummaryModel
     data:
-      - ["java.io", "FileInputStream", True, "FileInputStream", "", "", "Argument[0]", "Argument[-1]", "taint", "manual", "android-web-resource-response"]
+      - ["java.io", "FileInputStream", True, "FileInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual", "android-web-resource-response"]

@@ -2,12 +2,13 @@ package extractor
 
 import (
 	"fmt"
-	"golang.org/x/mod/modfile"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"golang.org/x/mod/modfile"
 
 	"github.com/github/codeql-go/extractor/dbscheme"
 	"github.com/github/codeql-go/extractor/srcarchive"
@@ -45,7 +46,7 @@ func (extraction *Extraction) extractGoMod(path string) error {
 	if err != nil {
 		return fmt.Errorf("failed to open go.mod file %s: %s", path, err.Error())
 	}
-	data, err := ioutil.ReadAll(file)
+	data, err := io.ReadAll(file)
 	if err != nil {
 		return fmt.Errorf("failed to read go.mod file %s: %s", path, err.Error())
 	}

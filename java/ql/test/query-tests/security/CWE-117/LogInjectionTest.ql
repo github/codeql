@@ -8,10 +8,4 @@ private class TestSource extends RemoteFlowSource {
   override string getSourceType() { result = "test source" }
 }
 
-private class LogInjectionTest extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
-
-  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
-    LogInjectionFlow::hasFlow(src, sink)
-  }
-}
+import TaintFlowTest<LogInjectionConfig>

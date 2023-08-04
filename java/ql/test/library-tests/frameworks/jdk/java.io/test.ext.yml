@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "getThrowable_messageDefault", "(Object)", "", "Argument[0].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]

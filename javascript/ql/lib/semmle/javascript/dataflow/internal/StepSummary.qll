@@ -94,6 +94,10 @@ private module Cached {
     DataFlow::localFieldStep(pred, succ) and
     summary = LevelStep()
     or
+    // Implied flow of host object into 'this' of a method
+    CallGraph::impliedReceiverStep(pred, succ) and
+    summary = CallStep()
+    or
     exists(string prop |
       basicStoreStep(pred, succ, prop) and
       summary = StoreStep(prop)

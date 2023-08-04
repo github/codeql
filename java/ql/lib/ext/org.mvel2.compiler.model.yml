@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.mvel2.compiler", "Accessor", False, "getValue", "", "", "Argument[-1]", "mvel", "manual"]
-      - ["org.mvel2.compiler", "CompiledAccExpression", False, "getValue", "", "", "Argument[-1]", "mvel", "manual"]
-      - ["org.mvel2.compiler", "CompiledExpression", False, "getDirectValue", "", "", "Argument[-1]", "mvel", "manual"]
-      - ["org.mvel2.compiler", "ExecutableStatement", False, "getValue", "", "", "Argument[-1]", "mvel", "manual"]
+      - ["org.mvel2.compiler", "Accessor", False, "getValue", "", "", "Argument[this]", "mvel-injection", "manual"]
+      - ["org.mvel2.compiler", "CompiledAccExpression", False, "getValue", "", "", "Argument[this]", "mvel-injection", "manual"]
+      - ["org.mvel2.compiler", "CompiledExpression", False, "getDirectValue", "", "", "Argument[this]", "mvel-injection", "manual"]
+      - ["org.mvel2.compiler", "ExecutableStatement", False, "getValue", "", "", "Argument[this]", "mvel-injection", "manual"]

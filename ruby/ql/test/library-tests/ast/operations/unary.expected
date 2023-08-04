@@ -7,6 +7,7 @@ unaryOperations
 | operations.rb:28:1:28:12 | defined? ... | defined? | operations.rb:28:10:28:12 | foo | DefinedExpr |
 | operations.rb:29:20:29:23 | * ... | * | operations.rb:29:21:29:23 | [...] | SplatExpr |
 | operations.rb:29:31:29:42 | ** ... | ** | operations.rb:29:33:29:42 | {...} | HashSplatExpr |
+| operations.rb:104:24:104:32 | * ... | * | operations.rb:104:24:104:32 | [...] | SplatExpr |
 unaryLogicalOperations
 | operations.rb:23:1:23:2 | ! ... | ! | operations.rb:23:2:23:2 | a | NotExpr |
 | operations.rb:24:1:24:5 | not ... | not | operations.rb:24:5:24:5 | b | NotExpr |

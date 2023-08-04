@@ -34,9 +34,13 @@ private module Cached {
 
   cached
   predicate hasUnreachedInstructionCached(IRFunction irFunc) {
-    exists(OldInstruction oldInstruction |
+    exists(OldIR::Instruction oldInstruction |
       irFunc = oldInstruction.getEnclosingIRFunction() and
-      Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+      (
+        Reachability::isInfeasibleInstructionSuccessor(oldInstruction, _)
+        or
+        oldInstruction.getOpcode() instanceof Opcode::Unreached
+      )
     )
   }
 
@@ -366,21 +370,19 @@ private module Cached {
     then
       result = getChi(getOldInstruction(instruction)) and
       kind instanceof GotoEdge
-    else (
+    else
       exists(OldInstruction oldInstruction |
-        oldInstruction = getOldInstruction(instruction) and
+        (
+          oldInstruction = getOldInstruction(instruction)
+          or
+          instruction = getChi(oldInstruction)
+        ) and
         (
           if Reachability::isInfeasibleInstructionSuccessor(oldInstruction, kind)
           then result = unreachedInstruction(instruction.getEnclosingIRFunction())
           else result = getNewInstruction(oldInstruction.getSuccessor(kind))
         )
       )
-      or
-      exists(OldInstruction oldInstruction |
-        instruction = getChi(oldInstruction) and
-        result = getNewInstruction(oldInstruction.getSuccessor(kind))
-      )
-    )
   }
 
   cached
@@ -418,12 +420,6 @@ private module Cached {
     exists(IRFunctionBase irFunc |
       instr = unreachedInstruction(irFunc) and result = irFunc.getFunction()
     )
-  }
-
-  /** DEPRECATED: Alias for getInstructionAst */
-  cached
-  deprecated Language::AST getInstructionAST(Instruction instr) {
-    result = getInstructionAst(instr)
   }
 
   cached
@@ -991,20 +987,14 @@ predicate canReuseSsaForMemoryResult(Instruction instruction) {
   // We don't support reusing SSA for any location that could create a `Chi` instruction.
 }
 
-/** DEPRECATED: Alias for canReuseSsaForMemoryResult */
-deprecated predicate canReuseSSAForMemoryResult = canReuseSsaForMemoryResult/1;
-
 /**
  * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
- * `DebugSSA` module, which is then imported by PrintSSA.
+ * `DebugSsa` module, which is then imported by PrintSSA.
  */
 module DebugSsa {
   import PhiInsertion
   import DefUse
 }
-
-/** DEPRECATED: Alias for DebugSsa */
-deprecated module DebugSSA = DebugSsa;
 
 import CachedForDebugging
 
@@ -1062,62 +1052,6 @@ private module CachedForDebugging {
   cached
   int maxValue() { result = 2147483647 }
 }
-
-module SsaConsistency {
-  /**
-   * Holds if a `MemoryOperand` has more than one `MemoryLocation` assigned by alias analysis.
-   */
-  query predicate multipleOperandMemoryLocations(
-    OldIR::MemoryOperand operand, string message, OldIR::IRFunction func, string funcText
-  ) {
-    exists(int locationCount |
-      locationCount = strictcount(Alias::getOperandMemoryLocation(operand)) and
-      locationCount > 1 and
-      func = operand.getEnclosingIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction()) and
-      message =
-        operand.getUse().toString() + " " + "Operand has " + locationCount.toString() +
-          " memory accesses in function '$@': " +
-          strictconcat(Alias::getOperandMemoryLocation(operand).toString(), ", ")
-    )
-  }
-
-  /**
-   * Holds if a `MemoryLocation` does not have an associated `VirtualVariable`.
-   */
-  query predicate missingVirtualVariableForMemoryLocation(
-    Alias::MemoryLocation location, string message, OldIR::IRFunction func, string funcText
-  ) {
-    not exists(location.getVirtualVariable()) and
-    func = location.getIRFunction() and
-    funcText = Language::getIdentityString(func.getFunction()) and
-    message = "Memory location has no virtual variable in function '$@'."
-  }
-
-  /**
-   * Holds if a `MemoryLocation` is a member of more than one `VirtualVariable`.
-   */
-  query predicate multipleVirtualVariablesForMemoryLocation(
-    Alias::MemoryLocation location, string message, OldIR::IRFunction func, string funcText
-  ) {
-    exists(int vvarCount |
-      vvarCount = strictcount(location.getVirtualVariable()) and
-      vvarCount > 1 and
-      func = location.getIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction()) and
-      message =
-        "Memory location has " + vvarCount.toString() + " virtual variables in function '$@': (" +
-          concat(Alias::VirtualVariable vvar |
-            vvar = location.getVirtualVariable()
-          |
-            vvar.toString(), ", "
-          ) + ")."
-    )
-  }
-}
-
-/** DEPRECATED: Alias for SsaConsistency */
-deprecated module SSAConsistency = SsaConsistency;
 
 /**
  * Provides the portion of the parameterized IR interface that is used to construct the SSA stages

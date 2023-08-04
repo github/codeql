@@ -14,8 +14,8 @@ import semmle.code.cpp.models.interfaces.Taint
  */
 private class ConversionConstructorModel extends Constructor, TaintFunction {
   ConversionConstructorModel() {
-    strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
-    not hasSpecifier("explicit")
+    strictcount(Parameter p | p = this.getAParameter() and not p.hasInitializer()) = 1 and
+    not this.hasSpecifier("explicit")
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

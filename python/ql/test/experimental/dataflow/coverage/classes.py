@@ -535,21 +535,6 @@ def test_len_if():
         pass
 
 
-# object.__length_hint__(self)
-class With_length_hint:
-    def __length_hint__(self):
-        SINK1(self)
-        OK()  # Call not found
-        return 0
-
-
-def test_length_hint():
-    import operator
-
-    with_length_hint = With_length_hint()  #$ MISSING: arg1="SSA variable with_length_hint" func=With_length_hint.__length_hint__
-    operator.length_hint(with_length_hint)
-
-
 # object.__getitem__(self, key)
 class With_getitem:
     def __getitem__(self, key):
@@ -1376,13 +1361,6 @@ class With_index:
         SINK1(self)
         OK()  # Call not found
         return 0
-
-
-def test_index():
-    import operator
-
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
-    operator.index(with_index)
 
 
 def test_index_slicing():

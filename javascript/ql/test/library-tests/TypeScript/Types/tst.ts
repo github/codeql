@@ -424,3 +424,45 @@ module TS49 {
     }
   }
 }
+
+/////////////////
+
+module TS50 {
+    function loggedMethod<This, Args extends any[], Return>(
+        target: (this: This, ...args: Args) => Return,
+        context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
+    ) {
+        const methodName = String(context.name);
+    
+        function replacementMethod(this: This, ...args: Args): Return {
+            console.log(`LOG: Entering method '${methodName}'.`)
+            const result = target.call(this, ...args);
+            console.log(`LOG: Exiting method '${methodName}'.`)
+            return result;
+        }
+    
+        return replacementMethod;
+    }
+
+    class Person {
+        name: string;
+        constructor(name: string) {
+            this.name = name;
+        }
+    
+        @loggedMethod("")
+        greet() {
+            console.log(`Hello, my name is ${this.name}.`);
+            return 2;
+        }
+    }
+
+    const p = new Person("John").greet(); // <- number, part of well-typed decorators in TS 5.0.
+
+    declare function myConstIdFunction<const T extends readonly string[]>(args: T): T;
+
+    // foo is readonly ["a", "b", "c"]
+    const foo = myConstIdFunction(["a", "b" ,"c"]);
+    
+    const b = foo[1]; // <- "b"
+}

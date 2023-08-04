@@ -8,15 +8,17 @@ predicate locationIsInStandardHeaders(Location loc) {
 }
 
 /**
- * Holds if the AST or IR for the specified function should be printed in the test output.
+ * Holds if the AST or IR for the specified declaration should be printed in the test output.
  *
- * This predicate excludes functions defined in standard headers.
+ * This predicate excludes declarations defined in standard headers.
  */
-predicate shouldDumpFunction(Declaration decl) {
+predicate shouldDumpDeclaration(Declaration decl) {
   not locationIsInStandardHeaders(decl.getLocation()) and
   (
     decl instanceof Function
     or
     decl.(GlobalOrNamespaceVariable).hasInitializer()
+    or
+    decl.(StaticLocalVariable).hasInitializer()
   )
 }

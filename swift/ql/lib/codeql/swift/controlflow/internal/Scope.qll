@@ -3,7 +3,7 @@ private import codeql.swift.generated.ParentChild
 private import codeql.swift.generated.Synth
 
 module CallableBase {
-  class TypeRange = Synth::TAbstractFunctionDecl or Synth::TKeyPathExpr or Synth::TClosureExpr;
+  class TypeRange = Synth::TFunction or Synth::TKeyPathExpr or Synth::TClosureExpr;
 
   class Range extends Scope::Range, TypeRange { }
 }

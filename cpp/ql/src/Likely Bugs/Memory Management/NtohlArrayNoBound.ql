@@ -12,5 +12,5 @@ import cpp
 import NtohlArrayNoBound
 
 from DataFlow::Node source, DataFlow::Node sink
-where NetworkToBufferSizeFlow::hasFlow(source, sink)
+where NetworkToBufferSizeFlow::flow(source, sink)
 select sink, "Unchecked use of data from network function $@.", source, source.toString()

@@ -14,7 +14,7 @@
 import go
 
 /**
- * Holds if `src` is a pattern for a collection of alternatives where
+ * Holds if `re` is a pattern for a collection of alternatives where
  * only the first or last alternative is anchored, indicating a
  * precedence mistake explained by `msg`.
  *
@@ -46,7 +46,7 @@ predicate isInterestingSemiAnchoredRegexpString(string re, string msg) {
 }
 
 /**
- * Holds if `src` is an unanchored pattern for a URL, indicating a
+ * Holds if `re` is an unanchored pattern for a URL, indicating a
  * mistake explained by `msg`.
  */
 bindingset[re]
@@ -71,7 +71,7 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
+  override predicate isSource(DataFlow::Node source) { this.isSourceString(source, _) }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }

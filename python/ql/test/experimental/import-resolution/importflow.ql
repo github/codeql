@@ -11,6 +11,9 @@ private class SourceString extends DataFlow::Node {
   SourceString() {
     this.asExpr().(StrConst).getText() = contents and
     this.asExpr().getParent() instanceof Assign
+    or
+    this.asExpr().(ClassExpr).getInnerScope().getName() = "SOURCE" and
+    contents = "SOURCE"
   }
 
   string getContents() { result = contents }
@@ -63,14 +66,16 @@ private class ImportConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink = API::moduleImport("trace").getMember("check").getACall().getArg(1)
   }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    exists(DataFlow::MethodCallNode call | call.calls(node, "block_flow"))
+  }
 }
 
-class ResolutionTest extends InlineExpectationsTest {
-  ResolutionTest() { this = "ResolutionTest" }
+module ResolutionTest implements TestSig {
+  string getARelevantTag() { result = "prints" }
 
-  override string getARelevantTag() { result = "prints" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     (
       exists(DataFlow::PathNode source, DataFlow::PathNode sink, ImportConfiguration config |
         config.hasFlowPath(source, sink) and
@@ -98,12 +103,10 @@ private string getTagForVersion(int version) {
   version = major_version()
 }
 
-class VersionSpecificResolutionTest extends InlineExpectationsTest {
-  VersionSpecificResolutionTest() { this = "VersionSpecificResolutionTest" }
+module VersionSpecificResolutionTest implements TestSig {
+  string getARelevantTag() { result = getTagForVersion(_) }
 
-  override string getARelevantTag() { result = getTagForVersion(_) }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     (
       exists(DataFlow::PathNode source, DataFlow::PathNode sink, ImportConfiguration config |
         config.hasFlowPath(source, sink) and
@@ -123,3 +126,5 @@ class VersionSpecificResolutionTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests<ResolutionTest, VersionSpecificResolutionTest>>

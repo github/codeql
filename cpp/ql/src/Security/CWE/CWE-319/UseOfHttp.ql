@@ -89,10 +89,10 @@ module HttpStringToUrlOpenConfig implements DataFlow::ConfigSig {
   }
 }
 
-module HttpStringToUrlOpen = TaintTracking::Make<HttpStringToUrlOpenConfig>;
+module HttpStringToUrlOpen = TaintTracking::Global<HttpStringToUrlOpenConfig>;
 
 from HttpStringToUrlOpen::PathNode source, HttpStringToUrlOpen::PathNode sink, HttpStringLiteral str
 where
-  HttpStringToUrlOpen::hasFlowPath(source, sink) and
+  HttpStringToUrlOpen::flowPath(source, sink) and
   str = source.getNode().asIndirectExpr()
 select str, source, sink, "This URL may be constructed with the HTTP protocol."

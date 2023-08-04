@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.netty.channel", "Channel$Unsafe", True, "connect", "(SocketAddress,SocketAddress,ChannelPromise)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["io.netty.channel", "ChannelDuplexHandler", True, "connect", "(ChannelHandlerContext,SocketAddress,SocketAddress,ChannelPromise)", "", "Argument[1]", "request-forgery", "ai-manual"]
+      - ["io.netty.channel", "ChannelOutboundHandlerAdapter", True, "connect", "(ChannelHandlerContext,SocketAddress,SocketAddress,ChannelPromise)", "", "Argument[1]", "request-forgery", "ai-manual"]
+      - ["io.netty.channel", "ChannelOutboundInvoker", True, "connect", "(SocketAddress,ChannelPromise)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["io.netty.channel", "ChannelOutboundInvoker", True, "connect", "(SocketAddress,SocketAddress,ChannelPromise)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["io.netty.channel", "ChannelOutboundInvoker", True, "connect", "(SocketAddress)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["io.netty.channel", "DefaultChannelPipeline", False, "connect", "(SocketAddress,ChannelPromise)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["io.netty.channel", "DefaultChannelPipeline", False, "connect", "(SocketAddress,SocketAddress,ChannelPromise)", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["io.netty.channel", "DefaultChannelPipeline", False, "connect", "(SocketAddress,SocketAddress)", "", "Argument[0]", "request-forgery", "ai-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.netty.channel", "ChannelInboundHandler", True, "channelRead", "", "", "Parameter[1]", "remote", "manual"]
+      - ["io.netty.channel", "SimpleChannelInboundHandler", True, "channelRead0", "", "", "Parameter[1]", "remote", "manual"]

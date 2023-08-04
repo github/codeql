@@ -12,15 +12,20 @@ predicate taintFlowUpdate(DataFlow::ParameterNode p1, DataFlow::ParameterNode p2
   exists(DataFlow::PostUpdateNode ret | localTaint(p1, ret) | ret.getPreUpdateNode() = p2)
 }
 
+predicate summaryStep(FlowSummaryNode src, FlowSummaryNode sink) {
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(src.getSummaryNode(), sink.getSummaryNode(),
+    false) or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(src.getSummaryNode(), _, sink.getSummaryNode()) or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(src.getSummaryNode(), _, sink.getSummaryNode())
+}
+
 from DataFlow::Node src, DataFlow::Node sink
 where
   (
     localAdditionalTaintStep(src, sink) or
     FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
   ) and
-  not FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false) and
-  not FlowSummaryImpl::Private::Steps::summaryReadStep(src, _, sink) and
-  not FlowSummaryImpl::Private::Steps::summaryStoreStep(src, _, sink)
+  not summaryStep(src, sink)
   or
   exists(ArgumentNode arg, MethodAccess call, DataFlow::ParameterNode p, int i |
     src = arg and

@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.xml.transform", "Transformer", False, "transform", "", "", "Argument[-1]", "xslt", "manual"]
+      - ["javax.xml.transform", "Transformer", False, "transform", "", "", "Argument[this]", "xslt-injection", "manual"]

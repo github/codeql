@@ -7,7 +7,7 @@ query predicate sqlExpressions(SqlExpr se, Expr e) { se.getSql() = e }
 query predicate sqlCsvSinks(Element p, Expr e) {
   p = e.getParent() and
   exists(Node n |
-    sinkNode(n, "sql") and
+    sinkNode(n, "sql-injection") and
     n.asExpr() = e
   )
 }

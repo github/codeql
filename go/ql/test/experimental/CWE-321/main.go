@@ -1,13 +1,17 @@
 package main
 
 //go:generate depstubber -vendor github.com/appleboy/gin-jwt/v2 GinJWTMiddleware New
-//go:generate depstubber -vendor github.com/golang-jwt/jwt/v4 MapClaims,RegisteredClaims,SigningMethodRSA,SigningMethodHMAC,Token NewNumericDate,NewWithClaims
+//go:generate depstubber -vendor github.com/golang-jwt/jwt/v4 MapClaims,RegisteredClaims,SigningMethodRSA,SigningMethodHMAC,Token NewNumericDate,NewWithClaims,New
 //go:generate depstubber -vendor github.com/gin-gonic/gin Context New
 //go:generate depstubber -vendor github.com/go-kit/kit/auth/jwt "" NewSigner
 //go:generate depstubber -vendor github.com/lestrrat/go-jwx/jwk "" New
 //go:generate depstubber -vendor github.com/square/go-jose/v3 Recipient NewEncrypter,NewSigner
 //go:generate depstubber -vendor gopkg.in/square/go-jose.v2 Recipient NewEncrypter,NewSigner
 //go:generate depstubber -vendor github.com/cristalhq/jwt/v3 Signer NewSignerHS,HS256
+//go:generate depstubber -vendor github.com/iris-contrib/middleware/jwt "" NewToken,NewTokenWithClaims
+//go:generate depstubber -vendor github.com/kataras/iris/v12/middleware/jwt Signer,Verifier NewSigner,NewVerifier
+//go:generate depstubber -vendor github.com/kataras/jwt Keys,Alg Sign,SignEncrypted,SignEncryptedWithHeader,SignWithHeader
+//go:generate depstubber -vendor github.com/gogf/gf-jwt/v2 GfJWTMiddleware
 
 import (
 	"time"
@@ -15,7 +19,11 @@ import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	cristal "github.com/cristalhq/jwt/v3"
 	gokit "github.com/go-kit/kit/auth/jwt"
+	gogf "github.com/gogf/gf-jwt/v2"
 	gjwt "github.com/golang-jwt/jwt/v4"
+	iris "github.com/iris-contrib/middleware/jwt"
+	iris12 "github.com/kataras/iris/v12/middleware/jwt"
+	kataras "github.com/kataras/jwt"
 	le "github.com/lestrrat/go-jwx/jwk"
 	jose_v3 "github.com/square/go-jose/v3"
 	jose_v2 "gopkg.in/square/go-jose.v2"
@@ -111,6 +119,78 @@ var sharedKeyglobal = []byte("key10")
 
 func lejwt2() (interface{}, error) {
 	return le.New(sharedKeyglobal) // BAD
+}
+
+func gogfjwt() interface{} {
+	return &gogf.GfJWTMiddleware{
+		Realm:           "test zone",
+		Key:             []byte("key11"),
+		Timeout:         time.Minute * 5,
+		MaxRefresh:      time.Minute * 5,
+		IdentityKey:     "id",
+		TokenLookup:     "header: Authorization, query: token, cookie: jwt",
+		TokenHeadName:   "Bearer",
+		TimeFunc:        time.Now,
+		Authenticator:   nil,
+		Unauthorized:    nil,
+		PayloadFunc:     nil,
+		IdentityHandler: nil,
+	}
+}
+
+func irisjwt() interface{} {
+	mySecret := []byte("key12")
+	token := iris.NewTokenWithClaims(nil, nil)
+	tokenString, _ := token.SignedString(mySecret)
+	return tokenString
+}
+
+func iris12jwt2() interface{} {
+	mySecret := []byte("key13")
+
+	s := &iris12.Signer{
+		Alg:    nil,
+		Key:    mySecret,
+		MaxAge: 3 * time.Second,
+	}
+	return s
+}
+
+func irisjwt3() interface{} {
+	secret := []byte("key14")
+	signer := iris12.NewSigner(nil, secret, 3*time.Second)
+	return signer
+}
+
+func katarasJwt() interface{} {
+	secret := []byte("key15")
+	token, _ := kataras.Sign(nil, secret, nil, nil)
+	return token
+}
+
+func katarasJwt2() interface{} {
+	secret := []byte("key16")
+	token, _ := kataras.SignEncrypted(nil, secret, nil, nil)
+	return token
+}
+
+func katarasJwt3() interface{} {
+	secret := []byte("key17")
+	token, _ := kataras.SignEncryptedWithHeader(nil, secret, nil, nil, nil)
+	return token
+}
+
+func katarasJwt4() interface{} {
+	secret := []byte("key18")
+	token, _ := kataras.SignWithHeader(nil, secret, nil, nil)
+	return token
+}
+
+func katarasJwt5() {
+	secret := []byte("key19")
+	var keys kataras.Keys
+	var alg kataras.Alg
+	keys.Register(alg, "api", nil, secret)
 }
 
 func main() {

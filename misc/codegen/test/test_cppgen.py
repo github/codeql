@@ -62,19 +62,20 @@ def test_two_class_hierarchy(generate):
     ("boolean", "bool"),
     ("MyClass", "TrapLabel<MyClassTag>"),
 ])
-@pytest.mark.parametrize("property_cls,optional,repeated,trap_name", [
-    (schema.SingleProperty, False, False, None),
-    (schema.OptionalProperty, True, False, "MyClassProps"),
-    (schema.RepeatedProperty, False, True, "MyClassProps"),
-    (schema.RepeatedOptionalProperty, True, True, "MyClassProps"),
+@pytest.mark.parametrize("property_cls,optional,repeated,unordered,trap_name", [
+    (schema.SingleProperty, False, False, False, None),
+    (schema.OptionalProperty, True, False, False, "MyClassProps"),
+    (schema.RepeatedProperty, False, True, False, "MyClassProps"),
+    (schema.RepeatedOptionalProperty, True, True, False, "MyClassProps"),
+    (schema.RepeatedUnorderedProperty, False, True, True, "MyClassProps"),
 ])
-def test_class_with_field(generate, type, expected, property_cls, optional, repeated, trap_name):
+def test_class_with_field(generate, type, expected, property_cls, optional, repeated, unordered, trap_name):
     assert generate([
         schema.Class(name="MyClass", properties=[property_cls("prop", type)]),
     ]) == [
         cpp.Class(name="MyClass",
                   fields=[cpp.Field("prop", expected, is_optional=optional,
-                                    is_repeated=repeated, trap_name=trap_name)],
+                                    is_repeated=repeated, is_unordered=unordered, trap_name=trap_name)],
                   trap_name="MyClasses",
                   final=True)
     ]
@@ -180,25 +181,47 @@ def test_cpp_skip_pragma(generate):
     ]
 
 
-def test_ipa_classes_ignored(generate):
+def test_synth_classes_ignored(generate):
     assert generate([
         schema.Class(
             name="W",
-            ipa=schema.IpaInfo(),
+            synth=schema.SynthInfo(),
         ),
         schema.Class(
             name="X",
-            ipa=schema.IpaInfo(from_class="A"),
+            synth=schema.SynthInfo(from_class="A"),
         ),
         schema.Class(
             name="Y",
-            ipa=schema.IpaInfo(on_arguments={"a": "A", "b": "int"}),
+            synth=schema.SynthInfo(on_arguments={"a": "A", "b": "int"}),
         ),
         schema.Class(
             name="Z",
         ),
     ]) == [
         cpp.Class(name="Z", final=True, trap_name="Zs"),
+    ]
+
+
+def test_synth_properties_ignored(generate):
+    assert generate([
+        schema.Class(
+            name="X",
+            properties=[
+                schema.SingleProperty("x", "a"),
+                schema.SingleProperty("y", "b", synth=True),
+                schema.SingleProperty("z", "c"),
+                schema.OptionalProperty("foo", "bar", synth=True),
+                schema.RepeatedProperty("baz", "bazz", synth=True),
+                schema.RepeatedOptionalProperty("bazzz", "bazzzz", synth=True),
+                schema.RepeatedUnorderedProperty("bazzzzz", "bazzzzzz", synth=True),
+            ],
+        ),
+    ]) == [
+        cpp.Class(name="X", final=True, trap_name="Xes", fields=[
+            cpp.Field("x", "a"),
+            cpp.Field("z", "c"),
+        ]),
     ]
 
 

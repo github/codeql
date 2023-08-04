@@ -4,6 +4,18 @@ edges
 | test2.cpp:25:22:25:23 | & ... | test2.cpp:27:13:27:13 | v |
 | test2.cpp:25:22:25:23 | fscanf output argument | test2.cpp:27:13:27:13 | v |
 | test2.cpp:27:13:27:13 | v | test2.cpp:12:21:12:21 | v |
+| test2.cpp:36:9:36:14 | buffer | test2.cpp:39:9:39:11 | num |
+| test2.cpp:36:9:36:14 | buffer | test2.cpp:39:9:39:11 | num |
+| test2.cpp:36:9:36:14 | buffer | test2.cpp:39:9:39:11 | num |
+| test2.cpp:36:9:36:14 | buffer | test2.cpp:39:9:39:11 | num |
+| test2.cpp:36:9:36:14 | buffer | test2.cpp:40:3:40:5 | num |
+| test2.cpp:36:9:36:14 | buffer | test2.cpp:40:3:40:5 | num |
+| test2.cpp:36:9:36:14 | buffer | test2.cpp:40:3:40:5 | num |
+| test2.cpp:36:9:36:14 | buffer | test2.cpp:40:3:40:5 | num |
+| test2.cpp:36:9:36:14 | fgets output argument | test2.cpp:39:9:39:11 | num |
+| test2.cpp:36:9:36:14 | fgets output argument | test2.cpp:39:9:39:11 | num |
+| test2.cpp:36:9:36:14 | fgets output argument | test2.cpp:40:3:40:5 | num |
+| test2.cpp:36:9:36:14 | fgets output argument | test2.cpp:40:3:40:5 | num |
 | test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
 | test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
 | test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:18:6:18:18 | call to getTaintedInt |
@@ -32,6 +44,13 @@ nodes
 | test2.cpp:25:22:25:23 | & ... | semmle.label | & ... |
 | test2.cpp:25:22:25:23 | fscanf output argument | semmle.label | fscanf output argument |
 | test2.cpp:27:13:27:13 | v | semmle.label | v |
+| test2.cpp:36:9:36:14 | buffer | semmle.label | buffer |
+| test2.cpp:36:9:36:14 | buffer | semmle.label | buffer |
+| test2.cpp:36:9:36:14 | fgets output argument | semmle.label | fgets output argument |
+| test2.cpp:39:9:39:11 | num | semmle.label | num |
+| test2.cpp:39:9:39:11 | num | semmle.label | num |
+| test2.cpp:40:3:40:5 | num | semmle.label | num |
+| test2.cpp:40:3:40:5 | num | semmle.label | num |
 | test5.cpp:5:5:5:17 | getTaintedInt indirection | semmle.label | getTaintedInt indirection |
 | test5.cpp:9:7:9:9 | buf | semmle.label | buf |
 | test5.cpp:9:7:9:9 | buf | semmle.label | buf |
@@ -56,6 +75,8 @@ nodes
 #select
 | test2.cpp:14:11:14:11 | v | test2.cpp:25:22:25:23 | & ... | test2.cpp:14:11:14:11 | v | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test2.cpp:25:22:25:23 | & ... | User-provided value |
 | test2.cpp:14:11:14:11 | v | test2.cpp:25:22:25:23 | & ... | test2.cpp:14:11:14:11 | v | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test2.cpp:25:22:25:23 | & ... | User-provided value |
+| test2.cpp:39:9:39:11 | num | test2.cpp:36:9:36:14 | buffer | test2.cpp:39:9:39:11 | num | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test2.cpp:36:9:36:14 | buffer | User-provided value |
+| test2.cpp:40:3:40:5 | num | test2.cpp:36:9:36:14 | buffer | test2.cpp:40:3:40:5 | num | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test2.cpp:36:9:36:14 | buffer | User-provided value |
 | test5.cpp:17:6:17:18 | call to getTaintedInt | test5.cpp:9:7:9:9 | buf | test5.cpp:17:6:17:18 | call to getTaintedInt | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test5.cpp:9:7:9:9 | buf | User-provided value |
 | test5.cpp:19:6:19:6 | y | test5.cpp:9:7:9:9 | buf | test5.cpp:19:6:19:6 | y | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test5.cpp:9:7:9:9 | buf | User-provided value |
 | test5.cpp:19:6:19:6 | y | test5.cpp:9:7:9:9 | buf | test5.cpp:19:6:19:6 | y | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test5.cpp:9:7:9:9 | buf | User-provided value |

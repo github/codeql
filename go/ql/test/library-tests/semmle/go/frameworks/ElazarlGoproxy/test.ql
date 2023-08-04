@@ -1,12 +1,10 @@
 import go
 import TestUtilities.InlineExpectationsTest
 
-class UntrustedFlowSourceTest extends InlineExpectationsTest {
-  UntrustedFlowSourceTest() { this = "untrustedflowsource" }
+module UntrustedFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "untrustedflowsource" }
 
-  override string getARelevantTag() { result = "untrustedflowsource" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "untrustedflowsource" and
     value = element and
     exists(UntrustedFlowSource src | value = "\"" + src.toString() + "\"" |
@@ -16,12 +14,10 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
   }
 }
 
-class HeaderWriteTest extends InlineExpectationsTest {
-  HeaderWriteTest() { this = "headerwrite" }
+module HeaderWriteTest implements TestSig {
+  string getARelevantTag() { result = "headerwrite" }
 
-  override string getARelevantTag() { result = "headerwrite" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "headerwrite" and
     exists(Http::HeaderWrite hw, string name, string val | element = hw.toString() |
       hw.definesHeader(name, val) and
@@ -32,12 +28,10 @@ class HeaderWriteTest extends InlineExpectationsTest {
   }
 }
 
-class LoggerTest extends InlineExpectationsTest {
-  LoggerTest() { this = "LoggerTest" }
+module LoggerTest implements TestSig {
+  string getARelevantTag() { result = "logger" }
 
-  override string getARelevantTag() { result = "logger" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(LoggerCall log |
       log.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
@@ -47,3 +41,33 @@ class LoggerTest extends InlineExpectationsTest {
     )
   }
 }
+
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) {
+    n = any(DataFlow::CallNode c | c.getCalleeName().matches("tainted%")).getResult()
+  }
+
+  predicate isSink(DataFlow::Node n) {
+    n = any(DataFlow::CallNode cn | cn.getTarget().getName() = "sink").getAnArgument()
+  }
+}
+
+module Flow = TaintTracking::Global<Config>;
+
+module TaintFlow implements TestSig {
+  string getARelevantTag() { result = "taintflow" }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "taintflow" and
+    value = "" and
+    element = "" and
+    exists(DataFlow::Node toNode |
+      toNode
+          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      Flow::flowTo(toNode)
+    )
+  }
+}
+
+import MakeTest<MergeTests4<UntrustedFlowSourceTest, HeaderWriteTest, LoggerTest, TaintFlow>>

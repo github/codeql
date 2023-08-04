@@ -4,7 +4,7 @@ extensions:
       extensible: summaryModel
     data:
       # Note that when lambdas are supported we should have more models for TransformedSplitMap
-      - ["org.apache.commons.collections4.splitmap", "AbstractIterableGetMapDecorator", True, "AbstractIterableGetMapDecorator", "", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
-      - ["org.apache.commons.collections4.splitmap", "AbstractIterableGetMapDecorator", True, "AbstractIterableGetMapDecorator", "", "", "Argument[0].MapValue", "Argument[-1].MapValue", "value", "manual"]
+      - ["org.apache.commons.collections4.splitmap", "AbstractIterableGetMapDecorator", True, "AbstractIterableGetMapDecorator", "", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
+      - ["org.apache.commons.collections4.splitmap", "AbstractIterableGetMapDecorator", True, "AbstractIterableGetMapDecorator", "", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["org.apache.commons.collections4.splitmap", "TransformedSplitMap", True, "transformingMap", "", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["org.apache.commons.collections4.splitmap", "TransformedSplitMap", True, "transformingMap", "", "", "Argument[0].MapValue", "ReturnValue.MapValue", "value", "manual"]

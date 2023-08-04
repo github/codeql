@@ -12,7 +12,7 @@
  *       external/cwe/cwe-020
  */
 
-private import semmle.python.RegexTreeView::RegexTreeView as TreeView
+private import semmle.python.regexp.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.OverlyLargeRangeQuery::Make<TreeView>
 
 from TreeView::RegExpCharacterRange range, string reason

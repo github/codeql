@@ -33,12 +33,17 @@ class Node extends TNode {
   }
 
   /**
-   * Gets this node's underlying expression, if any.
+   * Gets the expression that corresponds to this node, if any.
    */
   Expr asExpr() { none() }
 
   /**
-   * Gets this data flow node's corresponding control flow node.
+   * Gets this node's underlying pattern, if any.
+   */
+  Pattern asPattern() { none() }
+
+  /**
+   * Gets the control flow node that corresponds to this data flow node.
    */
   ControlFlowNode getCfgNode() { none() }
 
@@ -62,6 +67,20 @@ class ExprNode extends Node, TExprNode {
   ExprNode() { this = TExprNode(n, expr) }
 
   override Expr asExpr() { result = expr }
+
+  override ControlFlowNode getCfgNode() { result = n }
+}
+
+/**
+ * A pattern, viewed as a node in a data flow graph.
+ */
+class PatternNode extends Node, TPatternNode {
+  CfgNode n;
+  Pattern pattern;
+
+  PatternNode() { this = TPatternNode(n, pattern) }
+
+  override Pattern asPattern() { result = pattern }
 
   override ControlFlowNode getCfgNode() { result = n }
 }
@@ -110,13 +129,15 @@ class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
   Node getPreUpdateNode() { result = super.getPreUpdateNode() }
 }
 
-/** Gets a node corresponding to expression `e`. */
+/**
+ * Gets a node corresponding to expression `e`.
+ */
 ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(DataFlowParameter p) { result.getParameter() = p }
+ParameterNode parameterNode(ParamDecl p) { result.getParameter() = p }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -170,6 +191,38 @@ module Content {
     int getIndex() { result = index }
 
     override string toString() { result = "Tuple element at index " + index.toString() }
+  }
+
+  /** A parameter of an enum element. */
+  class EnumContent extends Content, TEnumContent {
+    private ParamDecl p;
+
+    EnumContent() { this = TEnumContent(p) }
+
+    /** Gets the declaration of the enum parameter. */
+    ParamDecl getParam() { result = p }
+
+    /**
+     * Gets a string describing this enum content, of the form: `EnumElementName:N` where `EnumElementName`
+     * is the name of the enum element declaration within the enum, and `N` is the 0-based index of the
+     * parameter that this content is for. For example in the following code there is only one `EnumContent`
+     * and it's signature is `myValue:0`:
+     * ```
+     * enum MyEnum {
+     *   case myValue(Int)
+     * }
+     * ```
+     */
+    string getSignature() {
+      exists(EnumElementDecl d, int pos | d.getParam(pos) = p | result = d.toString() + ":" + pos)
+    }
+
+    override string toString() { result = this.getSignature() }
+  }
+
+  /** An element of an array at an unknown index */
+  class ArrayContent extends Content, TArrayContent {
+    override string toString() { result = "Array element" }
   }
 }
 

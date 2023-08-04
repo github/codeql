@@ -50,9 +50,9 @@ module Generated {
      * transitively.
      */
     final {{name}} resolve() {
-      not exists(getResolveStep()) and result = this
+      not exists(this.getResolveStep()) and result = this
       or
-      result = getResolveStep().resolve()
+      result = this.getResolveStep().resolve()
     }
     {{/root}}
     {{#final}}
@@ -60,19 +60,19 @@ module Generated {
     {{/final}}
     {{#properties}}
 
-    {{#type_is_class}}
+    {{#type_is_hideable}}
     /**
      * {{>ql_property_doc}}     *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
-      {{^ipa}}
-      result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}}))
-      {{/ipa}}
-      {{#ipa}}
+    {{type}} get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}int index{{/is_indexed}}) {
+      {{^synth}}
+      result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}))
+      {{/synth}}
+      {{#synth}}
       none()
-      {{/ipa}}
+      {{/synth}}
     }
 
     /**
@@ -83,12 +83,13 @@ module Generated {
     {{/description}}
     {{/has_description}}
      */
-    final {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
-      result = getImmediate{{singular}}({{#is_repeated}}index{{/is_repeated}}).resolve()
+    final {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
+      exists({{type}} immediate | immediate = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}) and
+        {{#hideable}}if exists(this.getResolveStep()) then result = immediate else {{/hideable}}result = immediate.resolve())
     }
 
-    {{/type_is_class}}
-    {{^type_is_class}}
+    {{/type_is_hideable}}
+    {{^type_is_hideable}}
     /**
      * {{>ql_property_doc}}     *
     {{#has_description}}
@@ -97,31 +98,31 @@ module Generated {
     {{/description}}
     {{/has_description}}
      */
-    {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
-      {{^ipa}}
-      {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}})
-      {{/ipa}}
-      {{#ipa}}
+    {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
+      {{^synth}}
+      {{^is_predicate}}result = {{/is_predicate}}{{#type_is_class}}Synth::convert{{type}}FromRaw({{/type_is_class}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}){{#type_is_class}}){{/type_is_class}}
+      {{/synth}}
+      {{#synth}}
       none()
-      {{/ipa}}
+      {{/synth}}
     }
 
-    {{/type_is_class}}
+    {{/type_is_hideable}}
     {{#is_optional}}
     /**
      * Holds if `{{getter}}({{#is_repeated}}index{{/is_repeated}})` exists.
      */
     final predicate has{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
-      exists({{getter}}({{#is_repeated}}index{{/is_repeated}}))
+      exists(this.{{getter}}({{#is_repeated}}index{{/is_repeated}}))
     }
     {{/is_optional}}
-    {{#is_repeated}}
+    {{#is_indexed}}
 
     /**
      * Gets any of the {{doc_plural}}.
      */
     final {{type}} {{indefinite_getter}}() {
-      result = {{getter}}(_)
+      result = this.{{getter}}(_)
     }
     {{^is_optional}}
 
@@ -129,10 +130,18 @@ module Generated {
      * Gets the number of {{doc_plural}}.
      */
     final int getNumberOf{{plural}}() {
-      result = count(int i | exists({{getter}}(i)))
+      result = count(int i | exists(this.{{getter}}(i)))
     }
     {{/is_optional}}
-    {{/is_repeated}}
+    {{/is_indexed}}
+    {{#is_unordered}}
+    /**
+     * Gets the number of {{doc_plural}}.
+     */
+    final int getNumberOf{{plural}}() {
+      result = count(this.{{getter}}())
+    }
+    {{/is_unordered}}
     {{/properties}}
   }
 }

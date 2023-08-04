@@ -1,0 +1,49 @@
+extensions:
+- addsTo:
+    pack: codeql/java-all
+    extensible: sourceModel
+  data:
+    - ["io.netty.handler.codec.http2", "Http2FrameListener", True, "onDataRead", "", "", "Parameter[2]", "remote", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2FrameListener", True, "onHeadersRead", "", "", "Parameter[2]", "remote", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2FrameListener", True, "onPushPromiseRead", "", "", "Parameter[3]", "remote", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2FrameListener", True, "onUnknownFrame", "", "", "Parameter[4]", "remote", "manual"]
+- addsTo:
+    pack: codeql/java-all
+    extensible: summaryModel
+  data:
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "authority", "()", "", "Argument[this].Element.MapValue", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "authority", "(CharSequence)", "", "Argument[0]", "Argument[this].Element.MapValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "authority", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "method", "()", "", "Argument[this].Element.MapValue", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "method", "(CharSequence)", "", "Argument[0]", "Argument[this].Element.MapValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "method", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "path", "()", "", "Argument[this].Element.MapValue", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "path", "(CharSequence)", "", "Argument[0]", "Argument[this].Element.MapValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "path", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "scheme", "()", "", "Argument[this].Element.MapValue", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "scheme", "(CharSequence)", "", "Argument[0]", "Argument[this].Element.MapValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "scheme", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "status", "()", "", "Argument[this].Element.MapValue", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "status", "(CharSequence)", "", "Argument[0]", "Argument[this].Element.MapValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "status", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2Headers", True, "valueIterator", "(CharSequence)", "", "Argument[this].Element.MapValue", "ReturnValue.Element", "value", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2HeadersFrame", True, "headers", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "Http2PushPromiseFrame", True, "http2Headers", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "addHttp2ToHttpHeaders", "(int,Http2Headers,FullHttpMessage,boolean)", "", "Argument[1].Element.MapKey", "Argument[2]", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "addHttp2ToHttpHeaders", "(int,Http2Headers,FullHttpMessage,boolean)", "", "Argument[1].Element.MapValue", "Argument[2]", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "addHttp2ToHttpHeaders", "(int,Http2Headers,HttpHeaders,HttpVersion,boolean,boolean)", "", "Argument[1].Element.MapKey", "Argument[2].Element.MapKey", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "addHttp2ToHttpHeaders", "(int,Http2Headers,HttpHeaders,HttpVersion,boolean,boolean)", "", "Argument[1].Element.MapValue", "Argument[2].Element.MapValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toFullHttpRequest", "", "", "Argument[1].Element.MapKey", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toFullHttpRequest", "", "", "Argument[1].Element.MapValue", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toFullHttpRequest", "(int,Http2Headers,ByteBuf,boolean)", "", "Argument[2]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toFullHttpResponse", "", "", "Argument[1].Element.MapKey", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toFullHttpResponse", "", "", "Argument[1].Element.MapValue", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toFullHttpResponse", "(int,Http2Headers,ByteBuf,boolean)", "", "Argument[2]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toHttp2Headers", "(HttpHeaders,boolean)", "", "Argument[0].Element.MapKey", "ReturnValue.Element.MapKey", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toHttp2Headers", "(HttpHeaders,boolean)", "", "Argument[0].Element.MapValue", "ReturnValue.Element.MapValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toHttp2Headers", "(HttpHeaders,Http2Headers)", "", "Argument[0].Element.MapKey", "Argument[1].Element.MapKey", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toHttp2Headers", "(HttpHeaders,Http2Headers)", "", "Argument[0].Element.MapValue", "Argument[1].Element.MapValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toHttpRequest", "", "", "Argument[1].Element.MapKey", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toHttpRequest", "", "", "Argument[1].Element.MapValue", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toHttpResponse", "", "", "Argument[1].Element.MapKey", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http2", "HttpConversionUtil", False, "toHttpResponse", "", "", "Argument[1].Element.MapValue", "ReturnValue", "taint", "manual"]

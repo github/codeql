@@ -2069,6 +2069,7 @@ public class Parser {
       pi.value = this.parseMethod(pi.isGenerator, pi.isAsync);
     } else if (this.options.ecmaVersion() >= 5
         && !pi.computed
+        && !pi.isPattern
         && pi.key instanceof Identifier
         && (((Identifier) pi.key).getName().equals("get")
             || ((Identifier) pi.key).getName().equals("set"))

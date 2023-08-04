@@ -1,0 +1,7 @@
+| key_path_expr.swift:11:17:11:17 | KeyPathComponent | key_path_expr.swift:7:9:7:9 | value |
+| key_path_expr.swift:12:24:12:26 | KeyPathComponent | file://:0:0:0:0 | subscript ... |
+| key_path_expr.swift:13:34:13:38 | KeyPathComponent | file://:0:0:0:0 | subscript ... |
+| key_path_expr.swift:15:21:15:21 | KeyPathComponent | key_path_expr.swift:8:9:8:9 | opt |
+| key_path_expr.swift:15:26:15:26 | KeyPathComponent | key_path_expr.swift:3:9:3:9 | opt |
+| key_path_expr.swift:16:25:16:25 | KeyPathComponent | key_path_expr.swift:8:9:8:9 | opt |
+| key_path_expr.swift:16:30:16:30 | KeyPathComponent | key_path_expr.swift:2:9:2:9 | value |

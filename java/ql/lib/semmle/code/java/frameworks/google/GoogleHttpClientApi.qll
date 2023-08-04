@@ -10,7 +10,7 @@ private class ParseAsMethod extends Method {
   }
 }
 
-private module TypeLiteralToParseAsFlowConfiguration implements DataFlow::ConfigSig {
+private module TypeLiteralToParseAsFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
 
   predicate isSink(DataFlow::Node sink) {
@@ -21,10 +21,10 @@ private module TypeLiteralToParseAsFlowConfiguration implements DataFlow::Config
   }
 }
 
-private module TypeLiteralToParseAsFlow = DataFlow::Make<TypeLiteralToParseAsFlowConfiguration>;
+private module TypeLiteralToParseAsFlow = DataFlow::Global<TypeLiteralToParseAsFlowConfig>;
 
 private TypeLiteral getSourceWithFlowToParseAs() {
-  TypeLiteralToParseAsFlow::hasFlow(DataFlow::exprNode(result), _)
+  TypeLiteralToParseAsFlow::flow(DataFlow::exprNode(result), _)
 }
 
 /** A field that is deserialized by `HttpResponse.parseAs`. */

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/json-iterator/go", "", False, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["github.com/json-iterator/go", "", False, "UnmarshalFromString", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["github.com/json-iterator/go", "API", True, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["github.com/json-iterator/go", "API", True, "UnmarshalFromString", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]

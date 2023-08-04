@@ -73,12 +73,12 @@ module SharedXss {
       exists(body.getAContentTypeNode())
       or
       exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |
-        body = call.getAnArgument() and
+        body = call.getASyntacticArgument() and
         // checks that the format value does not start with (ignoring whitespace as defined by
         // https://mimesniff.spec.whatwg.org/#whitespace-byte):
         //  - '<', which could lead to an HTML content type being detected, or
         //  - '%', which could be a format string.
-        call.getArgument(1).getStringValue().regexpMatch("(?s)[\\t\\n\\x0c\\r ]*+[^<%].*")
+        call.getSyntacticArgument(1).getStringValue().regexpMatch("(?s)[\\t\\n\\x0c\\r ]*+[^<%].*")
       )
       or
       exists(DataFlow::Node pred | body = pred.getASuccessor*() |
@@ -124,6 +124,22 @@ module SharedXss {
         f instanceof HtmlEscapeFunction
         or
         f instanceof JsEscapeFunction
+      )
+    }
+  }
+
+  /**
+   * A `Template` from `html/template` will HTML-escape data automatically
+   * and therefore acts as a sanitizer for XSS vulnerabilities.
+   */
+  class HtmlTemplateSanitizer extends Sanitizer, DataFlow::Node {
+    HtmlTemplateSanitizer() {
+      exists(Method m, DataFlow::CallNode call | m = call.getCall().getTarget() |
+        m.hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
+        call.getArgument(2) = this
+        or
+        m.hasQualifiedName("html/template", "Template", "Execute") and
+        call.getArgument(1) = this
       )
     }
   }

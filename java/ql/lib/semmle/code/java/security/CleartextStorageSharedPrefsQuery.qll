@@ -28,17 +28,17 @@ class SharedPreferencesEditorMethodAccess extends Storable, MethodAccess {
 
   /** Gets an input, for example `password` in `editor.putString("password", password);`. */
   override Expr getAnInput() {
-    exists(SharedPreferencesFlowConfig conf, DataFlow::Node editor |
+    exists(DataFlow::Node editor |
       sharedPreferencesInput(editor, result) and
-      conf.hasFlow(DataFlow::exprNode(this), editor)
+      SharedPreferencesFlow::flow(DataFlow::exprNode(this), editor)
     )
   }
 
   /** Gets a store, for example `editor.commit();`. */
   override Expr getAStore() {
-    exists(SharedPreferencesFlowConfig conf, DataFlow::Node editor |
+    exists(DataFlow::Node editor |
       sharedPreferencesStore(editor, result) and
-      conf.hasFlow(DataFlow::exprNode(this), editor)
+      SharedPreferencesFlow::flow(DataFlow::exprNode(this), editor)
     )
   }
 }
@@ -65,15 +65,15 @@ private predicate sharedPreferencesStore(DataFlow::Node editor, MethodAccess m) 
 }
 
 /** Flow from `SharedPreferences.Editor` to either a setter or a store method. */
-private class SharedPreferencesFlowConfig extends DataFlow::Configuration {
-  SharedPreferencesFlowConfig() { this = "SharedPreferencesFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
+private module SharedPreferencesFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
     src.asExpr() instanceof SharedPreferencesEditorMethodAccess
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sharedPreferencesInput(sink, _) or
     sharedPreferencesStore(sink, _)
   }
 }
+
+private module SharedPreferencesFlow = DataFlow::Global<SharedPreferencesFlowConfig>;

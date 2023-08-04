@@ -13,8 +13,8 @@ where
   or
   key = "Interpreter version" and
   exists(string major, string minor |
-    py_flags_versioned("version.major", major, _) and
-    py_flags_versioned("version.minor", minor, _) and
+    py_flags_versioned("extractor_python_version.major", major, _) and
+    py_flags_versioned("extractor_python_version.minor", minor, _) and
     value = major + "." + minor
   )
   or

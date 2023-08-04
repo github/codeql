@@ -1,3 +1,65 @@
+## 0.7.1
+
+### New Queries
+
+* Added a new experimental query, `rb/xpath-injection`, to detect cases where XPath statements are constructed from user input in an unsafe manner.
+
+### Minor Analysis Improvements
+
+* Improved resolution of calls performed on an object created with `Proc.new`.
+
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Fixed a bug in how `map_filter` calls are analyzed. Previously, such calls would
+  appear to the return the receiver of the call, but now the return value of the callback
+  is properly taken into account.
+
+### Bug Fixes
+
+* The experimental query "Arbitrary file write during zipfile/tarfile extraction" (`ruby/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* Fixed a bug that would occur when an `initialize` method returns `self` or one of its parameters.
+  In such cases, the corresponding calls to `new` would be associated with an incorrect return type.
+  This could result in inaccurate call target resolution and cause false positive alerts.
+* Fixed an issue where calls to `delete` or `assoc` with a constant-valued argument would be analyzed imprecisely,
+  as if the argument value was not a known constant.
+
+## 0.6.2
+
+No user-facing changes.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### New Queries
+
+* Added a new experimental query, `rb/server-side-template-injection`, to detect cases where user input may be embedded into a template's code in an unsafe manner.
+
+## 0.5.6
+
+### Minor Analysis Improvements
+
+* `rb/sensitive-get-query` no longer reports flow paths from input parameters to sensitive use nodes. This avoids cases where many flow paths could be generated for a single parameter, which caused excessive paths to be generated.
+
+## 0.5.5
+
+### New Queries
+
+* Added a new query, `rb/zip-slip`, to detect arbitrary file writes during extraction of zip/tar archives.
+
 ## 0.5.4
 
 No user-facing changes.

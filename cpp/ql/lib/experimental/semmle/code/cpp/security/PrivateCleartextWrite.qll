@@ -54,7 +54,7 @@ module PrivateCleartextWrite {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
-  module WriteFlow = TaintTracking::Make<WriteConfig>;
+  module WriteFlow = TaintTracking::Global<WriteConfig>;
 
   class PrivateDataSource extends Source {
     PrivateDataSource() { this.getExpr() instanceof PrivateDataExpr }

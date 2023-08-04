@@ -83,7 +83,7 @@ private module MarkupSafeModel {
     }
 
     /** Taint propagation for `markupsafe.Markup`. */
-    private class AddtionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeTo.(ClassInstantiation).getArg(0) = nodeFrom
       }
@@ -92,11 +92,7 @@ private module MarkupSafeModel {
 
   /** Any escaping performed via the `markupsafe` package. */
   abstract private class MarkupSafeEscape extends Escaping::Range {
-    override string getKind() {
-      // TODO: this package claims to escape for both HTML and XML, but for now we don't
-      // model XML.
-      result = Escaping::getHtmlKind()
-    }
+    override string getKind() { result in [Escaping::getHtmlKind(), Escaping::getXmlKind()] }
   }
 
   /** A call to any of the escaping functions in `markupsafe` */

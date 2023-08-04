@@ -12,18 +12,19 @@ import codeql.swift.security.UnsafeJsEvalExtensions
 /**
  * A taint configuration from taint sources to sinks for this query.
  */
-class UnsafeJsEvalConfig extends TaintTracking::Configuration {
-  UnsafeJsEvalConfig() { this = "UnsafeJsEvalConfig" }
+module UnsafeJsEvalConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
+  predicate isSink(DataFlow::Node node) { node instanceof UnsafeJsEvalSink }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof UnsafeJsEvalSink }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof UnsafeJsEvalBarrier }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof UnsafeJsEvalSanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(UnsafeJsEvalAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(UnsafeJsEvalAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
+
+/**
+ * Detect taint flow of taint sources to sinks for this query.
+ */
+module UnsafeJsEvalFlow = TaintTracking::Global<UnsafeJsEvalConfig>;

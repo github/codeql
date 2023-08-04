@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hc.core5.http.impl.bootstrap", "HttpAsyncRequester", True, "connect", "(HttpHost,Timeout)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.impl.bootstrap", "HttpAsyncRequester", True, "connect", "(HttpHost,Timeout,Object,FutureCallback)", "", "Argument[0]", "request-forgery", "hq-manual"]

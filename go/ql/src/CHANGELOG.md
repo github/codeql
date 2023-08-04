@@ -1,3 +1,43 @@
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during zip extraction ("zip slip")" (`go/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
+## 0.5.2
+
+No user-facing changes.
+
+## 0.5.1
+
+No user-facing changes.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* The receiver arguments of `net/http.Header.Set` and `.Del` are no longer flagged by query `go/untrusted-data-to-external-api`.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
 ## 0.4.4
 
 ### Minor Analysis Improvements

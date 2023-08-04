@@ -1,17 +1,16 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-import DataFlow
 
 StringLiteral src() { result.getCompilationUnit().fromSource() }
 
-class Conf extends Configuration {
-  Conf() { this = "qq capture" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr() = src() }
 
-  override predicate isSource(Node n) { n.asExpr() = src() }
-
-  override predicate isSink(Node n) { any() }
+  predicate isSink(DataFlow::Node n) { any() }
 }
 
-from Node src, Node sink, Conf conf
-where conf.hasFlow(src, sink)
+module Flow = DataFlow::Global<Config>;
+
+from DataFlow::Node src, DataFlow::Node sink
+where Flow::flow(src, sink)
 select src, sink

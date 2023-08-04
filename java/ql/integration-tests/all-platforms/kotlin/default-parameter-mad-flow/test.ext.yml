@@ -3,7 +3,7 @@ extensions:
       pack: integrationtest-default-parameter-mad-flow
       extensible: summaryModel
     data:
-      - ["", "ConstructorWithDefaults", True, "ConstructorWithDefaults", "(int,int)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["", "ConstructorWithDefaults", True, "ConstructorWithDefaults", "(int,int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["", "LibKt", True, "topLevelWithDefaults", "(int,int)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["", "LibKt", True, "extensionWithDefaults", "(String,int,int)", "", "Argument[1]", "ReturnValue", "value", "manual"]
       - ["", "LibClass", True, "memberWithDefaults", "(int,int)", "", "Argument[0]", "ReturnValue", "value", "manual"]

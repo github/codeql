@@ -15,7 +15,7 @@ import org.codehaus.groovy.tools.javac.JavaStubCompilationUnit;
 public class GroovyCompilationUnitTest extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // "org.codehaus.groovy.control;CompilationUnit;false;compile;;;Argument[-1];groovy;manual"
+        // "org.codehaus.groovy.control;CompilationUnit;false;compile;;;Argument[this];groovy;manual"
         {
             CompilationUnit cu = new CompilationUnit();
             cu.addSource("test", request.getParameter("source"));

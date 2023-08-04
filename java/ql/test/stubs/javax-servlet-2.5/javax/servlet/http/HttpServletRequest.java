@@ -1,58 +1,57 @@
-// Generated automatically from javax.servlet.http.HttpServletRequest for testing purposes
+/**
+ *
+ * Copyright 2003-2004 The Apache Software Foundation
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+/*
+ * Adapted from the Java Servlet API version 2.4 as available at
+ *   http://search.maven.org/remotecontent?filepath=javax/servlet/servlet-api/2.4/servlet-api-2.4-sources.jar
+ * Only relevant stubs of this file have been retained for test purposes.
+ */
 
 package javax.servlet.http;
 
-import java.security.Principal;
-import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Map;
 import javax.servlet.ServletRequest;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletMapping;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-import javax.servlet.http.PushBuilder;
+import javax.servlet.ServletContext;
 
-public interface HttpServletRequest extends ServletRequest
-{
-    Collection<Part> getParts();
-    Cookie[] getCookies();
-    Enumeration<String> getHeaderNames();
-    Enumeration<String> getHeaders(String p0);
-    HttpSession getSession();
-    HttpSession getSession(boolean p0);
-    Part getPart(String p0);
-    Principal getUserPrincipal();
-    String changeSessionId();
-    String getAuthType();
-    String getContextPath();
-    String getHeader(String p0);
-    String getMethod();
-    String getPathInfo();
-    String getPathTranslated();
-    String getQueryString();
-    String getRemoteUser();
-    String getRequestURI();
-    String getRequestedSessionId();
-    String getServletPath();
-    StringBuffer getRequestURL();
-    boolean authenticate(HttpServletResponse p0);
-    boolean isRequestedSessionIdFromCookie();
-    boolean isRequestedSessionIdFromURL();
-    boolean isRequestedSessionIdFromUrl();
-    boolean isRequestedSessionIdValid();
-    boolean isUserInRole(String p0);
-    default HttpServletMapping getHttpServletMapping(){ return null; }
-    default Map<String, String> getTrailerFields(){ return null; }
-    default PushBuilder newPushBuilder(){ return null; }
-    default boolean isTrailerFieldsReady(){ return false; }
-    int getIntHeader(String p0);
-    long getDateHeader(String p0);
-    static String BASIC_AUTH = null;
-    static String CLIENT_CERT_AUTH = null;
-    static String DIGEST_AUTH = null;
-    static String FORM_AUTH = null;
-    void login(String p0, String p1);
-    void logout();
+public interface HttpServletRequest extends ServletRequest {
+    public String getAuthType();
+    public Cookie[] getCookies();
+    public long getDateHeader(String name);
+    public String getHeader(String name);
+    public Enumeration getHeaders(String name);
+    public Enumeration getHeaderNames();
+    public int getIntHeader(String name);
+    public String getMethod();
+    public String getPathInfo();
+    public String getPathTranslated();
+    public String getContextPath();
+    public String getQueryString();
+    public String getRemoteUser();
+    public boolean isUserInRole(String role);
+    public java.security.Principal getUserPrincipal();
+    public String getRequestedSessionId();
+    public String getRequestURI();
+    public StringBuffer getRequestURL();
+    public String getServletPath();
+    public HttpSession getSession(boolean create);
+    public HttpSession getSession();
+    public boolean isRequestedSessionIdValid();
+    public boolean isRequestedSessionIdFromCookie();
+    public boolean isRequestedSessionIdFromURL();
+    public boolean isRequestedSessionIdFromUrl();
+    public ServletContext getServletContext();
 }

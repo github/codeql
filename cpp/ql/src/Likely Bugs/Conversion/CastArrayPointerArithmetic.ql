@@ -44,14 +44,6 @@ module CastToPointerArithFlowConfig implements DataFlow::StateConfigSig {
     ) and
     getFullyConvertedType(node) = state
   }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
-
-  predicate isAdditionalFlowStep(
-    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
-  ) {
-    none()
-  }
 }
 
 /**
@@ -80,9 +72,9 @@ predicate introducesNewField(Class derived, Class base) {
   )
 }
 
-module CastToPointerArithFlow = DataFlow::MakeWithState<CastToPointerArithFlowConfig>;
+module CastToPointerArithFlow = DataFlow::GlobalWithState<CastToPointerArithFlowConfig>;
 
 from CastToPointerArithFlow::PathNode source, CastToPointerArithFlow::PathNode sink
-where CastToPointerArithFlow::hasFlowPath(source, sink)
+where CastToPointerArithFlow::flowPath(source, sink)
 select sink, source, sink, "This pointer arithmetic may be done with the wrong type because of $@.",
   source, "this cast"

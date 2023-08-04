@@ -25,17 +25,22 @@ module Generated {
      * Gets the `index`th active element of this if config declaration (0-based).
      */
     final AstNode getActiveElement(int index) {
-      result = getImmediateActiveElement(index).resolve()
+      exists(AstNode immediate |
+        immediate = this.getImmediateActiveElement(index) and
+        result = immediate.resolve()
+      )
     }
 
     /**
      * Gets any of the active elements of this if config declaration.
      */
-    final AstNode getAnActiveElement() { result = getActiveElement(_) }
+    final AstNode getAnActiveElement() { result = this.getActiveElement(_) }
 
     /**
      * Gets the number of active elements of this if config declaration.
      */
-    final int getNumberOfActiveElements() { result = count(int i | exists(getActiveElement(i))) }
+    final int getNumberOfActiveElements() {
+      result = count(int i | exists(this.getActiveElement(i)))
+    }
   }
 }

@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.mvel2.jsr223", "MvelCompiledScript", False, "eval", "", "", "Argument[-1]", "mvel", "manual"]
-      - ["org.mvel2.jsr223", "MvelScriptEngine", False, "eval", "", "", "Argument[0]", "mvel", "manual"]
-      - ["org.mvel2.jsr223", "MvelScriptEngine", False, "evaluate", "", "", "Argument[0]", "mvel", "manual"]
+      - ["org.mvel2.jsr223", "MvelCompiledScript", False, "eval", "", "", "Argument[this]", "mvel-injection", "manual"]
+      - ["org.mvel2.jsr223", "MvelScriptEngine", False, "eval", "", "", "Argument[0]", "mvel-injection", "manual"]
+      - ["org.mvel2.jsr223", "MvelScriptEngine", False, "evaluate", "", "", "Argument[0]", "mvel-injection", "manual"]

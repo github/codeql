@@ -50,126 +50,126 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;MutablePropertyValues;(List);;Argument[0].Element;Argument[-1].Element;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;MutablePropertyValues;(List);;Argument[0].Element;Argument[this].Element;value;manual"
 			MutablePropertyValues out = null;
 			List in = List.of(source());
 			out = new MutablePropertyValues(in);
 			sink(getElementDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;MutablePropertyValues;(Map);;Argument[0].MapKey;Argument[-1].Element.MapKey;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;MutablePropertyValues;(Map);;Argument[0].MapKey;Argument[this].Element.MapKey;value;manual"
 			MutablePropertyValues out = null;
 			Map in = Map.of(source(), null);
 			out = new MutablePropertyValues(in);
 			sink(getMapKeyDefault(getElementDefault(out))); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;MutablePropertyValues;(Map);;Argument[0].MapValue;Argument[-1].Element.MapValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;MutablePropertyValues;(Map);;Argument[0].MapValue;Argument[this].Element.MapValue;value;manual"
 			MutablePropertyValues out = null;
 			Map in = Map.of(null, source());
 			out = new MutablePropertyValues(in);
 			sink(getMapValueDefault(getElementDefault(out))); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;MutablePropertyValues;(PropertyValues);;Argument[0].Element;Argument[-1].Element;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;MutablePropertyValues;(PropertyValues);;Argument[0].Element;Argument[this].Element;value;manual"
 			MutablePropertyValues out = null;
 			PropertyValues in = newMutablePropertyValuesWithElement((PropertyValue) source());
 			out = new MutablePropertyValues(in);
 			sink(getElementDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[-1];ReturnValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[this];ReturnValue;value;manual"
 			MutablePropertyValues out = null;
 			MutablePropertyValues in = (MutablePropertyValues) source();
 			out = in.add(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[0];Argument[-1].Element.MapKey;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[0];Argument[this].Element.MapKey;value;manual"
 			MutablePropertyValues out = null;
 			String in = (String) source();
 			out.add(in, null);
 			sink(getMapKeyDefault(getElementDefault(out))); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[1];Argument[-1].Element.MapValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;add;(String,Object);;Argument[1];Argument[this].Element.MapValue;value;manual"
 			MutablePropertyValues out = null;
 			Object in = (Object) source();
 			out.add(null, in);
 			sink(getMapValueDefault(getElementDefault(out))); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(PropertyValue);;Argument[-1];ReturnValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(PropertyValue);;Argument[this];ReturnValue;value;manual"
 			MutablePropertyValues out = null;
 			MutablePropertyValues in = (MutablePropertyValues) source();
 			out = in.addPropertyValue(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(PropertyValue);;Argument[0];Argument[-1].Element;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(PropertyValue);;Argument[0];Argument[this].Element;value;manual"
 			MutablePropertyValues out = null;
 			PropertyValue in = (PropertyValue) source();
 			out.addPropertyValue(in);
 			sink(getElementDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(String,Object);;Argument[0];Argument[-1].Element.MapKey;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(String,Object);;Argument[0];Argument[this].Element.MapKey;value;manual"
 			MutablePropertyValues out = null;
 			String in = (String) source();
 			out.addPropertyValue(in, null);
 			sink(getMapKeyDefault(getElementDefault(out))); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(String,Object);;Argument[1];Argument[-1].Element.MapValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValue;(String,Object);;Argument[1];Argument[this].Element.MapValue;value;manual"
 			MutablePropertyValues out = null;
 			Object in = (Object) source();
 			out.addPropertyValue(null, in);
 			sink(getMapValueDefault(getElementDefault(out))); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;Argument[-1];ReturnValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;Argument[this];ReturnValue;value;manual"
 			MutablePropertyValues out = null;
 			MutablePropertyValues in = (MutablePropertyValues) source();
 			out = in.addPropertyValues((Map) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;Argument[0].MapKey;Argument[-1].Element.MapKey;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;Argument[0].MapKey;Argument[this].Element.MapKey;value;manual"
 			MutablePropertyValues out = null;
 			Map in = Map.of(source(), null);
 			out.addPropertyValues(in);
 			sink(getMapKeyDefault(getElementDefault(out))); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;Argument[0].MapValue;Argument[-1].Element.MapValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(Map);;Argument[0].MapValue;Argument[this].Element.MapValue;value;manual"
 			MutablePropertyValues out = null;
 			Map in = Map.of(null, source());
 			out.addPropertyValues(in);
 			sink(getMapValueDefault(getElementDefault(out))); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(PropertyValues);;Argument[-1];ReturnValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(PropertyValues);;Argument[this];ReturnValue;value;manual"
 			MutablePropertyValues out = null;
 			MutablePropertyValues in = (MutablePropertyValues) source();
 			out = in.addPropertyValues((PropertyValues) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(PropertyValues);;Argument[0].Element;Argument[-1].Element;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;addPropertyValues;(PropertyValues);;Argument[0].Element;Argument[this].Element;value;manual"
 			MutablePropertyValues out = null;
 			PropertyValues in = newMutablePropertyValuesWithElement((PropertyValue) source());
 			out.addPropertyValues(in);
 			sink(getElementDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;get;;;Argument[-1].Element.MapValue;ReturnValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;get;;;Argument[this].Element.MapValue;ReturnValue;value;manual"
 			Object out = null;
 			MutablePropertyValues in = newMutablePropertyValuesWithMapValue(source());
 			out = in.get(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;getPropertyValue;;;Argument[-1].Element;ReturnValue;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;getPropertyValue;;;Argument[this].Element;ReturnValue;value;manual"
 			PropertyValue out = null;
 			MutablePropertyValues in =
 					newMutablePropertyValuesWithElement((PropertyValue) source());
@@ -177,7 +177,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;getPropertyValueList;;;Argument[-1].Element;ReturnValue.Element;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;getPropertyValueList;;;Argument[this].Element;ReturnValue.Element;value;manual"
 			List out = null;
 			MutablePropertyValues in =
 					newMutablePropertyValuesWithElement((PropertyValue) source());
@@ -185,7 +185,7 @@ public class Test {
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;getPropertyValues;;;Argument[-1].Element;ReturnValue.ArrayElement;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;getPropertyValues;;;Argument[this].Element;ReturnValue.ArrayElement;value;manual"
 			PropertyValue[] out = null;
 			MutablePropertyValues in =
 					newMutablePropertyValuesWithElement((PropertyValue) source());
@@ -193,63 +193,63 @@ public class Test {
 			sink(getArrayElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;MutablePropertyValues;true;setPropertyValueAt;;;Argument[0];Argument[-1].Element;value;manual"
+			// "org.springframework.beans;MutablePropertyValues;true;setPropertyValueAt;;;Argument[0];Argument[this].Element;value;manual"
 			MutablePropertyValues out = null;
 			PropertyValue in = (PropertyValue) source();
 			out.setPropertyValueAt(in, 0);
 			sink(getElementDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValue;false;PropertyValue;(PropertyValue);;Argument[0];Argument[-1];value;manual"
+			// "org.springframework.beans;PropertyValue;false;PropertyValue;(PropertyValue);;Argument[0];Argument[this];value;manual"
 			PropertyValue out = null;
 			PropertyValue in = (PropertyValue) source();
 			out = new PropertyValue(in);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValue;false;PropertyValue;(PropertyValue,Object);;Argument[0].MapKey;Argument[-1].MapKey;value;manual"
+			// "org.springframework.beans;PropertyValue;false;PropertyValue;(PropertyValue,Object);;Argument[0].MapKey;Argument[this].MapKey;value;manual"
 			PropertyValue out = null;
 			PropertyValue in = new PropertyValue(new PropertyValue((String) source(), null), null);
 			out = new PropertyValue(in, (Object) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValue;false;PropertyValue;(PropertyValue,Object);;Argument[1];Argument[-1].MapValue;value;manual"
+			// "org.springframework.beans;PropertyValue;false;PropertyValue;(PropertyValue,Object);;Argument[1];Argument[this].MapValue;value;manual"
 			PropertyValue out = null;
 			Object in = (Object) source();
 			out = new PropertyValue((PropertyValue) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValue;false;PropertyValue;(String,Object);;Argument[0];Argument[-1].MapKey;value;manual"
+			// "org.springframework.beans;PropertyValue;false;PropertyValue;(String,Object);;Argument[0];Argument[this].MapKey;value;manual"
 			PropertyValue out = null;
 			String in = (String) source();
 			out = new PropertyValue(in, (Object) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValue;false;PropertyValue;(String,Object);;Argument[1];Argument[-1].MapValue;value;manual"
+			// "org.springframework.beans;PropertyValue;false;PropertyValue;(String,Object);;Argument[1];Argument[this].MapValue;value;manual"
 			PropertyValue out = null;
 			Object in = (Object) source();
 			out = new PropertyValue((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValue;false;getName;;;Argument[-1].MapKey;ReturnValue;value;manual"
+			// "org.springframework.beans;PropertyValue;false;getName;;;Argument[this].MapKey;ReturnValue;value;manual"
 			String out = null;
 			PropertyValue in = new PropertyValue((String) source(), null);
 			out = in.getName();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValue;false;getValue;;;Argument[-1].MapValue;ReturnValue;value;manual"
+			// "org.springframework.beans;PropertyValue;false;getValue;;;Argument[this].MapValue;ReturnValue;value;manual"
 			Object out = null;
 			PropertyValue in = new PropertyValue("", source());
 			out = in.getValue();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValues;true;getPropertyValue;;;Argument[-1].Element;ReturnValue;value;manual"
+			// "org.springframework.beans;PropertyValues;true;getPropertyValue;;;Argument[this].Element;ReturnValue;value;manual"
 			PropertyValue out = null;
 			MutablePropertyValues in =
 					newMutablePropertyValuesWithElement((PropertyValue) source());
@@ -257,14 +257,14 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValues;true;getPropertyValue;;;Argument[-1].Element;ReturnValue;value;manual"
+			// "org.springframework.beans;PropertyValues;true;getPropertyValue;;;Argument[this].Element;ReturnValue;value;manual"
 			PropertyValue out = null;
 			PropertyValues in = newMutablePropertyValuesWithElement((PropertyValue) source());
 			out = in.getPropertyValue(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValues;true;getPropertyValues;;;Argument[-1].Element;ReturnValue.ArrayElement;value;manual"
+			// "org.springframework.beans;PropertyValues;true;getPropertyValues;;;Argument[this].Element;ReturnValue.ArrayElement;value;manual"
 			PropertyValue[] out = null;
 			MutablePropertyValues in =
 					newMutablePropertyValuesWithElement((PropertyValue) source());
@@ -272,7 +272,7 @@ public class Test {
 			sink(getArrayElement(out)); // $ hasValueFlow
 		}
 		{
-			// "org.springframework.beans;PropertyValues;true;getPropertyValues;;;Argument[-1].Element;ReturnValue.ArrayElement;value;manual"
+			// "org.springframework.beans;PropertyValues;true;getPropertyValues;;;Argument[this].Element;ReturnValue.ArrayElement;value;manual"
 			PropertyValue[] out = null;
 			PropertyValues in = newMutablePropertyValuesWithElement((PropertyValue) source());
 			out = in.getPropertyValues();

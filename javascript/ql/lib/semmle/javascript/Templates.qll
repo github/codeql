@@ -13,19 +13,19 @@ import javascript
  */
 class TaggedTemplateExpr extends Expr, @tagged_template_expr {
   /** Gets the tagging expression of this tagged template. */
-  Expr getTag() { result = getChildExpr(0) }
+  Expr getTag() { result = this.getChildExpr(0) }
 
   /** Gets the tagged template itself. */
-  TemplateLiteral getTemplate() { result = getChildExpr(1) }
+  TemplateLiteral getTemplate() { result = this.getChildExpr(1) }
 
   /** Gets the `i`th type argument to the tag of this template literal. */
-  TypeExpr getTypeArgument(int i) { i >= 0 and result = getChildTypeExpr(2 + i) }
+  TypeExpr getTypeArgument(int i) { i >= 0 and result = this.getChildTypeExpr(2 + i) }
 
   /** Gets a type argument of the tag of this template literal. */
-  TypeExpr getATypeArgument() { result = getTypeArgument(_) }
+  TypeExpr getATypeArgument() { result = this.getTypeArgument(_) }
 
   /** Gets the number of type arguments appearing on the tag of this template literal. */
-  int getNumTypeArgument() { result = count(getATypeArgument()) }
+  int getNumTypeArgument() { result = count(this.getATypeArgument()) }
 
   override predicate isImpure() { any() }
 
@@ -46,19 +46,19 @@ class TemplateLiteral extends Expr, @template_literal {
    * Gets the `i`th element of this template literal, which may either
    * be an interpolated expression or a constant template element.
    */
-  Expr getElement(int i) { result = getChildExpr(i) }
+  Expr getElement(int i) { result = this.getChildExpr(i) }
 
   /**
    * Gets an element of this template literal.
    */
-  Expr getAnElement() { result = getElement(_) }
+  Expr getAnElement() { result = this.getElement(_) }
 
   /**
    * Gets the number of elements of this template literal.
    */
-  int getNumElement() { result = count(getAnElement()) }
+  int getNumElement() { result = count(this.getAnElement()) }
 
-  override predicate isImpure() { getAnElement().isImpure() }
+  override predicate isImpure() { this.getAnElement().isImpure() }
 
   override string getAPrimaryQlClass() { result = "TemplateLiteral" }
 }
@@ -80,7 +80,7 @@ class TemplateElement extends Expr, @template_element {
    * elements with invalid escape sequences, which only have a raw value but
    * no cooked value.
    */
-  predicate hasValue() { exists(getValue()) }
+  predicate hasValue() { exists(this.getValue()) }
 
   /**
    * Gets the "cooked" value of this template element, if any.

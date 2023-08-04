@@ -155,7 +155,7 @@ private class CommandArgArrayImmutableFirst extends CommandArgumentArray {
   Expr getFirstElement() {
     result = this.getAWrite(0)
     or
-    not exists(getAWrite(0)) and
+    not exists(this.getAWrite(0)) and
     result = firstElementOf(this.getDefiningExpr())
   }
 

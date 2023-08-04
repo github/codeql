@@ -145,11 +145,6 @@ void TypeTranslator::fillAnyFunctionType(const swift::AnyFunctionType& type,
   entry.result = dispatcher.fetchLabel(type.getResult());
   for (const auto& p : type.getParams()) {
     entry.param_types.push_back(dispatcher.fetchLabel(p.getPlainType()));
-    if (p.hasLabel()) {
-      entry.param_labels.emplace_back(p.getLabel().str().str());
-    } else {
-      entry.param_labels.emplace_back();
-    }
   }
   entry.is_throwing = type.isThrowing();
   entry.is_async = type.isAsync();

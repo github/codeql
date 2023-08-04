@@ -22,9 +22,6 @@
 private import python as PY
 private import ApiGraphModels
 import semmle.python.ApiGraphs::API as API
-
-class Unit = PY::Unit;
-
 // Re-export libraries needed by ApiGraphModels.qll
 import semmle.python.dataflow.new.internal.AccessPathSyntax as AccessPathSyntax
 import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
@@ -109,6 +106,23 @@ API::Node getExtraSuccessorFromInvoke(API::CallNode node, AccessPathToken token)
     or
     exists(string arg | arg + ":" = token.getAnArgument() | result = node.getKeywordParameter(arg))
   )
+}
+
+pragma[inline]
+API::Node getAFuzzySuccessor(API::Node node) {
+  result = node.getAMember()
+  or
+  result = node.getParameter(_)
+  or
+  result = node.getKeywordParameter(_)
+  or
+  result = node.getReturn()
+  or
+  result = node.getASubscript()
+  or
+  result = node.getAwaited()
+  or
+  result = node.getASubclass()
 }
 
 /**

@@ -192,7 +192,7 @@ def test_nested_comprehension_deep_with_local_flow():
 def test_nested_comprehension_dict():
     d = {"s": [SOURCE]}
     x = [y for k, v in d.items() for y in v]
-    SINK(x[0]) #$ MISSING:flow="SOURCE, l:-2 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-2 -> x[0]"
 
 
 def test_nested_comprehension_paren():
@@ -726,15 +726,15 @@ def test_deep_callgraph():
         return f5(arg)
 
     x = f6(SOURCE)
-    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
     x = f5(SOURCE)
-    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
     x = f4(SOURCE)
-    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
     x = f3(SOURCE)
-    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
     x = f2(SOURCE)
-    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
     x = f1(SOURCE)
     SINK(x) #$ flow="SOURCE, l:-1 -> x"
 

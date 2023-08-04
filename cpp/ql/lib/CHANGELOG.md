@@ -1,3 +1,138 @@
+## 0.8.1
+
+### Deprecated APIs
+
+* The library `semmle.code.cpp.dataflow.DataFlow` has been deprecated. Please use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* The `IRGuards` library has improved handling of pointer addition and subtraction operations.
+
+## 0.8.0
+
+### New Features
+
+* The `ProductFlow::StateConfigSig` signature now includes default predicates for `isBarrier1`, `isBarrier2`, `isAdditionalFlowStep1`, and `isAdditionalFlowStep1`. Hence, it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getURL` predicate from the `Container`, `Folder`, and `File` classes. Use the `getLocation` predicate instead.
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `hasCopyConstructor` predicate from the `Class` class in `Class.qll`.
+* Deleted many deprecated predicates and classes with uppercase `AST`, `SSA`, `CFG`, `API`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `CodeDuplication.qll` file.
+
+## 0.7.2
+
+### New Features
+
+* Added an AST-based interface (`semmle.code.cpp.rangeanalysis.new.RangeAnalysis`) for the relative range analysis library.
+* A new predicate `BarrierGuard::getAnIndirectBarrierNode` has been added to the new dataflow library (`semmle.code.cpp.dataflow.new.DataFlow`) to mark indirect expressions as barrier nodes using the `BarrierGuard` API.
+
+### Major Analysis Improvements
+
+* In the intermediate representation, handling of control flow after non-returning calls has been improved. This should remove false positives in queries that use the intermedite representation or libraries based on it, including the new data flow library.
+
+### Minor Analysis Improvements
+
+* The `StdNamespace` class now also includes all inline namespaces that are children of `std` namespace.
+* The new dataflow (`semmle.code.cpp.dataflow.new.DataFlow`) and taint-tracking libraries (`semmle.code.cpp.dataflow.new.TaintTracking`) now support tracking flow through static local variables.
+
+## 0.7.1
+
+No user-facing changes.
+
+## 0.7.0
+
+### Breaking Changes
+
+* The internal `SsaConsistency` module has been moved from `SSAConstruction` to `SSAConsitency`, and the deprecated `SSAConsistency` module has been removed.
+
+### Deprecated APIs
+
+* The single-parameter predicates `ArrayOrVectorAggregateLiteral.getElementExpr` and `ClassAggregateLiteral.getFieldExpr` have been deprecated in favor of `ArrayOrVectorAggregateLiteral.getAnElementExpr` and `ClassAggregateLiteral.getAFieldExpr`.
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+* The `SslContextCallAbstractConfig`, `SslContextCallConfig`, `SslContextCallBannedProtocolConfig`, `SslContextCallTls12ProtocolConfig`, `SslContextCallTls13ProtocolConfig`, `SslContextCallTlsProtocolConfig`, `SslContextFlowsToSetOptionConfig`, `SslOptionConfig` dataflow configurations from `BoostorgAsio` have been deprecated. Please use `SslContextCallConfigSig`, `SslContextCallGlobal`, `SslContextCallFlow`, `SslContextCallBannedProtocolFlow`, `SslContextCallTls12ProtocolFlow`, `SslContextCallTls13ProtocolFlow`, `SslContextCallTlsProtocolFlow`, `SslContextFlowsToSetOptionFlow`.
+
+### New Features
+
+* Added overridable predicates `getSizeExpr` and `getSizeMult` to the `BufferAccess` class (`semmle.code.cpp.security.BufferAccess.qll`). This makes it possible to model a larger class of buffer reads and writes using the library.
+
+### Minor Analysis Improvements
+
+* The `BufferAccess` library (`semmle.code.cpp.security.BufferAccess`) no longer matches buffer accesses inside unevaluated contexts (such as inside `sizeof` or `decltype` expressions). As a result, queries using this library may see fewer false positives.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Breaking Changes
+
+* The `semmle.code.cpp.commons.Buffer` and `semmle.code.cpp.commons.NullTermination` libraries no longer expose `semmle.code.cpp.dataflow.DataFlow`. Please import `semmle.code.cpp.dataflow.DataFlow` directly.
+
+### Deprecated APIs
+
+* The `WriteConfig` taint tracking configuration has been deprecated. Please use `WriteFlow`.
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* A new C/C++ dataflow library (`semmle.code.cpp.dataflow.new.DataFlow`) has been added.
+  The new library behaves much more like the dataflow library of other CodeQL supported
+  languages by following use-use dataflow paths instead of def-use dataflow paths.
+  The new library also better supports dataflow through indirections, and new predicates
+  such as `Node::asIndirectExpr` have been added to facilitate working with indirections.
+
+  The `semmle.code.cpp.ir.dataflow.DataFlow` library is now identical to the new
+  `semmle.code.cpp.dataflow.new.DataFlow` library.
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `hasGeneratedCopyConstructor` and `hasGeneratedCopyAssignmentOperator` predicates from the `Folder` class.
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getMustlockFunction`, `getTrylockFunction`, `getLockFunction`, and `getUnlockFunction` predicates from the `MutexType` class.
+* Deleted the deprecated `getPosInBasicBlock` predicate from the `SubBasicBlock` class.
+* Deleted the deprecated `getExpr` predicate from the `PointerDereferenceExpr` class.
+* Deleted the deprecated `getUseInstruction` and `getDefinitionInstruction` predicates from the `Operand` class.
+* Deleted the deprecated `isInParameter`, `isInParameterPointer`, and `isInQualifier` predicates from the `FunctionInput` class.
+* Deleted the deprecated `isOutParameterPointer`, `isOutQualifier`, `isOutReturnValue`, and `isOutReturnPointer` predicate from the `FunctionOutput` class.
+* Deleted the deprecated 3-argument `isGuardPhi` predicate from the `RangeSsaDefinition` class.
+
 ## 0.5.4
 
 No user-facing changes.

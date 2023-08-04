@@ -48,7 +48,7 @@ newtype DefLoc =
   /** A local variable. */
   LocalVariableLoc(VariableReadAccess read, VariableWriteAccess write) {
     exists(Ssa::WriteDefinition w |
-      write = w.getWriteAccess() and
+      write = w.getWriteAccess().getAstNode() and
       read = w.getARead().getExpr() and
       not read.isSynthesized()
     )

@@ -1,5 +1,5 @@
 /**
- * DEPRECATED: Use `Make` and `MakeWithState` instead.
+ * DEPRECATED: Use `Global` and `GlobalWithState` instead.
  *
  * Provides a `Configuration` class backwards-compatible interface to the data
  * flow library.
@@ -11,6 +11,7 @@ import DataFlowImplSpecific::Public
 private import DataFlowImpl
 import DataFlowImplCommonPublic
 import FlowStateString
+private import codeql.util.Unit
 
 /**
  * A configuration of interprocedural data flow analysis. This defines
@@ -275,6 +276,8 @@ private module Config implements FullStateConfigSig {
     getConfig(state).isSource(source) and getState(state) instanceof FlowStateEmpty
   }
 
+  predicate isSink(Node sink) { none() }
+
   predicate isSink(Node sink, FlowState state) {
     getConfig(state).isSink(sink, getState(state))
     or
@@ -312,6 +315,8 @@ private module Config implements FullStateConfigSig {
     any(Configuration config).allowImplicitRead(node, c)
   }
 
+  predicate neverSkip(Node node) { none() }
+
   int fieldFlowBranchLimit() { result = min(any(Configuration config).fieldFlowBranchLimit()) }
 
   FlowFeature getAFeature() { result = any(Configuration config).getAFeature() }
@@ -328,7 +333,6 @@ private module Config implements FullStateConfigSig {
 }
 
 private import Impl<Config> as I
-import I
 
 /**
  * A `Node` augmented with a call context (except for sinks), an access path, and a configuration.
@@ -379,6 +383,8 @@ class PathNode instanceof I::PathNode {
   final predicate isSinkGroup(string group) { super.isSinkGroup(group) }
 }
 
+module PathGraph = I::PathGraph;
+
 private predicate hasFlow(Node source, Node sink, Configuration config) {
   exists(PathNode source0, PathNode sink0 |
     hasFlowPath(source0, sink0, config) and
@@ -388,7 +394,7 @@ private predicate hasFlow(Node source, Node sink, Configuration config) {
 }
 
 private predicate hasFlowPath(PathNode source, PathNode sink, Configuration config) {
-  hasFlowPath(source, sink) and source.getConfiguration() = config
+  I::flowPath(source, sink) and source.getConfiguration() = config
 }
 
 private predicate hasFlowTo(Node sink, Configuration config) { hasFlow(_, sink, config) }

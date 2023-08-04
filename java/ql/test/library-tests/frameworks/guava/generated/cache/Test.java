@@ -48,35 +48,35 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "com.google.common.cache;Cache;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual"
+			// "com.google.common.cache;Cache;true;asMap;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			ConcurrentMap out = null;
 			LoadingCache in = newCacheWithMapKey(source());
 			out = in.asMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;asMap;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual"
+			// "com.google.common.cache;Cache;true;asMap;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			ConcurrentMap out = null;
 			Cache in = newCacheWithMapKey(source());
 			out = in.asMap();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;asMap;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
+			// "com.google.common.cache;Cache;true;asMap;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			ConcurrentMap out = null;
 			LoadingCache in = newCacheWithMapValue(source());
 			out = in.asMap();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;asMap;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
+			// "com.google.common.cache;Cache;true;asMap;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			ConcurrentMap out = null;
 			Cache in = newCacheWithMapValue(source());
 			out = in.asMap();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;get;(Object,Callable);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "com.google.common.cache;Cache;true;get;(Object,Callable);;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Cache in = newCacheWithMapValue(source());
 			out = in.get(null, null);
@@ -91,63 +91,63 @@ public class Test {
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;MapKey of Argument[-1];MapKey of ReturnValue;value;manual"
+			// "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			ImmutableMap out = null;
 			Cache in = newCacheWithMapKey(source());
 			out = in.getAllPresent(null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;getIfPresent;;;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "com.google.common.cache;Cache;true;getIfPresent;;;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Cache in = newCacheWithMapValue(source());
 			out = in.getIfPresent(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;put;(Object,Object);;Argument[0];MapKey of Argument[-1];value;manual"
+			// "com.google.common.cache;Cache;true;put;(Object,Object);;Argument[0];MapKey of Argument[this];value;manual"
 			Cache out = null;
 			Object in = source();
 			out.put(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;put;(Object,Object);;Argument[1];MapValue of Argument[-1];value;manual"
+			// "com.google.common.cache;Cache;true;put;(Object,Object);;Argument[1];MapValue of Argument[this];value;manual"
 			Cache out = null;
 			Object in = source();
 			out.put(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
+			// "com.google.common.cache;Cache;true;putAll;(Map);;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			Cache out = null;
 			Map in = newMapWithMapKey(source());
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;Cache;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
+			// "com.google.common.cache;Cache;true;putAll;(Map);;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			Cache out = null;
 			Map in = newMapWithMapValue(source());
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;LoadingCache;true;apply;;;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "com.google.common.cache;LoadingCache;true;apply;;;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			LoadingCache in = newCacheWithMapValue(source());
 			out = in.apply(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;LoadingCache;true;get;;;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "com.google.common.cache;LoadingCache;true;get;;;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			LoadingCache in = newCacheWithMapValue(source());
 			out = in.get(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of Argument[-1];value;manual"
+			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;Element of Argument[0];MapKey of Argument[this];value;manual"
 			LoadingCache out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.getAll(in);
@@ -162,14 +162,14 @@ public class Test {
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
+			// "com.google.common.cache;LoadingCache;true;getAll;(Iterable);;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			ImmutableMap out = null;
 			LoadingCache in = newCacheWithMapValue(source());
 			out = in.getAll(null);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.common.cache;LoadingCache;true;getUnchecked;;;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "com.google.common.cache;LoadingCache;true;getUnchecked;;;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			LoadingCache in = newCacheWithMapValue(source());
 			out = in.getUnchecked(null);

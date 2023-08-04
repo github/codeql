@@ -4,6 +4,8 @@
 
 private import go
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.util.Unit
+private import DataFlowPrivate as DataFlowPrivate
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -66,14 +68,6 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
   )
 }
 
-private newtype TUnit = TMkUnit()
-
-/** A singleton class containing a single dummy "unit" value. */
-private class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
-
 /**
  * A unit class for adding additional taint steps.
  *
@@ -102,7 +96,8 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   sliceStep(pred, succ) or
   any(FunctionModel fm).taintStep(pred, succ) or
   any(AdditionalTaintStep a).step(pred, succ) or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred, succ, false)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(DataFlowPrivate::FlowSummaryNode)
+        .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
 }
 
 /**

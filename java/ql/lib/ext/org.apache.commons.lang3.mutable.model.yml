@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.commons.lang3.mutable", "Mutable", True, "getValue", "", "", "Argument[-1].SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value]", "ReturnValue", "value", "manual"]
-      - ["org.apache.commons.lang3.mutable", "Mutable", True, "setValue", "", "", "Argument[0]", "Argument[-1].SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value]", "value", "manual"]
-      - ["org.apache.commons.lang3.mutable", "MutableObject", False, "MutableObject", "", "", "Argument[0]", "Argument[-1].SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value]", "value", "manual"]
+      - ["org.apache.commons.lang3.mutable", "Mutable", True, "getValue", "", "", "Argument[this].SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value]", "ReturnValue", "value", "manual"]
+      - ["org.apache.commons.lang3.mutable", "Mutable", True, "setValue", "", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value]", "value", "manual"]
+      - ["org.apache.commons.lang3.mutable", "MutableObject", False, "MutableObject", "", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.commons.lang3.mutable.MutableObject.value]", "value", "manual"]

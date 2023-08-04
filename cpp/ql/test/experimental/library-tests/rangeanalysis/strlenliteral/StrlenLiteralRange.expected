@@ -1,0 +1,2 @@
+| test.cpp:4:3:4:8 | call to strlen | 7.0 | 7.0 |
+| test.cpp:5:3:5:8 | call to strlen | 1.8446744073709552E19 | 0.0 |

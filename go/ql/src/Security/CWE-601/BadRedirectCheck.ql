@@ -121,7 +121,7 @@ class Configuration extends TaintTracking::Configuration {
     )
     or
     exists(DataFlow::CallNode call, int i | call.getTarget().hasQualifiedName("path", "Join") |
-      i > 0 and node = call.getArgument(i)
+      i > 0 and node = call.getSyntacticArgument(i)
     )
   }
 

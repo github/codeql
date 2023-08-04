@@ -35,7 +35,10 @@ deprecated class IntentUriPermissionManipulationConf extends TaintTracking::Conf
   }
 }
 
-private module IntentUriPermissionManipulationConf implements DataFlow::ConfigSig {
+/**
+ * A taint tracking configuration for user-provided Intents being returned to third party apps.
+ */
+module IntentUriPermissionManipulationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentUriPermissionManipulationSink }
@@ -53,4 +56,4 @@ private module IntentUriPermissionManipulationConf implements DataFlow::ConfigSi
  * Taint tracking flow for user-provided Intents being returned to third party apps.
  */
 module IntentUriPermissionManipulationFlow =
-  TaintTracking::Make<IntentUriPermissionManipulationConf>;
+  TaintTracking::Global<IntentUriPermissionManipulationConfig>;

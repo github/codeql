@@ -17,6 +17,6 @@ module Generated {
     /**
      * Holds if `getWidth()` exists.
      */
-    final predicate hasWidth() { exists(getWidth()) }
+    final predicate hasWidth() { exists(this.getWidth()) }
   }
 }

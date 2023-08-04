@@ -1,0 +1,19 @@
+extensions:
+- addsTo:
+    pack: codeql/java-all
+    extensible: summaryModel
+  data:
+    - ["io.netty.handler.codec.http.cookie", "Cookie", True, "domain", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "Cookie", True, "name", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "Cookie", True, "path", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "Cookie", True, "value", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "Cookie", True, "setDomain", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "Cookie", True, "setPath", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "Cookie", True, "setValue", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "ServerCookieDecoder", True, "decode", "(String)", "", "Argument[0]", "ReturnValue.Element", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "ServerCookieDecoder", True, "decodeAll", "(String)", "", "Argument[0]", "ReturnValue.Element", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "ServerCookieEncoder", True, "encode", "(Cookie)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "ServerCookieEncoder", True, "encode", "(Cookie[])", "", "Argument[0].ArrayElement", "ReturnValue.Element", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "ServerCookieEncoder", True, "encode", "(Collection)", "", "Argument[0].Element", "ReturnValue.Element", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "ServerCookieEncoder", True, "encode", "(Iterable)", "", "Argument[0].Element", "ReturnValue.Element", "taint", "manual"]
+    - ["io.netty.handler.codec.http.cookie", "ServerCookieEncoder", True, "encode", "(String,String)", "", "Argument[1..2]", "ReturnValue", "taint", "manual"]

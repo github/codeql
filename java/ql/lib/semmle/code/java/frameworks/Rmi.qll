@@ -4,7 +4,7 @@ import java
 
 /** The interface `java.rmi.Remote`. */
 class TypeRemote extends RefType {
-  TypeRemote() { hasQualifiedName("java.rmi", "Remote") }
+  TypeRemote() { this.hasQualifiedName("java.rmi", "Remote") }
 }
 
 /** A method that is intended to be called via RMI. */
@@ -12,7 +12,6 @@ class RemoteCallableMethod extends Method {
   RemoteCallableMethod() { remoteCallableMethod(this) }
 }
 
-pragma[assume_small_delta]
 private predicate remoteCallableMethod(Method method) {
   method.getDeclaringType().getASupertype() instanceof TypeRemote
   or

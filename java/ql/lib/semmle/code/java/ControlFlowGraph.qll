@@ -400,7 +400,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a statement that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private Stmt nonReturningStmt() {
     result instanceof ThrowStmt
     or
@@ -422,7 +421,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets an expression that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private Expr nonReturningExpr() {
     result = nonReturningMethodAccess()
     or

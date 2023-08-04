@@ -23,29 +23,11 @@ instructionWithoutSuccessor
 | file://:0:0:0:0 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | condition_decls.cpp:15:6:15:17 | void if_decl_bind(int) | void if_decl_bind(int) |
 | file://:0:0:0:0 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
 | file://:0:0:0:0 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
-| misc.c:171:10:171:13 | Uninitialized: definition of str2 | Instruction 'Uninitialized: definition of str2' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| misc.c:171:15:171:31 | Add: ... + ... | Instruction 'Add: ... + ...' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| misc.c:173:14:173:26 | Mul: ... * ... | Instruction 'Mul: ... * ...' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| misc.c:173:37:173:39 | Store: array to pointer conversion | Instruction 'Store: array to pointer conversion' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| misc.c:174:17:174:22 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| misc.c:174:30:174:35 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
-| misc.c:174:55:174:60 | Store: (char ****)... | Instruction 'Store: (char ****)...' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
 | ms_try_mix.cpp:35:13:35:19 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
 | ms_try_mix.cpp:53:5:53:11 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:49:6:49:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
 | stmt_expr.cpp:29:11:32:11 | CopyValue: (statement expression) | Instruction 'CopyValue: (statement expression)' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
 | stmt_in_type.cpp:5:53:5:53 | Constant: 1 | Instruction 'Constant: 1' has no successors in function '$@'. | stmt_in_type.cpp:2:6:2:12 | void cpp_fun() | void cpp_fun() |
-| vla.c:5:9:5:14 | Uninitialized: definition of matrix | Instruction 'Uninitialized: definition of matrix' has no successors in function '$@'. | vla.c:3:12:3:12 | int f(int, char**) | int f(int, char**) |
-| vla.c:5:16:5:19 | Load: argc | Instruction 'Load: argc' has no successors in function '$@'. | vla.c:3:12:3:12 | int f(int, char**) | int f(int, char**) |
-| vla.c:5:27:5:33 | BufferReadSideEffect: (const char *)... | Instruction 'BufferReadSideEffect: (const char *)...' has no successors in function '$@'. | vla.c:3:12:3:12 | int f(int, char**) | int f(int, char**) |
-| vla.c:11:6:11:16 | InitializeNonLocal: vla_typedef | Instruction 'InitializeNonLocal: vla_typedef' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
-| vla.c:12:33:12:44 | Add: ... + ... | Instruction 'Add: ... + ...' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
-| vla.c:12:50:12:62 | Mul: ... * ... | Instruction 'Mul: ... * ...' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
-| vla.c:13:12:13:14 | Uninitialized: definition of var | Instruction 'Uninitialized: definition of var' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
-| vla.c:14:36:14:47 | Add: ... + ... | Instruction 'Add: ... + ...' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
-| vla.c:14:53:14:65 | Mul: ... * ... | Instruction 'Mul: ... * ...' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
-| vla.c:14:74:14:79 | CallSideEffect: call to getInt | Instruction 'CallSideEffect: call to getInt' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
-| vla.c:14:92:14:94 | Store: (char *)... | Instruction 'Store: (char *)...' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -65,7 +47,6 @@ useNotDominatedByDefinition
 | ms_try_except.cpp:19:17:19:21 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
 | static_init_templates.cpp:15:1:15:18 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | static_init_templates.cpp:15:1:15:18 | void MyClass::MyClass() | void MyClass::MyClass() |
 | try_catch.cpp:21:9:21:9 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
-| vla.c:3:31:3:34 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:12:3:12 | int f(int, char**) | int f(int, char**) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated

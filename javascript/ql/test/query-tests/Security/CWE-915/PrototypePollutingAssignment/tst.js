@@ -103,11 +103,23 @@ app.get('/bar', (req, res) => {
 
     let object = {};
     object[taint][taint] = taint; // NOT OK
-    
+
     const bad = ["__proto__", "constructor"];
     if (bad.includes(taint)) {
         return;
     }
 
     object[taint][taint] = taint; // OK
+});
+
+app.get('/assign', (req, res) => {
+    let taint = String(req.query.data);
+    let plainObj = {};
+
+    let object = Object.assign({}, plainObj[taint]);
+    object[taint] = taint; // OK - 'object' is not Object.prototype itself (but possibly a copy)
+
+    let dest = {};
+    Object.assign(dest, plainObj[taint]);
+    dest[taint] = taint; // OK - 'dest' is not Object.prototype itself (but possibly a copy)
 });

@@ -1159,7 +1159,7 @@ public class TypeScriptASTConverter {
             loc,
             hasModifier(node, "ConstKeyword"),
             hasModifier(node, "DeclareKeyword"),
-            convertChildrenNotNull(node, "illegalDecorators"), // as of https://github.com/microsoft/TypeScript/pull/50343/ the property is called `illegalDecorators` instead of `decorators`
+            getDecorators(node),
             convertChild(node, "name"),
             convertChildren(node, "members"));
     attachSymbolInformation(enumDeclaration, node);
@@ -1552,8 +1552,13 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertJsxAttribute(JsonObject node, SourceLocation loc) throws ParseError {
+    JsonObject nameNode = node.get("name").getAsJsonObject();
+    if (nameNode.get("name") != null) {
+      // it's a namespaced attribute
+      nameNode = nameNode.get("name").getAsJsonObject();
+    }
     return new JSXAttribute(
-        loc, convertJSXName(convertChild(node, "name")), convertChild(node, "initializer"));
+        loc, convertJSXName(((Expression)convertNode(nameNode, null))), convertChild(node, "initializer")); // 2
   }
 
   private Node convertJsxClosingElement(JsonObject node, SourceLocation loc) throws ParseError {

@@ -6,16 +6,16 @@ import semmle.code.csharp.dataflow.TaintTracking3
 import semmle.code.csharp.dataflow.TaintTracking4
 import semmle.code.csharp.dataflow.TaintTracking5
 
-class FlowConfig extends TaintTracking::Configuration {
-  FlowConfig() { this = "FlowConfig" }
+module FlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof Literal }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof Literal }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(LocalVariable decl | sink.asExpr() = decl.getInitializer())
   }
 }
 
-from FlowConfig config, DataFlow::Node source, DataFlow::Node sink
-where config.hasFlow(source, sink)
+module Flow = TaintTracking::Global<FlowConfig>;
+
+from DataFlow::Node source, DataFlow::Node sink
+where Flow::flow(source, sink)
 select source, sink

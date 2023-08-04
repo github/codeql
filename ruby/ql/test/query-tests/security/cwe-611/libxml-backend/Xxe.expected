@@ -1,19 +1,21 @@
 edges
-| LibXmlBackend.rb:16:15:16:20 | call to params :  | LibXmlBackend.rb:16:15:16:26 | ...[...] :  |
-| LibXmlBackend.rb:16:15:16:26 | ...[...] :  | LibXmlBackend.rb:18:30:18:36 | content |
-| LibXmlBackend.rb:16:15:16:26 | ...[...] :  | LibXmlBackend.rb:19:19:19:25 | content |
-| LibXmlBackend.rb:16:15:16:26 | ...[...] :  | LibXmlBackend.rb:20:27:20:33 | content |
-| LibXmlBackend.rb:16:15:16:26 | ...[...] :  | LibXmlBackend.rb:21:34:21:40 | content |
+| LibXmlBackend.rb:16:5:16:11 | content | LibXmlBackend.rb:18:30:18:36 | content |
+| LibXmlBackend.rb:16:5:16:11 | content | LibXmlBackend.rb:19:19:19:25 | content |
+| LibXmlBackend.rb:16:5:16:11 | content | LibXmlBackend.rb:20:27:20:33 | content |
+| LibXmlBackend.rb:16:5:16:11 | content | LibXmlBackend.rb:21:34:21:40 | content |
+| LibXmlBackend.rb:16:15:16:20 | call to params | LibXmlBackend.rb:16:15:16:26 | ...[...] |
+| LibXmlBackend.rb:16:15:16:26 | ...[...] | LibXmlBackend.rb:16:5:16:11 | content |
 nodes
-| LibXmlBackend.rb:16:15:16:20 | call to params :  | semmle.label | call to params :  |
-| LibXmlBackend.rb:16:15:16:26 | ...[...] :  | semmle.label | ...[...] :  |
+| LibXmlBackend.rb:16:5:16:11 | content | semmle.label | content |
+| LibXmlBackend.rb:16:15:16:20 | call to params | semmle.label | call to params |
+| LibXmlBackend.rb:16:15:16:26 | ...[...] | semmle.label | ...[...] |
 | LibXmlBackend.rb:18:30:18:36 | content | semmle.label | content |
 | LibXmlBackend.rb:19:19:19:25 | content | semmle.label | content |
 | LibXmlBackend.rb:20:27:20:33 | content | semmle.label | content |
 | LibXmlBackend.rb:21:34:21:40 | content | semmle.label | content |
 subpaths
 #select
-| LibXmlBackend.rb:18:30:18:36 | content | LibXmlBackend.rb:16:15:16:20 | call to params :  | LibXmlBackend.rb:18:30:18:36 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |
-| LibXmlBackend.rb:19:19:19:25 | content | LibXmlBackend.rb:16:15:16:20 | call to params :  | LibXmlBackend.rb:19:19:19:25 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |
-| LibXmlBackend.rb:20:27:20:33 | content | LibXmlBackend.rb:16:15:16:20 | call to params :  | LibXmlBackend.rb:20:27:20:33 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |
-| LibXmlBackend.rb:21:34:21:40 | content | LibXmlBackend.rb:16:15:16:20 | call to params :  | LibXmlBackend.rb:21:34:21:40 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |
+| LibXmlBackend.rb:18:30:18:36 | content | LibXmlBackend.rb:16:15:16:20 | call to params | LibXmlBackend.rb:18:30:18:36 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |
+| LibXmlBackend.rb:19:19:19:25 | content | LibXmlBackend.rb:16:15:16:20 | call to params | LibXmlBackend.rb:19:19:19:25 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |
+| LibXmlBackend.rb:20:27:20:33 | content | LibXmlBackend.rb:16:15:16:20 | call to params | LibXmlBackend.rb:20:27:20:33 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |
+| LibXmlBackend.rb:21:34:21:40 | content | LibXmlBackend.rb:16:15:16:20 | call to params | LibXmlBackend.rb:21:34:21:40 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |

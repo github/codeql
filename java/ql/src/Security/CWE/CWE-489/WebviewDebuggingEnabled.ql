@@ -11,9 +11,9 @@
  */
 
 import java
-import semmle.code.java.security.WebviewDubuggingEnabledQuery
-import DataFlow::PathGraph
+import semmle.code.java.security.WebviewDebuggingEnabledQuery
+import WebviewDebugEnabledFlow::PathGraph
 
-from WebviewDebugEnabledConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
-where conf.hasFlowPath(source, sink)
+from WebviewDebugEnabledFlow::PathNode source, WebviewDebugEnabledFlow::PathNode sink
+where WebviewDebugEnabledFlow::flowPath(source, sink)
 select sink, source, sink, "Webview debugging is enabled."

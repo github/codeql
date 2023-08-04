@@ -61,7 +61,7 @@ module ZipSlip {
   }
 
   /**
-   * Excludes zipped file data from consideration for zip slip.
+   * A zipped file, excluded from for zip slip.
    */
   class ZipFileOpen extends Sanitizer {
     ZipFileOpen() {

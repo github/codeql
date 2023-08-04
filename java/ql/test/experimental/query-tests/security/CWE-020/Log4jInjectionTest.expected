@@ -1053,8 +1053,8 @@ edges
 | Log4jJndiInjectionTest.java:37:59:37:66 | source(...) : String | Log4jJndiInjectionTest.java:37:41:37:66 | (...)... |
 | Log4jJndiInjectionTest.java:39:50:39:57 | source(...) : String | Log4jJndiInjectionTest.java:39:41:39:57 | (...)... |
 | Log4jJndiInjectionTest.java:40:50:40:57 | source(...) : String | Log4jJndiInjectionTest.java:40:41:40:57 | (...)... |
-| Log4jJndiInjectionTest.java:41:56:41:78 | {...} [[]] : String | Log4jJndiInjectionTest.java:41:56:41:78 | new Object[] |
-| Log4jJndiInjectionTest.java:41:70:41:77 | source(...) : String | Log4jJndiInjectionTest.java:41:56:41:78 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:41:56:41:78 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:41:56:41:78 | new Object[] |
+| Log4jJndiInjectionTest.java:41:70:41:77 | source(...) : String | Log4jJndiInjectionTest.java:41:56:41:78 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:42:65:42:72 | source(...) : String | Log4jJndiInjectionTest.java:42:56:42:72 | (...)... |
 | Log4jJndiInjectionTest.java:43:50:43:57 | source(...) : String | Log4jJndiInjectionTest.java:43:41:43:57 | (...)... |
 | Log4jJndiInjectionTest.java:44:80:44:87 | source(...) : String | Log4jJndiInjectionTest.java:44:71:44:87 | (...)... |
@@ -1120,8 +1120,8 @@ edges
 | Log4jJndiInjectionTest.java:104:36:104:43 | source(...) : String | Log4jJndiInjectionTest.java:104:26:104:43 | (...)... |
 | Log4jJndiInjectionTest.java:107:35:107:42 | source(...) : String | Log4jJndiInjectionTest.java:107:26:107:42 | (...)... |
 | Log4jJndiInjectionTest.java:108:35:108:42 | source(...) : String | Log4jJndiInjectionTest.java:108:26:108:42 | (...)... |
-| Log4jJndiInjectionTest.java:109:41:109:63 | {...} [[]] : String | Log4jJndiInjectionTest.java:109:41:109:63 | new Object[] |
-| Log4jJndiInjectionTest.java:109:55:109:62 | source(...) : String | Log4jJndiInjectionTest.java:109:41:109:63 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:109:41:109:63 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:109:41:109:63 | new Object[] |
+| Log4jJndiInjectionTest.java:109:55:109:62 | source(...) : String | Log4jJndiInjectionTest.java:109:41:109:63 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:110:50:110:57 | source(...) : String | Log4jJndiInjectionTest.java:110:41:110:57 | (...)... |
 | Log4jJndiInjectionTest.java:111:35:111:42 | source(...) : String | Log4jJndiInjectionTest.java:111:26:111:42 | (...)... |
 | Log4jJndiInjectionTest.java:112:65:112:72 | source(...) : String | Log4jJndiInjectionTest.java:112:56:112:72 | (...)... |
@@ -1190,8 +1190,8 @@ edges
 | Log4jJndiInjectionTest.java:175:59:175:66 | source(...) : String | Log4jJndiInjectionTest.java:175:41:175:66 | (...)... |
 | Log4jJndiInjectionTest.java:177:50:177:57 | source(...) : String | Log4jJndiInjectionTest.java:177:41:177:57 | (...)... |
 | Log4jJndiInjectionTest.java:178:50:178:57 | source(...) : String | Log4jJndiInjectionTest.java:178:41:178:57 | (...)... |
-| Log4jJndiInjectionTest.java:179:56:179:78 | {...} [[]] : String | Log4jJndiInjectionTest.java:179:56:179:78 | new Object[] |
-| Log4jJndiInjectionTest.java:179:70:179:77 | source(...) : String | Log4jJndiInjectionTest.java:179:56:179:78 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:179:56:179:78 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:179:56:179:78 | new Object[] |
+| Log4jJndiInjectionTest.java:179:70:179:77 | source(...) : String | Log4jJndiInjectionTest.java:179:56:179:78 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:180:65:180:72 | source(...) : String | Log4jJndiInjectionTest.java:180:56:180:72 | (...)... |
 | Log4jJndiInjectionTest.java:181:50:181:57 | source(...) : String | Log4jJndiInjectionTest.java:181:41:181:57 | (...)... |
 | Log4jJndiInjectionTest.java:182:80:182:87 | source(...) : String | Log4jJndiInjectionTest.java:182:71:182:87 | (...)... |
@@ -1257,8 +1257,8 @@ edges
 | Log4jJndiInjectionTest.java:242:36:242:43 | source(...) : String | Log4jJndiInjectionTest.java:242:26:242:43 | (...)... |
 | Log4jJndiInjectionTest.java:245:35:245:42 | source(...) : String | Log4jJndiInjectionTest.java:245:26:245:42 | (...)... |
 | Log4jJndiInjectionTest.java:246:35:246:42 | source(...) : String | Log4jJndiInjectionTest.java:246:26:246:42 | (...)... |
-| Log4jJndiInjectionTest.java:247:41:247:63 | {...} [[]] : String | Log4jJndiInjectionTest.java:247:41:247:63 | new Object[] |
-| Log4jJndiInjectionTest.java:247:55:247:62 | source(...) : String | Log4jJndiInjectionTest.java:247:41:247:63 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:247:41:247:63 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:247:41:247:63 | new Object[] |
+| Log4jJndiInjectionTest.java:247:55:247:62 | source(...) : String | Log4jJndiInjectionTest.java:247:41:247:63 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:248:50:248:57 | source(...) : String | Log4jJndiInjectionTest.java:248:41:248:57 | (...)... |
 | Log4jJndiInjectionTest.java:249:35:249:42 | source(...) : String | Log4jJndiInjectionTest.java:249:26:249:42 | (...)... |
 | Log4jJndiInjectionTest.java:250:65:250:72 | source(...) : String | Log4jJndiInjectionTest.java:250:56:250:72 | (...)... |
@@ -1327,8 +1327,8 @@ edges
 | Log4jJndiInjectionTest.java:313:59:313:66 | source(...) : String | Log4jJndiInjectionTest.java:313:41:313:66 | (...)... |
 | Log4jJndiInjectionTest.java:315:50:315:57 | source(...) : String | Log4jJndiInjectionTest.java:315:41:315:57 | (...)... |
 | Log4jJndiInjectionTest.java:316:50:316:57 | source(...) : String | Log4jJndiInjectionTest.java:316:41:316:57 | (...)... |
-| Log4jJndiInjectionTest.java:317:56:317:78 | {...} [[]] : String | Log4jJndiInjectionTest.java:317:56:317:78 | new Object[] |
-| Log4jJndiInjectionTest.java:317:70:317:77 | source(...) : String | Log4jJndiInjectionTest.java:317:56:317:78 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:317:56:317:78 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:317:56:317:78 | new Object[] |
+| Log4jJndiInjectionTest.java:317:70:317:77 | source(...) : String | Log4jJndiInjectionTest.java:317:56:317:78 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:318:65:318:72 | source(...) : String | Log4jJndiInjectionTest.java:318:56:318:72 | (...)... |
 | Log4jJndiInjectionTest.java:319:50:319:57 | source(...) : String | Log4jJndiInjectionTest.java:319:41:319:57 | (...)... |
 | Log4jJndiInjectionTest.java:320:80:320:87 | source(...) : String | Log4jJndiInjectionTest.java:320:71:320:87 | (...)... |
@@ -1394,8 +1394,8 @@ edges
 | Log4jJndiInjectionTest.java:380:36:380:43 | source(...) : String | Log4jJndiInjectionTest.java:380:26:380:43 | (...)... |
 | Log4jJndiInjectionTest.java:383:35:383:42 | source(...) : String | Log4jJndiInjectionTest.java:383:26:383:42 | (...)... |
 | Log4jJndiInjectionTest.java:384:35:384:42 | source(...) : String | Log4jJndiInjectionTest.java:384:26:384:42 | (...)... |
-| Log4jJndiInjectionTest.java:385:41:385:63 | {...} [[]] : String | Log4jJndiInjectionTest.java:385:41:385:63 | new Object[] |
-| Log4jJndiInjectionTest.java:385:55:385:62 | source(...) : String | Log4jJndiInjectionTest.java:385:41:385:63 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:385:41:385:63 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:385:41:385:63 | new Object[] |
+| Log4jJndiInjectionTest.java:385:55:385:62 | source(...) : String | Log4jJndiInjectionTest.java:385:41:385:63 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:386:50:386:57 | source(...) : String | Log4jJndiInjectionTest.java:386:41:386:57 | (...)... |
 | Log4jJndiInjectionTest.java:387:35:387:42 | source(...) : String | Log4jJndiInjectionTest.java:387:26:387:42 | (...)... |
 | Log4jJndiInjectionTest.java:388:65:388:72 | source(...) : String | Log4jJndiInjectionTest.java:388:56:388:72 | (...)... |
@@ -1464,8 +1464,8 @@ edges
 | Log4jJndiInjectionTest.java:451:58:451:65 | source(...) : String | Log4jJndiInjectionTest.java:451:40:451:65 | (...)... |
 | Log4jJndiInjectionTest.java:453:49:453:56 | source(...) : String | Log4jJndiInjectionTest.java:453:40:453:56 | (...)... |
 | Log4jJndiInjectionTest.java:454:49:454:56 | source(...) : String | Log4jJndiInjectionTest.java:454:40:454:56 | (...)... |
-| Log4jJndiInjectionTest.java:455:55:455:77 | {...} [[]] : String | Log4jJndiInjectionTest.java:455:55:455:77 | new Object[] |
-| Log4jJndiInjectionTest.java:455:69:455:76 | source(...) : String | Log4jJndiInjectionTest.java:455:55:455:77 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:455:55:455:77 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:455:55:455:77 | new Object[] |
+| Log4jJndiInjectionTest.java:455:69:455:76 | source(...) : String | Log4jJndiInjectionTest.java:455:55:455:77 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:456:64:456:71 | source(...) : String | Log4jJndiInjectionTest.java:456:55:456:71 | (...)... |
 | Log4jJndiInjectionTest.java:457:49:457:56 | source(...) : String | Log4jJndiInjectionTest.java:457:40:457:56 | (...)... |
 | Log4jJndiInjectionTest.java:458:79:458:86 | source(...) : String | Log4jJndiInjectionTest.java:458:70:458:86 | (...)... |
@@ -1531,8 +1531,8 @@ edges
 | Log4jJndiInjectionTest.java:518:35:518:42 | source(...) : String | Log4jJndiInjectionTest.java:518:25:518:42 | (...)... |
 | Log4jJndiInjectionTest.java:521:34:521:41 | source(...) : String | Log4jJndiInjectionTest.java:521:25:521:41 | (...)... |
 | Log4jJndiInjectionTest.java:522:34:522:41 | source(...) : String | Log4jJndiInjectionTest.java:522:25:522:41 | (...)... |
-| Log4jJndiInjectionTest.java:523:40:523:62 | {...} [[]] : String | Log4jJndiInjectionTest.java:523:40:523:62 | new Object[] |
-| Log4jJndiInjectionTest.java:523:54:523:61 | source(...) : String | Log4jJndiInjectionTest.java:523:40:523:62 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:523:40:523:62 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:523:40:523:62 | new Object[] |
+| Log4jJndiInjectionTest.java:523:54:523:61 | source(...) : String | Log4jJndiInjectionTest.java:523:40:523:62 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:524:49:524:56 | source(...) : String | Log4jJndiInjectionTest.java:524:40:524:56 | (...)... |
 | Log4jJndiInjectionTest.java:525:34:525:41 | source(...) : String | Log4jJndiInjectionTest.java:525:25:525:41 | (...)... |
 | Log4jJndiInjectionTest.java:526:64:526:71 | source(...) : String | Log4jJndiInjectionTest.java:526:55:526:71 | (...)... |
@@ -1601,8 +1601,8 @@ edges
 | Log4jJndiInjectionTest.java:589:71:589:78 | source(...) : String | Log4jJndiInjectionTest.java:589:53:589:78 | (...)... |
 | Log4jJndiInjectionTest.java:591:62:591:69 | source(...) : String | Log4jJndiInjectionTest.java:591:53:591:69 | (...)... |
 | Log4jJndiInjectionTest.java:592:62:592:69 | source(...) : String | Log4jJndiInjectionTest.java:592:53:592:69 | (...)... |
-| Log4jJndiInjectionTest.java:593:68:593:90 | {...} [[]] : String | Log4jJndiInjectionTest.java:593:68:593:90 | new Object[] |
-| Log4jJndiInjectionTest.java:593:82:593:89 | source(...) : String | Log4jJndiInjectionTest.java:593:68:593:90 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:593:68:593:90 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:593:68:593:90 | new Object[] |
+| Log4jJndiInjectionTest.java:593:82:593:89 | source(...) : String | Log4jJndiInjectionTest.java:593:68:593:90 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:594:77:594:84 | source(...) : String | Log4jJndiInjectionTest.java:594:68:594:84 | (...)... |
 | Log4jJndiInjectionTest.java:595:62:595:69 | source(...) : String | Log4jJndiInjectionTest.java:595:53:595:69 | (...)... |
 | Log4jJndiInjectionTest.java:596:92:596:99 | source(...) : String | Log4jJndiInjectionTest.java:596:83:596:99 | (...)... |
@@ -1668,8 +1668,8 @@ edges
 | Log4jJndiInjectionTest.java:656:48:656:55 | source(...) : String | Log4jJndiInjectionTest.java:656:38:656:55 | (...)... |
 | Log4jJndiInjectionTest.java:659:47:659:54 | source(...) : String | Log4jJndiInjectionTest.java:659:38:659:54 | (...)... |
 | Log4jJndiInjectionTest.java:660:47:660:54 | source(...) : String | Log4jJndiInjectionTest.java:660:38:660:54 | (...)... |
-| Log4jJndiInjectionTest.java:661:53:661:75 | {...} [[]] : String | Log4jJndiInjectionTest.java:661:53:661:75 | new Object[] |
-| Log4jJndiInjectionTest.java:661:67:661:74 | source(...) : String | Log4jJndiInjectionTest.java:661:53:661:75 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:661:53:661:75 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:661:53:661:75 | new Object[] |
+| Log4jJndiInjectionTest.java:661:67:661:74 | source(...) : String | Log4jJndiInjectionTest.java:661:53:661:75 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:662:62:662:69 | source(...) : String | Log4jJndiInjectionTest.java:662:53:662:69 | (...)... |
 | Log4jJndiInjectionTest.java:663:47:663:54 | source(...) : String | Log4jJndiInjectionTest.java:663:38:663:54 | (...)... |
 | Log4jJndiInjectionTest.java:664:77:664:84 | source(...) : String | Log4jJndiInjectionTest.java:664:68:664:84 | (...)... |
@@ -1738,8 +1738,8 @@ edges
 | Log4jJndiInjectionTest.java:727:59:727:66 | source(...) : String | Log4jJndiInjectionTest.java:727:41:727:66 | (...)... |
 | Log4jJndiInjectionTest.java:729:50:729:57 | source(...) : String | Log4jJndiInjectionTest.java:729:41:729:57 | (...)... |
 | Log4jJndiInjectionTest.java:730:50:730:57 | source(...) : String | Log4jJndiInjectionTest.java:730:41:730:57 | (...)... |
-| Log4jJndiInjectionTest.java:731:56:731:78 | {...} [[]] : String | Log4jJndiInjectionTest.java:731:56:731:78 | new Object[] |
-| Log4jJndiInjectionTest.java:731:70:731:77 | source(...) : String | Log4jJndiInjectionTest.java:731:56:731:78 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:731:56:731:78 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:731:56:731:78 | new Object[] |
+| Log4jJndiInjectionTest.java:731:70:731:77 | source(...) : String | Log4jJndiInjectionTest.java:731:56:731:78 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:732:65:732:72 | source(...) : String | Log4jJndiInjectionTest.java:732:56:732:72 | (...)... |
 | Log4jJndiInjectionTest.java:733:50:733:57 | source(...) : String | Log4jJndiInjectionTest.java:733:41:733:57 | (...)... |
 | Log4jJndiInjectionTest.java:734:80:734:87 | source(...) : String | Log4jJndiInjectionTest.java:734:71:734:87 | (...)... |
@@ -1805,8 +1805,8 @@ edges
 | Log4jJndiInjectionTest.java:794:36:794:43 | source(...) : String | Log4jJndiInjectionTest.java:794:26:794:43 | (...)... |
 | Log4jJndiInjectionTest.java:797:35:797:42 | source(...) : String | Log4jJndiInjectionTest.java:797:26:797:42 | (...)... |
 | Log4jJndiInjectionTest.java:798:35:798:42 | source(...) : String | Log4jJndiInjectionTest.java:798:26:798:42 | (...)... |
-| Log4jJndiInjectionTest.java:799:41:799:63 | {...} [[]] : String | Log4jJndiInjectionTest.java:799:41:799:63 | new Object[] |
-| Log4jJndiInjectionTest.java:799:55:799:62 | source(...) : String | Log4jJndiInjectionTest.java:799:41:799:63 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:799:41:799:63 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:799:41:799:63 | new Object[] |
+| Log4jJndiInjectionTest.java:799:55:799:62 | source(...) : String | Log4jJndiInjectionTest.java:799:41:799:63 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:800:50:800:57 | source(...) : String | Log4jJndiInjectionTest.java:800:41:800:57 | (...)... |
 | Log4jJndiInjectionTest.java:801:35:801:42 | source(...) : String | Log4jJndiInjectionTest.java:801:26:801:42 | (...)... |
 | Log4jJndiInjectionTest.java:802:65:802:72 | source(...) : String | Log4jJndiInjectionTest.java:802:56:802:72 | (...)... |
@@ -1875,8 +1875,8 @@ edges
 | Log4jJndiInjectionTest.java:865:58:865:65 | source(...) : String | Log4jJndiInjectionTest.java:865:40:865:65 | (...)... |
 | Log4jJndiInjectionTest.java:867:49:867:56 | source(...) : String | Log4jJndiInjectionTest.java:867:40:867:56 | (...)... |
 | Log4jJndiInjectionTest.java:868:49:868:56 | source(...) : String | Log4jJndiInjectionTest.java:868:40:868:56 | (...)... |
-| Log4jJndiInjectionTest.java:869:55:869:77 | {...} [[]] : String | Log4jJndiInjectionTest.java:869:55:869:77 | new Object[] |
-| Log4jJndiInjectionTest.java:869:69:869:76 | source(...) : String | Log4jJndiInjectionTest.java:869:55:869:77 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:869:55:869:77 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:869:55:869:77 | new Object[] |
+| Log4jJndiInjectionTest.java:869:69:869:76 | source(...) : String | Log4jJndiInjectionTest.java:869:55:869:77 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:870:64:870:71 | source(...) : String | Log4jJndiInjectionTest.java:870:55:870:71 | (...)... |
 | Log4jJndiInjectionTest.java:871:49:871:56 | source(...) : String | Log4jJndiInjectionTest.java:871:40:871:56 | (...)... |
 | Log4jJndiInjectionTest.java:872:79:872:86 | source(...) : String | Log4jJndiInjectionTest.java:872:70:872:86 | (...)... |
@@ -1942,8 +1942,8 @@ edges
 | Log4jJndiInjectionTest.java:932:35:932:42 | source(...) : String | Log4jJndiInjectionTest.java:932:25:932:42 | (...)... |
 | Log4jJndiInjectionTest.java:935:34:935:41 | source(...) : String | Log4jJndiInjectionTest.java:935:25:935:41 | (...)... |
 | Log4jJndiInjectionTest.java:936:34:936:41 | source(...) : String | Log4jJndiInjectionTest.java:936:25:936:41 | (...)... |
-| Log4jJndiInjectionTest.java:937:40:937:62 | {...} [[]] : String | Log4jJndiInjectionTest.java:937:40:937:62 | new Object[] |
-| Log4jJndiInjectionTest.java:937:54:937:61 | source(...) : String | Log4jJndiInjectionTest.java:937:40:937:62 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:937:40:937:62 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:937:40:937:62 | new Object[] |
+| Log4jJndiInjectionTest.java:937:54:937:61 | source(...) : String | Log4jJndiInjectionTest.java:937:40:937:62 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:938:49:938:56 | source(...) : String | Log4jJndiInjectionTest.java:938:40:938:56 | (...)... |
 | Log4jJndiInjectionTest.java:939:34:939:41 | source(...) : String | Log4jJndiInjectionTest.java:939:25:939:41 | (...)... |
 | Log4jJndiInjectionTest.java:940:64:940:71 | source(...) : String | Log4jJndiInjectionTest.java:940:55:940:71 | (...)... |
@@ -2005,17 +2005,17 @@ edges
 | Log4jJndiInjectionTest.java:996:39:996:46 | source(...) : String | Log4jJndiInjectionTest.java:996:25:996:46 | (...)... |
 | Log4jJndiInjectionTest.java:998:65:998:72 | source(...) : String | Log4jJndiInjectionTest.java:998:55:998:72 | (...)... |
 | Log4jJndiInjectionTest.java:999:48:999:55 | source(...) : String | Log4jJndiInjectionTest.java:999:39:999:55 | (...)... |
-| Log4jJndiInjectionTest.java:1000:45:1000:67 | {...} [[]] : String | Log4jJndiInjectionTest.java:1000:45:1000:67 | new Object[] |
-| Log4jJndiInjectionTest.java:1000:59:1000:66 | source(...) : String | Log4jJndiInjectionTest.java:1000:45:1000:67 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:1000:45:1000:67 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:1000:45:1000:67 | new Object[] |
+| Log4jJndiInjectionTest.java:1000:59:1000:66 | source(...) : String | Log4jJndiInjectionTest.java:1000:45:1000:67 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:1001:42:1001:49 | source(...) : String | Log4jJndiInjectionTest.java:1001:33:1001:49 | (...)... |
-| Log4jJndiInjectionTest.java:1002:39:1002:61 | {...} [[]] : String | Log4jJndiInjectionTest.java:1002:39:1002:61 | new Object[] |
-| Log4jJndiInjectionTest.java:1002:53:1002:60 | source(...) : String | Log4jJndiInjectionTest.java:1002:39:1002:61 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:1002:39:1002:61 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:1002:39:1002:61 | new Object[] |
+| Log4jJndiInjectionTest.java:1002:53:1002:60 | source(...) : String | Log4jJndiInjectionTest.java:1002:39:1002:61 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:1020:40:1020:47 | source(...) : String | Log4jJndiInjectionTest.java:1020:25:1020:47 | (...)... |
 | Log4jJndiInjectionTest.java:1021:35:1021:42 | source(...) : String | Log4jJndiInjectionTest.java:1021:25:1021:42 | (...)... |
 | Log4jJndiInjectionTest.java:1023:34:1023:41 | source(...) : String | Log4jJndiInjectionTest.java:1023:25:1023:41 | (...)... |
 | Log4jJndiInjectionTest.java:1024:34:1024:41 | source(...) : String | Log4jJndiInjectionTest.java:1024:25:1024:41 | (...)... |
-| Log4jJndiInjectionTest.java:1025:40:1025:62 | {...} [[]] : String | Log4jJndiInjectionTest.java:1025:40:1025:62 | new Object[] |
-| Log4jJndiInjectionTest.java:1025:54:1025:61 | source(...) : String | Log4jJndiInjectionTest.java:1025:40:1025:62 | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:1025:40:1025:62 | {...} : Object[] [[]] : String | Log4jJndiInjectionTest.java:1025:40:1025:62 | new Object[] |
+| Log4jJndiInjectionTest.java:1025:54:1025:61 | source(...) : String | Log4jJndiInjectionTest.java:1025:40:1025:62 | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:1028:49:1028:56 | source(...) : String | Log4jJndiInjectionTest.java:1028:40:1028:56 | (...)... |
 | Log4jJndiInjectionTest.java:1029:34:1029:41 | source(...) : String | Log4jJndiInjectionTest.java:1029:25:1029:41 | (...)... |
 | Log4jJndiInjectionTest.java:1030:64:1030:71 | source(...) : String | Log4jJndiInjectionTest.java:1030:55:1030:71 | (...)... |
@@ -2075,28 +2075,28 @@ edges
 | Log4jJndiInjectionTest.java:1085:39:1085:46 | source(...) : String | Log4jJndiInjectionTest.java:1085:25:1085:46 | (...)... |
 | Log4jJndiInjectionTest.java:1088:47:1088:54 | source(...) : String | Log4jJndiInjectionTest.java:1088:38:1088:54 | (...)... |
 | Log4jJndiInjectionTest.java:1089:53:1089:60 | source(...) : String | Log4jJndiInjectionTest.java:1089:44:1089:60 | (...)... |
-| Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] [<map.value>] : String | Log4jJndiInjectionTest.java:1092:34:1092:36 | map |
-| Log4jJndiInjectionTest.java:1091:28:1091:44 | (...)... : String | Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1092:34:1092:36 | map |
+| Log4jJndiInjectionTest.java:1091:28:1091:44 | (...)... : String | Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1091:37:1091:44 | source(...) : String | Log4jJndiInjectionTest.java:1091:28:1091:44 | (...)... : String |
-| Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : MapMessage | Log4jJndiInjectionTest.java:1096:26:1096:29 | mmsg |
-| Log4jJndiInjectionTest.java:1095:71:1095:87 | (...)... : String | Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : MapMessage |
+| Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : StringMapMessage | Log4jJndiInjectionTest.java:1096:26:1096:29 | mmsg |
+| Log4jJndiInjectionTest.java:1095:71:1095:87 | (...)... : String | Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : StringMapMessage |
 | Log4jJndiInjectionTest.java:1095:80:1095:87 | source(...) : String | Log4jJndiInjectionTest.java:1095:71:1095:87 | (...)... : String |
-| Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : MapMessage | Log4jJndiInjectionTest.java:1101:26:1101:29 | mmsg |
-| Log4jJndiInjectionTest.java:1100:35:1100:51 | (...)... : String | Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : StringMapMessage | Log4jJndiInjectionTest.java:1101:26:1101:29 | mmsg |
+| Log4jJndiInjectionTest.java:1100:35:1100:51 | (...)... : String | Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1100:44:1100:51 | source(...) : String | Log4jJndiInjectionTest.java:1100:35:1100:51 | (...)... : String |
-| Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : MapMessage | Log4jJndiInjectionTest.java:1106:26:1106:29 | mmsg |
-| Log4jJndiInjectionTest.java:1105:34:1105:50 | (...)... : String | Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : StringMapMessage | Log4jJndiInjectionTest.java:1106:26:1106:29 | mmsg |
+| Log4jJndiInjectionTest.java:1105:34:1105:50 | (...)... : String | Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1105:43:1105:50 | source(...) : String | Log4jJndiInjectionTest.java:1105:34:1105:50 | (...)... : String |
-| Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] [<map.value>] : String | Log4jJndiInjectionTest.java:1112:25:1112:27 | map [<map.value>] : String |
-| Log4jJndiInjectionTest.java:1111:33:1111:49 | (...)... : String | Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1112:25:1112:27 | map : HashMap [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1111:33:1111:49 | (...)... : String | Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1111:42:1111:49 | source(...) : String | Log4jJndiInjectionTest.java:1111:33:1111:49 | (...)... : String |
-| Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : MapMessage | Log4jJndiInjectionTest.java:1113:26:1113:29 | mmsg |
-| Log4jJndiInjectionTest.java:1112:25:1112:27 | map [<map.value>] : String | Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : StringMapMessage | Log4jJndiInjectionTest.java:1113:26:1113:29 | mmsg |
+| Log4jJndiInjectionTest.java:1112:25:1112:27 | map : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1116:61:1116:68 | source(...) : String | Log4jJndiInjectionTest.java:1116:52:1116:68 | (...)... |
 | Log4jJndiInjectionTest.java:1117:81:1117:88 | source(...) : String | Log4jJndiInjectionTest.java:1117:72:1117:88 | (...)... |
-| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] [<map.value>] : String | Log4jJndiInjectionTest.java:1120:43:1120:45 | map |
-| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] [<map.value>] : String | Log4jJndiInjectionTest.java:1121:63:1121:65 | map |
-| Log4jJndiInjectionTest.java:1119:33:1119:49 | (...)... : String | Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1120:43:1120:45 | map |
+| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : HashMap [<map.value>] : String | Log4jJndiInjectionTest.java:1121:63:1121:65 | map |
+| Log4jJndiInjectionTest.java:1119:33:1119:49 | (...)... : String | Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1119:42:1119:49 | source(...) : String | Log4jJndiInjectionTest.java:1119:33:1119:49 | (...)... : String |
 nodes
 | Log4jJndiInjectionTest.java:24:16:24:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -2120,7 +2120,7 @@ nodes
 | Log4jJndiInjectionTest.java:40:41:40:57 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:40:50:40:57 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:41:56:41:78 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:41:56:41:78 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:41:56:41:78 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:41:70:41:77 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:42:56:42:72 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:42:65:42:72 | source(...) : String | semmle.label | source(...) : String |
@@ -2255,7 +2255,7 @@ nodes
 | Log4jJndiInjectionTest.java:108:26:108:42 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:108:35:108:42 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:109:41:109:63 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:109:41:109:63 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:109:41:109:63 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:109:55:109:62 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:110:41:110:57 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:110:50:110:57 | source(...) : String | semmle.label | source(...) : String |
@@ -2395,7 +2395,7 @@ nodes
 | Log4jJndiInjectionTest.java:178:41:178:57 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:178:50:178:57 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:179:56:179:78 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:179:56:179:78 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:179:56:179:78 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:179:70:179:77 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:180:56:180:72 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:180:65:180:72 | source(...) : String | semmle.label | source(...) : String |
@@ -2530,7 +2530,7 @@ nodes
 | Log4jJndiInjectionTest.java:246:26:246:42 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:246:35:246:42 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:247:41:247:63 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:247:41:247:63 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:247:41:247:63 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:247:55:247:62 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:248:41:248:57 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:248:50:248:57 | source(...) : String | semmle.label | source(...) : String |
@@ -2670,7 +2670,7 @@ nodes
 | Log4jJndiInjectionTest.java:316:41:316:57 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:316:50:316:57 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:317:56:317:78 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:317:56:317:78 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:317:56:317:78 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:317:70:317:77 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:318:56:318:72 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:318:65:318:72 | source(...) : String | semmle.label | source(...) : String |
@@ -2805,7 +2805,7 @@ nodes
 | Log4jJndiInjectionTest.java:384:26:384:42 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:384:35:384:42 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:385:41:385:63 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:385:41:385:63 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:385:41:385:63 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:385:55:385:62 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:386:41:386:57 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:386:50:386:57 | source(...) : String | semmle.label | source(...) : String |
@@ -2945,7 +2945,7 @@ nodes
 | Log4jJndiInjectionTest.java:454:40:454:56 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:454:49:454:56 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:455:55:455:77 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:455:55:455:77 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:455:55:455:77 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:455:69:455:76 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:456:55:456:71 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:456:64:456:71 | source(...) : String | semmle.label | source(...) : String |
@@ -3080,7 +3080,7 @@ nodes
 | Log4jJndiInjectionTest.java:522:25:522:41 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:522:34:522:41 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:523:40:523:62 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:523:40:523:62 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:523:40:523:62 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:523:54:523:61 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:524:40:524:56 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:524:49:524:56 | source(...) : String | semmle.label | source(...) : String |
@@ -3220,7 +3220,7 @@ nodes
 | Log4jJndiInjectionTest.java:592:53:592:69 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:592:62:592:69 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:593:68:593:90 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:593:68:593:90 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:593:68:593:90 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:593:82:593:89 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:594:68:594:84 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:594:77:594:84 | source(...) : String | semmle.label | source(...) : String |
@@ -3355,7 +3355,7 @@ nodes
 | Log4jJndiInjectionTest.java:660:38:660:54 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:660:47:660:54 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:661:53:661:75 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:661:53:661:75 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:661:53:661:75 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:661:67:661:74 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:662:53:662:69 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:662:62:662:69 | source(...) : String | semmle.label | source(...) : String |
@@ -3495,7 +3495,7 @@ nodes
 | Log4jJndiInjectionTest.java:730:41:730:57 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:730:50:730:57 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:731:56:731:78 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:731:56:731:78 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:731:56:731:78 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:731:70:731:77 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:732:56:732:72 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:732:65:732:72 | source(...) : String | semmle.label | source(...) : String |
@@ -3630,7 +3630,7 @@ nodes
 | Log4jJndiInjectionTest.java:798:26:798:42 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:798:35:798:42 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:799:41:799:63 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:799:41:799:63 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:799:41:799:63 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:799:55:799:62 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:800:41:800:57 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:800:50:800:57 | source(...) : String | semmle.label | source(...) : String |
@@ -3770,7 +3770,7 @@ nodes
 | Log4jJndiInjectionTest.java:868:40:868:56 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:868:49:868:56 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:869:55:869:77 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:869:55:869:77 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:869:55:869:77 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:869:69:869:76 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:870:55:870:71 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:870:64:870:71 | source(...) : String | semmle.label | source(...) : String |
@@ -3905,7 +3905,7 @@ nodes
 | Log4jJndiInjectionTest.java:936:25:936:41 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:936:34:936:41 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:937:40:937:62 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:937:40:937:62 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:937:40:937:62 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:937:54:937:61 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:938:40:938:56 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:938:49:938:56 | source(...) : String | semmle.label | source(...) : String |
@@ -4030,12 +4030,12 @@ nodes
 | Log4jJndiInjectionTest.java:999:39:999:55 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:999:48:999:55 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1000:45:1000:67 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:1000:45:1000:67 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:1000:45:1000:67 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:1000:59:1000:66 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1001:33:1001:49 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1001:42:1001:49 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1002:39:1002:61 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:1002:39:1002:61 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:1002:39:1002:61 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:1002:53:1002:60 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1020:25:1020:47 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1020:40:1020:47 | source(...) : String | semmle.label | source(...) : String |
@@ -4047,7 +4047,7 @@ nodes
 | Log4jJndiInjectionTest.java:1024:25:1024:41 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1024:34:1024:41 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1025:40:1025:62 | new Object[] | semmle.label | new Object[] |
-| Log4jJndiInjectionTest.java:1025:40:1025:62 | {...} [[]] : String | semmle.label | {...} [[]] : String |
+| Log4jJndiInjectionTest.java:1025:40:1025:62 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
 | Log4jJndiInjectionTest.java:1025:54:1025:61 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1026:40:1026:47 | source(...) | semmle.label | source(...) |
 | Log4jJndiInjectionTest.java:1028:40:1028:56 | (...)... | semmle.label | (...)... |
@@ -4168,33 +4168,33 @@ nodes
 | Log4jJndiInjectionTest.java:1088:47:1088:54 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1089:44:1089:60 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1089:53:1089:60 | source(...) : String | semmle.label | source(...) : String |
-| Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] [<map.value>] : String | semmle.label | map [post update] [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1091:13:1091:15 | map [post update] : HashMap [<map.value>] : String | semmle.label | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1091:28:1091:44 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1091:37:1091:44 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1092:34:1092:36 | map | semmle.label | map |
-| Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : MapMessage | semmle.label | with(...) : MapMessage |
+| Log4jJndiInjectionTest.java:1095:31:1095:88 | with(...) : StringMapMessage | semmle.label | with(...) : StringMapMessage |
 | Log4jJndiInjectionTest.java:1095:71:1095:87 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1095:80:1095:87 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1096:26:1096:29 | mmsg | semmle.label | mmsg |
-| Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : MapMessage | semmle.label | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1100:13:1100:16 | mmsg [post update] : StringMapMessage | semmle.label | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1100:35:1100:51 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1100:44:1100:51 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1101:26:1101:29 | mmsg | semmle.label | mmsg |
-| Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : MapMessage | semmle.label | mmsg [post update] : MapMessage |
+| Log4jJndiInjectionTest.java:1105:13:1105:16 | mmsg [post update] : StringMapMessage | semmle.label | mmsg [post update] : StringMapMessage |
 | Log4jJndiInjectionTest.java:1105:34:1105:50 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1105:43:1105:50 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1106:26:1106:29 | mmsg | semmle.label | mmsg |
-| Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] [<map.value>] : String | semmle.label | map [post update] [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1111:13:1111:15 | map [post update] : HashMap [<map.value>] : String | semmle.label | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1111:33:1111:49 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1111:42:1111:49 | source(...) : String | semmle.label | source(...) : String |
-| Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : MapMessage | semmle.label | mmsg [post update] : MapMessage |
-| Log4jJndiInjectionTest.java:1112:25:1112:27 | map [<map.value>] : String | semmle.label | map [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1112:13:1112:16 | mmsg [post update] : StringMapMessage | semmle.label | mmsg [post update] : StringMapMessage |
+| Log4jJndiInjectionTest.java:1112:25:1112:27 | map : HashMap [<map.value>] : String | semmle.label | map : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1113:26:1113:29 | mmsg | semmle.label | mmsg |
 | Log4jJndiInjectionTest.java:1116:52:1116:68 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1116:61:1116:68 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1117:72:1117:88 | (...)... | semmle.label | (...)... |
 | Log4jJndiInjectionTest.java:1117:81:1117:88 | source(...) : String | semmle.label | source(...) : String |
-| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] [<map.value>] : String | semmle.label | map [post update] [<map.value>] : String |
+| Log4jJndiInjectionTest.java:1119:13:1119:15 | map [post update] : HashMap [<map.value>] : String | semmle.label | map [post update] : HashMap [<map.value>] : String |
 | Log4jJndiInjectionTest.java:1119:33:1119:49 | (...)... : String | semmle.label | (...)... : String |
 | Log4jJndiInjectionTest.java:1119:42:1119:49 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1120:43:1120:45 | map | semmle.label | map |

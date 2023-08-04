@@ -39,13 +39,8 @@ private API::Node graphQlSchema() { result = API::getTopLevelMember("GraphQL").g
  */
 private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
   GraphqlRelayClassicMutationClass() {
-    this.getSuperclassExpr() =
-      graphQlSchema()
-          .getMember("RelayClassicMutation")
-          .getASubclass*()
-          .getAValueReachableFromSource()
-          .asExpr()
-          .getExpr()
+    this =
+      graphQlSchema().getMember("RelayClassicMutation").getADescendentModule().getADeclaration()
   }
 }
 
@@ -74,13 +69,7 @@ private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
  */
 private class GraphqlSchemaResolverClass extends ClassDeclaration {
   GraphqlSchemaResolverClass() {
-    this.getSuperclassExpr() =
-      graphQlSchema()
-          .getMember("Resolver")
-          .getASubclass()
-          .getAValueReachableFromSource()
-          .asExpr()
-          .getExpr()
+    this = graphQlSchema().getMember("Resolver").getADescendentModule().getADeclaration()
   }
 }
 
@@ -103,13 +92,7 @@ private string getASupportedHttpMethod() { result = ["get", "post"] }
  */
 class GraphqlSchemaObjectClass extends ClassDeclaration {
   GraphqlSchemaObjectClass() {
-    this.getSuperclassExpr() =
-      graphQlSchema()
-          .getMember("Object")
-          .getASubclass()
-          .getAValueReachableFromSource()
-          .asExpr()
-          .getExpr()
+    this = graphQlSchema().getMember("Object").getADescendentModule().getADeclaration()
   }
 
   /** Gets a `GraphqlFieldDefinitionMethodCall` called in this class. */

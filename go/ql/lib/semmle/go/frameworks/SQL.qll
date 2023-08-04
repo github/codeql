@@ -145,9 +145,25 @@ module SQL {
           f.hasQualifiedName(gopgorm(), "Q") and
           arg = 0
           or
-          exists(string tp, string m | f.(Method).hasQualifiedName(gopgorm(), tp, m) |
+          exists(string tp, string m | f.(Method).hasQualifiedName([gopgorm(), gopg()], tp, m) |
+            tp = ["DB", "Conn"] and
+            m = ["QueryContext", "QueryOneContext"] and
+            arg = 2
+            or
+            tp = ["DB", "Conn"] and
+            m = ["ExecContext", "ExecOneContext", "Query", "QueryOne"] and
+            arg = 1
+            or
+            tp = ["DB", "Conn"] and
+            m = ["Exec", "ExecOne", "Prepare"] and
+            arg = 0
+            or
             tp = "Query" and
-            m = ["ColumnExpr", "For", "Having", "Where", "WhereIn", "WhereInMulti", "WhereOr"] and
+            m =
+              [
+                "ColumnExpr", "For", "GroupExpr", "Having", "Join", "OrderExpr", "TableExpr",
+                "Where", "WhereIn", "WhereInMulti", "WhereOr"
+              ] and
             arg = 0
             or
             tp = "Query" and
@@ -218,27 +234,6 @@ module SQL {
         )
       }
     }
-
-    /** A taint model for various methods on the struct `Formatter` of `go-pg/pg/orm`. */
-    private class PgOrmFormatterFunction extends TaintTracking::FunctionModel, Method {
-      FunctionInput i;
-      FunctionOutput o;
-
-      PgOrmFormatterFunction() {
-        exists(string m | this.hasQualifiedName(gopgorm(), "Formatter", m) |
-          // func (f Formatter) Append(dst []byte, src string, params ...interface{}) []byte
-          // func (f Formatter) AppendBytes(dst, src []byte, params ...interface{}) []byte
-          // func (f Formatter) FormatQuery(dst []byte, query string, params ...interface{}) []byte
-          (m = "Append" or m = "AppendBytes" or m = "FormatQuery") and
-          i.isParameter(1) and
-          (o.isParameter(0) or o.isResult())
-        )
-      }
-
-      override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-        inp = i and outp = o
-      }
-    }
   }
 
   /** A model for sinks of GORM. */
@@ -246,7 +241,7 @@ module SQL {
     GormSink() {
       exists(Method meth, string package, string name |
         meth.hasQualifiedName(package, "DB", name) and
-        this = meth.getACall().getArgument(0) and
+        this = meth.getACall().getSyntacticArgument(0) and
         package = Gorm::packagePath() and
         name in [
             "Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having", "Joins",
@@ -293,7 +288,7 @@ module Xorm {
     XormSink() {
       exists(Method meth, string type, string name, int n |
         meth.hasQualifiedName(Xorm::packagePath(), type, name) and
-        this = meth.getACall().getArgument(n) and
+        this = meth.getACall().getSyntacticArgument(n) and
         type = ["Engine", "Session"]
       |
         name =
@@ -306,6 +301,50 @@ module Xorm {
         name = ["SumInt", "Sum", "Sums", "SumsInt"] and n = 1
         or
         name = "Join" and n = [0, 1, 2]
+      )
+    }
+  }
+}
+
+/**
+ * Provides classes for working with the [Bun](https://bun.uptrace.dev/) package.
+ */
+module Bun {
+  /** Gets the package name for Bun package. */
+  private string packagePath() { result = package("github.com/uptrace/bun", "") }
+
+  /** A model for sinks of Bun. */
+  private class BunSink extends SQL::QueryString::Range {
+    BunSink() {
+      exists(Function f, string m, int arg | this = f.getACall().getArgument(arg) |
+        f.hasQualifiedName(packagePath(), m) and
+        m = "NewRawQuery" and
+        arg = 1
+      )
+      or
+      exists(Method f, string tp, string m, int arg | this = f.getACall().getArgument(arg) |
+        f.hasQualifiedName(packagePath(), tp, m) and
+        (
+          tp = ["DB", "Conn"] and
+          m = ["ExecContext", "PrepareContext", "QueryContext", "QueryRowContext"] and
+          arg = 1
+          or
+          tp = ["DB", "Conn"] and
+          m = ["Exec", "NewRaw", "Prepare", "Query", "QueryRow", "Raw"] and
+          arg = 0
+          or
+          tp.matches("%Query") and
+          m =
+            [
+              "ColumnExpr", "DistinctOn", "For", "GroupExpr", "Having", "ModelTableExpr",
+              "OrderExpr", "TableExpr", "Where", "WhereOr"
+            ] and
+          arg = 0
+          or
+          tp = "RawQuery" and
+          m = "NewRaw" and
+          arg = 0
+        )
       )
     }
   }

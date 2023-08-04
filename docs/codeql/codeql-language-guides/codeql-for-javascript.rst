@@ -28,8 +28,6 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Using flow labels for precise data flow analysis <using-flow-labels-for-precise-data-flow-analysis>`: You can associate flow labels with each value tracked by the flow analysis to determine whether the flow contains potential vulnerabilities.
 
--  :doc:`Specifying remote flow sources for JavaScript <specifying-additional-remote-flow-sources-for-javascript>`: You can model potential sources of untrusted user input in your code without making changes to the CodeQL standard library by specifying extra remote flow sources in an external file.
-
 -  :doc:`Using type tracking for API modeling <using-type-tracking-for-api-modeling>`: You can track data through an API by creating a model using the CodeQL type-tracking library for JavaScript.
 
 -  :doc:`Abstract syntax tree classes for working with JavaScript and TypeScript programs <abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs>`: CodeQL has a large selection of classes for representing the abstract syntax tree of JavaScript and TypeScript programs.

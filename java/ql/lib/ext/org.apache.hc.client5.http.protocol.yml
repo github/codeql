@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.hc.client5.http.protocol", "RedirectLocations", True, "add", "(URI)", "", "Argument[0]", "Argument[this].Element", "value", "hq-manual"]

@@ -3,6 +3,7 @@ private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
 private import DataFlowImplConsistency
+private import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -152,13 +153,14 @@ predicate jumpStep(Node n1, Node n2) { none() }
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+predicate storeStep(Node node1, ContentSet f, Node node2) {
   exists(ClassAggregateLiteral aggr, Field field |
-    // The following line requires `node2` to be both an `ExprNode` and a
+    // The following lines requires `node2` to be both an `ExprNode` and a
     // `PostUpdateNode`, which means it must be an `ObjectInitializerNode`.
+    node2 instanceof PostUpdateNode and
     node2.asExpr() = aggr and
     f.(FieldContent).getField() = field and
-    aggr.getFieldExpr(field) = node1.asExpr()
+    aggr.getAFieldExpr(field) = node1.asExpr()
   )
   or
   exists(FieldAccess fa |
@@ -166,12 +168,13 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
       node1.asExpr() = a and
       a.getLValue() = fa
     ) and
-    node2.getPreUpdateNode().asExpr() = fa.getQualifier() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = fa.getQualifier() and
     f.(FieldContent).getField() = fa.getTarget()
   )
   or
   exists(ConstructorFieldInit cfi |
-    node2.getPreUpdateNode().(PreConstructorInitThis).getConstructorFieldInit() = cfi and
+    node2.(PostUpdateNode).getPreUpdateNode().(PreConstructorInitThis).getConstructorFieldInit() =
+      cfi and
     f.(FieldContent).getField() = cfi.getTarget() and
     node1.asExpr() = cfi.getExpr()
   )
@@ -182,7 +185,7 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content f, Node node2) {
+predicate readStep(Node node1, ContentSet f, Node node2) {
   exists(FieldAccess fr |
     node1.asExpr() = fr.getQualifier() and
     fr.getTarget() = f.(FieldContent).getField() and
@@ -194,7 +197,7 @@ predicate readStep(Node node1, Content f, Node node2) {
 /**
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   none() // stub implementation
 }
 
@@ -203,6 +206,8 @@ predicate clearsContent(Node n, Content c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) { none() }
+
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 Type getNodeType(Node n) {
@@ -256,22 +261,11 @@ class DataFlowCall extends Expr instanceof Call {
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
 
-int accessPathLimit() { result = 5 }
-
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) { none() }
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }

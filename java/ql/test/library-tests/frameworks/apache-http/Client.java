@@ -25,21 +25,21 @@ public class Client {
 	public void test() throws Exception {
 
 		{
-			// "org.apache.http.client.utils;URIBuilder;true;URIBuilder;(String);;Argument[0];Argument[-1];taint;ai-generated"
+			// "org.apache.http.client.utils;URIBuilder;true;URIBuilder;(String);;Argument[0];Argument[this];taint;ai-generated"
 			URIBuilder out = null;
 			String in = (String) taint();
 			out = new URIBuilder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.http.client.utils;URIBuilder;true;URIBuilder;(URI);;Argument[0];Argument[-1];taint;ai-generated"
+			// "org.apache.http.client.utils;URIBuilder;true;URIBuilder;(URI);;Argument[0];Argument[this];taint;ai-generated"
 			URIBuilder out = null;
 			URI in = (URI) taint();
 			out = new URIBuilder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.http.client.utils;URIBuilder;true;setHost;(String);;Argument[0];Argument[-1];taint;ai-generated"
+			// "org.apache.http.client.utils;URIBuilder;true;setHost;(String);;Argument[0];Argument[this];taint;ai-generated"
 			URIBuilder out = null;
 			String in = (String) taint();
 			out.setHost(in);
@@ -54,14 +54,14 @@ public class Client {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.http.client.utils;URIBuilder;true;setPath;(String);;Argument[0];Argument[-1].SyntheticField[org.apache.http.client.utils.URIBuilder.path];taint;ai-generated"
+			// "org.apache.http.client.utils;URIBuilder;true;setPath;(String);;Argument[0];Argument[this].SyntheticField[org.apache.http.client.utils.URIBuilder.path];taint;ai-generated"
 			URIBuilder out = null;
 			String in = (String) taint();
 			out.setPath(in);
 			sink(getURIBuilder_pathDefault(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.http.client.utils;URIBuilder;true;setPathSegments;(List);;Argument[0];Argument[-1].SyntheticField[org.apache.http.client.utils.URIBuilder.path];taint;ai-generated"
+			// "org.apache.http.client.utils;URIBuilder;true;setPathSegments;(List);;Argument[0];Argument[this].SyntheticField[org.apache.http.client.utils.URIBuilder.path];taint;ai-generated"
 			URIBuilder out = null;
 			List in = (List) taint();
 			out.setPathSegments(in);

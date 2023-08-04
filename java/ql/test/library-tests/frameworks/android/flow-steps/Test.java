@@ -27,182 +27,182 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "android.os;Parcel;false;readArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readArray;;;Argument[this];ReturnValue;taint;manual"
 			Object[] out = null;
 			Parcel in = (Parcel)source();
 			out = in.readArray(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readArrayList;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readArrayList;;;Argument[this];ReturnValue;taint;manual"
 			ArrayList out = null;
 			Parcel in = (Parcel)source();
 			out = in.readArrayList(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readBinderArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readBinderArray;;;Argument[this];Argument[0];taint;manual"
 			IBinder[] out = null;
 			Parcel in = (Parcel)source();
 			in.readBinderArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readBinderList;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readBinderList;;;Argument[this];Argument[0];taint;manual"
 			List out = null;
 			Parcel in = (Parcel)source();
 			in.readBinderList(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			Parcel in = (Parcel)source();
 			out = in.readBoolean();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readBooleanArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readBooleanArray;;;Argument[this];Argument[0];taint;manual"
 			boolean[] out = null;
 			Parcel in = (Parcel)source();
 			in.readBooleanArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readBundle;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readBundle;;;Argument[this];ReturnValue;taint;manual"
 			Bundle out = null;
 			Parcel in = (Parcel)source();
 			out = in.readBundle(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readBundle;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readBundle;;;Argument[this];ReturnValue;taint;manual"
 			Bundle out = null;
 			Parcel in = (Parcel)source();
 			out = in.readBundle();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readByte;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readByte;;;Argument[this];ReturnValue;taint;manual"
 			byte out = 0;
 			Parcel in = (Parcel)source();
 			out = in.readByte();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readByteArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readByteArray;;;Argument[this];Argument[0];taint;manual"
 			byte[] out = null;
 			Parcel in = (Parcel)source();
 			in.readByteArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readCharArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readCharArray;;;Argument[this];Argument[0];taint;manual"
 			char[] out = null;
 			Parcel in = (Parcel)source();
 			in.readCharArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readDouble;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readDouble;;;Argument[this];ReturnValue;taint;manual"
 			double out = 0.0;
 			Parcel in = (Parcel)source();
 			out = in.readDouble();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readDoubleArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readDoubleArray;;;Argument[this];Argument[0];taint;manual"
 			double[] out = null;
 			Parcel in = (Parcel)source();
 			in.readDoubleArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readFileDescriptor;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readFileDescriptor;;;Argument[this];ReturnValue;taint;manual"
 			ParcelFileDescriptor out = null;
 			Parcel in = (Parcel)source();
 			out = in.readFileDescriptor();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readFloat;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readFloat;;;Argument[this];ReturnValue;taint;manual"
 			float out = 0.0f;
 			Parcel in = (Parcel)source();
 			out = in.readFloat();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readFloatArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readFloatArray;;;Argument[this];Argument[0];taint;manual"
 			float[] out = null;
 			Parcel in = (Parcel)source();
 			in.readFloatArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readHashMap;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readHashMap;;;Argument[this];ReturnValue;taint;manual"
 			HashMap out = null;
 			Parcel in = (Parcel)source();
 			out = in.readHashMap(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			Parcel in = (Parcel)source();
 			out = in.readInt();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readIntArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readIntArray;;;Argument[this];Argument[0];taint;manual"
 			int[] out = null;
 			Parcel in = (Parcel)source();
 			in.readIntArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readList;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readList;;;Argument[this];Argument[0];taint;manual"
 			List out = null;
 			Parcel in = (Parcel)source();
 			in.readList(out, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readLong;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readLong;;;Argument[this];ReturnValue;taint;manual"
 			long out = 0L;
 			Parcel in = (Parcel)source();
 			out = in.readLong();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readLongArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readLongArray;;;Argument[this];Argument[0];taint;manual"
 			long[] out = null;
 			Parcel in = (Parcel)source();
 			in.readLongArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readMap;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readMap;;;Argument[this];Argument[0];taint;manual"
 			Map out = null;
 			Parcel in = (Parcel)source();
 			in.readMap(out, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readParcelable;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readParcelable;;;Argument[this];ReturnValue;taint;manual"
 			Parcelable out = null;
 			Parcel in = (Parcel)source();
 			out = in.readParcelable(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readParcelableArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readParcelableArray;;;Argument[this];ReturnValue;taint;manual"
 			Parcelable[] out = null;
 			Parcel in = (Parcel)source();
 			out = in.readParcelableArray(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readParcelableList;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readParcelableList;;;Argument[this];Argument[0];taint;manual"
 			List out = null;
 			Parcel in = (Parcel)source();
 			in.readParcelableList(out, null);
@@ -217,105 +217,105 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Parcel;false;readPersistableBundle;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readPersistableBundle;;;Argument[this];ReturnValue;taint;manual"
 			PersistableBundle out = null;
 			Parcel in = (Parcel)source();
 			out = in.readPersistableBundle(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readPersistableBundle;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readPersistableBundle;;;Argument[this];ReturnValue;taint;manual"
 			PersistableBundle out = null;
 			Parcel in = (Parcel)source();
 			out = in.readPersistableBundle();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readSerializable;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readSerializable;;;Argument[this];ReturnValue;taint;manual"
 			Serializable out = null;
 			Parcel in = (Parcel)source();
 			out = in.readSerializable();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readSize;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readSize;;;Argument[this];ReturnValue;taint;manual"
 			Size out = null;
 			Parcel in = (Parcel)source();
 			out = in.readSize();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readSizeF;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readSizeF;;;Argument[this];ReturnValue;taint;manual"
 			SizeF out = null;
 			Parcel in = (Parcel)source();
 			out = in.readSizeF();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readSparseArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readSparseArray;;;Argument[this];ReturnValue;taint;manual"
 			SparseArray out = null;
 			Parcel in = (Parcel)source();
 			out = in.readSparseArray(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readSparseBooleanArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readSparseBooleanArray;;;Argument[this];ReturnValue;taint;manual"
 			SparseBooleanArray out = null;
 			Parcel in = (Parcel)source();
 			out = in.readSparseBooleanArray();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readString;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			Parcel in = (Parcel)source();
 			out = in.readString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readStringArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readStringArray;;;Argument[this];Argument[0];taint;manual"
 			String[] out = null;
 			Parcel in = (Parcel)source();
 			in.readStringArray(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readStringList;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readStringList;;;Argument[this];Argument[0];taint;manual"
 			List out = null;
 			Parcel in = (Parcel)source();
 			in.readStringList(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readStrongBinder;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readStrongBinder;;;Argument[this];ReturnValue;taint;manual"
 			IBinder out = null;
 			Parcel in = (Parcel)source();
 			out = in.readStrongBinder();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readTypedArray;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readTypedArray;;;Argument[this];Argument[0];taint;manual"
 			Object[] out = null;
 			Parcel in = (Parcel)source();
 			in.readTypedArray(out, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readTypedList;;;Argument[-1];Argument[0];taint;manual"
+			// "android.os;Parcel;false;readTypedList;;;Argument[this];Argument[0];taint;manual"
 			List out = null;
 			Parcel in = (Parcel)source();
 			in.readTypedList(out, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readTypedObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readTypedObject;;;Argument[this];ReturnValue;taint;manual"
 			Object out = null;
 			Parcel in = (Parcel)source();
 			out = in.readTypedObject(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Parcel;false;readValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.os;Parcel;false;readValue;;;Argument[this];ReturnValue;taint;manual"
 			Object out = null;
 			Parcel in = (Parcel)source();
 			out = in.readValue(null);

@@ -121,6 +121,7 @@ and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/
    JDBC, Database
    Protobuf, Serialization
    Kryo deserialization, Serialization
+   Project Lombok, Utility library
    SnakeYaml, Serialization
    Spring JDBC, Database
    Spring MVC, Web application framework
@@ -223,7 +224,9 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    aioch, Database
    aiomysql, Database
    aiopg, Database
+   aiosqlite, Database
    asyncpg, Database
+   cassandra-driver, Database
    clickhouse-driver, Database
    cx_Oracle, Database
    mysql-connector-python, Database
@@ -233,9 +236,9 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    oracledb, Database
    phoenixdb, Database
    psycopg2, Database
-   pyodbc, Database
    pymssql, Database
    PyMySQL, Database
+   pyodbc, Database
    sqlite3, Database
    Flask-SQLAlchemy, Database ORM
    peewee, Database ORM
@@ -277,3 +280,33 @@ and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/
    rubyzip, Compression library
    typhoeus, HTTP client
 
+Swift built-in support
+================================
+
+.. include:: ../reusables/swift-beta-note.rst
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/swift-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src>`__)
+and the CodeQL library pack ``codeql/swift-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+
+   Name, Category
+   `AEXML <https://github.com/tadija/AEXML>`__, XML processing library
+   `Alamofire <https://github.com/Alamofire/Alamofire>`__, Network communicator
+   `Core Data <https://developer.apple.com/documentation/coredata/>`__, Database
+   `CryptoKit <https://developer.apple.com/documentation/cryptokit/>`__, Cryptography library
+   `CryptoSwift <https://github.com/krzyzanowskim/CryptoSwift>`__, Cryptography library
+   `Foundation <https://developer.apple.com/documentation/foundation>`__, Utility library
+   `GRDB <https://github.com/groue/GRDB.swift>`__, Database
+   `JavaScriptCore <https://developer.apple.com/documentation/javascriptcore>`__, Scripting library
+   `Libxml2 <https://gitlab.gnome.org/GNOME/libxml2>`__, XML processing library
+   `Network <https://developer.apple.com/documentation/network>`__, Network communicator
+   `Realm Swift <https://realm.io/realm-swift/>`__, Database
+   `RNCryptor <https://github.com/RNCryptor/RNCryptor>`__, Cryptography library
+   `SQLite3 <https://sqlite.org/index.html>`__, Database
+   `SQLite.swift <https://github.com/stephencelis/SQLite.swift>`__, Database
+   `WebKit <https://developer.apple.com/documentation/webkit>`__, User interface library

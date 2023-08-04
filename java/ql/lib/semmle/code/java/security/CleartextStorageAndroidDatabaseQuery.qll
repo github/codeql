@@ -29,16 +29,16 @@ class LocalDatabaseOpenMethodAccess extends Storable, Call {
   }
 
   override Expr getAnInput() {
-    exists(LocalDatabaseFlowConfig config, DataFlow::Node database |
+    exists(DataFlow::Node database |
       localDatabaseInput(database, result) and
-      config.hasFlow(DataFlow::exprNode(this), database)
+      LocalDatabaseFlow::flow(DataFlow::exprNode(this), database)
     )
   }
 
   override Expr getAStore() {
-    exists(LocalDatabaseFlowConfig config, DataFlow::Node database |
+    exists(DataFlow::Node database |
       localDatabaseStore(database, result) and
-      config.hasFlow(DataFlow::exprNode(this), database)
+      LocalDatabaseFlow::flow(DataFlow::exprNode(this), database)
     )
   }
 }
@@ -93,19 +93,17 @@ private predicate localDatabaseStore(DataFlow::Node database, MethodAccess store
   )
 }
 
-private class LocalDatabaseFlowConfig extends DataFlow::Configuration {
-  LocalDatabaseFlowConfig() { this = "LocalDatabaseFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module LocalDatabaseFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr() instanceof LocalDatabaseOpenMethodAccess
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     localDatabaseInput(sink, _) or
     localDatabaseStore(sink, _)
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     // Adds a step for tracking databases through field flow, that is, a database is opened and
     // assigned to a field, and then an input or store method is called on that field elsewhere.
     exists(Field f |
@@ -115,3 +113,5 @@ private class LocalDatabaseFlowConfig extends DataFlow::Configuration {
     )
   }
 }
+
+private module LocalDatabaseFlow = DataFlow::Global<LocalDatabaseFlowConfig>;

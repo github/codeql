@@ -2878,6 +2878,16 @@ operations/operations.rb:
 #  103|   getStmt: [AssignLogicalOrExpr] ... ||= ...
 #  103|     getAnOperand/getLeftOperand: [ConstantAssignment, ConstantReadAccess] CONSTANT4
 #  103|     getAnOperand/getRightOperand: [IntegerLiteral] 7
+#  104|   getStmt: [AssignExpr] ... = ...
+#  104|     getAnOperand/getLeftOperand: [DestructuredLhsExpr] (..., ...)
+#  104|       getElement: [ConstantAssignment] FOO
+#  104|       getElement: [ConstantAssignment] BAR
+#  104|       getElement: [ConstantAssignment] FOO
+#  104|         getScopeExpr: [LocalVariableAccess] foo
+#  104|     getAnOperand/getRightOperand: [ArrayLiteral] [...]
+#  104|       getElement: [IntegerLiteral] 1
+#  104|       getElement: [IntegerLiteral] 2
+#  104|       getElement: [IntegerLiteral] 3
 params/params.rb:
 #    1| [Toplevel] params.rb
 #    4|   getStmt: [Method] identifier_method_params

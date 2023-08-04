@@ -15,21 +15,21 @@ import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Remote
 import semmle.code.csharp.security.dataflow.flowsources.Local
 import semmle.code.csharp.frameworks.Format
-import DataFlow::PathGraph
+import FormatString::PathGraph
 
-class FormatStringConfiguration extends TaintTracking::Configuration {
-  FormatStringConfiguration() { this = "FormatStringConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module FormatStringConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource
     or
     source instanceof LocalFlowSource
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(FormatCall call | call.hasInsertions()).getFormatExpr()
   }
 }
+
+module FormatString = TaintTracking::Global<FormatStringConfig>;
 
 string getSourceType(DataFlow::Node node) {
   result = node.(RemoteFlowSource).getSourceType()
@@ -37,7 +37,7 @@ string getSourceType(DataFlow::Node node) {
   result = node.(LocalFlowSource).getSourceType()
 }
 
-from FormatStringConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from FormatString::PathNode source, FormatString::PathNode sink
+where FormatString::flowPath(source, sink)
 select sink.getNode(), source, sink, "This format string depends on $@.", source.getNode(),
   ("this" + getSourceType(source.getNode()))

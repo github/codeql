@@ -15,10 +15,10 @@
 
 import java
 import semmle.code.java.security.AndroidIntentRedirectionQuery
-import DataFlow::PathGraph
+import IntentRedirectionFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, IntentRedirectionConfiguration conf
-where conf.hasFlowPath(source, sink)
+from IntentRedirectionFlow::PathNode source, IntentRedirectionFlow::PathNode sink
+where IntentRedirectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "Arbitrary Android activities or services can be started from a $@.", source.getNode(),
   "user-provided value"

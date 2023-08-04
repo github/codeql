@@ -16,7 +16,8 @@
  * 1. The `namespace` column selects a package.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
- *    arbitrary subtype of that type.
+ *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
+ *    blank (for example, a free function).
  * 4. The `name` column optionally selects a specific named member of the type.
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
@@ -72,33 +73,8 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
-
-/**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import codeql.swift.frameworks.StandardLibrary.Collection
-  private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
-  private import codeql.swift.frameworks.StandardLibrary.Data
-  private import codeql.swift.frameworks.StandardLibrary.FileManager
-  private import codeql.swift.frameworks.StandardLibrary.FilePath
-  private import codeql.swift.frameworks.StandardLibrary.InputStream
-  private import codeql.swift.frameworks.StandardLibrary.NsData
-  private import codeql.swift.frameworks.StandardLibrary.NsObject
-  private import codeql.swift.frameworks.StandardLibrary.NsString
-  private import codeql.swift.frameworks.StandardLibrary.NsUrl
-  private import codeql.swift.frameworks.StandardLibrary.Sequence
-  private import codeql.swift.frameworks.StandardLibrary.String
-  private import codeql.swift.frameworks.StandardLibrary.Url
-  private import codeql.swift.frameworks.StandardLibrary.UrlSession
-  private import codeql.swift.frameworks.StandardLibrary.WebView
-  private import codeql.swift.frameworks.Alamofire.Alamofire
-  private import codeql.swift.security.CleartextLoggingExtensions
-  private import codeql.swift.security.CleartextStorageDatabaseExtensions
-  private import codeql.swift.security.PathInjectionExtensions
-  private import codeql.swift.security.PredicateInjectionExtensions
-}
+private import FlowSummary as FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A unit class for adding additional source model rows.
@@ -288,13 +264,15 @@ module CsvValidation {
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSubtype() {
     exists(string pred, string row |
@@ -360,7 +338,7 @@ module CsvValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
+        getInvalidModelSubtype(), getInvalidModelColumnCount(), KindVal::getInvalidModelKind()
       ]
   }
 }
@@ -373,7 +351,7 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
-private string paramsStringPart(AbstractFunctionDecl c, int i) {
+private string paramsStringPart(Function c, int i) {
   i = -1 and result = "(" and exists(c)
   or
   exists(int n, string p | c.getParam(n).getType().toString() = p |
@@ -392,12 +370,10 @@ private string paramsStringPart(AbstractFunctionDecl c, int i) {
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(AbstractFunctionDecl c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+string paramsString(Function c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 bindingset[func]
-predicate matchesSignature(AbstractFunctionDecl func, string signature) {
+predicate matchesSignature(Function func, string signature) {
   signature = "" or
   paramsString(func) = signature
 }
@@ -420,17 +396,17 @@ private Element interpretElement0(
   namespace = "" and // TODO: Fill out when we properly extract modules.
   (
     // Non-member functions
-    exists(AbstractFunctionDecl func |
+    exists(Function func |
       func.getName() = name and
       type = "" and
       matchesSignature(func, signature) and
       subtypes = false and
-      not result instanceof MethodDecl and
+      not result instanceof Method and
       result = func
     )
     or
     // Member functions
-    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, MethodDecl method |
+    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, Method method |
       method.getName() = name and
       method = declWithMethod.getAMember() and
       namedTypeDecl.getFullName() = type and
@@ -500,9 +476,22 @@ private predicate parseField(AccessPathToken c, Content::FieldContent f) {
   )
 }
 
+private predicate parseEnum(AccessPathToken c, Content::EnumContent f) {
+  c.getName() = "EnumElement" and
+  c.getAnArgument() = f.getSignature()
+  or
+  c.getName() = "OptionalSome" and
+  f.getSignature() = "some:0"
+}
+
 /** Holds if the specification component parses as a `Content`. */
 predicate parseContent(AccessPathToken component, Content content) {
   parseField(component, content)
+  or
+  parseEnum(component, content)
+  or
+  component.getName() = "ArrayElement" and
+  content instanceof Content::ArrayContent
 }
 
 cached

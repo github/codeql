@@ -26,3 +26,16 @@ void test2_source()
 	ms.val = v;
 	test2_sink(v, ms, ms, &ms);
 }
+
+char *fgets(char *, int, FILE *);
+int atoi(const char *);
+
+void test3()
+{
+  char buffer[20];
+  fgets(buffer, 20, stdin);
+
+  int num = atoi(buffer);
+  num = num + 1000; // BAD
+  num += 1000; // BAD
+}

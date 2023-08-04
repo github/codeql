@@ -133,7 +133,7 @@ class Variable extends Declaration, @variable {
     or
     exists(AssignExpr ae | ae.getLValue().(Access).getTarget() = this and result = ae.getRValue())
     or
-    exists(ClassAggregateLiteral l | result = l.getFieldExpr(this))
+    exists(ClassAggregateLiteral l | result = l.getAFieldExpr(this))
   }
 
   /**

@@ -1,3 +1,118 @@
+## 0.7.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Major Analysis Improvements
+
+* The API graph library (`codeql.ruby.ApiGraphs`) has been significantly improved, with better support for inheritance,
+  and data-flow nodes can now be converted to API nodes by calling `.track()` or `.backtrack()` on the node.
+  API graphs allow for efficient modelling of how a given value is used by the code base, or how values produced by the code base
+  are consumed by a library. See the documentation for `API::Node` for details and examples.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* The `'QUERY_STRING'` field of a Rack `env` parameter is now recognized as a source of remote user input.
+* Query parameters and cookies from `Rack::Response` objects are recognized as potential sources of remote flow input.
+* Calls to `Rack::Utils.parse_query` now propagate taint.
+
+## 0.7.0
+
+### Deprecated APIs
+
+* The `Configuration` taint flow configuration class from `codeql.ruby.security.InsecureDownloadQuery` has been deprecated. Use the `Flow` module instead.
+
+### Minor Analysis Improvements
+
+* More kinds of rack applications are now recognized.
+* Rack::Response instances are now recognized as potential responses from rack applications.
+* HTTP redirect responses from Rack applications are now recognized as a potential sink for open redirect alerts.
+* Additional sinks for `rb/unsafe-deserialization` have been added. This includes various methods from the `yaml` and `plist` gems, which deserialize YAML and Property List data, respectively.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `URL`, `XSS`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getValueText` predicate from the `Expr`, `StringComponent`, and `ExprCfgNode` classes. Use `getConstantValue` instead.
+* Deleted the deprecated `VariableReferencePattern` class, use `ReferencePattern` instead.
+* Deleted all deprecated aliases in `StandardLibrary.qll`, use `codeql.ruby.frameworks.Core` and `codeql.ruby.frameworks.Stdlib` instead.
+* Support for the `sequel` gem has been added. Method calls that execute queries against a database that may be vulnerable to injection attacks will now be recognized.
+* Support for the `mysql2` gem has been added. Method calls that execute queries against an MySQL database that may be vulnerable to injection attacks will now be recognized.
+* Support for the `pg` gem has been added. Method calls that execute queries against a PostgreSQL database that may be vulnerable to injection attacks will now be recognized.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Support for the `sqlite3` gem has been added. Method calls that execute queries against an SQLite3 database that may be vulnerable to injection attacks will now be recognized.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Minor Analysis Improvements
+
+* Control flow graph: the evaluation order of scope expressions and receivers in multiple assignments has been adjusted to match the changes made in Ruby 
+3.1 and 3.2.
+* The clear-text storage (`rb/clear-text-storage-sensitive-data`) and logging (`rb/clear-text-logging-sensitive-data`) queries now use built-in flow through hashes, for improved precision. This may result in both new true positives and less false positives.
+* Accesses of `params` in Sinatra applications are now recognized as HTTP input accesses.
+* Data flow is tracked from Sinatra route handlers to ERB files.
+* Data flow is tracked between basic Sinatra filters (those without URL patterns) and their corresponding route handlers.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Data flow through `initialize` methods is now taken into account also when the receiver of a `new` call is an (implicit or explicit) `self`.
+* The Active Record query methods `reorder` and `count_by_sql` are now recognized as SQL executions.
+* Calls to `ActiveRecord::Connection#execute`, including those via subclasses, are now recognized as SQL executions.
+* Data flow through `ActionController::Parameters#require` is now tracked properly.
+* The severity of parse errors was reduced to warning (previously error). 
+* Deleted the deprecated `getQualifiedName` predicate from the `ConstantWriteAccess` class.
+* Deleted the deprecated `getWhenBranch` and `getAWhenBranch` predicates from the `CaseExpr` class.
+* Deleted the deprecated `Self`, `PatternParameter`, `Pattern`, `VariablePattern`, `TuplePattern`, and `TuplePatternParameter` classes.
+
 ## 0.5.4
 
 ### Minor Analysis Improvements

@@ -39,7 +39,7 @@ module NullDaclConfig implements DataFlow::ConfigSig {
   }
 }
 
-module NullDaclFlow = DataFlow::Make<NullDaclConfig>;
+module NullDaclFlow = DataFlow::Global<NullDaclConfig>;
 
 /**
  * Dataflow that detects a call to SetSecurityDescriptorDacl with a pDacl
@@ -70,7 +70,7 @@ module NonNullDaclConfig implements DataFlow::ConfigSig {
   }
 }
 
-module NonNullDaclFlow = DataFlow::Make<NonNullDaclConfig>;
+module NonNullDaclFlow = DataFlow::Global<NonNullDaclConfig>;
 
 from SetSecurityDescriptorDaclFunctionCall call, string message
 where
@@ -88,7 +88,7 @@ where
         " that is set to NULL will result in an unprotected object."
   |
     var = call.getArgument(2) and
-    NullDaclFlow::hasFlowToExpr(var) and
-    not NonNullDaclFlow::hasFlowToExpr(var)
+    NullDaclFlow::flowToExpr(var) and
+    not NonNullDaclFlow::flowToExpr(var)
   )
 select call, message

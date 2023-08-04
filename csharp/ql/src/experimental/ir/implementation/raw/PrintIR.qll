@@ -4,8 +4,8 @@
  * This file contains the actual implementation of `PrintIR.ql`. For test cases and very small
  * databases, `PrintIR.ql` can be run directly to dump the IR for the entire database. For most
  * uses, however, it is better to write a query that imports `PrintIR.qll`, extends
- * `PrintIRConfiguration`, and overrides `shouldPrintFunction()` to select a subset of functions to
- * dump.
+ * `PrintIRConfiguration`, and overrides `shouldPrintDeclaration()` to select a subset of declarations
+ * to dump.
  */
 
 private import internal.IRInternal
@@ -16,7 +16,7 @@ import Imports::IRConfiguration
 private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
 
 /**
- * The query can extend this class to control which functions are printed.
+ * The query can extend this class to control which declarations are printed.
  */
 class PrintIRConfiguration extends TPrintIRConfiguration {
   /** Gets a textual representation of this configuration. */
@@ -24,9 +24,9 @@ class PrintIRConfiguration extends TPrintIRConfiguration {
 
   /**
    * Holds if the IR for `func` should be printed. By default, holds for all
-   * functions.
+   * functions, global and namespace variables, and static local variables.
    */
-  predicate shouldPrintFunction(Language::Declaration decl) { any() }
+  predicate shouldPrintDeclaration(Language::Declaration decl) { any() }
 }
 
 /**
@@ -34,12 +34,20 @@ class PrintIRConfiguration extends TPrintIRConfiguration {
  */
 private class FilteredIRConfiguration extends IRConfiguration {
   override predicate shouldEvaluateDebugStringsForFunction(Language::Declaration func) {
-    shouldPrintFunction(func)
+    shouldPrintDeclaration(func)
   }
 }
 
-private predicate shouldPrintFunction(Language::Declaration decl) {
-  exists(PrintIRConfiguration config | config.shouldPrintFunction(decl))
+private predicate shouldPrintDeclaration(Language::Declaration decl) {
+  exists(PrintIRConfiguration config | config.shouldPrintDeclaration(decl))
+}
+
+private predicate shouldPrintInstruction(Instruction i) {
+  exists(IRPropertyProvider provider | provider.shouldPrintInstruction(i))
+}
+
+private predicate shouldPrintOperand(Operand operand) {
+  exists(IRPropertyProvider provider | provider.shouldPrintOperand(operand))
 }
 
 private string getAdditionalInstructionProperty(Instruction instr, string key) {
@@ -82,9 +90,11 @@ private string getOperandPropertyString(Operand operand) {
 }
 
 private newtype TPrintableIRNode =
-  TPrintableIRFunction(IRFunction irFunc) { shouldPrintFunction(irFunc.getFunction()) } or
-  TPrintableIRBlock(IRBlock block) { shouldPrintFunction(block.getEnclosingFunction()) } or
-  TPrintableInstruction(Instruction instr) { shouldPrintFunction(instr.getEnclosingFunction()) }
+  TPrintableIRFunction(IRFunction irFunc) { shouldPrintDeclaration(irFunc.getFunction()) } or
+  TPrintableIRBlock(IRBlock block) { shouldPrintDeclaration(block.getEnclosingFunction()) } or
+  TPrintableInstruction(Instruction instr) {
+    shouldPrintInstruction(instr) and shouldPrintDeclaration(instr.getEnclosingFunction())
+  }
 
 /**
  * A node to be emitted in the IR graph.
@@ -127,13 +137,13 @@ abstract private class PrintableIRNode extends TPrintableIRNode {
    * Gets the value of the node property with the specified key.
    */
   string getProperty(string key) {
-    key = "semmle.label" and result = getLabel()
+    key = "semmle.label" and result = this.getLabel()
     or
-    key = "semmle.order" and result = getOrder().toString()
+    key = "semmle.order" and result = this.getOrder().toString()
     or
-    key = "semmle.graphKind" and result = getGraphKind()
+    key = "semmle.graphKind" and result = this.getGraphKind()
     or
-    key = "semmle.forceText" and forceText() and result = "true"
+    key = "semmle.forceText" and this.forceText() and result = "true"
   }
 }
 
@@ -149,7 +159,9 @@ private class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction 
 
   override Language::Location getLocation() { result = irFunc.getLocation() }
 
-  override string getLabel() { result = Language::getIdentityString(irFunc.getFunction()) }
+  override string getLabel() {
+    result = Imports::LanguageDebug::getIdentityString(irFunc.getFunction())
+  }
 
   override int getOrder() {
     this =
@@ -176,7 +188,7 @@ private class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
 
   PrintableIRBlock() { this = TPrintableIRBlock(block) }
 
-  override string toString() { result = getLabel() }
+  override string toString() { result = this.getLabel() }
 
   override Language::Location getLocation() { result = block.getLocation() }
 
@@ -221,7 +233,7 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
       |
         resultString = instr.getResultString() and
         operationString = instr.getOperationString() and
-        operandsString = getOperandsString() and
+        operandsString = this.getOperandsString() and
         columnWidths(block, resultWidth, operationWidth) and
         result =
           resultString + getPaddingString(resultWidth - resultString.length()) + " = " +
@@ -250,7 +262,8 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
   private string getOperandsString() {
     result =
       concat(Operand operand |
-        operand = instr.getAnOperand()
+        operand = instr.getAnOperand() and
+        shouldPrintOperand(operand)
       |
         operand.getDumpString() + getOperandPropertyString(operand), ", "
         order by

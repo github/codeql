@@ -24,7 +24,7 @@ FILES=codeql-extractor.yml\
       ql/lib/ruby.dbscheme.stats\
       ql/lib/ruby.dbscheme
 
-BIN_FILES=target/release/ruby-extractor$(EXE) target/release/ruby-autobuilder$(EXE)
+BIN_FILES=target/release/codeql-extractor-ruby$(EXE)
 
 extractor-common:
 	rm -rf build
@@ -37,15 +37,14 @@ extractor-common:
 tools: $(BIN_FILES)
 	rm -rf tools/bin
 	mkdir tools/bin
-	cp -r target/release/ruby-autobuilder$(EXE) tools/bin/autobuilder$(EXE)
-	cp -r target/release/ruby-extractor$(EXE) tools/bin/extractor$(EXE)	
+	cp -r target/release/codeql-extractor-ruby$(EXE) tools/bin/extractor$(EXE)
 
 target/release/%$(EXE):
-	cargo build --release --bin $(basename $(notdir $@))
+	cd extractor && cargo build --release
 
 dbscheme:
-	cargo build --bin ruby-generator
-	cargo run -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+	cd extractor && cargo build --release
+	extractor/target/release/codeql-extractor-ruby generate --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 	codeql query format -i ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 
 .PHONY:	extractor
@@ -63,8 +62,7 @@ extractor:	$(FILES) $(BIN_FILES)
 	cp tools/autobuild.cmd extractor-pack/tools/autobuild.cmd
 	cp ql/lib/ruby.dbscheme.stats extractor-pack/ruby.dbscheme.stats
 	cp ql/lib/ruby.dbscheme extractor-pack/ruby.dbscheme
-	cp target/release/ruby-extractor$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/extractor$(EXE)
-	cp target/release/ruby-autobuilder$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/autobuilder$(EXE)
+	cp extractor/target/release/codeql-extractor-ruby$(EXE) extractor-pack/tools/$(CODEQL_PLATFORM)/extractor$(EXE)
 
 test: extractor dbscheme
 	codeql test run --check-databases --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --search-path extractor-pack --consistency-queries ql/consistency-queries ql/test

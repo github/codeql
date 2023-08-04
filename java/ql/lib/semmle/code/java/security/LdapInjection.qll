@@ -29,7 +29,7 @@ class LdapInjectionAdditionalTaintStep extends Unit {
 
 /** Default sink for LDAP injection vulnerabilities. */
 private class DefaultLdapInjectionSink extends LdapInjectionSink {
-  DefaultLdapInjectionSink() { sinkNode(this, "ldap") }
+  DefaultLdapInjectionSink() { sinkNode(this, "ldap-injection") }
 }
 
 /** A sanitizer that clears the taint on (boxed) primitive types. */

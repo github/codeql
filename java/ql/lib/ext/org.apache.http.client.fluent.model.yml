@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.http.client.fluent", "Request", True, "Delete", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Delete", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Get", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Get", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Head", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Head", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Options", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Options", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Patch", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Patch", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Post", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Post", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Put", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Put", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Trace", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.http.client.fluent", "Request", True, "Trace", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]

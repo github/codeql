@@ -1,3 +1,49 @@
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Fixed modeling of `aiohttp.ClientSession` so we properly handle `async with` uses. This can impact results of server-side request forgery queries (`py/full-ssrf`, `py/partial-ssrf`).
+
+## 0.8.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during archive extraction ("Zip Slip")" (`py/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+### Bug Fixes
+
+* The display name (`@name`) of the `py/unsafe-deserialization` query has been updated in favor of consistency with other languages.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+No user-facing changes.
+
+## 0.7.0
+
+### Bug Fixes
+
+* Nonlocal variables are excluded from alerts.
+
+## 0.6.6
+
+No user-facing changes.
+
+## 0.6.5
+
+### New Queries
+
+* Added a new query, `py/shell-command-constructed-from-input`, to detect libraries that unsafely construct shell commands from their inputs.
+
 ## 0.6.4
 
 No user-facing changes.

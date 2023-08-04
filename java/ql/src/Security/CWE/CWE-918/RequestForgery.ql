@@ -16,6 +16,6 @@ import semmle.code.java.security.RequestForgeryConfig
 import RequestForgeryFlow::PathGraph
 
 from RequestForgeryFlow::PathNode source, RequestForgeryFlow::PathNode sink
-where RequestForgeryFlow::hasFlowPath(source, sink)
+where RequestForgeryFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Potential server-side request forgery due to a $@.",
   source.getNode(), "user-provided value"

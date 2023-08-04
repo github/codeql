@@ -47,13 +47,13 @@ module Conf4 implements ConfigSig {
 }
 
 predicate flow(Node src, Node sink, string s) {
-  Make<Conf1>::hasFlow(src, sink) and s = "nobarrier"
+  Global<Conf1>::flow(src, sink) and s = "nobarrier"
   or
-  Make<Conf2>::hasFlow(src, sink) and s = "srcbarrier"
+  Global<Conf2>::flow(src, sink) and s = "srcbarrier"
   or
-  Make<Conf3>::hasFlow(src, sink) and s = "sinkbarrier"
+  Global<Conf3>::flow(src, sink) and s = "sinkbarrier"
   or
-  Make<Conf4>::hasFlow(src, sink) and s = "both"
+  Global<Conf4>::flow(src, sink) and s = "both"
 }
 
 from Node src, Node sink, string s

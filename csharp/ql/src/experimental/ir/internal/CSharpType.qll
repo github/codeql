@@ -150,10 +150,10 @@ class CSharpType extends TCSharpType {
   abstract string toString();
 
   /** Gets a string used in IR dumps */
-  string getDumpString() { result = toString() }
+  string getDumpString() { result = this.toString() }
 
   /** Gets the size of the type in bytes, if known. */
-  final int getByteSize() { result = getIRType().getByteSize() }
+  final int getByteSize() { result = this.getIRType().getByteSize() }
 
   /**
    * Gets the `IRType` that represents this `CSharpType`. Many different `CSharpType`s can map to a
@@ -168,7 +168,7 @@ class CSharpType extends TCSharpType {
    */
   abstract predicate hasType(Type type, boolean isGLValue);
 
-  final predicate hasUnspecifiedType(Type type, boolean isGLValue) { hasType(type, isGLValue) }
+  final predicate hasUnspecifiedType(Type type, boolean isGLValue) { this.hasType(type, isGLValue) }
 }
 
 /**

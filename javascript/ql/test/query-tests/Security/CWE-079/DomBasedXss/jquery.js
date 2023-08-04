@@ -32,4 +32,7 @@ function test() {
   $(hash + 'blah'); // OK
   $('blah' + hash); // OK - does not start with '<'
   $('<b>' + hash + '</b>'); // NOT OK
+
+  $('#foo').replaceWith(tainted); // NOT OK
+  $('#foo').replaceWith(() => tainted); // NOT OK
 }

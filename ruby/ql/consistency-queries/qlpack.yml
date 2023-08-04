@@ -2,3 +2,4 @@ name: codeql/ruby-consistency-queries
 groups: [ruby, test, consistency-queries]
 dependencies:
   codeql/ruby-all: ${workspace}
+warnOnImplicitThis: true

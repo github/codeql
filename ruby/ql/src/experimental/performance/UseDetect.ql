@@ -11,6 +11,7 @@
 // This is an implementation of the Rubocop rule
 // https://github.com/rubocop/rubocop-performance/blob/master/lib/rubocop/cop/performance/detect.rb
 import codeql.ruby.AST
+import codeql.ruby.CFG
 import codeql.ruby.dataflow.SSA
 
 /** A call that extracts the first or last element of a list. */
@@ -41,12 +42,12 @@ class EndCall extends MethodCall {
 }
 
 Expr getUniqueRead(Expr e) {
-  exists(AssignExpr ae |
-    e = ae.getRightOperand() and
-    forex(Ssa::WriteDefinition def | def.getWriteAccess() = ae.getLeftOperand() |
+  forex(CfgNode eNode | eNode.getAstNode() = e |
+    exists(Ssa::WriteDefinition def |
+      def.assigns(eNode) and
       strictcount(def.getARead()) = 1 and
       not def = any(Ssa::PhiNode phi).getAnInput() and
-      def.getARead() = result.getAControlFlowNode()
+      def.getARead().getAstNode() = result
     )
   )
 }

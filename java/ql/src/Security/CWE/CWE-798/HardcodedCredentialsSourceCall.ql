@@ -12,11 +12,11 @@
 
 import java
 import semmle.code.java.security.HardcodedCredentialsSourceCallQuery
-import DataFlow::PathGraph
+import HardcodedCredentialSourceCallFlow::PathGraph
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink,
-  HardcodedCredentialSourceCallConfiguration conf
-where conf.hasFlowPath(source, sink)
+  HardcodedCredentialSourceCallFlow::PathNode source,
+  HardcodedCredentialSourceCallFlow::PathNode sink
+where HardcodedCredentialSourceCallFlow::flowPath(source, sink)
 select source.getNode(), source, sink, "Hard-coded value flows to $@.", sink.getNode(),
   "sensitive call"

@@ -1,28 +1,19 @@
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.XPath
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.XPathInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "test:xml:xpathinjection" }
+module HasXPathInjectionTest implements TestSig {
+  string getARelevantTag() { result = "hasXPathInjection" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
-}
-
-class HasXPathInjectionTest extends InlineExpectationsTest {
-  HasXPathInjectionTest() { this = "HasXPathInjectionTest" }
-
-  override string getARelevantTag() { result = "hasXPathInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasXPathInjection" and
-    exists(DataFlow::Node sink, Conf conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | XPathInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
     )
   }
 }
+
+import MakeTest<HasXPathInjectionTest>

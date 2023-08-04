@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.netty.handler.stream", "ChunkedFile", True, "ChunkedFile", "(RandomAccessFile,long,long,int)", "", "Argument[0]", "path-injection", "ai-manual"]

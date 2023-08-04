@@ -223,7 +223,7 @@ deprecated class LeapYearCheckConfiguration extends DataFlow::Configuration {
  * Data flow configuration for finding a variable access that would flow into
  * a function call that includes an operation to check for leap year.
  */
-private module LeapYearCheckConfiguration implements DataFlow::ConfigSig {
+private module LeapYearCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof VariableAccess }
 
   predicate isSink(DataFlow::Node sink) {
@@ -231,7 +231,7 @@ private module LeapYearCheckConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module LeapYearCheckFlow = DataFlow::Make<LeapYearCheckConfiguration>;
+module LeapYearCheckFlow = DataFlow::Global<LeapYearCheckConfig>;
 
 /**
  * Data flow configuration for finding an operation with hardcoded 365 that will flow into
@@ -264,7 +264,7 @@ deprecated class FiletimeYearArithmeticOperationCheckConfiguration extends DataF
  * Data flow configuration for finding an operation with hardcoded 365 that will flow into
  * a `FILEINFO` field.
  */
-private module FiletimeYearArithmeticOperationCheckConfiguration implements DataFlow::ConfigSig {
+private module FiletimeYearArithmeticOperationCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(Expr e, Operation op | e = source.asExpr() |
       op.getAChild*().getValue().toInt() = 365 and
@@ -284,7 +284,7 @@ private module FiletimeYearArithmeticOperationCheckConfiguration implements Data
 }
 
 module FiletimeYearArithmeticOperationCheckFlow =
-  DataFlow::Make<FiletimeYearArithmeticOperationCheckConfiguration>;
+  DataFlow::Global<FiletimeYearArithmeticOperationCheckConfig>;
 
 /**
  * Taint configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
@@ -334,7 +334,7 @@ deprecated class PossibleYearArithmeticOperationCheckConfiguration extends Taint
 /**
  * Taint configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
  */
-private module PossibleYearArithmeticOperationCheckConfiguration implements DataFlow::ConfigSig {
+private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(Operation op | op = source.asConvertedExpr() |
       op.getAChild*().getValue().toInt() = 365 and
@@ -372,4 +372,4 @@ private module PossibleYearArithmeticOperationCheckConfiguration implements Data
 }
 
 module PossibleYearArithmeticOperationCheckFlow =
-  TaintTracking::Make<PossibleYearArithmeticOperationCheckConfiguration>;
+  TaintTracking::Global<PossibleYearArithmeticOperationCheckConfig>;

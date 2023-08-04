@@ -2,14 +2,12 @@ import swift
 import Taint
 import TestUtilities.InlineExpectationsTest
 
-class TaintTest extends InlineExpectationsTest {
-  TaintTest() { this = "TaintTest" }
+module TaintTest implements TestSig {
+  string getARelevantTag() { result = "tainted" }
 
-  override string getARelevantTag() { result = "tainted" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(TestConfiguration config, Node source, Node sink, Expr sinkExpr |
-      config.hasFlow(source, sink) and
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DataFlow::Node source, DataFlow::Node sink, Expr sinkExpr |
+      TestFlow::flow(source, sink) and
       sinkExpr = sink.asExpr() and
       location = sinkExpr.getLocation() and
       element = sinkExpr.toString() and
@@ -18,3 +16,5 @@ class TaintTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<TaintTest>

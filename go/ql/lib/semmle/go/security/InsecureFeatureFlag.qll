@@ -24,22 +24,22 @@ module InsecureFeatureFlag {
     /** Gets a global value number representing a (likely) security flag. */
     GVN getAFlag() {
       // a call like `cfg.disableVerification()`
-      exists(DataFlow::CallNode c | c.getTarget().getName() = getAFlagName() |
+      exists(DataFlow::CallNode c | c.getTarget().getName() = this.getAFlagName() |
         result = globalValueNumber(c)
       )
       or
       // a variable or field like `insecure`
-      exists(ValueEntity flag | flag.getName() = getAFlagName() |
+      exists(ValueEntity flag | flag.getName() = this.getAFlagName() |
         result = globalValueNumber(flag.getARead())
       )
       or
       // a string constant such as `"insecure"` or `"skipVerification"`
-      exists(DataFlow::Node const | const.getStringValue() = getAFlagName() |
+      exists(DataFlow::Node const | const.getStringValue() = this.getAFlagName() |
         result = globalValueNumber(const)
       )
       or
       // track feature flags through various operations
-      exists(DataFlow::Node flag | flag = getAFlag().getANode() |
+      exists(DataFlow::Node flag | flag = this.getAFlag().getANode() |
         // tuple destructurings
         result = globalValueNumber(DataFlow::extractTupleElement(flag, _))
         or
@@ -71,7 +71,7 @@ module InsecureFeatureFlag {
   }
 
   /**
-   * Flags suggesting an optional feature, perhaps deliberately insecure.
+   * A flag suggesting an optional feature, perhaps deliberately insecure.
    */
   class SecurityFeatureFlag extends FlagKind {
     SecurityFeatureFlag() { this = "securityFeature" }

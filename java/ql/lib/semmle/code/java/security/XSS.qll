@@ -6,6 +6,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+private import semmle.code.java.frameworks.hudson.Hudson
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
@@ -39,11 +40,11 @@ class XssAdditionalTaintStep extends Unit {
 /** A default sink representing methods susceptible to XSS attacks. */
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
-    sinkNode(this, "xss")
+    sinkNode(this, ["html-injection", "js-injection"])
     or
     exists(MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
-      XssVulnerableWriterSourceToWritingMethodFlow::hasFlowToExpr(ma.getQualifier()) and
+      XssVulnerableWriterSourceToWritingMethodFlow::flowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
     )
   }
@@ -71,7 +72,7 @@ private module XssVulnerableWriterSourceToWritingMethodFlowConfig implements Dat
 }
 
 private module XssVulnerableWriterSourceToWritingMethodFlow =
-  TaintTracking::Make<XssVulnerableWriterSourceToWritingMethodFlowConfig>;
+  TaintTracking::Global<XssVulnerableWriterSourceToWritingMethodFlowConfig>;
 
 /** A method that can be used to output data to an output stream or writer. */
 private class WritingMethod extends Method {

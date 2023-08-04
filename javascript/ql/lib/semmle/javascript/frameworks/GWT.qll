@@ -8,7 +8,7 @@ import javascript
  * A `$gwt_version` variable.
  */
 class GwtVersionVariable extends GlobalVariable {
-  GwtVersionVariable() { getName() = "$gwt_version" }
+  GwtVersionVariable() { this.getName() = "$gwt_version" }
 }
 
 /** DEPRECATED: Alias for GwtVersionVariable */
@@ -33,7 +33,7 @@ class GwtHeader extends InlineScript {
   }
 
   /** DEPRECATED: Alias for getGwtVersion */
-  deprecated string getGWTVersion() { result = getGwtVersion() }
+  deprecated string getGWTVersion() { result = this.getGwtVersion() }
 }
 
 /** DEPRECATED: Alias for GwtHeader */
@@ -43,7 +43,7 @@ deprecated class GWTHeader = GwtHeader;
  * A toplevel in a file that appears to be GWT-generated.
  */
 class GwtGeneratedTopLevel extends TopLevel {
-  GwtGeneratedTopLevel() { exists(GwtHeader h | getFile() = h.getFile()) }
+  GwtGeneratedTopLevel() { exists(GwtHeader h | this.getFile() = h.getFile()) }
 }
 
 /** DEPRECATED: Alias for GwtGeneratedTopLevel */

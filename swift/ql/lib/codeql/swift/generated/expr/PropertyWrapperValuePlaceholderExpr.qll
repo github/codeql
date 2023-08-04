@@ -30,12 +30,17 @@ module Generated {
     /**
      * Gets the wrapped value of this property wrapper value placeholder expression, if it exists.
      */
-    final Expr getWrappedValue() { result = getImmediateWrappedValue().resolve() }
+    final Expr getWrappedValue() {
+      exists(Expr immediate |
+        immediate = this.getImmediateWrappedValue() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getWrappedValue()` exists.
      */
-    final predicate hasWrappedValue() { exists(getWrappedValue()) }
+    final predicate hasWrappedValue() { exists(this.getWrappedValue()) }
 
     /**
      * Gets the placeholder of this property wrapper value placeholder expression.
@@ -53,6 +58,11 @@ module Generated {
     /**
      * Gets the placeholder of this property wrapper value placeholder expression.
      */
-    final OpaqueValueExpr getPlaceholder() { result = getImmediatePlaceholder().resolve() }
+    final OpaqueValueExpr getPlaceholder() {
+      exists(OpaqueValueExpr immediate |
+        immediate = this.getImmediatePlaceholder() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

@@ -114,13 +114,13 @@ module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ImproperArrayIndexValidation = TaintTracking::Make<ImproperArrayIndexValidationConfig>;
+module ImproperArrayIndexValidation = TaintTracking::Global<ImproperArrayIndexValidationConfig>;
 
 from
   ImproperArrayIndexValidation::PathNode source, ImproperArrayIndexValidation::PathNode sink,
   string sourceType
 where
-  ImproperArrayIndexValidation::hasFlowPath(source, sink) and
+  ImproperArrayIndexValidation::flowPath(source, sink) and
   isFlowSource(source.getNode(), sourceType)
 select sink.getNode(), source, sink,
   "An array indexing expression depends on $@ that might be outside the bounds of the array.",

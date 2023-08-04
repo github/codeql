@@ -132,7 +132,7 @@ module ServerSideRequestForgery {
   }
 
   /**
-   * If the tainted variable is a boolean or has numeric type is not possible to exploit a SSRF
+   * A value which has boolean or numeric type, considered as a sanitizer for SSRF.
    */
   class NumSanitizer extends Sanitizer {
     NumSanitizer() {
@@ -142,8 +142,8 @@ module ServerSideRequestForgery {
   }
 
   /**
-   * When we receive a body from a request, we can use certain tags on our struct's fields to hint
-   * the binding function to run some validations for that field. If these binding functions returns
+   * A body received from a request, where certain tags on our struct's fields have been used to hint
+   * to the binding function to run some validations for that field. If these binding functions returns
    * no error, then we consider these fields safe for SSRF.
    */
   class BodySanitizer extends Sanitizer instanceof CheckedAlphanumericStructFieldRead { }

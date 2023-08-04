@@ -36,42 +36,42 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "android.content;Intent;false;Intent;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;false;Intent;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapKey(source()));
 			out = new Intent(in);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;false;Intent;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;false;Intent;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = new Intent(in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;false;Intent;(String,Uri);;Argument[1];SyntheticField[android.content.Intent.data] of Argument[-1];value;manual"
+			// "android.content;Intent;false;Intent;(String,Uri);;Argument[1];SyntheticField[android.content.Intent.data] of Argument[this];value;manual"
 			Intent out = null;
 			Uri in = (Uri)source();
 			out = new Intent(null, in);
 			sink(getData(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;false;Intent;(String,Uri,Context,Class);;Argument[1];SyntheticField[android.content.Intent.data] of Argument[-1];value;manual"
+			// "android.content;Intent;false;Intent;(String,Uri,Context,Class);;Argument[1];SyntheticField[android.content.Intent.data] of Argument[this];value;manual"
 			Intent out = null;
 			Uri in = (Uri)source();
 			out = new Intent(null, in, null, null);
 			sink(getData(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;addCategory;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;addCategory;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.addCategory(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;addFlags;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;addFlags;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.addFlags(0);
@@ -99,938 +99,938 @@ public class Test {
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getBundleExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getBundleExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			Bundle out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getBundleExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getByteArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getByteArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			byte[] out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getByteArrayExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getCharArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getCharArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			char[] out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getCharArrayExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getCharSequenceArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getCharSequenceArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			CharSequence[] out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getCharSequenceArrayExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getCharSequenceArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getCharSequenceArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			ArrayList out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getCharSequenceArrayListExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getCharSequenceExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getCharSequenceExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			CharSequence out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getCharSequenceExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getData;;;SyntheticField[android.content.Intent.data] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getData;;;SyntheticField[android.content.Intent.data] of Argument[this];ReturnValue;value;manual"
 			Uri out = null;
 			Intent in = (Intent)newWithIntent_data(source());
 			out = in.getData();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getDataString;;;SyntheticField[android.content.Intent.data] of Argument[-1];ReturnValue;taint;manual"
+			// "android.content;Intent;true;getDataString;;;SyntheticField[android.content.Intent.data] of Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			Intent in = (Intent)newWithIntent_data(source());
 			out = in.getDataString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;getExtras;();;SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getExtras;();;SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			Bundle out = null;
 			Intent in = (Intent)newWithIntent_extras(source());
 			out = in.getExtras();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;false;getIntent;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];taint;manual"
+			// "android.content;Intent;false;getIntent;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[this];taint;manual"
 			Intent out = null;
 			String in = (String)source();
 			out = Intent.getIntent(in);
 			sink(out.getData()); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;false;getIntentOld;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];taint;manual"
+			// "android.content;Intent;false;getIntentOld;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[this];taint;manual"
 			Intent out = null;
 			String in = (String)source();
 			out = Intent.getIntentOld(in);
 			sink(out.getData()); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;getParcelableArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getParcelableArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			Parcelable[] out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getParcelableArrayExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getParcelableArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getParcelableArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			ArrayList out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getParcelableArrayListExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getParcelableExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getParcelableExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			Parcelable out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getParcelableExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getSerializableExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getSerializableExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			Serializable out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getSerializableExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getStringArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getStringArrayExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			String[] out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getStringArrayExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getStringArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getStringArrayListExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			ArrayList out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getStringArrayListExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;getStringExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;getStringExtra;(String);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];ReturnValue;value;manual"
 			String out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out = in.getStringExtra(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;false;parseUri;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];taint;manual"
+			// "android.content;Intent;false;parseUri;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[this];taint;manual"
 			Intent out = null;
 			String in = (String)source();
 			out = Intent.parseUri(in, 0);
 			sink(out.getData()); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putCharSequenceArrayListExtra(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putCharSequenceArrayListExtra(in, null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putCharSequenceArrayListExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			ArrayList in = (ArrayList)source();
 			out.putCharSequenceArrayListExtra(null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, 0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, 0.0f);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, 0.0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (short[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (short)0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (long[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (int[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (float[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (double[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (char[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (byte[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (byte)0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (boolean[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (String[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (String)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (Serializable)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (Parcelable[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (Parcelable)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (CharSequence[])null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (CharSequence)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, (Bundle)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtra((String)null, '\0');
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, false);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, 0L);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, 0.0f);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, 0.0);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, 0);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (short[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (short)0);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (long[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (int[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (float[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (double[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (char[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (byte[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (byte)0);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (boolean[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (String[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (String)null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (Serializable)null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (Parcelable[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (Parcelable)null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (CharSequence[])null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (CharSequence)null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, (Bundle)null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra(in, '\0');
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			short[] in = (short[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			short in = (short)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			long[] in = (long[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			long in = (long)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			int[] in = (int[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			int in = (int)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			float[] in = (float[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			float in = (float)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			double[] in = (double[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			double in = (double)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			char[] in = (char[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			char in = (char)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			byte[] in = (byte[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			byte in = (byte)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			boolean[] in = (boolean[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			boolean in = (boolean)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String[] in = (String[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Serializable in = (Serializable)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Parcelable[] in = (Parcelable[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Parcelable in = (Parcelable)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			CharSequence[] in = (CharSequence[])source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			CharSequence in = (CharSequence)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Bundle in = (Bundle)source();
 			out.putExtra((String)null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtras;(Bundle);;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtras;(Bundle);;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtras((Bundle)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtras;(Bundle);;MapKey of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtras;(Bundle);;MapKey of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Bundle in = (Bundle)newBundleWithMapKey(source());
 			out.putExtras(in);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtras;(Bundle);;MapValue of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtras;(Bundle);;MapValue of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out.putExtras(in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtras;(Intent);;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putExtras;(Intent);;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putExtras((Intent)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtras;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtras;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapKey(source()));
 			out.putExtras(in);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putExtras;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putExtras;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out.putExtras(in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putIntegerArrayListExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putIntegerArrayListExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putIntegerArrayListExtra(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putIntegerArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putIntegerArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putIntegerArrayListExtra(in, null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putParcelableArrayListExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putParcelableArrayListExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putParcelableArrayListExtra(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putParcelableArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putParcelableArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putParcelableArrayListExtra(in, null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putParcelableArrayListExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putParcelableArrayListExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			ArrayList in = (ArrayList)source();
 			out.putParcelableArrayListExtra(null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putStringArrayListExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;putStringArrayListExtra;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.putStringArrayListExtra(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putStringArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putStringArrayListExtra;;;Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			String in = (String)source();
 			out.putStringArrayListExtra(in, null);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;putStringArrayListExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;putStringArrayListExtra;;;Argument[1];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			ArrayList in = (ArrayList)source();
 			out.putStringArrayListExtra(null, in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;replaceExtras;(Bundle);;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;replaceExtras;(Bundle);;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.replaceExtras((Bundle)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;replaceExtras;(Bundle);;MapKey of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;replaceExtras;(Bundle);;MapKey of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Bundle in = (Bundle)newBundleWithMapKey(source());
 			out.replaceExtras(in);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;replaceExtras;(Bundle);;MapValue of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;replaceExtras;(Bundle);;MapValue of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out.replaceExtras(in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;replaceExtras;(Intent);;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;replaceExtras;(Intent);;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.replaceExtras((Intent)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;replaceExtras;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;replaceExtras;(Intent);;MapKey of SyntheticField[android.content.Intent.extras] of Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapKey(source()));
 			out.replaceExtras(in);
 			sink(getMapKey(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;replaceExtras;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// "android.content;Intent;true;replaceExtras;(Intent);;MapValue of SyntheticField[android.content.Intent.extras] of Argument[0];MapValue of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Intent out = null;
 			Intent in = (Intent)newWithIntent_extras(newBundleWithMapValue(source()));
 			out.replaceExtras(in);
 			sink(getMapValue(getIntent_extras(out))); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setAction;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setAction;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setAction(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setClass;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setClass;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setClass(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setClassName;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setClassName;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setClassName((String)null, (String)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setClassName;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setClassName;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setClassName((Context)null, (String)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setComponent;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setComponent;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setComponent(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setData;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setData;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setData(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setData;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value;manual",
+			// "android.content;Intent;true;setData;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[this];value;manual",
 			Uri in = (Uri)source();
 			Intent instance = new Intent();
 			instance.setData(in);
 			sink(instance.getData()); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setDataAndNormalize;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value;manual",
+			// "android.content;Intent;true;setDataAndNormalize;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[this];value;manual",
 			Uri in = (Uri)source();
 			Intent instance = new Intent();
 			instance.setDataAndNormalize(in);
 			sink(instance.getData()); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setDataAndType;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value;manual",
+			// "android.content;Intent;true;setDataAndType;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[this];value;manual",
 			Uri in = (Uri)source();
 			Intent instance = new Intent();
 			instance.setDataAndType(in, null);
 			sink(instance.getData()); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setDataAndTypeAndNormalize;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[-1];value;manual",
+			// "android.content;Intent;true;setDataAndTypeAndNormalize;;;Argument[0];SyntheticField[android.content.Intent.data] of Argument[this];value;manual",
 			Uri in = (Uri)source();
 			Intent instance = new Intent();
 			instance.setDataAndTypeAndNormalize(in, null);
 			sink(instance.getData()); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setDataAndNormalize;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setDataAndNormalize;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setDataAndNormalize(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setDataAndType;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setDataAndType;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setDataAndType(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setDataAndTypeAndNormalize;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setDataAndTypeAndNormalize;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setDataAndTypeAndNormalize(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setFlags;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setFlags;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setFlags(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setIdentifier;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setIdentifier;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setIdentifier(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setPackage;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setPackage;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setPackage(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setType;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setType;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setType(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;Intent;true;setTypeAndNormalize;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;Intent;true;setTypeAndNormalize;;;Argument[this];ReturnValue;value;manual"
 			Intent out = null;
 			Intent in = (Intent)source();
 			out = in.setTypeAndNormalize(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;get;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;BaseBundle;true;get;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			BaseBundle in = (BaseBundle)newBundleWithMapValue(source());
 			out = in.get(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;getString;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;BaseBundle;true;getString;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			String out = null;
 			BaseBundle in = (BaseBundle)newBundleWithMapValue(source());
 			out = in.getString(null);
@@ -1045,210 +1045,210 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;getString;(String,String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;BaseBundle;true;getString;(String,String);;MapValue of Argument[this];ReturnValue;value;manual"
 			String out = null;
 			BaseBundle in = (BaseBundle)newBundleWithMapValue(source());
 			out = in.getString(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;getStringArray;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;BaseBundle;true;getStringArray;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			String[] out = null;
 			BaseBundle in = (BaseBundle)newBundleWithMapValue(source());
 			out = in.getStringArray(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;keySet;();;MapKey of Argument[-1];Element of ReturnValue;value;manual"
+			// "android.os;BaseBundle;true;keySet;();;MapKey of Argument[this];Element of ReturnValue;value;manual"
 			Set out = null;
 			BaseBundle in = (BaseBundle)newBundleWithMapKey(source());
 			out = in.keySet();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putAll;(PersistableBundle);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putAll;(PersistableBundle);;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			PersistableBundle in = newPersistableBundleWithMapKey(source());
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putAll;(PersistableBundle);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putAll;(PersistableBundle);;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			BaseBundle out = null;
 			PersistableBundle in = newPersistableBundleWithMapValue(source());
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putBoolean;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putBoolean;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putBoolean(in, false);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putBooleanArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putBooleanArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putBooleanArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putDouble;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putDouble;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putDouble(in, 0.0);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putDoubleArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putDoubleArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putDoubleArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putInt;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putInt;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putInt(in, 0);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putIntArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putIntArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putIntArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putLong;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putLong;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putLong(in, 0L);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putLongArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putLongArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putLongArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putString;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putString;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putString(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putString;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putString;;;Argument[1];MapValue of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putString(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putStringArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putStringArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			BaseBundle out = null;
 			String in = (String)source();
 			out.putStringArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;BaseBundle;true;putStringArray;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;BaseBundle;true;putStringArray;;;Argument[1];MapValue of Argument[this];value;manual"
 			BaseBundle out = null;
 			String[] in = (String[])source();
 			out.putStringArray(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;false;Bundle;(Bundle);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;false;Bundle;(Bundle);;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			Bundle in = (Bundle)newBundleWithMapKey(source());
 			out = new Bundle(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;false;Bundle;(Bundle);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;false;Bundle;(Bundle);;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = new Bundle(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;false;Bundle;(PersistableBundle);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;false;Bundle;(PersistableBundle);;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			PersistableBundle in = newPersistableBundleWithMapKey(source());
 			out = new Bundle(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;false;Bundle;(PersistableBundle);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;false;Bundle;(PersistableBundle);;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			PersistableBundle in = newPersistableBundleWithMapValue(source());
 			out = new Bundle(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;clone;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual"
+			// "android.os;Bundle;true;clone;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			Object out = null;
 			Bundle in = (Bundle)newBundleWithMapKey(source());
 			out = in.clone();
 			sink(getMapKey((Bundle)out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;clone;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
+			// "android.os;Bundle;true;clone;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			Object out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.clone();
 			sink(getMapValue((Bundle)out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;deepCopy;();;MapKey of Argument[-1];MapKey of ReturnValue;value;manual"
+			// "android.os;Bundle;true;deepCopy;();;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			Bundle out = null;
 			Bundle in = (Bundle)newBundleWithMapKey(source());
 			out = in.deepCopy();
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;deepCopy;();;MapValue of Argument[-1];MapValue of ReturnValue;value;manual"
+			// "android.os;Bundle;true;deepCopy;();;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			Bundle out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.deepCopy();
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getBinder;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getBinder;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			IBinder out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getBinder(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getBundle;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getBundle;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			Bundle out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getBundle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getByteArray;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getByteArray;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			byte[] out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getByteArray(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getCharArray;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getCharArray;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			char[] out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getCharArray(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getCharSequence;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getCharSequence;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			CharSequence out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getCharSequence(null);
@@ -1263,371 +1263,371 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getCharSequence;(String,CharSequence);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getCharSequence;(String,CharSequence);;MapValue of Argument[this];ReturnValue;value;manual"
 			CharSequence out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getCharSequence(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getCharSequenceArray;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getCharSequenceArray;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			CharSequence[] out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getCharSequenceArray(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getCharSequenceArrayList;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getCharSequenceArrayList;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			ArrayList out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getCharSequenceArrayList(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getParcelable;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getParcelable;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			Parcelable out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getParcelable(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getParcelableArray;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getParcelableArray;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			Parcelable[] out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getParcelableArray(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getParcelableArrayList;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getParcelableArrayList;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			ArrayList out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getParcelableArrayList(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getSerializable;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getSerializable;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			Serializable out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getSerializable(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getSparseParcelableArray;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getSparseParcelableArray;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			SparseArray out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getSparseParcelableArray(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;getStringArrayList;(String);;MapValue of Argument[-1];ReturnValue;value;manual"
+			// "android.os;Bundle;true;getStringArrayList;(String);;MapValue of Argument[this];ReturnValue;value;manual"
 			ArrayList out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out = in.getStringArrayList(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putAll;(Bundle);;MapKey of Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putAll;(Bundle);;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			Bundle in = (Bundle)newBundleWithMapKey(source());
 			out.putAll(in);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putAll;(Bundle);;MapValue of Argument[0];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putAll;(Bundle);;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			Bundle in = (Bundle)newBundleWithMapValue(source());
 			out.putAll(in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putBinder;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putBinder;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putBinder(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putBinder;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putBinder;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			IBinder in = (IBinder)source();
 			out.putBinder(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putBundle;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putBundle;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putBundle(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putBundle;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putBundle;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			Bundle in = (Bundle)source();
 			out.putBundle(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putByte;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putByte;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putByte(in, (byte)0);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putByteArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putByteArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putByteArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putByteArray;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putByteArray;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			byte[] in = (byte[])source();
 			out.putByteArray(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putChar;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putChar;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putChar(in, '\0');
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putCharArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putCharArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putCharArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putCharArray;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putCharArray;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			char[] in = (char[])source();
 			out.putCharArray(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putCharSequence;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putCharSequence;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putCharSequence(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putCharSequence;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putCharSequence;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			CharSequence in = (CharSequence)source();
 			out.putCharSequence(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putCharSequenceArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putCharSequenceArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putCharSequenceArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putCharSequenceArray;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putCharSequenceArray;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			CharSequence[] in = (CharSequence[])source();
 			out.putCharSequenceArray(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putCharSequenceArrayList;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putCharSequenceArrayList;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putCharSequenceArrayList(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putCharSequenceArrayList;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putCharSequenceArrayList;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			ArrayList in = (ArrayList)source();
 			out.putCharSequenceArrayList(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putFloat;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putFloat;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putFloat(in, 0.0f);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putFloatArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putFloatArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putFloatArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putIntegerArrayList;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putIntegerArrayList;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putIntegerArrayList(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putParcelable;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putParcelable;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putParcelable(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putParcelable;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putParcelable;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			Parcelable in = (Parcelable)source();
 			out.putParcelable(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putParcelableArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putParcelableArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putParcelableArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putParcelableArray;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putParcelableArray;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			Parcelable[] in = (Parcelable[])source();
 			out.putParcelableArray(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putParcelableArrayList;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putParcelableArrayList;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putParcelableArrayList(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putParcelableArrayList;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putParcelableArrayList;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			ArrayList in = (ArrayList)source();
 			out.putParcelableArrayList(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putSerializable;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putSerializable;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putSerializable(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putSerializable;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putSerializable;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			Serializable in = (Serializable)source();
 			out.putSerializable(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putShort;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putShort;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putShort(in, (short)0);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putShortArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putShortArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putShortArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putSize;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putSize;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putSize(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putSizeF;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putSizeF;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putSizeF(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putSparseParcelableArray;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putSparseParcelableArray;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putSparseParcelableArray(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putSparseParcelableArray;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putSparseParcelableArray;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			SparseArray in = (SparseArray)source();
 			out.putSparseParcelableArray(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putStringArrayList;;;Argument[0];MapKey of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putStringArrayList;;;Argument[0];MapKey of Argument[this];value;manual"
 			Bundle out = null;
 			String in = (String)source();
 			out.putStringArrayList(in, null);
 			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;putStringArrayList;;;Argument[1];MapValue of Argument[-1];value;manual"
+			// "android.os;Bundle;true;putStringArrayList;;;Argument[1];MapValue of Argument[this];value;manual"
 			Bundle out = null;
 			ArrayList in = (ArrayList)source();
 			out.putStringArrayList(null, in);
 			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
-			// "android.os;Bundle;true;readFromParcel;;;Argument[0];MapKey of Argument[-1];taint;manual"
+			// "android.os;Bundle;true;readFromParcel;;;Argument[0];MapKey of Argument[this];taint;manual"
 			Bundle out = null;
 			Parcel in = (Parcel)source();
 			out.readFromParcel(in);
 			sink(getMapKey(out)); // $ hasTaintFlow
 		}
 		{
-			// "android.os;Bundle;true;readFromParcel;;;Argument[0];MapValue of Argument[-1];taint;manual"
+			// "android.os;Bundle;true;readFromParcel;;;Argument[0];MapValue of Argument[this];taint;manual"
 			Bundle out = null;
 			Parcel in = (Parcel)source();
 			out.readFromParcel(in);
 			sink(getMapValue(out)); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;ComponentName;(Context,Class);;Argument[1];Argument[-1];taint;manual"
+			// "android.content;ComponentName;false;ComponentName;(Context,Class);;Argument[1];Argument[this];taint;manual"
 			ComponentName out = null;
 			Class in = (Class) source();
 			out = new ComponentName((Context) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;ComponentName;(Context,String);;Argument[1];Argument[-1];taint;manual"
+			// "android.content;ComponentName;false;ComponentName;(Context,String);;Argument[1];Argument[this];taint;manual"
 			ComponentName out = null;
 			String in = (String) source();
 			out = new ComponentName((Context) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;ComponentName;(Parcel);;Argument[0];Argument[-1];taint;manual"
+			// "android.content;ComponentName;false;ComponentName;(Parcel);;Argument[0];Argument[this];taint;manual"
 			ComponentName out = null;
 			Parcel in = (Parcel) source();
 			out = new ComponentName(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;ComponentName;(String,String);;Argument[0..1];Argument[-1];taint;manual"
+			// "android.content;ComponentName;false;ComponentName;(String,String);;Argument[0..1];Argument[this];taint;manual"
 			ComponentName out = null;
 			String in = (String) source();
 			out = new ComponentName(in, (String) null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;ComponentName;(String,String);;Argument[0..1];Argument[-1];taint;manual"
+			// "android.content;ComponentName;false;ComponentName;(String,String);;Argument[0..1];Argument[this];taint;manual"
 			ComponentName out = null;
 			String in = (String) source();
 			out = new ComponentName((String) null, in);
@@ -1655,35 +1655,35 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;flattenToShortString;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ComponentName;false;flattenToShortString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			ComponentName in = (ComponentName) source();
 			out = in.flattenToShortString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;flattenToString;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ComponentName;false;flattenToString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			ComponentName in = (ComponentName) source();
 			out = in.flattenToString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;getClassName;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ComponentName;false;getClassName;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			ComponentName in = (ComponentName) source();
 			out = in.getClassName();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;getPackageName;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ComponentName;false;getPackageName;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			ComponentName in = (ComponentName) source();
 			out = in.getPackageName();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ComponentName;false;getShortClassName;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ComponentName;false;getShortClassName;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			ComponentName in = (ComponentName) source();
 			out = in.getShortClassName();
@@ -1697,63 +1697,63 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;Intent;(Context,Class);;Argument[1];Argument[-1];taint;manual"
+			// "android.content;Intent;true;Intent;(Context,Class);;Argument[1];Argument[this];taint;manual"
 			Intent out = null;
 			Class in = (Class) source();
 			out = new Intent((Context) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;Intent;(Intent);;Argument[0];Argument[-1];taint;manual"
+			// "android.content;Intent;true;Intent;(Intent);;Argument[0];Argument[this];taint;manual"
 			Intent out = null;
 			Intent in = (Intent) source();
 			out = new Intent(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;Intent;(String,Uri,Context,Class);;Argument[3];Argument[-1];taint;manual"
+			// "android.content;Intent;true;Intent;(String,Uri,Context,Class);;Argument[3];Argument[this];taint;manual"
 			Intent out = null;
 			Class in = (Class) source();
 			out = new Intent(null, null, null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;setClass;;;Argument[1];Argument[-1];taint;manual"
+			// "android.content;Intent;true;setClass;;;Argument[1];Argument[this];taint;manual"
 			Intent out = null;
 			Class in = (Class) source();
 			out.setClass(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;setClassName;(Context,String);;Argument[1];Argument[-1];taint;manual"
+			// "android.content;Intent;true;setClassName;(Context,String);;Argument[1];Argument[this];taint;manual"
 			Intent out = null;
 			String in = (String) source();
 			out.setClassName((Context) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;setClassName;(String,String);;Argument[0..1];Argument[-1];taint;manual"
+			// "android.content;Intent;true;setClassName;(String,String);;Argument[0..1];Argument[this];taint;manual"
 			Intent out = null;
 			String in = (String) source();
 			out.setClassName(in, (String) null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;setClassName;(String,String);;Argument[0..1];Argument[-1];taint;manual"
+			// "android.content;Intent;true;setClassName;(String,String);;Argument[0..1];Argument[this];taint;manual"
 			Intent out = null;
 			String in = (String) source();
 			out.setClassName((String) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;setComponent;;;Argument[0];Argument[-1];taint;manual"
+			// "android.content;Intent;true;setComponent;;;Argument[0];Argument[this];taint;manual"
 			Intent out = null;
 			ComponentName in = (ComponentName) source();
 			out.setComponent(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;Intent;true;setPackage;;;Argument[0];Argument[-1];taint;manual"
+			// "android.content;Intent;true;setPackage;;;Argument[0];Argument[this];taint;manual"
 			Intent out = null;
 			String in = (String) source();
 			out.setPackage(in);

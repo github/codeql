@@ -12,6 +12,6 @@ from
   string input, string kind, string provenance
 where
   sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
-  provenance != "generated"
+  not provenance.matches("%generated")
 select namespace, type, subtypes, name, signature, ext, input, kind, provenance order by
     namespace, type, name, signature, input, kind

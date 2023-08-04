@@ -1,0 +1,9 @@
+WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:19,45-53)
+WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:20,24-32)
+WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:27,15-23)
+WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:33,22-30)
+WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:40,25-33)
+WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:42,17-25)
+WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:46,20-28)
+failures
+testFailures

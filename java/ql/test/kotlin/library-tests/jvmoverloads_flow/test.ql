@@ -1,18 +1,18 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 
-class Config extends DataFlow::Configuration {
-  Config() { this = "config" }
-
-  override predicate isSource(DataFlow::Node n) {
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) {
     n.asExpr().(MethodAccess).getCallee().getName() = "source"
   }
 
-  override predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().getName() = "sink"
   }
 }
 
-from Config c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
+module Flow = DataFlow::Global<Config>;
+
+from DataFlow::Node source, DataFlow::Node sink
+where Flow::flow(source, sink)
 select source, sink, source.getEnclosingCallable()

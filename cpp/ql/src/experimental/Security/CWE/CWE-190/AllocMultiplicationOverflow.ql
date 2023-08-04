@@ -32,10 +32,10 @@ module MultToAllocConfig implements DataFlow::ConfigSig {
   }
 }
 
-module MultToAlloc = DataFlow::Make<MultToAllocConfig>;
+module MultToAlloc = DataFlow::Global<MultToAllocConfig>;
 
 from MultToAlloc::PathNode source, MultToAlloc::PathNode sink
-where MultToAlloc::hasFlowPath(source, sink)
+where MultToAlloc::flowPath(source, sink)
 select sink, source, sink,
   "Potentially overflowing value from $@ is used in the size of this allocation.", source,
   "multiplication"

@@ -4,7 +4,7 @@ import {{elements_module}}
 import TestUtils
 
 {{#property}}
-from {{class_name}} x{{#is_repeated}}, int index{{/is_repeated}}
+from {{class_name}} x{{#is_indexed}}, int index{{/is_indexed}}
 where toBeTested(x) and not x.isUnknown()
-select x, {{#is_repeated}}index, {{/is_repeated}}x.{{getter}}({{#is_repeated}}index{{/is_repeated}})
+select x, {{#is_indexed}}index, {{/is_indexed}}x.{{getter}}({{#is_indexed}}index{{/is_indexed}})
 {{/property}}

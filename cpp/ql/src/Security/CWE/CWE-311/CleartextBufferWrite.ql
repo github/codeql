@@ -39,7 +39,7 @@ class SensitiveBufferWrite extends Expr instanceof BufferWrite::BufferWrite {
  * A taint flow configuration for flow from user input to a buffer write
  * into a sensitive expression.
  */
-module ToBufferConfiguration implements DataFlow::ConfigSig {
+module ToBufferConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
   predicate isBarrier(DataFlow::Node node) {
@@ -49,7 +49,7 @@ module ToBufferConfiguration implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 }
 
-module ToBufferFlow = TaintTracking::Make<ToBufferConfiguration>;
+module ToBufferFlow = TaintTracking::Global<ToBufferConfig>;
 
 predicate isSinkImpl(DataFlow::Node sink, SensitiveBufferWrite w) {
   w.getASource() = sink.asIndirectExpr()
@@ -59,7 +59,7 @@ from
   SensitiveBufferWrite w, ToBufferFlow::PathNode sourceNode, ToBufferFlow::PathNode sinkNode,
   FlowSource source
 where
-  ToBufferFlow::hasFlowPath(sourceNode, sinkNode) and
+  ToBufferFlow::flowPath(sourceNode, sinkNode) and
   sourceNode.getNode() = source and
   isSinkImpl(sinkNode.getNode(), w)
 select w, sourceNode, sinkNode,

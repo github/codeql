@@ -21,7 +21,7 @@ from
   PolynomialRedosFlow::PathNode source, PolynomialRedosFlow::PathNode sink,
   SuperlinearBackTracking::PolynomialBackTrackingTerm regexp
 where
-  PolynomialRedosFlow::hasFlowPath(source, sink) and
+  PolynomialRedosFlow::flowPath(source, sink) and
   regexp.getRootTerm() = sink.getNode().(PolynomialRedosSink).getRegExp()
 select sink, source, sink,
   "This $@ that depends on a $@ may run slow on strings " + regexp.getPrefixMessage() +

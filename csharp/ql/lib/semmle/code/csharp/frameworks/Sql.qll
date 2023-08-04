@@ -52,23 +52,24 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
 class DapperCommandDefinitionMethodCallSqlExpr extends SqlExpr, ObjectCreation {
   DapperCommandDefinitionMethodCallSqlExpr() {
     this.getObjectType() instanceof Dapper::CommandDefinitionStruct and
-    exists(Conf c | c.hasFlow(DataFlow::exprNode(this), _))
+    DapperCommandDefinitionMethodCallSql::flow(DataFlow::exprNode(this), _)
   }
 
   override Expr getSql() { result = this.getArgumentForName("commandText") }
 }
 
-private class Conf extends DataFlow4::Configuration {
-  Conf() { this = "DapperCommandDefinitionFlowConfig" }
-
-  override predicate isSource(DataFlow::Node node) {
+private module DapperCommandDefitionMethodCallSqlConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     node.asExpr().(ObjectCreation).getObjectType() instanceof Dapper::CommandDefinitionStruct
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(MethodCall mc |
       mc.getTarget() = any(Dapper::SqlMapperClass c).getAQueryMethod() and
       node.asExpr() = mc.getArgumentForName("command")
     )
   }
 }
+
+private module DapperCommandDefinitionMethodCallSql =
+  DataFlow::Global<DapperCommandDefitionMethodCallSqlConfig>;

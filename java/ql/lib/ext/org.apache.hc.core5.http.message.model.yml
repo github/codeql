@@ -1,10 +1,23 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(HttpRequest)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(String,String,ProtocolVersion)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "getMethod", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "getUri", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(HttpRequest)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(String,String,ProtocolVersion)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "getMethod", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "getUri", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

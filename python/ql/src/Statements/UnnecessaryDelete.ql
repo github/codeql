@@ -36,5 +36,5 @@ where
     ex = Value::named("sys.exc_info") and
     ex.getACall().getScope() = f
   )
-select del, "Unnecessary deletion of local variable $@ in function $@.", e.getLocation(),
-  e.toString(), f.getLocation(), f.getName()
+select del, "Unnecessary deletion of local variable $@ in function $@.", e, e.toString(), f,
+  f.getName()

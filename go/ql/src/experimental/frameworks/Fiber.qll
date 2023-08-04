@@ -130,18 +130,14 @@ private module Fiber {
    * Models HTTP redirects.
    */
   private class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
-    string package;
     DataFlow::Node urlNode;
 
     Redirect() {
       // HTTP redirect models for package: github.com/gofiber/fiber@v1.14.6
-      package = fiberPackagePath() and
       // Receiver type: Ctx
-      (
-        // signature: func (*Ctx) Redirect(location string, status ...int)
-        this = any(Method m | m.hasQualifiedName(package, "Ctx", "Redirect")).getACall() and
-        urlNode = this.getArgument(0)
-      )
+      // signature: func (*Ctx) Redirect(location string, status ...int)
+      this = any(Method m | m.hasQualifiedName(fiberPackagePath(), "Ctx", "Redirect")).getACall() and
+      urlNode = this.getArgument(0)
     }
 
     override DataFlow::Node getUrl() { result = urlNode }
@@ -187,7 +183,7 @@ private module Fiber {
           // signature: func (*Ctx) Append(field string, values ...string)
           methodName = "Append" and
           headerNameNode = headerSetterCall.getArgument(0) and
-          headerValueNode = headerSetterCall.getArgument(any(int i | i >= 1))
+          headerValueNode = headerSetterCall.getSyntacticArgument(any(int i | i >= 1))
           or
           // signature: func (*Ctx) Set(key string, val string)
           methodName = "Set" and
@@ -274,7 +270,7 @@ private module Fiber {
           or
           // signature: func (*Ctx) Send(bodies ...interface{})
           methodName = "Send" and
-          bodyNode = bodySetterCall.getArgument(_)
+          bodyNode = bodySetterCall.getASyntacticArgument()
           or
           // signature: func (*Ctx) SendBytes(body []byte)
           methodName = "SendBytes" and
@@ -290,7 +286,7 @@ private module Fiber {
           or
           // signature: func (*Ctx) Write(bodies ...interface{})
           methodName = "Write" and
-          bodyNode = bodySetterCall.getArgument(_)
+          bodyNode = bodySetterCall.getASyntacticArgument()
         )
       )
     )

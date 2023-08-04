@@ -56,8 +56,5 @@ module StoredXss {
     }
   }
 
-  import TaintTracking::Make<Config>
+  import TaintTracking::Global<Config>
 }
-
-/** DEPRECATED: Alias for StoredXss */
-deprecated module StoredXSS = StoredXss;

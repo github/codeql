@@ -11,7 +11,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
-private import semmle.python.RegexTreeView::RegexTreeView as TreeView
+private import semmle.python.regexp.RegexTreeView::RegexTreeView as TreeView
 private import semmle.python.ApiGraphs
 private import semmle.python.regex
 

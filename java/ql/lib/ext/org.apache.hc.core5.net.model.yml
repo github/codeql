@@ -3,5 +3,21 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.hc.core5.net", "URIAuthority", True, "getHostName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.hc.core5.net", "URIAuthority", True, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "URIAuthority", "(Host)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "URIAuthority", "(String)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "URIAuthority", "(String,Host)", "", "Argument[1]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "URIAuthority", "(String,String,int)", "", "Argument[1]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "URIAuthority", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "getHostName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "URIBuilder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "URIBuilder", "(String,Charset)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "URIBuilder", "(URI)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "URIBuilder", "(URI,Charset)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "setHost", "(InetAddress)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "setHost", "(InetAddress)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "setHost", "(String)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "setHost", "(String)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "setHttpHost", "(HttpHost)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URIBuilder", True, "setHttpHost", "(HttpHost)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.net", "URLEncodedUtils", True, "parse", "(URI,Charset)", "", "Argument[0]", "ReturnValue.Element", "taint", "hq-manual"]

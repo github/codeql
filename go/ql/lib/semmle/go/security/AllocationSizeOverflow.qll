@@ -52,7 +52,7 @@ module AllocationSizeOverflow {
       nd.(Sink).getAllocationSize() = allocsz
     }
 
-    override predicate isSink(DataFlow::Node nd) { isSinkWithAllocationSize(nd, _) }
+    override predicate isSink(DataFlow::Node nd) { this.isSinkWithAllocationSize(nd, _) }
 
     override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
       additionalStep(pred, succ)

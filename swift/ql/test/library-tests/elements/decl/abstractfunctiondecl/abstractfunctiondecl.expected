@@ -1,8 +1,0 @@
-| abstractfunctiondecl.swift:2:1:2:15 | func1() | getName:func1(), hasName:func1() |
-| abstractfunctiondecl.swift:5:2:5:16 | func2() | MethodDecl, getName:func2(), hasName:func2(), hasQualifiedName(2):Class1.func2(), hasQualifiedName(3):abstractfunctiondecl.Class1.func2() |
-| abstractfunctiondecl.swift:8:3:8:17 | func3() | MethodDecl, getName:func3(), hasName:func3(), hasQualifiedName(2):Class1.Class2.func3(), hasQualifiedName(3):abstractfunctiondecl.Class1.Class2.func3() |
-| abstractfunctiondecl.swift:13:2:13:13 | func4() | MethodDecl, getName:func4(), hasName:func4(), hasQualifiedName(2):Protocol1.func4(), hasQualifiedName(3):abstractfunctiondecl.Protocol1.func4() |
-| abstractfunctiondecl.swift:17:2:17:16 | func4() | MethodDecl, getName:func4(), hasName:func4(), hasQualifiedName(2):Class3.func4(), hasQualifiedName(3):abstractfunctiondecl.Class3.func4() |
-| abstractfunctiondecl.swift:21:2:21:16 | func5() | MethodDecl, getName:func5(), hasName:func5(), hasQualifiedName(2):Class3.func5(), hasQualifiedName(3):abstractfunctiondecl.Class3.func5() |
-| abstractfunctiondecl.swift:25:2:25:16 | func6() | MethodDecl, getName:func6(), hasName:func6(), hasQualifiedName(2):Struct1.func6(), hasQualifiedName(3):abstractfunctiondecl.Struct1.func6() |
-| abstractfunctiondecl.swift:31:2:31:16 | func7() | MethodDecl, getName:func7(), hasName:func7(), hasQualifiedName(2):Enum1.func7(), hasQualifiedName(3):abstractfunctiondecl.Enum1.func7() |

@@ -3,14 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.http.message", "BasicHttpEntityEnclosingRequest", False, "BasicHttpEntityEnclosingRequest", "(RequestLine)", "", "Argument[0]", "open-url", "manual"]
-      - ["org.apache.http.message", "BasicHttpEntityEnclosingRequest", False, "BasicHttpEntityEnclosingRequest", "(String,String)", "", "Argument[1]", "open-url", "manual"]
-      - ["org.apache.http.message", "BasicHttpEntityEnclosingRequest", False, "BasicHttpEntityEnclosingRequest", "(String,String,ProtocolVersion)", "", "Argument[1]", "open-url", "manual"]
-      - ["org.apache.http.message", "BasicHttpRequest", False, "BasicHttpRequest", "(RequestLine)", "", "Argument[0]", "open-url", "manual"]
-      - ["org.apache.http.message", "BasicHttpRequest", False, "BasicHttpRequest", "(String,String)", "", "Argument[1]", "open-url", "manual"]
-      - ["org.apache.http.message", "BasicHttpRequest", False, "BasicHttpRequest", "(String,String,ProtocolVersion)", "", "Argument[1]", "open-url", "manual"]
+      - ["org.apache.http.message", "BasicHttpEntityEnclosingRequest", False, "BasicHttpEntityEnclosingRequest", "(RequestLine)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.http.message", "BasicHttpEntityEnclosingRequest", False, "BasicHttpEntityEnclosingRequest", "(String,String)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["org.apache.http.message", "BasicHttpEntityEnclosingRequest", False, "BasicHttpEntityEnclosingRequest", "(String,String,ProtocolVersion)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["org.apache.http.message", "BasicHttpRequest", False, "BasicHttpRequest", "(RequestLine)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.http.message", "BasicHttpRequest", False, "BasicHttpRequest", "(String,String)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["org.apache.http.message", "BasicHttpRequest", False, "BasicHttpRequest", "(String,String,ProtocolVersion)", "", "Argument[1]", "request-forgery", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.http.message", "BasicRequestLine", False, "BasicRequestLine", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["org.apache.http.message", "BasicRequestLine", False, "BasicRequestLine", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]

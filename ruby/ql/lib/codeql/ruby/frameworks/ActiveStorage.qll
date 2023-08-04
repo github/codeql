@@ -85,7 +85,6 @@ module ActiveStorage {
           // Class methods
           API::getTopLevelMember("ActiveStorage")
               .getMember("Blob")
-              .getASubclass()
               .getAMethodCall(["create_after_unfurling!", "create_and_upload!"]),
           // Instance methods
           any(BlobInstance i, DataFlow::CallNode c |

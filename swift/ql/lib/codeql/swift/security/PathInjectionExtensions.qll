@@ -12,18 +12,15 @@ private import codeql.swift.frameworks.StandardLibrary.FilePath
 /** A data flow sink for path injection vulnerabilities. */
 abstract class PathInjectionSink extends DataFlow::Node { }
 
-/** A sanitizer for path injection vulnerabilities. */
-abstract class PathInjectionSanitizer extends DataFlow::Node { }
+/** A barrier for path injection vulnerabilities. */
+abstract class PathInjectionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
- *
- * Extend this class to add additional taint steps that should apply to paths related to
- * path injection vulnerabilities.
+ * A unit class for adding additional flow steps.
  */
-class PathInjectionAdditionalTaintStep extends Unit {
+class PathInjectionAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to path injection vulnerabilities.
    */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
@@ -36,15 +33,14 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
   DefaultPathInjectionSink() { sinkNode(this, "path-injection") }
 }
 
-private class DefaultPathInjectionSanitizer extends PathInjectionSanitizer {
-  DefaultPathInjectionSanitizer() {
+private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
+  DefaultPathInjectionBarrier() {
     // This is a simplified implementation.
-    // TODO: Implement a complete path sanitizer when Guards are available.
     exists(CallExpr starts, CallExpr normalize, DataFlow::Node validated |
       starts.getStaticTarget().getName() = "starts(with:)" and
-      starts.getStaticTarget().getEnclosingDecl() instanceof FilePath and
+      starts.getStaticTarget().getEnclosingDecl().asNominalTypeDecl() instanceof FilePath and
       normalize.getStaticTarget().getName() = "lexicallyNormalized()" and
-      normalize.getStaticTarget().getEnclosingDecl() instanceof FilePath
+      normalize.getStaticTarget().getEnclosingDecl().asNominalTypeDecl() instanceof FilePath
     |
       TaintTracking::localTaint(validated, DataFlow::exprNode(normalize.getQualifier())) and
       DataFlow::localExprFlow(normalize, starts.getQualifier()) and
@@ -127,7 +123,13 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";DatabasePool;true;init(path:configuration:);;;Argument[0];path-injection",
         ";DatabaseQueue;true;init(path:configuration:);;;Argument[0];path-injection",
         ";DatabaseSnapshotPool;true;init(path:configuration:);;;Argument[0];path-injection",
-        ";SerializedDatabase;true;init(path:configuration:defaultLabel:purpose:);;;Argument[0];path-injection"
+        ";SerializedDatabase;true;init(path:configuration:defaultLabel:purpose:);;;Argument[0];path-injection",
+        // Realm
+        ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[0];path-injection",
+        ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[0];path-injection",
+        ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[10];path-injection",
+        ";Realm.Configuration;true;fileURL;;;PostUpdate;path-injection",
+        ";Realm.Configuration;true;seedFilePath;;;PostUpdate;path-injection",
       ]
   }
 }

@@ -537,17 +537,13 @@ final class ClassInterfaceNode extends ElementNode {
     or
     childIndex >= 0 and
     result.(ElementNode).getElement() =
-      rank[childIndex](Element e, string file, int line, int column, string childStr, int argCount |
+      rank[childIndex](Element e, string file, int line, int column, string childStr, string sig |
         e = this.getADeclaration() and
         locationSortKeys(e, file, line, column) and
         childStr = e.toString() and
-        (
-          if e instanceof Callable
-          then argCount = e.(Callable).getNumberOfParameters()
-          else argCount = 0
-        )
+        (if e instanceof Callable then sig = e.(Callable).getStringSignature() else sig = "")
       |
-        e order by file, line, column, childStr, argCount
+        e order by file, line, column, childStr, sig
       )
   }
 }

@@ -13,8 +13,8 @@ import java
  */
 class LombokAnnotation extends Annotation {
   LombokAnnotation() {
-    getType().getPackage().hasName("lombok") or
-    getType().getPackage().getName().matches("lombok.%")
+    this.getType().getPackage().hasName("lombok") or
+    this.getType().getPackage().getName().matches("lombok.%")
   }
 }
 
@@ -22,7 +22,7 @@ class LombokAnnotation extends Annotation {
  * A Lombok `@NonNull` annotation.
  */
 class LombokNonNullAnnotation extends LombokAnnotation {
-  LombokNonNullAnnotation() { getType().hasName("NonNull") }
+  LombokNonNullAnnotation() { this.getType().hasName("NonNull") }
 }
 
 /**
@@ -32,7 +32,7 @@ class LombokNonNullAnnotation extends LombokAnnotation {
  * automatically closed by Lombok in a generated try-finally block.
  */
 class LombokCleanupAnnotation extends LombokAnnotation {
-  LombokCleanupAnnotation() { getType().hasName("Cleanup") }
+  LombokCleanupAnnotation() { this.getType().hasName("Cleanup") }
 }
 
 /**
@@ -47,7 +47,7 @@ class LombokCleanupAnnotation extends LombokAnnotation {
  * overridden by specifying `AccessLevel.NONE` for a field.
  */
 class LombokGetterAnnotation extends LombokAnnotation {
-  LombokGetterAnnotation() { getType().hasName("Getter") }
+  LombokGetterAnnotation() { this.getType().hasName("Getter") }
 }
 
 /**
@@ -62,7 +62,7 @@ class LombokGetterAnnotation extends LombokAnnotation {
  * overridden by specifying `AccessLevel.NONE` for a field.
  */
 class LombokSetterAnnotation extends LombokAnnotation {
-  LombokSetterAnnotation() { getType().hasName("Setter") }
+  LombokSetterAnnotation() { this.getType().hasName("Setter") }
 }
 
 /**
@@ -72,7 +72,7 @@ class LombokSetterAnnotation extends LombokAnnotation {
  * generates a `toString()` method.
  */
 class LombokToStringAnnotation extends LombokAnnotation {
-  LombokToStringAnnotation() { getType().hasName("ToString") }
+  LombokToStringAnnotation() { this.getType().hasName("ToString") }
 }
 
 /**
@@ -82,7 +82,7 @@ class LombokToStringAnnotation extends LombokAnnotation {
  * generates suitable `equals` and `hashCode` methods.
  */
 class LombokEqualsAndHashCodeAnnotation extends LombokAnnotation {
-  LombokEqualsAndHashCodeAnnotation() { getType().hasName("EqualsAndHashCode") }
+  LombokEqualsAndHashCodeAnnotation() { this.getType().hasName("EqualsAndHashCode") }
 }
 
 /**
@@ -92,7 +92,7 @@ class LombokEqualsAndHashCodeAnnotation extends LombokAnnotation {
  * generates a constructor with no parameters.
  */
 class LombokNoArgsConstructorAnnotation extends LombokAnnotation {
-  LombokNoArgsConstructorAnnotation() { getType().hasName("NoArgsConstructor") }
+  LombokNoArgsConstructorAnnotation() { this.getType().hasName("NoArgsConstructor") }
 }
 
 /**
@@ -104,7 +104,7 @@ class LombokNoArgsConstructorAnnotation extends LombokAnnotation {
  * where it is declared.
  */
 class LombokRequiredArgsConstructorAnnotation extends LombokAnnotation {
-  LombokRequiredArgsConstructorAnnotation() { getType().hasName("RequiredArgsConstructor") }
+  LombokRequiredArgsConstructorAnnotation() { this.getType().hasName("RequiredArgsConstructor") }
 }
 
 /**
@@ -114,7 +114,7 @@ class LombokRequiredArgsConstructorAnnotation extends LombokAnnotation {
  * generates a constructor with a parameter for each field in the class.
  */
 class LombokAllArgsConstructorAnnotation extends LombokAnnotation {
-  LombokAllArgsConstructorAnnotation() { getType().hasName("AllArgsConstructor") }
+  LombokAllArgsConstructorAnnotation() { this.getType().hasName("AllArgsConstructor") }
 }
 
 /**
@@ -124,7 +124,7 @@ class LombokAllArgsConstructorAnnotation extends LombokAnnotation {
  * fields, `@Setter` on all non-final fields, and `@RequiredArgsConstructor`.
  */
 class LombokDataAnnotation extends LombokAnnotation {
-  LombokDataAnnotation() { getType().hasName("Data") }
+  LombokDataAnnotation() { this.getType().hasName("Data") }
 }
 
 /**
@@ -138,7 +138,7 @@ class LombokDataAnnotation extends LombokAnnotation {
  * ```
  */
 class LombokValueAnnotation extends LombokAnnotation {
-  LombokValueAnnotation() { getType().hasName("Value") }
+  LombokValueAnnotation() { this.getType().hasName("Value") }
 }
 
 /**
@@ -148,7 +148,7 @@ class LombokValueAnnotation extends LombokAnnotation {
  * generates complex builder APIs for the class.
  */
 class LombokBuilderAnnotation extends LombokAnnotation {
-  LombokBuilderAnnotation() { getType().hasName("Builder") }
+  LombokBuilderAnnotation() { this.getType().hasName("Builder") }
 }
 
 /**
@@ -158,7 +158,7 @@ class LombokBuilderAnnotation extends LombokAnnotation {
  * without declaring them in a `throws` clause.
  */
 class LombokSneakyThrowsAnnotation extends LombokAnnotation {
-  LombokSneakyThrowsAnnotation() { getType().hasName("SneakyThrows") }
+  LombokSneakyThrowsAnnotation() { this.getType().hasName("SneakyThrows") }
 }
 
 /**
@@ -170,7 +170,7 @@ class LombokSneakyThrowsAnnotation extends LombokAnnotation {
  * methods annotated with `@Synchronized`.
  */
 class LombokSynchronizedAnnotation extends LombokAnnotation {
-  LombokSynchronizedAnnotation() { getType().hasName("Synchronized") }
+  LombokSynchronizedAnnotation() { this.getType().hasName("Synchronized") }
 }
 
 /**
@@ -180,7 +180,7 @@ class LombokSynchronizedAnnotation extends LombokAnnotation {
  * generates a logger field named `log` with a specified type.
  */
 class LombokLogAnnotation extends LombokAnnotation {
-  LombokLogAnnotation() { getType().hasName("Log") }
+  LombokLogAnnotation() { this.getType().hasName("Log") }
 }
 
 /*
@@ -196,14 +196,14 @@ class LombokLogAnnotation extends LombokAnnotation {
  */
 class LombokGetterAnnotatedField extends Field {
   LombokGetterAnnotatedField() {
-    getAnAnnotation() instanceof LombokGetterAnnotation
+    this.getAnAnnotation() instanceof LombokGetterAnnotation
     or
     exists(LombokAnnotation a |
       a instanceof LombokGetterAnnotation or
       a instanceof LombokDataAnnotation or
       a instanceof LombokValueAnnotation
     |
-      a = getDeclaringType().getSourceDeclaration().getAnAnnotation()
+      a = this.getDeclaringType().getSourceDeclaration().getAnAnnotation()
     )
   }
 }
@@ -217,8 +217,8 @@ class LombokGetterAnnotatedField extends Field {
  */
 class LombokEqualsAndHashCodeGeneratedClass extends Class {
   LombokEqualsAndHashCodeGeneratedClass() {
-    getAnAnnotation() instanceof LombokEqualsAndHashCodeAnnotation or
-    getAnAnnotation() instanceof LombokDataAnnotation or
-    getAnAnnotation() instanceof LombokValueAnnotation
+    this.getAnAnnotation() instanceof LombokEqualsAndHashCodeAnnotation or
+    this.getAnAnnotation() instanceof LombokDataAnnotation or
+    this.getAnAnnotation() instanceof LombokValueAnnotation
   }
 }

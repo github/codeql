@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.commons.collections4.multiset", "HashMultiSet", True, "HashMultiSet", "", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]
+      - ["org.apache.commons.collections4.multiset", "HashMultiSet", True, "HashMultiSet", "", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["org.apache.commons.collections4.multiset", "PredicatedMultiSet", True, "predicatedMultiSet", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4.multiset", "SynchronizedMultiSet", True, "synchronizedMultiSet", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4.multiset", "UnmodifiableMultiSet", True, "unmodifiableMultiSet", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]

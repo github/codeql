@@ -4,7 +4,9 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
+| cpp11.cpp:50:15:50:16 | (no string representation) | Node should have one toString but has 0. |
 missingToString
+| Nodes without toString: 1 |
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
@@ -51,3 +53,4 @@ uniqueParameterNodeAtPosition
 | ir.cpp:726:6:726:13 | TryCatch | 0 indirection | ir.cpp:740:24:740:24 | e indirection | Parameters with overlapping positions. |
 uniqueParameterNodePosition
 uniqueContentApprox
+identityLocalStep

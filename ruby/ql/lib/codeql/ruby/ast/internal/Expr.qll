@@ -4,7 +4,9 @@ private import AST
 private import TreeSitter
 
 class StmtSequenceSynth extends StmtSequence, TStmtSequenceSynth {
-  final override Stmt getStmt(int n) { synthChild(this, n, result) }
+  final override Stmt getStmt(int n) {
+    result = rank[n + 1](int i, Stmt s | synthChild(this, i, s) | s order by i)
+  }
 
   final override string toString() { result = "..." }
 }

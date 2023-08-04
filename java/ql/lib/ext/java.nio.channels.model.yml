@@ -4,4 +4,12 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.nio.channels", "Channels", False, "newChannel", "(InputStream)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.nio.channels", "ReadableByteChannel", True, "read", "(ByteBuffer)", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["java.nio.channels", "ReadableByteChannel", True, "read", "(ByteBuffer)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.nio.channels", "FileChannel", False, "open", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.channels", "FileChannel", False, "open", "(Path,Set,FileAttribute[])", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.channels", "FileChannel", True, "write", "(ByteBuffer,long)", "", "Argument[0]", "file-content-store", "ai-manual"]
+      - ["java.nio.channels", "FileChannel", True, "write", "(ByteBuffer)", "", "Argument[0]", "file-content-store", "ai-manual"]

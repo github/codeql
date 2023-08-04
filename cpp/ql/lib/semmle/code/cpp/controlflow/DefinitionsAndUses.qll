@@ -98,7 +98,7 @@ library class DefOrUse extends ControlFlowNodeBase {
 
   pragma[noinline]
   private predicate reaches_helper(boolean isDef, SemanticStackVariable v, BasicBlock bb, int i) {
-    getVariable(isDef) = v and
+    this.getVariable(isDef) = v and
     bb.getNode(i) = this
   }
 
@@ -118,21 +118,21 @@ library class DefOrUse extends ControlFlowNodeBase {
      * predicates are duplicated for now.
      */
 
-    exists(BasicBlock bb, int i | reaches_helper(isDef, v, bb, i) |
+    exists(BasicBlock bb, int i | this.reaches_helper(isDef, v, bb, i) |
       exists(int j |
         j > i and
         (bbDefAt(bb, j, v, defOrUse) or bbUseAt(bb, j, v, defOrUse)) and
-        not exists(int k | firstBarrierAfterThis(isDef, k, v) and k < j)
+        not exists(int k | this.firstBarrierAfterThis(isDef, k, v) and k < j)
       )
       or
-      not firstBarrierAfterThis(isDef, _, v) and
+      not this.firstBarrierAfterThis(isDef, _, v) and
       bbSuccessorEntryReachesDefOrUse(bb, v, defOrUse, _)
     )
   }
 
   private predicate firstBarrierAfterThis(boolean isDef, int j, SemanticStackVariable v) {
     exists(BasicBlock bb, int i |
-      getVariable(isDef) = v and
+      this.getVariable(isDef) = v and
       bb.getNode(i) = this and
       j = min(int k | bbBarrierAt(bb, k, v, _) and k > i)
     )

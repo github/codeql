@@ -1,13 +1,15 @@
 #include "swift/xcode-autobuilder/XcodeProjectParser.h"
-#include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
-#include "swift/xcode-autobuilder/CFHelpers.h"
 
+#include <array>
 #include <iostream>
 #include <filesystem>
 #include <unordered_map>
 #include <unordered_set>
 #include <fstream>
 #include <CoreFoundation/CoreFoundation.h>
+
+#include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
+#include "swift/xcode-autobuilder/CFHelpers.h"
 
 namespace fs = std::filesystem;
 
@@ -17,14 +19,14 @@ struct TargetData {
   std::string type;
 };
 
-typedef std::unordered_map<std::string, CFDictionaryRef> Targets;
-typedef std::unordered_map<std::string, std::vector<std::string>> Dependencies;
-typedef std::unordered_map<std::string, std::vector<std::pair<std::string, CFDictionaryRef>>>
-    BuildFiles;
+using TargetMap = std::unordered_map<std::string, CFDictionaryRef>;
+using DependencyMap = std::unordered_map<std::string, std::vector<std::string>>;
+using FileMap =
+    std::unordered_map<std::string, std::vector<std::pair<std::string, CFDictionaryRef>>>;
 
 static size_t totalFilesCount(const std::string& target,
-                              const Dependencies& dependencies,
-                              const BuildFiles& buildFiles) {
+                              const DependencyMap& dependencies,
+                              const FileMap& buildFiles) {
   size_t sum = buildFiles.at(target).size();
   for (auto& dep : dependencies.at(target)) {
     sum += totalFilesCount(dep, dependencies, buildFiles);
@@ -47,9 +49,9 @@ static bool objectIsTarget(CFDictionaryRef object) {
 
 static void mapTargetsToSourceFiles(CFDictionaryRef objects,
                                     std::unordered_map<std::string, size_t>& fileCounts) {
-  Targets targets;
-  Dependencies dependencies;
-  BuildFiles buildFiles;
+  TargetMap targets;
+  DependencyMap dependencies;
+  FileMap buildFiles;
 
   auto kv = CFKeyValues::fromDictionary(objects);
   for (size_t i = 0; i < kv.size; i++) {
@@ -199,32 +201,34 @@ static std::unordered_map<std::string, TargetData> mapTargetsToWorkspace(
 static std::vector<fs::path> collectFiles(const std::string& workingDir) {
   fs::path workDir(workingDir);
   std::vector<fs::path> files;
-  auto iterator = fs::recursive_directory_iterator(workDir);
   auto end = fs::recursive_directory_iterator();
-  for (; iterator != end; iterator++) {
-    auto filename = iterator->path().filename();
-    if (filename == "DerivedData" || filename == ".git" || filename == "build") {
+  for (auto it = fs::recursive_directory_iterator(workDir); it != end; ++it) {
+    const auto& p = it->path();
+    if (p.filename() == "Package.swift") {
+      files.push_back(p);
+      continue;
+    }
+    if (!it->is_directory()) {
+      continue;
+    }
+    if (p.filename() == "DerivedData" || p.filename() == ".git" || p.filename() == "build") {
       // Skip these folders
-      iterator.disable_recursion_pending();
+      it.disable_recursion_pending();
       continue;
     }
-    auto dirEntry = *iterator;
-    if (!dirEntry.is_directory()) {
-      continue;
+    if (p.extension() == ".xcodeproj" || p.extension() == ".xcworkspace") {
+      files.push_back(p);
     }
-    if (dirEntry.path().extension() != fs::path(".xcodeproj") &&
-        dirEntry.path().extension() != fs::path(".xcworkspace")) {
-      continue;
-    }
-    files.push_back(dirEntry.path());
   }
   return files;
 }
 
 static std::unordered_map<std::string, std::vector<std::string>> collectWorkspaces(
-    const std::string& workingDir) {
+    const std::string& workingDir,
+    bool& swiftPackageEncountered) {
   // Here we are collecting list of all workspaces and Xcode projects corresponding to them
   // Projects without workspaces go into the same "empty-workspace" bucket
+  swiftPackageEncountered = false;
   std::unordered_map<std::string, std::vector<std::string>> workspaces;
   std::unordered_set<std::string> projectsBelongingToWorkspace;
   std::vector<fs::path> files = collectFiles(workingDir);
@@ -234,6 +238,15 @@ static std::unordered_map<std::string, std::vector<std::string>> collectWorkspac
       for (auto& project : projects) {
         projectsBelongingToWorkspace.insert(project.string());
         workspaces[path.string()].push_back(project.string());
+      }
+    } else if (!swiftPackageEncountered && path.filename() == "Package.swift") {
+      // a package manifest must begin with a specific header comment
+      // see https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html
+      static constexpr std::string_view packageHeader = "// swift-tools-version:";
+      std::array<char, packageHeader.size()> buffer{};
+      std::string_view bufferView{buffer.data(), buffer.size()};
+      if (std::ifstream{path}.read(buffer.data(), buffer.size()) && bufferView == packageHeader) {
+        swiftPackageEncountered = true;
       }
     }
   }
@@ -249,12 +262,13 @@ static std::unordered_map<std::string, std::vector<std::string>> collectWorkspac
   return workspaces;
 }
 
-std::vector<Target> collectTargets(const std::string& workingDir) {
+Targets collectTargets(const std::string& workingDir) {
+  Targets ret;
   // Getting a list of workspaces and the project that belong to them
-  auto workspaces = collectWorkspaces(workingDir);
-  if (workspaces.empty()) {
-    std::cerr << "[xcode autobuilder] Xcode project or workspace not found\n";
-    exit(1);
+  auto workspaces = collectWorkspaces(workingDir, ret.swiftPackageEncountered);
+  ret.xcodeEncountered = !workspaces.empty();
+  if (!ret.xcodeEncountered) {
+    return ret;
   }
 
   // Mapping each target to the workspace/project it belongs to
@@ -263,11 +277,9 @@ std::vector<Target> collectTargets(const std::string& workingDir) {
   // Mapping each target to the number of source files it contains
   auto targetFilesMapping = mapTargetsToSourceFiles(workspaces);
 
-  std::vector<Target> targets;
-
   for (auto& [targetName, data] : targetMapping) {
-    targets.push_back(Target{data.workspace, data.project, targetName, data.type,
-                             targetFilesMapping[targetName]});
+    ret.targets.push_back(Target{data.workspace, data.project, targetName, data.type,
+                                 targetFilesMapping[targetName]});
   }
-  return targets;
+  return ret;
 }

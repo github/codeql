@@ -14,13 +14,19 @@
 import csharp
 import semmle.code.csharp.security.dataflow.LDAPInjectionQuery
 import semmle.code.csharp.security.dataflow.flowsources.Stored
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import StoredLdapInjection::PathGraph
 
-class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {
-  override predicate isSource(DataFlow::Node source) { source instanceof StoredFlowSource }
+module StoredLdapInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof StoredFlowSource }
+
+  predicate isSink = LdapInjectionConfig::isSink/1;
+
+  predicate isBarrier = LdapInjectionConfig::isBarrier/1;
 }
 
-from StoredTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+module StoredLdapInjection = TaintTracking::Global<StoredLdapInjectionConfig>;
+
+from StoredLdapInjection::PathNode source, StoredLdapInjection::PathNode sink
+where StoredLdapInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "This LDAP query depends on a $@.", source.getNode(),
   "stored (potentially user-provided) value"

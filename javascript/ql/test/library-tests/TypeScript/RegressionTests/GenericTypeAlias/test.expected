@@ -1,0 +1,15 @@
+typeAliases
+| tst.ts:1:8:1:41 | type Fo ... R \| A>; |
+| tst.ts:3:8:3:42 | type Ba ... R, A]>; |
+| tst.ts:5:8:5:47 | type Ba ...  => A>; |
+typeAliasType
+| tst.ts:1:8:1:41 | type Fo ... R \| A>; | Foo<R> |
+| tst.ts:3:8:3:42 | type Ba ... R, A]>; | Bar<R> |
+| tst.ts:5:8:5:47 | type Ba ...  => A>; | Baz<R> |
+getAliasedType
+| Bar<R> | <A>() => Bar<[R, A]> |
+| Bar<[R, A]> | <A>() => Bar<[[R, A], A]> |
+| Baz<(x: R) => A> | <A>() => Baz<(x: (x: R) => A) => A> |
+| Baz<R> | <A>() => Baz<(x: R) => A> |
+| Foo<R \| A> | <A>() => Foo<R \| A> |
+| Foo<R> | <A>() => Foo<R \| A> |

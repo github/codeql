@@ -1,8 +1,8 @@
 import swift
 
 string describe(TypeDecl td) {
-  //result = "getAliasedType:" + td.(TypeAliasDecl).getAliasedType() TODO: not yet implemented.
-  //or
+  result = "getAliasedType:" + td.(TypeAliasDecl).getAliasedType()
+  or
   result = "getABaseType:" + td.(NominalTypeDecl).getABaseType()
 }
 

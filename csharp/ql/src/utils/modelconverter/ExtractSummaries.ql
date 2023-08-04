@@ -12,6 +12,6 @@ from
   string input, string output, string kind, string provenance
 where
   summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
-  provenance != "generated"
+  not provenance.matches("%generated")
 select namespace, type, subtypes, name, signature, ext, input, output, kind, provenance order by
     namespace, type, name, signature, input, output, kind

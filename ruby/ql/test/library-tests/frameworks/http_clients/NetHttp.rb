@@ -25,3 +25,5 @@ def get(domain, path)
 end
 
 get("example.com", "/").body
+
+Net::HTTP.post(uri, "some_body") # note: response body not accessed

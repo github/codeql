@@ -17,9 +17,9 @@ library class BoundKind extends string {
 
   predicate isUpper() { this = "<=" }
 
-  predicate providesLowerBound() { isEqual() or isLower() }
+  predicate providesLowerBound() { this.isEqual() or this.isLower() }
 
-  predicate providesUpperBound() { isEqual() or isUpper() }
+  predicate providesUpperBound() { this.isEqual() or this.isUpper() }
 }
 
 /**

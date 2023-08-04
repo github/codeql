@@ -6,10 +6,12 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.GroovyInjection
 
 /**
+ * DEPRECATED: Use `GroovyInjectionFlow` instead.
+ *
  * A taint-tracking configuration for unsafe user input
  * that is used to evaluate a Groovy expression.
  */
-class GroovyInjectionConfig extends TaintTracking::Configuration {
+deprecated class GroovyInjectionConfig extends TaintTracking::Configuration {
   GroovyInjectionConfig() { this = "GroovyInjectionConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -20,3 +22,23 @@ class GroovyInjectionConfig extends TaintTracking::Configuration {
     any(GroovyInjectionAdditionalTaintStep c).step(fromNode, toNode)
   }
 }
+
+/**
+ * A taint-tracking configuration for unsafe user input
+ * that is used to evaluate a Groovy expression.
+ */
+module GroovyInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof GroovyInjectionSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+    any(GroovyInjectionAdditionalTaintStep c).step(fromNode, toNode)
+  }
+}
+
+/**
+ * Detect taint flow of unsafe user input
+ * that is used to evaluate a Groovy expression.
+ */
+module GroovyInjectionFlow = TaintTracking::Global<GroovyInjectionConfig>;

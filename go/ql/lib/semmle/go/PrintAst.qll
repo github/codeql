@@ -5,7 +5,7 @@
 import go
 
 /**
- * Hook to customize the files and functions printed by this module.
+ * A hook to customize the files and functions printed by this module.
  *
  * For an AstNode to be printed, it always requires `shouldPrintFile(f)` to hold
  * for its containing file `f`, and additionally requires `shouldPrintFunction(fun)`
@@ -85,12 +85,12 @@ class PrintAstNode extends TPrintAstNode {
    * within a function are printed, but the query can override
    * `PrintAstConfiguration.shouldPrintFunction` to filter the output.
    */
-  predicate shouldPrint() { exists(getLocation()) }
+  predicate shouldPrint() { exists(this.getLocation()) }
 
   /**
    * Gets a child of this node.
    */
-  PrintAstNode getAChild() { result = getChild(_) }
+  PrintAstNode getAChild() { result = this.getChild(_) }
 
   /**
    * Gets the location of this node in the source code.
@@ -103,7 +103,7 @@ class PrintAstNode extends TPrintAstNode {
    */
   string getProperty(string key) {
     key = "semmle.label" and
-    result = toString()
+    result = this.toString()
   }
 
   /**
@@ -112,7 +112,7 @@ class PrintAstNode extends TPrintAstNode {
    * this.
    */
   string getChildEdgeLabel(int childIndex) {
-    exists(getChild(childIndex)) and
+    exists(this.getChild(childIndex)) and
     result = childIndex.toString()
   }
 
@@ -191,7 +191,7 @@ class FileNode extends BaseAstNode {
     result = super.getProperty(key)
     or
     key = "semmle.order" and
-    result = getSortOrder().toString()
+    result = this.getSortOrder().toString()
   }
 
   /**
@@ -220,7 +220,7 @@ class FileNode extends BaseAstNode {
    */
   override BaseAstNode getChild(int childIndex) {
     if exists(ast.getPackageNameExpr())
-    then result = getChildPackageFirst(childIndex, TAstNode(ast.getPackageNameExpr()), _)
+    then result = this.getChildPackageFirst(childIndex, TAstNode(ast.getPackageNameExpr()), _)
     else result = super.getChild(childIndex)
   }
 
@@ -230,7 +230,7 @@ class FileNode extends BaseAstNode {
    * of this method.
    */
   override string getChildEdgeLabel(int childIndex) {
-    if getChild(childIndex) = TAstNode(ast.getPackageNameExpr())
+    if this.getChild(childIndex) = TAstNode(ast.getPackageNameExpr())
     then result = "package"
     else result = super.getChildEdgeLabel(childIndex)
   }

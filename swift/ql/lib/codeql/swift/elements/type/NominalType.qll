@@ -3,7 +3,7 @@ private import codeql.swift.elements.decl.NominalTypeDecl
 private import codeql.swift.elements.type.Type
 
 class NominalType extends Generated::NominalType {
-  Type getABaseType() { result = this.getDeclaration().(NominalTypeDecl).getABaseType() }
+  override Type getABaseType() { result = this.getDeclaration().(NominalTypeDecl).getABaseType() }
 
   NominalType getADerivedType() { result.getABaseType() = this }
 

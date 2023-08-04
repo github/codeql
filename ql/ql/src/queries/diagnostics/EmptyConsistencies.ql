@@ -58,6 +58,7 @@ where
     or
     ModConsistency::noResolve(node) and msg = "ModConsistency::noResolve"
   ) and
+  none() and // disabled for now
   not node.getLocation()
       .getFile()
       .getAbsolutePath()

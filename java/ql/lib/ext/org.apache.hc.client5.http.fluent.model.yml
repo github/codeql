@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "create", "(Method,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "create", "(String,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "create", "(String,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "delete", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "delete", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "get", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "get", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "head", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "head", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "options", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "options", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "patch", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "patch", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "post", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "post", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "put", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "put", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "trace", "(String)", "", "Argument[0]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.client5.http.fluent", "Request", True, "trace", "(URI)", "", "Argument[0]", "request-forgery", "hq-manual"]

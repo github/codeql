@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.xml.sax", "InputSource", False, "InputSource", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.xml.sax", "InputSource", False, "InputSource", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]

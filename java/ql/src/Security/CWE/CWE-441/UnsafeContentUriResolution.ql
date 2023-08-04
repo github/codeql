@@ -17,7 +17,7 @@ import semmle.code.java.security.UnsafeContentUriResolutionQuery
 import UnsafeContentResolutionFlow::PathGraph
 
 from UnsafeContentResolutionFlow::PathNode src, UnsafeContentResolutionFlow::PathNode sink
-where UnsafeContentResolutionFlow::hasFlowPath(src, sink)
+where UnsafeContentResolutionFlow::flowPath(src, sink)
 select sink.getNode(), src, sink,
   "This ContentResolver method that resolves a URI depends on a $@.", src.getNode(),
   "user-provided value"

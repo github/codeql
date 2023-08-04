@@ -3,11 +3,11 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.thymeleaf", "ITemplateEngine", True, "process", "", "", "Argument[0]", "ssti", "manual"]
-      - ["org.thymeleaf", "ITemplateEngine", True, "processThrottled", "", "", "Argument[0]", "ssti", "manual"]
+      - ["org.thymeleaf", "ITemplateEngine", True, "process", "", "", "Argument[0]", "template-injection", "manual"]
+      - ["org.thymeleaf", "ITemplateEngine", True, "processThrottled", "", "", "Argument[0]", "template-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.thymeleaf", "TemplateSpec", False, "TemplateSpec", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["org.thymeleaf", "TemplateSpec", False, "getTemplate", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.thymeleaf", "TemplateSpec", False, "TemplateSpec", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["org.thymeleaf", "TemplateSpec", False, "getTemplate", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

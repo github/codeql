@@ -84,11 +84,11 @@ module OverflowDestinationConfig implements DataFlow::ConfigSig {
   }
 }
 
-module OverflowDestination = TaintTracking::Make<OverflowDestinationConfig>;
+module OverflowDestination = TaintTracking::Global<OverflowDestinationConfig>;
 
 from FunctionCall fc, OverflowDestination::PathNode source, OverflowDestination::PathNode sink
 where
-  OverflowDestination::hasFlowPath(source, sink) and
+  OverflowDestination::flowPath(source, sink) and
   sourceSized(fc, sink.getNode().asIndirectConvertedExpr())
 select fc, source, sink,
   "To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size."

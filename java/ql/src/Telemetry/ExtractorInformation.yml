@@ -1,0 +1,5 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-queries
+      extensible: extractorInformationSkipKey
+    data: []

@@ -33,17 +33,17 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` through a static field.
+ * Holds if data can flow from `node1` to `node2` through a field.
  */
-private predicate staticFieldStep(Node node1, Node node2) {
+private predicate fieldStep(Node node1, Node node2) {
   exists(Field f |
+    // Taint fields through assigned values only if they're static
     f.isStatic() and
     f.getAnAssignedValue() = node1.asExpr() and
     node2.(FieldValueNode).getField() = f
   )
   or
   exists(Field f, FieldRead fr |
-    f.isStatic() and
     node1.(FieldValueNode).getField() = f and
     fr.getField() = f and
     fr = node2.asExpr() and
@@ -72,11 +72,11 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` through a static field or
+ * Holds if data can flow from `node1` to `node2` through a field or
  * variable capture.
  */
 predicate jumpStep(Node node1, Node node2) {
-  staticFieldStep(node1, node2)
+  fieldStep(node1, node2)
   or
   variableCaptureStep(node1, node2)
   or
@@ -85,7 +85,8 @@ predicate jumpStep(Node node1, Node node2) {
   any(AdditionalValueStep a).step(node1, node2) and
   node1.getEnclosingCallable() != node2.getEnclosingCallable()
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(node1, node2)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -105,7 +106,7 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, Node node2) {
+predicate storeStep(Node node1, ContentSet f, Node node2) {
   exists(FieldAccess fa |
     instanceFieldAssign(node1.asExpr(), fa) and
     node2.(PostUpdateNode).getPreUpdateNode() = getFieldQualifier(fa) and
@@ -114,7 +115,8 @@ predicate storeStep(Node node1, Content f, Node node2) {
   or
   f instanceof ArrayContent and arrayStoreStep(node1, node2)
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, f, node2)
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), f,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -122,7 +124,7 @@ predicate storeStep(Node node1, Content f, Node node2) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content f, Node node2) {
+predicate readStep(Node node1, ContentSet f, Node node2) {
   exists(FieldRead fr |
     node1 = getFieldQualifier(fr) and
     fr.getField() = f.(FieldContent).getField() and
@@ -145,7 +147,8 @@ predicate readStep(Node node1, Content f, Node node2) {
   or
   f instanceof CollectionContent and collectionReadStep(node1, node2)
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1, f, node2)
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), f,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -153,14 +156,14 @@ predicate readStep(Node node1, Content f, Node node2) {
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   exists(FieldAccess fa |
     instanceFieldAssign(_, fa) and
     n = getFieldQualifier(fa) and
     c.(FieldContent).getField() = fa.getField()
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
 
 /**
@@ -168,7 +171,7 @@ predicate clearsContent(Node n, Content c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
-  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n, c)
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
 
 /**
@@ -176,7 +179,7 @@ predicate expectsContent(Node n, ContentSet c) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-DataFlowType getErasedRepr(Type t) {
+RefType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
     then result.(BoxedType).getPrimitiveType().getName() = "double"
@@ -189,43 +192,34 @@ DataFlowType getErasedRepr(Type t) {
   t instanceof NullType and result instanceof TypeObject
 }
 
+class DataFlowType extends SrcRefType {
+  DataFlowType() { this = getErasedRepr(_) }
+}
+
+pragma[nomagic]
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { t1.getASourceSupertype+() = t2 }
+
 pragma[noinline]
 DataFlowType getNodeType(Node n) {
   result = getErasedRepr(n.getTypeBound())
   or
-  result = FlowSummaryImpl::Private::summaryNodeType(n)
+  result = FlowSummaryImpl::Private::summaryNodeType(n.(FlowSummaryNode).getSummaryNode())
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) {
+string ppReprType(DataFlowType t) {
   if t.(BoxedType).getPrimitiveType().getName() = "double"
   then result = "Number"
   else result = t.toString()
-}
-
-private predicate canContainBool(Type t) {
-  t instanceof BooleanType or
-  any(BooleanType b).(RefType).getASourceSupertype+() = t
 }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
-  exists(Type e1, Type e2 |
-    e1 = getErasedRepr(t1) and
-    e2 = getErasedRepr(t2)
-  |
-    // Because of `getErasedRepr`, `erasedHaveIntersection` is a sufficient
-    // compatibility check, but `conContainBool` is kept as a dummy disjunct
-    // to get the proper join-order.
-    erasedHaveIntersection(e1, e2)
-    or
-    canContainBool(e1) and canContainBool(e2)
-  )
-}
+bindingset[t1, t2]
+pragma[inline_late]
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { erasedHaveIntersection(t1, t2) }
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
@@ -259,11 +253,9 @@ class DataFlowCallable extends TDataFlowCallable {
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = RefType;
-
 private newtype TDataFlowCall =
   TCall(Call c) or
-  TSummaryCall(SummarizedCallable c, Node receiver) {
+  TSummaryCall(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
@@ -313,12 +305,12 @@ class SrcCall extends DataFlowCall, TCall {
 /** A synthesized call inside a `SummarizedCallable`. */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private SummarizedCallable c;
-  private Node receiver;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /** Gets the data flow node that this call targets. */
-  Node getReceiver() { result = receiver }
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
 
@@ -367,21 +359,16 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
   )
 }
 
-int accessPathLimit() { result = 5 }
-
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) {
-  c instanceof ArrayContent or c instanceof CollectionContent
+  c instanceof ArrayContent or c instanceof CollectionContent or c instanceof MapValueContent
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) {
-  n instanceof SummaryNode or
-  n instanceof SummaryParameterNode
-}
+predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 
@@ -399,7 +386,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-  receiver = call.(SummaryCall).getReceiver() and
+  receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver() and
   getNodeDataFlowType(receiver)
       .getSourceDeclaration()
       .(FunctionalInterface)

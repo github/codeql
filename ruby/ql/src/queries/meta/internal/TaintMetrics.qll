@@ -8,9 +8,10 @@ private import codeql.ruby.security.PathInjectionCustomizations
 private import codeql.ruby.security.ServerSideRequestForgeryCustomizations
 private import codeql.ruby.security.UnsafeDeserializationCustomizations
 private import codeql.ruby.security.UrlRedirectCustomizations
+private import codeql.ruby.security.SqlInjectionCustomizations
 
 class RelevantFile extends File {
-  RelevantFile() { not getRelativePath().regexpMatch(".*/test(case)?s?/.*") }
+  RelevantFile() { not this.getRelativePath().regexpMatch(".*/test(case)?s?/.*") }
 }
 
 RemoteFlowSource relevantTaintSource(string kind) {
@@ -34,6 +35,8 @@ DataFlow::Node relevantTaintSink(string kind) {
     kind = "UnsafeDeserialization" and result instanceof UnsafeDeserialization::Sink
     or
     kind = "UrlRedirect" and result instanceof UrlRedirect::Sink
+    or
+    kind = "SqlInjection" and result instanceof SqlInjection::Sink
   ) and
   // the sink is not a string literal
   not exists(Ast::StringLiteral str |

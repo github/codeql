@@ -16,18 +16,21 @@ import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Stored
 import semmle.code.csharp.security.dataflow.XSSQuery
 import semmle.code.csharp.security.dataflow.XSSSinks
-import semmle.code.csharp.dataflow.DataFlow2
-import DataFlow2::PathGraph
+import StoredXss::PathGraph
 
-class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {
-  override predicate isSource(DataFlow2::Node source) { source instanceof StoredFlowSource }
+module StoredXssTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof StoredFlowSource }
+
+  predicate isSink = XssTrackingConfig::isSink/1;
+
+  predicate isBarrier = XssTrackingConfig::isBarrier/1;
 }
 
-from
-  StoredTaintTrackingConfiguration c, DataFlow2::PathNode source, DataFlow2::PathNode sink,
-  string explanation
+module StoredXss = TaintTracking::Global<StoredXssTrackingConfig>;
+
+from StoredXss::PathNode source, StoredXss::PathNode sink, string explanation
 where
-  c.hasFlowPath(source, sink) and
+  StoredXss::flowPath(source, sink) and
   if exists(sink.getNode().(Sink).explanation())
   then explanation = " (" + sink.getNode().(Sink).explanation() + ")"
   else explanation = ""

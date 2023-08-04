@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.commons.ognl.enhance", "ExpressionAccessor", True, "get", "", "", "Argument[-1]", "ognl-injection", "manual"]
-      - ["org.apache.commons.ognl.enhance", "ExpressionAccessor", True, "set", "", "", "Argument[-1]", "ognl-injection", "manual"]
+      - ["org.apache.commons.ognl.enhance", "ExpressionAccessor", True, "get", "", "", "Argument[this]", "ognl-injection", "manual"]
+      - ["org.apache.commons.ognl.enhance", "ExpressionAccessor", True, "set", "", "", "Argument[this]", "ognl-injection", "manual"]

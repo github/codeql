@@ -90,7 +90,7 @@ predicate missingGuard(VariableAccess va, string effect) {
   )
 }
 
-module UncontrolledArithConfiguration implements DataFlow::ConfigSig {
+module UncontrolledArithConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(RandomFunction rand, Call call | call.getTarget() = rand |
       rand.getFunctionOutput().isReturnValue() and
@@ -122,7 +122,7 @@ module UncontrolledArithConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module UncontrolledArith = TaintTracking::Make<UncontrolledArithConfiguration>;
+module UncontrolledArith = TaintTracking::Global<UncontrolledArithConfig>;
 
 /** Gets the expression that corresponds to `node`, if any. */
 Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgument()] }
@@ -131,7 +131,7 @@ from
   UncontrolledArith::PathNode source, UncontrolledArith::PathNode sink, VariableAccess va,
   string effect
 where
-  UncontrolledArith::hasFlowPath(source, sink) and
+  UncontrolledArith::flowPath(source, sink) and
   sink.getNode().asExpr() = va and
   missingGuard(va, effect)
 select sink.getNode(), source, sink,

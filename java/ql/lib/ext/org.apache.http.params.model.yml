@@ -3,10 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.http.params", "HttpParams", True, "getDoubleParameter", "(String,double)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http.params", "HttpParams", True, "getDoubleParameter", "(String,double)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http.params", "HttpParams", True, "getDoubleParameter", "(String,double)", "", "Argument[1]", "ReturnValue", "value", "manual"]
-      - ["org.apache.http.params", "HttpParams", True, "getIntParameter", "(String,int)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http.params", "HttpParams", True, "getIntParameter", "(String,int)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http.params", "HttpParams", True, "getIntParameter", "(String,int)", "", "Argument[1]", "ReturnValue", "value", "manual"]
-      - ["org.apache.http.params", "HttpParams", True, "getLongParameter", "(String,long)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http.params", "HttpParams", True, "getLongParameter", "(String,long)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http.params", "HttpParams", True, "getLongParameter", "(String,long)", "", "Argument[1]", "ReturnValue", "value", "manual"]
-      - ["org.apache.http.params", "HttpParams", True, "getParameter", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http.params", "HttpParams", True, "getParameter", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]

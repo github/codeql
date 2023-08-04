@@ -54,3 +54,14 @@ func (_ Patch) Apply(_ []byte) ([]byte, error) {
 func (_ Patch) ApplyIndent(_ []byte, _ string) ([]byte, error) {
 	return nil, nil
 }
+
+type ApplyOptions struct {
+}
+
+func (_ Patch) ApplyWithOptions(_ []byte, _ *ApplyOptions) ([]byte, error) {
+	return nil, nil
+}
+
+func (_ Patch) ApplyIndentWithOptions(_ []byte, _ string, _ *ApplyOptions) ([]byte, error) {
+	return nil, nil
+}

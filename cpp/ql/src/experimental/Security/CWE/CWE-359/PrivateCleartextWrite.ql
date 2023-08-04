@@ -16,7 +16,7 @@ import experimental.semmle.code.cpp.security.PrivateCleartextWrite::PrivateClear
 import WriteFlow::PathGraph
 
 from WriteFlow::PathNode source, WriteFlow::PathNode sink
-where WriteFlow::hasFlowPath(source, sink)
+where WriteFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This write into the external location '" + sink.getNode() +
     "' may contain unencrypted data from $@.", source, "this source of private data."

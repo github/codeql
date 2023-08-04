@@ -5,5 +5,5 @@ import cpp
 // (which, in the case of designated initializers, will not necessarily match
 // the order of the array elements).
 from ArrayAggregateLiteral aal, int childIndex, int elementIndex
-where aal.getElementExpr(elementIndex) = aal.getChild(childIndex)
+where aal.getAnElementExpr(elementIndex) = aal.getChild(childIndex)
 select aal, aal.getUnspecifiedType(), childIndex, aal.getChild(childIndex), elementIndex

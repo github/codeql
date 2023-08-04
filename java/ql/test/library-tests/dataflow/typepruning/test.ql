@@ -2,18 +2,16 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import DataFlow
 
-class Conf extends Configuration {
-  Conf() { this = "test types" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(Node n) { n.asExpr().(MethodAccess).getMethod().hasName("source") }
 
-  override predicate isSource(Node n) { n.asExpr().(MethodAccess).getMethod().hasName("source") }
-
-  override predicate isSink(Node n) {
+  predicate isSink(Node n) {
     exists(MethodAccess sink |
       sink.getAnArgument() = n.asExpr() and sink.getMethod().hasName("sink")
     )
   }
 
-  override predicate isAdditionalFlowStep(Node n1, Node n2) {
+  predicate isAdditionalFlowStep(Node n1, Node n2) {
     exists(MethodAccess ma |
       ma.getMethod().hasName("customStep") and
       ma.getAnArgument() = n1.asExpr() and
@@ -22,6 +20,8 @@ class Conf extends Configuration {
   }
 }
 
-from Node src, Node sink, Conf conf
-where conf.hasFlow(src, sink)
+module Flow = DataFlow::Global<Config>;
+
+from Node src, Node sink
+where Flow::flow(src, sink)
 select src, sink, sink.getEnclosingCallable()

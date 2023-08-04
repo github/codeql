@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DefUse
-import semmle.code.java.dataflow.DataFlow6
+import semmle.code.java.dataflow.DataFlow
 import RandomDataSource
 
 /**
@@ -29,19 +29,17 @@ private predicate isSeeded(RValue use) {
   )
 }
 
-private class PredictableSeedFlowConfiguration extends DataFlow6::Configuration {
-  PredictableSeedFlowConfiguration() { this = "Random::PredictableSeedFlowConfiguration" }
+private module PredictableSeedFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PredictableSeedExpr }
 
-  override predicate isSource(DataFlow6::Node source) {
-    source.asExpr() instanceof PredictableSeedExpr
-  }
+  predicate isSink(DataFlow::Node sink) { isSeeding(sink.asExpr(), _) }
 
-  override predicate isSink(DataFlow6::Node sink) { isSeeding(sink.asExpr(), _) }
-
-  override predicate isAdditionalFlowStep(DataFlow6::Node node1, DataFlow6::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     predictableCalcStep(node1.asExpr(), node2.asExpr())
   }
 }
+
+private module PredictableSeedFlow = DataFlow::Global<PredictableSeedFlowConfig>;
 
 private predicate predictableCalcStep(Expr e1, Expr e2) {
   e2.(BinaryExpr).hasOperands(e1, any(PredictableSeedExpr p))
@@ -81,7 +79,7 @@ private predicate predictableCalcStep(Expr e1, Expr e2) {
 private predicate safelySeeded(RValue use) {
   exists(Expr arg |
     isSeeding(arg, use) and
-    not exists(PredictableSeedFlowConfiguration conf | conf.hasFlowToExpr(arg))
+    not PredictableSeedFlow::flowToExpr(arg)
   )
   or
   exists(GetRandomData da, RValue seeduse |
@@ -118,9 +116,7 @@ private predicate isSeeding(Expr arg, RValue use) {
 
 private predicate isSeedingSource(Expr arg, RValue use, Expr source) {
   isSeeding(arg, use) and
-  exists(PredictableSeedFlowConfiguration conf |
-    conf.hasFlow(DataFlow6::exprNode(source), DataFlow6::exprNode(arg))
-  )
+  PredictableSeedFlow::flow(DataFlow::exprNode(source), DataFlow::exprNode(arg))
 }
 
 private predicate isRandomSeeding(MethodAccess m, Expr arg) {

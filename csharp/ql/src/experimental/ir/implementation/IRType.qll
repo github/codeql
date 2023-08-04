@@ -39,7 +39,7 @@ class IRType extends TIRType {
    * Gets a string that uniquely identifies this `IRType`. This string is often the same as the
    * result of `IRType.toString()`, but for some types it may be more verbose to ensure uniqueness.
    */
-  string getIdentityString() { result = toString() }
+  string getIdentityString() { result = this.toString() }
 
   /**
    * Gets the size of the type, in bytes, if known.
@@ -206,7 +206,7 @@ class IRFloatingPointType extends IRNumericType, TIRFloatingPointType {
   IRFloatingPointType() { this = TIRFloatingPointType(_, base, domain) }
 
   final override string toString() {
-    result = getDomainPrefix() + getBaseString() + byteSize.toString()
+    result = this.getDomainPrefix() + this.getBaseString() + byteSize.toString()
   }
 
   final override Language::LanguageType getCanonicalLanguageType() {

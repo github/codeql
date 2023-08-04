@@ -181,7 +181,7 @@ class Folder extends Container, @folder {
   override string getURL() { result = "folder://" + this.getAbsolutePath() }
 }
 
-/** Any file, including files that have not been extracted but are referred to as locations for errors. */
+/** A file, including files that have not been extracted but are referred to as locations for errors. */
 class ExtractedOrExternalFile extends Container, @file, Documentable, ExprParent, GoModExprParent,
   DeclParent, ScopeNode
 {

@@ -21,8 +21,13 @@ function RegisterExtractorPack(id)
         -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
         -- otherwise we do nothing.
         local match = false
+        local testMatch = false
         local dotnetRunNeedsSeparator = false;
         local dotnetRunInjectionIndex = nil;
+        -- A flag indicating whether we are in a position where we expect a sub-command such as `build`.
+        -- Once we have found one, we set this to `false` to not accidentally pick up on things that
+        -- look like sub-command names later on in the argument vector.
+        local inSubCommandPosition = true;
         local argv = compilerArguments.argv
         if OperatingSystem == 'windows' then
             -- let's hope that this split matches the escaping rules `dotnet` applies to command line arguments
@@ -34,20 +39,38 @@ function RegisterExtractorPack(id)
             -- dotnet options start with either - or / (both are legal)
             local firstCharacter = string.sub(arg, 1, 1)
             if not (firstCharacter == '-') and not (firstCharacter == '/') then
-                if (not match) then
+                if (not match) and inSubCommandPosition then
                     Log(1, 'Dotnet subcommand detected: %s', arg)
                 end
-                if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' or arg == 'test' then
-                    match = true
+                -- only respond to strings that look like sub-command names if we have not yet
+                -- encountered something that looks like a sub-command
+                if inSubCommandPosition then
+                    if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' then
+                        match = true
+                        break
+                    end
+                    if arg == 'run' then
+                        -- for `dotnet run`, we need to make sure that `-p:UseSharedCompilation=false` is
+                        -- not passed in as an argument to the program that is run
+                        match = true
+                        dotnetRunNeedsSeparator = true
+                        dotnetRunInjectionIndex = i + 1
+                    end
+                    if arg == 'test' then
+                        match = true
+                        testMatch = true
+                    end
+                end
+
+                -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
+                -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
+                if testMatch and (arg:match('%.exe$') or arg:match('%.dll'))  then
+                    match = false
                     break
                 end
-                if arg == 'run' then
-                    -- for `dotnet run`, we need to make sure that `-p:UseSharedCompilation=false` is
-                    -- not passed in as an argument to the program that is run
-                    match = true
-                    dotnetRunNeedsSeparator = true
-                    dotnetRunInjectionIndex = i + 1
-                end
+
+                -- we have found a sub-command, ignore all strings that look like sub-command names from now on
+                inSubCommandPosition = false
             end
             -- if we see a separator to `dotnet run`, inject just prior to the existing separator
             if arg == '--' then
@@ -63,7 +86,7 @@ function RegisterExtractorPack(id)
             end
         end
         if match then
-            local injections = { '-p:UseSharedCompilation=false' }
+            local injections = { '-p:UseSharedCompilation=false', '-p:EmitCompilerGeneratedFiles=true' }
             if dotnetRunNeedsSeparator then
                 table.insert(injections, '--')
             end
@@ -118,7 +141,8 @@ function RegisterExtractorPack(id)
                     compilerArguments,
                     nil, {
                     '/p:UseSharedCompilation=false',
-                    '/p:MvcBuildViews=true'
+                    '/p:MvcBuildViews=true',
+                    '/p:EmitCompilerGeneratedFiles=true',
                 })
 
             }
@@ -154,7 +178,7 @@ function RegisterExtractorPack(id)
 
             if seenCompilerCall then
                 return {
-                    order = ORDER_BEFORE,
+                    order = ORDER_AFTER,
                     invocation = {
                         path = AbsolutifyExtractorPath(id, extractor),
                         arguments = {
@@ -194,7 +218,7 @@ function RegisterExtractorPack(id)
 
             if seenCompilerCall then
                 return {
-                    order = ORDER_BEFORE,
+                    order = ORDER_AFTER,
                     invocation = {
                         path = AbsolutifyExtractorPath(id, extractor),
                         arguments = {
