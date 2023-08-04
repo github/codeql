@@ -4069,7 +4069,7 @@ module MakeImpl<DataFlowParameter Lang> {
           NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
           TRevSummaryCtx3 sc3, PartialAccessPath ap
         ) {
-          sinkNodeWithState(node, state) and
+          revSinkNode(node, state) and
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
           sc3 = TRevSummaryCtx3None() and
@@ -4287,7 +4287,7 @@ module MakeImpl<DataFlowParameter Lang> {
         }
 
         predicate isSink() {
-          sinkNodeWithState(node, state) and
+          revSinkNode(node, state) and
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
           sc3 = TRevSummaryCtx3None() and

@@ -114,7 +114,7 @@ module Configs<DataFlowParameter Lang> {
     predicate isSink(Node sink, FlowState state);
 
     /**
-     * Holds if `sink` is a relevant data flow sink.
+     * Holds if `sink` is a relevant data flow sink for any state.
      */
     default predicate isSink(Node sink) { none() }
 
