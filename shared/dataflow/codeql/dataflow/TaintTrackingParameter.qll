@@ -1,3 +1,7 @@
+/**
+ * Provides the signature for the language-specific parts of the taint-tracking analyses.
+ */
+
 import DataFlowParameter
 
 signature module TaintTrackingParameter<DataFlowParameter Lang> {

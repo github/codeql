@@ -1,5 +1,5 @@
 /**
- * Provides classes for performing local (intra-procedural) and
+ * Provides modules for performing local (intra-procedural) and
  * global (inter-procedural) taint-tracking analyses.
  */
 
@@ -8,6 +8,9 @@ private import DataFlowImpl
 private import DataFlowParameter
 import TaintTrackingParameter
 
+/**
+ * Construct the modules for taint-tracking analyses.
+ */
 module TaintFlowMake<
   DataFlowParameter DataFlowLang, TaintTrackingParameter<DataFlowLang> TaintTrackingLang>
 {
