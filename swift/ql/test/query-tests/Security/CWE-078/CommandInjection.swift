@@ -159,3 +159,40 @@ func testCommandInjectionMore(mySafeString: String) {
 	task11.variables = ["abc": userControlledString] // BAD [NOT DETECTED]
 	task11.execute(withInput: nil)
 }
+
+struct MyClass {
+	let p1 : Process
+	let p2 : Process?
+	let p3 : Process!
+
+	var myValue: [String]? {
+		get {
+			return nil
+		}
+		set {
+			p1.arguments = newValue // BAD
+			p2!.arguments = newValue // BAD
+			p3.arguments = newValue // BAD
+		}
+	}
+
+	mutating func myFunc() {
+		guard let userControlledString = try? String(contentsOf: URL(string: "http://example.com/")!) else {
+			return
+		}
+
+		let tainted1 = [userControlledString]
+
+		p1.arguments = tainted1 // BAD
+		p2!.arguments = tainted1 // BAD
+		p3.arguments = tainted1 // BAD
+
+		let tainted2 : [String]? = [userControlledString]
+
+		p1.arguments = tainted2 // BAD
+		p2!.arguments = tainted2 // BAD
+		p3.arguments = tainted2 // BAD
+
+		myValue = tainted2
+	}
+}

@@ -78,6 +78,45 @@ edges
 | CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] | CommandInjection.swift:158:45:158:78 | ...! |
 | CommandInjection.swift:158:45:158:78 | ...! | file://:0:0:0:0 | url |
 | CommandInjection.swift:158:57:158:57 | userControlledString | CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:172:3:172:3 | newValue | CommandInjection.swift:173:19:173:19 | newValue |
+| CommandInjection.swift:172:3:172:3 | newValue | CommandInjection.swift:174:20:174:20 | newValue |
+| CommandInjection.swift:172:3:172:3 | newValue | CommandInjection.swift:175:19:175:19 | newValue |
+| CommandInjection.swift:173:4:173:4 | [post] getter for .p1 [arguments] | CommandInjection.swift:173:4:173:4 | [post] getter for .p1 |
+| CommandInjection.swift:173:19:173:19 | newValue | CommandInjection.swift:173:4:173:4 | [post] getter for .p1 [arguments] |
+| CommandInjection.swift:174:4:174:6 | [post] ...! [arguments] | CommandInjection.swift:174:4:174:6 | [post] ...! |
+| CommandInjection.swift:174:20:174:20 | newValue | CommandInjection.swift:174:4:174:6 | [post] ...! [arguments] |
+| CommandInjection.swift:175:4:175:4 | [post] ...! [arguments] | CommandInjection.swift:175:4:175:4 | [post] ...! |
+| CommandInjection.swift:175:19:175:19 | newValue | CommandInjection.swift:175:4:175:4 | [post] ...! [arguments] |
+| CommandInjection.swift:180:9:180:13 | let ...? [some:0] | CommandInjection.swift:180:13:180:13 | userControlledString |
+| CommandInjection.swift:180:13:180:13 | userControlledString | CommandInjection.swift:184:19:184:19 | userControlledString |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:180:9:180:13 | let ...? [some:0] |
+| CommandInjection.swift:184:18:184:39 | [...] | CommandInjection.swift:186:18:186:18 | tainted1 |
+| CommandInjection.swift:184:18:184:39 | [...] | CommandInjection.swift:187:19:187:19 | tainted1 |
+| CommandInjection.swift:184:18:184:39 | [...] | CommandInjection.swift:188:18:188:18 | tainted1 |
+| CommandInjection.swift:184:19:184:19 | userControlledString | CommandInjection.swift:184:18:184:39 | [...] |
+| CommandInjection.swift:184:19:184:19 | userControlledString | CommandInjection.swift:190:31:190:31 | userControlledString |
+| CommandInjection.swift:186:3:186:3 | [post] getter for .p1 [arguments] | CommandInjection.swift:186:3:186:3 | [post] getter for .p1 |
+| CommandInjection.swift:186:18:186:18 | tainted1 | CommandInjection.swift:186:3:186:3 | [post] getter for .p1 [arguments] |
+| CommandInjection.swift:186:18:186:18 | tainted1 | CommandInjection.swift:187:19:187:19 | tainted1 |
+| CommandInjection.swift:186:18:186:18 | tainted1 | CommandInjection.swift:188:18:188:18 | tainted1 |
+| CommandInjection.swift:187:3:187:5 | [post] ...! [arguments] | CommandInjection.swift:187:3:187:5 | [post] ...! |
+| CommandInjection.swift:187:19:187:19 | tainted1 | CommandInjection.swift:187:3:187:5 | [post] ...! [arguments] |
+| CommandInjection.swift:187:19:187:19 | tainted1 | CommandInjection.swift:188:18:188:18 | tainted1 |
+| CommandInjection.swift:188:3:188:3 | [post] ...! [arguments] | CommandInjection.swift:188:3:188:3 | [post] ...! |
+| CommandInjection.swift:188:18:188:18 | tainted1 | CommandInjection.swift:188:3:188:3 | [post] ...! [arguments] |
+| CommandInjection.swift:190:30:190:51 | [...] | CommandInjection.swift:192:18:192:18 | tainted2 |
+| CommandInjection.swift:190:30:190:51 | [...] | CommandInjection.swift:193:19:193:19 | tainted2 |
+| CommandInjection.swift:190:30:190:51 | [...] | CommandInjection.swift:194:18:194:18 | tainted2 |
+| CommandInjection.swift:190:30:190:51 | [...] | CommandInjection.swift:196:13:196:13 | tainted2 |
+| CommandInjection.swift:190:31:190:31 | userControlledString | CommandInjection.swift:190:30:190:51 | [...] |
+| CommandInjection.swift:192:3:192:3 | [post] getter for .p1 [arguments] | CommandInjection.swift:192:3:192:3 | [post] getter for .p1 |
+| CommandInjection.swift:192:18:192:18 | tainted2 | CommandInjection.swift:192:3:192:3 | [post] getter for .p1 [arguments] |
+| CommandInjection.swift:193:3:193:5 | [post] ...! [arguments] | CommandInjection.swift:193:3:193:5 | [post] ...! |
+| CommandInjection.swift:193:19:193:19 | tainted2 | CommandInjection.swift:193:3:193:5 | [post] ...! [arguments] |
+| CommandInjection.swift:194:3:194:3 | [post] ...! [arguments] | CommandInjection.swift:194:3:194:3 | [post] ...! |
+| CommandInjection.swift:194:18:194:18 | tainted2 | CommandInjection.swift:194:3:194:3 | [post] ...! [arguments] |
+| CommandInjection.swift:196:13:196:13 | tainted2 | CommandInjection.swift:172:3:172:3 | newValue |
 | file://:0:0:0:0 | url | file://:0:0:0:0 | url |
 | file://:0:0:0:0 | url | file://:0:0:0:0 | url |
 nodes
@@ -159,6 +198,43 @@ nodes
 | CommandInjection.swift:158:45:158:78 | ...! | semmle.label | ...! |
 | CommandInjection.swift:158:45:158:78 | ...! | semmle.label | ...! |
 | CommandInjection.swift:158:57:158:57 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:172:3:172:3 | newValue | semmle.label | newValue |
+| CommandInjection.swift:173:4:173:4 | [post] getter for .p1 | semmle.label | [post] getter for .p1 |
+| CommandInjection.swift:173:4:173:4 | [post] getter for .p1 [arguments] | semmle.label | [post] getter for .p1 [arguments] |
+| CommandInjection.swift:173:19:173:19 | newValue | semmle.label | newValue |
+| CommandInjection.swift:174:4:174:6 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:174:4:174:6 | [post] ...! [arguments] | semmle.label | [post] ...! [arguments] |
+| CommandInjection.swift:174:20:174:20 | newValue | semmle.label | newValue |
+| CommandInjection.swift:175:4:175:4 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:175:4:175:4 | [post] ...! [arguments] | semmle.label | [post] ...! [arguments] |
+| CommandInjection.swift:175:19:175:19 | newValue | semmle.label | newValue |
+| CommandInjection.swift:180:9:180:13 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| CommandInjection.swift:180:13:180:13 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) [some:0] | semmle.label | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:184:18:184:39 | [...] | semmle.label | [...] |
+| CommandInjection.swift:184:19:184:19 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:186:3:186:3 | [post] getter for .p1 | semmle.label | [post] getter for .p1 |
+| CommandInjection.swift:186:3:186:3 | [post] getter for .p1 [arguments] | semmle.label | [post] getter for .p1 [arguments] |
+| CommandInjection.swift:186:18:186:18 | tainted1 | semmle.label | tainted1 |
+| CommandInjection.swift:187:3:187:5 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:187:3:187:5 | [post] ...! [arguments] | semmle.label | [post] ...! [arguments] |
+| CommandInjection.swift:187:19:187:19 | tainted1 | semmle.label | tainted1 |
+| CommandInjection.swift:188:3:188:3 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:188:3:188:3 | [post] ...! [arguments] | semmle.label | [post] ...! [arguments] |
+| CommandInjection.swift:188:18:188:18 | tainted1 | semmle.label | tainted1 |
+| CommandInjection.swift:190:30:190:51 | [...] | semmle.label | [...] |
+| CommandInjection.swift:190:31:190:31 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:192:3:192:3 | [post] getter for .p1 | semmle.label | [post] getter for .p1 |
+| CommandInjection.swift:192:3:192:3 | [post] getter for .p1 [arguments] | semmle.label | [post] getter for .p1 [arguments] |
+| CommandInjection.swift:192:18:192:18 | tainted2 | semmle.label | tainted2 |
+| CommandInjection.swift:193:3:193:5 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:193:3:193:5 | [post] ...! [arguments] | semmle.label | [post] ...! [arguments] |
+| CommandInjection.swift:193:19:193:19 | tainted2 | semmle.label | tainted2 |
+| CommandInjection.swift:194:3:194:3 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:194:3:194:3 | [post] ...! [arguments] | semmle.label | [post] ...! [arguments] |
+| CommandInjection.swift:194:18:194:18 | tainted2 | semmle.label | tainted2 |
+| CommandInjection.swift:196:13:196:13 | tainted2 | semmle.label | tainted2 |
 | file://:0:0:0:0 | url | semmle.label | url |
 | file://:0:0:0:0 | url | semmle.label | url |
 | file://:0:0:0:0 | url | semmle.label | url |
@@ -183,5 +259,14 @@ subpaths
 | CommandInjection.swift:155:40:155:73 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:155:40:155:73 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:156:32:156:53 | [...] | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:156:32:156:53 | [...] | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | CommandInjection.swift:158:45:158:78 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:158:45:158:78 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:173:4:173:4 | [post] getter for .p1 | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:173:4:173:4 | [post] getter for .p1 | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:174:4:174:6 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:174:4:174:6 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:175:4:175:4 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:175:4:175:4 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:186:3:186:3 | [post] getter for .p1 | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:186:3:186:3 | [post] getter for .p1 | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:187:3:187:5 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:187:3:187:5 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:188:3:188:3 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:188:3:188:3 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:192:3:192:3 | [post] getter for .p1 | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:192:3:192:3 | [post] getter for .p1 | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:193:3:193:5 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:193:3:193:5 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:194:3:194:3 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:194:3:194:3 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
 | file://:0:0:0:0 | url | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | file://:0:0:0:0 | url | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
 | file://:0:0:0:0 | url | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | file://:0:0:0:0 | url | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
