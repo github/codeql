@@ -717,7 +717,7 @@ func testWriteOptional() {
     mo2!.v2 = source()
     mo2!.v3 = source()
 
-    sink(arg: v1!) // $ MISSING:flow=710
+    sink(arg: v1!) // $ flow=710
     sink(arg: v2!) // $ flow=711
     sink(arg: v3) // $ flow=712
     sink(arg: mo1.v1!) // $ MISSING:flow=713

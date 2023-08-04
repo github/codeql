@@ -348,6 +348,8 @@ edges
 | test.swift:699:9:699:9 | value [some:0] | file://:0:0:0:0 | value [some:0] |
 | test.swift:700:9:700:9 | self [v3] | file://:0:0:0:0 | self [v3] |
 | test.swift:700:9:700:9 | value | file://:0:0:0:0 | value |
+| test.swift:710:5:710:5 | v1 [some:0] | test.swift:720:15:720:15 | v1 [some:0] |
+| test.swift:710:11:710:18 | call to source() | test.swift:710:5:710:5 | v1 [some:0] |
 | test.swift:711:10:711:17 | call to source() | test.swift:711:10:711:17 | call to source() [some:0] |
 | test.swift:711:10:711:17 | call to source() | test.swift:721:15:721:17 | ...! |
 | test.swift:711:10:711:17 | call to source() [some:0] | test.swift:721:15:721:15 | v2 [some:0] |
@@ -364,6 +366,7 @@ edges
 | test.swift:715:5:715:5 | mo1 [v2] | test.swift:724:15:724:15 | mo1 [v2] |
 | test.swift:715:14:715:21 | call to source() | test.swift:700:9:700:9 | value |
 | test.swift:715:14:715:21 | call to source() | test.swift:715:5:715:5 | [post] mo1 [v3] |
+| test.swift:720:15:720:15 | v1 [some:0] | test.swift:720:15:720:17 | ...! |
 | test.swift:721:15:721:15 | v2 [some:0] | test.swift:721:15:721:17 | ...! |
 | test.swift:724:15:724:15 | mo1 [v2, some:0] | test.swift:699:9:699:9 | self [v2, some:0] |
 | test.swift:724:15:724:15 | mo1 [v2, some:0] | test.swift:724:15:724:19 | .v2 [some:0] |
@@ -761,6 +764,8 @@ nodes
 | test.swift:699:9:699:9 | value [some:0] | semmle.label | value [some:0] |
 | test.swift:700:9:700:9 | self [v3] | semmle.label | self [v3] |
 | test.swift:700:9:700:9 | value | semmle.label | value |
+| test.swift:710:5:710:5 | v1 [some:0] | semmle.label | v1 [some:0] |
+| test.swift:710:11:710:18 | call to source() | semmle.label | call to source() |
 | test.swift:711:10:711:17 | call to source() | semmle.label | call to source() |
 | test.swift:711:10:711:17 | call to source() [some:0] | semmle.label | call to source() [some:0] |
 | test.swift:712:10:712:17 | call to source() | semmle.label | call to source() |
@@ -772,6 +777,8 @@ nodes
 | test.swift:715:5:715:5 | mo1 [v2, some:0] | semmle.label | mo1 [v2, some:0] |
 | test.swift:715:5:715:5 | mo1 [v2] | semmle.label | mo1 [v2] |
 | test.swift:715:14:715:21 | call to source() | semmle.label | call to source() |
+| test.swift:720:15:720:15 | v1 [some:0] | semmle.label | v1 [some:0] |
+| test.swift:720:15:720:17 | ...! | semmle.label | ...! |
 | test.swift:721:15:721:15 | v2 [some:0] | semmle.label | v2 [some:0] |
 | test.swift:721:15:721:17 | ...! | semmle.label | ...! |
 | test.swift:722:15:722:15 | v3 | semmle.label | v3 |
@@ -917,6 +924,7 @@ subpaths
 | test.swift:678:15:678:26 | ...[...] | test.swift:676:20:676:27 | call to source() | test.swift:678:15:678:26 | ...[...] | result |
 | test.swift:682:15:682:27 | ...[...] | test.swift:681:21:681:28 | call to source() | test.swift:682:15:682:27 | ...[...] | result |
 | test.swift:694:15:694:21 | ...[...] | test.swift:693:17:693:24 | call to source() | test.swift:694:15:694:21 | ...[...] | result |
+| test.swift:720:15:720:17 | ...! | test.swift:710:11:710:18 | call to source() | test.swift:720:15:720:17 | ...! | result |
 | test.swift:721:15:721:17 | ...! | test.swift:711:10:711:17 | call to source() | test.swift:721:15:721:17 | ...! | result |
 | test.swift:722:15:722:15 | v3 | test.swift:712:10:712:17 | call to source() | test.swift:722:15:722:15 | v3 | result |
 | test.swift:724:15:724:21 | ...! | test.swift:714:14:714:21 | call to source() | test.swift:724:15:724:21 | ...! | result |
