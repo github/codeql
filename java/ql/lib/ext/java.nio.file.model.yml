@@ -21,6 +21,7 @@ extensions:
       - ["java.nio.file", "Files", False, "lines", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "lines", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "move", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["java.nio.file", "Files", False, "move", "(Path,Path,CopyOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "newBufferedReader", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "newBufferedReader", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", False, "newBufferedWriter", "", "", "Argument[0]", "path-injection", "manual"]
@@ -36,8 +37,7 @@ extensions:
       - ["java.nio.file", "Files", False, "write", "", "", "Argument[1]", "file-content-store", "manual"]
       - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[0]", "path-injection", "manual"]
       - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[1]", "file-content-store", "manual"]
-      - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[1]", "path-injection", "ai-manual"]
-      - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
+
       - ["java.nio.file", "Files", True, "delete", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", True, "newOutputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
