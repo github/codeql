@@ -33,6 +33,26 @@ extension String {
     }
 }
 
+class NSUserScriptTask : NSObject {
+	typealias CompletionHandler = @Sendable (Error?) -> Void
+
+	init(url: URL) throws {}
+	func execute(completionHandler handler: NSUserScriptTask.CompletionHandler? = nil) { }
+}
+
+class NSUserUnixTask : NSUserScriptTask {
+	func execute(withArguments arguments: [String]?, completionHandler handler: NSUserScriptTask.CompletionHandler? = nil) { }
+}
+
+protocol NSSecureCoding {
+}
+
+class NSUserAutomatorTask : NSUserScriptTask {
+	func execute(withInput input: NSSecureCoding?, completionHandler handler: NSUserScriptTask.CompletionHandler? = nil) { }
+
+	var variables: [String: Any]? { get { return nil } set { } }
+}
+
 // --- tests ---
 
 func validateCommand(_ command: String) -> String? {
@@ -125,4 +145,17 @@ func testCommandInjectionMore(mySafeString: String) {
 	_ = try? Process.run(URL(string: mySafeString)!, arguments: ["abc", mySafeString]) // GOOD
 	_ = try? Process.run(URL(string: userControlledString)!, arguments: ["abc", mySafeString]) // BAD
 	_ = try? Process.run(URL(string: mySafeString)!, arguments: ["abc", userControlledString]) // BAD
+
+	let task8 = try! NSUserScriptTask(url: URL(string: mySafeString)!) // GOOD
+	task8.execute()
+
+	let task9 = try! NSUserScriptTask(url: URL(string: userControlledString)!) // BAD [NOT DETECTED]
+	task9.execute()
+
+	let task10 = try! NSUserUnixTask(url: URL(string: userControlledString)!) // BAD [NOT DETECTED]
+	task10.execute(withArguments: [userControlledString]) // BAD [NOT DETECTED]
+
+	let task11 = try! NSUserAutomatorTask(url: URL(string: userControlledString)!) // BAD [NOT DETECTED]
+	task11.variables = ["abc": userControlledString] // BAD [NOT DETECTED]
+	task11.execute(withInput: nil)
 }
