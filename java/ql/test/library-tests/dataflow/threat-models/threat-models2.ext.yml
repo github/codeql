@@ -1,5 +1,4 @@
 extensions:
-extensions:
 
   - addsTo:
       pack: codeql/java-all

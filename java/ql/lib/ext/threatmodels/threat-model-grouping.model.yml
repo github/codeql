@@ -9,10 +9,8 @@ extensions:
       - ["uri-path", "default"]
 
       # Android threat models
-      - ["android-widget", "android"]
       - ["android-external-storage-dir", "android"]
       - ["contentprovider", "android"]
-      - ["android-external-storage-dir", "android"]
 
       # Remote threat models
       - ["request", "remote"]
