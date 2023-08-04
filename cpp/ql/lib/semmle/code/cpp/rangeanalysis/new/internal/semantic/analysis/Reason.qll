@@ -65,6 +65,8 @@ module Make<ParamSig Param> {
   class SemTypeReason extends SemReason, TSemTypeReason {
     TypeReasonImpl impl;
 
+    SemTypeReason() { this = TSemTypeReason(impl) }
+
     override string toString() { result = "TypeReason" }
 
     bindingset[this, reason]
