@@ -112,7 +112,7 @@ private string getContentSpecific(ContentSet cs) {
   or
   exists(Content::EnumContent c |
     cs.isSingleton(c) and
-    result = "EnumElement[" +  c.getSignature() + "]"
+    result = "EnumElement[" + c.getSignature() + "]"
   )
   or
   exists(Content::ArrayContent c |
@@ -139,7 +139,8 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(ContentSet c |
     sc = TWithoutContentSummaryComponent(c) and
     result = "WithoutContent" + c.toString()
-  ) or
+  )
+  or
   exists(ContentSet c |
     sc = TWithContentSummaryComponent(c) and
     result = "WithContent" + c.toString()
