@@ -48,7 +48,8 @@
  *    - "Element": Selects the collection elements of the selected element.
  *    - "WithoutElement": Selects the selected element but without
  *       its collection elements.
- *    - "WithElement": Selects the collection elements of the selected element.
+ *    - "WithElement": Selects the collection elements of the selected element, but
+ *       points to the selected element.
  *
  *    An `output` can be can be a dot separated path consisting of either "",
  *    "Argument[n]", "Argument[n1..n2]", "Parameter", "Parameter[n]",
