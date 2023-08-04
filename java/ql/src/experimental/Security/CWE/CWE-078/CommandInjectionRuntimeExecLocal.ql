@@ -15,6 +15,8 @@
 import CommandInjectionRuntimeExec
 import ExecUserFlow::PathGraph
 
+class LocalSource extends Source instanceof LocalUserInput { }
+
 from
   ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd,
   DataFlow::Node sinkCmd

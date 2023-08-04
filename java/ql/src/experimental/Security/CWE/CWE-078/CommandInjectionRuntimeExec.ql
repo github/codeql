@@ -14,6 +14,8 @@
 import CommandInjectionRuntimeExec
 import ExecUserFlow::PathGraph
 
+class RemoteSource extends Source instanceof RemoteFlowSource { }
+
 from
   ExecUserFlow::PathNode source, ExecUserFlow::PathNode sink, DataFlow::Node sourceCmd,
   DataFlow::Node sinkCmd

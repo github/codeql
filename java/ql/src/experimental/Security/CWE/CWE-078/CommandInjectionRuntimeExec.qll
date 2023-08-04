@@ -30,10 +30,6 @@ module ExecCmdFlow = TaintTracking::Global<ExecCmdFlowConfig>;
 
 abstract class Source extends DataFlow::Node { }
 
-class RemoteSource extends Source instanceof RemoteFlowSource { }
-
-class LocalSource extends Source instanceof LocalUserInput { }
-
 module ExecUserFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
