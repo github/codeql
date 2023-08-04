@@ -3,20 +3,21 @@
  * global (inter-procedural) taint-tracking analyses.
  */
 
-import DataFlow
-import DataFlowImpl
-import DataFlowParameter
+private import DataFlow
+private import DataFlowImpl
+private import DataFlowParameter
 import TaintTrackingParameter
 
 module TaintFlowMake<
   DataFlowParameter DataFlowLang, TaintTrackingParameter<DataFlowLang> TaintTrackingLang>
 {
-  private import DataFlowLang
   private import TaintTrackingLang
-  private import DataFlowMake<DataFlowLang>
-  private import MakeImpl<DataFlowLang>
+  private import DataFlowMake<DataFlowLang> as DataFlow
+  private import MakeImpl<DataFlowLang> as DataFlowInternal
 
-  private module AddTaintDefaults<FullStateConfigSig Config> implements FullStateConfigSig {
+  private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
+    DataFlowInternal::FullStateConfigSig
+  {
     import Config
 
     predicate isBarrier(DataFlowLang::Node node) {
@@ -44,41 +45,43 @@ module TaintFlowMake<
   /**
    * Constructs a global taint tracking computation.
    */
-  module Global<ConfigSig Config> implements GlobalFlowSig {
-    private module Config0 implements FullStateConfigSig {
-      import DefaultState<Config>
+  module Global<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::DefaultState<Config>
       import Config
     }
 
-    private module C implements FullStateConfigSig {
+    private module C implements DataFlowInternal::FullStateConfigSig {
       import AddTaintDefaults<Config0>
     }
 
-    import Impl<C>
+    import DataFlowInternal::Impl<C>
   }
 
   /** DEPRECATED: Use `Global` instead. */
-  deprecated module Make<ConfigSig Config> implements GlobalFlowSig {
+  deprecated module Make<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
     import Global<Config>
   }
 
   /**
    * Constructs a global taint tracking computation using flow state.
    */
-  module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
-    private module Config0 implements FullStateConfigSig {
+  module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
       import Config
     }
 
-    private module C implements FullStateConfigSig {
+    private module C implements DataFlowInternal::FullStateConfigSig {
       import AddTaintDefaults<Config0>
     }
 
-    import Impl<C>
+    import DataFlowInternal::Impl<C>
   }
 
   /** DEPRECATED: Use `GlobalWithState` instead. */
-  deprecated module MakeWithState<StateConfigSig Config> implements GlobalFlowSig {
+  deprecated module MakeWithState<DataFlow::StateConfigSig Config> implements
+    DataFlow::GlobalFlowSig
+  {
     import GlobalWithState<Config>
   }
 }
