@@ -54,6 +54,14 @@ module Make<ParamSig Param> {
 
     bindingset[this, reason]
     override SemReason combineWith(SemReason reason) {
+      // Since we end up reporting a `SemReason` for the inferred bound we often pick somewhat
+      // arbitrarily between two `SemReason`s during the analysis. This isn't an issue for most reasons
+      // since they're mainly used for constructing alert messages. However, the `SemTypeReason` is
+      // supposed to be used in query logic to filter out bounds inferred by type-based analysis if
+      // the query author chooses to do so. So we need to ensure that if _any_ of the bounds that
+      // contribute to the final bound depends on type information then the `SemReason` we report must
+      // be a `SemTypeReason`. So when we need to combine this `SemCondReason` with a `SemTypeReason`
+      // the result should always be a `SemTypeReason`.
       if reason instanceof SemTypeReason then result instanceof SemTypeReason else result = this
     }
   }
