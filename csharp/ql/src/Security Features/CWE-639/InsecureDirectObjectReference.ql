@@ -2,12 +2,13 @@
  * @name Insecure Direct Object Reference
  * @description Using user input to control which object is modified without
  *              proper authorization checks allows an attacker to modify arbitrary objects.
- * @kind path-problem
+ * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision medium
- * @id cs/insecure-direct0object-reference
+ * @id cs/insecure-direct-object-reference
  * @tags security
- *       external/cwe/639
+ *       external/cwe-639
  */
 
 import csharp
