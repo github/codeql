@@ -120,7 +120,7 @@ private string getContentSpecific(ContentSet cs) {
     result = "ArrayElement"
   )
   or
-  exists(Content::SetContent c |
+  exists(Content::CollectionContent c |
     cs.isSingleton(c) and
     result = "SetElement"
   )

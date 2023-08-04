@@ -226,7 +226,7 @@ module Content {
   }
 
   /** An element of a set */
-  class SetContent extends Content, TSetContent {
+  class CollectionContent extends Content, TCollectionContent {
     override string toString() { result = "Set element" }
   }
 }

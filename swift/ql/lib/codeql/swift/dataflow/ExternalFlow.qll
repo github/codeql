@@ -494,7 +494,7 @@ predicate parseContent(AccessPathToken component, Content content) {
   content instanceof Content::ArrayContent
   or
   component.getName() = "SetElement" and
-  content instanceof Content::SetContent
+  content instanceof Content::CollectionContent
 }
 
 cached
