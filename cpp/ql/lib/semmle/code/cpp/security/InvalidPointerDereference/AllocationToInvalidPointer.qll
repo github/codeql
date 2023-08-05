@@ -96,7 +96,7 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
  * but because there's a strict comparison that compares `n` against the size of the allocation this
  * snippet is fine.
  */
-module SizeBarrier {
+private module SizeBarrier {
   private module SizeBarrierConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
       // The sources is the same as in the sources for the second
