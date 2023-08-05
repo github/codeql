@@ -659,7 +659,7 @@ void test32(unsigned size) {
   xs++;
   if (xs >= end)
     return;
-  xs[0] = 0; // $ deref=L656->L662+1 deref=L657->L662+1 GOOD [FALSE POSITIVE]
+  xs[0] = 0; // GOOD
 }
 
 void test33(unsigned size, unsigned src_pos)
