@@ -104,6 +104,9 @@ private module SizeBarrier {
       hasSize(_, source, _)
     }
 
+    /**
+     * Holds if `left < right + k` holds if `g` evaluates to `testIsTrue`.
+     */
     additional predicate isSink(
       DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int k, boolean testIsTrue
     ) {
@@ -124,11 +127,11 @@ private module SizeBarrier {
     )
   }
 
-  private predicate operandGuardChecks(
-    IRGuardCondition g, Operand left, Operand right, int state, boolean edge
-  ) {
+  /**
+   * Holds if `small < large + state` holds if `g` evaluates to `edge`.
+   */
+  private predicate operandGuardChecks(IRGuardCondition g, Operand left, int state, boolean edge) {
     exists(DataFlow::Node nLeft, DataFlow::Node nRight, int k |
-      nRight.asOperand() = right and
       nLeft.asOperand() = left and
       SizeBarrierConfig::isSink(nLeft, nRight, g, k, edge) and
       state = getAFlowStateForNode(nRight) and
@@ -137,32 +140,71 @@ private module SizeBarrier {
   }
 
   /**
-   * Gets an instruction that is guarded by a guard condition which ensures that
-   * the value of the instruction is upper-bounded by size of some allocation.
+   * Gets an instruction `instr` that is guarded by a check such as `instr <= left + delta` where
+   * `left <= _ + k` and `left` is the "small side" of of a relational comparison that checks
+   * whether `left <= size` where `size` is the size of an allocation.
    */
-  Instruction getABarrierInstruction(int state) {
+  Instruction getABarrierInstruction0(int delta, int k) {
     exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge |
       use = value.getAUse() and
-      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](use), _,
-        pragma[only_bind_into](state), pragma[only_bind_into](edge)) and
-      result = value.getAnInstruction() and
+      // We know:
+      // 1. result <= value + delta (by `bounded`)
+      // 2. value < size + k + 1 (by `operandGuardChecks`).
+      // Condition 2 implies: value <= size + k, so if we know
+      // that `state >= k + delta` then we have:
+      // result <= value + delta (by 1.)
+      //        <= size + k + delta (by 2.)
+      //        <= size + state (by the assumption).
+      // Callers of `getABarrierInstruction0` should ensure that `state >= k + delta`
+      // is satisfied.
+      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](use),
+        pragma[only_bind_into](k + 1), pragma[only_bind_into](edge)) and
+      bounded(result, value.getAnInstruction(), delta) and
       g.controls(result.getBlock(), edge)
     )
   }
+
+  /**
+   * Gets an instruction that is guarded by a guard condition which ensures that
+   * the value of the instruction is upper-bounded by size of some allocation.
+   */
+  bindingset[state]
+  pragma[inline_late]
+  Instruction getABarrierInstruction(int state) {
+    exists(int delta, int k |
+      // See the implementation comments in `getABarrierInstruction0` for why
+      // this conjunct is necessary.
+      state >= k + delta and
+      result = getABarrierInstruction0(delta, k)
+    )
+  }
+
+  private module ValidForStateConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { hasSize(_, source, _) }
+
+    predicate isSink(DataFlow::Node sink) { isSink(sink, _, _) }
+
+    additional predicate isSink(DataFlow::Node sink, int delta, int k) {
+      sink.asOperand() = SizeBarrier::getABarrierInstruction0(delta, k).getAUse()
+    }
+  }
+
+  private module ValidForStateFlow = DataFlow::Global<ValidForStateConfig>;
 
   /**
    * Gets a `DataFlow::Node` that is guarded by a guard condition which ensures that
    * the value of the node is upper-bounded by size of some allocation.
    */
   DataFlow::Node getABarrierNode(int state) {
-    result.asOperand() = getABarrierInstruction(state).getAUse()
+    exists(DataFlow::Node source, int delta, int k |
+      ValidForStateFlow::flow(source, result) and
+      hasSize(_, source, state) and
+      ValidForStateConfig::isSink(result, delta, k) and
+      // See the implementation comments in `getABarrierInstruction0` for why
+      // this conjunct is necessary.
+      state >= k + delta
+    )
   }
-
-  /**
-   * Gets the block of a node that is guarded (see `getABarrierInstruction` or
-   * `getABarrierNode` for the definition of what it means to be guarded).
-   */
-  IRBlock getABarrierBlock(int state) { result.getAnInstruction() = getABarrierInstruction(state) }
 }
 
 private module InterestingPointerAddInstruction {
