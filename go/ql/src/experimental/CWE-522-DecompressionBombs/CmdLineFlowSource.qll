@@ -116,6 +116,29 @@ class CobraCmdLineSource extends CmdLineFlowSource {
   }
 }
 
+class CmdLineSourceFlags extends CmdLineFlowSource {
+  CmdLineSourceFlags() {
+    // bind function arguments to variable and set the variable as cli source flow node
+    exists(DataFlow::CallNode call, DataFlow::DeclaredVariable v |
+      (
+        v.getARead().asExpr() = call.getArgument(0).asExpr() or
+        v.getARead().asExpr() = call.getArgument(0).asExpr().getAChild().(ReferenceExpr)
+      ) and
+      call.getTarget().hasQualifiedName(["flag", "flag.FlagSet"], ["StringVar", "TextVar"]) and
+      (
+        this = v.getARead()
+        or
+        this.asExpr() = v.getAReference()
+      )
+    )
+    or
+    exists(DataFlow::CallNode call |
+      call.getTarget().hasQualifiedName(["flag", "flag.FlagSet"], "String") and
+      this = call
+    )
+  }
+}
+
 class CobraCmdLineSourceFlags extends CmdLineFlowSource {
   CobraCmdLineSourceFlags() {
     // bind function arguments to variable and set the variable as cli source flow node
