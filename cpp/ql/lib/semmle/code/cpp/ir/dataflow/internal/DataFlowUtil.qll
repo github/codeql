@@ -196,6 +196,44 @@ class Node extends TIRDataFlowNode {
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
   /**
+   * Gets a constant that is used to compute this node's constant value.
+   *
+   * For example, `node.asFoldedConstant() = "1"` holds for the `node` that
+   * reprents the value `1 | MY_VALUE` in
+   * ```cpp
+   * enum Masks { MY_VALUE = 0x10 };
+   * ...
+   * int value = 1 | MY_VALUE;
+   * ```
+   *
+   * This predicate is useful when doing taint-tracking from all literal
+   * expressions with a specific value. If one were to use
+   * ```ql
+   * node.asExpr().getValue() = "1"
+   * ````
+   * in the above example to mark `1` as the source in a taint-tracking
+   * configuration, no node would be selected as a source because the value
+   * `1` has been folded into a constant that represents the value
+   * `1 | MY_VALUE`. However, using `node.asFoldedConstant() = "1"` would pick
+   * select the node for `1 | MY_VALUE` because a constant with the value `1`
+   * was part of the expression that was used to compute the value for the
+   * constant `1 | MY_VALUE`.
+   *
+   * Note: This predicate should not be used for _dataflow_ configurations
+   * since the the value returned by this predicate will not represent the
+   * runtime value of the underlying expression (since the expression has been
+   * constant folded). For such cases `node.asExpr().getValue()` should be used
+   * instead.
+   */
+  string asFoldedConstant() {
+    this.asInstruction()
+        .(IntegerConstantInstruction)
+        .getUnconvertedResultExpression()
+        .getAChild*()
+        .getValue() = result
+  }
+
+  /**
    * Gets the non-conversion expression that's indirectly tracked by this node
    * under `index` number of indirections.
    */
