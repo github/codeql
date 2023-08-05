@@ -305,7 +305,7 @@ void test21() {
 
   for (int i = 0; i < n; i += 2) {
     xs[i] = test21_get(i); // GOOD
-    xs[i+1] = test21_get(i+1); // $ alloc=L304 alloc=L304-1 deref=L308 // GOOD [FALSE POSITIVE]
+    xs[i+1] = test21_get(i+1); // GOOD
   }
 }
 
@@ -672,7 +672,7 @@ void test33(unsigned size, unsigned src_pos)
   while (dst_pos < size - 1) {
     dst_pos++;
     if (true)
-      xs[dst_pos++] = 0; // $ alloc=L667+1 deref=L675 // GOOD [FALSE POSITIVE]
+      xs[dst_pos++] = 0; // GOOD
   }
 }
 
