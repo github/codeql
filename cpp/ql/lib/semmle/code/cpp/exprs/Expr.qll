@@ -152,7 +152,19 @@ class Expr extends StmtParent, @expr {
     else result = this.getValue()
   }
 
-  /** Holds if this expression has a value that can be determined at compile time. */
+  /**
+   * Holds if this expression has a value that can be determined at compile time.
+   *
+   * An expression has a value that can be determined at compile time when:
+   * - it is a compile-time constant, e.g., a literal value or the result of a constexpr
+   *   compile-time constant;
+   * - it is an address of a (member) function, an address of a constexpr variable
+   *   initialized to a constant address, or an address of an lvalue, or any of the
+   *   previous with a constant value added to or subtracted from the address;
+   * - it is a reference to a (member) function, a reference to a constexpr variable
+   *   initialized to a constant address, or a reference to an lvalue;
+   * - it is a non-template parameter of a uninstantiated template.
+   */
   cached
   predicate isConstant() {
     valuebind(_, underlyingElement(this))

@@ -1,3 +1,9 @@
+## 0.1.1
+
+### Deprecated APIs
+
+* The `InlineExpectationsTest` class has been deprecated. Use `TestSig` and `MakeTest` instead.
+
 ## 0.1.0
 
 No user-facing changes.

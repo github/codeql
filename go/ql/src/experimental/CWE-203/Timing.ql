@@ -24,16 +24,38 @@ private predicate isBadResult(DataFlow::Node e) {
  */
 abstract class Sink extends DataFlow::Node { }
 
-/** A taint-tracking sink which models comparisons of sensitive variables. */
-private class SensitiveCompareSink extends Sink {
-  ComparisonExpr c;
+/** A taint-tracking sink which models comparisons of sensitive expressions using `strings.Compare` function. */
+private class SensitiveStringCompareSink extends Sink {
+  SensitiveStringCompareSink() {
+    // We select a comparison where a secret or password is tested.
+    exists(DataFlow::CallNode c, Expr op1, Expr nonSensitiveOperand |
+      c.getTarget().hasQualifiedName("strings", "Compare") and
+      c.getArgument(_).asExpr() = op1 and
+      op1.(SensitiveVariableAccess).getClassification() =
+        [SensitiveExpr::secret(), SensitiveExpr::password()] and
+      c.getArgument(_).asExpr() = nonSensitiveOperand and
+      not op1 = nonSensitiveOperand and
+      not (
+        // Comparisons with `nil` should be excluded.
+        nonSensitiveOperand = Builtin::nil().getAReference()
+        or
+        // Comparisons with empty string should also be excluded.
+        nonSensitiveOperand.getStringValue().length() = 0
+      )
+    |
+      // It is important to note that the name of both the operands need not be
+      // `sensitive`. Even if one of the operands appears to be sensitive, we consider it a potential sink.
+      nonSensitiveOperand = this.asExpr()
+    )
+  }
+}
 
+/** A taint-tracking sink which models comparisons of sensitive expressions. */
+private class SensitiveCompareSink extends Sink {
   SensitiveCompareSink() {
     // We select a comparison where a secret or password is tested.
-    exists(SensitiveVariableAccess op1, Expr op2 |
+    exists(SensitiveExpr op1, Expr op2, EqualityTestExpr c |
       op1.getClassification() = [SensitiveExpr::secret(), SensitiveExpr::password()] and
-      // exclude grant to avoid FP from OAuth
-      not op1.getClassification().matches("%grant%") and
       op1 = c.getAnOperand() and
       op2 = c.getAnOperand() and
       not op1 = op2 and
@@ -45,13 +67,34 @@ private class SensitiveCompareSink extends Sink {
         op2.getStringValue().length() = 0
       )
     |
-      // It is important to note that the name of both the operands need not be
-      // `sensitive`. Even if one of the operands appears to be sensitive, we consider it a potential sink.
-      c.getAnOperand() = this.asExpr()
+      op2 = this.asExpr()
     )
   }
+}
 
-  DataFlow::Node getOtherOperand() { result.asExpr() = c.getAnOperand() and not result = this }
+/** A taint-tracking sink which models comparisons of sensitive strings. */
+private class SensitiveStringSink extends Sink {
+  SensitiveStringSink() {
+    // We select a comparison where a secret or password is tested.
+    exists(StringLit op1, Expr op2, EqualityTestExpr c |
+      op1.getStringValue()
+          .regexpMatch(HeuristicNames::maybeSensitive([
+                SensitiveExpr::secret(), SensitiveExpr::password()
+              ])) and
+      op1 = c.getAnOperand() and
+      op2 = c.getAnOperand() and
+      not op1 = op2 and
+      not (
+        // Comparisons with `nil` should be excluded.
+        op2 = Builtin::nil().getAReference()
+        or
+        // Comparisons with empty string should also be excluded.
+        op2.getStringValue().length() = 0
+      )
+    |
+      op2 = this.asExpr()
+    )
+  }
 }
 
 class SecretTracking extends TaintTracking::Configuration {
@@ -65,8 +108,6 @@ class SecretTracking extends TaintTracking::Configuration {
 }
 
 from SecretTracking cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where
-  cfg.hasFlowPath(source, sink) and
-  not cfg.hasFlowTo(sink.getNode().(SensitiveCompareSink).getOtherOperand())
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ may be vulnerable to timing attacks.", source.getNode(),
   "Hardcoded String"

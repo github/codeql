@@ -8,13 +8,14 @@ private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
+private import codeql.swift.frameworks.StandardLibrary.Array
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c, pos)
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.(ParameterNodeImpl).isParameterOf(c, pos)
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -110,7 +111,8 @@ private module Cached {
       hasExprNode(n,
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
-          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr()
+          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr(),
+          any(SubscriptExpr se).getBase()
         ])
     }
 
@@ -166,10 +168,18 @@ private module Cached {
     // flow through `&` (inout argument)
     nodeFrom.asExpr() = nodeTo.asExpr().(InOutExpr).getSubExpr()
     or
+    // reverse flow through `&` (inout argument)
+    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr().(InOutExpr).getSubExpr() =
+      nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
     // flow through `try!` and similar constructs
     nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
     or
     // flow through `!`
+    // note: there's a case in `readStep` that handles when the source is the
+    //   `OptionalSomeContentSet` within the RHS. This case is for when the
+    //   `Optional` itself is tainted (which it usually shouldn't be, but
+    //   retaining this case increases robustness of flow).
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
     // flow through `?` and `?.`
@@ -245,7 +255,8 @@ private module Cached {
   newtype TContent =
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
-    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) }
+    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
+    TArrayContent()
 }
 
 /**
@@ -691,6 +702,22 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     init.isFailable()
   )
   or
+  // creation of an array `[v1,v2]`
+  exists(ArrayExpr arr |
+    node1.asExpr() = arr.getAnElement() and
+    node2.asExpr() = arr and
+    c.isSingleton(any(Content::ArrayContent ac))
+  )
+  or
+  // array assignment `a[n] = x`
+  exists(AssignExpr assign, SubscriptExpr subscript |
+    node1.asExpr() = assign.getSource() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
+    subscript = assign.getDest() and
+    subscript.getBase().getType() instanceof ArrayType and
+    c.isSingleton(any(Content::ArrayContent ac))
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
 }
@@ -725,6 +752,10 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     )
   )
   or
+  // read of an enum (`Optional.Some`) member via `!`
+  node1.asExpr() = node2.asExpr().(ForceValueExpr).getSubExpr() and
+  c instanceof OptionalSomeContentSet
+  or
   // read of a tuple member via `case let (v1, v2)` pattern matching
   exists(TuplePattern tupPat, int idx, Pattern subPat |
     node1.asPattern() = tupPat and
@@ -742,10 +773,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of a component in a key-path expression chain
-  exists(KeyPathComponent component, FieldDecl f |
+  exists(KeyPathComponent component |
     component = node1.(KeyPathComponentNodeImpl).getComponent() and
-    f = component.getDeclRef() and
-    c.isSingleton(any(Content::FieldContent ct | ct.getField() = f))
+    (
+      c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
+      or
+      c.isSingleton(any(Content::ArrayContent ac)) and
+      component.isSubscript()
+    )
   |
     // the next node is either the next element in the chain
     node2.(KeyPathComponentNodeImpl).getComponent() = component.getNextComponent()
@@ -753,6 +788,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     // or the return node, if this is the last component in the chain
     not exists(component.getNextComponent()) and
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
+  )
+  or
+  // read of an array member via subscript operator
+  exists(SubscriptExpr subscript |
+    subscript.getBase() = node1.asExpr() and
+    subscript = node2.asExpr() and
+    subscript.getBase().getType() instanceof ArrayType and
+    c.isSingleton(any(Content::ArrayContent ac))
   )
 }
 
@@ -796,7 +839,7 @@ class DataFlowType extends TDataFlowType {
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) {
+DataFlowType getNodeType(Node n) {
   any() // return the singleton DataFlowType until we support type pruning for Swift
 }
 
@@ -849,23 +892,13 @@ class CastNode extends Node {
   CastNode() { none() }
 }
 
-/**
- * Holds if `n` should never be skipped over in the `PathGraph` and in path
- * explanations.
- */
-predicate neverSkipInPathGraph(Node n) { none() }
-
 class DataFlowExpr = Expr;
-
-class DataFlowParameter = ParamDecl;
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof Content::ArrayContent }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.

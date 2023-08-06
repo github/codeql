@@ -23,6 +23,66 @@ newtype JavaRelatedLocationType =
   MethodDoc() or
   ClassDoc()
 
+newtype TFrameworkModeEndpoint =
+  TExplicitParameter(Parameter p) or
+  TQualifier(Callable c)
+
+/**
+ * A framework mode endpoint.
+ */
+abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
+  /**
+   * Returns the parameter index of the endpoint.
+   */
+  abstract int getIndex();
+
+  /**
+   * Returns the name of the parameter of the endpoint.
+   */
+  abstract string getParamName();
+
+  /**
+   * Returns the callable that contains the endpoint.
+   */
+  abstract Callable getEnclosingCallable();
+
+  abstract Top asTop();
+
+  string toString() { result = this.asTop().toString() }
+
+  Location getLocation() { result = this.asTop().getLocation() }
+}
+
+class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParameter {
+  Parameter param;
+
+  ExplicitParameterEndpoint() { this = TExplicitParameter(param) and param.fromSource() }
+
+  override int getIndex() { result = param.getPosition() }
+
+  override string getParamName() { result = param.getName() }
+
+  override Callable getEnclosingCallable() { result = param.getCallable() }
+
+  override Top asTop() { result = param }
+}
+
+class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
+  Callable callable;
+
+  QualifierEndpoint() {
+    this = TQualifier(callable) and not callable.isStatic() and callable.fromSource()
+  }
+
+  override int getIndex() { result = -1 }
+
+  override string getParamName() { result = "this" }
+
+  override Callable getEnclosingCallable() { result = callable }
+
+  override Top asTop() { result = callable }
+}
+
 /**
  * A candidates implementation for framework mode.
  *
@@ -33,7 +93,7 @@ newtype JavaRelatedLocationType =
  */
 module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
-  class Endpoint = DataFlow::ParameterNode;
+  class Endpoint = FrameworkModeEndpoint;
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
 
@@ -46,14 +106,14 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) { none() }
 
-  RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
+  RelatedLocation asLocation(Endpoint e) { result = e.asTop() }
 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
-  predicate isSink(Endpoint e, string kind) {
+  predicate isSink(Endpoint e, string kind, string provenance) {
     exists(string package, string type, string name, string signature, string ext, string input |
       sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, _)
+      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
     )
   }
 
@@ -70,9 +130,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     FrameworkModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
     ext = "" and
-    exists(int paramIdx | e.isParameterOf(_, paramIdx) |
-      input = AutomodelJavaUtil::getArgumentForIndex(paramIdx)
-    )
+    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex())
   }
 
   /**
@@ -124,16 +182,13 @@ class FrameworkModeMetadataExtractor extends string {
     Endpoint e, string package, string type, string subtypes, string name, string signature,
     string input, string parameterName
   ) {
-    exists(Callable callable, int paramIdx |
-      e.asParameter() = callable.getParameter(paramIdx) and
-      input = AutomodelJavaUtil::getArgumentForIndex(paramIdx) and
-      package = callable.getDeclaringType().getPackage().getName() and
-      type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
-      subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
-      name = callable.getName() and
-      parameterName = e.asParameter().getName() and
-      signature = ExternalFlow::paramsString(callable)
-    )
+    parameterName = e.getParamName() and
+    name = e.getEnclosingCallable().getName() and
+    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex()) and
+    package = e.getEnclosingCallable().getDeclaringType().getPackage().getName() and
+    type = e.getEnclosingCallable().getDeclaringType().getErasure().(RefType).nestedName() and
+    subtypes = AutomodelJavaUtil::considerSubtypes(e.getEnclosingCallable()).toString() and
+    signature = ExternalFlow::paramsString(e.getEnclosingCallable())
   }
 }
 
@@ -154,7 +209,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
+    not FrameworkCandidatesImpl::isSink(e, _, _) and
     FrameworkModeGetCallable::getCallable(e).getName().matches("is%") and
     FrameworkModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
   }
@@ -172,7 +227,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
+    not FrameworkCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
       callable = FrameworkModeGetCallable::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
@@ -201,7 +256,7 @@ private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingTo
   NotAModelApiParameter() { this = "not a model API parameter" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not exists(ModelExclusions::ModelApi api | api.getAParameter() = e.asParameter())
+    not e.getEnclosingCallable() instanceof ModelExclusions::ModelApi
   }
 }
 

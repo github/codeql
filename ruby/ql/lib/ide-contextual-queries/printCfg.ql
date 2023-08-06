@@ -7,7 +7,7 @@
  * @tags ide-contextual-queries/print-cfg
  */
 
-private import codeql.ruby.controlflow.internal.ControlFlowGraphImplShared::TestOutput
+private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl::TestOutput
 private import codeql.IDEContextual
 
 /**
