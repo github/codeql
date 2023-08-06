@@ -1,4 +1,3 @@
-/*- Compilations -*/
 
 /**
  * An invocation of the compiler. Note that more than one file may be
@@ -123,7 +122,6 @@ compilation_finished(
     float elapsed_seconds : float ref
 );
 
-/*- External data -*/
 
 /**
  * External data, loaded from CSV files during snapshot creation. See
@@ -131,75 +129,16 @@ compilation_finished(
  * for more information.
  */
 externalData(
-  int id : @externalDataElement,
-  string path : string ref,
-  int column: int ref,
-  string value : string ref
+    int id : @externalDataElement,
+    string path : string ref,
+    int column: int ref,
+    string value : string ref
 );
-
-/*- Source location prefix -*/
 
 /**
  * The source location of the snapshot.
  */
 sourceLocationPrefix(string prefix : string ref);
-
-/*- Files and folders -*/
-
-/**
- * The location of an element.
- * The location spans column `startcolumn` of line `startline` to
- * column `endcolumn` of line `endline` in file `file`.
- * For more information, see
- * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
- */
-locations_default(
-  unique int id: @location_default,
-  int file: @file ref,
-  int beginLine: int ref,
-  int beginColumn: int ref,
-  int endLine: int ref,
-  int endColumn: int ref
-);
-
-files(
-  unique int id: @file,
-  string name: string ref
-);
-
-folders(
-  unique int id: @folder,
-  string name: string ref
-);
-
-@container = @file | @folder
-
-containerparent(
-  int parent: @container ref,
-  unique int child: @container ref
-);
-
-/*- Lines of code -*/
-
-numlines(
-  int element_id: @sourceline ref,
-  int num_lines: int ref,
-  int num_code: int ref,
-  int num_comment: int ref
-);
-
-/*- Diagnostic messages -*/
-
-diagnostics(
-  unique int id: @diagnostic,
-  int severity: int ref,
-  string error_tag: string ref,
-  string error_message: string ref,
-  string full_error_message: string ref,
-  int location: @location_default ref
-);
-
-/*- C++ dbscheme -*/
 
 /**
  * Information about packages that provide code used during compilation.
@@ -224,7 +163,58 @@ header_to_external_package(
     int package : @external_package ref
 );
 
-@location = @location_stmt | @location_expr | @location_default | @container;
+/*
+ * Version history
+ */
+
+svnentries(
+    unique int id : @svnentry,
+    string revision : string ref,
+    string author : string ref,
+    date revisionDate : date ref,
+    int changeSize : int ref
+)
+
+svnaffectedfiles(
+    int id : @svnentry ref,
+    int file : @file ref,
+    string action : string ref
+)
+
+svnentrymsg(
+    unique int id : @svnentry ref,
+    string message : string ref
+)
+
+svnchurn(
+    int commit : @svnentry ref,
+    int file : @file ref,
+    int addedLines : int ref,
+    int deletedLines : int ref
+)
+
+/*
+ * C++ dbscheme
+ */
+
+@location = @location_stmt | @location_expr | @location_default ;
+
+/**
+ * The location of an element that is not an expression or a statement.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_default(
+    /** The location of an element that is not an expression or a statement. */
+    unique int id: @location_default,
+    int container: @container ref,
+    int startLine: int ref,
+    int startColumn: int ref,
+    int endLine: int ref,
+    int endColumn: int ref
+);
 
 /**
  * The location of a statement.
@@ -262,6 +252,39 @@ locations_expr(
 
 /** An element for which line-count information is available. */
 @sourceline = @file | @function | @variable | @enumconstant | @xmllocatable;
+
+numlines(
+    int element_id: @sourceline ref,
+    int num_lines: int ref,
+    int num_code: int ref,
+    int num_comment: int ref
+);
+
+diagnostics(
+    unique int id: @diagnostic,
+    int severity: int ref,
+    string error_tag: string ref,
+    string error_message: string ref,
+    string full_error_message: string ref,
+    int location: @location_default ref
+);
+
+files(
+    unique int id: @file,
+    string name: string ref
+);
+
+folders(
+    unique int id: @folder,
+    string name: string ref
+);
+
+@container = @folder | @file
+
+containerparent(
+    int parent: @container ref,
+    unique int child: @container ref
+);
 
 fileannotations(
     int id: @file ref,
@@ -2114,73 +2137,76 @@ link_parent(
     int link_target : @link_target ref
 );
 
-/*- XML Files -*/
+/* XML Files */
 
-xmlEncoding(
-  unique int id: @file ref,
-  string encoding: string ref
-);
+xmlEncoding(unique int id: @file ref, string encoding: string ref);
 
 xmlDTDs(
-  unique int id: @xmldtd,
-  string root: string ref,
-  string publicId: string ref,
-  string systemId: string ref,
-  int fileid: @file ref
+    unique int id: @xmldtd,
+    string root: string ref,
+    string publicId: string ref,
+    string systemId: string ref,
+    int fileid: @file ref
 );
 
 xmlElements(
-  unique int id: @xmlelement,
-  string name: string ref,
-  int parentid: @xmlparent ref,
-  int idx: int ref,
-  int fileid: @file ref
+    unique int id: @xmlelement,
+    string name: string ref,
+    int parentid: @xmlparent ref,
+    int idx: int ref,
+    int fileid: @file ref
 );
 
 xmlAttrs(
-  unique int id: @xmlattribute,
-  int elementid: @xmlelement ref,
-  string name: string ref,
-  string value: string ref,
-  int idx: int ref,
-  int fileid: @file ref
+    unique int id: @xmlattribute,
+    int elementid: @xmlelement ref,
+    string name: string ref,
+    string value: string ref,
+    int idx: int ref,
+    int fileid: @file ref
 );
 
 xmlNs(
-  int id: @xmlnamespace,
-  string prefixName: string ref,
-  string URI: string ref,
-  int fileid: @file ref
+    int id: @xmlnamespace,
+    string prefixName: string ref,
+    string URI: string ref,
+    int fileid: @file ref
 );
 
 xmlHasNs(
-  int elementId: @xmlnamespaceable ref,
-  int nsId: @xmlnamespace ref,
-  int fileid: @file ref
+    int elementId: @xmlnamespaceable ref,
+    int nsId: @xmlnamespace ref,
+    int fileid: @file ref
 );
 
 xmlComments(
-  unique int id: @xmlcomment,
-  string text: string ref,
-  int parentid: @xmlparent ref,
-  int fileid: @file ref
+    unique int id: @xmlcomment,
+    string text: string ref,
+    int parentid: @xmlparent ref,
+    int fileid: @file ref
 );
 
 xmlChars(
-  unique int id: @xmlcharacters,
-  string text: string ref,
-  int parentid: @xmlparent ref,
-  int idx: int ref,
-  int isCDATA: int ref,
-  int fileid: @file ref
+    unique int id: @xmlcharacters,
+    string text: string ref,
+    int parentid: @xmlparent ref,
+    int idx: int ref,
+    int isCDATA: int ref,
+    int fileid: @file ref
 );
 
 @xmlparent = @file | @xmlelement;
 @xmlnamespaceable = @xmlelement | @xmlattribute;
 
 xmllocations(
-  int xmlElement: @xmllocatable ref,
-  int location: @location_default ref
+    int xmlElement: @xmllocatable ref,
+    int location: @location_default ref
 );
 
-@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
+@xmllocatable = @xmlcharacters
+              | @xmlelement
+              | @xmlcomment
+              | @xmlattribute
+              | @xmldtd
+              | @file
+              | @xmlnamespace;
