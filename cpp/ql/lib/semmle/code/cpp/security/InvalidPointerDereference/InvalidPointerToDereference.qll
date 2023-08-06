@@ -143,8 +143,7 @@ private module InvalidPointerToDerefBarrier {
   }
 
   /**
-   * Gets an instruction `instr` such that `instr < derefSource - deltaDerefSinkAndDerefAddress`
-   * for some `derefSource`.
+   * Gets an address operand whose definition `instr` satisfies `instr < pai`.
    */
   AddressOperand getABarrierAddressOperand(PointerArithmeticInstruction pai) {
     result.getDef() = getABarrierInstruction(pai)
