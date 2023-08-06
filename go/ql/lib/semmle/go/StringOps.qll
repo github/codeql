@@ -222,11 +222,6 @@ module StringOps {
       }
     }
 
-    /**
-     * A configuration for tracking flow from a call to `strings.NewReplacer` to
-     * the receiver of a call to `strings.Replacer.Replace` or
-     * `strings.Replacer.WriteString`.
-     */
     private module StringsNewReplacerConfig implements DataFlow::ConfigSig {
       predicate isSource(DataFlow::Node source) { source instanceof StringsNewReplacerCall }
 
@@ -238,6 +233,10 @@ module StringOps {
       }
     }
 
+    /**
+     * Tracks data flow from a call to `strings.NewReplacer` to the receiver of
+     * a call to `strings.Replacer.Replace` or `strings.Replacer.WriteString`.
+     */
     private module StringsNewReplacerFlow = DataFlow::Global<StringsNewReplacerConfig>;
 
     /**

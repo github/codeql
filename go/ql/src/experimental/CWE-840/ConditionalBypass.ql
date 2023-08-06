@@ -12,9 +12,6 @@
 
 import go
 
-/**
- * A taint-tracking configuration for reasoning about conditional bypass.
- */
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof UntrustedFlowSource
@@ -27,6 +24,7 @@ module Config implements DataFlow::ConfigSig {
   }
 }
 
+/** Tracks taint flow for reasoning about conditional bypass. */
 module Flow = TaintTracking::Global<Config>;
 
 from

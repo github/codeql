@@ -74,5 +74,9 @@ module WeakCryptoAlgorithm {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
+  /**
+   * Tracks taint flow from sensitive information to weak cryptographic
+   * algorithms.
+   */
   module Flow = TaintTracking::Global<Config>;
 }

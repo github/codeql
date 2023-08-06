@@ -88,4 +88,8 @@ private module Config implements DataFlow::ConfigSig {
   }
 }
 
+/**
+ * Tracks taint flow for reasoning about user-controlled bypassing of sensitive
+ * actions.
+ */
 module Flow = TaintTracking::Global<Config>;

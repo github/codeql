@@ -43,6 +43,10 @@ private module DsnInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof RegexpCheckBarrier }
 }
 
+/**
+ * Tracks taint flow for reasoning about Data Source Name injection
+ * vulnerabilities.
+ */
 module DsnInjectionFlow = TaintTracking::Global<DsnInjectionConfig>;
 
 /** A model of a function which decodes or unmarshals a tainted input, propagating taint from any argument to either the method receiver or return value. */

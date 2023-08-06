@@ -49,5 +49,9 @@ module StringBreak {
     }
   }
 
+  /**
+   * Tracks taint flow for reasoning about unsafe-quoting vulnerabilities,
+   * parameterized with the type of quote being tracked.
+   */
   module Flow = TaintTracking::GlobalWithState<Config>;
 }

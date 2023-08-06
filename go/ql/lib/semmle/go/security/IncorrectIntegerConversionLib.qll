@@ -257,6 +257,11 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
   }
 }
 
+/**
+ * Tracks taint flow from an integer obtained from parsing a string flows to a
+ * type conversion to a smaller integer type, which could cause unexpected
+ * values.
+ */
 module Flow = TaintTracking::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
 
 private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch) {

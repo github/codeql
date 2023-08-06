@@ -42,6 +42,10 @@ module ConstantStateFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
 }
 
+/**
+ * Tracks data flow of a constant string value to a call to `AuthCodeURL` as
+ * the `state` parameter.
+ */
 module Flow = DataFlow::Global<ConstantStateFlowConfig>;
 
 import Flow::PathGraph
@@ -108,6 +112,13 @@ module PrivateUrlFlowsToAuthCodeUrlCallConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
 }
 
+/**
+ * Tracks data flow from a URL indicating the OAuth redirect doesn't point to a publicly
+ * accessible address to the receiver of an `AuthCodeURL` call.
+ *
+ * Note we accept localhost and 127.0.0.1 on the assumption this is probably a transient
+ * listener; if it actually is a persistent server then that really is vulnerable to CSRF.
+ */
 module PrivateUrlFlowsToAuthCodeUrlCallFlow =
   DataFlow::Global<PrivateUrlFlowsToAuthCodeUrlCallConfig>;
 

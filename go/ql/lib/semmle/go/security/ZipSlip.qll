@@ -41,5 +41,6 @@ module ZipSlip {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
+  /** Tracks taint flow for reasoning about zip-slip vulnerabilities. */
   module Flow = TaintTracking::Global<Config>;
 }

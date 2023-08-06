@@ -46,5 +46,9 @@ module InsecureRandomness {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
+  /**
+   * Tracks taint flow for reasoning about random values that are not
+   * cryptographically secure.
+   */
   module Flow = TaintTracking::Global<Config>;
 }

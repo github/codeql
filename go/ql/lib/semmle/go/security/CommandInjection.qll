@@ -51,6 +51,10 @@ module CommandInjection {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
+  /**
+   * Tracks taint flow for reasoning about command-injection vulnerabilities
+   * with sinks which are not sanitized by `--`.
+   */
   module Flow = TaintTracking::Global<Config>;
 
   private class ArgumentArrayWithDoubleDash extends DataFlow::Node {
@@ -129,5 +133,9 @@ module CommandInjection {
     }
   }
 
+  /**
+   * Tracks taint flow for reasoning about command-injection vulnerabilities
+   * with sinks which are sanitized by `--`.
+   */
   module DoubleDashSanitizingFlow = TaintTracking::Global<DoubleDashSanitizingConfig>;
 }

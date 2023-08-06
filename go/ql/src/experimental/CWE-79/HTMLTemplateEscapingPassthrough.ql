@@ -35,12 +35,6 @@ class PassthroughTypeName extends string {
   PassthroughTypeName() { this = ["HTML", "HTMLAttr", "JS", "JSStr", "CSS", "Srcset", "URL"] }
 }
 
-/**
- * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
- * is converted into a special "passthrough" type which will not be escaped by the template generator;
- * this allows the injection of arbitrary content (html, css, js) into the generated
- * output of the templates.
- */
 module UntrustedToPassthroughTypeConversionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
@@ -58,6 +52,12 @@ module UntrustedToPassthroughTypeConversionConfig implements DataFlow::ConfigSig
   }
 }
 
+/**
+ * Tracks taint flow for reasoning about when an `UntrustedFlowSource` is
+ * converted into a special "passthrough" type which will not be escaped by the
+ * template generator; this allows the injection of arbitrary content (html,
+ * css, js) into the generated output of the templates.
+ */
 module UntrustedToPassthroughTypeConversionFlow =
   TaintTracking::Global<UntrustedToPassthroughTypeConversionConfig>;
 
@@ -72,10 +72,6 @@ predicate flowsFromConversionToExec(
     targetType)
 }
 
-/**
- * A taint-tracking configuration for reasoning about when the result of a conversion
- * to a PassthroughType flows to a template execution call.
- */
 module PassthroughTypeConversionToTemplateExecutionCallConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceConversionToPassthroughType(source, _) }
 
@@ -91,6 +87,10 @@ module PassthroughTypeConversionToTemplateExecutionCallConfig implements DataFlo
   predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
 }
 
+/**
+ * Tracks taint flow for reasoning about when the result of a conversion to a
+ * PassthroughType flows to a template execution call.
+ */
 module PassthroughTypeConversionToTemplateExecutionCallFlow =
   TaintTracking::Global<PassthroughTypeConversionToTemplateExecutionCallConfig>;
 
@@ -108,16 +108,16 @@ predicate isSinkToTemplateExec(DataFlow::Node sink, DataFlow::CallNode call) {
   )
 }
 
-/**
- * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
- * flows into a template executor call.
- */
 module FromUntrustedToTemplateExecutionCallConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
   predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
 }
 
+/**
+ * Tracks taint flow from an `UntrustedFlowSource` into a template executor
+ * call.
+ */
 module FromUntrustedToTemplateExecutionCallFlow =
   TaintTracking::Global<FromUntrustedToTemplateExecutionCallConfig>;
 

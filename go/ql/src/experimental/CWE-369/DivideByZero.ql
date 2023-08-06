@@ -27,9 +27,6 @@ predicate divideByZeroSanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
   )
 }
 
-/**
- * A taint-tracking configuration for reasoning about division by zero, where divisor is user-controlled and unchecked.
- */
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
@@ -50,6 +47,10 @@ module Config implements DataFlow::ConfigSig {
   }
 }
 
+/**
+ * Tracks taint flow for reasoning about division by zero, where divisor is
+ * user-controlled and unchecked.
+ */
 module Flow = TaintTracking::Global<Config>;
 
 import Flow::PathGraph

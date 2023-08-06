@@ -27,6 +27,10 @@ module Config implements DataFlow::ConfigSig {
   }
 }
 
+/**
+ * Tracks data flow from an RSA key length to a calls to an RSA key generation
+ * function.
+ */
 module Flow = DataFlow::Global<Config>;
 
 import Flow::PathGraph

@@ -35,5 +35,6 @@ module EmailInjection {
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
   }
 
+  /** Tracks taint flow for reasoning about email-injection vulnerabilities. */
   module Flow = TaintTracking::Global<Config>;
 }

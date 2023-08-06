@@ -119,4 +119,8 @@ private module LdapInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof LdapSanitizer }
 }
 
+/**
+ * Tracks taint flow for reasoning about when an `UntrustedFlowSource` flows
+ * into an argument or field that is vulnerable to LDAP injection.
+ */
 module LdapInjectionFlow = TaintTracking::Global<LdapInjectionConfig>;

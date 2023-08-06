@@ -384,5 +384,6 @@ module HardcodedKeys {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
+  /** Tracks taint flow for reasoning about JWT token signing vulnerabilities. */
   module Flow = TaintTracking::Global<Config>;
 }

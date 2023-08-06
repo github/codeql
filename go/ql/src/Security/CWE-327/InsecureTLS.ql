@@ -50,10 +50,6 @@ int getASecureTlsVersion() {
  */
 int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _, _) }
 
-/**
- * A taint-tracking configuration for tracking flow from TLS versions to the
- * `tls.Config.MinVersion` and `tls.Config.MaxVersion` fields.
- */
 module TlsVersionFlowConfig implements DataFlow::ConfigSig {
   /**
    * Holds if `source` is a TLS version source yielding value `val`.
@@ -77,6 +73,10 @@ module TlsVersionFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
 }
 
+/**
+ * Tracks taint flow from TLS versions to the `tls.Config.MinVersion` and
+ * `tls.Config.MaxVersion` fields.
+ */
 module TlsVersionFlow = TaintTracking::Global<TlsVersionFlowConfig>;
 
 /**
@@ -150,10 +150,6 @@ predicate isInsecureTlsVersionFlow(
   )
 }
 
-/**
- * A taint-tracking configuration for tracking flow from insecure TLS cipher
- * suites into a `tls.Config` struct, to the `CipherSuites` field.
- */
 module TlsInsecureCipherSuitesFlowConfig implements DataFlow::ConfigSig {
   /**
    * Holds if `source` reads an insecure TLS cipher suite named `suiteName`.
@@ -207,6 +203,10 @@ module TlsInsecureCipherSuitesFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 }
 
+/**
+ * Tracks taint flow from insecure TLS cipher suites into the `CipherSuites`
+ * field of a `tls.Config` struct.
+ */
 module TlsInsecureCipherSuitesFlow = TaintTracking::Global<TlsInsecureCipherSuitesFlowConfig>;
 
 /**

@@ -129,6 +129,10 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isCloseSink(sink, _) }
 }
 
+/**
+ * Tracks data flow for reasoning about which writable file handles resulting from calls to
+ * `os.OpenFile` have `os.File.Close` called on them.
+ */
 module UnhandledFileCloseFlow = DataFlow::Global<UnhandledFileCloseConfig>;
 
 import UnhandledFileCloseFlow::PathGraph

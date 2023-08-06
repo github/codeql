@@ -207,6 +207,9 @@ private module UntrustedDataConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
+/**
+ * Tracks data flow from `RemoteFlowSource`s to `ExternalApiDataNode`s.
+ */
 module UntrustedDataToExternalApiFlow = DataFlow::Global<UntrustedDataConfig>;
 
 /** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
@@ -234,6 +237,9 @@ private module UntrustedDataToUnknownExternalApiConfig implements DataFlow::Conf
   predicate isSink(DataFlow::Node sink) { sink instanceof UnknownExternalApiDataNode }
 }
 
+/**
+ * Tracks data flow from `RemoteFlowSource`s to `UnknownExternalApiDataNode`s.
+ */
 module UntrustedDataToUnknownExternalApiFlow =
   DataFlow::Global<UntrustedDataToUnknownExternalApiConfig>;
 

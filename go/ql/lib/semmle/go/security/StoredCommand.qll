@@ -54,5 +54,6 @@ module StoredCommand {
     predicate isBarrier(DataFlow::Node node) { node instanceof CommandInjection::Sanitizer }
   }
 
+  /** Tracks taint flow for reasoning about command-injection vulnerabilities. */
   module Flow = TaintTracking::Global<Config>;
 }

@@ -89,5 +89,12 @@ module CleartextLogging {
     }
   }
 
+  /**
+   * Tracks data flow for reasoning about clear-text logging of sensitive
+   * information, from `Source`s, which are sources of sensitive data, to
+   * `Sink`s, which is an abstract class representing all the places sensitive
+   * data may be stored in cleartext. Additional sources or sinks can be added
+   * by extending the relevant class.
+   */
   module Flow = DataFlow::Global<Config>;
 }

@@ -42,6 +42,10 @@ module SuspiciousCharacterInRegexpConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 }
 
+/**
+ * Tracks data flow from strings containing suspicious escape sequences to a
+ * use as a regular expression.
+ */
 module Flow = DataFlow::Global<SuspiciousCharacterInRegexpConfig>;
 
 import Flow::PathGraph

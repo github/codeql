@@ -67,5 +67,6 @@ module RequestForgery {
     }
   }
 
+  /** Tracks taint flow for reasoning about request forgery. */
   module Flow = TaintTracking::Global<Config>;
 }

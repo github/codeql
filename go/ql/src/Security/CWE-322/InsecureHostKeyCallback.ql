@@ -70,6 +70,10 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { writeIsSink(sink, _) }
 }
 
+/**
+ * Tracks data flow to identify `HostKeyCallbackFunc` instances that reach
+ * `ClientConfig.HostKeyCallback` fields.
+ */
 module Flow = DataFlow::Global<Config>;
 
 import Flow::PathGraph

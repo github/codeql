@@ -100,6 +100,7 @@ private module NameToNetHttpCookieTrackingConfig implements DataFlow::ConfigSig 
   }
 }
 
+/** Tracks taint flow from sensitive names to `net/http.SetCookie`. */
 module NameToNetHttpCookieTrackingFlow = TaintTracking::Global<NameToNetHttpCookieTrackingConfig>;
 
 /**
@@ -142,6 +143,10 @@ private module BoolToNetHttpCookieTrackingConfig implements DataFlow::ConfigSig 
   }
 }
 
+/**
+ * Tracks taint flow from a `bool` assigned to `HttpOnly` to
+ * `net/http.SetCookie`.
+ */
 module BoolToNetHttpCookieTrackingFlow = TaintTracking::Global<BoolToNetHttpCookieTrackingConfig>;
 
 /**
@@ -182,6 +187,10 @@ private module BoolToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
   }
 }
 
+/**
+ * Tracks data flow from `HttpOnly` set to `false` to
+ * `gin-gonic/gin.Context.SetCookie`.
+ */
 module BoolToGinSetCookieTrackingFlow = DataFlow::Global<BoolToGinSetCookieTrackingConfig>;
 
 /**
@@ -203,10 +212,6 @@ deprecated private class NameToGinSetCookieTrackingConfiguration extends DataFlo
   }
 }
 
-/**
- * A taint-tracking configuration for tracking flow from sensitive names to
- * `gin-gonic/gin.Context.SetCookie`.
- */
 private module NameToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
 
@@ -218,6 +223,9 @@ private module NameToGinSetCookieTrackingConfig implements DataFlow::ConfigSig {
   }
 }
 
+/**
+ * Tracks taint flow from sensitive names to `gin-gonic/gin.Context.SetCookie`.
+ */
 private module NameToGinSetCookieTrackingFlow = DataFlow::Global<NameToGinSetCookieTrackingConfig>;
 
 /**
@@ -299,6 +307,10 @@ private module GorillaCookieStoreSaveTrackingConfig implements DataFlow::ConfigS
   }
 }
 
+/**
+ * Tracks data flow from gorilla cookie store creation to
+ * `gorilla/sessions.Session.Save`.
+ */
 module GorillaCookieStoreSaveTrackingFlow = DataFlow::Global<GorillaCookieStoreSaveTrackingConfig>;
 
 /**
@@ -347,6 +359,10 @@ private module GorillaSessionOptionsTrackingConfig implements DataFlow::ConfigSi
   }
 }
 
+/**
+ * Tracks taint flow from session options to
+ * `gorilla/sessions.Session.Save`.
+ */
 module GorillaSessionOptionsTrackingFlow =
   TaintTracking::Global<GorillaSessionOptionsTrackingConfig>;
 
@@ -401,5 +417,9 @@ private module BoolToGorillaSessionOptionsTrackingConfig implements DataFlow::Co
   }
 }
 
+/**
+ * Tracks taint flow from a `bool` assigned to `HttpOnly` to
+ * `gorilla/sessions.Session.Save`.
+ */
 module BoolToGorillaSessionOptionsTrackingFlow =
   TaintTracking::Global<BoolToGorillaSessionOptionsTrackingConfig>;

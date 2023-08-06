@@ -43,10 +43,6 @@ class DebugStackFunction extends Function {
   DebugStackFunction() { this.hasQualifiedName("runtime/debug", "Stack") }
 }
 
-/**
- * A taint-tracking configuration that looks for stack traces being written to
- * an HTTP response body without an intervening debug- or development-mode conditional.
- */
 module StackTraceExposureConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.(DataFlow::PostUpdateNode).getPreUpdateNode() =
@@ -68,6 +64,10 @@ module StackTraceExposureConfig implements DataFlow::ConfigSig {
   }
 }
 
+/**
+ * Tracks taint flow for reasoning about stack traces being written to an HTTP
+ * response body without an intervening debug- or development-mode conditional.
+ */
 module StackTraceExposureFlow = TaintTracking::Global<StackTraceExposureConfig>;
 
 import StackTraceExposureFlow::PathGraph

@@ -67,5 +67,6 @@ module SafeUrlFlow {
     }
   }
 
+  /** Tracks taint flow for reasoning about safe URLs. */
   module Flow = TaintTracking::Global<Config>;
 }

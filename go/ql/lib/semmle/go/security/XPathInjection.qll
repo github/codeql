@@ -43,5 +43,9 @@ module XPathInjection {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
+  /**
+   * Tracks taint flow for reasoning about untrusted user input used in an
+   * XPath expression.
+   */
   module Flow = TaintTracking::Global<Config>;
 }

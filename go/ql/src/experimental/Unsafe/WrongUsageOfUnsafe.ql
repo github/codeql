@@ -53,6 +53,7 @@ module UnsafeTypeCastingConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { typeCastNodeIsSink(sink, _) }
 }
 
+/** Tracks taint flow for reasoning about type casting from a `unsafe.Pointer`. */
 module UnsafeTypeCastingFlow = TaintTracking::Global<UnsafeTypeCastingConfig>;
 
 import UnsafeTypeCastingFlow::PathGraph

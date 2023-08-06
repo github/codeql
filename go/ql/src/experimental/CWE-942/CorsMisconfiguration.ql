@@ -51,10 +51,6 @@ class AllowCredentialsHeaderWrite extends Http::HeaderWrite {
   AllowCredentialsHeaderWrite() { this.getHeaderName() = headerAllowCredentials() }
 }
 
-/**
- * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
- * flows to a HeaderWrite that writes an `Access-Control-Allow-Origin` header's value.
- */
 module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
@@ -73,6 +69,10 @@ module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSinkHW(sink, _) }
 }
 
+/**
+ * Tracks taint flowfor reasoning about when an `UntrustedFlowSource` flows to
+ * a `HeaderWrite` that writes an `Access-Control-Allow-Origin` header's value.
+ */
 module UntrustedToAllowOriginHeaderFlow = TaintTracking::Global<UntrustedToAllowOriginHeaderConfig>;
 
 /**
@@ -122,10 +122,6 @@ class MapRead extends DataFlow::ElementReadNode {
   MapRead() { this.getBase().getType() instanceof MapType }
 }
 
-/**
- * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
- * flows somewhere.
- */
 module FromUntrustedConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
@@ -165,6 +161,10 @@ module FromUntrustedConfig implements DataFlow::ConfigSig {
   }
 }
 
+/**
+ * Tracks taint flow for reasoning about when an `UntrustedFlowSource` flows
+ * somewhere.
+ */
 module FromUntrustedFlow = TaintTracking::Global<FromUntrustedConfig>;
 
 /**

@@ -104,5 +104,6 @@ module OpenUrlRedirect {
     }
   }
 
+  /** Tracks taint flow for reasoning about unvalidated URL redirections. */
   module Flow = DataFlow::Global<Config>;
 }

@@ -63,6 +63,7 @@ module ServerSideRequestForgery {
     predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
   }
 
+  /** Tracks taint flow for reasoning about request forgery vulnerabilities. */
   module Flow = TaintTracking::Global<Config>;
 
   /** A data flow source for request forgery vulnerabilities. */

@@ -14,7 +14,7 @@ module AllocationSizeOverflow {
   import AllocationSizeOverflowCustomizations::AllocationSizeOverflow
 
   /**
-   * DEPRECATED: Use a copy of `FindLargeLensConfig` and `FindLargeLensFlow` instead.
+   * DEPRECATED: Use copies of `FindLargeLensConfig` and `FindLargeLensFlow` instead.
    *
    * A taint-tracking configuration for identifying `len(...)` calls whose argument may be large.
    */
@@ -40,6 +40,9 @@ module AllocationSizeOverflow {
     predicate isBarrier(DataFlow::Node nd) { nd instanceof Sanitizer }
   }
 
+  /**
+   * Tracks taint flow to find `len(...)` calls whose argument may be large.
+   */
   private module FindLargeLensFlow = TaintTracking::Global<FindLargeLensConfig>;
 
   private DataFlow::CallNode getALargeLenCall() {
@@ -111,5 +114,6 @@ module AllocationSizeOverflow {
     }
   }
 
+  /** Tracks taint flow to find allocation-size overflows. */
   module Flow = TaintTracking::Global<Config>;
 }
