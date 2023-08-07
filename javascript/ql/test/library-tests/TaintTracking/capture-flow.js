@@ -45,4 +45,4 @@ function innerRead(x) {
 }
 
 sink(innerRead('safe')); // OK
-sink(innerRead(source())); // NOT OK [INCONSISTENCY]
+sink(innerRead(source())); // NOT OK

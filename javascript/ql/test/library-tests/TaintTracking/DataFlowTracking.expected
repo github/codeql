@@ -39,6 +39,7 @@
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:19:6:19:16 | outerMost() |
 | capture-flow.js:31:14:31:21 | source() | capture-flow.js:31:6:31:22 | confuse(source()) |
+| capture-flow.js:46:16:46:23 | source() | capture-flow.js:46:6:46:24 | innerRead(source()) |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:18:8:18:14 | c.taint |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:22:8:22:19 | c_safe.taint |
