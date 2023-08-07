@@ -8,7 +8,7 @@ private import codeql.util.Unit
 private import codeql.util.Option
 private import codeql.dataflow.DataFlow
 
-module MakeImpl<DataFlowParameter Lang> {
+module MakeImpl<InputSig Lang> {
   private import Lang
   private import DataFlowMake<Lang>
   private import DataFlowImplCommon::MakeImplCommon<Lang>

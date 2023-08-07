@@ -6,7 +6,7 @@
  */
 
 /** Provides language-specific data flow parameters. */
-signature module DataFlowParameter {
+signature module InputSig {
   class Node {
     /** Gets a textual representation of this element. */
     string toString();
@@ -227,7 +227,7 @@ signature module DataFlowParameter {
   predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg);
 }
 
-module Configs<DataFlowParameter Lang> {
+module Configs<InputSig Lang> {
   private import Lang
   private import internal.DataFlowImplCommon::MakeImplCommon<Lang>
   import DataFlowImplCommonPublic
@@ -431,7 +431,7 @@ module Configs<DataFlowParameter Lang> {
   }
 }
 
-module DataFlowMake<DataFlowParameter Lang> {
+module DataFlowMake<InputSig Lang> {
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Lang>
   import Configs<Lang>

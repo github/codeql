@@ -1,6 +1,6 @@
 private import codeql.dataflow.DataFlow
 
-module MakeImplCommon<DataFlowParameter Lang> {
+module MakeImplCommon<InputSig Lang> {
   private import Lang
   import Cached
 
