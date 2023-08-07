@@ -2,7 +2,7 @@
  * Provides Ruby-specific definitions for use in the data flow library.
  */
 
-private import codeql.dataflow.DataFlowParameter
+private import codeql.dataflow.DataFlow
 
 module Private {
   import DataFlowPrivate
@@ -13,7 +13,7 @@ module Public {
   import DataFlowPublic
 }
 
-module RubyDataFlow implements DataFlowParameter {
+module RubyDataFlow implements InputSig {
   import Private
   import Public
 
