@@ -8,13 +8,6 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.RandomQuery
 
 /**
- * The `java.util.Random` class.
- */
-class TypeRandom extends RefType {
-  TypeRandom() { this.hasQualifiedName("java.util", "Random") }
-}
-
-/**
  * A node representing a source of weak randomness.
  *
  * For example, use of `java.util.Random` or `java.lang.Math.random`.
