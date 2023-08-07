@@ -1,8 +1,7 @@
 /**
  * Provides an implementation of global (interprocedural) data flow. This file
- * re-exports the local (intraprocedural) data flow analysis from
- * `DataFlowImplSpecific::Public` and adds a global analysis, mainly exposed
- * through the `Global` and `GlobalWithState` modules.
+ * adds a global analysis, mainly exposed through the `Global` and `GlobalWithState`
+ * modules.
  */
 
 /** Provides language-specific data flow parameters. */
