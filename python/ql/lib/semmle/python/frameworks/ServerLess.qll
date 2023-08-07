@@ -1,3 +1,12 @@
+/**
+ * Provides classes and predicates for working with those serverless handlers,
+ * handled by the shared library.
+ *
+ * E.g. [AWS](https://docs.aws.amazon.com/lambda/latest/dg/python-handler.html).
+ *
+ * In particular a `RemoteFlowSource` is added for each.
+ */
+
 import python
 import codeql.serverless.ServerLess
 import semmle.python.dataflow.new.DataFlow
