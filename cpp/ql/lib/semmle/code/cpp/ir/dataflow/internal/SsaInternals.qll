@@ -10,19 +10,10 @@ private import ssa0.SsaInternals as SsaInternals0
 import SsaInternalsCommon
 
 private module SourceVariables {
-  int getMaxIndirectionForIRVariable(IRVariable var) {
-    exists(Type type, boolean isGLValue |
-      var.getLanguageType().hasType(type, isGLValue) and
-      if isGLValue = true
-      then result = 1 + getMaxIndirectionsForType(type)
-      else result = getMaxIndirectionsForType(type)
-    )
-  }
-
   cached
   private newtype TSourceVariable =
     TSourceIRVariable(BaseIRVariable baseVar, int ind) {
-      ind = [0 .. getMaxIndirectionForIRVariable(baseVar.getIRVariable())]
+      ind = [0 .. countIndirectionsForCppType(baseVar.getIRVariable().getLanguageType()) + 1]
     } or
     TCallVariable(AllocationInstruction call, int ind) {
       ind = [0 .. countIndirectionsForCppType(getResultLanguageType(call))]
