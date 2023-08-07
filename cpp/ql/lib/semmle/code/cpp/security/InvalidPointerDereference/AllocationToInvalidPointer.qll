@@ -128,7 +128,8 @@ private module SizeBarrier {
   }
 
   /**
-   * Holds if `small < large + state` holds if `g` evaluates to `edge`.
+   * Holds if `left < large + state` holds if `g` evaluates to `edge`, where `large` is some
+   * value that is equal to the size argument of an allocation.
    */
   private predicate operandGuardChecks(IRGuardCondition g, Operand left, int state, boolean edge) {
     exists(DataFlow::Node nLeft, DataFlow::Node nRight, int k |
