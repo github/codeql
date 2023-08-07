@@ -1,3 +1,9 @@
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Logrus' `WithContext` methods are no longer treated as if they output the values stored in that context to a log message.
+
 ## 0.6.1
 
 ### New Features
