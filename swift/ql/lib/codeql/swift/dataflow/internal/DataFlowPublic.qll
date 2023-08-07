@@ -225,9 +225,9 @@ module Content {
     override string toString() { result = "Array element" }
   }
 
-  /** An element of a set */
+  /** An element of a collection. */
   class CollectionContent extends Content, TCollectionContent {
-    override string toString() { result = "Set element" }
+    override string toString() { result = "Collection element" }
   }
 }
 
