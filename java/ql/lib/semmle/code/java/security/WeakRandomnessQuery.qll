@@ -57,7 +57,9 @@ abstract class WeakRandomnessSink extends DataFlow::Node { }
 private class CookieSink extends WeakRandomnessSink {
   CookieSink() {
     this.getType() instanceof TypeCookie and
-    exists(MethodAccess ma | ma.getMethod().hasName("addCookie") |
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("javax.servlet.http", "HttpServletResponse", "addCookie")
+    |
       ma.getArgument(0) = this.asExpr()
     )
   }
