@@ -15,15 +15,9 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
 private module SourceVariables {
-  class SourceVariable instanceof BaseSourceVariable {
-    string toString() { result = BaseSourceVariable.super.toString() }
-
+  class SourceVariable extends BaseSourceVariable {
     BaseSourceVariable getBaseVariable() { result = this }
   }
-
-  class SourceIRVariable = BaseIRVariable;
-
-  class CallVariable = BaseCallVariable;
 }
 
 import SourceVariables
