@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class WeakRandomCookies extends HttpServlet {
     HttpServletResponse response;
@@ -42,5 +43,26 @@ public class WeakRandomCookies extends HttpServlet {
 
         Cookie cookie5 = new Cookie("name", Integer.toString(tlr.nextInt()));
         response.addCookie(cookie5); // $hasWeakRandomFlow
+
+        Cookie cookie6 = new Cookie("name", RandomStringUtils.random(10));
+        response.addCookie(cookie6); // $hasWeakRandomFlow
+
+        Cookie cookie7 = new Cookie("name", RandomStringUtils.randomAscii(10));
+        response.addCookie(cookie7); // $hasWeakRandomFlow
+
+        long c3 = r.nextLong();
+        // BAD: The cookie value may be predictable.
+        Cookie cookie8 = new Cookie("name", Long.toString(c3 * 5));
+        response.addCookie(cookie8); // $hasWeakRandomFlow
+
+        double c4 = Math.random();
+        // BAD: The cookie value may be predictable.
+        Cookie cookie9 = new Cookie("name", Double.toString(c4));
+        response.addCookie(cookie9); // $hasWeakRandomFlow
+
+        double c5 = Math.random();
+        // BAD: The cookie value may be predictable.
+        Cookie cookie10 = new Cookie("name", Double.toString(++c5));
+        response.addCookie(cookie10); // $hasWeakRandomFlow
     }
 }
