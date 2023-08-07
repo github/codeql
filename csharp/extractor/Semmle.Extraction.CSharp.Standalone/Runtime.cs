@@ -92,7 +92,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                 var match = RuntimeRegex().Match(r);
                 if (match.Success)
                 {
-                    runtimes.AddOrUpdate(match.Groups[1].Value, new RuntimeVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
+                    runtimes.AddOrUpdateToLatest(match.Groups[1].Value, new RuntimeVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
                 }
             });
 
