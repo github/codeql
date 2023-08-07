@@ -59,7 +59,7 @@ private class YamlParseStep extends AdditionalTaintStep {
 }
 
 /**
- * A Node ends with YAML parse, parse_stream, parse_file methods
+ * Gets A Node ends with YAML parse, parse_stream, parse_file methods
  */
 API::Node yamlNode() {
   result = yamlLibrary().getMethod(["parse", "parse_stream", "parse_file"]).getReturn()
@@ -72,6 +72,6 @@ API::Node yamlNode() {
 }
 
 /**
- * A YAML module instance
+ * Gets A YAML module instance
  */
 API::Node yamlLibrary() { result = API::getTopLevelMember(["YAML", "Psych"]) }
