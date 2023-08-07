@@ -24,13 +24,17 @@ newtype JavaRelatedLocationType = CallContext()
 newtype TApplicationModeEndpoint =
   TExplicitArgument(Call call, DataFlow::Node arg) {
     exists(Argument argExpr |
-      arg.asExpr() = argExpr and not argExpr.isVararg() and call = argExpr.getCall()
+      arg.asExpr() = argExpr and call = argExpr.getCall() and not argExpr.isVararg()
     )
   } or
   TInstanceArgument(Call call, DataFlow::Node arg) { arg = DataFlow::getInstanceArgument(call) } or
-  TImplicitVarargsArray(Call call, DataFlow::ImplicitVarargsArray varargs, int idx) {
-    varargs.getCall() = call and
-    idx = min(Argument arg, int n | arg = call.getArgument(n) and arg.isVararg() | n)
+  TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
+    exists(Argument argExpr |
+      arg.asExpr() = argExpr and
+      call = argExpr.getCall() and
+      argExpr.isVararg() and
+      idx = min(int n | argExpr = call.getArgument(n) and argExpr.isVararg() | n)
+    )
   }
 
 /**
@@ -96,18 +100,18 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
  */
 class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArray {
   Call call;
-  DataFlow::ImplicitVarargsArray varargs;
+  DataFlow::Node vararg;
   int idx;
 
-  ImplicitVarargsArray() { this = TImplicitVarargsArray(call, varargs, idx) }
+  ImplicitVarargsArray() { this = TImplicitVarargsArray(call, vararg, idx) }
 
   override predicate isArgOf(Call c, int i) { c = call and i = idx }
 
   override Top asTop() { result = this.getCall() }
 
-  override DataFlow::Node asNode() { result = varargs }
+  override DataFlow::Node asNode() { result = vararg }
 
-  override string toString() { result = varargs.toString() }
+  override string toString() { result = vararg.toString() }
 }
 
 /**

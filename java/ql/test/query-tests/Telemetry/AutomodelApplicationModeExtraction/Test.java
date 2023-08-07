@@ -47,10 +47,10 @@ class Test {
 		);
 	}
 		
-	public static void FilesWalkExample(Path p) throws Exception {
+	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
 		Files.walk(
 			p, // negative example (modeled as a taint step)
-			FileVisitOption.FOLLOW_LINKS // the implicit varargs array is a candidate
+			o // the implicit varargs array is a candidate
 		);
 	}
 }
