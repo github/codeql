@@ -62,8 +62,8 @@ module ServerLess<Input I> {
    * Gets the looked up value if it exists or
    * the empty string if it does not.
    */
-  pragma[inline]
   bindingset[property]
+  pragma[inline]
   private string lookupValueOrEmpty(YamlMapping mapping, string property) {
     if exists(mapping.lookup(property))
     then result = mapping.lookup(property).(YamlScalar).getValue()
@@ -146,19 +146,19 @@ module ServerLess<Input I> {
   }
 
   /**
-   * Holds if a file with stem `fileStem` has a serverless handler denoted by `func`.
+   * Holds if a file with path `pathNoExt` (+ some extension) has a serverless handler denoted by `func`.
    *
    * This is a convenience predicate for the common case where the first part of the
    * handler property is the file name.
    *
    * `func` should be interpreted in a language specific way, see `mapping.md`.
    */
-  predicate hasServerlessHandler(string fileStem, string func, string framework, string runtime) {
+  predicate hasServerlessHandler(string pathNoExt, string func, string framework, string runtime) {
     exists(File ymlFile, string handler, string codeUri, string filePart |
       hasServerlessHandler(ymlFile, framework, handler, codeUri, runtime)
     |
       splitHandler(handler, filePart, func) and
-      fileStem = ymlFile.getParentContainer().getAbsolutePath() + "/" + codeUri + filePart
+      pathNoExt = ymlFile.getParentContainer().getAbsolutePath() + "/" + codeUri + filePart
     )
   }
 }
