@@ -22,18 +22,18 @@
 
   <recommendation>
     <p>
-      In order to maintain a trust boundary, data from less trusted sources should be validated before being used.
+      To maintain a trust boundary, validate data from less trusted sources before use.
     </p>
   </recommendation>
 
   <example>
     <p>
-      In the first (bad) example, the server accepts a parameter from the user and uses it to set the username without validation.
+      In the first (bad) example, the server accepts a parameter from the user, then uses it to set the username without validation.
     </p>
     <sample src="TrustBoundaryVulnerable.java" />
 
     <p>
-      In the second (good) example, the server validates the parameter before using it to set the username.
+      In the second (good) example, the server validates the parameter from the user, then uses it to set the username.
     </p>
     <sample src="TrustBoundaryFixed.java" />
 
