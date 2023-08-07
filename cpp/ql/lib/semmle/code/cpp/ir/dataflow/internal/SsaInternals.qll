@@ -193,7 +193,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
 
   /**
    * Gets the instruction that computes the base of this definition or use.
-   * This is always a `VariableAddressInstruction` or an `AllocationInstruction`.
+   * This is always a `VariableAddressInstruction` or an `CallInstruction`.
    */
   abstract BaseSourceVariableInstruction getBase();
 
