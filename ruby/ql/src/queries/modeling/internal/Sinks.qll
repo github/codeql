@@ -14,129 +14,96 @@ private import Util as Util
 // TODO: there is probably a more sensible central location for this module
 module Sinks {
   private module Configs {
-    signature class KindSig {
-      predicate isSink(DataFlow::Node node);
-
-      predicate isSanitizer(DataFlow::Node node);
-
-      string getKind();
-    }
-
-    signature class SinkSig extends DataFlow::Node;
-
-    signature class SanitizerSig extends DataFlow::Node;
-
-    abstract class MCustomization {
-  abstract DataFlow::Node getSink();
-  abstract DataFlow::Node getSanitizer();
-abstract string getKind();
-    }
-
-    module SKind<MCustomization Customization> implements KindSig {
-      predicate isSink(DataFlow::Node node) { node instanceof Customization::Sink }
-
-      predicate isSanitizer(DataFlow::Node node) { node instanceof Customization::Sanitizer }
-
-      string getKind() { Customization::isKind(result) }
-    }
-
-    module MCodeInjection implements MCustomization {
-      import CodeInjection
-
-      predicate isKind(string k) { k = "code-injection" }
-    }
-
-    module CodeInjectionKind = SKind<MCodeInjection>;
-
-    module MCommandInjection implements MCustomization {
-      import CommandInjection
-
-      predicate isKind(string k) { k = "command-injection" }
-    }
-
-    module CommandInjectionKind = SKind<MCommandInjection>;
-
-    module MPathInjection implements MCustomization {
-      import PathInjection
-
-      predicate isKind(string k) { k = "path-injection" }
-    }
-
-    module PathInjectionKind = SKind<MPathInjection>;
-
-    module MSqlInjection implements MCustomization {
-      import SqlInjection
-
-      predicate isKind(string k) { k = "sql-injection" }
-    }
-
-    module SqlInjectionKind = SKind<MSqlInjection>;
-
-    module HtmlInjection implements MCustomization {
-      import ReflectedXss as R
-      import StoredXss as S
-
-      class Sanitizer extends DataFlow::Node {
-        Sanitizer() { this instanceof R::Sanitizer or this instanceof S::Sanitizer }
+    abstract class Kind extends string {
+      Kind() {
+        this =
+          [
+            "code-injection", "command-injection", "path-injection", "sql-injection",
+            "sql-injection", "request-forgery", "url-redirection", "unsafe-deserialization",
+          ]
       }
 
-      class Sink extends DataFlow::Node {
-        Sink() { this instanceof R::Sink or this instanceof S::Sink }
+      abstract DataFlow::Node getASink();
+
+      abstract DataFlow::Node getASanitizer();
+
+      string getKind() { result = this }
+    }
+
+    class CodeInjectionKind extends Kind {
+      CodeInjectionKind() { this = "code-injection" }
+
+      override DataFlow::Node getASink() { result instanceof CodeInjection::Sink }
+
+      override DataFlow::Node getASanitizer() { result instanceof CodeInjection::Sanitizer }
+    }
+
+    class CommandInjectionKind extends Kind {
+      CommandInjectionKind() { this = "command-injection" }
+
+      override DataFlow::Node getASink() { result instanceof CommandInjection::Sink }
+
+      override DataFlow::Node getASanitizer() { result instanceof CommandInjection::Sanitizer }
+    }
+
+    class PathInjectionKind extends Kind {
+      PathInjectionKind() { this = "path-injection" }
+
+      override DataFlow::Node getASink() { result instanceof PathInjection::Sink }
+
+      override DataFlow::Node getASanitizer() { result instanceof PathInjection::Sanitizer }
+    }
+
+    class SqlInjectionKind extends Kind {
+      SqlInjectionKind() { this = "sql-injection" }
+
+      override DataFlow::Node getASink() { result instanceof SqlInjection::Sink }
+
+      override DataFlow::Node getASanitizer() { result instanceof SqlInjection::Sanitizer }
+    }
+
+    class HtmlInjectionKind extends Kind {
+      HtmlInjectionKind() { this = "html-injection" }
+
+      override DataFlow::Node getASink() {
+        result instanceof ReflectedXss::Sink or result instanceof StoredXss::Sink
       }
 
-      predicate isKind(string k) { k = "sql-injection" }
+      override DataFlow::Node getASanitizer() {
+        result instanceof ReflectedXss::Sanitizer or result instanceof StoredXss::Sanitizer
+      }
     }
 
-    module HtmlInjectionKind = SKind<MSqlInjection>;
+    class RequestForgeryKind extends Kind {
+      RequestForgeryKind() { this = "request-forgery" }
 
-    module MRequestForgery implements MCustomization {
-      import ServerSideRequestForgery
+      override DataFlow::Node getASink() { result instanceof ServerSideRequestForgery::Sink }
 
-      predicate isKind(string k) { k = "request-forgery" }
+      override DataFlow::Node getASanitizer() {
+        result instanceof ServerSideRequestForgery::Sanitizer
+      }
     }
 
-    module RequestForgeryKind = SKind<MRequestForgery>;
+    class UrlRedirectionKind extends Kind {
+      UrlRedirectionKind() { this = "url-redirection" }
 
-    module MUrlRedirection implements MCustomization {
-      import UrlRedirect
+      override DataFlow::Node getASink() { result instanceof UrlRedirect::Sink }
 
-      predicate isKind(string k) { k = "url-redirection" }
+      override DataFlow::Node getASanitizer() { result instanceof UrlRedirect::Sanitizer }
     }
 
-    module UrlRedirectionKind = SKind<MUrlRedirection>;
+    class UnsafeDeserializationKind extends Kind {
+      UnsafeDeserializationKind() { this = "unsafe-deserialization" }
 
-    module MUnsafeDeserialization implements MCustomization {
-      import UnsafeDeserialization
+      override DataFlow::Node getASink() { result instanceof UnsafeDeserialization::Sink }
 
-      predicate isKind(string k) { k = "unsafe-deserialization" }
+      override DataFlow::Node getASanitizer() { result instanceof UnsafeDeserialization::Sanitizer }
     }
-
-    module UnsafeDeserializationKind = SKind<MUnsafeDeserialization>;
   }
 
-  private DataFlow::Node getTaintSinkOfKind(string kind) {
+  private DataFlow::Node getTaintSinkOfKind(Configs::Kind kind) {
     result.getLocation().getFile() instanceof Util::RelevantFile and
-(
-kind = Configs::CodeInjectionKind::getKind()
-                                        and
-
-      // kind = SinkKinds::codeInjection() and result instanceof Configs::CodeInjectionKind::Sink
-      // or
-      // kind = SinkKinds::commandInjection() and result instanceof CommandInjection::Sink
-      // or
-      // kind = SinkKinds::htmlInjection() and
-      // (result instanceof ReflectedXss::Sink or result instanceof StoredXss::Sink)
-      // or
-      // kind = SinkKinds::pathInjection() and result instanceof PathInjection::Sink
-      // or
-      // kind = SinkKinds::requestForgery() and result instanceof ServerSideRequestForgery::Sink
-      // or
-      // kind = SinkKinds::unsafeDeserialization() and result instanceof UnsafeDeserialization::Sink
-      // or
-      // kind = SinkKinds::urlRedirection() and result instanceof UrlRedirect::Sink
-      // or
-      // kind = SinkKinds::sqlInjection() and result instanceof SqlInjection::Sink
-    ) and
+    result = kind.getASink() and
     // the sink is not a string literal
     not exists(Ast::StringLiteral str |
       str = result.asExpr().getExpr() and
@@ -146,7 +113,7 @@ kind = Configs::CodeInjectionKind::getKind()
   }
 
   private predicate flowFromParameterToSink(
-    DataFlow::ParameterNode param, DataFlow::Node knownSink, SinkKinds::Kind kind
+    DataFlow::ParameterNode param, DataFlow::Node knownSink, Configs::Kind kind
   ) {
     knownSink = getTaintSinkOfKind(kind) and
     param.flowsTo(knownSink) and
@@ -164,7 +131,7 @@ kind = Configs::CodeInjectionKind::getKind()
   }
 
   predicate parameterIsSuspicious(DataFlow::ParameterNode param, string kind) {
-    param.getName() = "sql" and kind = SinkKinds::sqlInjection()
+    param.getName() = "sql" and kind instanceof Configs::SqlInjectionKind
   }
 
   predicate sinkModelSuspiciousParameterName(string type, string path, string kind) {
