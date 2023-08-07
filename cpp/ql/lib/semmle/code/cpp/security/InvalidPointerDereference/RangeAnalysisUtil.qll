@@ -20,7 +20,8 @@ private Instruction getABoundIn(SemBound b, IRFunction func) {
 pragma[inline]
 private predicate boundedImpl(Instruction i, Instruction b, int delta) {
   exists(SemBound bound, IRFunction func |
-    semBounded(getSemanticExpr(i), bound, delta, true, _) and
+    semBounded(getSemanticExpr(i), bound, delta, true,
+      any(SemReason reason | not reason instanceof SemTypeReason)) and
     b = getABoundIn(bound, func) and
     i.getEnclosingIRFunction() = func
   )

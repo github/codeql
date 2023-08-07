@@ -811,3 +811,22 @@
 | test.swift:693:5:693:5 | arr6 | test.swift:693:5:693:5 | &... |
 | test.swift:694:15:694:15 | [post] arr6 | test.swift:694:15:694:15 | &... |
 | test.swift:694:15:694:15 | arr6 | test.swift:694:15:694:15 | &... |
+| test.swift:696:9:696:9 | SSA def(arr7) | test.swift:697:15:697:15 | arr7 |
+| test.swift:696:9:696:9 | arr7 | test.swift:696:9:696:9 | SSA def(arr7) |
+| test.swift:696:16:696:25 | [...] | test.swift:696:9:696:9 | arr7 |
+| test.swift:697:15:697:34 | call to randomElement() | test.swift:697:15:697:35 | ...! |
+| test.swift:701:9:701:9 | SSA def(set1) | test.swift:702:15:702:15 | set1 |
+| test.swift:701:9:701:9 | set1 | test.swift:701:9:701:9 | SSA def(set1) |
+| test.swift:701:9:701:15 | ... as ... | test.swift:701:9:701:9 | set1 |
+| test.swift:701:21:701:27 | [...] | test.swift:701:9:701:15 | ... as ... |
+| test.swift:702:15:702:15 | [post] set1 | test.swift:703:5:703:5 | set1 |
+| test.swift:702:15:702:15 | set1 | test.swift:703:5:703:5 | set1 |
+| test.swift:702:15:702:34 | call to randomElement() | test.swift:702:15:702:35 | ...! |
+| test.swift:703:5:703:5 | &... | test.swift:704:15:704:15 | set1 |
+| test.swift:703:5:703:5 | [post] set1 | test.swift:703:5:703:5 | &... |
+| test.swift:703:5:703:5 | set1 | test.swift:703:5:703:5 | &... |
+| test.swift:704:15:704:34 | call to randomElement() | test.swift:704:15:704:35 | ...! |
+| test.swift:706:9:706:9 | SSA def(set2) | test.swift:707:15:707:15 | set2 |
+| test.swift:706:9:706:9 | set2 | test.swift:706:9:706:9 | SSA def(set2) |
+| test.swift:706:16:706:30 | call to Set<Element>.init(_:) | test.swift:706:9:706:9 | set2 |
+| test.swift:707:15:707:34 | call to randomElement() | test.swift:707:15:707:35 | ...! |
