@@ -340,14 +340,14 @@ edges
 | test.swift:696:17:696:24 | call to source() | test.swift:696:16:696:25 | [...] [Array element] |
 | test.swift:697:15:697:15 | arr7 [Array element] | test.swift:697:15:697:34 | call to randomElement() [some:0] |
 | test.swift:697:15:697:34 | call to randomElement() [some:0] | test.swift:697:15:697:35 | ...! |
-| test.swift:703:5:703:5 | [post] set1 [Set element] | test.swift:704:15:704:15 | set1 [Set element] |
-| test.swift:703:17:703:24 | call to source() | test.swift:703:5:703:5 | [post] set1 [Set element] |
-| test.swift:704:15:704:15 | set1 [Set element] | test.swift:704:15:704:34 | call to randomElement() [some:0] |
+| test.swift:703:5:703:5 | [post] set1 [Collection element] | test.swift:704:15:704:15 | set1 [Collection element] |
+| test.swift:703:17:703:24 | call to source() | test.swift:703:5:703:5 | [post] set1 [Collection element] |
+| test.swift:704:15:704:15 | set1 [Collection element] | test.swift:704:15:704:34 | call to randomElement() [some:0] |
 | test.swift:704:15:704:34 | call to randomElement() [some:0] | test.swift:704:15:704:35 | ...! |
-| test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Set element] | test.swift:707:15:707:15 | set2 [Set element] |
-| test.swift:706:20:706:29 | [...] [Array element] | test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Set element] |
+| test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:707:15:707:15 | set2 [Collection element] |
+| test.swift:706:20:706:29 | [...] [Array element] | test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Collection element] |
 | test.swift:706:21:706:28 | call to source() | test.swift:706:20:706:29 | [...] [Array element] |
-| test.swift:707:15:707:15 | set2 [Set element] | test.swift:707:15:707:34 | call to randomElement() [some:0] |
+| test.swift:707:15:707:15 | set2 [Collection element] | test.swift:707:15:707:34 | call to randomElement() [some:0] |
 | test.swift:707:15:707:34 | call to randomElement() [some:0] | test.swift:707:15:707:35 | ...! |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
@@ -724,15 +724,15 @@ nodes
 | test.swift:697:15:697:15 | arr7 [Array element] | semmle.label | arr7 [Array element] |
 | test.swift:697:15:697:34 | call to randomElement() [some:0] | semmle.label | call to randomElement() [some:0] |
 | test.swift:697:15:697:35 | ...! | semmle.label | ...! |
-| test.swift:703:5:703:5 | [post] set1 [Set element] | semmle.label | [post] set1 [Set element] |
+| test.swift:703:5:703:5 | [post] set1 [Collection element] | semmle.label | [post] set1 [Collection element] |
 | test.swift:703:17:703:24 | call to source() | semmle.label | call to source() |
-| test.swift:704:15:704:15 | set1 [Set element] | semmle.label | set1 [Set element] |
+| test.swift:704:15:704:15 | set1 [Collection element] | semmle.label | set1 [Collection element] |
 | test.swift:704:15:704:34 | call to randomElement() [some:0] | semmle.label | call to randomElement() [some:0] |
 | test.swift:704:15:704:35 | ...! | semmle.label | ...! |
-| test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Set element] | semmle.label | call to Set<Element>.init(_:) [Set element] |
+| test.swift:706:16:706:30 | call to Set<Element>.init(_:) [Collection element] | semmle.label | call to Set<Element>.init(_:) [Collection element] |
 | test.swift:706:20:706:29 | [...] [Array element] | semmle.label | [...] [Array element] |
 | test.swift:706:21:706:28 | call to source() | semmle.label | call to source() |
-| test.swift:707:15:707:15 | set2 [Set element] | semmle.label | set2 [Set element] |
+| test.swift:707:15:707:15 | set2 [Collection element] | semmle.label | set2 [Collection element] |
 | test.swift:707:15:707:34 | call to randomElement() [some:0] | semmle.label | call to randomElement() [some:0] |
 | test.swift:707:15:707:35 | ...! | semmle.label | ...! |
 subpaths
