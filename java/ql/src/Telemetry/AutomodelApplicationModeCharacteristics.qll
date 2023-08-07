@@ -31,9 +31,9 @@ newtype TApplicationModeEndpoint =
   TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
     exists(Argument argExpr |
       arg.asExpr() = argExpr and
-      call = argExpr.getCall() and
+      call.getArgument(idx) = argExpr and
       argExpr.isVararg() and
-      idx = min(int n | argExpr = call.getArgument(n) and argExpr.isVararg() | n)
+      not exists(int i | i < idx and call.getArgument(i).(Argument).isVararg())
     )
   }
 

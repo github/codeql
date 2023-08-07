@@ -50,7 +50,9 @@ class Test {
 	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
 		Files.walk(
 			p, // negative example (modeled as a taint step)
-			o // the implicit varargs array is a candidate
+			o, // the implicit varargs array is a candidate
+			o // not a candidate (only the first arg corresponding to a varargs array
+			  // is extracted)
 		);
 	}
 }
