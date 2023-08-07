@@ -21,44 +21,11 @@ class TypeRandom extends RefType {
  */
 abstract class WeakRandomnessSource extends DataFlow::Node { }
 
-/**
- * A node representing a call to a constructor of `java.util.Random`.
- */
-private class JavaRandomSource extends WeakRandomnessSource {
-  JavaRandomSource() { this.asExpr().(ClassInstanceExpr).getType() instanceof TypeRandom }
-}
-
-/**
- * A node representing a call to one of the methods of `org.apache.commons.lang.RandomStringUtils`.
- */
-private class ApacheRandomStringUtilsMethodAccessSource extends WeakRandomnessSource {
-  ApacheRandomStringUtilsMethodAccessSource() {
-    this.asExpr()
-        .(MethodAccess)
-        .getMethod()
-        .hasQualifiedName("org.apache.commons.lang", "RandomStringUtils",
-          [
-            "random", "randomAlphabetic", "randomAlphanumeric", "randomAscii", "randomGraph",
-            "randomNumeric", "randomPrint"
-          ])
-  }
-}
-
-private class ThreadLocalRandomSource extends WeakRandomnessSource {
-  ThreadLocalRandomSource() {
-    this.asExpr()
-        .(MethodAccess)
-        .getMethod()
-        .hasQualifiedName("java.util.concurrent", "ThreadLocalRandom", "current")
-  }
-}
-
-/**
- * The `random` method of `java.lang.Math`.
- */
-private class MathRandomMethodAccess extends WeakRandomnessSource {
-  MathRandomMethodAccess() {
-    this.asExpr().(MethodAccess).getMethod().hasQualifiedName("java.lang", "Math", "random")
+private class RandomMethodSource extends WeakRandomnessSource {
+  RandomMethodSource() {
+    exists(RandomDataSource s | this.asExpr() = s.getOutput() |
+      not s.getQualifier().getType() instanceof SafeRandomImplementation
+    )
   }
 }
 
@@ -121,26 +88,12 @@ module WeakRandomnessConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof WeakRandomnessSink }
 
-  predicate isBarrier(DataFlow::Node n) { n.getTypeBound() instanceof SafeRandomImplementation }
-
   predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     n1.asExpr() = n2.asExpr().(BinaryExpr).getAnOperand()
     or
     n1.asExpr() = n2.asExpr().(UnaryExpr).getExpr()
-    or
-    exists(MethodAccess ma, Method m |
-      n1.asExpr() = ma.getQualifier() and
-      ma.getMethod() = m and
-      m.getDeclaringType().getAnAncestor() instanceof TypeRandom
-    |
-      m.hasName(["nextInt", "nextLong", "nextFloat", "nextDouble", "nextBoolean", "nextGaussian"]) and
-      n2.asExpr() = ma
-      or
-      m.hasName("nextBytes") and
-      n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getArgument(0)
-    )
     or
     covertsBytesToString(n1, n2)
   }
