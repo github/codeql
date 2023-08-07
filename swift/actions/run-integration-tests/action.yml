@@ -18,7 +18,7 @@ runs:
     - name: Run integration tests
       shell: bash
       run: |
-        python swift/integration-tests/runner.py --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+        python swift/integration-tests/runner.py --check-databases --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
       env:
         SEMMLE_DEBUG_TRACER: 10000
     - name: Upload test logs
