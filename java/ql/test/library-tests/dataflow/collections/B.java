@@ -9,6 +9,7 @@ public class B {
   static void sink(Object obj) { }
 
   static Object[] storeArrayElement(Object obj) { return new Object[] {obj}; }
+  static Set storeSetElement(Object obj) { return Set.of(obj); }
 
   static Object readArrayElement(Object[] obj) { return obj[0]; }
   static boolean readArrayElement(boolean[] obj) { return obj[0]; }
@@ -1231,6 +1232,16 @@ public class B {
       // "java.util;Map;false;ofEntries;;;Argument[0].MapValue.ArrayElement;ReturnValue.MapValue;value;manual",
       Map out = null;
       Object[] in = storeArrayElement(storeMapValue(source())); out = Map.ofEntries((Map.Entry[])in); sink(readMapValue(out)); // $ hasValueFlow
+    }
+    {
+      // "java.util;Set;true;clear;;;Argument[this].WithoutElement;Argument[this];value;manual"
+      Set out = null;
+      Set in = storeSetElement(source()); out = in; out.clear(); sink(readElement(out)); // No flow
+    }
+    {
+      // "java.util;Set;true;clear;;;Argument[this].WithoutElement;Argument[this];value;manual"
+      Set out = null;
+      Set in = (Set)source(); out = in; out.clear(); sink(out); // $ hasValueFlow
     }
     {
       // "java.util;Set;false;copyOf;(Collection);;Argument[0].Element;ReturnValue.Element;value;manual",

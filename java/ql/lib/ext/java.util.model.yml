@@ -314,6 +314,7 @@ extensions:
       - ["java.util", "Scanner", True, "useLocale", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["java.util", "Scanner", True, "useRadix", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["java.util", "Set", False, "copyOf", "(Collection)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      - ["java.util", "Set", False, "clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["java.util", "Set", False, "of", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Set", False, "of", "(Object,Object)", "", "Argument[0..1]", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Set", False, "of", "(Object,Object,Object)", "", "Argument[0..2]", "ReturnValue.Element", "value", "manual"]
@@ -427,7 +428,6 @@ extensions:
       - ["java.util", "Iterator", "remove", "()", "summary", "manual"]
       - ["java.util", "List", "remove", "(Object)", "summary", "manual"]
       - ["java.util", "Map", "clear", "()", "summary", "manual"]
-      - ["java.util", "Set", "clear", "()", "summary", "manual"]
       - ["java.util", "Set", "remove", "(Object)", "summary", "manual"]
       - ["java.util", "Set", "removeAll", "(Collection)", "summary", "manual"]
 
