@@ -377,6 +377,7 @@ abstract private class AbstractBaseSourceVariable extends TBaseSourceVariable {
   /** Gets the type of this base source variable. */
   final DataFlowType getType() { this.getLanguageType().hasUnspecifiedType(result, _) }
 
+  /** Gets the `CppType` of this base source variable. */
   abstract CppType getLanguageType();
 }
 

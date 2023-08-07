@@ -22,6 +22,7 @@ private module SourceVariables {
 
     SourceVariable() { this = TMkSourceVariable(base, ind) }
 
+    /** Gets the IR variable associated with this `SourceVariable`, if any. */
     IRVariable getIRVariable() { result = base.(BaseIRVariable).getIRVariable() }
 
     /**

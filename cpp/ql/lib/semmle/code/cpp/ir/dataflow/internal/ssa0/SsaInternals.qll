@@ -16,6 +16,9 @@ private import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
 private module SourceVariables {
   class SourceVariable extends BaseSourceVariable {
+    /**
+     * Gets the base source variable of this `SourceVariable`.
+     */
     BaseSourceVariable getBaseVariable() { result = this }
   }
 }
