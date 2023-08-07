@@ -213,7 +213,7 @@ class ApplicationModeMetadataExtractor extends string {
 
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
-    string input
+    string input, string isVarargsArray
   ) {
     exists(Callable callable |
       e.getCall().getCallee() = callable and
@@ -224,7 +224,10 @@ class ApplicationModeMetadataExtractor extends string {
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
       name = callable.getName() and
-      signature = ExternalFlow::paramsString(callable)
+      signature = ExternalFlow::paramsString(callable) and
+      if e instanceof ImplicitVarargsArray
+      then isVarargsArray = "true"
+      else isVarargsArray = "false"
     )
   }
 }
