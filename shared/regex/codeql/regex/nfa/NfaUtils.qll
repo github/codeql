@@ -1305,10 +1305,67 @@ module Make<RegexTreeViewSig TreeImpl> {
     bindingset[s]
     private string escape(string s) {
       result =
-        s.replaceAll("\\", "\\\\")
-            .replaceAll("\n", "\\n")
-            .replaceAll("\r", "\\r")
-            .replaceAll("\t", "\\t")
+        escapeUnicodeString(s.replaceAll("\\", "\\\\")
+              .replaceAll("\n", "\\n")
+              .replaceAll("\r", "\\r")
+              .replaceAll("\t", "\\t"))
+    }
+
+    /**
+     * Gets a string where the unicode characters in `s` have been escaped.
+     */
+    bindingset[s]
+    private string escapeUnicodeString(string s) {
+      result = concat(int i, string char | char = escapeUnicodeChar(s.charAt(i)) | char order by i)
+    }
+
+    /**
+     * Gets a unicode escaped string for `char`.
+     * If `char` is a printable char, then `char` is returned.
+     */
+    bindingset[char]
+    private string escapeUnicodeChar(string char) {
+      if isPrintable(char)
+      then result = char
+      else result = "\\u" + to4digitNumber(toHex(any(int i | i.toUnicode() = char)))
+    }
+
+    /**
+     * Gets a string representation of `number` in hexadecimal.
+     * Works for the first 200000 numbers, which is enough for every unicode character.
+     */
+    private string toHex(int number) {
+      number = [0 .. 200000] and
+      if number <= 9
+      then result = number + ""
+      else
+        if number <= 15
+        then result = "abcdef".charAt(number - 10)
+        else result = toHex(number / 16) + toHex(number % 16)
+    }
+
+    /** Gets a string where 0 has been prepended to `num` until it has length 4. */
+    bindingset[num]
+    private string to4digitNumber(string num) {
+      if num.length() >= 4
+      then result = num
+      else
+        if num.length() = 3
+        then result = "0" + num
+        else
+          if num.length() = 2
+          then result = "00" + num
+          else
+            if num.length() = 1
+            then result = "000" + num
+            else result = "0000"
+    }
+
+    /** Holds if `char` is easily printable char, or whitespace. */
+    private predicate isPrintable(string char) {
+      exists(ascii(char))
+      or
+      char = "\n\r\t".charAt(_)
     }
 
     /**
