@@ -33,6 +33,9 @@ newtype TApplicationModeEndpoint =
     idx = min(Argument arg, int n | arg = call.getArgument(n) and arg.isVararg() | n)
   }
 
+/**
+ * An endpoint is a node that is a candidate for modeling.
+ */
 abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint {
   abstract predicate isArgOf(Call c, int idx);
 
@@ -82,6 +85,15 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
   override string toString() { result = arg.toString() }
 }
 
+/**
+ * An endpoint that represents an implicit varargs array.
+ * We choose to represent the varargs array as a single endpoint, rather than as multiple endpoints.
+ *
+ * This avoids the problem of having to deal with redundant endpoints downstream.
+ *
+ * In order to be able to distinguish between varargs endpoints and regular endpoints, we export the `isVarargsArray`
+ * meta data field in the extraction queries.
+ */
 class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArray {
   Call call;
   DataFlow::ImplicitVarargsArray varargs;
