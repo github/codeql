@@ -1,4 +1,4 @@
-import DataFlowParameter
+private import codeql.dataflow.DataFlow
 
 module MakeImplCommon<DataFlowParameter Lang> {
   private import Lang
