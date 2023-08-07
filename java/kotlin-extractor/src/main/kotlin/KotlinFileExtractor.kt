@@ -552,7 +552,7 @@ open class KotlinFileExtractor(
                 logger.warnElement("Expected annotation property to define a getter", prop)
             } else {
                 val getterId = useFunction<DbMethod>(getter)
-                val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}", getter.returnType, extractEnumTypeAccesses)
+                val exprId = extractAnnotationValueExpression(v, id, i, "{$getterId}", getter.returnType, extractEnumTypeAccesses)
                 if (exprId != null) {
                     tw.writeAnnotValue(id, getterId, exprId)
                 }
@@ -587,7 +587,7 @@ open class KotlinFileExtractor(
                 extractAnnotation(v, parent, idx, extractEnumTypeAccesses, contextLabel)
             }
             is IrVararg -> {
-                tw.getLabelFor<DbArrayinit>("@\"annotationarray;{${parent}};$contextLabel\"").also { arrayId ->
+                tw.getLabelFor<DbArrayinit>("@\"annotationarray;{$parent};$contextLabel\"").also { arrayId ->
                     // Use the context type (i.e., the type the annotation expects, not the actual type of the array)
                     // because the Java extractor fills in array types using the same technique. These should only
                     // differ for generic annotations.
@@ -1193,7 +1193,7 @@ open class KotlinFileExtractor(
             // n + o'th parameter, where `o` is the parameter offset caused by adding any dispatch receiver to the parameter list.
             // Note we don't need to add the extension receiver here because `useValueParameter` always assumes an extension receiver
             // will be prepended if one exists.
-            val realFunctionId = useFunction<DbCallable>(f)
+            val realFunctionId = useFunction<DbCallable>(f, parentId, null)
             DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams, typeParameters = listOf(), isStatic = true)).use {
                 val realParamsVarId = getValueParameterLabel(id, parameterTypes.size - 2)
                 val intType = pluginContext.irBuiltIns.intType
