@@ -74,7 +74,10 @@ module CppLangImplConstant implements LangSig<FloatDelta> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(SemExpr e, float bound, boolean upper) { none() }
+  predicate hasConstantBound(SemExpr e, float bound, boolean upper, SemReason reason) {
+    semHasConstantBoundConstantSpecific(e, bound, upper) and
+    reason instanceof SemTypeReason
+  }
 
   /**
    * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
