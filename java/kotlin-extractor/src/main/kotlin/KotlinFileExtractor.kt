@@ -2926,7 +2926,11 @@ open class KotlinFileExtractor(
                         tw.writeStmts_throwstmt(throwId, stmtParent.parent, stmtParent.idx, callable)
                         tw.writeHasLocation(throwId, locId)
                         val newExprId = extractNewExpr(it, null, thrownType, locId, throwId, 0, callable, throwId)
-                        extractTypeAccess(thrownType, locId, newExprId, -3, callable, throwId)
+                        if (newExprId == null) {
+                            logger.errorElement("No ID for newExpr in noWhenBranchMatchedException", c)
+                        } else {
+                            extractTypeAccess(thrownType, locId, newExprId, -3, callable, throwId)
+                        }
                     }
                 }
                 isBuiltinCallInternal(c, "illegalArgumentException") -> {
@@ -3270,7 +3274,7 @@ open class KotlinFileExtractor(
         idx: Int,
         callable: Label<out DbCallable>,
         enclosingStmt: Label<out DbStmt>
-    ): Label<DbNewexpr> = extractNewExpr(useFunction<DbConstructor>(calledConstructor, constructorTypeArgs), constructedType, locId, parent, idx, callable, enclosingStmt)
+    ): Label<DbNewexpr>? = extractNewExpr(useFunction<DbConstructor>(calledConstructor, constructorTypeArgs), constructedType, locId, parent, idx, callable, enclosingStmt)
 
     private fun needsObinitFunction(c: IrClass) = c.primaryConstructor == null && c.constructors.count() > 1
 
@@ -3310,26 +3314,31 @@ open class KotlinFileExtractor(
                 extractDefaultsCallArguments(it, e.symbol.owner, callable, enclosingStmt, valueArgs, null, null)
             }
         } else {
-            extractNewExpr(e.symbol.owner, eType.arguments, type, locId, parent, idx, callable, enclosingStmt).also {
-
-                val realCallTarget = e.symbol.owner.realOverrideTarget
-                // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
-                if (e is IrEnumConstructorCall &&
-                    realCallTarget is IrConstructor &&
-                    realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
-                    realCallTarget.valueParameters.size == 2 &&
-                    realCallTarget.valueParameters[0].type == pluginContext.irBuiltIns.stringType &&
-                    realCallTarget.valueParameters[1].type == pluginContext.irBuiltIns.intType) {
-
-                    val id0 = extractNull(pluginContext.irBuiltIns.stringType, locId, it, 0, callable, enclosingStmt)
-                    tw.writeCompiler_generated(id0, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
-
-                    val id1 = extractConstantInteger(0, locId, it, 1, callable, enclosingStmt)
-                    tw.writeCompiler_generated(id1, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
-                } else {
-                    extractCallValueArguments(it, e, enclosingStmt, callable, 0)
-                }
+            val newExprId = extractNewExpr(e.symbol.owner, eType.arguments, type, locId, parent, idx, callable, enclosingStmt)
+            if (newExprId == null) {
+                logger.errorElement("Cannot get newExpr ID", e)
+                return
             }
+
+            val realCallTarget = e.symbol.owner.realOverrideTarget
+            // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
+            if (e is IrEnumConstructorCall &&
+                realCallTarget is IrConstructor &&
+                realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
+                realCallTarget.valueParameters.size == 2 &&
+                realCallTarget.valueParameters[0].type == pluginContext.irBuiltIns.stringType &&
+                realCallTarget.valueParameters[1].type == pluginContext.irBuiltIns.intType) {
+
+                val id0 = extractNull(pluginContext.irBuiltIns.stringType, locId, newExprId, 0, callable, enclosingStmt)
+                tw.writeCompiler_generated(id0, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+
+                val id1 = extractConstantInteger(0, locId, newExprId, 1, callable, enclosingStmt)
+                tw.writeCompiler_generated(id1, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+            } else {
+                extractCallValueArguments(newExprId, e, enclosingStmt, callable, 0)
+            }
+
+            newExprId
         }
 
         if (isAnonymous) {
