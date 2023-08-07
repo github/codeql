@@ -30,21 +30,15 @@ sink(foo1.call(null, source, "")); // NOT OK
 sink(foo2.call(null, source, "")); // OK
 
 sink(foo1.apply(null, [source, ""])); // NOT OK
-sink(foo2.apply(null, [source, ""])); // OK
-
-// doesn't work due to fundamental limitations of our dataflow analysis.
-// exactly (and I mean exactly) the same thing happens in the below `obj.foo` example.
-// in general we don't track flow that first goes through a call, and then a return, unless we can summarize it. 
-// in the other examples we can summarize the flow, because it's quite simple, but here we can't.
-// (try to read the QLDoc in the top of `Configuration.qll`, that might help). 
-sink(foo1_apply([source, ""])); // NOT OK - but not flagged [INCONSISTENCY]
+sink(foo2.apply(null, [source, ""])); // OK [INCONSISTENCY]
+sink(foo1_apply([source, ""])); // NOT OK
 
 foo1_apply_sink([source, ""]); // This works, because we don't need a return after a call (the sink is inside the called function).
 
 sink(foo1_apply.apply(["", source])); // OK
 
 sink(foo1_call([source, ""])); // NOT OK
-sink(foo1_call(["", source])); // OK
+sink(foo1_call(["", source])); // OK [INCONSISTENCY]
 
 
 var obj = {
@@ -62,17 +56,17 @@ sink(foo(obj)); // NOT OK - but not flagged [INCONSISTENCY]
 
 function argumentsObject() {
   function sinkArguments1() {
-    sink(arguments[1]); // OK
+    sink(arguments[1]); // OK [INCONSISTENCY]
   }
   function sinkArguments0() {
     sink(arguments[0]); // NOT OK
   }
-  
+
   function fowardArguments() {
     sinkArguments1.apply(this, arguments);
     sinkArguments0.apply(this, arguments);
   }
-  
+
   fowardArguments.apply(this, [source, ""]);
 }
 
