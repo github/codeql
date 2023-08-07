@@ -2,10 +2,10 @@
  * Provides Swift-specific definitions for use in the taint tracking library.
  */
 
-private import codeql.dataflow.TaintTrackingParameter
+private import codeql.dataflow.TaintTracking
 private import DataFlowImplSpecific
 
-module SwiftTaintTracking implements TaintTrackingParameter<SwiftDataFlow> {
+module SwiftTaintTracking implements InputSig<SwiftDataFlow> {
   import TaintTrackingPrivate
   import TaintTrackingPublic
 }

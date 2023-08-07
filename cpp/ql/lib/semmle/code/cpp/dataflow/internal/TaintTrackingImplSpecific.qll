@@ -2,9 +2,9 @@
  * Provides C++-specific definitions for use in the taint tracking library.
  */
 
-private import codeql.dataflow.TaintTrackingParameter
+private import codeql.dataflow.TaintTracking
 private import DataFlowImplSpecific
 
-module CppOldTaintTracking implements TaintTrackingParameter<CppOldDataFlow> {
+module CppOldTaintTracking implements InputSig<CppOldDataFlow> {
   import TaintTrackingUtil
 }

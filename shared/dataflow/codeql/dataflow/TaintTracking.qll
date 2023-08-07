@@ -3,19 +3,39 @@
  * global (inter-procedural) taint-tracking analyses.
  */
 
-private import DataFlow
-private import DataFlowImpl
-private import DataFlowParameter
-import TaintTrackingParameter
+private import DataFlow as DF
+private import internal.DataFlowImpl
+
+/**
+ * Provides language-specific taint-tracking parameters.
+ */
+signature module InputSig<DF::InputSig Lang> {
+  /**
+   * Holds if `node` should be a sanitizer in all global taint flow configurations
+   * but not in local taint.
+   */
+  predicate defaultTaintSanitizer(Lang::Node node);
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be included in all
+   * global taint flow configurations.
+   */
+  predicate defaultAdditionalTaintStep(Lang::Node src, Lang::Node sink);
+
+  /**
+   * Holds if taint flow configurations should allow implicit reads of `c` at sinks
+   * and inputs to additional taint steps.
+   */
+  bindingset[node]
+  predicate defaultImplicitTaintRead(Lang::Node node, Lang::ContentSet c);
+}
 
 /**
  * Construct the modules for taint-tracking analyses.
  */
-module TaintFlowMake<
-  DataFlowParameter DataFlowLang, TaintTrackingParameter<DataFlowLang> TaintTrackingLang>
-{
+module TaintFlowMake<DF::InputSig DataFlowLang, InputSig<DataFlowLang> TaintTrackingLang> {
   private import TaintTrackingLang
-  private import DataFlowMake<DataFlowLang> as DataFlow
+  private import DF::DataFlowMake<DataFlowLang> as DataFlow
   private import MakeImpl<DataFlowLang> as DataFlowInternal
 
   private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
