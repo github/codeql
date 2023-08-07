@@ -8,7 +8,7 @@
 Sanitizing untrusted input is a common technique for preventing injection attacks and other security 
 vulnerabilities. Regular expressions are often used to perform this sanitization. However, when the 
 regular expression matches multiple consecutive characters, replacing it just once 
-can result in the unsafe text re-appearing in the sanitized input.
+can result in the unsafe text reappearing in the sanitized input.
 </p>
 <p>
 Attackers can exploit this issue by crafting inputs that, when sanitized with an ineffective regular 
