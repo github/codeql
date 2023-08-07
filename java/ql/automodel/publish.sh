@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-AUTOMODEL_ROOT="$(dirname $0)"
+AUTOMODEL_ROOT="$(readlink -f "$(dirname $0)")"
 WORKSPACE_ROOT="$AUTOMODEL_ROOT/../../../.."
 GRPS="automodel,-test"
 
