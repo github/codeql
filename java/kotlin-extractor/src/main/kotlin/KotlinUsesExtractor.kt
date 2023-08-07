@@ -1322,16 +1322,30 @@ open class KotlinUsesExtractor(
             else -> false
         }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
-        return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
-    }
-
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T>? {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         }
         val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        val parentId = useDeclarationParent(javaFun.parent, false, classTypeArgsIncludingOuterClasses, true)
+        if (parentId == null) {
+            logger.error("Couldn't find parent ID for function ${f.name.asString()}")
+            return null
+        }
+        return useFunction(f, javaFun, parentId, classTypeArgsIncludingOuterClasses)
+    }
+
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+        if (f.isLocalFunction()) {
+            val ids = getLocallyVisibleFunctionLabels(f)
+            return ids.function.cast<T>()
+        }
+        val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        return useFunction(f, javaFun, parentId, classTypeArgsIncludingOuterClasses)
+    }
+
+    private fun <T: DbCallable> useFunction(f: IrFunction, javaFun: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out T> {
         val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
         val id: Label<T> = tw.getLabelFor(label) {
             extractPrivateSpecialisedDeclaration(f, classTypeArgsIncludingOuterClasses)
