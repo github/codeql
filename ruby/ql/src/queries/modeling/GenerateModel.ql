@@ -1,10 +1,11 @@
 // TODO: metadata
 private import internal.Types
+private import internal.Sources
 private import internal.Sinks
 
 query predicate typeModel = Types::typeModel/3;
 
-query predicate sourceModel(string type, string path, string kind) { none() }
+query predicate sourceModel = Sources::sourceModel/3;
 
 query predicate sinkModel = Sinks::sinkModel/3;
 
