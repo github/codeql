@@ -154,7 +154,7 @@ class CapturedParameter = CaptureInput::CapturedParameter;
 
 module CaptureFlow = VariableCapture::Flow<CaptureInput>;
 
-CaptureFlow::ClosureNode asClosureNode(Node n) {
+private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode() or
   result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
   result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
@@ -165,11 +165,11 @@ CaptureFlow::ClosureNode asClosureNode(Node n) {
     n
 }
 
-private predicate captureStoreStep(Node node1, ClosureContent c, Node node2) {
+private predicate captureStoreStep(Node node1, CapturedVariableContent c, Node node2) {
   CaptureFlow::storeStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
 }
 
-private predicate captureReadStep(Node node1, ClosureContent c, Node node2) {
+private predicate captureReadStep(Node node1, CapturedVariableContent c, Node node2) {
   CaptureFlow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
 }
 
@@ -565,7 +565,9 @@ ContentApprox getContentApprox(Content c) {
   or
   c instanceof MapValueContent and result = TMapValueContentApprox()
   or
-  exists(CapturedVariable v | c = TClosureContent(v) and result = TClosureContentApprox(v))
+  exists(CapturedVariable v |
+    c = TCapturedVariableContent(v) and result = TCapturedVariableContentApprox(v)
+  )
   or
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
 }

@@ -151,6 +151,11 @@ signature module OutputSig<InputSig I> {
   /**
    * A data flow node that we need to reference in the step relations for
    * captured variables.
+   *
+   * Note that only the `SynthesizedCaptureNode` subclass is expected to be
+   * added as additional nodes in `DataFlow::Node`. The other subclasses are
+   * expected to already be present and are included here in order to reference
+   * them in the step relations.
    */
   class ClosureNode;
 
@@ -229,53 +234,65 @@ module Flow<InputSig Input> implements OutputSig<Input> {
   private import Input
 
   additional module ConsistencyChecks {
-    private predicate relevantExpr(Expr e) {
-      e instanceof VariableRead or
-      any(VariableWrite vw).getSource() = e or
-      e instanceof ClosureExpr or
-      any(ClosureExpr ce).hasAliasedAccess(e)
+    final private class FinalExpr = Expr;
+
+    private class RelevantExpr extends FinalExpr {
+      RelevantExpr() {
+        this instanceof VariableRead or
+        any(VariableWrite vw).getSource() = this or
+        this instanceof ClosureExpr or
+        any(ClosureExpr ce).hasAliasedAccess(this)
+      }
     }
 
-    private predicate relevantBasicBlock(BasicBlock bb) {
-      exists(Expr e | relevantExpr(e) and e.hasCfgNode(bb, _))
-      or
-      exists(VariableWrite vw | vw.hasCfgNode(bb, _))
+    final private class FinalBasicBlock = BasicBlock;
+
+    private class RelevantBasicBlock extends FinalBasicBlock {
+      RelevantBasicBlock() {
+        exists(RelevantExpr e | e.hasCfgNode(this, _))
+        or
+        exists(VariableWrite vw | vw.hasCfgNode(this, _))
+      }
     }
 
-    private predicate relevantCallable(Callable c) {
-      exists(BasicBlock bb | relevantBasicBlock(bb) and bb.getEnclosingCallable() = c)
-      or
-      exists(CapturedVariable v | v.getCallable() = c)
-      or
-      exists(ClosureExpr ce | ce.hasBody(c))
+    final private class FinalCallable = Callable;
+
+    private class RelevantCallable extends FinalCallable {
+      RelevantCallable() {
+        exists(RelevantBasicBlock bb | bb.getEnclosingCallable() = this)
+        or
+        exists(CapturedVariable v | v.getCallable() = this)
+        or
+        exists(ClosureExpr ce | ce.hasBody(this))
+      }
     }
 
     query predicate uniqueToString(string msg, int n) {
       exists(string elem |
-        n = strictcount(BasicBlock bb | relevantBasicBlock(bb) and not exists(bb.toString())) and
+        n = strictcount(RelevantBasicBlock bb | not exists(bb.toString())) and
         elem = "BasicBlock"
         or
         n = strictcount(CapturedVariable v | not exists(v.toString())) and elem = "CapturedVariable"
         or
-        n = strictcount(Expr e | relevantExpr(e) and not exists(e.toString())) and elem = "Expr"
+        n = strictcount(RelevantExpr e | not exists(e.toString())) and elem = "Expr"
         or
-        n = strictcount(Callable c | relevantCallable(c) and not exists(c.toString())) and
+        n = strictcount(RelevantCallable c | not exists(c.toString())) and
         elem = "Callable"
       |
         msg = n + " " + elem + "(s) are missing toString"
       )
       or
       exists(string elem |
-        n = strictcount(BasicBlock bb | relevantBasicBlock(bb) and 2 <= strictcount(bb.toString())) and
+        n = strictcount(RelevantBasicBlock bb | 2 <= strictcount(bb.toString())) and
         elem = "BasicBlock"
         or
         n = strictcount(CapturedVariable v | 2 <= strictcount(v.toString())) and
         elem = "CapturedVariable"
         or
-        n = strictcount(Expr e | relevantExpr(e) and 2 <= strictcount(e.toString())) and
+        n = strictcount(RelevantExpr e | 2 <= strictcount(e.toString())) and
         elem = "Expr"
         or
-        n = strictcount(Callable c | relevantCallable(c) and 2 <= strictcount(c.toString())) and
+        n = strictcount(RelevantCallable c | 2 <= strictcount(c.toString())) and
         elem = "Callable"
       |
         msg = n + " " + elem + "(s) have multiple toStrings"
@@ -283,7 +300,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     }
 
     query predicate uniqueEnclosingCallable(BasicBlock bb, string msg) {
-      relevantBasicBlock(bb) and
+      bb instanceof RelevantBasicBlock and
       (
         msg = "BasicBlock has no enclosing callable" and not exists(bb.getEnclosingCallable())
         or
@@ -293,19 +310,19 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     }
 
     query predicate uniqueDominator(BasicBlock bb, string msg) {
-      relevantBasicBlock(bb) and
+      bb instanceof RelevantBasicBlock and
       msg = "BasicBlock has multiple immediate dominators" and
       2 <= strictcount(getImmediateBasicBlockDominator(bb))
     }
 
     query predicate localDominator(BasicBlock bb, string msg) {
-      relevantBasicBlock(bb) and
+      bb instanceof RelevantBasicBlock and
       msg = "BasicBlock has non-local dominator" and
       bb.getEnclosingCallable() != getImmediateBasicBlockDominator(bb).getEnclosingCallable()
     }
 
     query predicate localSuccessor(BasicBlock bb, string msg) {
-      relevantBasicBlock(bb) and
+      bb instanceof RelevantBasicBlock and
       msg = "BasicBlock has non-local successor" and
       bb.getEnclosingCallable() != getABasicBlockSuccessor(bb).getEnclosingCallable()
     }
@@ -322,7 +339,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     }
 
     query predicate uniqueLocation(Expr e, string msg) {
-      relevantExpr(e) and
+      e instanceof RelevantExpr and
       (
         msg = "Expr has no location" and not exists(e.getLocation())
         or
@@ -331,7 +348,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     }
 
     query predicate uniqueCfgNode(Expr e, string msg) {
-      relevantExpr(e) and
+      e instanceof RelevantExpr and
       (
         msg = "Expr has no cfg node" and not e.hasCfgNode(_, _)
         or
@@ -413,7 +430,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     }
 
     query predicate uniqueCallableLocation(Callable c, string msg) {
-      relevantCallable(c) and
+      c instanceof RelevantCallable and
       (
         msg = "Callable has no location" and not exists(c.getLocation())
         or
@@ -622,13 +639,12 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       entryBlock(bb) and
       pragma[only_bind_out](bb.getEnclosingCallable()) = c and
       i =
-        -1 +
-          min(int j |
+        min(int j |
             j = 1 or
             captureRead(_, bb, j, _, _) or
             captureWrite(_, bb, j, _, _) or
             synthRead(_, bb, j, _, _)
-          )
+          ) - 1
     |
       cc = TThis(c)
       or
@@ -637,9 +653,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
   }
 
   private module CaptureSsaInput implements Ssa::InputSig {
-    class BasicBlock instanceof Input::BasicBlock {
-      string toString() { result = super.toString() }
-    }
+    final class BasicBlock = Input::BasicBlock;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = Input::getImmediateBasicBlockDominator(bb)
@@ -666,7 +680,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
 
     predicate variableRead(BasicBlock bb, int i, SourceVariable cc, boolean certain) {
       (
-        synthThisQualifier(bb, i) and cc = TThis(bb.(Input::BasicBlock).getEnclosingCallable())
+        synthThisQualifier(bb, i) and cc = TThis(bb.getEnclosingCallable())
         or
         exists(CapturedVariable v | cc = TVariable(v) |
           captureRead(v, bb, i, true, _) or synthRead(v, bb, i, true, _)

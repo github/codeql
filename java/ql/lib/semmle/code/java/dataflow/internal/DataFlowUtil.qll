@@ -275,10 +275,10 @@ class MapValueContent extends Content, TMapValueContent {
 }
 
 /** A captured variable. */
-class ClosureContent extends Content, TClosureContent {
+class CapturedVariableContent extends Content, TCapturedVariableContent {
   CapturedVariable v;
 
-  ClosureContent() { this = TClosureContent(v) }
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
 
   CapturedVariable getVariable() { result = v }
 

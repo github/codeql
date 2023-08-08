@@ -65,7 +65,7 @@ private module Cached {
     TCollectionContent() or
     TMapKeyContent() or
     TMapValueContent() or
-    TClosureContent(CapturedVariable v) or
+    TCapturedVariableContent(CapturedVariable v) or
     TSyntheticFieldContent(SyntheticField s)
 
   cached
@@ -75,7 +75,7 @@ private module Cached {
     TCollectionContentApprox() or
     TMapKeyContentApprox() or
     TMapValueContentApprox() or
-    TClosureContentApprox(CapturedVariable v) or
+    TCapturedVariableContentApprox(CapturedVariable v) or
     TSyntheticFieldApproxContent()
 }
 
