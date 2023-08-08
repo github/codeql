@@ -41,6 +41,41 @@ edges
 | UnsafeDeserialization.rb:122:5:122:13 | yaml_data | UnsafeDeserialization.rb:123:25:123:33 | yaml_data | provenance |  |
 | UnsafeDeserialization.rb:122:17:122:22 | call to params | UnsafeDeserialization.rb:122:17:122:28 | ...[...] | provenance |  |
 | UnsafeDeserialization.rb:122:17:122:28 | ...[...] | UnsafeDeserialization.rb:122:5:122:13 | yaml_data | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:138:32:138:40 | yaml_data | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:139:37:139:45 | yaml_data | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:140:32:140:40 | yaml_data | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:141:20:141:48 | call to parse_stream | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:143:14:143:35 | call to parse | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:144:14:144:40 | call to parse_file | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:146:5:146:24 | call to children | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:152:14:152:33 | call to children | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:152:14:152:39 | call to first | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:153:15:153:34 | call to children | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:153:15:153:46 | call to children | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:153:15:153:58 | call to children | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:156:14:156:44 | call to children | provenance |  |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | UnsafeDeserialization.rb:156:14:156:47 | ...[...] | provenance |  |
+| UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:137:17:137:28 | ...[...] | provenance |  |
+| UnsafeDeserialization.rb:137:17:137:28 | ...[...] | UnsafeDeserialization.rb:137:5:137:13 | yaml_data | provenance |  |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | UnsafeDeserialization.rb:146:5:146:24 | call to children | provenance |  |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | UnsafeDeserialization.rb:152:14:152:33 | call to children | provenance |  |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | UnsafeDeserialization.rb:152:14:152:39 | call to first | provenance |  |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | UnsafeDeserialization.rb:153:15:153:34 | call to children | provenance |  |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | UnsafeDeserialization.rb:153:15:153:46 | call to children | provenance |  |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | UnsafeDeserialization.rb:153:15:153:58 | call to children | provenance |  |
+| UnsafeDeserialization.rb:146:5:146:24 | call to children | UnsafeDeserialization.rb:146:35:146:39 | child | provenance |  |
+| UnsafeDeserialization.rb:152:14:152:33 | call to children | UnsafeDeserialization.rb:152:14:152:39 | call to first | provenance |  |
+| UnsafeDeserialization.rb:153:15:153:34 | call to children | UnsafeDeserialization.rb:153:15:153:37 | ...[...] | provenance |  |
+| UnsafeDeserialization.rb:153:15:153:34 | call to children | UnsafeDeserialization.rb:153:15:153:46 | call to children | provenance |  |
+| UnsafeDeserialization.rb:153:15:153:34 | call to children | UnsafeDeserialization.rb:153:15:153:58 | call to children | provenance |  |
+| UnsafeDeserialization.rb:153:15:153:37 | ...[...] | UnsafeDeserialization.rb:153:15:153:46 | call to children | provenance |  |
+| UnsafeDeserialization.rb:153:15:153:37 | ...[...] | UnsafeDeserialization.rb:153:15:153:58 | call to children | provenance |  |
+| UnsafeDeserialization.rb:153:15:153:46 | call to children | UnsafeDeserialization.rb:153:15:153:49 | ...[...] | provenance |  |
+| UnsafeDeserialization.rb:153:15:153:46 | call to children | UnsafeDeserialization.rb:153:15:153:58 | call to children | provenance |  |
+| UnsafeDeserialization.rb:153:15:153:49 | ...[...] | UnsafeDeserialization.rb:153:15:153:58 | call to children | provenance |  |
+| UnsafeDeserialization.rb:156:14:156:44 | call to children | UnsafeDeserialization.rb:156:14:156:47 | ...[...] | provenance |  |
 | UnsafeDeserialization.rb:161:5:161:14 | plist_data | UnsafeDeserialization.rb:162:30:162:39 | plist_data | provenance |  |
 | UnsafeDeserialization.rb:161:5:161:14 | plist_data | UnsafeDeserialization.rb:163:30:163:39 | plist_data | provenance |  |
 | UnsafeDeserialization.rb:161:18:161:23 | call to params | UnsafeDeserialization.rb:161:18:161:29 | ...[...] | provenance |  |
@@ -101,6 +136,28 @@ nodes
 | UnsafeDeserialization.rb:122:17:122:22 | call to params | semmle.label | call to params |
 | UnsafeDeserialization.rb:122:17:122:28 | ...[...] | semmle.label | ...[...] |
 | UnsafeDeserialization.rb:123:25:123:33 | yaml_data | semmle.label | yaml_data |
+| UnsafeDeserialization.rb:137:5:137:13 | yaml_data | semmle.label | yaml_data |
+| UnsafeDeserialization.rb:137:17:137:22 | call to params | semmle.label | call to params |
+| UnsafeDeserialization.rb:137:17:137:28 | ...[...] | semmle.label | ...[...] |
+| UnsafeDeserialization.rb:138:32:138:40 | yaml_data | semmle.label | yaml_data |
+| UnsafeDeserialization.rb:139:37:139:45 | yaml_data | semmle.label | yaml_data |
+| UnsafeDeserialization.rb:140:32:140:40 | yaml_data | semmle.label | yaml_data |
+| UnsafeDeserialization.rb:141:20:141:48 | call to parse_stream | semmle.label | call to parse_stream |
+| UnsafeDeserialization.rb:143:14:143:35 | call to parse | semmle.label | call to parse |
+| UnsafeDeserialization.rb:144:14:144:40 | call to parse_file | semmle.label | call to parse_file |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | semmle.label | call to parse_stream |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | semmle.label | call to parse_stream |
+| UnsafeDeserialization.rb:146:5:146:24 | call to children | semmle.label | call to children |
+| UnsafeDeserialization.rb:146:35:146:39 | child | semmle.label | child |
+| UnsafeDeserialization.rb:152:14:152:33 | call to children | semmle.label | call to children |
+| UnsafeDeserialization.rb:152:14:152:39 | call to first | semmle.label | call to first |
+| UnsafeDeserialization.rb:153:15:153:34 | call to children | semmle.label | call to children |
+| UnsafeDeserialization.rb:153:15:153:37 | ...[...] | semmle.label | ...[...] |
+| UnsafeDeserialization.rb:153:15:153:46 | call to children | semmle.label | call to children |
+| UnsafeDeserialization.rb:153:15:153:49 | ...[...] | semmle.label | ...[...] |
+| UnsafeDeserialization.rb:153:15:153:58 | call to children | semmle.label | call to children |
+| UnsafeDeserialization.rb:156:14:156:44 | call to children | semmle.label | call to children |
+| UnsafeDeserialization.rb:156:14:156:47 | ...[...] | semmle.label | ...[...] |
 | UnsafeDeserialization.rb:161:5:161:14 | plist_data | semmle.label | plist_data |
 | UnsafeDeserialization.rb:161:18:161:23 | call to params | semmle.label | call to params |
 | UnsafeDeserialization.rb:161:18:161:29 | ...[...] | semmle.label | ...[...] |
@@ -127,6 +184,17 @@ subpaths
 | UnsafeDeserialization.rb:110:34:110:36 | xml | UnsafeDeserialization.rb:109:11:109:16 | call to params | UnsafeDeserialization.rb:110:34:110:36 | xml | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:109:11:109:16 | call to params | user-provided value |
 | UnsafeDeserialization.rb:116:25:116:33 | yaml_data | UnsafeDeserialization.rb:115:17:115:22 | call to params | UnsafeDeserialization.rb:116:25:116:33 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:115:17:115:22 | call to params | user-provided value |
 | UnsafeDeserialization.rb:123:25:123:33 | yaml_data | UnsafeDeserialization.rb:122:17:122:22 | call to params | UnsafeDeserialization.rb:123:25:123:33 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:122:17:122:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:138:32:138:40 | yaml_data | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:138:32:138:40 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:139:37:139:45 | yaml_data | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:139:37:139:45 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:140:32:140:40 | yaml_data | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:140:32:140:40 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:141:20:141:48 | call to parse_stream | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:141:20:141:48 | call to parse_stream | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:143:14:143:35 | call to parse | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:143:14:143:35 | call to parse | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:144:14:144:40 | call to parse_file | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:144:14:144:40 | call to parse_file | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:145:19:145:47 | call to parse_stream | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:146:35:146:39 | child | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:146:35:146:39 | child | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:152:14:152:39 | call to first | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:152:14:152:39 | call to first | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:153:15:153:58 | call to children | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:153:15:153:58 | call to children | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:156:14:156:47 | ...[...] | UnsafeDeserialization.rb:137:17:137:22 | call to params | UnsafeDeserialization.rb:156:14:156:47 | ...[...] | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:137:17:137:22 | call to params | user-provided value |
 | UnsafeDeserialization.rb:162:30:162:39 | plist_data | UnsafeDeserialization.rb:161:18:161:23 | call to params | UnsafeDeserialization.rb:162:30:162:39 | plist_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:161:18:161:23 | call to params | user-provided value |
 | UnsafeDeserialization.rb:163:30:163:39 | plist_data | UnsafeDeserialization.rb:161:18:161:23 | call to params | UnsafeDeserialization.rb:163:30:163:39 | plist_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:161:18:161:23 | call to params | user-provided value |
 | UnsafeDeserialization.rb:173:24:173:34 | call to read | UnsafeDeserialization.rb:173:24:173:34 | call to read | UnsafeDeserialization.rb:173:24:173:34 | call to read | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:173:24:173:34 | call to read | value from stdin |
