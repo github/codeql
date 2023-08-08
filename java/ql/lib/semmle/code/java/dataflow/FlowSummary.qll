@@ -101,6 +101,7 @@ abstract class SyntheticCallable extends string {
  * A module for importing frameworks that define synthetic callables.
  */
 private module SyntheticCallables {
+  private import semmle.code.java.dispatch.WrappedInvocation
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.Stream
 }
@@ -169,6 +170,8 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
     )
   }
 }
+
+class Provenance = Impl::Public::Provenance;
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
