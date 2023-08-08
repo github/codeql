@@ -55,16 +55,16 @@ class MyTextInput : UITextInput {
 	func text(in range: UITextRange) -> String? { return nil }
 	func harmless(in range: UITextRange) -> String? { return nil }
 
-	func shouldChangeText(in range: UITextRange, replacementText text: String) -> Bool { // $ MISSING: source=local
-		sink(arg: text) // $ MISSING: tainted=
+	func shouldChangeText(in range: UITextRange, replacementText text: String) -> Bool { // $ source=local
+		sink(arg: text) // $ tainted
 
 		return true
 	}
 }
 
 class MyUITextFieldDelegate : UITextFieldDelegate {
-	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool { // $ MISSING: source=local
-		sink(arg: string) // $ MISSING: tainted=
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool { // $ source=local
+		sink(arg: string) // $ tainted
 
 		return true
 	}
@@ -77,6 +77,6 @@ func test(textField: UITextField, searchTextField: UISearchTextField, myTextInpu
   _ = textField.text?.uppercased() // $ source=local
   _ = searchTextField.text // $ source=local
 
-  _ = myTextInput.text(in: range)! // $ MISSING: source=local
+  _ = myTextInput.text(in: range)! // $ source=local
   _ = myTextInput.harmless(in: range)! // GOOD (not input)
 }
