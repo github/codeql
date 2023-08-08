@@ -144,25 +144,27 @@ func taintCollections(array: inout Array<Int>, contiguousArray: inout Contiguous
   sink(arg: array[0]) // $ tainted=142
   array.withContiguousStorageIfAvailable({
     buffer in
+    sink(arg: buffer) // $ SPURIOUS: tainted=142
+    sink(arg: buffer[0]) // $ tainted=142
     sink(arg: array)
     sink(arg: array[0]) // $ MISSING: tainted=142
   })
 
   contiguousArray[0] = source2()
   sink(arg: contiguousArray)
-  sink(arg: contiguousArray[0]) // $ MISSING: tainted=151
+  sink(arg: contiguousArray[0]) // $ MISSING: tainted=153
   contiguousArray.withContiguousStorageIfAvailable({
     buffer in
     sink(arg: buffer)
-    sink(arg: buffer[0]) // $ MISSING: tainted=151
+    sink(arg: buffer[0]) // $ MISSING: tainted=153
   })
 
   dictionary[0] = source2()
   sink(arg: dictionary)
-  sink(arg: dictionary[0]!) // $ MISSING: tainted=160
+  sink(arg: dictionary[0]!) // $ MISSING: tainted=162
   dictionary.withContiguousStorageIfAvailable({
     buffer in
     sink(arg: buffer)
-    sink(arg: buffer[0]) // $ MISSING: tainted=160
+    sink(arg: buffer[0]) // $ MISSING: tainted=162
   })
 }
