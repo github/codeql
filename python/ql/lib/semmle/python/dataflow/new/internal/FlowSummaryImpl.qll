@@ -1378,7 +1378,7 @@ module Private {
 
     /**
      * Holds if a neutral model `csv` exists (semi-colon separated format). Used for testing purposes.
-     * The syntax is: "namespace;type;name;signature;provenance"",
+     * The syntax is: "namespace;type;name;signature;kind;provenance"",
      */
     query predicate neutral(string csv) {
       exists(RelevantNeutralCallable c |
