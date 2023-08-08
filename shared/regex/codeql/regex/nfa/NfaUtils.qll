@@ -1327,38 +1327,19 @@ module Make<RegexTreeViewSig TreeImpl> {
     private string escapeUnicodeChar(string char) {
       if isPrintable(char)
       then result = char
-      else result = "\\u" + to4digitNumber(toHex(any(int i | i.toUnicode() = char)))
+      else result = "\\u" + to4digitHex(any(int i | i.toUnicode() = char))
     }
 
     /**
-     * Gets a string representation of `number` in hexadecimal.
-     * Works for the first 200000 numbers, which is enough for every unicode character.
+     * Gets a 4-digit hex representation of `i`.
      */
-    private string toHex(int number) {
-      number = [0 .. 200000] and
-      if number <= 9
-      then result = number + ""
-      else
-        if number <= 15
-        then result = "abcdef".charAt(number - 10)
-        else result = toHex(number / 16) + toHex(number % 16)
-    }
-
-    /** Gets a string where 0 has been prepended to `num` until it has length 4. */
-    bindingset[num]
-    private string to4digitNumber(string num) {
-      if num.length() >= 4
-      then result = num
-      else
-        if num.length() = 3
-        then result = "0" + num
-        else
-          if num.length() = 2
-          then result = "00" + num
-          else
-            if num.length() = 1
-            then result = "000" + num
-            else result = "0000"
+    bindingset[i]
+    string to4digitHex(int i) {
+      result =
+        "0123456789abcdef".charAt(i.bitShiftRight(12).bitAnd(15)) +
+          "0123456789abcdef".charAt(i.bitShiftRight(8).bitAnd(15)) +
+          "0123456789abcdef".charAt(i.bitShiftRight(4).bitAnd(15)) +
+          "0123456789abcdef".charAt(i.bitAnd(15))
     }
 
     /** Holds if `char` is easily printable char, or whitespace. */
