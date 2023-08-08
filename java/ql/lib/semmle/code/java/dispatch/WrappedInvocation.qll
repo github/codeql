@@ -62,16 +62,9 @@ Method getRunnerTarget(MethodAccess ma) {
 import semmle.code.java.dataflow.FlowSummary
 import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific as ImplSpecific
 
-private predicate hasExternalSummary(Callable c) {
-  exists(SummarizedCallableBase scb | scb.asCallable() = c |
-    ImplSpecific::summaryElement(scb, _, _, _, _)
-  )
-}
-
 private predicate mayInvokeCallback(SrcMethod m, int n) {
   m.getParameterType(n).(RefType).getSourceDeclaration() instanceof FunctionalInterface and
-  (not m.fromSource() or m.isNative() or m.getFile().getAbsolutePath().matches("%/test/stubs/%")) and
-  not hasExternalSummary(m)
+  (not m.fromSource() or m.isNative() or m.getFile().getAbsolutePath().matches("%/test/stubs/%"))
 }
 
 private class SummarizedCallableWithCallback extends SummarizedCallable {
