@@ -94,8 +94,9 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
 
 cached
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address, int indirectionIndex) {
-    exists(Instruction base | isDef(_, _, address, base, _, indirectionIndex) |
+  TDefImpl(BaseSourceVariableInstruction base, Operand address, int indirectionIndex) {
+    isDef(_, _, address, base, _, indirectionIndex) and
+    (
       // We only include the definition if the SSA pruning stage
       // concluded that the definition is live after the write.
       any(SsaInternals0::Def def).getAddressOperand() = address
@@ -105,8 +106,8 @@ private newtype TDefOrUseImpl =
       base.(VariableAddressInstruction).getAstVariable() instanceof GlobalLikeVariable
     )
   } or
-  TUseImpl(Operand operand, int indirectionIndex) {
-    isUse(_, operand, _, _, indirectionIndex) and
+  TUseImpl(BaseSourceVariableInstruction base, Operand operand, int indirectionIndex) {
+    isUse(_, operand, base, _, indirectionIndex) and
     not isDef(_, _, operand, _, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
@@ -265,15 +266,17 @@ abstract class DefImpl extends DefOrUseImpl {
 }
 
 private class DirectDef extends DefImpl, TDefImpl {
-  DirectDef() { this = TDefImpl(address, ind) }
+  BaseSourceVariableInstruction base;
 
-  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+  DirectDef() { this = TDefImpl(base, address, ind) }
 
-  override int getIndirection() { isDef(_, _, address, _, result, ind) }
+  override BaseSourceVariableInstruction getBase() { result = base }
 
-  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+  override int getIndirection() { isDef(_, _, address, base, result, ind) }
 
-  override predicate isCertain() { isDef(true, _, address, _, _, ind) }
+  override Node0Impl getValue() { isDef(_, result, address, base, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, base, _, ind) }
 }
 
 private class IteratorDef extends DefImpl, TIteratorDef {
@@ -316,6 +319,7 @@ abstract class UseImpl extends DefOrUseImpl {
 
 abstract private class OperandBasedUse extends UseImpl {
   Operand operand;
+  BaseSourceVariableInstruction base;
 
   bindingset[ind]
   OperandBasedUse() { any() }
@@ -323,24 +327,24 @@ abstract private class OperandBasedUse extends UseImpl {
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     // See the comment in `ssa0`'s `OperandBasedUse` for an explanation of this
     // predicate's implementation.
-    exists(BaseSourceVariableInstruction base | base = this.getBase() |
-      if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
-      then
-        exists(Operand op, int indirectionIndex, int indirection |
-          indirectionIndex = this.getIndirectionIndex() and
-          indirection = this.getIndirection() and
-          op =
-            min(Operand cand, int i |
-              isUse(_, cand, base, indirection, indirectionIndex) and
-              block.getInstruction(i) = cand.getUse()
-            |
-              cand order by i
-            ) and
-          block.getInstruction(index) = op.getUse()
-        )
-      else operand.getUse() = block.getInstruction(index)
-    )
+    if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
+    then
+      exists(Operand op, int indirectionIndex, int indirection |
+        indirectionIndex = this.getIndirectionIndex() and
+        indirection = this.getIndirection() and
+        op =
+          min(Operand cand, int i |
+            isUse(_, cand, base, indirection, indirectionIndex) and
+            block.getInstruction(i) = cand.getUse()
+          |
+            cand order by i
+          ) and
+        block.getInstruction(index) = op.getUse()
+      )
+    else operand.getUse() = block.getInstruction(index)
   }
+
+  final override BaseSourceVariableInstruction getBase() { result = base }
 
   final Operand getOperand() { result = operand }
 
@@ -348,25 +352,19 @@ abstract private class OperandBasedUse extends UseImpl {
 }
 
 private class DirectUse extends OperandBasedUse, TUseImpl {
-  DirectUse() { this = TUseImpl(operand, ind) }
+  DirectUse() { this = TUseImpl(base, operand, ind) }
 
-  override int getIndirection() { isUse(_, operand, _, result, ind) }
+  override int getIndirection() { isUse(_, operand, base, result, ind) }
 
-  override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
-
-  override predicate isCertain() { isUse(true, operand, _, _, ind) }
+  override predicate isCertain() { isUse(true, operand, base, _, ind) }
 
   override Node getNode() { nodeHasOperand(result, operand, ind) }
 }
 
 private class IteratorUse extends OperandBasedUse, TIteratorUse {
-  BaseSourceVariableInstruction container;
+  IteratorUse() { this = TIteratorUse(operand, base, ind) }
 
-  IteratorUse() { this = TIteratorUse(operand, container, ind) }
-
-  override int getIndirection() { isIteratorUse(container, operand, result, ind) }
-
-  override BaseSourceVariableInstruction getBase() { result = container }
+  override int getIndirection() { isIteratorUse(base, operand, result, ind) }
 
   override predicate isCertain() { none() }
 
