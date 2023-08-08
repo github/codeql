@@ -15,8 +15,8 @@ func taintThroughClosurePointer() {
   sink(arg: myArray1[0]) // $ tainted=13
   let return1 = myArray1.withUnsafeBytes({
     ptr1 in
-    sink(arg: ptr1)
-    sink(arg: ptr1[0]) // $ MISSING: tainted=13
+    sink(arg: ptr1) // $ SPURIOUS: tainted=13
+    sink(arg: ptr1[0]) // $ tainted=13
     return source()
   })
   sink(arg: return1) // $ tainted=20
@@ -30,8 +30,8 @@ func taintThroughClosurePointer() {
   sink(arg: myArray2[0]) // $ tainted=28
   let return2 = myArray2.withUnsafeBufferPointer({
     ptr2 in
-    sink(arg: ptr2)
-    sink(arg: ptr2[0]) // $ MISSING: tainted=28
+    sink(arg: ptr2) // $ SPURIOUS: tainted=28
+    sink(arg: ptr2[0]) // $ tainted=28
     return source()
   })
   sink(arg: return2) // $ tainted=35
