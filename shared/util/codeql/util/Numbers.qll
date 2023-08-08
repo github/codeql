@@ -105,6 +105,8 @@ private int toHex(string hex) {
  */
 bindingset[i]
 string to4digitHex(int i) {
+  i >= 0 and
+  i <= 65535 and
   result =
     "0123456789abcdef".charAt(i.bitShiftRight(12).bitAnd(15)) +
       "0123456789abcdef".charAt(i.bitShiftRight(8).bitAnd(15)) +
