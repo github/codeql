@@ -6,7 +6,7 @@ import swift
 private import codeql.swift.dataflow.ExternalFlow
 
 /**
- * A model for `UITextField` and `UITextInput` members that are flow sources.
+ * A model for `UITextField`, `UITextInput` and related class members that are flow sources.
  */
 private class UITextFieldSource extends SourceModelCsv {
   override predicate row(string row) {
