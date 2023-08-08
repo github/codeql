@@ -299,30 +299,24 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       )
     }
 
-    query predicate uniqueEnclosingCallable(BasicBlock bb, string msg) {
-      bb instanceof RelevantBasicBlock and
-      (
-        msg = "BasicBlock has no enclosing callable" and not exists(bb.getEnclosingCallable())
-        or
-        msg = "BasicBlock has multiple enclosing callables" and
-        2 <= strictcount(bb.getEnclosingCallable())
-      )
+    query predicate uniqueEnclosingCallable(RelevantBasicBlock bb, string msg) {
+      msg = "BasicBlock has no enclosing callable" and not exists(bb.getEnclosingCallable())
+      or
+      msg = "BasicBlock has multiple enclosing callables" and
+      2 <= strictcount(bb.getEnclosingCallable())
     }
 
-    query predicate uniqueDominator(BasicBlock bb, string msg) {
-      bb instanceof RelevantBasicBlock and
+    query predicate uniqueDominator(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has multiple immediate dominators" and
       2 <= strictcount(getImmediateBasicBlockDominator(bb))
     }
 
-    query predicate localDominator(BasicBlock bb, string msg) {
-      bb instanceof RelevantBasicBlock and
+    query predicate localDominator(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has non-local dominator" and
       bb.getEnclosingCallable() != getImmediateBasicBlockDominator(bb).getEnclosingCallable()
     }
 
-    query predicate localSuccessor(BasicBlock bb, string msg) {
-      bb instanceof RelevantBasicBlock and
+    query predicate localSuccessor(RelevantBasicBlock bb, string msg) {
       msg = "BasicBlock has non-local successor" and
       bb.getEnclosingCallable() != getABasicBlockSuccessor(bb).getEnclosingCallable()
     }
@@ -338,23 +332,17 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       not captureAccess(v, _)
     }
 
-    query predicate uniqueLocation(Expr e, string msg) {
-      e instanceof RelevantExpr and
-      (
-        msg = "Expr has no location" and not exists(e.getLocation())
-        or
-        msg = "Expr has multiple locations" and 2 <= strictcount(e.getLocation())
-      )
+    query predicate uniqueLocation(RelevantExpr e, string msg) {
+      msg = "Expr has no location" and not exists(e.getLocation())
+      or
+      msg = "Expr has multiple locations" and 2 <= strictcount(e.getLocation())
     }
 
-    query predicate uniqueCfgNode(Expr e, string msg) {
-      e instanceof RelevantExpr and
-      (
-        msg = "Expr has no cfg node" and not e.hasCfgNode(_, _)
-        or
-        msg = "Expr has multiple cfg nodes" and
-        2 <= strictcount(BasicBlock bb, int i | e.hasCfgNode(bb, i))
-      )
+    query predicate uniqueCfgNode(RelevantExpr e, string msg) {
+      msg = "Expr has no cfg node" and not e.hasCfgNode(_, _)
+      or
+      msg = "Expr has multiple cfg nodes" and
+      2 <= strictcount(BasicBlock bb, int i | e.hasCfgNode(bb, i))
     }
 
     private predicate uniqueWriteTarget(VariableWrite vw, string msg) {
@@ -429,13 +417,10 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       )
     }
 
-    query predicate uniqueCallableLocation(Callable c, string msg) {
-      c instanceof RelevantCallable and
-      (
-        msg = "Callable has no location" and not exists(c.getLocation())
-        or
-        msg = "Callable has multiple locations" and 2 <= strictcount(c.getLocation())
-      )
+    query predicate uniqueCallableLocation(RelevantCallable c, string msg) {
+      msg = "Callable has no location" and not exists(c.getLocation())
+      or
+      msg = "Callable has multiple locations" and 2 <= strictcount(c.getLocation())
     }
 
     query predicate consistencyOverview(string msg, int n) {
