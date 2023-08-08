@@ -570,12 +570,8 @@ module AiohttpWebModel {
     override DataFlow::Node getMimetypeOrContentTypeArg() {
       result = this.getArgByName("content_type")
       or
-      exists(DataFlow::Node headers, Dict d |
-        headers = this.getArgByName("headers").getALocalSource()
-      |
-        headers.asExpr() = d and
-        d.getAKey().(StrConst).getText().toLowerCase() = "content-type" and
-        d.getAValue() = result.asExpr()
+      exists(string key | key.toLowerCase() = "content-type" |
+        result = this.getKeywordParameter("headers").getSubscript(key).getAValueReachingSink()
       )
     }
 
