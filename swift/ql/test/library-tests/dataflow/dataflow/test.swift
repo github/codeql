@@ -692,6 +692,19 @@ func testArray() {
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
     sink(arg: arr6[0]) // $ flow=693
+
+    var arr7 = [source()]
+    sink(arg: arr7.randomElement()!) // $ flow=696
+}
+
+func testSetCollections() {
+    var set1: Set = [1,2,3]
+    sink(arg: set1.randomElement()!)
+    set1.insert(source())
+    sink(arg: set1.randomElement()!) // $flow=703
+
+    let set2 = Set([source()])
+    sink(arg: set2.randomElement()!) // $ flow=706
 }
 
 struct MyOptionals {

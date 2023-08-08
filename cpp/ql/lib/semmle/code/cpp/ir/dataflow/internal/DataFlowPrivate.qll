@@ -1078,7 +1078,7 @@ private IRVariable getIRVariableForParameterNode(ParameterNode p) {
 
 /** Holds if `v` is the source variable corresponding to the parameter represented by `p`. */
 pragma[nomagic]
-private predicate parameterNodeHasSourceVariable(ParameterNode p, Ssa::SourceIRVariable v) {
+private predicate parameterNodeHasSourceVariable(ParameterNode p, Ssa::SourceVariable v) {
   v.getIRVariable() = getIRVariableForParameterNode(p) and
   exists(Position pos | p.isParameterOf(_, pos) |
     pos instanceof DirectPosition and

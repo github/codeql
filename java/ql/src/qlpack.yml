@@ -12,4 +12,5 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - Telemetry/ExtractorInformation.yml
+  - Telemetry/AutomodelCandidateFilter.yml
 warnOnImplicitThis: true

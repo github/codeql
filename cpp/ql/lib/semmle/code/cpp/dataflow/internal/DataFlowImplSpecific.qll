@@ -2,7 +2,7 @@
  * Provides C++-specific definitions for use in the data flow library.
  */
 
-private import codeql.dataflow.DataFlowParameter
+private import codeql.dataflow.DataFlow
 
 module Private {
   import DataFlowPrivate
@@ -13,7 +13,7 @@ module Public {
   import DataFlowUtil
 }
 
-module CppOldDataFlow implements DataFlowParameter {
+module CppOldDataFlow implements InputSig {
   import Private
   import Public
 

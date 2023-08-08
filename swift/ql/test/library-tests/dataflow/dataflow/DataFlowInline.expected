@@ -1,2 +1,12 @@
 failures
 testFailures
+| test.swift:733:15:733:17 | ...! | Unexpected result: flow=723 |
+| test.swift:733:20:734:1 | // $ flow=710\n | Missing result:flow=710 |
+| test.swift:734:15:734:17 | ...! | Unexpected result: flow=724 |
+| test.swift:734:20:735:1 | // $ flow=711\n | Missing result:flow=711 |
+| test.swift:735:15:735:15 | v3 | Unexpected result: flow=725 |
+| test.swift:735:19:736:1 | // $ flow=712\n | Missing result:flow=712 |
+| test.swift:737:15:737:21 | ...! | Unexpected result: flow=727 |
+| test.swift:737:24:738:1 | // $ flow=714\n | Missing result:flow=714 |
+| test.swift:738:15:738:19 | .v3 | Unexpected result: flow=728 |
+| test.swift:738:23:739:1 | // $ flow=715\n | Missing result:flow=715 |
