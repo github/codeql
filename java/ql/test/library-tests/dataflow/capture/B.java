@@ -227,4 +227,25 @@ public class B {
     }
   }
 
+  void testDoubleCall() {
+    String s = source("src");
+    List<String> l = new ArrayList<>();
+    List<String> l2 = new ArrayList<>();
+    class MyLocal2 {
+      MyLocal2() {
+        sink(l.get(0)); // no flow
+        sink(l2.get(0)); // no flow
+        l.add(s);
+      }
+      void run() {
+        l2.add(l.get(0));
+      }
+    }
+    // The ClassInstanceExpr has two calls in the same cfg node:
+    // First the constructor call for which it is the postupdate,
+    // and then as instance argument to the run call.
+    new MyLocal2().run();
+    sink(l.get(0)); // $ hasValueFlow=src
+    sink(l2.get(0)); // $ hasValueFlow=src
+  }
 }
