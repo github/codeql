@@ -45,6 +45,14 @@ edges
 | summaries.rb:1:1:1:7 | tainted | summaries.rb:147:16:147:22 | tainted |
 | summaries.rb:1:1:1:7 | tainted | summaries.rb:150:39:150:45 | tainted |
 | summaries.rb:1:1:1:7 | tainted | summaries.rb:150:39:150:45 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:154:20:154:26 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:154:20:154:26 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:155:28:155:34 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:155:28:155:34 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:156:27:156:33 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:156:27:156:33 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:158:15:158:21 | tainted |
+| summaries.rb:1:1:1:7 | tainted | summaries.rb:158:15:158:21 | tainted |
 | summaries.rb:1:11:1:36 | call to identity | summaries.rb:1:1:1:7 | tainted |
 | summaries.rb:1:11:1:36 | call to identity | summaries.rb:1:1:1:7 | tainted |
 | summaries.rb:1:20:1:36 | call to source | summaries.rb:1:11:1:36 | call to identity |
@@ -232,6 +240,9 @@ edges
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:145:26:145:32 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:147:16:147:22 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:150:39:150:45 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:154:20:154:26 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:155:28:155:34 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:156:27:156:33 | tainted |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:16:122:22 | [post] tainted |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:25:122:25 | [post] y |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:33:122:33 | [post] z |
@@ -475,6 +486,18 @@ nodes
 | summaries.rb:147:16:147:22 | tainted | semmle.label | tainted |
 | summaries.rb:150:39:150:45 | tainted | semmle.label | tainted |
 | summaries.rb:150:39:150:45 | tainted | semmle.label | tainted |
+| summaries.rb:154:20:154:26 | tainted | semmle.label | tainted |
+| summaries.rb:154:20:154:26 | tainted | semmle.label | tainted |
+| summaries.rb:155:28:155:34 | tainted | semmle.label | tainted |
+| summaries.rb:155:28:155:34 | tainted | semmle.label | tainted |
+| summaries.rb:156:27:156:33 | tainted | semmle.label | tainted |
+| summaries.rb:156:27:156:33 | tainted | semmle.label | tainted |
+| summaries.rb:158:15:158:21 | tainted | semmle.label | tainted |
+| summaries.rb:158:15:158:21 | tainted | semmle.label | tainted |
+| summaries.rb:163:20:163:36 | call to source | semmle.label | call to source |
+| summaries.rb:163:20:163:36 | call to source | semmle.label | call to source |
+| summaries.rb:166:20:166:36 | call to source | semmle.label | call to source |
+| summaries.rb:166:20:166:36 | call to source | semmle.label | call to source |
 subpaths
 invalidSpecComponent
 #select
@@ -574,6 +597,18 @@ invalidSpecComponent
 | summaries.rb:147:16:147:22 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:147:16:147:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:150:39:150:45 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:150:39:150:45 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:150:39:150:45 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:150:39:150:45 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:154:20:154:26 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:154:20:154:26 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:154:20:154:26 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:154:20:154:26 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:155:28:155:34 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:155:28:155:34 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:155:28:155:34 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:155:28:155:34 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:156:27:156:33 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:156:27:156:33 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:156:27:156:33 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:156:27:156:33 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:158:15:158:21 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:158:15:158:21 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:158:15:158:21 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:158:15:158:21 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | $@ | summaries.rb:163:20:163:36 | call to source | call to source |
+| summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | $@ | summaries.rb:163:20:163:36 | call to source | call to source |
+| summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | $@ | summaries.rb:166:20:166:36 | call to source | call to source |
+| summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | $@ | summaries.rb:166:20:166:36 | call to source | call to source |
 warning
 | CSV type row should have 3 columns but has 1: TooFewColumns |
 | CSV type row should have 3 columns but has 6: TooManyColumns;;Member[Foo].Instance;too;many;columns |

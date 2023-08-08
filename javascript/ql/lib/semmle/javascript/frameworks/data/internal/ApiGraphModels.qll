@@ -454,6 +454,14 @@ private API::Node getNodeFromPath(string type, AccessPath path, int n) {
   or
   // Apply a type step
   typeStep(getNodeFromPath(type, path, n), result)
+  or
+  // Apply a fuzzy step (without advancing 'n')
+  path.getToken(n).getName() = "Fuzzy" and
+  result = Specific::getAFuzzySuccessor(getNodeFromPath(type, path, n))
+  or
+  // Skip a fuzzy step (advance 'n' without changing the current node)
+  path.getToken(n - 1).getName() = "Fuzzy" and
+  result = getNodeFromPath(type, path, n - 1)
 }
 
 /**
@@ -500,6 +508,14 @@ private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath, int n) 
   // will themselves find by following type-steps.
   n > 0 and
   n < subPath.getNumToken()
+  or
+  // Apply a fuzzy step (without advancing 'n')
+  subPath.getToken(n).getName() = "Fuzzy" and
+  result = Specific::getAFuzzySuccessor(getNodeFromSubPath(base, subPath, n))
+  or
+  // Skip a fuzzy step (advance 'n' without changing the current node)
+  subPath.getToken(n - 1).getName() = "Fuzzy" and
+  result = getNodeFromSubPath(base, subPath, n - 1)
 }
 
 /**
@@ -561,7 +577,7 @@ private Specific::InvokeNode getInvocationFromPath(string type, AccessPath path)
  */
 bindingset[name]
 private predicate isValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Argument", "Parameter", "ReturnValue", "WithArity", "TypeVar"]
+  name = ["Argument", "Parameter", "ReturnValue", "WithArity", "TypeVar", "Fuzzy"]
   or
   Specific::isExtraValidTokenNameInIdentifyingAccessPath(name)
 }
@@ -572,7 +588,7 @@ private predicate isValidTokenNameInIdentifyingAccessPath(string name) {
  */
 bindingset[name]
 private predicate isValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = "ReturnValue"
+  name = ["ReturnValue", "Fuzzy"]
   or
   Specific::isExtraValidNoArgumentTokenInIdentifyingAccessPath(name)
 }

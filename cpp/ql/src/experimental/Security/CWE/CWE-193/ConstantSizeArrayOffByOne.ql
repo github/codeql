@@ -28,7 +28,8 @@ Instruction getABoundIn(SemBound b, IRFunction func) {
 pragma[inline]
 predicate boundedImpl(Instruction i, Instruction b, int delta) {
   exists(SemBound bound, IRFunction func |
-    semBounded(getSemanticExpr(i), bound, delta, true, _) and
+    semBounded(getSemanticExpr(i), bound, delta, true,
+      any(SemReason reason | not reason instanceof SemTypeReason)) and
     b = getABoundIn(bound, func) and
     pragma[only_bind_out](i.getEnclosingIRFunction()) = func
   )
@@ -93,7 +94,8 @@ predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, int size) {
 bindingset[pai]
 pragma[inline_late]
 predicate constantUpperBounded(PointerArithmeticInstruction pai, int delta) {
-  semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), delta, true, _)
+  semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), delta, true,
+    any(SemReason reason | not reason instanceof SemTypeReason))
 }
 
 bindingset[pai, size]

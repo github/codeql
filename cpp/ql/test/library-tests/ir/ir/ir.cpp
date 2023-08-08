@@ -2021,4 +2021,13 @@ void TernaryTestNonPodObj(bool a, TernaryNonPodObj x, TernaryNonPodObj y, Ternar
     (z = a ? x : y) = TernaryNonPodObj();
 }
 
+void CommaTestHelper(unsigned int);
+
+unsigned int CommaTest(unsigned int x) {
+  unsigned int y;
+  y = x < 100 ?
+    (CommaTestHelper(x), x) :
+    (CommaTestHelper(x), 10);
+}
+
 // semmle-extractor-options: -std=c++17 --clang

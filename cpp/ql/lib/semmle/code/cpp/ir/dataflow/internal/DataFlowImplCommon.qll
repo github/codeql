@@ -1,3 +1,3 @@
 private import DataFlowImplSpecific
-private import codeql.dataflow.DataFlowImplCommon
+private import codeql.dataflow.internal.DataFlowImplCommon
 import MakeImplCommon<CppDataFlow>

@@ -51,6 +51,8 @@ class Sinks extends ModelInput::SinkModelCsv {
         // testing package syntax
         "foo1.bar;Member[baz1].Argument[any];test-sink", //
         "foo2;Member[bar].Member[baz2].Argument[any];test-sink", //
+        // testing fuzzy
+        "testlib;Fuzzy.Member[fuzzyCall].Argument[0];test-sink", //
       ]
   }
 }

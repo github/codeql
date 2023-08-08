@@ -118,7 +118,7 @@ module LocalFlow {
   /** Gets the SSA definition node corresponding to parameter `p`. */
   SsaDefinitionExtNode getParameterDefNode(NamedParameter p) {
     exists(BasicBlock bb, int i |
-      bb.getNode(i).getNode() = p.getDefiningAccess() and
+      bb.getNode(i).getAstNode() = p.getDefiningAccess() and
       result.getDefinitionExt().definesAt(_, bb, i, _)
     )
   }
@@ -203,8 +203,8 @@ module LocalFlow {
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
       nodeFrom = n and
       exprTo = nodeTo.asExpr() and
-      n.getReturningNode().getNode() instanceof BreakStmt and
-      exprTo.getNode() instanceof Loop and
+      n.getReturningNode().getAstNode() instanceof BreakStmt and
+      exprTo.getAstNode() instanceof Loop and
       nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getReturningNode()
     )
     or
@@ -926,7 +926,7 @@ abstract class SourceReturnNode extends ReturnNode {
 private module ReturnNodes {
   private predicate isValid(CfgNodes::ReturningCfgNode node) {
     exists(ReturningStmt stmt, Callable scope |
-      stmt = node.getNode() and
+      stmt = node.getAstNode() and
       scope = node.getScope()
     |
       stmt instanceof ReturnStmt and
@@ -952,7 +952,7 @@ private module ReturnNodes {
     }
 
     override ReturnKind getKindSource() {
-      if n.getNode() instanceof BreakStmt
+      if n.getAstNode() instanceof BreakStmt
       then result instanceof BreakReturnKind
       else
         exists(CfgScope scope | scope = this.getCfgScope() |

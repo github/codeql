@@ -486,7 +486,6 @@
   ],
   "CFG": [
     "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
-    "ruby/ql/lib/codeql/ruby/controlflow/internal/ControlFlowGraphImplShared.qll",
     "swift/ql/lib/codeql/swift/controlflow/internal/ControlFlowGraphImplShared.qll"
   ],
   "TypeTracker": [
