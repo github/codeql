@@ -19,6 +19,20 @@ module Make<RegexTreeViewSig TreeImpl> {
   }
 
   /**
+   * Gets the `i`th codepoint in `s`.
+   */
+  bindingset[s]
+  private string getCodepointAt(string s, int i) { result = s.regexpFind("(.|\\s)", i, _) }
+
+  /**
+   * Gets the length of `s` in codepoints.
+   */
+  bindingset[str]
+  private int getCodepointLength(string str) {
+    result = max(int m | exists(str.regexpFind("(.|\\s)", m - 1, _)) or m = 0)
+  }
+
+  /**
    * Gets an approximation for the ASCII code for `char`.
    * Only the easily printable chars are included (so no newline, tab, null, etc).
    */
@@ -190,17 +204,17 @@ module Make<RegexTreeViewSig TreeImpl> {
     /** An input symbol corresponding to character `c`. */
     Char(string c) {
       c =
-        any(RegexpCharacterConstant cc |
-          cc instanceof RelevantRegExpTerm and
-          not isIgnoreCase(cc.getRootTerm())
-        ).getValue().charAt(_)
+        getCodepointAt(any(RegexpCharacterConstant cc |
+            cc instanceof RelevantRegExpTerm and
+            not isIgnoreCase(cc.getRootTerm())
+          ).getValue(), _)
       or
       // normalize everything to lower case if the regexp is case insensitive
       c =
         any(RegexpCharacterConstant cc, string char |
           cc instanceof RelevantRegExpTerm and
           isIgnoreCase(cc.getRootTerm()) and
-          char = cc.getValue().charAt(_)
+          char = getCodepointAt(cc.getValue(), _)
         |
           char.toLowerCase()
         )
@@ -396,7 +410,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     string getARelevantChar() {
       exists(ascii(result))
       or
-      exists(RegexpCharacterConstant c | result = c.getValue().charAt(_))
+      exists(RegexpCharacterConstant c | result = getCodepointAt(c.getValue(), _))
       or
       classEscapeMatches(_, result)
     }
@@ -702,16 +716,16 @@ module Make<RegexTreeViewSig TreeImpl> {
       q1 = Match(s, i) and
       (
         not isIgnoreCase(s.getRootTerm()) and
-        lbl = Char(s.getValue().charAt(i))
+        lbl = Char(getCodepointAt(s.getValue(), i))
         or
         // normalize everything to lower case if the regexp is case insensitive
         isIgnoreCase(s.getRootTerm()) and
-        exists(string c | c = s.getValue().charAt(i) | lbl = Char(c.toLowerCase()))
+        exists(string c | c = getCodepointAt(s.getValue(), i) | lbl = Char(c.toLowerCase()))
       ) and
       (
         q2 = Match(s, i + 1)
         or
-        s.getValue().length() = i + 1 and
+        getCodepointLength(s.getValue()) = i + 1 and
         q2 = after(s)
       )
     )
@@ -812,7 +826,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     Match(RelevantRegExpTerm t, int i) {
       i = 0
       or
-      exists(t.(RegexpCharacterConstant).getValue().charAt(i))
+      exists(getCodepointAt(t.(RegexpCharacterConstant).getValue(), i))
     } or
     /**
      * An accept state, where exactly the given input string is accepted.
@@ -1105,7 +1119,9 @@ module Make<RegexTreeViewSig TreeImpl> {
        */
       predicate reachesOnlyRejectableSuffixes(State fork, string w) {
         isReDoSCandidate(fork, w) and
-        forex(State next | next = process(fork, w, w.length() - 1) | isLikelyRejectable(next)) and
+        forex(State next | next = process(fork, w, getCodepointLength(w) - 1) |
+          isLikelyRejectable(next)
+        ) and
         not getProcessPrevious(fork, _, w) = acceptsAnySuffix() // we stop `process(..)` early if we can, check here if it happened.
       }
 
@@ -1215,6 +1231,12 @@ module Make<RegexTreeViewSig TreeImpl> {
         exists(string char | char = ["|", "\n", "Z"] | not deltaClosedChar(s, char, _))
       }
 
+      // `process` can't use pragma[inline] predicates. So a materialized version of `getCodepointAt` is needed.
+      private string getCodePointAtForProcess(string str, int i) {
+        result = getCodepointAt(str, i) and
+        exists(getProcessPrevious(_, _, str))
+      }
+
       /**
        * Gets a state that can be reached from pumpable `fork` consuming all
        * chars in `w` any number of times followed by the first `i+1` characters of `w`.
@@ -1224,7 +1246,7 @@ module Make<RegexTreeViewSig TreeImpl> {
         exists(State prev | prev = getProcessPrevious(fork, i, w) |
           not prev = acceptsAnySuffix() and // we stop `process(..)` early if we can. If the successor accepts any suffix, then we know it can never be rejected.
           exists(string char, InputSymbol sym |
-            char = w.charAt(i) and
+            char = getCodePointAtForProcess(w, i) and
             deltaClosed(prev, sym, result) and
             // noopt to prevent joining `prev` with all possible `chars` that could transition away from `prev`.
             // Instead only join with the set of `chars` where a relevant `InputSymbol` has already been found.
@@ -1246,7 +1268,7 @@ module Make<RegexTreeViewSig TreeImpl> {
           or
           // repeat until fixpoint
           i = 0 and
-          result = process(fork, w, w.length() - 1)
+          result = process(fork, w, getCodepointLength(w) - 1)
         )
       }
 
@@ -1262,7 +1284,9 @@ module Make<RegexTreeViewSig TreeImpl> {
       /**
        * Gets a `char` that occurs in a `pump` string.
        */
-      private string getAProcessChar() { result = any(string s | isReDoSCandidate(_, s)).charAt(_) }
+      private string getAProcessChar() {
+        result = getCodepointAt(any(string s | isReDoSCandidate(_, s)), _)
+      }
     }
 
     /**
@@ -1317,7 +1341,8 @@ module Make<RegexTreeViewSig TreeImpl> {
      */
     bindingset[s]
     private string escapeUnicodeString(string s) {
-      result = concat(int i, string char | char = escapeUnicodeChar(s.charAt(i)) | char order by i)
+      result =
+        concat(int i, string char | char = escapeUnicodeChar(getCodepointAt(s, i)) | char order by i)
     }
 
     /**
@@ -1328,7 +1353,10 @@ module Make<RegexTreeViewSig TreeImpl> {
     private string escapeUnicodeChar(string char) {
       if isPrintable(char)
       then result = char
-      else result = "\\u" + to4digitHex(any(int i | i.toUnicode() = char))
+      else
+        if exists(to4digitHex(any(int i | i.toUnicode() = char)))
+        then result = "\\u" + to4digitHex(any(int i | i.toUnicode() = char))
+        else result = "\\u{" + toHex(any(int i | i.toUnicode() = char)) + "}"
     }
 
     /** Holds if `char` is easily printable char, or whitespace. */

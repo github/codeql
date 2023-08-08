@@ -50,7 +50,7 @@ int parseHexInt(string hex) {
       sum(int index, string c |
         c = stripped.charAt(index)
       |
-        sixteenToThe(stripped.length() - 1 - index) * toHex(c)
+        sixteenToThe(stripped.length() - 1 - index) * charToHex(c)
       )
   )
 }
@@ -83,7 +83,7 @@ int parseOctalInt(string octal) {
 }
 
 /** Gets the integer value of the `hex` char. */
-private int toHex(string hex) {
+private int charToHex(string hex) {
   hex = [0 .. 9].toString() and
   result = hex.toInt()
   or
@@ -107,11 +107,23 @@ bindingset[i]
 string to4digitHex(int i) {
   i >= 0 and
   i <= 65535 and
+  exists(string hex | hex = toHex(i) |
+    result = concat(int zeroes | zeroes = [1 .. 4 - hex.length()] | "0") + hex
+  )
+}
+
+/**
+ * Gets a hex representation of `i`.
+ */
+bindingset[i]
+string toHex(int i) {
   result =
-    "0123456789abcdef".charAt(i.bitShiftRight(12).bitAnd(15)) +
-      "0123456789abcdef".charAt(i.bitShiftRight(8).bitAnd(15)) +
-      "0123456789abcdef".charAt(i.bitShiftRight(4).bitAnd(15)) +
-      "0123456789abcdef".charAt(i.bitAnd(15))
+    // make the number with lots of preceding zeroes, then remove all preceding zeroes in a post-processing step
+    concat(int shift |
+      shift in [28, 24, 20, 16, 12, 8, 4, 0]
+    |
+      "0123456789abcdef".charAt(i.bitShiftRight(shift).bitAnd(15)) order by shift desc
+    ).regexpReplaceAll("^0*", "")
 }
 
 /**
