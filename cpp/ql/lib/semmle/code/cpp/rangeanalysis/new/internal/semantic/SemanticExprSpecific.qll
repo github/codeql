@@ -434,6 +434,50 @@ module SemanticExprConfig {
 
   /** Gets the expression associated with `instr`. */
   SemExpr getSemanticExpr(IR::Instruction instr) { result = Equiv::getEquivalenceClass(instr) }
+
+  private predicate typeBounds(SemType t, float lb, float ub) {
+    exists(SemIntegerType integralType, float limit |
+      integralType = t and limit = 2.pow(8 * integralType.getByteSize())
+    |
+      if integralType instanceof SemBooleanType
+      then lb = 0 and ub = 1
+      else
+        if integralType.isSigned()
+        then (
+          lb = -(limit / 2) and ub = (limit / 2) - 1
+        ) else (
+          lb = 0 and ub = limit - 1
+        )
+    )
+    or
+    // This covers all floating point types. The range is (-Inf, +Inf).
+    t instanceof SemFloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
+  }
+
+  /**
+   * Holds if `upper = true` and `e <= bound` or `upper = false` and `e >= bound` based
+   * only on type information.
+   */
+  predicate hasConstantBoundConstantSpecific(Expr e, float bound, boolean upper) {
+    exists(
+      SemType converted, SemType unconverted, float unconvertedLb, float convertedLb,
+      float unconvertedUb, float convertedUb
+    |
+      unconverted = getSemanticType(e.getUnconverted().getResultIRType()) and
+      converted = getSemanticType(e.getConverted().getResultIRType()) and
+      typeBounds(unconverted, unconvertedLb, unconvertedUb) and
+      typeBounds(converted, convertedLb, convertedUb) and
+      (
+        upper = true and
+        unconvertedUb < convertedUb and
+        bound = unconvertedUb
+        or
+        upper = false and
+        unconvertedLb > convertedLb and
+        bound = unconvertedLb
+      )
+    )
+  }
 }
 
 predicate getSemanticExpr = SemanticExprConfig::getSemanticExpr/1;
@@ -457,3 +501,5 @@ IRBound::Bound getCppBound(SemBound bound) { bound = result }
 SemGuard getSemanticGuard(IRGuards::IRGuardCondition guard) { result = guard }
 
 IRGuards::IRGuardCondition getCppGuard(SemGuard guard) { guard = result }
+
+predicate hasConstantBoundConstantSpecific = SemanticExprConfig::hasConstantBoundConstantSpecific/3;

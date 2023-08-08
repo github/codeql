@@ -113,6 +113,37 @@ signature module DeltaSig {
 }
 
 signature module LangSig<DeltaSig D> {
+  /** A reason for an inferred bound. */
+  class SemReason {
+    /**
+     * Returns `this` if `reason` is not a `SemTypeReason`. Otherwise,
+     * this predicate returns `SemTypeReason`.
+     *
+     * This predicate ensures that we propagate `SemTypeReason` all the way
+     * to the top-level of a call to `semBounded` if the inferred bound is
+     * based on type-information.
+     */
+    bindingset[this, reason]
+    SemReason combineWith(SemReason reason);
+  }
+
+  /**
+   * A reason for an inferred bound that indicates that the bound is inferred
+   * without going through a bounding condition.
+   */
+  class SemNoReason extends SemReason;
+
+  /** A reason for an inferred bound pointing to a condition. */
+  class SemCondReason extends SemReason {
+    SemGuard getCond();
+  }
+
+  /**
+   * A reason for an inferred bound that indicates that the bound is inferred
+   * based on type-information.
+   */
+  class SemTypeReason extends SemReason;
+
   /**
    * Holds if the specified expression should be excluded from the result of `ssaRead()`.
    *
@@ -124,7 +155,7 @@ signature module LangSig<DeltaSig D> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(SemExpr e, D::Delta bound, boolean upper);
+  predicate hasConstantBound(SemExpr e, D::Delta bound, boolean upper, SemReason reason);
 
   /**
    * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
@@ -249,6 +280,14 @@ module RangeStage<
   DeltaSig D, BoundSig<D> Bounds, OverflowSig<D> OverflowParam, LangSig<D> LangParam,
   UtilSig<D> UtilParam>
 {
+  class SemReason = LangParam::SemReason;
+
+  class SemCondReason = LangParam::SemCondReason;
+
+  class SemNoReason = LangParam::SemNoReason;
+
+  class SemTypeReason = LangParam::SemTypeReason;
+
   private import Bounds
   private import LangParam
   private import UtilParam
@@ -509,36 +548,6 @@ module RangeStage<
     )
   }
 
-  private newtype TSemReason =
-    TSemNoReason() or
-    TSemCondReason(SemGuard guard) { possibleReason(guard) }
-
-  /**
-   * A reason for an inferred bound. This can either be `CondReason` if the bound
-   * is due to a specific condition, or `NoReason` if the bound is inferred
-   * without going through a bounding condition.
-   */
-  abstract class SemReason extends TSemReason {
-    /** Gets a textual representation of this reason. */
-    abstract string toString();
-  }
-
-  /**
-   * A reason for an inferred bound that indicates that the bound is inferred
-   * without going through a bounding condition.
-   */
-  class SemNoReason extends SemReason, TSemNoReason {
-    override string toString() { result = "NoReason" }
-  }
-
-  /** A reason for an inferred bound pointing to a condition. */
-  class SemCondReason extends SemReason, TSemCondReason {
-    /** Gets the condition that is the reason for the bound. */
-    SemGuard getCond() { this = TSemCondReason(result) }
-
-    override string toString() { result = this.getCond().toString() }
-  }
-
   /**
    * Holds if `e + delta` is a valid bound for `v` at `pos`.
    * - `upper = true`  : `v <= e + delta`
@@ -551,13 +560,13 @@ module RangeStage<
     semSsaUpdateStep(v, e, delta) and
     pos.hasReadOfVar(v) and
     (upper = true or upper = false) and
-    reason = TSemNoReason()
+    reason instanceof SemNoReason
     or
     exists(SemGuard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
       semGuardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
-      reason = TSemCondReason(guard)
+      reason.(SemCondReason).getCond() = guard
     )
   }
 
@@ -570,7 +579,7 @@ module RangeStage<
       pos.hasReadOfVar(v) and
       guard = semEqFlowCond(v, e, delta, false, testIsTrue) and
       semGuardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
-      reason = TSemCondReason(guard)
+      reason.(SemCondReason).getCond() = guard
     )
   }
 
@@ -700,7 +709,7 @@ module RangeStage<
       // upper = true:  v <= mid + d1 <= b + d1 + d2 = b + delta
       // upper = false: v >= mid + d1 >= b + d1 + d2 = b + delta
       delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2)) and
-      (if r1 instanceof SemNoReason then reason = r2 else reason = r1)
+      (if r1 instanceof SemNoReason then reason = r2 else reason = r1.combineWith(r2))
     )
     or
     exists(D::Delta d, SemReason r1, SemReason r2 |
@@ -714,9 +723,9 @@ module RangeStage<
         upper = false and delta = D::fromFloat(D::toFloat(d) + 1)
       ) and
       (
-        reason = r1
+        reason = r1.combineWith(r2)
         or
-        reason = r2 and not r2 instanceof SemNoReason
+        reason = r2.combineWith(r1) and not r2 instanceof SemNoReason
       )
     )
   }
@@ -786,7 +795,7 @@ module RangeStage<
       (upper = true or upper = false) and
       fromBackEdge0 = false and
       origdelta = D::fromFloat(0) and
-      reason = TSemNoReason()
+      reason instanceof SemNoReason
     |
       if semBackEdge(phi, inp, edge)
       then
@@ -911,14 +920,15 @@ module RangeStage<
    * Holds if `e` has an upper (for `upper = true`) or lower
    * (for `upper = false`) bound of `b`.
    */
-  private predicate baseBound(SemExpr e, D::Delta b, boolean upper) {
-    hasConstantBound(e, b, upper)
+  private predicate baseBound(SemExpr e, D::Delta b, boolean upper, SemReason reason) {
+    hasConstantBound(e, b, upper, reason)
     or
     upper = false and
     b = D::fromInt(0) and
     semPositive(e.(SemBitAndExpr).getAnOperand()) and
     // REVIEW: We let the language opt out here to preserve original results.
-    not ignoreZeroLowerBound(e)
+    not ignoreZeroLowerBound(e) and
+    reason instanceof SemNoReason
   }
 
   /**
@@ -1044,13 +1054,12 @@ module RangeStage<
       (upper = true or upper = false) and
       fromBackEdge = false and
       origdelta = delta and
-      reason = TSemNoReason()
+      reason instanceof SemNoReason
       or
-      baseBound(e, delta, upper) and
+      baseBound(e, delta, upper, reason) and
       b instanceof SemZeroBound and
       fromBackEdge = false and
-      origdelta = delta and
-      reason = TSemNoReason()
+      origdelta = delta
       or
       exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
         boundedSsa(v, bb, b, delta, upper, fromBackEdge, origdelta, reason) and
@@ -1104,9 +1113,9 @@ module RangeStage<
         boundedConditionalExpr(cond, b, upper, true, d1, fbe1, od1, r1) and
         boundedConditionalExpr(cond, b, upper, false, d2, fbe2, od2, r2) and
         (
-          delta = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
+          delta = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1.combineWith(r2)
           or
-          delta = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
+          delta = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2.combineWith(r1)
         )
       |
         upper = true and delta = D::fromFloat(D::toFloat(d1).maximum(D::toFloat(d2)))
@@ -1132,9 +1141,15 @@ module RangeStage<
         delta = D::fromFloat(D::toFloat(dLeft) + D::toFloat(dRight)) and
         fromBackEdge = fbeLeft.booleanOr(fbeRight)
       |
-        b = bLeft and origdelta = odLeft and reason = rLeft and bRight instanceof SemZeroBound
+        b = bLeft and
+        origdelta = odLeft and
+        reason = rLeft.combineWith(rRight) and
+        bRight instanceof SemZeroBound
         or
-        b = bRight and origdelta = odRight and reason = rRight and bLeft instanceof SemZeroBound
+        b = bRight and
+        origdelta = odRight and
+        reason = rRight.combineWith(rLeft) and
+        bLeft instanceof SemZeroBound
       )
       or
       exists(
@@ -1150,9 +1165,9 @@ module RangeStage<
         (
           if D::toFloat(d1).abs() > D::toFloat(d2).abs()
           then (
-            d_max = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
+            d_max = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1.combineWith(r2)
           ) else (
-            d_max = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
+            d_max = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2.combineWith(r1)
           )
         )
       |
@@ -1168,11 +1183,14 @@ module RangeStage<
         boundedMulOperand(e, upper, true, dLeft, fbeLeft, odLeft, rLeft) and
         boundedMulOperand(e, upper, false, dRight, fbeRight, odRight, rRight) and
         delta = D::fromFloat(D::toFloat(dLeft) * D::toFloat(dRight)) and
-        fromBackEdge = fbeLeft.booleanOr(fbeRight)
+        fromBackEdge = fbeLeft.booleanOr(fbeRight) and
+        b instanceof SemZeroBound
       |
-        b instanceof SemZeroBound and origdelta = odLeft and reason = rLeft
+        origdelta = odLeft and
+        reason = rLeft.combineWith(rRight)
         or
-        b instanceof SemZeroBound and origdelta = odRight and reason = rRight
+        origdelta = odRight and
+        reason = rRight.combineWith(rLeft)
       )
     )
   }

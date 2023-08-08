@@ -6,11 +6,11 @@
 
 private import codeql.util.Unit
 private import codeql.util.Option
-import DataFlowParameter
+private import codeql.dataflow.DataFlow
 
-module MakeImpl<DataFlowParameter Lang> {
+module MakeImpl<InputSig Lang> {
   private import Lang
-  private import DataFlow::DataFlowMake<Lang>
+  private import DataFlowMake<Lang>
   private import DataFlowImplCommon::MakeImplCommon<Lang>
   private import DataFlowImplCommonPublic
 
@@ -32,6 +32,11 @@ module MakeImpl<DataFlowParameter Lang> {
      * Holds if `sink` is a relevant data flow sink accepting `state`.
      */
     predicate isSink(Node sink, FlowState state);
+
+    /**
+     * Holds if `sink` is a relevant data flow sink for any state.
+     */
+    predicate isSink(Node sink);
 
     /**
      * Holds if data flow through `node` is prohibited. This completely removes
@@ -216,8 +221,11 @@ module MakeImpl<DataFlowParameter Lang> {
     private predicate outBarrier(NodeEx node) {
       exists(Node n |
         node.asNode() = n and
-        Config::isBarrierOut(n) and
+        Config::isBarrierOut(n)
+      |
         Config::isSink(n, _)
+        or
+        Config::isSink(n)
       )
     }
 
@@ -230,7 +238,8 @@ module MakeImpl<DataFlowParameter Lang> {
         not Config::isSource(n, _)
         or
         Config::isBarrierOut(n) and
-        not Config::isSink(n, _)
+        not Config::isSink(n, _) and
+        not Config::isSink(n)
       )
     }
 
@@ -247,7 +256,7 @@ module MakeImpl<DataFlowParameter Lang> {
     }
 
     pragma[nomagic]
-    private predicate sinkNode(NodeEx node, FlowState state) {
+    private predicate sinkNodeWithState(NodeEx node, FlowState state) {
       Config::isSink(node.asNode(), state) and
       not fullBarrier(node) and
       not stateBarrier(node, state)
@@ -645,6 +654,16 @@ module MakeImpl<DataFlowParameter Lang> {
         )
       }
 
+      additional predicate sinkNode(NodeEx node, FlowState state) {
+        fwdFlow(node) and
+        fwdFlowState(state) and
+        Config::isSink(node.asNode())
+        or
+        fwdFlow(node) and
+        fwdFlowState(state) and
+        sinkNodeWithState(node, state)
+      }
+
       /**
        * Holds if `node` is part of a path from a source to a sink.
        *
@@ -659,12 +678,8 @@ module MakeImpl<DataFlowParameter Lang> {
 
       pragma[nomagic]
       private predicate revFlow0(NodeEx node, boolean toReturn) {
-        exists(FlowState state |
-          fwdFlow(node) and
-          sinkNode(node, state) and
-          fwdFlowState(state) and
-          if hasSinkCallCtx() then toReturn = true else toReturn = false
-        )
+        sinkNode(node, _) and
+        if hasSinkCallCtx() then toReturn = true else toReturn = false
         or
         exists(NodeEx mid | revFlow(mid, toReturn) |
           localFlowStepEx(node, mid) or
@@ -919,6 +934,8 @@ module MakeImpl<DataFlowParameter Lang> {
       }
       /* End: Stage 1 logic. */
     }
+
+    private predicate sinkNode = Stage1::sinkNode/2;
 
     pragma[noinline]
     private predicate localFlowStepNodeCand1(NodeEx node1, NodeEx node2) {
@@ -3894,7 +3911,10 @@ module MakeImpl<DataFlowParameter Lang> {
       }
 
       private predicate interestingCallableSink(DataFlowCallable c) {
-        exists(Node n | Config::isSink(n, _) and c = getNodeEnclosingCallable(n))
+        exists(Node n | c = getNodeEnclosingCallable(n) |
+          Config::isSink(n, _) or
+          Config::isSink(n)
+        )
         or
         exists(DataFlowCallable mid | interestingCallableSink(mid) and callableStep(c, mid))
       }
@@ -3926,8 +3946,10 @@ module MakeImpl<DataFlowParameter Lang> {
         or
         exists(Node n |
           ce2 = TCallableSink() and
-          Config::isSink(n, _) and
           ce1 = TCallable(getNodeEnclosingCallable(n))
+        |
+          Config::isSink(n, _) or
+          Config::isSink(n)
         )
       }
 
@@ -3981,11 +4003,20 @@ module MakeImpl<DataFlowParameter Lang> {
 
       private predicate relevantState(FlowState state) {
         sourceNode(_, state) or
-        sinkNode(_, state) or
+        sinkNodeWithState(_, state) or
         additionalLocalStateStep(_, state, _, _) or
         additionalLocalStateStep(_, _, _, state) or
         additionalJumpStateStep(_, state, _, _) or
         additionalJumpStateStep(_, _, _, state)
+      }
+
+      private predicate revSinkNode(NodeEx node, FlowState state) {
+        sinkNodeWithState(node, state)
+        or
+        Config::isSink(node.asNode()) and
+        relevantState(state) and
+        not fullBarrier(node) and
+        not stateBarrier(node, state)
       }
 
       private newtype TSummaryCtx1 =
@@ -4038,7 +4069,7 @@ module MakeImpl<DataFlowParameter Lang> {
           NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2,
           TRevSummaryCtx3 sc3, PartialAccessPath ap
         ) {
-          sinkNode(node, state) and
+          revSinkNode(node, state) and
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
           sc3 = TRevSummaryCtx3None() and
@@ -4256,7 +4287,7 @@ module MakeImpl<DataFlowParameter Lang> {
         }
 
         predicate isSink() {
-          sinkNode(node, state) and
+          revSinkNode(node, state) and
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
           sc3 = TRevSummaryCtx3None() and
