@@ -229,6 +229,11 @@ module Content {
   class CollectionContent extends Content, TCollectionContent {
     override string toString() { result = "Collection element" }
   }
+
+  /** An element of a collection. */
+  class DictionaryKeyContent extends Content, TDictionaryKeyContent {
+    override string toString() { result = "Dictionary key" }
+  }
 }
 
 /**

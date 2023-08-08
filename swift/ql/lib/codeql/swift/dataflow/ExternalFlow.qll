@@ -495,6 +495,9 @@ predicate parseContent(AccessPathToken component, Content content) {
   or
   component.getName() = "CollectionElement" and
   content instanceof Content::CollectionContent
+  or
+  component.getName() = "DictionaryKey" and
+  content instanceof Content::DictionaryKeyContent
 }
 
 cached

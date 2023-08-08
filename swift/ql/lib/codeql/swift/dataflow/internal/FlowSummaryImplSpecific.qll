@@ -124,6 +124,11 @@ private string getContentSpecific(ContentSet cs) {
     cs.isSingleton(c) and
     result = "CollectionElement"
   )
+  or
+  exists(Content::DictionaryKeyContent c |
+    cs.isSingleton(c) and
+    result = "DictionaryKey"
+  )
 }
 
 /** Gets the textual representation of a summary component in the format used for MaD models. */

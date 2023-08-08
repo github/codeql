@@ -257,7 +257,8 @@ private module Cached {
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
     TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
     TArrayContent() or
-    TCollectionContent()
+    TCollectionContent() or
+    TDictionaryKeyContent()
 }
 
 /**
