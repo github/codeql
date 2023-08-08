@@ -9,6 +9,7 @@ private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 private import codeql.swift.frameworks.StandardLibrary.Array
+private import codeql.swift.frameworks.StandardLibrary.Dictionary
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
@@ -716,8 +717,33 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
     subscript = assign.getDest() and
-    subscript.getBase().getType() instanceof ArrayType and
+    subscript.getBase().getType().getCanonicalType() instanceof ArrayType and
     c.isSingleton(any(Content::ArrayContent ac))
+  )
+  or
+  // dictionary literal [a:b]
+  exists(DictionaryExpr dict |
+    node2.asExpr() = dict and
+    node1.asExpr() = dict.getAnElement().(TupleExpr).getElement(0) and
+    c.isSingleton(any(Content::DictionaryKeyContent dkc))
+    or
+    node2.asExpr() = dict and
+    node1.asExpr() = dict.getAnElement().(TupleExpr).getElement(1) and
+    c.isSingleton(any(Content::CollectionContent cc))
+  )
+  or
+  // dictionary assignment `dict[key] = value`
+  exists(AssignExpr assign, SubscriptExpr subscript |
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
+    subscript = assign.getDest() and
+    subscript.getBase().getType().getCanonicalType() instanceof CanonicalDictionaryType and
+    (
+      node1.asExpr() = assign.getSource() and
+      c.isSingleton(any(Content::CollectionContent ac))
+      or
+      node1.asExpr() = subscript.getAnArgument().getExpr() and
+      c.isSingleton(any(Content::DictionaryKeyContent ac))
+    )
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
@@ -792,12 +818,17 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
-  // read of an array member via subscript operator
+  // read of an array or dictionary member via subscript operator
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    subscript.getBase().getType() instanceof ArrayType and
-    c.isSingleton(any(Content::ArrayContent ac))
+    (
+      subscript.getBase().getType().getCanonicalType() instanceof ArrayType and
+      c.isSingleton(any(Content::ArrayContent ac))
+      or
+      subscript.getBase().getType().getCanonicalType() instanceof CanonicalDictionaryType and
+      c.isSingleton(any(Content::CollectionContent ac))
+    )
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,

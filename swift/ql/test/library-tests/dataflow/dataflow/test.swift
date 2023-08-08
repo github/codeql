@@ -713,7 +713,7 @@ func testDictionary() {
 
     dict1[1] = source()
 
-    sink(arg: dict1[1]) // $ MISSING: flow=714
+    sink(arg: dict1[1]) // $ flow=714
 
     var dict2 = [source(): 1]
     sink(arg: dict2[1])
@@ -724,7 +724,7 @@ func testDictionary() {
     }
 
     var dict3 = [1: source()]
-    sink(arg: dict3[1]) // $ MISSING: flow=726
+    sink(arg: dict3[1]) // $ flow=726
 
     dict3[source()] = 2
 
@@ -732,5 +732,4 @@ func testDictionary() {
         sink(arg: key) // $ MISSING: flow=729
         sink(arg: value) // $ MISSING: flow=726
     }
-
 }
