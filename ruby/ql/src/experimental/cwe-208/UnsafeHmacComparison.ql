@@ -54,11 +54,7 @@ class Configuration extends DataFlow::Configuration {
 
   // Holds if a given sink is an Equality Operation (== or !=)
   override predicate isSink(DataFlow::Node sink) {
-    exists(EqualityOperation eqOp |
-      eqOp.getLeftOperand() = sink.asExpr().getExpr()
-      or
-      eqOp.getRightOperand() = sink.asExpr().getExpr()
-    )
+    any(EqualityOperation eqOp).getAnOperand() = sink.asExpr().getExpr()
   }
 }
 
