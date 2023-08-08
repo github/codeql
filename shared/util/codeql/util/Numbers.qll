@@ -101,6 +101,18 @@ private int toHex(string hex) {
 }
 
 /**
+ * Gets a 4-digit hex representation of `i`.
+ */
+bindingset[i]
+string to4digitHex(int i) {
+  result =
+    "0123456789abcdef".charAt(i.bitShiftRight(12).bitAnd(15)) +
+      "0123456789abcdef".charAt(i.bitShiftRight(8).bitAnd(15)) +
+      "0123456789abcdef".charAt(i.bitShiftRight(4).bitAnd(15)) +
+      "0123456789abcdef".charAt(i.bitAnd(15))
+}
+
+/**
  * Gets the value of 16 to the power of `n`. Holds only for `n` in the range
  * 0..7 (inclusive).
  */

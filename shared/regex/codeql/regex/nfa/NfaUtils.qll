@@ -3,6 +3,7 @@
  */
 
 private import codeql.regex.RegexTreeView
+private import codeql.util.Numbers
 
 /**
  * Classes and predicates that create an NFA and various algorithms for working with it.
@@ -1328,18 +1329,6 @@ module Make<RegexTreeViewSig TreeImpl> {
       if isPrintable(char)
       then result = char
       else result = "\\u" + to4digitHex(any(int i | i.toUnicode() = char))
-    }
-
-    /**
-     * Gets a 4-digit hex representation of `i`.
-     */
-    bindingset[i]
-    string to4digitHex(int i) {
-      result =
-        "0123456789abcdef".charAt(i.bitShiftRight(12).bitAnd(15)) +
-          "0123456789abcdef".charAt(i.bitShiftRight(8).bitAnd(15)) +
-          "0123456789abcdef".charAt(i.bitShiftRight(4).bitAnd(15)) +
-          "0123456789abcdef".charAt(i.bitAnd(15))
     }
 
     /** Holds if `char` is easily printable char, or whitespace. */
