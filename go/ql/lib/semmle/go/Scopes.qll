@@ -795,6 +795,9 @@ module Builtin {
   /** Gets the built-in function `cap`. */
   BuiltinFunction cap() { result.getName() = "cap" }
 
+  /** Gets the built-in function `clear`. */
+  BuiltinFunction clear() { result.getName() = "clear" }
+
   /** Gets the built-in function `close`. */
   BuiltinFunction close() { result.getName() = "close" }
 
@@ -815,6 +818,12 @@ module Builtin {
 
   /** Gets the built-in function `make`. */
   BuiltinFunction make() { result.getName() = "make" }
+
+  /** Gets the built-in function `max`. */
+  BuiltinFunction max_() { result.getName() = "max" }
+
+  /** Gets the built-in function `min`. */
+  BuiltinFunction min_() { result.getName() = "min" }
 
   /** Gets the built-in function `new`. */
   BuiltinFunction new() { result.getName() = "new" }
