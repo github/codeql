@@ -701,8 +701,36 @@ func testSetCollections() {
     var set1: Set = [1,2,3]
     sink(arg: set1.randomElement()!)
     set1.insert(source())
-    sink(arg: set1.randomElement()!) // $flow=703
+    sink(arg: set1.randomElement()!) // $ flow=703
 
     let set2 = Set([source()])
     sink(arg: set2.randomElement()!) // $ flow=706
+}
+
+func testDictionary() {
+    var dict1 = [1:2, 3:4, 5:6]
+    sink(arg: dict1[1])
+
+    dict1[1] = source()
+
+    sink(arg: dict1[1]) // $ MISSING: flow=714
+
+    var dict2 = [source(): 1]
+    sink(arg: dict2[1])
+
+    for (key, value) in dict2 {
+        sink(arg: key) // $ MISSING: flow=718
+        sink(arg: value)
+    }
+
+    var dict3 = [1: source()]
+    sink(arg: dict3[1]) // $ MISSING: flow=726
+
+    dict3[source()] = 2
+
+    for (key, value) in dict3 {
+        sink(arg: key) // $ MISSING: flow=729
+        sink(arg: value) // $ MISSING: flow=726
+    }
+
 }
