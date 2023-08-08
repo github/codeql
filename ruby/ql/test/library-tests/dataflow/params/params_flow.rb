@@ -67,12 +67,12 @@ end
 splatstuff(*args)
 
 def splatmid(x, y, *z, w, r)
-    sink x # $ hasValueFlow=27 $ hasValueFlow=32
-    sink y # $ hasValueFlow=28 $ MISSING: hasValueFlow=33
-    sink z[0] # $ MISSING: hasValueFlow=29 $ MISSING: hasValueFlow=34
-    sink z[1] # $ MISSING: hasValueFlow=35
-    sink w # $ hasValueFlow=30 $ MISSING: hasValueFlow=36
-    sink r # $ hasValueFlow=31 $ MISSING: hasValueFlow=37
+    sink x # $ hasValueFlow=27 $ hasValueFlow=32 $ hasValueFlow=45
+    sink y # $ hasValueFlow=28 $ hasValueFlow=46 $ MISSING: hasValueFlow=33
+    sink z[0] # $ hasValueFlow=47 $ MISSING: hasValueFlow=29 $ hasValueFlow=34
+    sink z[1] # $ hasValueFlow=48 $ MISSING: hasValueFlow=35
+    sink w # $ hasValueFlow=30 $ hasValueFlow=50 $ MISSING: hasValueFlow=36
+    sink r # $ hasValueFlow=31 $ hasValueFlow=51 $ MISSING: hasValueFlow=37
 end
 
 splatmid(taint(27), taint(28), taint(29), taint(30), taint(31))
@@ -92,3 +92,5 @@ end
 
 args = [taint(40), taint(41), taint(42), taint(43)]
 pos_many(taint(38), taint(39), *args, taint(44))
+
+splatmid(taint(45), taint(46), *[taint(47), taint(48), taint(49)], taint(50), taint(51))
