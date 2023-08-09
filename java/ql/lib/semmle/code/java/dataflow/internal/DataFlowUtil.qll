@@ -135,6 +135,30 @@ private module Cached {
 
 import Cached
 
+private predicate capturedVariableRead(Node n) {
+  n.asExpr().(RValue).getVariable() instanceof CapturedVariable
+}
+
+/**
+ * Holds if there is a data flow step from `e1` to `e2` that only steps from
+ * child to parent in the AST.
+ */
+predicate simpleAstFlowStep(Expr e1, Expr e2) {
+  e2.(CastingExpr).getExpr() = e1
+  or
+  e2.(ChooseExpr).getAResultExpr() = e1
+  or
+  e2.(AssignExpr).getSource() = e1
+  or
+  e2.(ArrayCreationExpr).getInit() = e1
+  or
+  e2 = any(StmtExpr stmtExpr | e1 = stmtExpr.getResultExpr())
+  or
+  e2 = any(NotNullExpr nne | e1 = nne.getExpr())
+  or
+  e2.(WhenExpr).getBranch(_).getAResult() = e1
+}
+
 private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   TaintTrackingUtil::forceCachingInSameStage() and
   // Variable flow steps through adjacent def-use and use-use pairs.
@@ -142,39 +166,31 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
     upd.getDefiningExpr().(AssignOp) = node1.asExpr()
   |
-    node2.asExpr() = upd.getAFirstUse()
+    node2.asExpr() = upd.getAFirstUse() and
+    not capturedVariableRead(node2)
   )
   or
   exists(SsaImplicitInit init |
     init.isParameterDefinition(node1.asParameter()) and
-    node2.asExpr() = init.getAFirstUse()
+    node2.asExpr() = init.getAFirstUse() and
+    not capturedVariableRead(node2)
   )
   or
   adjacentUseUse(node1.asExpr(), node2.asExpr()) and
   not exists(FieldRead fr |
     hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
   ) and
-  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _)
+  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _) and
+  not capturedVariableRead(node2)
   or
   ThisFlow::adjacentThisRefs(node1, node2)
   or
-  adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr())
+  adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr()) and
+  not capturedVariableRead(node2)
   or
   ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
   or
-  node2.asExpr().(CastingExpr).getExpr() = node1.asExpr()
-  or
-  node2.asExpr().(ChooseExpr).getAResultExpr() = node1.asExpr()
-  or
-  node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
-  or
-  node2.asExpr().(ArrayCreationExpr).getInit() = node1.asExpr()
-  or
-  node2.asExpr() = any(StmtExpr stmtExpr | node1.asExpr() = stmtExpr.getResultExpr())
-  or
-  node2.asExpr() = any(NotNullExpr nne | node1.asExpr() = nne.getExpr())
-  or
-  node2.asExpr().(WhenExpr).getBranch(_).getAResult() = node1.asExpr()
+  simpleAstFlowStep(node1.asExpr(), node2.asExpr())
   or
   exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
@@ -185,6 +201,8 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode(), true)
+  or
+  captureValueStep(node1, node2)
 }
 
 /**
@@ -254,6 +272,19 @@ class MapValueContent extends Content, TMapValueContent {
   override DataFlowType getType() { result instanceof TypeObject }
 
   override string toString() { result = "<map.value>" }
+}
+
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  CapturedVariable getVariable() { result = v }
+
+  override DataFlowType getType() { result = getErasedRepr(v.(Variable).getType()) }
+
+  override string toString() { result = v.toString() }
 }
 
 /** A reference through a synthetic instance field. */

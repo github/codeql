@@ -781,26 +781,12 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDef
   override Expr getDefinedExpr() { result = operand.getDef().getUnconvertedResultExpression() }
 }
 
-pragma[nomagic]
-predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int indirectionIndex) {
-  Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
-  operandForFullyConvertedCall(operand, call)
-}
-
-pragma[nomagic]
-predicate indirectReturnOutNodeInstruction0(
-  CallInstruction call, Instruction instr, int indirectionIndex
-) {
-  Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
-  instructionForFullyConvertedCall(instr, call)
-}
-
 /**
  * Holds if `node` is an indirect operand with columns `(operand, indirectionIndex)`, and
  * `operand` represents a use of the fully converted value of `call`.
  */
 private predicate hasOperand(Node node, CallInstruction call, int indirectionIndex, Operand operand) {
-  indirectReturnOutNodeOperand0(call, operand, indirectionIndex) and
+  operandForFullyConvertedCall(operand, call) and
   hasOperandAndIndex(node, operand, indirectionIndex)
 }
 
@@ -813,7 +799,7 @@ private predicate hasOperand(Node node, CallInstruction call, int indirectionInd
 private predicate hasInstruction(
   Node node, CallInstruction call, int indirectionIndex, Instruction instr
 ) {
-  indirectReturnOutNodeInstruction0(call, instr, indirectionIndex) and
+  instructionForFullyConvertedCall(instr, call) and
   hasInstructionAndIndex(node, instr, indirectionIndex)
 }
 

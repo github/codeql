@@ -370,15 +370,20 @@ newtype TBaseSourceVariable =
   // Each allocation gets its own source variable
   TBaseCallVariable(AllocationInstruction call)
 
-abstract class BaseSourceVariable extends TBaseSourceVariable {
+abstract private class AbstractBaseSourceVariable extends TBaseSourceVariable {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
   /** Gets the type of this base source variable. */
-  abstract DataFlowType getType();
+  final DataFlowType getType() { this.getLanguageType().hasUnspecifiedType(result, _) }
+
+  /** Gets the `CppType` of this base source variable. */
+  abstract CppType getLanguageType();
 }
 
-class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
+final class BaseSourceVariable = AbstractBaseSourceVariable;
+
+class BaseIRVariable extends AbstractBaseSourceVariable, TBaseIRVariable {
   IRVariable var;
 
   IRVariable getIRVariable() { result = var }
@@ -387,10 +392,10 @@ class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
 
   override string toString() { result = var.toString() }
 
-  override DataFlowType getType() { result = var.getType() }
+  override CppType getLanguageType() { result = var.getLanguageType() }
 }
 
-class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
+class BaseCallVariable extends AbstractBaseSourceVariable, TBaseCallVariable {
   AllocationInstruction call;
 
   BaseCallVariable() { this = TBaseCallVariable(call) }
@@ -399,7 +404,7 @@ class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
 
   override string toString() { result = call.toString() }
 
-  override DataFlowType getType() { result = call.getResultType() }
+  override CppType getLanguageType() { result = getResultLanguageType(call) }
 }
 
 /**

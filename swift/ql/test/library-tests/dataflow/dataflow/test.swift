@@ -692,4 +692,51 @@ func testArray() {
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
     sink(arg: arr6[0]) // $ flow=693
+
+    var arr7 = [source()]
+    sink(arg: arr7.randomElement()!) // $ flow=696
+}
+
+func testSetCollections() {
+    var set1: Set = [1,2,3]
+    sink(arg: set1.randomElement()!)
+    set1.insert(source())
+    sink(arg: set1.randomElement()!) // $flow=703
+
+    let set2 = Set([source()])
+    sink(arg: set2.randomElement()!) // $ flow=706
+}
+
+struct MyOptionals {
+    var v1 : Int? = 0
+    var v2 : Int? = 0
+    var v3 : Int! = 0
+}
+
+func testWriteOptional() {
+    var v1 : Int? = 0
+    var v2 : Int? = 0
+    var v3 : Int! = 0
+    var mo1 = MyOptionals()
+    var mo2 : MyOptionals! = MyOptionals()
+
+    v1! = source()
+    v2 = source()
+    v3 = source()
+    mo1.v1! = source()
+    mo1.v2 = source()
+    mo1.v3 = source()
+    mo2!.v1! = source()
+    mo2!.v2 = source()
+    mo2!.v3 = source()
+
+    sink(arg: v1!) // $ flow=723
+    sink(arg: v2!) // $ flow=724
+    sink(arg: v3) // $ flow=725
+    sink(arg: mo1.v1!) // $ MISSING:flow=726
+    sink(arg: mo1.v2!) // $ flow=727
+    sink(arg: mo1.v3) // $ flow=728
+    sink(arg: mo2!.v1!) // $ MISSING:flow=729
+    sink(arg: mo2!.v2!) // $ MISSING:flow=730
+    sink(arg: mo2!.v3) // $ MISSING:flow=731
 }
