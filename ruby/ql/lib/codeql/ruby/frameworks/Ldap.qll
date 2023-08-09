@@ -45,10 +45,7 @@ module NetLdap {
     NetLdapConnection() { this in [ldap().getAnInstantiation(), ldap().getAMethodCall("open")] }
 
     predicate usesSsl() {
-      [
-        this.getKeywordArgument("encryption"), this.getAMethodCall("encryption").getArgument(0),
-        this.getAMethodCall("encryption").getKeywordArgument("method")
-      ].getConstantValue().isStringlikeValue("simple_tls")
+      getValue(this, "encryption").getConstantValue().isStringlikeValue("simple_tls")
     }
 
     DataFlow::Node getAuthValue(string arg) {
@@ -88,13 +85,7 @@ module NetLdap {
 
     NetLdapBind() { this = l.getAMethodCall("bind") }
 
-    override DataFlow::Node getHost() {
-      result =
-        [
-          l.getKeywordArgument("host"), l.getAMethodCall("host").getArgument(0),
-          l.getAMethodCall("host").getKeywordArgument("method")
-        ]
-    }
+    override DataFlow::Node getHost() { result = getValue(l, "host") }
 
     override DataFlow::Node getPassword() {
       result = l.getAuthValue("password") or
@@ -102,5 +93,14 @@ module NetLdap {
     }
 
     override predicate usesSsl() { l.usesSsl() }
+  }
+
+  /** LDAP Attribute value */
+  DataFlow::Node getValue(NetLdapConnection l, string attr) {
+    result =
+      [
+        l.getKeywordArgument(attr), l.getAMethodCall(attr).getArgument(0),
+        l.getAMethodCall(attr).getKeywordArgument(attr)
+      ]
   }
 }
