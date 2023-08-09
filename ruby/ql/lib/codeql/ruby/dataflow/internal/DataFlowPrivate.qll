@@ -629,7 +629,9 @@ private module ParameterNodes {
         or
         exists(int n | n > 0 |
           parameter = callable.getParameter(n).(SplatParameter) and
-          pos.isSplat(n)
+          pos.isSplat(n) and
+          // There are no positional parameters after the splat
+          not exists(SimpleParameter p, int m | m > n | p = callable.getParameter(m))
         )
       )
     }

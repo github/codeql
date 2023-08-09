@@ -69,8 +69,8 @@ splatstuff(*args)
 def splatmid(x, y, *z, w, r)
     sink x # $ hasValueFlow=27 $ hasValueFlow=32 $ hasValueFlow=45
     sink y # $ hasValueFlow=28 $ hasValueFlow=46 $ MISSING: hasValueFlow=33
-    sink z[0] # $ hasValueFlow=47 $ MISSING: hasValueFlow=29 $ hasValueFlow=34
-    sink z[1] # $ hasValueFlow=48 $ MISSING: hasValueFlow=35
+    sink z[0] # MISSING: $ hasValueFlow=47 $ hasValueFlow=29 $ hasValueFlow=34
+    sink z[1] # $ MISSING: hasValueFlow=48 $ hasValueFlow=35
     sink w # $ hasValueFlow=30 $ hasValueFlow=50 $ MISSING: hasValueFlow=36
     sink r # $ hasValueFlow=31 $ hasValueFlow=51 $ MISSING: hasValueFlow=37
 end
@@ -94,3 +94,21 @@ args = [taint(40), taint(41), taint(42), taint(43)]
 pos_many(taint(38), taint(39), *args, taint(44))
 
 splatmid(taint(45), taint(46), *[taint(47), taint(48), taint(49)], taint(50), taint(51))
+
+def splatmidsmall(a, *splats, b)
+    sink a # $ hasValueFlow=52 $ hasValueFlow=55
+    sink splats[0] # $ MISSING: hasValueFlow=53
+    sink splats[1] # $ MISSING: hasValueFlow=54
+    sink b # $ hasValueFlow=57
+end
+
+splatmidsmall(taint(52), *[taint(53), taint(54)])
+splatmidsmall(taint(55), taint(56), taint(57))
+
+def splat_followed_by_keyword_param(a, *b, c:)
+    sink a # $ hasValueFlow=58
+    sink b[0] # $ MISSING: hasValueFlow=59
+    sink c # $ hasValueFlow=60
+end
+
+splat_followed_by_keyword_param(taint(58), taint(59), c: taint(60))
