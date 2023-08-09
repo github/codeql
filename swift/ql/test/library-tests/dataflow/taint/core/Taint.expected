@@ -1,4 +1,13 @@
 edges
+| conversions.swift:28:19:28:29 | call to sourceInt() | conversions.swift:28:12:28:30 | call to String.init(_:) |
+| conversions.swift:29:12:29:30 | call to String.init(_:) | conversions.swift:29:12:29:32 | .utf8 |
+| conversions.swift:29:19:29:29 | call to sourceInt() | conversions.swift:29:12:29:30 | call to String.init(_:) |
+| conversions.swift:63:19:63:31 | call to sourceFloat() | conversions.swift:63:12:63:32 | call to String.init(_:) |
+| conversions.swift:64:12:64:32 | call to String.init(_:) | conversions.swift:64:12:64:34 | .utf8 |
+| conversions.swift:64:19:64:31 | call to sourceFloat() | conversions.swift:64:12:64:32 | call to String.init(_:) |
+| conversions.swift:78:19:78:32 | call to sourceString() | conversions.swift:78:12:78:33 | call to String.init(_:) |
+| conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:95:12:95:12 | parent |
+| conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:96:12:96:12 | parent |
 | file://:0:0:0:0 | self [first] | file://:0:0:0:0 | .first |
 | file://:0:0:0:0 | self [second] | file://:0:0:0:0 | .second |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [first] |
@@ -77,6 +86,24 @@ edges
 | try.swift:18:18:18:25 | call to source() | try.swift:18:18:18:25 | call to source() [some:0] |
 | try.swift:18:18:18:25 | call to source() [some:0] | try.swift:18:13:18:25 | try? ... [some:0] |
 nodes
+| conversions.swift:24:12:24:22 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:28:12:28:30 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:28:19:28:29 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:29:12:29:30 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:29:12:29:32 | .utf8 | semmle.label | .utf8 |
+| conversions.swift:29:19:29:29 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:60:12:60:24 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:63:12:63:32 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:63:19:63:31 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:64:12:64:32 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:64:12:64:34 | .utf8 | semmle.label | .utf8 |
+| conversions.swift:64:19:64:31 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:77:12:77:25 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:78:12:78:33 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:78:19:78:32 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:94:31:94:44 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:95:12:95:12 | parent | semmle.label | parent |
+| conversions.swift:96:12:96:12 | parent | semmle.label | parent |
 | file://:0:0:0:0 | .first | semmle.label | .first |
 | file://:0:0:0:0 | .second | semmle.label | .second |
 | file://:0:0:0:0 | [post] self [first] | semmle.label | [post] self [first] |
@@ -200,6 +227,16 @@ subpaths
 | stringinterpolation.swift:28:14:28:21 | call to source() | stringinterpolation.swift:7:6:7:6 | value | file://:0:0:0:0 | [post] self [second] | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] |
 | stringinterpolation.swift:31:21:31:21 | p2 [second] | stringinterpolation.swift:7:6:7:6 | self [second] | file://:0:0:0:0 | .second | stringinterpolation.swift:31:21:31:24 | .second |
 #select
+| conversions.swift:24:12:24:22 | call to sourceInt() | conversions.swift:24:12:24:22 | call to sourceInt() | conversions.swift:24:12:24:22 | call to sourceInt() | result |
+| conversions.swift:28:12:28:30 | call to String.init(_:) | conversions.swift:28:19:28:29 | call to sourceInt() | conversions.swift:28:12:28:30 | call to String.init(_:) | result |
+| conversions.swift:29:12:29:32 | .utf8 | conversions.swift:29:19:29:29 | call to sourceInt() | conversions.swift:29:12:29:32 | .utf8 | result |
+| conversions.swift:60:12:60:24 | call to sourceFloat() | conversions.swift:60:12:60:24 | call to sourceFloat() | conversions.swift:60:12:60:24 | call to sourceFloat() | result |
+| conversions.swift:63:12:63:32 | call to String.init(_:) | conversions.swift:63:19:63:31 | call to sourceFloat() | conversions.swift:63:12:63:32 | call to String.init(_:) | result |
+| conversions.swift:64:12:64:34 | .utf8 | conversions.swift:64:19:64:31 | call to sourceFloat() | conversions.swift:64:12:64:34 | .utf8 | result |
+| conversions.swift:77:12:77:25 | call to sourceString() | conversions.swift:77:12:77:25 | call to sourceString() | conversions.swift:77:12:77:25 | call to sourceString() | result |
+| conversions.swift:78:12:78:33 | call to String.init(_:) | conversions.swift:78:19:78:32 | call to sourceString() | conversions.swift:78:12:78:33 | call to String.init(_:) | result |
+| conversions.swift:95:12:95:12 | parent | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:95:12:95:12 | parent | result |
+| conversions.swift:96:12:96:12 | parent | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:96:12:96:12 | parent | result |
 | simple.swift:12:13:12:24 | ... .+(_:_:) ... | simple.swift:12:17:12:24 | call to source() | simple.swift:12:13:12:24 | ... .+(_:_:) ... | result |
 | simple.swift:13:13:13:24 | ... .+(_:_:) ... | simple.swift:13:13:13:20 | call to source() | simple.swift:13:13:13:24 | ... .+(_:_:) ... | result |
 | simple.swift:14:13:14:24 | ... .-(_:_:) ... | simple.swift:14:17:14:24 | call to source() | simple.swift:14:13:14:24 | ... .-(_:_:) ... | result |
