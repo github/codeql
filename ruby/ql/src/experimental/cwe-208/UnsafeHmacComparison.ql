@@ -13,7 +13,6 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-import DataFlow::PathGraph
 import codeql.ruby.ApiGraphs
 import ruby
 
