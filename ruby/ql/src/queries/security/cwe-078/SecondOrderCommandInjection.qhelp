@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Some shell commands, like <code>git ls-remote</code>, can execute 
+arbitrary commands if a user provides a malicious URL that starts with 
+<code>--upload-pack</code>. This can be used to execute arbitrary code on
+the server.
+</p>
+
+</overview>
+
+<recommendation>
+
+<p>
+Sanitize user input before passing it to the shell command. For example,
+ensure that URLs are valid and do not contain malicious commands.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example shows code that executes <code>git ls-remote</code> on a
+URL that can be controlled by a malicious user.
+</p>
+
+<sample src="examples/second-order-command-injection.js" />
+
+<p>
+The problem has been fixed in the snippet below, where the URL is validated before
+being passed to the shell command.
+</p>
+
+<sample src="examples/second-order-command-injection-fixed.js" />
+
+</example>
+<references>
+<li>Max Justicz: <a href="https://justi.cz/security/2021/04/20/cocoapods-rce.html">Hacking 3,000,000 apps at once through CocoaPods</a>.</li>
+<li>Git: <a href="https://git-scm.com/docs/git-ls-remote/2.22.0#Documentation/git-ls-remote.txt---upload-packltexecgt">Git - git-ls-remote Documentation</a>.</li>
+<li>OWASP: <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.</li>
+
+</references>
+</qhelp>

@@ -756,8 +756,19 @@ deprecated module HTTP = Http;
  * for instance by spawning a new process.
  */
 class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExecution::Range {
+  /** Gets an argument to this execution that specifies the command. */
+  DataFlow::Node getACommandArgument() { result = super.getACommandArgument() }
+
   /** Holds if a shell interprets `arg`. */
   predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
+
+  /**
+   * Gets an argument to this command execution that specifies the argument list
+   * to the command.
+   * TODO: This list could potentially include the command itself (e.g. `git` or `hg`).
+   * TODO: Look through all the `SystemCommandExecution` models.
+   */
+  DataFlow::Node getArgumentList() { result = super.getArgumentList() }
 
   /** Gets an argument to this execution that specifies the command or an argument to it. */
   DataFlow::Node getAnArgument() { result = super.getAnArgument() }
@@ -778,6 +789,15 @@ module SystemCommandExecution {
 
     /** Holds if a shell interprets `arg`. */
     predicate isShellInterpreted(DataFlow::Node arg) { none() }
+
+    /**
+     * Gets an argument to this command execution that specifies the argument list
+     * to the command.
+     */
+    DataFlow::Node getArgumentList() { none() }
+
+    /** Gets an argument to this execution that specifies the command. */
+    DataFlow::Node getACommandArgument() { none() }
   }
 }
 

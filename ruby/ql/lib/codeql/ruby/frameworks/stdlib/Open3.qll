@@ -5,6 +5,7 @@
 private import ruby
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
+private import codeql.ruby.frameworks.core.Kernel
 
 /**
  * Provides modeling for the `Open3` library.
@@ -28,6 +29,19 @@ module Open3 {
       // These Open3 methods invoke a subshell if you provide a single string as argument
       super.getNumberOfArguments() = 1 and
       arg = this.getAnArgument()
+    }
+
+    override DataFlow::Node getACommandArgument() {
+      result = Kernel::getACommandArgumentFromShellCall(this)
+    }
+
+    override DataFlow::Node getArgumentList() {
+      // TODO: This is incomplete
+      exists(Cfg::CfgNodes::ExprNodes::UnaryOperationCfgNode un |
+        un = super.getArgument(_).asExpr() and // TODO: Specific arg?
+        un.getOperator() = "*" and
+        result.asExpr() = un.getOperand()
+      )
     }
   }
 
@@ -56,6 +70,10 @@ module Open3 {
       // A command in the pipeline is executed in a subshell if it is given as a single string argument.
       arg.asExpr().getExpr() instanceof Ast::StringlikeLiteral and
       arg = this.getAnArgument()
+    }
+
+    override DataFlow::Node getACommandArgument() {
+      result = Kernel::getACommandArgumentFromShellCall(this)
     }
   }
 }
