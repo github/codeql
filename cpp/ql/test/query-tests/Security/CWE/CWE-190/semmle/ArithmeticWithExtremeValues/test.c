@@ -65,7 +65,7 @@ void test_crement() {
   sc9 += 1; // GOOD
 
   sc10 = 1;
-  sc10 += CHAR_MAX; // BAD [NOT DETECTED]
+  sc10 += CHAR_MAX; // BAD
 }
 
 void test_negatives() {
