@@ -43,7 +43,7 @@ module NetLdap {
   /** A call that establishes a LDAP Connection */
   private class NetLdapConnection extends DataFlow::CallNode {
 
-    NetLdapConnection() { this in [ldap().getAnInstantiation(), ldap().getAMethodCall(["open"])] }
+    NetLdapConnection() { this in [ldap().getAnInstantiation(), ldap().getAMethodCall("open")] }
 
     predicate usesSsl() {
       [
