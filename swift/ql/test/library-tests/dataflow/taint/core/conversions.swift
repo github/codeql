@@ -22,9 +22,9 @@ class MyString : LosslessStringConvertible, CustomStringConvertible, CustomDebug
 
 func testConversions() {
 	sink(arg: sourceInt()) // $ tainted=24
-	sink(arg: Int(sourceInt())) // $ MISSING: tainted=
-	sink(arg: UInt8(sourceInt())) // $ MISSING: tainted=
-	sink(arg: Float(sourceInt())) // $ MISSING: tainted=
+	sink(arg: Int(sourceInt())) // $ tainted=25
+	sink(arg: UInt8(sourceInt())) // $ tainted=26
+	sink(arg: Float(sourceInt())) // $ tainted=27
 	sink(arg: String(sourceInt())) // $ tainted=28
 	sink(arg: String(sourceInt()).utf8) // $ tainted=29
 	sink(arg: [UInt8](sourceString().utf8)) // $ MISSING: tainted=
@@ -34,43 +34,43 @@ func testConversions() {
 	}
 
 	let v2: UInt8 = numericCast(sourceInt())
-	sink(arg: v2) // $ MISSING: tainted=
+	sink(arg: v2) // $ tainted=36
 
 	let v4: UInt = unsafeBitCast(sourceInt(), to: UInt.self)
-	sink(arg: v4) // $ MISSING: tainted=
+	sink(arg: v4) // $ tainted=39
 
 	let v5 = UInt(truncatingIfNeeded: sourceInt())
-	sink(arg: v5) // $ MISSING: tainted=
+	sink(arg: v5) // $ tainted=42
 
 	let v6 = UInt(bitPattern: sourceInt())
-	sink(arg: v6) // $ MISSING: tainted=
+	sink(arg: v6) // $ tainted=45
 
-	sink(arg: Int(exactly: sourceInt())!) // $ MISSING: tainted=
-	sink(arg: Int(clamping: sourceInt())) // $ MISSING: tainted=
-	sink(arg: Int(truncatingIfNeeded: sourceInt())) // $ MISSING: tainted=
-	sink(arg: Int(sourceString(), radix: 10)!) // $ MISSING: tainted=
+	sink(arg: Int(exactly: sourceInt())!) // $ tainted=48
+	sink(arg: Int(clamping: sourceInt())) // $ tainted=49
+	sink(arg: Int(truncatingIfNeeded: sourceInt())) // $ tainted=50
+	sink(arg: Int(sourceString(), radix: 10)!) // $ tainted=51
 
-	sink(arg: Int(littleEndian: sourceInt())) // $ MISSING: tainted=
-	sink(arg: Int(bigEndian: sourceInt())) // $ MISSING: tainted=
-	sink(arg: sourceInt().littleEndian) // $ MISSING: tainted=
-	sink(arg: sourceInt().bigEndian) // $ MISSING: tainted=
+	sink(arg: Int(littleEndian: sourceInt())) // $ tainted=53
+	sink(arg: Int(bigEndian: sourceInt())) // $ tainted=54
+	sink(arg: sourceInt().littleEndian) // $ tainted=55
+	sink(arg: sourceInt().bigEndian) // $ tainted=56
 
 	// ---
 
 	sink(arg: sourceFloat()) // $ tainted=60
-	sink(arg: Float(sourceFloat())) // $ MISSING: tainted=
-	sink(arg: UInt8(sourceFloat())) // $ MISSING: tainted=
+	sink(arg: Float(sourceFloat())) // $ tainted=61
+	sink(arg: UInt8(sourceFloat())) // $ tainted=62
 	sink(arg: String(sourceFloat())) // $ tainted=63
 	sink(arg: String(sourceFloat()).utf8) // $ tainted=64
 
-	sink(arg: Float(sourceFloat())) // MISSING: tainted=
-	sink(arg: Float(sign: .plus, exponent: sourceInt(), significand: 0.0)) // MISSING: tainted=
-	sink(arg: Float(sign: .plus, exponent: 0, significand: sourceFloat())) // MISSING: tainted=
+	sink(arg: Float(sourceFloat())) // $ tainted=66
+	sink(arg: Float(sign: .plus, exponent: sourceInt(), significand: 0.0)) // $ tainted=67
+	sink(arg: Float(sign: .plus, exponent: 0, significand: sourceFloat())) // $ tainted=68
 	sink(arg: Float(signOf: sourceFloat(), magnitudeOf: 0.0)) // (good)
-	sink(arg: Float(signOf: 0.0, magnitudeOf: sourceFloat())) // MISSING: tainted=
+	sink(arg: Float(signOf: 0.0, magnitudeOf: sourceFloat())) // $ tainted=70
 
-	sink(arg: sourceFloat().exponent) // $ MISSING: tainted=
-	sink(arg: sourceFloat().significand) // $ MISSING: tainted=
+	sink(arg: sourceFloat().exponent) // $ tainted=72
+	sink(arg: sourceFloat().significand) // $ tainted=73
 
 	// ---
 
@@ -96,6 +96,6 @@ func testConversions() {
 	sink(arg: parent as! MyChildClass) // $ tainted=94
 
 	let v3: MyChildClass = unsafeDowncast(parent, to: MyChildClass.self)
-	sink(arg: v3) // $ MISSING: tainted=
-	sink(arg: v3 as! MyParentClass) // $ MISSING: tainted=
+	sink(arg: v3) // $ tainted=94
+	sink(arg: v3 as! MyParentClass) // $ tainted=94
 }

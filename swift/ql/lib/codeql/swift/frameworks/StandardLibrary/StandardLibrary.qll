@@ -14,6 +14,7 @@ private import NsData
 private import NsObject
 private import NsString
 private import NsUrl
+private import Numeric
 private import Sequence
 private import Set
 private import String
