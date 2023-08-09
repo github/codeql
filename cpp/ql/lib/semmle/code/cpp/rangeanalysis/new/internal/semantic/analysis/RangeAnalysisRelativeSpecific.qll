@@ -110,7 +110,7 @@ module CppLangImplRelative implements LangSig<FloatDelta> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(SemExpr e, float bound, boolean upper, SemReason reason) { none() }
+  predicate hasConstantBound(SemExpr e, float bound, boolean upper) { none() }
 
   /**
    * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
