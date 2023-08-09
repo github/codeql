@@ -338,6 +338,7 @@
 | file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: Argument[-1] in Write |
 | file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: Argument[-1] in Write |
 | file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: Argument[-1] in Write |
+| file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: Argument[-1] in Write |
 | file://:0:0:0:0 | [summary param] 0 in WriteAt | file://:0:0:0:0 | [summary] to write: Argument[-1] in WriteAt |
 | file://:0:0:0:0 | [summary param] 0 in WriteAt | file://:0:0:0:0 | [summary] to write: Argument[-1] in WriteAt |
 | file://:0:0:0:0 | [summary param] 0 in WriteAt | file://:0:0:0:0 | [summary] to write: Argument[-1] in WriteAt |
@@ -524,6 +525,7 @@
 | file://:0:0:0:0 | [summary param] -1 in GoString | file://:0:0:0:0 | [summary] to write: ReturnValue in GoString |
 | file://:0:0:0:0 | [summary param] -1 in GoString | file://:0:0:0:0 | [summary] to write: ReturnValue in GoString |
 | file://:0:0:0:0 | [summary param] -1 in GoString | file://:0:0:0:0 | [summary] to write: ReturnValue in GoString |
+| file://:0:0:0:0 | [summary param] -1 in GoString | file://:0:0:0:0 | [summary] to write: ReturnValue in GoString |
 | file://:0:0:0:0 | [summary param] -1 in Hijack | file://:0:0:0:0 | [summary] to write: ReturnValue in Hijack |
 | file://:0:0:0:0 | [summary param] -1 in Hijack | file://:0:0:0:0 | [summary] to write: ReturnValue in Hijack |
 | file://:0:0:0:0 | [summary param] -1 in Hijack | file://:0:0:0:0 | [summary] to write: ReturnValue in Hijack |
@@ -676,6 +678,7 @@
 | file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: Argument[0] in ReadAt |
 | file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: Argument[0] in ReadAt |
 | file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: Argument[0] in ReadAt |
+| file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: Argument[0] in ReadAt |
 | file://:0:0:0:0 | [summary param] -1 in ReadBytes | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadBytes |
 | file://:0:0:0:0 | [summary param] -1 in ReadBytes | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadBytes |
 | file://:0:0:0:0 | [summary param] -1 in ReadCodeLine | file://:0:0:0:0 | [summary] to write: ReturnValue[1] in ReadCodeLine |
@@ -684,8 +687,10 @@
 | file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDir |
 | file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDir |
 | file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDir |
+| file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDir |
 | file://:0:0:0:0 | [summary param] -1 in ReadDotBytes | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDotBytes |
 | file://:0:0:0:0 | [summary param] -1 in ReadDotLines | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDotLines |
+| file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadFile |
 | file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadFile |
 | file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadFile |
 | file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadFile |
@@ -816,6 +821,16 @@
 | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
 | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
 | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
 | file://:0:0:0:0 | [summary param] -1 in Sub | file://:0:0:0:0 | [summary] to write: ReturnValue in Sub |
 | file://:0:0:0:0 | [summary param] -1 in Sub | file://:0:0:0:0 | [summary] to write: ReturnValue in Sub |
 | file://:0:0:0:0 | [summary param] -1 in Swap | file://:0:0:0:0 | [summary] to write: ReturnValue in Swap |
@@ -837,6 +852,7 @@
 | file://:0:0:0:0 | [summary param] -1 in TryRecv | file://:0:0:0:0 | [summary] to write: ReturnValue in TryRecv |
 | file://:0:0:0:0 | [summary param] -1 in UnsafeAddr | file://:0:0:0:0 | [summary] to write: ReturnValue in UnsafeAddr |
 | file://:0:0:0:0 | [summary param] -1 in Username | file://:0:0:0:0 | [summary] to write: ReturnValue in Username |
+| file://:0:0:0:0 | [summary param] -1 in Value | file://:0:0:0:0 | [summary] to write: ReturnValue in Value |
 | file://:0:0:0:0 | [summary param] -1 in Value | file://:0:0:0:0 | [summary] to write: ReturnValue in Value |
 | file://:0:0:0:0 | [summary param] -1 in Value | file://:0:0:0:0 | [summary] to write: ReturnValue in Value |
 | file://:0:0:0:0 | [summary param] -1 in Value | file://:0:0:0:0 | [summary] to write: ReturnValue in Value |
