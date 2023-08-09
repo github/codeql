@@ -292,10 +292,11 @@ module HttpServerHttpResponseTest implements TestSig {
           exists(DedicatedResponseTest d | d.isDedicatedFile(file))
         ) and
         (
-          exists(Http::Server::HttpResponse response |
-            location = response.getLocation() and
-            element = response.toString() and
-            value = prettyNodeForInlineTest(response.getBody()) and
+          exists(Http::Server::HttpResponse response, DataFlow::Node body |
+            body = response.getBody() and
+            location = body.getLocation() and
+            element = body.toString() and
+            value = prettyNodeForInlineTest(body) and
             tag = "responseBody"
           )
           or
