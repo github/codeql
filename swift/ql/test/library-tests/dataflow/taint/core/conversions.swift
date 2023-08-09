@@ -30,7 +30,7 @@ func testConversions() {
 	sink(arg: [UInt8](sourceString().utf8)) // $ MISSING: tainted=
 
 	if let v = sourceInt() as? UInt {
-		sink(arg: v) // $ MISSING: tainted=
+		sink(arg: v) // $ tainted=32
 	}
 
 	let v2: UInt8 = numericCast(sourceInt())

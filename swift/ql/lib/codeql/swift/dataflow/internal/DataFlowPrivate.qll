@@ -182,6 +182,11 @@ private module Cached {
     //   retaining this case increases robustness of flow).
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
+    // read of an optional .some member via `let x: T = y: T?` pattern matching
+    // note: similar to `ForceValueExpr` this is ideally a content `readStep` but
+    //   in practice we sometimes have taint on the optional itself.
+    nodeTo.asPattern() = nodeFrom.asPattern().(OptionalSomePattern).getSubPattern()
+    or
     // flow through `?` and `?.`
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
     or
