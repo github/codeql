@@ -85,7 +85,6 @@ For each repository, you can see:
 - Visibility of the repository
 - Whether analysis is still running (black, moving circle) or finished (green checkmark)
 - Number of stars the repository has on GitHub
-- When the repository was last updated
 
 To see the results for a repository:
 

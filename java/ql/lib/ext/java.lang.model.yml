@@ -176,7 +176,6 @@ extensions:
       - ["java.lang", "Object", "getClass", "()", "summary", "manual"]
       - ["java.lang", "Object", "hashCode", "()", "summary", "manual"]
       - ["java.lang", "Object", "toString", "()", "summary", "manual"]
-      - ["java.lang", "Runnable", "run", "()", "summary", "manual"]
       - ["java.lang", "Runtime", "getRuntime", "()", "summary", "manual"]
       - ["java.lang", "String", "compareTo", "(String)", "summary", "manual"]
       - ["java.lang", "String", "contains", "(CharSequence)", "summary", "manual"]

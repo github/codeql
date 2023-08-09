@@ -41,7 +41,7 @@
 | test.swift:60:15:60:15 | [post] x | test.swift:61:23:61:23 | x |
 | test.swift:60:15:60:15 | x | test.swift:61:23:61:23 | x |
 | test.swift:61:22:61:23 | &... | test.swift:62:15:62:15 | x |
-| test.swift:61:22:61:23 | [post] &... | test.swift:62:15:62:15 | x |
+| test.swift:61:23:61:23 | [post] x | test.swift:61:22:61:23 | &... |
 | test.swift:61:23:61:23 | x | test.swift:61:22:61:23 | &... |
 | test.swift:65:16:65:28 | SSA def(arg1) | test.swift:66:21:66:21 | arg1 |
 | test.swift:65:16:65:28 | arg1 | test.swift:65:16:65:28 | SSA def(arg1) |
@@ -64,10 +64,10 @@
 | test.swift:74:9:74:12 | ... as ... | test.swift:74:9:74:9 | y |
 | test.swift:74:18:74:18 | 0 | test.swift:74:9:74:12 | ... as ... |
 | test.swift:75:21:75:22 | &... | test.swift:76:15:76:15 | x |
-| test.swift:75:21:75:22 | [post] &... | test.swift:76:15:76:15 | x |
+| test.swift:75:22:75:22 | [post] x | test.swift:75:21:75:22 | &... |
 | test.swift:75:22:75:22 | x | test.swift:75:21:75:22 | &... |
 | test.swift:75:31:75:32 | &... | test.swift:77:15:77:15 | y |
-| test.swift:75:31:75:32 | [post] &... | test.swift:77:15:77:15 | y |
+| test.swift:75:32:75:32 | [post] y | test.swift:75:31:75:32 | &... |
 | test.swift:75:32:75:32 | y | test.swift:75:31:75:32 | &... |
 | test.swift:81:5:81:18 | SSA def(arg) | test.swift:80:1:82:1 | arg[return] |
 | test.swift:81:11:81:18 | call to source() | test.swift:81:5:81:18 | SSA def(arg) |
@@ -87,7 +87,7 @@
 | test.swift:96:19:96:19 | [post] x | test.swift:97:40:97:40 | x |
 | test.swift:96:19:96:19 | x | test.swift:97:40:97:40 | x |
 | test.swift:97:39:97:40 | &... | test.swift:98:19:98:19 | x |
-| test.swift:97:39:97:40 | [post] &... | test.swift:98:19:98:19 | x |
+| test.swift:97:40:97:40 | [post] x | test.swift:97:39:97:40 | &... |
 | test.swift:97:40:97:40 | x | test.swift:97:39:97:40 | &... |
 | test.swift:102:13:102:13 | SSA def(x) | test.swift:103:19:103:19 | x |
 | test.swift:102:13:102:13 | x | test.swift:102:13:102:13 | SSA def(x) |
@@ -96,7 +96,7 @@
 | test.swift:103:19:103:19 | [post] x | test.swift:104:41:104:41 | x |
 | test.swift:103:19:103:19 | x | test.swift:104:41:104:41 | x |
 | test.swift:104:40:104:41 | &... | test.swift:105:19:105:19 | x |
-| test.swift:104:40:104:41 | [post] &... | test.swift:105:19:105:19 | x |
+| test.swift:104:41:104:41 | [post] x | test.swift:104:40:104:41 | &... |
 | test.swift:104:41:104:41 | x | test.swift:104:40:104:41 | &... |
 | test.swift:109:9:109:14 | SSA def(arg) | test.swift:110:12:110:12 | arg |
 | test.swift:109:9:109:14 | arg | test.swift:109:9:109:14 | SSA def(arg) |
@@ -664,6 +664,7 @@
 | test.swift:591:7:591:7 | SSA def(n) | test.swift:592:36:592:36 | n |
 | test.swift:591:7:591:7 | n | test.swift:591:7:591:7 | SSA def(n) |
 | test.swift:591:11:591:11 | 0 | test.swift:591:7:591:7 | n |
+| test.swift:592:36:592:36 | [post] n | test.swift:592:35:592:36 | &... |
 | test.swift:592:36:592:36 | n | test.swift:592:35:592:36 | &... |
 | test.swift:596:7:596:7 | self | test.swift:596:7:596:7 | SSA def(self) |
 | test.swift:598:3:598:3 | SSA def(self) | test.swift:599:5:599:5 | self |
@@ -744,8 +745,152 @@
 | test.swift:660:5:660:9 | SSA def(y) | test.swift:661:15:661:15 | y |
 | test.swift:660:9:660:9 | 0 | test.swift:660:5:660:9 | SSA def(y) |
 | test.swift:661:10:661:11 | &... | test.swift:662:15:662:15 | x |
-| test.swift:661:10:661:11 | [post] &... | test.swift:662:15:662:15 | x |
+| test.swift:661:11:661:11 | [post] x | test.swift:661:10:661:11 | &... |
 | test.swift:661:11:661:11 | x | test.swift:661:10:661:11 | &... |
 | test.swift:661:14:661:15 | &... | test.swift:663:15:663:15 | y |
-| test.swift:661:14:661:15 | [post] &... | test.swift:663:15:663:15 | y |
+| test.swift:661:15:661:15 | [post] y | test.swift:661:14:661:15 | &... |
 | test.swift:661:15:661:15 | y | test.swift:661:14:661:15 | &... |
+| test.swift:667:9:667:9 | SSA def(arr1) | test.swift:668:15:668:15 | arr1 |
+| test.swift:667:9:667:9 | arr1 | test.swift:667:9:667:9 | SSA def(arr1) |
+| test.swift:667:16:667:22 | [...] | test.swift:667:9:667:9 | arr1 |
+| test.swift:668:15:668:15 | &... | test.swift:669:5:669:5 | arr1 |
+| test.swift:668:15:668:15 | [post] arr1 | test.swift:668:15:668:15 | &... |
+| test.swift:668:15:668:15 | arr1 | test.swift:668:15:668:15 | &... |
+| test.swift:669:5:669:5 | &... | test.swift:670:15:670:15 | arr1 |
+| test.swift:669:5:669:5 | [post] arr1 | test.swift:669:5:669:5 | &... |
+| test.swift:669:5:669:5 | arr1 | test.swift:669:5:669:5 | &... |
+| test.swift:670:15:670:15 | &... | test.swift:671:15:671:15 | arr1 |
+| test.swift:670:15:670:15 | [post] arr1 | test.swift:670:15:670:15 | &... |
+| test.swift:670:15:670:15 | arr1 | test.swift:670:15:670:15 | &... |
+| test.swift:673:9:673:9 | SSA def(arr2) | test.swift:674:15:674:15 | arr2 |
+| test.swift:673:9:673:9 | arr2 | test.swift:673:9:673:9 | SSA def(arr2) |
+| test.swift:673:16:673:25 | [...] | test.swift:673:9:673:9 | arr2 |
+| test.swift:674:15:674:15 | &... | test.swift:685:16:685:16 | arr2 |
+| test.swift:674:15:674:15 | [post] arr2 | test.swift:674:15:674:15 | &... |
+| test.swift:674:15:674:15 | arr2 | test.swift:674:15:674:15 | &... |
+| test.swift:676:9:676:9 | SSA def(matrix) | test.swift:677:15:677:15 | matrix |
+| test.swift:676:9:676:9 | matrix | test.swift:676:9:676:9 | SSA def(matrix) |
+| test.swift:676:18:676:29 | [...] | test.swift:676:9:676:9 | matrix |
+| test.swift:677:15:677:15 | &... | test.swift:678:15:678:15 | matrix |
+| test.swift:677:15:677:15 | [post] matrix | test.swift:677:15:677:15 | &... |
+| test.swift:677:15:677:15 | matrix | test.swift:677:15:677:15 | &... |
+| test.swift:678:15:678:15 | [post] matrix | test.swift:678:15:678:15 | &... |
+| test.swift:678:15:678:15 | matrix | test.swift:678:15:678:15 | &... |
+| test.swift:678:15:678:23 | ...[...] | test.swift:678:15:678:23 | &... |
+| test.swift:680:9:680:9 | SSA def(matrix2) | test.swift:681:5:681:5 | matrix2 |
+| test.swift:680:9:680:9 | matrix2 | test.swift:680:9:680:9 | SSA def(matrix2) |
+| test.swift:680:19:680:23 | [...] | test.swift:680:9:680:9 | matrix2 |
+| test.swift:681:5:681:5 | &... | test.swift:682:15:682:15 | matrix2 |
+| test.swift:681:5:681:5 | [post] matrix2 | test.swift:681:5:681:5 | &... |
+| test.swift:681:5:681:5 | matrix2 | test.swift:681:5:681:5 | &... |
+| test.swift:681:5:681:14 | ...[...] | test.swift:681:5:681:14 | &... |
+| test.swift:682:15:682:15 | [post] matrix2 | test.swift:682:15:682:15 | &... |
+| test.swift:682:15:682:15 | matrix2 | test.swift:682:15:682:15 | &... |
+| test.swift:682:15:682:24 | ...[...] | test.swift:682:15:682:24 | &... |
+| test.swift:684:9:684:9 | SSA def(arr3) | test.swift:685:23:685:23 | arr3 |
+| test.swift:684:9:684:9 | arr3 | test.swift:684:9:684:9 | SSA def(arr3) |
+| test.swift:684:16:684:18 | [...] | test.swift:684:9:684:9 | arr3 |
+| test.swift:685:9:685:9 | SSA def(arr4) | test.swift:687:15:687:15 | arr4 |
+| test.swift:685:9:685:9 | arr4 | test.swift:685:9:685:9 | SSA def(arr4) |
+| test.swift:685:16:685:23 | ... .+(_:_:) ... | test.swift:685:9:685:9 | arr4 |
+| test.swift:685:23:685:23 | arr3 | test.swift:686:15:686:15 | arr3 |
+| test.swift:686:15:686:15 | [post] arr3 | test.swift:686:15:686:15 | &... |
+| test.swift:686:15:686:15 | arr3 | test.swift:686:15:686:15 | &... |
+| test.swift:687:15:687:15 | [post] arr4 | test.swift:687:15:687:15 | &... |
+| test.swift:687:15:687:15 | arr4 | test.swift:687:15:687:15 | &... |
+| test.swift:689:9:689:9 | SSA def(arr5) | test.swift:690:15:690:15 | arr5 |
+| test.swift:689:9:689:9 | arr5 | test.swift:689:9:689:9 | SSA def(arr5) |
+| test.swift:689:16:689:51 | call to Array<Element>.init(repeating:count:) | test.swift:689:9:689:9 | arr5 |
+| test.swift:690:15:690:15 | [post] arr5 | test.swift:690:15:690:15 | &... |
+| test.swift:690:15:690:15 | arr5 | test.swift:690:15:690:15 | &... |
+| test.swift:692:9:692:9 | SSA def(arr6) | test.swift:693:5:693:5 | arr6 |
+| test.swift:692:9:692:9 | arr6 | test.swift:692:9:692:9 | SSA def(arr6) |
+| test.swift:692:16:692:22 | [...] | test.swift:692:9:692:9 | arr6 |
+| test.swift:693:5:693:5 | &... | test.swift:694:15:694:15 | arr6 |
+| test.swift:693:5:693:5 | [post] arr6 | test.swift:693:5:693:5 | &... |
+| test.swift:693:5:693:5 | arr6 | test.swift:693:5:693:5 | &... |
+| test.swift:694:15:694:15 | [post] arr6 | test.swift:694:15:694:15 | &... |
+| test.swift:694:15:694:15 | arr6 | test.swift:694:15:694:15 | &... |
+| test.swift:696:9:696:9 | SSA def(arr7) | test.swift:697:15:697:15 | arr7 |
+| test.swift:696:9:696:9 | arr7 | test.swift:696:9:696:9 | SSA def(arr7) |
+| test.swift:696:16:696:25 | [...] | test.swift:696:9:696:9 | arr7 |
+| test.swift:697:15:697:34 | call to randomElement() | test.swift:697:15:697:35 | ...! |
+| test.swift:701:9:701:9 | SSA def(set1) | test.swift:702:15:702:15 | set1 |
+| test.swift:701:9:701:9 | set1 | test.swift:701:9:701:9 | SSA def(set1) |
+| test.swift:701:9:701:15 | ... as ... | test.swift:701:9:701:9 | set1 |
+| test.swift:701:21:701:27 | [...] | test.swift:701:9:701:15 | ... as ... |
+| test.swift:702:15:702:15 | [post] set1 | test.swift:703:5:703:5 | set1 |
+| test.swift:702:15:702:15 | set1 | test.swift:703:5:703:5 | set1 |
+| test.swift:702:15:702:34 | call to randomElement() | test.swift:702:15:702:35 | ...! |
+| test.swift:703:5:703:5 | &... | test.swift:704:15:704:15 | set1 |
+| test.swift:703:5:703:5 | [post] set1 | test.swift:703:5:703:5 | &... |
+| test.swift:703:5:703:5 | set1 | test.swift:703:5:703:5 | &... |
+| test.swift:704:15:704:34 | call to randomElement() | test.swift:704:15:704:35 | ...! |
+| test.swift:706:9:706:9 | SSA def(set2) | test.swift:707:15:707:15 | set2 |
+| test.swift:706:9:706:9 | set2 | test.swift:706:9:706:9 | SSA def(set2) |
+| test.swift:706:16:706:30 | call to Set<Element>.init(_:) | test.swift:706:9:706:9 | set2 |
+| test.swift:707:15:707:34 | call to randomElement() | test.swift:707:15:707:35 | ...! |
+| test.swift:710:8:710:8 | SSA def(self) | test.swift:710:8:710:8 | self[return] |
+| test.swift:710:8:710:8 | self | test.swift:710:8:710:8 | SSA def(self) |
+| test.swift:711:9:711:9 | self | test.swift:711:9:711:9 | SSA def(self) |
+| test.swift:711:9:711:9 | self | test.swift:711:9:711:9 | SSA def(self) |
+| test.swift:711:9:711:9 | self | test.swift:711:9:711:9 | SSA def(self) |
+| test.swift:711:9:711:9 | value | test.swift:711:9:711:9 | SSA def(value) |
+| test.swift:712:9:712:9 | self | test.swift:712:9:712:9 | SSA def(self) |
+| test.swift:712:9:712:9 | self | test.swift:712:9:712:9 | SSA def(self) |
+| test.swift:712:9:712:9 | self | test.swift:712:9:712:9 | SSA def(self) |
+| test.swift:712:9:712:9 | value | test.swift:712:9:712:9 | SSA def(value) |
+| test.swift:713:9:713:9 | self | test.swift:713:9:713:9 | SSA def(self) |
+| test.swift:713:9:713:9 | self | test.swift:713:9:713:9 | SSA def(self) |
+| test.swift:713:9:713:9 | self | test.swift:713:9:713:9 | SSA def(self) |
+| test.swift:713:9:713:9 | value | test.swift:713:9:713:9 | SSA def(value) |
+| test.swift:717:9:717:9 | SSA def(v1) | test.swift:723:5:723:5 | v1 |
+| test.swift:717:9:717:9 | v1 | test.swift:717:9:717:9 | SSA def(v1) |
+| test.swift:717:9:717:17 | ... as ... | test.swift:717:9:717:9 | v1 |
+| test.swift:717:21:717:21 | 0 | test.swift:717:9:717:17 | ... as ... |
+| test.swift:718:9:718:17 | ... as ... | test.swift:718:9:718:9 | v2 |
+| test.swift:718:21:718:21 | 0 | test.swift:718:9:718:17 | ... as ... |
+| test.swift:719:9:719:17 | ... as ... | test.swift:719:9:719:9 | v3 |
+| test.swift:719:21:719:21 | 0 | test.swift:719:9:719:17 | ... as ... |
+| test.swift:720:9:720:9 | SSA def(mo1) | test.swift:726:5:726:5 | mo1 |
+| test.swift:720:9:720:9 | mo1 | test.swift:720:9:720:9 | SSA def(mo1) |
+| test.swift:720:15:720:27 | call to MyOptionals.init() | test.swift:720:9:720:9 | mo1 |
+| test.swift:721:9:721:9 | SSA def(mo2) | test.swift:729:5:729:5 | mo2 |
+| test.swift:721:9:721:9 | mo2 | test.swift:721:9:721:9 | SSA def(mo2) |
+| test.swift:721:9:721:26 | ... as ... | test.swift:721:9:721:9 | mo2 |
+| test.swift:721:30:721:42 | call to MyOptionals.init() | test.swift:721:9:721:26 | ... as ... |
+| test.swift:723:5:723:5 | v1 | test.swift:723:5:723:7 | ...! |
+| test.swift:723:5:723:5 | v1 | test.swift:733:15:733:15 | v1 |
+| test.swift:724:5:724:17 | SSA def(v2) | test.swift:734:15:734:15 | v2 |
+| test.swift:724:10:724:17 | call to source() | test.swift:724:5:724:17 | SSA def(v2) |
+| test.swift:725:5:725:17 | SSA def(v3) | test.swift:735:15:735:15 | v3 |
+| test.swift:725:10:725:17 | call to source() | test.swift:725:5:725:17 | SSA def(v3) |
+| test.swift:726:5:726:5 | [post] mo1 | test.swift:727:5:727:5 | mo1 |
+| test.swift:726:5:726:5 | mo1 | test.swift:727:5:727:5 | mo1 |
+| test.swift:726:5:726:9 | .v1 | test.swift:726:5:726:11 | ...! |
+| test.swift:727:5:727:5 | [post] mo1 | test.swift:728:5:728:5 | mo1 |
+| test.swift:727:5:727:5 | mo1 | test.swift:728:5:728:5 | mo1 |
+| test.swift:728:5:728:5 | [post] mo1 | test.swift:736:15:736:15 | mo1 |
+| test.swift:728:5:728:5 | mo1 | test.swift:736:15:736:15 | mo1 |
+| test.swift:729:5:729:5 | mo2 | test.swift:729:5:729:8 | ...! |
+| test.swift:729:5:729:5 | mo2 | test.swift:730:5:730:5 | mo2 |
+| test.swift:729:5:729:10 | .v1 | test.swift:729:5:729:12 | ...! |
+| test.swift:730:5:730:5 | mo2 | test.swift:730:5:730:8 | ...! |
+| test.swift:730:5:730:5 | mo2 | test.swift:731:5:731:5 | mo2 |
+| test.swift:731:5:731:5 | mo2 | test.swift:731:5:731:8 | ...! |
+| test.swift:731:5:731:5 | mo2 | test.swift:739:15:739:15 | mo2 |
+| test.swift:733:15:733:15 | v1 | test.swift:733:15:733:17 | ...! |
+| test.swift:734:15:734:15 | v2 | test.swift:734:15:734:17 | ...! |
+| test.swift:736:15:736:15 | [post] mo1 | test.swift:737:15:737:15 | mo1 |
+| test.swift:736:15:736:15 | mo1 | test.swift:737:15:737:15 | mo1 |
+| test.swift:736:15:736:19 | .v1 | test.swift:736:15:736:21 | ...! |
+| test.swift:737:15:737:15 | [post] mo1 | test.swift:738:15:738:15 | mo1 |
+| test.swift:737:15:737:15 | mo1 | test.swift:738:15:738:15 | mo1 |
+| test.swift:737:15:737:19 | .v2 | test.swift:737:15:737:21 | ...! |
+| test.swift:739:15:739:15 | mo2 | test.swift:739:15:739:18 | ...! |
+| test.swift:739:15:739:15 | mo2 | test.swift:740:15:740:15 | mo2 |
+| test.swift:739:15:739:20 | .v1 | test.swift:739:15:739:22 | ...! |
+| test.swift:740:15:740:15 | mo2 | test.swift:740:15:740:18 | ...! |
+| test.swift:740:15:740:15 | mo2 | test.swift:741:15:741:15 | mo2 |
+| test.swift:740:15:740:20 | .v2 | test.swift:740:15:740:22 | ...! |
+| test.swift:741:15:741:15 | mo2 | test.swift:741:15:741:18 | ...! |

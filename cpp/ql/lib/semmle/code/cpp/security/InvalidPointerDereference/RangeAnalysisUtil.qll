@@ -20,7 +20,8 @@ private Instruction getABoundIn(SemBound b, IRFunction func) {
 pragma[inline]
 private predicate boundedImpl(Instruction i, Instruction b, int delta) {
   exists(SemBound bound, IRFunction func |
-    semBounded(getSemanticExpr(i), bound, delta, true, _) and
+    semBounded(getSemanticExpr(i), bound, delta, true,
+      any(SemReason reason | not reason instanceof SemTypeReason)) and
     b = getABoundIn(bound, func) and
     i.getEnclosingIRFunction() = func
   )
@@ -34,6 +35,15 @@ private predicate boundedImpl(Instruction i, Instruction b, int delta) {
 bindingset[i]
 pragma[inline_late]
 predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
+
+/**
+ * Holds if `i <= b + delta`.
+ *
+ * This predicate enforces a join-order that ensures that `b` has already been bound.
+ */
+bindingset[b]
+pragma[inline_late]
+predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
 
 /** Holds if `i <= b + delta`. */
 predicate bounded = boundedImpl/3;

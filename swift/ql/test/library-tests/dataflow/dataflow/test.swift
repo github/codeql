@@ -1,5 +1,5 @@
 func source() -> Int { return 0; }
-func sink(arg: Int) {}
+func sink<T>(arg: T) {}
 
 func intraprocedural_with_local_flow() -> Void {
     var t2: Int
@@ -627,7 +627,7 @@ func testNestedKeyPath() {
 func testArrayKeyPath() {
     let array = [source()]
     let f = \[Int].[0]
-    sink(arg: array[keyPath: f]) // $ MISSING: flow=628
+    sink(arg: array[keyPath: f]) // $ flow=628
 }
 
 struct S2_Optional {
@@ -661,4 +661,82 @@ func testSwap() {
     swap(&x, &y)
     sink(arg: x) // $ SPURIOUS: flow=659
     sink(arg: y) // $ flow=659
+}
+
+func testArray() {
+    var arr1 = [1,2,3]
+    sink(arg: arr1[0])
+    arr1[1] = source()
+    sink(arg: arr1[0]) // $ flow=669
+    sink(arg: arr1)
+
+    var arr2 = [source()]
+    sink(arg: arr2[0]) // $ flow=673
+
+    var matrix = [[source()]]
+    sink(arg: matrix[0])
+    sink(arg: matrix[0][0]) // $ flow=676
+
+    var matrix2 = [[1]]
+    matrix2[0][0] = source()
+    sink(arg: matrix2[0][0]) // $ flow=681
+
+    var arr3 = [1]
+    var arr4 = arr2 + arr3
+    sink(arg: arr3[0])
+    sink(arg: arr4[0]) // $ MISSING: flow=673
+
+    var arr5 = Array(repeating: source(), count: 2)
+    sink(arg: arr5[0]) // $ MISSING: flow=689
+
+    var arr6 = [1,2,3]
+    arr6.insert(source(), at: 2)
+    sink(arg: arr6[0]) // $ flow=693
+
+    var arr7 = [source()]
+    sink(arg: arr7.randomElement()!) // $ flow=696
+}
+
+func testSetCollections() {
+    var set1: Set = [1,2,3]
+    sink(arg: set1.randomElement()!)
+    set1.insert(source())
+    sink(arg: set1.randomElement()!) // $flow=703
+
+    let set2 = Set([source()])
+    sink(arg: set2.randomElement()!) // $ flow=706
+}
+
+struct MyOptionals {
+    var v1 : Int? = 0
+    var v2 : Int? = 0
+    var v3 : Int! = 0
+}
+
+func testWriteOptional() {
+    var v1 : Int? = 0
+    var v2 : Int? = 0
+    var v3 : Int! = 0
+    var mo1 = MyOptionals()
+    var mo2 : MyOptionals! = MyOptionals()
+
+    v1! = source()
+    v2 = source()
+    v3 = source()
+    mo1.v1! = source()
+    mo1.v2 = source()
+    mo1.v3 = source()
+    mo2!.v1! = source()
+    mo2!.v2 = source()
+    mo2!.v3 = source()
+
+    sink(arg: v1!) // $ flow=723
+    sink(arg: v2!) // $ flow=724
+    sink(arg: v3) // $ flow=725
+    sink(arg: mo1.v1!) // $ MISSING:flow=726
+    sink(arg: mo1.v2!) // $ flow=727
+    sink(arg: mo1.v3) // $ flow=728
+    sink(arg: mo2!.v1!) // $ MISSING:flow=729
+    sink(arg: mo2!.v2!) // $ MISSING:flow=730
+    sink(arg: mo2!.v3) // $ MISSING:flow=731
 }

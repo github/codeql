@@ -2,6 +2,7 @@
  * This file imports all models related to the Swift standard library.
  */
 
+private import Array
 private import Collection
 private import CustomUrlSchemes
 private import Data
@@ -14,6 +15,7 @@ private import NsObject
 private import NsString
 private import NsUrl
 private import Sequence
+private import Set
 private import String
 private import Url
 private import UrlSession

@@ -1,0 +1,7 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: supportedThreatModels
+    data:
+      - ["default"] # The "default" threat model is always included.

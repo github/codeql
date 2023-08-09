@@ -1235,14 +1235,6 @@ module Exprs {
     }
   }
 
-  private class InOutTree extends AstStandardPostOrderTree {
-    override InOutExpr ast;
-
-    final override ControlFlowElement getChildElement(int i) {
-      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyConverted()
-    }
-  }
-
   private class SubscriptTree extends AstControlFlowTree {
     override SubscriptExpr ast;
 
@@ -1749,7 +1741,8 @@ module Exprs {
 
   module Conversions {
     class ConversionOrIdentity =
-      Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr;
+      Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr or
+          Synth::TInOutExpr;
 
     abstract class ConversionOrIdentityTree extends AstStandardPostOrderTree {
       ConversionOrIdentityTree() { ast instanceof ConversionOrIdentity }
@@ -1777,6 +1770,12 @@ module Exprs {
 
     private class ImplicitConversionTree extends ConversionOrIdentityTree {
       override ImplicitConversionExpr ast;
+
+      override predicate convertsFrom(Expr e) { ast.convertsFrom(e) }
+    }
+
+    private class InOutTree extends ConversionOrIdentityTree {
+      override InOutExpr ast;
 
       override predicate convertsFrom(Expr e) { ast.convertsFrom(e) }
     }

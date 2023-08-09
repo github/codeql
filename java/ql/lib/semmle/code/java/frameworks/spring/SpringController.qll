@@ -237,7 +237,7 @@ class SpringRequestMappingParameter extends Parameter {
 
   private predicate isExplicitlyTaintedInput() {
     // InputStream or Reader parameters allow access to the body of a request
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "InputStream") or
+    this.getType().(RefType).getAnAncestor() instanceof TypeInputStream or
     this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader") or
     // The SpringServletInputAnnotations allow access to the URI, request parameters, cookie values and the body of the request
     this.getAnAnnotation() instanceof SpringServletInputAnnotation or

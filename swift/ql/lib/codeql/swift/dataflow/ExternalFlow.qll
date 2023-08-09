@@ -486,8 +486,15 @@ private predicate parseEnum(AccessPathToken c, Content::EnumContent f) {
 
 /** Holds if the specification component parses as a `Content`. */
 predicate parseContent(AccessPathToken component, Content content) {
-  parseField(component, content) or
+  parseField(component, content)
+  or
   parseEnum(component, content)
+  or
+  component.getName() = "ArrayElement" and
+  content instanceof Content::ArrayContent
+  or
+  component.getName() = "CollectionElement" and
+  content instanceof Content::CollectionContent
 }
 
 cached

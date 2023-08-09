@@ -3,10 +3,24 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
+private import codeql.util.Unit
+private import Reason as Reason
 private import RangeAnalysisStage
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 
 module CppLangImplConstant implements LangSig<FloatDelta> {
+  private module Param implements Reason::ParamSig {
+    class TypeReasonImpl = Unit;
+  }
+
+  class SemReason = Reason::Make<Param>::SemReason;
+
+  class SemNoReason = Reason::Make<Param>::SemNoReason;
+
+  class SemCondReason = Reason::Make<Param>::SemCondReason;
+
+  class SemTypeReason = Reason::Make<Param>::SemTypeReason;
+
   /**
    * Holds if the specified expression should be excluded from the result of `ssaRead()`.
    *
@@ -60,7 +74,10 @@ module CppLangImplConstant implements LangSig<FloatDelta> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(SemExpr e, float bound, boolean upper) { none() }
+  predicate hasConstantBound(SemExpr e, float bound, boolean upper, SemReason reason) {
+    semHasConstantBoundConstantSpecific(e, bound, upper) and
+    reason instanceof SemTypeReason
+  }
 
   /**
    * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
