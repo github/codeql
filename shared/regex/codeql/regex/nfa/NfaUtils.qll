@@ -29,7 +29,7 @@ module Make<RegexTreeViewSig TreeImpl> {
    */
   bindingset[str]
   private int getCodepointLength(string str) {
-    result = max(int m | exists(str.regexpFind("(.|\\s)", m - 1, _)) or m = 0)
+    result = str.regexpReplaceAll("(.|\\s)", "x").length()
   }
 
   /**
@@ -708,6 +708,12 @@ module Make<RegexTreeViewSig TreeImpl> {
     )
   }
 
+  pragma[noinline]
+  private int getCodepointLengthForState(string s) {
+    result = getCodepointLength(s) and
+    s = any(RegexpCharacterConstant reg).getValue()
+  }
+
   /**
    * Holds if the NFA has a transition from `q1` to `q2` labelled with `lbl`.
    */
@@ -725,7 +731,7 @@ module Make<RegexTreeViewSig TreeImpl> {
       (
         q2 = Match(s, i + 1)
         or
-        getCodepointLength(s.getValue()) = i + 1 and
+        getCodepointLengthForState(s.getValue()) = i + 1 and
         q2 = after(s)
       )
     )
@@ -1119,7 +1125,7 @@ module Make<RegexTreeViewSig TreeImpl> {
        */
       predicate reachesOnlyRejectableSuffixes(State fork, string w) {
         isReDoSCandidate(fork, w) and
-        forex(State next | next = process(fork, w, getCodepointLength(w) - 1) |
+        forex(State next | next = process(fork, w, getCodepointLengthForCandidate(w) - 1) |
           isLikelyRejectable(next)
         ) and
         not getProcessPrevious(fork, _, w) = acceptsAnySuffix() // we stop `process(..)` early if we can, check here if it happened.
@@ -1232,9 +1238,10 @@ module Make<RegexTreeViewSig TreeImpl> {
       }
 
       // `process` can't use pragma[inline] predicates. So a materialized version of `getCodepointAt` is needed.
+      pragma[noinline]
       private string getCodePointAtForProcess(string str, int i) {
         result = getCodepointAt(str, i) and
-        exists(getProcessPrevious(_, _, str))
+        isReDoSCandidate(_, str)
       }
 
       /**
@@ -1255,6 +1262,12 @@ module Make<RegexTreeViewSig TreeImpl> {
         )
       }
 
+      pragma[noinline]
+      private int getCodepointLengthForCandidate(string s) {
+        result = getCodepointLength(s) and
+        isReDoSCandidate(_, s)
+      }
+
       /**
        * Gets a state that can be reached from pumpable `fork` consuming all
        * chars in `w` any number of times followed by the first `i` characters of `w`.
@@ -1268,7 +1281,7 @@ module Make<RegexTreeViewSig TreeImpl> {
           or
           // repeat until fixpoint
           i = 0 and
-          result = process(fork, w, getCodepointLength(w) - 1)
+          result = process(fork, w, getCodepointLengthForCandidate(w) - 1)
         )
       }
 
