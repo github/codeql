@@ -155,7 +155,7 @@ signature module LangSig<DeltaSig D> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(SemExpr e, D::Delta bound, boolean upper);
+  predicate hasConstantBound(SemExpr e, D::Delta bound, boolean upper, SemReason reason);
 
   /**
    * Holds if `e >= bound + delta` (if `upper = false`) or `e <= bound + delta` (if `upper = true`).
@@ -920,14 +920,15 @@ module RangeStage<
    * Holds if `e` has an upper (for `upper = true`) or lower
    * (for `upper = false`) bound of `b`.
    */
-  private predicate baseBound(SemExpr e, D::Delta b, boolean upper) {
-    hasConstantBound(e, b, upper)
+  private predicate baseBound(SemExpr e, D::Delta b, boolean upper, SemReason reason) {
+    hasConstantBound(e, b, upper, reason)
     or
     upper = false and
     b = D::fromInt(0) and
     semPositive(e.(SemBitAndExpr).getAnOperand()) and
     // REVIEW: We let the language opt out here to preserve original results.
-    not ignoreZeroLowerBound(e)
+    not ignoreZeroLowerBound(e) and
+    reason instanceof SemNoReason
   }
 
   /**
@@ -1055,11 +1056,10 @@ module RangeStage<
       origdelta = delta and
       reason instanceof SemNoReason
       or
-      baseBound(e, delta, upper) and
+      baseBound(e, delta, upper, reason) and
       b instanceof SemZeroBound and
       fromBackEdge = false and
-      origdelta = delta and
-      reason instanceof SemNoReason
+      origdelta = delta
       or
       exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
         boundedSsa(v, bb, b, delta, upper, fromBackEdge, origdelta, reason) and

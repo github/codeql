@@ -15,6 +15,7 @@ private import NsObject
 private import NsString
 private import NsUrl
 private import Sequence
+private import Set
 private import String
 private import Url
 private import UrlSession

@@ -146,14 +146,6 @@ int countIndirectionsForCppType(LanguageType langType) {
   )
 }
 
-/**
- * A `CallInstruction` that calls an allocation function such
- * as `malloc` or `operator new`.
- */
-class AllocationInstruction extends CallInstruction {
-  AllocationInstruction() { this.getStaticCallTarget() instanceof Cpp::AllocationFunction }
-}
-
 private predicate isIndirectionType(Type t) { t instanceof Indirection }
 
 private predicate hasUnspecifiedBaseType(Indirection t, Type base) {
@@ -368,17 +360,22 @@ newtype TBaseSourceVariable =
   // Each IR variable gets its own source variable
   TBaseIRVariable(IRVariable var) or
   // Each allocation gets its own source variable
-  TBaseCallVariable(AllocationInstruction call)
+  TBaseCallVariable(CallInstruction call) { not call.getResultIRType() instanceof IRVoidType }
 
-abstract class BaseSourceVariable extends TBaseSourceVariable {
+abstract private class AbstractBaseSourceVariable extends TBaseSourceVariable {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
   /** Gets the type of this base source variable. */
-  abstract DataFlowType getType();
+  final DataFlowType getType() { this.getLanguageType().hasUnspecifiedType(result, _) }
+
+  /** Gets the `CppType` of this base source variable. */
+  abstract CppType getLanguageType();
 }
 
-class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
+final class BaseSourceVariable = AbstractBaseSourceVariable;
+
+class BaseIRVariable extends AbstractBaseSourceVariable, TBaseIRVariable {
   IRVariable var;
 
   IRVariable getIRVariable() { result = var }
@@ -387,19 +384,19 @@ class BaseIRVariable extends BaseSourceVariable, TBaseIRVariable {
 
   override string toString() { result = var.toString() }
 
-  override DataFlowType getType() { result = var.getType() }
+  override CppType getLanguageType() { result = var.getLanguageType() }
 }
 
-class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
-  AllocationInstruction call;
+class BaseCallVariable extends AbstractBaseSourceVariable, TBaseCallVariable {
+  CallInstruction call;
 
   BaseCallVariable() { this = TBaseCallVariable(call) }
 
-  AllocationInstruction getCallInstruction() { result = call }
+  CallInstruction getCallInstruction() { result = call }
 
   override string toString() { result = call.toString() }
 
-  override DataFlowType getType() { result = call.getResultType() }
+  override CppType getLanguageType() { result = getResultLanguageType(call) }
 }
 
 /**
@@ -499,8 +496,7 @@ private class BaseIRVariableInstruction extends BaseSourceVariableInstruction,
   override BaseIRVariable getBaseSourceVariable() { result.getIRVariable() = this.getIRVariable() }
 }
 
-private class BaseAllocationInstruction extends BaseSourceVariableInstruction, AllocationInstruction
-{
+private class BaseCallInstruction extends BaseSourceVariableInstruction, CallInstruction {
   override BaseCallVariable getBaseSourceVariable() { result.getCallInstruction() = this }
 }
 

@@ -2,7 +2,7 @@
  * Provides Python-specific definitions for use in the data flow library.
  */
 
-private import codeql.dataflow.DataFlowParameter
+private import codeql.dataflow.DataFlow
 // we need to export `Unit` for the DataFlowImpl* files
 private import python as Python
 
@@ -15,7 +15,7 @@ module Public {
   import DataFlowUtil
 }
 
-module PythonDataFlow implements DataFlowParameter {
+module PythonDataFlow implements InputSig {
   import Private
   import Public
 

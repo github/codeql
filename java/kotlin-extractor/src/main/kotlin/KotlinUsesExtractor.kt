@@ -612,7 +612,7 @@ open class KotlinUsesExtractor(
         val componentTypeLabel = recInfo.componentTypeResults.javaResult.id
         val dimensions = recInfo.dimensions + 1
 
-        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel}}\"") {
+        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{$elementTypeLabel}\"") {
             tw.writeArrays(
                 it,
                 javaShortName,
@@ -1141,7 +1141,7 @@ open class KotlinUsesExtractor(
         // method (and presumably that disambiguation is never needed when the method belongs to a parameterized
         // instance of a generic class), but as of now I don't know when the raw method would be referred to.
         val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArgsIncludingOuterClasses.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
-        return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
+        return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}$typeArgSuffix\""
     }
 
     val javaLangClass by lazy { referenceExternalClass("java.lang.Class") }
@@ -1672,7 +1672,7 @@ open class KotlinUsesExtractor(
         // clashing trap labels. These are always private, so we can just make up a label without
         // worrying about their names as seen from Java.
         val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it).javaResult.id}" } ?: ""
-        return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
+        return "@\"field;{$parentId};$extensionPropertyDiscriminator${f.name.asString()}\""
     }
 
     fun useField(f: IrField): Label<out DbField> =
