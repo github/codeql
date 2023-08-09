@@ -128,16 +128,13 @@ private module SizeBarrier {
   }
 
   /**
-   * Holds if `left < large + state` holds if `g` evaluates to `edge`, where `large` is some
-   * value that is equal to the size argument of an allocation.
+   * Holds if `left < nRight + k` holds if `g` evaluates to `edge`.
    */
-  private predicate operandGuardChecks(IRGuardCondition g, Operand left, int state, boolean edge) {
-    exists(DataFlow::Node nLeft, DataFlow::Node nRight, int k |
-      nLeft.asOperand() = left and
-      SizeBarrierConfig::isSink(nLeft, nRight, g, k, edge) and
-      state = getAFlowStateForNode(nRight) and
-      k <= state
-    )
+  private predicate operandGuardChecks(
+    IRGuardCondition g, Operand left, DataFlow::Node right, int k, boolean edge
+  ) {
+    flowTo(right) and
+    SizeBarrierConfig::isSink(DataFlow::operandNode(left), right, g, k, edge)
   }
 
   /**
@@ -146,22 +143,23 @@ private module SizeBarrier {
    * whether `left <= size` where `size` is the size of an allocation.
    */
   Instruction getABarrierInstruction0(int delta, int k) {
-    exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge |
-      use = value.getAUse() and
+    exists(IRGuardCondition g, ValueNumber value, Operand left, boolean edge, DataFlow::Node right |
+      left = value.getAUse() and
       // We know:
       // 1. result <= value + delta (by `bounded`)
-      // 2. value < size + k + 1 (by `operandGuardChecks`).
-      // Condition 2 implies: value <= size + k, so if we know
+      // 2. value < right + k + 1 (by `operandGuardChecks`).
+      // Condition 2 implies: value <= right + k, so if we know
       // that `state >= k + delta` then we have:
       // result <= value + delta (by 1.)
-      //        <= size + k + delta (by 2.)
-      //        <= size + state (by the assumption).
+      //        <= right + k + delta (by 2.)
+      //        <= right + state (by the assumption).
       // Callers of `getABarrierInstruction0` should ensure that `state >= k + delta`
       // is satisfied.
-      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](use),
+      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](left), right,
         pragma[only_bind_into](k + 1), pragma[only_bind_into](edge)) and
       bounded(result, value.getAnInstruction(), delta) and
-      g.controls(result.getBlock(), edge)
+      g.controls(result.getBlock(), edge) and
+      k + 1 <= getAFlowStateForNode(right)
     )
   }
 
