@@ -380,7 +380,7 @@ func testTuples3() {
     sink(arg: t1.1) // $ flow=375
     sink(arg: t2.0) // $ flow=375
     sink(arg: t2.1)
-    sink(arg: t3.0) // $ MISSING: flow=375
+    sink(arg: t3.0) // $ flow=375
     sink(arg: t3.1)
 }
 

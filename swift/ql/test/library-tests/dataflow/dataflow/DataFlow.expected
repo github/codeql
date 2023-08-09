@@ -182,13 +182,17 @@ edges
 | test.swift:369:13:369:13 | t [Tuple element at index 1] | test.swift:369:13:369:15 | .1 |
 | test.swift:369:13:369:15 | .1 | test.swift:369:12:369:19 | (...) [Tuple element at index 0] |
 | test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:376:30:376:30 | t1 [Tuple element at index 1] |
+| test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:377:30:377:30 | t1 [Tuple element at index 1] |
 | test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:380:15:380:15 | t1 [Tuple element at index 1] |
 | test.swift:375:18:375:25 | call to source() | test.swift:375:14:375:26 | (...) [Tuple element at index 1] |
 | test.swift:376:14:376:32 | call to tupleShiftLeft1(_:) [Tuple element at index 0] | test.swift:381:15:381:15 | t2 [Tuple element at index 0] |
 | test.swift:376:30:376:30 | t1 [Tuple element at index 1] | test.swift:368:22:368:36 | t [Tuple element at index 1] |
 | test.swift:376:30:376:30 | t1 [Tuple element at index 1] | test.swift:376:14:376:32 | call to tupleShiftLeft1(_:) [Tuple element at index 0] |
+| test.swift:377:14:377:32 | call to tupleShiftLeft2(_:) [Tuple element at index 0] | test.swift:383:15:383:15 | t3 [Tuple element at index 0] |
+| test.swift:377:30:377:30 | t1 [Tuple element at index 1] | test.swift:377:14:377:32 | call to tupleShiftLeft2(_:) [Tuple element at index 0] |
 | test.swift:380:15:380:15 | t1 [Tuple element at index 1] | test.swift:380:15:380:18 | .1 |
 | test.swift:381:15:381:15 | t2 [Tuple element at index 0] | test.swift:381:15:381:18 | .0 |
+| test.swift:383:15:383:15 | t3 [Tuple element at index 0] | test.swift:383:15:383:18 | .0 |
 | test.swift:394:16:394:21 | v | test.swift:394:61:394:61 | v |
 | test.swift:394:61:394:61 | v | test.swift:394:45:394:62 | call to ... [mySingle:0] |
 | test.swift:396:18:396:23 | v | test.swift:396:59:396:59 | v |
@@ -607,10 +611,14 @@ nodes
 | test.swift:375:18:375:25 | call to source() | semmle.label | call to source() |
 | test.swift:376:14:376:32 | call to tupleShiftLeft1(_:) [Tuple element at index 0] | semmle.label | call to tupleShiftLeft1(_:) [Tuple element at index 0] |
 | test.swift:376:30:376:30 | t1 [Tuple element at index 1] | semmle.label | t1 [Tuple element at index 1] |
+| test.swift:377:14:377:32 | call to tupleShiftLeft2(_:) [Tuple element at index 0] | semmle.label | call to tupleShiftLeft2(_:) [Tuple element at index 0] |
+| test.swift:377:30:377:30 | t1 [Tuple element at index 1] | semmle.label | t1 [Tuple element at index 1] |
 | test.swift:380:15:380:15 | t1 [Tuple element at index 1] | semmle.label | t1 [Tuple element at index 1] |
 | test.swift:380:15:380:18 | .1 | semmle.label | .1 |
 | test.swift:381:15:381:15 | t2 [Tuple element at index 0] | semmle.label | t2 [Tuple element at index 0] |
 | test.swift:381:15:381:18 | .0 | semmle.label | .0 |
+| test.swift:383:15:383:15 | t3 [Tuple element at index 0] | semmle.label | t3 [Tuple element at index 0] |
+| test.swift:383:15:383:18 | .0 | semmle.label | .0 |
 | test.swift:394:16:394:21 | v | semmle.label | v |
 | test.swift:394:45:394:62 | call to ... [mySingle:0] | semmle.label | call to ... [mySingle:0] |
 | test.swift:394:61:394:61 | v | semmle.label | v |
@@ -944,6 +952,7 @@ subpaths
 | test.swift:364:15:364:15 | b | test.swift:351:31:351:38 | call to source() | test.swift:364:15:364:15 | b | result |
 | test.swift:380:15:380:18 | .1 | test.swift:375:18:375:25 | call to source() | test.swift:380:15:380:18 | .1 | result |
 | test.swift:381:15:381:18 | .0 | test.swift:375:18:375:25 | call to source() | test.swift:381:15:381:18 | .0 | result |
+| test.swift:383:15:383:18 | .0 | test.swift:375:18:375:25 | call to source() | test.swift:383:15:383:18 | .0 | result |
 | test.swift:428:19:428:19 | a | test.swift:422:19:422:26 | call to source() | test.swift:428:19:428:19 | a | result |
 | test.swift:437:19:437:19 | x | test.swift:422:19:422:26 | call to source() | test.swift:437:19:437:19 | x | result |
 | test.swift:453:19:453:19 | b | test.swift:444:26:444:33 | call to source() | test.swift:453:19:453:19 | b | result |
