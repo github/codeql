@@ -1,0 +1,11 @@
+name: python-model-summaries-tests
+groups:
+    - python
+    - test
+dependencies:
+    codeql/python-tests: ${workspace}
+extractor: python
+tests: .
+warnOnImplicitThis: true
+dataExtensions:
+  - AllTests.ext.yml

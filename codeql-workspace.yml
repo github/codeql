@@ -27,6 +27,7 @@ provide:
   - "swift/extractor-pack/codeql-extractor.yml"
   - "swift/integration-tests/qlpack.yml"
   - "ql/extractor-pack/codeql-extractor.yml"
+  - "python/ql/test/experimental/dataflow/model-summaries/qlpack.yml"
 
 versionPolicies:
   default:
