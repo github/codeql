@@ -307,3 +307,8 @@ class SemConditionalExpr extends SemKnownExpr {
     branch = false and result = falseResult
   }
 }
+
+/** Holds if `upper = true` and `e <= bound` or `upper = false` and `e >= bound`. */
+predicate semHasConstantBoundConstantSpecific(SemExpr e, float bound, boolean upper) {
+  Specific::hasConstantBoundConstantSpecific(e, bound, upper)
+}
