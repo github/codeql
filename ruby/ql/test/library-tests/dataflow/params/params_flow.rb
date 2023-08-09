@@ -7,8 +7,8 @@ def sink x
 end
 
 def positional(p1, p2)
-    sink p1 # $ hasValueFlow=1 $ hasValueFlow=16 $ hasValueFlow=18
-    sink p2 # $ hasValueFlow=2 $ hasValueFlow=19 $ MISSING: hasValueFlow=17
+    sink p1 # $ hasValueFlow=1 $ hasValueFlow=16 $ hasValueFlow=18 $ hasValueFlow=61
+    sink p2 # $ hasValueFlow=2 $ hasValueFlow=19 $ hasValueFlow=61 $ MISSING: hasValueFlow=17
 end
 
 positional(taint(1), taint(2))
@@ -112,3 +112,7 @@ def splat_followed_by_keyword_param(a, *b, c:)
 end
 
 splat_followed_by_keyword_param(taint(58), taint(59), c: taint(60))
+
+x = []
+x[some_index()] = taint(61)
+positional(*x)

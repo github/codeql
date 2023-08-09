@@ -812,7 +812,11 @@ private module ParameterNodes {
     ParameterNode getAParameter(ContentSet c) {
       exists(int n |
         isParameterNode(result, callable, (any(ParameterPosition p | p.isPositional(n)))) and
-        c = getPositionalContent(n)
+        (
+          c = getPositionalContent(n)
+          or
+          c.isSingleton(TUnknownElementContent())
+        )
       )
     }
 
