@@ -148,13 +148,9 @@ private module SizeBarrier {
       // We know:
       // 1. result <= value + delta (by `bounded`)
       // 2. value < right + k + 1 (by `operandGuardChecks`).
-      // Condition 2 implies: value <= right + k, so if we know
-      // that `state >= k + delta` then we have:
+      // Note that condition 2 implies: value <= right + k. So we have:
       // result <= value + delta (by 1.)
       //        <= right + k + delta (by 2.)
-      //        <= right + state (by the assumption).
-      // Callers of `getABarrierInstruction0` should ensure that `state >= k + delta`
-      // is satisfied.
       operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](left), right,
         pragma[only_bind_into](k + 1), pragma[only_bind_into](edge)) and
       bounded(result, value.getAnInstruction(), delta) and
@@ -171,9 +167,9 @@ private module SizeBarrier {
   pragma[inline_late]
   Instruction getABarrierInstruction(int state) {
     exists(int delta, int k |
-      // See the implementation comments in `getABarrierInstruction0` for why
-      // this conjunct is necessary.
       state >= k + delta and
+      // result <= "size of allocation" + delta + k
+      //        <= "size of allocation" + state
       result = getABarrierInstruction0(delta, k)
     )
   }
@@ -199,9 +195,10 @@ private module SizeBarrier {
       ValidForStateFlow::flow(source, result) and
       hasSize(_, source, state) and
       ValidForStateConfig::isSink(result, delta, k) and
-      // See the implementation comments in `getABarrierInstruction0` for why
-      // this conjunct is necessary.
       state >= k + delta
+      // so now we have:
+      // result <= "size of allocation" + delta + k
+      //        <= "size of allocation" + state
     )
   }
 }
