@@ -99,3 +99,11 @@ func testConversions() {
 	sink(arg: v3) // $ tainted=94
 	sink(arg: v3 as! MyParentClass) // $ tainted=94
 }
+
+var myCEnumConst : Int = 0
+typealias MyCEnumType = UInt32
+
+func testCEnum() {
+	sink(arg: MyCEnumType(myCEnumConst))
+	sink(arg: MyCEnumType(sourceInt())) // $ tainted=108
+}
