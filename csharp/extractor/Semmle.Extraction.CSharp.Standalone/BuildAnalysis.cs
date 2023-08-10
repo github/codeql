@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 
 namespace Semmle.BuildAnalyser
 {
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    internal sealed partial class BuildAnalysis : IDisposable
+    internal sealed class BuildAnalysis : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly ProgressMonitor progressMonitor;
@@ -29,7 +28,7 @@ namespace Semmle.BuildAnalyser
         private readonly Options options;
         private readonly DirectoryInfo sourceDir;
         private readonly DotNet dotnet;
-        private readonly Lazy<IEnumerable<string>> allFiles;
+        private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
 
 
@@ -58,7 +57,9 @@ namespace Semmle.BuildAnalyser
 
             this.progressMonitor.FindingFiles(options.SrcDir);
 
-            this.allFiles = new(() => GetFiles("*.*"));
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+
+            this.fileContent = new FileContent(packageDirectory, progressMonitor, () => GetFiles("*.*"));
             this.allSources = GetFiles("*.cs").ToArray();
             var allProjects = GetFiles("*.csproj");
             var solutions = options.SolutionFile is not null
@@ -75,7 +76,7 @@ namespace Semmle.BuildAnalyser
                 progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
                 dllDirNames.Add(runtimeLocation);
 
-                if (UseAspNetDlls() && runtime.GetAspRuntime() is string aspRuntime)
+                if (fileContent.UseAspNetDlls && runtime.GetAspRuntime() is string aspRuntime)
                 {
                     progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspRuntime}");
                     dllDirNames.Add(aspRuntime);
@@ -86,8 +87,6 @@ namespace Semmle.BuildAnalyser
             {
                 UseReference(typeof(object).Assembly.Location);
             }
-
-            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
 
             if (options.UseNuGet)
             {
@@ -231,11 +230,6 @@ namespace Semmle.BuildAnalyser
         private void UseSource(FileInfo sourceFile) => sources[sourceFile.FullName] = sourceFile.Exists;
 
         /// <summary>
-        /// All files in the source directory.
-        /// </summary>
-        private IEnumerable<string> AllFiles => allFiles.Value;
-
-        /// <summary>
         /// The list of resolved reference files.
         /// </summary>
         public IEnumerable<string> ReferenceFiles => usedReferences.Keys;
@@ -335,73 +329,9 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix)
-        {
-            var match = input.Slice(valueMatch.Index, valueMatch.Length);
-            var includeIndex = match.IndexOf(groupPrefix, StringComparison.InvariantCultureIgnoreCase);
-            if (includeIndex == -1)
-            {
-                return string.Empty;
-            }
-
-            match = match.Slice(includeIndex + groupPrefix.Length + 1);
-
-            var quoteIndex1 = match.IndexOf("\"");
-            var quoteIndex2 = match.Slice(quoteIndex1 + 1).IndexOf("\"");
-
-            return match.Slice(quoteIndex1 + 1, quoteIndex2).ToString().ToLowerInvariant();
-        }
-
-        private static bool IsGroupMatch(ReadOnlySpan<char> line, Regex regex, string groupPrefix, string value)
-        {
-            foreach (var valueMatch in regex.EnumerateMatches(line))
-            {
-                // We can't get the group from the ValueMatch, so doing it manually:
-                if (GetGroup(line, valueMatch, groupPrefix) == value.ToLowerInvariant())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Returns true if any file in the source directory indicates that ASP.NET is used.
-        /// The following heuristic is used to decide, if ASP.NET is used:
-        /// If any file in the source directory contains something like (this will most like be a .csproj file)
-        ///     <Project Sdk="Microsoft.NET.Sdk.Web">
-        ///     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
-        /// </summary>
-        private bool UseAspNetDlls()
-        {
-            foreach (var file in AllFiles)
-            {
-                try
-                {
-                    using var sr = new StreamReader(file);
-                    ReadOnlySpan<char> line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        if (IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web") ||
-                            IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App"))
-                        {
-                            return true;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    progressMonitor.FailedToReadFile(file, ex);
-                }
-            }
-            return false;
-        }
 
         private void DownloadMissingPackages(IEnumerable<string> restoreTargets)
         {
-            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName).Select(d => Path.GetFileName(d).ToLowerInvariant()).ToHashSet();
-            var notYetDownloadedPackages = new HashSet<string>();
-
             var nugetConfigs = GetFiles("nuget.config", recurseSubdirectories: true).ToArray();
             string? nugetConfig = null;
             if (nugetConfigs.Length > 1)
@@ -418,32 +348,7 @@ namespace Semmle.BuildAnalyser
                 nugetConfig = nugetConfigs.FirstOrDefault();
             }
 
-            foreach (var file in AllFiles)
-            {
-                try
-                {
-                    using var sr = new StreamReader(file);
-                    ReadOnlySpan<char> line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        foreach (var valueMatch in PackageReference().EnumerateMatches(line))
-                        {
-                            // We can't get the group from the ValueMatch, so doing it manually:
-                            var packageName = GetGroup(line, valueMatch, "Include");
-                            if (!string.IsNullOrEmpty(packageName) && !alreadyDownloadedPackages.Contains(packageName))
-                            {
-                                notYetDownloadedPackages.Add(packageName);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    progressMonitor.FailedToReadFile(file, ex);
-                }
-            }
-
-            foreach (var package in notYetDownloadedPackages)
+            foreach (var package in fileContent.NotYetDownloadedPackages)
             {
                 progressMonitor.NugetInstall(package);
                 using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
@@ -487,15 +392,5 @@ namespace Semmle.BuildAnalyser
         }
 
         public void Dispose() => packageDirectory?.Dispose();
-
-        [GeneratedRegex("<PackageReference\\s+Include=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex PackageReference();
-
-        [GeneratedRegex("<FrameworkReference\\s+Include=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex FrameworkReference();
-
-        [GeneratedRegex("<Project\\s+Sdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex ProjectSdk();
-
     }
 }
