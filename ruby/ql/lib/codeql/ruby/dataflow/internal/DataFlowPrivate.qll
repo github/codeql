@@ -885,7 +885,7 @@ private module ParameterNodes {
    * A node that holds the content of a specific positional argument.
    * See `SynthSplatArgumentNode` for more information.
    */
-  class SynthSplatParameterElementNode extends TSynthSplatParameterElementNode {
+  class SynthSplatParameterElementNode extends ParameterNodeImpl, TSynthSplatParameterElementNode {
     private DataFlowCallable callable;
     private int pos;
 
@@ -893,11 +893,17 @@ private module ParameterNodes {
 
     int getPosition() { result = pos }
 
-    DataFlowCallable getCallable() { result = callable }
+    final override Parameter getParameter() { none() }
 
-    string toString() { result = "synthetic *args[" + pos + "]" }
+    final override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) { none() }
 
-    Location getLocation() { result = callable.getLocation() }
+    final override CfgScope getCfgScope() { result = callable.asCallable() }
+
+    final override DataFlowCallable getEnclosingCallable() { result = callable }
+
+    final override Location getLocationImpl() { result = callable.getLocation() }
+
+    final override string toStringImpl() { result = "synthetic *args[" + pos + "]" }
   }
 
   /** A parameter for a library callable with a flow summary. */
@@ -1344,7 +1350,9 @@ predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
   exists(SynthSplatParameterElementNode elemNode, NormalParameterNode splatNode, int splatPos |
     elemNode = node1 and splatNode = node2
   |
-    splatNode.isParameterOf(elemNode.getCallable(), any(ParameterPosition p | p.isSplat(splatPos))) and
+    splatNode
+        .isParameterOf(elemNode.getEnclosingCallable(),
+          any(ParameterPosition p | p.isSplat(splatPos))) and
     c = getPositionalContent(elemNode.getPosition() - splatPos)
   )
 }
@@ -1421,7 +1429,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(SynthSplatArgParameterNode fromNode, SynthSplatParameterElementNode toNode, int pos |
     node1 = fromNode and node2 = toNode
   |
-    fromNode.isParameterOf(toNode.getCallable(), _) and
+    fromNode.isParameterOf(toNode.getEnclosingCallable(), _) and
     c = getPositionalContent(pos) and
     toNode.getPosition() = pos
   )
