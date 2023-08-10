@@ -105,14 +105,14 @@ private module SizeBarrier {
     }
 
     /**
-     * Holds if `left < right + k` holds if `g` evaluates to `testIsTrue`.
+     * Holds if `left <= right + k` holds if `g` evaluates to `testIsTrue`.
      */
     additional predicate isSink(
       DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int k, boolean testIsTrue
     ) {
       // The sink is any "large" side of a relational comparison. i.e., the `right` expression
-      // in a guard such as `left < right + k`.
-      g.comparesLt(left.asOperand(), right.asOperand(), k, true, testIsTrue)
+      // in a guard such as `left <= right + k`.
+      g.comparesLt(left.asOperand(), right.asOperand(), k + 1, true, testIsTrue)
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
@@ -123,12 +123,12 @@ private module SizeBarrier {
   private int getAFlowStateForNode(DataFlow::Node node) {
     exists(DataFlow::Node source |
       flow(source, node) and
-      hasSize(_, source, result)
+      hasSize(_, source, result + 1)
     )
   }
 
   /**
-   * Holds if `left < nRight + k` holds if `g` evaluates to `edge`.
+   * Holds if `left <= nRight + k` holds if `g` evaluates to `edge`.
    */
   private predicate operandGuardChecks(
     IRGuardCondition g, Operand left, DataFlow::Node right, int k, boolean edge
@@ -152,10 +152,10 @@ private module SizeBarrier {
       // result <= value + delta (by 1.)
       //        <= right + k + delta (by 2.)
       operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](left), right,
-        pragma[only_bind_into](k + 1), pragma[only_bind_into](edge)) and
+        pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
       bounded(result, value.getAnInstruction(), delta) and
       g.controls(result.getBlock(), edge) and
-      k + 1 <= getAFlowStateForNode(right)
+      k <= getAFlowStateForNode(right)
     )
   }
 
