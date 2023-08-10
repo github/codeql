@@ -21,6 +21,7 @@ newtype SynthKind =
   BraceBlockKind() or
   CaseMatchKind() or
   ClassVariableAccessKind(ClassVariable v) or
+  DefinedExprKind() or
   DivExprKind() or
   ElseKind() or
   ExponentExprKind() or
@@ -40,6 +41,7 @@ newtype SynthKind =
   ModuloExprKind() or
   MulExprKind() or
   NilLiteralKind() or
+  NotExprKind() or
   RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
   SimpleParameterKind() or
@@ -1258,6 +1260,7 @@ private module HashLiteralDesugar {
  * ```
  * desugars to, roughly,
  * ```rb
+ * if not defined? x then x = nil end
  * xs.each { |__synth__0| x = __synth__0; <loop_body> }
  * ```
  *
@@ -1267,53 +1270,137 @@ private module HashLiteralDesugar {
  * scoped to the synthesized block.
  */
 private module ForLoopDesugar {
+  private Ruby::AstNode getForLoopPatternChild(Ruby::For for) {
+    result = for.getPattern()
+    or
+    result.getParent() = getForLoopPatternChild(for)
+  }
+
+  /** Holds if `v` is the `i`th iteration variable of `for`. */
+  private predicate forLoopVariable(Ruby::For for, VariableReal v, int i) {
+    v =
+      rank[i + 1](VariableReal v0, Ruby::AstNode n, Location l |
+        n = getForLoopPatternChild(for) and
+        l = n.getLocation() and
+        access(n, v0)
+      |
+        v0 order by l.getStartLine(), l.getStartColumn()
+      )
+  }
+
+  /** Gets the number of iteration variables of `for`. */
+  private int forLoopVariableCount(Ruby::For for) {
+    result = count(int j | forLoopVariable(for, _, j))
+  }
+
+  private Ruby::For toTsFor(ForExpr for) { for = TForExpr(result) }
+
+  /**
+   * Synthesizes an assignment
+   * ```rb
+   * if not defined? v then v = nil end
+   * ```
+   * anchored at index `rootIndex` of `root`.
+   */
+  bindingset[root, rootIndex, v]
+  private predicate nilAssignUndefined(
+    AstNode root, int rootIndex, AstNode parent, int i, Child child, VariableReal v
+  ) {
+    parent = root and
+    i = rootIndex and
+    child = SynthChild(IfKind())
+    or
+    exists(AstNode if_ | if_ = TIfSynth(root, rootIndex) |
+      parent = if_ and
+      i = 0 and
+      child = SynthChild(NotExprKind())
+      or
+      exists(AstNode not_ | not_ = TNotExprSynth(if_, 0) |
+        parent = not_ and
+        i = 0 and
+        child = SynthChild(DefinedExprKind())
+        or
+        parent = TDefinedExprSynth(not_, 0) and
+        i = 0 and
+        child = SynthChild(LocalVariableAccessRealKind(v))
+      )
+      or
+      parent = if_ and
+      i = 1 and
+      child = SynthChild(AssignExprKind())
+      or
+      parent = TAssignExprSynth(if_, 1) and
+      (
+        i = 0 and
+        child = SynthChild(LocalVariableAccessRealKind(v))
+        or
+        i = 1 and
+        child = SynthChild(NilLiteralKind())
+      )
+    )
+  }
+
   pragma[nomagic]
   private predicate forLoopSynthesis(AstNode parent, int i, Child child) {
     exists(ForExpr for |
-      // each call
       parent = for and
       i = -1 and
-      child = SynthChild(MethodCallKind("each", false, 0))
+      child = SynthChild(StmtSequenceKind())
       or
-      exists(MethodCall eachCall | eachCall = TMethodCallSynth(for, -1, "each", false, 0) |
-        // receiver
-        parent = eachCall and
-        i = 0 and
-        child = childRef(for.getValue()) // value is the Enumerable
+      exists(AstNode seq | seq = TStmtSequenceSynth(for, -1) |
+        exists(VariableReal v, int j | forLoopVariable(toTsFor(for), v, j) |
+          nilAssignUndefined(seq, j, parent, i, child, v)
+        )
         or
-        parent = eachCall and
-        i = 1 and
-        child = SynthChild(BraceBlockKind())
-        or
-        exists(Block block | block = TBraceBlockSynth(eachCall, 1) |
-          // block params
-          parent = block and
-          i = 0 and
-          child = SynthChild(SimpleParameterKind())
+        exists(int numberOfVars | numberOfVars = forLoopVariableCount(toTsFor(for)) |
+          // each call
+          parent = seq and
+          i = numberOfVars and
+          child = SynthChild(MethodCallKind("each", false, 0))
           or
-          exists(SimpleParameter param | param = TSimpleParameterSynth(block, 0) |
-            parent = param and
+          exists(MethodCall eachCall |
+            eachCall = TMethodCallSynth(seq, numberOfVars, "each", false, 0)
+          |
+            // receiver
+            parent = eachCall and
             i = 0 and
-            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+            child = childRef(for.getValue()) // value is the Enumerable
             or
-            // assignment to pattern from for loop to synth parameter
-            parent = block and
+            parent = eachCall and
             i = 1 and
-            child = SynthChild(AssignExprKind())
+            child = SynthChild(BraceBlockKind())
             or
-            parent = TAssignExprSynth(block, 1) and
-            (
+            exists(Block block | block = TBraceBlockSynth(eachCall, 1) |
+              // block params
+              parent = block and
               i = 0 and
-              child = childRef(for.getPattern())
+              child = SynthChild(SimpleParameterKind())
               or
-              i = 1 and
-              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+              exists(SimpleParameter param | param = TSimpleParameterSynth(block, 0) |
+                parent = param and
+                i = 0 and
+                child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+                or
+                // assignment to pattern from for loop to synth parameter
+                parent = block and
+                i = 1 and
+                child = SynthChild(AssignExprKind())
+                or
+                parent = TAssignExprSynth(block, 1) and
+                (
+                  i = 0 and
+                  child = childRef(for.getPattern())
+                  or
+                  i = 1 and
+                  child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+                )
+              )
+              or
+              // rest of block body
+              parent = block and
+              child = childRef(for.getBody().(Do).getStmt(i - 2))
             )
           )
-          or
-          // rest of block body
-          parent = block and
-          child = childRef(for.getBody().(Do).getStmt(i - 2))
         )
       )
     )

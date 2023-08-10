@@ -10,6 +10,8 @@ exprValue
 | calls/calls.rb:26:7:26:7 | 1 | 1 | int |
 | calls/calls.rb:36:9:36:11 | 100 | 100 | int |
 | calls/calls.rb:36:14:36:16 | 200 | 200 | int |
+| calls/calls.rb:226:1:228:3 | nil | nil | nil |
+| calls/calls.rb:229:1:231:3 | nil | nil | nil |
 | calls/calls.rb:280:5:280:8 | :blah | :blah | symbol |
 | calls/calls.rb:281:5:281:8 | :blah | :blah | symbol |
 | calls/calls.rb:290:11:290:16 | "blah" | blah | string |
@@ -57,6 +59,9 @@ exprValue
 | calls/calls.rb:322:31:322:31 | 1 | 1 | int |
 | calls/calls.rb:322:37:322:37 | 2 | 2 | int |
 | calls/calls.rb:330:31:330:37 | "error" | error | string |
+| calls/calls.rb:342:1:344:3 | nil | nil | nil |
+| calls/calls.rb:342:1:344:3 | nil | nil | nil |
+| calls/calls.rb:342:1:344:3 | nil | nil | nil |
 | calls/calls.rb:342:5:342:5 | 0 | 0 | int |
 | calls/calls.rb:342:8:342:8 | 1 | 1 | int |
 | calls/calls.rb:342:11:342:11 | 2 | 2 | int |
@@ -330,16 +335,22 @@ exprValue
 | control/loops.rb:4:5:4:5 | 0 | 0 | int |
 | control/loops.rb:5:5:5:5 | 0 | 0 | int |
 | control/loops.rb:6:5:6:5 | 0 | 0 | int |
+| control/loops.rb:9:1:12:3 | nil | nil | nil |
 | control/loops.rb:9:10:9:10 | 1 | 1 | int |
 | control/loops.rb:9:13:9:14 | 10 | 10 | int |
+| control/loops.rb:16:1:19:3 | nil | nil | nil |
 | control/loops.rb:16:10:16:10 | 1 | 1 | int |
 | control/loops.rb:16:13:16:14 | 10 | 10 | int |
+| control/loops.rb:22:1:25:3 | nil | nil | nil |
+| control/loops.rb:22:1:25:3 | nil | nil | nil |
 | control/loops.rb:22:5:22:7 | 0 | 0 | int |
 | control/loops.rb:22:10:22:14 | 1 | 1 | int |
 | control/loops.rb:22:20:22:22 | :foo | :foo | symbol |
 | control/loops.rb:22:25:22:25 | 0 | 0 | int |
 | control/loops.rb:22:28:22:30 | :bar | :bar | symbol |
 | control/loops.rb:22:33:22:33 | 1 | 1 | int |
+| control/loops.rb:28:1:32:3 | nil | nil | nil |
+| control/loops.rb:28:1:32:3 | nil | nil | nil |
 | control/loops.rb:28:6:28:8 | 0 | 0 | int |
 | control/loops.rb:28:11:28:15 | 1 | 1 | int |
 | control/loops.rb:28:22:28:24 | :foo | :foo | symbol |
@@ -365,6 +376,7 @@ exprValue
 | control/loops.rb:66:11:66:11 | y | 0 | int |
 | erb/template.html.erb:19:5:19:17 | "hello world" | hello world | string |
 | erb/template.html.erb:25:9:25:10 | "" |  | string |
+| erb/template.html.erb:27:6:31:8 | nil | nil | nil |
 | erb/template.html.erb:27:16:27:20 | "foo" | foo | string |
 | erb/template.html.erb:27:23:27:27 | "bar" | bar | string |
 | erb/template.html.erb:27:30:27:34 | "baz" | baz | string |
@@ -934,6 +946,8 @@ exprCfgNodeValue
 | calls/calls.rb:26:7:26:7 | 1 | 1 | int |
 | calls/calls.rb:36:9:36:11 | 100 | 100 | int |
 | calls/calls.rb:36:14:36:16 | 200 | 200 | int |
+| calls/calls.rb:226:1:228:3 | nil | nil | nil |
+| calls/calls.rb:229:1:231:3 | nil | nil | nil |
 | calls/calls.rb:280:5:280:8 | :blah | :blah | symbol |
 | calls/calls.rb:281:5:281:8 | :blah | :blah | symbol |
 | calls/calls.rb:290:11:290:16 | "blah" | blah | string |
@@ -981,6 +995,9 @@ exprCfgNodeValue
 | calls/calls.rb:322:31:322:31 | 1 | 1 | int |
 | calls/calls.rb:322:37:322:37 | 2 | 2 | int |
 | calls/calls.rb:330:31:330:37 | "error" | error | string |
+| calls/calls.rb:342:1:344:3 | nil | nil | nil |
+| calls/calls.rb:342:1:344:3 | nil | nil | nil |
+| calls/calls.rb:342:1:344:3 | nil | nil | nil |
 | calls/calls.rb:342:5:342:5 | 0 | 0 | int |
 | calls/calls.rb:342:8:342:8 | 1 | 1 | int |
 | calls/calls.rb:342:11:342:11 | 2 | 2 | int |
@@ -1226,16 +1243,22 @@ exprCfgNodeValue
 | control/loops.rb:4:5:4:5 | 0 | 0 | int |
 | control/loops.rb:5:5:5:5 | 0 | 0 | int |
 | control/loops.rb:6:5:6:5 | 0 | 0 | int |
+| control/loops.rb:9:1:12:3 | nil | nil | nil |
 | control/loops.rb:9:10:9:10 | 1 | 1 | int |
 | control/loops.rb:9:13:9:14 | 10 | 10 | int |
+| control/loops.rb:16:1:19:3 | nil | nil | nil |
 | control/loops.rb:16:10:16:10 | 1 | 1 | int |
 | control/loops.rb:16:13:16:14 | 10 | 10 | int |
+| control/loops.rb:22:1:25:3 | nil | nil | nil |
+| control/loops.rb:22:1:25:3 | nil | nil | nil |
 | control/loops.rb:22:5:22:7 | 0 | 0 | int |
 | control/loops.rb:22:10:22:14 | 1 | 1 | int |
 | control/loops.rb:22:20:22:22 | :foo | :foo | symbol |
 | control/loops.rb:22:25:22:25 | 0 | 0 | int |
 | control/loops.rb:22:28:22:30 | :bar | :bar | symbol |
 | control/loops.rb:22:33:22:33 | 1 | 1 | int |
+| control/loops.rb:28:1:32:3 | nil | nil | nil |
+| control/loops.rb:28:1:32:3 | nil | nil | nil |
 | control/loops.rb:28:6:28:8 | 0 | 0 | int |
 | control/loops.rb:28:11:28:15 | 1 | 1 | int |
 | control/loops.rb:28:22:28:24 | :foo | :foo | symbol |
@@ -1261,6 +1284,7 @@ exprCfgNodeValue
 | control/loops.rb:66:11:66:11 | y | 0 | int |
 | erb/template.html.erb:19:5:19:17 | "hello world" | hello world | string |
 | erb/template.html.erb:25:9:25:10 | "" |  | string |
+| erb/template.html.erb:27:6:31:8 | nil | nil | nil |
 | erb/template.html.erb:27:16:27:20 | "foo" | foo | string |
 | erb/template.html.erb:27:23:27:27 | "bar" | bar | string |
 | erb/template.html.erb:27:30:27:34 | "baz" | baz | string |
