@@ -10,6 +10,7 @@
 | conversions.swift:15:7:15:7 | self | conversions.swift:15:7:15:7 | SSA def(self) |
 | conversions.swift:16:11:16:11 | SSA def(self) | conversions.swift:16:11:16:42 | self[return] |
 | conversions.swift:16:11:16:11 | self | conversions.swift:16:11:16:11 | SSA def(self) |
+| conversions.swift:16:11:16:42 | [summary param] 0 in MyString.init(_:) | conversions.swift:16:11:16:42 | [summary] to write: ReturnValue in MyString.init(_:) |
 | conversions.swift:18:28:18:28 | SSA def(self) | conversions.swift:18:28:18:44 | self[return] |
 | conversions.swift:18:28:18:28 | self | conversions.swift:18:28:18:28 | SSA def(self) |
 | conversions.swift:19:33:19:33 | SSA def(self) | conversions.swift:19:33:19:49 | self[return] |
@@ -73,6 +74,7 @@
 | conversions.swift:80:6:80:6 | ms1 | conversions.swift:80:6:80:6 | SSA def(ms1) |
 | conversions.swift:80:12:80:26 | call to MyString.init(_:) | conversions.swift:80:12:80:27 | ...! |
 | conversions.swift:80:12:80:27 | ...! | conversions.swift:80:6:80:6 | ms1 |
+| conversions.swift:80:21:80:21 | abc | conversions.swift:80:12:80:26 | call to MyString.init(_:) |
 | conversions.swift:81:12:81:12 | [post] ms1 | conversions.swift:82:12:82:12 | ms1 |
 | conversions.swift:81:12:81:12 | ms1 | conversions.swift:82:12:82:12 | ms1 |
 | conversions.swift:82:12:82:12 | [post] ms1 | conversions.swift:83:12:83:12 | ms1 |
@@ -83,6 +85,7 @@
 | conversions.swift:86:6:86:6 | ms2 | conversions.swift:86:6:86:6 | SSA def(ms2) |
 | conversions.swift:86:12:86:35 | call to MyString.init(_:) | conversions.swift:86:12:86:36 | ...! |
 | conversions.swift:86:12:86:36 | ...! | conversions.swift:86:6:86:6 | ms2 |
+| conversions.swift:86:21:86:34 | call to sourceString() | conversions.swift:86:12:86:35 | call to MyString.init(_:) |
 | conversions.swift:87:12:87:12 | [post] ms2 | conversions.swift:88:12:88:12 | ms2 |
 | conversions.swift:87:12:87:12 | ms2 | conversions.swift:88:12:88:12 | ms2 |
 | conversions.swift:88:12:88:12 | [post] ms2 | conversions.swift:89:12:89:12 | ms2 |

@@ -36,6 +36,11 @@ edges
 | conversions.swift:72:12:72:24 | call to sourceFloat() | conversions.swift:72:12:72:26 | .exponent |
 | conversions.swift:73:12:73:24 | call to sourceFloat() | conversions.swift:73:12:73:26 | .significand |
 | conversions.swift:78:19:78:32 | call to sourceString() | conversions.swift:78:12:78:33 | call to String.init(_:) |
+| conversions.swift:86:12:86:35 | call to MyString.init(_:) | conversions.swift:86:12:86:35 | call to MyString.init(_:) [some:0] |
+| conversions.swift:86:12:86:35 | call to MyString.init(_:) | conversions.swift:87:12:87:12 | ms2 |
+| conversions.swift:86:12:86:35 | call to MyString.init(_:) [some:0] | conversions.swift:86:12:86:36 | ...! |
+| conversions.swift:86:12:86:36 | ...! | conversions.swift:87:12:87:12 | ms2 |
+| conversions.swift:86:21:86:34 | call to sourceString() | conversions.swift:86:12:86:35 | call to MyString.init(_:) |
 | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:95:12:95:12 | parent |
 | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:96:12:96:12 | parent |
 | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:98:40:98:40 | parent |
@@ -189,6 +194,11 @@ nodes
 | conversions.swift:77:12:77:25 | call to sourceString() | semmle.label | call to sourceString() |
 | conversions.swift:78:12:78:33 | call to String.init(_:) | semmle.label | call to String.init(_:) |
 | conversions.swift:78:19:78:32 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:86:12:86:35 | call to MyString.init(_:) | semmle.label | call to MyString.init(_:) |
+| conversions.swift:86:12:86:35 | call to MyString.init(_:) [some:0] | semmle.label | call to MyString.init(_:) [some:0] |
+| conversions.swift:86:12:86:36 | ...! | semmle.label | ...! |
+| conversions.swift:86:21:86:34 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:87:12:87:12 | ms2 | semmle.label | ms2 |
 | conversions.swift:94:31:94:44 | call to sourceString() | semmle.label | call to sourceString() |
 | conversions.swift:95:12:95:12 | parent | semmle.label | parent |
 | conversions.swift:96:12:96:12 | parent | semmle.label | parent |
@@ -351,6 +361,7 @@ subpaths
 | conversions.swift:73:12:73:26 | .significand | conversions.swift:73:12:73:24 | call to sourceFloat() | conversions.swift:73:12:73:26 | .significand | result |
 | conversions.swift:77:12:77:25 | call to sourceString() | conversions.swift:77:12:77:25 | call to sourceString() | conversions.swift:77:12:77:25 | call to sourceString() | result |
 | conversions.swift:78:12:78:33 | call to String.init(_:) | conversions.swift:78:19:78:32 | call to sourceString() | conversions.swift:78:12:78:33 | call to String.init(_:) | result |
+| conversions.swift:87:12:87:12 | ms2 | conversions.swift:86:21:86:34 | call to sourceString() | conversions.swift:87:12:87:12 | ms2 | result |
 | conversions.swift:95:12:95:12 | parent | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:95:12:95:12 | parent | result |
 | conversions.swift:96:12:96:12 | parent | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:96:12:96:12 | parent | result |
 | conversions.swift:99:12:99:12 | v3 | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:99:12:99:12 | v3 | result |
