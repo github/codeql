@@ -144,13 +144,13 @@ private module SizeBarrier {
    */
   Instruction getABarrierInstruction0(int delta, int k) {
     exists(IRGuardCondition g, ValueNumber value, Operand left, boolean edge, DataFlow::Node right |
-      left = value.getAUse() and
       // We know:
       // 1. result <= value + delta (by `bounded`)
       // 2. value <= right + k (by `operandGuardChecks`).
       // So:
       // result <= value + delta (by 1.)
       //        <= right + k + delta (by 2.)
+      left = value.getAUse() and
       operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](left), right,
         pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
       bounded(result, value.getAnInstruction(), delta) and
