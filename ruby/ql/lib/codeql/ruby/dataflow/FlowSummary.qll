@@ -1,6 +1,8 @@
 /** Provides classes and predicates for defining flow summaries. */
 
 import codeql.ruby.AST
+private import codeql.ruby.CFG
+private import codeql.ruby.typetracking.TypeTracker
 import codeql.ruby.DataFlow
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
@@ -158,3 +160,66 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+
+/**
+ * Provides a set of special flow summaries to ensure that callbacks passed into
+ * library methods will be passed as `self` arguments into themeselves. That is,
+ * we are assuming that callbacks passed into library methods will be called, which is
+ * needed for flow through captured variables.
+ */
+private module LibraryCallbackSummaries {
+  private predicate libraryCall(CfgNodes::ExprNodes::CallCfgNode call) {
+    not exists(getTarget(call))
+  }
+
+  private class LibraryBlockMethod extends SummarizedCallable {
+    LibraryBlockMethod() { this = "<library method accepting a block>" }
+
+    final override MethodCall getACall() {
+      libraryCall(result.getAControlFlowNode()) and
+      result.hasBlock()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[block]" and
+      output = "Argument[block].Parameter[lambda-self]" and
+      preservesValue = true
+    }
+  }
+
+  private DataFlow::LocalSourceNode trackLambdaCreation(TypeTracker t) {
+    t.start() and
+    lambdaCreation(result, TLambdaCallKind(), _)
+    or
+    exists(TypeTracker t2 | result = trackLambdaCreation(t2).track(t2, t)) and
+    not result instanceof DataFlow::SelfParameterNode
+  }
+
+  private predicate libraryCallHasLambdaArg(CfgNodes::ExprNodes::CallCfgNode call, int i) {
+    exists(CfgNodes::ExprCfgNode arg |
+      arg = call.getArgument(i) and
+      arg = trackLambdaCreation(TypeTracker::end()).getALocalUse().asExpr() and
+      libraryCall(call) and
+      not arg instanceof CfgNodes::ExprNodes::BlockArgumentCfgNode
+    )
+  }
+
+  private class LibraryLambdaMethod extends SummarizedCallable {
+    private int i;
+
+    LibraryLambdaMethod() {
+      this = "<library method accepting a lambda at index " + i + ">" and
+      i in [0 .. 10]
+    }
+
+    final override MethodCall getACall() {
+      libraryCallHasLambdaArg(result.getAControlFlowNode(), i)
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[" + i + "]" and
+      output = "Argument[" + i + "].Parameter[lambda-self]" and
+      preservesValue = true
+    }
+  }
+}

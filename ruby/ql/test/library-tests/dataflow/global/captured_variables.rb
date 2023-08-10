@@ -14,14 +14,14 @@ capture_local_call taint(1.1)
 
 def capture_escape_return1 x
     -> {
-        sink(x) # $ MISSING: hasValueFlow=1.2
+        sink(x) # $ hasValueFlow=1.2
     }
 end
 (capture_escape_return1 taint(1.2)).call
 
 def capture_escape_return2 x
     -> {
-        sink(x) # $ MISSING: hasValueFlow=1.3
+        sink(x) # $ hasValueFlow=1.3
     }
 end
 Something.unknownMethod(capture_escape_return2 taint(1.3))
@@ -51,7 +51,7 @@ x = taint(1)
     x = taint(2)
 end
 
-sink x # $ hasValueFlow=2
+sink x # $ hasValueFlow=2 $ SPURIOUS: hasValueFlow=1
 
 class Foo
     def set_field x
@@ -65,11 +65,11 @@ end
 foo = Foo.new
 foo.set_field(taint(3))
 [1, 2, 3].each do |i|
-    sink(foo.get_field) # $ MISSING: hasValueFlow=3 $ MISSING: hasValueFlow=4
+    sink(foo.get_field) # $ hasValueFlow=3 $ MISSING: hasValueFlow=4
     foo.set_field(taint(4))
 end
 
-sink(foo.get_field) # $ MISSING: hasValueFlow=4 $ SPURIOUS: hasValueFlow=3 
+sink(foo.get_field) # $ hasValueFlow=4 $ SPURIOUS: hasValueFlow=3 
 
 foo = Foo.new
 if (rand() < 0) then
@@ -80,19 +80,19 @@ else
     end
 end
 
-sink(foo.get_field) # $ MISSING: hasValueFlow=5
+sink(foo.get_field) # $ hasValueFlow=5
 
 y = taint(6)
 fn = -> {
-    sink(y) # $ hasValueFlow=6 $ SPURIOUS: hasValueFlow=7
+    sink(y) # $ hasValueFlow=6
     y = taint(7)
 }
 fn.call
-sink(y) # $ hasValueFlow=7
+sink(y) # $ hasValueFlow=7 $ SPURIOUS: hasValueFlow=6
 
 def capture_arg x
     -> {
-        sink x # $ MISSING: hasValueFlow=8
+        sink x # $ hasValueFlow=8
     }
 end
 capture_arg(taint(8)).call
@@ -109,13 +109,13 @@ def capture_nested
     x = taint(10)
     middle = -> {
         inner = -> {
-            sink x # $ hasValueFlow=10 $ SPURIOUS: hasValueFlow=11
+            sink x # $ hasValueFlow=10
             x = taint(11)
         }
         inner.call
     }
     middle.call
-    sink x # $ hasValueFlow=11
+    sink x # $ hasValueFlow=11 $ SPURIOUS: hasValueFlow=10
 end
 capture_nested
 
@@ -151,7 +151,7 @@ module CaptureModuleSelf
     end
 
     self.foo do
-        sink @x # $ MISSING: hasValueFlow=13
+        sink @x # $ hasValueFlow=13
     end
 end
 

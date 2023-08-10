@@ -202,7 +202,10 @@ module ExprNodes {
     override LhsExpr getExpr() { result = super.getExpr() }
 
     /** Gets a variable used in (or introduced by) this LHS. */
-    Variable getAVariable() { result = e.(VariableAccess).getVariable() }
+    deprecated Variable getAVariable() { result = e.(VariableAccess).getVariable() }
+
+    /** Gets the variable used in (or introduced by) this LHS. */
+    Variable getVariable() { result = e.(VariableAccess).getVariable() }
   }
 
   private class AssignExprChildMapping extends ExprChildMapping, AssignExpr {

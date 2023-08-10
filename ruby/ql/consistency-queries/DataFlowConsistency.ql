@@ -11,8 +11,6 @@ private module Input implements InputSig<RubyDataFlow> {
   predicate postWithInFlowExclude(Node n) { n instanceof FlowSummaryNode }
 
   predicate argHasPostUpdateExclude(ArgumentNode n) {
-    n instanceof BlockArgumentNode
-    or
     n instanceof FlowSummaryNode
     or
     n instanceof SynthHashSplatArgumentNode

@@ -450,10 +450,10 @@ edges
 | array_flow.rb:403:5:403:5 | a [element 2] | array_flow.rb:404:18:404:18 | a [element 2] |
 | array_flow.rb:403:16:403:25 | call to source | array_flow.rb:403:5:403:5 | a [element 2] |
 | array_flow.rb:404:5:404:5 | b [element 2] | array_flow.rb:408:10:408:10 | b [element 2] |
-| array_flow.rb:404:9:406:7 | __synth__0__1 | array_flow.rb:404:13:404:13 | x |
-| array_flow.rb:404:13:404:13 | x | array_flow.rb:405:14:405:14 | x |
-| array_flow.rb:404:13:404:13 | x | array_flow.rb:407:10:407:10 | x |
+| array_flow.rb:404:9:406:7 | [post] { ... } [captured x] | array_flow.rb:407:10:407:10 | x |
+| array_flow.rb:404:9:406:7 | __synth__0__1 | array_flow.rb:405:14:405:14 | x |
 | array_flow.rb:404:18:404:18 | a [element 2] | array_flow.rb:404:5:404:5 | b [element 2] |
+| array_flow.rb:404:18:404:18 | a [element 2] | array_flow.rb:404:9:406:7 | [post] { ... } [captured x] |
 | array_flow.rb:404:18:404:18 | a [element 2] | array_flow.rb:404:9:406:7 | __synth__0__1 |
 | array_flow.rb:408:10:408:10 | b [element 2] | array_flow.rb:408:10:408:13 | ...[...] |
 | array_flow.rb:412:5:412:5 | a [element 2] | array_flow.rb:413:5:413:5 | a [element 2] |
@@ -2609,8 +2609,8 @@ nodes
 | array_flow.rb:403:5:403:5 | a [element 2] | semmle.label | a [element 2] |
 | array_flow.rb:403:16:403:25 | call to source | semmle.label | call to source |
 | array_flow.rb:404:5:404:5 | b [element 2] | semmle.label | b [element 2] |
+| array_flow.rb:404:9:406:7 | [post] { ... } [captured x] | semmle.label | [post] { ... } [captured x] |
 | array_flow.rb:404:9:406:7 | __synth__0__1 | semmle.label | __synth__0__1 |
-| array_flow.rb:404:13:404:13 | x | semmle.label | x |
 | array_flow.rb:404:18:404:18 | a [element 2] | semmle.label | a [element 2] |
 | array_flow.rb:405:14:405:14 | x | semmle.label | x |
 | array_flow.rb:407:10:407:10 | x | semmle.label | x |
