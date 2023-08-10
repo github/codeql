@@ -107,6 +107,8 @@
 | conversions.swift:98:40:98:40 | parent | conversions.swift:98:25:98:69 | call to unsafeDowncast(_:to:) |
 | conversions.swift:99:12:99:12 | [post] v3 | conversions.swift:100:12:100:12 | v3 |
 | conversions.swift:99:12:99:12 | v3 | conversions.swift:100:12:100:12 | v3 |
+| conversions.swift:107:24:107:24 | myCEnumConst | conversions.swift:107:12:107:36 | call to Self.init(_:) |
+| conversions.swift:108:24:108:34 | call to sourceInt() | conversions.swift:108:12:108:35 | call to Self.init(_:) |
 | simple.swift:12:13:12:13 | 1 | simple.swift:12:13:12:24 | ... .+(_:_:) ... |
 | simple.swift:12:17:12:24 | call to source() | simple.swift:12:13:12:24 | ... .+(_:_:) ... |
 | simple.swift:13:13:13:20 | call to source() | simple.swift:13:13:13:24 | ... .+(_:_:) ... |

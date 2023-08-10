@@ -47,6 +47,7 @@ edges
 | conversions.swift:98:25:98:69 | call to unsafeDowncast(_:to:) | conversions.swift:99:12:99:12 | v3 |
 | conversions.swift:98:25:98:69 | call to unsafeDowncast(_:to:) | conversions.swift:100:12:100:12 | v3 |
 | conversions.swift:98:40:98:40 | parent | conversions.swift:98:25:98:69 | call to unsafeDowncast(_:to:) |
+| conversions.swift:108:24:108:34 | call to sourceInt() | conversions.swift:108:12:108:35 | call to Self.init(_:) |
 | file://:0:0:0:0 | self [first] | file://:0:0:0:0 | .first |
 | file://:0:0:0:0 | self [second] | file://:0:0:0:0 | .second |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [first] |
@@ -206,6 +207,8 @@ nodes
 | conversions.swift:98:40:98:40 | parent | semmle.label | parent |
 | conversions.swift:99:12:99:12 | v3 | semmle.label | v3 |
 | conversions.swift:100:12:100:12 | v3 | semmle.label | v3 |
+| conversions.swift:108:12:108:35 | call to Self.init(_:) | semmle.label | call to Self.init(_:) |
+| conversions.swift:108:24:108:34 | call to sourceInt() | semmle.label | call to sourceInt() |
 | file://:0:0:0:0 | .first | semmle.label | .first |
 | file://:0:0:0:0 | .second | semmle.label | .second |
 | file://:0:0:0:0 | [post] self [first] | semmle.label | [post] self [first] |
@@ -366,6 +369,7 @@ subpaths
 | conversions.swift:96:12:96:12 | parent | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:96:12:96:12 | parent | result |
 | conversions.swift:99:12:99:12 | v3 | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:99:12:99:12 | v3 | result |
 | conversions.swift:100:12:100:12 | v3 | conversions.swift:94:31:94:44 | call to sourceString() | conversions.swift:100:12:100:12 | v3 | result |
+| conversions.swift:108:12:108:35 | call to Self.init(_:) | conversions.swift:108:24:108:34 | call to sourceInt() | conversions.swift:108:12:108:35 | call to Self.init(_:) | result |
 | simple.swift:12:13:12:24 | ... .+(_:_:) ... | simple.swift:12:17:12:24 | call to source() | simple.swift:12:13:12:24 | ... .+(_:_:) ... | result |
 | simple.swift:13:13:13:24 | ... .+(_:_:) ... | simple.swift:13:13:13:20 | call to source() | simple.swift:13:13:13:24 | ... .+(_:_:) ... | result |
 | simple.swift:14:13:14:24 | ... .-(_:_:) ... | simple.swift:14:17:14:24 | call to source() | simple.swift:14:13:14:24 | ... .-(_:_:) ... | result |
