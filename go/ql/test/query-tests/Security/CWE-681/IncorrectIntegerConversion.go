@@ -134,7 +134,7 @@ func testParseUint() {
 		if err != nil {
 			panic(err)
 		}
-		_ = int8(parsed)
+		_ = int8(parsed) // $ hasValueFlow="type conversion"
 		_ = uint8(parsed)
 		_ = int16(parsed)
 		_ = uint16(parsed)
@@ -152,7 +152,7 @@ func testParseUint() {
 		}
 		_ = int8(parsed)  // $ hasValueFlow="type conversion"
 		_ = uint8(parsed) // $ hasValueFlow="type conversion"
-		_ = int16(parsed)
+		_ = int16(parsed) // $ hasValueFlow="type conversion"
 		_ = uint16(parsed)
 		_ = int32(parsed)
 		_ = uint32(parsed)
@@ -170,11 +170,11 @@ func testParseUint() {
 		_ = uint8(parsed)  // $ hasValueFlow="type conversion"
 		_ = int16(parsed)  // $ hasValueFlow="type conversion"
 		_ = uint16(parsed) // $ hasValueFlow="type conversion"
-		_ = int32(parsed)
+		_ = int32(parsed)  // $ hasValueFlow="type conversion"
 		_ = uint32(parsed)
 		_ = int64(parsed)
 		_ = uint64(parsed)
-		_ = int(parsed)
+		_ = int(parsed) // $ hasValueFlow="type conversion"
 		_ = uint(parsed)
 	}
 	{
@@ -188,7 +188,7 @@ func testParseUint() {
 		_ = uint16(parsed) // $ hasValueFlow="type conversion"
 		_ = int32(parsed)  // $ hasValueFlow="type conversion"
 		_ = uint32(parsed) // $ hasValueFlow="type conversion"
-		_ = int64(parsed)
+		_ = int64(parsed)  // $ hasValueFlow="type conversion"
 		_ = uint64(parsed)
 		_ = int(parsed)  // $ hasValueFlow="type conversion"
 		_ = uint(parsed) // $ hasValueFlow="type conversion"
@@ -204,9 +204,9 @@ func testParseUint() {
 		_ = uint16(parsed) // $ hasValueFlow="type conversion"
 		_ = int32(parsed)  // $ hasValueFlow="type conversion"
 		_ = uint32(parsed) // $ hasValueFlow="type conversion"
-		_ = int64(parsed)
+		_ = int64(parsed)  // $ hasValueFlow="type conversion"
 		_ = uint64(parsed)
-		_ = int(parsed)
+		_ = int(parsed) // $ hasValueFlow="type conversion"
 		_ = uint(parsed)
 	}
 }
