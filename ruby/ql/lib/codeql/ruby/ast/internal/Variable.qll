@@ -1,5 +1,6 @@
 private import TreeSitter
 private import codeql.ruby.AST
+private import codeql.ruby.CFG
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.Parameter
 private import codeql.ruby.ast.internal.Pattern
@@ -364,7 +365,7 @@ private module Cached {
 
   cached
   predicate isCapturedAccess(LocalVariableAccess access) {
-    exists(Scope scope1, Scope scope2 |
+    exists(Scope scope1, CfgScope scope2 |
       scope1 = access.getVariable().getDeclaringScope() and
       scope2 = access.getCfgScope() and
       scope1 != scope2
@@ -375,10 +376,11 @@ private module Cached {
         // class C
         //   def self.m // not a captured access
         //   end
+        //
+        //   self.foo // not a captured access
         // end
         // ```
-        not scope2 instanceof Toplevel or
-        not access = any(SingletonMethod m).getObject()
+        not scope2 instanceof Toplevel
       else any()
     )
   }
