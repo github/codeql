@@ -13,8 +13,7 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
-import codeql.ruby.ApiGraphs
-import ruby
+private import codeql.ruby.ApiGraphs
 
 private class OpenSslHmacSource extends DataFlow::Node {
   OpenSslHmacSource() {
