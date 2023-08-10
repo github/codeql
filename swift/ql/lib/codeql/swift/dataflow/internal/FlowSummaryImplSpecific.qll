@@ -110,6 +110,11 @@ private string getContentSpecific(ContentSet cs) {
     result = "Field[" + c.getField().getName() + "]"
   )
   or
+  exists(Content::TupleContent c |
+    cs.isSingleton(c) and
+    result = "TupleElement[" + c.getIndex().toString() + "]"
+  )
+  or
   exists(Content::EnumContent c |
     cs.isSingleton(c) and
     result = "EnumElement[" + c.getSignature() + "]"
