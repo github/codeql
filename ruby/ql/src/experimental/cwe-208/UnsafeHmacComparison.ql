@@ -39,6 +39,7 @@ private module UnsafeHmacComparison {
 }
 
 private import UnsafeHmacComparison::PathGraph
+
 from UnsafeHmacComparison::PathNode source, UnsafeHmacComparison::PathNode sink
 where UnsafeHmacComparison::flowPath(source, sink)
 select sink.getNode(), source, sink, "This comparison is potentially vulnerable to a timing attack."
