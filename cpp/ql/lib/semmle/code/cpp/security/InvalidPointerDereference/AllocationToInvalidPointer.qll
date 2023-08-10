@@ -147,8 +147,8 @@ private module SizeBarrier {
       left = value.getAUse() and
       // We know:
       // 1. result <= value + delta (by `bounded`)
-      // 2. value < right + k + 1 (by `operandGuardChecks`).
-      // Note that condition 2 implies: value <= right + k. So we have:
+      // 2. value <= right + k (by `operandGuardChecks`).
+      // So:
       // result <= value + delta (by 1.)
       //        <= right + k + delta (by 2.)
       operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](left), right,
