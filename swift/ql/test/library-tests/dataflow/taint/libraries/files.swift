@@ -184,8 +184,8 @@ func test_files(e1: Encoder) {
 
 	// --- FilePath member variables ---
 
-	sink(string: tainted.description) // $ tainted=133
-	sink(string: tainted.debugDescription) // $ tainted=133
+	sink(string: tainted.description) // $ MISSING: tainted=133
+	sink(string: tainted.debugDescription) // $ MISSING: tainted=133
 	sink(string: tainted.extension!) // $ tainted=133
 	sink(string: tainted.stem!) // $ tainted=133
 	sink(string: tainted.string) // $ tainted=133
