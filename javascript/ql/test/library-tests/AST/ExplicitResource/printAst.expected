@@ -1,0 +1,69 @@
+nodes
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| tst.js:1:1:9:1 | [FunctionDeclStmt] functio ... } } | semmle.label | [FunctionDeclStmt] functio ... } } |
+| tst.js:1:1:9:1 | [FunctionDeclStmt] functio ... } } | semmle.order | 1 |
+| tst.js:1:10:1:10 | [VarDecl] g | semmle.label | [VarDecl] g |
+| tst.js:1:14:9:1 | [BlockStmt] { u ... } } | semmle.label | [BlockStmt] { u ... } } |
+| tst.js:2:5:2:33 | [DeclStmt] using stream = ... | semmle.label | [DeclStmt] using stream = ... |
+| tst.js:2:11:2:16 | [VarDecl] stream | semmle.label | [VarDecl] stream |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | semmle.label | [VariableDeclarator] stream ... ource() |
+| tst.js:2:20:2:30 | [VarRef] getResource | semmle.label | [VarRef] getResource |
+| tst.js:2:20:2:32 | [CallExpr] getResource() | semmle.label | [CallExpr] getResource() |
+| tst.js:4:5:4:7 | [VarRef] let | semmle.label | [VarRef] let |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | semmle.label | [CallExpr] let (test = 20) |
+| tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | semmle.label | [ExprStmt] let (test = 20); |
+| tst.js:4:10:4:13 | [VarRef] test | semmle.label | [VarRef] test |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | semmle.label | [AssignExpr] test = 20 |
+| tst.js:4:17:4:18 | [Literal] 20 | semmle.label | [Literal] 20 |
+| tst.js:6:5:8:5 | [ForStmt] for (us ... . } | semmle.label | [ForStmt] for (us ... . } |
+| tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | semmle.label | [DeclStmt] using stream2 = ... |
+| tst.js:6:16:6:22 | [VarDecl] stream2 | semmle.label | [VarDecl] stream2 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | semmle.label | [VariableDeclarator] stream2 ... ource() |
+| tst.js:6:26:6:36 | [VarRef] getResource | semmle.label | [VarRef] getResource |
+| tst.js:6:26:6:38 | [CallExpr] getResource() | semmle.label | [CallExpr] getResource() |
+| tst.js:6:45:8:5 | [BlockStmt] { ... . } | semmle.label | [BlockStmt] { ... . } |
+edges
+| file://:0:0:0:0 | (Arguments) | tst.js:4:10:4:18 | [AssignExpr] test = 20 | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:4:10:4:18 | [AssignExpr] test = 20 | semmle.order | 0 |
+| tst.js:1:1:9:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:10:1:10 | [VarDecl] g | semmle.label | 0 |
+| tst.js:1:1:9:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:10:1:10 | [VarDecl] g | semmle.order | 0 |
+| tst.js:1:1:9:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:14:9:1 | [BlockStmt] { u ... } } | semmle.label | 5 |
+| tst.js:1:1:9:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:14:9:1 | [BlockStmt] { u ... } } | semmle.order | 5 |
+| tst.js:1:14:9:1 | [BlockStmt] { u ... } } | tst.js:2:5:2:33 | [DeclStmt] using stream = ... | semmle.label | 1 |
+| tst.js:1:14:9:1 | [BlockStmt] { u ... } } | tst.js:2:5:2:33 | [DeclStmt] using stream = ... | semmle.order | 1 |
+| tst.js:1:14:9:1 | [BlockStmt] { u ... } } | tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | semmle.label | 2 |
+| tst.js:1:14:9:1 | [BlockStmt] { u ... } } | tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | semmle.order | 2 |
+| tst.js:1:14:9:1 | [BlockStmt] { u ... } } | tst.js:6:5:8:5 | [ForStmt] for (us ... . } | semmle.label | 3 |
+| tst.js:1:14:9:1 | [BlockStmt] { u ... } } | tst.js:6:5:8:5 | [ForStmt] for (us ... . } | semmle.order | 3 |
+| tst.js:2:5:2:33 | [DeclStmt] using stream = ... | tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | semmle.label | 1 |
+| tst.js:2:5:2:33 | [DeclStmt] using stream = ... | tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | semmle.order | 1 |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | tst.js:2:11:2:16 | [VarDecl] stream | semmle.label | 1 |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | tst.js:2:11:2:16 | [VarDecl] stream | semmle.order | 1 |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | tst.js:2:20:2:32 | [CallExpr] getResource() | semmle.label | 2 |
+| tst.js:2:11:2:32 | [VariableDeclarator] stream ... ource() | tst.js:2:20:2:32 | [CallExpr] getResource() | semmle.order | 2 |
+| tst.js:2:20:2:32 | [CallExpr] getResource() | tst.js:2:20:2:30 | [VarRef] getResource | semmle.label | 0 |
+| tst.js:2:20:2:32 | [CallExpr] getResource() | tst.js:2:20:2:30 | [VarRef] getResource | semmle.order | 0 |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | tst.js:4:5:4:7 | [VarRef] let | semmle.label | 0 |
+| tst.js:4:5:4:19 | [CallExpr] let (test = 20) | tst.js:4:5:4:7 | [VarRef] let | semmle.order | 0 |
+| tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | tst.js:4:5:4:19 | [CallExpr] let (test = 20) | semmle.label | 1 |
+| tst.js:4:5:4:20 | [ExprStmt] let (test = 20); | tst.js:4:5:4:19 | [CallExpr] let (test = 20) | semmle.order | 1 |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | tst.js:4:10:4:13 | [VarRef] test | semmle.label | 1 |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | tst.js:4:10:4:13 | [VarRef] test | semmle.order | 1 |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | tst.js:4:17:4:18 | [Literal] 20 | semmle.label | 2 |
+| tst.js:4:10:4:18 | [AssignExpr] test = 20 | tst.js:4:17:4:18 | [Literal] 20 | semmle.order | 2 |
+| tst.js:6:5:8:5 | [ForStmt] for (us ... . } | tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | semmle.label | 1 |
+| tst.js:6:5:8:5 | [ForStmt] for (us ... . } | tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | semmle.order | 1 |
+| tst.js:6:5:8:5 | [ForStmt] for (us ... . } | tst.js:6:45:8:5 | [BlockStmt] { ... . } | semmle.label | 2 |
+| tst.js:6:5:8:5 | [ForStmt] for (us ... . } | tst.js:6:45:8:5 | [BlockStmt] { ... . } | semmle.order | 2 |
+| tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | semmle.label | 1 |
+| tst.js:6:10:6:38 | [DeclStmt] using stream2 = ... | tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | semmle.order | 1 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | tst.js:6:16:6:22 | [VarDecl] stream2 | semmle.label | 1 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | tst.js:6:16:6:22 | [VarDecl] stream2 | semmle.order | 1 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | tst.js:6:26:6:38 | [CallExpr] getResource() | semmle.label | 2 |
+| tst.js:6:16:6:38 | [VariableDeclarator] stream2 ... ource() | tst.js:6:26:6:38 | [CallExpr] getResource() | semmle.order | 2 |
+| tst.js:6:26:6:38 | [CallExpr] getResource() | tst.js:6:26:6:36 | [VarRef] getResource | semmle.label | 0 |
+| tst.js:6:26:6:38 | [CallExpr] getResource() | tst.js:6:26:6:36 | [VarRef] getResource | semmle.order | 0 |
+graphProperties
+| semmle.graphKind | tree |

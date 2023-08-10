@@ -51,6 +51,9 @@ import java.util.Set;
 public class ESNextParser extends JSXParser {
   public ESNextParser(Options options, String input, int startPos) {
     super(options.allowImportExportEverywhere(true), input, startPos);
+
+    // recognise `using` as a keyword. See https://github.com/tc39/proposal-explicit-resource-management
+    this.keywords.add("using");
   }
 
   /*
