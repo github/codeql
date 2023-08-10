@@ -371,9 +371,10 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     query predicate uniqueWriteCfgNode(string msg) { uniqueWriteCfgNode(_, msg) }
 
     private predicate localWriteStep(VariableWrite vw, string msg) {
-      exists(BasicBlock bb |
-        vw.hasCfgNode(bb, _) and
-        bb.getEnclosingCallable() != vw.getVariable().getCallable() and
+      exists(BasicBlock bb1, BasicBlock bb2 |
+        vw.hasCfgNode(bb1, _) and
+        vw.getSource().hasCfgNode(bb2, _) and
+        bb1.getEnclosingCallable() != bb2.getEnclosingCallable() and
         msg = "VariableWrite is not a local step"
       )
     }
