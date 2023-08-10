@@ -789,8 +789,8 @@ func testDictionary() {
     var dict4 = [1:source()]
     sink(arg: dict4.updateValue(1, forKey: source())!)
     sink(arg: dict4.updateValue(source(), forKey: 2)!)
-    sink(arg: dict4.randomElement()!.0) // $ MISSING: flow=791
-    sink(arg: dict4.randomElement()!.1) // $ flow=789 MISSING: flow=790
-    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=791
-    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=789 flow=790
+    sink(arg: dict4.randomElement()!.0) // $ flow=790
+    sink(arg: dict4.randomElement()!.1) // $ flow=789 flow=791
+    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=790
+    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=789 flow=791
 }
