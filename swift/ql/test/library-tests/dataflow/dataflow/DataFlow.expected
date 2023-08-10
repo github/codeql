@@ -404,6 +404,20 @@ edges
 | test.swift:756:15:756:19 | .v2 [some:0] | test.swift:756:15:756:21 | ...! |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:732:9:732:9 | self [v3] |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:757:15:757:19 | .v3 |
+| test.swift:767:5:767:5 | [post] dict1 [Array element] | test.swift:769:15:769:15 | dict1 [Array element] |
+| test.swift:767:16:767:23 | call to source() | test.swift:767:5:767:5 | [post] dict1 [Array element] |
+| test.swift:769:15:769:15 | dict1 [Array element] | test.swift:769:15:769:22 | ...[...] |
+| test.swift:779:17:779:29 | [...] [Collection element, Tuple element at index 1] | test.swift:780:15:780:15 | dict3 [Collection element, Tuple element at index 1] |
+| test.swift:779:18:779:28 | (...) [Tuple element at index 1] | test.swift:779:17:779:29 | [...] [Collection element, Tuple element at index 1] |
+| test.swift:779:21:779:28 | call to source() | test.swift:779:18:779:28 | (...) [Tuple element at index 1] |
+| test.swift:780:15:780:15 | dict3 [Collection element, Tuple element at index 1] | test.swift:780:15:780:22 | DictionarySubscriptNode [Tuple element at index 1] |
+| test.swift:780:15:780:22 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:780:15:780:22 | ...[...] |
+| test.swift:789:17:789:28 | [...] [Collection element, Tuple element at index 1] | test.swift:793:15:793:15 | dict4 [Collection element, Tuple element at index 1] |
+| test.swift:789:18:789:27 | (...) [Tuple element at index 1] | test.swift:789:17:789:28 | [...] [Collection element, Tuple element at index 1] |
+| test.swift:789:20:789:27 | call to source() | test.swift:789:18:789:27 | (...) [Tuple element at index 1] |
+| test.swift:793:15:793:15 | dict4 [Collection element, Tuple element at index 1] | test.swift:793:15:793:35 | call to randomElement() [some:0, Tuple element at index 1] |
+| test.swift:793:15:793:35 | call to randomElement() [some:0, Tuple element at index 1] | test.swift:793:15:793:36 | ...! [Tuple element at index 1] |
+| test.swift:793:15:793:36 | ...! [Tuple element at index 1] | test.swift:793:15:793:38 | .1 |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
@@ -849,6 +863,23 @@ nodes
 | test.swift:756:15:756:21 | ...! | semmle.label | ...! |
 | test.swift:757:15:757:15 | mo1 [v3] | semmle.label | mo1 [v3] |
 | test.swift:757:15:757:19 | .v3 | semmle.label | .v3 |
+| test.swift:767:5:767:5 | [post] dict1 [Array element] | semmle.label | [post] dict1 [Array element] |
+| test.swift:767:16:767:23 | call to source() | semmle.label | call to source() |
+| test.swift:769:15:769:15 | dict1 [Array element] | semmle.label | dict1 [Array element] |
+| test.swift:769:15:769:22 | ...[...] | semmle.label | ...[...] |
+| test.swift:779:17:779:29 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| test.swift:779:18:779:28 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| test.swift:779:21:779:28 | call to source() | semmle.label | call to source() |
+| test.swift:780:15:780:15 | dict3 [Collection element, Tuple element at index 1] | semmle.label | dict3 [Collection element, Tuple element at index 1] |
+| test.swift:780:15:780:22 | ...[...] | semmle.label | ...[...] |
+| test.swift:780:15:780:22 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test.swift:789:17:789:28 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| test.swift:789:18:789:27 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| test.swift:789:20:789:27 | call to source() | semmle.label | call to source() |
+| test.swift:793:15:793:15 | dict4 [Collection element, Tuple element at index 1] | semmle.label | dict4 [Collection element, Tuple element at index 1] |
+| test.swift:793:15:793:35 | call to randomElement() [some:0, Tuple element at index 1] | semmle.label | call to randomElement() [some:0, Tuple element at index 1] |
+| test.swift:793:15:793:36 | ...! [Tuple element at index 1] | semmle.label | ...! [Tuple element at index 1] |
+| test.swift:793:15:793:38 | .1 | semmle.label | .1 |
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -996,3 +1027,6 @@ subpaths
 | test.swift:754:15:754:15 | v3 | test.swift:744:10:744:17 | call to source() | test.swift:754:15:754:15 | v3 | result |
 | test.swift:756:15:756:21 | ...! | test.swift:746:14:746:21 | call to source() | test.swift:756:15:756:21 | ...! | result |
 | test.swift:757:15:757:19 | .v3 | test.swift:747:14:747:21 | call to source() | test.swift:757:15:757:19 | .v3 | result |
+| test.swift:769:15:769:22 | ...[...] | test.swift:767:16:767:23 | call to source() | test.swift:769:15:769:22 | ...[...] | result |
+| test.swift:780:15:780:22 | ...[...] | test.swift:779:21:779:28 | call to source() | test.swift:780:15:780:22 | ...[...] | result |
+| test.swift:793:15:793:38 | .1 | test.swift:789:20:789:27 | call to source() | test.swift:793:15:793:38 | .1 | result |

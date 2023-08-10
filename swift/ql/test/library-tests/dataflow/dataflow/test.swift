@@ -759,3 +759,38 @@ func testWriteOptional() {
     sink(arg: mo2!.v2!) // $ MISSING:flow=749
     sink(arg: mo2!.v3) // $ MISSING:flow=750
 }
+
+func testDictionary() {
+    var dict1 = [1:2, 3:4, 5:6]
+    sink(arg: dict1[1])
+
+    dict1[1] = source()
+
+    sink(arg: dict1[1]) // $ flow=767
+
+    var dict2 = [source(): 1]
+    sink(arg: dict2[1])
+
+    for (key, value) in dict2 {
+        sink(arg: key) // $ MISSING: flow=771
+        sink(arg: value)
+    }
+
+    var dict3 = [1: source()]
+    sink(arg: dict3[1]) // $ flow=779
+
+    dict3[source()] = 2
+
+    for (key, value) in dict3 {
+        sink(arg: key) // $ MISSING: flow=782
+        sink(arg: value) // $ MISSING: flow=779
+    }
+
+    var dict4 = [1:source()]
+    sink(arg: dict4.updateValue(1, forKey: source())!)
+    sink(arg: dict4.updateValue(source(), forKey: 2)!)
+    sink(arg: dict4.randomElement()!.0) // $ MISSING: flow=791
+    sink(arg: dict4.randomElement()!.1) // $ flow=789 MISSING: flow=790
+    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=791
+    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=789 flow=790
+}
