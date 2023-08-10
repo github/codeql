@@ -129,18 +129,17 @@ namespace Semmle.BuildAnalyser
                 {
                     progressMonitor.FailedToReadFile(file, ex);
                 }
-
             }
             IsInitialized = true;
         }
 
-        [GeneratedRegex("<PackageReference\\s+Include=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("<PackageReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex PackageReference();
 
-        [GeneratedRegex("<FrameworkReference\\s+Include=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("<FrameworkReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex FrameworkReference();
 
-        [GeneratedRegex("<Project\\s+Sdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("<(.*\\s)?Project.*\\sSdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex ProjectSdk();
     }
 }
