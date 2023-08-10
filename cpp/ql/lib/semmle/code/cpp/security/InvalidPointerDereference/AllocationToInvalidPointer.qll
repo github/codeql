@@ -123,7 +123,7 @@ private module SizeBarrier {
   private int getAFlowStateForNode(DataFlow::Node node) {
     exists(DataFlow::Node source |
       flow(source, node) and
-      hasSize(_, source, result + 1)
+      hasSize(_, source, result)
     )
   }
 
@@ -155,7 +155,7 @@ private module SizeBarrier {
         pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
       bounded(result, value.getAnInstruction(), delta) and
       g.controls(result.getBlock(), edge) and
-      k <= getAFlowStateForNode(right)
+      k < getAFlowStateForNode(right)
     )
   }
 
