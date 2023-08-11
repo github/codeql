@@ -725,3 +725,11 @@ void test21_simple(bool b) {
     xs[i+1] = 0; // GOOD
   }
 }
+
+void test36(unsigned size, unsigned n) {
+  int* p = new int[size + 2];
+  if(n < size + 1) {
+    int* end = p + (n + 2); // $ alloc=L730+2
+    *end = 0; // $ deref=L733 // BAD
+  }
+}
