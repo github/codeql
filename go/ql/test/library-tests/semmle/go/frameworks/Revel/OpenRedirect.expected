@@ -1,8 +1,11 @@
 edges
+| EndToEnd.go:94:20:94:27 | implicit dereference | EndToEnd.go:94:20:94:27 | selection of Params |
+| EndToEnd.go:94:20:94:27 | implicit dereference | EndToEnd.go:94:20:94:32 | selection of Form |
+| EndToEnd.go:94:20:94:27 | selection of Params | EndToEnd.go:94:20:94:27 | implicit dereference |
 | EndToEnd.go:94:20:94:27 | selection of Params | EndToEnd.go:94:20:94:32 | selection of Form |
-| EndToEnd.go:94:20:94:27 | selection of Params | EndToEnd.go:94:20:94:49 | call to Get |
 | EndToEnd.go:94:20:94:32 | selection of Form | EndToEnd.go:94:20:94:49 | call to Get |
 nodes
+| EndToEnd.go:94:20:94:27 | implicit dereference | semmle.label | implicit dereference |
 | EndToEnd.go:94:20:94:27 | selection of Params | semmle.label | selection of Params |
 | EndToEnd.go:94:20:94:32 | selection of Form | semmle.label | selection of Form |
 | EndToEnd.go:94:20:94:49 | call to Get | semmle.label | call to Get |

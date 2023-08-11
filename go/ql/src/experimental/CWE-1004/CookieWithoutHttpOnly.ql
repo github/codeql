@@ -15,25 +15,43 @@
 
 import go
 import AuthCookie
-import DataFlow::PathGraph
+
+module NetHttpCookieTrackingFlow =
+  DataFlow::MergePathGraph<NameToNetHttpCookieTrackingFlow::PathNode,
+    BoolToNetHttpCookieTrackingFlow::PathNode, NameToNetHttpCookieTrackingFlow::PathGraph,
+    BoolToNetHttpCookieTrackingFlow::PathGraph>;
+
+module GorillaTrackingFlow =
+  DataFlow::MergePathGraph3<GorillaCookieStoreSaveTrackingFlow::PathNode,
+    GorillaSessionOptionsTrackingFlow::PathNode, BoolToGorillaSessionOptionsTrackingFlow::PathNode,
+    GorillaCookieStoreSaveTrackingFlow::PathGraph, GorillaSessionOptionsTrackingFlow::PathGraph,
+    BoolToGorillaSessionOptionsTrackingFlow::PathGraph>;
+
+module MergedFlow =
+  DataFlow::MergePathGraph3<NetHttpCookieTrackingFlow::PathNode,
+    BoolToGinSetCookieTrackingFlow::PathNode, GorillaTrackingFlow::PathNode,
+    NetHttpCookieTrackingFlow::PathGraph, BoolToGinSetCookieTrackingFlow::PathGraph,
+    GorillaTrackingFlow::PathGraph>;
+
+import MergedFlow::PathGraph
 
 /** Holds if `HttpOnly` of `net/http.SetCookie` is set to `false` or not set (default value is used). */
-predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  exists(DataFlow::PathNode sensitiveName, DataFlow::PathNode setCookieSink |
-    exists(NameToNetHttpCookieTrackingConfiguration cfg |
-      cfg.hasFlowPath(sensitiveName, setCookieSink)
-    ) and
+predicate isNetHttpCookieFlow(
+  NetHttpCookieTrackingFlow::PathNode source, NetHttpCookieTrackingFlow::PathNode sink
+) {
+  exists(
+    NameToNetHttpCookieTrackingFlow::PathNode sensitiveName,
+    NameToNetHttpCookieTrackingFlow::PathNode setCookieSink
+  |
+    NameToNetHttpCookieTrackingFlow::flowPath(sensitiveName, setCookieSink) and
     (
-      not any(BoolToNetHttpCookieTrackingConfiguration cfg).hasFlowTo(setCookieSink.getNode()) and
-      source = sensitiveName and
-      sink = setCookieSink
+      not BoolToNetHttpCookieTrackingFlow::flowTo(sink.getNode()) and
+      source.asPathNode1() = sensitiveName and
+      sink.asPathNode1() = setCookieSink
       or
-      exists(BoolToNetHttpCookieTrackingConfiguration cfg, DataFlow::PathNode setCookieSink2 |
-        cfg.hasFlowPath(source, setCookieSink2) and
-        source.getNode().getBoolValue() = false and
-        sink = setCookieSink2 and
-        setCookieSink.getNode() = setCookieSink2.getNode()
-      )
+      BoolToNetHttpCookieTrackingFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
+      source.getNode().getBoolValue() = false and
+      setCookieSink.getNode() = sink.getNode()
     )
   )
 }
@@ -42,44 +60,40 @@ predicate isNetHttpCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink
  * Holds if there is gorilla cookie store creation to `Save` path and
  * `HttpOnly` is set to `false` or not set (default value is used).
  */
-predicate isGorillaSessionsCookieFlow(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  exists(DataFlow::PathNode cookieStoreCreate, DataFlow::PathNode sessionSave |
-    any(GorillaCookieStoreSaveTrackingConfiguration cfg).hasFlowPath(cookieStoreCreate, sessionSave) and
+predicate isGorillaSessionsCookieFlow(
+  GorillaTrackingFlow::PathNode source, GorillaTrackingFlow::PathNode sink
+) {
+  exists(
+    GorillaCookieStoreSaveTrackingFlow::PathNode cookieStoreCreate,
+    GorillaCookieStoreSaveTrackingFlow::PathNode sessionSave
+  |
+    GorillaCookieStoreSaveTrackingFlow::flowPath(cookieStoreCreate, sessionSave) and
     (
-      not any(GorillaSessionOptionsTrackingConfiguration cfg).hasFlowTo(sessionSave.getNode()) and
-      source = cookieStoreCreate and
-      sink = sessionSave
+      not GorillaSessionOptionsTrackingFlow::flowTo(sink.getNode()) and
+      source.asPathNode1() = cookieStoreCreate and
+      sink.asPathNode1() = sessionSave
       or
-      exists(
-        GorillaSessionOptionsTrackingConfiguration cfg, DataFlow::PathNode options,
-        DataFlow::PathNode sessionSave2
-      |
-        cfg.hasFlowPath(options, sessionSave2) and
+      exists(GorillaTrackingFlow::PathNode options, GorillaTrackingFlow::PathNode sessionSave2 |
+        GorillaSessionOptionsTrackingFlow::flowPath(options.asPathNode2(),
+          sessionSave2.asPathNode2()) and
         (
-          not any(BoolToGorillaSessionOptionsTrackingConfiguration boolCfg)
-              .hasFlowTo(sessionSave.getNode()) and
+          not BoolToGorillaSessionOptionsTrackingFlow::flowTo(sink.getNode()) and
           sink = sessionSave2 and
           source = options and
           sessionSave.getNode() = sessionSave2.getNode()
           or
-          exists(
-            BoolToGorillaSessionOptionsTrackingConfiguration boolCfg,
-            DataFlow::PathNode sessionSave3
-          |
-            boolCfg.hasFlowPath(source, sessionSave3) and
-            source.getNode().getBoolValue() = false and
-            sink = sessionSave3 and
-            sessionSave.getNode() = sessionSave3.getNode()
-          )
+          BoolToGorillaSessionOptionsTrackingFlow::flowPath(source.asPathNode3(), sink.asPathNode3()) and
+          source.getNode().getBoolValue() = false and
+          sink.getNode() = sessionSave.getNode()
         )
       )
     )
   )
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink
+from MergedFlow::PathNode source, MergedFlow::PathNode sink
 where
-  isNetHttpCookieFlow(source, sink) or
-  any(BoolToGinSetCookieTrackingConfiguration cfg).hasFlowPath(source, sink) or
-  isGorillaSessionsCookieFlow(source, sink)
+  isNetHttpCookieFlow(source.asPathNode1(), sink.asPathNode1()) or
+  BoolToGinSetCookieTrackingFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) or
+  isGorillaSessionsCookieFlow(source.asPathNode3(), sink.asPathNode3())
 select sink.getNode(), source, sink, "Cookie attribute 'HttpOnly' is not set to true."

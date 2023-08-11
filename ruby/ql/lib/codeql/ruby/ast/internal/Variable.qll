@@ -368,20 +368,8 @@ private module Cached {
     exists(Scope scope1, CfgScope scope2 |
       scope1 = access.getVariable().getDeclaringScope() and
       scope2 = access.getCfgScope() and
-      scope1 != scope2
-    |
-      if access instanceof SelfVariableAccess
-      then
-        // ```
-        // class C
-        //   def self.m // not a captured access
-        //   end
-        //
-        //   self.foo // not a captured access
-        // end
-        // ```
-        not scope2 instanceof Toplevel
-      else any()
+      scope1 != scope2 and
+      not scope2 instanceof Toplevel
     )
   }
 

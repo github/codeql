@@ -472,7 +472,7 @@ open class KotlinFileExtractor(
 
     private fun extractObinitFunction(c: IrClass, parentId: Label<out DbClassorinterface>) {
         // add method:
-        val obinitLabel = getObinitLabel(c)
+        val obinitLabel = getObinitLabel(c, parentId)
         val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
         val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
         tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, parentId, obinitId)
@@ -1160,6 +1160,10 @@ open class KotlinFileExtractor(
             return
 
         val id = getDefaultsMethodLabel(f)
+        if (id == null) {
+            logger.errorElement("Cannot get defaults method label for function", f)
+            return
+        }
         val locId = getLocation(f, null)
         val extReceiver = f.extensionReceiverParameter
         val dispatchReceiver = if (f.shouldExtractAsStatic) null else f.dispatchReceiverParameter
@@ -1284,6 +1288,10 @@ open class KotlinFileExtractor(
                         useDeclarationParent(f.parent, false)
                     else
                         parentId
+            if (sourceParentId == null) {
+                logger.errorElement("Cannot get source parent ID for function", f)
+                return
+            }
             val sourceDeclId = tw.getLabelFor<DbCallable>(getFunctionLabel(f, sourceParentId, listOf(), overloadParameters))
             val overriddenAttributes = OverriddenFunctionAttributes(id = overloadId, sourceDeclarationId = sourceDeclId, valueParameters = overloadParameters)
             forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, extractAnnotations = false, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenAttributes)
@@ -1301,7 +1309,7 @@ open class KotlinFileExtractor(
                         val constructorCallId = tw.getFreshIdLabel<DbConstructorinvocationstmt>()
                         tw.writeStmts_constructorinvocationstmt(constructorCallId, blockId, 0, overloadId)
                         tw.writeHasLocation(constructorCallId, realFunctionLocId)
-                        tw.writeCallableBinding(constructorCallId, getDefaultsMethodLabel(f))
+                        tw.writeCallableBinding(constructorCallId, getDefaultsMethodLabel(f, parentId))
 
                         extractDefaultsCallArguments(constructorCallId, f, overloadId, constructorCallId, regularArgs, null, null)
                     } else {
@@ -2081,13 +2089,23 @@ open class KotlinFileExtractor(
             getFunctionShortName(f).nameInDB + "\$default"
         }
 
-    private fun getDefaultsMethodLabel(f: IrFunction): Label<out DbCallable> {
+    private fun getDefaultsMethodLabel(f: IrFunction): Label<out DbCallable>? {
+        val classTypeArgsIncludingOuterClasses = null
+        val parentId = useDeclarationParent(f.parent, false, classTypeArgsIncludingOuterClasses, true)
+        if (parentId == null) {
+            logger.errorElement("Couldn't get parent ID for defaults method", f)
+            return null
+        }
+        return getDefaultsMethodLabel(f, parentId)
+    }
+
+    private fun getDefaultsMethodLabel(f: IrFunction, parentId: Label<out DbElement>): Label<out DbCallable> {
         val defaultsMethodName = if (f is IrConstructor) "<init>" else getDefaultsMethodName(f)
         val argTypes = getDefaultsMethodArgTypes(f)
 
         val defaultMethodLabelStr = getFunctionLabel(
             f.parent,
-            maybeParentId = null,
+            parentId,
             defaultsMethodName,
             argTypes,
             erase(f.returnType),
@@ -3300,9 +3318,9 @@ open class KotlinFileExtractor(
 
     private fun needsObinitFunction(c: IrClass) = c.primaryConstructor == null && c.constructors.count() > 1
 
-    private fun getObinitLabel(c: IrClass) = getFunctionLabel(
+    private fun getObinitLabel(c: IrClass, parentId: Label<out DbElement>): String = getFunctionLabel(
         c,
-        null,
+        parentId,
         "<obinit>",
         listOf(),
         pluginContext.irBuiltIns.unitType,
@@ -3332,7 +3350,12 @@ open class KotlinFileExtractor(
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
 
         val id = if (e !is IrEnumConstructorCall && callUsesDefaultArguments(e.symbol.owner, valueArgs)) {
-            extractNewExpr(getDefaultsMethodLabel(e.symbol.owner).cast(), type, locId, parent, idx, callable, enclosingStmt).also {
+            val defaultsMethodId = getDefaultsMethodLabel(e.symbol.owner)
+            if (defaultsMethodId == null) {
+                logger.errorElement("Cannot get defaults method ID", e)
+                return
+            }
+            extractNewExpr(defaultsMethodId.cast(), type, locId, parent, idx, callable, enclosingStmt).also {
                 extractDefaultsCallArguments(it, e.symbol.owner, callable, enclosingStmt, valueArgs, null, null)
             }
         } else {
@@ -3817,7 +3840,13 @@ open class KotlinFileExtractor(
                         val id = tw.getFreshIdLabel<DbMethodaccess>()
                         val type = useType(pluginContext.irBuiltIns.unitType)
                         val locId = tw.getLocation(e)
-                        val methodLabel = getObinitLabel(irConstructor.parentAsClass)
+                        val parentClass = irConstructor.parentAsClass
+                        val parentId = useDeclarationParent(parentClass, false, null, true)
+                        if (parentId == null) {
+                            logger.errorElement("Cannot get parent ID for obinit", e)
+                            return
+                        }
+                        val methodLabel = getObinitLabel(parentClass, parentId)
                         val methodId = tw.getLabelFor<DbMethod>(methodLabel)
                         tw.writeExprs_methodaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)

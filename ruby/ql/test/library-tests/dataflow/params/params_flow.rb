@@ -116,3 +116,13 @@ splat_followed_by_keyword_param(taint(58), taint(59), c: taint(60))
 x = []
 x[some_index()] = taint(61)
 positional(*x)
+
+def destruct((a,b), (c,(d,e)))
+    sink a # $ MISSING: hasValueFlow=62
+    sink b # $ MISSING: hasValueFlow=63
+    sink c # $ MISSING: hasValueFlow=64
+    sink d
+    sink e # $ MISSING: hasValueFlow=65
+end
+
+destruct([taint(62), taint(63)], [taint(64), [0, taint(65)]])
