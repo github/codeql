@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.sun.security.sasl.digest", "DigestMD5Base", False, "generateResponseValue", "(String, String, String, String, String, char[], byte[], byte[], int, byte[])", "credential-password", "Argument[5]", "manual"]
+      - ["com.sun.security.sasl.digest", "DigestMD5Server", False, "generateResponseAuth", "(String, char[], byte[], int, byte[])", "credential-password", "Argument[1]", "manual"]

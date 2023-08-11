@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.sun.istack.internal.tools", "DefaultAuthenticator$AuthInfo", False, "AuthInfo", "(URL, String, String)", "credential-password", "Argument[2]", "manual"]

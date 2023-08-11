@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.sun.net.ssl", "KeyManagerFactory", False, "init", "(KeyStore, char[])", "credential-password", "Argument[1]", "manual"]
+      - ["com.sun.net.ssl", "KeyManagerFactorySpi", False, "engineInit", "(KeyStore, char[])", "credential-password", "Argument[1]", "manual"]
+      - ["com.sun.net.ssl", "KeyManagerFactorySpiWrapper", False, "engineInit", "(KeyStore, char[])", "credential-password", "Argument[1]", "manual"]

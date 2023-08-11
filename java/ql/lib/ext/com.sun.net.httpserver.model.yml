@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.sun.net.httpserver", "BasicAuthenticator", False, "checkCredentials", "(String, String)", "credential-password", "Argument[1]", "manual"]

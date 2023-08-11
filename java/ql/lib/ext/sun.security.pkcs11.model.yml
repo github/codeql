@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.security.pkcs11", "P11KeyStore", False, "engineGetKey", "(String, char[])", "credential-password", "Argument[1]", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore", False, "engineLoad", "(InputStream, char[])", "credential-password", "Argument[1]", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore", False, "engineSetKeyEntry", "(String, Key, char[], Certificate[])", "credential-password", "Argument[2]", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore", False, "engineStore", "(OutputStream, char[])", "credential-password", "Argument[1]", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore$PasswordCallbackHandler", False, "PasswordCallbackHandler", "(char[])", "credential-password", "Argument[0]", "manual"]
+      - ["sun.security.pkcs11", "Secmod$KeyStoreLoadParameter", False, "KeyStoreLoadParameter", "(TrustType, char[])", "credential-password", "Argument[1]", "manual"]

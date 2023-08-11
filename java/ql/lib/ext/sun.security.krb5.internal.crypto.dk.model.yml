@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.security.krb5.internal.crypto.dk", "AesDkCrypto", False, "stringToKey", "(char[], String, byte[])", "credential-password", "Argument[0]", "manual"]
+      - ["sun.security.krb5.internal.crypto.dk", "ArcFourCrypto", False, "stringToKey", "(char[])", "credential-password", "Argument[0]", "manual"]
