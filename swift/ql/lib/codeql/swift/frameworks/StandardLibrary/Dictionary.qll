@@ -1,3 +1,8 @@
+/**
+ * Provides models for the Swift `Dictionary` class.
+ */
+
+
 import swift
 private import codeql.swift.dataflow.ExternalFlow
 
