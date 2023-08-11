@@ -31,6 +31,9 @@ where
     name = "Read"
     or
     pkg = ["os.dirEntry", "os.unixDirent"] and name = ["Info", "Name"]
+    or
+    // Not available on arm64
+    pkg = "vendor/golang.org/x/crypto/internal/poly1305.mac" and name = "Write"
   ) and
   getLocation(pred, predLoc)
 select predLoc, pred, succ
