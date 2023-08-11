@@ -1,6 +1,19 @@
 import go
 
-from DataFlow::Node pred, DataFlow::Node succ
+predicate getLocation(DataFlow::Node node, string loc) {
+  node.hasLocationInfo(loc, _, _, _, _) and loc != ""
+  or
+  exists(string pkg, string name |
+    node.(DataFlow::SummarizedParameterNode)
+        .getCallable()
+        .asSummarizedCallable()
+        .asFunction()
+        .hasQualifiedName(pkg, name) and
+    loc = pkg + "." + name
+  )
+}
+
+from string predLoc, DataFlow::Node pred, DataFlow::Node succ
 where
   TaintTracking::localTaintStep(pred, succ) and
   not DataFlow::localFlowStep(pred, succ) and
@@ -18,5 +31,6 @@ where
     name = "Read"
     or
     pkg = ["os.dirEntry", "os.unixDirent"] and name = ["Info", "Name"]
-  )
-select pred, succ
+  ) and
+  getLocation(pred, predLoc)
+select predLoc, pred, succ
