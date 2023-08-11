@@ -17,17 +17,17 @@ namespace Semmle.BuildAnalyser
     internal partial class FileContent
     {
         private readonly ProgressMonitor progressMonitor;
-        private readonly TemporaryDirectory packageDirectory;
+        private readonly IUnsafeFileReader unsafeFileReader;
         private readonly Func<IEnumerable<string>> getFiles;
+        private readonly Func<HashSet<string>> getAlreadyDownloadedPackages;
         private readonly HashSet<string> notYetDownloadedPackages = new HashSet<string>();
-
-        private bool IsInitialized { get; set; } = false;
+        private Initializer Initialize { get; init; }
 
         public HashSet<string> NotYetDownloadedPackages
         {
             get
             {
-                Initialize();
+                Initialize.Run();
                 return notYetDownloadedPackages;
             }
         }
@@ -45,17 +45,29 @@ namespace Semmle.BuildAnalyser
         {
             get
             {
-                Initialize();
+                Initialize.Run();
                 return useAspNetDlls;
             }
         }
 
-        public FileContent(TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor, Func<IEnumerable<string>> getFiles)
+        internal FileContent(Func<HashSet<string>> getAlreadyDownloadedPackages,
+            ProgressMonitor progressMonitor,
+            Func<IEnumerable<string>> getFiles,
+            IUnsafeFileReader unsafeFileReader)
         {
+            this.getAlreadyDownloadedPackages = getAlreadyDownloadedPackages;
             this.progressMonitor = progressMonitor;
-            this.packageDirectory = packageDirectory;
             this.getFiles = getFiles;
+            this.unsafeFileReader = unsafeFileReader;
+            Initialize = new Initializer(DoInitialize);
         }
+
+
+        public FileContent(TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor, Func<IEnumerable<string>> getFiles) : this(() => Directory.GetDirectories(packageDirectory.DirInfo.FullName)
+                .Select(d => Path.GetFileName(d)
+                .ToLowerInvariant())
+                .ToHashSet(), progressMonitor, getFiles, new UnsafeFileReader())
+        { }
 
         private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix)
         {
@@ -87,21 +99,14 @@ namespace Semmle.BuildAnalyser
             return false;
         }
 
-        private void Initialize()
+        private void DoInitialize()
         {
-            if (IsInitialized)
-            {
-                return;
-            }
-
-            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName).Select(d => Path.GetFileName(d).ToLowerInvariant()).ToHashSet();
+            var alreadyDownloadedPackages = getAlreadyDownloadedPackages();
             foreach (var file in getFiles())
             {
                 try
                 {
-                    using var sr = new StreamReader(file);
-                    ReadOnlySpan<char> line;
-                    while ((line = sr.ReadLine()) != null)
+                    foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
                     {
 
                         // Find the not yet downloaded packages.
@@ -122,7 +127,6 @@ namespace Semmle.BuildAnalyser
                                 IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web") ||
                                 IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App");
                         }
-
                     }
                 }
                 catch (Exception ex)
@@ -130,7 +134,6 @@ namespace Semmle.BuildAnalyser
                     progressMonitor.FailedToReadFile(file, ex);
                 }
             }
-            IsInitialized = true;
         }
 
         [GeneratedRegex("<PackageReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
@@ -141,5 +144,23 @@ namespace Semmle.BuildAnalyser
 
         [GeneratedRegex("<(.*\\s)?Project.*\\sSdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex ProjectSdk();
+    }
+}
+
+internal interface IUnsafeFileReader
+{
+    IEnumerable<string> ReadLines(string file);
+}
+
+internal class UnsafeFileReader : IUnsafeFileReader
+{
+    public IEnumerable<string> ReadLines(string file)
+    {
+        using var sr = new StreamReader(file);
+        string? line;
+        while ((line = sr.ReadLine()) != null)
+        {
+            yield return line;
+        }
     }
 }
