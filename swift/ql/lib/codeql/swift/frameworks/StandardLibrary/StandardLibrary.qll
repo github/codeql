@@ -2,6 +2,7 @@
  * This file imports all models related to the Swift standard library.
  */
 
+private import Array
 private import Collection
 private import CustomUrlSchemes
 private import Data

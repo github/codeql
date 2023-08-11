@@ -34,15 +34,6 @@ private predicate objectToString(MethodAccess ma) {
   )
 }
 
-private class StringContainer extends RefType {
-  StringContainer() {
-    this instanceof TypeString or
-    this instanceof StringBuildingType or
-    this.hasQualifiedName("java.util", "StringTokenizer") or
-    this.(Array).getComponentType() instanceof StringContainer
-  }
-}
-
 /**
  * A taint-tracking configuration to reason about the use of potentially insecure cryptographic algorithms.
  */
@@ -53,7 +44,7 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node n) {
     objectToString(n.asExpr()) or
-    not n.getType().getErasure() instanceof StringContainer
+    n.getType().getErasure() instanceof TypeObject
   }
 }
 

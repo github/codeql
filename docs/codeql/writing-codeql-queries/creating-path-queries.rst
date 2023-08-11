@@ -5,6 +5,8 @@ Creating path queries
 
 You can create path queries to visualize the flow of information through a codebase.
 
+.. include:: ../reusables/new-data-flow-api.rst
+
 Overview
 ========
 
@@ -58,18 +60,22 @@ You should use the following template:
     import <language>
     // For some languages (Java/C++/Python/Swift) you need to explicitly import the data flow library, such as
     // import semmle.code.java.dataflow.DataFlow or import codeql.swift.dataflow.DataFlow
-    import DataFlow::PathGraph
     ...
 
-    from MyConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
-    where config.hasFlowPath(source, sink)
+    module Flow = DataFlow::Global<MyConfiguration>;
+    import Flow::PathGraph
+
+    from Flow::PathNode source, Flow::PathNode sink
+    where Flow::flowPath(source, sink)
     select sink.getNode(), source, sink, "<message>"
 
 Where:
 
-- ``DataFlow::Pathgraph`` is the path graph module you need to import from the standard CodeQL libraries.
-- ``source`` and ``sink`` are nodes on the `path graph <https://en.wikipedia.org/wiki/Path_graph>`__, and ``DataFlow::PathNode`` is their type.
-- ``MyConfiguration`` is a class containing the predicates which define how data may flow between the ``source`` and the ``sink``.
+- ``MyConfiguration`` is a module containing the predicates that define how data may flow between the ``source`` and the ``sink``.
+- ``Flow`` is the result of the data flow computation based on ``MyConfiguration``.
+- ``Flow::Pathgraph`` is the resulting data flow graph module you need to import in order to include path explanations in the query.
+- ``source`` and ``sink`` are nodes in the graph as defined in the configuration, and ``Flow::PathNode`` is their type.
+- ``DataFlow::Global<..>`` is an invocation of data flow. ``TaintTracking::Global<..>`` can be used instead to include a default set of additional taint steps.
 
 
 The following sections describe the main requirements for a valid path query.
@@ -83,14 +89,14 @@ The other metadata requirements depend on how you intend to run the query. For m
 Generating path explanations
 ****************************
 
-In order to generate path explanations, your query needs to compute a `path graph <https://en.wikipedia.org/wiki/Path_graph>`__.
+In order to generate path explanations, your query needs to compute a graph.
 To do this you need to define a :ref:`query predicate <query-predicates>` called ``edges`` in your query.
 This predicate defines the edge relations of the graph you are computing, and it is used to compute the paths related to each result that your query generates.
 You can import a predefined ``edges`` predicate from a path graph module in one of the standard data flow libraries. In addition to the path graph module, the data flow libraries contain the other ``classes``, ``predicates``, and ``modules`` that are commonly used in data flow analysis.
 
 .. code-block:: ql
 
-    import DataFlow::PathGraph
+    import MyFlow::PathGraph
 
 This statement imports the ``PathGraph`` module from the data flow library (``DataFlow.qll``), in which ``edges`` is defined.
 
@@ -106,7 +112,7 @@ You can also define your own ``edges`` predicate in the body of your query. It s
 .. code-block:: ql
 
     query predicate edges(PathNode a, PathNode b) {
-    /** Logical conditions which hold if `(a,b)` is an edge in the data flow graph */
+      /* Logical conditions which hold if `(a,b)` is an edge in the data flow graph */
     }
 
 For more examples of how to define an ``edges`` predicate, visit the `standard CodeQL libraries <https://codeql.github.com/codeql-standard-libraries>`__ and search for ``edges``.
@@ -117,14 +123,23 @@ Declaring sources and sinks
 You must provide information about the ``source`` and ``sink`` in your path query. These are objects that correspond to the nodes of the paths that you are exploring.
 The name and the type of the ``source`` and the ``sink`` must be declared in the ``from`` statement of the query, and the types must be compatible with the nodes of the graph computed by the ``edges`` predicate.
 
-If you are querying C/C++, C#, Go, Java, JavaScript, Python, or Ruby code (and you have used ``import DataFlow::PathGraph`` in your query), the definitions of the ``source`` and ``sink`` are accessed via the ``Configuration`` class in the data flow library. You should declare all three of these objects in the ``from`` statement.
+If you are querying C/C++, C#, Go, Java, JavaScript, Python, or Ruby code (and you have used ``import MyFlow::PathGraph`` in your query), the definitions of the ``source`` and ``sink`` are accessed via the module resulting from the application of the ``Global<..>`` module in the data flow library. You should declare both of these objects in the ``from`` statement.
 For example:
 
 .. code-block:: ql
 
-    from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+    module MyFlow = DataFlow::Global<MyConfiguration>;
 
-The configuration class is accessed by importing the data flow library. This class contains the predicates which define how data flow is treated in the query:
+    from MyFlow::PathNode source, MyFlow::PathNode sink
+
+The configuration module must be defined to include definitions of sources and sinks. For example:
+
+.. code-block:: ql
+
+    module MyConfiguration implements DataFlow::ConfigSig {
+      predicate isSource(DataFlow::Node source) { ... }
+      predicate isSink(DataFlow::Node source) { ... }
+    }
 
 - ``isSource()`` defines where data may flow from.
 - ``isSink()`` defines where data may flow to.
@@ -141,11 +156,11 @@ This clause can use :ref:`aggregations <aggregations>`, :ref:`predicates <predic
 
 When writing a path queries, you would typically include a predicate that holds only if data flows from the ``source`` to the ``sink``.
 
-You can use the ``hasFlowPath`` predicate to specify flow from the ``source`` to the ``sink`` for a given ``Configuration``:
+You can use the ``flowPath`` predicate to specify flow from the ``source`` to the ``sink`` for a given ``Configuration``:
 
 .. code-block:: ql
 
-    where config.hasFlowPath(source, sink)
+    where MyFlow::flowPath(source, sink)
 
 
 Select clause

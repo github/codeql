@@ -2815,12 +2815,15 @@
 | file://:0:0:0:0 | [summary param] position 0 in Hash[] | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in Hash[] |
 | file://:0:0:0:0 | [summary param] position 0 in Mysql2::Client.escape() | file://:0:0:0:0 | [summary] to write: ReturnValue in Mysql2::Client.escape() |
 | file://:0:0:0:0 | [summary param] position 0 in Mysql2::Client.new() | file://:0:0:0:0 | [summary] to write: ReturnValue in Mysql2::Client.new() |
+| file://:0:0:0:0 | [summary param] position 0 in Net::LDAP.new | file://:0:0:0:0 | [summary] to write: ReturnValue in Net::LDAP.new |
+| file://:0:0:0:0 | [summary param] position 0 in Net::LDAP::Filter | file://:0:0:0:0 | [summary] to write: ReturnValue in Net::LDAP::Filter |
 | file://:0:0:0:0 | [summary param] position 0 in PG.new() | file://:0:0:0:0 | [summary] to write: ReturnValue in PG.new() |
 | file://:0:0:0:0 | [summary param] position 0 in Rack::Utils.parse_query | file://:0:0:0:0 | [summary] to write: ReturnValue in Rack::Utils.parse_query |
 | file://:0:0:0:0 | [summary param] position 0 in SQLite3::Database.quote() | file://:0:0:0:0 | [summary] to write: ReturnValue in SQLite3::Database.quote() |
 | file://:0:0:0:0 | [summary param] position 0 in Sequel.connect | file://:0:0:0:0 | [summary] to write: ReturnValue in Sequel.connect |
 | file://:0:0:0:0 | [summary param] position 0 in String.try_convert | file://:0:0:0:0 | [summary] to write: ReturnValue in String.try_convert |
 | file://:0:0:0:0 | [summary param] position 0 in \| | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in \| |
+| file://:0:0:0:0 | [summary param] position 1 in Net::LDAP::Filter | file://:0:0:0:0 | [summary] to write: ReturnValue in Net::LDAP::Filter |
 | file://:0:0:0:0 | [summary param] position 1.. in File.join | file://:0:0:0:0 | [summary] to write: ReturnValue in File.join |
 | file://:0:0:0:0 | [summary param] self in & | file://:0:0:0:0 | [summary] read: Argument[self].Element[any] in & |
 | file://:0:0:0:0 | [summary param] self in * | file://:0:0:0:0 | [summary] read: Argument[self].Element[any] in * |

@@ -119,9 +119,9 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	// --- RangeReplaceableCollection ---
 
 	var inputVar = input
-	inputVar.replace(regex, with: "") // $ regex=.* input=&...
+	inputVar.replace(regex, with: "") // $ regex=.* input=inputVar
 	_ = input.replacing(regex, with: "") // $ regex=.* input=input
-	inputVar.trimPrefix(regex) // $ regex=.* input=&...
+	inputVar.trimPrefix(regex) // $ regex=.* input=inputVar
 
 	// --- StringProtocol ---
 

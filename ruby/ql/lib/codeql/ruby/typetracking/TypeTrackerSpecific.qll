@@ -230,7 +230,7 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
     // deliberately do not include `getInitializeTarget`, since calls to `new` should not
     // get the return value from `initialize`. Any fields being set in the initializer
     // will reach all reads via `callStep` and `localFieldStep`.
-    nodeTo.asExpr().getNode() = call.getNode()
+    nodeTo.asExpr().getAstNode() = call.getAstNode()
   )
 }
 
