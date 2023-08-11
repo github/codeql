@@ -169,7 +169,7 @@ private module SizeBarrier {
     exists(int delta, int k |
       state > k + delta and
       // result <= "size of allocation" + delta + k
-      //        <= "size of allocation" + state
+      //        < "size of allocation" + state
       result = getABarrierInstruction0(delta, k)
     )
   }
@@ -198,7 +198,7 @@ private module SizeBarrier {
       state > k + delta
       // so now we have:
       // result <= "size of allocation" + delta + k
-      //        <= "size of allocation" + state
+      //        < "size of allocation" + state
     )
   }
 }
