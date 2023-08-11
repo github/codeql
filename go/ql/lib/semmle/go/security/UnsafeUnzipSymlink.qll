@@ -14,7 +14,7 @@ module UnsafeUnzipSymlink {
   import UnsafeUnzipSymlinkCustomizations::UnsafeUnzipSymlink
 
   /**
-   * DEPRECATED: Use a copy of `EvalSymlinksConfig` and `EvalSymlinksFlow` instead.
+   * DEPRECATED: Use copies of `EvalSymlinksConfig` and `EvalSymlinksFlow` instead.
    *
    * A taint-flow configuration tracking archive header fields flowing to a `path/filepath.EvalSymlinks` call.
    */

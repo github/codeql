@@ -47,8 +47,8 @@ module InsecureRandomness {
   }
 
   /**
-   * Tracks taint flow for reasoning about random values that are not
-   * cryptographically secure.
+   * Tracks taint flow from randomly generated values which are not
+   * cryptographically secure to cryptographic applications.
    */
   module Flow = TaintTracking::Global<Config>;
 }

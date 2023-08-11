@@ -50,8 +50,9 @@ module StringBreak {
   }
 
   /**
-   * Tracks taint flow for reasoning about unsafe-quoting vulnerabilities,
-   * parameterized with the type of quote being tracked.
+   * Tracks taint flow from untrusted data which may contain single or double
+   * quotes to uses where those quotes need to be escaped. The type of quote
+   * is accessible through the `Sink`.
    */
   module Flow = TaintTracking::GlobalWithState<Config>;
 }

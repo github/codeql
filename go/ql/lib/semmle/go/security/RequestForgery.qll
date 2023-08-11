@@ -67,6 +67,6 @@ module RequestForgery {
     }
   }
 
-  /** Tracks taint flow for reasoning about request forgery. */
+  /** Tracks taint flow from untrusted data to request forgery attack vectors. */
   module Flow = TaintTracking::Global<Config>;
 }

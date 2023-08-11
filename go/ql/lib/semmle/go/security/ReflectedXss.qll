@@ -46,6 +46,6 @@ module ReflectedXss {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
-  /** Tracks taint flow for reasoning about XSS. */
+  /** Tracks taint flow from untrusted data to XSS attack vectors. */
   module Flow = TaintTracking::Global<Config>;
 }
