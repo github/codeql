@@ -9,3 +9,6 @@ extensions:
       - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKeys", "(char[], String)", "credential-password", "Argument[0]", "manual"]
       - ["sun.security.krb5", "EncryptionKey", False, "stringToKey", "(char[], String, byte[], int)", "credential-password", "Argument[0]", "manual"]
       - ["sun.security.krb5", "KrbAsRep", False, "decryptUsingPassword", "(char[], KrbAsReq, PrincipalName)", "credential-password", "Argument[0]", "manual"]
+      - ["sun.security.krb5", "Credentials", False, "Credentials", "(byte[], String, String, byte[], int, boolean[], Date, Date, Date, Date, InetAddress[])", "crypto-parameter", "Argument[3]", "manual"]
+      - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(byte[], int, Integer)", "crypto-parameter", "Argument[0]", "manual"]
+      - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(int, byte[])", "crypto-parameter", "Argument[1]", "manual"]

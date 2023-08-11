@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.security.spec", "EncodedKeySpec", False, "EncodedKeySpec", "(byte[])", "crypto-parameter", "Argument[0]", "manual"]
+      - ["java.security.spec", "PKCS8EncodedKeySpec", False, "PKCS8EncodedKeySpec", "(byte[])", "crypto-parameter", "Argument[0]", "manual"]
+      - ["java.security.spec", "X509EncodedKeySpec", False, "X509EncodedKeySpec", "(byte[])", "crypto-parameter", "Argument[0]", "manual"]

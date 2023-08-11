@@ -4,3 +4,5 @@ extensions:
       extensible: sinkModel
     data:
       - ["sun.security.tools.keytool", "Main", False, "getNewPasswd", "(String, char[])", "credential-password", "Argument[1]", "manual"]
+      - ["sun.security.tools.keytool", "Main", False, "getKeyPasswd", "(String, String, char[])", "crypto-parameter", "Argument[2]", "manual"]
+      - ["sun.security.tools.keytool", "Main", False, "recoverKey", "(String, char[], char[])", "crypto-parameter", "Argument[2]", "manual"]

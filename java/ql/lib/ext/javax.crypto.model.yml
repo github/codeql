@@ -5,3 +5,6 @@ extensions:
     data:
       - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec)", "", "Argument[2]", "encryption-iv", "manual"]
       - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec,SecureRandom)", "", "Argument[2]", "encryption-iv", "manual"]
+      - ["javax.crypto", "Cipher", False, "unwrap", "(byte[], String, int)", "crypto-parameter", "Argument[0]", "manual"]
+      - ["javax.crypto", "CipherSpi", False, "engineUnwrap", "(byte[], String, int)", "crypto-parameter", "Argument[0]", "manual"]
+      - ["javax.crypto", "EncryptedPrivateKeyInfo", False, "checkPKCS8Encoding", "(byte[])", "crypto-parameter", "Argument[0]", "manual"]

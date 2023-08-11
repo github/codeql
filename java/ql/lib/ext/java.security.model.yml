@@ -13,3 +13,5 @@ extensions:
       - ["java.security", "KeyStoreSpi", False, "engineLoad", "(InputStream, char[])", "credential-password", "Argument[1]", "manual"]
       - ["java.security", "KeyStoreSpi", False, "engineSetKeyEntry", "(String, Key, char[], Certificate[])", "credential-password", "Argument[2]", "manual"]
       - ["java.security", "KeyStoreSpi", False, "engineStore", "(OutputStream, char[])", "credential-password", "Argument[1]", "manual"]
+      - ["java.security", "KeyStore", False, "setKeyEntry", "(String, byte[], Certificate[])", "crypto-parameter", "Argument[1]", "manual"]
+      - ["java.security", "KeyStoreSpi", False, "engineSetKeyEntry", "(String, byte[], Certificate[])", "crypto-parameter", "Argument[1]", "manual"]

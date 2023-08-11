@@ -13,3 +13,5 @@ extensions:
       - ["sun.security.provider", "JavaKeyStore", False, "engineStore", "(OutputStream, char[])", "credential-password", "Argument[1]", "manual"]
       - ["sun.security.provider", "JavaKeyStore", False, "getPreKeyedHash", "(char[])", "credential-password", "Argument[0]", "manual"]
       - ["sun.security.provider", "KeyProtector", False, "KeyProtector", "(char[])", "credential-password", "Argument[0]", "manual"]
+      - ["sun.security.provider", "DomainKeyStore", False, "engineSetKeyEntry", "(String, byte[], Certificate[])", "crypto-parameter", "Argument[1]", "manual"]
+      - ["sun.security.provider", "JavaKeyStore", False, "engineSetKeyEntry", "(String, byte[], Certificate[])", "crypto-parameter", "Argument[1]", "manual"]

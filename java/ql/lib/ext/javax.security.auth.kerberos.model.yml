@@ -5,3 +5,7 @@ extensions:
     data:
       - ["javax.security.auth.kerberos", "KerberosKey", False, "KerberosKey", "(KerberosPrincipal, char[], String)", "credential-password", "Argument[1]", "manual"]
       - ["javax.security.auth.kerberos", "KeyImpl", False, "KeyImpl", "(KerberosPrincipal, char[], String)", "credential-password", "Argument[1]", "manual"]
+      - ["javax.security.auth.kerberos", "KerberosKey", False, "KerberosKey", "(KerberosPrincipal, byte[], int, int)", "crypto-parameter", "Argument[1]", "manual"]
+      - ["javax.security.auth.kerberos", "KerberosTicket", False, "KerberosTicket", "(byte[], KerberosPrincipal, KerberosPrincipal, byte[], int, boolean[], Date, Date, Date, Date, InetAddress[])", "crypto-parameter", "Argument[3]", "manual"]
+      - ["javax.security.auth.kerberos", "KerberosTicket", False, "init", "(byte[], KerberosPrincipal, KerberosPrincipal, byte[], int, boolean[], Date, Date, Date, Date, InetAddress[])", "crypto-parameter", "Argument[3]", "manual"]
+      - ["javax.security.auth.kerberos", "KeyImpl", False, "KeyImpl", "(byte[], int)", "crypto-parameter", "Argument[0]", "manual"]
