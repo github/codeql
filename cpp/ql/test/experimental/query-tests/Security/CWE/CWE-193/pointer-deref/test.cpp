@@ -305,7 +305,7 @@ void test21() {
 
   for (int i = 0; i < n; i += 2) {
     xs[i] = test21_get(i); // GOOD
-    xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
+    xs[i+1] = test21_get(i+1); // GOOD
   }
 }
 
@@ -722,6 +722,6 @@ void test21_simple(bool b) {
   int* xs = new int[n];
 
   for (int i = 0; i < n; i += 2) {
-    xs[i+1] = 0; // GOOD [FALSE POSITIVE]
+    xs[i+1] = 0; // GOOD
   }
 }
