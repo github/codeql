@@ -224,6 +224,11 @@ module Content {
   class ArrayContent extends Content, TArrayContent {
     override string toString() { result = "Array element" }
   }
+
+  /** An element of a collection. */
+  class CollectionContent extends Content, TCollectionContent {
+    override string toString() { result = "Collection element" }
+  }
 }
 
 /**

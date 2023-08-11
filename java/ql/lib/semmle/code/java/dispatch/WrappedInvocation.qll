@@ -58,3 +58,37 @@ Method getRunnerTarget(MethodAccess ma) {
     result.overridesOrInstantiates*(runmethod)
   )
 }
+
+import semmle.code.java.dataflow.FlowSummary
+import semmle.code.java.dataflow.internal.FlowSummaryImplSpecific as ImplSpecific
+
+private predicate mayInvokeCallback(SrcMethod m, int n) {
+  m.getParameterType(n).(RefType).getSourceDeclaration() instanceof FunctionalInterface and
+  (not m.fromSource() or m.isNative() or m.getFile().getAbsolutePath().matches("%/test/stubs/%"))
+}
+
+private class SummarizedCallableWithCallback extends SummarizedCallable {
+  private int pos;
+
+  SummarizedCallableWithCallback() { mayInvokeCallback(this.asCallable(), pos) }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    input = SummaryComponentStack::argument(pos) and
+    output = SummaryComponentStack::push(SummaryComponent::parameter(-1), input) and
+    preservesValue = true
+  }
+
+  override predicate hasProvenance(Provenance provenance) { provenance = "hq-generated" }
+}
+
+private class RequiredComponentStackForCallback extends RequiredSummaryComponentStack {
+  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+    exists(int pos |
+      mayInvokeCallback(_, pos) and
+      head = SummaryComponent::parameter(-1) and
+      tail = SummaryComponentStack::argument(pos)
+    )
+  }
+}

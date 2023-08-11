@@ -51,11 +51,13 @@ private predicate isIncorrectIntegerConversion(int sourceBitSize, int sinkBitSiz
 }
 
 /**
+ * DEPRECATED: use `Flow` instead.
+ *
  * A taint-tracking configuration for reasoning about when an integer
  * obtained from parsing a string flows to a type conversion to a smaller
  * integer types, which could cause unexpected values.
  */
-class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
+deprecated class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
   boolean sinkIsSigned;
   int sourceBitSize;
   int sinkBitSize;
@@ -147,6 +149,119 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     )
   }
 }
+
+/** Flow state for ConversionWithoutBoundsCheckConfig. */
+newtype IntegerConversionFlowState =
+  /** Keep track of info about the source and potential sinks. */
+  TFlowstate(boolean sinkIsSigned, int sourceBitSize, int sinkBitSize) {
+    sinkIsSigned in [true, false] and
+    isIncorrectIntegerConversion(sourceBitSize, sinkBitSize)
+  }
+
+/** Gets the bit size of the source. */
+int getSourceBitSize(IntegerConversionFlowState state) { state = TFlowstate(_, result, _) }
+
+private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConfigSig {
+  class FlowState = IntegerConversionFlowState;
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    exists(
+      DataFlow::CallNode c, IntegerParser::Range ip, int apparentBitSize, int effectiveBitSize
+    |
+      c.getTarget() = ip and source = c.getResult(0)
+    |
+      (
+        apparentBitSize = ip.getTargetBitSize()
+        or
+        // If we are reading a variable, check if it is
+        // `strconv.IntSize`, and use 0 if it is.
+        exists(DataFlow::Node rawBitSize | rawBitSize = ip.getTargetBitSizeInput().getNode(c) |
+          if rawBitSize = any(Strconv::IntSize intSize).getARead()
+          then apparentBitSize = 0
+          else apparentBitSize = rawBitSize.getIntValue()
+        )
+      ) and
+      (
+        if apparentBitSize = 0
+        then effectiveBitSize = getIntTypeBitSize(source.getFile())
+        else effectiveBitSize = apparentBitSize
+      ) and
+      // `effectiveBitSize` could be any value between 0 and 64, but we
+      // can round it up to the nearest size of an integer type without
+      // changing behavior.
+      exists(int sourceBitSize |
+        sourceBitSize = min(int b | b in [0, 8, 16, 32, 64] and b >= effectiveBitSize)
+      |
+        state = TFlowstate(_, sourceBitSize, _)
+      )
+    )
+  }
+
+  /**
+   * Holds if `sink` is a typecast to an integer type with size `bitSize` (where
+   * 0 represents architecture-dependent) and the expression being typecast is
+   * not also in a right-shift expression. We allow this case because it is
+   * a common pattern to serialise `byte(v)`, `byte(v >> 8)`, and so on.
+   */
+  additional predicate isSinkWithBitSize(
+    DataFlow::TypeCastNode sink, boolean sinkIsSigned, int bitSize
+  ) {
+    sink.asExpr() instanceof ConversionExpr and
+    exists(IntegerType integerType | sink.getResultType().getUnderlyingType() = integerType |
+      (
+        bitSize = integerType.getSize()
+        or
+        not exists(integerType.getSize()) and
+        bitSize = getIntTypeBitSize(sink.getFile())
+      ) and
+      if integerType instanceof SignedIntegerType then sinkIsSigned = true else sinkIsSigned = false
+    ) and
+    not exists(ShrExpr shrExpr |
+      shrExpr.getLeftOperand().getGlobalValueNumber() =
+        sink.getOperand().asExpr().getGlobalValueNumber() or
+      shrExpr.getLeftOperand().(AndExpr).getAnOperand().getGlobalValueNumber() =
+        sink.getOperand().asExpr().getGlobalValueNumber()
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    // We use the argument of the type conversion as the configuration sink so that we
+    // can sanitize the result of the conversion to prevent flow on to further sinks
+    // without needing to use `isSanitizerOut`, which doesn't work with flow states
+    // (and therefore the legacy `TaintTracking::Configuration` class).
+    exists(boolean sinkIsSigned, int sinkBitSize |
+      state = TFlowstate(sinkIsSigned, _, sinkBitSize)
+    |
+      isSinkWithBitSize(sink.getASuccessor(), sinkIsSigned, sinkBitSize)
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    exists(boolean sinkIsSigned, int sourceBitSize, int sinkBitSize |
+      state = TFlowstate(sinkIsSigned, sourceBitSize, sinkBitSize)
+    |
+      // To catch flows that only happen on 32-bit architectures we
+      // consider an architecture-dependent sink bit size to be 32.
+      exists(UpperBoundCheckGuard g, int bitSize |
+        if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32
+      |
+        node = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g) and
+        g.isBoundFor(bitSize, sinkIsSigned)
+      )
+      or
+      exists(int bitSize |
+        isIncorrectIntegerConversion(sourceBitSize, bitSize) and
+        isSinkWithBitSize(node, sinkIsSigned, bitSize)
+      )
+    )
+  }
+}
+
+/**
+ * Tracks taint flow from an integer obtained from parsing a string that flows
+ * to a type conversion to a smaller integer type, which could cause data loss.
+ */
+module Flow = TaintTracking::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
 
 private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch) {
   g.(UpperBoundCheckGuard).checks(e, branch)
