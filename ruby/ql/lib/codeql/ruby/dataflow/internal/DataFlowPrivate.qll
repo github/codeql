@@ -337,6 +337,7 @@ private module Cached {
       c.getAnArgument() instanceof CfgNodes::ExprNodes::PairCfgNode
     } or
     TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
+      exists(Argument arg, ArgumentPosition pos | pos.isPositional(_) | arg.isArgumentOf(c, pos)) and
       not exists(Argument arg, ArgumentPosition pos | pos.isSplat(_) or pos.isSplatAll() |
         arg.isArgumentOf(c, pos)
       )
