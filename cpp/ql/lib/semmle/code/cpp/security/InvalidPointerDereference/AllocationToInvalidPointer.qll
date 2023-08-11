@@ -118,11 +118,11 @@ private module SizeBarrier {
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
   }
 
-  private import DataFlow::Global<SizeBarrierConfig>
+  module SizeBarrierFlow = DataFlow::Global<SizeBarrierConfig>;
 
   private int getASizeAddend(DataFlow::Node node) {
     exists(DataFlow::Node source |
-      flow(source, node) and
+      SizeBarrierFlow::flow(source, node) and
       hasSize(_, source, result)
     )
   }
@@ -133,7 +133,7 @@ private module SizeBarrier {
   private predicate operandGuardChecks(
     IRGuardCondition g, Operand left, DataFlow::Node right, int k, boolean edge
   ) {
-    flowTo(right) and
+    SizeBarrierFlow::flowTo(right) and
     SizeBarrierConfig::isSink(DataFlow::operandNode(left), right, g, k, edge)
   }
 
@@ -174,27 +174,15 @@ private module SizeBarrier {
     )
   }
 
-  private module ValidForStateConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { hasSize(_, source, _) }
-
-    predicate isSink(DataFlow::Node sink) { isSink(sink, _, _) }
-
-    additional predicate isSink(DataFlow::Node sink, int delta, int k) {
-      sink.asOperand() = SizeBarrier::getABarrierInstruction0(delta, k).getAUse()
-    }
-  }
-
-  private module ValidForStateFlow = DataFlow::Global<ValidForStateConfig>;
-
   /**
    * Gets a `DataFlow::Node` that is guarded by a guard condition which ensures that
    * the value of the node is upper-bounded by size of some allocation.
    */
   DataFlow::Node getABarrierNode(int state) {
     exists(DataFlow::Node source, int delta, int k |
-      ValidForStateFlow::flow(source, result) and
+      SizeBarrierFlow::flow(source, result) and
       hasSize(_, source, state) and
-      ValidForStateConfig::isSink(result, delta, k) and
+      result.asInstruction() = SizeBarrier::getABarrierInstruction0(delta, k) and
       state > k + delta
       // so now we have:
       // result <= "size of allocation" + delta + k
