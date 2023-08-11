@@ -66,13 +66,13 @@
  * module. Since the node we are tracking is not necessarily _equal_ to the pointer-arithmetic instruction, but rather satisfies
  * `node.asInstruction() <= pai + deltaDerefSourceAndPai`, we need to account for the delta when checking if a guard is sufficiently
  * strong to infer that a future dereference is safe. To do this, we check that the guard guarantees that a node `n` satisfies
- * `n < node + k` where `node` is a node such that `node <= pai`. Thus, we know that any node `n'` such that `n' <= n + delta` where
+ * `n < node + k` where `node` is a node such that `node <= pai`. Thus, we know that any node `m` such that `m <= n + delta` where
  * `delta + k <= 0` will be safe because:
  * ```
- * n' <= n + delta
- *    <  node + k + delta
- *    <= pai + k + delta
- *    <= pai
+ * m <= n + delta
+ *   <  node + k + delta
+ *   <= pai + k + delta
+ *   <= pai
  * ```
  */
 
