@@ -30,7 +30,8 @@ module KindValidation<KindValidationConfigSig Config> {
           "js-injection", "ldap-injection", "log-injection", "path-injection", "request-forgery",
           "sql-injection", "url-redirection",
           // Java-only currently, but may be shared in the future
-          "bean-validation", "fragment-injection", "groovy-injection", "hostname-verification",
+          "bean-validation", "credential-other", "credential-password", "credential-username",
+          "crypto-parameter", "fragment-injection", "groovy-injection", "hostname-verification",
           "information-leak", "intent-redirection", "jexl-injection", "jndi-injection",
           "mvel-injection", "ognl-injection", "pending-intents", "response-splitting",
           "trust-boundary-violation", "template-injection", "xpath-injection", "xslt-injection",

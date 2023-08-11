@@ -3,17 +3,47 @@
  */
 
 import java
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
+
+/**
+ * A node representing a password being passed to a method.
+ */
+class PasswordParameter extends DataFlow::Node {
+  PasswordParameter() { sinkNode(this, "credential-password") }
+}
+
+/**
+ * A node representing a username being passed to a method.
+ */
+class UsernameParameter extends DataFlow::Node {
+  UsernameParameter() { sinkNode(this, "credential-username") }
+}
+
+/**
+ * A node representing a cryptographic key being passed to a method.
+ */
+class CryptoKeyParameter extends DataFlow::Node {
+  CryptoKeyParameter() { sinkNode(this, "crypto-parameter") }
+}
+
+/**
+ * A node representing a credential being passed to a method.
+ */
+class CredentialParameter extends DataFlow::Node {
+  CredentialParameter() { sinkNode(this, "credential-other") }
+}
 
 /**
  * Holds if callable `c` from a standard Java API expects a password parameter at index `i`.
  */
-predicate javaApiCallablePasswordParam(Callable c, int i) {
+deprecated predicate javaApiCallablePasswordParam(Callable c, int i) {
   exists(c.getParameter(i)) and
   javaApiCallablePasswordParam(c.getDeclaringType().getQualifiedName() + ";" +
       c.getStringSignature() + ";" + i)
 }
 
-private predicate javaApiCallablePasswordParam(string s) {
+deprecated private predicate javaApiCallablePasswordParam(string s) {
   // Auto-generated using an auxiliary query run on the JDK source code.
   s =
     [
@@ -133,13 +163,13 @@ private predicate javaApiCallablePasswordParam(string s) {
 /**
  * Holds if callable `c` from a standard Java API expects a username parameter at index `i`.
  */
-predicate javaApiCallableUsernameParam(Callable c, int i) {
+deprecated predicate javaApiCallableUsernameParam(Callable c, int i) {
   exists(c.getParameter(i)) and
   javaApiCallableUsernameParam(c.getDeclaringType().getQualifiedName() + ";" +
       c.getStringSignature() + ";" + i)
 }
 
-private predicate javaApiCallableUsernameParam(string s) {
+deprecated private predicate javaApiCallableUsernameParam(string s) {
   // Auto-generated using an auxiliary query run on the JDK source code.
   s =
     [
@@ -196,13 +226,13 @@ private predicate javaApiCallableUsernameParam(string s) {
 /**
  * Holds if callable `c` from a standard Java API expects a cryptographic key parameter at index `i`.
  */
-predicate javaApiCallableCryptoKeyParam(Callable c, int i) {
+deprecated predicate javaApiCallableCryptoKeyParam(Callable c, int i) {
   exists(c.getParameter(i)) and
   javaApiCallableCryptoKeyParam(c.getDeclaringType().getQualifiedName() + ";" +
       c.getStringSignature() + ";" + i)
 }
 
-private predicate javaApiCallableCryptoKeyParam(string s) {
+deprecated private predicate javaApiCallableCryptoKeyParam(string s) {
   // Auto-generated using an auxiliary query run on the JDK source code.
   s =
     [
@@ -424,13 +454,13 @@ private predicate javaApiCallableCryptoKeyParam(string s) {
 /**
  * Holds if callable `c` from a known API expects a credential parameter at index `i`.
  */
-predicate otherApiCallableCredentialParam(Callable c, int i) {
+deprecated predicate otherApiCallableCredentialParam(Callable c, int i) {
   exists(c.getParameter(i)) and
   otherApiCallableCredentialParam(c.getDeclaringType().getQualifiedName() + ";" +
       c.getStringSignature() + ";" + i)
 }
 
-private predicate otherApiCallableCredentialParam(string s) {
+deprecated private predicate otherApiCallableCredentialParam(string s) {
   s =
     [
       "javax.crypto.spec.IvParameterSpec;IvParameterSpec(byte[]);0",
