@@ -167,7 +167,7 @@ private module SizeBarrier {
   pragma[inline_late]
   Instruction getABarrierInstruction(int state) {
     exists(int delta, int k |
-      state >= k + delta and
+      state > k + delta and
       // result <= "size of allocation" + delta + k
       //        <= "size of allocation" + state
       result = getABarrierInstruction0(delta, k)
@@ -195,7 +195,7 @@ private module SizeBarrier {
       ValidForStateFlow::flow(source, result) and
       hasSize(_, source, state) and
       ValidForStateConfig::isSink(result, delta, k) and
-      state >= k + delta
+      state > k + delta
       // so now we have:
       // result <= "size of allocation" + delta + k
       //        <= "size of allocation" + state

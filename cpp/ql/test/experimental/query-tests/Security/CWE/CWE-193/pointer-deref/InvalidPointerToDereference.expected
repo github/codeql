@@ -1,2 +1,4 @@
 failures
 testFailures
+| test.cpp:308:5:308:29 | ... = ... | Unexpected result: deref=L308 |
+| test.cpp:725:5:725:15 | ... = ... | Unexpected result: deref=L725 |

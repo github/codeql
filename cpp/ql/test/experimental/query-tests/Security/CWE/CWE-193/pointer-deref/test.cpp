@@ -305,7 +305,7 @@ void test21() {
 
   for (int i = 0; i < n; i += 2) {
     xs[i] = test21_get(i); // GOOD
-    xs[i+1] = test21_get(i+1); // GOOD
+    xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
   }
 }
 
@@ -712,5 +712,16 @@ void test35(unsigned long size, char* q)
   char* end = p + size; // $ alloc=L711
   if(q <= end) {
     deref(q);
+  }
+}
+
+void test21_simple(bool b) {
+  int n = 0;
+  if (b) n = 2;
+
+  int* xs = new int[n];
+
+  for (int i = 0; i < n; i += 2) {
+    xs[i+1] = 0; // GOOD [FALSE POSITIVE]
   }
 }

@@ -1,2 +1,6 @@
 failures
 testFailures
+| test.cpp:308:5:308:11 | PointerAdd: access to array | Unexpected result: alloc=L304 |
+| test.cpp:308:5:308:11 | PointerAdd: access to array | Unexpected result: alloc=L304-1 |
+| test.cpp:725:5:725:11 | PointerAdd: access to array | Unexpected result: alloc=L722 |
+| test.cpp:725:5:725:11 | PointerAdd: access to array | Unexpected result: alloc=L722-1 |
