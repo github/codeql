@@ -302,25 +302,18 @@ predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 
 private class DictionarySubscriptNode extends NodeImpl, TDictionarySubscriptNode {
   SubscriptExpr expr;
-  DictionarySubscriptNode() {
-    this = TDictionarySubscriptNode(expr)
-  }
+
+  DictionarySubscriptNode() { this = TDictionarySubscriptNode(expr) }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = expr.getEnclosingCallable()
   }
 
-  override string toStringImpl() {
-    result = "DictionarySubscriptNode"
-  }
+  override string toStringImpl() { result = "DictionarySubscriptNode" }
 
-  override Location getLocationImpl() {
-    result = expr.getLocation()
-  }
+  override Location getLocationImpl() { result = expr.getLocation() }
 
-  SubscriptExpr getExpr() {
-    result = expr
-  }
+  SubscriptExpr getExpr() { result = expr }
 }
 
 private module ParameterNodes {
@@ -755,7 +748,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of a dictionary value via subscript operator, with intermediate step
-  exists(AssignExpr assign, SubscriptExpr subscript | 
+  exists(AssignExpr assign, SubscriptExpr subscript |
     subscript = assign.getDest() and
     (
       subscript.getArgument(0).getExpr() = node1.asExpr() and
@@ -859,7 +852,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of a dictionary value via subscript operator
-  exists(SubscriptExpr subscript | 
+  exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     node2.(DictionarySubscriptNode).getExpr() = subscript and
     c.isSingleton(any(Content::CollectionContent cc))
