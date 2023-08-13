@@ -105,14 +105,14 @@ private module SizeBarrier {
     }
 
     /**
-     * Holds if `left <= right + k` holds if `g` evaluates to `testIsTrue`.
+     * Holds if `small <= large + k` holds if `g` evaluates to `testIsTrue`.
      */
     additional predicate isSink(
-      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int k, boolean testIsTrue
+      DataFlow::Node small, DataFlow::Node large, IRGuardCondition g, int k, boolean testIsTrue
     ) {
-      // The sink is any "large" side of a relational comparison. i.e., the `right` expression
-      // in a guard such as `left <= right + k`.
-      g.comparesLt(left.asOperand(), right.asOperand(), k + 1, true, testIsTrue)
+      // The sink is any "large" side of a relational comparison. i.e., the `large` expression
+      // in a guard such as `small <= large + k`.
+      g.comparesLt(small.asOperand(), large.asOperand(), k + 1, true, testIsTrue)
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
@@ -128,34 +128,36 @@ private module SizeBarrier {
   }
 
   /**
-   * Holds if `left <= nRight + k` holds if `g` evaluates to `edge`.
+   * Holds if `small <= large + k` holds if `g` evaluates to `edge`.
    */
   private predicate operandGuardChecks(
-    IRGuardCondition g, Operand left, DataFlow::Node right, int k, boolean edge
+    IRGuardCondition g, Operand small, DataFlow::Node large, int k, boolean edge
   ) {
-    SizeBarrierFlow::flowTo(right) and
-    SizeBarrierConfig::isSink(DataFlow::operandNode(left), right, g, k, edge)
+    SizeBarrierFlow::flowTo(large) and
+    SizeBarrierConfig::isSink(DataFlow::operandNode(small), large, g, k, edge)
   }
 
   /**
-   * Gets an instruction `instr` that is guarded by a check such as `instr <= left + delta` where
-   * `left <= _ + k` and `left` is the "small side" of of a relational comparison that checks
-   * whether `left <= size` where `size` is the size of an allocation.
+   * Gets an instruction `instr` that is guarded by a check such as `instr <= small + delta` where
+   * `small <= _ + k` and `small` is the "small side" of of a relational comparison that checks
+   * whether `small <= size` where `size` is the size of an allocation.
    */
   Instruction getABarrierInstruction0(int delta, int k) {
-    exists(IRGuardCondition g, ValueNumber value, Operand left, boolean edge, DataFlow::Node right |
+    exists(
+      IRGuardCondition g, ValueNumber value, Operand small, boolean edge, DataFlow::Node large
+    |
       // We know:
       // 1. result <= value + delta (by `bounded`)
-      // 2. value <= right + k (by `operandGuardChecks`).
+      // 2. value <= large + k (by `operandGuardChecks`).
       // So:
       // result <= value + delta (by 1.)
-      //        <= right + k + delta (by 2.)
-      left = value.getAUse() and
-      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](left), right,
+      //        <= large + k + delta (by 2.)
+      small = value.getAUse() and
+      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](small), large,
         pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
       bounded(result, value.getAnInstruction(), delta) and
       g.controls(result.getBlock(), edge) and
-      k < getASizeAddend(right)
+      k < getASizeAddend(large)
     )
   }
 

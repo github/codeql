@@ -94,10 +94,10 @@ private module InvalidPointerToDerefBarrier {
     predicate isSource(DataFlow::Node source) { isSource(source, _) }
 
     additional predicate isSink(
-      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int k, boolean testIsTrue
+      DataFlow::Node small, DataFlow::Node large, IRGuardCondition g, int k, boolean testIsTrue
     ) {
       // The sink is any "large" side of a relational comparison.
-      g.comparesLt(left.asOperand(), right.asOperand(), k, true, testIsTrue)
+      g.comparesLt(small.asOperand(), large.asOperand(), k, true, testIsTrue)
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
@@ -106,9 +106,9 @@ private module InvalidPointerToDerefBarrier {
   private module BarrierFlow = DataFlow::Global<BarrierConfig>;
 
   /**
-   * Holds if `g` ensures that `small < big + k` if `g` evaluates to `edge`.
+   * Holds if `g` ensures that `small < large + k` if `g` evaluates to `edge`.
    *
-   * Additionally, it also holds that `big <= pai`. Thus, when `g` evaluates to `edge`
+   * Additionally, it also holds that `large <= pai`. Thus, when `g` evaluates to `edge`
    * it holds that `small < pai + k`.
    */
   private predicate operandGuardChecks(
