@@ -174,6 +174,8 @@ private module InvalidPointerToDerefConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState pai) {
+    // `node = getABarrierNode(pai)` ensures that node < pai, so this node is safe to dereference.
+    // Note that this is the only place where the `FlowState` is used in this configuration.
     node = InvalidPointerToDerefBarrier::getABarrierNode(pai)
   }
 }
