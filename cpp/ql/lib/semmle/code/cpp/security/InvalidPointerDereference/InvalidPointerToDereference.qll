@@ -128,6 +128,7 @@ private module InvalidPointerToDerefBarrier {
   Instruction getABarrierInstruction(PointerArithmeticInstruction pai) {
     exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge, int delta, int k |
       use = value.getAUse() and
+      // value < pai + k
       operandGuardChecks(pai, pragma[only_bind_into](g), pragma[only_bind_into](use),
         pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
       // result <= value + delta
