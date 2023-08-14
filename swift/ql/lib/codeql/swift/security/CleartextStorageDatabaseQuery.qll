@@ -39,6 +39,11 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
       cx.asNominalTypeDecl() = d and
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
+    or
+    // flow out from array elements of at the sink,
+    // for example in `database.allStatements(sql: "", arguments: [sensitive])`.
+    isSink(node) and
+    c.getAReadContent() instanceof DataFlow::Content::ArrayContent
   }
 }
 
