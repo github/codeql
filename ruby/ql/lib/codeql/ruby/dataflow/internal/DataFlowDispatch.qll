@@ -1436,6 +1436,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isSynthSplat() and apos.isSplatAll()
   or
+  apos.isSynthSplat() and ppos.isSynthArgSplat()
+  or
   // Exact splat match
   exists(int n | apos.isSplat(n) and ppos.isSplat(n))
   or
@@ -1446,13 +1448,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isAnyNamed() and apos.isKeyword(_)
   or
   apos.isAnyNamed() and ppos.isKeyword(_)
-  or
-  ppos.isSynthSplat() and apos.isSplatAll()
-  or
-  // Exact splat match
-  exists(int n | apos.isSplat(n) and ppos.isSplat(n))
-  or
-  apos.isSynthSplat() and ppos.isSynthArgSplat()
 }
 
 /**
