@@ -130,14 +130,28 @@ module Sinks {
     )
   }
 
-  predicate parameterIsSuspicious(DataFlow::ParameterNode param, string kind) {
-    param.getName() = "sql" and kind instanceof Configs::SqlInjectionKind
+  DataFlow::ParameterNode getASuspiciousParameter(DataFlow::MethodNode methodNode, string kind) {
+    result = methodNode.getParameter(_) and
+    exists(string pName | pName = result.getName() |
+      pName.matches(["%sql%", "%query"]) and kind instanceof Configs::SqlInjectionKind
+      or
+      pName.matches(["%path%", "%filename%", "%file%", "%fname%"]) and
+      kind instanceof Configs::PathInjectionKind
+      or
+      methodNode.getMethodName().matches(["%exec%"]) and
+      (
+        kind instanceof Configs::CodeInjectionKind
+        or
+        kind instanceof Configs::CommandInjectionKind
+        or
+        kind instanceof Configs::SqlInjectionKind
+      )
+    )
   }
 
   predicate sinkModelSuspiciousParameterName(string type, string path, string kind) {
     exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
-      paramNode = methodNode.getParameter(_) and
-      parameterIsSuspicious(paramNode, kind) and
+      paramNode = getASuspiciousParameter(methodNode, kind) and
       methodNode.getLocation().getFile() instanceof Util::RelevantFile
     |
       type = Util::getAnAccessPathPrefix(methodNode) and
@@ -146,7 +160,7 @@ module Sinks {
   }
 
   predicate sinkModel(string type, string path, string kind) {
-    sinkModelFlowToKnownSink(type, path, kind) or
+    //  sinkModelFlowToKnownSink(type, path, kind) or
     sinkModelSuspiciousParameterName(type, path, kind)
   }
 }
