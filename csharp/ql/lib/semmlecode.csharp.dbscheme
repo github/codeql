@@ -1147,6 +1147,7 @@ case @expr.kind of
 | 133 = @urshift_expr
 | 134 = @assign_urshift_expr
 | 135 = @utf8_string_literal_expr
+| 136 = @interpolated_string_alignment_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;

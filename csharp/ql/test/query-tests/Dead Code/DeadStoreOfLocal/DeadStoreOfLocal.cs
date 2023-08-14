@@ -474,3 +474,12 @@ public static class Using
         }
     }
 }
+
+class StringInterpolation
+{
+    string M1(string s)
+    {
+        const int align = 6;
+        return $"{s,align}"; // GOOD
+    }
+}

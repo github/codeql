@@ -895,6 +895,11 @@ class NameOfExpr extends Expr, @nameof_expr {
 }
 
 /**
+ * TODO: Make a QL doc.
+ */
+class InterpolatedStringAlignmentExpr extends Expr, @interpolated_string_alignment_expr { }
+
+/**
  * An interpolated string, for example `$"Hello, {name}!"` on line 2 in
  *
  * ```csharp
