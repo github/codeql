@@ -33,6 +33,8 @@ module WebAppConstantSecretKeyConfig implements DataFlow::StateConfigSig {
     state = Django() and DjangoConstantSecretKeyConfig::isSource(source)
   }
 
+  predicate isBarrier(DataFlow::Node node) { node.getLocation().getFile().inStdlib() }
+
   predicate isSink(DataFlow::Node sink, FlowState state) {
     state = Flask() and FlaskConstantSecretKeyConfig::isSink(sink)
     or
