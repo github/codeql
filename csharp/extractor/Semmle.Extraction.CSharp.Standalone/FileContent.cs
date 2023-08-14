@@ -21,13 +21,13 @@ namespace Semmle.BuildAnalyser
         private readonly Func<IEnumerable<string>> getFiles;
         private readonly Func<HashSet<string>> getAlreadyDownloadedPackages;
         private readonly HashSet<string> notYetDownloadedPackages = new HashSet<string>();
-        private Initializer Initialize { get; init; }
+        private readonly Initializer initialize;
 
         public HashSet<string> NotYetDownloadedPackages
         {
             get
             {
-                Initialize.Run();
+                initialize.Run();
                 return notYetDownloadedPackages;
             }
         }
@@ -45,7 +45,7 @@ namespace Semmle.BuildAnalyser
         {
             get
             {
-                Initialize.Run();
+                initialize.Run();
                 return useAspNetDlls;
             }
         }
@@ -59,7 +59,7 @@ namespace Semmle.BuildAnalyser
             this.progressMonitor = progressMonitor;
             this.getFiles = getFiles;
             this.unsafeFileReader = unsafeFileReader;
-            Initialize = new Initializer(DoInitialize);
+            this.initialize = new Initializer(DoInitialize);
         }
 
 
