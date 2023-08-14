@@ -276,6 +276,8 @@ private module Config implements FullStateConfigSig {
     getConfig(state).isSource(source) and getState(state) instanceof FlowStateEmpty
   }
 
+  predicate isSink(Node sink) { none() }
+
   predicate isSink(Node sink, FlowState state) {
     getConfig(state).isSink(sink, getState(state))
     or

@@ -264,7 +264,7 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getNode() =
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getAstNode() =
       ap.getVariableAccess()
   )
 }
@@ -439,6 +439,7 @@ private module Cached {
     } or
     THashSplatArgumentPosition() or
     TSplatAllArgumentPosition() or
+    TSplatArgumentPosition(int pos) { exists(Call c | c.getArgument(pos) instanceof SplatExpr) } or
     TAnyArgumentPosition() or
     TAnyKeywordArgumentPosition()
 
@@ -468,6 +469,10 @@ private module Cached {
     // synthetic parameter position.
     TSynthHashSplatParameterPosition() or
     TSplatAllParameterPosition() or
+    TSplatParameterPosition(int pos) {
+      exists(Parameter p | p.getPosition() = pos and p instanceof SplatParameter)
+    } or
+    TSynthSplatParameterPosition() or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
 }
@@ -1288,7 +1293,11 @@ class ParameterPosition extends TParameterPosition {
 
   predicate isSynthHashSplat() { this = TSynthHashSplatParameterPosition() }
 
+  predicate isSynthSplat() { this = TSynthSplatParameterPosition() }
+
   predicate isSplatAll() { this = TSplatAllParameterPosition() }
+
+  predicate isSplat(int n) { this = TSplatParameterPosition(n) }
 
   /**
    * Holds if this position represents any parameter, except `self` parameters. This
@@ -1320,6 +1329,10 @@ class ParameterPosition extends TParameterPosition {
     this.isAny() and result = "any"
     or
     this.isAnyNamed() and result = "any-named"
+    or
+    this.isSynthSplat() and result = "synthetic *"
+    or
+    exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
   }
 }
 
@@ -1354,6 +1367,8 @@ class ArgumentPosition extends TArgumentPosition {
 
   predicate isSplatAll() { this = TSplatAllArgumentPosition() }
 
+  predicate isSplat(int n) { this = TSplatArgumentPosition(n) }
+
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
@@ -1371,6 +1386,8 @@ class ArgumentPosition extends TArgumentPosition {
     this.isHashSplat() and result = "**"
     or
     this.isSplatAll() and result = "*"
+    or
+    exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
   }
 }
 
@@ -1401,6 +1418,11 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isSplatAll() and apos.isSplatAll()
   or
+  ppos.isSynthSplat() and apos.isSplatAll()
+  or
+  // Exact splat match
+  exists(int n | apos.isSplat(n) and ppos.isSplat(n))
+  or
   ppos.isAny() and argumentPositionIsNotSelf(apos)
   or
   apos.isAny() and parameterPositionIsNotSelf(ppos)
@@ -1416,6 +1438,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
  * This is a temporary hook to support technical debt in the Go language; do not use.
  */
 pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, DataFlow::Node p, ArgumentNode arg) {
+predicate golangSpecificParamArgFilter(
+  DataFlowCall call, DataFlow::ParameterNode p, ArgumentNode arg
+) {
   any()
 }

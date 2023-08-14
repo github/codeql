@@ -23,6 +23,9 @@ async def html_text(request): # $ requestHandler
 async def html_body(request): # $ requestHandler
     return web.Response(body=b"foo", content_type="text/html") # $ HttpResponse mimetype=text/html responseBody=b"foo"
 
+@routes.get("/html_body_header") # $ routeSetup="/html_body_header"
+async def html_body_header(request): # $ requestHandler
+    return web.Response(headers={"content-type": "text/html"}, text="foo") # $ HttpResponse mimetype=text/html responseBody="foo"
 
 @routes.get("/html_body_set_later") # $ routeSetup="/html_body_set_later"
 async def html_body_set_later(request): # $ requestHandler
@@ -64,6 +67,26 @@ async def redirect_302(request): # $ requestHandler
         raise web.HTTPFound("/login") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/login"
     else:
         raise web.HTTPFound(location="/logout") # $ HttpResponse HttpRedirectResponse mimetype=application/octet-stream redirectLocation="/logout"
+
+
+@routes.get("/file_response") # $ routeSetup="/file_response"
+async def file_response(request): # $ requestHandler
+    filename = "foo.txt"
+    resp = web.FileResponse(filename) # $ HttpResponse mimetype=application/octet-stream getAPathArgument=filename
+    resp = web.FileResponse(path=filename) # $ HttpResponse mimetype=application/octet-stream getAPathArgument=filename
+    return resp
+
+
+@routes.get("/streaming_response") # $ routeSetup="/streaming_response"
+async def streaming_response(request): # $ requestHandler
+    resp = web.StreamResponse() # $ HttpResponse mimetype=application/octet-stream
+    await resp.prepare(request)
+
+    await resp.write(b"foo") # $ responseBody=b"foo"
+    await resp.write(data=b"bar") # $ responseBody=b"bar"
+    await resp.write_eof(b"baz") # $ responseBody=b"baz"
+
+    return resp
 
 ################################################################################
 # Cookies

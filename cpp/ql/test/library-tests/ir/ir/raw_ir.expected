@@ -11015,6 +11015,62 @@ ir.cpp:
 # 2021|     mu2021_36(glval<TernaryNonPodObj>) = Store[#temp2021:10]           : &:r2021_35, r2021_34
 #-----|   Goto -> Block 10
 
+# 2026| unsigned int CommaTest(unsigned int)
+# 2026|   Block 0
+# 2026|     v2026_1(void)                = EnterFunction          : 
+# 2026|     mu2026_2(unknown)            = AliasedDefinition      : 
+# 2026|     mu2026_3(unknown)            = InitializeNonLocal     : 
+# 2026|     r2026_4(glval<unsigned int>) = VariableAddress[x]     : 
+# 2026|     mu2026_5(unsigned int)       = InitializeParameter[x] : &:r2026_4
+# 2027|     r2027_1(glval<unsigned int>) = VariableAddress[y]     : 
+# 2027|     mu2027_2(unsigned int)       = Uninitialized[y]       : &:r2027_1
+# 2028|     r2028_1(glval<unsigned int>) = VariableAddress[x]     : 
+# 2028|     r2028_2(unsigned int)        = Load[x]                : &:r2028_1, ~m?
+# 2028|     r2028_3(unsigned int)        = Constant[100]          : 
+# 2028|     r2028_4(bool)                = CompareLT              : r2028_2, r2028_3
+# 2028|     v2028_5(void)                = ConditionalBranch      : r2028_4
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+# 2026|   Block 1
+# 2026|     r2026_6(glval<unsigned int>) = VariableAddress[#return] : 
+# 2026|     v2026_7(void)                = ReturnValue              : &:r2026_6, ~m?
+# 2026|     v2026_8(void)                = AliasedUse               : ~m?
+# 2026|     v2026_9(void)                = ExitFunction             : 
+
+# 2028|   Block 2
+# 2028|     r2028_6(glval<unsigned int>) = VariableAddress[#temp2028:7] : 
+# 2028|     r2028_7(unsigned int)        = Load[#temp2028:7]            : &:r2028_6, ~m?
+# 2028|     r2028_8(glval<unsigned int>) = VariableAddress[y]           : 
+# 2028|     mu2028_9(unsigned int)       = Store[y]                     : &:r2028_8, r2028_7
+# 2031|     v2031_1(void)                = Unreached                    : 
+
+# 2029|   Block 3
+# 2029|     r2029_1(glval<unknown>)       = FunctionAddress[CommaTestHelper] : 
+# 2029|     r2029_2(glval<unsigned int>)  = VariableAddress[x]               : 
+# 2029|     r2029_3(unsigned int)         = Load[x]                          : &:r2029_2, ~m?
+# 2029|     v2029_4(void)                 = Call[CommaTestHelper]            : func:r2029_1, 0:r2029_3
+# 2029|     mu2029_5(unknown)             = ^CallSideEffect                  : ~m?
+# 2029|     r2029_6(glval<unsigned int>)  = VariableAddress[x]               : 
+# 2029|     r2029_7(unsigned int)         = Load[x]                          : &:r2029_6, ~m?
+# 2029|     r2029_8(unsigned int)         = CopyValue                        : r2029_7
+# 2028|     r2028_10(glval<unsigned int>) = VariableAddress[#temp2028:7]     : 
+# 2028|     mu2028_11(unsigned int)       = Store[#temp2028:7]               : &:r2028_10, r2029_8
+#-----|   Goto -> Block 2
+
+# 2030|   Block 4
+# 2030|     r2030_1(glval<unknown>)       = FunctionAddress[CommaTestHelper] : 
+# 2030|     r2030_2(glval<unsigned int>)  = VariableAddress[x]               : 
+# 2030|     r2030_3(unsigned int)         = Load[x]                          : &:r2030_2, ~m?
+# 2030|     v2030_4(void)                 = Call[CommaTestHelper]            : func:r2030_1, 0:r2030_3
+# 2030|     mu2030_5(unknown)             = ^CallSideEffect                  : ~m?
+# 2030|     r2030_6(int)                  = Constant[10]                     : 
+# 2030|     r2030_7(int)                  = CopyValue                        : r2030_6
+# 2030|     r2030_8(unsigned int)         = Convert                          : r2030_7
+# 2028|     r2028_12(glval<unsigned int>) = VariableAddress[#temp2028:7]     : 
+# 2028|     mu2028_13(unsigned int)       = Store[#temp2028:7]               : &:r2028_12, r2030_8
+#-----|   Goto -> Block 2
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

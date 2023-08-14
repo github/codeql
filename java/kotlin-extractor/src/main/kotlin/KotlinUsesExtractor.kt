@@ -612,7 +612,7 @@ open class KotlinUsesExtractor(
         val componentTypeLabel = recInfo.componentTypeResults.javaResult.id
         val dimensions = recInfo.dimensions + 1
 
-        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel}}\"") {
+        val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{$elementTypeLabel}\"") {
             tw.writeArrays(
                 it,
                 javaShortName,
@@ -1034,8 +1034,13 @@ open class KotlinUsesExtractor(
      * enclosing classes to get the instantiation that this function is
      * in.
      */
-    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) : String {
-        return getFunctionLabel(f, null, classTypeArgsIncludingOuterClasses)
+    fun getFunctionLabel(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): String? {
+        val parentId = useDeclarationParent(f.parent, false, classTypeArgsIncludingOuterClasses, true)
+        if (parentId == null) {
+            logger.error("Couldn't get parent ID for function label")
+            return null
+        }
+        return getFunctionLabel(f, parentId, classTypeArgsIncludingOuterClasses)
     }
 
     /*
@@ -1052,10 +1057,10 @@ open class KotlinUsesExtractor(
      * that omit one or more parameters that has a default value specified.
      */
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, maybeParameterList: List<IrValueParameter>? = null) =
+    fun getFunctionLabel(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, maybeParameterList: List<IrValueParameter>? = null): String =
         getFunctionLabel(
             f.parent,
-            maybeParentId,
+            parentId,
             getFunctionShortName(f).nameInDB,
             (maybeParameterList ?: f.valueParameters).map { it.type },
             getAdjustedReturnType(f),
@@ -1078,7 +1083,7 @@ open class KotlinUsesExtractor(
         // The parent of the function; normally f.parent.
         parent: IrDeclarationParent,
         // The ID of the function's parent, or null if we should work it out ourselves.
-        maybeParentId: Label<out DbElement>?,
+        parentId: Label<out DbElement>,
         // The name of the function; normally f.name.asString().
         name: String,
         // The types of the value parameters that the functions takes; normally f.valueParameters.map { it.type }.
@@ -1102,7 +1107,6 @@ open class KotlinUsesExtractor(
         // The prefix used in the label. "callable", unless a property label is created, then it's "property".
         prefix: String = "callable"
     ): String {
-        val parentId = maybeParentId ?: useDeclarationParent(parent, false, classTypeArgsIncludingOuterClasses, true)
         val allParamTypes = if (extensionParamType == null) parameterTypes else listOf(extensionParamType) + parameterTypes
 
         val substitutionMap = classTypeArgsIncludingOuterClasses?.let { notNullArgs ->
@@ -1141,7 +1145,7 @@ open class KotlinUsesExtractor(
         // method (and presumably that disambiguation is never needed when the method belongs to a parameterized
         // instance of a generic class), but as of now I don't know when the raw method would be referred to.
         val typeArgSuffix = if (functionTypeParameters.isNotEmpty() && classTypeArgsIncludingOuterClasses.isNullOrEmpty()) "<${functionTypeParameters.size}>" else "";
-        return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
+        return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}$typeArgSuffix\""
     }
 
     val javaLangClass by lazy { referenceExternalClass("java.lang.Class") }
@@ -1322,16 +1326,30 @@ open class KotlinUsesExtractor(
             else -> false
         }
 
-    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
-        return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
-    }
-
-    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+    fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T>? {
         if (f.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(f)
             return ids.function.cast<T>()
         }
         val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        val parentId = useDeclarationParent(javaFun.parent, false, classTypeArgsIncludingOuterClasses, true)
+        if (parentId == null) {
+            logger.error("Couldn't find parent ID for function ${f.name.asString()}")
+            return null
+        }
+        return useFunction(f, javaFun, parentId, classTypeArgsIncludingOuterClasses)
+    }
+
+    fun <T: DbCallable> useFunction(f: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, noReplace: Boolean = false): Label<out T> {
+        if (f.isLocalFunction()) {
+            val ids = getLocallyVisibleFunctionLabels(f)
+            return ids.function.cast<T>()
+        }
+        val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
+        return useFunction(f, javaFun, parentId, classTypeArgsIncludingOuterClasses)
+    }
+
+    private fun <T: DbCallable> useFunction(f: IrFunction, javaFun: IrFunction, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out T> {
         val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
         val id: Label<T> = tw.getLabelFor(label) {
             extractPrivateSpecialisedDeclaration(f, classTypeArgsIncludingOuterClasses)
@@ -1672,7 +1690,7 @@ open class KotlinUsesExtractor(
         // clashing trap labels. These are always private, so we can just make up a label without
         // worrying about their names as seen from Java.
         val extensionPropertyDiscriminator = getExtensionReceiverType(f)?.let { "extension;${useType(it).javaResult.id}" } ?: ""
-        return "@\"field;{$parentId};${extensionPropertyDiscriminator}${f.name.asString()}\""
+        return "@\"field;{$parentId};$extensionPropertyDiscriminator${f.name.asString()}\""
     }
 
     fun useField(f: IrField): Label<out DbField> =

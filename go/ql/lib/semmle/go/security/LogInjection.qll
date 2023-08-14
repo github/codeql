@@ -15,6 +15,8 @@ module LogInjection {
   import LogInjectionCustomizations::LogInjection
 
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A taint-tracking configuration for reasoning about log injection vulnerabilities.
    */
   deprecated class Configuration extends TaintTracking::Configuration {
@@ -31,9 +33,7 @@ module LogInjection {
     }
   }
 
-  /**
-   * A taint-tracking configuration for reasoning about log injection vulnerabilities.
-   */
+  /** Config for reasoning about log injection vulnerabilities. */
   module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -42,5 +42,6 @@ module LogInjection {
     predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
   }
 
+  /** Tracks taint flow for reasoning about log injection vulnerabilities. */
   module Flow = TaintTracking::Global<Config>;
 }

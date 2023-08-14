@@ -10,7 +10,6 @@
  */
 
 import go
-import DataFlow::PathGraph
 import semmle.go.dataflow.internal.TaintTrackingUtil
 
 /**
@@ -28,31 +27,34 @@ predicate divideByZeroSanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
   )
 }
 
-/**
- * A taint-tracking configuration for reasoning about division by zero, where divisor is user-controlled and unchecked.
- */
-class DivideByZeroCheckConfig extends TaintTracking::Configuration {
-  DivideByZeroCheckConfig() { this = "DivideByZeroCheckConfig" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(Function f, DataFlow::CallNode cn | cn = f.getACall() |
       f.hasQualifiedName("strconv", ["Atoi", "ParseInt", "ParseUint", "ParseFloat"]) and
-      pred = cn.getArgument(0) and
-      succ = cn.getResult(0)
+      node1 = cn.getArgument(0) and
+      node2 = cn.getResult(0)
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<divideByZeroSanitizerGuard/3>::getABarrierNode()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = DataFlow::exprNode(any(QuoExpr e).getRightOperand())
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, DivideByZeroCheckConfig cfg
-where cfg.hasFlowPath(source, sink)
+/**
+ * Tracks taint flow for reasoning about division by zero, where divisor is
+ * user-controlled and unchecked.
+ */
+module Flow = TaintTracking::Global<Config>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
 select sink, source, sink, "This variable might be zero leading to a division-by-zero panic."

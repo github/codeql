@@ -681,9 +681,7 @@ predicate storeStepImpl(Node node1, Content c, PostFieldUpdateNode node2, boolea
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
-  storeStepImpl(node1, c, node2, _)
-}
+predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1, c, node2, _) }
 
 /**
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
@@ -744,7 +742,7 @@ predicate nodeHasInstruction(Node node, Instruction instr, int indirectionIndex)
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content c, Node node2) {
+predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2 |
     nodeHasOperand(node2, operand, indirectionIndex2) and
     // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
@@ -767,7 +765,7 @@ predicate readStep(Node node1, Content c, Node node2) {
 /**
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   n =
     any(PostUpdateNode pun, Content d | d.impliesClearOf(c) and storeStepImpl(_, d, pun, true) | pun)
         .getPreUpdateNode() and
@@ -792,7 +790,7 @@ predicate clearsContent(Node n, Content c) {
       storeStepImpl(_, d, pun, true) and
       pun.getPreUpdateNode() = n
     |
-      c.getIndirectionIndex() = d.getIndirectionIndex()
+      c.(Content).getIndirectionIndex() = d.getIndirectionIndex()
     )
   )
 }
@@ -834,12 +832,6 @@ class CastNode extends Node {
 }
 
 /**
- * Holds if `n` should never be skipped over in the `PathGraph` and in path
- * explanations.
- */
-predicate neverSkipInPathGraph(Node n) { none() }
-
-/**
  * A function that may contain code or a variable that may contain itself. When
  * flow crosses from one _enclosing callable_ to another, the interprocedural
  * data-flow library discards call contexts and inserts a node in the big-step
@@ -853,7 +845,7 @@ class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
-  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
+  DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
 module IsUnreachableInCall {
@@ -923,8 +915,6 @@ module IsUnreachableInCall {
 }
 
 import IsUnreachableInCall
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
@@ -1088,7 +1078,7 @@ private IRVariable getIRVariableForParameterNode(ParameterNode p) {
 
 /** Holds if `v` is the source variable corresponding to the parameter represented by `p`. */
 pragma[nomagic]
-private predicate parameterNodeHasSourceVariable(ParameterNode p, Ssa::SourceIRVariable v) {
+private predicate parameterNodeHasSourceVariable(ParameterNode p, Ssa::SourceVariable v) {
   v.getIRVariable() = getIRVariableForParameterNode(p) and
   exists(Position pos | p.isParameterOf(_, pos) |
     pos instanceof DirectPosition and
