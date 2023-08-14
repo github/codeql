@@ -138,22 +138,6 @@ module LocalFlow {
   }
 
   /**
-   * Holds if `nodeFrom -> nodeTo` is a step from a parameter to a capture entry node for
-   * that parameter.
-   *
-   * This is intended to recover from flow not currently recognised by ordinary capture flow.
-   */
-  predicate localFlowSsaParamCaptureInput(ParameterNodeImpl nodeFrom, Node nodeTo) {
-    exists(Ssa::CapturedEntryDefinition def |
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
-    |
-      nodeFrom.getParameter().(NamedParameter).getVariable() = def.getSourceVariable()
-      or
-      nodeFrom.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
-    )
-  }
-
-  /**
    * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
    * involving SSA definition `def`.
    */
@@ -285,6 +269,53 @@ predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
   not n.getExpr() instanceof ConstantAccess
 }
 
+/** Provides logic related to captured variables. */
+module VariableCapture {
+  class CapturedVariable extends LocalVariable {
+    CapturedVariable() { this.isCaptured() }
+
+    CfgScope getCfgScope() {
+      exists(Scope scope | scope = this.getDeclaringScope() |
+        result = scope
+        or
+        result = scope.(ModuleBase).getCfgScope()
+      )
+    }
+  }
+
+  class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
+    CapturedSsaDefinitionExt() { this.getSourceVariable() instanceof CapturedVariable }
+  }
+
+  /**
+   * Holds if there is control-flow insensitive data-flow from `node1` to `node2`
+   * involving a captured variable. Only used in type tracking.
+   */
+  predicate flowInsensitiveStep(Node node1, Node node2) {
+    exists(CapturedSsaDefinitionExt def, CapturedVariable v |
+      // From an assignment or implicit initialization of a captured variable to its flow-insensitive node
+      def = node1.(SsaDefinitionExtNode).getDefinitionExt() and
+      def.getSourceVariable() = v and
+      (
+        def instanceof Ssa::WriteDefinition
+        or
+        def instanceof Ssa::SelfDefinition
+      ) and
+      node2.(CapturedVariableNode).getVariable() = v
+      or
+      // From a captured variable node to its flow-sensitive capture nodes
+      node1.(CapturedVariableNode).getVariable() = v and
+      def = node2.(SsaDefinitionExtNode).getDefinitionExt() and
+      def.getSourceVariable() = v and
+      (
+        def instanceof Ssa::CapturedCallDefinition
+        or
+        def instanceof Ssa::CapturedEntryDefinition
+      )
+    )
+  }
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -296,6 +327,7 @@ private module Cached {
     TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
+    TCapturedVariableNode(VariableCapture::CapturedVariable v) or
     TNormalParameterNode(Parameter p) {
       p instanceof SimpleParameter or
       p instanceof OptionalParameter or
@@ -389,6 +421,8 @@ private module Cached {
       LocalFlow::localFlowSsaInputFromRead(exprFrom, _, nodeTo) and
       exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()]
     )
+    or
+    VariableCapture::flowInsensitiveStep(nodeFrom, nodeTo)
   }
 
   private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
@@ -550,13 +584,29 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
 }
 
 /** An SSA definition for a `self` variable. */
-class SsaSelfDefinitionNode extends LocalSourceNode, SsaDefinitionExtNode {
+class SsaSelfDefinitionNode extends SsaDefinitionExtNode {
   private SelfVariable self;
 
   SsaSelfDefinitionNode() { self = def.getSourceVariable() }
 
   /** Gets the scope in which the `self` variable is declared. */
   Scope getSelfScope() { result = self.getDeclaringScope() }
+}
+
+/** A data flow node representing a captured variable. Only used in type tracking. */
+class CapturedVariableNode extends NodeImpl, TCapturedVariableNode {
+  private VariableCapture::CapturedVariable variable;
+
+  CapturedVariableNode() { this = TCapturedVariableNode(variable) }
+
+  /** Gets the captured variable represented by this node. */
+  VariableCapture::CapturedVariable getVariable() { result = variable }
+
+  override CfgScope getCfgScope() { result = variable.getCfgScope() }
+
+  override Location getLocationImpl() { result = variable.getLocation() }
+
+  override string toStringImpl() { result = "captured " + variable.getName() }
 }
 
 /**
@@ -1163,19 +1213,23 @@ private module OutNodes {
 
 import OutNodes
 
-predicate jumpStep(Node pred, Node succ) {
-  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
-    succ.(SsaDefinitionExtNode).getDefinitionExt())
-  or
-  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
-    succ.(SsaDefinitionExtNode).getDefinitionExt())
-  or
+predicate jumpStepTypeTracker(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
     succ.(FlowSummaryNode).getSummaryNode())
   or
   any(AdditionalJumpStep s).step(pred, succ)
+}
+
+predicate jumpStep(Node pred, Node succ) {
+  jumpStepTypeTracker(pred, succ)
+  or
+  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
+    succ.(SsaDefinitionExtNode).getDefinitionExt())
+  or
+  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
+    succ.(SsaDefinitionExtNode).getDefinitionExt())
 }
 
 private ContentSet getKeywordContent(string name) {
