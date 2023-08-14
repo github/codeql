@@ -78,7 +78,8 @@ namespace Semmle.BuildAnalyser
 
         public IList<string> GetListedRuntimes()
         {
-            var args = "--list-runtimes";
+            const string args = "--list-runtimes";
+            progressMonitor.RunningProcess($"{dotnet} {args}");
             var pi = new ProcessStartInfo(dotnet, args)
             {
                 RedirectStandardOutput = true,
@@ -90,6 +91,7 @@ namespace Semmle.BuildAnalyser
                 progressMonitor.CommandFailed(dotnet, args, exitCode);
                 return new List<string>();
             }
+            progressMonitor.LogInfo($"Found runtimes: {string.Join("\n", runtimes)}");
             return runtimes;
         }
     }

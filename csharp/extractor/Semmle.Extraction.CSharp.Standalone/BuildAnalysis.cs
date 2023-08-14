@@ -67,7 +67,7 @@ namespace Semmle.BuildAnalyser
             if (options.ScanNetFrameworkDlls)
             {
                 var runtimeLocation = new Runtime(dotnet).GetRuntime(options.UseSelfContainedDotnet);
-                progressMonitor.Log(Util.Logging.Severity.Debug, $"Runtime location selected: {runtimeLocation}");
+                progressMonitor.Log(Util.Logging.Severity.Info, $"Runtime location selected: {runtimeLocation}");
                 dllDirNames.Add(runtimeLocation);
             }
 

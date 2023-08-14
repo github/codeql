@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             public override string ToString() => FullPath;
         }
 
-        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-([a-z]+)\.(\d+\.\d+\.\d+))?\s\[(\S+)\]$")]
+        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-([a-z]+)\.(\d+\.\d+\.\d+))?\s\[(.+)\]$")]
         private static partial Regex RuntimeRegex();
 
         /// <summary>
