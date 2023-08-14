@@ -1276,13 +1276,19 @@ private module ForLoopDesugar {
     result.getParent() = getForLoopPatternChild(for)
   }
 
+  /** Holds if `n` is an access to variable `v` in the pattern of `for`. */
+  pragma[nomagic]
+  private predicate forLoopVariableAccess(Ruby::For for, Ruby::AstNode n, VariableReal v) {
+    n = getForLoopPatternChild(for) and
+    access(n, v)
+  }
+
   /** Holds if `v` is the `i`th iteration variable of `for`. */
   private predicate forLoopVariable(Ruby::For for, VariableReal v, int i) {
     v =
       rank[i + 1](VariableReal v0, Ruby::AstNode n, Location l |
-        n = getForLoopPatternChild(for) and
-        l = n.getLocation() and
-        access(n, v0)
+        forLoopVariableAccess(for, n, v0) and
+        l = n.getLocation()
       |
         v0 order by l.getStartLine(), l.getStartColumn()
       )
@@ -1406,6 +1412,18 @@ private module ForLoopDesugar {
     )
   }
 
+  pragma[nomagic]
+  private predicate isDesugaredInitNode(ForExpr for, Variable v, AstNode n) {
+    exists(StmtSequence seq, AssignExpr ae |
+      seq = for.getDesugared() and
+      n = seq.getStmt(_) and
+      ae = n.(IfExpr).getThen() and
+      v = ae.getLeftOperand().getAVariable()
+    )
+    or
+    isDesugaredInitNode(for, v, n.getParent())
+  }
+
   private class ForLoopSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       forLoopSynthesis(parent, i, child)
@@ -1424,6 +1442,14 @@ private module ForLoopDesugar {
 
     final override predicate excludeFromControlFlowTree(AstNode n) {
       n = any(ForExpr for).getBody()
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(ForExpr for, Ruby::AstNode access, Variable v |
+        forLoopVariableAccess(toTsFor(for), access, v) and
+        isDesugaredInitNode(for, v, n) and
+        l = access.getLocation()
+      )
     }
   }
 }

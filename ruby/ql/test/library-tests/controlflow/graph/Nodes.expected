@@ -25,10 +25,10 @@ callsWithNoArguments
 | cfg.rb:60:17:60:17 | call to b |
 | cfg.rb:62:7:62:12 | * ... |
 | cfg.rb:62:17:62:27 | * ... |
-| cfg.rb:90:1:93:3 | [false] ! ... |
-| cfg.rb:90:1:93:3 | [true] ! ... |
 | cfg.rb:90:1:93:3 | call to each |
-| cfg.rb:90:1:93:3 | defined? ... |
+| cfg.rb:90:5:90:5 | [false] ! ... |
+| cfg.rb:90:5:90:5 | [true] ! ... |
+| cfg.rb:90:5:90:5 | defined? ... |
 | cfg.rb:98:10:98:15 | ** ... |
 | cfg.rb:98:30:98:35 | ** ... |
 | cfg.rb:138:17:138:23 | * ... |
