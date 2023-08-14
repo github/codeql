@@ -431,7 +431,10 @@ class ExpRedosTest {
         "(a*)*b", // $ hasExpRedos
 
         // BAD - but not detected due to the way possessive quantifiers are approximated
-        "((aa|a*+)b)*c" // $ MISSING: hasExpRedos
+        "((aa|a*+)b)*c", // $ MISSING: hasExpRedos
+
+        // BAD - testsing
+        "(?is)(a|aa?)*b" // $ hasExpRedos hasPrefixMsg="starting with 'is' and " hasPump=a
     };
 
     void test() {
