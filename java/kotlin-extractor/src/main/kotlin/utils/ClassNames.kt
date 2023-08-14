@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
+import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 
 // Adapted from Kotlin's interpreter/Utils.kt function 'internalName'
@@ -108,14 +109,40 @@ private fun getRawIrClassBinaryPath(irClass: IrClass) =
 fun getIrClassBinaryPath(irClass: IrClass): String {
   return getRawIrClassBinaryPath(irClass)
   // Otherwise, make up a fake location:
-    ?: "/!unknown-binary-location/${getIrElementBinaryName(irClass).replace(".", "/")}.class"
+    ?: getUnknownBinaryLocation(getIrElementBinaryName(irClass))
 }
 
-fun getContainingClassOrSelf(decl: IrDeclaration): IrClass? {
-    return when(decl) {
-        is IrClass -> decl
-        else -> decl.parentClassOrNull
+fun getIrDeclarationBinaryPath(d: IrDeclaration): String? {
+    if (d is IrClass) {
+        return getIrClassBinaryPath(d)
     }
+    val parentClass = d.parentClassOrNull
+    if (parentClass != null) {
+        return getIrClassBinaryPath(parentClass)
+    }
+    if (d.parent is IrExternalPackageFragment) {
+        // This is in a file class.
+        // Get the name in a similar way to the compiler's ExternalPackageParentPatcherLowering
+        // visitMemberAccess/generateOrGetFacadeClass.
+        if (d is IrMemberWithContainerSource) {
+            val containerSource = d.containerSource
+            if (containerSource is FacadeClassSource) {
+                val facadeClassName = containerSource.facadeClassName
+                if (facadeClassName != null) {
+                    // This is a multifile-class
+                    return getUnknownBinaryLocation(facadeClassName.fqNameForTopLevelClassMaybeWithDollars.asString())
+                } else {
+                    // This is a file-class
+                    return getUnknownBinaryLocation(containerSource.className.fqNameForTopLevelClassMaybeWithDollars.asString())
+                }
+            }
+        }
+    }
+    return null
+}
+
+fun getUnknownBinaryLocation(s: String): String {
+    return "/!unknown-binary-location/${s.replace(".", "/")}.class"
 }
 
 fun getJavaEquivalentClassId(c: IrClass) =

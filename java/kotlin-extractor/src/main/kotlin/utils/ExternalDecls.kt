@@ -3,6 +3,7 @@ package com.github.codeql.utils
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import org.jetbrains.kotlin.ir.declarations.IrExternalPackageFragment
 import org.jetbrains.kotlin.ir.util.isFileClass
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
 
@@ -28,6 +29,10 @@ fun isExternalDeclaration(d: IrDeclaration): Boolean {
                 CONST Int type=kotlin.Int value=-2147483648
     */
     val p = d.parent
+    if (p is IrExternalPackageFragment) {
+        // This is an external declaration in a (multi)file class
+        return true
+    }
     if (p is IrDeclaration) {
         return isExternalDeclaration(p)
     }
@@ -37,5 +42,15 @@ fun isExternalDeclaration(d: IrDeclaration): Boolean {
 /**
  * Returns true if `d` is not itself a class, but is a member of an external file class.
  */
-fun isExternalFileClassMember(d: IrDeclaration) = d !is IrClass && (d.parentClassOrNull?.let { it.isFileClass } ?: false)
+fun isExternalFileClassMember(d: IrDeclaration): Boolean {
+    if (d is IrClass) { return false }
+    val p = d.parent
+    when (p) {
+        is IrClass -> return p.isFileClass
+        is IrExternalPackageFragment ->
+            // This is an external declaration in a (multi)file class
+            return true
+    }
+    return false
+}
 

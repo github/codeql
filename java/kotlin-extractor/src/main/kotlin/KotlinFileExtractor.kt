@@ -409,11 +409,10 @@ open class KotlinFileExtractor(
 
     private fun getLocation(decl: IrDeclaration, typeArgs: List<IrTypeArgument>?): Label<DbLocation> {
         return if (typeArgs != null && typeArgs.isNotEmpty()) {
-            val c = getContainingClassOrSelf(decl)
-            if (c == null) {
+            val binaryPath = getIrDeclarationBinaryPath(decl)
+            if (binaryPath == null) {
                 tw.getLocation(decl)
             } else {
-                val binaryPath = getIrClassBinaryPath(c)
                 val newTrapWriter = tw.makeFileTrapWriter(binaryPath, true)
                 newTrapWriter.getWholeFileLocation()
             }
