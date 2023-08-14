@@ -10,6 +10,7 @@ private import codeql.ruby.security.UnsafeDeserializationCustomizations
 private import codeql.ruby.security.UrlRedirectCustomizations
 private import codeql.ruby.security.SqlInjectionCustomizations
 private import Util as Util
+private import codeql.ruby.typetracking.TypeTracker
 
 // TODO: there is probably a more sensible central location for this module
 module Sinks {
@@ -159,8 +160,30 @@ module Sinks {
     )
   }
 
+  predicate sinkModelFlowToKnownSinkTypeTracker(string type, string path, string kind) {
+    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
+      paramNode = getASuspiciousParameter(methodNode, kind) and
+      paramNode = taintType(kind)
+    |
+      type = Util::getAnAccessPathPrefix(methodNode) and
+      path = "(TT)" + Util::getMethodParameterPath(methodNode, paramNode)
+    )
+  }
+
   predicate sinkModel(string type, string path, string kind) {
-    //  sinkModelFlowToKnownSink(type, path, kind) or
+    sinkModelFlowToKnownSink(type, path, kind)
+    or
+    sinkModelFlowToKnownSinkTypeTracker(type, path, kind)
+    or
     sinkModelSuspiciousParameterName(type, path, kind)
   }
+
+  DataFlow::Node taintType(TypeBackTracker t, Configs::Kind kind) {
+    t.start() and
+    result = kind.getASink()
+    or
+    exists(TypeBackTracker t2 | t = t2.smallstep(result, taintType(t2, kind)))
+  }
+
+  DataFlow::Node taintType(Configs::Kind kind) { result = taintType(TypeBackTracker::end(), kind) }
 }
