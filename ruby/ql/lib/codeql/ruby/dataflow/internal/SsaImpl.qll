@@ -1,7 +1,7 @@
 private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
-private import codeql.ruby.controlflow.internal.ControlFlowGraphImplShared as ControlFlowGraphImplShared
+private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
@@ -31,7 +31,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
         i = 0
         or
         // ...or a class or module block.
-        bb.getNode(i).getNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
+        bb.getNode(i).getAstNode() = scope.(ModuleBase).getAControlFlowEntryNode() and
         not scope instanceof Toplevel // handled by case above
       )
       or
@@ -124,10 +124,10 @@ private predicate capturedExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, Local
 private predicate namespaceSelfExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, SelfVariable v) {
   exists(Namespace ns, AstNode last |
     v.getDeclaringScope() = ns and
-    last = ControlFlowGraphImplShared::getAControlFlowExitNode(ns) and
+    last = ControlFlowGraphImpl::getAControlFlowExitNode(ns) and
     if last = ns
-    then bb.getNode(i).getAPredecessor().getNode() = last
-    else bb.getNode(i).getNode() = last
+    then bb.getNode(i).getAPredecessor().getAstNode() = last
+    else bb.getNode(i).getAstNode() = last
   )
 }
 
@@ -183,7 +183,7 @@ private predicate capturedCallRead(CallCfgNode call, Cfg::BasicBlock bb, int i, 
 private predicate variableReadActual(Cfg::BasicBlock bb, int i, LocalVariable v) {
   exists(VariableReadAccess read |
     read.getVariable() = v and
-    read = bb.getNode(i).getNode()
+    read = bb.getNode(i).getAstNode()
   )
 }
 

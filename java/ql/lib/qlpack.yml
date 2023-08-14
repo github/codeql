@@ -1,11 +1,12 @@
 name: codeql/java-all
-version: 0.7.1-dev
+version: 0.7.3-dev
 groups: java
 dbscheme: config/semmlecode.dbscheme
 extractor: java
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/regex: ${workspace}
   codeql/tutorial: ${workspace}
@@ -15,4 +16,5 @@ dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml
   - ext/experimental/*.model.yml
+  - ext/threatmodels/*.model.yml
 warnOnImplicitThis: true

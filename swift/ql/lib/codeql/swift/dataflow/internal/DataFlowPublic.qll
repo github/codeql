@@ -137,7 +137,7 @@ ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(DataFlowParameter p) { result.getParameter() = p }
+ParameterNode parameterNode(ParamDecl p) { result.getParameter() = p }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -202,9 +202,32 @@ module Content {
     /** Gets the declaration of the enum parameter. */
     ParamDecl getParam() { result = p }
 
-    override string toString() {
+    /**
+     * Gets a string describing this enum content, of the form: `EnumElementName:N` where `EnumElementName`
+     * is the name of the enum element declaration within the enum, and `N` is the 0-based index of the
+     * parameter that this content is for. For example in the following code there is only one `EnumContent`
+     * and it's signature is `myValue:0`:
+     * ```
+     * enum MyEnum {
+     *   case myValue(Int)
+     * }
+     * ```
+     */
+    string getSignature() {
       exists(EnumElementDecl d, int pos | d.getParam(pos) = p | result = d.toString() + ":" + pos)
     }
+
+    override string toString() { result = this.getSignature() }
+  }
+
+  /** An element of an array at an unknown index */
+  class ArrayContent extends Content, TArrayContent {
+    override string toString() { result = "Array element" }
+  }
+
+  /** An element of a collection. */
+  class CollectionContent extends Content, TCollectionContent {
+    override string toString() { result = "Collection element" }
   }
 }
 

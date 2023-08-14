@@ -1,11 +1,13 @@
 name: codeql/ruby-all
-version: 0.7.1-dev
+version: 0.7.3-dev
 groups: ruby
 extractor: ruby
 dbscheme: ruby.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
+  codeql/controlflow: ${workspace}
+  codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/regex: ${workspace}
   codeql/ssa: ${workspace}

@@ -12,7 +12,7 @@ private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.frameworks.data.ModelsAsData
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
@@ -118,7 +118,7 @@ module LocalFlow {
   /** Gets the SSA definition node corresponding to parameter `p`. */
   SsaDefinitionExtNode getParameterDefNode(NamedParameter p) {
     exists(BasicBlock bb, int i |
-      bb.getNode(i).getNode() = p.getDefiningAccess() and
+      bb.getNode(i).getAstNode() = p.getDefiningAccess() and
       result.getDefinitionExt().definesAt(_, bb, i, _)
     )
   }
@@ -203,8 +203,8 @@ module LocalFlow {
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
       nodeFrom = n and
       exprTo = nodeTo.asExpr() and
-      n.getReturningNode().getNode() instanceof BreakStmt and
-      exprTo.getNode() instanceof Loop and
+      n.getReturningNode().getAstNode() instanceof BreakStmt and
+      exprTo.getAstNode() instanceof Loop and
       nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getReturningNode()
     )
     or
@@ -245,6 +245,7 @@ private class Argument extends CfgNodes::ExprCfgNode {
       not this.getExpr() instanceof BlockArgument and
       not this.getExpr().(Pair).getKey().getConstantValue().isSymbol(_) and
       not this.getExpr() instanceof HashSplatExpr and
+      not this.getExpr() instanceof SplatExpr and
       arg.isPositional(i)
     )
     or
@@ -261,8 +262,15 @@ private class Argument extends CfgNodes::ExprCfgNode {
     arg.isHashSplat()
     or
     this = call.getArgument(0) and
+    not exists(call.getArgument(1)) and
     this.getExpr() instanceof SplatExpr and
     arg.isSplatAll()
+    or
+    exists(int pos | pos > 0 or exists(call.getArgument(pos + 1)) |
+      this = call.getArgument(pos) and
+      this.getExpr() instanceof SplatExpr and
+      arg.isSplat(pos)
+    )
   }
 
   /** Holds if this expression is the `i`th argument of `c`. */
@@ -300,6 +308,10 @@ private module Cached {
     TSynthHashSplatParameterNode(DataFlowCallable c) {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
+    TSynthSplatParameterNode(DataFlowCallable c) {
+      exists(c.asCallable()) and // exclude library callables
+      isParameterNode(_, c, any(ParameterPosition p | p.isPositional(_)))
+    } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       // filter out nodes that clearly don't need post-update nodes
       isNonConstantExpr(n) and
@@ -318,7 +330,7 @@ private module Cached {
 
   class TSourceParameterNode =
     TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or
-        TSynthHashSplatParameterNode;
+        TSynthHashSplatParameterNode or TSynthSplatParameterNode;
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -514,6 +526,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthHashSplatParameterNode
   or
   n instanceof SynthHashSplatArgumentNode
+  or
+  n instanceof SynthSplatParameterNode
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -610,7 +624,15 @@ private module ParameterNodes {
         pos.isHashSplat()
         or
         parameter = callable.getParameter(0).(SplatParameter) and
+        not exists(callable.getParameter(1)) and
         pos.isSplatAll()
+        or
+        exists(int n | n > 0 |
+          parameter = callable.getParameter(n).(SplatParameter) and
+          pos.isSplat(n) and
+          // There are no positional parameters after the splat
+          not exists(SimpleParameter p, int m | m > n | p = callable.getParameter(m))
+        )
       )
     }
 
@@ -747,6 +769,70 @@ private module ParameterNodes {
     final override Location getLocationImpl() { result = callable.getLocation() }
 
     final override string toStringImpl() { result = "**kwargs" }
+  }
+
+  /**
+   * A synthetic data-flow node to allow flow to positional parameters from a splat argument.
+   *
+   * For example, in the following code:
+   *
+   * ```rb
+   * def foo(x, y); end
+   *
+   * foo(*[a, b])
+   * ```
+   *
+   * We want `a` to flow to `x` and `b` to flow to `y`. We do this by constructing
+   * a `SynthSplatParameterNode` for the method `foo`, and matching the splat argument to this
+   * parameter node via `parameterMatch/2`. We then add read steps from this node to parameters
+   * `x` and `y`, for content at indices 0 and 1 respectively (see `readStep`).
+   *
+   * We don't yet correctly handle cases where the splat argument is not the first argument, e.g. in
+   * ```rb
+   * foo(a, *[b])
+   * ```
+   */
+  class SynthSplatParameterNode extends ParameterNodeImpl, TSynthSplatParameterNode {
+    private DataFlowCallable callable;
+
+    SynthSplatParameterNode() { this = TSynthSplatParameterNode(callable) }
+
+    /**
+     * Gets a parameter which will contain the value given by `c`, assuming
+     * that the method was called with a single splat argument.
+     * For example, if the synth splat parameter is for the following method
+     *
+     * ```rb
+     * def foo(x, y, a:, *rest)
+     * end
+     * ```
+     *
+     * Then `getAParameter(element 0) = x` and `getAParameter(element 1) = y`.
+     */
+    ParameterNode getAParameter(ContentSet c) {
+      exists(int n |
+        isParameterNode(result, callable, (any(ParameterPosition p | p.isPositional(n)))) and
+        (
+          c = getPositionalContent(n)
+          or
+          c.isSingleton(TUnknownElementContent())
+        )
+      )
+    }
+
+    final override Parameter getParameter() { none() }
+
+    final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c = callable and pos.isSynthSplat()
+    }
+
+    final override CfgScope getCfgScope() { result = callable.asCallable() }
+
+    final override DataFlowCallable getEnclosingCallable() { result = callable }
+
+    final override Location getLocationImpl() { result = callable.getLocation() }
+
+    final override string toStringImpl() { result = "synthetic *args" }
   }
 
   /** A parameter for a library callable with a flow summary. */
@@ -926,7 +1012,7 @@ abstract class SourceReturnNode extends ReturnNode {
 private module ReturnNodes {
   private predicate isValid(CfgNodes::ReturningCfgNode node) {
     exists(ReturningStmt stmt, Callable scope |
-      stmt = node.getNode() and
+      stmt = node.getAstNode() and
       scope = node.getScope()
     |
       stmt instanceof ReturnStmt and
@@ -952,7 +1038,7 @@ private module ReturnNodes {
     }
 
     override ReturnKind getKindSource() {
-      if n.getNode() instanceof BreakStmt
+      if n.getAstNode() instanceof BreakStmt
       then result instanceof BreakReturnKind
       else
         exists(CfgScope scope | scope = this.getCfgScope() |
@@ -1099,6 +1185,13 @@ private ContentSet getKeywordContent(string name) {
   )
 }
 
+private ContentSet getPositionalContent(int n) {
+  exists(ConstantValue::ConstantIntegerValue i |
+    result.isSingleton(TKnownElementContent(i)) and
+    i.isInt(n)
+  )
+}
+
 /**
  * Subset of `storeStep` that should be shared with type-tracking.
  */
@@ -1187,6 +1280,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
   or
+  node2 = node1.(SynthSplatParameterNode).getAParameter(c)
+  or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
 }
@@ -1232,7 +1327,7 @@ class DataFlowType extends TDataFlowType {
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) { result = TTodoDataFlowType() and exists(n) }
+DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { none() }
@@ -1303,8 +1398,6 @@ predicate neverSkipInPathGraph(Node n) {
 }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

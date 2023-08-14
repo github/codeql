@@ -1,3 +1,13 @@
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Fixed modeling of `aiohttp.ClientSession` so we properly handle `async with` uses. This can impact results of server-side request forgery queries (`py/full-ssrf`, `py/partial-ssrf`).
+
 ## 0.8.0
 
 ### Bug Fixes

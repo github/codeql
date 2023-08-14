@@ -56,6 +56,7 @@ string getArgumentForIndex(int index) {
  * It would technically be ok to always use the value 'true', but this would
  * break convention.
  */
+pragma[nomagic]
 boolean considerSubtypes(Callable callable) {
   if
     callable.isStatic() or
@@ -64,4 +65,25 @@ boolean considerSubtypes(Callable callable) {
     callable.getDeclaringType().isFinal()
   then result = false
   else result = true
+}
+
+/**
+ * Holds if the given package, type, name and signature is a candidate for automodeling.
+ *
+ * This predicate is extensible, so that different endpoints can be selected at runtime.
+ */
+extensible predicate automodelCandidateFilter(
+  string package, string type, string name, string signature
+);
+
+/**
+ * Holds if the given package, type, name and signature is a candidate for automodeling.
+ *
+ * This relies on an extensible predicate, and if that is not supplied then
+ * all endpoints are considered candidates.
+ */
+bindingset[package, type, name, signature]
+predicate includeAutomodelCandidate(string package, string type, string name, string signature) {
+  not automodelCandidateFilter(_, _, _, _) or
+  automodelCandidateFilter(package, type, name, signature)
 }

@@ -33,3 +33,5 @@ async def test():
     assert context.verify_mode == ssl.VerifyMode.CERT_NONE
 
     s.get("url", ssl=context) # $ clientRequestUrlPart="url" MISSING: clientRequestCertValidationDisabled
+
+    s.ws_connect("url") # $ clientRequestUrlPart="url"

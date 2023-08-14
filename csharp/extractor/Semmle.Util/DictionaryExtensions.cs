@@ -22,9 +22,9 @@ namespace Semmle.Util
 
         /// <summary>
         /// Adds a new value or replaces the existing value (if the new value is greater than the existing) 
-        /// in dictionary for the given key.
+        /// in this dictionary for the given key.
         /// </summary>
-        public static void AddOrUpdate<T1, T2>(this Dictionary<T1, T2> dict, T1 key, T2 value) where T1 : notnull where T2 : IComparable<T2>
+        public static void AddOrUpdateToLatest<T1, T2>(this Dictionary<T1, T2> dict, T1 key, T2 value) where T1 : notnull where T2 : IComparable<T2>
         {
             if (!dict.TryGetValue(key, out var existing) || existing.CompareTo(value) < 0)
             {

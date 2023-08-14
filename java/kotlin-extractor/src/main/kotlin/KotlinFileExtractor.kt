@@ -472,7 +472,7 @@ open class KotlinFileExtractor(
 
     private fun extractObinitFunction(c: IrClass, parentId: Label<out DbClassorinterface>) {
         // add method:
-        val obinitLabel = getObinitLabel(c)
+        val obinitLabel = getObinitLabel(c, parentId)
         val obinitId = tw.getLabelFor<DbMethod>(obinitLabel)
         val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
         tw.writeMethods(obinitId, "<obinit>", "<obinit>()", returnType.javaResult.id, parentId, obinitId)
@@ -552,9 +552,13 @@ open class KotlinFileExtractor(
                 logger.warnElement("Expected annotation property to define a getter", prop)
             } else {
                 val getterId = useFunction<DbMethod>(getter)
-                val exprId = extractAnnotationValueExpression(v, id, i, "{${getterId}}", getter.returnType, extractEnumTypeAccesses)
-                if (exprId != null) {
-                    tw.writeAnnotValue(id, getterId, exprId)
+                if (getterId == null) {
+                    logger.errorElement("Couldn't get ID for getter", getter)
+                } else {
+                    val exprId = extractAnnotationValueExpression(v, id, i, "{$getterId}", getter.returnType, extractEnumTypeAccesses)
+                    if (exprId != null) {
+                        tw.writeAnnotValue(id, getterId, exprId)
+                    }
                 }
             }
         }
@@ -587,7 +591,7 @@ open class KotlinFileExtractor(
                 extractAnnotation(v, parent, idx, extractEnumTypeAccesses, contextLabel)
             }
             is IrVararg -> {
-                tw.getLabelFor<DbArrayinit>("@\"annotationarray;{${parent}};$contextLabel\"").also { arrayId ->
+                tw.getLabelFor<DbArrayinit>("@\"annotationarray;{$parent};$contextLabel\"").also { arrayId ->
                     // Use the context type (i.e., the type the annotation expects, not the actual type of the array)
                     // because the Java extractor fills in array types using the same technique. These should only
                     // differ for generic annotations.
@@ -979,6 +983,10 @@ open class KotlinFileExtractor(
     private fun extractInstanceInitializerBlock(parent: StmtParent, enclosingConstructor: IrConstructor) {
         with("object initializer block", enclosingConstructor) {
             val constructorId = useFunction<DbConstructor>(enclosingConstructor)
+            if (constructorId == null) {
+                logger.errorElement("Cannot get ID for constructor", enclosingConstructor)
+                return
+            }
             val enclosingClass = enclosingConstructor.parentClassOrNull
             if (enclosingClass == null) {
                 logger.errorElement("Constructor's parent is not a class", enclosingConstructor)
@@ -1152,6 +1160,10 @@ open class KotlinFileExtractor(
             return
 
         val id = getDefaultsMethodLabel(f)
+        if (id == null) {
+            logger.errorElement("Cannot get defaults method label for function", f)
+            return
+        }
         val locId = getLocation(f, null)
         val extReceiver = f.extensionReceiverParameter
         val dispatchReceiver = if (f.shouldExtractAsStatic) null else f.dispatchReceiverParameter
@@ -1193,7 +1205,7 @@ open class KotlinFileExtractor(
             // n + o'th parameter, where `o` is the parameter offset caused by adding any dispatch receiver to the parameter list.
             // Note we don't need to add the extension receiver here because `useValueParameter` always assumes an extension receiver
             // will be prepended if one exists.
-            val realFunctionId = useFunction<DbCallable>(f)
+            val realFunctionId = useFunction<DbCallable>(f, parentId, null)
             DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams, typeParameters = listOf(), isStatic = true)).use {
                 val realParamsVarId = getValueParameterLabel(id, parameterTypes.size - 2)
                 val intType = pluginContext.irBuiltIns.intType
@@ -1276,6 +1288,10 @@ open class KotlinFileExtractor(
                         useDeclarationParent(f.parent, false)
                     else
                         parentId
+            if (sourceParentId == null) {
+                logger.errorElement("Cannot get source parent ID for function", f)
+                return
+            }
             val sourceDeclId = tw.getLabelFor<DbCallable>(getFunctionLabel(f, sourceParentId, listOf(), overloadParameters))
             val overriddenAttributes = OverriddenFunctionAttributes(id = overloadId, sourceDeclarationId = sourceDeclId, valueParameters = overloadParameters)
             forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, extractAnnotations = false, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = overriddenAttributes)
@@ -1293,7 +1309,7 @@ open class KotlinFileExtractor(
                         val constructorCallId = tw.getFreshIdLabel<DbConstructorinvocationstmt>()
                         tw.writeStmts_constructorinvocationstmt(constructorCallId, blockId, 0, overloadId)
                         tw.writeHasLocation(constructorCallId, realFunctionLocId)
-                        tw.writeCallableBinding(constructorCallId, getDefaultsMethodLabel(f))
+                        tw.writeCallableBinding(constructorCallId, getDefaultsMethodLabel(f, parentId))
 
                         extractDefaultsCallArguments(constructorCallId, f, overloadId, constructorCallId, regularArgs, null, null)
                     } else {
@@ -1410,10 +1426,17 @@ open class KotlinFileExtractor(
 
                 val sourceDeclaration =
                     overriddenAttributes?.sourceDeclarationId ?:
-                        if (typeSubstitution != null && overriddenAttributes?.id == null)
-                            useFunction(f)
-                        else
+                        if (typeSubstitution != null && overriddenAttributes?.id == null) {
+                            val sourceFunId = useFunction<DbCallable>(f)
+                            if (sourceFunId == null) {
+                                logger.errorElement("Cannot get source ID for function", f)
+                                id // TODO: This is wrong; we ought to just fail in this case
+                            } else {
+                                sourceFunId
+                            }
+                        } else {
                             id
+                        }
 
                 val extReceiver = f.extensionReceiverParameter
                 // The following parameter order is correct, because member $default methods (where the order would be [dispatchParam], [extensionParam], normalParams) are not extracted here
@@ -2066,13 +2089,23 @@ open class KotlinFileExtractor(
             getFunctionShortName(f).nameInDB + "\$default"
         }
 
-    private fun getDefaultsMethodLabel(f: IrFunction): Label<out DbCallable> {
+    private fun getDefaultsMethodLabel(f: IrFunction): Label<out DbCallable>? {
+        val classTypeArgsIncludingOuterClasses = null
+        val parentId = useDeclarationParent(f.parent, false, classTypeArgsIncludingOuterClasses, true)
+        if (parentId == null) {
+            logger.errorElement("Couldn't get parent ID for defaults method", f)
+            return null
+        }
+        return getDefaultsMethodLabel(f, parentId)
+    }
+
+    private fun getDefaultsMethodLabel(f: IrFunction, parentId: Label<out DbElement>): Label<out DbCallable> {
         val defaultsMethodName = if (f is IrConstructor) "<init>" else getDefaultsMethodName(f)
         val argTypes = getDefaultsMethodArgTypes(f)
 
         val defaultMethodLabelStr = getFunctionLabel(
             f.parent,
-            maybeParentId = null,
+            parentId,
             defaultsMethodName,
             argTypes,
             erase(f.returnType),
@@ -2926,7 +2959,11 @@ open class KotlinFileExtractor(
                         tw.writeStmts_throwstmt(throwId, stmtParent.parent, stmtParent.idx, callable)
                         tw.writeHasLocation(throwId, locId)
                         val newExprId = extractNewExpr(it, null, thrownType, locId, throwId, 0, callable, throwId)
-                        extractTypeAccess(thrownType, locId, newExprId, -3, callable, throwId)
+                        if (newExprId == null) {
+                            logger.errorElement("No ID for newExpr in noWhenBranchMatchedException", c)
+                        } else {
+                            extractTypeAccess(thrownType, locId, newExprId, -3, callable, throwId)
+                        }
                     }
                 }
                 isBuiltinCallInternal(c, "illegalArgumentException") -> {
@@ -3270,13 +3307,20 @@ open class KotlinFileExtractor(
         idx: Int,
         callable: Label<out DbCallable>,
         enclosingStmt: Label<out DbStmt>
-    ): Label<DbNewexpr> = extractNewExpr(useFunction<DbConstructor>(calledConstructor, constructorTypeArgs), constructedType, locId, parent, idx, callable, enclosingStmt)
+    ): Label<DbNewexpr>? {
+        val funId = useFunction<DbConstructor>(calledConstructor, constructorTypeArgs)
+        if (funId == null) {
+            logger.error("Cannot get ID for newExpr function")
+            return null
+        }
+        return extractNewExpr(funId, constructedType, locId, parent, idx, callable, enclosingStmt)
+    }
 
     private fun needsObinitFunction(c: IrClass) = c.primaryConstructor == null && c.constructors.count() > 1
 
-    private fun getObinitLabel(c: IrClass) = getFunctionLabel(
+    private fun getObinitLabel(c: IrClass, parentId: Label<out DbElement>): String = getFunctionLabel(
         c,
-        null,
+        parentId,
         "<obinit>",
         listOf(),
         pluginContext.irBuiltIns.unitType,
@@ -3306,30 +3350,40 @@ open class KotlinFileExtractor(
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
 
         val id = if (e !is IrEnumConstructorCall && callUsesDefaultArguments(e.symbol.owner, valueArgs)) {
-            extractNewExpr(getDefaultsMethodLabel(e.symbol.owner).cast(), type, locId, parent, idx, callable, enclosingStmt).also {
+            val defaultsMethodId = getDefaultsMethodLabel(e.symbol.owner)
+            if (defaultsMethodId == null) {
+                logger.errorElement("Cannot get defaults method ID", e)
+                return
+            }
+            extractNewExpr(defaultsMethodId.cast(), type, locId, parent, idx, callable, enclosingStmt).also {
                 extractDefaultsCallArguments(it, e.symbol.owner, callable, enclosingStmt, valueArgs, null, null)
             }
         } else {
-            extractNewExpr(e.symbol.owner, eType.arguments, type, locId, parent, idx, callable, enclosingStmt).also {
-
-                val realCallTarget = e.symbol.owner.realOverrideTarget
-                // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
-                if (e is IrEnumConstructorCall &&
-                    realCallTarget is IrConstructor &&
-                    realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
-                    realCallTarget.valueParameters.size == 2 &&
-                    realCallTarget.valueParameters[0].type == pluginContext.irBuiltIns.stringType &&
-                    realCallTarget.valueParameters[1].type == pluginContext.irBuiltIns.intType) {
-
-                    val id0 = extractNull(pluginContext.irBuiltIns.stringType, locId, it, 0, callable, enclosingStmt)
-                    tw.writeCompiler_generated(id0, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
-
-                    val id1 = extractConstantInteger(0, locId, it, 1, callable, enclosingStmt)
-                    tw.writeCompiler_generated(id1, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
-                } else {
-                    extractCallValueArguments(it, e, enclosingStmt, callable, 0)
-                }
+            val newExprId = extractNewExpr(e.symbol.owner, eType.arguments, type, locId, parent, idx, callable, enclosingStmt)
+            if (newExprId == null) {
+                logger.errorElement("Cannot get newExpr ID", e)
+                return
             }
+
+            val realCallTarget = e.symbol.owner.realOverrideTarget
+            // Generated constructor calls to kotlin.Enum have no arguments in IR, but the constructor takes two parameters.
+            if (e is IrEnumConstructorCall &&
+                realCallTarget is IrConstructor &&
+                realCallTarget.parentClassOrNull?.fqNameWhenAvailable?.asString() == "kotlin.Enum" &&
+                realCallTarget.valueParameters.size == 2 &&
+                realCallTarget.valueParameters[0].type == pluginContext.irBuiltIns.stringType &&
+                realCallTarget.valueParameters[1].type == pluginContext.irBuiltIns.intType) {
+
+                val id0 = extractNull(pluginContext.irBuiltIns.stringType, locId, newExprId, 0, callable, enclosingStmt)
+                tw.writeCompiler_generated(id0, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+
+                val id1 = extractConstantInteger(0, locId, newExprId, 1, callable, enclosingStmt)
+                tw.writeCompiler_generated(id1, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+            } else {
+                extractCallValueArguments(newExprId, e, enclosingStmt, callable, 0)
+            }
+
+            newExprId
         }
 
         if (isAnonymous) {
@@ -3698,9 +3752,13 @@ open class KotlinFileExtractor(
 
                     val locId = tw.getLocation(e)
                     val methodId = useFunction<DbConstructor>(e.symbol.owner)
+                    if (methodId == null) {
+                        logger.errorElement("Cannot get ID for delegating constructor", e)
+                    } else {
+                        tw.writeCallableBinding(id.cast<DbCaller>(), methodId)
+                    }
 
                     tw.writeHasLocation(id, locId)
-                    tw.writeCallableBinding(id.cast<DbCaller>(), methodId)
                     extractCallValueArguments(id, e, id, callable, 0)
                     val dr = e.dispatchReceiver
                     if (dr != null) {
@@ -3782,7 +3840,13 @@ open class KotlinFileExtractor(
                         val id = tw.getFreshIdLabel<DbMethodaccess>()
                         val type = useType(pluginContext.irBuiltIns.unitType)
                         val locId = tw.getLocation(e)
-                        val methodLabel = getObinitLabel(irConstructor.parentAsClass)
+                        val parentClass = irConstructor.parentAsClass
+                        val parentId = useDeclarationParent(parentClass, false, null, true)
+                        if (parentId == null) {
+                            logger.errorElement("Cannot get parent ID for obinit", e)
+                            return
+                        }
+                        val methodLabel = getObinitLabel(parentClass, parentId)
                         val methodId = tw.getLabelFor<DbMethod>(methodLabel)
                         tw.writeExprs_methodaccess(id, type.javaResult.id, exprParent.parent, exprParent.idx)
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
@@ -4636,7 +4700,11 @@ open class KotlinFileExtractor(
             extractExprContext(callId, locId, labels.methodId, retId)
 
             val callableId = useFunction<DbCallable>(target.owner.realOverrideTarget, classTypeArgsIncludingOuterClasses)
-            tw.writeCallableBinding(callId.cast<DbCaller>(), callableId)
+            if (callableId == null) {
+                logger.error("Cannot get ID for reflection target")
+            } else {
+                tw.writeCallableBinding(callId.cast<DbCaller>(), callableId)
+            }
 
             val useFirstArgAsDispatch: Boolean
             if (dispatchReceiverInfo != null) {
@@ -4818,20 +4886,24 @@ open class KotlinFileExtractor(
             val getterReturnType = parameterTypes.last()
 
             if (getter != null) {
-                val getLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.GET.asString(), getterParameterTypes, getterReturnType, classId, locId)
                 val getterCallableId = useFunction<DbCallable>(getter.owner.realOverrideTarget, classTypeArguments)
+                if (getterCallableId == null) {
+                    logger.errorElement("Cannot get ID for getter", propertyReferenceExpr)
+                } else {
+                    val getLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.GET.asString(), getterParameterTypes, getterReturnType, classId, locId)
 
-                helper.extractCallToReflectionTarget(
-                    getLabels,
-                    getter,
-                    getterReturnType,
-                    expressionTypeArguments,
-                    classTypeArguments
-                )
+                    helper.extractCallToReflectionTarget(
+                        getLabels,
+                        getter,
+                        getterReturnType,
+                        expressionTypeArguments,
+                        classTypeArguments
+                    )
 
-                tw.writePropertyRefGetBinding(idPropertyRef, getterCallableId)
+                    tw.writePropertyRefGetBinding(idPropertyRef, getterCallableId)
 
-                helper.extractPropertyReferenceInvoke(getLabels.methodId, getterParameterTypes, getterReturnType)
+                    helper.extractPropertyReferenceInvoke(getLabels.methodId, getterParameterTypes, getterReturnType)
+                }
             } else {
                 // Property without a getter.
                 if (backingField == null) {
@@ -4852,19 +4924,22 @@ open class KotlinFileExtractor(
             }
 
             if (setter != null) {
-                val setLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.SET.asString(), parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
-
                 val setterCallableId = useFunction<DbCallable>(setter.owner.realOverrideTarget, classTypeArguments)
+                if (setterCallableId == null) {
+                    logger.errorElement("Cannot get ID for setter", propertyReferenceExpr)
+                } else {
+                    val setLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.SET.asString(), parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
 
-                helper.extractCallToReflectionTarget(
-                    setLabels,
-                    setter,
-                    pluginContext.irBuiltIns.unitType,
-                    expressionTypeArguments,
-                    classTypeArguments
-                )
+                    helper.extractCallToReflectionTarget(
+                        setLabels,
+                        setter,
+                        pluginContext.irBuiltIns.unitType,
+                        expressionTypeArguments,
+                        classTypeArguments
+                    )
 
-                tw.writePropertyRefSetBinding(idPropertyRef, setterCallableId)
+                    tw.writePropertyRefSetBinding(idPropertyRef, setterCallableId)
+                }
             } else {
                 if (backingField != null && !backingField.owner.isFinal) {
                     val setLabels = addFunctionManual(tw.getFreshIdLabel(), OperatorNameConventions.SET.asString(), parameterTypes, pluginContext.irBuiltIns.unitType, classId, locId)
@@ -4999,7 +5074,11 @@ open class KotlinFileExtractor(
             tw.writeCallableBinding(idMemberRef, ids.constructor)
 
             val targetCallableId = useFunction<DbCallable>(target.owner.realOverrideTarget, classTypeArguments)
-            tw.writeMemberRefBinding(idMemberRef, targetCallableId)
+            if (targetCallableId == null) {
+                logger.errorElement("Cannot get ID for function reference callable", functionReferenceExpr)
+            } else {
+                tw.writeMemberRefBinding(idMemberRef, targetCallableId)
+            }
 
             val helper = CallableReferenceHelper(functionReferenceExpr, locId, ids)
 
@@ -5145,7 +5224,11 @@ open class KotlinFileExtractor(
         tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
         extractExprContext(callId, locId, funLabels.methodId, retId)
         val calledMethodId = useFunction<DbMethod>(lambda)
-        tw.writeCallableBinding(callId, calledMethodId)
+        if (calledMethodId == null) {
+            logger.errorElement("Cannot get ID for called lambda", lambda)
+        } else {
+            tw.writeCallableBinding(callId, calledMethodId)
+        }
 
         // this access
         extractThisAccess(ids.type, funLabels.methodId, callId, -1, retId, locId)
@@ -5614,7 +5697,11 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(callId, callType.kotlinResult.id)
                     extractExprContext(callId, locId, ids.function, returnId)
                     val calledMethodId = useFunction<DbMethod>(invokeMethod, functionType.arguments)
-                    tw.writeCallableBinding(callId, calledMethodId)
+                    if (calledMethodId == null) {
+                        logger.errorElement("Cannot get ID for called method", invokeMethod)
+                    } else {
+                        tw.writeCallableBinding(callId, calledMethodId)
+                    }
 
                     // <fn> access
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
@@ -5737,14 +5824,17 @@ open class KotlinFileExtractor(
             if (baseConstructor == null) {
                 logger.warnElement("Cannot find base constructor", elementToReportOn)
             } else {
-                val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
-                tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
-
                 val baseConstructorId = useFunction<DbConstructor>(baseConstructor)
+                if (baseConstructorId == null) {
+                    logger.errorElement("Cannot find base constructor ID", elementToReportOn)
+                } else {
+                    val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
+                    tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
 
-                tw.writeHasLocation(superCallId, locId)
-                tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
-                extractSuperconstructorArgs(superCallId)
+                    tw.writeHasLocation(superCallId, locId)
+                    tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
+                    extractSuperconstructorArgs(superCallId)
+                }
             }
         }
 

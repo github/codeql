@@ -33,9 +33,9 @@ v5.8.swift:
 #    5|           Type = Temperature
 #    5|       getBody(): [BraceStmt] { ... }
 #    5|         getElement(0): [YieldStmt] yield ...
-#-----|           getResult(0): [InOutExpr] &...
-#-----|             getSubExpr(): [MemberRefExpr] .degreesCelsius
-#-----|               getBase(): [DeclRefExpr] self
+#-----|           getResult(0): [MemberRefExpr] .degreesCelsius
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
 #    4|   getMember(2): [Initializer] Temperature.init(degreesCelsius:)
 #    4|       InterfaceType = (Temperature.Type) -> (Double) -> Temperature
 #    4|     getSelfParam(): [ParamDecl] self
@@ -145,9 +145,9 @@ v5.8.swift:
 #   30|           Type = Button
 #   30|       getBody(): [BraceStmt] { ... }
 #   30|         getElement(0): [YieldStmt] yield ...
-#-----|           getResult(0): [InOutExpr] &...
-#-----|             getSubExpr(): [MemberRefExpr] .tapHandler
-#-----|               getBase(): [DeclRefExpr] self
+#-----|           getResult(0): [MemberRefExpr] .tapHandler
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
 #   29|   getMember(2): [Initializer] Button.init()
 #   29|       InterfaceType = (Button.Type) -> () -> Button
 #   29|     getSelfParam(): [ParamDecl] self
@@ -197,9 +197,9 @@ v5.8.swift:
 #   34|           Type = ViewController
 #   34|       getBody(): [BraceStmt] { ... }
 #   34|         getElement(0): [YieldStmt] yield ...
-#-----|           getResult(0): [InOutExpr] &...
-#-----|             getSubExpr(): [MemberRefExpr] .button
-#-----|               getBase(): [DeclRefExpr] self
+#-----|           getResult(0): [MemberRefExpr] .button
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
 #   36|   getMember(2): [NamedFunction] setup()
 #   36|       InterfaceType = (ViewController) -> () -> ()
 #   36|     getSelfParam(): [ParamDecl] self

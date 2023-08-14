@@ -58,9 +58,9 @@ signature module CandidateSig {
   predicate isSanitizer(Endpoint e, EndpointType t);
 
   /**
-   * Holds if `e` is a sink with the label `kind`.
+   * Holds if `e` is a sink with the label `kind`, and provenance `provenance`.
    */
-  predicate isSink(Endpoint e, string kind);
+  predicate isSink(Endpoint e, string kind, string provenance);
 
   /**
    * Holds if `e` is not a sink of any kind.
@@ -87,7 +87,7 @@ signature module CandidateSig {
  *   implementations of endpoint characteristics exported by this module.
  */
 module SharedCharacteristics<CandidateSig Candidate> {
-  predicate isSink = Candidate::isSink/2;
+  predicate isSink = Candidate::isSink/3;
 
   predicate isNeutral = Candidate::isNeutral/1;
 
@@ -282,7 +282,9 @@ module SharedCharacteristics<CandidateSig Candidate> {
         this = madKind + "-characteristic"
       }
 
-      override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSink(e, madKind) }
+      override predicate appliesToEndpoint(Candidate::Endpoint e) {
+        Candidate::isSink(e, madKind, _)
+      }
 
       override Candidate::EndpointType getSinkType() { result = endpointType }
     }
@@ -301,7 +303,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
      * analyzed.
      */
     private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
-      IsSanitizerCharacteristic() { this = "external" }
+      IsSanitizerCharacteristic() { this = "known sanitizer" }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSanitizer(e, _) }
     }
