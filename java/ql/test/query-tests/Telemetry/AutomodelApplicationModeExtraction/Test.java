@@ -31,7 +31,7 @@ class Test {
 
 	public static InputStream getInputStream(Path openPath) throws Exception {
 		return Files.newInputStream(
-			openPath // positive example (known sink)
+			openPath // positive example (known sink), candidate ("only" ai-modeled, and useful as a candidate in regression testing)
 		);
 	}
 
@@ -56,4 +56,3 @@ class Test {
 		);
 	}
 }
-

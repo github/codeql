@@ -22,7 +22,7 @@ where
   not erroneousEndpoints(endpoint, _, _, _, _, false) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, isVarargsArray) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
-  CharacteristicsImpl::isKnownSink(endpoint, sinkType) and
+  CharacteristicsImpl::isKnownSink(endpoint, sinkType, _) and
   exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
 select endpoint.asNode(),
   sinkType + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
