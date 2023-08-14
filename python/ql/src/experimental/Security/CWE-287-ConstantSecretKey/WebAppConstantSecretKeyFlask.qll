@@ -63,13 +63,12 @@ module FlaskConstantSecretKeyConfig {
         sink = attr.getValue()
       )
       or
-      exists(SecretKeyAssignStmt e |
-        sink.asExpr() = e.getValue()
-      )
+      exists(SecretKeyAssignStmt e | sink.asExpr() = e.getValue())
     ) and
     exists(sink.getScope().getLocation().getFile().getRelativePath()) and
     not sink.getScope().getLocation().getFile().inStdlib()
   }
+
   /**
    * An Assignments like `SECRET_KEY = ConstantValue`
    * and `SECRET_KEY` file must be the Location that is specified in argument of `from_object` or `from_pyfile` methods
