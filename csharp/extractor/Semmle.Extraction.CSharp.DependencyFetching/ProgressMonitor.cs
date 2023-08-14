@@ -108,5 +108,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         internal void NoTopLevelNugetConfig() =>
             LogInfo("Could not find a top-level nuget.config file.");
+
+        internal void RazorSourceGeneratorMissing(string fullPath) =>
+            LogInfo($"Razor source generator folder {fullPath} does not exist.");
+
+        internal void CscMissing(string cscPath) =>
+            LogInfo($"Csc.exe not found at {cscPath}.");
     }
 }

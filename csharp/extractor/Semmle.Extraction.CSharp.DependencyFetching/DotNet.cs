@@ -5,14 +5,6 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal interface IDotNet
-    {
-        bool RestoreToDirectory(string project, string directory, string? pathToNugetConfig = null);
-        bool New(string folder);
-        bool AddPackage(string folder, string package);
-        IList<string> GetListedRuntimes();
-    }
-
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
@@ -76,23 +68,33 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return RunCommand(args);
         }
 
-        public IList<string> GetListedRuntimes()
+        public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
+
+        public IList<string> GetListedSdks() => GetListed("--list-sdks", "SDK");
+
+        private IList<string> GetListed(string args, string artifact)
         {
-            const string args = "--list-runtimes";
             progressMonitor.RunningProcess($"{dotnet} {args}");
             var pi = new ProcessStartInfo(dotnet, args)
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false
             };
-            var exitCode = pi.ReadOutput(out var runtimes);
+            var exitCode = pi.ReadOutput(out var artifacts);
             if (exitCode != 0)
             {
                 progressMonitor.CommandFailed(dotnet, args, exitCode);
                 return new List<string>();
             }
-            progressMonitor.LogInfo($"Found runtimes: {string.Join("\n", runtimes)}");
-            return runtimes;
+            progressMonitor.LogInfo($"Found {artifact}s: {string.Join("\n", artifacts)}");
+            return artifacts;
+        }
+
+        public bool Exec(string execArgs)
+        {
+            // TODO: we might need to swallow the stdout of the started process to not pollute the logs of the extraction.
+            var args = $"exec {execArgs}";
+            return RunCommand(args);
         }
     }
 }
