@@ -25,7 +25,7 @@ where
   CharacteristicsImpl::isKnownSink(endpoint, sinkType) and
   exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
 select endpoint.asNode(),
-  sinkType + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
+  sinkType + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   package, "package", //
   type, "type", //
