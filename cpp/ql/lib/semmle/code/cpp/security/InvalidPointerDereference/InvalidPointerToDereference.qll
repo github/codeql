@@ -114,11 +114,11 @@ private module InvalidPointerToDerefBarrier {
   private predicate operandGuardChecks(
     PointerArithmeticInstruction pai, IRGuardCondition g, Operand small, int k, boolean edge
   ) {
-    exists(DataFlow::Node source, DataFlow::Node nSmall, DataFlow::Node nBig |
+    exists(DataFlow::Node source, DataFlow::Node nSmall, DataFlow::Node nLarge |
       nSmall.asOperand() = small and
       BarrierConfig::isSource(source, pai) and
-      BarrierFlow::flow(source, nBig) and
-      BarrierConfig::isSink(nSmall, nBig, g, k, edge)
+      BarrierFlow::flow(source, nLarge) and
+      BarrierConfig::isSink(nSmall, nLarge, g, k, edge)
     )
   }
 
