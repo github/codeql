@@ -404,8 +404,25 @@ edges
 | test.swift:756:15:756:19 | .v2 [some:0] | test.swift:756:15:756:21 | ...! |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:732:9:732:9 | self [v3] |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:757:15:757:19 | .v3 |
+| test.swift:763:19:763:28 | args [Array element] | test.swift:765:15:765:15 | args [Array element] |
+| test.swift:765:15:765:15 | args [Array element] | test.swift:765:15:765:21 | ...[...] |
 | test.swift:768:19:768:24 | v | test.swift:769:15:769:15 | v |
+| test.swift:775:29:775:40 | args [Array element] | test.swift:778:15:778:15 | args [Array element] |
+| test.swift:775:29:775:40 | args [Array element] | test.swift:779:15:779:15 | args [Array element] |
+| test.swift:775:29:775:40 | args [Array element] | test.swift:786:15:786:15 | args [Array element] |
+| test.swift:778:15:778:15 | args [Array element] | test.swift:778:15:778:21 | ...[...] |
+| test.swift:779:15:779:15 | args [Array element] | test.swift:779:15:779:21 | ...[...] |
+| test.swift:785:21:785:29 | enter #keyPath(...) [Array element] | test.swift:785:27:785:29 | KeyPathComponent [Array element] |
+| test.swift:785:27:785:29 | KeyPathComponent [Array element] | test.swift:785:21:785:29 | exit #keyPath(...) |
+| test.swift:786:15:786:15 | args [Array element] | test.swift:785:21:785:29 | enter #keyPath(...) [Array element] |
+| test.swift:786:15:786:15 | args [Array element] | test.swift:786:15:786:38 | \\...[...] |
+| test.swift:790:24:790:31 | [...] [Array element] | test.swift:763:19:763:28 | args [Array element] |
+| test.swift:790:24:790:31 | [...] [Array element] | test.swift:790:24:790:31 | [...] [Array element] |
+| test.swift:790:24:790:31 | call to source() | test.swift:790:24:790:31 | [...] [Array element] |
 | test.swift:791:18:791:25 | call to source() | test.swift:768:19:768:24 | v |
+| test.swift:792:21:792:31 | [...] [Array element] | test.swift:775:29:775:40 | args [Array element] |
+| test.swift:792:21:792:31 | [...] [Array element] | test.swift:792:21:792:31 | [...] [Array element] |
+| test.swift:792:24:792:31 | call to source() | test.swift:792:21:792:31 | [...] [Array element] |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
@@ -851,9 +868,28 @@ nodes
 | test.swift:756:15:756:21 | ...! | semmle.label | ...! |
 | test.swift:757:15:757:15 | mo1 [v3] | semmle.label | mo1 [v3] |
 | test.swift:757:15:757:19 | .v3 | semmle.label | .v3 |
+| test.swift:763:19:763:28 | args [Array element] | semmle.label | args [Array element] |
+| test.swift:765:15:765:15 | args [Array element] | semmle.label | args [Array element] |
+| test.swift:765:15:765:21 | ...[...] | semmle.label | ...[...] |
 | test.swift:768:19:768:24 | v | semmle.label | v |
 | test.swift:769:15:769:15 | v | semmle.label | v |
+| test.swift:775:29:775:40 | args [Array element] | semmle.label | args [Array element] |
+| test.swift:778:15:778:15 | args [Array element] | semmle.label | args [Array element] |
+| test.swift:778:15:778:21 | ...[...] | semmle.label | ...[...] |
+| test.swift:779:15:779:15 | args [Array element] | semmle.label | args [Array element] |
+| test.swift:779:15:779:21 | ...[...] | semmle.label | ...[...] |
+| test.swift:785:21:785:29 | enter #keyPath(...) [Array element] | semmle.label | enter #keyPath(...) [Array element] |
+| test.swift:785:21:785:29 | exit #keyPath(...) | semmle.label | exit #keyPath(...) |
+| test.swift:785:27:785:29 | KeyPathComponent [Array element] | semmle.label | KeyPathComponent [Array element] |
+| test.swift:786:15:786:15 | args [Array element] | semmle.label | args [Array element] |
+| test.swift:786:15:786:38 | \\...[...] | semmle.label | \\...[...] |
+| test.swift:790:24:790:31 | [...] [Array element] | semmle.label | [...] [Array element] |
+| test.swift:790:24:790:31 | [...] [Array element] | semmle.label | [...] [Array element] |
+| test.swift:790:24:790:31 | call to source() | semmle.label | call to source() |
 | test.swift:791:18:791:25 | call to source() | semmle.label | call to source() |
+| test.swift:792:21:792:31 | [...] [Array element] | semmle.label | [...] [Array element] |
+| test.swift:792:21:792:31 | [...] [Array element] | semmle.label | [...] [Array element] |
+| test.swift:792:24:792:31 | call to source() | semmle.label | call to source() |
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -902,6 +938,7 @@ subpaths
 | test.swift:756:15:756:15 | mo1 [v2, some:0] | test.swift:731:9:731:9 | self [v2, some:0] | file://:0:0:0:0 | .v2 [some:0] | test.swift:756:15:756:19 | .v2 [some:0] |
 | test.swift:756:15:756:15 | mo1 [v2] | test.swift:731:9:731:9 | self [v2] | file://:0:0:0:0 | .v2 | test.swift:756:15:756:19 | .v2 |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:732:9:732:9 | self [v3] | file://:0:0:0:0 | .v3 | test.swift:757:15:757:19 | .v3 |
+| test.swift:786:15:786:15 | args [Array element] | test.swift:785:21:785:29 | enter #keyPath(...) [Array element] | test.swift:785:21:785:29 | exit #keyPath(...) | test.swift:786:15:786:38 | \\...[...] |
 #select
 | test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 | result |
 | test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 | result |
@@ -1001,4 +1038,8 @@ subpaths
 | test.swift:754:15:754:15 | v3 | test.swift:744:10:744:17 | call to source() | test.swift:754:15:754:15 | v3 | result |
 | test.swift:756:15:756:21 | ...! | test.swift:746:14:746:21 | call to source() | test.swift:756:15:756:21 | ...! | result |
 | test.swift:757:15:757:19 | .v3 | test.swift:747:14:747:21 | call to source() | test.swift:757:15:757:19 | .v3 | result |
+| test.swift:765:15:765:21 | ...[...] | test.swift:790:24:790:31 | call to source() | test.swift:765:15:765:21 | ...[...] | result |
 | test.swift:769:15:769:15 | v | test.swift:791:18:791:25 | call to source() | test.swift:769:15:769:15 | v | result |
+| test.swift:778:15:778:21 | ...[...] | test.swift:792:24:792:31 | call to source() | test.swift:778:15:778:21 | ...[...] | result |
+| test.swift:779:15:779:21 | ...[...] | test.swift:792:24:792:31 | call to source() | test.swift:779:15:779:21 | ...[...] | result |
+| test.swift:786:15:786:38 | \\...[...] | test.swift:792:24:792:31 | call to source() | test.swift:786:15:786:38 | \\...[...] | result |

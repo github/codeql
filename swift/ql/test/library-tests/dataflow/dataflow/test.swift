@@ -762,7 +762,7 @@ func testWriteOptional() {
 
 func testVarargs1(args: Int...) {
     sink(arg: args)
-    sink(arg: args[0]) // $ MISSING: flow=790
+    sink(arg: args[0]) // $ flow=790
 }
 
 func testVarargs2(_ v: Int, _ args: Int...) {
@@ -775,15 +775,15 @@ func testVarargs2(_ v: Int, _ args: Int...) {
 func testVarargs3(_ v: Int, _ args: Int...) {
     sink(arg: v)
     sink(arg: args)
-    sink(arg: args[0])
-    sink(arg: args[1]) // $ MISSING: flow=792
+    sink(arg: args[0]) // $ SPURIOUS: flow=792
+    sink(arg: args[1]) // $ flow=792
 
     for arg in args {
         sink(arg: arg) // $ MISSING: flow=792
     }
 
     let myKeyPath = \[Int][1]
-    sink(arg: args[keyPath: myKeyPath]) // $ MISSING: flow=792
+    sink(arg: args[keyPath: myKeyPath]) // $ flow=792
 }
 
 func testVarargsCaller() {

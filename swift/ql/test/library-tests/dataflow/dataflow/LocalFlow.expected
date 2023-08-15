@@ -939,3 +939,6 @@
 | test.swift:785:9:785:9 | myKeyPath | test.swift:785:9:785:9 | SSA def(myKeyPath) |
 | test.swift:785:21:785:29 | #keyPath(...) | test.swift:785:9:785:9 | myKeyPath |
 | test.swift:785:21:785:29 | enter #keyPath(...) | test.swift:785:27:785:29 | KeyPathComponent |
+| test.swift:790:24:790:31 | [...] | test.swift:790:24:790:31 | [...] |
+| test.swift:791:28:791:31 | [...] | test.swift:791:28:791:31 | [...] |
+| test.swift:792:21:792:31 | [...] | test.swift:792:21:792:31 | [...] |

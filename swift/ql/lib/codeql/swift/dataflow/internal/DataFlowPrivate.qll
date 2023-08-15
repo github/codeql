@@ -190,6 +190,9 @@ private module Cached {
     // flow through unary `+` (which does nothing)
     nodeFrom.asExpr() = nodeTo.asExpr().(UnaryPlusExpr).getOperand()
     or
+    // flow through varargs expansions (that wrap an `ArrayExpr` where varargs enter a call)
+    nodeFrom.asExpr() = nodeTo.asExpr().(VarargExpansionExpr).getSubExpr()
+    or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
       nco.getOperator().(FreeFunction).getName() = "??(_:_:)" and
@@ -799,11 +802,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
-  // read of an array member via subscript operator
+  // read of an array or variadic sequence type member via subscript operator
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    subscript.getBase().getType() instanceof ArrayType and
+    (
+      subscript.getBase().getType() instanceof ArrayType or
+      subscript.getBase().getType() instanceof VariadicSequenceType
+    ) and
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or
