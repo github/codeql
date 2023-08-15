@@ -16,7 +16,7 @@ on:
       - .github/actions/**
       - codeql-workspace.yml
 env:
-  GO_VERSION: '1.21.0'
+  GO_VERSION: '~1.21.0'
 jobs:
   test-linux:
     name: Test Linux (Ubuntu)
