@@ -95,3 +95,25 @@ void gotoLoop(bool b1, bool b2)
     }
   }
 }
+
+void test_sub(int x, int y, int n) {
+  if(x > 0 && x < 500) {
+    if(y > 0 && y < 10) {
+      range(x - y); // $ range="<=InitializeParameter: x-1" range=<=498
+    }
+
+    if(n > 0 && n < 100) {
+      for (int i = 0; i < n; i++)
+      {
+        range(n - i); // $ range=<=99 range="<=InitializeParameter: n | Store: n+0"
+        range(i - n); // $ range="<=InitializeParameter: n | Store: n-2" range=<=97 range="<=Phi: i-1"
+      }
+
+      for (int i = n; i != 0; i--)
+      {
+        range(n - i); // $ SPURIOUS: overflow=+
+        range(i - n); // $ range="<=Phi: i-1" SPURIOUS: overflow=-
+      }
+    }
+  }
+}

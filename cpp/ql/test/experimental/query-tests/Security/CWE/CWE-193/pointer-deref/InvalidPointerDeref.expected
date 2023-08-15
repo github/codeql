@@ -228,6 +228,7 @@ edges
 | test.cpp:732:16:732:26 | ... + ... | test.cpp:732:16:732:26 | ... + ... |
 | test.cpp:732:16:732:26 | ... + ... | test.cpp:733:5:733:12 | ... = ... |
 | test.cpp:732:16:732:26 | ... + ... | test.cpp:733:5:733:12 | ... = ... |
+| test.cpp:739:12:739:21 | new[] | test.cpp:742:5:742:16 | ... = ... |
 nodes
 | test.cpp:4:15:4:20 | call to malloc | semmle.label | call to malloc |
 | test.cpp:5:15:5:22 | ... + ... | semmle.label | ... + ... |
@@ -382,6 +383,8 @@ nodes
 | test.cpp:732:16:732:26 | ... + ... | semmle.label | ... + ... |
 | test.cpp:732:16:732:26 | ... + ... | semmle.label | ... + ... |
 | test.cpp:733:5:733:12 | ... = ... | semmle.label | ... = ... |
+| test.cpp:739:12:739:21 | new[] | semmle.label | new[] |
+| test.cpp:742:5:742:16 | ... = ... | semmle.label | ... = ... |
 subpaths
 #select
 | test.cpp:6:14:6:15 | * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -417,3 +420,4 @@ subpaths
 | test.cpp:701:15:701:16 | * ... | test.cpp:695:13:695:26 | new[] | test.cpp:701:15:701:16 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:695:13:695:26 | new[] | new[] | test.cpp:696:19:696:22 | size | size |
 | test.cpp:706:12:706:13 | * ... | test.cpp:711:13:711:26 | new[] | test.cpp:706:12:706:13 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:711:13:711:26 | new[] | new[] | test.cpp:712:19:712:22 | size | size |
 | test.cpp:733:5:733:12 | ... = ... | test.cpp:730:12:730:28 | new[] | test.cpp:733:5:733:12 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:730:12:730:28 | new[] | new[] | test.cpp:732:21:732:25 | ... + ... | ... + ... |
+| test.cpp:742:5:742:16 | ... = ... | test.cpp:739:12:739:21 | new[] | test.cpp:742:5:742:16 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:739:12:739:21 | new[] | new[] | test.cpp:742:7:742:11 | ... - ... | ... - ... |
