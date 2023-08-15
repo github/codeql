@@ -96,8 +96,8 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
     NSLog("%@", password as! CVarArg) // $ MISSING: hasCleartextLogging=96
     NSLog("%@ %@", "" as! CVarArg, password as! CVarArg) // $ MISSING: hasCleartextLogging=97
     NSLog("\(password)") // $ hasCleartextLogging=98
-    NSLogv("%@", getVaList([password as! CVarArg])) // $ MISSING: hasCleartextLogging=99
-    NSLogv("%@ %@", getVaList(["" as! CVarArg, password as! CVarArg])) // $ MISSING: hasCleartextLogging=100
+    NSLogv("%@", getVaList([password as! CVarArg])) // $ hasCleartextLogging=99
+    NSLogv("%@ %@", getVaList(["" as! CVarArg, password as! CVarArg])) // $ hasCleartextLogging=100
     NSLog(passwordHash) // SAfe
     NSLogv("%@", getVaList([passwordHash as! CVarArg])) // Safe
 

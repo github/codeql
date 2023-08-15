@@ -94,7 +94,7 @@ private class LoggingSinks extends SinkModelCsv {
         ";;false;NSLog(_:_:);;;Argument[0];log-injection",
         ";;false;NSLog(_:_:);;;Argument[1].ArrayElement;log-injection",
         ";;false;NSLogv(_:_:);;;Argument[0];log-injection",
-        ";;false;NSLogv(_:_:);;;Argument[1].ArrayElement;log-injection",
+        ";;false;NSLogv(_:_:);;;Argument[1];log-injection",
         ";;false;vfprintf(_:_:_:);;;Agument[1..2];log-injection",
         ";Logger;true;log(_:);;;Argument[0];log-injection",
         ";Logger;true;log(level:_:);;;Argument[1];log-injection",
