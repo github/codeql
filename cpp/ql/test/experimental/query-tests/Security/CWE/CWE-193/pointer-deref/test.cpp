@@ -739,6 +739,6 @@ void test37(unsigned long n)
   int *p = new int[n];
   for (unsigned long i = n; i != 0u; i--)
   {
-    p[n - i] = 0; // $ alloc=L739 deref=L742 // GOOD [FALSE POSITIVE]
+    p[n - i] = 0; // GOOD
   }
 }
