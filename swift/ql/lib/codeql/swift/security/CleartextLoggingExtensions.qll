@@ -87,14 +87,10 @@ private class LoggingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";;false;print(_:separator:terminator:);;;Argument[0].ArrayElement;log-injection",
-        ";;false;print(_:separator:terminator:);;;Argument[1..2];log-injection",
-        ";;false;print(_:separator:terminator:toStream:);;;Argument[0].ArrayElement;log-injection",
-        ";;false;print(_:separator:terminator:toStream:);;;Argument[1..2];log-injection",
-        ";;false;NSLog(_:_:);;;Argument[0];log-injection",
-        ";;false;NSLog(_:_:);;;Argument[1].ArrayElement;log-injection",
-        ";;false;NSLogv(_:_:);;;Argument[0];log-injection",
-        ";;false;NSLogv(_:_:);;;Argument[1];log-injection",
+        ";;false;print(_:separator:terminator:);;;Argument[0..2];log-injection",
+        ";;false;print(_:separator:terminator:toStream:);;;Argument[0..2];log-injection",
+        ";;false;NSLog(_:_:);;;Argument[0..1];log-injection",
+        ";;false;NSLogv(_:_:);;;Argument[0..1];log-injection",
         ";;false;vfprintf(_:_:_:);;;Agument[1..2];log-injection",
         ";Logger;true;log(_:);;;Argument[0];log-injection",
         ";Logger;true;log(level:_:);;;Argument[1];log-injection",
