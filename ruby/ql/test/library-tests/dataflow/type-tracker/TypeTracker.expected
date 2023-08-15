@@ -7,7 +7,6 @@ track
 | type_tracker.rb:2:5:5:7 | field= | type tracker without call steps | type_tracker.rb:2:5:5:7 | field= |
 | type_tracker.rb:2:5:5:7 | self in field= | type tracker with call steps | type_tracker.rb:7:5:9:7 | self in field |
 | type_tracker.rb:2:5:5:7 | self in field= | type tracker without call steps | type_tracker.rb:2:5:5:7 | self in field= |
-| type_tracker.rb:2:5:5:7 | synthetic *args | type tracker without call steps | type_tracker.rb:2:5:5:7 | synthetic *args |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:3:14:3:23 | call to field |
@@ -58,7 +57,6 @@ track
 | type_tracker.rb:18:1:21:3 | &block | type tracker without call steps | type_tracker.rb:18:1:21:3 | &block |
 | type_tracker.rb:18:1:21:3 | positional | type tracker without call steps | type_tracker.rb:18:1:21:3 | positional |
 | type_tracker.rb:18:1:21:3 | self in positional | type tracker without call steps | type_tracker.rb:18:1:21:3 | self in positional |
-| type_tracker.rb:18:1:21:3 | synthetic *args | type tracker without call steps | type_tracker.rb:18:1:21:3 | synthetic *args |
 | type_tracker.rb:18:16:18:17 | p1 | type tracker without call steps | type_tracker.rb:18:16:18:17 | p1 |
 | type_tracker.rb:18:16:18:17 | p1 | type tracker without call steps | type_tracker.rb:18:16:18:17 | p1 |
 | type_tracker.rb:18:16:18:17 | p1 | type tracker without call steps with content element 0 | type_tracker.rb:19:5:19:11 | * |
@@ -150,7 +148,6 @@ track
 | type_tracker.rb:32:26:32:26 | 8 | type tracker without call steps with content element :p1 | type_tracker.rb:32:1:32:27 | ** |
 | type_tracker.rb:34:1:53:3 | &block | type tracker without call steps | type_tracker.rb:34:1:53:3 | &block |
 | type_tracker.rb:34:1:53:3 | self in throughArray | type tracker without call steps | type_tracker.rb:34:1:53:3 | self in throughArray |
-| type_tracker.rb:34:1:53:3 | synthetic *args | type tracker without call steps | type_tracker.rb:34:1:53:3 | synthetic *args |
 | type_tracker.rb:34:1:53:3 | throughArray | type tracker without call steps | type_tracker.rb:34:1:53:3 | throughArray |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:34:18:34:20 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:34:18:34:20 | obj |
@@ -357,7 +354,6 @@ trackEnd
 | type_tracker.rb:2:5:5:7 | self in field= | type_tracker.rb:7:5:9:7 | self (field) |
 | type_tracker.rb:2:5:5:7 | self in field= | type_tracker.rb:7:5:9:7 | self in field |
 | type_tracker.rb:2:5:5:7 | self in field= | type_tracker.rb:8:9:8:14 | self |
-| type_tracker.rb:2:5:5:7 | synthetic *args | type_tracker.rb:2:5:5:7 | synthetic *args |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:2:16:2:18 | val |
@@ -429,7 +425,6 @@ trackEnd
 | type_tracker.rb:18:1:21:3 | self in positional | type_tracker.rb:18:1:21:3 | self in positional |
 | type_tracker.rb:18:1:21:3 | self in positional | type_tracker.rb:19:5:19:11 | self |
 | type_tracker.rb:18:1:21:3 | self in positional | type_tracker.rb:20:5:20:11 | self |
-| type_tracker.rb:18:1:21:3 | synthetic *args | type_tracker.rb:18:1:21:3 | synthetic *args |
 | type_tracker.rb:18:16:18:17 | p1 | type_tracker.rb:18:16:18:17 | p1 |
 | type_tracker.rb:18:16:18:17 | p1 | type_tracker.rb:18:16:18:17 | p1 |
 | type_tracker.rb:18:16:18:17 | p1 | type_tracker.rb:18:16:18:17 | p1 |
@@ -522,7 +517,6 @@ trackEnd
 | type_tracker.rb:32:26:32:26 | 8 | type_tracker.rb:32:26:32:26 | 8 |
 | type_tracker.rb:34:1:53:3 | &block | type_tracker.rb:34:1:53:3 | &block |
 | type_tracker.rb:34:1:53:3 | self in throughArray | type_tracker.rb:34:1:53:3 | self in throughArray |
-| type_tracker.rb:34:1:53:3 | synthetic *args | type_tracker.rb:34:1:53:3 | synthetic *args |
 | type_tracker.rb:34:1:53:3 | throughArray | type_tracker.rb:34:1:53:3 | throughArray |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:34:18:34:20 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:34:18:34:20 | obj |
