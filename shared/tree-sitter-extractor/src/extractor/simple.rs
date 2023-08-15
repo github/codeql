@@ -118,14 +118,7 @@ impl Extractor {
                 if matches.is_empty() {
                     tracing::error!(?path, "No matching language found, skipping file.");
                 } else {
-                    let mut languages_processed = {
-                        // No known extractor uses more than 8 languages.
-                        let mut v = Vec::with_capacity(8);
-                        for _ in &self.languages {
-                            v.push(false);
-                        }
-                        v
-                    };
+                    let mut languages_processed = vec![false; self.languages.len()];
 
                     for m in matches {
                         let i = glob_language_mapping[m];
