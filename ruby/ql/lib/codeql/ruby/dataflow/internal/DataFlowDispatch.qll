@@ -438,7 +438,6 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
     THashSplatArgumentPosition() or
-    TSplatAllArgumentPosition() or
     TSplatArgumentPosition(int pos) { exists(Call c | c.getArgument(pos) instanceof SplatExpr) } or
     TSynthSplatArgumentPosition() or
     TAnyArgumentPosition() or
@@ -469,7 +468,6 @@ private module Cached {
     // position for multiple parameter nodes in the same callable, we introduce this
     // synthetic parameter position.
     TSynthHashSplatParameterPosition() or
-    TSplatAllParameterPosition() or
     TSplatParameterPosition(int pos) {
       exists(Parameter p | p.getPosition() = pos and p instanceof SplatParameter)
     } or
@@ -1300,8 +1298,6 @@ class ParameterPosition extends TParameterPosition {
   // A fake position to indicate that this parameter node holds content from a synth arg splat node
   predicate isSynthArgSplat() { this = TSynthArgSplatParameterPosition() }
 
-  predicate isSplatAll() { this = TSplatAllParameterPosition() }
-
   predicate isSplat(int n) { this = TSplatParameterPosition(n) }
 
   /**
@@ -1328,8 +1324,6 @@ class ParameterPosition extends TParameterPosition {
     this.isHashSplat() and result = "**"
     or
     this.isSynthHashSplat() and result = "synthetic **"
-    or
-    this.isSplatAll() and result = "*"
     or
     this.isAny() and result = "any"
     or
@@ -1372,8 +1366,6 @@ class ArgumentPosition extends TArgumentPosition {
    */
   predicate isHashSplat() { this = THashSplatArgumentPosition() }
 
-  predicate isSplatAll() { this = TSplatAllArgumentPosition() }
-
   predicate isSplat(int n) { this = TSplatArgumentPosition(n) }
 
   predicate isSynthSplat() { this = TSynthSplatArgumentPosition() }
@@ -1393,8 +1385,6 @@ class ArgumentPosition extends TArgumentPosition {
     this.isAnyNamed() and result = "any-named"
     or
     this.isHashSplat() and result = "**"
-    or
-    this.isSplatAll() and result = "*"
     or
     this.isSynthSplat() and result = "synthetic *"
     or
@@ -1427,11 +1417,9 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isSynthHashSplat() and apos.isHashSplat()
   or
-  ppos.isSplatAll() and apos.isSplatAll()
+  ppos.isSplat(0) and apos.isSynthSplat()
   or
-  ppos.isSplatAll() and apos.isSynthSplat()
-  or
-  ppos.isSynthSplat() and apos.isSplatAll()
+  ppos.isSynthSplat() and apos.isSplat(0)
   or
   apos.isSynthSplat() and ppos.isSynthArgSplat()
   or
