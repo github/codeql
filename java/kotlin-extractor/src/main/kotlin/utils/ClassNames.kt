@@ -130,7 +130,7 @@ fun getIrDeclarationBinaryPath(d: IrDeclaration): String? {
     return null
 }
 
-fun getUnknownBinaryLocation(s: String): String {
+private fun getUnknownBinaryLocation(s: String): String {
     return "/!unknown-binary-location/${s.replace(".", "/")}.class"
 }
 

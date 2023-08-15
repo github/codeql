@@ -77,7 +77,7 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
-    fun useFileClassType(pkg: String, jvmName: String) = TypeResults(
+    private fun useFileClassType(pkg: String, jvmName: String) = TypeResults(
         TypeResult(extractFileClass(pkg, jvmName), "", ""),
         TypeResult(fakeKotlinType(), "", "")
     )
@@ -94,13 +94,13 @@ open class KotlinUsesExtractor(
         return id
     }
 
-    fun extractFileClass(fqName: FqName): Label<out DbClassorinterface> {
+    private fun extractFileClass(fqName: FqName): Label<out DbClassorinterface> {
         val pkg = if (fqName.isRoot()) "" else fqName.parent().asString()
         val jvmName = fqName.shortName().asString()
         return extractFileClass(pkg, jvmName)
     }
 
-    fun extractFileClass(pkg: String, jvmName: String): Label<out DbClassorinterface> {
+    private fun extractFileClass(pkg: String, jvmName: String): Label<out DbClassorinterface> {
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
         val id: Label<DbClassorinterface> = tw.getLabelFor(label) {
@@ -799,7 +799,7 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun parentOf(d: IrDeclaration): IrDeclarationParent {
+    private fun parentOf(d: IrDeclaration): IrDeclarationParent {
         if (d is IrField) {
             return getFieldParent(d)
         }
@@ -1739,7 +1739,7 @@ open class KotlinUsesExtractor(
             it.isConst || it.isLateinit
         } ?: false
 
-    fun getFieldParent(f: IrField) =
+    private fun getFieldParent(f: IrField) =
         f.parentClassOrNull?.let {
             if (it.isCompanion && isDirectlyExposableCompanionObjectField(f))
                 it.parent
