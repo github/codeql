@@ -6,3 +6,5 @@ extensions:
       - ["com.sun.security.ntlm", "Client", False, "Client", "(String, String, String, String, char[])", "credential-password", "Argument[4]", "manual"]
       - ["com.sun.security.ntlm", "NTLM", False, "getP1", "(char[])", "credential-password", "Argument[0]", "manual"]
       - ["com.sun.security.ntlm", "NTLM", False, "getP2", "(char[])", "credential-password", "Argument[0]", "manual"]
+      - ["com.sun.security.ntlm", "Client", False, "Client", "(String, String, String, String, char[])", "credential-username", "Argument[2]", "manual"]
+      - ["com.sun.security.ntlm", "Server", False, "getPassword", "(String, String)", "credential-username", "Argument[1]", "manual"]

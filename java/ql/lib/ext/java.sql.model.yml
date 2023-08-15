@@ -17,6 +17,7 @@ extensions:
       - ["java.sql", "Statement", True, "executeLargeUpdate", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["java.sql", "Statement", True, "executeQuery", "", "", "Argument[0]", "sql-injection", "manual"]
       - ["java.sql", "Statement", True, "executeUpdate", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["java.sql", "DriverManager", False, "getConnection", "(String, String, String)", "credential-username", "Argument[1]", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

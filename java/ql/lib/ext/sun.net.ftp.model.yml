@@ -5,3 +5,6 @@ extensions:
     data:
       - ["sun.net.ftp", "FtpClient", False, "login", "(String, char[])", "credential-password", "Argument[1]", "manual"]
       - ["sun.net.ftp", "FtpClient", False, "login", "(String, char[], String)", "credential-password", "Argument[1]", "manual"]
+      - ["sun.net.ftp", "FtpClient", False, "login", "(String, char[])", "credential-username", "Argument[0]", "manual"]
+      - ["sun.net.ftp", "FtpClient", False, "login", "(String, char[], String)", "credential-username", "Argument[0]", "manual"]
+      - ["sun.net.ftp", "FtpDirEntry", False, "setUser", "(String)", "credential-username", "Argument[0]", "manual"]

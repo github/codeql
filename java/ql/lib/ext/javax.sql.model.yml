@@ -7,3 +7,6 @@ extensions:
       - ["javax.sql", "DataSource", False, "getConnection", "(String, String)", "credential-password", "Argument[1]", "manual"]
       - ["javax.sql", "RowSet", False, "setPassword", "(String)", "credential-password", "Argument[0]", "manual"]
       - ["javax.sql", "XADataSource", False, "getXAConnection", "(String, String)", "credential-password", "Argument[1]", "manual"]
+      - ["javax.sql", "ConnectionPoolDataSource", False, "getPooledConnection", "(String, String)", "credential-username", "Argument[0]", "manual"]
+      - ["javax.sql", "DataSource", False, "getConnection", "(String, String)", "credential-username", "Argument[0]", "manual"]
+      - ["javax.sql", "XADataSource", False, "getXAConnection", "(String, String)", "credential-username", "Argument[0]", "manual"]

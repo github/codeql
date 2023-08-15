@@ -5,3 +5,4 @@ extensions:
     data:
       - ["com.sun.rowset", "JdbcRowSetImpl", False, "JdbcRowSetImpl", "(String, String, String)", "credential-password", "Argument[2]", "manual"]
       - ["com.sun.rowset", "JdbcRowSetImpl", False, "setPassword", "(String)", "credential-password", "Argument[0]", "manual"]
+      - ["com.sun.rowset", "JdbcRowSetImpl", False, "JdbcRowSetImpl", "(String, String, String)", "credential-username", "Argument[1]", "manual"]

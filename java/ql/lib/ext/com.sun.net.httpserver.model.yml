@@ -4,3 +4,5 @@ extensions:
       extensible: sinkModel
     data:
       - ["com.sun.net.httpserver", "BasicAuthenticator", False, "checkCredentials", "(String, String)", "credential-password", "Argument[1]", "manual"]
+      - ["com.sun.net.httpserver", "BasicAuthenticator", False, "checkCredentials", "(String, String)", "credential-username", "Argument[0]", "manual"]
+      - ["com.sun.net.httpserver", "HttpPrincipal", False, "HttpPrincipal", "(String, String)", "credential-username", "Argument[0]", "manual"]
