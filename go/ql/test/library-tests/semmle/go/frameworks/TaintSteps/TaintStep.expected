@@ -864,7 +864,6 @@
 | os.fileWithoutReadFrom.WriteString | file://:0:0:0:0 | [summary param] 0 in WriteString | file://:0:0:0:0 | [summary] to write: Argument[-1] in WriteString |
 | os.rawConn.Read | file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: Argument[0] in Read |
 | os.rawConn.Write | file://:0:0:0:0 | [summary param] 0 in Write | file://:0:0:0:0 | [summary] to write: Argument[-1] in Write |
-| os.unixDirent.String | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
 | path.Base | file://:0:0:0:0 | [summary param] 0 in Base | file://:0:0:0:0 | [summary] to write: ReturnValue in Base |
 | path.Clean | file://:0:0:0:0 | [summary param] 0 in Clean | file://:0:0:0:0 | [summary] to write: ReturnValue in Clean |
 | path.Dir | file://:0:0:0:0 | [summary param] 0 in Dir | file://:0:0:0:0 | [summary] to write: ReturnValue in Dir |

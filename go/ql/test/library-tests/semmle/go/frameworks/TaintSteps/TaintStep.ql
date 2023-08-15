@@ -30,7 +30,7 @@ where
     pkg.matches("crypto/rand.%") and
     name = "Read"
     or
-    pkg = ["os.dirEntry", "os.unixDirent"] and name = ["Info", "Name"]
+    pkg = ["os.dirEntry", "os.unixDirent"] and name = ["Info", "Name", "String"]
     or
     // Not available on arm64
     pkg = "vendor/golang.org/x/crypto/internal/poly1305.mac" and name = "Write"
