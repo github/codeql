@@ -10,15 +10,43 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly Version? preReleaseVersion;
         private readonly string? preReleaseVersionType;
         private bool IsPreRelease => preReleaseVersionType is not null && preReleaseVersion is not null;
-        public string FullPath
+
+        private string FullVersion
         {
             get
             {
                 var preRelease = IsPreRelease ? $"-{preReleaseVersionType}.{preReleaseVersion}" : "";
-                var version = this.version + preRelease;
-                return Path.Combine(dir, version);
+                return this.version + preRelease;
             }
         }
+
+        public string FullPath => Path.Combine(dir, FullVersion);
+
+        /**
+         * The full path to the reference assemblies for this runtime.
+         * This is the same as FullPath, except that we assume that the
+         * reference assemblies are in a directory called "packs" and
+         * the reference assemblies themselves are in a directory called
+         * "<Framework>.Ref/ref".
+         * Example:
+         *  FullPath: /usr/share/dotnet/shared/Microsoft.NETCore.App/7.0.2
+         *  FullPathReferenceAssemblies: /usr/share/dotnet/packs/Microsoft.NETCore.App.Ref/7.0.2/ref
+         */
+        public string? FullPathReferenceAssemblies
+        {
+            get
+            {
+                var directories = dir.Split(Path.DirectorySeparatorChar);
+                if (directories.Length >= 2)
+                {
+                    directories[^2] = "packs";
+                    directories[^1] = $"{directories[^1]}.Ref";
+                    return Path.Combine(string.Join(Path.DirectorySeparatorChar, directories), FullVersion, "ref");
+                }
+                return null;
+            }
+        }
+
 
         public DotnetVersion(string dir, string version, string preReleaseVersionType, string preReleaseVersion)
         {

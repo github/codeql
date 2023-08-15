@@ -94,6 +94,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private string? GetVersion(string framework)
+        {
+            if (NewestRuntimes.TryGetValue(framework, out var version))
+            {
+                var refAssemblies = version.FullPathReferenceAssemblies;
+                return Directory.Exists(refAssemblies)
+                    ? refAssemblies
+                    : version.FullPath;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Gets the .NET runtime location to use for extraction.
         /// </summary>
@@ -105,9 +117,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // Location of the newest .NET Core Runtime.
-            if (NewestRuntimes.TryGetValue(netCoreApp, out var netCoreVersion))
+            if (GetVersion(netCoreApp) is string path)
             {
-                return netCoreVersion.FullPath;
+                return path;
             }
 
             if (DesktopRuntimes.Any())
@@ -122,14 +134,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Gets the ASP.NET runtime location to use for extraction, if one exists.
         /// </summary>
-        public string? GetAspRuntime()
-        {
-            // Location of the newest ASP.NET Core Runtime.
-            if (NewestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
-            {
-                return aspNetCoreVersion.FullPath;
-            }
-            return null;
-        }
+        public string? GetAspRuntime() => GetVersion(aspNetCoreApp);
     }
 }
