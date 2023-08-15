@@ -472,7 +472,11 @@ private module Cached {
     TSplatParameterPosition(int pos) {
       exists(Parameter p | p.getPosition() = pos and p instanceof SplatParameter)
     } or
-    TSynthSplatParameterPosition() or
+    TSynthSplatParameterPosition(int pos) {
+      // `pos` is the position of the splat _argument_ that is matched to the
+      // `SynthSplatParameterNode` with this position.
+      exists(ArgumentPosition a | a.isSplat(pos))
+    } or
     TSynthArgSplatParameterPosition() or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
@@ -1301,7 +1305,7 @@ class ParameterPosition extends TParameterPosition {
 
   predicate isSynthHashSplat() { this = TSynthHashSplatParameterPosition() }
 
-  predicate isSynthSplat() { this = TSynthSplatParameterPosition() }
+  predicate isSynthSplat(int n) { this = TSynthSplatParameterPosition(n) }
 
   // A fake position to indicate that this parameter node holds content from a synth arg splat node
   predicate isSynthArgSplat() { this = TSynthArgSplatParameterPosition() }
@@ -1339,7 +1343,7 @@ class ParameterPosition extends TParameterPosition {
     or
     this.isAnyNamed() and result = "any-named"
     or
-    this.isSynthSplat() and result = "synthetic *"
+    exists(int pos | this.isSynthSplat(pos) and result = "synthetic * (position " + pos + ")")
     or
     this.isSynthArgSplat() and result = "synthetic * (from *args)"
     or
@@ -1442,7 +1446,7 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isSplat(0) and apos.isSynthSplat()
   or
-  ppos.isSynthSplat() and apos.isSplat(0)
+  exists(int n | ppos.isSynthSplat(n) and apos.isSplat(n))
   or
   apos.isSynthSplat() and ppos.isSynthArgSplat()
   or

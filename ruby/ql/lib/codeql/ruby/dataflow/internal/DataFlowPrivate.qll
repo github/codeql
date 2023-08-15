@@ -448,9 +448,11 @@ private module Cached {
     TSynthHashSplatParameterNode(DataFlowCallable c) {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
-    TSynthSplatParameterNode(DataFlowCallable c) {
+    TSynthSplatParameterNode(DataFlowCallable c, int n) {
       exists(c.asCallable()) and // exclude library callables
-      isParameterNode(_, c, any(ParameterPosition p | p.isPositional(_)))
+      isParameterNode(_, c, any(ParameterPosition p | p.isPositional(_))) and
+      // `n` is the position of the splat argument that is matched to this node
+      exists(ArgumentPosition pos | pos.isSplat(n))
     } or
     TSynthSplatArgParameterNode(DataFlowCallable c) {
       exists(c.asCallable()) and // exclude library callables
@@ -1037,11 +1039,20 @@ private module ParameterNodes {
    * ```rb
    * foo(a, *[b])
    * ```
+   *
+   * TODO: we do now support the above, but we don't support this case:
+   *
+   * ```rb
+   * foo(a, *[b], c)
+   * ```
+   *
+   * Update this documentation.
    */
   class SynthSplatParameterNode extends ParameterNodeImpl, TSynthSplatParameterNode {
     private DataFlowCallable callable;
+    private int n;
 
-    SynthSplatParameterNode() { this = TSynthSplatParameterNode(callable) }
+    SynthSplatParameterNode() { this = TSynthSplatParameterNode(callable, n) }
 
     /**
      * Gets a parameter which will contain the value given by `c`, assuming
@@ -1053,13 +1064,13 @@ private module ParameterNodes {
      * end
      * ```
      *
-     * Then `getAParameter(element 0) = x` and `getAParameter(element 1) = y`.
+     * then `getAParameter(element 0) = x` and `getAParameter(element 1) = y`.
      */
     ParameterNode getAParameter(ContentSet c) {
-      exists(int n |
-        isParameterNode(result, callable, (any(ParameterPosition p | p.isPositional(n)))) and
+      exists(int m |
+        isParameterNode(result, callable, (any(ParameterPosition p | p.isPositional(m)))) and
         (
-          c = getPositionalContent(n)
+          c = getPositionalContent(m - n)
           or
           c.isSingleton(TUnknownElementContent())
         )
@@ -1069,7 +1080,7 @@ private module ParameterNodes {
     final override Parameter getParameter() { none() }
 
     final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c = callable and pos.isSynthSplat()
+      c = callable and pos.isSynthSplat(n)
     }
 
     final override CfgScope getCfgScope() { result = callable.asCallable() }
