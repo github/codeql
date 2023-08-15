@@ -3209,6 +3209,90 @@ cfg.swift:
 #  519|     getElement(6): [ReturnStmt] return ...
 #  519|       getResult(): [DeclRefExpr] x
 #  519|       getResult().getFullyConverted(): [LoadExpr] (Int) ...
+#  522| [NamedFunction] testAsyncFor()
+#  522|     InterfaceType = () async -> ()
+#  522|   getBody(): [BraceStmt] { ... }
+#  523|     getVariable(0): [ConcreteVarDecl] stream
+#  523|         Type = AsyncStream<Int>
+#  523|     getElement(0): [PatternBindingDecl] var ... = ...
+#  523|       getInit(0): [CallExpr] call to AsyncStream<Element>.init(_:bufferingPolicy:_:)
+#  523|         getFunction(): [MethodLookupExpr] AsyncStream<Element>.init(_:bufferingPolicy:_:)
+#  523|           getBase(): [TypeExpr] AsyncStream<Int>.Type
+#  523|             getTypeRepr(): [TypeRepr] AsyncStream<Int>
+#  523|           getMethodRef(): [DeclRefExpr] AsyncStream<Element>.init(_:bufferingPolicy:_:)
+#  523|         getArgument(0): [Argument] : Int.Type
+#  523|           getExpr(): [TypeExpr] Int.Type
+#  523|             getTypeRepr(): [TypeRepr] Int
+#  523|           getExpr().getFullyConverted(): [DotSelfExpr] .self
+#  523|         getArgument(1): [Argument] bufferingPolicy: call to ...
+#  523|           getExpr(): [CallExpr] call to ...
+#  523|             getFunction(): [MethodLookupExpr] .bufferingNewest
+#  523|               getBase(): [TypeExpr] AsyncStream<Int>.Continuation.BufferingPolicy.Type
+#  523|                 getTypeRepr(): [TypeRepr] AsyncStream<Int>.Continuation.BufferingPolicy
+#  523|               getMethodRef(): [DeclRefExpr] bufferingNewest
+#  523|             getArgument(0): [Argument] : 5
+#  523|               getExpr(): [IntegerLiteralExpr] 5
+#  523|         getArgument(2): [Argument] : { ... }
+#  523|           getExpr(): [ExplicitClosureExpr] { ... }
+#  524|             getParam(0): [ParamDecl] continuation
+#  524|                 Type = AsyncStream<Int>.Continuation
+#  523|             getBody(): [BraceStmt] { ... }
+#  525|               getElement(0): [BraceStmt] { ... }
+#  525|                 getElement(0): [CallExpr] call to detached(priority:operation:)
+#  525|                   getFunction(): [MethodLookupExpr] .detached(priority:operation:)
+#  525|                     getBase(): [TypeExpr] Task<(), Never>.Type
+#  525|                       getTypeRepr(): [TypeRepr] Task<(), Never>
+#  525|                     getMethodRef(): [DeclRefExpr] detached(priority:operation:)
+#  525|                   getArgument(0): [Argument] priority: default priority
+#  525|                     getExpr(): [DefaultArgumentExpr] default priority
+#  525|                   getArgument(1): [Argument] operation: { ... }
+#  525|                     getExpr(): [ExplicitClosureExpr] { ... }
+#  525|                       getBody(): [BraceStmt] { ... }
+#  526|                         getElement(0): [ForEachStmt] for ... in ... { ... }
+#  526|                           getPattern(): [NamedPattern] i
+#  526|                           getSequence(): [BinaryExpr] ... ....(_:_:) ...
+#  526|                             getFunction(): [MethodLookupExpr] ....(_:_:)
+#  526|                               getBase(): [TypeExpr] Int.Type
+#  526|                                 getTypeRepr(): [TypeRepr] Int
+#  526|                               getMethodRef(): [DeclRefExpr] ...(_:_:)
+#  526|                             getArgument(0): [Argument] : 1
+#  526|                               getExpr(): [IntegerLiteralExpr] 1
+#  526|                             getArgument(1): [Argument] : 100
+#  526|                               getExpr(): [IntegerLiteralExpr] 100
+#  526|                           getBody(): [BraceStmt] { ... }
+#  527|                             getElement(0): [CallExpr] call to yield(_:)
+#  527|                               getFunction(): [MethodLookupExpr] .yield(_:)
+#  527|                                 getBase(): [DeclRefExpr] continuation
+#  527|                                 getMethodRef(): [DeclRefExpr] yield(_:)
+#  527|                               getArgument(0): [Argument] : i
+#  527|                                 getExpr(): [DeclRefExpr] i
+#  529|                         getElement(1): [CallExpr] call to finish()
+#  529|                           getFunction(): [MethodLookupExpr] .finish()
+#  529|                             getBase(): [DeclRefExpr] continuation
+#  529|                             getMethodRef(): [DeclRefExpr] finish()
+#  527|                       getCapture(0): [CapturedDecl] continuation
+#  525|                 getElement(1): [ReturnStmt] return
+#  523|       getPattern(0): [NamedPattern] stream
+#  533|     getElement(1): [ForEachStmt] for ... in ... { ... }
+#  533|       getPattern(): [NamedPattern] i
+#  533|       getSequence(): [DeclRefExpr] stream
+#  533|       getBody(): [BraceStmt] { ... }
+#  534|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#  534|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  534|           getArgument(0): [Argument] : [...]
+#  534|             getExpr(): [VarargExpansionExpr] [...]
+#  534|               getSubExpr(): [ArrayExpr] [...]
+#  534|                 getElement(0): [DeclRefExpr] i
+#  534|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  534|           getArgument(1): [Argument] separator: default separator
+#  534|             getExpr(): [DefaultArgumentExpr] default separator
+#  534|           getArgument(2): [Argument] terminator: default terminator
+#  534|             getExpr(): [DefaultArgumentExpr] default terminator
+#  525| [NilLiteralExpr] nil
+#  526| [ConcreteVarDecl] i
+#  526|     Type = Int
+#  533| [ConcreteVarDecl] i
+#  533|     Type = Int
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...
