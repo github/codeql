@@ -133,10 +133,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var views = GetFiles("*.cshtml")
-                .Concat(GetFiles("*.razor"))
-                .ToArray();
+                .Concat(GetFiles("*.razor"));
 
-            if (views.Length > 0)
+            if (views.Any())
             {
                 // TODO: use SDK specified in global.json
                 // TODO: add feature flag to control razor generation

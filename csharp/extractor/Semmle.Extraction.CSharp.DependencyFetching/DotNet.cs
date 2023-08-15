@@ -34,19 +34,34 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private bool RunCommand(string args)
+        private static ProcessStartInfo MakeDotnetStartInfo(string args) =>
+            new ProcessStartInfo(dotnet, args)
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+
+        private bool RunCommandAux(string args, bool silent)
         {
             progressMonitor.RunningProcess($"{dotnet} {args}");
-            using var proc = Process.Start(dotnet, args);
-            proc.WaitForExit();
-            if (proc.ExitCode != 0)
+            using var proc = silent
+                ? Process.Start(MakeDotnetStartInfo(args))
+                : Process.Start(dotnet, args);
+            proc?.WaitForExit();
+            var exitCode = proc?.ExitCode ?? -1;
+            if (exitCode != 0)
             {
-                progressMonitor.CommandFailed(dotnet, args, proc.ExitCode);
+                progressMonitor.CommandFailed(dotnet, args, exitCode);
                 return false;
             }
-
             return true;
         }
+
+        private bool RunCommand(string args) =>
+            RunCommandAux(args, false);
+
+        private bool RunCommandSilently(string args) =>
+            RunCommandAux(args, true);
 
         public bool RestoreToDirectory(string projectOrSolutionFile, string packageDirectory, string? pathToNugetConfig = null)
         {
@@ -75,11 +90,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private IList<string> GetListed(string args, string artifact)
         {
             progressMonitor.RunningProcess($"{dotnet} {args}");
-            var pi = new ProcessStartInfo(dotnet, args)
-            {
-                RedirectStandardOutput = true,
-                UseShellExecute = false
-            };
+            var pi = MakeDotnetStartInfo(args);
             var exitCode = pi.ReadOutput(out var artifacts);
             if (exitCode != 0)
             {
@@ -92,9 +103,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public bool Exec(string execArgs)
         {
-            // TODO: we might need to swallow the stdout of the started process to not pollute the logs of the extraction.
             var args = $"exec {execArgs}";
-            return RunCommand(args);
+            return RunCommandSilently(args);
         }
     }
 }
