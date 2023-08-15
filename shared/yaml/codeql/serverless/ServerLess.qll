@@ -109,7 +109,8 @@ module ServerLess<Input I> {
     File ymlFile, string framework, string handler, string codeUri, string runtime
   ) {
     exists(YamlMapping resource | ymlFile = resource.getFile() |
-      // There exists at least "AWS::Serverless::Function" and "Aliyun::Serverless::Function"
+      // Official AWS API uses "AWS::Serverless::Function" but we've seen that Aliyun uses the same schema ("Aliyun::Serverless::Function"), so we allow any prefix to be used.
+      // Note that "AWS::Serverless::Function" expands to a "AWS::Lambda::Function" when deployed (described here: https://github.com/aws/serverless-application-model#getting-started). Also note that a "AWS::Lambda::Function" requires code in its definition, so needs different handling (see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html)
       resource.lookup("Type").(YamlScalar).getValue().regexpMatch(".*::Serverless::Function") and
       framework = lookupValue(resource, "Type") and
       exists(YamlMapping properties | properties = resource.lookup("Properties") |
