@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
+import com.github.codeql.utils.versions.getFileClassFqName
 import com.github.codeql.utils.versions.getKotlinType
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
@@ -24,7 +25,6 @@ import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
-import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
 import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
@@ -821,26 +821,12 @@ open class KotlinUsesExtractor(
         val parent = parentOf(d)
         if (parent is IrExternalPackageFragment) {
             // This is in a file class.
-            // Get the name in a similar way to the compiler's ExternalPackageParentPatcherLowering
-            // visitMemberAccess/generateOrGetFacadeClass.
-            if (d is IrMemberWithContainerSource) {
-                val containerSource = d.containerSource
-                if (containerSource is FacadeClassSource) {
-                    val facadeClassName = containerSource.facadeClassName
-                    if (facadeClassName != null) {
-                        // TODO: This is really a multifile-class rather than a file-class
-                        return extractFileClass(facadeClassName.fqNameForTopLevelClassMaybeWithDollars)
-                    } else {
-                        return extractFileClass(containerSource.className.fqNameForTopLevelClassMaybeWithDollars)
-                    }
-                } else {
-                    logger.error("Unexpected container source ${containerSource?.javaClass}")
-                    return null
-                }
-            } else {
-                logger.error("Element in external package fragment without container source ${d.javaClass}")
+            val fqName = getFileClassFqName(d)
+            if (fqName == null) {
+                logger.error("Can't get FqName for element in external package fragment ${d.javaClass}")
                 return null
             }
+            return extractFileClass(fqName)
         }
         return useDeclarationParent(parent, canBeTopLevel, classTypeArguments, inReceiverContext)
     }

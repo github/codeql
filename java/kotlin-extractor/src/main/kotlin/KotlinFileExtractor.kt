@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.builtins.functions.BuiltInFunctionArity
 import org.jetbrains.kotlin.config.JvmAnalysisFlags
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.java.JavaVisibilities
-import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
@@ -2384,23 +2383,11 @@ open class KotlinFileExtractor(
         val parent = target.parent
         if (parent is IrExternalPackageFragment) {
             // This is in a file class.
-            // Get the name in a similar way to the compiler's ExternalPackageParentPatcherLowering
-            // visitMemberAccess/generateOrGetFacadeClass.
-            if (target is IrMemberWithContainerSource) {
-                val containerSource = target.containerSource
-                if (containerSource is FacadeClassSource) {
-                    val facadeClassName = containerSource.facadeClassName
-                    if (facadeClassName != null) {
-                        // TODO: This is really a multifile-class rather than a file-class
-                        extractTypeAccess(useFileClassType(facadeClassName.fqNameForTopLevelClassMaybeWithDollars), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
-                    } else {
-                        extractTypeAccess(useFileClassType(containerSource.className.fqNameForTopLevelClassMaybeWithDollars), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
-                    }
-                } else {
-                    logger.warnElement("Unexpected container source ${containerSource?.javaClass}", target)
-                }
+            val fqName = getFileClassFqName(target)
+            if (fqName == null) {
+                logger.error("Can't get FqName for element in external package fragment ${target.javaClass}")
             } else {
-                logger.warnElement("Element in external package fragment without container source ${target.javaClass}", target)
+                extractTypeAccess(useFileClassType(fqName), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
             }
         } else if (parent is IrClass) {
             extractTypeAccessRecursive(parent.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)

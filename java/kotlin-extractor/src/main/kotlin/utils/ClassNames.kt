@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import com.github.codeql.utils.getJvmName
+import com.github.codeql.utils.versions.getFileClassFqName
 import com.intellij.openapi.vfs.StandardFileSystems
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
@@ -13,7 +14,6 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
-import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 
 // Adapted from Kotlin's interpreter/Utils.kt function 'internalName'
@@ -122,20 +122,9 @@ fun getIrDeclarationBinaryPath(d: IrDeclaration): String? {
     }
     if (d.parent is IrExternalPackageFragment) {
         // This is in a file class.
-        // Get the name in a similar way to the compiler's ExternalPackageParentPatcherLowering
-        // visitMemberAccess/generateOrGetFacadeClass.
-        if (d is IrMemberWithContainerSource) {
-            val containerSource = d.containerSource
-            if (containerSource is FacadeClassSource) {
-                val facadeClassName = containerSource.facadeClassName
-                if (facadeClassName != null) {
-                    // This is a multifile-class
-                    return getUnknownBinaryLocation(facadeClassName.fqNameForTopLevelClassMaybeWithDollars.asString())
-                } else {
-                    // This is a file-class
-                    return getUnknownBinaryLocation(containerSource.className.fqNameForTopLevelClassMaybeWithDollars.asString())
-                }
-            }
+        val fqName = getFileClassFqName(d)
+        if (fqName != null) {
+            return getUnknownBinaryLocation(fqName.asString())
         }
     }
     return null
