@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Semmle.BuildAnalyser;
-using Semmle.Util;
 using System.Text;
 
 namespace Semmle.Extraction.CSharp.Standalone
@@ -21,14 +20,14 @@ namespace Semmle.Extraction.CSharp.Standalone
             this.progressMonitor = progressMonitor;
             this.dotNet = dotNet;
 
-            sourceGeneratorFolder = Path.Combine(this.sdk.FullPath, "Sdks/Microsoft.NET.Sdk.Razor/source-generators");
+            sourceGeneratorFolder = Path.Combine(this.sdk.FullPath, "Sdks", "Microsoft.NET.Sdk.Razor", "source-generators");
             if (!Directory.Exists(sourceGeneratorFolder))
             {
                 this.progressMonitor.RazorSourceGeneratorMissing(sourceGeneratorFolder);
                 throw new Exception($"Razor source generator folder {sourceGeneratorFolder} does not exist.");
             }
 
-            cscPath = Path.Combine(this.sdk.FullPath, "Roslyn/bincore/csc.dll");
+            cscPath = Path.Combine(this.sdk.FullPath, "Roslyn", "bincore", "csc.dll");
             if (!File.Exists(cscPath))
             {
                 this.progressMonitor.CscMissing(cscPath);
