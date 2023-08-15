@@ -197,7 +197,7 @@ private predicate isPotentialPackage(Folder f) {
 private string moduleNameFromBase(Container file) {
   // We used to also require `isPotentialPackage(f)` to hold in this case,
   // but we saw modules not getting resolved because their folder did not
-  // contain an `__init__.py` file. 
+  // contain an `__init__.py` file.
   //
   // This makes the folder not be a package but a namespace package instead.
   // In most cases this is a mistake :| See following links for more details
