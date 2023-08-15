@@ -9,7 +9,7 @@ private import codeql.swift.dataflow.ExternalFlow
  * An instance of the `Array` type.
  */
 class ArrayType extends Type {
-  ArrayType() { this.getName().matches("Array<%") or this.getName().matches("[%]") }
+  ArrayType() { this.getCanonicalType().getName().matches("Array<%") }
 }
 
 /**

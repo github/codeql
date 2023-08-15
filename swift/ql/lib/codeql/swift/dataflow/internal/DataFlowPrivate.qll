@@ -747,24 +747,26 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or
-  // read of a dictionary value via subscript operator, with intermediate step
+  // assignment to a dictionary value via subscript operator, with intermediate step
+  // `dict[key] = value`
   exists(AssignExpr assign, SubscriptExpr subscript |
     subscript = assign.getDest() and
     (
       subscript.getArgument(0).getExpr() = node1.asExpr() and
       node2.(DictionarySubscriptNode).getExpr() = subscript and
-      c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
+      c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 0))
       or
       assign.getSource() = node1.asExpr() and
       node2.(DictionarySubscriptNode).getExpr() = subscript and
       c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
       or
-      node1.(DictionarySubscriptNode) = node1 and
-      node2.asExpr() = subscript and
+      node1.(DictionarySubscriptNode).getExpr() = subscript and
+      node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
       c.isSingleton(any(Content::CollectionContent cc))
     )
   )
   or
+  // creation of a dictionary `[key: value, ...]`
   exists(DictionaryExpr dict |
     node1.asExpr() = dict.getAnElement() and
     node2.asExpr() = dict and
@@ -872,7 +874,11 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
-  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode() and
+  (
+    c.isSingleton(any(Content::FieldContent fc)) or
+    c.isSingleton(any(Content::TupleContent tc))
+  )
 }
 
 /**
