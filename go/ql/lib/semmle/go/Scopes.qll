@@ -678,6 +678,8 @@ private predicate builtinFunction(
   or
   name = "cap" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
+  name = "clear" and pure = false and mayPanic = false and mustPanic = false and variadic = false
+  or
   name = "close" and pure = false and mayPanic = true and mustPanic = false and variadic = false
   or
   name = "complex" and pure = true and mayPanic = true and mustPanic = false and variadic = false
@@ -691,6 +693,10 @@ private predicate builtinFunction(
   name = "len" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
   name = "make" and pure = true and mayPanic = true and mustPanic = false and variadic = true
+  or
+  name = "max" and pure = true and mayPanic = false and mustPanic = false and variadic = true
+  or
+  name = "min" and pure = true and mayPanic = false and mustPanic = false and variadic = true
   or
   name = "new" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
