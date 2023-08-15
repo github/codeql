@@ -759,3 +759,35 @@ func testWriteOptional() {
     sink(arg: mo2!.v2!) // $ MISSING:flow=749
     sink(arg: mo2!.v3) // $ MISSING:flow=750
 }
+
+func testVarargs1(args: Int...) {
+    sink(arg: args)
+    sink(arg: args[0]) // $ MISSING: flow=790
+}
+
+func testVarargs2(_ v: Int, _ args: Int...) {
+    sink(arg: v) // $ flow=791
+    sink(arg: args)
+    sink(arg: args[0])
+    sink(arg: args[1])
+}
+
+func testVarargs3(_ v: Int, _ args: Int...) {
+    sink(arg: v)
+    sink(arg: args)
+    sink(arg: args[0])
+    sink(arg: args[1]) // $ MISSING: flow=792
+
+    for arg in args {
+        sink(arg: arg) // $ MISSING: flow=792
+    }
+
+    let myKeyPath = \[Int][1]
+    sink(arg: args[keyPath: myKeyPath]) // $ MISSING: flow=792
+}
+
+func testVarargsCaller() {
+    testVarargs1(args: source())
+    testVarargs2(source(), 2, 3)
+    testVarargs3(1, 2, source())
+}
