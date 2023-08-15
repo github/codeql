@@ -781,6 +781,9 @@ func testDictionary() {
 
     dict3[source()] = 2
 
+    sink(arg: dict3.randomElement()!.0) // $ MISSING: flow=779
+    sink(arg: dict3.randomElement()!.1) // $ SPURIOUS: flow=779 MISSING: flow=782
+
     for (key, value) in dict3 {
         sink(arg: key) // $ MISSING: flow=782
         sink(arg: value) // $ MISSING: flow=779
@@ -789,8 +792,8 @@ func testDictionary() {
     var dict4 = [1:source()]
     sink(arg: dict4.updateValue(1, forKey: source())!)
     sink(arg: dict4.updateValue(source(), forKey: 2)!)
-    sink(arg: dict4.randomElement()!.0) // $ flow=790
-    sink(arg: dict4.randomElement()!.1) // $ flow=789 flow=791
-    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=790
-    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=789 flow=791
+    sink(arg: dict4.randomElement()!.0) // $ flow=793
+    sink(arg: dict4.randomElement()!.1) // $ flow=792 flow=794
+    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=793
+    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=792 flow=794
 }
