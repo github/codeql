@@ -732,7 +732,7 @@ void test_does_not_write_source_to_dereference()
 {
   int x;
   does_not_write_source_to_dereference(&x);
-  sink(x); // $ ast,ir=733:7 SPURIOUS: ast,ir=726:11
+  sink(x); // $ ast=733:7 ir SPURIOUS: ast=726:11
 }
 
 void sometimes_calls_sink_eq(int x, int n) {
