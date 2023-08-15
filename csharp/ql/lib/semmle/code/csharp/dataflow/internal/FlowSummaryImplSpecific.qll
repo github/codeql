@@ -205,10 +205,9 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
   or
   sc = TWithContentSummaryComponent(_) and result = "WithElement"
   or
-  exists(ReturnKind rk |
+  exists(OutRefReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    not rk = getReturnValueKind() and
-    result = "ReturnValue[" + rk + "]"
+    result = "Argument[" + rk.getPosition() + "]"
   )
 }
 
