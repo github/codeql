@@ -1,6 +1,6 @@
 import go
 
-predicate getLocation(DataFlow::Node node, string loc) {
+predicate hasLocation(DataFlow::Node node, string loc) {
   node.hasLocationInfo(loc, _, _, _, _) and loc != ""
   or
   exists(string pkg, string name |
@@ -35,5 +35,5 @@ where
     // Not available on arm64
     pkg = "vendor/golang.org/x/crypto/internal/poly1305.mac" and name = "Write"
   ) and
-  getLocation(pred, predLoc)
+  hasLocation(pred, predLoc)
 select predLoc, pred, succ
