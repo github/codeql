@@ -104,7 +104,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool Exec(string execArgs)
         {
             var args = $"exec {execArgs}";
-            return RunCommandSilently(args);
+            //return RunCommandSilently(args);
+            return RunCommand(args);
         }
     }
 }

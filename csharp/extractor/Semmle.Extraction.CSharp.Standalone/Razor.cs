@@ -62,6 +62,8 @@ namespace Semmle.Extraction.CSharp.Standalone
             {
                 GenerateAnalyzerConfig(cshtmls, analyzerConfig);
 
+                progressMonitor.LogInfo($"Analyzer config content: {File.ReadAllText(analyzerConfig)}");
+
                 var args = new StringBuilder();
                 args.Append($"/target:exe /generatedfilesout:\"{outputFolder}\" /out:\"{dllPath}\" /analyzerconfig:\"{analyzerConfig}\" ");
 
