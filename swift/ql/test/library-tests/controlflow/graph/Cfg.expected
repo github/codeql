@@ -6011,7 +6011,7 @@ cfg.swift:
 #-----|  -> stream
 
 #  523| var ... = ...
-#-----|  -> stream
+#-----|  -> .makeAsyncIterator()
 
 #  523| stream
 #-----| match -> AsyncStream<Element>.init(_:bufferingPolicy:_:)
@@ -6084,7 +6084,7 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #  525| { ... }
-#-----|  -> ....(_:_:)
+#-----|  -> .makeIterator()
 
 #  525| { ... }
 #-----|  -> call to detached(priority:operation:)
@@ -6100,6 +6100,12 @@ cfg.swift:
 #-----|  -> 100
 
 #  526| ... ....(_:_:) ...
+#-----|  -> call to makeIterator()
+
+#  526| .makeIterator()
+#-----|  -> ....(_:_:)
+
+#  526| call to makeIterator()
 #-----|  -> for ... in ... { ... }
 
 #  526| ....(_:_:)
@@ -6139,8 +6145,17 @@ cfg.swift:
 #  533| i
 #-----| match -> print(_:separator:terminator:)
 
-#  533| stream
+#  533| (AsyncStream<Int>) ...
+#-----|  -> call to makeAsyncIterator()
+
+#  533| .makeAsyncIterator()
+#-----|  -> stream
+
+#  533| call to makeAsyncIterator()
 #-----|  -> for ... in ... { ... }
+
+#  533| stream
+#-----|  -> (AsyncStream<Int>) ...
 
 #  534| print(_:separator:terminator:)
 #-----|  -> i

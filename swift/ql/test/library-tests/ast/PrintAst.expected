@@ -3250,15 +3250,18 @@ cfg.swift:
 #  525|                       getBody(): [BraceStmt] { ... }
 #  526|                         getElement(0): [ForEachStmt] for ... in ... { ... }
 #  526|                           getPattern(): [NamedPattern] i
-#  526|                           getSequence(): [BinaryExpr] ... ....(_:_:) ...
-#  526|                             getFunction(): [MethodLookupExpr] ....(_:_:)
-#  526|                               getBase(): [TypeExpr] Int.Type
-#  526|                                 getTypeRepr(): [TypeRepr] Int
-#  526|                               getMethodRef(): [DeclRefExpr] ...(_:_:)
-#  526|                             getArgument(0): [Argument] : 1
-#  526|                               getExpr(): [IntegerLiteralExpr] 1
-#  526|                             getArgument(1): [Argument] : 100
-#  526|                               getExpr(): [IntegerLiteralExpr] 100
+#  526|                           getSequence(): [CallExpr] call to makeIterator()
+#  526|                             getFunction(): [MethodLookupExpr] .makeIterator()
+#  526|                               getBase(): [BinaryExpr] ... ....(_:_:) ...
+#  526|                                 getFunction(): [MethodLookupExpr] ....(_:_:)
+#  526|                                   getBase(): [TypeExpr] Int.Type
+#  526|                                     getTypeRepr(): [TypeRepr] Int
+#  526|                                   getMethodRef(): [DeclRefExpr] ...(_:_:)
+#  526|                                 getArgument(0): [Argument] : 1
+#  526|                                   getExpr(): [IntegerLiteralExpr] 1
+#  526|                                 getArgument(1): [Argument] : 100
+#  526|                                   getExpr(): [IntegerLiteralExpr] 100
+#-----|                               getMethodRef(): [DeclRefExpr] makeIterator()
 #  526|                           getBody(): [BraceStmt] { ... }
 #  527|                             getElement(0): [CallExpr] call to yield(_:)
 #  527|                               getFunction(): [MethodLookupExpr] .yield(_:)
@@ -3275,7 +3278,11 @@ cfg.swift:
 #  523|       getPattern(0): [NamedPattern] stream
 #  533|     getElement(1): [ForEachStmt] for ... in ... { ... }
 #  533|       getPattern(): [NamedPattern] i
-#  533|       getSequence(): [DeclRefExpr] stream
+#  533|       getSequence(): [CallExpr] call to makeAsyncIterator()
+#  533|         getFunction(): [MethodLookupExpr] .makeAsyncIterator()
+#  533|           getBase(): [DeclRefExpr] stream
+#  533|           getBase().getFullyConverted(): [LoadExpr] (AsyncStream<Int>) ...
+#-----|           getMethodRef(): [DeclRefExpr] makeAsyncIterator()
 #  533|       getBody(): [BraceStmt] { ... }
 #  534|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #  534|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
