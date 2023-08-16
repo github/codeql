@@ -509,6 +509,10 @@
 | main.go | main.go:28:2:28:4 | implicit dereference | main.go:28:2:28:9 | selection of Body |
 | main.go | main.go:28:2:28:4 | req | main.go:28:2:28:4 | implicit dereference |
 | main.go | main.go:28:2:28:9 | selection of Body | main.go:27:2:27:2 | definition of b |
+| main.go | main.go:34:2:34:4 | implicit dereference | main.go:32:16:32:18 | definition of req |
+| main.go | main.go:34:2:34:4 | implicit dereference | main.go:34:2:34:9 | selection of Body |
+| main.go | main.go:34:2:34:4 | req | main.go:34:2:34:4 | implicit dereference |
+| main.go | main.go:34:2:34:9 | selection of Body | main.go:33:2:33:2 | definition of b |
 | math/big.Accuracy.String | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
 | math/big.Float.MarshalText | file://:0:0:0:0 | [summary param] -1 in MarshalText | file://:0:0:0:0 | [summary] to write: ReturnValue in MarshalText |
 | math/big.Float.String | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |

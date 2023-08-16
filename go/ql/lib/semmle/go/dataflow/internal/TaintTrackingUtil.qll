@@ -408,3 +408,19 @@ class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTain
     this = DataFlow::BarrierGuard<listOfConstantsComparisonSanitizerGuard/3>::getABarrierNode()
   }
 }
+
+/**
+ * The `clear` built-in function deletes or zeroes out all elements of a map or slice
+ * and therefore acts as a general sanitizer for taint flow to any uses dominated by it.
+ */
+private class ClearSanitizer extends DefaultTaintSanitizer {
+  ClearSanitizer() {
+    exists(SsaWithFields var, DataFlow::CallNode call, DataFlow::Node arg | this = var.getAUse() |
+      call = Builtin::clear().getACall() and
+      arg = call.getAnArgument() and
+      arg = var.getAUse() and
+      arg != this and
+      this.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+    )
+  }
+}
