@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 
 namespace Semmle.BuildAnalyser
 {
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    internal sealed partial class BuildAnalysis : IDisposable
+    internal sealed class BuildAnalysis : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly ProgressMonitor progressMonitor;
@@ -29,6 +28,9 @@ namespace Semmle.BuildAnalyser
         private readonly Options options;
         private readonly DirectoryInfo sourceDir;
         private readonly DotNet dotnet;
+        private readonly FileContent fileContent;
+        private readonly TemporaryDirectory packageDirectory;
+
 
         /// <summary>
         /// Performs a C# build analysis.
@@ -55,6 +57,9 @@ namespace Semmle.BuildAnalyser
 
             this.progressMonitor.FindingFiles(options.SrcDir);
 
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+
+            this.fileContent = new FileContent(packageDirectory, progressMonitor, () => GetFiles("*.*"));
             this.allSources = GetFiles("*.cs").ToArray();
             var allProjects = GetFiles("*.csproj");
             var solutions = options.SolutionFile is not null
@@ -63,20 +68,25 @@ namespace Semmle.BuildAnalyser
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
 
-            // Find DLLs in the .Net Framework
+            // Find DLLs in the .Net / Asp.Net Framework
             if (options.ScanNetFrameworkDlls)
             {
-                var runtimeLocation = new Runtime(dotnet).GetRuntime(options.UseSelfContainedDotnet);
-                progressMonitor.Log(Util.Logging.Severity.Debug, $"Runtime location selected: {runtimeLocation}");
+                var runtime = new Runtime(dotnet);
+                var runtimeLocation = runtime.GetRuntime(options.UseSelfContainedDotnet);
+                progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
                 dllDirNames.Add(runtimeLocation);
+
+                if (fileContent.UseAspNetDlls && runtime.GetAspRuntime() is string aspRuntime)
+                {
+                    progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspRuntime}");
+                    dllDirNames.Add(aspRuntime);
+                }
             }
 
             if (options.UseMscorlib)
             {
                 UseReference(typeof(object).Assembly.Location);
             }
-
-            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
 
             if (options.UseNuGet)
             {
@@ -187,6 +197,7 @@ namespace Semmle.BuildAnalyser
             {
                 finalAssemblyList[r.Name] = r;
             }
+
             // Update the used references list
             usedReferences.Clear();
             foreach (var r in finalAssemblyList.Select(r => r.Value.Filename))
@@ -210,24 +221,18 @@ namespace Semmle.BuildAnalyser
         /// Store that a particular reference file is used.
         /// </summary>
         /// <param name="reference">The filename of the reference.</param>
-        private void UseReference(string reference)
-        {
-            usedReferences[reference] = true;
-        }
+        private void UseReference(string reference) => usedReferences[reference] = true;
 
         /// <summary>
         /// Store that a particular source file is used (by a project file).
         /// </summary>
         /// <param name="sourceFile">The source file.</param>
-        private void UseSource(FileInfo sourceFile)
-        {
-            sources[sourceFile.FullName] = sourceFile.Exists;
-        }
+        private void UseSource(FileInfo sourceFile) => sources[sourceFile.FullName] = sourceFile.Exists;
 
         /// <summary>
         /// The list of resolved reference files.
         /// </summary>
-        public IEnumerable<string> ReferenceFiles => this.usedReferences.Keys;
+        public IEnumerable<string> ReferenceFiles => usedReferences.Keys;
 
         /// <summary>
         /// The list of source files used in projects.
@@ -242,7 +247,7 @@ namespace Semmle.BuildAnalyser
         /// <summary>
         /// List of assembly IDs which couldn't be resolved.
         /// </summary>
-        public IEnumerable<string> UnresolvedReferences => this.unresolvedReferences.Select(r => r.Key);
+        public IEnumerable<string> UnresolvedReferences => unresolvedReferences.Select(r => r.Key);
 
         /// <summary>
         /// List of source files which were mentioned in project files but
@@ -256,12 +261,7 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         /// <param name="id">The assembly ID.</param>
         /// <param name="projectFile">The project file making the reference.</param>
-        private void UnresolvedReference(string id, string projectFile)
-        {
-            unresolvedReferences[id] = projectFile;
-        }
-
-        private readonly TemporaryDirectory packageDirectory;
+        private void UnresolvedReference(string id, string projectFile) => unresolvedReferences[id] = projectFile;
 
         /// <summary>
         /// Reads all the source files and references from the given list of projects.
@@ -318,10 +318,8 @@ namespace Semmle.BuildAnalyser
 
         }
 
-        private bool Restore(string target, string? pathToNugetConfig = null)
-        {
-            return dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName, pathToNugetConfig);
-        }
+        private bool Restore(string target, string? pathToNugetConfig = null) =>
+            dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName, pathToNugetConfig);
 
         private void Restore(IEnumerable<string> targets, string? pathToNugetConfig = null)
         {
@@ -331,11 +329,9 @@ namespace Semmle.BuildAnalyser
             }
         }
 
+
         private void DownloadMissingPackages(IEnumerable<string> restoreTargets)
         {
-            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName).Select(d => Path.GetFileName(d).ToLowerInvariant()).ToHashSet();
-            var notYetDownloadedPackages = new HashSet<string>();
-
             var nugetConfigs = GetFiles("nuget.config", recurseSubdirectories: true).ToArray();
             string? nugetConfig = null;
             if (nugetConfigs.Length > 1)
@@ -352,46 +348,7 @@ namespace Semmle.BuildAnalyser
                 nugetConfig = nugetConfigs.FirstOrDefault();
             }
 
-            var allFiles = GetFiles("*.*");
-            foreach (var file in allFiles)
-            {
-                try
-                {
-                    using var sr = new StreamReader(file);
-                    ReadOnlySpan<char> line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        foreach (var valueMatch in PackageReference().EnumerateMatches(line))
-                        {
-                            // We can't get the group from the ValueMatch, so doing it manually:
-                            var match = line.Slice(valueMatch.Index, valueMatch.Length);
-                            var includeIndex = match.IndexOf("Include", StringComparison.InvariantCultureIgnoreCase);
-                            if (includeIndex == -1)
-                            {
-                                continue;
-                            }
-
-                            match = match.Slice(includeIndex + "Include".Length + 1);
-
-                            var quoteIndex1 = match.IndexOf("\"");
-                            var quoteIndex2 = match.Slice(quoteIndex1 + 1).IndexOf("\"");
-
-                            var packageName = match.Slice(quoteIndex1 + 1, quoteIndex2).ToString().ToLowerInvariant();
-                            if (!alreadyDownloadedPackages.Contains(packageName))
-                            {
-                                notYetDownloadedPackages.Add(packageName);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    progressMonitor.FailedToReadFile(file, ex);
-                    continue;
-                }
-            }
-
-            foreach (var package in notYetDownloadedPackages)
+            foreach (var package in fileContent.NotYetDownloadedPackages)
             {
                 progressMonitor.NugetInstall(package);
                 using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
@@ -434,12 +391,6 @@ namespace Semmle.BuildAnalyser
             });
         }
 
-        public void Dispose()
-        {
-            packageDirectory?.Dispose();
-        }
-
-        [GeneratedRegex("<PackageReference .*Include=\"(.*?)\".*/>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex PackageReference();
+        public void Dispose() => packageDirectory?.Dispose();
     }
 }

@@ -74,7 +74,7 @@ predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 /**
  * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
  */
-predicate jumpStep = DataFlowPrivate::jumpStep/2;
+predicate jumpStep = DataFlowPrivate::jumpStepTypeTracker/2;
 
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]

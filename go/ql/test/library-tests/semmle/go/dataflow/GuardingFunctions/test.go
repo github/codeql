@@ -342,7 +342,7 @@ func test() {
 	{
 		s := source()
 		if guardBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -351,7 +351,7 @@ func test() {
 	{
 		s := source()
 		if guardBoolStmt(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -362,7 +362,7 @@ func test() {
 		if juggleParams("other arg", s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -371,14 +371,14 @@ func test() {
 		if guardBoolNeg(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolCmp(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -389,14 +389,14 @@ func test() {
 		if guardBoolNegCmp(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLOrLhs(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -405,16 +405,16 @@ func test() {
 	{
 		s := source()
 		if guardBoolLOrNegLhs(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLOrRhs(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -423,18 +423,18 @@ func test() {
 	{
 		s := source()
 		if guardBoolLOrNegRhs(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLAndLhs(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -443,16 +443,16 @@ func test() {
 		if guardBoolLAndNegLhs(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLAndRhs(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -461,14 +461,14 @@ func test() {
 		if guardBoolLAndNegRhs(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolProxy(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -479,14 +479,14 @@ func test() {
 		if guardBoolNegProxy(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolCmpProxy(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -497,14 +497,14 @@ func test() {
 		if guardBoolNegCmpProxy(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLOrLhsProxy(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -513,16 +513,16 @@ func test() {
 	{
 		s := source()
 		if guardBoolLOrNegLhsProxy(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLOrRhsProxy(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -531,18 +531,18 @@ func test() {
 	{
 		s := source()
 		if guardBoolLOrNegRhsProxy(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLAndLhsProxy(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -551,16 +551,16 @@ func test() {
 		if guardBoolLAndNegLhsProxy(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLAndRhsProxy(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -569,7 +569,7 @@ func test() {
 		if guardBoolLAndNegRhsProxy(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -578,14 +578,14 @@ func test() {
 		if guardProxyNilToBool(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardNeqProxyNilToBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -594,7 +594,7 @@ func test() {
 	{
 		s := source()
 		if guardNotEqProxyNilToBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -603,7 +603,7 @@ func test() {
 	{
 		s := source()
 		if guardLOrLhsProxyNilToBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -612,16 +612,16 @@ func test() {
 	{
 		s := source()
 		if guardLOrNegLhsProxyNilToBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardLOrRhsProxyNilToBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -630,18 +630,18 @@ func test() {
 	{
 		s := source()
 		if guardLOrNegRhsProxyNilToBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardLAndLhsProxyNilToBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -650,16 +650,16 @@ func test() {
 		if guardLAndNegLhsProxyNilToBool(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardLAndRhsProxyNilToBool(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -668,7 +668,7 @@ func test() {
 		if guardLAndNegRhsProxyNilToBool(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -677,7 +677,7 @@ func test() {
 		if guard(s) == nil {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -686,14 +686,14 @@ func test() {
 		if guardBoolProxyToNil(s) == nil {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolNegProxyToNil(s) == nil {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -704,14 +704,14 @@ func test() {
 		if guardBoolCmpProxyToNil(s) == nil {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolNegCmpProxyToNil(s) == nil {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -722,16 +722,16 @@ func test() {
 		if guardBoolLOrLhsProxyToNil(s) == nil {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLOrNegLhsProxyToNil(s) == nil {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -740,32 +740,32 @@ func test() {
 		if guardBoolLOrRhsProxyToNil(s) == nil {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLOrNegRhsProxyToNil(s) == nil {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLAndLhsProxyToNil(s) == nil {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLAndNegLhsProxyToNil(s) == nil {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -774,16 +774,16 @@ func test() {
 	{
 		s := source()
 		if guardBoolLAndRhsProxyToNil(s) == nil {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if guardBoolLAndNegRhsProxyToNil(s) == nil {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -794,7 +794,7 @@ func test() {
 		if directProxyNil(s) == nil {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -803,7 +803,7 @@ func test() {
 		if deeplyNestedConditionalLeft(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -812,7 +812,7 @@ func test() {
 		if deeplyNestedConditionalMiddle(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -821,7 +821,7 @@ func test() {
 		if deeplyNestedConditionalRight(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 
@@ -832,7 +832,7 @@ func test() {
 		s := source()
 		isInvalid := guardBool(s)
 		if isInvalid {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		} else {
 			sink(s)
 		}
@@ -842,9 +842,9 @@ func test() {
 		s := source()
 		isValid := !guardBool(s)
 		if isValid {
-			sink(s) // $ SPURIOUS: dataflow=s
+			sink(s) // $ SPURIOUS: hasValueFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasValueFlow="s"
 		}
 	}
 

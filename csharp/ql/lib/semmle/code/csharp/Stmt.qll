@@ -861,6 +861,12 @@ class YieldReturnStmt extends YieldStmt {
   override string getAPrimaryQlClass() { result = "YieldReturnStmt" }
 }
 
+bindingset[cfe1, cfe2]
+pragma[inline_late]
+private predicate sameCallable(ControlFlowElement cfe1, ControlFlowElement cfe2) {
+  cfe1.getEnclosingCallable() = cfe2.getEnclosingCallable()
+}
+
 /**
  * A `try` statement, for example
  *
@@ -947,8 +953,7 @@ class TryStmt extends Stmt, @try_stmt {
       mid = this.getATriedElement() and
       not mid instanceof TryStmt and
       result = mid.getAChild() and
-      pragma[only_bind_into](mid.getEnclosingCallable()) =
-        pragma[only_bind_into](result.getEnclosingCallable())
+      sameCallable(mid, result)
     )
   }
 }

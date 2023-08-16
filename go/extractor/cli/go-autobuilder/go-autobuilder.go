@@ -773,7 +773,7 @@ func installDependenciesAndBuild() {
 
 	goModVersion, goModVersionFound := tryReadGoDirective(buildInfo)
 
-	if goModVersionFound && semver.Compare("v"+goModVersion, getEnvGoSemVer()) >= 0 {
+	if goModVersionFound && semver.Compare("v"+goModVersion, getEnvGoSemVer()) > 0 {
 		diagnostics.EmitNewerGoVersionNeeded()
 	}
 
