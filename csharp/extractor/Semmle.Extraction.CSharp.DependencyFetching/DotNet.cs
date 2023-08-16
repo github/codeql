@@ -22,31 +22,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private void Info()
         {
             // TODO: make sure the below `dotnet` version is matching the one specified in global.json
-            progressMonitor.RunningProcess($"{dotnet} --info");
-            using var proc = Process.Start(dotnet, "--info");
-            proc.WaitForExit();
-            var ret = proc.ExitCode;
-
-            if (ret != 0)
+            var res = RunCommand("--info");
+            if (!res)
             {
-                progressMonitor.CommandFailed(dotnet, "--info", ret);
-                throw new Exception($"{dotnet} --info failed with exit code {ret}.");
+                throw new Exception($"{dotnet} --info failed.");
             }
         }
 
-        private static ProcessStartInfo MakeDotnetStartInfo(string args) =>
+        private static ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput) =>
             new ProcessStartInfo(dotnet, args)
             {
                 UseShellExecute = false,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = redirectStandardOutput
             };
 
-        private bool RunCommandAux(string args, bool silent)
+        private bool RunCommand(string args)
         {
             progressMonitor.RunningProcess($"{dotnet} {args}");
-            using var proc = silent
-                ? Process.Start(MakeDotnetStartInfo(args))
-                : Process.Start(dotnet, args);
+            using var proc = Process.Start(MakeDotnetStartInfo(args, redirectStandardOutput: false));
             proc?.WaitForExit();
             var exitCode = proc?.ExitCode ?? -1;
             if (exitCode != 0)
@@ -56,12 +49,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             return true;
         }
-
-        private bool RunCommand(string args) =>
-            RunCommandAux(args, false);
-
-        private bool RunCommandSilently(string args) =>
-            RunCommandAux(args, true);
 
         public bool RestoreToDirectory(string projectOrSolutionFile, string packageDirectory, string? pathToNugetConfig = null)
         {
@@ -90,7 +77,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private IList<string> GetListed(string args, string artifact)
         {
             progressMonitor.RunningProcess($"{dotnet} {args}");
-            var pi = MakeDotnetStartInfo(args);
+            var pi = MakeDotnetStartInfo(args, redirectStandardOutput: true);
             var exitCode = pi.ReadOutput(out var artifacts);
             if (exitCode != 0)
             {
@@ -104,7 +91,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool Exec(string execArgs)
         {
             var args = $"exec {execArgs}";
-            //return RunCommandSilently(args);
             return RunCommand(args);
         }
     }
