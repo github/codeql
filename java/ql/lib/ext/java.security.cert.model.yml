@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.security.cert", "X509CertSelector", False, "setSubjectPublicKey", "(byte[])", "crypto-parameter", "Argument[0]", "manual"]
+      - ["java.security.cert", "X509CertSelector", False, "setSubjectPublicKey", "(byte[])", "", "Argument[0]", "crypto-parameter", "manual"]
