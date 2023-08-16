@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String, String)", "credential-other", "Argument[0]", "manual"]
-      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String, String)", "credential-other", "Argument[1]", "manual"]
-      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String, char[])", "credential-other", "Argument[0]", "manual"]
-      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String, char[])", "credential-other", "Argument[1]", "manual"]
+      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String, String)", "", "Argument[0]", "credential-other", "manual"]
+      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String, String)", "", "Argument[1]", "credential-other", "manual"]
+      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String, char[])", "", "Argument[0]", "credential-other", "manual"]
+      - ["net.schmizz.sshj", "SSHClient", False, "authPassword", "(String, char[])", "", "Argument[1]", "credential-other", "manual"]

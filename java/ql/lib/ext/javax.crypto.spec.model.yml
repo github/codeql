@@ -11,8 +11,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.crypto.spec", "IvParameterSpec", False, "IvParameterSpec", "(byte[])", "credential-other", "Argument[0]", "manual"]
-      - ["javax.crypto.spec", "IvParameterSpec", False, "IvParameterSpec", "(byte[], int, int)", "credential-other", "Argument[0]", "manual"]
       - ["javax.crypto.spec", "PBEKeySpec", False, "PBEKeySpec", "(char[])", "", "Argument[0]", "credential-password", "manual"]
       - ["javax.crypto.spec", "PBEKeySpec", False, "PBEKeySpec", "(char[], byte[], int)", "", "Argument[0]", "credential-password", "manual"]
       - ["javax.crypto.spec", "PBEKeySpec", False, "PBEKeySpec", "(char[], byte[], int, int)", "", "Argument[0]", "credential-password", "manual"]
@@ -25,3 +23,5 @@ extensions:
       - ["javax.crypto.spec", "DESedeKeySpec", False, "isParityAdjusted", "(byte[], int)", "", "Argument[0]", "crypto-parameter", "manual"]
       - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[], String)", "", "Argument[0]", "crypto-parameter", "manual"]
       - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[], int, int, String)", "", "Argument[0]", "crypto-parameter", "manual"]
+      - ["javax.crypto.spec", "IvParameterSpec", False, "IvParameterSpec", "(byte[])", "", "Argument[0]", "credential-other", "manual"]
+      - ["javax.crypto.spec", "IvParameterSpec", False, "IvParameterSpec", "(byte[], int, int)", "", "Argument[0]", "credential-other", "manual"]
