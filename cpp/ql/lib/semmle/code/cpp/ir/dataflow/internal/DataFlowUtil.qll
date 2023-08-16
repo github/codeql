@@ -781,26 +781,12 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDef
   override Expr getDefinedExpr() { result = operand.getDef().getUnconvertedResultExpression() }
 }
 
-pragma[nomagic]
-predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int indirectionIndex) {
-  Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
-  operandForFullyConvertedCall(operand, call)
-}
-
-pragma[nomagic]
-predicate indirectReturnOutNodeInstruction0(
-  CallInstruction call, Instruction instr, int indirectionIndex
-) {
-  Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
-  instructionForFullyConvertedCall(instr, call)
-}
-
 /**
  * Holds if `node` is an indirect operand with columns `(operand, indirectionIndex)`, and
  * `operand` represents a use of the fully converted value of `call`.
  */
 private predicate hasOperand(Node node, CallInstruction call, int indirectionIndex, Operand operand) {
-  indirectReturnOutNodeOperand0(call, operand, indirectionIndex) and
+  operandForFullyConvertedCall(operand, call) and
   hasOperandAndIndex(node, operand, indirectionIndex)
 }
 
@@ -813,7 +799,7 @@ private predicate hasOperand(Node node, CallInstruction call, int indirectionInd
 private predicate hasInstruction(
   Node node, CallInstruction call, int indirectionIndex, Instruction instr
 ) {
-  indirectReturnOutNodeInstruction0(call, instr, indirectionIndex) and
+  instructionForFullyConvertedCall(instr, call) and
   hasInstructionAndIndex(node, instr, indirectionIndex)
 }
 
@@ -1534,6 +1520,25 @@ private module Cached {
     )
   }
 
+  /**
+   * Holds if `operand.getDef() = instr`, but there exists a `StoreInstruction` that
+   * writes to an address that is equivalent to the value computed by `instr` in
+   * between `instr` and `operand`, and therefore there should not be flow from `*instr`
+   * to `*operand`.
+   */
+  pragma[nomagic]
+  private predicate isStoredToBetween(Instruction instr, Operand operand) {
+    simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand)) and
+    exists(StoreInstruction store, IRBlock block, int storeIndex, int instrIndex, int operandIndex |
+      store.getDestinationAddress() = instr and
+      block.getInstruction(storeIndex) = store and
+      block.getInstruction(instrIndex) = instr and
+      block.getInstruction(operandIndex) = operand.getUse() and
+      instrIndex < storeIndex and
+      storeIndex < operandIndex
+    )
+  }
+
   private predicate indirectionInstructionFlow(
     RawIndirectInstruction nodeFrom, IndirectOperand nodeTo
   ) {
@@ -1543,7 +1548,8 @@ private module Cached {
       simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand))
     |
       hasOperandAndIndex(nodeTo, operand, pragma[only_bind_into](indirectionIndex)) and
-      hasInstructionAndIndex(nodeFrom, instr, pragma[only_bind_into](indirectionIndex))
+      hasInstructionAndIndex(nodeFrom, instr, pragma[only_bind_into](indirectionIndex)) and
+      not isStoredToBetween(instr, operand)
     )
   }
 

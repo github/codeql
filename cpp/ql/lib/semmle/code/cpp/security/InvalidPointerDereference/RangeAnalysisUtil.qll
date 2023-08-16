@@ -18,12 +18,21 @@ private Instruction getABoundIn(SemBound b, IRFunction func) {
  * Holds if `i <= b + delta`.
  */
 pragma[inline]
-private predicate boundedImpl(Instruction i, Instruction b, int delta) {
+private predicate boundedImplCand(Instruction i, Instruction b, int delta) {
   exists(SemBound bound, IRFunction func |
     semBounded(getSemanticExpr(i), bound, delta, true, _) and
     b = getABoundIn(bound, func) and
     i.getEnclosingIRFunction() = func
   )
+}
+
+/**
+ * Holds if `i <= b + delta` and `delta` is the smallest integer that satisfies
+ * this condition.
+ */
+pragma[inline]
+private predicate boundedImpl(Instruction i, Instruction b, int delta) {
+  delta = min(int cand | boundedImplCand(i, b, cand))
 }
 
 /**

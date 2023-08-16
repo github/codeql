@@ -55,7 +55,8 @@ private module Cached {
       )
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-    TFieldValueNode(Field f)
+    TFieldValueNode(Field f) or
+    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn)
 
   cached
   newtype TContent =
@@ -64,6 +65,7 @@ private module Cached {
     TCollectionContent() or
     TMapKeyContent() or
     TMapValueContent() or
+    TCapturedVariableContent(CapturedVariable v) or
     TSyntheticFieldContent(SyntheticField s)
 
   cached
@@ -73,6 +75,7 @@ private module Cached {
     TCollectionContentApprox() or
     TMapKeyContentApprox() or
     TMapValueContentApprox() or
+    TCapturedVariableContentApprox(CapturedVariable v) or
     TSyntheticFieldApproxContent()
 }
 
@@ -126,6 +129,8 @@ module Public {
       result = this.(MallocNode).getClassInstanceExpr().getType()
       or
       result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
+      or
+      result = this.(CaptureNode).getTypeImpl()
       or
       result = this.(FieldValueNode).getField().getType()
     }
@@ -372,6 +377,7 @@ module Private {
     result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
     result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable() or
+    result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
     result.asFieldScope() = n.(FieldValueNode).getField()
   }
 
@@ -491,6 +497,28 @@ module Private {
       c.asSummarizedCallable() = this.getSummarizedCallable() and pos = this.getPosition()
     }
   }
+
+  /**
+   * A synthesized data flow node representing a closure object that tracks
+   * captured variables.
+   */
+  class CaptureNode extends Node, TCaptureNode {
+    private CaptureFlow::SynthesizedCaptureNode cn;
+
+    CaptureNode() { this = TCaptureNode(cn) }
+
+    CaptureFlow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
+
+    override Location getLocation() { result = cn.getLocation() }
+
+    override string toString() { result = cn.toString() }
+
+    Type getTypeImpl() {
+      exists(Variable v | cn.isVariableAccess(v) and result = v.getType())
+      or
+      cn.isInstanceAccess() and result = cn.getEnclosingCallable().getDeclaringType()
+    }
+  }
 }
 
 private import Private
@@ -516,6 +544,17 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
 
   SummaryPostUpdateNode() {
     FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+  }
+
+  override Node getPreUpdateNode() { result = pre }
+}
+
+private class CapturePostUpdateNode extends PostUpdateNode, CaptureNode {
+  private CaptureNode pre;
+
+  CapturePostUpdateNode() {
+    CaptureFlow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+      pre.getSynthesizedCaptureNode())
   }
 
   override Node getPreUpdateNode() { result = pre }

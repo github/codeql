@@ -18,11 +18,17 @@ namespace Semmle.Extraction.CSharp.Standalone
         private const string aspNetCoreApp = "Microsoft.AspNetCore.App";
 
         private readonly IDotNet dotNet;
+        private readonly Lazy<Dictionary<string, RuntimeVersion>> newestRuntimes;
+        private Dictionary<string, RuntimeVersion> NewestRuntimes => newestRuntimes.Value;
         private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
-        public Runtime(IDotNet dotNet) => this.dotNet = dotNet;
+        public Runtime(IDotNet dotNet)
+        {
+            this.dotNet = dotNet;
+            this.newestRuntimes = new(GetNewestRuntimes);
+        }
 
-        internal sealed class RuntimeVersion : IComparable<RuntimeVersion>
+        internal record RuntimeVersion : IComparable<RuntimeVersion>
         {
             private readonly string dir;
             private readonly Version version;
@@ -71,15 +77,10 @@ namespace Semmle.Extraction.CSharp.Standalone
                 return c;
             }
 
-            public override bool Equals(object? obj) =>
-                obj is not null && obj is RuntimeVersion other && other.FullPath == FullPath;
-
-            public override int GetHashCode() => FullPath.GetHashCode();
-
             public override string ToString() => FullPath;
         }
 
-        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-([a-z]+)\.(\d+\.\d+\.\d+))?\s\[(\S+)\]$")]
+        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-([a-z]+)\.(\d+\.\d+\.\d+))?\s\[(.+)\]$")]
         private static partial Regex RuntimeRegex();
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                 var match = RuntimeRegex().Match(r);
                 if (match.Success)
                 {
-                    runtimes.AddOrUpdate(match.Groups[1].Value, new RuntimeVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
+                    runtimes.AddOrUpdateToLatest(match.Groups[1].Value, new RuntimeVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
                 }
             });
 
@@ -145,33 +146,42 @@ namespace Semmle.Extraction.CSharp.Standalone
             }
         }
 
-        private IEnumerable<string> GetRuntimes()
+        /// <summary>
+        /// Gets the .NET runtime location to use for extraction.
+        /// </summary>
+        public string GetRuntime(bool useSelfContained)
         {
-            // Gets the newest version of the installed runtimes.
-            var newestRuntimes = GetNewestRuntimes();
+            if (useSelfContained)
+            {
+                return ExecutingRuntime;
+            }
 
             // Location of the newest .NET Core Runtime.
-            if (newestRuntimes.TryGetValue(netCoreApp, out var netCoreVersion))
+            if (NewestRuntimes.TryGetValue(netCoreApp, out var netCoreVersion))
             {
-                yield return netCoreVersion.FullPath;
+                return netCoreVersion.FullPath;
             }
 
-            // Location of the newest ASP.NET Core Runtime.
-            if (newestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
+            if (DesktopRuntimes.Any())
             {
-                yield return aspNetCoreVersion.FullPath;
+                return DesktopRuntimes.First();
             }
-
-            foreach (var r in DesktopRuntimes)
-                yield return r;
 
             // A bad choice if it's the self-contained runtime distributed in codeql dist.
-            yield return ExecutingRuntime;
+            return ExecutingRuntime;
         }
 
         /// <summary>
-        /// Gets the .NET runtime location to use for extraction
+        /// Gets the ASP.NET runtime location to use for extraction, if one exists.
         /// </summary>
-        public string GetRuntime(bool useSelfContained) => useSelfContained ? ExecutingRuntime : GetRuntimes().First();
+        public string? GetAspRuntime()
+        {
+            // Location of the newest ASP.NET Core Runtime.
+            if (NewestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
+            {
+                return aspNetCoreVersion.FullPath;
+            }
+            return null;
+        }
     }
 }

@@ -3,24 +3,10 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-private import codeql.util.Unit
-private import Reason as Reason
 private import RangeAnalysisStage
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 
 module CppLangImplConstant implements LangSig<FloatDelta> {
-  private module Param implements Reason::ParamSig {
-    class TypeReasonImpl = Unit;
-  }
-
-  class SemReason = Reason::Make<Param>::SemReason;
-
-  class SemNoReason = Reason::Make<Param>::SemNoReason;
-
-  class SemCondReason = Reason::Make<Param>::SemCondReason;
-
-  class SemTypeReason = Reason::Make<Param>::SemTypeReason;
-
   /**
    * Holds if the specified expression should be excluded from the result of `ssaRead()`.
    *

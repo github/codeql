@@ -1,143 +1,65 @@
 edges
 | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a |
-| HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a |
-| HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion | HTMLTemplateEscapingPassthrough.go:36:40:36:40 | a |
-| HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion | HTMLTemplateEscapingPassthrough.go:36:40:36:40 | a |
-| HTMLTemplateEscapingPassthrough.go:35:23:35:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:35:23:35:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion | HTMLTemplateEscapingPassthrough.go:41:40:41:40 | a |
-| HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion | HTMLTemplateEscapingPassthrough.go:41:40:41:40 | a |
-| HTMLTemplateEscapingPassthrough.go:40:19:40:33 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:40:19:40:33 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion | HTMLTemplateEscapingPassthrough.go:47:41:47:41 | c |
-| HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion | HTMLTemplateEscapingPassthrough.go:47:41:47:41 | c |
-| HTMLTemplateEscapingPassthrough.go:46:29:46:43 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:46:29:46:43 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion | HTMLTemplateEscapingPassthrough.go:51:44:51:44 | d |
-| HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion | HTMLTemplateEscapingPassthrough.go:51:44:51:44 | d |
-| HTMLTemplateEscapingPassthrough.go:50:23:50:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:50:23:50:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion | HTMLTemplateEscapingPassthrough.go:55:44:55:44 | e |
-| HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion | HTMLTemplateEscapingPassthrough.go:55:44:55:44 | e |
-| HTMLTemplateEscapingPassthrough.go:54:26:54:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:54:26:54:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion | HTMLTemplateEscapingPassthrough.go:59:38:59:38 | b |
-| HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion | HTMLTemplateEscapingPassthrough.go:59:38:59:38 | b |
-| HTMLTemplateEscapingPassthrough.go:58:24:58:38 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:58:24:58:38 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion | HTMLTemplateEscapingPassthrough.go:63:44:63:44 | f |
-| HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion | HTMLTemplateEscapingPassthrough.go:63:44:63:44 | f |
-| HTMLTemplateEscapingPassthrough.go:62:27:62:41 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:62:27:62:41 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion | HTMLTemplateEscapingPassthrough.go:67:38:67:38 | g |
-| HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion | HTMLTemplateEscapingPassthrough.go:67:38:67:38 | g |
-| HTMLTemplateEscapingPassthrough.go:66:24:66:38 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:66:24:66:38 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:75:17:75:31 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:76:38:76:44 | escaped |
-| HTMLTemplateEscapingPassthrough.go:81:10:81:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:82:16:82:33 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:81:10:81:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:84:38:84:40 | src |
 | HTMLTemplateEscapingPassthrough.go:89:10:89:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:91:64:91:66 | src |
 | HTMLTemplateEscapingPassthrough.go:91:16:91:77 | type conversion | HTMLTemplateEscapingPassthrough.go:92:38:92:46 | converted |
-| HTMLTemplateEscapingPassthrough.go:91:16:91:77 | type conversion | HTMLTemplateEscapingPassthrough.go:92:38:92:46 | converted |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:67 | call to HTMLEscapeString | HTMLTemplateEscapingPassthrough.go:91:16:91:77 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:91:64:91:66 | src | HTMLTemplateEscapingPassthrough.go:91:38:91:67 | call to HTMLEscapeString |
-| HTMLTemplateEscapingPassthrough.go:101:9:101:14 | selection of Form | HTMLTemplateEscapingPassthrough.go:101:9:101:24 | call to Get |
-| HTMLTemplateEscapingPassthrough.go:101:9:101:24 | call to Get | HTMLTemplateEscapingPassthrough.go:115:8:115:15 | call to getId |
-| HTMLTemplateEscapingPassthrough.go:104:18:104:18 | definition of x | HTMLTemplateEscapingPassthrough.go:105:9:105:24 | type conversion |
-| HTMLTemplateEscapingPassthrough.go:105:9:105:24 | type conversion | HTMLTemplateEscapingPassthrough.go:123:11:123:36 | call to passthrough |
-| HTMLTemplateEscapingPassthrough.go:108:35:108:35 | definition of x | HTMLTemplateEscapingPassthrough.go:110:19:110:19 | x |
-| HTMLTemplateEscapingPassthrough.go:115:8:115:15 | call to getId | HTMLTemplateEscapingPassthrough.go:116:15:116:15 | x |
-| HTMLTemplateEscapingPassthrough.go:116:15:116:15 | x | HTMLTemplateEscapingPassthrough.go:104:18:104:18 | definition of x |
-| HTMLTemplateEscapingPassthrough.go:123:11:123:36 | call to passthrough | HTMLTemplateEscapingPassthrough.go:108:35:108:35 | definition of x |
 nodes
 | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a | semmle.label | a |
-| HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a | semmle.label | a |
-| HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:35:9:35:38 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:35:23:35:37 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:35:23:35:37 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:36:40:36:40 | a | semmle.label | a |
 | HTMLTemplateEscapingPassthrough.go:36:40:36:40 | a | semmle.label | a |
 | HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:40:9:40:34 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:40:19:40:33 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:40:19:40:33 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:41:40:41:40 | a | semmle.label | a |
-| HTMLTemplateEscapingPassthrough.go:41:40:41:40 | a | semmle.label | a |
-| HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:46:11:46:44 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:46:29:46:43 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:46:29:46:43 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:47:41:47:41 | c | semmle.label | c |
 | HTMLTemplateEscapingPassthrough.go:47:41:47:41 | c | semmle.label | c |
 | HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:50:11:50:38 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:50:23:50:37 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:50:23:50:37 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:51:44:51:44 | d | semmle.label | d |
-| HTMLTemplateEscapingPassthrough.go:51:44:51:44 | d | semmle.label | d |
-| HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:54:11:54:41 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:54:26:54:40 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:54:26:54:40 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:55:44:55:44 | e | semmle.label | e |
 | HTMLTemplateEscapingPassthrough.go:55:44:55:44 | e | semmle.label | e |
 | HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:58:11:58:39 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:58:24:58:38 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:58:24:58:38 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:59:38:59:38 | b | semmle.label | b |
-| HTMLTemplateEscapingPassthrough.go:59:38:59:38 | b | semmle.label | b |
-| HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:62:11:62:42 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:62:27:62:41 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:62:27:62:41 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:63:44:63:44 | f | semmle.label | f |
 | HTMLTemplateEscapingPassthrough.go:63:44:63:44 | f | semmle.label | f |
 | HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:66:11:66:39 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:66:24:66:38 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:66:24:66:38 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:67:38:67:38 | g | semmle.label | g |
 | HTMLTemplateEscapingPassthrough.go:67:38:67:38 | g | semmle.label | g |
 | HTMLTemplateEscapingPassthrough.go:75:17:75:31 | call to UserAgent | semmle.label | call to UserAgent |
 | HTMLTemplateEscapingPassthrough.go:76:38:76:44 | escaped | semmle.label | escaped |
 | HTMLTemplateEscapingPassthrough.go:81:10:81:24 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:81:10:81:24 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:82:16:82:33 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:84:38:84:40 | src | semmle.label | src |
 | HTMLTemplateEscapingPassthrough.go:89:10:89:24 | call to UserAgent | semmle.label | call to UserAgent |
-| HTMLTemplateEscapingPassthrough.go:91:16:91:77 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:91:16:91:77 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:67 | call to HTMLEscapeString | semmle.label | call to HTMLEscapeString |
 | HTMLTemplateEscapingPassthrough.go:91:64:91:66 | src | semmle.label | src |
 | HTMLTemplateEscapingPassthrough.go:92:38:92:46 | converted | semmle.label | converted |
-| HTMLTemplateEscapingPassthrough.go:92:38:92:46 | converted | semmle.label | converted |
-| HTMLTemplateEscapingPassthrough.go:101:9:101:14 | selection of Form | semmle.label | selection of Form |
-| HTMLTemplateEscapingPassthrough.go:101:9:101:24 | call to Get | semmle.label | call to Get |
-| HTMLTemplateEscapingPassthrough.go:104:18:104:18 | definition of x | semmle.label | definition of x |
-| HTMLTemplateEscapingPassthrough.go:105:9:105:24 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:105:9:105:24 | type conversion | semmle.label | type conversion |
-| HTMLTemplateEscapingPassthrough.go:108:35:108:35 | definition of x | semmle.label | definition of x |
-| HTMLTemplateEscapingPassthrough.go:110:19:110:19 | x | semmle.label | x |
-| HTMLTemplateEscapingPassthrough.go:115:8:115:15 | call to getId | semmle.label | call to getId |
-| HTMLTemplateEscapingPassthrough.go:116:15:116:15 | x | semmle.label | x |
-| HTMLTemplateEscapingPassthrough.go:123:11:123:36 | call to passthrough | semmle.label | call to passthrough |
 subpaths
 #select
 | HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a | HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a | Data from an $@ will not be auto-escaped because it was $@ to template.HTML | HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | untrusted source | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | converted |
