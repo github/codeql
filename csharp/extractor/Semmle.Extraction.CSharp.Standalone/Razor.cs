@@ -50,22 +50,21 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public IEnumerable<string> GenerateFiles(IEnumerable<string> cshtmls, IEnumerable<string> references, string workingDirectory)
         {
-            // TODO: the below command might be too long. It should be written to a temp file and passed to csc via @.
-
             var name = Guid.NewGuid().ToString("N").ToUpper();
-            var analyzerConfig = Path.Combine(Path.GetTempPath(), name + ".txt");
-            var dllPath = Path.Combine(Path.GetTempPath(), name + ".dll");
+            var tempPath = Path.GetTempPath();
+            var analyzerConfig = Path.Combine(tempPath, name + ".txt");
+            var dllPath = Path.Combine(tempPath, name + ".dll");
+            var cscArgsPath = Path.Combine(tempPath, name + ".rsp");
             var outputFolder = Path.Combine(workingDirectory, name);
             Directory.CreateDirectory(outputFolder);
 
             try
             {
-                GenerateAnalyzerConfig(cshtmls, Path.Combine(sourceGeneratorFolder, analyzerConfig));
+                GenerateAnalyzerConfig(cshtmls, analyzerConfig);
 
                 var args = new StringBuilder();
-                args.Append($"\"{cscPath}\" /target:exe /generatedfilesout:\"{outputFolder}\" /out:\"{dllPath}\" /analyzerconfig:\"{analyzerConfig}\" ");
+                args.Append($"/target:exe /generatedfilesout:\"{outputFolder}\" /out:\"{dllPath}\" /analyzerconfig:\"{analyzerConfig}\" ");
 
-                // TODO: quote paths:
                 foreach (var f in Directory.GetFiles(sourceGeneratorFolder, "*.dll"))
                 {
                     args.Append($"/analyzer:\"{f}\" ");
@@ -81,7 +80,16 @@ namespace Semmle.Extraction.CSharp.Standalone
                     args.Append($"/reference:\"{f}\" ");
                 }
 
-                dotNet.Exec(args.ToString());
+                var argsString = args.ToString();
+
+                progressMonitor.RazorCscArgs(argsString);
+
+                using (var sw = new StreamWriter(cscArgsPath))
+                {
+                    sw.Write(argsString);
+                }
+
+                dotNet.Exec($"\"{cscPath}\" /noconfig @\"{cscArgsPath}\"");
 
                 return Directory.GetFiles(outputFolder, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
             }
@@ -89,6 +97,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             {
                 DeleteFile(analyzerConfig);
                 DeleteFile(dllPath);
+                DeleteFile(cscArgsPath);
             }
         }
 

@@ -114,5 +114,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         internal void CscMissing(string cscPath) =>
             LogInfo($"Csc.exe not found at {cscPath}.");
+
+        internal void RazorCscArgs(string args) =>
+            LogInfo($"Running CSC to generate Razor source files. Args: {args}.");
     }
 }
