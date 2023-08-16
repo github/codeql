@@ -348,7 +348,7 @@ int positiveRange(int x) {
     int arr[128];
 
     for(int i=127-offset; i>= 0; i--) {
-        arr[i] = arr[i+1] + arr[i+offset]; // GOOD [FALSE POSITIVE]
+        arr[i] = arr[i+1] + arr[i+offset]; // GOOD
     }
     return arr[0];
 }

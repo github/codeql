@@ -6,6 +6,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
+private import semmle.code.cpp.ir.ValueNumbering
 
 /**
  * Holds if `operand` is an operand that is not used by the dataflow library.
@@ -864,7 +865,7 @@ private module Cached {
    * to a specific address.
    */
   private predicate isCertainAddress(Operand operand) {
-    operand.getDef() instanceof VariableAddressInstruction
+    valueNumberOfOperand(operand).getAnInstruction() instanceof VariableAddressInstruction
     or
     operand.getType() instanceof Cpp::ReferenceType
   }
