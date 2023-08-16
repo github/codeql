@@ -46,6 +46,22 @@ private string getParameterPath(DataFlow::ParameterNode paramNode) {
   )
 }
 
+string getArgumentPath(DataFlow::ParameterNode paramNode) {
+  exists(Ast::Parameter param, string paramSpec |
+    param = paramNode.asParameter() and
+    (
+      paramSpec = param.getPosition().toString()
+      or
+      paramSpec = param.(Ast::KeywordParameter).getName() + ":"
+      or
+      param instanceof Ast::BlockParameter and
+      paramSpec = "block"
+    )
+  |
+    result = "Argument[" + paramSpec + "]"
+  )
+}
+
 string getMethodParameterPath(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode) {
   result = getMethodPath(methodNode) + "." + getParameterPath(paramNode)
 }
