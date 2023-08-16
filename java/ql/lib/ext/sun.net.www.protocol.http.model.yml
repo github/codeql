@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.net.www.protocol.http", "DigestAuthentication", False, "computeDigest", "(boolean, String, char[], String, String, String, String, String, String)", "credential-username", "Argument[1]", "manual"]
       - ["sun.net.www.protocol.http", "DigestAuthentication", False, "computeDigest", "(boolean, String, char[], String, String, String, String, String, String)", "", "Argument[2]", "credential-password", "manual"]
       - ["sun.net.www.protocol.http", "DigestAuthentication", False, "encode", "(String, char[], MessageDigest)", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.net.www.protocol.http", "DigestAuthentication", False, "computeDigest", "(boolean, String, char[], String, String, String, String, String, String)", "", "Argument[1]", "credential-username", "manual"]

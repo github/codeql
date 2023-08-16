@@ -3,9 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.net.ftp.impl", "FtpClient", False, "login", "(String, char[])", "credential-username", "Argument[0]", "manual"]
-      - ["sun.net.ftp.impl", "FtpClient", False, "login", "(String, char[], String)", "credential-username", "Argument[0]", "manual"]
-      - ["sun.net.ftp.impl", "FtpClient", False, "tryLogin", "(String, char[])", "credential-username", "Argument[0]", "manual"]
       - ["sun.net.ftp.impl", "FtpClient", False, "login", "(String, char[])", "", "Argument[1]", "credential-password", "manual"]
       - ["sun.net.ftp.impl", "FtpClient", False, "login", "(String, char[], String)", "", "Argument[1]", "credential-password", "manual"]
       - ["sun.net.ftp.impl", "FtpClient", False, "tryLogin", "(String, char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.net.ftp.impl", "FtpClient", False, "login", "(String, char[])", "", "Argument[0]", "credential-username", "manual"]
+      - ["sun.net.ftp.impl", "FtpClient", False, "login", "(String, char[], String)", "", "Argument[0]", "credential-username", "manual"]
+      - ["sun.net.ftp.impl", "FtpClient", False, "tryLogin", "(String, char[])", "", "Argument[0]", "credential-username", "manual"]

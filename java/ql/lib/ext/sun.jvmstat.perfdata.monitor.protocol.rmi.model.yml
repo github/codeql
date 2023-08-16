@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.jvmstat.perfdata.monitor.protocol.rmi", "RemoteVmManager", False, "RemoteVmManager", "(RemoteHost, String)", "credential-username", "Argument[1]", "manual"]
+      - ["sun.jvmstat.perfdata.monitor.protocol.rmi", "RemoteVmManager", False, "RemoteVmManager", "(RemoteHost, String)", "", "Argument[1]", "credential-username", "manual"]

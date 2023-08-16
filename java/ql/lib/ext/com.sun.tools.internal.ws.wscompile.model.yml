@@ -4,4 +4,4 @@ extensions:
       extensible: sinkModel
     data:
       - ["com.sun.tools.internal.ws.wscompile", "AuthInfo", False, "AuthInfo", "(URL, String, String)", "", "Argument[2]", "credential-password", "manual"]
-      - ["com.sun.tools.internal.ws.wscompile", "AuthInfo", False, "AuthInfo", "(URL, String, String)", "credential-username", "Argument[1]", "manual"]
+      - ["com.sun.tools.internal.ws.wscompile", "AuthInfo", False, "AuthInfo", "(URL, String, String)", "", "Argument[1]", "credential-username", "manual"]

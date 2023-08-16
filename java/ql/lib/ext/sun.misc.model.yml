@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.misc", "Perf", False, "attach", "(String, int, String)", "credential-username", "Argument[0]", "manual"]
-      - ["sun.misc", "Perf", False, "attach", "(String, int, int)", "credential-username", "Argument[0]", "manual"]
-      - ["sun.misc", "Perf", False, "attachImpl", "(String, int, int)", "credential-username", "Argument[0]", "manual"]
+      - ["sun.misc", "Perf", False, "attach", "(String, int, String)", "", "Argument[0]", "credential-username", "manual"]
+      - ["sun.misc", "Perf", False, "attach", "(String, int, int)", "", "Argument[0]", "credential-username", "manual"]
+      - ["sun.misc", "Perf", False, "attachImpl", "(String, int, int)", "", "Argument[0]", "credential-username", "manual"]

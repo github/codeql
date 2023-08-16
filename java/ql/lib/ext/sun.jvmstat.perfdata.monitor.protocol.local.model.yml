@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.jvmstat.perfdata.monitor.protocol.local", "LocalVmManager", False, "LocalVmManager", "(String)", "credential-username", "Argument[0]", "manual"]
-      - ["sun.jvmstat.perfdata.monitor.protocol.local", "PerfDataFile", False, "getFile", "(String, int)", "credential-username", "Argument[0]", "manual"]
-      - ["sun.jvmstat.perfdata.monitor.protocol.local", "PerfDataFile", False, "getTempDirectory", "(String)", "credential-username", "Argument[0]", "manual"]
+      - ["sun.jvmstat.perfdata.monitor.protocol.local", "LocalVmManager", False, "LocalVmManager", "(String)", "", "Argument[0]", "credential-username", "manual"]
+      - ["sun.jvmstat.perfdata.monitor.protocol.local", "PerfDataFile", False, "getFile", "(String, int)", "", "Argument[0]", "credential-username", "manual"]
+      - ["sun.jvmstat.perfdata.monitor.protocol.local", "PerfDataFile", False, "getTempDirectory", "(String)", "", "Argument[0]", "credential-username", "manual"]

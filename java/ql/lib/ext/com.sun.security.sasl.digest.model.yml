@@ -5,4 +5,4 @@ extensions:
     data:
       - ["com.sun.security.sasl.digest", "DigestMD5Base", False, "generateResponseValue", "(String, String, String, String, String, char[], byte[], byte[], int, byte[])", "", "Argument[5]", "credential-password", "manual"]
       - ["com.sun.security.sasl.digest", "DigestMD5Server", False, "generateResponseAuth", "(String, char[], byte[], int, byte[])", "", "Argument[1]", "credential-password", "manual"]
-      - ["com.sun.security.sasl.digest", "DigestMD5Server", False, "generateResponseAuth", "(String, char[], byte[], int, byte[])", "credential-username", "Argument[0]", "manual"]
+      - ["com.sun.security.sasl.digest", "DigestMD5Server", False, "generateResponseAuth", "(String, char[], byte[], int, byte[])", "", "Argument[0]", "credential-username", "manual"]
