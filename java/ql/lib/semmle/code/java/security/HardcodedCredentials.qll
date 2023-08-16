@@ -59,15 +59,10 @@ abstract class CredentialsSink extends Expr {
  */
 class CredentialsApiSink extends CredentialsSink {
   CredentialsApiSink() {
-    exists(Call call, int i |
-      this = call.getArgument(i) and
-      (
-        javaApiCallableUsernameParam(call.getCallee(), i) or
-        javaApiCallablePasswordParam(call.getCallee(), i) or
-        javaApiCallableCryptoKeyParam(call.getCallee(), i) or
-        otherApiCallableCredentialParam(call.getCallee(), i)
-      )
-    )
+    this = any(PasswordParameter p).asExpr() or
+    this = any(UsernameParameter p).asExpr() or
+    this = any(CryptoKeyParameter p).asExpr() or
+    this = any(CredentialParameter p).asExpr()
   }
 }
 
