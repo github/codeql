@@ -3,5 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["ch.ethz.ssh2", "Connection", False, "authenticateWithPassword", "(String, String)", "", "Argument[0]", "credential-other", "manual"]
-      - ["ch.ethz.ssh2", "Connection", False, "authenticateWithPassword", "(String, String)", "", "Argument[1]", "credential-other", "manual"]
+      - ["ch.ethz.ssh2", "Connection", False, "authenticateWithNone", "", "", "Argument[0]", "credential-username", "manual"]
+      - ["ch.ethz.ssh2", "Connection", False, "authenticateWithPassword", "", "", "Argument[0]", "credential-username", "manual"]
+      - ["ch.ethz.ssh2", "Connection", False, "authenticateWithPassword", "", "", "Argument[1]", "credential-password", "manual"]
+      - ["ch.ethz.ssh2", "Connection", False, "authenticateWithPublicKey", "", "", "Argument[0]", "credential-username", "manual"]
+      - ["ch.ethz.ssh2", "Connection", False, "authenticateWithPublicKey", "", "", "Argument[2]", "credential-password", "manual"]
+      - ["ch.ethz.ssh2", "Connection", False, "authenticateWithPublicKey", "", "", "Argument[1]", "crypto-parameter", "manual"]

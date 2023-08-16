@@ -3,10 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.security.jgss.krb5", "CipherHelper", False, "desCbcDecrypt", "(WrapToken, byte[], InputStream, int, byte[], int)", "", "Argument[1]", "crypto-parameter", "manual"]
-      - ["sun.security.jgss.krb5", "CipherHelper", False, "desCbcDecrypt", "(WrapToken, byte[], byte[], int, int, byte[], int)", "", "Argument[1]", "crypto-parameter", "manual"]
-      - ["sun.security.jgss.krb5", "CipherHelper", False, "getDesCbcChecksum", "(byte[], byte[], byte[], int, int)", "", "Argument[0]", "crypto-parameter", "manual"]
+      - ["sun.security.jgss.krb5", "CipherHelper", False, "desCbcDecrypt", "(WrapToken,byte[],InputStream,int,byte[],int)", "", "Argument[1]", "crypto-parameter", "manual"]
+      - ["sun.security.jgss.krb5", "CipherHelper", False, "desCbcDecrypt", "(WrapToken,byte[],byte[],int,int,byte[],int)", "", "Argument[1]", "crypto-parameter", "manual"]
+      - ["sun.security.jgss.krb5", "CipherHelper", False, "getDesCbcChecksum", "(byte[],byte[],byte[],int,int)", "", "Argument[0]", "crypto-parameter", "manual"]
       - ["sun.security.jgss.krb5", "CipherHelper", False, "getDesEncryptionKey", "(byte[])", "", "Argument[0]", "crypto-parameter", "manual"]
-      - ["sun.security.jgss.krb5", "CipherHelper", False, "getInitializedDes", "(boolean, byte[], byte[])", "", "Argument[1]", "crypto-parameter", "manual"]
-      - ["sun.security.jgss.krb5", "Krb5InitCredential", False, "Krb5InitCredential", "(Krb5NameElement, Credentials, byte[], KerberosPrincipal, KerberosPrincipal, byte[], int, boolean[], Date, Date, Date, Date, InetAddress[])", "", "Argument[5]", "crypto-parameter", "manual"]
-      - ["sun.security.jgss.krb5", "Krb5InitCredential", False, "Krb5InitCredential", "(Krb5NameElement, byte[], KerberosPrincipal, KerberosPrincipal, byte[], int, boolean[], Date, Date, Date, Date, InetAddress[])", "", "Argument[4]", "crypto-parameter", "manual"]
+      - ["sun.security.jgss.krb5", "CipherHelper", False, "getInitializedDes", "(boolean,byte[],byte[])", "", "Argument[1]", "crypto-parameter", "manual"]
+      - ["sun.security.jgss.krb5", "Krb5InitCredential", False, "Krb5InitCredential", "(Krb5NameElement,Credentials,byte[],KerberosPrincipal,KerberosPrincipal,byte[],int,boolean[],Date,Date,Date,Date,InetAddress[])", "", "Argument[5]", "crypto-parameter", "manual"]
+      - ["sun.security.jgss.krb5", "Krb5InitCredential", False, "Krb5InitCredential", "(Krb5NameElement,byte[],KerberosPrincipal,KerberosPrincipal,byte[],int,boolean[],Date,Date,Date,Date,InetAddress[])", "", "Argument[4]", "crypto-parameter", "manual"]

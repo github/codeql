@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.security.tools.keytool", "Main", False, "getNewPasswd", "(String, char[])", "", "Argument[1]", "credential-password", "manual"]
-      - ["sun.security.tools.keytool", "Main", False, "getKeyPasswd", "(String, String, char[])", "", "Argument[2]", "crypto-parameter", "manual"]
-      - ["sun.security.tools.keytool", "Main", False, "recoverKey", "(String, char[], char[])", "", "Argument[2]", "crypto-parameter", "manual"]
+      - ["sun.security.tools.keytool", "Main", False, "getNewPasswd", "(String,char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.tools.keytool", "Main", False, "getKeyPasswd", "(String,String,char[])", "", "Argument[2]", "crypto-parameter", "manual"]
+      - ["sun.security.tools.keytool", "Main", False, "recoverKey", "(String,char[],char[])", "", "Argument[2]", "crypto-parameter", "manual"]

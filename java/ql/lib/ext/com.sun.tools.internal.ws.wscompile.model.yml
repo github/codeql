@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.sun.tools.internal.ws.wscompile", "AuthInfo", False, "AuthInfo", "(URL, String, String)", "", "Argument[2]", "credential-password", "manual"]
-      - ["com.sun.tools.internal.ws.wscompile", "AuthInfo", False, "AuthInfo", "(URL, String, String)", "", "Argument[1]", "credential-username", "manual"]
+      - ["com.sun.tools.internal.ws.wscompile", "AuthInfo", False, "AuthInfo", "(URL,String,String)", "", "Argument[2]", "credential-password", "manual"]
+      - ["com.sun.tools.internal.ws.wscompile", "AuthInfo", False, "AuthInfo", "(URL,String,String)", "", "Argument[1]", "credential-username", "manual"]

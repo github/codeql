@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations", "PrivateKeyResolver", False, "PrivateKeyResolver", "(KeyStore, char[])", "", "Argument[1]", "credential-password", "manual"]
-      - ["com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations", "SecretKeyResolver", False, "SecretKeyResolver", "(KeyStore, char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations", "PrivateKeyResolver", False, "PrivateKeyResolver", "(KeyStore,char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["com.sun.org.apache.xml.internal.security.keys.keyresolver.implementations", "SecretKeyResolver", False, "SecretKeyResolver", "(KeyStore,char[])", "", "Argument[1]", "credential-password", "manual"]

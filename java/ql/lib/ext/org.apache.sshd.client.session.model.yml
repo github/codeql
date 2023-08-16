@@ -4,5 +4,5 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.sshd.client.session", "AbstractClientSession", False, "addPasswordIdentity", "(String)", "", "Argument[0]", "credential-other", "manual"]
-      - ["org.apache.sshd.client.session", "ClientSessionCreator", False, "connect", "(String, SocketAddress)", "", "Argument[0]", "credential-other", "manual"]
-      - ["org.apache.sshd.client.session", "ClientSessionCreator", False, "connect", "(String, String, int)", "", "Argument[0]", "credential-other", "manual"]
+      - ["org.apache.sshd.client.session", "ClientSessionCreator", False, "connect", "(String,SocketAddress)", "", "Argument[0]", "credential-other", "manual"]
+      - ["org.apache.sshd.client.session", "ClientSessionCreator", False, "connect", "(String,String,int)", "", "Argument[0]", "credential-other", "manual"]
