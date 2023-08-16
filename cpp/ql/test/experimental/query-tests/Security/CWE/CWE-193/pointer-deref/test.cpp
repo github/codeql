@@ -733,3 +733,12 @@ void test36(unsigned size, unsigned n) {
     *end = 0; // $ deref=L733 // BAD
   }
 }
+
+void test37(unsigned long n)
+{
+  int *p = new int[n];
+  for (unsigned long i = n; i != 0u; i--)
+  {
+    p[n - i] = 0; // GOOD
+  }
+}

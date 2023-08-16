@@ -574,16 +574,6 @@ module RangeStage<
     )
   }
 
-  /** Holds if `e >= 1` as determined by sign analysis. */
-  private predicate strictlyPositiveIntegralExpr(SemExpr e) {
-    semStrictlyPositive(e) and getTrackedType(e) instanceof SemIntegerType
-  }
-
-  /** Holds if `e <= -1` as determined by sign analysis. */
-  private predicate strictlyNegativeIntegralExpr(SemExpr e) {
-    semStrictlyNegative(e) and getTrackedType(e) instanceof SemIntegerType
-  }
-
   /**
    * Holds if `e1 + delta` is a valid bound for `e2`.
    * - `upper = true`  : `e2 <= e1 + delta`
@@ -596,27 +586,6 @@ module RangeStage<
     e2.(SafeCastExpr).getOperand() = e1 and
     delta = D::fromInt(0) and
     (upper = true or upper = false)
-    or
-    exists(SemExpr x, SemSubExpr sub |
-      e2 = sub and
-      sub.getLeftOperand() = e1 and
-      sub.getRightOperand() = x
-    |
-      // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
-      not x instanceof SemConstantIntegerExpr and
-      if strictlyPositiveIntegralExpr(x)
-      then upper = true and delta = D::fromInt(-1)
-      else
-        if semPositive(x)
-        then upper = true and delta = D::fromInt(0)
-        else
-          if strictlyNegativeIntegralExpr(x)
-          then upper = false and delta = D::fromInt(1)
-          else
-            if semNegative(x)
-            then upper = false and delta = D::fromInt(0)
-            else none()
-    )
     or
     e2.(SemRemExpr).getRightOperand() = e1 and
     semPositive(e1) and
@@ -1138,6 +1107,30 @@ module RangeStage<
       )
       or
       exists(
+        D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight, D::Delta odLeft,
+        D::Delta odRight, SemReason rLeft, SemReason rRight
+      |
+        boundedSubOperandLeft(e, upper, b, dLeft, fbeLeft, odLeft, rLeft) and
+        boundedSubOperandRight(e, upper, dRight, fbeRight, odRight, rRight) and
+        // when `upper` is `true` we have:
+        // left <= b + dLeft
+        // right >= 0 + dRight
+        // left - right <= b + dLeft - (0 + dRight)
+        //               = b + (dLeft - dRight)
+        // and when `upper` is `false` we have:
+        // left >= b + dLeft
+        // right <= 0 + dRight
+        // left - right >= b + dLeft - (0 + dRight)
+        //               = b + (dLeft - dRight)
+        delta = D::fromFloat(D::toFloat(dLeft) - D::toFloat(dRight)) and
+        fromBackEdge = fbeLeft.booleanOr(fbeRight)
+      |
+        origdelta = odLeft and reason = rLeft
+        or
+        origdelta = odRight and reason = rRight
+      )
+      or
+      exists(
         SemRemExpr rem, D::Delta d_max, D::Delta d1, D::Delta d2, boolean fbe1, boolean fbe2,
         D::Delta od1, D::Delta od2, SemReason r1, SemReason r2
       |
@@ -1199,6 +1192,38 @@ module RangeStage<
       isLeft = false and
       bounded(add.getRightOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
     )
+  }
+
+  /**
+   * Holds if `sub = left - right` and `left <= b + delta` if `upper` is `true`
+   * and `left >= b + delta` is `upper` is `false`.
+   */
+  pragma[nomagic]
+  private predicate boundedSubOperandLeft(
+    SemSubExpr sub, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason
+  ) {
+    // `semValueFlowStep` already handles the case where one of the operands is a constant.
+    not semValueFlowStep(sub, _, _) and
+    bounded(sub.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
+  }
+
+  /**
+   * Holds if `sub = left - right` and `right <= 0 + delta` if `upper` is `false`
+   * and `right >= 0 + delta` is `upper` is `true`.
+   *
+   * Note that the boolean value of `upper` is flipped compared to many other predicates in
+   * this file. This ensures a clean join at the call-site.
+   */
+  pragma[nomagic]
+  private predicate boundedSubOperandRight(
+    SemSubExpr sub, boolean upper, D::Delta delta, boolean fromBackEdge, D::Delta origdelta,
+    SemReason reason
+  ) {
+    // `semValueFlowStep` already handles the case where one of the operands is a constant.
+    not semValueFlowStep(sub, _, _) and
+    bounded(sub.getRightOperand(), any(SemZeroBound zb), delta, upper.booleanNot(), fromBackEdge,
+      origdelta, reason)
   }
 
   pragma[nomagic]
