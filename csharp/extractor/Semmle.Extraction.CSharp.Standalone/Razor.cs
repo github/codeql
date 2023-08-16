@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Semmle.BuildAnalyser;
 using System.Text;
+using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {
@@ -40,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             using var sw = new StreamWriter(analyzerConfigPath);
             sw.WriteLine("is_global = true");
 
-            foreach (var f in cshtmls)
+            foreach (var f in cshtmls.Select(f => f.Replace('\\', '/')))
             {
                 sw.WriteLine($"\n[{f}]");
                 var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(f)); // TODO: this should be the relative path of the file.
