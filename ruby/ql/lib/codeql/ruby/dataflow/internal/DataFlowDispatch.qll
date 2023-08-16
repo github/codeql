@@ -426,12 +426,9 @@ private module Cached {
     TSelfArgumentPosition() or
     TBlockArgumentPosition() or
     TPositionalArgumentPosition(int pos) {
-      pos in [0 .. 10] and
-      (
-        exists(Call c | exists(c.getArgument(pos)))
-        or
-        FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
-      )
+      exists(Call c | exists(c.getArgument(pos)))
+      or
+      FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
     } or
     TKeywordArgumentPosition(string name) {
       name = any(KeywordParameter kp).getName()

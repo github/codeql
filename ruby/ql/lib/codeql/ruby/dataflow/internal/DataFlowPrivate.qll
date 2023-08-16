@@ -318,8 +318,8 @@ private module Cached {
     } or
     TSynthSplatParameterElementNode(DataFlowCallable c, int n) {
       exists(c.asCallable()) and // exclude library callables
-      exists(ArgumentPosition p | p.isPositional(n)) and
-      isParameterNode(_, c, any(ParameterPosition p | p.isSplat(_)))
+      isParameterNode(_, c, any(ParameterPosition p | p.isSplat(_))) and
+      n in [0 .. 10]
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       // filter out nodes that clearly don't need post-update nodes
@@ -892,7 +892,20 @@ private module ParameterNodes {
 
     SynthSplatParameterElementNode() { this = TSynthSplatParameterElementNode(callable, pos) }
 
-    int getPosition() { result = pos }
+    pragma[nomagic]
+    NormalParameterNode getSplatParameterNode(int splatPos) {
+      result
+          .isParameterOf(this.getEnclosingCallable(), any(ParameterPosition p | p.isSplat(splatPos)))
+    }
+
+    int getStorePosition() { result = pos }
+
+    int getReadPosition() {
+      exists(int splatPos |
+        exists(this.getSplatParameterNode(splatPos)) and
+        result = pos + splatPos
+      )
+    }
 
     final override Parameter getParameter() { none() }
 
@@ -1070,14 +1083,14 @@ private module ArgumentNodes {
    * 2. We match this to an analogous parameter node `SynthSplatArgParameterNode` on the callee side
    *   (see `parameterMatch`).
    * 3. For each content element stored in the `SynthSplatArgParameterNode`, we add a read step to a separate
-   *   `SynthSplatParameterElementNode`, which is parameterised by the element index (see `readStep`).
+   *   `SynthSplatParameterElementNode`, which is parameterized by the element index (see `readStep`).
    * 4. Finally, we add store steps from these `SynthSplatParameterElementNode`s to the real splat parameter node
    *   (see `storeStep`).
    *   We only add store steps for elements that will not flow to the earlier positional parameters.
    *   In practice that means we ignore elements at index `<= N`, where `N` is the index of the splat parameter.
    *   For the remaining elements we subtract `N` from their index and store them in the splat parameter.
    */
-  class SynthSplatArgumentNode extends ArgumentNode, TSynthSplatArgumentNode {
+  class SynthSplatArgumentNode extends ArgumentNode, NodeImpl, TSynthSplatArgumentNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
     SynthSplatArgumentNode() { this = TSynthSplatArgumentNode(c) }
@@ -1090,12 +1103,6 @@ private module ArgumentNodes {
       call = c and
       pos.isSynthSplat()
     }
-  }
-
-  private class SynthSplatArgumentNodeImpl extends NodeImpl, TSynthSplatArgumentNode {
-    CfgNodes::ExprNodes::CallCfgNode c;
-
-    SynthSplatArgumentNodeImpl() { this = TSynthSplatArgumentNode(c) }
 
     override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
 
@@ -1346,16 +1353,11 @@ predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
     exists(int n | pos.isPositional(n) and c = getPositionalContent(n))
   )
   or
-  // Store from SynthSplatParameterElementNode[n] into SplatParameterNode[m]
-  // where m = n - <position of SplatParameterNode>
-  exists(SynthSplatParameterElementNode elemNode, NormalParameterNode splatNode, int splatPos |
-    elemNode = node1 and splatNode = node2
-  |
-    splatNode
-        .isParameterOf(elemNode.getEnclosingCallable(),
-          any(ParameterPosition p | p.isSplat(splatPos))) and
-    c = getPositionalContent(elemNode.getPosition() - splatPos)
-  )
+  node1 =
+    any(SynthSplatParameterElementNode elemNode |
+      node2 = elemNode.getSplatParameterNode(_) and
+      c = getPositionalContent(elemNode.getStorePosition())
+    )
 }
 
 /**
@@ -1421,19 +1423,17 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
   or
-  node2 = node1.(SynthSplatParameterNode).getAParameter(c)
-  or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
   or
+  node2 = node1.(SynthSplatParameterNode).getAParameter(c)
+  or
   // Read from SynthSplatArgParameterNode into SynthSplatParameterElementNode
-  exists(SynthSplatArgParameterNode fromNode, SynthSplatParameterElementNode toNode, int pos |
-    node1 = fromNode and node2 = toNode
-  |
-    fromNode.isParameterOf(toNode.getEnclosingCallable(), _) and
-    c = getPositionalContent(pos) and
-    toNode.getPosition() = pos
-  )
+  node2 =
+    any(SynthSplatParameterElementNode e |
+      node1.(SynthSplatArgParameterNode).isParameterOf(e.getEnclosingCallable(), _) and
+      c = getPositionalContent(e.getReadPosition())
+    )
 }
 
 /**
