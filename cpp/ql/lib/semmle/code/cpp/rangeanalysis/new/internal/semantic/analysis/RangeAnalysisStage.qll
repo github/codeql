@@ -1106,12 +1106,9 @@ module RangeStage<
         b = bRight and origdelta = odRight and reason = rRight and bLeft instanceof SemZeroBound
       )
       or
-      exists(
-        D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight, D::Delta odLeft,
-        D::Delta odRight, SemReason rLeft, SemReason rRight
-      |
-        boundedSubOperandLeft(e, upper, b, dLeft, fbeLeft, odLeft, rLeft) and
-        boundedSubOperandRight(e, upper, dRight, fbeRight, odRight, rRight) and
+      exists(D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight |
+        boundedSubOperandLeft(e, upper, b, dLeft, fbeLeft, origdelta, reason) and
+        boundedSubOperandRight(e, upper, dRight, fbeRight) and
         // when `upper` is `true` we have:
         // left <= b + dLeft
         // right >= 0 + dRight
@@ -1124,10 +1121,6 @@ module RangeStage<
         //               = b + (dLeft - dRight)
         delta = D::fromFloat(D::toFloat(dLeft) - D::toFloat(dRight)) and
         fromBackEdge = fbeLeft.booleanOr(fbeRight)
-      |
-        origdelta = odLeft and reason = rLeft
-        or
-        origdelta = odRight and reason = rRight
       )
       or
       exists(
@@ -1217,13 +1210,12 @@ module RangeStage<
    */
   pragma[nomagic]
   private predicate boundedSubOperandRight(
-    SemSubExpr sub, boolean upper, D::Delta delta, boolean fromBackEdge, D::Delta origdelta,
-    SemReason reason
+    SemSubExpr sub, boolean upper, D::Delta delta, boolean fromBackEdge
   ) {
     // `semValueFlowStep` already handles the case where one of the operands is a constant.
     not semValueFlowStep(sub, _, _) and
-    bounded(sub.getRightOperand(), any(SemZeroBound zb), delta, upper.booleanNot(), fromBackEdge,
-      origdelta, reason)
+    bounded(sub.getRightOperand(), any(SemZeroBound zb), delta, upper.booleanNot(), fromBackEdge, _,
+      _)
   }
 
   pragma[nomagic]
