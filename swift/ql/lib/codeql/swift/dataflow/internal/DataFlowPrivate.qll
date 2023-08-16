@@ -300,6 +300,12 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 
+/**
+ * The intermediate node for a dictionary subscript operation `dict[key]`. In a write, this is used
+ * as the destination of the `storeStep`s that add `TupleContent`s and the source of the storeStep
+ * that adds `CollectionContent`. In a read, this is the destination of the `readStep` that pops
+ * `CollectionContent` and the source of the `readStep` that pops `TupleContent[0]`
+ */
 private class DictionarySubscriptNode extends NodeImpl, TDictionarySubscriptNode {
   SubscriptExpr expr;
 
