@@ -362,7 +362,6 @@
 /lib/codeql/swift/elements/type/UnownedStorageTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/UnresolvedType.qll linguist-generated
 /lib/codeql/swift/elements/type/UnresolvedTypeConstructor.qll linguist-generated
-/lib/codeql/swift/elements/type/VariadicSequenceType.qll linguist-generated
 /lib/codeql/swift/elements/type/VariadicSequenceTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/WeakStorageType.qll linguist-generated
 /lib/codeql/swift/elements/type/WeakStorageTypeConstructor.qll linguist-generated
