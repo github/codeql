@@ -760,6 +760,12 @@ module Make<RegexTreeViewSig TreeImpl> {
     or
     exists(RegExpGroup grp | lbl = Epsilon() | q1 = before(grp) and q2 = before(grp.getChild(0)))
     or
+    exists(RegExpGroup grp | lbl = Epsilon() |
+      not exists(grp.getAChild()) and
+      q1 = before(grp) and
+      q2 = before(grp.getSuccessor())
+    )
+    or
     exists(EffectivelyStar star | lbl = Epsilon() |
       q1 = before(star) and q2 = before(star.getChild(0))
       or
