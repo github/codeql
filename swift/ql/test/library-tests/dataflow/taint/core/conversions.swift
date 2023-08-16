@@ -34,9 +34,9 @@ func testConversions() {
 	sink(arg: arr)
 	sink(arg: arr[0]) // $ tainted=33
 	sink(arg: [MyInt](arr))
-	sink(arg: [MyInt](arr)[0]) // $ MISSING: tainted=33
+	sink(arg: [MyInt](arr)[0]) // $ tainted=33
 	sink(arg: [UInt8](sourceString().utf8))
-	sink(arg: [UInt8](sourceString().utf8)[0]) // $ MISSING: tainted=33
+	sink(arg: [UInt8](sourceString().utf8)[0]) // $ tainted=39
 
 	if let v = sourceInt() as? UInt {
 		sink(arg: v) // $ tainted=41

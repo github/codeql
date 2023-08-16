@@ -6,8 +6,14 @@ edges
 | conversions.swift:31:12:31:30 | call to String.init(_:) | conversions.swift:31:12:31:32 | .utf8 |
 | conversions.swift:31:19:31:29 | call to sourceInt() | conversions.swift:31:12:31:30 | call to String.init(_:) |
 | conversions.swift:33:12:33:30 | [...] [Array element] | conversions.swift:35:12:35:12 | arr [Array element] |
+| conversions.swift:33:12:33:30 | [...] [Array element] | conversions.swift:37:20:37:20 | arr [Array element] |
 | conversions.swift:33:19:33:29 | call to sourceInt() | conversions.swift:33:12:33:30 | [...] [Array element] |
 | conversions.swift:35:12:35:12 | arr [Array element] | conversions.swift:35:12:35:17 | ...[...] |
+| conversions.swift:37:12:37:23 | call to Array<Element>.init(_:) [Array element] | conversions.swift:37:12:37:26 | ...[...] |
+| conversions.swift:37:20:37:20 | arr [Array element] | conversions.swift:37:12:37:23 | call to Array<Element>.init(_:) [Array element] |
+| conversions.swift:39:12:39:39 | call to Array<Element>.init(_:) [Array element] | conversions.swift:39:12:39:42 | ...[...] |
+| conversions.swift:39:20:39:33 | call to sourceString() | conversions.swift:39:20:39:35 | .utf8 |
+| conversions.swift:39:20:39:35 | .utf8 | conversions.swift:39:12:39:39 | call to Array<Element>.init(_:) [Array element] |
 | conversions.swift:41:13:41:23 | call to sourceInt() | conversions.swift:42:13:42:13 | v |
 | conversions.swift:45:18:45:41 | call to numericCast(_:) | conversions.swift:46:12:46:12 | v2 |
 | conversions.swift:45:30:45:40 | call to sourceInt() | conversions.swift:45:18:45:41 | call to numericCast(_:) |
@@ -145,6 +151,13 @@ nodes
 | conversions.swift:33:19:33:29 | call to sourceInt() | semmle.label | call to sourceInt() |
 | conversions.swift:35:12:35:12 | arr [Array element] | semmle.label | arr [Array element] |
 | conversions.swift:35:12:35:17 | ...[...] | semmle.label | ...[...] |
+| conversions.swift:37:12:37:23 | call to Array<Element>.init(_:) [Array element] | semmle.label | call to Array<Element>.init(_:) [Array element] |
+| conversions.swift:37:12:37:26 | ...[...] | semmle.label | ...[...] |
+| conversions.swift:37:20:37:20 | arr [Array element] | semmle.label | arr [Array element] |
+| conversions.swift:39:12:39:39 | call to Array<Element>.init(_:) [Array element] | semmle.label | call to Array<Element>.init(_:) [Array element] |
+| conversions.swift:39:12:39:42 | ...[...] | semmle.label | ...[...] |
+| conversions.swift:39:20:39:33 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:39:20:39:35 | .utf8 | semmle.label | .utf8 |
 | conversions.swift:41:13:41:23 | call to sourceInt() | semmle.label | call to sourceInt() |
 | conversions.swift:42:13:42:13 | v | semmle.label | v |
 | conversions.swift:45:18:45:41 | call to numericCast(_:) | semmle.label | call to numericCast(_:) |
@@ -346,6 +359,8 @@ subpaths
 | conversions.swift:30:12:30:30 | call to String.init(_:) | conversions.swift:30:19:30:29 | call to sourceInt() | conversions.swift:30:12:30:30 | call to String.init(_:) | result |
 | conversions.swift:31:12:31:32 | .utf8 | conversions.swift:31:19:31:29 | call to sourceInt() | conversions.swift:31:12:31:32 | .utf8 | result |
 | conversions.swift:35:12:35:17 | ...[...] | conversions.swift:33:19:33:29 | call to sourceInt() | conversions.swift:35:12:35:17 | ...[...] | result |
+| conversions.swift:37:12:37:26 | ...[...] | conversions.swift:33:19:33:29 | call to sourceInt() | conversions.swift:37:12:37:26 | ...[...] | result |
+| conversions.swift:39:12:39:42 | ...[...] | conversions.swift:39:20:39:33 | call to sourceString() | conversions.swift:39:12:39:42 | ...[...] | result |
 | conversions.swift:42:13:42:13 | v | conversions.swift:41:13:41:23 | call to sourceInt() | conversions.swift:42:13:42:13 | v | result |
 | conversions.swift:46:12:46:12 | v2 | conversions.swift:45:30:45:40 | call to sourceInt() | conversions.swift:46:12:46:12 | v2 | result |
 | conversions.swift:49:12:49:12 | v4 | conversions.swift:48:31:48:41 | call to sourceInt() | conversions.swift:49:12:49:12 | v4 | result |
