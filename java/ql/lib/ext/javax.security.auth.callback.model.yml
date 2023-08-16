@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.security.auth.callback", "PasswordCallback", False, "setPassword", "(char[])", "credential-password", "Argument[0]", "manual"]
+      - ["javax.security.auth.callback", "PasswordCallback", False, "setPassword", "(char[])", "", "Argument[0]", "credential-password", "manual"]

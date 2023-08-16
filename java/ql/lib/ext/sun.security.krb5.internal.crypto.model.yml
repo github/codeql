@@ -3,11 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.security.krb5.internal.crypto", "Aes128", False, "stringToKey", "(char[], String, byte[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5.internal.crypto", "Aes256", False, "stringToKey", "(char[], String, byte[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5.internal.crypto", "ArcFourHmac", False, "stringToKey", "(char[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5.internal.crypto", "Des", False, "char_to_key", "(char[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5.internal.crypto", "Des", False, "string_to_key_bytes", "(char[])", "credential-password", "Argument[0]", "manual"]
       - ["sun.security.krb5.internal.crypto", "Aes128", False, "calculateChecksum", "(byte[], int, byte[], int, int)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.krb5.internal.crypto", "Aes128", False, "decrypt", "(byte[], int, byte[], byte[], int, int)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.krb5.internal.crypto", "Aes128", False, "decryptRaw", "(byte[], int, byte[], byte[], int, int)", "crypto-parameter", "Argument[0]", "manual"]
@@ -86,3 +81,8 @@ extensions:
       - ["sun.security.krb5.internal.crypto", "RsaMd5DesCksumType", False, "calculateKeyedChecksum", "(byte[], int, byte[], int)", "crypto-parameter", "Argument[2]", "manual"]
       - ["sun.security.krb5.internal.crypto", "RsaMd5DesCksumType", False, "decryptKeyedChecksum", "(byte[], byte[])", "crypto-parameter", "Argument[1]", "manual"]
       - ["sun.security.krb5.internal.crypto", "RsaMd5DesCksumType", False, "verifyKeyedChecksum", "(byte[], int, byte[], byte[], int)", "crypto-parameter", "Argument[2]", "manual"]
+      - ["sun.security.krb5.internal.crypto", "Aes128", False, "stringToKey", "(char[], String, byte[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5.internal.crypto", "Aes256", False, "stringToKey", "(char[], String, byte[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5.internal.crypto", "ArcFourHmac", False, "stringToKey", "(char[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5.internal.crypto", "Des", False, "char_to_key", "(char[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5.internal.crypto", "Des", False, "string_to_key_bytes", "(char[])", "", "Argument[0]", "credential-password", "manual"]

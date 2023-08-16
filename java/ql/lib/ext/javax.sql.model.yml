@@ -3,10 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.sql", "ConnectionPoolDataSource", False, "getPooledConnection", "(String, String)", "credential-password", "Argument[1]", "manual"]
-      - ["javax.sql", "DataSource", False, "getConnection", "(String, String)", "credential-password", "Argument[1]", "manual"]
-      - ["javax.sql", "RowSet", False, "setPassword", "(String)", "credential-password", "Argument[0]", "manual"]
-      - ["javax.sql", "XADataSource", False, "getXAConnection", "(String, String)", "credential-password", "Argument[1]", "manual"]
       - ["javax.sql", "ConnectionPoolDataSource", False, "getPooledConnection", "(String, String)", "credential-username", "Argument[0]", "manual"]
       - ["javax.sql", "DataSource", False, "getConnection", "(String, String)", "credential-username", "Argument[0]", "manual"]
       - ["javax.sql", "XADataSource", False, "getXAConnection", "(String, String)", "credential-username", "Argument[0]", "manual"]
+      - ["javax.sql", "ConnectionPoolDataSource", False, "getPooledConnection", "(String, String)", "", "Argument[1]", "credential-password", "manual"]
+      - ["javax.sql", "DataSource", False, "getConnection", "(String, String)", "", "Argument[1]", "credential-password", "manual"]
+      - ["javax.sql", "RowSet", False, "setPassword", "(String)", "", "Argument[0]", "credential-password", "manual"]
+      - ["javax.sql", "XADataSource", False, "getXAConnection", "(String, String)", "", "Argument[1]", "credential-password", "manual"]

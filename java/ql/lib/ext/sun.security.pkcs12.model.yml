@@ -3,13 +3,13 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "calculateMac", "(char[], byte[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "createEncryptedData", "(char[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "encryptContent", "(byte[], char[])", "credential-password", "Argument[1]", "manual"]
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineGetKey", "(String, char[])", "credential-password", "Argument[1]", "manual"]
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineLoad", "(InputStream, char[])", "credential-password", "Argument[1]", "manual"]
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineSetKeyEntry", "(String, Key, char[], Certificate[])", "credential-password", "Argument[2]", "manual"]
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineStore", "(OutputStream, char[])", "credential-password", "Argument[1]", "manual"]
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "getPBEKey", "(char[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "loadSafeContents", "(DerInputStream, char[])", "credential-password", "Argument[1]", "manual"]
       - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineSetKeyEntry", "(String, byte[], Certificate[])", "crypto-parameter", "Argument[1]", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "calculateMac", "(char[], byte[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "createEncryptedData", "(char[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "encryptContent", "(byte[], char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineGetKey", "(String, char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineLoad", "(InputStream, char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineSetKeyEntry", "(String, Key, char[], Certificate[])", "", "Argument[2]", "credential-password", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "engineStore", "(OutputStream, char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "getPBEKey", "(char[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.pkcs12", "PKCS12KeyStore", False, "loadSafeContents", "(DerInputStream, char[])", "", "Argument[1]", "credential-password", "manual"]

@@ -3,12 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.security.pkcs11", "P11KeyStore", False, "engineGetKey", "(String, char[])", "credential-password", "Argument[1]", "manual"]
-      - ["sun.security.pkcs11", "P11KeyStore", False, "engineLoad", "(InputStream, char[])", "credential-password", "Argument[1]", "manual"]
-      - ["sun.security.pkcs11", "P11KeyStore", False, "engineSetKeyEntry", "(String, Key, char[], Certificate[])", "credential-password", "Argument[2]", "manual"]
-      - ["sun.security.pkcs11", "P11KeyStore", False, "engineStore", "(OutputStream, char[])", "credential-password", "Argument[1]", "manual"]
-      - ["sun.security.pkcs11", "P11KeyStore$PasswordCallbackHandler", False, "PasswordCallbackHandler", "(char[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.pkcs11", "Secmod$KeyStoreLoadParameter", False, "KeyStoreLoadParameter", "(TrustType, char[])", "credential-password", "Argument[1]", "manual"]
       - ["sun.security.pkcs11", "ConstructKeys", False, "constructPrivateKey", "(byte[], String)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.pkcs11", "ConstructKeys", False, "constructPublicKey", "(byte[], String)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.pkcs11", "ConstructKeys", False, "constructSecretKey", "(byte[], String)", "crypto-parameter", "Argument[0]", "manual"]
@@ -16,3 +10,9 @@ extensions:
       - ["sun.security.pkcs11", "P11KeyStore", False, "engineSetKeyEntry", "(String, byte[], Certificate[])", "crypto-parameter", "Argument[1]", "manual"]
       - ["sun.security.pkcs11", "P11RSACipher", False, "engineUnwrap", "(byte[], String, int)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.pkcs11", "P11SecretKeyFactory", False, "fixDESParity", "(byte[], int)", "crypto-parameter", "Argument[0]", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore", False, "engineGetKey", "(String, char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore", False, "engineLoad", "(InputStream, char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore", False, "engineSetKeyEntry", "(String, Key, char[], Certificate[])", "", "Argument[2]", "credential-password", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore", False, "engineStore", "(OutputStream, char[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.pkcs11", "P11KeyStore$PasswordCallbackHandler", False, "PasswordCallbackHandler", "(char[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.pkcs11", "Secmod$KeyStoreLoadParameter", False, "KeyStoreLoadParameter", "(TrustType, char[])", "", "Argument[1]", "credential-password", "manual"]

@@ -3,8 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.security.krb5.internal.crypto.dk", "AesDkCrypto", False, "stringToKey", "(char[], String, byte[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5.internal.crypto.dk", "ArcFourCrypto", False, "stringToKey", "(char[])", "credential-password", "Argument[0]", "manual"]
       - ["sun.security.krb5.internal.crypto.dk", "AesDkCrypto", False, "calculateChecksum", "(byte[], int, byte[], int, int)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.krb5.internal.crypto.dk", "AesDkCrypto", False, "decrypt", "(byte[], int, byte[], byte[], int, int)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.krb5.internal.crypto.dk", "AesDkCrypto", False, "decryptCTS", "(byte[], int, byte[], byte[], int, int, boolean)", "crypto-parameter", "Argument[0]", "manual"]
@@ -36,3 +34,5 @@ extensions:
       - ["sun.security.krb5.internal.crypto.dk", "DkCrypto", False, "encryptRaw", "(byte[], int, byte[], byte[], int, int)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.krb5.internal.crypto.dk", "DkCrypto", False, "getCipher", "(byte[], byte[], int)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.krb5.internal.crypto.dk", "DkCrypto", False, "getHmac", "(byte[], byte[])", "crypto-parameter", "Argument[0]", "manual"]
+      - ["sun.security.krb5.internal.crypto.dk", "AesDkCrypto", False, "stringToKey", "(char[], String, byte[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5.internal.crypto.dk", "ArcFourCrypto", False, "stringToKey", "(char[])", "", "Argument[0]", "credential-password", "manual"]

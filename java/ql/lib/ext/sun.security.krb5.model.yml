@@ -3,12 +3,12 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(char[], String, String)", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKey", "(PrincipalName, char[], int, SaltAndParams)", "credential-password", "Argument[1]", "manual"]
-      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKey", "(char[], String, int, byte[])", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKeys", "(char[], String)", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5", "EncryptionKey", False, "stringToKey", "(char[], String, byte[], int)", "credential-password", "Argument[0]", "manual"]
-      - ["sun.security.krb5", "KrbAsRep", False, "decryptUsingPassword", "(char[], KrbAsReq, PrincipalName)", "credential-password", "Argument[0]", "manual"]
       - ["sun.security.krb5", "Credentials", False, "Credentials", "(byte[], String, String, byte[], int, boolean[], Date, Date, Date, Date, InetAddress[])", "crypto-parameter", "Argument[3]", "manual"]
       - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(byte[], int, Integer)", "crypto-parameter", "Argument[0]", "manual"]
       - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(int, byte[])", "crypto-parameter", "Argument[1]", "manual"]
+      - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(char[], String, String)", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKey", "(PrincipalName, char[], int, SaltAndParams)", "", "Argument[1]", "credential-password", "manual"]
+      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKey", "(char[], String, int, byte[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKeys", "(char[], String)", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5", "EncryptionKey", False, "stringToKey", "(char[], String, byte[], int)", "", "Argument[0]", "credential-password", "manual"]
+      - ["sun.security.krb5", "KrbAsRep", False, "decryptUsingPassword", "(char[], KrbAsReq, PrincipalName)", "", "Argument[0]", "credential-password", "manual"]

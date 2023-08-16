@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.sun.rowset", "JdbcRowSetImpl", False, "JdbcRowSetImpl", "(String, String, String)", "credential-password", "Argument[2]", "manual"]
-      - ["com.sun.rowset", "JdbcRowSetImpl", False, "setPassword", "(String)", "credential-password", "Argument[0]", "manual"]
       - ["com.sun.rowset", "JdbcRowSetImpl", False, "JdbcRowSetImpl", "(String, String, String)", "credential-username", "Argument[1]", "manual"]
+      - ["com.sun.rowset", "JdbcRowSetImpl", False, "JdbcRowSetImpl", "(String, String, String)", "", "Argument[2]", "credential-password", "manual"]
+      - ["com.sun.rowset", "JdbcRowSetImpl", False, "setPassword", "(String)", "", "Argument[0]", "credential-password", "manual"]
