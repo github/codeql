@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.commons.net.ftp", "FTPClient", False, "login", "(String, String)", "credential-other", "Argument[0]", "manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", False, "login", "(String, String)", "credential-other", "Argument[1]", "manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", False, "login", "(String, String, String)", "credential-other", "Argument[0]", "manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", False, "login", "(String, String, String)", "credential-other", "Argument[1]", "manual"]

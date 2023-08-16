@@ -4,6 +4,10 @@ extensions:
       extensible: sinkModel
     data:
       - ["com.jcraft.jsch", "JSch", True, "getSession", "(String,String,int)", "", "Argument[1]", "request-forgery", "ai-manual"]
+      - ["com.jcraft.jsch", "JSch", False, "getSession", "(String, String)", "credential-other", "Argument[0]", "manual"]
+      - ["com.jcraft.jsch", "JSch", False, "getSession", "(String, String, int)", "credential-other", "Argument[0]", "manual"]
+      - ["com.jcraft.jsch", "Session", False, "setPassword", "(String)", "credential-other", "Argument[0]", "manual"]
+      - ["com.jcraft.jsch", "Session", False, "setPassword", "(byte[])", "credential-other", "Argument[0]", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
