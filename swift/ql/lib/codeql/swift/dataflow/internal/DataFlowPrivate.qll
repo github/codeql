@@ -877,7 +877,8 @@ predicate clearsContent(Node n, ContentSet c) {
   n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode() and
   (
     c.isSingleton(any(Content::FieldContent fc)) or
-    c.isSingleton(any(Content::TupleContent tc))
+    c.isSingleton(any(Content::TupleContent tc)) or
+    c.isSingleton(any(Content::EnumContent ec))
   )
 }
 
