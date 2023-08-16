@@ -51,7 +51,22 @@ static bool exec(const std::vector<std::string>& argv) {
   return true;
 }
 
-void buildTarget(Target& target, bool dryRun) {
+static bool run_build_command(const std::vector<std::string>& argv, bool dryRun) {
+  if (dryRun) {
+    std::cout << absl::StrJoin(argv, " ") << "\n";
+  } else {
+    if (!exec(argv)) {
+      DIAGNOSE_ERROR(buildCommandFailed,
+                     "`autobuild` failed to run the build command:\n\n```\n{}\n```",
+                     absl::StrJoin(argv, " "));
+      codeql::Log::flush();
+      return false;
+    }
+  }
+  return true;
+}
+
+bool buildXcodeTarget(XcodeTarget& target, bool dryRun) {
   std::vector<std::string> argv({"/usr/bin/xcodebuild", "build"});
   if (!target.workspace.empty()) {
     argv.push_back("-workspace");
@@ -65,16 +80,40 @@ void buildTarget(Target& target, bool dryRun) {
   argv.push_back(target.name);
   argv.push_back("CODE_SIGNING_REQUIRED=NO");
   argv.push_back("CODE_SIGNING_ALLOWED=NO");
+  return run_build_command(argv, dryRun);
+}
 
-  if (dryRun) {
-    std::cout << absl::StrJoin(argv, " ") << "\n";
-  } else {
-    if (!exec(argv)) {
-      DIAGNOSE_ERROR(buildCommandFailed,
-                     "`autobuild` failed to run the detected build command:\n\n```\n{}\n```",
-                     absl::StrJoin(argv, " "));
-      codeql::Log::flush();
-      exit(1);
+bool buildSwiftPackage(const std::filesystem::path& packageFile, bool dryRun) {
+  std::vector<std::string> argv(
+      {"/usr/bin/swift", "build", "--package-path", packageFile.parent_path()});
+  return run_build_command(argv, dryRun);
+}
+
+static void pod_install(const std::string& pod, const std::filesystem::path& podfile, bool dryRun) {
+  std::vector<std::string> argv(
+      {pod, "install", "--project-directory=" + podfile.parent_path().string()});
+  run_build_command(argv, dryRun);
+}
+
+static void carthage_install(const std::string& carthage,
+                             const std::filesystem::path& podfile,
+                             bool dryRun) {
+  std::vector<std::string> argv(
+      {carthage, "bootstrap", "--project-directory", podfile.parent_path()});
+  run_build_command(argv, dryRun);
+}
+
+void installDependencies(ProjectStructure& target, bool dryRun) {
+  auto pod = std::string(getenv("CODEQL_SWIFT_POD_EXEC"));
+  auto carthage = std::string(getenv("CODEQL_SWIFT_CARTHAGE_EXEC"));
+  if (!pod.empty() && !target.podfiles.empty()) {
+    for (auto& podfile : target.podfiles) {
+      pod_install(pod, podfile, dryRun);
+    }
+  }
+  if (!carthage.empty() && !target.cartfiles.empty()) {
+    for (auto& cartfile : target.cartfiles) {
+      carthage_install(carthage, cartfile, dryRun);
     }
   }
 }
