@@ -5,12 +5,12 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision high
- * @id js/incomplete-hostname-regexp
+ * @id swift/incomplete-hostname-regexp
  * @tags correctness
  *       security
  *       external/cwe/cwe-020
  */
 
-private import semmle.javascript.security.regexp.HostnameRegexp as HostnameRegexp
+private import codeql.swift.security.regex.HostnameRegex as HostnameRegex
 
-query predicate problems = HostnameRegexp::incompleteHostnameRegExp/4;
+query predicate problems = HostnameRegex::incompleteHostnameRegExp/4;
