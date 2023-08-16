@@ -750,9 +750,11 @@ module MakeImplCommon<InputSig Lang> {
        * makes a difference.
        */
       cached
-      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-        result = viableImplInCallContextExt(call, ctx) and
-        reducedViableImplInCallContext(call, _, ctx)
+      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx) {
+        exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
+          result = viableImplInCallContextExt(call, outer) and
+          reducedViableImplInCallContext(call, _, outer)
+        )
       }
 
       /**
@@ -778,9 +780,13 @@ module MakeImplCommon<InputSig Lang> {
        * `ctx`.
        */
       cached
-      DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
-        result = viableImplInCallContextExt(call, ctx) and
-        reducedViableImplInReturn(result, call)
+      DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, CallContextReturn ctx) {
+        exists(DataFlowCallable c0, DataFlowCall call0 |
+          callEnclosingCallable(call0, result) and
+          ctx = TReturn(c0, call0) and
+          c0 = viableImplInCallContextExt(call0, call) and
+          reducedViableImplInReturn(c0, call0)
+        )
       }
     }
 
@@ -1278,38 +1284,18 @@ module MakeImplCommon<InputSig Lang> {
     result = getReturnPosition0(ret, ret.getKind())
   }
 
-  /**
-   * Checks whether `inner` can return to `call` in the call context `innercc`.
-   * Assumes a context of `inner = viableCallableExt(call)`.
-   */
-  bindingset[innercc, inner, call]
-  predicate checkCallContextReturn(CallContext innercc, DataFlowCallable inner, DataFlowCall call) {
-    innercc instanceof CallContextAny
-    or
-    exists(DataFlowCallable c0, DataFlowCall call0 |
-      callEnclosingCallable(call0, inner) and
-      innercc = TReturn(c0, call0) and
-      c0 = prunedViableImplInCallContextReverse(call0, call)
-    )
-  }
-
-  /**
-   * Checks whether `call` can resolve to `calltarget` in the call context `cc`.
-   * Assumes a context of `calltarget = viableCallableExt(call)`.
-   */
-  bindingset[cc, call, calltarget]
-  predicate checkCallContextCall(CallContext cc, DataFlowCall call, DataFlowCallable calltarget) {
-    exists(DataFlowCall ctx | cc = TSpecificCall(ctx) |
-      if reducedViableImplInCallContext(call, _, ctx)
-      then calltarget = prunedViableImplInCallContext(call, ctx)
-      else any()
+  /** Holds if `call` does not have a reduced set of dispatch targets in call context `ctx`. */
+  bindingset[call, ctx]
+  predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx) {
+    exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
+      not reducedViableImplInCallContext(call, _, outer)
     )
     or
-    cc instanceof CallContextSomeCall
+    ctx instanceof CallContextSomeCall
     or
-    cc instanceof CallContextAny
+    ctx instanceof CallContextAny
     or
-    cc instanceof CallContextReturn
+    ctx instanceof CallContextReturn
   }
 
   /**
@@ -1320,11 +1306,7 @@ module MakeImplCommon<InputSig Lang> {
   predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
     cc instanceof CallContextAny and callable = viableCallableExt(call)
     or
-    exists(DataFlowCallable c0, DataFlowCall call0 |
-      callEnclosingCallable(call0, callable) and
-      cc = TReturn(c0, call0) and
-      c0 = prunedViableImplInCallContextReverse(call0, call)
-    )
+    callable = prunedViableImplInCallContextReverse(call, cc)
   }
 
   /**
@@ -1333,17 +1315,10 @@ module MakeImplCommon<InputSig Lang> {
    */
   bindingset[call, cc]
   DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
-    exists(DataFlowCall ctx | cc = TSpecificCall(ctx) |
-      if reducedViableImplInCallContext(call, _, ctx)
-      then result = prunedViableImplInCallContext(call, ctx)
-      else result = viableCallableExt(call)
-    )
+    result = prunedViableImplInCallContext(call, cc)
     or
-    result = viableCallableExt(call) and cc instanceof CallContextSomeCall
-    or
-    result = viableCallableExt(call) and cc instanceof CallContextAny
-    or
-    result = viableCallableExt(call) and cc instanceof CallContextReturn
+    noPrunedViableImplInCallContext(call, cc) and
+    result = viableCallableExt(call)
   }
 
   /** An optional Boolean value. */
