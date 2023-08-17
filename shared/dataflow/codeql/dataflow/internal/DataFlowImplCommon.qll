@@ -1299,8 +1299,7 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   /**
-   * Resolves a return from `callable` in `cc` to `call`. This is equivalent to
-   * `callable = viableCallableExt(call) and checkCallContextReturn(cc, callable, call)`.
+   * Resolves a return from `callable` in `cc` to `call`.
    */
   bindingset[cc, callable]
   predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
@@ -1310,8 +1309,7 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   /**
-   * Resolves a call from `call` in `cc` to `result`. This is equivalent to
-   * `result = viableCallableExt(call) and checkCallContextCall(cc, call, result)`.
+   * Resolves a call from `call` in `cc` to `result`.
    */
   bindingset[call, cc]
   DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
