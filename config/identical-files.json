@@ -483,10 +483,6 @@
     "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll",
     "swift/ql/lib/codeql/swift/security/internal/SensitiveDataHeuristics.qll"
   ],
-  "CFG": [
-    "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
-    "swift/ql/lib/codeql/swift/controlflow/internal/ControlFlowGraphImplShared.qll"
-  ],
   "TypeTracker": [
     "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
     "ruby/ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
