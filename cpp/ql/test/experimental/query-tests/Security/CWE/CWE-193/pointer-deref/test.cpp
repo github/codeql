@@ -742,3 +742,49 @@ void test37(unsigned long n)
     p[n - i] = 0; // GOOD
   }
 }
+
+unsigned get(char);
+void exit(int);
+
+void error(const char * msg) {
+  exit(1);
+}
+
+void test38(unsigned size) {
+  char * alloc = new char[size];
+
+  unsigned pos = 0;
+  while (pos < size) {
+    char kind = alloc[pos];
+    unsigned n = get(alloc[pos]);
+    if (pos + n >= size) {
+      error("");
+    }
+    switch (kind) {
+    case '0':
+      if (n != 1)
+        error("");
+      char x = alloc[pos + 1]; // $ alloc=L754 deref=L767 // GOOD [FALSE POSITIVE]
+      break;
+    case '1':
+      if (n != 2)
+        error("");
+      char a = alloc[pos + 1]; // $ alloc=L754 deref=L772 // GOOD [FALSE POSITIVE]
+      char b = alloc[pos + 2];
+      break;
+    }
+    pos += 1 + n;
+  }
+}
+
+void test38_simple(unsigned size, unsigned pos, unsigned numParams) {
+  char * p = new char[size];
+
+  if (pos < size) {
+    if (pos + numParams < size) {
+      if (numParams == 1) {
+        char x = p[pos + 1]; // $ alloc=L781 deref=L786 // GOOD [FALSE POSITIVE]
+      }
+    }
+  }
+}
