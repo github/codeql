@@ -1,3 +1,5 @@
+// This test finds taint tracking steps which are not data flow steps
+// to illustrate which steps are added specifically by taint tracking
 import go
 
 predicate hasLocation(DataFlow::Node node, string loc) {
