@@ -106,7 +106,7 @@ namespace Semmle.BuildAnalyser
                 {
                     Restore(solutions);
                     Restore(allProjects);
-                    DownloadMissingPackages(allProjects);
+                    DownloadMissingPackages();
                 }
             }
 
@@ -330,7 +330,7 @@ namespace Semmle.BuildAnalyser
         }
 
 
-        private void DownloadMissingPackages(IEnumerable<string> restoreTargets)
+        private void DownloadMissingPackages()
         {
             var nugetConfigs = GetFiles("nuget.config", recurseSubdirectories: true).ToArray();
             string? nugetConfig = null;
