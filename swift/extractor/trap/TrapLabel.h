@@ -10,7 +10,6 @@
 #include <cmath>
 #include <charconv>
 #include <concepts>
-#include <optional>
 
 namespace codeql {
 
