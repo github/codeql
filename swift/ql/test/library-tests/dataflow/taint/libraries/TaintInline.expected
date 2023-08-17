@@ -1,13 +1,5 @@
 failures
 testFailures
-| int.swift:18:21:19:1 | // $ SPURIOUS: tainted=13\n | Fixed spurious result:tainted=13 |
-| int.swift:33:21:34:1 | // $ SPURIOUS: tainted=28\n | Fixed spurious result:tainted=28 |
-| int.swift:48:23:49:1 | // $ SPURIOUS: tainted=47\n | Fixed spurious result:tainted=47 |
-| int.swift:84:20:85:1 | // $ SPURIOUS: tainted=83\n | Fixed spurious result:tainted=83 |
-| int.swift:89:23:90:1 | // $ SPURIOUS: tainted=83\n | Fixed spurious result:tainted=83 |
-| int.swift:132:20:133:1 | // $ tainted=131\n | Missing result:tainted=131 |
-| int.swift:137:30:138:1 | // $ SPURIOUS: tainted=131\n | Fixed spurious result:tainted=131 |
-| int.swift:147:23:148:1 | // $ SPURIOUS: tainted=142\n | Fixed spurious result:tainted=142 |
 | string.swift:407:23:408:1 | // $ tainted=366\n | Missing result:tainted=366 |
 | string.swift:441:20:442:1 | // $ tainted=366\n | Missing result:tainted=366 |
 | string.swift:483:23:484:1 | // $ tainted=450\n | Missing result:tainted=450 |

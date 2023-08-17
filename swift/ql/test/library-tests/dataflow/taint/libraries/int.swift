@@ -15,7 +15,7 @@ func taintThroughClosurePointer() {
   sink(arg: myArray1[0]) // $ tainted=13
   let return1 = myArray1.withUnsafeBytes({
     ptr1 in
-    sink(arg: ptr1) // $ SPURIOUS: tainted=13
+    sink(arg: ptr1)
     sink(arg: ptr1[0]) // $ tainted=13
     return source()
   })
@@ -30,7 +30,7 @@ func taintThroughClosurePointer() {
   sink(arg: myArray2[0]) // $ tainted=28
   let return2 = myArray2.withUnsafeBufferPointer({
     ptr2 in
-    sink(arg: ptr2) // $ SPURIOUS: tainted=28
+    sink(arg: ptr2)
     sink(arg: ptr2[0]) // $ tainted=28
     return source()
   })
@@ -45,7 +45,7 @@ func taintThroughMutablePointer() {
   let return1 = myArray1.withUnsafeMutableBufferPointer({
     buffer in
     buffer.update(repeating: source())
-    sink(arg: buffer) // $ SPURIOUS: tainted=47
+    sink(arg: buffer)
     sink(arg: buffer[0]) // $ tainted=47
     sink(arg: buffer.baseAddress!.pointee) // $ MISSING: tainted=47
     return source()
@@ -81,12 +81,12 @@ func taintThroughMutablePointer() {
   let return3 = myArray3.withContiguousMutableStorageIfAvailable({
     ptr in
     ptr.update(repeating: source())
-    sink(arg: ptr) // $ SPURIOUS: tainted=83
+    sink(arg: ptr)
     sink(arg: ptr[0]) // $ tainted=83
     return source()
   })
   sink(arg: return3!) // $ tainted=86
-  sink(arg: myArray3) // $ SPURIOUS: tainted=83
+  sink(arg: myArray3)
   sink(arg: myArray3[0]) // $ tainted=83
 
   // ---
@@ -129,12 +129,12 @@ func taintThroughMutablePointer() {
   let return6 = myMutableBuffer.withContiguousMutableStorageIfAvailable({
     ptr in
     ptr.update(repeating: source2())
-    sink(arg: ptr) // $ tainted=131
+    sink(arg: ptr)
     sink(arg: ptr[0]) // $ tainted=131
     return source()
   })
   sink(arg: return6!) // $ tainted=134
-  sink(arg: myMutableBuffer) // $ SPURIOUS: tainted=131
+  sink(arg: myMutableBuffer)
   sink(arg: myMutableBuffer[0]) // $ tainted=131
 }
 
@@ -144,7 +144,7 @@ func taintCollections(array: inout Array<Int>, contiguousArray: inout Contiguous
   sink(arg: array[0]) // $ tainted=142
   array.withContiguousStorageIfAvailable({
     buffer in
-    sink(arg: buffer) // $ SPURIOUS: tainted=142
+    sink(arg: buffer)
     sink(arg: buffer[0]) // $ tainted=142
     sink(arg: array)
     sink(arg: array[0]) // $ MISSING: tainted=142
