@@ -1,60 +1,88 @@
 edges
-| AirspeedSsti.py:10:16:10:27 | dict of externally controlled string | AirspeedSsti.py:10:16:10:43 | externally controlled string |
-| AirspeedSsti.py:10:16:10:27 | dict of externally controlled string | AirspeedSsti.py:10:16:10:43 | externally controlled string |
-| AirspeedSsti.py:10:16:10:43 | externally controlled string | AirspeedSsti.py:11:30:11:37 | externally controlled string |
-| AirspeedSsti.py:10:16:10:43 | externally controlled string | AirspeedSsti.py:11:30:11:37 | externally controlled string |
-| ChevronSsti.py:10:16:10:27 | dict of externally controlled string | ChevronSsti.py:10:16:10:43 | externally controlled string |
-| ChevronSsti.py:10:16:10:27 | dict of externally controlled string | ChevronSsti.py:10:16:10:43 | externally controlled string |
-| ChevronSsti.py:10:16:10:43 | externally controlled string | ChevronSsti.py:11:27:11:34 | externally controlled string |
-| ChevronSsti.py:10:16:10:43 | externally controlled string | ChevronSsti.py:11:27:11:34 | externally controlled string |
-| DjangoTemplates.py:6:8:6:14 | django.request.HttpRequest | DjangoTemplates.py:8:16:8:22 | django.request.HttpRequest |
-| DjangoTemplates.py:6:8:6:14 | django.request.HttpRequest | DjangoTemplates.py:8:16:8:22 | django.request.HttpRequest |
-| DjangoTemplates.py:8:16:8:22 | django.request.HttpRequest | DjangoTemplates.py:8:16:8:26 | django.http.request.QueryDict |
-| DjangoTemplates.py:8:16:8:22 | django.request.HttpRequest | DjangoTemplates.py:8:16:8:26 | django.http.request.QueryDict |
-| DjangoTemplates.py:8:16:8:26 | django.http.request.QueryDict | DjangoTemplates.py:8:16:8:38 | externally controlled string |
-| DjangoTemplates.py:8:16:8:26 | django.http.request.QueryDict | DjangoTemplates.py:8:16:8:38 | externally controlled string |
-| DjangoTemplates.py:8:16:8:38 | externally controlled string | DjangoTemplates.py:9:18:9:25 | externally controlled string |
-| DjangoTemplates.py:8:16:8:38 | externally controlled string | DjangoTemplates.py:9:18:9:25 | externally controlled string |
-| FlaskTemplate.py:17:41:17:52 | dict of externally controlled string | FlaskTemplate.py:17:41:17:68 | externally controlled string |
-| FlaskTemplate.py:17:41:17:52 | dict of externally controlled string | FlaskTemplate.py:17:41:17:68 | externally controlled string |
-| JinjaSsti.py:7:7:7:13 | django.request.HttpRequest | JinjaSsti.py:9:16:9:22 | django.request.HttpRequest |
-| JinjaSsti.py:7:7:7:13 | django.request.HttpRequest | JinjaSsti.py:9:16:9:22 | django.request.HttpRequest |
-| JinjaSsti.py:9:16:9:22 | django.request.HttpRequest | JinjaSsti.py:9:16:9:26 | django.http.request.QueryDict |
-| JinjaSsti.py:9:16:9:22 | django.request.HttpRequest | JinjaSsti.py:9:16:9:26 | django.http.request.QueryDict |
-| JinjaSsti.py:9:16:9:26 | django.http.request.QueryDict | JinjaSsti.py:9:16:9:38 | externally controlled string |
-| JinjaSsti.py:9:16:9:26 | django.http.request.QueryDict | JinjaSsti.py:9:16:9:38 | externally controlled string |
-| JinjaSsti.py:9:16:9:38 | externally controlled string | JinjaSsti.py:10:25:10:32 | externally controlled string |
-| JinjaSsti.py:9:16:9:38 | externally controlled string | JinjaSsti.py:10:25:10:32 | externally controlled string |
-| JinjaSsti.py:16:7:16:13 | django.request.HttpRequest | JinjaSsti.py:19:16:19:22 | django.request.HttpRequest |
-| JinjaSsti.py:16:7:16:13 | django.request.HttpRequest | JinjaSsti.py:19:16:19:22 | django.request.HttpRequest |
-| JinjaSsti.py:19:16:19:22 | django.request.HttpRequest | JinjaSsti.py:19:16:19:26 | django.http.request.QueryDict |
-| JinjaSsti.py:19:16:19:22 | django.request.HttpRequest | JinjaSsti.py:19:16:19:26 | django.http.request.QueryDict |
-| JinjaSsti.py:19:16:19:26 | django.http.request.QueryDict | JinjaSsti.py:19:16:19:38 | externally controlled string |
-| JinjaSsti.py:19:16:19:26 | django.http.request.QueryDict | JinjaSsti.py:19:16:19:38 | externally controlled string |
-| JinjaSsti.py:19:16:19:38 | externally controlled string | JinjaSsti.py:20:28:20:35 | externally controlled string |
-| JinjaSsti.py:19:16:19:38 | externally controlled string | JinjaSsti.py:20:28:20:35 | externally controlled string |
-| MakoSsti.py:6:10:6:16 | django.request.HttpRequest | MakoSsti.py:8:16:8:22 | django.request.HttpRequest |
-| MakoSsti.py:6:10:6:16 | django.request.HttpRequest | MakoSsti.py:8:16:8:22 | django.request.HttpRequest |
-| MakoSsti.py:8:16:8:22 | django.request.HttpRequest | MakoSsti.py:8:16:8:26 | django.http.request.QueryDict |
-| MakoSsti.py:8:16:8:22 | django.request.HttpRequest | MakoSsti.py:8:16:8:26 | django.http.request.QueryDict |
-| MakoSsti.py:8:16:8:26 | django.http.request.QueryDict | MakoSsti.py:8:16:8:38 | externally controlled string |
-| MakoSsti.py:8:16:8:26 | django.http.request.QueryDict | MakoSsti.py:8:16:8:38 | externally controlled string |
-| MakoSsti.py:8:16:8:38 | externally controlled string | MakoSsti.py:9:27:9:34 | externally controlled string |
-| MakoSsti.py:8:16:8:38 | externally controlled string | MakoSsti.py:9:27:9:34 | externally controlled string |
-| TRender.py:5:13:5:19 | django.request.HttpRequest | TRender.py:6:16:6:22 | django.request.HttpRequest |
-| TRender.py:5:13:5:19 | django.request.HttpRequest | TRender.py:6:16:6:22 | django.request.HttpRequest |
-| TRender.py:6:16:6:22 | django.request.HttpRequest | TRender.py:6:16:6:26 | django.http.request.QueryDict |
-| TRender.py:6:16:6:22 | django.request.HttpRequest | TRender.py:6:16:6:26 | django.http.request.QueryDict |
-| TRender.py:6:16:6:26 | django.http.request.QueryDict | TRender.py:6:16:6:38 | externally controlled string |
-| TRender.py:6:16:6:26 | django.http.request.QueryDict | TRender.py:6:16:6:38 | externally controlled string |
-| TRender.py:6:16:6:38 | externally controlled string | TRender.py:7:24:7:31 | externally controlled string |
-| TRender.py:6:16:6:38 | externally controlled string | TRender.py:7:24:7:31 | externally controlled string |
+| AirspeedSsti.py:2:26:2:32 | ControlFlowNode for ImportMember | AirspeedSsti.py:2:26:2:32 | GSSA Variable request |
+| AirspeedSsti.py:2:26:2:32 | GSSA Variable request | AirspeedSsti.py:10:16:10:22 | ControlFlowNode for request |
+| AirspeedSsti.py:10:16:10:22 | ControlFlowNode for request | AirspeedSsti.py:10:16:10:27 | ControlFlowNode for Attribute |
+| AirspeedSsti.py:10:16:10:27 | ControlFlowNode for Attribute | AirspeedSsti.py:10:16:10:43 | ControlFlowNode for Attribute() |
+| AirspeedSsti.py:10:16:10:43 | ControlFlowNode for Attribute() | AirspeedSsti.py:11:30:11:37 | ControlFlowNode for template |
+| ChevronSsti.py:1:26:1:32 | ControlFlowNode for ImportMember | ChevronSsti.py:1:26:1:32 | GSSA Variable request |
+| ChevronSsti.py:1:26:1:32 | GSSA Variable request | ChevronSsti.py:10:16:10:22 | ControlFlowNode for request |
+| ChevronSsti.py:10:16:10:22 | ControlFlowNode for request | ChevronSsti.py:10:16:10:27 | ControlFlowNode for Attribute |
+| ChevronSsti.py:10:16:10:27 | ControlFlowNode for Attribute | ChevronSsti.py:10:16:10:43 | ControlFlowNode for Attribute() |
+| ChevronSsti.py:10:16:10:43 | ControlFlowNode for Attribute() | ChevronSsti.py:11:27:11:34 | ControlFlowNode for template |
+| DjangoTemplates.py:6:8:6:14 | ControlFlowNode for request | DjangoTemplates.py:8:16:8:26 | ControlFlowNode for Attribute |
+| DjangoTemplates.py:8:16:8:26 | ControlFlowNode for Attribute | DjangoTemplates.py:8:16:8:38 | ControlFlowNode for Subscript |
+| DjangoTemplates.py:8:16:8:38 | ControlFlowNode for Subscript | DjangoTemplates.py:9:18:9:25 | ControlFlowNode for template |
+| FlaskTemplate.py:1:26:1:32 | ControlFlowNode for ImportMember | FlaskTemplate.py:1:26:1:32 | GSSA Variable request |
+| FlaskTemplate.py:1:26:1:32 | GSSA Variable request | FlaskTemplate.py:10:8:10:14 | ControlFlowNode for request |
+| FlaskTemplate.py:1:26:1:32 | GSSA Variable request | FlaskTemplate.py:11:39:11:45 | ControlFlowNode for request |
+| FlaskTemplate.py:1:26:1:32 | GSSA Variable request | FlaskTemplate.py:17:41:17:47 | ControlFlowNode for request |
+| FlaskTemplate.py:10:8:10:14 | ControlFlowNode for request | FlaskTemplate.py:11:39:11:50 | ControlFlowNode for Attribute |
+| FlaskTemplate.py:11:39:11:45 | ControlFlowNode for request | FlaskTemplate.py:11:39:11:50 | ControlFlowNode for Attribute |
+| FlaskTemplate.py:11:39:11:50 | ControlFlowNode for Attribute | FlaskTemplate.py:11:39:11:66 | ControlFlowNode for Attribute() |
+| FlaskTemplate.py:17:41:17:47 | ControlFlowNode for request | FlaskTemplate.py:17:41:17:52 | ControlFlowNode for Attribute |
+| FlaskTemplate.py:17:41:17:52 | ControlFlowNode for Attribute | FlaskTemplate.py:17:41:17:68 | ControlFlowNode for Attribute() |
+| JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | JinjaSsti.py:9:16:9:26 | ControlFlowNode for Attribute |
+| JinjaSsti.py:9:16:9:26 | ControlFlowNode for Attribute | JinjaSsti.py:9:16:9:38 | ControlFlowNode for Subscript |
+| JinjaSsti.py:9:16:9:38 | ControlFlowNode for Subscript | JinjaSsti.py:10:25:10:32 | ControlFlowNode for template |
+| JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | JinjaSsti.py:19:16:19:26 | ControlFlowNode for Attribute |
+| JinjaSsti.py:19:16:19:26 | ControlFlowNode for Attribute | JinjaSsti.py:19:16:19:38 | ControlFlowNode for Subscript |
+| JinjaSsti.py:19:16:19:38 | ControlFlowNode for Subscript | JinjaSsti.py:20:28:20:35 | ControlFlowNode for template |
+| MakoSsti.py:6:10:6:16 | ControlFlowNode for request | MakoSsti.py:8:16:8:26 | ControlFlowNode for Attribute |
+| MakoSsti.py:8:16:8:26 | ControlFlowNode for Attribute | MakoSsti.py:8:16:8:38 | ControlFlowNode for Subscript |
+| MakoSsti.py:8:16:8:38 | ControlFlowNode for Subscript | MakoSsti.py:9:27:9:34 | ControlFlowNode for template |
+| TRender.py:5:13:5:19 | ControlFlowNode for request | TRender.py:6:16:6:26 | ControlFlowNode for Attribute |
+| TRender.py:6:16:6:26 | ControlFlowNode for Attribute | TRender.py:6:16:6:38 | ControlFlowNode for Subscript |
+| TRender.py:6:16:6:38 | ControlFlowNode for Subscript | TRender.py:7:24:7:31 | ControlFlowNode for template |
+nodes
+| AirspeedSsti.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| AirspeedSsti.py:2:26:2:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| AirspeedSsti.py:10:16:10:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| AirspeedSsti.py:10:16:10:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| AirspeedSsti.py:10:16:10:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| AirspeedSsti.py:11:30:11:37 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| ChevronSsti.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| ChevronSsti.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| ChevronSsti.py:10:16:10:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| ChevronSsti.py:10:16:10:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| ChevronSsti.py:10:16:10:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| ChevronSsti.py:11:27:11:34 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| DjangoTemplates.py:6:8:6:14 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| DjangoTemplates.py:8:16:8:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| DjangoTemplates.py:8:16:8:38 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| DjangoTemplates.py:9:18:9:25 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| FlaskTemplate.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| FlaskTemplate.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| FlaskTemplate.py:10:8:10:14 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| FlaskTemplate.py:11:39:11:45 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| FlaskTemplate.py:11:39:11:50 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| FlaskTemplate.py:11:39:11:66 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| FlaskTemplate.py:17:41:17:47 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| FlaskTemplate.py:17:41:17:52 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| FlaskTemplate.py:17:41:17:68 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| JinjaSsti.py:9:16:9:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| JinjaSsti.py:9:16:9:38 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| JinjaSsti.py:10:25:10:32 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| JinjaSsti.py:19:16:19:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| JinjaSsti.py:19:16:19:38 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| JinjaSsti.py:20:28:20:35 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| MakoSsti.py:6:10:6:16 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| MakoSsti.py:8:16:8:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| MakoSsti.py:8:16:8:38 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| MakoSsti.py:9:27:9:34 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| TRender.py:5:13:5:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| TRender.py:6:16:6:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| TRender.py:6:16:6:38 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| TRender.py:7:24:7:31 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+subpaths
 #select
-| AirspeedSsti.py:11:30:11:37 | template | AirspeedSsti.py:10:16:10:27 | dict of externally controlled string | AirspeedSsti.py:11:30:11:37 | externally controlled string | This Template depends on $@. | AirspeedSsti.py:10:16:10:27 | Attribute | a user-provided value |
-| ChevronSsti.py:11:27:11:34 | template | ChevronSsti.py:10:16:10:27 | dict of externally controlled string | ChevronSsti.py:11:27:11:34 | externally controlled string | This Template depends on $@. | ChevronSsti.py:10:16:10:27 | Attribute | a user-provided value |
-| DjangoTemplates.py:9:18:9:25 | template | DjangoTemplates.py:6:8:6:14 | django.request.HttpRequest | DjangoTemplates.py:9:18:9:25 | externally controlled string | This Template depends on $@. | DjangoTemplates.py:6:8:6:14 | request | a user-provided value |
-| FlaskTemplate.py:17:41:17:68 | Attribute() | FlaskTemplate.py:17:41:17:52 | dict of externally controlled string | FlaskTemplate.py:17:41:17:68 | externally controlled string | This Template depends on $@. | FlaskTemplate.py:17:41:17:52 | Attribute | a user-provided value |
-| JinjaSsti.py:10:25:10:32 | template | JinjaSsti.py:7:7:7:13 | django.request.HttpRequest | JinjaSsti.py:10:25:10:32 | externally controlled string | This Template depends on $@. | JinjaSsti.py:7:7:7:13 | request | a user-provided value |
-| JinjaSsti.py:20:28:20:35 | template | JinjaSsti.py:16:7:16:13 | django.request.HttpRequest | JinjaSsti.py:20:28:20:35 | externally controlled string | This Template depends on $@. | JinjaSsti.py:16:7:16:13 | request | a user-provided value |
-| MakoSsti.py:9:27:9:34 | template | MakoSsti.py:6:10:6:16 | django.request.HttpRequest | MakoSsti.py:9:27:9:34 | externally controlled string | This Template depends on $@. | MakoSsti.py:6:10:6:16 | request | a user-provided value |
-| TRender.py:7:24:7:31 | template | TRender.py:5:13:5:19 | django.request.HttpRequest | TRender.py:7:24:7:31 | externally controlled string | This Template depends on $@. | TRender.py:5:13:5:19 | request | a user-provided value |
+| AirspeedSsti.py:11:30:11:37 | ControlFlowNode for template | AirspeedSsti.py:2:26:2:32 | ControlFlowNode for ImportMember | AirspeedSsti.py:11:30:11:37 | ControlFlowNode for template | This Template depends on $@. | AirspeedSsti.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| ChevronSsti.py:11:27:11:34 | ControlFlowNode for template | ChevronSsti.py:1:26:1:32 | ControlFlowNode for ImportMember | ChevronSsti.py:11:27:11:34 | ControlFlowNode for template | This Template depends on $@. | ChevronSsti.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| DjangoTemplates.py:9:18:9:25 | ControlFlowNode for template | DjangoTemplates.py:6:8:6:14 | ControlFlowNode for request | DjangoTemplates.py:9:18:9:25 | ControlFlowNode for template | This Template depends on $@. | DjangoTemplates.py:6:8:6:14 | ControlFlowNode for request | user-provided value |
+| FlaskTemplate.py:11:39:11:66 | ControlFlowNode for Attribute() | FlaskTemplate.py:1:26:1:32 | ControlFlowNode for ImportMember | FlaskTemplate.py:11:39:11:66 | ControlFlowNode for Attribute() | This Template depends on $@. | FlaskTemplate.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| FlaskTemplate.py:17:41:17:68 | ControlFlowNode for Attribute() | FlaskTemplate.py:1:26:1:32 | ControlFlowNode for ImportMember | FlaskTemplate.py:17:41:17:68 | ControlFlowNode for Attribute() | This Template depends on $@. | FlaskTemplate.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| JinjaSsti.py:10:25:10:32 | ControlFlowNode for template | JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | JinjaSsti.py:10:25:10:32 | ControlFlowNode for template | This Template depends on $@. | JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | user-provided value |
+| JinjaSsti.py:20:28:20:35 | ControlFlowNode for template | JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | JinjaSsti.py:20:28:20:35 | ControlFlowNode for template | This Template depends on $@. | JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | user-provided value |
+| MakoSsti.py:9:27:9:34 | ControlFlowNode for template | MakoSsti.py:6:10:6:16 | ControlFlowNode for request | MakoSsti.py:9:27:9:34 | ControlFlowNode for template | This Template depends on $@. | MakoSsti.py:6:10:6:16 | ControlFlowNode for request | user-provided value |
+| TRender.py:7:24:7:31 | ControlFlowNode for template | TRender.py:5:13:5:19 | ControlFlowNode for request | TRender.py:7:24:7:31 | ControlFlowNode for template | This Template depends on $@. | TRender.py:5:13:5:19 | ControlFlowNode for request | user-provided value |
