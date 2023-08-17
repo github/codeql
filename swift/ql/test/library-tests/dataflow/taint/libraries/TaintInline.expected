@@ -1,9 +1,6 @@
 failures
 testFailures
-| string.swift:407:23:408:1 | // $ tainted=366\n | Missing result:tainted=366 |
-| string.swift:441:20:442:1 | // $ tainted=366\n | Missing result:tainted=366 |
-| string.swift:483:23:484:1 | // $ tainted=450\n | Missing result:tainted=450 |
-| string.swift:496:23:497:1 | // $ tainted=450\n | Missing result:tainted=450 |
-| string.swift:518:20:519:1 | // $ tainted=506\n | Missing result:tainted=506 |
-| string.swift:544:20:545:1 | // $ tainted=533\n | Missing result:tainted=533 |
-| string.swift:610:18:611:1 | // $ tainted=617\n | Missing result:tainted=617 |
+| string.swift:470:81:471:1 | // $ tainted=450\n | Missing result:tainted=450 |
+| string.swift:473:50:474:1 | // $ tainted=450\n | Missing result:tainted=450 |
+| string.swift:496:26:497:1 | // $ tainted=450\n | Missing result:tainted=450 |
+| string.swift:526:50:527:1 | // $ tainted=506\n | Missing result:tainted=506 |
