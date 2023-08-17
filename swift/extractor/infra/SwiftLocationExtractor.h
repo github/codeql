@@ -18,26 +18,19 @@ class TrapDomain;
 namespace detail {
 template <typename T>
 concept HasStartAndEndLoc = requires(T e) {
-  e.getStartLoc();
-  e.getEndLoc();
-};
+                              e.getStartLoc();
+                              e.getEndLoc();
+                            };
 
 template <typename T>
-concept HasOneLoc = requires(T e) {
-  e.getLoc();
-}
-&&(!HasStartAndEndLoc<T>);
+concept HasOneLoc = requires(T e) { e.getLoc(); } && (!HasStartAndEndLoc<T>);
 
 template <typename T>
-concept HasOneLocField = requires(T e) {
-  e.Loc;
-};
+concept HasOneLocField = requires(T e) { e.Loc; };
 
 template <typename T>
-concept HasSourceRangeOnly = requires(T e) {
-  e.getSourceRange();
-}
-&&(!HasStartAndEndLoc<T>)&&(!HasOneLoc<T>);
+concept HasSourceRangeOnly = requires(T e) { e.getSourceRange(); } && (!HasStartAndEndLoc<T>) &&
+                             (!HasOneLoc<T>);
 
 swift::SourceRange getSourceRange(const HasStartAndEndLoc auto& locatable) {
   return {locatable.getStartLoc(), locatable.getEndLoc()};

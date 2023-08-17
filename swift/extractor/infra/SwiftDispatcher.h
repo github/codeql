@@ -130,8 +130,8 @@ class SwiftDispatcher {
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
   template <typename E>
-  requires std::constructible_from<Handle, E> TrapLabelOf<E> fetchLabel(const E& e,
-                                                                        swift::Type type = {}) {
+    requires std::constructible_from<Handle, E>
+  TrapLabelOf<E> fetchLabel(const E& e, swift::Type type = {}) {
     if constexpr (std::constructible_from<bool, const E&>) {
       if (!e) {
         // this will be treated on emission
@@ -163,7 +163,8 @@ class SwiftDispatcher {
   }
 
   template <typename E>
-  requires std::constructible_from<Handle, E*> TrapLabelOf<E> fetchLabel(const E& e) {
+    requires std::constructible_from<Handle, E*>
+  TrapLabelOf<E> fetchLabel(const E& e) {
     return fetchLabel(&e);
   }
 
@@ -327,7 +328,10 @@ class SwiftDispatcher {
   virtual void visit(const swift::CapturedValue* capture) = 0;
 
   template <typename T>
-  requires(!std::derived_from<T, swift::TypeRepr>) void visit(const T* e, swift::Type) { visit(e); }
+    requires(!std::derived_from<T, swift::TypeRepr>)
+  void visit(const T* e, swift::Type) {
+    visit(e);
+  }
 
   const swift::SourceManager& sourceManager;
   SwiftExtractorState& state;
