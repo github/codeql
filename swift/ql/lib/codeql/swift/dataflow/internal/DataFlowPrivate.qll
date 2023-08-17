@@ -803,8 +803,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    subscript.getBase().getType() instanceof ArrayType and
-    c.isSingleton(any(Content::ArrayContent ac))
+    (
+      subscript.getBase().getType() instanceof ArrayType and
+      c.isSingleton(any(Content::ArrayContent ac))
+      or
+      c.isSingleton(any(Content::CollectionContent ac))
+    )
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
