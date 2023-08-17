@@ -230,7 +230,10 @@ string getAnInsecureAlgorithmName() {
       // Encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
       "ECB",
       // CBC mode of operation with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks
-      "AES/CBC/PKCS[57]Padding"
+      "AES/CBC/PKCS[57]Padding",
+      // As of NIST.SP.800-131Ar2, 2TDES, 3TDES, and SKIPJACK are no longer supported, deprectated effective end 2023.
+      // "DESede", "TripleDES", "3DES" are all 3TDEA depending on which library (BC, JCE, JSSE etc.)
+      "DESede", "TripleDES", "3DES" , "SKIPJACK", "Skipjack"
     ]
 }
 
@@ -270,8 +273,8 @@ string getInsecureAlgorithmRegex() {
 string getASecureAlgorithmName() {
   result =
     [
-      "RSA", "SHA256", "SHA512", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
-      "Blowfish", "ECIES"
+      "RSA", "SHA256", "SHA512", "CCM", "GCM", "Blowfish", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
+      "(ChaCha20Poly1305|ChaCha20)", "ECIES"
     ]
 }
 
