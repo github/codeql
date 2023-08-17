@@ -35,11 +35,16 @@ module WebAppConstantSecretKeyConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getLocation().getFile().inStdlib() or
+    node.getLocation().getFile().inStdlib()
+    or
+    // To reduce FP rate, the following was added
     node.getLocation()
         .getFile()
-        .getAbsolutePath()
-        .matches(["%test%", "%demo%", "%example%", "%sample%"])
+        .getRelativePath()
+        .matches(["%test%", "%demo%", "%example%", "%sample%"]) and
+    // but that also meant all data-flow nodes in query tests were excluded... so we had
+    // to add this:
+    not node.getLocation().getFile().getRelativePath().matches("%query-tests/Security/CWE-287%")
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
