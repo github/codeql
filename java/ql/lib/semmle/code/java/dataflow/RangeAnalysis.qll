@@ -267,6 +267,7 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
 /**
  * Gets a basic block in which `v1` equals `v2 + delta`.
  */
+pragma[nomagic]
 private BasicBlock eqSsaCondDirectlyControls(SsaVariable v1, SsaVariable v2, int delta) {
   exists(Guard guardEq, int d1, int d2, boolean eqIsTrue |
     guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
