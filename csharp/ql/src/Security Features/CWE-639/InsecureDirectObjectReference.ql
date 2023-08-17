@@ -17,4 +17,4 @@ import semmle.code.csharp.security.auth.InsecureDirectObjectReferenceQuery
 from ActionMethod m
 where hasInsecureDirectObjectReference(m)
 select m,
-  "This method may not verify which users should be able to access resources of the provided ID."
+  "This method may be missing authorization checks for which users can access the resource of the provided ID."

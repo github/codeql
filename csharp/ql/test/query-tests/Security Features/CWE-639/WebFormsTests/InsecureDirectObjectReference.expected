@@ -1,1 +1,1 @@
-| EditComment.aspx.cs:7:20:7:29 | btn1_Click | This method may not verify which users should be able to access resources of the provided ID. |
+| EditComment.aspx.cs:7:20:7:29 | btn1_Click | This method may be missing authorization checks for which users can access the resource of the provided ID. |

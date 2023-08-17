@@ -22,6 +22,7 @@ private predicate hasIdParameter(ActionMethod m) {
   exists(RemoteFlowSource src | src.getEnclosingCallable() = m |
     src.asParameter().getName().toLowerCase().matches(["%id", "%idx"])
     or
+    // handle cases like `Request.QueryString["Id"]`
     exists(StringLiteral idStr |
       idStr.getValue().toLowerCase().matches(["%id", "%idx"]) and
       getParentExpr*(src.asExpr()) = getParentExpr*(idStr)
@@ -31,8 +32,10 @@ private predicate hasIdParameter(ActionMethod m) {
 
 /** Holds if `m` at some point in its call graph may make some kind of check against the current user. */
 private predicate checksUser(ActionMethod m) {
-  exists(Property p | p.getName().toLowerCase().matches(["%user%", "%session%"]) |
-    m.calls*(p.getGetter())
+  exists(Callable c, string name | name = c.getName().toLowerCase() |
+    name.matches(["%user%", "%session%"]) and
+    not name.matches("%get%by%") and // methods like `getUserById` or `getXByUsername` aren't likely to be referring to the current user
+    m.calls*(c)
   )
 }
 
