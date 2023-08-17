@@ -759,3 +759,31 @@ func testWriteOptional() {
     sink(arg: mo2!.v2!) // $ MISSING:flow=749
     sink(arg: mo2!.v3) // $ MISSING:flow=750
 }
+
+struct S3 {
+  init(_ v: Int) {
+    self.v = v
+  }
+
+  func getv() -> Int { return v }
+
+  var v: Int
+}
+
+func testStruct() {
+    var s1 = S3(source())
+    var s2 = S3(0)
+
+    sink(arg: s1.v) // $ flow=774
+    sink(arg: s2.v)
+    sink(arg: s1.getv()) // $ flow=774
+    sink(arg: s2.getv())
+
+    s1.v = 0
+    s2.v = source()
+
+    sink(arg: s1.v)
+    sink(arg: s2.v) // $ flow=783
+    sink(arg: s1.getv())
+    sink(arg: s2.getv()) // $ flow=783
+}

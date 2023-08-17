@@ -913,3 +913,39 @@
 | test.swift:759:15:759:15 | mo2 | test.swift:760:15:760:15 | mo2 |
 | test.swift:759:15:759:20 | .v2 | test.swift:759:15:759:22 | ...! |
 | test.swift:760:15:760:15 | mo2 | test.swift:760:15:760:18 | ...! |
+| test.swift:764:3:764:3 | SSA def(self) | test.swift:765:5:765:5 | self |
+| test.swift:764:3:764:3 | self | test.swift:764:3:764:3 | SSA def(self) |
+| test.swift:764:8:764:13 | SSA def(v) | test.swift:765:14:765:14 | v |
+| test.swift:764:8:764:13 | v | test.swift:764:8:764:13 | SSA def(v) |
+| test.swift:765:5:765:5 | [post] self | test.swift:764:3:766:3 | self[return] |
+| test.swift:765:5:765:5 | self | test.swift:764:3:766:3 | self[return] |
+| test.swift:768:8:768:8 | SSA def(self) | test.swift:768:31:768:31 | self |
+| test.swift:768:8:768:8 | self | test.swift:768:8:768:8 | SSA def(self) |
+| test.swift:768:31:768:31 | [post] self | test.swift:768:3:768:33 | self[return] |
+| test.swift:768:31:768:31 | self | test.swift:768:3:768:33 | self[return] |
+| test.swift:770:7:770:7 | self | test.swift:770:7:770:7 | SSA def(self) |
+| test.swift:770:7:770:7 | self | test.swift:770:7:770:7 | SSA def(self) |
+| test.swift:770:7:770:7 | self | test.swift:770:7:770:7 | SSA def(self) |
+| test.swift:770:7:770:7 | value | test.swift:770:7:770:7 | SSA def(value) |
+| test.swift:774:9:774:9 | SSA def(s1) | test.swift:777:15:777:15 | s1 |
+| test.swift:774:9:774:9 | s1 | test.swift:774:9:774:9 | SSA def(s1) |
+| test.swift:774:14:774:25 | call to S3.init(_:) | test.swift:774:9:774:9 | s1 |
+| test.swift:775:9:775:9 | SSA def(s2) | test.swift:778:15:778:15 | s2 |
+| test.swift:775:9:775:9 | s2 | test.swift:775:9:775:9 | SSA def(s2) |
+| test.swift:775:14:775:18 | call to S3.init(_:) | test.swift:775:9:775:9 | s2 |
+| test.swift:777:15:777:15 | [post] s1 | test.swift:779:15:779:15 | s1 |
+| test.swift:777:15:777:15 | s1 | test.swift:779:15:779:15 | s1 |
+| test.swift:778:15:778:15 | [post] s2 | test.swift:780:15:780:15 | s2 |
+| test.swift:778:15:778:15 | s2 | test.swift:780:15:780:15 | s2 |
+| test.swift:779:15:779:15 | [post] s1 | test.swift:782:5:782:5 | s1 |
+| test.swift:779:15:779:15 | s1 | test.swift:782:5:782:5 | s1 |
+| test.swift:780:15:780:15 | [post] s2 | test.swift:783:5:783:5 | s2 |
+| test.swift:780:15:780:15 | s2 | test.swift:783:5:783:5 | s2 |
+| test.swift:782:5:782:5 | [post] s1 | test.swift:785:15:785:15 | s1 |
+| test.swift:782:5:782:5 | s1 | test.swift:785:15:785:15 | s1 |
+| test.swift:783:5:783:5 | [post] s2 | test.swift:786:15:786:15 | s2 |
+| test.swift:783:5:783:5 | s2 | test.swift:786:15:786:15 | s2 |
+| test.swift:785:15:785:15 | [post] s1 | test.swift:787:15:787:15 | s1 |
+| test.swift:785:15:785:15 | s1 | test.swift:787:15:787:15 | s1 |
+| test.swift:786:15:786:15 | [post] s2 | test.swift:788:15:788:15 | s2 |
+| test.swift:786:15:786:15 | s2 | test.swift:788:15:788:15 | s2 |

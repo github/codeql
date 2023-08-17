@@ -4,10 +4,12 @@ edges
 | file://:0:0:0:0 | self [v2, some:0] | file://:0:0:0:0 | .v2 [some:0] |
 | file://:0:0:0:0 | self [v2] | file://:0:0:0:0 | .v2 |
 | file://:0:0:0:0 | self [v3] | file://:0:0:0:0 | .v3 |
+| file://:0:0:0:0 | self [v] | file://:0:0:0:0 | .v |
 | file://:0:0:0:0 | self [x, some:0] | file://:0:0:0:0 | .x [some:0] |
 | file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v2] |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v3] |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v] |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [x] |
 | file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [v2, some:0] |
 | file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [x, some:0] |
@@ -404,9 +406,34 @@ edges
 | test.swift:756:15:756:19 | .v2 [some:0] | test.swift:756:15:756:21 | ...! |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:732:9:732:9 | self [v3] |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:757:15:757:19 | .v3 |
+| test.swift:764:8:764:13 | v | test.swift:765:14:765:14 | v |
+| test.swift:765:5:765:5 | [post] self [v] | test.swift:764:3:766:3 | self[return] [v] |
+| test.swift:765:14:765:14 | v | test.swift:765:5:765:5 | [post] self [v] |
+| test.swift:768:8:768:8 | self [v] | test.swift:768:31:768:31 | self [v] |
+| test.swift:768:31:768:31 | self [v] | test.swift:768:31:768:31 | .v |
+| test.swift:768:31:768:31 | self [v] | test.swift:770:7:770:7 | self [v] |
+| test.swift:770:7:770:7 | self [v] | file://:0:0:0:0 | self [v] |
+| test.swift:770:7:770:7 | value | file://:0:0:0:0 | value |
+| test.swift:774:14:774:25 | call to S3.init(_:) [v] | test.swift:777:15:777:15 | s1 [v] |
+| test.swift:774:14:774:25 | call to S3.init(_:) [v] | test.swift:779:15:779:15 | s1 [v] |
+| test.swift:774:17:774:24 | call to source() | test.swift:764:8:764:13 | v |
+| test.swift:774:17:774:24 | call to source() | test.swift:774:14:774:25 | call to S3.init(_:) [v] |
+| test.swift:777:15:777:15 | s1 [v] | test.swift:770:7:770:7 | self [v] |
+| test.swift:777:15:777:15 | s1 [v] | test.swift:777:15:777:18 | .v |
+| test.swift:779:15:779:15 | s1 [v] | test.swift:768:8:768:8 | self [v] |
+| test.swift:779:15:779:15 | s1 [v] | test.swift:779:15:779:23 | call to getv() |
+| test.swift:783:5:783:5 | [post] s2 [v] | test.swift:786:15:786:15 | s2 [v] |
+| test.swift:783:5:783:5 | [post] s2 [v] | test.swift:788:15:788:15 | s2 [v] |
+| test.swift:783:12:783:19 | call to source() | test.swift:770:7:770:7 | value |
+| test.swift:783:12:783:19 | call to source() | test.swift:783:5:783:5 | [post] s2 [v] |
+| test.swift:786:15:786:15 | s2 [v] | test.swift:770:7:770:7 | self [v] |
+| test.swift:786:15:786:15 | s2 [v] | test.swift:786:15:786:18 | .v |
+| test.swift:788:15:788:15 | s2 [v] | test.swift:768:8:768:8 | self [v] |
+| test.swift:788:15:788:15 | s2 [v] | test.swift:788:15:788:23 | call to getv() |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
+| file://:0:0:0:0 | .v | semmle.label | .v |
 | file://:0:0:0:0 | .v2 | semmle.label | .v2 |
 | file://:0:0:0:0 | .v2 [some:0] | semmle.label | .v2 [some:0] |
 | file://:0:0:0:0 | .v3 | semmle.label | .v3 |
@@ -415,6 +442,7 @@ nodes
 | file://:0:0:0:0 | [post] self [v2, some:0] | semmle.label | [post] self [v2, some:0] |
 | file://:0:0:0:0 | [post] self [v2] | semmle.label | [post] self [v2] |
 | file://:0:0:0:0 | [post] self [v3] | semmle.label | [post] self [v3] |
+| file://:0:0:0:0 | [post] self [v] | semmle.label | [post] self [v] |
 | file://:0:0:0:0 | [post] self [x, some:0] | semmle.label | [post] self [x, some:0] |
 | file://:0:0:0:0 | [post] self [x] | semmle.label | [post] self [x] |
 | file://:0:0:0:0 | self [a, x] | semmle.label | self [a, x] |
@@ -422,8 +450,10 @@ nodes
 | file://:0:0:0:0 | self [v2, some:0] | semmle.label | self [v2, some:0] |
 | file://:0:0:0:0 | self [v2] | semmle.label | self [v2] |
 | file://:0:0:0:0 | self [v3] | semmle.label | self [v3] |
+| file://:0:0:0:0 | self [v] | semmle.label | self [v] |
 | file://:0:0:0:0 | self [x, some:0] | semmle.label | self [x, some:0] |
 | file://:0:0:0:0 | self [x] | semmle.label | self [x] |
+| file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |
@@ -849,6 +879,27 @@ nodes
 | test.swift:756:15:756:21 | ...! | semmle.label | ...! |
 | test.swift:757:15:757:15 | mo1 [v3] | semmle.label | mo1 [v3] |
 | test.swift:757:15:757:19 | .v3 | semmle.label | .v3 |
+| test.swift:764:3:766:3 | self[return] [v] | semmle.label | self[return] [v] |
+| test.swift:764:8:764:13 | v | semmle.label | v |
+| test.swift:765:5:765:5 | [post] self [v] | semmle.label | [post] self [v] |
+| test.swift:765:14:765:14 | v | semmle.label | v |
+| test.swift:768:8:768:8 | self [v] | semmle.label | self [v] |
+| test.swift:768:31:768:31 | .v | semmle.label | .v |
+| test.swift:768:31:768:31 | self [v] | semmle.label | self [v] |
+| test.swift:770:7:770:7 | self [v] | semmle.label | self [v] |
+| test.swift:770:7:770:7 | value | semmle.label | value |
+| test.swift:774:14:774:25 | call to S3.init(_:) [v] | semmle.label | call to S3.init(_:) [v] |
+| test.swift:774:17:774:24 | call to source() | semmle.label | call to source() |
+| test.swift:777:15:777:15 | s1 [v] | semmle.label | s1 [v] |
+| test.swift:777:15:777:18 | .v | semmle.label | .v |
+| test.swift:779:15:779:15 | s1 [v] | semmle.label | s1 [v] |
+| test.swift:779:15:779:23 | call to getv() | semmle.label | call to getv() |
+| test.swift:783:5:783:5 | [post] s2 [v] | semmle.label | [post] s2 [v] |
+| test.swift:783:12:783:19 | call to source() | semmle.label | call to source() |
+| test.swift:786:15:786:15 | s2 [v] | semmle.label | s2 [v] |
+| test.swift:786:15:786:18 | .v | semmle.label | .v |
+| test.swift:788:15:788:15 | s2 [v] | semmle.label | s2 [v] |
+| test.swift:788:15:788:23 | call to getv() | semmle.label | call to getv() |
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -897,6 +948,13 @@ subpaths
 | test.swift:756:15:756:15 | mo1 [v2, some:0] | test.swift:731:9:731:9 | self [v2, some:0] | file://:0:0:0:0 | .v2 [some:0] | test.swift:756:15:756:19 | .v2 [some:0] |
 | test.swift:756:15:756:15 | mo1 [v2] | test.swift:731:9:731:9 | self [v2] | file://:0:0:0:0 | .v2 | test.swift:756:15:756:19 | .v2 |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:732:9:732:9 | self [v3] | file://:0:0:0:0 | .v3 | test.swift:757:15:757:19 | .v3 |
+| test.swift:768:31:768:31 | self [v] | test.swift:770:7:770:7 | self [v] | file://:0:0:0:0 | .v | test.swift:768:31:768:31 | .v |
+| test.swift:774:17:774:24 | call to source() | test.swift:764:8:764:13 | v | test.swift:764:3:766:3 | self[return] [v] | test.swift:774:14:774:25 | call to S3.init(_:) [v] |
+| test.swift:777:15:777:15 | s1 [v] | test.swift:770:7:770:7 | self [v] | file://:0:0:0:0 | .v | test.swift:777:15:777:18 | .v |
+| test.swift:779:15:779:15 | s1 [v] | test.swift:768:8:768:8 | self [v] | test.swift:768:31:768:31 | .v | test.swift:779:15:779:23 | call to getv() |
+| test.swift:783:12:783:19 | call to source() | test.swift:770:7:770:7 | value | file://:0:0:0:0 | [post] self [v] | test.swift:783:5:783:5 | [post] s2 [v] |
+| test.swift:786:15:786:15 | s2 [v] | test.swift:770:7:770:7 | self [v] | file://:0:0:0:0 | .v | test.swift:786:15:786:18 | .v |
+| test.swift:788:15:788:15 | s2 [v] | test.swift:768:8:768:8 | self [v] | test.swift:768:31:768:31 | .v | test.swift:788:15:788:23 | call to getv() |
 #select
 | test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 | result |
 | test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 | result |
@@ -996,3 +1054,7 @@ subpaths
 | test.swift:754:15:754:15 | v3 | test.swift:744:10:744:17 | call to source() | test.swift:754:15:754:15 | v3 | result |
 | test.swift:756:15:756:21 | ...! | test.swift:746:14:746:21 | call to source() | test.swift:756:15:756:21 | ...! | result |
 | test.swift:757:15:757:19 | .v3 | test.swift:747:14:747:21 | call to source() | test.swift:757:15:757:19 | .v3 | result |
+| test.swift:777:15:777:18 | .v | test.swift:774:17:774:24 | call to source() | test.swift:777:15:777:18 | .v | result |
+| test.swift:779:15:779:23 | call to getv() | test.swift:774:17:774:24 | call to source() | test.swift:779:15:779:23 | call to getv() | result |
+| test.swift:786:15:786:18 | .v | test.swift:783:12:783:19 | call to source() | test.swift:786:15:786:18 | .v | result |
+| test.swift:788:15:788:23 | call to getv() | test.swift:783:12:783:19 | call to source() | test.swift:788:15:788:23 | call to getv() | result |
