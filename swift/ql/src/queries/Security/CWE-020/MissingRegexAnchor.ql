@@ -5,22 +5,25 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision medium
- * @id js/regex/missing-regexp-anchor
+ * @id swift/missing-regexp-anchor
  * @tags correctness
  *       security
  *       external/cwe/cwe-020
  */
 
-private import javascript
-private import semmle.javascript.security.regexp.HostnameRegexp as HostnameRegexp
+private import swift
+private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.regex.Regex
+private import codeql.swift.regex.RegexTreeView::RegexTreeView as TreeImpl
+private import codeql.swift.security.regex.HostnameRegex as HostnameRegex
 private import codeql.regex.MissingRegExpAnchor as MissingRegExpAnchor
-private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeImpl
 
 private module Impl implements
-  MissingRegExpAnchor::MissingRegExpAnchorSig<TreeImpl, HostnameRegexp::Impl>
+  MissingRegExpAnchor::MissingRegExpAnchorSig<TreeImpl, HostnameRegex::Impl>
 {
-  predicate isUsedAsReplace(RegExpPatternSource pattern) {
-    // is used for capture or replace
+  predicate isUsedAsReplace(RegexPatternSource pattern) {
+    none()
+/* java   // is used for capture or replace
     exists(DataFlow::MethodCallNode mcn, string name | name = mcn.getMethodName() |
       name = "exec" and
       mcn = pattern.getARegExpObject().getAMethodCall() and
@@ -37,20 +40,30 @@ private module Impl implements
         or
         name = "match" and exists(mcn.getAPropertyRead())
       )
-    )
+    )*/
+/* rb   exists(DataFlow::CallNode mcn, DataFlow::Node arg, string name |
+      name = mcn.getMethodName() and
+      arg = mcn.getArgument(0)
+    |
+      (
+        pattern.getAParse().(DataFlow::LocalSourceNode).flowsTo(arg) or
+        pattern.getAParse() = arg
+      ) and
+      name = ["sub", "sub!", "gsub", "gsub!"]
+    )*/
   }
 
   string getEndAnchorText() { result = "$" }
 }
 
-import MissingRegExpAnchor::Make<TreeImpl, HostnameRegexp::Impl, Impl>
+import MissingRegExpAnchor::Make<TreeImpl, HostnameRegex::Impl, Impl>
 
-from DataFlow::Node nd, string msg
+from DataFlow::Node node, string msg
 where
-  isUnanchoredHostnameRegExp(nd, msg)
+  isUnanchoredHostnameRegExp(node, msg)
   or
-  isSemiAnchoredHostnameRegExp(nd, msg)
+  isSemiAnchoredHostnameRegExp(node, msg)
   or
-  hasMisleadingAnchorPrecedence(nd, msg)
+  hasMisleadingAnchorPrecedence(node, msg)
 // isLineAnchoredHostnameRegExp is not used here, as it is not relevant to JS.
-select nd, msg
+select node, msg

@@ -1,1 +1,1 @@
-Security/CWE-020/MissingRegExpAnchor.ql
+queries/Security/CWE-020/MissingRegexAnchor.ql
