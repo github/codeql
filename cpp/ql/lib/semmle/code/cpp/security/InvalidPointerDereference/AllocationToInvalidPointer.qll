@@ -96,7 +96,7 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
  * but because there's a strict comparison that compares `n` against the size of the allocation this
  * snippet is fine.
  */
-module SizeBarrier {
+private module SizeBarrier {
   private module SizeBarrierConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
       // The sources is the same as in the sources for the second
@@ -104,35 +104,60 @@ module SizeBarrier {
       hasSize(_, source, _)
     }
 
+    /**
+     * Holds if `small <= large + k` holds if `g` evaluates to `testIsTrue`.
+     */
     additional predicate isSink(
-      DataFlow::Node left, DataFlow::Node right, IRGuardCondition g, int k, boolean testIsTrue
+      DataFlow::Node small, DataFlow::Node large, IRGuardCondition g, int k, boolean testIsTrue
     ) {
-      // The sink is any "large" side of a relational comparison. i.e., the `right` expression
-      // in a guard such as `left < right + k`.
-      g.comparesLt(left.asOperand(), right.asOperand(), k, true, testIsTrue)
+      // The sink is any "large" side of a relational comparison. i.e., the `large` expression
+      // in a guard such as `small <= large + k`.
+      g.comparesLt(small.asOperand(), large.asOperand(), k + 1, true, testIsTrue)
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
   }
 
-  private import DataFlow::Global<SizeBarrierConfig>
+  module SizeBarrierFlow = DataFlow::Global<SizeBarrierConfig>;
 
-  private int getAFlowStateForNode(DataFlow::Node node) {
+  private int getASizeAddend(DataFlow::Node node) {
     exists(DataFlow::Node source |
-      flow(source, node) and
+      SizeBarrierFlow::flow(source, node) and
       hasSize(_, source, result)
     )
   }
 
+  /**
+   * Holds if `small <= large + k` holds if `g` evaluates to `edge`.
+   */
   private predicate operandGuardChecks(
-    IRGuardCondition g, Operand left, Operand right, int state, boolean edge
+    IRGuardCondition g, Operand small, DataFlow::Node large, int k, boolean edge
   ) {
-    exists(DataFlow::Node nLeft, DataFlow::Node nRight, int k |
-      nRight.asOperand() = right and
-      nLeft.asOperand() = left and
-      SizeBarrierConfig::isSink(nLeft, nRight, g, k, edge) and
-      state = getAFlowStateForNode(nRight) and
-      k <= state
+    SizeBarrierFlow::flowTo(large) and
+    SizeBarrierConfig::isSink(DataFlow::operandNode(small), large, g, k, edge)
+  }
+
+  /**
+   * Gets an instruction `instr` that is guarded by a check such as `instr <= small + delta` where
+   * `small <= _ + k` and `small` is the "small side" of of a relational comparison that checks
+   * whether `small <= size` where `size` is the size of an allocation.
+   */
+  Instruction getABarrierInstruction0(int delta, int k) {
+    exists(
+      IRGuardCondition g, ValueNumber value, Operand small, boolean edge, DataFlow::Node large
+    |
+      // We know:
+      // 1. result <= value + delta (by `bounded`)
+      // 2. value <= large + k (by `operandGuardChecks`).
+      // So:
+      // result <= value + delta (by 1.)
+      //        <= large + k + delta (by 2.)
+      small = value.getAUse() and
+      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](small), large,
+        pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
+      bounded(result, value.getAnInstruction(), delta) and
+      g.controls(result.getBlock(), edge) and
+      k < getASizeAddend(large)
     )
   }
 
@@ -140,13 +165,14 @@ module SizeBarrier {
    * Gets an instruction that is guarded by a guard condition which ensures that
    * the value of the instruction is upper-bounded by size of some allocation.
    */
+  bindingset[state]
+  pragma[inline_late]
   Instruction getABarrierInstruction(int state) {
-    exists(IRGuardCondition g, ValueNumber value, Operand use, boolean edge |
-      use = value.getAUse() and
-      operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](use), _,
-        pragma[only_bind_into](state), pragma[only_bind_into](edge)) and
-      result = value.getAnInstruction() and
-      g.controls(result.getBlock(), edge)
+    exists(int delta, int k |
+      state > k + delta and
+      // result <= "size of allocation" + delta + k
+      //        < "size of allocation" + state
+      result = getABarrierInstruction0(delta, k)
     )
   }
 
@@ -155,14 +181,16 @@ module SizeBarrier {
    * the value of the node is upper-bounded by size of some allocation.
    */
   DataFlow::Node getABarrierNode(int state) {
-    result.asOperand() = getABarrierInstruction(state).getAUse()
+    exists(DataFlow::Node source, int delta, int k |
+      SizeBarrierFlow::flow(source, result) and
+      hasSize(_, source, state) and
+      result.asInstruction() = SizeBarrier::getABarrierInstruction0(delta, k) and
+      state > k + delta
+      // so now we have:
+      // result <= "size of allocation" + delta + k
+      //        < "size of allocation" + state
+    )
   }
-
-  /**
-   * Gets the block of a node that is guarded (see `getABarrierInstruction` or
-   * `getABarrierNode` for the definition of what it means to be guarded).
-   */
-  IRBlock getABarrierBlock(int state) { result.getAnInstruction() = getABarrierInstruction(state) }
 }
 
 private module InterestingPointerAddInstruction {

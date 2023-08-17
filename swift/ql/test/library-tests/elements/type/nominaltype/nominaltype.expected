@@ -1,13 +1,19 @@
-| nominaltype.swift:35:6:35:6 | a | A | A |  |
-| nominaltype.swift:36:6:36:6 | a_alias | A_alias | A | getAliasedType:A |
-| nominaltype.swift:37:6:37:6 | a_optional_alias | A_optional_alias | A? | getAliasedType:A? |
-| nominaltype.swift:38:6:38:6 | b1 | B1 | B1 | getABaseType:A |
-| nominaltype.swift:39:6:39:6 | b2 | B2 | B2 | getABaseType:A_alias |
-| nominaltype.swift:40:6:40:6 | b1_alias | B1_alias | B1 | getABaseType:A, getAliasedType:B1 |
-| nominaltype.swift:41:6:41:6 | b2_alias | B2_alias | B2 | getABaseType:A_alias, getAliasedType:B2 |
-| nominaltype.swift:42:6:42:6 | p | P | P |  |
-| nominaltype.swift:43:6:43:6 | p_alias | P_alias | P_alias |  |
-| nominaltype.swift:44:6:44:6 | c1 | C1 | C1 | getABaseType:P |
-| nominaltype.swift:45:6:45:6 | c2 | C2 | C2 | getABaseType:P_alias |
-| nominaltype.swift:46:6:46:6 | c1_alias | C1_alias | C1 | getABaseType:P, getAliasedType:C1 |
-| nominaltype.swift:47:6:47:6 | c2_alias | C2_alias | C2 | getABaseType:P_alias, getAliasedType:C2 |
+| nominaltype.swift:54:6:54:6 | a | A | getFullName:A, getName:A, getUnderlyingType:A |
+| nominaltype.swift:55:6:55:6 | a_alias | A_alias | getAliasedType:A, getFullName:A_alias, getName:A_alias, getUnderlyingType:A |
+| nominaltype.swift:56:6:56:6 | a_optional_alias | A_optional_alias | getAliasedType:A?, getFullName:A_optional_alias, getName:A_optional_alias, getUnderlyingType:A? |
+| nominaltype.swift:57:6:57:6 | b1 | B1 | getABaseType:A, getFullName:B1, getName:B1, getUnderlyingType:B1 |
+| nominaltype.swift:58:6:58:6 | b2 | B2 | getABaseType:A_alias, getFullName:B2, getName:B2, getUnderlyingType:B2 |
+| nominaltype.swift:59:6:59:6 | b1_alias | B1_alias | getABaseType:A, getAliasedType:B1, getFullName:B1_alias, getName:B1_alias, getUnderlyingType:B1 |
+| nominaltype.swift:60:6:60:6 | b2_alias | B2_alias | getABaseType:A_alias, getAliasedType:B2, getFullName:B2_alias, getName:B2_alias, getUnderlyingType:B2 |
+| nominaltype.swift:61:6:61:6 | p | P | getFullName:P, getName:P, getUnderlyingType:P |
+| nominaltype.swift:62:6:62:6 | p_alias | P_alias | getFullName:P_alias, getName:P_alias, getUnderlyingType:P_alias |
+| nominaltype.swift:63:6:63:6 | c1 | C1 | getABaseType:P, getFullName:C1, getName:C1, getUnderlyingType:C1 |
+| nominaltype.swift:64:6:64:6 | c2 | C2 | getABaseType:P_alias, getFullName:C2, getName:C2, getUnderlyingType:C2 |
+| nominaltype.swift:65:6:65:6 | c1_alias | C1_alias | getABaseType:P, getAliasedType:C1, getFullName:C1_alias, getName:C1_alias, getUnderlyingType:C1 |
+| nominaltype.swift:66:6:66:6 | c2_alias | C2_alias | getABaseType:P_alias, getAliasedType:C2, getFullName:C2_alias, getName:C2_alias, getUnderlyingType:C2 |
+| nominaltype.swift:67:6:67:6 | o | Outer | getFullName:Outer, getName:Outer, getUnderlyingType:Outer |
+| nominaltype.swift:68:6:68:6 | oi | Outer.Inner | getFullName:Outer.Inner, getName:Inner, getUnderlyingType:Outer.Inner |
+| nominaltype.swift:69:6:69:6 | oia | Outer.Inner.InnerAlias | getABaseType:FixedWidthInteger, getABaseType:SignedInteger, getABaseType:_ExpressibleByBuiltinIntegerLiteral, getAliasedType:Int, getFullName:Outer.Inner.InnerAlias, getName:InnerAlias, getUnderlyingType:Int |
+| nominaltype.swift:70:6:70:6 | aa | Any? | getFullName:Any?, getName:Any?, getUnderlyingType:Any? |
+| nominaltype.swift:71:6:71:6 | p1p2 | P1P2 | getFullName:P1P2, getName:P1P2, getUnderlyingType:P1P2 |
+| nominaltype.swift:72:6:72:6 | boxInt | Box<Int> | getFullName:Box<Int>, getName:Box<Int>, getUnderlyingType:Box<Int> |

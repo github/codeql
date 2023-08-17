@@ -169,7 +169,7 @@ private class CredentialVar extends Assignable {
     exists(string name | name = this.getName() |
       name.regexpMatch("(?i).*pass(wd|word|code|phrase)(?!.*question).*")
       or
-      name.regexpMatch("(?i).*(puid|username|userid).*")
+      name.regexpMatch("(?i).*(puid|username|userid)(?!.*(characters|claimtype)).*")
       or
       name.regexpMatch("(?i).*(cert)(?!.*(format|name)).*")
     )

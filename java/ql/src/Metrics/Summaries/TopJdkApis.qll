@@ -307,6 +307,7 @@ class TopJdkApi extends SummarizedCallableBase {
   predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutral() }
   /*
    * Note: the following top JDK APIs are not modeled with MaD:
+   * `java.lang.Runnable#run()`: specialised lambda flow
    * `java.lang.String#valueOf(Object)`: a complex case; an alias for `Object.toString`, except the dispatch is hidden
    * `java.lang.System#getProperty(String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
    * `java.lang.System#setProperty(String,String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs

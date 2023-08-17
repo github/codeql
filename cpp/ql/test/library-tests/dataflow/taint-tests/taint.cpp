@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast,ir
+	sink(*p3); // $ SPURIOUS: ast
 }
 
 // --- return values ---

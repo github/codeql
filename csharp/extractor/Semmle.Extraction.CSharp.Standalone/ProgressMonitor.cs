@@ -12,121 +12,101 @@ namespace Semmle.BuildAnalyser
             this.logger = logger;
         }
 
-        public void FindingFiles(string dir)
-        {
-            logger.Log(Severity.Info, "Finding files in {0}...", dir);
-        }
+        public void Log(Severity severity, string message) =>
+            logger.Log(severity, message);
+
+        public void LogInfo(string message) =>
+            logger.Log(Severity.Info, message);
+
+        private void LogDebug(string message) =>
+            logger.Log(Severity.Debug, message);
+
+        private void LogError(string message) =>
+            logger.Log(Severity.Error, message);
+
+        public void FindingFiles(string dir) =>
+            LogInfo($"Finding files in {dir}...");
 
         public void IndexingReferences(int count)
         {
-            logger.Log(Severity.Info, "Indexing...");
-            logger.Log(Severity.Debug, "Indexing {0} DLLs...", count);
+            LogInfo("Indexing...");
+            LogDebug($"Indexing {count} DLLs...");
         }
 
         public void UnresolvedReference(string id, string project)
         {
-            logger.Log(Severity.Info, "Unresolved reference {0}", id);
-            logger.Log(Severity.Debug, "Unresolved {0} referenced by {1}", id, project);
+            LogInfo($"Unresolved reference {id}");
+            LogDebug($"Unresolved {id} referenced by {project}");
         }
 
-        public void AnalysingSolution(string filename)
-        {
-            logger.Log(Severity.Info, $"Analyzing {filename}...");
-        }
+        public void AnalysingSolution(string filename) =>
+            LogInfo($"Analyzing {filename}...");
 
-        public void FailedProjectFile(string filename, string reason)
-        {
-            logger.Log(Severity.Info, "Couldn't read project file {0}: {1}", filename, reason);
-        }
+        public void FailedProjectFile(string filename, string reason) =>
+            LogInfo($"Couldn't read project file {filename}: {reason}");
 
         public void FailedNugetCommand(string exe, string args, string message)
         {
-            logger.Log(Severity.Info, "Command failed: {0} {1}", exe, args);
-            logger.Log(Severity.Info, "  {0}", message);
+            LogInfo($"Command failed: {exe} {args}");
+            LogInfo($"  {message}");
         }
 
-        public void NugetInstall(string package)
-        {
-            logger.Log(Severity.Info, "Restoring {0}...", package);
-        }
+        public void NugetInstall(string package) =>
+            LogInfo($"Restoring {package}...");
 
-        public void ResolvedReference(string filename)
-        {
-            logger.Log(Severity.Info, "Resolved {0}", filename);
-        }
+        public void ResolvedReference(string filename) =>
+            LogInfo($"Resolved {filename}");
 
         public void Summary(int existingSources, int usedSources, int missingSources,
             int references, int unresolvedReferences,
             int resolvedConflicts, int totalProjects, int failedProjects,
             TimeSpan analysisTime)
         {
-            logger.Log(Severity.Info, "");
-            logger.Log(Severity.Info, "Build analysis summary:");
-            logger.Log(Severity.Info, "{0, 6} source files in the filesystem", existingSources);
-            logger.Log(Severity.Info, "{0, 6} source files in project files", usedSources);
-            logger.Log(Severity.Info, "{0, 6} sources missing from project files", missingSources);
-            logger.Log(Severity.Info, "{0, 6} resolved references", references);
-            logger.Log(Severity.Info, "{0, 6} unresolved references", unresolvedReferences);
-            logger.Log(Severity.Info, "{0, 6} resolved assembly conflicts", resolvedConflicts);
-            logger.Log(Severity.Info, "{0, 6} projects", totalProjects);
-            logger.Log(Severity.Info, "{0, 6} missing/failed projects", failedProjects);
-            logger.Log(Severity.Info, "Build analysis completed in {0}", analysisTime);
+            const int align = 6;
+            LogInfo("");
+            LogInfo("Build analysis summary:");
+            LogInfo($"{existingSources,align} source files in the filesystem");
+            LogInfo($"{usedSources,align} source files in project files");
+            LogInfo($"{missingSources,align} sources missing from project files");
+            LogInfo($"{references,align} resolved references");
+            LogInfo($"{unresolvedReferences,align} unresolved references");
+            LogInfo($"{resolvedConflicts,align} resolved assembly conflicts");
+            LogInfo($"{totalProjects,align} projects");
+            LogInfo($"{failedProjects,align} missing/failed projects");
+            LogInfo($"Build analysis completed in {analysisTime}");
         }
 
-        public void Log(Severity severity, string message)
-        {
-            logger.Log(severity, message);
-        }
+        public void ResolvedConflict(string asm1, string asm2) =>
+            LogDebug($"Resolved {asm1} as {asm2}");
 
-        public void ResolvedConflict(string asm1, string asm2)
-        {
-            logger.Log(Severity.Debug, "Resolved {0} as {1}", asm1, asm2);
-        }
+        public void MissingProject(string projectFile) =>
+            LogInfo($"Solution is missing {projectFile}");
 
-        public void MissingProject(string projectFile)
-        {
-            logger.Log(Severity.Info, "Solution is missing {0}", projectFile);
-        }
+        public void CommandFailed(string exe, string arguments, int exitCode) =>
+            LogError($"Command {exe} {arguments} failed with exit code {exitCode}");
 
-        public void CommandFailed(string exe, string arguments, int exitCode)
-        {
-            logger.Log(Severity.Error, $"Command {exe} {arguments} failed with exit code {exitCode}");
-        }
+        public void MissingNuGet() =>
+            LogError("Missing nuget.exe");
 
-        public void MissingNuGet()
-        {
-            logger.Log(Severity.Error, "Missing nuget.exe");
-        }
+        public void MissingDotNet() =>
+            LogError("Missing dotnet CLI");
 
-        public void MissingDotNet()
-        {
-            logger.Log(Severity.Error, "Missing dotnet CLI");
-        }
+        public void RunningProcess(string command) =>
+            LogInfo($"Running {command}");
 
-        public void RunningProcess(string command)
-        {
-            logger.Log(Severity.Info, $"Running {command}");
-        }
-
-        public void FailedToRestoreNugetPackage(string package)
-        {
-            logger.Log(Severity.Info, $"Failed to restore nuget package {package}");
-        }
+        public void FailedToRestoreNugetPackage(string package) =>
+            LogInfo($"Failed to restore nuget package {package}");
 
         public void FailedToReadFile(string file, Exception ex)
         {
-            logger.Log(Severity.Info, $"Failed to read file {file}");
-            logger.Log(Severity.Debug, $"Failed to read file {file}, exception: {ex}");
+            LogInfo($"Failed to read file {file}");
+            LogDebug($"Failed to read file {file}, exception: {ex}");
         }
 
-        public void MultipleNugetConfig(string[] nugetConfigs)
-        {
-            logger.Log(Severity.Info, $"Found multiple nuget.config files: {string.Join(", ", nugetConfigs)}.");
-        }
+        public void MultipleNugetConfig(string[] nugetConfigs) =>
+            LogInfo($"Found multiple nuget.config files: {string.Join(", ", nugetConfigs)}.");
 
-        internal void NoTopLevelNugetConfig()
-        {
-            logger.Log(Severity.Info, $"Could not find a top-level nuget.config file.");
-        }
+        internal void NoTopLevelNugetConfig() =>
+            LogInfo("Could not find a top-level nuget.config file.");
     }
 }

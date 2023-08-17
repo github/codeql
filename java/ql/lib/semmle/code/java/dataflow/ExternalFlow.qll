@@ -35,8 +35,9 @@
  *    or method, or a parameter.
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
- *    element selected by the first 6 columns. An `input` can be either "",
- *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
+ *    element selected by the first 6 columns. An `input` can be a dot separated
+ *    path consisting of either "", "Argument[n]", "Argument[n1..n2]",
+ *    "ReturnValue", "Element", "WithoutElement", or "WithElement":
  *    - "": Selects a write to the selected element in case this is a field.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `this` specifies the qualifier.
@@ -44,9 +45,15 @@
  *      the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      This requires that the selected element is a method with a body.
+ *    - "Element": Selects the collection elements of the selected element.
+ *    - "WithoutElement": Selects the selected element but without
+ *       its collection elements.
+ *    - "WithElement": Selects the collection elements of the selected element, but
+ *       points to the selected element.
  *
- *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
- *    "Parameter[n]", "Parameter[n1..n2]", or "ReturnValue":
+ *    An `output` can be can be a dot separated path consisting of either "",
+ *    "Argument[n]", "Argument[n1..n2]", "Parameter", "Parameter[n]",
+ *    "Parameter[n1..n2]", "ReturnValue", or "Element":
  *    - "": Selects a read of a selected field, or a selected parameter.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
@@ -61,6 +68,7 @@
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
+ *    - "Element": Selects the collection elements of the selected element.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries

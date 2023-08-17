@@ -703,6 +703,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     init.isFailable()
   )
   or
+  // assignment to an optional via `!`, e.g. `optional! = ...`
+  exists(ForceValueExpr fve, AssignExpr assign |
+    fve = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2.asExpr() = fve.getSubExpr() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
   // creation of an array `[v1,v2]`
   exists(ArrayExpr arr |
     node1.asExpr() = arr.getAnElement() and

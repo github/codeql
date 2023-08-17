@@ -100,5 +100,36 @@ namespace Semmle.Extraction.Tests
             Assert.Equal("/path/dotnet/shared/Microsoft.NETCore.App/8.0.0-rc.4.43280.8", FixExpectedPathOnWindows(netCoreApp.FullPath));
         }
 
+        [Fact]
+        public void TestRuntime4()
+        {
+            // Setup
+            var listedRuntimes = new List<string>
+            {
+                @"Microsoft.AspNetCore.App 6.0.5 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]",
+                @"Microsoft.AspNetCore.App 6.0.20 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]",
+                @"Microsoft.AspNetCore.App 7.0.2 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]",
+                @"Microsoft.NETCore.App 6.0.5 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]",
+                @"Microsoft.NETCore.App 6.0.20 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]",
+                @"Microsoft.NETCore.App 7.0.2 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]",
+                @"Microsoft.WindowsDesktop.App 6.0.5 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]",
+                @"Microsoft.WindowsDesktop.App 6.0.20 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]",
+                @"Microsoft.WindowsDesktop.App 7.0.4 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]"
+            };
+            var dotnet = new DotNetStub(listedRuntimes);
+            var runtime = new Runtime(dotnet);
+
+            // Execute
+            var runtimes = runtime.GetNewestRuntimes();
+
+            // Verify
+            Assert.Equal(3, runtimes.Count);
+
+            Assert.True(runtimes.TryGetValue("Microsoft.AspNetCore.App", out var aspNetCoreApp));
+            Assert.Equal(@"C:/Program Files/dotnet/shared/Microsoft.AspNetCore.App/7.0.2", FixExpectedPathOnWindows(aspNetCoreApp.FullPath));
+
+            Assert.True(runtimes.TryGetValue("Microsoft.NETCore.App", out var netCoreApp));
+            Assert.Equal(@"C:/Program Files/dotnet/shared/Microsoft.NETCore.App/7.0.2", FixExpectedPathOnWindows(netCoreApp.FullPath));
+        }
     }
 }

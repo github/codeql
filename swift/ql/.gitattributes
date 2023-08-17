@@ -349,7 +349,6 @@
 /lib/codeql/swift/elements/type/SubstitutableType.qll linguist-generated
 /lib/codeql/swift/elements/type/SugarType.qll linguist-generated
 /lib/codeql/swift/elements/type/SyntaxSugarType.qll linguist-generated
-/lib/codeql/swift/elements/type/TupleType.qll linguist-generated
 /lib/codeql/swift/elements/type/TupleTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/TypeAliasTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/TypeReprConstructor.qll linguist-generated

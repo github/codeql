@@ -7,13 +7,13 @@ class Sink extends DataFlow::Node {
   }
 }
 
-class TestConfig extends TaintTracking::Configuration {
-  TestConfig() { this = "testconfig" }
+private module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 }
+
+private module TestFlow = TaintTracking::Global<TestConfig>;
 
 module MissingDataFlowTest implements TestSig {
   string getARelevantTag() { result = "noflow" }
@@ -22,7 +22,7 @@ module MissingDataFlowTest implements TestSig {
     tag = "noflow" and
     value = "" and
     exists(Sink sink |
-      not any(TestConfig c).hasFlow(_, sink) and
+      not TestFlow::flowTo(sink) and
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString()

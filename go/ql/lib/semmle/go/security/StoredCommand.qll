@@ -17,9 +17,11 @@ import CommandInjectionCustomizations
  */
 module StoredCommand {
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "StoredCommand" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -39,4 +41,19 @@ module StoredCommand {
       guard instanceof CommandInjection::SanitizerGuard
     }
   }
+
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      source instanceof StoredXss::Source and
+      // exclude file names, since those are not generally an issue
+      not source instanceof StoredXss::FileNameSource
+    }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjection::Sink }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof CommandInjection::Sanitizer }
+  }
+
+  /** Tracks taint flow for reasoning about command-injection vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
 }
