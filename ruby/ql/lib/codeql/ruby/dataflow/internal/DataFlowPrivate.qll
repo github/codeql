@@ -138,22 +138,6 @@ module LocalFlow {
   }
 
   /**
-   * Holds if `nodeFrom -> nodeTo` is a step from a parameter to a capture entry node for
-   * that parameter.
-   *
-   * This is intended to recover from flow not currently recognised by ordinary capture flow.
-   */
-  predicate localFlowSsaParamCaptureInput(ParameterNodeImpl nodeFrom, Node nodeTo) {
-    exists(Ssa::CapturedEntryDefinition def |
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
-    |
-      nodeFrom.getParameter().(NamedParameter).getVariable() = def.getSourceVariable()
-      or
-      nodeFrom.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
-    )
-  }
-
-  /**
    * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
    * involving SSA definition `def`.
    */
@@ -245,6 +229,7 @@ private class Argument extends CfgNodes::ExprCfgNode {
       not this.getExpr() instanceof BlockArgument and
       not this.getExpr().(Pair).getKey().getConstantValue().isSymbol(_) and
       not this.getExpr() instanceof HashSplatExpr and
+      not this.getExpr() instanceof SplatExpr and
       arg.isPositional(i)
     )
     or
@@ -261,8 +246,15 @@ private class Argument extends CfgNodes::ExprCfgNode {
     arg.isHashSplat()
     or
     this = call.getArgument(0) and
+    not exists(call.getArgument(1)) and
     this.getExpr() instanceof SplatExpr and
     arg.isSplatAll()
+    or
+    exists(int pos | pos > 0 or exists(call.getArgument(pos + 1)) |
+      this = call.getArgument(pos) and
+      this.getExpr() instanceof SplatExpr and
+      arg.isSplat(pos)
+    )
   }
 
   /** Holds if this expression is the `i`th argument of `c`. */
@@ -277,6 +269,53 @@ predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
   not n.getExpr() instanceof ConstantAccess
 }
 
+/** Provides logic related to captured variables. */
+module VariableCapture {
+  class CapturedVariable extends LocalVariable {
+    CapturedVariable() { this.isCaptured() }
+
+    CfgScope getCfgScope() {
+      exists(Scope scope | scope = this.getDeclaringScope() |
+        result = scope
+        or
+        result = scope.(ModuleBase).getCfgScope()
+      )
+    }
+  }
+
+  class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
+    CapturedSsaDefinitionExt() { this.getSourceVariable() instanceof CapturedVariable }
+  }
+
+  /**
+   * Holds if there is control-flow insensitive data-flow from `node1` to `node2`
+   * involving a captured variable. Only used in type tracking.
+   */
+  predicate flowInsensitiveStep(Node node1, Node node2) {
+    exists(CapturedSsaDefinitionExt def, CapturedVariable v |
+      // From an assignment or implicit initialization of a captured variable to its flow-insensitive node
+      def = node1.(SsaDefinitionExtNode).getDefinitionExt() and
+      def.getSourceVariable() = v and
+      (
+        def instanceof Ssa::WriteDefinition
+        or
+        def instanceof Ssa::SelfDefinition
+      ) and
+      node2.(CapturedVariableNode).getVariable() = v
+      or
+      // From a captured variable node to its flow-sensitive capture nodes
+      node1.(CapturedVariableNode).getVariable() = v and
+      def = node2.(SsaDefinitionExtNode).getDefinitionExt() and
+      def.getSourceVariable() = v and
+      (
+        def instanceof Ssa::CapturedCallDefinition
+        or
+        def instanceof Ssa::CapturedEntryDefinition
+      )
+    )
+  }
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -288,6 +327,7 @@ private module Cached {
     TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
+    TCapturedVariableNode(VariableCapture::CapturedVariable v) or
     TNormalParameterNode(Parameter p) {
       p instanceof SimpleParameter or
       p instanceof OptionalParameter or
@@ -299,6 +339,10 @@ private module Cached {
     TBlockParameterNode(MethodBase m) or
     TSynthHashSplatParameterNode(DataFlowCallable c) {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
+    } or
+    TSynthSplatParameterNode(DataFlowCallable c) {
+      exists(c.asCallable()) and // exclude library callables
+      isParameterNode(_, c, any(ParameterPosition p | p.isPositional(_)))
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
       // filter out nodes that clearly don't need post-update nodes
@@ -318,7 +362,7 @@ private module Cached {
 
   class TSourceParameterNode =
     TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or
-        TSynthHashSplatParameterNode;
+        TSynthHashSplatParameterNode or TSynthSplatParameterNode;
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -377,6 +421,8 @@ private module Cached {
       LocalFlow::localFlowSsaInputFromRead(exprFrom, _, nodeTo) and
       exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()]
     )
+    or
+    VariableCapture::flowInsensitiveStep(nodeFrom, nodeTo)
   }
 
   private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
@@ -514,6 +560,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthHashSplatParameterNode
   or
   n instanceof SynthHashSplatArgumentNode
+  or
+  n instanceof SynthSplatParameterNode
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -536,13 +584,29 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
 }
 
 /** An SSA definition for a `self` variable. */
-class SsaSelfDefinitionNode extends LocalSourceNode, SsaDefinitionExtNode {
+class SsaSelfDefinitionNode extends SsaDefinitionExtNode {
   private SelfVariable self;
 
   SsaSelfDefinitionNode() { self = def.getSourceVariable() }
 
   /** Gets the scope in which the `self` variable is declared. */
   Scope getSelfScope() { result = self.getDeclaringScope() }
+}
+
+/** A data flow node representing a captured variable. Only used in type tracking. */
+class CapturedVariableNode extends NodeImpl, TCapturedVariableNode {
+  private VariableCapture::CapturedVariable variable;
+
+  CapturedVariableNode() { this = TCapturedVariableNode(variable) }
+
+  /** Gets the captured variable represented by this node. */
+  VariableCapture::CapturedVariable getVariable() { result = variable }
+
+  override CfgScope getCfgScope() { result = variable.getCfgScope() }
+
+  override Location getLocationImpl() { result = variable.getLocation() }
+
+  override string toStringImpl() { result = "captured " + variable.getName() }
 }
 
 /**
@@ -610,7 +674,15 @@ private module ParameterNodes {
         pos.isHashSplat()
         or
         parameter = callable.getParameter(0).(SplatParameter) and
+        not exists(callable.getParameter(1)) and
         pos.isSplatAll()
+        or
+        exists(int n | n > 0 |
+          parameter = callable.getParameter(n).(SplatParameter) and
+          pos.isSplat(n) and
+          // There are no positional parameters after the splat
+          not exists(SimpleParameter p, int m | m > n | p = callable.getParameter(m))
+        )
       )
     }
 
@@ -747,6 +819,70 @@ private module ParameterNodes {
     final override Location getLocationImpl() { result = callable.getLocation() }
 
     final override string toStringImpl() { result = "**kwargs" }
+  }
+
+  /**
+   * A synthetic data-flow node to allow flow to positional parameters from a splat argument.
+   *
+   * For example, in the following code:
+   *
+   * ```rb
+   * def foo(x, y); end
+   *
+   * foo(*[a, b])
+   * ```
+   *
+   * We want `a` to flow to `x` and `b` to flow to `y`. We do this by constructing
+   * a `SynthSplatParameterNode` for the method `foo`, and matching the splat argument to this
+   * parameter node via `parameterMatch/2`. We then add read steps from this node to parameters
+   * `x` and `y`, for content at indices 0 and 1 respectively (see `readStep`).
+   *
+   * We don't yet correctly handle cases where the splat argument is not the first argument, e.g. in
+   * ```rb
+   * foo(a, *[b])
+   * ```
+   */
+  class SynthSplatParameterNode extends ParameterNodeImpl, TSynthSplatParameterNode {
+    private DataFlowCallable callable;
+
+    SynthSplatParameterNode() { this = TSynthSplatParameterNode(callable) }
+
+    /**
+     * Gets a parameter which will contain the value given by `c`, assuming
+     * that the method was called with a single splat argument.
+     * For example, if the synth splat parameter is for the following method
+     *
+     * ```rb
+     * def foo(x, y, a:, *rest)
+     * end
+     * ```
+     *
+     * Then `getAParameter(element 0) = x` and `getAParameter(element 1) = y`.
+     */
+    ParameterNode getAParameter(ContentSet c) {
+      exists(int n |
+        isParameterNode(result, callable, (any(ParameterPosition p | p.isPositional(n)))) and
+        (
+          c = getPositionalContent(n)
+          or
+          c.isSingleton(TUnknownElementContent())
+        )
+      )
+    }
+
+    final override Parameter getParameter() { none() }
+
+    final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c = callable and pos.isSynthSplat()
+    }
+
+    final override CfgScope getCfgScope() { result = callable.asCallable() }
+
+    final override DataFlowCallable getEnclosingCallable() { result = callable }
+
+    final override Location getLocationImpl() { result = callable.getLocation() }
+
+    final override string toStringImpl() { result = "synthetic *args" }
   }
 
   /** A parameter for a library callable with a flow summary. */
@@ -1077,13 +1213,7 @@ private module OutNodes {
 
 import OutNodes
 
-predicate jumpStep(Node pred, Node succ) {
-  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
-    succ.(SsaDefinitionExtNode).getDefinitionExt())
-  or
-  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
-    succ.(SsaDefinitionExtNode).getDefinitionExt())
-  or
+predicate jumpStepTypeTracker(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
@@ -1092,10 +1222,27 @@ predicate jumpStep(Node pred, Node succ) {
   any(AdditionalJumpStep s).step(pred, succ)
 }
 
+predicate jumpStep(Node pred, Node succ) {
+  jumpStepTypeTracker(pred, succ)
+  or
+  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
+    succ.(SsaDefinitionExtNode).getDefinitionExt())
+  or
+  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
+    succ.(SsaDefinitionExtNode).getDefinitionExt())
+}
+
 private ContentSet getKeywordContent(string name) {
   exists(ConstantValue::ConstantSymbolValue key |
     result.isSingleton(TKnownElementContent(key)) and
     key.isSymbol(name)
+  )
+}
+
+private ContentSet getPositionalContent(int n) {
+  exists(ConstantValue::ConstantIntegerValue i |
+    result.isSingleton(TKnownElementContent(i)) and
+    i.isInt(n)
   )
 }
 
@@ -1186,6 +1333,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     )
   or
   node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
+  or
+  node2 = node1.(SynthSplatParameterNode).getAParameter(c)
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())

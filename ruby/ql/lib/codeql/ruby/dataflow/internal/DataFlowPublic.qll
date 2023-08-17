@@ -363,10 +363,9 @@ private module Cached {
     source = sink and
     source instanceof LocalSourceNode
     or
-    exists(Node mid | hasLocalSource(mid, source) |
+    exists(Node mid |
+      hasLocalSource(mid, source) and
       localFlowStepTypeTracker(mid, sink)
-      or
-      LocalFlow::localFlowSsaParamCaptureInput(mid, sink)
     )
   }
 

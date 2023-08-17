@@ -90,7 +90,7 @@ class ExprNode extends Node, TExprNode_ {
    */
   Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
     this = TExprNode(cfn) and
-    result = cfn.getElement()
+    result = cfn.getAstNode()
   }
 }
 

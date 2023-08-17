@@ -832,13 +832,22 @@ arg
 | local_dataflow.rb:9:12:9:12 | 2 | local_dataflow.rb:9:9:9:15 | call to [] | position 1 |
 | local_dataflow.rb:9:14:9:14 | 3 | local_dataflow.rb:9:9:9:15 | call to [] | position 2 |
 | local_dataflow.rb:10:5:13:3 | { ... } | local_dataflow.rb:10:5:13:3 | call to each | block |
+| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [false] ! ... | self |
+| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [true] ! ... | self |
+| local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:10:9:10:9 | defined? ... | self |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:10:5:13:3 | call to each | self |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:11:1:11:2 | call to do | self |
 | local_dataflow.rb:12:3:12:5 | self | local_dataflow.rb:12:3:12:5 | call to p | self |
 | local_dataflow.rb:12:5:12:5 | x | local_dataflow.rb:12:3:12:5 | call to p | position 0 |
 | local_dataflow.rb:15:1:17:3 | { ... } | local_dataflow.rb:15:1:17:3 | call to each | block |
+| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [false] ! ... | self |
+| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [true] ! ... | self |
+| local_dataflow.rb:15:5:15:5 | x | local_dataflow.rb:15:5:15:5 | defined? ... | self |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:15:1:17:3 | call to each | self |
 | local_dataflow.rb:19:1:21:3 | { ... } | local_dataflow.rb:19:1:21:3 | call to each | block |
+| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [false] ! ... | self |
+| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [true] ! ... | self |
+| local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:19:5:19:5 | defined? ... | self |
 | local_dataflow.rb:19:10:19:14 | array | local_dataflow.rb:19:1:21:3 | call to each | self |
 | local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... | self |
 | local_dataflow.rb:20:10:20:10 | 1 | local_dataflow.rb:20:6:20:10 | ... > ... | position 0 |

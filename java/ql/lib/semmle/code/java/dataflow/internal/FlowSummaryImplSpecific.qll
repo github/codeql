@@ -170,6 +170,10 @@ predicate neutralSummaryElement(SummarizedCallableBase c, string provenance) {
 bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   exists(Content content | parseContent(c, content) and result = SummaryComponent::content(content))
+  or
+  c = "WithoutElement" and result = SummaryComponent::withoutContent(any(CollectionContent cc))
+  or
+  c = "WithElement" and result = SummaryComponent::withContent(any(CollectionContent cc))
 }
 
 /** Gets the summary component for specification component `c`, if any. */
@@ -196,6 +200,10 @@ private string getContentSpecific(Content c) {
 /** Gets the textual representation of the content in the format used for MaD models. */
 string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
+  or
+  sc = TWithoutContentSummaryComponent(_) and result = "WithoutElement"
+  or
+  sc = TWithContentSummaryComponent(_) and result = "WithElement"
 }
 
 bindingset[pos]

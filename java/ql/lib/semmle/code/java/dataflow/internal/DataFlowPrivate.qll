@@ -10,6 +10,7 @@ private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImplConsistency
 private import DataFlowNodes
+private import codeql.dataflow.VariableCapture as VariableCapture
 import DataFlowNodes::Private
 
 private newtype TReturnKind = TNormalReturnKind()
@@ -51,24 +52,129 @@ private predicate fieldStep(Node node1, Node node2) {
   )
 }
 
-/**
- * Holds if data can flow from `node1` to `node2` through variable capture.
- */
-private predicate variableCaptureStep(Node node1, ExprNode node2) {
-  exists(SsaImplicitInit closure, SsaVariable captured |
-    closure.captures(captured) and
-    node2.getExpr() = closure.getAFirstUse()
-  |
-    node1.asExpr() = captured.getAUse()
-    or
-    not exists(captured.getAUse()) and
-    exists(SsaVariable capturedDef | capturedDef = captured.getAnUltimateDefinition() |
-      capturedDef.(SsaImplicitInit).isParameterDefinition(node1.asParameter()) or
-      capturedDef.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
-        node1.asExpr() or
-      capturedDef.(SsaExplicitUpdate).getDefiningExpr().(AssignOp) = node1.asExpr()
-    )
+private predicate closureFlowStep(Expr e1, Expr e2) {
+  simpleAstFlowStep(e1, e2)
+  or
+  exists(SsaVariable v |
+    v.getAUse() = e2 and
+    v.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
+      e1
   )
+}
+
+private module CaptureInput implements VariableCapture::InputSig {
+  private import java as J
+
+  class Location = J::Location;
+
+  class BasicBlock instanceof J::BasicBlock {
+    string toString() { result = super.toString() }
+
+    Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
+
+    Location getLocation() { result = super.getLocation() }
+  }
+
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { bbIDominates(result, bb) }
+
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) {
+    result = bb.(J::BasicBlock).getABBSuccessor()
+  }
+
+  //TODO: support capture of `this` in lambdas
+  class CapturedVariable instanceof LocalScopeVariable {
+    CapturedVariable() {
+      2 <=
+        strictcount(J::Callable c |
+          c = this.getCallable() or c = this.getAnAccess().getEnclosingCallable()
+        )
+    }
+
+    string toString() { result = super.toString() }
+
+    Callable getCallable() { result = super.getCallable() }
+
+    Location getLocation() { result = super.getLocation() }
+  }
+
+  class CapturedParameter extends CapturedVariable instanceof Parameter { }
+
+  class Expr instanceof J::Expr {
+    string toString() { result = super.toString() }
+
+    Location getLocation() { result = super.getLocation() }
+
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i) }
+  }
+
+  class VariableWrite extends Expr instanceof VariableUpdate {
+    CapturedVariable v;
+
+    VariableWrite() { super.getDestVar() = v }
+
+    CapturedVariable getVariable() { result = v }
+
+    Expr getSource() {
+      result = this.(VariableAssign).getSource() or
+      result = this.(AssignOp)
+    }
+  }
+
+  class VariableRead extends Expr instanceof RValue {
+    CapturedVariable v;
+
+    VariableRead() { super.getVariable() = v }
+
+    CapturedVariable getVariable() { result = v }
+  }
+
+  class ClosureExpr extends Expr instanceof ClassInstanceExpr {
+    NestedClass nc;
+
+    ClosureExpr() {
+      nc.(AnonymousClass).getClassInstanceExpr() = this
+      or
+      nc instanceof LocalClass and
+      super.getConstructedType().getASourceSupertype*().getSourceDeclaration() = nc
+    }
+
+    predicate hasBody(Callable body) { nc.getACallable() = body }
+
+    predicate hasAliasedAccess(Expr f) { closureFlowStep+(this, f) and not closureFlowStep(f, _) }
+  }
+
+  class Callable extends J::Callable {
+    predicate isConstructor() { this instanceof Constructor }
+  }
+}
+
+class CapturedVariable = CaptureInput::CapturedVariable;
+
+class CapturedParameter = CaptureInput::CapturedParameter;
+
+module CaptureFlow = VariableCapture::Flow<CaptureInput>;
+
+private CaptureFlow::ClosureNode asClosureNode(Node n) {
+  result = n.(CaptureNode).getSynthesizedCaptureNode() or
+  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
+  result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
+    n.(PostUpdateNode).getPreUpdateNode().asExpr() or
+  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter() or
+  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable() or
+  exprNode(result.(CaptureFlow::MallocNode).getClosureExpr()).(PostUpdateNode).getPreUpdateNode() =
+    n
+}
+
+private predicate captureStoreStep(Node node1, CapturedVariableContent c, Node node2) {
+  CaptureFlow::storeStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+}
+
+private predicate captureReadStep(Node node1, CapturedVariableContent c, Node node2) {
+  CaptureFlow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+}
+
+predicate captureValueStep(Node node1, Node node2) {
+  CaptureFlow::localFlowStep(asClosureNode(node1), asClosureNode(node2))
 }
 
 /**
@@ -77,10 +183,6 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
  */
 predicate jumpStep(Node node1, Node node2) {
   fieldStep(node1, node2)
-  or
-  variableCaptureStep(node1, node2)
-  or
-  variableCaptureStep(node1.(PostUpdateNode).getPreUpdateNode(), node2)
   or
   any(AdditionalValueStep a).step(node1, node2) and
   node1.getEnclosingCallable() != node2.getEnclosingCallable()
@@ -117,6 +219,8 @@ predicate storeStep(Node node1, ContentSet f, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), f,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  captureStoreStep(node1, f, node2)
 }
 
 /**
@@ -149,6 +253,8 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), f,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  captureReadStep(node1, f, node2)
 }
 
 /**
@@ -231,19 +337,29 @@ private newtype TDataFlowCallable =
   TSummarizedCallable(SummarizedCallable c) or
   TFieldScope(Field f)
 
+/**
+ * A callable or scope enclosing some number of data flow nodes. This can either
+ * be a source callable, a synthesized callable for which we have a summary
+ * model, or a synthetic scope for a field value node.
+ */
 class DataFlowCallable extends TDataFlowCallable {
+  /** Gets the source callable corresponding to this callable, if any. */
   Callable asCallable() { this = TSrcCallable(result) }
 
+  /** Gets the summary model callable corresponding to this callable, if any. */
   SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
+  /** Gets the field corresponding to this callable, if it is a field value scope. */
   Field asFieldScope() { this = TFieldScope(result) }
 
+  /** Gets a textual representation of this callable. */
   string toString() {
     result = this.asCallable().toString() or
     result = "Synthetic: " + this.asSummarizedCallable().toString() or
     result = "Field scope: " + this.asFieldScope().toString()
   }
 
+  /** Gets the location of this callable. */
   Location getLocation() {
     result = this.asCallable().getLocation() or
     result = this.asSummarizedCallable().getLocation() or
@@ -406,6 +522,8 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  or
+  CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(p.(InstanceParameterNode).getCallable())
 }
 
 /** An approximated `Content`. */
@@ -446,6 +564,10 @@ ContentApprox getContentApprox(Content c) {
   c instanceof MapKeyContent and result = TMapKeyContentApprox()
   or
   c instanceof MapValueContent and result = TMapValueContentApprox()
+  or
+  exists(CapturedVariable v |
+    c = TCapturedVariableContent(v) and result = TCapturedVariableContentApprox(v)
+  )
   or
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
 }
