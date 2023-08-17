@@ -37,9 +37,10 @@ private class CollectionSummaries extends SummaryModelCsv {
         ";BidirectionalCollection;true;joined(separator:);;;Argument[-1..0];ReturnValue;taint",
         ";BidirectionalCollection;true;last(where:);;;Argument[-1];ReturnValue;taint",
         ";BidirectionalCollection;true;popLast();;;Argument[-1];ReturnValue;taint",
-        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
-        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[-1].ArrayElement;Argument[0].Parameter[0];taint",
-        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[0].Parameter[0];Argument[-1];taint",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[-1].ArrayElement;Argument[0].Parameter[0].CollectionElement;value",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[-1].CollectionElement;Argument[0].Parameter[0].CollectionElement;value",
+        ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[0].Parameter[0].CollectionElement;Argument[-1].CollectionElement;value",
         ";MutableCollection;true;withContiguousMutableStorageIfAvailable(_:);;;Argument[0].ReturnValue;ReturnValue.OptionalSome;value",
       ]
   }

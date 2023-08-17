@@ -1,2 +1,25 @@
 failures
 testFailures
+| int.swift:18:21:19:1 | // $ SPURIOUS: tainted=13\n | Fixed spurious result:tainted=13 |
+| int.swift:19:24:20:1 | // $ tainted=13\n | Missing result:tainted=13 |
+| int.swift:33:21:34:1 | // $ SPURIOUS: tainted=28\n | Fixed spurious result:tainted=28 |
+| int.swift:34:24:35:1 | // $ tainted=28\n | Missing result:tainted=28 |
+| int.swift:48:23:49:1 | // $ SPURIOUS: tainted=47\n | Fixed spurious result:tainted=47 |
+| int.swift:49:26:50:1 | // $ tainted=47\n | Missing result:tainted=47 |
+| int.swift:84:20:85:1 | // $ SPURIOUS: tainted=83\n | Fixed spurious result:tainted=83 |
+| int.swift:85:23:86:1 | // $ tainted=83\n | Missing result:tainted=83 |
+| int.swift:89:23:90:1 | // $ SPURIOUS: tainted=83\n | Fixed spurious result:tainted=83 |
+| int.swift:90:26:91:1 | // $ tainted=83\n | Missing result:tainted=83 |
+| int.swift:132:20:133:1 | // $ tainted=131\n | Missing result:tainted=131 |
+| int.swift:133:23:134:1 | // $ tainted=131\n | Missing result:tainted=131 |
+| int.swift:137:30:138:1 | // $ SPURIOUS: tainted=131\n | Fixed spurious result:tainted=131 |
+| int.swift:138:33:139:1 | // $ tainted=131\n | Missing result:tainted=131 |
+| int.swift:147:23:148:1 | // $ SPURIOUS: tainted=142\n | Fixed spurious result:tainted=142 |
+| int.swift:148:26:149:1 | // $ tainted=142\n | Missing result:tainted=142 |
+| string.swift:407:23:408:1 | // $ tainted=366\n | Missing result:tainted=366 |
+| string.swift:441:20:442:1 | // $ tainted=366\n | Missing result:tainted=366 |
+| string.swift:483:23:484:1 | // $ tainted=450\n | Missing result:tainted=450 |
+| string.swift:496:23:497:1 | // $ tainted=450\n | Missing result:tainted=450 |
+| string.swift:518:20:519:1 | // $ tainted=506\n | Missing result:tainted=506 |
+| string.swift:544:20:545:1 | // $ tainted=533\n | Missing result:tainted=533 |
+| string.swift:610:18:611:1 | // $ tainted=617\n | Missing result:tainted=617 |
