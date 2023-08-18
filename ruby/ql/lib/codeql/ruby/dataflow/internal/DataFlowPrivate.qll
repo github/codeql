@@ -377,8 +377,7 @@ private module Cached {
 
   class TSourceParameterNode =
     TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or
-        TSynthHashSplatParameterNode or TSynthSplatParameterNode or TSynthSplatArgParameterNode or
-        TSynthSplatParameterElementNode;
+        TSynthHashSplatParameterNode or TSynthSplatParameterNode or TSynthSplatArgParameterNode;
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -480,8 +479,11 @@ private module Cached {
     entrySsaDefinition(n) and
     not LocalFlow::localFlowSsaParamInput(_, n)
     or
-    // Needed for stores in type tracking
     TypeTrackerSpecific::storeStepIntoSourceNode(_, n, _)
+    or
+    TypeTrackerSpecific::readStepIntoSourceNode(_, n, _)
+    or
+    TypeTrackerSpecific::readStoreStepIntoSourceNode(_, n, _, _)
   }
 
   cached
@@ -936,7 +938,7 @@ private module ParameterNodes {
    * A node that holds the content of a specific positional argument.
    * See `SynthSplatArgumentNode` for more information.
    */
-  class SynthSplatParameterElementNode extends ParameterNodeImpl, TSynthSplatParameterElementNode {
+  class SynthSplatParameterElementNode extends NodeImpl, TSynthSplatParameterElementNode {
     private DataFlowCallable callable;
     private int pos;
 
@@ -956,10 +958,6 @@ private module ParameterNodes {
         result = pos + splatPos
       )
     }
-
-    final override Parameter getParameter() { none() }
-
-    final override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) { none() }
 
     final override CfgScope getCfgScope() { result = callable.asCallable() }
 
@@ -1369,7 +1367,7 @@ private ContentSet getKeywordContent(string name) {
   )
 }
 
-private ContentSet getPositionalContent(int n) {
+ContentSet getPositionalContent(int n) {
   exists(ConstantValue::ConstantIntegerValue i |
     result.isSingleton(TKnownElementContent(i)) and
     i.isInt(n)
@@ -1400,18 +1398,13 @@ predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
     )
   )
   or
+  // Wrap all positional arguments in a synthesized splat argument node
   exists(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos |
     node2 = TSynthSplatArgumentNode(call) and
     node1.asExpr().(Argument).isArgumentOf(call, pos)
   |
     exists(int n | pos.isPositional(n) and c = getPositionalContent(n))
   )
-  or
-  node1 =
-    any(SynthSplatParameterElementNode elemNode |
-      node2 = elemNode.getSplatParameterNode(_) and
-      c = getPositionalContent(elemNode.getStorePosition())
-    )
 }
 
 /**
@@ -1445,7 +1438,22 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
   or
+  node1 =
+    any(SynthSplatParameterElementNode elemNode |
+      node2 = elemNode.getSplatParameterNode(_) and
+      c = getPositionalContent(elemNode.getStorePosition())
+    )
+  or
   storeStepCommon(node1, c, node2)
+}
+
+/**
+ * Subset of `readStep` that should be shared with type-tracking.
+ */
+predicate readStepCommon(Node node1, ContentSet c, Node node2) {
+  node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
+  or
+  node2 = node1.(SynthSplatParameterNode).getAParameter(c)
 }
 
 /**
@@ -1475,12 +1483,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
         ))
     )
   or
-  node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
-  or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
-  or
-  node2 = node1.(SynthSplatParameterNode).getAParameter(c)
   or
   // Read from SynthSplatArgParameterNode into SynthSplatParameterElementNode
   node2 =
@@ -1488,6 +1492,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       node1.(SynthSplatArgParameterNode).isParameterOf(e.getEnclosingCallable(), _) and
       c = getPositionalContent(e.getReadPosition())
     )
+  or
+  readStepCommon(node1, c, node2)
 }
 
 /**
