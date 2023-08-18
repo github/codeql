@@ -3,17 +3,23 @@ private import codeql.ruby.ApiGraphs
 private import Util as Util
 
 module Types {
-  // TODO: can we use DataFlow::Node#backtrack and API::Node#getInstance
-  private predicate methodReturnsTypeBase(
-    DataFlow::MethodNode methodNode, DataFlow::ClassNode classNode
-  ) {
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      // TODO: construction of type values not using a "new" call
+      source.(DataFlow::CallNode).getMethodName() = "new"
+    }
+
+    predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::MethodNode m).getAReturnNode() }
+  }
+
+  private import DataFlow::Global<Config>
+
+  private predicate methodReturnsType(DataFlow::MethodNode methodNode, DataFlow::ClassNode classNode) {
     // ignore cases of initializing instance of self
     not methodNode.getMethodName() = "initialize" and
-    exists(DataFlow::CallNode returnedValue |
-      // TODO: construction of type values not using a "new" call
-      returnedValue.flowsTo(methodNode.getAReturnNode()) and
-      returnedValue.getMethodName() = "new" and
-      classNode.getAnImmediateReference().getAMethodCall() = returnedValue and
+    exists(DataFlow::CallNode initCall |
+      flow(initCall, methodNode.getAReturnNode()) and
+      classNode.getAnImmediateReference().getAMethodCall() = initCall and
       // constructed object does not have a type declared in test code
       /*
        * TODO: this may be too restrictive, e.g.
@@ -24,18 +30,6 @@ module Types {
       forall(Ast::ModuleBase classDecl | classDecl = classNode.getADeclaration() |
         classDecl.getLocation().getFile() instanceof Util::RelevantFile
       )
-    )
-  }
-
-  private predicate methodReturnsType(DataFlow::MethodNode methodNode, DataFlow::ClassNode classNode) {
-    // return of a Foo instance created with Foo.new
-    methodReturnsTypeBase(methodNode, classNode)
-    or
-    // indirect return of a Foo instance
-    exists(DataFlow::CallNode returnedValue, DataFlow::MethodNode otherMethod |
-      returnedValue.flowsTo(methodNode.getAReturnNode()) and
-      returnedValue.getATarget() = otherMethod and
-      methodReturnsType(otherMethod, classNode)
     )
   }
 
