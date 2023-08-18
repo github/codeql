@@ -1,7 +1,6 @@
 #pragma once
 
 #include <filesystem>
-#include <ranges>
 
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
@@ -210,7 +209,7 @@ class SwiftDispatcher {
   auto fetchRepeatedLabels(Iterable&& arg) {
     using Label = decltype(fetchLabel(*arg.begin()));
     TrapLabelVectorWrapper<typename Label::Tag> ret;
-    if constexpr (std::ranges::sized_range<Iterable>) {
+    if constexpr (requires { arg.size(); }) {
       ret.data.reserve(arg.size());
     }
     for (auto&& e : arg) {
