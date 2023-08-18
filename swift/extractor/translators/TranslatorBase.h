@@ -22,6 +22,13 @@ class TranslatorBase {
 
 }  // namespace detail
 
+enum class TranslatorPolicy {
+  ignore,
+  translate,
+  translateParent,
+  emitUnknown,
+};
+
 // we want to override the default swift visitor behaviour of chaining calls to immediate
 // superclasses by default and instead provide our own TBD default (using the exact type).
 // Moreover, if the implementation class has translate##CLASS##KIND (that uses generated C++
@@ -29,17 +36,36 @@ class TranslatorBase {
 // type traits HasTranslate##CLASS##KIND defined above.
 // A special case is for explicitly ignored classes marked with void, which we should never
 // encounter.
-#define DEFINE_VISIT(KIND, CLASS, PARENT)                                              \
-  void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                     \
-    if constexpr (std::same_as<TrapTagOf<swift::CLASS##KIND>, void>) {                 \
-      LOG_ERROR("Unexpected " #CLASS #KIND);                                           \
-    } else if constexpr (requires(CrtpSubclass x) { x.translate##CLASS##KIND(*e); }) { \
-      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e));   \
-    } else if constexpr (requires(CrtpSubclass x) { x.translate##PARENT(*e); }) {      \
-      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##PARENT(*e));        \
-    } else {                                                                           \
-      dispatcher.emitUnknown(e);                                                       \
-    }                                                                                  \
+#define DEFINE_VISIT(KIND, CLASS, PARENT)                                            \
+ public:                                                                             \
+  static constexpr TranslatorPolicy getPolicyFor##CLASS##KIND() {                    \
+    if constexpr (std::same_as<TrapTagOf<swift::CLASS##KIND>, void>) {               \
+      return TranslatorPolicy::ignore;                                               \
+    } else if constexpr (requires(CrtpSubclass x, swift::CLASS##KIND e) {            \
+                           x.translate##CLASS##KIND(e);                              \
+                         }) {                                                        \
+      return TranslatorPolicy::translate;                                            \
+    } else if constexpr (requires(CrtpSubclass x, swift::CLASS##KIND e) {            \
+                           x.translate##PARENT(e);                                   \
+                         }) {                                                        \
+      return TranslatorPolicy::translateParent;                                      \
+    } else {                                                                         \
+      return TranslatorPolicy::emitUnknown;                                          \
+    }                                                                                \
+  }                                                                                  \
+                                                                                     \
+ private:                                                                            \
+  void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                   \
+    constexpr auto policy = getPolicyFor##CLASS##KIND();                             \
+    if constexpr (policy == TranslatorPolicy::ignore) {                              \
+      LOG_ERROR("Unexpected " #CLASS #KIND);                                         \
+    } else if constexpr (policy == TranslatorPolicy::translate) {                    \
+      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
+    } else if constexpr (policy == TranslatorPolicy::translateParent) {              \
+      dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##PARENT(*e));      \
+    } else if constexpr (policy == TranslatorPolicy::emitUnknown) {                  \
+      dispatcher.emitUnknown(e);                                                     \
+    }                                                                                \
   }
 
 // base class for our AST visitors, getting a SwiftDispatcher member and define_visit emission for
