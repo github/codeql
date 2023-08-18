@@ -59,12 +59,10 @@ swift::SourceRange getSourceRange(const llvm::MutableArrayRef<Locatable>& locata
   auto endRange = getSourceRange(locatables.back());
   return {startRange.Start, endRange.End};
 }
-
-// default case, no location
-swift::SourceRange getSourceRange(const auto&) {
-  return {};
-}
 }  // namespace detail
+
+template <typename E>
+concept IsLocatable = requires(E e) { detail::getSourceRange(e); };
 
 class SwiftLocationExtractor {
  public:
@@ -75,13 +73,13 @@ class SwiftLocationExtractor {
 
   // Emits a Location TRAP entry and attaches it to a `Locatable` trap label
   void attachLocation(const swift::SourceManager& sourceManager,
-                      const auto& locatable,
+                      const IsLocatable auto& locatable,
                       TrapLabel<LocatableTag> locatableLabel) {
     attachLocationImpl(sourceManager, detail::getSourceRange(locatable), locatableLabel);
   }
 
   void attachLocation(const swift::SourceManager& sourceManager,
-                      const auto* locatable,
+                      const IsLocatable auto* locatable,
                       TrapLabel<LocatableTag> locatableLabel) {
     attachLocation(sourceManager, *locatable, locatableLabel);
   }

@@ -175,7 +175,7 @@ class SwiftDispatcher {
     CODEQL_ASSERT(found != store.end(), "createEntry called on non-fetched label");
     using Tag = ConcreteTrapTagOf<E>;
     auto label = TrapLabel<Tag>::unsafeCreateFromUntyped(found->second);
-    if constexpr (requires { locationExtractor.attachLocation(sourceManager, e, label); }) {
+    if constexpr (IsLocatable<E>) {
       locationExtractor.attachLocation(sourceManager, e, label);
     }
     return TrapClassOf<E>{label};
