@@ -1,6 +1,6 @@
 using System;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     public class AssemblyLoadException : Exception { }
 }

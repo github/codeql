@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System;
+using System.Linq;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
     /// Manages the set of assemblies.

@@ -1,7 +1,7 @@
-﻿using Semmle.Util.Logging;
-using System;
+﻿using System;
+using Semmle.Util.Logging;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal class ProgressMonitor
     {

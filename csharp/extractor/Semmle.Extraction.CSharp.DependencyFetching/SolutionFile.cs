@@ -1,9 +1,9 @@
-﻿using Microsoft.Build.Construction;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Build.Construction;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
     /// Access data in a .sln file.

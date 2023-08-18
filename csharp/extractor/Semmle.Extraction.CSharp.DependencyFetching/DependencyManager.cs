@@ -1,20 +1,20 @@
-﻿using Semmle.Util;
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Semmle.Extraction.CSharp.Standalone;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using Semmle.Util;
+using Semmle.Util.Logging;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    internal sealed class BuildAnalysis : IDisposable
+    public sealed class DependencyManager : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly ProgressMonitor progressMonitor;
@@ -25,7 +25,7 @@ namespace Semmle.BuildAnalyser
         private int succeededProjects;
         private readonly string[] allSources;
         private int conflictedReferences = 0;
-        private readonly Options options;
+        private readonly IDependencyOptions options;
         private readonly DirectoryInfo sourceDir;
         private readonly DotNet dotnet;
         private readonly FileContent fileContent;
@@ -33,17 +33,17 @@ namespace Semmle.BuildAnalyser
 
 
         /// <summary>
-        /// Performs a C# build analysis.
+        /// Performs a C# dependency fetching.
         /// </summary>
-        /// <param name="options">Analysis options from the command line.</param>
-        /// <param name="progressMonitor">Display of analysis progress.</param>
-        public BuildAnalysis(Options options, ProgressMonitor progressMonitor)
+        /// <param name="options">Dependency fetching options</param>
+        /// <param name="logger">Logger for dependency fetching progress.</param>
+        public DependencyManager(string srcDir, IDependencyOptions options, ILogger logger)
         {
             var startTime = DateTime.Now;
 
             this.options = options;
-            this.progressMonitor = progressMonitor;
-            this.sourceDir = new DirectoryInfo(options.SrcDir);
+            this.progressMonitor = new ProgressMonitor(logger);
+            this.sourceDir = new DirectoryInfo(srcDir);
 
             try
             {
@@ -55,7 +55,7 @@ namespace Semmle.BuildAnalyser
                 throw;
             }
 
-            this.progressMonitor.FindingFiles(options.SrcDir);
+            this.progressMonitor.FindingFiles(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
 
@@ -285,7 +285,7 @@ namespace Semmle.BuildAnalyser
 
             try
             {
-                var csProj = new Extraction.CSharp.CsProjFile(project);
+                var csProj = new CsProjFile(project);
 
                 foreach (var @ref in csProj.References)
                 {
@@ -328,7 +328,6 @@ namespace Semmle.BuildAnalyser
                 Restore(target, pathToNugetConfig);
             }
         }
-
 
         private void DownloadMissingPackages()
         {

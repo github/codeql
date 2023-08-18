@@ -1,11 +1,11 @@
-﻿using Semmle.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Semmle.Util;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
     /// Manage the downloading of NuGet packages.
