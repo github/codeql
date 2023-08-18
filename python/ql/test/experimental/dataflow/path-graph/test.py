@@ -16,7 +16,7 @@ def aug_assign():
 
 
 def dont_use_rhs(cond):
-    # liked noted in the original Ruby PR: https://github.com/github/codeql/pull/12566
+    # like noted in the original Ruby PR: https://github.com/github/codeql/pull/12566
     x = SOURCE # $ path-node
 
     if cond:
