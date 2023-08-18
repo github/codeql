@@ -957,7 +957,7 @@ class RawIndirectOperand extends Node, TRawIndirectOperand {
   }
 
   override string toStringImpl() {
-    result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
+    result = operandNode(this.getOperand()).toStringImpl() + " indirection"
   }
 }
 
