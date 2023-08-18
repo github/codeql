@@ -40,7 +40,10 @@ concept HasSourceRangeOnly = requires(T e) {
 &&(!HasStartAndEndLoc<T>)&&(!HasOneLoc<T>);
 
 swift::SourceRange getSourceRange(const HasStartAndEndLoc auto& locatable) {
-  return {locatable.getStartLoc(), locatable.getEndLoc()};
+  if (locatable.getStartLoc() && locatable.getEndLoc()) {
+    return {locatable.getStartLoc(), locatable.getEndLoc()};
+  }
+  return {};
 }
 
 swift::SourceRange getSourceRange(const HasOneLoc auto& locatable) {
@@ -64,7 +67,10 @@ swift::SourceRange getSourceRange(const llvm::MutableArrayRef<Locatable>& locata
   }
   auto startRange = getSourceRange(locatables.front());
   auto endRange = getSourceRange(locatables.back());
-  return {startRange.Start, endRange.End};
+  if (startRange.Start && endRange.End) {
+    return {startRange.Start, endRange.End};
+  }
+  return {};
 }
 }  // namespace detail
 
