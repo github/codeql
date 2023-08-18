@@ -1,5 +1,6 @@
 | Edge | EdgeConstraint |
 | Edge | interface { } |
+| F | floaty |
 | K | comparable |
 | Node | NodeConstraint |
 | Node | interface { } |
@@ -7,6 +8,8 @@
 | SF2 | interface { } |
 | SG2 | interface { } |
 | T | interface { } |
+| T1 | interface { } |
+| T2 | interface { } |
 | TF1 | interface { } |
 | TF2 | interface { } |
 | TG1 | interface { } |
