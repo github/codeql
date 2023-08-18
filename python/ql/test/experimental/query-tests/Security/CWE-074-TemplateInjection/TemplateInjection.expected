@@ -4,6 +4,15 @@ edges
 | AirspeedSsti.py:10:16:10:22 | ControlFlowNode for request | AirspeedSsti.py:10:16:10:27 | ControlFlowNode for Attribute |
 | AirspeedSsti.py:10:16:10:27 | ControlFlowNode for Attribute | AirspeedSsti.py:10:16:10:43 | ControlFlowNode for Attribute() |
 | AirspeedSsti.py:10:16:10:43 | ControlFlowNode for Attribute() | AirspeedSsti.py:11:30:11:37 | ControlFlowNode for template |
+| CheetahSinks.py:1:26:1:32 | ControlFlowNode for ImportMember | CheetahSinks.py:1:26:1:32 | GSSA Variable request |
+| CheetahSinks.py:1:26:1:32 | GSSA Variable request | CheetahSinks.py:10:16:10:22 | ControlFlowNode for request |
+| CheetahSinks.py:1:26:1:32 | GSSA Variable request | CheetahSinks.py:21:16:21:22 | ControlFlowNode for request |
+| CheetahSinks.py:10:16:10:22 | ControlFlowNode for request | CheetahSinks.py:10:16:10:27 | ControlFlowNode for Attribute |
+| CheetahSinks.py:10:16:10:27 | ControlFlowNode for Attribute | CheetahSinks.py:10:16:10:43 | ControlFlowNode for Attribute() |
+| CheetahSinks.py:10:16:10:43 | ControlFlowNode for Attribute() | CheetahSinks.py:11:21:11:28 | ControlFlowNode for template |
+| CheetahSinks.py:21:16:21:22 | ControlFlowNode for request | CheetahSinks.py:21:16:21:27 | ControlFlowNode for Attribute |
+| CheetahSinks.py:21:16:21:27 | ControlFlowNode for Attribute | CheetahSinks.py:21:16:21:43 | ControlFlowNode for Attribute() |
+| CheetahSinks.py:21:16:21:43 | ControlFlowNode for Attribute() | CheetahSinks.py:22:20:22:27 | ControlFlowNode for template |
 | ChevronSsti.py:1:26:1:32 | ControlFlowNode for ImportMember | ChevronSsti.py:1:26:1:32 | GSSA Variable request |
 | ChevronSsti.py:1:26:1:32 | GSSA Variable request | ChevronSsti.py:10:16:10:22 | ControlFlowNode for request |
 | ChevronSsti.py:10:16:10:22 | ControlFlowNode for request | ChevronSsti.py:10:16:10:27 | ControlFlowNode for Attribute |
@@ -40,6 +49,16 @@ nodes
 | AirspeedSsti.py:10:16:10:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | AirspeedSsti.py:10:16:10:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | AirspeedSsti.py:11:30:11:37 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| CheetahSinks.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| CheetahSinks.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| CheetahSinks.py:10:16:10:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| CheetahSinks.py:10:16:10:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| CheetahSinks.py:10:16:10:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| CheetahSinks.py:11:21:11:28 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| CheetahSinks.py:21:16:21:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| CheetahSinks.py:21:16:21:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| CheetahSinks.py:21:16:21:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| CheetahSinks.py:22:20:22:27 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
 | ChevronSsti.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | ChevronSsti.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | ChevronSsti.py:10:16:10:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -78,6 +97,8 @@ nodes
 subpaths
 #select
 | AirspeedSsti.py:11:30:11:37 | ControlFlowNode for template | AirspeedSsti.py:2:26:2:32 | ControlFlowNode for ImportMember | AirspeedSsti.py:11:30:11:37 | ControlFlowNode for template | This Template depends on $@. | AirspeedSsti.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| CheetahSinks.py:11:21:11:28 | ControlFlowNode for template | CheetahSinks.py:1:26:1:32 | ControlFlowNode for ImportMember | CheetahSinks.py:11:21:11:28 | ControlFlowNode for template | This Template depends on $@. | CheetahSinks.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| CheetahSinks.py:22:20:22:27 | ControlFlowNode for template | CheetahSinks.py:1:26:1:32 | ControlFlowNode for ImportMember | CheetahSinks.py:22:20:22:27 | ControlFlowNode for template | This Template depends on $@. | CheetahSinks.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | ChevronSsti.py:11:27:11:34 | ControlFlowNode for template | ChevronSsti.py:1:26:1:32 | ControlFlowNode for ImportMember | ChevronSsti.py:11:27:11:34 | ControlFlowNode for template | This Template depends on $@. | ChevronSsti.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | DjangoTemplates.py:9:18:9:25 | ControlFlowNode for template | DjangoTemplates.py:6:8:6:14 | ControlFlowNode for request | DjangoTemplates.py:9:18:9:25 | ControlFlowNode for template | This Template depends on $@. | DjangoTemplates.py:6:8:6:14 | ControlFlowNode for request | user-provided value |
 | FlaskTemplate.py:11:39:11:66 | ControlFlowNode for Attribute() | FlaskTemplate.py:1:26:1:32 | ControlFlowNode for ImportMember | FlaskTemplate.py:11:39:11:66 | ControlFlowNode for Attribute() | This Template depends on $@. | FlaskTemplate.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
