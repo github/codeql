@@ -17,33 +17,37 @@ class TrapDomain;
 
 namespace detail {
 template <typename T>
+concept HasSourceRange = requires(T e) {
+  e.getSourceRange();
+};
+
+template <typename T>
 concept HasStartAndEndLoc = requires(T e) {
   e.getStartLoc();
   e.getEndLoc();
-};
+}
+&&!(HasSourceRange<T>);
 
 template <typename T>
 concept HasOneLoc = requires(T e) {
   e.getLoc();
 }
-&&(!HasStartAndEndLoc<T>);
+&&!(HasSourceRange<T>)&&(!HasStartAndEndLoc<T>);
 
 template <typename T>
 concept HasOneLocField = requires(T e) {
   e.Loc;
 };
 
-template <typename T>
-concept HasSourceRangeOnly = requires(T e) {
-  e.getSourceRange();
+swift::SourceRange getSourceRange(const HasSourceRange auto& locatable) {
+  return locatable.getSourceRange();
 }
-&&(!HasStartAndEndLoc<T>)&&(!HasOneLoc<T>);
 
 swift::SourceRange getSourceRange(const HasStartAndEndLoc auto& locatable) {
   if (locatable.getStartLoc() && locatable.getEndLoc()) {
     return {locatable.getStartLoc(), locatable.getEndLoc()};
   }
-  return {};
+  return {locatable.getStartLoc()};
 }
 
 swift::SourceRange getSourceRange(const HasOneLoc auto& locatable) {
@@ -52,10 +56,6 @@ swift::SourceRange getSourceRange(const HasOneLoc auto& locatable) {
 
 swift::SourceRange getSourceRange(const HasOneLocField auto& locatable) {
   return {locatable.Loc};
-}
-
-swift::SourceRange getSourceRange(const HasSourceRangeOnly auto& locatable) {
-  return locatable.getSourceRange();
 }
 
 swift::SourceRange getSourceRange(const swift::Token& token);
@@ -70,7 +70,7 @@ swift::SourceRange getSourceRange(const llvm::MutableArrayRef<Locatable>& locata
   if (startRange.Start && endRange.End) {
     return {startRange.Start, endRange.End};
   }
-  return {};
+  return {startRange.Start};
 }
 }  // namespace detail
 
