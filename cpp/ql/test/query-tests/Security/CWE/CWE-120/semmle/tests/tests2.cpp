@@ -60,5 +60,5 @@ void test3() {
   dest2 = (char*)malloc(3);
   if (!dest2)
     return;
-  snprintf(dest2, sizeof(src), "%s", src); // BAD [NOT DETECTED]: buffer overflow
+  snprintf(dest2, sizeof(src), "%s", src); // BAD (but with duplicate alerts)
 }
