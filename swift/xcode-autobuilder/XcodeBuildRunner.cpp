@@ -104,8 +104,8 @@ static void carthage_install(const std::string& carthage,
 }
 
 void installDependencies(ProjectStructure& target, bool dryRun) {
-  auto pod = std::string(getenv("CODEQL_SWIFT_POD_EXEC"));
-  auto carthage = std::string(getenv("CODEQL_SWIFT_CARTHAGE_EXEC"));
+  auto pod = std::string(getenv("CODEQL_SWIFT_POD_EXEC") ?: "");
+  auto carthage = std::string(getenv("CODEQL_SWIFT_CARTHAGE_EXEC") ?: "");
   if (!pod.empty() && !target.podfiles.empty()) {
     for (auto& podfile : target.podfiles) {
       pod_install(pod, podfile, dryRun);
