@@ -70,4 +70,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool ExcludesFile(string path) =>
             Excludes.Any(path.Contains);
     }
+
+    public class DependencyOptionsFactory
+    {
+        private static readonly DependencyOptions instance = new DependencyOptions();
+
+        public static IDependencyOptions Default => instance;
+    }
 }
