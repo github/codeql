@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <ranges>
 
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
