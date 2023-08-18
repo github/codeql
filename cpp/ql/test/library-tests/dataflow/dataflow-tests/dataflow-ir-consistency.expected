@@ -14,9 +14,7 @@ localCallNodes
 postIsNotPre
 postHasUniquePre
 uniquePostUpdate
-| example.c:24:2:24:7 | coords indirection | Node has multiple PostUpdateNodes. |
 | example.c:24:13:24:18 | coords indirection | Node has multiple PostUpdateNodes. |
-| example.c:26:2:26:7 | coords indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead
 argHasPostUpdate

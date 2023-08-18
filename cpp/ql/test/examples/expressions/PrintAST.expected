@@ -49,7 +49,7 @@ ArrayToPointer.c:
 #    9|     getStmt(2): [ExprStmt] ExprStmt
 #    9|       getExpr(): [AssignExpr] ... = ...
 #    9|           Type = [CharPointerType] char *
-#    9|           ValueCategory = prvalue(load)
+#    9|           ValueCategory = prvalue
 #    9|         getLValue(): [ValueFieldAccess] name
 #    9|             Type = [CharPointerType] char *
 #    9|             ValueCategory = lvalue
@@ -74,7 +74,7 @@ Cast.c:
 #    2|     getStmt(0): [ExprStmt] ExprStmt
 #    2|       getExpr(): [AssignExpr] ... = ...
 #    2|           Type = [CharPointerType] char *
-#    2|           ValueCategory = prvalue(load)
+#    2|           ValueCategory = prvalue
 #    2|         getLValue(): [VariableAccess] c
 #    2|             Type = [CharPointerType] char *
 #    2|             ValueCategory = lvalue
@@ -245,7 +245,7 @@ Conversion2.c:
 #    2|     getStmt(0): [ExprStmt] ExprStmt
 #    2|       getExpr(): [AssignExpr] ... = ...
 #    2|           Type = [IntType] int
-#    2|           ValueCategory = prvalue(load)
+#    2|           ValueCategory = prvalue
 #    2|         getLValue(): [VariableAccess] x
 #    2|             Type = [IntType] int
 #    2|             ValueCategory = lvalue
@@ -331,7 +331,7 @@ Conversion4.c:
 #    2|     getStmt(0): [ExprStmt] ExprStmt
 #    2|       getExpr(): [AssignExpr] ... = ...
 #    2|           Type = [IntType] int
-#    2|           ValueCategory = prvalue(load)
+#    2|           ValueCategory = prvalue
 #    2|         getLValue(): [VariableAccess] x
 #    2|             Type = [IntType] int
 #    2|             ValueCategory = lvalue
@@ -589,7 +589,7 @@ Parenthesis.c:
 #    2|     getStmt(0): [ExprStmt] ExprStmt
 #    2|       getExpr(): [AssignExpr] ... = ...
 #    2|           Type = [IntType] int
-#    2|           ValueCategory = prvalue(load)
+#    2|           ValueCategory = prvalue
 #    2|         getLValue(): [VariableAccess] i
 #    2|             Type = [IntType] int
 #    2|             ValueCategory = lvalue
@@ -625,7 +625,7 @@ PointerDereference.c:
 #    2|     getStmt(0): [ExprStmt] ExprStmt
 #    2|       getExpr(): [AssignExpr] ... = ...
 #    2|           Type = [IntType] int
-#    2|           ValueCategory = prvalue(load)
+#    2|           ValueCategory = prvalue
 #    2|         getLValue(): [VariableAccess] j
 #    2|             Type = [IntType] int
 #    2|             ValueCategory = lvalue
@@ -782,7 +782,7 @@ Subscript.c:
 #    2|     getStmt(0): [ExprStmt] ExprStmt
 #    2|       getExpr(): [AssignExpr] ... = ...
 #    2|           Type = [IntType] int
-#    2|           ValueCategory = prvalue(load)
+#    2|           ValueCategory = prvalue
 #    2|         getLValue(): [VariableAccess] j
 #    2|             Type = [IntType] int
 #    2|             ValueCategory = lvalue
@@ -1009,7 +1009,7 @@ macro_etc.c:
 #    9|     getStmt(1): [ExprStmt] ExprStmt
 #    9|       getExpr(): [AssignExpr] ... = ...
 #    9|           Type = [IntType] int
-#    9|           ValueCategory = prvalue(load)
+#    9|           ValueCategory = prvalue
 #    9|         getLValue(): [ValueFieldAccess] b
 #    9|             Type = [IntType] int
 #    9|             ValueCategory = lvalue
@@ -1079,7 +1079,7 @@ macro_etc.c:
 #   27|       getInitialization(): [ExprStmt] ExprStmt
 #   27|         getExpr(): [AssignExpr] ... = ...
 #   27|             Type = [PlainCharType] char
-#   27|             ValueCategory = prvalue(load)
+#   27|             ValueCategory = prvalue
 #   27|           getLValue(): [VariableAccess] i
 #   27|               Type = [PlainCharType] char
 #   27|               ValueCategory = lvalue
@@ -1108,7 +1108,7 @@ macro_etc.c:
 #   27|             ValueCategory = prvalue
 #   27|       getUpdate(): [PrefixIncrExpr] ++ ...
 #   27|           Type = [PlainCharType] char
-#   27|           ValueCategory = prvalue(load)
+#   27|           ValueCategory = prvalue
 #   27|         getOperand(): [VariableAccess] i
 #   27|             Type = [PlainCharType] char
 #   27|             ValueCategory = lvalue
@@ -1116,7 +1116,7 @@ macro_etc.c:
 #   27|         getStmt(0): [ExprStmt] ExprStmt
 #   27|           getExpr(): [AssignAddExpr] ... += ...
 #   27|               Type = [IntType] int
-#   27|               ValueCategory = prvalue(load)
+#   27|               ValueCategory = prvalue
 #   27|             getLValue(): [VariableAccess] t
 #   27|                 Type = [IntType] int
 #   27|                 ValueCategory = lvalue
@@ -1131,7 +1131,7 @@ macro_etc.c:
 #   28|       getInitialization(): [ExprStmt] ExprStmt
 #   28|         getExpr(): [AssignExpr] ... = ...
 #   28|             Type = [PlainCharType] char
-#   28|             ValueCategory = prvalue(load)
+#   28|             ValueCategory = prvalue
 #   28|           getLValue(): [VariableAccess] i
 #   28|               Type = [PlainCharType] char
 #   28|               ValueCategory = lvalue
@@ -1160,7 +1160,7 @@ macro_etc.c:
 #   28|             ValueCategory = prvalue
 #   28|       getUpdate(): [PrefixIncrExpr] ++ ...
 #   28|           Type = [PlainCharType] char
-#   28|           ValueCategory = prvalue(load)
+#   28|           ValueCategory = prvalue
 #   28|         getOperand(): [VariableAccess] i
 #   28|             Type = [PlainCharType] char
 #   28|             ValueCategory = lvalue
@@ -1168,7 +1168,7 @@ macro_etc.c:
 #   28|         getStmt(0): [ExprStmt] ExprStmt
 #   28|           getExpr(): [AssignAddExpr] ... += ...
 #   28|               Type = [IntType] int
-#   28|               ValueCategory = prvalue(load)
+#   28|               ValueCategory = prvalue
 #   28|             getLValue(): [VariableAccess] t
 #   28|                 Type = [IntType] int
 #   28|                 ValueCategory = lvalue
@@ -1182,7 +1182,7 @@ macro_etc.c:
 #   29|     getStmt(8): [ExprStmt] ExprStmt
 #   29|       getExpr(): [AssignExpr] ... = ...
 #   29|           Type = [CharPointerType] char *
-#   29|           ValueCategory = prvalue(load)
+#   29|           ValueCategory = prvalue
 #   29|         getLValue(): [VariableAccess] bt
 #   29|             Type = [CharPointerType] char *
 #   29|             ValueCategory = lvalue
@@ -1196,7 +1196,7 @@ macro_etc.c:
 #   30|     getStmt(9): [ExprStmt] ExprStmt
 #   30|       getExpr(): [AssignExpr] ... = ...
 #   30|           Type = [PlainCharType] char
-#   30|           ValueCategory = prvalue(load)
+#   30|           ValueCategory = prvalue
 #   30|         getLValue(): [ArrayExpr] access to array
 #   30|             Type = [PlainCharType] char
 #   30|             ValueCategory = lvalue
@@ -1220,7 +1220,7 @@ macro_etc.c:
 #   31|     getStmt(10): [ExprStmt] ExprStmt
 #   31|       getExpr(): [AssignExpr] ... = ...
 #   31|           Type = [FunctionPointerType] ..(*)(..)
-#   31|           ValueCategory = prvalue(load)
+#   31|           ValueCategory = prvalue
 #   31|         getLValue(): [VariableAccess] bp
 #   31|             Type = [FunctionPointerType] ..(*)(..)
 #   31|             ValueCategory = lvalue

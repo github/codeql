@@ -32,8 +32,6 @@ uniquePostUpdate
 | ir.cpp:777:3:777:11 | this indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:786:3:786:11 | this indirection | Node has multiple PostUpdateNodes. |
 | ir.cpp:795:3:795:11 | this indirection | Node has multiple PostUpdateNodes. |
-| misc.c:130:5:130:5 | s indirection | Node has multiple PostUpdateNodes. |
-| misc.c:131:5:131:6 | sp indirection | Node has multiple PostUpdateNodes. |
 | static_init_templates.cpp:240:7:240:7 | this indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead
