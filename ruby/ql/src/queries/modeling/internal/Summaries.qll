@@ -96,7 +96,7 @@ module Summaries {
   private module ValueFlow {
     import DataFlow::Global<Config>
 
-    predicate summaryModel(string type, string path, string input, string output, string kind) {
+    predicate summaryModel(string type, string path, string input, string output) {
       exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
         methodNode.getLocation().getFile() instanceof Util::RelevantFile and
         flow(paramNode, methodNode.getAReturnNode()) and
@@ -105,8 +105,7 @@ module Summaries {
         type = Util::getAnAccessPathPrefix(methodNode) and
         path = Util::getMethodPath(methodNode) and
         input = Util::getArgumentPath(paramNode) and
-        output = "ReturnValue" and
-        kind = "value"
+        output = "ReturnValue"
       )
     }
   }
@@ -114,7 +113,8 @@ module Summaries {
   private module TaintFlow {
     import TaintTracking::Global<Config>
 
-    predicate summaryModel(string type, string path, string input, string output, string kind) {
+    predicate summaryModel(string type, string path, string input, string output) {
+      not ValueFlow::summaryModel(type, path, input, output) and
       exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
         methodNode.getLocation().getFile() instanceof Util::RelevantFile and
         flow(paramNode, methodNode.getAReturnNode()) and
@@ -123,19 +123,14 @@ module Summaries {
         type = Util::getAnAccessPathPrefix(methodNode) and
         path = Util::getMethodPath(methodNode) and
         input = Util::getArgumentPath(paramNode) and
-        output = "ReturnValue" and
-        kind = "taint"
+        output = "ReturnValue"
       )
     }
   }
 
   predicate summaryModel(string type, string path, string input, string output, string kind) {
-    ValueFlow::summaryModel(type, path, input, output, kind)
+    ValueFlow::summaryModel(type, path, input, output) and kind = "value"
     or
-    TaintFlow::summaryModel(type, path, input, output, kind) and
-    not ValueFlow::summaryModel(type, path, input, output, "value")
-    // summaryModelParamToReturnValue(type, path, input, output, kind)
-    // or
-    // summaryModelParamToReturnTaint(type, path, input, output, kind)
+    TaintFlow::summaryModel(type, path, input, output) and kind = "taint"
   }
 }
