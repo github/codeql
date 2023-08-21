@@ -38,6 +38,19 @@ class SwiftDispatcher {
                               const swift::PoundAvailableInfo*,
                               const swift::AvailabilitySpec*>;
 
+  template <typename E>
+  static constexpr bool IsFetchable = std::is_constructible_v<Handle, const E&>;
+
+  template <typename E>
+  static constexpr bool IsLocatable =
+      std::is_base_of_v<LocatableTag, TrapTagOf<E>> && !std::is_base_of_v<TypeTag, TrapTagOf<E>>;
+
+  template <typename E>
+  static constexpr bool IsDeclPointer = std::is_convertible_v<E, const swift::Decl*>;
+
+  template <typename E>
+  static constexpr bool IsTypePointer = std::is_convertible_v<E, const swift::TypeBase*>;
+
  public:
   // all references and pointers passed as parameters to this constructor are supposed to outlive
   // the SwiftDispatcher
@@ -63,7 +76,7 @@ class SwiftDispatcher {
       using Label = std::remove_reference_t<decltype(label)>;
       if (!label.valid()) {
         const char* action;
-        if constexpr (std::derived_from<UnspecifiedElementTag, typename Label::Tag>) {
+        if constexpr (std::is_base_of_v<typename Label::Tag, UnspecifiedElementTag>) {
           action = "replacing with unspecified element";
           label = emitUnspecified(idOf(entry), field, index);
         } else {
@@ -119,7 +132,7 @@ class SwiftDispatcher {
 
   template <typename E>
   std::optional<TrapLabel<ElementTag>> idOf(const E& entry) {
-    if constexpr (requires { entry.id; }) {
+    if constexpr (HasId<E>::value) {
       return entry.id;
     } else {
       return std::nullopt;
@@ -129,14 +142,13 @@ class SwiftDispatcher {
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
-  // clang-format off
-  template <typename E>
-    requires std::constructible_from<Handle, E*>
-  TrapLabelOf<E> fetchLabel(const E* e, swift::Type type = {}) {
-    // clang-format on
-    if (!e) {
-      // this will be treated on emission
-      return undefined_label;
+  template <typename E, std::enable_if_t<IsFetchable<E>>* = nullptr>
+  TrapLabelOf<E> fetchLabel(const E& e, swift::Type type = {}) {
+    if constexpr (std::is_constructible_v<bool, const E&>) {
+      if (!e) {
+        // this will be treated on emission
+        return undefined_label;
+      }
     }
     auto& stored = store[e];
     if (!stored.valid()) {
@@ -162,11 +174,8 @@ class SwiftDispatcher {
     return ret;
   }
 
-  // clang-format off
-  template <typename E>
-    requires std::constructible_from<Handle, E*>
+  template <typename E, std::enable_if_t<IsFetchable<E*>>* = nullptr>
   TrapLabelOf<E> fetchLabel(const E& e) {
-    // clang-format on
     return fetchLabel(&e);
   }
 
@@ -175,8 +184,7 @@ class SwiftDispatcher {
   auto createEntry(const E& e) {
     auto found = store.find(&e);
     CODEQL_ASSERT(found != store.end(), "createEntry called on non-fetched label");
-    using Tag = ConcreteTrapTagOf<E>;
-    auto label = TrapLabel<Tag>::unsafeCreateFromUntyped(found->second);
+    auto label = TrapLabel<ConcreteTrapTagOf<E>>::unsafeCreateFromUntyped(found->second);
     if constexpr (IsLocatable<E>) {
       locationExtractor.attachLocation(sourceManager, e, label);
     }
@@ -187,8 +195,7 @@ class SwiftDispatcher {
   // an example is swift::Argument, that are created on the fly and thus have no stable pointer
   template <typename E>
   auto createUncachedEntry(const E& e) {
-    using Tag = TrapTagOf<E>;
-    auto label = trap.createTypedLabel<Tag>();
+    auto label = trap.createTypedLabel<TrapTagOf<E>>();
     locationExtractor.attachLocation(sourceManager, &e, label);
     return TrapClassOf<E>{label};
   }
@@ -211,7 +218,7 @@ class SwiftDispatcher {
   auto fetchRepeatedLabels(Iterable&& arg) {
     using Label = decltype(fetchLabel(*arg.begin()));
     TrapLabelVectorWrapper<typename Label::Tag> ret;
-    if constexpr (requires { arg.size(); }) {
+    if constexpr (HasSize<Iterable>::value) {
       ret.data.reserve(arg.size());
     }
     for (auto&& e : arg) {
@@ -244,7 +251,7 @@ class SwiftDispatcher {
  private:
   template <typename E>
   UntypedTrapLabel createLabel(const E& e, swift::Type type) {
-    if constexpr (requires { name(e); }) {
+    if constexpr (IsDeclPointer<E> || IsTypePointer<E>) {
       if (auto mangledName = name(e)) {
         if (shouldVisit(e)) {
           toBeVisited.emplace_back(e, type);
@@ -259,7 +266,7 @@ class SwiftDispatcher {
 
   template <typename E>
   bool shouldVisit(const E& e) {
-    if constexpr (std::convertible_to<E, const swift::Decl*>) {
+    if constexpr (IsDeclPointer<E>) {
       encounteredModules.insert(e->getModuleContext());
       if (bodyEmissionStrategy.shouldEmitDeclBody(*e)) {
         extractedDeclaration(e);
@@ -288,6 +295,18 @@ class SwiftDispatcher {
            module->isNonSwiftModule();
   }
 
+  template <typename T, typename = void>
+  struct HasSize : std::false_type {};
+
+  template <typename T>
+  struct HasSize<T, decltype(std::declval<T>().size(), void())> : std::true_type {};
+
+  template <typename T, typename = void>
+  struct HasId : std::false_type {};
+
+  template <typename T>
+  struct HasId<T, decltype(std::declval<T>().id, void())> : std::true_type {};
+
   template <typename Tag, typename... Ts>
   TrapLabel<Tag> fetchLabelFromUnion(const llvm::PointerUnion<Ts...> u) {
     TrapLabel<Tag> ret{};
@@ -305,7 +324,7 @@ class SwiftDispatcher {
     // on `BraceStmt`/`IfConfigDecl` elements), we cannot encounter a standalone `TypeRepr` there,
     // so we skip this case; extracting `TypeRepr`s here would be problematic as we would not be
     // able to provide the corresponding type
-    if constexpr (!std::same_as<T, swift::TypeRepr*>) {
+    if constexpr (!std::is_same_v<T, swift::TypeRepr*>) {
       if (auto e = u.template dyn_cast<T>()) {
         output = fetchLabel(e);
         return true;
@@ -329,8 +348,10 @@ class SwiftDispatcher {
   virtual void visit(const swift::TypeBase* type) = 0;
   virtual void visit(const swift::CapturedValue* capture) = 0;
 
-  template <typename T>
-  requires(!std::derived_from<T, swift::TypeRepr>) void visit(const T* e, swift::Type) { visit(e); }
+  template <typename T, std::enable_if<!std::is_base_of_v<swift::TypeRepr, T>>* = nullptr>
+  void visit(const T* e, swift::Type) {
+    visit(e);
+  }
 
   const swift::SourceManager& sourceManager;
   SwiftExtractorState& state;
