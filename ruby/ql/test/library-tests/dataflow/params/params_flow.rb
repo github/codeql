@@ -129,3 +129,9 @@ destruct([taint(62), taint(63)], [taint(64), [0, taint(65)]])
 
 args = [taint(66), taint(67)]
 pos_many(*args, taint(68), nil, nil, nil, nil)
+
+def splatall(*args)
+    sink args[1] # $ hasValueFlow=70
+end
+
+splatall(*[taint(69), taint(70), taint(71)])

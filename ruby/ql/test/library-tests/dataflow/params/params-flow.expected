@@ -116,6 +116,10 @@ edges
 | params_flow.rb:131:11:131:14 | args [element 0] | params_flow.rb:131:10:131:14 | * ... [element 0] |
 | params_flow.rb:131:11:131:14 | args [element 1] | params_flow.rb:131:10:131:14 | * ... [element 1] |
 | params_flow.rb:131:17:131:25 | call to taint | params_flow.rb:83:17:83:17 | u |
+| params_flow.rb:133:14:133:18 | *args [element 1] | params_flow.rb:134:10:134:13 | args [element 1] |
+| params_flow.rb:134:10:134:13 | args [element 1] | params_flow.rb:134:10:134:16 | ...[...] |
+| params_flow.rb:137:10:137:43 | * ... [element 1] | params_flow.rb:133:14:133:18 | *args [element 1] |
+| params_flow.rb:137:23:137:31 | call to taint | params_flow.rb:137:10:137:43 | * ... [element 1] |
 nodes
 | params_flow.rb:9:16:9:17 | p1 | semmle.label | p1 |
 | params_flow.rb:9:20:9:21 | p2 | semmle.label | p2 |
@@ -253,6 +257,11 @@ nodes
 | params_flow.rb:131:11:131:14 | args [element 0] | semmle.label | args [element 0] |
 | params_flow.rb:131:11:131:14 | args [element 1] | semmle.label | args [element 1] |
 | params_flow.rb:131:17:131:25 | call to taint | semmle.label | call to taint |
+| params_flow.rb:133:14:133:18 | *args [element 1] | semmle.label | *args [element 1] |
+| params_flow.rb:134:10:134:13 | args [element 1] | semmle.label | args [element 1] |
+| params_flow.rb:134:10:134:16 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:137:10:137:43 | * ... [element 1] | semmle.label | * ... [element 1] |
+| params_flow.rb:137:23:137:31 | call to taint | semmle.label | call to taint |
 subpaths
 #select
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:14:12:14:19 | call to taint | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:14:12:14:19 | call to taint | call to taint |
@@ -304,3 +313,4 @@ subpaths
 | params_flow.rb:109:10:109:10 | a | params_flow.rb:114:33:114:41 | call to taint | params_flow.rb:109:10:109:10 | a | $@ | params_flow.rb:114:33:114:41 | call to taint | call to taint |
 | params_flow.rb:110:10:110:13 | ...[...] | params_flow.rb:114:44:114:52 | call to taint | params_flow.rb:110:10:110:13 | ...[...] | $@ | params_flow.rb:114:44:114:52 | call to taint | call to taint |
 | params_flow.rb:111:10:111:10 | c | params_flow.rb:114:58:114:66 | call to taint | params_flow.rb:111:10:111:10 | c | $@ | params_flow.rb:114:58:114:66 | call to taint | call to taint |
+| params_flow.rb:134:10:134:16 | ...[...] | params_flow.rb:137:23:137:31 | call to taint | params_flow.rb:134:10:134:16 | ...[...] | $@ | params_flow.rb:137:23:137:31 | call to taint | call to taint |
