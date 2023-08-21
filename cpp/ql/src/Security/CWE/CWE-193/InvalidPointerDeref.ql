@@ -4,7 +4,8 @@
  *              and may lead to security vulnerabilities.
  * @kind path-problem
  * @problem.severity error
- * @precision high
+ * @security-severity 9.3
+ * @precision medium
  * @id cpp/invalid-pointer-deref
  * @tags reliability
  *       security
