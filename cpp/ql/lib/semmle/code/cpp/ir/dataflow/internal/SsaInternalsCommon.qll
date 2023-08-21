@@ -781,11 +781,14 @@ private module Cached {
    * instead associated with the operand returned by this predicate.
    */
   cached
-  Operand getIRRepresentationOfIndirectOperand(Operand operand, int indirectionIndex) {
+  predicate hasIRRepresentationOfIndirectOperand(
+    Operand operand, int indirectionIndex, Operand operandRepr, int indirectionIndexRepr
+  ) {
+    indirectionIndex = [1 .. countIndirectionsForCppType(getLanguageType(operand))] and
     exists(Instruction load |
       isDereference(load, operand) and
-      result = unique( | | getAUse(load)) and
-      isUseImpl(operand, _, indirectionIndex - 1)
+      operandRepr = unique( | | getAUse(load)) and
+      indirectionIndexRepr = indirectionIndex - 1
     )
   }
 
@@ -797,12 +800,15 @@ private module Cached {
    * instead associated with the instruction returned by this predicate.
    */
   cached
-  Instruction getIRRepresentationOfIndirectInstruction(Instruction instr, int indirectionIndex) {
+  predicate hasIRRepresentationOfIndirectInstruction(
+    Instruction instr, int indirectionIndex, Instruction instrRepr, int indirectionIndexRepr
+  ) {
+    indirectionIndex = [1 .. countIndirectionsForCppType(getResultLanguageType(instr))] and
     exists(Instruction load, Operand address |
       address.getDef() = instr and
       isDereference(load, address) and
-      isUseImpl(address, _, indirectionIndex - 1) and
-      result = load
+      instrRepr = load and
+      indirectionIndexRepr = indirectionIndex - 1
     )
   }
 

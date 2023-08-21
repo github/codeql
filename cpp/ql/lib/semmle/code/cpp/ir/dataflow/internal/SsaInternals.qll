@@ -74,7 +74,7 @@ predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectOperand(op, indirectionIndex))
+    not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
   )
 }
 
@@ -88,7 +88,7 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
     type = getResultLanguageType(instr) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectInstruction(instr, indirectionIndex))
+    not hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, _, _)
   )
 }
 
