@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 7.5
  * @precision medium
- * @id cs/insecure-direct-object-reference
+ * @id cs/web/insecure-direct-object-reference
  * @tags security
  *       external/cwe-639
  */
