@@ -48,10 +48,10 @@ namespace Semmle.Autobuild.CSharp
                     attempt = new BuildCommandRule(DotNetRule.WithDotNet).Analyse(this, false) & CheckExtractorRun(true);
                     break;
                 case CSharpBuildStrategy.Buildless:
-                    attempt = DotNetRule.WithDotNet(this, env =>
+                    attempt = DotNetRule.WithDotNet(this, (dotNetPath, env) =>
                         {
                             // No need to check that the extractor has been executed in buildless mode
-                            return new StandaloneBuildRule().Analyse(this, false);
+                            return new StandaloneBuildRule(dotNetPath).Analyse(this, false);
                         });
                     break;
                 case CSharpBuildStrategy.MSBuild:
