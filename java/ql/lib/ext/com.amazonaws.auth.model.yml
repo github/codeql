@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.amazonaws.auth", "BasicAWSCredentials", False, "BasicAWSCredentials", "", "", "Argument[0]", "credential-other", "manual"]
-      - ["com.amazonaws.auth", "BasicAWSCredentials", False, "BasicAWSCredentials", "", "", "Argument[1]", "credential-other", "manual"]
+      - ["com.amazonaws.auth", "BasicAWSCredentials", False, "BasicAWSCredentials", "", "", "Argument[0]", "crypto-parameter", "manual"]
+      - ["com.amazonaws.auth", "BasicAWSCredentials", False, "BasicAWSCredentials", "", "", "Argument[1]", "crypto-parameter", "manual"]

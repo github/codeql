@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.shiro.mgt", "AbstractRememberMeManager", False, "setCipherKey", "(byte[])", "", "Argument[0]", "credential-other", "manual"]
+      - ["org.apache.shiro.mgt", "AbstractRememberMeManager", False, "setCipherKey", "(byte[])", "", "Argument[0]", "crypto-parameter", "manual"]

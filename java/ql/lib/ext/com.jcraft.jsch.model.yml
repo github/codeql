@@ -3,11 +3,24 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(Identity,byte[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String)", "", "Argument[0]", "crypto-parameter", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,byte[])", "", "Argument[0]", "crypto-parameter", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,byte[])", "", "Argument[1]", "credential-password", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,byte[],byte[],byte[])", "", "Argument[0]", "credential-username", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,byte[],byte[],byte[])", "", "Argument[1]", "crypto-parameter", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,byte[],byte[],byte[])", "", "Argument[2]", "crypto-parameter", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,byte[],byte[],byte[])", "", "Argument[3]", "credential-password", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,String)", "", "Argument[0]", "crypto-parameter", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,String)", "", "Argument[1]", "credential-password", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,String,byte[])", "", "Argument[0]", "crypto-parameter", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,String,byte[])", "", "Argument[1]", "crypto-parameter", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "addIdentity", "(String,String,byte[])", "", "Argument[2]", "credential-password", "manual"]
       - ["com.jcraft.jsch", "JSch", True, "getSession", "(String,String,int)", "", "Argument[1]", "request-forgery", "ai-manual"]
-      - ["com.jcraft.jsch", "JSch", False, "getSession", "(String,String)", "", "Argument[0]", "credential-other", "manual"]
-      - ["com.jcraft.jsch", "JSch", False, "getSession", "(String,String,int)", "", "Argument[0]", "credential-other", "manual"]
-      - ["com.jcraft.jsch", "Session", False, "setPassword", "(String)", "", "Argument[0]", "credential-other", "manual"]
-      - ["com.jcraft.jsch", "Session", False, "setPassword", "(byte[])", "", "Argument[0]", "credential-other", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "getSession", "(String,String)", "", "Argument[0]", "credential-username", "manual"]
+      - ["com.jcraft.jsch", "JSch", True, "getSession", "(String,String,int)", "", "Argument[0]", "credential-username", "manual"]
+      - ["com.jcraft.jsch", "Session", False, "setPassword", "(String)", "", "Argument[0]", "credential-password", "manual"]
+      - ["com.jcraft.jsch", "Session", False, "setPassword", "(byte[])", "", "Argument[0]", "credential-password", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
