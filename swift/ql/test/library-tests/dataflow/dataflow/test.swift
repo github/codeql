@@ -661,7 +661,7 @@ func testOptionalKeyPath() {
     let s = S(x: source())
     let s2 = S2_Optional(s: s)
     let f = \S2_Optional.s?.x
-    sink(opt: s2[keyPath: f]) // $ MISSING: flow=661
+    sink(arg: s2[keyPath: f]!) // $ MISSING: flow=661
 }
 
 func testSwap() {
