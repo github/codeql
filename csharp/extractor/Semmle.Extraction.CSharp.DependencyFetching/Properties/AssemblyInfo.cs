@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Semmle.Extraction.CSharp.Standalone")]
-[assembly: AssemblyDescription("Standalone extractor for C#")]
+[assembly: AssemblyTitle("Semmle.Extraction.CSharp.DependencyFetching")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Semmle Ltd.")]
-[assembly: AssemblyProduct("Semmle.Extraction.CSharp.Standalone")]
-[assembly: AssemblyCopyright("Copyright © Semmle 2016")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Semmle.Extraction.CSharp.DependencyFetching")]
+[assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +20,10 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("bb71e9da-7e0a-43e8-989c-c8e87c828e7c")]
+[assembly: Guid("8e902d1e-f639-4f9f-a6d2-71e8ade7c5a3")]
+
+// Expose internals for testing purposes.
+[assembly: InternalsVisibleTo("Semmle.Extraction.Tests")]
 
 // Version information for an assembly consists of the following four values:
 //

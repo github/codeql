@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 
-namespace Semmle.Extraction.CSharp
+namespace Semmle.Extraction
 {
     /// <summary>
     /// Represents a .csproj file and reads information from it.
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp
 
             if (directoryName is null)
             {
-                throw new Extraction.InternalError($"Directory of file '{Filename}' is null");
+                throw new InternalError($"Directory of file '{Filename}' is null");
             }
 
             Directory = directoryName;

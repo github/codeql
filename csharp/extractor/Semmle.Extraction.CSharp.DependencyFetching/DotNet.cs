@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Semmle.Util;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal interface IDotNet
     {

@@ -1,11 +1,11 @@
-using Semmle.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Semmle.Util;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
 
     // <summary>
@@ -145,22 +145,22 @@ namespace Semmle.BuildAnalyser
         [GeneratedRegex("<(.*\\s)?Project.*\\sSdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex ProjectSdk();
     }
-}
 
-internal interface IUnsafeFileReader
-{
-    IEnumerable<string> ReadLines(string file);
-}
-
-internal class UnsafeFileReader : IUnsafeFileReader
-{
-    public IEnumerable<string> ReadLines(string file)
+    internal interface IUnsafeFileReader
     {
-        using var sr = new StreamReader(file);
-        string? line;
-        while ((line = sr.ReadLine()) != null)
+        IEnumerable<string> ReadLines(string file);
+    }
+
+    internal class UnsafeFileReader : IUnsafeFileReader
+    {
+        public IEnumerable<string> ReadLines(string file)
         {
-            yield return line;
+            using var sr = new StreamReader(file);
+            string? line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                yield return line;
+            }
         }
     }
 }

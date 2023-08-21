@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using Semmle.BuildAnalyser;
 using Semmle.Util;
 
-namespace Semmle.Extraction.CSharp.Standalone
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
     /// Locates .NET Runtimes.
