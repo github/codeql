@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var listed = dotNet.GetListedSdks();
             var sdks = ParseSdks(listed);
-            return sdks.OrderByDescending(s => s).FirstOrDefault();
+            return sdks.Max();
         }
     }
 }

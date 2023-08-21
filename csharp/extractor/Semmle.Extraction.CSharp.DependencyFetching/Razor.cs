@@ -52,9 +52,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var name = Guid.NewGuid().ToString("N").ToUpper();
             var tempPath = Path.GetTempPath();
-            var analyzerConfig = Path.Combine(tempPath, name + ".txt");
-            var dllPath = Path.Combine(tempPath, name + ".dll");
-            var cscArgsPath = Path.Combine(tempPath, name + ".rsp");
+            var analyzerConfig = Path.Combine(tempPath, $"{name}.txt");
+            var dllPath = Path.Combine(tempPath, $"{name}.dll");
+            var cscArgsPath = Path.Combine(tempPath, $"{name}.rsp");
             var outputFolder = Path.Combine(workingDirectory, name);
             Directory.CreateDirectory(outputFolder);
 

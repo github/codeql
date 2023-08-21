@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly DotNet dotnet;
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
-        private readonly TemporaryDirectory? razorWorkingDirectory;
+        private TemporaryDirectory? razorWorkingDirectory;
 
 
         /// <summary>
@@ -136,34 +136,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
             {
-                progressMonitor.LogInfo($"Generating source files from cshtml and razor files.");
-
-                var views = GetFiles("*.cshtml")
-                    .Concat(GetFiles("*.razor"))
-                    .ToArray();
-
-                if (views.Length > 0)
-                {
-                    progressMonitor.LogInfo($"Found {views.Length} cshtml and razor files.");
-
-                    // TODO: use SDK specified in global.json
-                    var sdk = new Sdk(dotnet).GetNewestSdk();
-                    if (sdk != null)
-                    {
-                        try
-                        {
-                            var razor = new Razor(sdk, dotnet, progressMonitor);
-                            razorWorkingDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "razor"));
-                            var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, razorWorkingDirectory.ToString());
-                            this.allSources.AddRange(generatedFiles);
-                        }
-                        catch (Exception ex)
-                        {
-                            // It's okay, we tried our best to generate source files from cshtml files.
-                            progressMonitor.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
-                        }
-                    }
-                }
+                GenerateSourceFilesFromWebViews();
             }
 
             progressMonitor.Summary(
@@ -176,6 +149,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 succeededProjects + failedProjects,
                 failedProjects,
                 DateTime.Now - startTime);
+        }
+
+        private void GenerateSourceFilesFromWebViews()
+        {
+            progressMonitor.LogInfo($"Generating source files from cshtml and razor files.");
+
+            var views = GetFiles("*.cshtml")
+                .Concat(GetFiles("*.razor"))
+                .ToArray();
+
+            if (views.Length > 0)
+            {
+                progressMonitor.LogInfo($"Found {views.Length} cshtml and razor files.");
+
+                // TODO: use SDK specified in global.json
+                var sdk = new Sdk(dotnet).GetNewestSdk();
+                if (sdk != null)
+                {
+                    try
+                    {
+                        var razor = new Razor(sdk, dotnet, progressMonitor);
+                        razorWorkingDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "razor"));
+                        var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, razorWorkingDirectory.ToString());
+                        this.allSources.AddRange(generatedFiles);
+                    }
+                    catch (Exception ex)
+                    {
+                        // It's okay, we tried our best to generate source files from cshtml files.
+                        progressMonitor.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
+                    }
+                }
+            }
         }
 
         public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info)) { }
