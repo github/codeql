@@ -610,7 +610,7 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
       hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
       hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
       instr = op2.getDef() and
-      isDereference(instr, op1)
+      isDereference(instr, op1, _)
     )
   )
 }

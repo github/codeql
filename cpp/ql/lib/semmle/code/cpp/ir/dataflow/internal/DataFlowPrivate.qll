@@ -692,7 +692,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1,
 private predicate numberOfLoadsFromOperandRec(
   Operand operandFrom, Operand operandTo, int ind, boolean certain
 ) {
-  exists(Instruction load | Ssa::isDereference(load, operandFrom) |
+  exists(Instruction load | Ssa::isDereference(load, operandFrom, _) |
     operandTo = operandFrom and ind = 0 and certain = true
     or
     numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1, certain)
@@ -716,7 +716,7 @@ private predicate numberOfLoadsFromOperand(
 ) {
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n, certain)
   or
-  not Ssa::isDereference(_, operandFrom) and
+  not Ssa::isDereference(_, operandFrom, _) and
   not conversionFlow(operandFrom, _, _, _) and
   operandFrom = operandTo and
   n = 0 and
