@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
 
         /// <summary>
-        /// Performs a C# dependency fetching.
+        /// Performs C# dependency fetching.
         /// </summary>
         /// <param name="options">Dependency fetching options</param>
         /// <param name="logger">Logger for dependency fetching progress.</param>

@@ -10,10 +10,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
+  <ItemGroup>
+    <ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
     <ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />
-	</ItemGroup>
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />

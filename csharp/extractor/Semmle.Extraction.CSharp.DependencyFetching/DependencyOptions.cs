@@ -53,9 +53,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
     public class DependencyOptions : IDependencyOptions
     {
-        private static readonly DependencyOptions instance = new DependencyOptions();
-
-        public static IDependencyOptions Default => instance;
+        public static IDependencyOptions Default => new DependencyOptions();
 
         public IList<string> DllDirs { get; set; } = new List<string>();
 
