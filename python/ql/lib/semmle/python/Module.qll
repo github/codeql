@@ -179,21 +179,6 @@ private predicate legalDottedName(string name) {
 bindingset[name]
 private predicate legalShortName(string name) { name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*") }
 
-/**
- * Holds if `f` is potentially a source package.
- * Does it have an __init__.py file (or --respect-init=False for Python 2) and is it within the source archive?
- */
-private predicate isPotentialSourcePackage(Folder f) {
-  f.getRelativePath() != "" and
-  isPotentialPackage(f)
-}
-
-private predicate isPotentialPackage(Folder f) {
-  exists(f.getFile("__init__.py"))
-  or
-  py_flags_versioned("options.respect_init", "False", _) and major_version() = 2 and exists(f)
-}
-
 private string moduleNameFromBase(Container file) {
   // We used to also require `isPotentialPackage(f)` to hold in this case,
   // but we saw modules not getting resolved because their folder did not
@@ -236,31 +221,87 @@ private predicate transitively_imported_from_entry_point(File file) {
   )
 }
 
+private predicate isRegularPackage(Folder f, string name) {
+  legalShortName(name) and
+  name = f.getStem() and
+  exists(f.getFile("__init__.py"))
+}
+
+private predicate isPotentialModuleFile(File file, string name) {
+  legalShortName(name) and
+  name = file.getStem() and
+  file.getExtension() = ["py", "pyc", "so", "pyd"] and
+  // it has to be imported in this folder
+  name =
+    any(ImportExpr i | i.getLocation().getFile().getParent() = file.getParent())
+        .getName()
+        .regexpReplaceAll("\\..*", "") and
+  name != ""
+}
+
+// See https://peps.python.org/pep-0420/#specification
+private predicate isNameSpacePackage(Folder f, string name) {
+  legalShortName(name) and
+  name = f.getStem() and
+  not isRegularPackage(f, name) and
+  // it has to be imported in this folder
+  name =
+    any(ImportExpr i | i.getLocation().getFile().getParent() = f)
+        .getName()
+        .regexpReplaceAll("\\..*", "") and
+  name != "" and
+  // no siblibling regular package
+  // no sibling module
+  not exists(Folder sibling | sibling.getParent() = f.getParent() |
+    isRegularPackage(sibling.getFolder(name), name)
+    or
+    isPotentialModuleFile(sibling.getAFile(), name)
+  )
+}
+
+private predicate isPackage(Folder f, string name) {
+  isRegularPackage(f, name)
+  or
+  isNameSpacePackage(f, name)
+}
+
+private predicate isModuleFile(File file, string name) {
+  isPotentialModuleFile(file, name) and
+  not isPackage(file.getParent(), _)
+}
+
+private predicate isOutermostPackage(Folder f, string name) {
+  isPackage(f, name) and
+  not isPackage(f.getParent(), _)
+}
+
 cached
-string moduleNameFromFile(Container file) {
+string moduleNameFromFile(Container c) {
+  // package
+  isOutermostPackage(c, result)
+  or
+  // module
+  isModuleFile(c, result)
+  or
   Stages::AST::ref() and
   exists(string basename |
-    basename = moduleNameFromBase(file) and
+    basename = moduleNameFromBase(c) and
     legalShortName(basename)
   |
-    result = moduleNameFromFile(file.getParent()) + "." + basename
+    // recursive case
+    result = moduleNameFromFile(c.getParent()) + "." + basename
     or
     // If `file` is a transitive import of a file that's executed directly, we allow references
     // to it by its `basename`.
-    transitively_imported_from_entry_point(file) and
+    transitively_imported_from_entry_point(c) and
     result = basename
   )
   or
-  isPotentialSourcePackage(file) and
-  result = file.getStem() and
-  (
-    not isPotentialSourcePackage(file.getParent()) or
-    not legalShortName(file.getParent().getBaseName())
-  )
+  //
+  // standard library
+  result = c.getStem() and c.getParent() = c.getImportRoot()
   or
-  result = file.getStem() and file.getParent() = file.getImportRoot()
-  or
-  result = file.getStem() and isStubRoot(file.getParent())
+  result = c.getStem() and isStubRoot(c.getParent())
 }
 
 private predicate isStubRoot(Folder f) {
