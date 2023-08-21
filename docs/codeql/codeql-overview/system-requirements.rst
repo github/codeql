@@ -26,7 +26,7 @@ For extraction of compiled languages (C/C++, C#, Go, Java) and Ruby on Linux:
 - ``glibc`` version 2.17 or greater must be installed.
 - ``musl-c``-based Linux distributions, such as Alpine Linux, are not supported.
 
-For JavaScript and TypeScript extraction on all platforms:
+For TypeScript extraction on all platforms:
 
 - Node.js 14 or higher must be installed and available on the ``PATH`` as ``node``.
 
