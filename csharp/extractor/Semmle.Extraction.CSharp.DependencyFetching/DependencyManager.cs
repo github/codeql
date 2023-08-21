@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                this.dotnet = new DotNet(progressMonitor);
+                this.dotnet = new DotNet(options, progressMonitor);
             }
             catch
             {

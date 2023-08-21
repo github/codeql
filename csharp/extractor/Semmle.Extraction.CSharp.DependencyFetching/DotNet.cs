@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
@@ -10,12 +11,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class DotNet : IDotNet
     {
-        private const string dotnet = "dotnet";
         private readonly ProgressMonitor progressMonitor;
+        private readonly string dotnet;
 
-        public DotNet(ProgressMonitor progressMonitor)
+        public DotNet(IDependencyOptions options, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
+            this.dotnet = Path.Combine(options.DotNetPath ?? string.Empty, "dotnet");
             Info();
         }
 
@@ -29,7 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private static ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput) =>
+        private ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput) =>
             new ProcessStartInfo(dotnet, args)
             {
                 UseShellExecute = false,
@@ -39,7 +41,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private bool RunCommand(string args)
         {
             progressMonitor.RunningProcess($"{dotnet} {args}");
-            using var proc = Process.Start(MakeDotnetStartInfo(args, redirectStandardOutput: false));
+            using var proc = Process.Start(this.MakeDotnetStartInfo(args, redirectStandardOutput: false));
             proc?.WaitForExit();
             var exitCode = proc?.ExitCode ?? -1;
             if (exitCode != 0)
@@ -77,7 +79,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private IList<string> GetListed(string args, string artifact)
         {
             progressMonitor.RunningProcess($"{dotnet} {args}");
-            var pi = MakeDotnetStartInfo(args, redirectStandardOutput: true);
+            var pi = this.MakeDotnetStartInfo(args, redirectStandardOutput: true);
             var exitCode = pi.ReadOutput(out var artifacts);
             if (exitCode != 0)
             {

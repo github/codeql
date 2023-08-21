@@ -51,6 +51,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// The number of threads to use.
         /// </summary>
         int Threads { get; }
+
+        /// <summary>
+        /// The path to the local ".dotnet" directory, if any.
+        /// </summary>
+        string? DotNetPath { get; }
     }
 
     public class DependencyOptions : IDependencyOptions
@@ -73,5 +78,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Excludes.Any(path.Contains);
 
         public int Threads { get; set; } = EnvironmentVariables.GetDefaultNumberOfThreads();
+
+        public string? DotNetPath { get; set; } = null;
     }
 }
