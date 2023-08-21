@@ -81,8 +81,8 @@ args = [taint(33), taint(34), taint(35), taint(36)]
 splatmid(taint(32), *args, taint(37))
 
 def pos_many(t, u, v, w, x, y, z)
-    sink t # $ hasValueFlow=38
-    sink u # $ hasValueFlow=39
+    sink t # $ hasValueFlow=38 $ hasValueFlow=66
+    sink u # $ hasValueFlow=39 $ hasValueFlow=67 $ SPURIOUS: hasValueFlow=68
     sink v # $ MISSING: hasValueFlow=40
     sink w # $ MISSING: hasValueFlow=41 $ SPURIOUS: hasValueFlow=44
     sink x # $ MISSING: hasValueFlow=42
@@ -126,3 +126,6 @@ def destruct((a,b), (c,(d,e)))
 end
 
 destruct([taint(62), taint(63)], [taint(64), [0, taint(65)]])
+
+args = [taint(66), taint(67)]
+pos_many(*args, taint(68), nil, nil, nil, nil)
