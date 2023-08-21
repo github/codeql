@@ -1,3 +1,2 @@
 failures
 testFailures
-| string.swift:496:26:497:1 | // $ tainted=450\n | Missing result:tainted=450 |
