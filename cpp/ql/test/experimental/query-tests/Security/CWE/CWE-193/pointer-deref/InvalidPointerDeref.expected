@@ -52,26 +52,17 @@ edges
 | test.cpp:82:17:82:22 | call to malloc | test.cpp:82:5:82:28 | ... = ... |
 | test.cpp:83:5:83:30 | ... = ... | test.cpp:83:9:83:11 | arr indirection [post update] [end] |
 | test.cpp:83:9:83:11 | arr indirection [post update] [end] | test.cpp:80:9:80:16 | mk_array indirection [end] |
-| test.cpp:83:15:83:17 | arr indirection [begin] | test.cpp:83:19:83:23 | begin indirection |
+| test.cpp:83:15:83:17 | arr indirection [begin] | test.cpp:83:5:83:30 | ... = ... |
+| test.cpp:83:15:83:17 | arr indirection [begin] | test.cpp:83:15:83:30 | ... + ... |
 | test.cpp:83:15:83:30 | ... + ... | test.cpp:83:5:83:30 | ... = ... |
-| test.cpp:83:19:83:23 | begin indirection | test.cpp:83:5:83:30 | ... = ... |
-| test.cpp:83:19:83:23 | begin indirection | test.cpp:83:15:83:30 | ... + ... |
 | test.cpp:89:19:89:26 | call to mk_array [end] | test.cpp:91:36:91:38 | arr indirection [end] |
 | test.cpp:89:19:89:26 | call to mk_array [end] | test.cpp:95:36:95:38 | arr indirection [end] |
-| test.cpp:91:36:91:38 | arr indirection [end] | test.cpp:91:40:91:42 | end indirection |
 | test.cpp:91:36:91:38 | arr indirection [end] | test.cpp:96:9:96:14 | ... = ... |
-| test.cpp:91:40:91:42 | end indirection | test.cpp:96:9:96:14 | ... = ... |
-| test.cpp:95:36:95:38 | arr indirection [end] | test.cpp:95:40:95:42 | end indirection |
 | test.cpp:95:36:95:38 | arr indirection [end] | test.cpp:96:9:96:14 | ... = ... |
-| test.cpp:95:40:95:42 | end indirection | test.cpp:96:9:96:14 | ... = ... |
 | test.cpp:104:27:104:29 | arr [end] | test.cpp:105:36:105:38 | arr indirection [end] |
 | test.cpp:104:27:104:29 | arr [end] | test.cpp:109:36:109:38 | arr indirection [end] |
-| test.cpp:105:36:105:38 | arr indirection [end] | test.cpp:105:40:105:42 | end indirection |
 | test.cpp:105:36:105:38 | arr indirection [end] | test.cpp:110:9:110:14 | ... = ... |
-| test.cpp:105:40:105:42 | end indirection | test.cpp:110:9:110:14 | ... = ... |
-| test.cpp:109:36:109:38 | arr indirection [end] | test.cpp:109:40:109:42 | end indirection |
 | test.cpp:109:36:109:38 | arr indirection [end] | test.cpp:110:9:110:14 | ... = ... |
-| test.cpp:109:40:109:42 | end indirection | test.cpp:110:9:110:14 | ... = ... |
 | test.cpp:119:18:119:25 | call to mk_array [end] | test.cpp:104:27:104:29 | arr [end] |
 | test.cpp:141:10:141:19 | mk_array_p indirection [end] | test.cpp:150:20:150:29 | call to mk_array_p indirection [end] |
 | test.cpp:141:10:141:19 | mk_array_p indirection [end] | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] |
@@ -80,22 +71,15 @@ edges
 | test.cpp:143:18:143:23 | call to malloc | test.cpp:143:5:143:29 | ... = ... |
 | test.cpp:144:5:144:32 | ... = ... | test.cpp:144:10:144:12 | arr indirection [post update] [end] |
 | test.cpp:144:10:144:12 | arr indirection [post update] [end] | test.cpp:141:10:141:19 | mk_array_p indirection [end] |
-| test.cpp:144:16:144:18 | arr indirection [begin] | test.cpp:144:21:144:25 | begin indirection |
+| test.cpp:144:16:144:18 | arr indirection [begin] | test.cpp:144:5:144:32 | ... = ... |
+| test.cpp:144:16:144:18 | arr indirection [begin] | test.cpp:144:16:144:32 | ... + ... |
 | test.cpp:144:16:144:32 | ... + ... | test.cpp:144:5:144:32 | ... = ... |
-| test.cpp:144:21:144:25 | begin indirection | test.cpp:144:5:144:32 | ... = ... |
-| test.cpp:144:21:144:25 | begin indirection | test.cpp:144:16:144:32 | ... + ... |
 | test.cpp:150:20:150:29 | call to mk_array_p indirection [end] | test.cpp:156:37:156:39 | arr indirection [end] |
-| test.cpp:156:37:156:39 | arr indirection [end] | test.cpp:156:42:156:44 | end indirection |
 | test.cpp:156:37:156:39 | arr indirection [end] | test.cpp:157:9:157:14 | ... = ... |
-| test.cpp:156:42:156:44 | end indirection | test.cpp:157:9:157:14 | ... = ... |
 | test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:166:37:166:39 | arr indirection [end] |
 | test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:170:37:170:39 | arr indirection [end] |
-| test.cpp:166:37:166:39 | arr indirection [end] | test.cpp:166:42:166:44 | end indirection |
 | test.cpp:166:37:166:39 | arr indirection [end] | test.cpp:171:9:171:14 | ... = ... |
-| test.cpp:166:42:166:44 | end indirection | test.cpp:171:9:171:14 | ... = ... |
-| test.cpp:170:37:170:39 | arr indirection [end] | test.cpp:170:42:170:44 | end indirection |
 | test.cpp:170:37:170:39 | arr indirection [end] | test.cpp:171:9:171:14 | ... = ... |
-| test.cpp:170:42:170:44 | end indirection | test.cpp:171:9:171:14 | ... = ... |
 | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] | test.cpp:165:29:165:31 | arr indirection [end] |
 | test.cpp:194:23:194:28 | call to malloc | test.cpp:195:17:195:23 | ... + ... |
 | test.cpp:194:23:194:28 | call to malloc | test.cpp:195:17:195:23 | ... + ... |
@@ -268,18 +252,13 @@ nodes
 | test.cpp:83:9:83:11 | arr indirection [post update] [end] | semmle.label | arr indirection [post update] [end] |
 | test.cpp:83:15:83:17 | arr indirection [begin] | semmle.label | arr indirection [begin] |
 | test.cpp:83:15:83:30 | ... + ... | semmle.label | ... + ... |
-| test.cpp:83:19:83:23 | begin indirection | semmle.label | begin indirection |
 | test.cpp:89:19:89:26 | call to mk_array [end] | semmle.label | call to mk_array [end] |
 | test.cpp:91:36:91:38 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:91:40:91:42 | end indirection | semmle.label | end indirection |
 | test.cpp:95:36:95:38 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:95:40:95:42 | end indirection | semmle.label | end indirection |
 | test.cpp:96:9:96:14 | ... = ... | semmle.label | ... = ... |
 | test.cpp:104:27:104:29 | arr [end] | semmle.label | arr [end] |
 | test.cpp:105:36:105:38 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:105:40:105:42 | end indirection | semmle.label | end indirection |
 | test.cpp:109:36:109:38 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:109:40:109:42 | end indirection | semmle.label | end indirection |
 | test.cpp:110:9:110:14 | ... = ... | semmle.label | ... = ... |
 | test.cpp:119:18:119:25 | call to mk_array [end] | semmle.label | call to mk_array [end] |
 | test.cpp:141:10:141:19 | mk_array_p indirection [end] | semmle.label | mk_array_p indirection [end] |
@@ -290,16 +269,12 @@ nodes
 | test.cpp:144:10:144:12 | arr indirection [post update] [end] | semmle.label | arr indirection [post update] [end] |
 | test.cpp:144:16:144:18 | arr indirection [begin] | semmle.label | arr indirection [begin] |
 | test.cpp:144:16:144:32 | ... + ... | semmle.label | ... + ... |
-| test.cpp:144:21:144:25 | begin indirection | semmle.label | begin indirection |
 | test.cpp:150:20:150:29 | call to mk_array_p indirection [end] | semmle.label | call to mk_array_p indirection [end] |
 | test.cpp:156:37:156:39 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:156:42:156:44 | end indirection | semmle.label | end indirection |
 | test.cpp:157:9:157:14 | ... = ... | semmle.label | ... = ... |
 | test.cpp:165:29:165:31 | arr indirection [end] | semmle.label | arr indirection [end] |
 | test.cpp:166:37:166:39 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:166:42:166:44 | end indirection | semmle.label | end indirection |
 | test.cpp:170:37:170:39 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:170:42:170:44 | end indirection | semmle.label | end indirection |
 | test.cpp:171:9:171:14 | ... = ... | semmle.label | ... = ... |
 | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] | semmle.label | call to mk_array_p indirection [end] |
 | test.cpp:194:23:194:28 | call to malloc | semmle.label | call to malloc |
