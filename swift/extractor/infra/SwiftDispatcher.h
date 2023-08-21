@@ -129,14 +129,14 @@ class SwiftDispatcher {
   // This method gives a TRAP label for already emitted AST node.
   // If the AST node was not emitted yet, then the emission is dispatched to a corresponding
   // visitor (see `visit(T *)` methods below).
+  // clang-format off
   template <typename E>
-  requires std::constructible_from<Handle, E> TrapLabelOf<E> fetchLabel(const E& e,
-                                                                        swift::Type type = {}) {
-    if constexpr (std::constructible_from<bool, const E&>) {
-      if (!e) {
-        // this will be treated on emission
-        return undefined_label;
-      }
+    requires std::constructible_from<Handle, E*>
+  TrapLabelOf<E> fetchLabel(const E* e, swift::Type type = {}) {
+    // clang-format on
+    if (!e) {
+      // this will be treated on emission
+      return undefined_label;
     }
     auto& stored = store[e];
     if (!stored.valid()) {
@@ -162,8 +162,11 @@ class SwiftDispatcher {
     return ret;
   }
 
+  // clang-format off
   template <typename E>
-  requires std::constructible_from<Handle, E*> TrapLabelOf<E> fetchLabel(const E& e) {
+    requires std::constructible_from<Handle, E*>
+  TrapLabelOf<E> fetchLabel(const E& e) {
+    // clang-format on
     return fetchLabel(&e);
   }
 
