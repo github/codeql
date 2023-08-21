@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Semmle.BuildAnalyser
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal interface IDotNet
     {

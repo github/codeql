@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Semmle.BuildAnalyser;
 using Semmle.Util;
 using System.Text.RegularExpressions;
 using System.Linq;
 
-namespace Semmle.Extraction.CSharp.Standalone
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal partial class Sdk
     {

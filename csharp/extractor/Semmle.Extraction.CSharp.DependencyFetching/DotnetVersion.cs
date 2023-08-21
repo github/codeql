@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Semmle.Extraction.CSharp.Standalone
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal record DotnetVersion : IComparable<DotnetVersion>
     {

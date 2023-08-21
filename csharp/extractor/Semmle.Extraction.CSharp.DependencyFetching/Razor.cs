@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Semmle.BuildAnalyser;
 using System.Text;
 using System.Linq;
 
-namespace Semmle.Extraction.CSharp.Standalone
+namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal class Razor
     {
