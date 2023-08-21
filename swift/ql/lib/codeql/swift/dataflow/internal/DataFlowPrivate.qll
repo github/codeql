@@ -727,6 +727,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or
+  // Store throug
+  exists(KeyPathComponent component |
+    component.isOptionalWrapping() and
+    node1.(KeyPathComponentNodeImpl).getComponent() = component and
+    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
 }
@@ -790,13 +798,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       c.isSingleton(any(Content::ArrayContent ac)) and
       component.isSubscript()
       or
-      c.isSingleton(any(Content::EnumContent ec, EnumElementDecl eed |
-          ec.getParam() = eed.getParam(0) and
-          eed.getEnclosingDecl().asNominalTypeDecl().getName() = "Optional"
-        |
-          ec
-        )) and
-      component.isOptionalForcing()
+      c instanceof OptionalSomeContentSet and
+      (
+        component.isOptionalForcing()
+        or
+        component.isOptionalChaining()
+      )
     )
   |
     // the next node is either the next element in the chain
