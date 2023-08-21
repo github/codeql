@@ -774,17 +774,18 @@ module MakeImplCommon<InputSig Lang> {
       }
 
       /**
-       * Gets a viable run-time dispatch target for the call `call` in the
-       * context `ctx`. This is restricted to those calls and results for which
-       * the return flow from the result to `call` restricts the possible context
-       * `ctx`.
+       * Gets a viable call site for the return from `callable` in call context
+       * `ctx`. This is restricted to those callables and contexts for which
+       * the possible call sites are restricted.
        */
       cached
-      DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, CallContextReturn ctx) {
+      DataFlowCall prunedViableImplInCallContextReverse(
+        DataFlowCallable callable, CallContextReturn ctx
+      ) {
         exists(DataFlowCallable c0, DataFlowCall call0 |
-          callEnclosingCallable(call0, result) and
+          callEnclosingCallable(call0, callable) and
           ctx = TReturn(c0, call0) and
-          c0 = viableImplInCallContextExt(call0, call) and
+          c0 = viableImplInCallContextExt(call0, result) and
           reducedViableImplInReturn(c0, call0)
         )
       }
@@ -1305,7 +1306,7 @@ module MakeImplCommon<InputSig Lang> {
   predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
     cc instanceof CallContextAny and callable = viableCallableExt(call)
     or
-    callable = prunedViableImplInCallContextReverse(call, cc)
+    call = prunedViableImplInCallContextReverse(callable, cc)
   }
 
   /**

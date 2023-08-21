@@ -2057,7 +2057,7 @@ module MakeImpl<InputSig Lang> {
       }
 
       DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx) {
-        result = prunedViableImplInCallContextReverse(call, ctx)
+        call = prunedViableImplInCallContextReverse(result, ctx)
       }
 
       predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) {
