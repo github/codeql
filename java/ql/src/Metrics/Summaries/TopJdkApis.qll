@@ -1,7 +1,6 @@
 /** Provides classes and predicates for working with Top JDK APIs. */
 
 import java
-private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.dataflow.ExternalFlow
 
@@ -298,16 +297,18 @@ class TopJdkApi extends Callable {
 
   /** Holds if this API has a manual summary model. */
   private predicate hasManualSummary() {
-    exists(SummarizedCallable sc | sc.asCallable() = this and sc.hasManualModel())
+    exists(FlowSummaryImpl::Public::SummarizedCallable sc |
+      sc.asCallable() = this and sc.hasManualModel()
+    )
   }
 
-  /** Holds if this API has a manual neutral model. */
-  private predicate hasManualNeutral() {
-    this.(FlowSummaryImpl::Public::NeutralCallable).hasManualModel()
+  /** Holds if this API has a manual neutral summary model. */
+  private predicate hasManualNeutralSummary() {
+    this.(FlowSummaryImpl::Public::NeutralSummaryCallable).hasManualModel()
   }
 
   /** Holds if this API has a manual MaD model. */
-  predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutral() }
+  predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutralSummary() }
   /*
    * Note: the following top JDK APIs are not modeled with MaD:
    * `java.lang.Runnable#run()`: specialised lambda flow
