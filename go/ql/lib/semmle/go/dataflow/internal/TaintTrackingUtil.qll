@@ -47,7 +47,7 @@ private Type getElementType(Type containerType) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   exists(Type containerType |
     node instanceof DataFlow::ArgumentNode and
     getElementType*(node.getType()) = containerType
