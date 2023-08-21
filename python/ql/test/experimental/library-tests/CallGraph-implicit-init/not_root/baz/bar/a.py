@@ -2,5 +2,5 @@ def afunc():
     print("afunc called")
     return 1
 
-from baz.foo import foo_func
-foo_func() # $ MISSING: pt,tt="baz/foo.py:foo_func"
+from not_root.baz.foo import foo_func
+foo_func() # $ pt,tt="not_root/baz/foo.py:foo_func"
