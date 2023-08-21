@@ -53,6 +53,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
     public class DependencyOptions : IDependencyOptions
     {
+        private static readonly DependencyOptions instance = new DependencyOptions();
+
+        public static IDependencyOptions Default => instance;
+
         public IList<string> DllDirs { get; set; } = new List<string>();
 
         public IList<string> Excludes { get; set; } = new List<string>();
@@ -69,12 +73,5 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public bool ExcludesFile(string path) =>
             Excludes.Any(path.Contains);
-    }
-
-    public class DependencyOptionsFactory
-    {
-        private static readonly DependencyOptions instance = new DependencyOptions();
-
-        public static IDependencyOptions Default => instance;
     }
 }

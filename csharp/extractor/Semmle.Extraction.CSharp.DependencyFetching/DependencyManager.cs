@@ -143,7 +143,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DateTime.Now - startTime);
         }
 
-        public DependencyManager(string srcDir) : this(srcDir, DependencyOptionsFactory.Default, new ConsoleLogger(Verbosity.Info)) { }
+        public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info)) { }
 
         private IEnumerable<string> GetFiles(string pattern, bool recurseSubdirectories = true)
         {
