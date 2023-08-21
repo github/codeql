@@ -12,24 +12,19 @@
 
 using namespace codeql;
 
-swift::SourceRange detail::getSourceRange(const swift::Token& token) {
-  const auto charRange = token.getRange();
-  return {charRange.getStart(), charRange.getEnd()};
-}
-
 void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
-                                                const swift::SourceRange& range,
+                                                swift::SourceLoc start,
+                                                swift::SourceLoc end,
                                                 TrapLabel<LocatableTag> locatableLabel) {
-  if (!range) {
+  if (!start.isValid() || !end.isValid()) {
     // invalid locations seem to come from entities synthesized by the compiler
     return;
   }
-  auto file = resolvePath(sourceManager.getDisplayNameForLoc(range.Start));
+  auto file = resolvePath(sourceManager.getDisplayNameForLoc(start));
   DbLocation entry{{}};
   entry.file = fetchFileLabel(file);
-  std::tie(entry.start_line, entry.start_column) =
-      sourceManager.getLineAndColumnInBuffer(range.Start);
-  std::tie(entry.end_line, entry.end_column) = sourceManager.getLineAndColumnInBuffer(range.End);
+  std::tie(entry.start_line, entry.start_column) = sourceManager.getLineAndColumnInBuffer(start);
+  std::tie(entry.end_line, entry.end_column) = sourceManager.getLineAndColumnInBuffer(end);
   SwiftMangledName locName{"loc", entry.file,     ':', entry.start_line, ':', entry.start_column,
                            ':',   entry.end_line, ':', entry.end_column};
   entry.id = trap.createTypedLabel<DbLocationTag>(locName);
@@ -46,6 +41,56 @@ TrapLabel<FileTag> SwiftLocationExtractor::emitFile(swift::SourceFile* file) {
 
 TrapLabel<FileTag> SwiftLocationExtractor::emitFile(const std::filesystem::path& file) {
   return fetchFileLabel(resolvePath(file));
+}
+
+void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
+                                                const swift::SourceRange& range,
+                                                TrapLabel<LocatableTag> locatableLabel) {
+  attachLocationImpl(sourceManager, range.Start, range.End, locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
+                                                const swift::CapturedValue* capture,
+                                                TrapLabel<LocatableTag> locatableLabel) {
+  attachLocationImpl(sourceManager, capture->getLoc(), locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
+                                                const swift::IfConfigClause* clause,
+                                                TrapLabel<LocatableTag> locatableLabel) {
+  attachLocationImpl(sourceManager, clause->Loc, locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
+                                                const swift::AvailabilitySpec* spec,
+                                                TrapLabel<LocatableTag> locatableLabel) {
+  attachLocationImpl(sourceManager, spec->getSourceRange(), locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
+                                                const swift::KeyPathExpr::Component* component,
+                                                TrapLabel<LocatableTag> locatableLabel) {
+  attachLocationImpl(sourceManager, component->getSourceRange().Start,
+                     component->getSourceRange().End, locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
+                                                const swift::Token* token,
+                                                TrapLabel<LocatableTag> locatableLabel) {
+  attachLocationImpl(sourceManager, token->getRange().getStart(), token->getRange().getEnd(),
+                     locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
+                                                swift::SourceLoc loc,
+                                                TrapLabel<LocatableTag> locatableLabel) {
+  attachLocationImpl(sourceManager, loc, loc, locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sourceManager,
+                                                const swift::DiagnosticInfo* diagInfo,
+                                                TrapLabel<LocatableTag> locatableLabel) {
+  attachLocationImpl(sourceManager, diagInfo->Loc, locatableLabel);
 }
 
 TrapLabel<FileTag> SwiftLocationExtractor::fetchFileLabel(const std::filesystem::path& file) {
