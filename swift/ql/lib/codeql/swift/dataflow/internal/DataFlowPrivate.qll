@@ -789,6 +789,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       or
       c.isSingleton(any(Content::ArrayContent ac)) and
       component.isSubscript()
+      or
+      c.isSingleton(any(Content::EnumContent ec, EnumElementDecl eed |
+          ec.getParam() = eed.getParam(0) and
+          eed.getEnclosingDecl().asNominalTypeDecl().getName() = "Optional"
+        |
+          ec
+        )) and
+      component.isOptionalForcing()
     )
   |
     // the next node is either the next element in the chain
