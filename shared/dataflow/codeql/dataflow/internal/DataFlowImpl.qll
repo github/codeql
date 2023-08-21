@@ -190,6 +190,8 @@ module MakeImpl<InputSig Lang> {
 
     private class ArgNodeEx extends NodeEx {
       ArgNodeEx() { this.asNode() instanceof ArgNode }
+
+      DataFlowCall getCall() { this.asNode().(ArgNode).argumentOf(result, _) }
     }
 
     private class ParamNodeEx extends NodeEx {
@@ -1145,11 +1147,20 @@ module MakeImpl<InputSig Lang> {
 
         class LocalCc;
 
-        bindingset[call, c, outercc]
-        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc);
+        DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx);
 
-        bindingset[call, c, innercc]
-        CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc);
+        bindingset[call, ctx]
+        predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx);
+
+        bindingset[call, c]
+        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c);
+
+        DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx);
+
+        predicate viableImplNotCallContextReducedReverse(CcNoCall ctx);
+
+        bindingset[call, c]
+        CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call);
 
         bindingset[node, cc]
         LocalCc getLocalCc(NodeEx node, Cc cc);
@@ -1191,21 +1202,24 @@ module MakeImpl<InputSig Lang> {
 
         pragma[nomagic]
         private predicate flowIntoCallApa(
-          DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, ApApprox apa
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
+          boolean allowsFieldFlow, ApApprox apa
         ) {
           flowIntoCall(call, arg, p, allowsFieldFlow) and
           PrevStage::revFlowAp(p, pragma[only_bind_into](apa)) and
-          PrevStage::revFlowAp(arg, pragma[only_bind_into](apa))
+          PrevStage::revFlowAp(arg, pragma[only_bind_into](apa)) and
+          c = p.getEnclosingCallable()
         }
 
         pragma[nomagic]
         private predicate flowOutOfCallApa(
-          DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
-          ApApprox apa
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+          boolean allowsFieldFlow, ApApprox apa
         ) {
           flowOutOfCall(call, ret, kind, out, allowsFieldFlow) and
           PrevStage::revFlowAp(out, pragma[only_bind_into](apa)) and
-          PrevStage::revFlowAp(ret, pragma[only_bind_into](apa))
+          PrevStage::revFlowAp(ret, pragma[only_bind_into](apa)) and
+          c = ret.getEnclosingCallable()
         }
 
         pragma[nomagic]
@@ -1214,7 +1228,7 @@ module MakeImpl<InputSig Lang> {
           ApApprox argApa, ApApprox apa
         ) {
           exists(ReturnKindExt kind |
-            flowOutOfCallApa(call, ret, kind, out, allowsFieldFlow, apa) and
+            flowOutOfCallApa(call, _, ret, kind, out, allowsFieldFlow, apa) and
             PrevStage::callMayFlowThroughRev(call) and
             PrevStage::returnMayFlowThrough(ret, argApa, apa, kind) and
             matchesCall(ccc, call)
@@ -1332,16 +1346,7 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow out of a callable
-          exists(
-            DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc,
-            DataFlowCallable inner
-          |
-            fwdFlow(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
-            flowOutOfCallApa(call, ret, _, node, allowsFieldFlow, apa) and
-            inner = ret.getEnclosingCallable() and
-            cc = getCallContextReturn(inner, call, innercc) and
-            if allowsFieldFlow = false then ap instanceof ApNil else any()
-          )
+          fwdFlowOut(node, state, cc, summaryCtx, argT, argAp, t, ap, apa)
           or
           // flow through a callable
           exists(
@@ -1408,15 +1413,115 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
+        bindingset[call, ctx]
+        pragma[inline_late]
+        private DataFlowCallable viableImplCallContextReducedInlineLate(
+          DataFlowCall call, CcCall ctx
+        ) {
+          result = viableImplCallContextReduced(call, ctx)
+        }
+
+        bindingset[arg, ctx]
+        pragma[inline_late]
+        private DataFlowCallable viableImplCallContextReducedInlineLate(
+          DataFlowCall call, ArgNodeEx arg, CcCall ctx
+        ) {
+          call = arg.getCall() and
+          result = viableImplCallContextReducedInlineLate(call, ctx)
+        }
+
+        bindingset[call]
+        pragma[inline_late]
+        private predicate flowIntoCallApaInlineLate(
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
+          boolean allowsFieldFlow, ApApprox apa
+        ) {
+          flowIntoCallApa(call, c, arg, p, allowsFieldFlow, apa)
+        }
+
+        bindingset[call, ctx]
+        pragma[inline_late]
+        private predicate viableImplNotCallContextReducedInlineLate(DataFlowCall call, Cc ctx) {
+          viableImplNotCallContextReduced(call, ctx)
+        }
+
+        bindingset[arg, outercc]
+        pragma[inline_late]
+        private predicate viableImplArgNotCallContextReduced(
+          DataFlowCall call, ArgNodeEx arg, Cc outercc
+        ) {
+          call = arg.getCall() and
+          viableImplNotCallContextReducedInlineLate(call, outercc)
+        }
+
         pragma[nomagic]
         private predicate fwdFlowIn(
           DataFlowCall call, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
           ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
-          exists(ArgNodeEx arg, boolean allowsFieldFlow |
+          exists(ArgNodeEx arg, boolean allowsFieldFlow, DataFlowCallable inner |
             fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
-            flowIntoCallApa(call, arg, p, allowsFieldFlow, apa) and
-            innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
+            (
+              inner = viableImplCallContextReducedInlineLate(call, arg, outercc)
+              or
+              viableImplArgNotCallContextReduced(call, arg, outercc)
+            ) and
+            flowIntoCallApaInlineLate(call, inner, arg, p, allowsFieldFlow, apa)
+          |
+            innercc = getCallContextCall(call, inner) and
+            if allowsFieldFlow = false then ap instanceof ApNil else any()
+          )
+        }
+
+        bindingset[ctx, result]
+        pragma[inline_late]
+        private DataFlowCallable viableImplCallContextReducedReverseInlineLate(
+          DataFlowCall call, CcNoCall ctx
+        ) {
+          result = viableImplCallContextReducedReverse(call, ctx)
+        }
+
+        bindingset[call]
+        pragma[inline_late]
+        private predicate flowOutOfCallApaInlineLate(
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+          ApApprox apa
+        ) {
+          flowOutOfCallApa(call, c, ret, _, out, allowsFieldFlow, apa)
+        }
+
+        bindingset[c, ret, apa, innercc]
+        pragma[inline_late]
+        pragma[noopt]
+        private predicate flowOutOfCallApaNotCallContextReduced(
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+          ApApprox apa, CcNoCall innercc
+        ) {
+          viableImplNotCallContextReducedReverse(innercc) and
+          flowOutOfCallApa(call, c, ret, _, out, allowsFieldFlow, apa)
+        }
+
+        // inline to reduce number of iterations
+        pragma[inline]
+        private predicate fwdFlowOut(
+          NodeEx out, FlowState state, CcNoCall outercc, ParamNodeOption summaryCtx, TypOption argT,
+          ApOption argAp, Typ t, Ap ap, ApApprox apa
+        ) {
+          exists(
+            DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc,
+            DataFlowCallable inner
+          |
+            fwdFlow(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
+            inner = ret.getEnclosingCallable() and
+            (
+              inner = viableImplCallContextReducedReverseInlineLate(call, innercc) and
+              flowOutOfCallApaInlineLate(call, inner, ret, out, allowsFieldFlow, apa)
+              or
+              flowOutOfCallApaNotCallContextReduced(call, inner, ret, out, allowsFieldFlow, apa,
+                innercc)
+            )
+          |
+            outercc = getCallContextReturn(inner, call) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
@@ -1518,7 +1623,7 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Ap argAp, Ap ap
         ) {
           exists(ApApprox argApa, Typ argT |
-            flowIntoCallApa(call, pragma[only_bind_into](arg), pragma[only_bind_into](p),
+            flowIntoCallApa(call, _, pragma[only_bind_into](arg), pragma[only_bind_into](p),
               allowsFieldFlow, argApa) and
             fwdFlow(arg, _, _, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
               argApa) and
@@ -1529,24 +1634,23 @@ module MakeImpl<InputSig Lang> {
         }
 
         pragma[nomagic]
-        private predicate flowIntoCallAp(
-          DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Ap ap
-        ) {
-          exists(ApApprox apa |
-            flowIntoCallApa(call, arg, p, allowsFieldFlow, apa) and
-            fwdFlow(arg, _, _, _, _, _, _, ap, apa)
+        private predicate flowIntoCallAp(DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Ap ap) {
+          exists(ApApprox apa, boolean allowsFieldFlow |
+            flowIntoCallApa(call, _, arg, p, allowsFieldFlow, apa) and
+            fwdFlow(arg, _, _, _, _, _, _, ap, apa) and
+            if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
 
         pragma[nomagic]
         private predicate flowOutOfCallAp(
-          DataFlowCall call, RetNodeEx ret, ReturnPosition pos, NodeEx out, boolean allowsFieldFlow,
-          Ap ap
+          DataFlowCall call, RetNodeEx ret, ReturnPosition pos, NodeEx out, Ap ap
         ) {
-          exists(ApApprox apa |
-            flowOutOfCallApa(call, ret, _, out, allowsFieldFlow, apa) and
+          exists(ApApprox apa, boolean allowsFieldFlow |
+            flowOutOfCallApa(call, _, ret, _, out, allowsFieldFlow, apa) and
             fwdFlow(ret, _, _, _, _, _, _, ap, apa) and
-            pos = ret.getReturnPosition()
+            pos = ret.getReturnPosition() and
+            if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
 
@@ -1627,10 +1731,9 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow into a callable
-          exists(ParamNodeEx p, boolean allowsFieldFlow |
+          exists(ParamNodeEx p |
             revFlow(p, state, TReturnCtxNone(), returnAp, ap) and
-            flowIntoCallAp(_, node, p, allowsFieldFlow, ap) and
-            (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
+            flowIntoCallAp(_, node, p, ap) and
             returnCtx = TReturnCtxNone()
           )
           or
@@ -1680,10 +1783,9 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, RetNodeEx ret, ReturnPosition pos, FlowState state,
           ReturnCtx returnCtx, ApOption returnAp, Ap ap
         ) {
-          exists(NodeEx out, boolean allowsFieldFlow |
+          exists(NodeEx out |
             revFlow(out, state, returnCtx, returnAp, ap) and
-            flowOutOfCallAp(call, ret, pos, out, allowsFieldFlow, ap) and
-            if allowsFieldFlow = false then ap instanceof ApNil else any()
+            flowOutOfCallAp(call, ret, pos, out, ap)
           )
         }
 
@@ -1872,11 +1974,22 @@ module MakeImpl<InputSig Lang> {
       bindingset[node, cc]
       LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
-      bindingset[call, c, outercc]
-      CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) { any() }
+      DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) { none() }
 
-      bindingset[call, c, innercc]
-      CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) { any() }
+      bindingset[call, ctx]
+      predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) { any() }
+
+      bindingset[call, c]
+      CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) { any() }
+
+      DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx) {
+        none()
+      }
+
+      predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) { any() }
+
+      bindingset[call, c]
+      CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
     }
 
     private module Level1CallContext {
@@ -1899,9 +2012,17 @@ module MakeImpl<InputSig Lang> {
         bindingset[node, cc]
         LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
-        bindingset[call, c, outercc]
-        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
-          checkCallContextCall(outercc, call, c) and
+        DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
+          result = prunedViableImplInCallContext(call, ctx)
+        }
+
+        bindingset[call, ctx]
+        predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
+          noPrunedViableImplInCallContext(call, ctx)
+        }
+
+        bindingset[call, c]
+        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
           if recordDataFlowCallSiteDispatch(call, c)
           then result = TSpecificCall(call)
           else result = TSomeCall()
@@ -1918,18 +2039,33 @@ module MakeImpl<InputSig Lang> {
               node.getEnclosingCallable())
         }
 
-        bindingset[call, c, outercc]
-        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c, Cc outercc) {
-          checkCallContextCall(outercc, call, c) and
+        DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
+          result = prunedViableImplInCallContext(call, ctx)
+        }
+
+        bindingset[call, ctx]
+        predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
+          noPrunedViableImplInCallContext(call, ctx)
+        }
+
+        bindingset[call, c]
+        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
           if recordDataFlowCallSite(call, c)
           then result = TSpecificCall(call)
           else result = TSomeCall()
         }
       }
 
-      bindingset[call, c, innercc]
-      CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call, Cc innercc) {
-        checkCallContextReturn(innercc, c, call) and
+      DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx) {
+        call = prunedViableImplInCallContextReverse(result, ctx)
+      }
+
+      predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) {
+        ctx instanceof CallContextAny
+      }
+
+      bindingset[call, c]
+      CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
         if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
       }
     }
