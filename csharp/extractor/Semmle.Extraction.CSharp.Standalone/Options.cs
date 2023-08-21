@@ -53,6 +53,9 @@ namespace Semmle.Extraction.CSharp.Standalone
                 case "references":
                     dependencies.DllDirs.Add(value);
                     return true;
+                case "dotnet":
+                    dependencies.DotNetPath = value;
+                    return true;
                 default:
                     return base.HandleOption(key, value);
             }
