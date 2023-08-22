@@ -18,6 +18,7 @@ edges
 | test_free.cpp:69:10:69:10 | a | test_free.cpp:72:14:72:14 | a |
 | test_free.cpp:69:10:69:10 | a | test_free.cpp:72:14:72:14 | a |
 | test_free.cpp:69:10:69:10 | a | test_free.cpp:72:14:72:14 | a |
+| test_free.cpp:83:12:83:12 | a | test_free.cpp:85:12:85:12 | a |
 | test_free.cpp:101:10:101:10 | a | test_free.cpp:103:10:103:10 | a |
 | test_free.cpp:128:10:128:11 | * ... | test_free.cpp:129:10:129:11 | * ... |
 | test_free.cpp:152:27:152:27 | a | test_free.cpp:154:10:154:10 | a |
@@ -51,6 +52,8 @@ nodes
 | test_free.cpp:69:10:69:10 | a | semmle.label | a |
 | test_free.cpp:72:14:72:14 | a | semmle.label | a |
 | test_free.cpp:72:14:72:14 | a | semmle.label | a |
+| test_free.cpp:83:12:83:12 | a | semmle.label | a |
+| test_free.cpp:85:12:85:12 | a | semmle.label | a |
 | test_free.cpp:101:10:101:10 | a | semmle.label | a |
 | test_free.cpp:103:10:103:10 | a | semmle.label | a |
 | test_free.cpp:128:10:128:11 | * ... | semmle.label | * ... |
@@ -84,6 +87,7 @@ subpaths
 | test_free.cpp:72:14:72:14 | a | test_free.cpp:69:10:69:10 | a | test_free.cpp:72:14:72:14 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:69:5:69:8 | call to free | call to free |
 | test_free.cpp:72:14:72:14 | a | test_free.cpp:69:10:69:10 | a | test_free.cpp:72:14:72:14 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:69:5:69:8 | call to free | call to free |
 | test_free.cpp:72:14:72:14 | a | test_free.cpp:69:10:69:10 | a | test_free.cpp:72:14:72:14 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:69:5:69:8 | call to free | call to free |
+| test_free.cpp:85:12:85:12 | a | test_free.cpp:83:12:83:12 | a | test_free.cpp:85:12:85:12 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:83:5:83:13 | delete | delete |
 | test_free.cpp:103:10:103:10 | a | test_free.cpp:101:10:101:10 | a | test_free.cpp:103:10:103:10 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:101:5:101:8 | call to free | call to free |
 | test_free.cpp:129:10:129:11 | * ... | test_free.cpp:128:10:128:11 | * ... | test_free.cpp:129:10:129:11 | * ... | Memory pointed to by '* ...' may already have been freed by $@. | test_free.cpp:128:5:128:8 | call to free | call to free |
 | test_free.cpp:154:10:154:10 | a | test_free.cpp:152:27:152:27 | a | test_free.cpp:154:10:154:10 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:152:22:152:25 | call to free | call to free |

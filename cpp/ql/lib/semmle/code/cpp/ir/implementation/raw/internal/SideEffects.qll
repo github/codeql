@@ -130,6 +130,8 @@ class CallOrAllocationExpr extends Expr {
     this instanceof Call
     or
     this instanceof NewOrNewArrayExpr
+    or
+    this instanceof DeleteOrDeleteArrayExpr
   }
 
   /** Gets the `Function` invoked by this expression, if known. */
@@ -137,6 +139,8 @@ class CallOrAllocationExpr extends Expr {
     result = this.(Call).getTarget()
     or
     result = this.(NewOrNewArrayExpr).getAllocator()
+    or
+    result = this.(DeleteOrDeleteArrayExpr).getDeallocator()
   }
 }
 

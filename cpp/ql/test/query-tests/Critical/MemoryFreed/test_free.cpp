@@ -81,8 +81,8 @@ public:
 void test_new1() {
     A *a = new A();
     delete(a);
-    a->f(); // BAD [NOT DETECTED]
-    delete(a); // BAD [NOT DETECTED]
+    a->f(); // BAD
+    delete(a); // BAD
 }
 
 void test_dereference1(A *a) {

@@ -5663,43 +5663,73 @@ ir.cpp:
 
 # 1015| void OperatorDelete()
 # 1015|   Block 0
-# 1015|     v1015_1(void)              = EnterFunction      : 
-# 1015|     mu1015_2(unknown)          = AliasedDefinition  : 
-# 1015|     mu1015_3(unknown)          = InitializeNonLocal : 
-# 1016|     r1016_1(int *)             = Constant[0]        : 
-# 1016|     v1016_2(void)              = NoOp               : 
-# 1017|     r1017_1(String *)          = Constant[0]        : 
-# 1017|     v1017_2(void)              = NoOp               : 
-# 1018|     r1018_1(SizedDealloc *)    = Constant[0]        : 
-# 1018|     v1018_2(void)              = NoOp               : 
-# 1019|     r1019_1(Overaligned *)     = Constant[0]        : 
-# 1019|     v1019_2(void)              = NoOp               : 
-# 1020|     r1020_1(PolymorphicBase *) = Constant[0]        : 
-# 1020|     v1020_2(void)              = NoOp               : 
-# 1021|     v1021_1(void)              = NoOp               : 
-# 1015|     v1015_4(void)              = ReturnVoid         : 
-# 1015|     v1015_5(void)              = AliasedUse         : ~m?
-# 1015|     v1015_6(void)              = ExitFunction       : 
+# 1015|     v1015_1(void)              = EnterFunction                    : 
+# 1015|     mu1015_2(unknown)          = AliasedDefinition                : 
+# 1015|     mu1015_3(unknown)          = InitializeNonLocal               : 
+# 1016|     r1016_1(glval<unknown>)    = FunctionAddress[operator delete] : 
+# 1016|     r1016_2(int *)             = Constant[0]                      : 
+# 1016|     v1016_3(void)              = Call[operator delete]            : func:r1016_1, 0:r1016_2
+# 1016|     mu1016_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1016|     v1016_5(void)              = Convert                          : v1016_3
+# 1017|     r1017_1(glval<unknown>)    = FunctionAddress[operator delete] : 
+# 1017|     r1017_2(String *)          = Constant[0]                      : 
+# 1017|     v1017_3(void)              = Call[operator delete]            : func:r1017_1, 0:r1017_2
+# 1017|     mu1017_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1017|     v1017_5(void)              = Convert                          : v1017_3
+# 1018|     r1018_1(glval<unknown>)    = FunctionAddress[operator delete] : 
+# 1018|     r1018_2(SizedDealloc *)    = Constant[0]                      : 
+# 1018|     v1018_3(void)              = Call[operator delete]            : func:r1018_1, 0:r1018_2
+# 1018|     mu1018_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1018|     v1018_5(void)              = Convert                          : v1018_3
+# 1019|     r1019_1(glval<unknown>)    = FunctionAddress[operator delete] : 
+# 1019|     r1019_2(Overaligned *)     = Constant[0]                      : 
+# 1019|     v1019_3(void)              = Call[operator delete]            : func:r1019_1, 0:r1019_2
+# 1019|     mu1019_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1019|     v1019_5(void)              = Convert                          : v1019_3
+# 1020|     r1020_1(glval<unknown>)    = FunctionAddress                  : 
+# 1020|     r1020_2(PolymorphicBase *) = Constant[0]                      : 
+# 1020|     v1020_3(void)              = Call[?]                          : func:r1020_1, 0:r1020_2
+# 1020|     mu1020_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1020|     v1020_5(void)              = Convert                          : v1020_3
+# 1021|     v1021_1(void)              = NoOp                             : 
+# 1015|     v1015_4(void)              = ReturnVoid                       : 
+# 1015|     v1015_5(void)              = AliasedUse                       : ~m?
+# 1015|     v1015_6(void)              = ExitFunction                     : 
 
 # 1024| void OperatorDeleteArray()
 # 1024|   Block 0
-# 1024|     v1024_1(void)              = EnterFunction      : 
-# 1024|     mu1024_2(unknown)          = AliasedDefinition  : 
-# 1024|     mu1024_3(unknown)          = InitializeNonLocal : 
-# 1025|     r1025_1(int *)             = Constant[0]        : 
-# 1025|     v1025_2(void)              = NoOp               : 
-# 1026|     r1026_1(String *)          = Constant[0]        : 
-# 1026|     v1026_2(void)              = NoOp               : 
-# 1027|     r1027_1(SizedDealloc *)    = Constant[0]        : 
-# 1027|     v1027_2(void)              = NoOp               : 
-# 1028|     r1028_1(Overaligned *)     = Constant[0]        : 
-# 1028|     v1028_2(void)              = NoOp               : 
-# 1029|     r1029_1(PolymorphicBase *) = Constant[0]        : 
-# 1029|     v1029_2(void)              = NoOp               : 
-# 1030|     v1030_1(void)              = NoOp               : 
-# 1024|     v1024_4(void)              = ReturnVoid         : 
-# 1024|     v1024_5(void)              = AliasedUse         : ~m?
-# 1024|     v1024_6(void)              = ExitFunction       : 
+# 1024|     v1024_1(void)              = EnterFunction                      : 
+# 1024|     mu1024_2(unknown)          = AliasedDefinition                  : 
+# 1024|     mu1024_3(unknown)          = InitializeNonLocal                 : 
+# 1025|     r1025_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1025|     r1025_2(int *)             = Constant[0]                        : 
+# 1025|     v1025_3(void)              = Call[operator delete[]]            : func:r1025_1, 0:r1025_2
+# 1025|     mu1025_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1025|     v1025_5(void)              = Convert                            : v1025_3
+# 1026|     r1026_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1026|     r1026_2(String *)          = Constant[0]                        : 
+# 1026|     v1026_3(void)              = Call[operator delete[]]            : func:r1026_1, 0:r1026_2
+# 1026|     mu1026_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1026|     v1026_5(void)              = Convert                            : v1026_3
+# 1027|     r1027_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1027|     r1027_2(SizedDealloc *)    = Constant[0]                        : 
+# 1027|     v1027_3(void)              = Call[operator delete[]]            : func:r1027_1, 0:r1027_2
+# 1027|     mu1027_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1027|     v1027_5(void)              = Convert                            : v1027_3
+# 1028|     r1028_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1028|     r1028_2(Overaligned *)     = Constant[0]                        : 
+# 1028|     v1028_3(void)              = Call[operator delete[]]            : func:r1028_1, 0:r1028_2
+# 1028|     mu1028_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1028|     v1028_5(void)              = Convert                            : v1028_3
+# 1029|     r1029_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1029|     r1029_2(PolymorphicBase *) = Constant[0]                        : 
+# 1029|     v1029_3(void)              = Call[operator delete[]]            : func:r1029_1, 0:r1029_2
+# 1029|     mu1029_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1029|     v1029_5(void)              = Convert                            : v1029_3
+# 1030|     v1030_1(void)              = NoOp                               : 
+# 1024|     v1024_4(void)              = ReturnVoid                         : 
+# 1024|     v1024_5(void)              = AliasedUse                         : ~m?
+# 1024|     v1024_6(void)              = ExitFunction                       : 
 
 # 1034| void EmptyStructInit()
 # 1034|   Block 0
