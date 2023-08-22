@@ -18,6 +18,7 @@ import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.TaintTracking
+import SqlTainted::PathGraph
 
 class SqlLikeFunction extends FunctionWithWrappers {
   SqlLikeFunction() { sqlArgument(this.getName(), _) }
@@ -53,8 +54,6 @@ module SqlTaintedConfig implements DataFlow::ConfigSig {
 }
 
 module SqlTainted = TaintTracking::Global<SqlTaintedConfig>;
-
-import SqlTainted::PathGraph
 
 from
   SqlLikeFunction runSql, Expr taintedArg, FlowSource taintSource, SqlTainted::PathNode sourceNode,
