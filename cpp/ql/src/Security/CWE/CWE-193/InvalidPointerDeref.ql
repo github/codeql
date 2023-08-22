@@ -1,6 +1,6 @@
   /**
    * @name Invalid pointer dereference
-   * @description Dereferencing a pointer that points past it allocation is undefined behavior
+   * @description Dereferencing a pointer that points past its allocation is undefined behavior
    *              and may lead to security vulnerabilities.
    * @kind path-problem
    * @problem.severity error
