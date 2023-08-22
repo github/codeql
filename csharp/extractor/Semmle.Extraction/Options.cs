@@ -1,6 +1,6 @@
 using System;
-using Semmle.Util.Logging;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {
