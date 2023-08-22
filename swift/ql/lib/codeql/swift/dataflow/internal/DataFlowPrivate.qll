@@ -727,7 +727,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or
-  // Store throug
+  // creation of an optional via implicit wrapping keypath component
   exists(KeyPathComponent component |
     component.isOptionalWrapping() and
     node1.(KeyPathComponentNodeImpl).getComponent() = component and
