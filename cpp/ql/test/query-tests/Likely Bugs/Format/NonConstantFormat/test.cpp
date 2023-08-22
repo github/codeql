@@ -161,5 +161,5 @@ void fmt_with_assignment() {
   const char *x, *y;
 
   x = y = "a";
-  printf(y);
+  printf(y); // GOOD
 }
