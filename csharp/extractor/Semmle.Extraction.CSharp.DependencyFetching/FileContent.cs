@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     // This class is used to read a set of files and decide different properties about the
     // content (by reading the content of the files only once).
     // The implementation is lazy, so the properties are only calculated when
-    // the first property is accessed. 
+    // the first property is accessed.
     // </summary>
     internal partial class FileContent
     {
@@ -20,15 +20,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IUnsafeFileReader unsafeFileReader;
         private readonly Func<IEnumerable<string>> getFiles;
         private readonly Func<HashSet<string>> getAlreadyDownloadedPackages;
-        private readonly HashSet<string> notYetDownloadedPackages = new HashSet<string>();
+        private readonly HashSet<string> allPackages = new HashSet<string>();
         private readonly Initializer initialize;
 
-        public HashSet<string> NotYetDownloadedPackages
+        public IEnumerable<string> NotYetDownloadedPackages
         {
             get
             {
                 initialize.Run();
-                return notYetDownloadedPackages;
+                var alreadyDownloadedPackages = getAlreadyDownloadedPackages();
+                return allPackages.Except(alreadyDownloadedPackages);
             }
         }
 
@@ -101,7 +102,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void DoInitialize()
         {
-            var alreadyDownloadedPackages = getAlreadyDownloadedPackages();
             foreach (var file in getFiles())
             {
                 try
@@ -109,14 +109,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
                     {
 
-                        // Find the not yet downloaded packages.
+                        // Find all the packages.
                         foreach (var valueMatch in PackageReference().EnumerateMatches(line))
                         {
                             // We can't get the group from the ValueMatch, so doing it manually:
                             var packageName = GetGroup(line, valueMatch, "Include");
-                            if (!string.IsNullOrEmpty(packageName) && !alreadyDownloadedPackages.Contains(packageName))
+                            if (!string.IsNullOrEmpty(packageName) && !allPackages.Contains(packageName))
                             {
-                                notYetDownloadedPackages.Add(packageName);
+                                allPackages.Add(packageName);
                             }
                         }
 

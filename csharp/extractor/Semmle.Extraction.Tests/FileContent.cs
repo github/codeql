@@ -1,5 +1,6 @@
 using Xunit;
 using System.Collections.Generic;
+using System.Linq;
 using Semmle.Util.Logging;
 using Semmle.Extraction.CSharp.DependencyFetching;
 
@@ -62,7 +63,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             Assert.False(useAspNetDlls);
-            Assert.Equal(3, notYetDownloadedPackages.Count);
+            Assert.Equal(3, notYetDownloadedPackages.Count());
             Assert.Contains("DotNetAnalyzers.DocumentationAnalyzers".ToLowerInvariant(), notYetDownloadedPackages);
             Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), notYetDownloadedPackages);
             Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), notYetDownloadedPackages);
@@ -87,7 +88,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             Assert.True(useAspNetDlls);
-            Assert.Equal(2, notYetDownloadedPackages.Count);
+            Assert.Equal(2, notYetDownloadedPackages.Count());
             Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), notYetDownloadedPackages);
             Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), notYetDownloadedPackages);
         }
