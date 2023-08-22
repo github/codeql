@@ -42,6 +42,8 @@ private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer
     or
     this.getType() instanceof BoxedType
     or
+    this.getType() instanceof NumberType
+    or
     isSafeCommandArgument(this.asExpr())
   }
 }
