@@ -4,6 +4,6 @@
 #include "swift/xcode-autobuilder/XcodeProjectParser.h"
 #include <filesystem>
 
-void installDependencies(ProjectStructure& target, bool dryRun);
-bool buildXcodeTarget(XcodeTarget& target, bool dryRun);
+void installDependencies(const ProjectStructure& target, bool dryRun);
+bool buildXcodeTarget(const XcodeTarget& target, bool dryRun);
 bool buildSwiftPackage(const std::filesystem::path& packageFile, bool dryRun);

@@ -59,14 +59,13 @@ static bool run_build_command(const std::vector<std::string>& argv, bool dryRun)
       DIAGNOSE_ERROR(buildCommandFailed,
                      "`autobuild` failed to run the build command:\n\n```\n{}\n```",
                      absl::StrJoin(argv, " "));
-      codeql::Log::flush();
       return false;
     }
   }
   return true;
 }
 
-bool buildXcodeTarget(XcodeTarget& target, bool dryRun) {
+bool buildXcodeTarget(const XcodeTarget& target, bool dryRun) {
   std::vector<std::string> argv({"/usr/bin/xcodebuild", "build"});
   if (!target.workspace.empty()) {
     argv.push_back("-workspace");
@@ -103,7 +102,7 @@ static void carthage_install(const std::string& carthage,
   run_build_command(argv, dryRun);
 }
 
-void installDependencies(ProjectStructure& target, bool dryRun) {
+void installDependencies(const ProjectStructure& target, bool dryRun) {
   auto pod = std::string(getenv("CODEQL_SWIFT_POD_EXEC") ?: "");
   auto carthage = std::string(getenv("CODEQL_SWIFT_CARTHAGE_EXEC") ?: "");
   if (!pod.empty() && !target.podfiles.empty()) {
