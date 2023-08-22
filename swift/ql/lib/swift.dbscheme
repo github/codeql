@@ -1918,6 +1918,12 @@ for_each_stmt_wheres(  //dir=stmt
   int where: @expr_or_none ref
 );
 
+#keyset[id]
+for_each_stmt_next_calls(  //dir=stmt
+  int id: @for_each_stmt ref,
+  int nextCall: @expr_or_none ref
+);
+
 @labeled_conditional_stmt =
   @guard_stmt
 | @if_stmt

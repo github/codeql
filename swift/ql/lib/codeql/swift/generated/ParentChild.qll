@@ -3668,7 +3668,10 @@ private module Impl {
   private Element getImmediateChildOfForEachStmt(
     ForEachStmt e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLabeledStmt, int n, int nPattern, int nSequence, int nWhere, int nBody |
+    exists(
+      int b, int bLabeledStmt, int n, int nPattern, int nSequence, int nWhere, int nNextCall,
+      int nBody
+    |
       b = 0 and
       bLabeledStmt =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
@@ -3676,7 +3679,8 @@ private module Impl {
       nPattern = n + 1 and
       nSequence = nPattern + 1 and
       nWhere = nSequence + 1 and
-      nBody = nWhere + 1 and
+      nNextCall = nWhere + 1 and
+      nBody = nNextCall + 1 and
       (
         none()
         or
@@ -3690,7 +3694,9 @@ private module Impl {
         or
         index = nSequence and result = e.getImmediateWhere() and partialPredicateCall = "Where()"
         or
-        index = nWhere and result = e.getBody() and partialPredicateCall = "Body()"
+        index = nWhere and result = e.getImmediateNextCall() and partialPredicateCall = "NextCall()"
+        or
+        index = nNextCall and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }

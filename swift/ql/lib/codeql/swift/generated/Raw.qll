@@ -2781,6 +2781,11 @@ module Raw {
     Expr getWhere() { for_each_stmt_wheres(this, result) }
 
     /**
+     * Gets the nextcall of this for each statement, if it exists.
+     */
+    Expr getNextCall() { for_each_stmt_next_calls(this, result) }
+
+    /**
      * Gets the body of this for each statement.
      */
     BraceStmt getBody() { for_each_stmts(this, _, _, result) }

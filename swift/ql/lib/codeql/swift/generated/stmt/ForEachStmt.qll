@@ -83,6 +83,34 @@ module Generated {
     final predicate hasWhere() { exists(this.getWhere()) }
 
     /**
+     * Gets the nextcall of this for each statement, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Expr getImmediateNextCall() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertForEachStmtToRaw(this)
+              .(Raw::ForEachStmt)
+              .getNextCall())
+    }
+
+    /**
+     * Gets the nextcall of this for each statement, if it exists.
+     */
+    final Expr getNextCall() {
+      exists(Expr immediate |
+        immediate = this.getImmediateNextCall() and
+        result = immediate.resolve()
+      )
+    }
+
+    /**
+     * Holds if `getNextCall()` exists.
+     */
+    final predicate hasNextCall() { exists(this.getNextCall()) }
+
+    /**
      * Gets the body of this for each statement.
      */
     BraceStmt getBody() {

@@ -988,6 +988,7 @@ class ForEachStmt(LabeledStmt):
     pattern: Pattern | child
     sequence: Expr | child
     where: optional[Expr] | child
+    nextCall: optional[Expr] | child
     body: BraceStmt | child
 
 class LabeledConditionalStmt(LabeledStmt):
