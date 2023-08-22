@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
 
-            this.fileContent = new FileContent(packageDirectory, progressMonitor, () => GetFiles("*.*"));
+            this.fileContent = new FileContent(progressMonitor, () => GetFiles("*.*"));
             this.allSources = GetFiles("*.cs").ToList();
             var allProjects = GetFiles("*.csproj");
             var solutions = options.SolutionFile is not null
@@ -388,7 +388,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 nugetConfig = nugetConfigs.FirstOrDefault();
             }
 
-            foreach (var package in fileContent.NotYetDownloadedPackages)
+            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName)
+                .Select(d => Path.GetFileName(d)
+                .ToLowerInvariant());
+            var notYetDownloadedPackages = fileContent.AllPackages.Except(alreadyDownloadedPackages);
+            foreach (var package in notYetDownloadedPackages)
             {
                 progressMonitor.NugetInstall(package);
                 using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));

@@ -19,17 +19,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ProgressMonitor progressMonitor;
         private readonly IUnsafeFileReader unsafeFileReader;
         private readonly Func<IEnumerable<string>> getFiles;
-        private readonly Func<HashSet<string>> getAlreadyDownloadedPackages;
         private readonly HashSet<string> allPackages = new HashSet<string>();
         private readonly Initializer initialize;
 
-        public IEnumerable<string> NotYetDownloadedPackages
+        public HashSet<string> AllPackages
         {
             get
             {
                 initialize.Run();
-                var alreadyDownloadedPackages = getAlreadyDownloadedPackages();
-                return allPackages.Except(alreadyDownloadedPackages);
+                return allPackages;
             }
         }
 
@@ -51,12 +49,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        internal FileContent(Func<HashSet<string>> getAlreadyDownloadedPackages,
-            ProgressMonitor progressMonitor,
+        internal FileContent(ProgressMonitor progressMonitor,
             Func<IEnumerable<string>> getFiles,
             IUnsafeFileReader unsafeFileReader)
         {
-            this.getAlreadyDownloadedPackages = getAlreadyDownloadedPackages;
             this.progressMonitor = progressMonitor;
             this.getFiles = getFiles;
             this.unsafeFileReader = unsafeFileReader;
@@ -64,10 +60,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
 
-        public FileContent(TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor, Func<IEnumerable<string>> getFiles) : this(() => Directory.GetDirectories(packageDirectory.DirInfo.FullName)
-                .Select(d => Path.GetFileName(d)
-                .ToLowerInvariant())
-                .ToHashSet(), progressMonitor, getFiles, new UnsafeFileReader())
+        public FileContent(ProgressMonitor progressMonitor, Func<IEnumerable<string>> getFiles) : this(progressMonitor, getFiles, new UnsafeFileReader())
         { }
 
         private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix)
@@ -114,7 +107,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         {
                             // We can't get the group from the ValueMatch, so doing it manually:
                             var packageName = GetGroup(line, valueMatch, "Include");
-                            if (!string.IsNullOrEmpty(packageName) && !allPackages.Contains(packageName))
+                            if (!string.IsNullOrEmpty(packageName))
                             {
                                 allPackages.Add(packageName);
                             }

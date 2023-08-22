@@ -34,8 +34,7 @@ namespace Semmle.Extraction.Tests
 
     internal class TestFileContent : FileContent
     {
-        public TestFileContent(List<string> lines) : base(() => new HashSet<string>(),
-            new ProgressMonitor(new LoggerStub()),
+        public TestFileContent(List<string> lines) : base(new ProgressMonitor(new LoggerStub()),
             () => new List<string>() { "test1.cs" },
             new UnsafeFileReaderStub(lines))
         { }
@@ -58,15 +57,15 @@ namespace Semmle.Extraction.Tests
             var fileContent = new TestFileContent(lines);
 
             // Execute
-            var notYetDownloadedPackages = fileContent.NotYetDownloadedPackages;
+            var allPackages = fileContent.AllPackages;
             var useAspNetDlls = fileContent.UseAspNetDlls;
 
             // Verify
             Assert.False(useAspNetDlls);
-            Assert.Equal(3, notYetDownloadedPackages.Count());
-            Assert.Contains("DotNetAnalyzers.DocumentationAnalyzers".ToLowerInvariant(), notYetDownloadedPackages);
-            Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), notYetDownloadedPackages);
-            Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), notYetDownloadedPackages);
+            Assert.Equal(3, allPackages.Count);
+            Assert.Contains("DotNetAnalyzers.DocumentationAnalyzers".ToLowerInvariant(), allPackages);
+            Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), allPackages);
+            Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), allPackages);
         }
 
         [Fact]
@@ -84,13 +83,13 @@ namespace Semmle.Extraction.Tests
 
             // Execute
             var useAspNetDlls = fileContent.UseAspNetDlls;
-            var notYetDownloadedPackages = fileContent.NotYetDownloadedPackages;
+            var allPackages = fileContent.AllPackages;
 
             // Verify
             Assert.True(useAspNetDlls);
-            Assert.Equal(2, notYetDownloadedPackages.Count());
-            Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), notYetDownloadedPackages);
-            Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), notYetDownloadedPackages);
+            Assert.Equal(2, allPackages.Count);
+            Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), allPackages);
+            Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), allPackages);
         }
     }
 }
