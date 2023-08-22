@@ -257,7 +257,7 @@ static std::unordered_map<std::string, std::vector<std::string>> collectWorkspac
   // Collect all projects not belonging to any workspace into a separate empty bucket
   for (auto& path : projectFiles.xcodeFiles) {
     if (path.extension() == ".xcodeproj") {
-      if (projectsBelongingToWorkspace.count(path.string())) {
+      if (projectsBelongingToWorkspace.contains(path.string())) {
         continue;
       }
       workspaces[std::string()].push_back(path.string());

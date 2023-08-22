@@ -80,7 +80,7 @@ static bool autobuild(const CLIArgs& args) {
     return false;
   } else if (!structure.xcodeEncountered && swiftPackages.empty()) {
     DIAGNOSE_ERROR(noProjectFound,
-                   "`autobuild` could not detect an Xcode project or workspace or Swift package");
+                   "`autobuild` detected neither an Xcode project or workspace, nor a Swift package");
     return false;
   } else if (!xcodeTargets.empty()) {
     LOG_INFO("Building Xcode target: {}", xcodeTargets.front());
