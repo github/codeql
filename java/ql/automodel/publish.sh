@@ -2,7 +2,7 @@
 set -e
 
 AUTOMODEL_ROOT="$(readlink -f "$(dirname $0)")"
-WORKSPACE_ROOT="$AUTOMODEL_ROOT/../../../.."
+WORKSPACE_ROOT="$AUTOMODEL_ROOT/../../.."
 GRPS="automodel,-test"
 
 if [ -z "$CODEQL_DIST" ]; then
