@@ -1264,16 +1264,6 @@ class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
   /** Gets the argument containing the binding expression. */
   DataFlow::Node getPassword() { result = super.getPassword() }
 
-  /** Holds if the binding process is anonymous. */
-  predicate isEmptyPassword() {
-    (
-      this.getPassword().getConstantValue().isStringlikeValue("")
-      or
-      this.getPassword().(DataFlow::ExprNode).getExprNode().getConstantValue().getValueType() =
-        "nil"
-    )
-  }
-
   /** Holds if the binding process use SSL. */
   predicate usesSsl() { super.usesSsl() }
 }
