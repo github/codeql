@@ -58,12 +58,7 @@ abstract class CredentialsSink extends Expr {
  * credentials.
  */
 class CredentialsApiSink extends CredentialsSink {
-  CredentialsApiSink() {
-    this = any(PasswordParameter p).asExpr() or
-    this = any(UsernameParameter p).asExpr() or
-    this = any(CryptoKeyParameter p).asExpr() or
-    this = any(CredentialParameter p).asExpr()
-  }
+  CredentialsApiSink() { this = any(CredentialSinkNode csn).asExpr() }
 }
 
 /**

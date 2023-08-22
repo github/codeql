@@ -7,31 +7,29 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
+ * A node which represents the use of a credential.
+ */
+abstract class CredentialSinkNode extends DataFlow::Node { }
+
+/**
  * A node representing a password being passed to a method.
  */
-class PasswordParameter extends DataFlow::Node {
-  PasswordParameter() { sinkNode(this, "credential-password") }
+class PasswordSink extends CredentialSinkNode {
+  PasswordSink() { sinkNode(this, "credential-password") }
 }
 
 /**
  * A node representing a username being passed to a method.
  */
-class UsernameParameter extends DataFlow::Node {
-  UsernameParameter() { sinkNode(this, "credential-username") }
+class UsernameSink extends CredentialSinkNode {
+  UsernameSink() { sinkNode(this, "credential-username") }
 }
 
 /**
  * A node representing a cryptographic key being passed to a method.
  */
-class CryptoKeyParameter extends DataFlow::Node {
-  CryptoKeyParameter() { sinkNode(this, "crypto-parameter") }
-}
-
-/**
- * A node representing a credential being passed to a method.
- */
-class CredentialParameter extends DataFlow::Node {
-  CredentialParameter() { sinkNode(this, "credential-other") }
+class CryptoKeySink extends CredentialSinkNode {
+  CryptoKeySink() { sinkNode(this, "crypto-parameter") }
 }
 
 /**
