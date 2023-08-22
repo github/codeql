@@ -20,6 +20,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
+import com.github.codeql.utils.versions.usesK2
 import com.semmle.util.files.FileUtil
 import kotlin.system.exitProcess
 
@@ -97,6 +98,7 @@ class KotlinExtractorExtension(
 
     private fun runExtractor(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val startTimeMs = System.currentTimeMillis()
+        val usesK2 = usesK2(pluginContext)
         // This default should be kept in sync with com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
         val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
         val compression_env_var = "CODEQL_EXTRACTOR_JAVA_OPTION_TRAP_COMPRESSION"
@@ -134,6 +136,7 @@ class KotlinExtractorExtension(
             tw.writeCompilation_info(compilation, "Kotlin Compiler Version", KotlinCompilerVersion.getVersion() ?: "<unknown>")
             val extractor_name = this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
             tw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
+            tw.writeCompilation_info(compilation, "Uses Kotlin 2", usesK2.toString())
             if (compilationStartTime != null) {
                 tw.writeCompilation_compiler_times(compilation, -1.0, (System.currentTimeMillis()-compilationStartTime)/1000.0)
             }
