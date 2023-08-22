@@ -550,6 +550,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    * `fromBackEdge` is true if data flows along a back-edge,
    * and `false` otherwise.
    */
+  cached
   final Node getAnInput(boolean fromBackEdge) {
     localFlowStep(result, this) and
     if phi.getBasicBlock().dominates(result.getBasicBlock())
