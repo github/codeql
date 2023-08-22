@@ -23,13 +23,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDictionary<string, string> unresolvedReferences = new ConcurrentDictionary<string, string>();
         private int failedProjects;
         private int succeededProjects;
-        private readonly string[] allSources;
+        private readonly List<string> allSources;
         private int conflictedReferences = 0;
         private readonly IDependencyOptions options;
         private readonly DirectoryInfo sourceDir;
         private readonly DotNet dotnet;
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
+        private TemporaryDirectory? razorWorkingDirectory;
 
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
 
             this.fileContent = new FileContent(packageDirectory, progressMonitor, () => GetFiles("*.*"));
-            this.allSources = GetFiles("*.cs").ToArray();
+            this.allSources = GetFiles("*.cs").ToList();
             var allProjects = GetFiles("*.csproj");
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
@@ -131,6 +132,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 progressMonitor.UnresolvedReference(r.Key, r.Value);
             }
 
+            var webViewExtractionOption = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_STANDALONE_EXTRACT_WEB_VIEWS");
+            if (bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
+                shouldExtractWebViews)
+            {
+                GenerateSourceFilesFromWebViews();
+            }
+
             progressMonitor.Summary(
                 AllSourceFiles.Count(),
                 ProjectSourceFiles.Count(),
@@ -141,6 +149,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 succeededProjects + failedProjects,
                 failedProjects,
                 DateTime.Now - startTime);
+        }
+
+        private void GenerateSourceFilesFromWebViews()
+        {
+            progressMonitor.LogInfo($"Generating source files from cshtml and razor files.");
+
+            var views = GetFiles("*.cshtml")
+                .Concat(GetFiles("*.razor"))
+                .ToArray();
+
+            if (views.Length > 0)
+            {
+                progressMonitor.LogInfo($"Found {views.Length} cshtml and razor files.");
+
+                // TODO: use SDK specified in global.json
+                var sdk = new Sdk(dotnet).GetNewestSdk();
+                if (sdk != null)
+                {
+                    try
+                    {
+                        var razor = new Razor(sdk, dotnet, progressMonitor);
+                        razorWorkingDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "razor"));
+                        var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, razorWorkingDirectory.ToString());
+                        this.allSources.AddRange(generatedFiles);
+                    }
+                    catch (Exception ex)
+                    {
+                        // It's okay, we tried our best to generate source files from cshtml files.
+                        progressMonitor.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
+                    }
+                }
+            }
         }
 
         public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info)) { }
@@ -156,9 +196,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Computes a unique temp directory for the packages associated
         /// with this source tree. Use a SHA1 of the directory name.
         /// </summary>
-        /// <param name="srcDir"></param>
         /// <returns>The full path of the temp directory.</returns>
-        private static string ComputeTempDirectory(string srcDir)
+        private static string ComputeTempDirectory(string srcDir, string subfolderName = "packages")
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
             var sha = SHA1.HashData(bytes);
@@ -166,7 +205,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(Path.GetTempPath(), "GitHub", "packages", sb.ToString());
+            return Path.Combine(Path.GetTempPath(), "GitHub", subfolderName, sb.ToString());
         }
 
         /// <summary>
@@ -392,6 +431,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             });
         }
 
-        public void Dispose() => packageDirectory?.Dispose();
+        public void Dispose()
+        {
+            packageDirectory?.Dispose();
+            razorWorkingDirectory?.Dispose();
+        }
     }
 }
