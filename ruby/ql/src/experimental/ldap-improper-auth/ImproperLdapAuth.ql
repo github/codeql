@@ -17,4 +17,4 @@ import DataFlow::PathGraph
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This LDAP authencation depends on a $@.", source.getNode(),
-  "user-provided value"
+  "user-provided value or the password is empty"

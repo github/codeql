@@ -28,6 +28,22 @@ module ImproperLdapAuth {
   private class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
 
   /**
+   * A source of empty input, considered as a flow source.
+   */
+  private class EmptySourceAsSource extends Source, EmptySource { }
+
+  class EmptySource extends DataFlow::Node {
+    /** Gets a string that describes the type of this remote flow source. */
+    EmptySource() {
+      (
+        this.getConstantValue().isStringlikeValue("")
+        or
+        this.(DataFlow::ExprNode).getConstantValue().isNil()
+      )
+    }
+  }
+
+  /**
    * An LDAP query execution considered as a flow sink.
    */
   private class LdapBindAsSink extends Sink {
@@ -44,5 +60,6 @@ module ImproperLdapAuth {
    * sanitizer-guard.
    */
   private class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
 }
