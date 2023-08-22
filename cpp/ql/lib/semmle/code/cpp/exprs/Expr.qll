@@ -932,39 +932,24 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
   Expr getExtent() { result = this.getChild(2) }
 }
 
+private class TDeleteOrDeleteArrayExpr = @delete_expr or @delete_array_expr;
+
 /**
- * A C++ `delete` (non-array) expression.
- * ```
- * delete ptr;
- * ```
+ * A C++ `delete` or `delete[]` expression.
  */
-class DeleteExpr extends Expr, @delete_expr {
-  override string toString() { result = "delete" }
-
-  override string getAPrimaryQlClass() { result = "DeleteExpr" }
-
+class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   override int getPrecedence() { result = 16 }
 
   /**
-   * Gets the compile-time type of the object being deleted.
-   */
-  Type getDeletedObjectType() {
-    result =
-      this.getExpr()
-          .getFullyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-          .(PointerType)
-          .getBaseType()
-  }
-
-  /**
    * Gets the call to a destructor that occurs prior to the object's memory being deallocated, if any.
+   *
+   * In the case of `delete[]` at runtime, the destructor will be called once for each element in the array, but the
+   * destructor call only exists once in the AST.
    */
   DestructorCall getDestructorCall() { result = this.getChild(1) }
 
   /**
-   * Gets the destructor to be called to destroy the object, if any.
+   * Gets the destructor to be called to destroy the object(s), if any.
    */
   Destructor getDestructor() { result = this.getDestructorCall().getTarget() }
 
@@ -979,6 +964,14 @@ class DeleteExpr extends Expr, @delete_expr {
   }
 
   /**
+   * Gets the call to a non-default `operator delete` that deallocates storage, if any.
+   *
+   * This will only be present when the type being deleted has a custom `operator delete` and
+   * is not a class with a virtual destructor.
+   */
+  FunctionCall getAllocatorCall() { result = this.getChild(0) }
+
+  /**
    * Holds if the deallocation function expects a size argument.
    */
   predicate hasSizedDeallocation() {
@@ -999,16 +992,37 @@ class DeleteExpr extends Expr, @delete_expr {
   }
 
   /**
-   * Gets the call to a non-default `operator delete` that deallocates storage, if any.
-   *
-   * This will only be present when the type being deleted has a custom `operator delete`.
-   */
-  FunctionCall getAllocatorCall() { result = this.getChild(0) }
-
-  /**
    * Gets the object being deleted.
    */
-  Expr getExpr() { result = this.getChild(3) or result = this.getChild(1).getChild(-1) }
+  Expr getExpr() { 
+    // If there is a destuctor call, the object being deleted is the qualifier
+    // otherwise it is the third child.
+    result = this.getChild(3) or result = this.getDestructorCall().getQualifier() }
+}
+
+/**
+ * A C++ `delete` (non-array) expression.
+ * ```
+ * delete ptr;
+ * ```
+ */
+class DeleteExpr extends DeleteOrDeleteArrayExpr, @delete_expr {
+  override string toString() { result = "delete" }
+
+  override string getAPrimaryQlClass() { result = "DeleteExpr" }
+
+  /**
+   * Gets the compile-time type of the object being deleted.
+   */
+  Type getDeletedObjectType() {
+    result =
+      this.getExpr()
+          .getFullyConverted()
+          .getType()
+          .stripTopLevelSpecifiers()
+          .(PointerType)
+          .getBaseType()
+  }
 }
 
 /**
@@ -1017,12 +1031,10 @@ class DeleteExpr extends Expr, @delete_expr {
  * delete[] arr;
  * ```
  */
-class DeleteArrayExpr extends Expr, @delete_array_expr {
+class DeleteArrayExpr extends DeleteOrDeleteArrayExpr, @delete_array_expr {
   override string toString() { result = "delete[]" }
 
   override string getAPrimaryQlClass() { result = "DeleteArrayExpr" }
-
-  override int getPrecedence() { result = 16 }
 
   /**
    * Gets the element type of the array being deleted.
@@ -1036,58 +1048,6 @@ class DeleteArrayExpr extends Expr, @delete_array_expr {
           .(PointerType)
           .getBaseType()
   }
-
-  /**
-   * Gets the call to a destructor that occurs prior to the array's memory being deallocated, if any.
-   *
-   * At runtime, the destructor will be called once for each element in the array, but the
-   * destructor call only exists once in the AST.
-   */
-  DestructorCall getDestructorCall() { result = this.getChild(1) }
-
-  /**
-   * Gets the destructor to be called to destroy each element in the array, if any.
-   */
-  Destructor getDestructor() { result = this.getDestructorCall().getTarget() }
-
-  /**
-   * Gets the `operator delete[]` that deallocates storage.
-   */
-  Function getDeallocator() {
-    expr_deallocator(underlyingElement(this), unresolveElement(result), _)
-  }
-
-  /**
-   * Holds if the deallocation function expects a size argument.
-   */
-  predicate hasSizedDeallocation() {
-    exists(int form |
-      expr_deallocator(underlyingElement(this), _, form) and
-      form.bitAnd(1) != 0 // Bit zero is the "size" bit
-    )
-  }
-
-  /**
-   * Holds if the deallocation function expects an alignment argument.
-   */
-  predicate hasAlignedDeallocation() {
-    exists(int form |
-      expr_deallocator(underlyingElement(this), _, form) and
-      form.bitAnd(2) != 0 // Bit one is the "alignment" bit
-    )
-  }
-
-  /**
-   * Gets the call to a non-default `operator delete` that deallocates storage, if any.
-   *
-   * This will only be present when the type being deleted has a custom `operator delete`.
-   */
-  FunctionCall getAllocatorCall() { result = this.getChild(0) }
-
-  /**
-   * Gets the array being deleted.
-   */
-  Expr getExpr() { result = this.getChild(3) or result = this.getChild(1).getChild(-1) }
 }
 
 /**
