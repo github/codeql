@@ -3,7 +3,7 @@
     "qhelp.dtd">
   <qhelp>
   <overview>
-  <p>The program performs an out-of-bounds read or write operation. In addition to causing program instability, techniques exist which may allow an attacker to use this vulnerability to execute arbitrary code.</p>
+  <p>The program performs an out-of-bounds read or write operation, which can cause program instability. In addition, attackers may take advantage of the situation, and implement techniques to use this vulnerability to execute arbitrary code.</p>
 
   </overview>
   <recommendation>
