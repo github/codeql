@@ -327,7 +327,7 @@ predicate basicLoadStoreStep(
 }
 
 /**
- * Holds if a read+store step `nodeFrom -> nodeTo`, where the destination node
+ * Holds if a read+store step `nodeFrom -> nodeTo` exists, where the destination node
  * should be treated as a local source node.
  */
 predicate readStoreStepIntoSourceNode(
