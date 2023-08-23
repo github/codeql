@@ -12,9 +12,9 @@
 
 import python
 import semmle.python.security.dataflow.NoSQLInjectionQuery
-import DataFlow::PathGraph
+import Flow::PathGraph
 
-from NoSqlInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink, source, sink, "This NoSQL query contains an unsanitized $@.", source,
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
+select sink.getNode(), source, sink, "This NoSQL query contains an unsanitized $@.", source,
   "user-provided value"
