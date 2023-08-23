@@ -1,5 +1,5 @@
 use crate::trap;
-use globset::{Glob, GlobSetBuilder};
+use globset::{GlobBuilder, GlobSetBuilder};
 use rayon::prelude::*;
 use std::fs::File;
 use std::io::BufRead;
@@ -89,7 +89,10 @@ impl Extractor {
             let mut glob_lang_mapping = vec![];
             for (i, lang) in self.languages.iter().enumerate() {
                 for glob_str in &lang.file_globs {
-                    let glob = Glob::new(glob_str).expect("invalid glob");
+                    let glob = GlobBuilder::new(glob_str)
+                        .literal_separator(true)
+                        .build()
+                        .expect("invalid glob");
                     builder.add(glob);
                     glob_lang_mapping.push(i);
                 }
@@ -114,33 +117,40 @@ impl Extractor {
                 let source = std::fs::read(&path)?;
                 let mut trap_writer = trap::Writer::new();
 
-                let matches = globset.matches(&path);
-                if matches.is_empty() {
-                    tracing::error!(?path, "No matching language found, skipping file.");
-                } else {
-                    let mut languages_processed = vec![false; self.languages.len()];
+                match path.file_name() {
+                    None => {
+                        tracing::error!(?path, "No file name found, skipping file.");
+                    }
+                    Some(filename) => {
+                        let matches = globset.matches(&filename);
+                        if matches.is_empty() {
+                            tracing::error!(?path, "No matching language found, skipping file.");
+                        } else {
+                            let mut languages_processed = vec![false; self.languages.len()];
 
-                    for m in matches {
-                        let i = glob_language_mapping[m];
-                        if languages_processed[i] {
-                            continue;
+                            for m in matches {
+                                let i = glob_language_mapping[m];
+                                if languages_processed[i] {
+                                    continue;
+                                }
+                                languages_processed[i] = true;
+                                let lang = &self.languages[i];
+
+                                crate::extractor::extract(
+                                    lang.ts_language,
+                                    lang.prefix,
+                                    &schemas[i],
+                                    &mut diagnostics_writer,
+                                    &mut trap_writer,
+                                    &path,
+                                    &source,
+                                    &[],
+                                );
+                                std::fs::create_dir_all(src_archive_file.parent().unwrap())?;
+                                std::fs::copy(&path, &src_archive_file)?;
+                                write_trap(&self.trap_dir, &path, &trap_writer, trap_compression)?;
+                            }
                         }
-                        languages_processed[i] = true;
-                        let lang = &self.languages[i];
-
-                        crate::extractor::extract(
-                            lang.ts_language,
-                            lang.prefix,
-                            &schemas[i],
-                            &mut diagnostics_writer,
-                            &mut trap_writer,
-                            &path,
-                            &source,
-                            &[],
-                        );
-                        std::fs::create_dir_all(src_archive_file.parent().unwrap())?;
-                        std::fs::copy(&path, &src_archive_file)?;
-                        write_trap(&self.trap_dir, &path, &trap_writer, trap_compression)?;
                     }
                 }
                 Ok(()) as std::io::Result<()>
