@@ -380,56 +380,10 @@ string paramsString(Callable c) {
     "(" + concat(int i | | getNestedName(c.getParameterType(i).getErasure()), "," order by i) + ")"
 }
 
-pragma[nomagic]
-private string paramsString_old(Callable c) {
-  result =
-    "(" + concat(int i | | c.getParameterType(i).getErasure().toString(), "," order by i) + ")"
-}
-
 private string paramsStringQualified(Callable c) {
   result =
     "(" + concat(int i | | getQualifiedName(c.getParameterType(i).getErasure()), "," order by i) +
       ")"
-}
-
-predicate failMatch(
-  string package, string type, boolean subtypes, string name, string signature, string sig2,
-  string sigf
-) {
-  elementSpec(package, type, subtypes, name, signature, _) and
-  not exists(interpretElement0(package, type, subtypes, name, signature)) and
-  exists(Callable c |
-    c = interpretElement0_old(package, type, subtypes, name, signature) and
-    sig2 = paramsString(c) and
-    sigf = paramsStringQualified(c)
-  )
-}
-
-private Element interpretElement0_old(
-  string package, string type, boolean subtypes, string name, string signature
-) {
-  elementSpec(package, type, subtypes, name, signature, _) and
-  (
-    exists(Member m |
-      (
-        result = m
-        or
-        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m)
-      ) and
-      m.hasQualifiedName(package, type, name)
-    |
-      signature = "" or
-      m.(Callable).getSignature() = any(string nameprefix) + signature or
-      paramsString_old(m) = signature
-    )
-    or
-    exists(RefType t |
-      t.hasQualifiedName(package, type) and
-      (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
-      name = "" and
-      signature = ""
-    )
-  )
 }
 
 private Element interpretElement0(
