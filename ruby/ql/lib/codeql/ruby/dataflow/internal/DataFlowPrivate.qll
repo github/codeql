@@ -1025,46 +1025,43 @@ private module ParameterNodes {
    * For example, in the following code:
    *
    * ```rb
-   * def foo(x, y); end
+   * def foo(x, y, z); end
    *
-   * foo(*[a, b])
+   * foo(a, *[b, c])
    * ```
    *
-   * We want `a` to flow to `x` and `b` to flow to `y`. We do this by constructing
+   * We want `b` to flow to `y` and `c` to flow to `z`. We do this by constructing
    * a `SynthSplatParameterNode` for the method `foo`, and matching the splat argument to this
    * parameter node via `parameterMatch/2`. We then add read steps from this node to parameters
-   * `x` and `y`, for content at indices 0 and 1 respectively (see `readStep`).
+   * `y` and `z`, for content at indices 0 and 1 respectively (see `readStep`).
    *
-   * We don't yet correctly handle cases where the splat argument is not the first argument, e.g. in
-   * ```rb
-   * foo(a, *[b])
-   * ```
+   * This node stores the index of the splat argument it is matched to, which allows us to shift
+   * indices correctly when adding read steps. Without this, in the example above we would erroneously
+   * get a read step to `x` and index 0 and `y` and index 1 etc.
    *
-   * TODO: we do now support the above, but we don't support this case:
-   *
+   * We don't yet correctly handle cases where a positional argument follows the splat argument, e.g. in
    * ```rb
    * foo(a, *[b], c)
    * ```
-   *
-   * Update this documentation.
    */
   class SynthSplatParameterNode extends ParameterNodeImpl, TSynthSplatParameterNode {
     private DataFlowCallable callable;
+    // The position of the splat argument that is matched to this node
     private int n;
 
     SynthSplatParameterNode() { this = TSynthSplatParameterNode(callable, n) }
 
     /**
-     * Gets a parameter which will contain the value given by `c`, assuming
-     * that the method was called with a single splat argument.
-     * For example, if the synth splat parameter is for the following method
+     * Gets a parameter which will contain the value given by `c`.
+     * For example, if the synth splat parameter is for the following method and method call:
      *
      * ```rb
-     * def foo(x, y, a:, *rest)
-     * end
+     * def foo(x, y, a:, *rest); end
+     *
+     * foo(arg1, *args)
      * ```
      *
-     * then `getAParameter(element 0) = x` and `getAParameter(element 1) = y`.
+     * then `getAParameter(element 0) = y`.
      */
     ParameterNode getAParameter(ContentSet c) {
       exists(int m |
