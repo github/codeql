@@ -8,20 +8,19 @@ private import semmle.code.java.security.Encryption
 private import semmle.code.java.frameworks.Properties
 private import semmle.code.java.dataflow.RangeUtils
 
-class GetPropertyMethodAccess extends MethodAccess {
+private class GetPropertyMethodAccess extends MethodAccess {
   GetPropertyMethodAccess() { this.getMethod() instanceof PropertiesGetPropertyMethod }
 
   private ConfigPair getPair() {
     this.getArgument(0).(ConstantStringExpr).getStringValue() = result.getNameElement().getName()
   }
 
-  string getValue() {
+  string getPropertyValue() {
     result = this.getPair().getValueElement().getValue() or
     result = this.getArgument(1).(ConstantStringExpr).getStringValue()
   }
 }
 
-string getWeakHashingAlgorithm(DataFlow::Node node) {
 /**
  * Get the name of the weak cryptographic algorithm represented by `node`.
  */
@@ -40,11 +39,9 @@ string getWeakHashingAlgorithmName(DataFlow::Node node) {
  */
 module InsecureAlgorithmPropertyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
-    exists(MethodAccess ma, ConfigPair pair |
-      n.asExpr() = ma and ma.getMethod() instanceof PropertiesGetPropertyMethod
-    |
-      ma.getArgument(0).(ConstantStringExpr).getStringValue() = pair.getNameElement().getName() and
-      not pair.getValueElement().getValue().regexpMatch(getSecureAlgorithmRegex())
+    exists(GetPropertyMethodAccess ma, string algo | n.asExpr() = ma |
+      algo = ma.getPropertyValue() and
+      not algo.regexpMatch(getSecureAlgorithmRegex())
     )
   }
 
