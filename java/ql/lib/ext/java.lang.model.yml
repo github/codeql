@@ -32,14 +32,14 @@ extensions:
       # These are potential vulnerabilities, but not for command-injection. No query for this kind of vulnerability currently exists.
       # - ["java.lang", "System", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
       # - ["java.lang", "System", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,Object)", "", "Argument[1]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String)", "", "Argument[1]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Object[])", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier)", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier,Throwable)", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Throwable)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,Object)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Object[])", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Supplier)", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Supplier,Throwable)", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Throwable)", "", "Argument[1]", "log-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
