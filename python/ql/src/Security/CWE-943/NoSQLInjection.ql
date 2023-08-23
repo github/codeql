@@ -11,7 +11,7 @@
  */
 
 import python
-import semmle.python.security.dataflow.NoSQLInjection
+import semmle.python.security.dataflow.NoSQLInjectionQuery
 import DataFlow::PathGraph
 
 from NoSqlInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
