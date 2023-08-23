@@ -1,8 +1,12 @@
 package java.nio.file;
 
+import java.io.InputStream;
+import java.io.FileInputStream;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.OpenOption;
 
 public class Files {
     public static void copy(
@@ -16,4 +20,11 @@ public class Files {
     ) throws IOException {
         // ...
     }
+
+    public static InputStream newInputStream(
+        Path openPath ,// positive example (known sink), candidate (ai-modeled, and useful as a candidate in regression testing)
+        OpenOption... options 
+    ) throws IOException {
+        return  new FileInputStream(openPath.toFile());
+    } 
 }
