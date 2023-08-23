@@ -862,9 +862,12 @@ module Make<RegexTreeViewSig TreeImpl> {
     RegExpTerm repr;
 
     State() {
-      this = Match(repr, _) or
-      this = Accept(repr) or
-      this = AcceptAnySuffix(repr)
+      (
+        this = Match(repr, _) or
+        this = Accept(repr) or
+        this = AcceptAnySuffix(repr)
+      ) and
+      repr instanceof RelevantRegExpTerm
     }
 
     /**
@@ -1457,7 +1460,8 @@ module Make<RegexTreeViewSig TreeImpl> {
         result = getChar(ancestor) and
         ancestor = getAnAncestor(n) and
         i = nodeDepth(ancestor)
-      )
+      ) and
+      nodeDepth(n) < 100
     }
 
     /** Gets a string corresponding to `node`. */
