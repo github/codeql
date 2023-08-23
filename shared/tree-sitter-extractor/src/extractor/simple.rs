@@ -122,7 +122,7 @@ impl Extractor {
                         tracing::error!(?path, "No file name found, skipping file.");
                     }
                     Some(filename) => {
-                        let matches = globset.matches(&filename);
+                        let matches = globset.matches(filename);
                         if matches.is_empty() {
                             tracing::error!(?path, "No matching language found, skipping file.");
                         } else {
