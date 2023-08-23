@@ -34,9 +34,7 @@ abstract class RegexPatternSource extends DataFlow::Node {
  * a `Regex`. This is a simple wrapper to make that happen.
  */
 private class RegexFromRegexPatternSource extends RegExp {
-  RegexPatternSource node;
-
-  RegexFromRegexPatternSource() { this = node.asExpr() }
+  RegexFromRegexPatternSource() { this = any(RegexPatternSource node).asExpr() }
 }
 
 /**
