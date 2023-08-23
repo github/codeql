@@ -185,12 +185,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info)) { }
 
-        private IEnumerable<string> GetFiles(string pattern, bool recurseSubdirectories = true)
-        {
-            return sourceDir.GetFiles(pattern, new EnumerationOptions { RecurseSubdirectories = recurseSubdirectories, MatchCasing = MatchCasing.CaseInsensitive })
+        private IEnumerable<string> GetFiles(string pattern, bool recurseSubdirectories = true) =>
+             sourceDir.GetFiles(pattern, new EnumerationOptions
+             {
+                 RecurseSubdirectories = recurseSubdirectories,
+                 MatchCasing = MatchCasing.CaseInsensitive
+             })
+                .Where(d => d.Extension != ".dll")
                 .Select(d => d.FullName)
                 .Where(d => !options.ExcludesFile(d));
-        }
 
         /// <summary>
         /// Computes a unique temp directory for the packages associated
