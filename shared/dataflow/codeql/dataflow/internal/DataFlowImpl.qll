@@ -2375,7 +2375,8 @@ module MakeImpl<InputSig Lang> {
 
       ApOption apSome(Ap ap) { result = TApproxAccessPathFrontSome(ap) }
 
-      import BooleanCallContext
+      import Level1CallContext
+      import NoLocalCallContext
 
       predicate localStep(
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
