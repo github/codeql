@@ -191,8 +191,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                  RecurseSubdirectories = recurseSubdirectories,
                  MatchCasing = MatchCasing.CaseInsensitive
              })
-                .Where(d => d.Extension != ".dll" && !options.ExcludesFile(d.FullName))
-                .Select(d => d.FullName);
+                .Where(d => d.Extension != ".dll")
+                .Select(d => d.FullName)
+                .Where(d => !options.ExcludesFile(d));
 
         /// <summary>
         /// Computes a unique temp directory for the packages associated
