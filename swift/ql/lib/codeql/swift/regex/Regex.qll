@@ -57,7 +57,7 @@ private class ParsedStringRegex extends RegexPatternSource {
 
   override DataFlow::Node getAParse() { result = use }
 
-  override RegExpTerm getRegExpTerm() { result.getRegExp() = this.asExpr() }
+  override RegExpTerm getRegExpTerm() { result.getRegExp() = expr }
 }
 
 /**
