@@ -1,6 +1,6 @@
 /**
- * This file contains the range-analysis specific parts of the `cpp/invalid-pointer-deref` query
- * that is used by both `AllocationToInvalidPointer.qll` and `InvalidPointerToDereference.qll`.
+ * This file contains the range-analysis specific parts of the `cpp/invalid-pointer-deref`
+ * and `cpp/overrun-write` query.
  */
 
 private import cpp
