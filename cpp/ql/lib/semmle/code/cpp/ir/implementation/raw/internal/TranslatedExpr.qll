@@ -2021,12 +2021,36 @@ TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
  * The IR translation of a call to `operator delete` as part of a `delete` or `delete[]`
  * expression.
  */
-class TranslatedDeallocatorCall extends TTranslatedDeallocatorCall, TranslatedDirectCall {
+class TranslatedDeallocatorCall extends TTranslatedDeallocatorCall, TranslatedCall {
   override DeleteOrDeleteArrayExpr expr;
 
   TranslatedDeallocatorCall() { this = TTranslatedDeallocatorCall(expr) }
 
   final override string toString() { result = "Deallocator call for " + expr.toString() }
+
+  final override Instruction getFirstCallTargetInstruction() {
+    result = this.getInstruction(CallTargetTag())
+  }
+
+  final override Instruction getCallTargetResult() { result = this.getInstruction(CallTargetTag()) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    TranslatedCall.super.hasInstruction(opcode, tag, resultType)
+    or
+    tag = CallTargetTag() and
+    resultType = getFunctionGLValueType() and
+    if exists(expr.getDeallocator())
+    then opcode instanceof Opcode::FunctionAddress
+    else opcode instanceof Opcode::VirtualDeleteFunctionAddress
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    result = TranslatedCall.super.getInstructionSuccessor(tag, kind)
+    or
+    tag = CallTargetTag() and
+    kind instanceof GotoEdge and
+    result = this.getFirstArgumentOrCallInstruction()
+  }
 
   final override predicate producesExprResult() { none() }
 

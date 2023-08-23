@@ -120,9 +120,9 @@ private predicate hasDefaultSideEffect(Call call, ParameterIndex i, boolean buff
 }
 
 /**
- * A `Call` or `NewOrNewArrayExpr`.
+ * A `Call` or `NewOrNewArrayExpr` or `DeleteOrDeleteArrayExpr`.
  *
- * Both kinds of expression invoke a function as part of their evaluation. This class provides a
+ * All kinds of expression invoke a function as part of their evaluation. This class provides a
  * way to treat both kinds of function similarly, and to get the invoked `Function`.
  */
 class CallOrAllocationExpr extends Expr {

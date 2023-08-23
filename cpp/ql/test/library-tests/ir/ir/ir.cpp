@@ -2030,4 +2030,40 @@ unsigned int CommaTest(unsigned int x) {
     (CommaTestHelper(x), 10);
 }
 
+void NewDeleteMem() {
+  int* x = new int;  // No constructor
+  *x = 6;
+  delete x;
+}
+
+class Base2 {
+public:
+    void operator delete(void* p) {
+    }
+    virtual ~Base2() {};
+};
+
+class Derived2 : public Base2 {
+    int i;
+public:
+    ~Derived2() {};
+
+    void operator delete(void* p) {
+    }
+};
+
+// Delete is kind-of virtual in these cases
+int virtual_delete()
+{
+    Base2* b1 = new Base2{};
+    delete b1;
+
+    Base2* b2 = new Derived2{};
+    delete b2;
+
+    Derived2* d = new Derived2{};
+    delete d;
+}
+
+
 // semmle-extractor-options: -std=c++17 --clang
