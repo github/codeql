@@ -391,16 +391,6 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       msg = "ClosureExpr has no body" and not ce.hasBody(_)
     }
 
-    query predicate closureAliasMustBeLocal(ClosureExpr ce, Expr access, string msg) {
-      exists(BasicBlock bb1, BasicBlock bb2 |
-        ce.hasAliasedAccess(access) and
-        ce.hasCfgNode(bb1, _) and
-        access.hasCfgNode(bb2, _) and
-        bb1.getEnclosingCallable() != bb2.getEnclosingCallable() and
-        msg = "ClosureExpr has non-local alias - these are ignored"
-      )
-    }
-
     private predicate astClosureParent(Callable closure, Callable parent) {
       exists(ClosureExpr ce, BasicBlock bb |
         ce.hasBody(closure) and ce.hasCfgNode(bb, _) and parent = bb.getEnclosingCallable()
@@ -440,7 +430,6 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       n = strictcount(VariableWrite vw | localWriteStep(vw, msg)) or
       n = strictcount(VariableRead vr | uniqueReadVariable(vr, msg)) or
       n = strictcount(ClosureExpr ce | closureMustHaveBody(ce, msg)) or
-      n = strictcount(ClosureExpr ce, Expr access | closureAliasMustBeLocal(ce, access, msg)) or
       n = strictcount(CapturedVariable v, Callable c | variableAccessAstNesting(v, c, msg)) or
       n = strictcount(Callable c | uniqueCallableLocation(c, msg))
     }
@@ -518,8 +507,40 @@ module Flow<InputSig Input> implements OutputSig<Input> {
   }
 
   /** Gets the enclosing callable of `ce`. */
-  private Callable closureExprGetCallable(ClosureExpr ce) {
+  private Callable closureExprGetEnclosingCallable(ClosureExpr ce) {
     exists(BasicBlock bb | ce.hasCfgNode(bb, _) and result = bb.getEnclosingCallable())
+  }
+
+  /** Gets the enclosing callable of `inner`. */
+  pragma[nomagic]
+  private Callable callableGetEnclosingCallable(Callable inner) {
+    exists(ClosureExpr closure |
+      closure.hasBody(inner) and
+      result = closureExprGetEnclosingCallable(closure)
+    )
+  }
+
+  /**
+   * Gets a callable that contains a reference to `ce` into which `ce` could be inlined without
+   * bringing any variables out of scope.
+   *
+   * If `ce` was to be inlined into that reference, the resulting callable
+   * would become the enclosing callable, and thus capture the same variables as `ce`.
+   * In some sense, we model captured aliases as if this inlining has happened.
+   */
+  private Callable closureExprGetAReferencingCallable(ClosureExpr ce) {
+    exists(Expr expr, BasicBlock bb |
+      ce.hasAliasedAccess(expr) and
+      expr.hasCfgNode(bb, _) and
+      result = bb.getEnclosingCallable() and
+      // The reference to `ce` is allowed to occur in a more deeply nested context
+      closureExprGetEnclosingCallable(ce) = callableGetEnclosingCallable*(result)
+    )
+  }
+
+  /** Gets a callable containing `ce` or one of its aliases. */
+  private Callable closureExprGetCallable(ClosureExpr ce) {
+    result = [closureExprGetEnclosingCallable(ce), closureExprGetAReferencingCallable(ce)]
   }
 
   /**
