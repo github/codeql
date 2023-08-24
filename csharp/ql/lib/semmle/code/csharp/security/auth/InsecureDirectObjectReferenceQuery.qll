@@ -12,7 +12,7 @@ import ActionMethods
 // Other queries check that there are authorization checks in place for admin methods.
 private predicate needsChecks(ActionMethod m) { m.isEdit() and not m.isAdmin() }
 
-private Expr getParentExpr(Expr ex) { result = ex.getParent() }
+private Expr getParentExpr(Expr ex) { result.getAChildExpr() = ex }
 
 /**
  * Holds if `m` has a parameter or access a remote flow source
@@ -41,7 +41,7 @@ private predicate checksUser(ActionMethod m) {
 
 /**
  * Holds if `m` is a method that modifies a particular resource based on
- * and ID provided by user input, but does not check anything based on the current user
+ * an ID provided by user input, but does not check anything based on the current user
  * to determine if they should modify this resource.
  */
 predicate hasInsecureDirectObjectReference(ActionMethod m) {

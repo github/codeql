@@ -5,7 +5,7 @@
 <overview>
 <p>When an action method accepts an ID parameter used to control which resource (e.g. a comment, a user profile, etc) 
 is being accessed/modified, checks should me made to ensure that the current user is authorized to access that resource. 
-Otherwise, an attacker could access an arbitrary resource by modifying the ID parameter.</p>
+Otherwise, an attacker could access an arbitrary resource by guessing the ID parameter.</p>
 
 </overview>
 <recommendation>
