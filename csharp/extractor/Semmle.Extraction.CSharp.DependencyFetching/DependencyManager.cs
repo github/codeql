@@ -122,12 +122,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             ResolveConflicts();
 
             // Output the findings
-            foreach (var r in usedReferences.Keys)
+            foreach (var r in usedReferences.Keys.OrderBy(r => r))
             {
                 progressMonitor.ResolvedReference(r);
             }
 
-            foreach (var r in unresolvedReferences)
+            foreach (var r in unresolvedReferences.OrderBy(r => r.Key))
             {
                 progressMonitor.UnresolvedReference(r.Key, r.Value);
             }
@@ -232,7 +232,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            sortedReferences = sortedReferences.OrderBy(r => r.Version).ToList();
+            var emptyVersion = new Version(0, 0);
+            sortedReferences = sortedReferences.OrderBy(r => r.NetCoreVersion ?? emptyVersion).ThenBy(r => r.Version ?? emptyVersion).ToList();
 
             var finalAssemblyList = new Dictionary<string, AssemblyInfo>();
 
@@ -253,9 +254,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var r in sortedReferences)
             {
                 var resolvedInfo = finalAssemblyList[r.Name];
-                if (resolvedInfo.Version != r.Version)
+                if (resolvedInfo.Version != r.Version || resolvedInfo.NetCoreVersion != r.NetCoreVersion)
                 {
-                    progressMonitor.ResolvedConflict(r.Id, resolvedInfo.Id);
+                    progressMonitor.ResolvedConflict(r.Id, resolvedInfo.Id + resolvedInfo.NetCoreVersion is null ? "" : $" (.NET Core {resolvedInfo.NetCoreVersion})");
                     ++conflictedReferences;
                 }
             }
