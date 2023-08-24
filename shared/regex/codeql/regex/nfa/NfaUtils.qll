@@ -862,12 +862,9 @@ module Make<RegexTreeViewSig TreeImpl> {
     RegExpTerm repr;
 
     State() {
-      (
-        this = Match(repr, _) or
-        this = Accept(repr) or
-        this = AcceptAnySuffix(repr)
-      ) and
-      repr instanceof RelevantRegExpTerm
+      this = Match(repr, _) or
+      this = Accept(repr) or
+      this = AcceptAnySuffix(repr)
     }
 
     /**
