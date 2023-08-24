@@ -1,42 +1,16 @@
 /**
- * Provides auxiliary classes and predicates used to construct the basic successor
- * relation on control flow elements.
- *
- * The implementation is centered around the concept of a _completion_, which
- * models how the execution of a statement or expression terminates.
- * Completions are represented as an algebraic data type `Completion` defined in
- * `Completion.qll`.
- *
- * The CFG is built by structural recursion over the AST. To achieve this the
- * CFG edges related to a given AST node, `n`, are divided into three categories:
- *
- *   1. The in-going edge that points to the first CFG node to execute when
- *      `n` is going to be executed.
- *   2. The out-going edges for control flow leaving `n` that are going to some
- *      other node in the surrounding context of `n`.
- *   3. The edges that have both of their end-points entirely within the AST
- *      node and its children.
- *
- * The edges in (1) and (2) are inherently non-local and are therefore
- * initially calculated as half-edges, that is, the single node, `k`, of the
- * edge contained within `n`, by the predicates `k = first(n)` and `k = last(n, _)`,
- * respectively. The edges in (3) can then be enumerated directly by the predicate
- * `succ` by calling `first` and `last` recursively on the children of `n` and
- * connecting the end-points. This yields the entire CFG, since all edges are in
- * (3) for _some_ AST node.
- *
- * The second parameter of `last` is the completion, which is necessary to distinguish
- * the out-going edges from `n`. Note that the completion changes as the calculation of
- * `last` proceeds outward through the AST; for example, a `BreakCompletion` is
- * caught up by its surrounding loop and turned into a `NormalCompletion`.
+ * Provides an implementation for constructing control-flow graphs (CFGs) from
+ * abstract syntax trees (ASTs), using the shared library from
+ * `codeql.controlflow.Cfg`. See the QLDoc for `module Make` in
+ * `shared.controlflow.codeql.controlflow.Cfg` for more details.
  */
 
 private import swift
+private import codeql.controlflow.Cfg as CfgShared
 private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.generated.Synth
 private import Completion
 private import Scope
-import ControlFlowGraphImplShared
 private import ControlFlowElements
 private import AstControlFlowTrees
 
