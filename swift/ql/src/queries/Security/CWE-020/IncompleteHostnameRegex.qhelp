@@ -50,7 +50,7 @@
 
 		<p>
 
-			The check is however easy to bypass because the unescaped
+			The check is, however, easy to bypass because the unescaped
 			<code>.</code> allows for any character before
 			<code>example.com</code>, effectively allowing the redirect to go to
 			an attacker-controlled domain such as <code>wwwXexample.com</code>.
@@ -68,7 +68,7 @@
 	</example>
 
 	<references>
-		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">Server Side Request Forgery</a></li>
-		<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">Unvalidated Redirects and Forwards Cheat Sheet</a></li>
+		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">Server Side Request Forgery</a>.</li>
+		<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
 	</references>
 </qhelp>
