@@ -766,6 +766,26 @@ ir.c:
 #    7|     v7_7(void)                                 = AliasedUse                   : ~m?
 #    7|     v7_8(void)                                 = ExitFunction                 : 
 
+#   13| void CStyleCast(void*)
+#   13|   Block 0
+#   13|     v13_1(void)          = EnterFunction              : 
+#   13|     mu13_2(unknown)      = AliasedDefinition          : 
+#   13|     mu13_3(unknown)      = InitializeNonLocal         : 
+#   13|     r13_4(glval<void *>) = VariableAddress[src]       : 
+#   13|     mu13_5(void *)       = InitializeParameter[src]   : &:r13_4
+#   13|     r13_6(void *)        = Load[src]                  : &:r13_4, ~m?
+#   13|     mu13_7(unknown)      = InitializeIndirection[src] : &:r13_6
+#   15|     r15_1(glval<char *>) = VariableAddress[dst]       : 
+#   15|     r15_2(glval<void *>) = VariableAddress[src]       : 
+#   15|     r15_3(void *)        = Load[src]                  : &:r15_2, ~m?
+#   15|     r15_4(char *)        = Convert                    : r15_3
+#   15|     mu15_5(char *)       = Store[dst]                 : &:r15_1, r15_4
+#   16|     v16_1(void)          = NoOp                       : 
+#   13|     v13_8(void)          = ReturnIndirection[src]     : &:r13_6, ~m?
+#   13|     v13_9(void)          = ReturnVoid                 : 
+#   13|     v13_10(void)         = AliasedUse                 : ~m?
+#   13|     v13_11(void)         = ExitFunction               : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0
