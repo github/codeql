@@ -245,3 +245,20 @@ void test_deref(char **a) {
     free(*a);
     use(*a); // GOOD [FALSE POSITIVE]
 }
+
+// Refs
+
+void test_ref(char *&p) {
+	free(p);
+	p = (char *)malloc(sizeof(char)*10);
+	use(p);  // GOOD [FALSE POSITIVE]
+    free(p); // GOOD [FALSE POSITIVE]
+}
+
+
+void test_ref_delete(int *&p) {
+	delete p;
+	p = new int;
+	use(p);  // GOOD [FALSE POSITIVE]
+    delete p;  // GOOD [FALSE POSITIVE]
+}
