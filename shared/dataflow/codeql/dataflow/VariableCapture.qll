@@ -583,7 +583,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
 
   /**
    * Holds if `access` is a reference to `ce` evaluated in the `i`th node of `bb`.
-   * The reference is restricted to be in the same callable as `ce` as a
+   * The reference is restricted to be nested within the same callable as `ce` as a
    * precaution, even though this is expected to hold for all the given aliased
    * accesses.
    */
