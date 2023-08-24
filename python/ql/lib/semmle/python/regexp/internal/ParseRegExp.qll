@@ -683,10 +683,8 @@ class RegExp extends Expr instanceof StrConst {
    * Holds if a parse mode starts between `start` and `end`.
    */
   private predicate flag_group_start(int start, int end) {
-    exists(int no_modes_end |
-      this.flag_group_start_no_modes(start, no_modes_end) and
-      end = max(int i | this.mode_character(start, i) | i + 1)
-    )
+    this.flag_group_start_no_modes(start, _) and
+    end = max(int i | this.mode_character(start, i) | i + 1)
   }
 
   /**
@@ -712,8 +710,8 @@ class RegExp extends Expr instanceof StrConst {
   }
 
   /**
-   * Holds if a parse mode group is between `start` and `end`, and includes the
-   * mode flag `c`. For example the following span, with mode flag `i`:
+   * Holds if a parse mode group includes the mode flag `c`.
+   * For example the following parse mode group, with mode flag `i`:
    * ```
    * (?i)
    * ```
