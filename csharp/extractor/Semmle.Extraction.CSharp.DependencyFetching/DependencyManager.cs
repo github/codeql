@@ -60,7 +60,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
             var allFiles = GetFiles("*.*").ToList();
-            this.fileContent = new FileContent(progressMonitor, GetFileNames(allFiles));
+            var smallFiles = GetSmallFiles(allFiles);
+            this.fileContent = new FileContent(progressMonitor, GetFileNames(smallFiles));
             this.allSources = GetFileNames(allFiles, ".cs").ToList();
             var allProjects = GetFileNames(allFiles, ".csproj");
             var solutions = options.SolutionFile is not null
@@ -193,6 +194,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private static IEnumerable<string> GetFileNames(IEnumerable<FileInfo> files, params string[] extensions) =>
             files.Where(fi => !extensions.Any() || extensions.Contains(fi.Extension)).Select(fi => fi.FullName);
+
+        private IEnumerable<FileInfo> GetSmallFiles(IEnumerable<FileInfo> files)
+        {
+            const int oneMb = 1_048_576;
+            return files.Where(file =>
+            {
+                if (file.Length > oneMb)
+                {
+                    progressMonitor.LogDebug($"Skipping {file.FullName} because it is bigger than 1MB.");
+                    return false;
+                }
+                return true;
+            });
+        }
 
         /// <summary>
         /// Computes a unique temp directory for the packages associated
