@@ -11,27 +11,27 @@ import javax.xml.ws.WebServiceProvider;
 class WebServiceClass { // $ JaxWsEndpoint
 
   @WebMethod
-  void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
+  public void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
   @WebEndpoint
-  void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
+  public void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
-  String acceptableTypes(String param) { // $ JaxWsEndpointRemoteMethod
+  public String acceptableTypes(String param) { // $ JaxWsEndpointRemoteMethod
     return null;
   }
 
-  String unacceptableParamType(File param) { // not an endpoint
+  public String unacceptableParamType(File param) { // not an endpoint
     return null;
   }
 
-  File unacceptableReturnType() { // not an endpoint
+  public File unacceptableReturnType() { // not an endpoint
     return null;
   }
 
   @XmlJavaTypeAdapter
-  File annotatedTypes(@XmlJavaTypeAdapter File param) { // $ JaxWsEndpointRemoteMethod
+  public File annotatedTypes(@XmlJavaTypeAdapter File param) { // $ JaxWsEndpointRemoteMethod
     return null;
   }
 }
@@ -41,27 +41,27 @@ class WebServiceClass { // $ JaxWsEndpoint
 class WebServiceProviderClass { // $ JaxWsEndpoint
 
   @WebMethod
-  void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
+  public void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
   @WebEndpoint
-  void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
+  public void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
-  String acceptableTypes(String param) { // $ JaxWsEndpointRemoteMethod
+  public String acceptableTypes(String param) { // $ JaxWsEndpointRemoteMethod
     return null;
   }
 
-  String unacceptableParamType(File param) { // not an endpoint
+  public String unacceptableParamType(File param) { // not an endpoint
     return null;
   }
 
-  File unacceptableReturnType() { // not an endpoint
+  public File unacceptableReturnType() { // not an endpoint
     return null;
   }
 
   @XmlJavaTypeAdapter
-  File annotatedTypes(@XmlJavaTypeAdapter File param) { // $ JaxWsEndpointRemoteMethod
+  public File annotatedTypes(@XmlJavaTypeAdapter File param) { // $ JaxWsEndpointRemoteMethod
     return null;
   }
 }
@@ -71,27 +71,27 @@ class WebServiceProviderClass { // $ JaxWsEndpoint
 class WebServiceClientClass { // $ JaxWsEndpoint
 
   @WebMethod
-  void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
+  public void WebMethodMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
   @WebEndpoint
-  void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
+  public void WebEndpointMethod() { // $ JaxWsEndpointRemoteMethod
   }
 
-  String acceptableTypes(String param) { // $ JaxWsEndpointRemoteMethod
+  public String acceptableTypes(String param) { // $ JaxWsEndpointRemoteMethod
     return null;
   }
 
-  String unacceptableParamType(File param) { // not an endpoint
+  public String unacceptableParamType(File param) { // not an endpoint
     return null;
   }
 
-  File unacceptableReturnType() { // not an endpoint
+  public File unacceptableReturnType() { // not an endpoint
     return null;
   }
 
   @XmlJavaTypeAdapter
-  File annotatedTypes(@XmlJavaTypeAdapter File param) { // $ JaxWsEndpointRemoteMethod
+  public File annotatedTypes(@XmlJavaTypeAdapter File param) { // $ JaxWsEndpointRemoteMethod
     return null;
   }
 

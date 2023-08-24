@@ -25,7 +25,7 @@ string getAJaxRsPackage(string subpackage) { result = getAJaxRsPackage() + "." +
  */
 class JaxWsEndpoint extends Class {
   JaxWsEndpoint() {
-    exists(AnnotationType a | a = this.getAnAnnotation().getType() |
+    exists(AnnotationType a | a = this.getAnAncestor().getAnAnnotation().getType() |
       a.hasName(["WebService", "WebServiceProvider", "WebServiceClient"])
     )
   }
@@ -37,6 +37,7 @@ class JaxWsEndpoint extends Class {
    */
   Method getARemoteMethod() {
     result = this.getACallable() and
+    result.isPublic() and
     not result instanceof InitializerMethod and
     not exists(Annotation a | a = result.getAnAnnotation() |
       a.getType().hasQualifiedName(["javax", "jakarta"] + ".jws", "WebMethod") and
