@@ -391,6 +391,17 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       msg = "ClosureExpr has no body" and not ce.hasBody(_)
     }
 
+    query predicate closureAliasMustBeInSameScope(ClosureExpr ce, Expr access, string msg) {
+      exists(BasicBlock bb1, BasicBlock bb2 |
+        ce.hasAliasedAccess(access) and
+        ce.hasCfgNode(bb1, _) and
+        access.hasCfgNode(bb2, _) and
+        not bb1.getEnclosingCallable() = callableGetEnclosingCallable*(bb2.getEnclosingCallable()) and
+        msg =
+          "ClosureExpr has an alias outside the scope of its enclosing callable - these are ignored"
+      )
+    }
+
     private predicate astClosureParent(Callable closure, Callable parent) {
       exists(ClosureExpr ce, BasicBlock bb |
         ce.hasBody(closure) and ce.hasCfgNode(bb, _) and parent = bb.getEnclosingCallable()
@@ -430,6 +441,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       n = strictcount(VariableWrite vw | localWriteStep(vw, msg)) or
       n = strictcount(VariableRead vr | uniqueReadVariable(vr, msg)) or
       n = strictcount(ClosureExpr ce | closureMustHaveBody(ce, msg)) or
+      n = strictcount(ClosureExpr ce, Expr access | closureAliasMustBeInSameScope(ce, access, msg)) or
       n = strictcount(CapturedVariable v, Callable c | variableAccessAstNesting(v, c, msg)) or
       n = strictcount(Callable c | uniqueCallableLocation(c, msg))
     }
@@ -521,7 +533,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
   }
 
   /**
-   * Gets a callable that contains a reference to `ce` into which `ce` could be inlined without
+   * Gets a callable that contains `ce`, or a reference to `ce` into which `ce` could be inlined without
    * bringing any variables out of scope.
    *
    * If `ce` was to be inlined into that reference, the resulting callable
@@ -529,6 +541,8 @@ module Flow<InputSig Input> implements OutputSig<Input> {
    * In some sense, we model captured aliases as if this inlining has happened.
    */
   private Callable closureExprGetAReferencingCallable(ClosureExpr ce) {
+    result = closureExprGetEnclosingCallable(ce)
+    or
     exists(Expr expr, BasicBlock bb |
       ce.hasAliasedAccess(expr) and
       expr.hasCfgNode(bb, _) and
@@ -536,11 +550,6 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       // The reference to `ce` is allowed to occur in a more deeply nested context
       closureExprGetEnclosingCallable(ce) = callableGetEnclosingCallable*(result)
     )
-  }
-
-  /** Gets a callable containing `ce` or one of its aliases. */
-  private Callable closureExprGetCallable(ClosureExpr ce) {
-    result = [closureExprGetEnclosingCallable(ce), closureExprGetAReferencingCallable(ce)]
   }
 
   /**
@@ -555,7 +564,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     )
     or
     exists(ClosureExpr ce |
-      c = closureExprGetCallable(ce) and
+      c = closureExprGetAReferencingCallable(ce) and
       closureCaptures(ce, v) and
       c != v.getCallable()
     )
@@ -587,11 +596,11 @@ module Flow<InputSig Input> implements OutputSig<Input> {
    * precaution, even though this is expected to hold for all the given aliased
    * accesses.
    */
-  private predicate localClosureAccess(ClosureExpr ce, Expr access, BasicBlock bb, int i) {
+  private predicate localOrNestedClosureAccess(ClosureExpr ce, Expr access, BasicBlock bb, int i) {
     ce.hasAliasedAccess(access) and
     access.hasCfgNode(bb, i) and
     pragma[only_bind_out](bb.getEnclosingCallable()) =
-      pragma[only_bind_out](closureExprGetCallable(ce))
+      pragma[only_bind_out](closureExprGetAReferencingCallable(ce))
   }
 
   /**
@@ -608,7 +617,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     exists(ClosureExpr ce | closureCaptures(ce, v) |
       ce.hasCfgNode(bb, i) and ce = closure
       or
-      localClosureAccess(ce, closure, bb, i)
+      localOrNestedClosureAccess(ce, closure, bb, i)
     ) and
     if v.getCallable() != bb.getEnclosingCallable() then topScope = false else topScope = true
   }
