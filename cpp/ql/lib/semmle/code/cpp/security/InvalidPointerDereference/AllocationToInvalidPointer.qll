@@ -101,7 +101,8 @@ private module SizeBarrier {
     predicate isSource(DataFlow::Node source) {
       // The sources is the same as in the sources for the second
       // projection in the `AllocToInvalidPointerConfig` module.
-      hasSize(_, source, _)
+      hasSize(_, source, _) and
+      InterestingPointerAddInstruction::isInterestingSize(source)
     }
 
     /**
@@ -218,6 +219,13 @@ private module InterestingPointerAddInstruction {
     exists(DataFlow::Node n |
       n.asInstruction() = pai.getLeft() and
       flowTo(n)
+    )
+  }
+
+  predicate isInterestingSize(DataFlow::Node n) {
+    exists(DataFlow::Node alloc |
+      hasSize(alloc.asConvertedExpr(), n, _) and
+      flow(alloc, _)
     )
   }
 }
