@@ -5,10 +5,6 @@ edges
 | ImproperLdapAuth.rb:24:5:24:8 | pass | ImproperLdapAuth.rb:31:24:31:27 | pass |
 | ImproperLdapAuth.rb:24:12:24:17 | call to params | ImproperLdapAuth.rb:24:12:24:24 | ...[...] |
 | ImproperLdapAuth.rb:24:12:24:24 | ...[...] | ImproperLdapAuth.rb:24:5:24:8 | pass |
-| ImproperLdapAuth.rb:37:5:37:8 | pass | ImproperLdapAuth.rb:47:23:47:26 | pass |
-| ImproperLdapAuth.rb:37:12:37:14 | nil | ImproperLdapAuth.rb:37:5:37:8 | pass |
-| ImproperLdapAuth.rb:55:5:55:8 | pass | ImproperLdapAuth.rb:62:24:62:27 | pass |
-| ImproperLdapAuth.rb:55:12:55:13 | "" | ImproperLdapAuth.rb:55:5:55:8 | pass |
 nodes
 | ImproperLdapAuth.rb:5:5:5:8 | pass | semmle.label | pass |
 | ImproperLdapAuth.rb:5:12:5:17 | call to params | semmle.label | call to params |
@@ -18,17 +14,7 @@ nodes
 | ImproperLdapAuth.rb:24:12:24:17 | call to params | semmle.label | call to params |
 | ImproperLdapAuth.rb:24:12:24:24 | ...[...] | semmle.label | ...[...] |
 | ImproperLdapAuth.rb:31:24:31:27 | pass | semmle.label | pass |
-| ImproperLdapAuth.rb:37:5:37:8 | pass | semmle.label | pass |
-| ImproperLdapAuth.rb:37:12:37:14 | nil | semmle.label | nil |
-| ImproperLdapAuth.rb:47:23:47:26 | pass | semmle.label | pass |
-| ImproperLdapAuth.rb:55:5:55:8 | pass | semmle.label | pass |
-| ImproperLdapAuth.rb:55:12:55:13 | "" | semmle.label | "" |
-| ImproperLdapAuth.rb:62:24:62:27 | pass | semmle.label | pass |
 subpaths
 #select
 | ImproperLdapAuth.rb:15:23:15:26 | pass | ImproperLdapAuth.rb:5:12:5:17 | call to params | ImproperLdapAuth.rb:15:23:15:26 | pass | This LDAP authencation depends on a $@. | ImproperLdapAuth.rb:5:12:5:17 | call to params | user-provided value |
 | ImproperLdapAuth.rb:31:24:31:27 | pass | ImproperLdapAuth.rb:24:12:24:17 | call to params | ImproperLdapAuth.rb:31:24:31:27 | pass | This LDAP authencation depends on a $@. | ImproperLdapAuth.rb:24:12:24:17 | call to params | user-provided value |
-| ImproperLdapAuth.rb:47:23:47:26 | pass | ImproperLdapAuth.rb:37:12:37:14 | nil | ImproperLdapAuth.rb:47:23:47:26 | pass | This LDAP authencation depends on a $@. | ImproperLdapAuth.rb:37:12:37:14 | nil | user-provided value |
-| ImproperLdapAuth.rb:47:23:47:26 | pass | ImproperLdapAuth.rb:47:23:47:26 | pass | ImproperLdapAuth.rb:47:23:47:26 | pass | This LDAP authencation depends on a $@. | ImproperLdapAuth.rb:47:23:47:26 | pass | user-provided value |
-| ImproperLdapAuth.rb:62:24:62:27 | pass | ImproperLdapAuth.rb:55:12:55:13 | "" | ImproperLdapAuth.rb:62:24:62:27 | pass | This LDAP authencation depends on a $@. | ImproperLdapAuth.rb:55:12:55:13 | "" | user-provided value |
-| ImproperLdapAuth.rb:62:24:62:27 | pass | ImproperLdapAuth.rb:62:24:62:27 | pass | ImproperLdapAuth.rb:62:24:62:27 | pass | This LDAP authencation depends on a $@. | ImproperLdapAuth.rb:62:24:62:27 | pass | user-provided value |

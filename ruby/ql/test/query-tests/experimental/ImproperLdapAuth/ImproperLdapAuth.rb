@@ -31,38 +31,6 @@ class FooController < ActionController::Base
     ldap.auth "admin", pass
     ldap.bind
   end
-
-  def some_request_handler
-    # An empty password is used 
-    pass = nil
-
-    # BAD: empty password
-    ldap = Net::LDAP.new(
-        host: 'ldap.example.com',
-        port: 636,
-        encryption: :simple_tls,
-        auth: {
-            method: :simple,
-            username: 'uid=admin,dc=example,dc=com',
-            password: pass
-        }
-    )
-    ldap.bind
-  end
-
-  def some_request_handler
-    # An empty password is used 
-    pass = ""
-
-    # BAD: empty password
-    ldap = Net::LDAP.new
-    ldap.host = your_server_ip_address
-    ldap.encryption(:method => :simple_tls)
-    ldap.port = 639
-    ldap.auth "admin", pass
-    ldap.bind
-  end
-
 end
 
 class BarController < ApplicationController
