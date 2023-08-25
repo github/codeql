@@ -75,11 +75,12 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     // REVIEW: Ignore initializers for `NewArrayExpr` until we determine how to
     // represent them.
     newExpr.getInitializer().getFullyConverted() = expr
-  ) or
+  )
+  or
   exists(DeleteOrDeleteArrayExpr deleteExpr |
     // Ignore the deallocator call, because we always synthesize it.
     deleteExpr.getDeallocatorCall() = expr
-  ) 
+  )
   or
   // Do not translate input/output variables in GNU asm statements
   //  getRealParent(expr) instanceof AsmStmt

@@ -576,10 +576,9 @@ class FunctionAddressInstruction extends FunctionInstruction {
   FunctionAddressInstruction() { this.getOpcode() instanceof Opcode::FunctionAddress }
 }
 
-
 /**
  * An instruction that returns the address of a "virtual" delete function.
- * 
+ *
  * This function, which does not actually exist in the source code, is used to
  * delete objects of a class with a virtual destructor. In that case the deacllocation
  * function is selected at runtime based on the dynamic type of the object. So this
@@ -588,8 +587,9 @@ class FunctionAddressInstruction extends FunctionInstruction {
  * which may differ dynamically depending on the type of the object.
  */
 class VirtualDeleteFunctionAddressInstruction extends Instruction {
-
-  VirtualDeleteFunctionAddressInstruction() { this.getOpcode() instanceof Opcode::VirtualDeleteFunctionAddress }
+  VirtualDeleteFunctionAddressInstruction() {
+    this.getOpcode() instanceof Opcode::VirtualDeleteFunctionAddress
+  }
 }
 
 /**
