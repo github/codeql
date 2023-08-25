@@ -1,10 +1,10 @@
 name: Sync Main
 on:
-  # schedule:
-  #   - cron:  '0 12 * * *'
-  # push:
-  #   branches:
-  #     - 'main'
+  schedule:
+    - cron:  '0 12 * * *'
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
 jobs:
   sync-main:
