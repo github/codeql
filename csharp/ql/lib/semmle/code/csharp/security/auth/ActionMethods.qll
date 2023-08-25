@@ -20,10 +20,9 @@ abstract class ActionMethod extends Method {
       str =
         this.getADescription()
             // separate camelCase words
-            .regexpReplaceAll("([a-z])([A-Z])", "$1_$2")
-            .toLowerCase() and
-      str.regexpMatch(".*(edit|delete|modify|change).*") and
-      not str.regexpMatch(".*(on_?change|changed).*")
+            .regexpReplaceAll("([a-z])([A-Z])", "$1_$2") and
+      str.regexpMatch("(?i).*(edit|delete|modify|change).*") and
+      not str.regexpMatch("(?i).*(on_?change|changed).*")
     )
   }
 
@@ -32,12 +31,8 @@ abstract class ActionMethod extends Method {
     this.getADescription()
         // separate camelCase words
         .regexpReplaceAll("([a-z])([A-Z])", "$1_$2")
-        .toLowerCase()
-        .regexpMatch(".*(admin|superuser).*")
+        .regexpMatch("(?i).*(admin|superuser).*")
   }
-
-  /** Holds if this method may need an authorization check. */
-  predicate needsAuth() { this.isEdit() or this.isAdmin() }
 
   /** Gets a callable for which if it contains an auth check, this method should be considered authenticated. */
   Callable getAnAuthorizingCallable() { result = this }
@@ -64,8 +59,7 @@ private class WebFormActionMethod extends ActionMethod {
   override Callable getAnAuthorizingCallable() {
     result = super.getAnAuthorizingCallable()
     or
-    result.getDeclaringType() = this.getDeclaringType() and
-    result.getName() = "Page_Load"
+    pageLoad(result, this.getDeclaringType())
   }
 
   override string getARoute() {
@@ -78,6 +72,12 @@ private class WebFormActionMethod extends ActionMethod {
       )
     )
   }
+}
+
+pragma[nomagic]
+private predicate pageLoad(Callable c, Type decl) {
+  c.getName() = "Page_Load" and
+  decl = c.getDeclaringType()
 }
 
 /**

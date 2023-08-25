@@ -6,6 +6,9 @@ import semmle.code.csharp.frameworks.system.web.UI
 import semmle.code.asp.WebConfig
 import ActionMethods
 
+/** Holds if the method `m` may need an authorization check. */
+predicate needsAuth(ActionMethod m) { m.isEdit() or m.isAdmin() }
+
 /** An expression that indicates that some authorization/authentication check is being performed. */
 class AuthExpr extends Expr {
   AuthExpr() {
@@ -25,7 +28,7 @@ class AuthExpr extends Expr {
 
 /** Holds if `m` is a method that should have an auth check, and does indeed have one. */
 predicate hasAuthViaCode(ActionMethod m) {
-  m.needsAuth() and
+  needsAuth(m) and
   exists(Callable caller, AuthExpr auth |
     m.getAnAuthorizingCallable().calls*(caller) and
     auth.getEnclosingCallable() = caller
@@ -86,7 +89,7 @@ predicate hasAuthViaAttribute(ActionMethod m) {
 
 /** Holds if `m` is a method that should have an auth check, but is missing it. */
 predicate missingAuth(ActionMethod m) {
-  m.needsAuth() and
+  needsAuth(m) and
   not hasAuthViaCode(m) and
   not hasAuthViaXml(m) and
   not hasAuthViaAttribute(m) and
