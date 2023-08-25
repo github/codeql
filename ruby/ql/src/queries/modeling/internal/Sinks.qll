@@ -131,59 +131,7 @@ module Sinks {
     )
   }
 
-  DataFlow::ParameterNode getASuspiciousParameter(DataFlow::MethodNode methodNode, string kind) {
-    result = methodNode.getParameter(_) and
-    exists(string pName | pName = result.getName() |
-      pName.matches(["%sql%", "%query"]) and kind instanceof Configs::SqlInjectionKind
-      or
-      pName.matches(["%path%", "%filename%", "%file%", "%fname%"]) and
-      kind instanceof Configs::PathInjectionKind
-      or
-      methodNode.getMethodName().matches(["%exec%"]) and
-      (
-        kind instanceof Configs::CodeInjectionKind
-        or
-        kind instanceof Configs::CommandInjectionKind
-        or
-        kind instanceof Configs::SqlInjectionKind
-      )
-    )
-  }
-
-  predicate sinkModelSuspiciousParameterName(string type, string path, string kind) {
-    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
-      paramNode = getASuspiciousParameter(methodNode, kind) and
-      methodNode.getLocation().getFile() instanceof Util::RelevantFile
-    |
-      type = Util::getAnAccessPathPrefix(methodNode) and
-      path = "(!!)" + Util::getMethodParameterPath(methodNode, paramNode)
-    )
-  }
-
-  predicate sinkModelFlowToKnownSinkTypeTracker(string type, string path, string kind) {
-    exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
-      paramNode = getASuspiciousParameter(methodNode, kind) and
-      paramNode = taintType(kind)
-    |
-      type = Util::getAnAccessPathPrefix(methodNode) and
-      path = "(TT)" + Util::getMethodParameterPath(methodNode, paramNode)
-    )
-  }
-
   predicate sinkModel(string type, string path, string kind) {
     sinkModelFlowToKnownSink(type, path, kind)
-    or
-    sinkModelFlowToKnownSinkTypeTracker(type, path, kind)
-    or
-    sinkModelSuspiciousParameterName(type, path, kind)
   }
-
-  DataFlow::Node taintType(TypeBackTracker t, Configs::Kind kind) {
-    t.start() and
-    result = kind.getASink()
-    or
-    exists(TypeBackTracker t2 | t = t2.smallstep(result, taintType(t2, kind)))
-  }
-
-  DataFlow::Node taintType(Configs::Kind kind) { result = taintType(TypeBackTracker::end(), kind) }
 }
