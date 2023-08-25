@@ -13,16 +13,13 @@ edges
 | LogInjectionBad.py:23:12:23:23 | ControlFlowNode for Attribute | LogInjectionBad.py:23:12:23:35 | ControlFlowNode for Attribute() |
 | LogInjectionBad.py:23:12:23:35 | ControlFlowNode for Attribute() | LogInjectionBad.py:23:5:23:8 | SSA variable name |
 | LogInjectionBad.py:29:5:29:8 | SSA variable name | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr |
-| LogInjectionBad.py:29:5:29:8 | SSA variable name | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr |
 | LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request | LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute |
 | LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute | LogInjectionBad.py:29:12:29:35 | ControlFlowNode for Attribute() |
 | LogInjectionBad.py:29:12:29:35 | ControlFlowNode for Attribute() | LogInjectionBad.py:29:5:29:8 | SSA variable name |
-| LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | file:///home/rasmus/.pyenv/versions/3.9.5/lib/python3.9/logging/__init__.py:1460:20:1460:22 | ControlFlowNode for msg |
 | LogInjectionBad.py:35:5:35:8 | SSA variable name | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr |
 | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute |
 | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() |
 | LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() | LogInjectionBad.py:35:5:35:8 | SSA variable name |
-| file:///home/rasmus/.pyenv/versions/3.9.5/lib/python3.9/logging/__init__.py:1460:20:1460:22 | ControlFlowNode for msg | file:///home/rasmus/.pyenv/versions/3.9.5/lib/python3.9/logging/__init__.py:1463:22:1463:24 | ControlFlowNode for msg |
 nodes
 | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | LogInjectionBad.py:7:19:7:25 | GSSA Variable request | semmle.label | GSSA Variable request |
@@ -41,18 +38,14 @@ nodes
 | LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | LogInjectionBad.py:29:12:29:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | LogInjectionBad.py:35:5:35:8 | SSA variable name | semmle.label | SSA variable name |
 | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| file:///home/rasmus/.pyenv/versions/3.9.5/lib/python3.9/logging/__init__.py:1460:20:1460:22 | ControlFlowNode for msg | semmle.label | ControlFlowNode for msg |
-| file:///home/rasmus/.pyenv/versions/3.9.5/lib/python3.9/logging/__init__.py:1463:22:1463:24 | ControlFlowNode for msg | semmle.label | ControlFlowNode for msg |
 subpaths
 #select
 | LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
 | LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
 | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
 | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
-| file:///home/rasmus/.pyenv/versions/3.9.5/lib/python3.9/logging/__init__.py:1463:22:1463:24 | ControlFlowNode for msg | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | file:///home/rasmus/.pyenv/versions/3.9.5/lib/python3.9/logging/__init__.py:1463:22:1463:24 | ControlFlowNode for msg | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
