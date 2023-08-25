@@ -94,6 +94,12 @@ module FinalConfig implements DataFlow::StateConfigSig {
     )
   }
 
+  int fieldFlowBranchLimit() {
+    result =
+      allocationToInvalidPointerFieldFlowBranchLimit()
+          .maximum(invalidPointerToDereferenceFieldFlowBranchLimit())
+  }
+
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {

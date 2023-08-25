@@ -78,6 +78,15 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
 }
 
 /**
+ * Gets the virtual dispatch branching limit when calculating field flow while searching
+ * for flow from an allocation to the construction of an out-of-bounds pointer.
+ *
+ * This can be overridden to a smaller value to improve performance (a
+ * value of 0 disables field flow), or a larger value to get more results.
+ */
+int allocationToInvalidPointerFieldFlowBranchLimit() { result = 0 }
+
+/**
  * A module that encapsulates a barrier guard to remove false positives from flow like:
  * ```cpp
  * char *p = new char[size];
@@ -104,6 +113,8 @@ private module SizeBarrier {
       hasSize(_, source, _) and
       InterestingPointerAddInstruction::isInterestingSize(source)
     }
+
+    int fieldFlowBranchLimit() { result = allocationToInvalidPointerFieldFlowBranchLimit() }
 
     /**
      * Holds if `small <= large + k` holds if `g` evaluates to `testIsTrue`.
@@ -202,6 +213,8 @@ private module InterestingPointerAddInstruction {
       hasSize(source.asConvertedExpr(), _, _)
     }
 
+    int fieldFlowBranchLimit() { result = allocationToInvalidPointerFieldFlowBranchLimit() }
+
     predicate isSink(DataFlow::Node sink) {
       sink.asInstruction() = any(PointerAddInstruction pai).getLeft()
     }
@@ -257,6 +270,10 @@ private module Config implements ProductFlow::StateConfigSig {
     exists(unit) and
     hasSize(allocSource.asConvertedExpr(), sizeSource, sizeAddend)
   }
+
+  int fieldFlowBranchLimit1() { result = allocationToInvalidPointerFieldFlowBranchLimit() }
+
+  int fieldFlowBranchLimit2() { result = allocationToInvalidPointerFieldFlowBranchLimit() }
 
   predicate isSinkPair(
     DataFlow::Node allocSink, FlowState1 unit, DataFlow::Node sizeSink, FlowState2 sizeAddend
