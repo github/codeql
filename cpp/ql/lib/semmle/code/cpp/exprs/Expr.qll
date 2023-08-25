@@ -949,13 +949,13 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   DestructorCall getDestructorCall() { result = this.getChild(1) }
 
   /**
-   * Gets the destructor to be called to destroy the object(s), if any.
+   * Gets the destructor to be called to destroy the object/array, if any.
    */
   Destructor getDestructor() { result = this.getDestructorCall().getTarget() }
 
   /**
-   * Gets the `operator delete` that deallocates storage. Does not hold
-   * if the type being destroyed has a virtual destructor. In that case, the
+   * Gets the `operator delete` or `operator delete[]` that deallocates storage.
+   * Does not hold if the type being destroyed has a virtual destructor. In that case, the
    * `operator delete` that will be called is determined at runtime based on the
    * dynamic type of the object.
    */
@@ -969,10 +969,10 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   deprecated FunctionCall getAllocatorCall() { result = this.getChild(0) }
 
   /**
-   * Gets the call to a non-default `operator delete` that deallocates storage, if any.
+   * Gets the call to a non-default `operator delete`/`delete[]` that deallocates storage, if any.
    *
    * This will only be present when the type being deleted has a custom `operator delete` and
-   * is not a class with a virtual destructor.
+   * does not have a virtual destructor.
    */
   FunctionCall getDeallocatorCall() { result = this.getChild(0) }
 
@@ -997,12 +997,13 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   }
 
   /**
-   * Gets the object being deleted.
+   * Gets the object/array being deleted.
    */
-  Expr getExpr() { 
+  Expr getExpr() {
     // If there is a destuctor call, the object being deleted is the qualifier
     // otherwise it is the third child.
-    result = this.getChild(3) or result = this.getDestructorCall().getQualifier() }
+    result = this.getChild(3) or result = this.getDestructorCall().getQualifier()
+  }
 }
 
 /**
