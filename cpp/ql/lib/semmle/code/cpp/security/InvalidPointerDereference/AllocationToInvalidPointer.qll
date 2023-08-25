@@ -222,6 +222,12 @@ private module InterestingPointerAddInstruction {
     )
   }
 
+  /**
+   * Holds if `n` is a size of an allocation whose result flows to the left operand
+   * of a pointer-arithmetic instruction.
+   *
+   * This predicate is used to reduce the set of tuples in `SizeBarrierConfig::isSource`.
+   */
   predicate isInterestingSize(DataFlow::Node n) {
     exists(DataFlow::Node alloc |
       hasSize(alloc.asConvertedExpr(), n, _) and
