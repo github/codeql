@@ -48,7 +48,7 @@ positional(*args)
 
 def posargs(p1, *posargs)
     sink p1 # $ hasValueFlow=20 $ hasValueFlow=23 $ hasValueFlow=24
-    sink (posargs[0]) # $ hasValueFlow=22 $ hasValueFlow=21 $ MISSING: hasValueFlow=25
+    sink (posargs[0]) # $ hasValueFlow=22 $ hasValueFlow=21 $ hasValueFlow=25
     sink (posargs[1])
 end
 
