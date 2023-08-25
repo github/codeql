@@ -949,7 +949,7 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   DestructorCall getDestructorCall() { result = this.getChild(1) }
 
   /**
-   * Gets the destructor to be called to destroy the object/array, if any.
+   * Gets the destructor to be called to destroy the object or array, if any.
    */
   Destructor getDestructor() { result = this.getDestructorCall().getTarget() }
 
@@ -997,10 +997,10 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   }
 
   /**
-   * Gets the object/array being deleted.
+   * Gets the object or array being deleted.
    */
   Expr getExpr() {
-    // If there is a destuctor call, the object being deleted is the qualifier
+    // If there is a destructor call, the object being deleted is the qualifier
     // otherwise it is the third child.
     result = this.getChild(3) or result = this.getDestructorCall().getQualifier()
   }
