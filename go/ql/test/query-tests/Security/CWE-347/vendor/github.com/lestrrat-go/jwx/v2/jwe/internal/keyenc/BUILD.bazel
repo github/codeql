@@ -1,0 +1,37 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "keyenc",
+    srcs = [
+        "interface.go",
+        "keyenc.go",
+    ],
+    importpath = "github.com/lestrrat-go/jwx/v2/jwe/internal/keyenc",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/ecutil",
+        "//jwa",
+        "//jwe/internal/cipher",
+        "//jwe/internal/concatkdf",
+        "//jwe/internal/keygen",
+        "//x25519",
+        "@org_golang_x_crypto//curve25519",
+        "@org_golang_x_crypto//pbkdf2",
+    ],
+)
+
+go_test(
+    name = "keyenc_test",
+    srcs = ["keyenc_test.go"],
+    deps = [
+        ":keyenc",
+        "//jwk",
+        "@com_github_stretchr_testify//assert",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":keyenc",
+    visibility = ["//jwe:__subpackages__"],
+)

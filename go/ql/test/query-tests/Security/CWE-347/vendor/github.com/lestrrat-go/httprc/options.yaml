@@ -1,0 +1,119 @@
+package_name: httprc
+output: options_gen.go
+interfaces:
+  - name: RegisterOption
+    comment: |
+      RegisterOption desribes options that can be passed to `(httprc.Cache).Register()`
+  - name: CacheOption
+    comment: |
+      CacheOption desribes options that can be passed to `New()`
+  - name: FetcherOption
+    methods:
+      - cacheOption
+    comment: |
+      FetcherOption describes options that can be passed to `(httprc.Fetcher).NewFetcher()`
+  - name: FetchOption
+    comment: |
+      FetchOption describes options that can be passed to `(httprc.Fetcher).Fetch()`
+  - name: FetchRegisterOption
+    methods:
+      - fetchOption
+      - registerOption
+  - name: FetchFetcherRegisterOption
+    methods:
+      - fetchOption
+      - fetcherOption
+      - registerOption
+options:
+  - ident: FetcherWorkerCount
+    interface: FetcherOption
+    argument_type: int
+    comment: |
+      WithFetchWorkerCount specifies the number of HTTP fetch workers that are spawned
+      in the backend. By default 3 workers are spawned.
+  - ident: Whitelist
+    interface: FetchFetcherRegisterOption
+    argument_type: Whitelist
+    comment: |
+      WithWhitelist specifies the Whitelist object that can control which URLs are
+      allowed to be processed.
+
+      It can be passed to `httprc.NewCache` as a whitelist applied to all
+      URLs that are fetched by the cache, or it can be passed on a per-URL
+      basis using `(httprc.Cache).Register()`. If both are specified,
+      the url must fulfill _both_ the cache-wide whitelist and the per-URL
+      whitelist.
+  - ident: Transformer
+    interface: RegisterOption
+    argument_type: Transformer
+    comment: |
+      WithTransformer specifies the `httprc.Transformer` object that should be applied
+      to the fetched resource. The `Transform()` method is only called if the HTTP request
+      returns a `200 OK` status.
+  - ident: HTTPClient
+    interface: FetchRegisterOption
+    argument_type: HTTPClient
+    comment: |
+      WithHTTPClient specififes the HTTP Client object that should be used to fetch
+      the resource. For example, if you need an `*http.Client` instance that requires
+      special TLS or Authorization setup, you might want to pass it using this option.
+  - ident: MinRefreshInterval
+    interface: RegisterOption
+    argument_type: time.Duration
+    comment: |
+      WithMinRefreshInterval specifies the minimum refresh interval to be used.
+
+      When we fetch the key from a remote URL, we first look at the `max-age`
+      directive from `Cache-Control` response header. If this value is present,
+      we compare the `max-age` value and the value specified by this option
+      and take the larger one (e.g. if `max-age` = 5 minutes and `min refresh` = 10
+      minutes, then next fetch will happen in 10 minutes)
+
+      Next we check for the `Expires` header, and similarly if the header is
+      present, we compare it against the value specified by this option,
+      and take the larger one.
+
+      Finally, if neither of the above headers are present, we use the
+      value specified by this option as the interval until the next refresh.
+
+      If unspecified, the minimum refresh interval is 1 hour.
+
+      This value and the header values are ignored if `WithRefreshInterval` is specified.
+  - ident: RefreshInterval
+    interface: RegisterOption
+    argument_type: time.Duration
+    comment: |
+      WithRefreshInterval specifies the static interval between refreshes
+      of resources controlled by `httprc.Cache`.
+
+      Providing this option overrides the adaptive token refreshing based
+      on Cache-Control/Expires header (and `httprc.WithMinRefreshInterval`),
+      and refreshes will *always* happen in this interval.
+
+      You generally do not want to make this value too small, as it can easily
+      be considered a DoS attack, and there is no backoff mechanism for failed
+      attempts.
+  - ident: RefreshWindow
+    interface: CacheOption
+    argument_type: time.Duration
+    comment: |
+      WithRefreshWindow specifies the interval between checks for refreshes.
+      `httprc.Cache` does not check for refreshes in exact intervals. Instead,
+      it wakes up at every tick that occurs in the interval specified by
+      `WithRefreshWindow` option, and refreshes all entries that need to be
+      refreshed within this window.
+
+      The default value is 15 minutes.
+
+      You generally do not want to make this value too small, as it can easily
+      be considered a DoS attack, and there is no backoff mechanism for failed
+      attempts.
+  - ident: ErrSink
+    interface: CacheOption
+    argument_type: ErrSink
+    comment: |
+      WithErrSink specifies the `httprc.ErrSink` object that handles errors
+      that occurred during the cache's execution. For example, you will be
+      able to intercept errors that occurred during the execution of Transformers.
+
+
