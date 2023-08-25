@@ -45,58 +45,6 @@ edges
 | test.cpp:53:5:53:23 | ... = ... | test.cpp:51:33:51:35 | end |
 | test.cpp:53:12:53:23 | ... + ... | test.cpp:53:5:53:23 | ... = ... |
 | test.cpp:60:34:60:37 | mk_array output argument | test.cpp:67:9:67:14 | ... = ... |
-| test.cpp:80:9:80:16 | mk_array indirection [end] | test.cpp:89:19:89:26 | call to mk_array [end] |
-| test.cpp:80:9:80:16 | mk_array indirection [end] | test.cpp:119:18:119:25 | call to mk_array [end] |
-| test.cpp:82:5:82:28 | ... = ... | test.cpp:82:9:82:13 | arr indirection [post update] [begin] |
-| test.cpp:82:9:82:13 | arr indirection [post update] [begin] | test.cpp:83:15:83:17 | arr indirection [begin] |
-| test.cpp:82:17:82:22 | call to malloc | test.cpp:82:5:82:28 | ... = ... |
-| test.cpp:83:5:83:30 | ... = ... | test.cpp:83:9:83:11 | arr indirection [post update] [end] |
-| test.cpp:83:9:83:11 | arr indirection [post update] [end] | test.cpp:80:9:80:16 | mk_array indirection [end] |
-| test.cpp:83:15:83:17 | arr indirection [begin] | test.cpp:83:19:83:23 | begin indirection |
-| test.cpp:83:15:83:30 | ... + ... | test.cpp:83:5:83:30 | ... = ... |
-| test.cpp:83:19:83:23 | begin indirection | test.cpp:83:5:83:30 | ... = ... |
-| test.cpp:83:19:83:23 | begin indirection | test.cpp:83:15:83:30 | ... + ... |
-| test.cpp:89:19:89:26 | call to mk_array [end] | test.cpp:91:36:91:38 | arr indirection [end] |
-| test.cpp:89:19:89:26 | call to mk_array [end] | test.cpp:95:36:95:38 | arr indirection [end] |
-| test.cpp:91:36:91:38 | arr indirection [end] | test.cpp:91:40:91:42 | end indirection |
-| test.cpp:91:36:91:38 | arr indirection [end] | test.cpp:96:9:96:14 | ... = ... |
-| test.cpp:91:40:91:42 | end indirection | test.cpp:96:9:96:14 | ... = ... |
-| test.cpp:95:36:95:38 | arr indirection [end] | test.cpp:95:40:95:42 | end indirection |
-| test.cpp:95:36:95:38 | arr indirection [end] | test.cpp:96:9:96:14 | ... = ... |
-| test.cpp:95:40:95:42 | end indirection | test.cpp:96:9:96:14 | ... = ... |
-| test.cpp:104:27:104:29 | arr [end] | test.cpp:105:36:105:38 | arr indirection [end] |
-| test.cpp:104:27:104:29 | arr [end] | test.cpp:109:36:109:38 | arr indirection [end] |
-| test.cpp:105:36:105:38 | arr indirection [end] | test.cpp:105:40:105:42 | end indirection |
-| test.cpp:105:36:105:38 | arr indirection [end] | test.cpp:110:9:110:14 | ... = ... |
-| test.cpp:105:40:105:42 | end indirection | test.cpp:110:9:110:14 | ... = ... |
-| test.cpp:109:36:109:38 | arr indirection [end] | test.cpp:109:40:109:42 | end indirection |
-| test.cpp:109:36:109:38 | arr indirection [end] | test.cpp:110:9:110:14 | ... = ... |
-| test.cpp:109:40:109:42 | end indirection | test.cpp:110:9:110:14 | ... = ... |
-| test.cpp:119:18:119:25 | call to mk_array [end] | test.cpp:104:27:104:29 | arr [end] |
-| test.cpp:141:10:141:19 | mk_array_p indirection [end] | test.cpp:150:20:150:29 | call to mk_array_p indirection [end] |
-| test.cpp:141:10:141:19 | mk_array_p indirection [end] | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] |
-| test.cpp:143:5:143:29 | ... = ... | test.cpp:143:10:143:14 | arr indirection [post update] [begin] |
-| test.cpp:143:10:143:14 | arr indirection [post update] [begin] | test.cpp:144:16:144:18 | arr indirection [begin] |
-| test.cpp:143:18:143:23 | call to malloc | test.cpp:143:5:143:29 | ... = ... |
-| test.cpp:144:5:144:32 | ... = ... | test.cpp:144:10:144:12 | arr indirection [post update] [end] |
-| test.cpp:144:10:144:12 | arr indirection [post update] [end] | test.cpp:141:10:141:19 | mk_array_p indirection [end] |
-| test.cpp:144:16:144:18 | arr indirection [begin] | test.cpp:144:21:144:25 | begin indirection |
-| test.cpp:144:16:144:32 | ... + ... | test.cpp:144:5:144:32 | ... = ... |
-| test.cpp:144:21:144:25 | begin indirection | test.cpp:144:5:144:32 | ... = ... |
-| test.cpp:144:21:144:25 | begin indirection | test.cpp:144:16:144:32 | ... + ... |
-| test.cpp:150:20:150:29 | call to mk_array_p indirection [end] | test.cpp:156:37:156:39 | arr indirection [end] |
-| test.cpp:156:37:156:39 | arr indirection [end] | test.cpp:156:42:156:44 | end indirection |
-| test.cpp:156:37:156:39 | arr indirection [end] | test.cpp:157:9:157:14 | ... = ... |
-| test.cpp:156:42:156:44 | end indirection | test.cpp:157:9:157:14 | ... = ... |
-| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:166:37:166:39 | arr indirection [end] |
-| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:170:37:170:39 | arr indirection [end] |
-| test.cpp:166:37:166:39 | arr indirection [end] | test.cpp:166:42:166:44 | end indirection |
-| test.cpp:166:37:166:39 | arr indirection [end] | test.cpp:171:9:171:14 | ... = ... |
-| test.cpp:166:42:166:44 | end indirection | test.cpp:171:9:171:14 | ... = ... |
-| test.cpp:170:37:170:39 | arr indirection [end] | test.cpp:170:42:170:44 | end indirection |
-| test.cpp:170:37:170:39 | arr indirection [end] | test.cpp:171:9:171:14 | ... = ... |
-| test.cpp:170:42:170:44 | end indirection | test.cpp:171:9:171:14 | ... = ... |
-| test.cpp:180:19:180:28 | call to mk_array_p indirection [end] | test.cpp:165:29:165:31 | arr indirection [end] |
 | test.cpp:194:23:194:28 | call to malloc | test.cpp:195:17:195:23 | ... + ... |
 | test.cpp:194:23:194:28 | call to malloc | test.cpp:195:17:195:23 | ... + ... |
 | test.cpp:194:23:194:28 | call to malloc | test.cpp:201:5:201:19 | ... = ... |
@@ -233,6 +181,18 @@ edges
 | test.cpp:754:18:754:31 | new[] | test.cpp:772:16:772:29 | access to array |
 | test.cpp:754:18:754:31 | new[] | test.cpp:772:16:772:29 | access to array |
 | test.cpp:781:14:781:27 | new[] | test.cpp:786:18:786:27 | access to array |
+| test.cpp:792:60:792:62 | end | test.cpp:800:40:800:43 | mk_array_no_field_flow output argument |
+| test.cpp:792:60:792:62 | end | test.cpp:832:40:832:43 | mk_array_no_field_flow output argument |
+| test.cpp:793:14:793:19 | call to malloc | test.cpp:794:5:794:24 | ... = ... |
+| test.cpp:793:14:793:19 | call to malloc | test.cpp:794:12:794:24 | ... + ... |
+| test.cpp:794:5:794:24 | ... = ... | test.cpp:792:60:792:62 | end |
+| test.cpp:794:12:794:24 | ... + ... | test.cpp:794:5:794:24 | ... = ... |
+| test.cpp:800:40:800:43 | mk_array_no_field_flow output argument | test.cpp:807:7:807:12 | ... = ... |
+| test.cpp:815:52:815:54 | end | test.cpp:815:52:815:54 | end |
+| test.cpp:815:52:815:54 | end | test.cpp:821:7:821:12 | ... = ... |
+| test.cpp:815:52:815:54 | end | test.cpp:821:7:821:12 | ... = ... |
+| test.cpp:832:40:832:43 | mk_array_no_field_flow output argument | test.cpp:833:37:833:39 | end |
+| test.cpp:833:37:833:39 | end | test.cpp:815:52:815:54 | end |
 nodes
 | test.cpp:4:15:4:20 | call to malloc | semmle.label | call to malloc |
 | test.cpp:5:15:5:22 | ... + ... | semmle.label | ... + ... |
@@ -260,48 +220,6 @@ nodes
 | test.cpp:53:12:53:23 | ... + ... | semmle.label | ... + ... |
 | test.cpp:60:34:60:37 | mk_array output argument | semmle.label | mk_array output argument |
 | test.cpp:67:9:67:14 | ... = ... | semmle.label | ... = ... |
-| test.cpp:80:9:80:16 | mk_array indirection [end] | semmle.label | mk_array indirection [end] |
-| test.cpp:82:5:82:28 | ... = ... | semmle.label | ... = ... |
-| test.cpp:82:9:82:13 | arr indirection [post update] [begin] | semmle.label | arr indirection [post update] [begin] |
-| test.cpp:82:17:82:22 | call to malloc | semmle.label | call to malloc |
-| test.cpp:83:5:83:30 | ... = ... | semmle.label | ... = ... |
-| test.cpp:83:9:83:11 | arr indirection [post update] [end] | semmle.label | arr indirection [post update] [end] |
-| test.cpp:83:15:83:17 | arr indirection [begin] | semmle.label | arr indirection [begin] |
-| test.cpp:83:15:83:30 | ... + ... | semmle.label | ... + ... |
-| test.cpp:83:19:83:23 | begin indirection | semmle.label | begin indirection |
-| test.cpp:89:19:89:26 | call to mk_array [end] | semmle.label | call to mk_array [end] |
-| test.cpp:91:36:91:38 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:91:40:91:42 | end indirection | semmle.label | end indirection |
-| test.cpp:95:36:95:38 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:95:40:95:42 | end indirection | semmle.label | end indirection |
-| test.cpp:96:9:96:14 | ... = ... | semmle.label | ... = ... |
-| test.cpp:104:27:104:29 | arr [end] | semmle.label | arr [end] |
-| test.cpp:105:36:105:38 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:105:40:105:42 | end indirection | semmle.label | end indirection |
-| test.cpp:109:36:109:38 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:109:40:109:42 | end indirection | semmle.label | end indirection |
-| test.cpp:110:9:110:14 | ... = ... | semmle.label | ... = ... |
-| test.cpp:119:18:119:25 | call to mk_array [end] | semmle.label | call to mk_array [end] |
-| test.cpp:141:10:141:19 | mk_array_p indirection [end] | semmle.label | mk_array_p indirection [end] |
-| test.cpp:143:5:143:29 | ... = ... | semmle.label | ... = ... |
-| test.cpp:143:10:143:14 | arr indirection [post update] [begin] | semmle.label | arr indirection [post update] [begin] |
-| test.cpp:143:18:143:23 | call to malloc | semmle.label | call to malloc |
-| test.cpp:144:5:144:32 | ... = ... | semmle.label | ... = ... |
-| test.cpp:144:10:144:12 | arr indirection [post update] [end] | semmle.label | arr indirection [post update] [end] |
-| test.cpp:144:16:144:18 | arr indirection [begin] | semmle.label | arr indirection [begin] |
-| test.cpp:144:16:144:32 | ... + ... | semmle.label | ... + ... |
-| test.cpp:144:21:144:25 | begin indirection | semmle.label | begin indirection |
-| test.cpp:150:20:150:29 | call to mk_array_p indirection [end] | semmle.label | call to mk_array_p indirection [end] |
-| test.cpp:156:37:156:39 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:156:42:156:44 | end indirection | semmle.label | end indirection |
-| test.cpp:157:9:157:14 | ... = ... | semmle.label | ... = ... |
-| test.cpp:165:29:165:31 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:166:37:166:39 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:166:42:166:44 | end indirection | semmle.label | end indirection |
-| test.cpp:170:37:170:39 | arr indirection [end] | semmle.label | arr indirection [end] |
-| test.cpp:170:42:170:44 | end indirection | semmle.label | end indirection |
-| test.cpp:171:9:171:14 | ... = ... | semmle.label | ... = ... |
-| test.cpp:180:19:180:28 | call to mk_array_p indirection [end] | semmle.label | call to mk_array_p indirection [end] |
 | test.cpp:194:23:194:28 | call to malloc | semmle.label | call to malloc |
 | test.cpp:195:17:195:23 | ... + ... | semmle.label | ... + ... |
 | test.cpp:195:17:195:23 | ... + ... | semmle.label | ... + ... |
@@ -394,6 +312,17 @@ nodes
 | test.cpp:772:16:772:29 | access to array | semmle.label | access to array |
 | test.cpp:781:14:781:27 | new[] | semmle.label | new[] |
 | test.cpp:786:18:786:27 | access to array | semmle.label | access to array |
+| test.cpp:792:60:792:62 | end | semmle.label | end |
+| test.cpp:793:14:793:19 | call to malloc | semmle.label | call to malloc |
+| test.cpp:794:5:794:24 | ... = ... | semmle.label | ... = ... |
+| test.cpp:794:12:794:24 | ... + ... | semmle.label | ... + ... |
+| test.cpp:800:40:800:43 | mk_array_no_field_flow output argument | semmle.label | mk_array_no_field_flow output argument |
+| test.cpp:807:7:807:12 | ... = ... | semmle.label | ... = ... |
+| test.cpp:815:52:815:54 | end | semmle.label | end |
+| test.cpp:815:52:815:54 | end | semmle.label | end |
+| test.cpp:821:7:821:12 | ... = ... | semmle.label | ... = ... |
+| test.cpp:832:40:832:43 | mk_array_no_field_flow output argument | semmle.label | mk_array_no_field_flow output argument |
+| test.cpp:833:37:833:39 | end | semmle.label | end |
 subpaths
 #select
 | test.cpp:6:14:6:15 | * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -404,10 +333,6 @@ subpaths
 | test.cpp:42:14:42:15 | * ... | test.cpp:40:15:40:20 | call to malloc | test.cpp:42:14:42:15 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:40:15:40:20 | call to malloc | call to malloc | test.cpp:41:20:41:27 | ... - ... | ... - ... |
 | test.cpp:44:14:44:21 | * ... | test.cpp:40:15:40:20 | call to malloc | test.cpp:44:14:44:21 | * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:40:15:40:20 | call to malloc | call to malloc | test.cpp:41:20:41:27 | ... - ... | ... - ... |
 | test.cpp:67:9:67:14 | ... = ... | test.cpp:52:19:52:24 | call to malloc | test.cpp:67:9:67:14 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:52:19:52:24 | call to malloc | call to malloc | test.cpp:53:20:53:23 | size | size |
-| test.cpp:96:9:96:14 | ... = ... | test.cpp:82:17:82:22 | call to malloc | test.cpp:96:9:96:14 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:82:17:82:22 | call to malloc | call to malloc | test.cpp:83:27:83:30 | size | size |
-| test.cpp:110:9:110:14 | ... = ... | test.cpp:82:17:82:22 | call to malloc | test.cpp:110:9:110:14 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:82:17:82:22 | call to malloc | call to malloc | test.cpp:83:27:83:30 | size | size |
-| test.cpp:157:9:157:14 | ... = ... | test.cpp:143:18:143:23 | call to malloc | test.cpp:157:9:157:14 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:143:18:143:23 | call to malloc | call to malloc | test.cpp:144:29:144:32 | size | size |
-| test.cpp:171:9:171:14 | ... = ... | test.cpp:143:18:143:23 | call to malloc | test.cpp:171:9:171:14 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:143:18:143:23 | call to malloc | call to malloc | test.cpp:144:29:144:32 | size | size |
 | test.cpp:201:5:201:19 | ... = ... | test.cpp:194:23:194:28 | call to malloc | test.cpp:201:5:201:19 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:194:23:194:28 | call to malloc | call to malloc | test.cpp:195:21:195:23 | len | len |
 | test.cpp:213:5:213:13 | ... = ... | test.cpp:205:23:205:28 | call to malloc | test.cpp:213:5:213:13 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:205:23:205:28 | call to malloc | call to malloc | test.cpp:206:21:206:23 | len | len |
 | test.cpp:232:3:232:20 | ... = ... | test.cpp:231:18:231:30 | new[] | test.cpp:232:3:232:20 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:231:18:231:30 | new[] | new[] | test.cpp:232:11:232:15 | index | index |
@@ -434,3 +359,5 @@ subpaths
 | test.cpp:772:16:772:29 | access to array | test.cpp:754:18:754:31 | new[] | test.cpp:772:16:772:29 | access to array | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:754:18:754:31 | new[] | new[] | test.cpp:767:22:767:28 | ... + ... | ... + ... |
 | test.cpp:772:16:772:29 | access to array | test.cpp:754:18:754:31 | new[] | test.cpp:772:16:772:29 | access to array | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:754:18:754:31 | new[] | new[] | test.cpp:772:22:772:28 | ... + ... | ... + ... |
 | test.cpp:786:18:786:27 | access to array | test.cpp:781:14:781:27 | new[] | test.cpp:786:18:786:27 | access to array | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:781:14:781:27 | new[] | new[] | test.cpp:786:20:786:26 | ... + ... | ... + ... |
+| test.cpp:807:7:807:12 | ... = ... | test.cpp:793:14:793:19 | call to malloc | test.cpp:807:7:807:12 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:793:14:793:19 | call to malloc | call to malloc | test.cpp:794:21:794:24 | size | size |
+| test.cpp:821:7:821:12 | ... = ... | test.cpp:793:14:793:19 | call to malloc | test.cpp:821:7:821:12 | ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:793:14:793:19 | call to malloc | call to malloc | test.cpp:794:21:794:24 | size | size |

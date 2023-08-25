@@ -80,7 +80,7 @@ struct array_t {
 array_t mk_array(int size) {
     array_t arr;
     arr.begin = malloc(size);
-    arr.end = arr.begin + size; // $ alloc=L82
+    arr.end = arr.begin + size; // $ MISSING: alloc=L82
 
     return arr;
 }
@@ -93,7 +93,7 @@ void test6(int size) {
     }
 
     for (char* p = arr.begin; p <= arr.end; ++p) {
-        *p = 0; // $ deref=L83->L91->L96 deref=L83->L95->L96 // BAD
+        *p = 0; // $ MISSING: deref=L83->L91->L96 deref=L83->L95->L96 // BAD [NOT DETECTED]
     }
 
     for (char* p = arr.begin; p < arr.end; ++p) {
@@ -107,7 +107,7 @@ void test7_callee(array_t arr) {
     }
 
     for (char* p = arr.begin; p <= arr.end; ++p) {
-        *p = 0; // $ deref=L83->L105->L110 deref=L83->L109->L110 // BAD
+        *p = 0; // $ MISSING: deref=L83->L105->L110 deref=L83->L109->L110 // BAD [NOT DETECTED]
     }
 
     for (char* p = arr.begin; p < arr.end; ++p) {
@@ -141,7 +141,7 @@ void test8(int size) {
 array_t *mk_array_p(int size) {
     array_t *arr = (array_t*) malloc(sizeof(array_t));
     arr->begin = malloc(size);
-    arr->end = arr->begin + size; // $ alloc=L143
+    arr->end = arr->begin + size; // $ MISSING: alloc=L143
 
     return arr;
 }
@@ -154,7 +154,7 @@ void test9(int size) {
     }
 
     for (char* p = arr->begin; p <= arr->end; ++p) {
-        *p = 0; // $ deref=L144->L156->L157 // BAD
+        *p = 0; // $ MISSING: deref=L144->L156->L157 // BAD [NOT DETECTED]
     }
 
     for (char* p = arr->begin; p < arr->end; ++p) {
@@ -168,7 +168,7 @@ void test10_callee(array_t *arr) {
     }
 
     for (char* p = arr->begin; p <= arr->end; ++p) {
-        *p = 0; // $ deref=L144->L166->L171 deref=L144->L170->L171 // BAD
+        *p = 0; // $ MISSING: deref=L144->L166->L171 deref=L144->L170->L171 // BAD [NOT DETECTED]
     }
 
     for (char* p = arr->begin; p < arr->end; ++p) {
@@ -787,4 +787,48 @@ void test38_simple(unsigned size, unsigned pos, unsigned numParams) {
       }
     }
   }
+}
+
+void mk_array_no_field_flow(int size, char** begin, char** end) {
+    *begin = malloc(size);
+    *end = *begin + size; // $ alloc=L793
+}
+
+void test6_no_field_flow(int size) {
+  char* begin;
+  char* end;
+  mk_array_no_field_flow(size, &begin, &end);
+
+  for (char* p = begin; p != end; ++p) {
+      *p = 0; // GOOD
+  }
+
+  for (char* p = begin; p <= end; ++p) {
+      *p = 0; // $ deref=L794->L802->L807 deref=L794->L806->L807 // BAD
+  }
+
+  for (char* p = begin; p < end; ++p) {
+      *p = 0; // GOOD
+  }
+}
+
+void test7_callee_no_field_flow(char* begin, char* end) {
+  for (char* p = begin; p != end; ++p) {
+      *p = 0; // GOOD
+  }
+
+  for (char* p = begin; p <= end; ++p) {
+      *p = 0; // $ deref=L794->L815->L821 deref=L794->L816->L821 deref=L794->L820->L821 // BAD
+  }
+
+  for (char* p = begin; p < end; ++p) {
+      *p = 0; // GOOD
+  }
+}
+
+void test7_no_field_flow(int size) {
+  char* begin;
+  char* end;
+  mk_array_no_field_flow(size, &begin, &end);
+  test7_callee_no_field_flow(begin, end);
 }
