@@ -138,7 +138,7 @@ predicate jumpStep(Node n1, Node n2) {
  * Thus, `node2` references an object with a content `x` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content c, Node node2) {
+predicate storeStep(Node node1, ContentSet c, Node node2) {
   // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
   // which in turn flows into the pointer content of `p`
   exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
@@ -165,7 +165,7 @@ predicate storeStep(Node node1, Content c, Node node2) {
  * Thus, `node1` references an object with a content `c` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content c, Node node2) {
+predicate readStep(Node node1, ContentSet c, Node node2) {
   node1 = node2.(PointerDereferenceNode).getOperand() and
   c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
   or
@@ -184,7 +184,7 @@ predicate readStep(Node node1, Content c, Node node2) {
 /**
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   // Because our post-update nodes are shared between multiple pre-update
   // nodes, attempting to clear content causes summary stores into arg in
   // particular to malfunction.
@@ -370,8 +370,6 @@ private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
 predicate isUnreachableInCall(Node n, DataFlowCall call) {
   getAFalsifiedGuard(call).dominates(n.getBasicBlock())
 }
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

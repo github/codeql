@@ -12,7 +12,7 @@ private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.frameworks.data.ModelsAsData
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
@@ -118,7 +118,7 @@ module LocalFlow {
   /** Gets the SSA definition node corresponding to parameter `p`. */
   SsaDefinitionExtNode getParameterDefNode(NamedParameter p) {
     exists(BasicBlock bb, int i |
-      bb.getNode(i).getNode() = p.getDefiningAccess() and
+      bb.getNode(i).getAstNode() = p.getDefiningAccess() and
       result.getDefinitionExt().definesAt(_, bb, i, _)
     )
   }
@@ -203,8 +203,8 @@ module LocalFlow {
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
       nodeFrom = n and
       exprTo = nodeTo.asExpr() and
-      n.getReturningNode().getNode() instanceof BreakStmt and
-      exprTo.getNode() instanceof Loop and
+      n.getReturningNode().getAstNode() instanceof BreakStmt and
+      exprTo.getAstNode() instanceof Loop and
       nodeTo.asExpr().getAPredecessor(any(SuccessorTypes::BreakSuccessor s)) = n.getReturningNode()
     )
     or
@@ -926,7 +926,7 @@ abstract class SourceReturnNode extends ReturnNode {
 private module ReturnNodes {
   private predicate isValid(CfgNodes::ReturningCfgNode node) {
     exists(ReturningStmt stmt, Callable scope |
-      stmt = node.getNode() and
+      stmt = node.getAstNode() and
       scope = node.getScope()
     |
       stmt instanceof ReturnStmt and
@@ -952,7 +952,7 @@ private module ReturnNodes {
     }
 
     override ReturnKind getKindSource() {
-      if n.getNode() instanceof BreakStmt
+      if n.getAstNode() instanceof BreakStmt
       then result instanceof BreakReturnKind
       else
         exists(CfgScope scope | scope = this.getCfgScope() |
@@ -1232,7 +1232,7 @@ class DataFlowType extends TDataFlowType {
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) { result = TTodoDataFlowType() and exists(n) }
+DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { none() }
@@ -1303,8 +1303,6 @@ predicate neverSkipInPathGraph(Node n) {
 }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

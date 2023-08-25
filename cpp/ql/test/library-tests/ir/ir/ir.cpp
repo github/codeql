@@ -1993,4 +1993,41 @@ void SetStaticFuncPtr() {
     pfn = c.StaticMemberFunction;
 }
 
+void TernaryTestInt(bool a, int x, int y, int z) {
+    z = a ? x : y;
+    z = a ? x : 5;
+    z = a ? 3 : 5;
+    (a ? x : y) = 7;
+}
+
+struct TernaryPodObj {
+};
+
+void TernaryTestPodObj(bool a, TernaryPodObj x, TernaryPodObj y, TernaryPodObj z) {
+    z = a ? x : y;
+    z = a ? x : TernaryPodObj();
+    z = a ? TernaryPodObj() : TernaryPodObj();
+    (z = a ? x : y) = TernaryPodObj();
+}
+
+struct TernaryNonPodObj {
+    virtual ~TernaryNonPodObj() {}
+};
+
+void TernaryTestNonPodObj(bool a, TernaryNonPodObj x, TernaryNonPodObj y, TernaryNonPodObj z) {
+    z = a ? x : y;
+    z = a ? x : TernaryNonPodObj();
+    z = a ? TernaryNonPodObj() : TernaryNonPodObj();
+    (z = a ? x : y) = TernaryNonPodObj();
+}
+
+void CommaTestHelper(unsigned int);
+
+unsigned int CommaTest(unsigned int x) {
+  unsigned int y;
+  y = x < 100 ?
+    (CommaTestHelper(x), x) :
+    (CommaTestHelper(x), 10);
+}
+
 // semmle-extractor-options: -std=c++17 --clang

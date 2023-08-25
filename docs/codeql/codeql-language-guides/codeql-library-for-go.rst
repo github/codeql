@@ -494,14 +494,14 @@ which are sets of data-flow nodes. Given these three sets, CodeQL provides a gen
 finding paths from a source to a sink, possibly going into and out of functions and fields, but
 never flowing through a barrier.
 
-To define a data-flow configuration, you can define a subclass of ``DataFlow::Configuration``,
-overriding the member predicates ``isSource``, ``isSink``, and ``isBarrier`` to define the sets of
-sources, sinks, and barriers.
+To define a data-flow configuration, you can define a module implementing ``DataFlow::ConfigSig``,
+including the predicates ``isSource``, ``isSink``, and ``isBarrier`` to define the sets of
+sources, sinks, and barriers. Data flow is then computed by applying
+``DataFlow::Global<..>`` to the configuration.
 
 Going beyond pure data flow, many security analyses need to perform more general `taint tracking`,
 which also considers flow through value-transforming operations such as string operations. To track
-taint, you can define a subclass of ``TaintTracking::Configuration``, which works similar to
-data-flow configurations.
+taint, you apply ``TaintTracking::Global<..>`` to your configuration instead.
 
 A detailed exposition of global data flow and taint tracking is out of scope for this brief
 introduction. For a general overview of data flow and taint tracking, see ":ref:`About data flow analysis <about-data-flow-analysis>`."

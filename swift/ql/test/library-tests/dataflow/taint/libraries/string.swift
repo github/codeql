@@ -438,7 +438,7 @@ func taintThroughEncodings() {
   })
   tainted.withContiguousStorageIfAvailable({
     ptr in
-    sink(arg: ptr)
+    sink(arg: ptr) // $ tainted=366
     sink(arg: ptr.baseAddress!) // $ MISSING: tainted=366
   })
 }
@@ -598,4 +598,53 @@ func untaintedFields() {
   sink(arg: String.availableStringEncodings)
   sink(arg: String.defaultCStringEncoding)
   sink(arg: tainted.isContiguousUTF8)
+}
+
+func callbackWithCleanPointer(ptr: UnsafeBufferPointer<String.Element>) throws -> Int {
+  sink(arg: ptr)
+
+  return 0
+}
+
+func callbackWithTaintedPointer(ptr: UnsafeBufferPointer<String.Element>) throws -> Int {
+  sink(arg: ptr) // $ tainted=617
+
+  return source()
+}
+
+func furtherTaintThroughCallbacks() {
+  let clean = ""
+  let tainted = source2()
+
+  // return values from the closure (1)
+  let result1 = clean.withContiguousStorageIfAvailable({
+    ptr in
+    return 0
+  })
+  sink(arg: result1!)
+  let result2 = clean.withContiguousStorageIfAvailable({
+    ptr in
+    return source()
+  })
+  sink(arg: result2!) // $ tainted=627
+
+  // return values from the closure (2)
+  if let result3 = clean.withContiguousStorageIfAvailable({
+    ptr in
+    return 0
+  }) {
+    sink(arg: result3)
+  }
+  if let result4 = clean.withContiguousStorageIfAvailable({
+    ptr in
+    return source()
+  }) {
+    sink(arg: result4) // $ tainted=640
+  }
+
+  // using a non-closure function
+  let result5 = try? clean.withContiguousStorageIfAvailable(callbackWithCleanPointer)
+  sink(arg: result5!)
+  let result6 = try? tainted.withContiguousStorageIfAvailable(callbackWithTaintedPointer)
+  sink(arg: result6!) // $ tainted=612
 }

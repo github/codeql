@@ -33,17 +33,17 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` through a static field.
+ * Holds if data can flow from `node1` to `node2` through a field.
  */
-private predicate staticFieldStep(Node node1, Node node2) {
+private predicate fieldStep(Node node1, Node node2) {
   exists(Field f |
+    // Taint fields through assigned values only if they're static
     f.isStatic() and
     f.getAnAssignedValue() = node1.asExpr() and
     node2.(FieldValueNode).getField() = f
   )
   or
   exists(Field f, FieldRead fr |
-    f.isStatic() and
     node1.(FieldValueNode).getField() = f and
     fr.getField() = f and
     fr = node2.asExpr() and
@@ -72,11 +72,11 @@ private predicate variableCaptureStep(Node node1, ExprNode node2) {
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` through a static field or
+ * Holds if data can flow from `node1` to `node2` through a field or
  * variable capture.
  */
 predicate jumpStep(Node node1, Node node2) {
-  staticFieldStep(node1, node2)
+  fieldStep(node1, node2)
   or
   variableCaptureStep(node1, node2)
   or
@@ -106,7 +106,7 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, Node node2) {
+predicate storeStep(Node node1, ContentSet f, Node node2) {
   exists(FieldAccess fa |
     instanceFieldAssign(node1.asExpr(), fa) and
     node2.(PostUpdateNode).getPreUpdateNode() = getFieldQualifier(fa) and
@@ -124,7 +124,7 @@ predicate storeStep(Node node1, Content f, Node node2) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content f, Node node2) {
+predicate readStep(Node node1, ContentSet f, Node node2) {
   exists(FieldRead fr |
     node1 = getFieldQualifier(fr) and
     fr.getField() = f.(FieldContent).getField() and
@@ -156,7 +156,7 @@ predicate readStep(Node node1, Content f, Node node2) {
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   exists(FieldAccess fa |
     instanceFieldAssign(_, fa) and
     n = getFieldQualifier(fa) and
@@ -207,46 +207,24 @@ DataFlowType getNodeType(Node n) {
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) {
+string ppReprType(DataFlowType t) {
   if t.(BoxedType).getPrimitiveType().getName() = "double"
   then result = "Number"
   else result = t.toString()
-}
-
-private predicate canContainBool(Type t) {
-  t instanceof BooleanType or
-  any(BooleanType b).(RefType).getASourceSupertype+() = t
 }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
-  exists(Type e1, Type e2 |
-    e1 = getErasedRepr(t1) and
-    e2 = getErasedRepr(t2)
-  |
-    // Because of `getErasedRepr`, `erasedHaveIntersection` is a sufficient
-    // compatibility check, but `conContainBool` is kept as a dummy disjunct
-    // to get the proper join-order.
-    erasedHaveIntersection(e1, e2)
-    or
-    canContainBool(e1) and canContainBool(e2)
-  )
-}
+bindingset[t1, t2]
+pragma[inline_late]
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { erasedHaveIntersection(t1, t2) }
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
   CastNode() { this.getExpr() instanceof CastingExpr }
 }
-
-/**
- * Holds if `n` should never be skipped over in the `PathGraph` and in path
- * explanations.
- */
-predicate neverSkipInPathGraph(Node n) { none() }
 
 private newtype TDataFlowCallable =
   TSrcCallable(Callable c) or
@@ -380,8 +358,6 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
           pragma[only_bind_into](pragma[only_bind_out](arg.getBooleanValue()).booleanNot()))
   )
 }
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

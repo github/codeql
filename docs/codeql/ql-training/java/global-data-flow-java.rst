@@ -63,12 +63,12 @@ We want to look for method calls where the method name is ``getNamespace()``, an
 
   import semmle.code.java.security.Security
 
-  class TaintedOGNLConfig extends TaintTracking::Configuration {
-    override predicate isSource(DataFlow::Node source) {
+  module TaintedOGNLConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       exists(Method m |
-    	   m.getName() = "getNamespace" and
-    	   m.getDeclaringType().getName() = "ActionProxy" and
-    	   source.asExpr() = m.getAReference()
+        m.getName() = "getNamespace" and
+        m.getDeclaringType().getName() = "ActionProxy" and
+        source.asExpr() = m.getAReference()
       )
     }
     ...
@@ -90,8 +90,8 @@ Fill in the definition of ``isSink``.
 
   import semmle.code.java.security.Security
 
-  class TaintedOGNLConfig extends TaintTracking::Configuration {
-    override predicate isSink(DataFlow::Node sink) {
+  module TaintedOGNLConfig implements DataFlow::ConfigSig {
+    predicate isSink(DataFlow::Node sink) {
       /* Fill me in */
     }
     ...
@@ -110,9 +110,9 @@ Find a method access to ``compileAndExecute``, and mark the first argument.
 
   import semmle.code.java.security.Security
 
-  class TaintedOGNLConfig extends TaintTracking::Configuration {
-    override predicate isSink(DataFlow::Node sink) {
-    	exists(MethodAccess ma |
+  module TaintedOGNLConfig implements DataFlow::ConfigSig {
+    predicate isSink(DataFlow::Node sink) {
+      exists(MethodAccess ma |
         ma.getMethod().getName() = "compileAndExecute" and
         ma.getArgument(0) = sink.asExpr()
       )
@@ -133,8 +133,8 @@ A sanitizer allows us to *prevent* flow through a particular node in the graph. 
 
 .. code-block:: ql
 
-  class TaintedOGNLConfig extends TaintTracking::Configuration {
-    override predicate isSanitizer(DataFlow::Node nd) {
+  module TaintedOGNLConfig implements DataFlow::ConfigSig {
+    predicate isBarrier(DataFlow::Node nd) {
       nd.getEnclosingCallable()
         .getDeclaringType()
         .getName() = "ValueStackShadowMap"
@@ -149,9 +149,8 @@ Add an additional taint step that (heuristically) taints a local variable if it 
 
 .. code-block:: ql
 
-  class TaintedOGNLConfig extends TaintTracking::Configuration {
-    override predicate isAdditionalTaintStep(DataFlow::Node node1,
-                                             DataFlow::Node node2) {
+  module TaintedOGNLConfig implements DataFlow::ConfigSig {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       exists(Field f, RefType t |
         node1.asExpr() = f.getAnAssignedValue() and
         node2.asExpr() = f.getAnAccess() and

@@ -690,3 +690,27 @@ void test_missing_call_context_2(unsigned size) {
   int* end_minus_one = pointer_arithmetic(p, size - 1);
   *end_minus_one = '0'; // $ deref=L680->L690->L691 // GOOD
 }
+
+void test34(unsigned size) {
+  char *p = new char[size];
+  char *end = p + size + 1; // $ alloc=L695
+  if (p + 1 < end) {
+    p += 1;
+  }
+  if (p + 1 < end) {
+    int val = *p; // $ deref=L698->L700->L701 // GOOD [FALSE POSITIVE]
+  }
+}
+
+void deref(char* q) {
+  char x = *q; // $ deref=L714->L705->L706 // BAD
+}
+
+void test35(unsigned long size, char* q)
+{
+  char* p = new char[size];
+  char* end = p + size; // $ alloc=L711
+  if(q <= end) {
+    deref(q);
+  }
+}

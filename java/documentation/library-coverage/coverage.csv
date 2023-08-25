@@ -1,4 +1,5 @@
 package,sink,source,summary,sink:bean-validation,sink:command-injection,sink:file-content-store,sink:fragment-injection,sink:groovy-injection,sink:hostname-verification,sink:html-injection,sink:information-leak,sink:intent-redirection,sink:jexl-injection,sink:jndi-injection,sink:js-injection,sink:ldap-injection,sink:log-injection,sink:mvel-injection,sink:ognl-injection,sink:path-injection,sink:pending-intents,sink:regex-use,sink:regex-use[-1],sink:regex-use[0],sink:regex-use[],sink:regex-use[f-1],sink:regex-use[f1],sink:regex-use[f],sink:request-forgery,sink:response-splitting,sink:sql-injection,sink:template-injection,sink:url-redirection,sink:xpath-injection,sink:xslt-injection,source:android-external-storage-dir,source:contentprovider,source:remote,summary:taint,summary:value
+actions.osgi,,,6,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,6,
 android.app,35,,103,,,,11,,,,,7,,,,,,,,,17,,,,,,,,,,,,,,,,,,18,85
 android.content,24,31,154,,,,,,,,,16,,,,,,,,,,,,,,,,,,,8,,,,,4,27,,63,91
 android.database,59,,41,,,,,,,,,,,,,,,,,,,,,,,,,,,,59,,,,,,,,41,
@@ -27,7 +28,7 @@ com.google.gson,,,44,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,30,14
 com.hubspot.jinjava,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2,,,,,,,,
 com.jcraft.jsch,1,,1,,,,,,,,,,,,,,,,,,,,,,,,,,1,,,,,,,,,,1,
 com.mitchellbosecke.pebble,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2,,,,,,,,
-com.opensymphony.xwork2.ognl,3,,,,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,,,,,,,,
+com.opensymphony.xwork2,67,,961,,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,,,,,,,867,94
 com.rabbitmq.client,,21,7,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,21,7,
 com.thoughtworks.xstream,1,,,,,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,
 com.unboundid.ldap.sdk,17,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,,,,,,,,,,,
@@ -55,7 +56,7 @@ jakarta.ws.rs.container,,9,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,9,,
 jakarta.ws.rs.core,2,,149,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2,,,,,,94,55
 java.awt,,,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3
 java.beans,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
-java.io,50,,45,,,22,,,,,,,,,,,,,,28,,,,,,,,,,,,,,,,,,,43,2
+java.io,50,,46,,,22,,,,,,,,,,,,,,28,,,,,,,,,,,,,,,,,,,44,2
 java.lang,31,,93,,13,,,,,,,,,,,,8,,,5,,,4,,,1,,,,,,,,,,,,,57,36
 java.net,13,3,23,,,,,,,,,,,,,,,,,,,,,,,,,,13,,,,,,,,,3,23,
 java.nio,53,,36,,,5,,,,,,,,,,,,,,47,,,,,,,,,1,,,,,,,,,,36,
@@ -121,6 +122,8 @@ org.apache.log4j,11,,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,,,,,,,,,,
 org.apache.logging.log4j,359,,8,,,,,,,,,,,,,,359,,,,,,,,,,,,,,,,,,,,,,4,4
 org.apache.shiro.codec,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
 org.apache.shiro.jndi,1,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,
+org.apache.struts.beanvalidation.validation.interceptor,,,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4,
+org.apache.struts2,11,,3873,,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,,,,,,,3839,34
 org.apache.tools.ant,11,,,,,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,,,,,,,
 org.apache.tools.zip,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
 org.apache.velocity.app,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,4,,,,,,,,

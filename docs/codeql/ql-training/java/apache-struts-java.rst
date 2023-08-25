@@ -56,7 +56,7 @@ Finding the RCE yourself
 
    **Hint**: Use ``Method.getDeclaringType()`` and ``Type.getASupertype()``
 
-#. Implement a ``DataFlow::Configuration``, defining the source as the first parameter of a ``toObject`` method, and the sink as an instance of ``UnsafeDeserializationSink``.
+#. Implement a ``DataFlow::ConfigSig``, defining the source as the first parameter of a ``toObject`` method, and the sink as an instance of ``UnsafeDeserializationSink``.
 
    **Hint**: Use ``Node::asParameter()``
 
@@ -99,13 +99,13 @@ Model answer, step 3
     * Configuration that tracks the flow of taint from the first parameter of
     * `ContentTypeHandler.toObject` to an instance of unsafe deserialization.
     */
-   class StrutsUnsafeDeserializationConfig extends Configuration {
-     StrutsUnsafeDeserializationConfig() { this = "StrutsUnsafeDeserializationConfig" }
-     override predicate isSource(Node source) {
+   module StrutsUnsafeDeserializationConfig implements ConfigSig {
+     predicate isSource(Node source) {
        source.asParameter() = any(ContentTypeHandlerDeserialization des).getParameter(0)
      }
-     override predicate isSink(Node sink) { sink instanceof UnsafeDeserializationSink }
+     predicate isSink(Node sink) { sink instanceof UnsafeDeserializationSink }
    }
+   module StrutsUnsafeDeserializationFlow = Global<StrutsUnsafeDeserializationConfig>;
 
 Model answer, step 4
 ====================
@@ -114,9 +114,8 @@ Model answer, step 4
 
    import PathGraph
    ...
-   from PathNode source, PathNode sink, StrutsUnsafeDeserializationConfig conf
-   where conf.hasFlowPath(source, sink)
-     and sink.getNode() instanceof UnsafeDeserializationSink
-   select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink, "Unsafe    deserialization of $@.", source, "user input"
+   from PathNode source, PathNode sink
+   where StrutsUnsafeDeserializationFlow::flowPath(source, sink)
+   select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink, "Unsafe deserialization of $@.", source, "user input"
 
 More full-featured version: https://github.com/github/securitylab/tree/main/CodeQL_Queries/java/Apache_Struts_CVE-2017-9805

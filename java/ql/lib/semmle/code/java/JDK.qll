@@ -177,6 +177,11 @@ class TypeObjectInputStream extends RefType {
   TypeObjectInputStream() { this.hasQualifiedName("java.io", "ObjectInputStream") }
 }
 
+/** The class `java.io.InputStream`. */
+class TypeInputStream extends RefType {
+  TypeInputStream() { this.hasQualifiedName("java.io", "InputStream") }
+}
+
 /** The class `java.nio.file.Paths`. */
 class TypePaths extends Class {
   TypePaths() { this.hasQualifiedName("java.nio.file", "Paths") }
