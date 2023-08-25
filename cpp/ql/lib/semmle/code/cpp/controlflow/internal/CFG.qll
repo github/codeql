@@ -337,7 +337,7 @@ private Node getControlOrderChildSparse(Node n, int i) {
       or
       i = 1 and result = del.getDestructorCall()
       or
-      i = 2 and result = del.getAllocatorCall()
+      i = 2 and result = del.getDeallocatorCall()
     )
   or
   n =
@@ -346,7 +346,7 @@ private Node getControlOrderChildSparse(Node n, int i) {
       or
       i = 1 and result = del.getDestructorCall()
       or
-      i = 2 and result = del.getAllocatorCall()
+      i = 2 and result = del.getDeallocatorCall()
     )
   or
   n =

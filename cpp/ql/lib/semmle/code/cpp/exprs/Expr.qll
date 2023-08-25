@@ -964,12 +964,17 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   }
 
   /**
+   * DEPRECATED: use `getDeallocatorCall` instead.
+   */
+  deprecated FunctionCall getAllocatorCall() { result = this.getChild(0) }
+
+  /**
    * Gets the call to a non-default `operator delete` that deallocates storage, if any.
    *
    * This will only be present when the type being deleted has a custom `operator delete` and
    * is not a class with a virtual destructor.
    */
-  FunctionCall getAllocatorCall() { result = this.getChild(0) }
+  FunctionCall getDeallocatorCall() { result = this.getChild(0) }
 
   /**
    * Holds if the deallocation function expects a size argument.
