@@ -1,3 +1,16 @@
 missingAnnotationOnSink
-failures
 testFailures
+| UnsafeUnpack.py:19:59:19:71 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:34:52:34:64 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:48:50:48:62 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:52:50:52:62 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:66:50:66:62 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:87:42:87:54 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:105:55:105:67 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:112:56:112:68 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:120:71:120:83 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:142:54:142:66 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:167:75:167:90 | Comment # $result=BAD    | Missing result:result=BAD |
+| UnsafeUnpack.py:176:64:176:76 | Comment # $result=BAD | Missing result:result=BAD |
+| UnsafeUnpack.py:201:47:201:59 | Comment # $result=BAD | Missing result:result=BAD |
+failures
