@@ -68,7 +68,7 @@ void report_error(const char*);
 #define ID(X) (X)
 
 void test_inside_macro_expansion(int x, int y) {
-  DOES_NOT_THROW(x == y); // GOOD [FALSE POSITIVE]
+  DOES_NOT_THROW(x == y); // GOOD
   x == y; // BAD
   x == ID(y); // BAD
 }
