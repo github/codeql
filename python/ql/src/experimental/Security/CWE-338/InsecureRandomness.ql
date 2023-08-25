@@ -14,11 +14,12 @@
  */
 
 import python
-import experimental.semmle.python.security.InsecureRandomness::InsecureRandomness
+import experimental.semmle.python.security.InsecureRandomness
 import semmle.python.dataflow.new.DataFlow
-import DataFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+import InsecureRandomness::Flow::PathGraph
+
+from InsecureRandomness::Flow::PathNode source, InsecureRandomness::Flow::PathNode sink
+where InsecureRandomness::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Cryptographically insecure $@ in a security context.",
   source.getNode(), "random value"
