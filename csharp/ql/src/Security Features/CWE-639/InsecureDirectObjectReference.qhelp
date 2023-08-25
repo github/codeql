@@ -18,6 +18,8 @@ Ensure that the current user is authorized to access the resource of the provide
 <p>In the following example, in the case marked BAD, there is no authorization check, so any user is able to edit any comment.
 In the case marked GOOD, there is a check that the current usr matches the author of the comment.</p>
 <sample src="WebFormsExample.cs" />
+<p>The following example shows a similar case for the ASP.NET Core framweork.</p>
+<sample src="MVCExample.cs" />
 
 
 </example>
@@ -25,6 +27,7 @@ In the case marked GOOD, there is a check that the current usr matches the autho
 
   <li>OWASP - <a href="https://wiki.owasp.org/index.php/Top_10_2013-A4-Insecure_Direct_Object_References">Insecure Direct Object Refrences</a>.</li>
   <li>OWASP - <a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References">Testing for Insecure Direct Object References</a>.</li>
+  <li>Microsoft Learn = <a href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased?view=aspnetcore-7.0">Resource-based authorization in ASP.NET Core</a>.</li>
 
 </references>
 </qhelp>
