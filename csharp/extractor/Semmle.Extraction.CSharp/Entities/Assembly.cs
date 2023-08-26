@@ -1,6 +1,5 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp;
 using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {

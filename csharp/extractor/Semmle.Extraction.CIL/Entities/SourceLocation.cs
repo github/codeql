@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Semmle.Extraction.PDB;
 
 namespace Semmle.Extraction.CIL.Entities

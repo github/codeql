@@ -64,10 +64,8 @@ class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode 
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
-      // Check for `ssl_verify_peer: false`
-      result = newCall.getKeywordArgumentIncludeHashArgument("ssl_verify_peer")
-    )
+    result =
+      connectionUse.(DataFlow::CallNode).getKeywordArgumentIncludeHashArgument("ssl_verify_peer")
   }
 
   cached
