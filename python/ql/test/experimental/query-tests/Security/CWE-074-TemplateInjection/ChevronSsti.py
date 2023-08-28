@@ -5,13 +5,13 @@ import chevron
 app = Flask(__name__)
 
 
-@route('/other')
+@app.route('/other')
 def a():
     template = request.args.get('template')
     return chevron.render(template, {"key": "value"})
 
 
-@route('/other2')
+@app.route('/other2')
 def b():
     template = request.args.get('template')
     args = {
