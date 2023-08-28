@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void LogInfo(string message) =>
             logger.Log(Severity.Info, message);
 
-        private void LogDebug(string message) =>
+        public void LogDebug(string message) =>
             logger.Log(Severity.Debug, message);
 
         private void LogError(string message) =>
