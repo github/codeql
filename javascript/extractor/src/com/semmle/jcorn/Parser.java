@@ -2840,7 +2840,7 @@ public class Parser {
     this.expect(TokenType.parenL);
     if (this.type == TokenType.semi) return this.parseFor(startLoc, null);
     boolean isLet = this.isLet();
-    if (this.type == TokenType._var || this.type == TokenType._const || isLet || this.type == TokenType._using) { // TODO: Add test for this.
+    if (this.type == TokenType._var || this.type == TokenType._const || isLet || this.type == TokenType._using) {
       Position initStartLoc = this.startLoc;
       String kind = isLet ? "let" : String.valueOf(this.value);
       this.next();
