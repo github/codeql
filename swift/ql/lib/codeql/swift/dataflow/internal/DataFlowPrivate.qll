@@ -256,7 +256,8 @@ private module Cached {
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
     TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
-    TArrayContent()
+    TArrayContent() or
+    TCollectionContent()
 }
 
 /**
@@ -702,6 +703,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     init.isFailable()
   )
   or
+  // assignment to an optional via `!`, e.g. `optional! = ...`
+  exists(ForceValueExpr fve, AssignExpr assign |
+    fve = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2.asExpr() = fve.getSubExpr() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
   // creation of an array `[v1,v2]`
   exists(ArrayExpr arr |
     node1.asExpr() = arr.getAnElement() and
@@ -716,6 +725,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     subscript = assign.getDest() and
     subscript.getBase().getType() instanceof ArrayType and
     c.isSingleton(any(Content::ArrayContent ac))
+  )
+  or
+  // creation of an optional via implicit wrapping keypath component
+  exists(KeyPathComponent component |
+    component.isOptionalWrapping() and
+    node1.(KeyPathComponentNodeImpl).getComponent() = component and
+    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
+    c instanceof OptionalSomeContentSet
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
@@ -780,6 +797,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       or
       c.isSingleton(any(Content::ArrayContent ac)) and
       component.isSubscript()
+      or
+      c instanceof OptionalSomeContentSet and
+      (
+        component.isOptionalForcing()
+        or
+        component.isOptionalChaining()
+      )
     )
   |
     // the next node is either the next element in the chain
@@ -794,9 +818,16 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    subscript.getBase().getType() instanceof ArrayType and
-    c.isSingleton(any(Content::ArrayContent ac))
+    (
+      subscript.getBase().getType() instanceof ArrayType and
+      c.isSingleton(any(Content::ArrayContent ac))
+      or
+      c.isSingleton(any(Content::CollectionContent ac))
+    )
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -898,7 +929,9 @@ class DataFlowExpr = Expr;
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { c instanceof Content::ArrayContent }
+predicate forceHighPrecision(Content c) {
+  c instanceof Content::ArrayContent or c instanceof Content::CollectionContent
+}
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.

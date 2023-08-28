@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.owasp.esapi", "Encoder", true, "encodeForHTML", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

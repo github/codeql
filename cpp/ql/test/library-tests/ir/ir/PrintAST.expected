@@ -1798,6 +1798,23 @@ ir.c:
 #   10|                 Type = [CTypedefType] MyCoords
 #   10|                 ValueCategory = lvalue
 #   11|     getStmt(3): [ReturnStmt] return ...
+#   13| [TopLevelFunction] void CStyleCast(void*)
+#   13|   <params>: 
+#   13|     getParameter(0): [Parameter] src
+#   13|         Type = [VoidPointerType] void *
+#   14|   getEntryPoint(): [BlockStmt] { ... }
+#   15|     getStmt(0): [DeclStmt] declaration
+#   15|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of dst
+#   15|           Type = [CharPointerType] char *
+#   15|         getVariable().getInitializer(): [Initializer] initializer for dst
+#   15|           getExpr(): [VariableAccess] src
+#   15|               Type = [VoidPointerType] void *
+#   15|               ValueCategory = prvalue(load)
+#   15|           getExpr().getFullyConverted(): [CStyleCast] (char *)...
+#   15|               Conversion = [PointerConversion] pointer conversion
+#   15|               Type = [CharPointerType] char *
+#   15|               ValueCategory = prvalue
+#   16|     getStmt(1): [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   <params>: 

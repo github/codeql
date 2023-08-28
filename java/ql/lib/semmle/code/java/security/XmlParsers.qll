@@ -9,6 +9,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.apache.CommonsXml
   private import semmle.code.java.frameworks.javaee.Xml
   private import semmle.code.java.frameworks.javase.Beans
+  private import semmle.code.java.frameworks.mdht.MdhtXml
   private import semmle.code.java.frameworks.rundeck.RundeckXml
 }
 

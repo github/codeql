@@ -60,7 +60,7 @@ extensions:
       - ["java.nio.file", "Files", True, "newBufferedReader", "(Path)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Files", True, "newByteChannel", "(Path,OpenOption[])", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Files", True, "newByteChannel", "(Path,Set,FileAttribute[])", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
-      - ["java.nio.file", "Files", True, "newDirectoryStream", "(Path,Filter)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
+      - ["java.nio.file", "Files", True, "newDirectoryStream", "(Path,DirectoryStream$Filter)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Files", True, "newDirectoryStream", "(Path)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Files", True, "walk", "(Path,FileVisitOption[])", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "FileSystem", True, "getPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.io.File;
-
+import java.nio.file.FileVisitOption;
 
 class Test {
 	public static void main(String[] args) throws Exception {
@@ -44,6 +44,15 @@ class Test {
 	public static int compareFiles(File f1, File f2) {
 		return f1.compareTo(
 			f2 // negative example (modeled as not a sink)
+		);
+	}
+		
+	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
+		Files.walk(
+			p, // negative example (modeled as a taint step)
+			o, // the implicit varargs array is a candidate
+			o // not a candidate (only the first arg corresponding to a varargs array
+			  // is extracted)
 		);
 	}
 }
