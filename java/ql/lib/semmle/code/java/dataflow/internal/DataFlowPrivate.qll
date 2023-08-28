@@ -113,11 +113,6 @@ private module CaptureInput implements VariableCapture::InputSig {
     VariableWrite() { super.getDestVar() = v }
 
     CapturedVariable getVariable() { result = v }
-
-    Node getSource() {
-      result.asExpr() = this.(VariableAssign).getSource() or
-      result.asExpr() = this.(AssignOp)
-    }
   }
 
   class VariableRead extends Expr instanceof RValue {
@@ -163,7 +158,13 @@ private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable() or
   exprNode(result.(CaptureFlow::MallocNode).getClosureExpr()).(PostUpdateNode).getPreUpdateNode() =
     n or
-  result.(CaptureFlow::VariableWriteSourceNode).getVariableWrite().getSource() = n
+  exists(CaptureInput::VariableWrite write |
+    result.(CaptureFlow::VariableWriteSourceNode).getVariableWrite() = write
+  |
+    n.asExpr() = write.(VariableAssign).getSource()
+    or
+    n.asExpr() = write.(AssignOp)
+  )
 }
 
 private predicate captureStoreStep(Node node1, CapturedVariableContent c, Node node2) {
