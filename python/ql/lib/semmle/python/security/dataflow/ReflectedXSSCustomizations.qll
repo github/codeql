@@ -5,6 +5,7 @@
  */
 
 private import python
+private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.frameworks.data.ModelsAsData
@@ -85,4 +86,10 @@ module ReflectedXss {
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
   class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+
+   class FlaskJsonify extends Sanitizer {
+     FlaskJsonify() {
+       this = [API::moduleImport("flask"), API::moduleImport("flask").getMember("Flask")].getMember("jsonify").getParameter(0).asSink()
+     }
+   }
 }
