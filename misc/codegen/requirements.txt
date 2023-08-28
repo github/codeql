@@ -1,5 +1,8 @@
-inflection
-pystache
-pytest
-pyyaml
-toposort
+inflection==0.5.1
+pystache==0.6.5
+pytest==7.4.0
+pyyaml==6.0.1
+toposort==1.10
+# for some reason implicit transitive dependency seems to be broken
+importlib_metadata==6.8.0
+typing_extensions==4.7.1
