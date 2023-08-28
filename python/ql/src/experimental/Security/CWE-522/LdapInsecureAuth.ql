@@ -12,7 +12,7 @@
 
 // determine precision above
 import python
-import experimental.semmle.python.security.LDAPInsecureAuth
+import experimental.semmle.python.security.LdapInsecureAuth
 import LdapInsecureAuthFlow::PathGraph
 
 from LdapInsecureAuthFlow::PathNode source, LdapInsecureAuthFlow::PathNode sink
