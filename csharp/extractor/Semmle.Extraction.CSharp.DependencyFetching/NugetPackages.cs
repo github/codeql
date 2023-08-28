@@ -14,6 +14,26 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class NugetPackages
     {
+        private readonly string nugetExe;
+        private readonly ProgressMonitor progressMonitor;
+
+        /// <summary>
+        /// The list of package files.
+        /// </summary>
+        public FileInfo[] PackageFiles { get; }
+
+        /// <summary>
+        /// The source directory used.
+        /// </summary>
+        public string SourceDirectory { get; }
+
+        /// <summary>
+        /// The computed packages directory.
+        /// This will be in the Temp location
+        /// so as to not trample the source tree.
+        /// </summary>
+        public TemporaryDirectory PackageDirectory { get; }
+
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
@@ -32,46 +52,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (!File.Exists(nugetExe))
                 throw new FileNotFoundException(string.Format("NuGet could not be found at {0}", nugetExe));
 
-            packages = new DirectoryInfo(SourceDirectory)
+            PackageFiles = new DirectoryInfo(SourceDirectory)
                 .EnumerateFiles("packages.config", SearchOption.AllDirectories)
                 .ToArray();
         }
-
-        // List of package files to download.
-        private readonly FileInfo[] packages;
-
-        /// <summary>
-        /// The list of package files.
-        /// </summary>
-        public IEnumerable<FileInfo> PackageFiles => packages;
-
-        /// <summary>
-        /// Download the packages to the temp folder.
-        /// </summary>
-        /// <param name="pm">The progress monitor used for reporting errors etc.</param>
-        public void InstallPackages()
-        {
-            foreach (var package in packages)
-            {
-                RestoreNugetPackage(package.FullName);
-            }
-        }
-
-        /// <summary>
-        /// The source directory used.
-        /// </summary>
-        public string SourceDirectory
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// The computed packages directory.
-        /// This will be in the Temp location
-        /// so as to not trample the source tree.
-        /// </summary>
-        public TemporaryDirectory PackageDirectory { get; }
 
         /// <summary>
         /// Restore all files in a specified package.
@@ -133,7 +117,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private readonly string nugetExe;
-        private readonly ProgressMonitor progressMonitor;
+        /// <summary>
+        /// Download the packages to the temp folder.
+        /// </summary>
+        /// <param name="pm">The progress monitor used for reporting errors etc.</param>
+        public void InstallPackages()
+        {
+            foreach (var package in PackageFiles)
+            {
+                RestoreNugetPackage(package.FullName);
+            }
+        }
     }
 }
