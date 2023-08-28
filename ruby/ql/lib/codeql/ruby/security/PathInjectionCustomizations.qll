@@ -11,6 +11,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 module PathInjection {
   /**
@@ -22,6 +23,10 @@ module PathInjection {
    * A data flow sink for path injection vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
+
+  private class DataExtensionSink extends Sink {
+    DataExtensionSink() { this = ModelOutput::getASinkNode("path-injection").asSink() }
+  }
 
   /**
    * A sanitizer for path injection vulnerabilities.

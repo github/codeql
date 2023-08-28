@@ -11,6 +11,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.Sanitizers
 private import codeql.ruby.frameworks.ActionController
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -27,6 +28,10 @@ module UrlRedirect {
    * A data flow sink for "URL redirection" vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
+
+  private class DataExtensionSqlExecutionSink extends Sink {
+    DataExtensionSqlExecutionSink() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
+  }
 
   /**
    * A sanitizer for "URL redirection" vulnerabilities.

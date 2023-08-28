@@ -11,6 +11,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.frameworks.ActiveJob
 private import codeql.ruby.frameworks.core.Module
 private import codeql.ruby.frameworks.core.Kernel
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 module UnsafeDeserialization {
   /**
@@ -25,6 +26,10 @@ module UnsafeDeserialization {
    * A data flow sink for unsafe deserialization vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
+
+  private class DataExtensionSink extends Sink {
+    DataExtensionSink() { this = ModelOutput::getASinkNode("unsafe-deserialization").asSink() }
+  }
 
   /**
    * A sanitizer for unsafe deserialization vulnerabilities.
