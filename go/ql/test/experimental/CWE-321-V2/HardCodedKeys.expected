@@ -1,0 +1,10 @@
+edges
+| golang-jwt-v5/golang-jwt-v5.go:19:14:19:34 | type conversion | golang-jwt-v5/golang-jwt-v5.go:37:9:37:14 | JwtKey |
+| golang-jwt-v5/golang-jwt-v5.go:19:21:19:33 | "AllYourBase" | golang-jwt-v5/golang-jwt-v5.go:19:14:19:34 | type conversion |
+nodes
+| golang-jwt-v5/golang-jwt-v5.go:19:14:19:34 | type conversion | semmle.label | type conversion |
+| golang-jwt-v5/golang-jwt-v5.go:19:21:19:33 | "AllYourBase" | semmle.label | "AllYourBase" |
+| golang-jwt-v5/golang-jwt-v5.go:37:9:37:14 | JwtKey | semmle.label | JwtKey |
+subpaths
+#select
+| golang-jwt-v5/golang-jwt-v5.go:37:9:37:14 | JwtKey | golang-jwt-v5/golang-jwt-v5.go:19:21:19:33 | "AllYourBase" | golang-jwt-v5/golang-jwt-v5.go:37:9:37:14 | JwtKey | This  $@. | golang-jwt-v5/golang-jwt-v5.go:19:21:19:33 | "AllYourBase" | Constant Key is used as JWT Secret key |
