@@ -2674,17 +2674,29 @@ public class Parser {
   // - 'async /*foo*/ function' is OK.
   // - 'async /*\n*/ function' is invalid.
   boolean isAsyncFunction() {
+    return isAsyncKeyword("async", "function");
+  }
+
+  boolean isAwaitUsing() {
+    return isAsyncKeyword("await", "using");
+  }
+
+  // check 'pre [no LineTerminator here] keyword'
+  // e.g. `await using" or `async function`.
+  // is only used for async/await parsing, so it requires ecmaVersion >= 8.
+  boolean isAsyncKeyword(String pre, String keyword) {
     if (this.type != TokenType.name
         || this.options.ecmaVersion() < 8
-        || !this.value.equals("async")) return false;
+        || !this.value.equals(pre)) return false;
 
     Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
     m.find(this.pos);
     int next = m.end();
+    int len = keyword.length();
     return !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
-        && inputSubstring(next, next + 8).equals("function")
-        && (next + 8 == this.input.length()
-            || !Identifiers.isIdentifierChar(this.input.codePointAt(next + 8), false));
+        && inputSubstring(next, next + len).equals(keyword)
+        && (next + len == this.input.length()
+            || !Identifiers.isIdentifierChar(this.input.codePointAt(next + len), false));
   }
 
   /**
@@ -2761,6 +2773,10 @@ public class Parser {
           : this.parseExport(startLoc, exports);
 
     } else {
+      if (this.isAwaitUsing() && (this.inAsync || options.esnext() && !this.inFunction)) {
+        this.next();
+        return this.parseVarStatement(startLoc, "using");
+      }
       if (this.isAsyncFunction() && declaration) {
         this.next();
         return this.parseFunctionStatement(startLoc, true);
@@ -2840,6 +2856,9 @@ public class Parser {
     this.expect(TokenType.parenL);
     if (this.type == TokenType.semi) return this.parseFor(startLoc, null);
     boolean isLet = this.isLet();
+    if (this.isAwaitUsing() && this.inAsync) {
+      this.next(); // just skip the await and treat it as a `using` statement
+    }
     if (this.type == TokenType._var || this.type == TokenType._const || isLet || this.type == TokenType._using) {
       Position initStartLoc = this.startLoc;
       String kind = isLet ? "let" : String.valueOf(this.value);

@@ -5,5 +5,17 @@ function g() {
     
     for (using stream2 = getResource(); ; ) {
         // ...
+        break;
     }
+}
+
+async function h() {
+    await using stream = getResource();
+
+    for (await using stream2 = getResource(); ; ) {
+        // ...
+        break;
+    }
+
+    console.log("end");
 }
