@@ -1,0 +1,30 @@
+"extensions":
+- "addsTo":
+    "extensible": "sinkModel"
+    "pack": "codeql/ruby-all"
+  "data":
+  - - "RequireAll"
+    - "Method[__require].Parameter[0]"
+    - "code-injection"
+  - - "RequireAll"
+    - "Method[__autoload].Parameter[1]"
+    - "path-injection"
+- "addsTo":
+    "extensible": "summaryModel"
+    "pack": "codeql/ruby-all"
+  "data":
+  - - "SpecHelper"
+    - "Method[fixture_path]"
+    - "Argument[1]"
+    - "ReturnValue"
+    - "taint"
+  - - "SpecHelper"
+    - "Method[fixture_path]"
+    - "Argument[0]"
+    - "ReturnValue"
+    - "taint"
+  - - "SpecHelper"
+    - "Method[relative_fixture_path]"
+    - "Argument[0]"
+    - "ReturnValue"
+    - "taint"
