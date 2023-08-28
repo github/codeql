@@ -17,9 +17,7 @@ import experimental.semmle.python.CookieHeader
 import experimental.semmle.python.security.injection.CookieInjection
 import CookieInjectionFlow::PathGraph
 
-from
-  CookieInjectionFlow::PathNode source, CookieInjectionFlow::PathNode sink,
-  string insecure
+from CookieInjectionFlow::PathNode source, CookieInjectionFlow::PathNode sink, string insecure
 where
   CookieInjectionFlow::flowPath(source, sink) and
   if exists(sink.getNode().(CookieSink))

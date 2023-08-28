@@ -26,11 +26,13 @@ private module PossibleTimingAttackAgainstSensitiveInfoConfig implements DataFlo
 }
 
 module PossibleTimingAttackAgainstSensitiveInfoFlow =
-TaintTracking::Global<PossibleTimingAttackAgainstSensitiveInfoConfig>;
+  TaintTracking::Global<PossibleTimingAttackAgainstSensitiveInfoConfig>;
 
 import PossibleTimingAttackAgainstSensitiveInfoFlow::PathGraph
 
-from PossibleTimingAttackAgainstSensitiveInfoFlow::PathNode source, PossibleTimingAttackAgainstSensitiveInfoFlow::PathNode sink
+from
+  PossibleTimingAttackAgainstSensitiveInfoFlow::PathNode source,
+  PossibleTimingAttackAgainstSensitiveInfoFlow::PathNode sink
 where PossibleTimingAttackAgainstSensitiveInfoFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
   "client-supplied token"

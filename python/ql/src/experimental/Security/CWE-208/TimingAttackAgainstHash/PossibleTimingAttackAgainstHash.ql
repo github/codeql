@@ -32,7 +32,9 @@ module PossibleTimingAttackAgainstHashFlow = TaintTracking::Global<PossibleTimin
 
 import PossibleTimingAttackAgainstHashFlow::PathGraph
 
-from PossibleTimingAttackAgainstHashFlow::PathNode source, PossibleTimingAttackAgainstHashFlow::PathNode sink
+from
+  PossibleTimingAttackAgainstHashFlow::PathNode source,
+  PossibleTimingAttackAgainstHashFlow::PathNode sink
 where PossibleTimingAttackAgainstHashFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Possible Timing attack against $@ validation.",
   source.getNode().(ProduceCryptoCall).getResultType(), "message"

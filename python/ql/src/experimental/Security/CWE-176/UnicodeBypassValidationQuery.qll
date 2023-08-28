@@ -36,8 +36,7 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo,
-    FlowState stateTo
+    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
     (
       exists(Escaping escaping | nodeFrom = escaping.getAnInput() and nodeTo = escaping.getOutput())

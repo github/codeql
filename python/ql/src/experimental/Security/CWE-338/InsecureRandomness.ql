@@ -16,7 +16,6 @@
 import python
 import experimental.semmle.python.security.InsecureRandomness
 import semmle.python.dataflow.new.DataFlow
-
 import InsecureRandomness::Flow::PathGraph
 
 from InsecureRandomness::Flow::PathNode source, InsecureRandomness::Flow::PathNode sink

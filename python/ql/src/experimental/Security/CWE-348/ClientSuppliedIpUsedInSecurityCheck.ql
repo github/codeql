@@ -47,9 +47,9 @@ private module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow::Co
   }
 }
 
-
 /** Global taint-tracking for detecting "client ip used in security check" vulnerabilities. */
-module ClientSuppliedIpUsedInSecurityCheckFlow = TaintTracking::Global<ClientSuppliedIpUsedInSecurityCheckConfig>;
+module ClientSuppliedIpUsedInSecurityCheckFlow =
+  TaintTracking::Global<ClientSuppliedIpUsedInSecurityCheckConfig>;
 
 from
   ClientSuppliedIpUsedInSecurityCheckFlow::PathNode source,
