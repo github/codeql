@@ -15,10 +15,10 @@
 
 // determine precision above
 import python
-import experimental.semmle.python.security.dataflow.ReflectedXSS
-import ReflectedXSSFlow::PathGraph
+import experimental.semmle.python.security.dataflow.EmailXss
+import EmailXssFlow::PathGraph
 
-from ReflectedXSSFlow::PathNode source, ReflectedXSSFlow::PathNode sink
-where ReflectedXSSFlow::flowPath(source, sink)
+from EmailXssFlow::PathNode source, EmailXssFlow::PathNode sink
+where EmailXssFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
   source.getNode(), "a user-provided value"
