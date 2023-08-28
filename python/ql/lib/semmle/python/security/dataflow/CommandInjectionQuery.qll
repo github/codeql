@@ -30,6 +30,9 @@ deprecated class Configuration extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * A taint-tracking configuration for detecting "command injection" vulnerabilities.
+ */
 module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 

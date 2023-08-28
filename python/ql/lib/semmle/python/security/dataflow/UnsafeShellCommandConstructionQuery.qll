@@ -35,6 +35,9 @@ deprecated class Configuration extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * A taint-tracking configuration for detecting "shell command constructed from library input" vulnerabilities.
+ */
 module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
