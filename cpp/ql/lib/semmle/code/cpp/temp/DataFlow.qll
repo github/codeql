@@ -26,8 +26,8 @@
   * global (inter-procedural) data flow analyses.
   */
  module DataFlow {
-  private import semmle.code.cpp.dataflow.internal.DataFlowImplSpecific
-  private import codeql.dataflow.DataFlow
-  import DataFlowMake<CppOldDataFlow>
-  import semmle.code.cpp.dataflow.internal.DataFlowImpl1
+    private import semmle.code.cpp.dataflow.internal.DataFlowImplSpecific
+    private import codeql.dataflow.DataFlow
+    import DataFlowMake<CppOldDataFlow>
+    import semmle.code.cpp.dataflow.internal.DataFlowImpl1
  }
