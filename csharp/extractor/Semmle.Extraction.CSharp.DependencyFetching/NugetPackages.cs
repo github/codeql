@@ -19,31 +19,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// The list of package files.
         /// </summary>
-        public FileInfo[] PackageFiles { get; }
-
-        /// <summary>
-        /// The source directory used.
-        /// </summary>
-        public string SourceDirectory { get; }
+        private readonly FileInfo[] packageFiles;
 
         /// <summary>
         /// The computed packages directory.
         /// This will be in the Temp location
         /// so as to not trample the source tree.
         /// </summary>
-        public TemporaryDirectory PackageDirectory { get; }
+        private readonly TemporaryDirectory packageDirectory;
 
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
         public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor)
         {
-            SourceDirectory = sourceDir;
-            PackageDirectory = packageDirectory;
+            this.packageDirectory = packageDirectory;
             this.progressMonitor = progressMonitor;
 
             nugetExe = ResolveNugetExe(sourceDir);
-            PackageFiles = new DirectoryInfo(SourceDirectory)
+            packageFiles = new DirectoryInfo(sourceDir)
                 .EnumerateFiles("packages.config", SearchOption.AllDirectories)
                 .ToArray();
         }
@@ -63,7 +57,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var nuget = Path.Combine(directory, "nuget", "nuget.exe");
             if (File.Exists(nuget))
             {
-                progressMonitor.LogInfo($"Found nuget.exe at {nuget}");
+                progressMonitor.FoundNuGet(nuget);
                 return nuget;
             }
             else
@@ -81,7 +75,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Nuget.exe already exists in the .nuget directory.
             if (File.Exists(nuget))
             {
-                progressMonitor.LogInfo($"Found nuget.exe at {nuget}");
+                progressMonitor.FoundNuGet(nuget);
                 return nuget;
             }
 
@@ -118,12 +112,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (Util.Win32.IsWindows())
             {
                 exe = nugetExe;
-                args = string.Format("install -OutputDirectory {0} {1}", PackageDirectory, package);
+                args = string.Format("install -OutputDirectory {0} {1}", packageDirectory, package);
             }
             else
             {
                 exe = "mono";
-                args = string.Format("{0} install -OutputDirectory {1} {2}", nugetExe, PackageDirectory, package);
+                args = string.Format("{0} install -OutputDirectory {1} {2}", nugetExe, packageDirectory, package);
             }
 
             var pi = new ProcessStartInfo(exe, args)
@@ -164,7 +158,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public void InstallPackages()
         {
-            foreach (var package in PackageFiles)
+            foreach (var package in packageFiles)
             {
                 RestoreNugetPackage(package.FullName);
             }
