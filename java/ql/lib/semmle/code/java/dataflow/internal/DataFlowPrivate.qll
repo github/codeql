@@ -150,14 +150,20 @@ class CapturedParameter = CaptureInput::CapturedParameter;
 module CaptureFlow = VariableCapture::Flow<CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
-  result = n.(CaptureNode).getSynthesizedCaptureNode() or
-  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
+  result = n.(CaptureNode).getSynthesizedCaptureNode()
+  or
+  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr()
+  or
   result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
-    n.(PostUpdateNode).getPreUpdateNode().asExpr() or
-  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter() or
-  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable() or
+    n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  or
+  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter()
+  or
+  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable()
+  or
   exprNode(result.(CaptureFlow::MallocNode).getClosureExpr()).(PostUpdateNode).getPreUpdateNode() =
-    n or
+    n
+  or
   exists(CaptureInput::VariableWrite write |
     result.(CaptureFlow::VariableWriteSourceNode).getVariableWrite() = write
   |
