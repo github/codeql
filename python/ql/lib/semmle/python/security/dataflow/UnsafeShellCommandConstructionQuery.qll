@@ -35,7 +35,7 @@ deprecated class Configuration extends TaintTracking::Configuration {
   }
 }
 
-private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
+module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }

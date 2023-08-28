@@ -30,7 +30,7 @@ deprecated class Configuration extends TaintTracking::Configuration {
   }
 }
 
-private module CommandInjectionConfig implements DataFlow::ConfigSig {
+module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }

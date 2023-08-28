@@ -88,7 +88,7 @@ class NormalizedUnchecked extends DataFlow::FlowState {
  *
  * Such checks are ineffective in the `NotNormalized` state.
  */
-private module PathInjectionConfig implements DataFlow::StateConfigSig {
+module PathInjectionConfig implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {

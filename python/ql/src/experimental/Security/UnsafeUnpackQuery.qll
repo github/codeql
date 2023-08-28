@@ -39,7 +39,7 @@ class AllTarfileOpens extends API::CallNode {
   }
 }
 
-private module UnsafeUnpackConfig implements DataFlow::ConfigSig {
+module UnsafeUnpackConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     // A source coming from a remote location
     source instanceof RemoteFlowSource
