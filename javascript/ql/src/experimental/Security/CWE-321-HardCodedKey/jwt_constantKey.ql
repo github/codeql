@@ -7,7 +7,7 @@
  * @id java/ip-address-spoofing
  * @tags security
  *       experimental
- *       external/cwe/cwe-348
+ *       external/cwe/CWE-321
  */
 
 import javascript
@@ -20,10 +20,11 @@ class JWTDecodeConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof StringLiteral }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink = API::moduleImport("jsonwebtoken").getMember("verify").getParameter(1).asSink()
+    sink = API::moduleImport("jsonwebtoken").getMember(["sign", "verify"]).getParameter(1).asSink()
   }
 }
 
 from JWTDecodeConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "this token $@.", sink.getNode(), "file system operation"
+select sink.getNode(), source, sink, "this $@. is used as a secret key", source.getNode(),
+  "Constant"
