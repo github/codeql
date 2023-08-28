@@ -1,6 +1,6 @@
 using System;
-using Microsoft.DiaSymReader;
 using System.Reflection;
+using Microsoft.DiaSymReader;
 
 #pragma warning disable IDE0060, CA1822
 

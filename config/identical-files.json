@@ -32,16 +32,6 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForPathname.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl1.qll"
   ],
-  "TaintTracking Java/C++/C#/Go/Python/Ruby/Swift": [
-    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTracking.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTracking.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTracking.qll",
-    "go/ql/lib/semmle/go/dataflow/internal/tainttracking1/TaintTracking.qll",
-    "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTracking.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/tainttracking1/TaintTracking.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTracking.qll",
-    "swift/ql/lib/codeql/swift/dataflow/internal/tainttracking1/TaintTracking.qll"
-  ],
   "TaintTracking Legacy Configuration Java/C++/C#/Go/Python/Ruby/Swift": [
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
@@ -482,10 +472,6 @@
     "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll",
     "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll",
     "swift/ql/lib/codeql/swift/security/internal/SensitiveDataHeuristics.qll"
-  ],
-  "CFG": [
-    "csharp/ql/lib/semmle/code/csharp/controlflow/internal/ControlFlowGraphImplShared.qll",
-    "swift/ql/lib/codeql/swift/controlflow/internal/ControlFlowGraphImplShared.qll"
   ],
   "TypeTracker": [
     "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",

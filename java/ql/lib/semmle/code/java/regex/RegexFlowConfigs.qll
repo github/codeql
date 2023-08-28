@@ -148,6 +148,8 @@ private module RegexFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
   }
+
+  int fieldFlowBranchLimit() { result = 1 }
 }
 
 private module RegexFlow = DataFlow::Global<RegexFlowConfig>;

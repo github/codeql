@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.activation", "FileDataSource", True, "FileDataSource", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["javax.activation", "URLDataSource", True, "URLDataSource", "", "", "Argument[0]", "request-forgery", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.activation", "DataHandler", True, "getContent", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.activation", "DataHandler", True, "getDataSource", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.activation", "DataHandler", True, "getInputStream", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.activation", "DataHandler", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.activation", "DataHandler", True, "writeTo", "(OutputStream)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["javax.activation", "DataSource", True, "getInputStream", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.activation", "DataSource", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

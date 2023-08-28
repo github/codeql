@@ -1604,8 +1604,6 @@ extensions:
       - ["org.apache.commons.lang", "SerializationUtils", "serialize", "(Serializable,OutputStream)", "summary", "df-generated"]
       - ["org.apache.commons.lang", "StringEscapeUtils", "escapeCsv", "(String)", "summary", "df-generated"]
       - ["org.apache.commons.lang", "StringEscapeUtils", "escapeCsv", "(Writer,String)", "summary", "df-generated"]
-      - ["org.apache.commons.lang", "StringEscapeUtils", "escapeHtml", "(String)", "summary", "df-generated"]
-      - ["org.apache.commons.lang", "StringEscapeUtils", "escapeHtml", "(Writer,String)", "summary", "df-generated"]
       - ["org.apache.commons.lang", "StringEscapeUtils", "escapeJava", "(String)", "summary", "df-generated"]
       - ["org.apache.commons.lang", "StringEscapeUtils", "escapeJava", "(Writer,String)", "summary", "df-generated"]
       - ["org.apache.commons.lang", "StringEscapeUtils", "escapeJavaScript", "(String)", "summary", "df-generated"]

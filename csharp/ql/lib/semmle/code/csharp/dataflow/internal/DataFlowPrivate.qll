@@ -819,7 +819,7 @@ private module Cached {
 
   cached
   newtype TNode =
-    TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof Expr } or
+    TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof Expr } or
     TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
     TCilSsaDefinitionExtNode(CilSsaImpl::DefinitionExt def) or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) {
@@ -835,19 +835,19 @@ private module Cached {
       not c.(Modifiable).isStatic()
     } or
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
-      any(Callable c).canYieldReturn(cfn.getElement())
+      any(Callable c).canYieldReturn(cfn.getAstNode())
     } or
     TAsyncReturnNode(ControlFlow::Nodes::ElementNode cfn) {
-      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.getElement())
+      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.getAstNode())
     } or
     TImplicitCapturedArgumentNode(ControlFlow::Nodes::ElementNode cfn, LocalScopeVariable v) {
       exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, cfn, _) |
         v = def.getSourceVariable().getAssignable()
       )
     } or
-    TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation } or
+    TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof ObjectCreation } or
     TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
-      cfn.getElement().(ObjectCreation).hasInitializer()
+      cfn.getAstNode().(ObjectCreation).hasInitializer()
     } or
     TExprPostUpdateNode(ControlFlow::Nodes::ExprNode cfn) {
       cfn = LocalFlow::getAPostUpdateNodeForArg(_)
@@ -1256,7 +1256,7 @@ private module ArgumentNodes {
       result.asCallable() = cfn.getEnclosingCallable()
     }
 
-    override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
 
     override Location getLocationImpl() { result = cfn.getLocation() }
 
@@ -1397,7 +1397,7 @@ private module ReturnNodes {
     private ControlFlow::Nodes::ElementNode cfn;
     private Expr expr;
 
-    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.getElement() }
+    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.getAstNode() }
 
     Expr getExpr() { result = expr }
 
@@ -2106,7 +2106,7 @@ private module PostUpdateNodes {
       result.asCallable() = cfn.getEnclosingCallable()
     }
 
-    override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
 
     override ControlFlow::Node getControlFlowNodeImpl() { none() }
 

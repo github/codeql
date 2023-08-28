@@ -1457,7 +1457,8 @@ module Make<RegexTreeViewSig TreeImpl> {
         result = getChar(ancestor) and
         ancestor = getAnAncestor(n) and
         i = nodeDepth(ancestor)
-      )
+      ) and
+      nodeDepth(n) < 100
     }
 
     /** Gets a string corresponding to `node`. */
