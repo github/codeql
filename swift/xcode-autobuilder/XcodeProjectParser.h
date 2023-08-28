@@ -3,11 +3,17 @@
 #include "swift/xcode-autobuilder/XcodeTarget.h"
 #include <vector>
 #include <string>
+#include <filesystem>
 
-struct Targets {
-  std::vector<Target> targets;
+struct ProjectStructure {
+  std::vector<XcodeTarget> xcodeTargets;
   bool xcodeEncountered;
-  bool swiftPackageEncountered;
+  // Swift Package Manager support
+  std::vector<std::filesystem::path> swiftPackages;
+  // CocoaPods support
+  std::vector<std::filesystem::path> podfiles;
+  // Carthage support
+  std::vector<std::filesystem::path> cartfiles;
 };
 
-Targets collectTargets(const std::string& workingDir);
+ProjectStructure scanProjectStructure(const std::string& workingDir);

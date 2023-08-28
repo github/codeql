@@ -305,7 +305,7 @@ void test21() {
 
   for (int i = 0; i < n; i += 2) {
     xs[i] = test21_get(i); // GOOD
-    xs[i+1] = test21_get(i+1); // $ alloc=L304 alloc=L304-1 deref=L308 // GOOD [FALSE POSITIVE]
+    xs[i+1] = test21_get(i+1); // GOOD
   }
 }
 
@@ -659,7 +659,7 @@ void test32(unsigned size) {
   xs++;
   if (xs >= end)
     return;
-  xs[0] = 0; // $ deref=L656->L662+1 deref=L657->L662+1 GOOD [FALSE POSITIVE]
+  xs[0] = 0; // GOOD
 }
 
 void test33(unsigned size, unsigned src_pos)
@@ -672,7 +672,7 @@ void test33(unsigned size, unsigned src_pos)
   while (dst_pos < size - 1) {
     dst_pos++;
     if (true)
-      xs[dst_pos++] = 0; // $ alloc=L667+1 deref=L675 // GOOD [FALSE POSITIVE]
+      xs[dst_pos++] = 0; // GOOD
   }
 }
 
@@ -712,5 +712,79 @@ void test35(unsigned long size, char* q)
   char* end = p + size; // $ alloc=L711
   if(q <= end) {
     deref(q);
+  }
+}
+
+void test21_simple(bool b) {
+  int n = 0;
+  if (b) n = 2;
+
+  int* xs = new int[n];
+
+  for (int i = 0; i < n; i += 2) {
+    xs[i+1] = 0; // GOOD
+  }
+}
+
+void test36(unsigned size, unsigned n) {
+  int* p = new int[size + 2];
+  if(n < size + 1) {
+    int* end = p + (n + 2); // $ alloc=L730+2
+    *end = 0; // $ deref=L733 // BAD
+  }
+}
+
+void test37(unsigned long n)
+{
+  int *p = new int[n];
+  for (unsigned long i = n; i != 0u; i--)
+  {
+    p[n - i] = 0; // GOOD
+  }
+}
+
+unsigned get(char);
+void exit(int);
+
+void error(const char * msg) {
+  exit(1);
+}
+
+void test38(unsigned size) {
+  char * alloc = new char[size];
+
+  unsigned pos = 0;
+  while (pos < size) {
+    char kind = alloc[pos];
+    unsigned n = get(alloc[pos]);
+    if (pos + n >= size) {
+      error("");
+    }
+    switch (kind) {
+    case '0':
+      if (n != 1)
+        error("");
+      char x = alloc[pos + 1]; // $ alloc=L754 deref=L767 // GOOD [FALSE POSITIVE]
+      break;
+    case '1':
+      if (n != 2)
+        error("");
+      char a = alloc[pos + 1]; // $ alloc=L754 deref=L772 // GOOD [FALSE POSITIVE]
+      char b = alloc[pos + 2];
+      break;
+    }
+    pos += 1 + n;
+  }
+}
+
+void test38_simple(unsigned size, unsigned pos, unsigned numParams) {
+  char * p = new char[size];
+
+  if (pos < size) {
+    if (pos + numParams < size) {
+      if (numParams == 1) {
+        char x = p[pos + 1]; // $ alloc=L781 deref=L786 // GOOD [FALSE POSITIVE]
+      }
+    }
   }
 }

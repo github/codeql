@@ -26,6 +26,8 @@ extensions:
       - ["javax.servlet.http", "HttpServletResponse", False, "addHeader", "", "", "Argument[0..1]", "response-splitting", "manual"]
       - ["javax.servlet.http", "HttpServletResponse", False, "sendError", "(int,String)", "", "Argument[1]", "information-leak", "manual"]
       - ["javax.servlet.http", "HttpServletResponse", False, "setHeader", "", "", "Argument[0..1]", "response-splitting", "manual"]
+      - ["javax.servlet.http", "HttpSession", True, "putValue", "", "", "Argument[0..1]", "trust-boundary-violation", "manual"]
+      - ["javax.servlet.http", "HttpSession", True, "setAttribute", "", "", "Argument[0..1]", "trust-boundary-violation", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

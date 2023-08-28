@@ -25,7 +25,7 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
 
 private predicate localCilTaintStep(CIL::DataFlowNode src, CIL::DataFlowNode sink) {
   src = sink.(CIL::BinaryArithmeticExpr).getAnOperand() or

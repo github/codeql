@@ -7,7 +7,7 @@ module SqlInjectionTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "sqlinjection" and
-    exists(DataFlow::Node sink | any(SqlInjection::Configuration c).hasFlow(_, sink) |
+    exists(DataFlow::Node sink | SqlInjection::Flow::flowTo(sink) |
       element = sink.toString() and
       value = sink.toString() and
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),

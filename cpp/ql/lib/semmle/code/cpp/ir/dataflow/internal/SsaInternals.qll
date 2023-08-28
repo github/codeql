@@ -10,32 +10,35 @@ private import ssa0.SsaInternals as SsaInternals0
 import SsaInternalsCommon
 
 private module SourceVariables {
-  int getMaxIndirectionForIRVariable(IRVariable var) {
-    exists(Type type, boolean isGLValue |
-      var.getLanguageType().hasType(type, isGLValue) and
-      if isGLValue = true
-      then result = 1 + getMaxIndirectionsForType(type)
-      else result = getMaxIndirectionsForType(type)
-    )
-  }
-
   cached
   private newtype TSourceVariable =
-    TSourceIRVariable(BaseIRVariable baseVar, int ind) {
-      ind = [0 .. getMaxIndirectionForIRVariable(baseVar.getIRVariable())]
-    } or
-    TCallVariable(AllocationInstruction call, int ind) {
-      ind = [0 .. countIndirectionsForCppType(getResultLanguageType(call))]
+    TMkSourceVariable(SsaInternals0::SourceVariable base, int ind) {
+      ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
     }
 
-  abstract class SourceVariable extends TSourceVariable {
+  class SourceVariable extends TSourceVariable {
+    SsaInternals0::SourceVariable base;
     int ind;
 
-    bindingset[ind]
-    SourceVariable() { any() }
+    SourceVariable() { this = TMkSourceVariable(base, ind) }
+
+    /** Gets the IR variable associated with this `SourceVariable`, if any. */
+    IRVariable getIRVariable() { result = base.(BaseIRVariable).getIRVariable() }
+
+    /**
+     * Gets the base source variable (i.e., the variable without any
+     * indirections) of this source variable.
+     */
+    SsaInternals0::SourceVariable getBaseVariable() { result = base }
 
     /** Gets a textual representation of this element. */
-    abstract string toString();
+    string toString() {
+      ind = 0 and
+      result = this.getBaseVariable().toString()
+      or
+      ind > 0 and
+      result = this.getBaseVariable().toString() + " indirection"
+    }
 
     /**
      * Gets the number of loads performed on the base source variable
@@ -43,65 +46,19 @@ private module SourceVariables {
      */
     int getIndirection() { result = ind }
 
-    /**
-     * Gets the base source variable (i.e., the variable without any
-     * indirections) of this source variable.
-     */
-    abstract BaseSourceVariable getBaseVariable();
-
     /** Holds if this variable is a glvalue. */
-    predicate isGLValue() { none() }
+    predicate isGLValue() { ind = 0 }
 
     /**
      * Gets the type of this source variable. If `isGLValue()` holds, then
      * the type of this source variable should be thought of as "pointer
      * to `getType()`".
      */
-    abstract DataFlowType getType();
-  }
-
-  class SourceIRVariable extends SourceVariable, TSourceIRVariable {
-    BaseIRVariable var;
-
-    SourceIRVariable() { this = TSourceIRVariable(var, ind) }
-
-    IRVariable getIRVariable() { result = var.getIRVariable() }
-
-    override BaseIRVariable getBaseVariable() { result.getIRVariable() = this.getIRVariable() }
-
-    override string toString() {
-      ind = 0 and
-      result = this.getIRVariable().toString()
-      or
-      ind > 0 and
-      result = this.getIRVariable().toString() + " indirection"
+    DataFlowType getType() {
+      if this.isGLValue()
+      then result = base.getType()
+      else result = getTypeImpl(base.getType(), ind - 1)
     }
-
-    override predicate isGLValue() { ind = 0 }
-
-    override DataFlowType getType() {
-      if ind = 0 then result = var.getType() else result = getTypeImpl(var.getType(), ind - 1)
-    }
-  }
-
-  class CallVariable extends SourceVariable, TCallVariable {
-    AllocationInstruction call;
-
-    CallVariable() { this = TCallVariable(call, ind) }
-
-    AllocationInstruction getCall() { result = call }
-
-    override BaseCallVariable getBaseVariable() { result.getCallInstruction() = call }
-
-    override string toString() {
-      ind = 0 and
-      result = "Call"
-      or
-      ind > 0 and
-      result = "Call indirection"
-    }
-
-    override DataFlowType getType() { result = getTypeImpl(call.getResultType(), ind) }
   }
 }
 
@@ -137,8 +94,9 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
 
 cached
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address, int indirectionIndex) {
-    exists(Instruction base | isDef(_, _, address, base, _, indirectionIndex) |
+  TDefImpl(BaseSourceVariableInstruction base, Operand address, int indirectionIndex) {
+    isDef(_, _, address, base, _, indirectionIndex) and
+    (
       // We only include the definition if the SSA pruning stage
       // concluded that the definition is live after the write.
       any(SsaInternals0::Def def).getAddressOperand() = address
@@ -148,8 +106,8 @@ private newtype TDefOrUseImpl =
       base.(VariableAddressInstruction).getAstVariable() instanceof GlobalLikeVariable
     )
   } or
-  TUseImpl(Operand operand, int indirectionIndex) {
-    isUse(_, operand, _, _, indirectionIndex) and
+  TUseImpl(BaseSourceVariableInstruction base, Operand operand, int indirectionIndex) {
+    isUse(_, operand, base, _, indirectionIndex) and
     not isDef(_, _, operand, _, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
@@ -236,7 +194,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
 
   /**
    * Gets the instruction that computes the base of this definition or use.
-   * This is always a `VariableAddressInstruction` or an `AllocationInstruction`.
+   * This is always a `VariableAddressInstruction` or an `CallInstruction`.
    */
   abstract BaseSourceVariableInstruction getBase();
 
@@ -308,15 +266,17 @@ abstract class DefImpl extends DefOrUseImpl {
 }
 
 private class DirectDef extends DefImpl, TDefImpl {
-  DirectDef() { this = TDefImpl(address, ind) }
+  BaseSourceVariableInstruction base;
 
-  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+  DirectDef() { this = TDefImpl(base, address, ind) }
 
-  override int getIndirection() { isDef(_, _, address, _, result, ind) }
+  override BaseSourceVariableInstruction getBase() { result = base }
 
-  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+  override int getIndirection() { isDef(_, _, address, base, result, ind) }
 
-  override predicate isCertain() { isDef(true, _, address, _, _, ind) }
+  override Node0Impl getValue() { isDef(_, result, address, base, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, base, _, ind) }
 }
 
 private class IteratorDef extends DefImpl, TIteratorDef {
@@ -359,6 +319,7 @@ abstract class UseImpl extends DefOrUseImpl {
 
 abstract private class OperandBasedUse extends UseImpl {
   Operand operand;
+  BaseSourceVariableInstruction base;
 
   bindingset[ind]
   OperandBasedUse() { any() }
@@ -366,24 +327,24 @@ abstract private class OperandBasedUse extends UseImpl {
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     // See the comment in `ssa0`'s `OperandBasedUse` for an explanation of this
     // predicate's implementation.
-    exists(BaseSourceVariableInstruction base | base = this.getBase() |
-      if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
-      then
-        exists(Operand op, int indirectionIndex, int indirection |
-          indirectionIndex = this.getIndirectionIndex() and
-          indirection = this.getIndirection() and
-          op =
-            min(Operand cand, int i |
-              isUse(_, cand, base, indirection, indirectionIndex) and
-              block.getInstruction(i) = cand.getUse()
-            |
-              cand order by i
-            ) and
-          block.getInstruction(index) = op.getUse()
-        )
-      else operand.getUse() = block.getInstruction(index)
-    )
+    if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
+    then
+      exists(Operand op, int indirectionIndex, int indirection |
+        indirectionIndex = this.getIndirectionIndex() and
+        indirection = this.getIndirection() and
+        op =
+          min(Operand cand, int i |
+            isUse(_, cand, base, indirection, indirectionIndex) and
+            block.getInstruction(i) = cand.getUse()
+          |
+            cand order by i
+          ) and
+        block.getInstruction(index) = op.getUse()
+      )
+    else operand.getUse() = block.getInstruction(index)
   }
+
+  final override BaseSourceVariableInstruction getBase() { result = base }
 
   final Operand getOperand() { result = operand }
 
@@ -391,25 +352,19 @@ abstract private class OperandBasedUse extends UseImpl {
 }
 
 private class DirectUse extends OperandBasedUse, TUseImpl {
-  DirectUse() { this = TUseImpl(operand, ind) }
+  DirectUse() { this = TUseImpl(base, operand, ind) }
 
-  override int getIndirection() { isUse(_, operand, _, result, ind) }
+  override int getIndirection() { isUse(_, operand, base, result, ind) }
 
-  override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
-
-  override predicate isCertain() { isUse(true, operand, _, _, ind) }
+  override predicate isCertain() { isUse(true, operand, base, _, ind) }
 
   override Node getNode() { nodeHasOperand(result, operand, ind) }
 }
 
 private class IteratorUse extends OperandBasedUse, TIteratorUse {
-  BaseSourceVariableInstruction container;
+  IteratorUse() { this = TIteratorUse(operand, base, ind) }
 
-  IteratorUse() { this = TIteratorUse(operand, container, ind) }
-
-  override int getIndirection() { isIteratorUse(container, operand, result, ind) }
-
-  override BaseSourceVariableInstruction getBase() { result = container }
+  override int getIndirection() { isIteratorUse(base, operand, result, ind) }
 
   override predicate isCertain() { none() }
 

@@ -1,6 +1,7 @@
 using Xunit;
-using Assert = Xunit.Assert;
 using Semmle.Util;
+
+using Assert = Xunit.Assert;
 
 namespace SemmleTests.Semmle.Util
 {

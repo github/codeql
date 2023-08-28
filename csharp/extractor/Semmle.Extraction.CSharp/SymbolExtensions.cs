@@ -1,10 +1,10 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp
 {

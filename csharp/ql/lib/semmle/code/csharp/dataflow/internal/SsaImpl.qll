@@ -71,7 +71,7 @@ module ExposedForTestingOnly {
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
  */
 private predicate variableReadActual(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
-  v.getAnAccess().(AssignableRead) = bb.getNode(i).getElement()
+  v.getAnAccess().(AssignableRead) = bb.getNode(i).getAstNode()
 }
 
 private module SourceVariableImpl {
@@ -939,7 +939,7 @@ private module CapturedVariableLivenessImpl {
     CapturedReadLocalScopeVariable captured, Callable c, boolean libraryDelegateCall
   ) {
     implicitReadCandidate(v, call) and
-    c = getARuntimeTarget(call.getElement(), libraryDelegateCall) and
+    c = getARuntimeTarget(call.getAstNode(), libraryDelegateCall) and
     captured = v.getAssignable() and
     capturerReads(_, captured)
   }

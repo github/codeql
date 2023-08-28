@@ -3,7 +3,7 @@
 #include <string>
 #include <binlog/adapt_struct.hpp>
 
-struct Target {
+struct XcodeTarget {
   std::string workspace;
   std::string project;
   std::string name;
@@ -11,4 +11,4 @@ struct Target {
   size_t fileCount;
 };
 
-BINLOG_ADAPT_STRUCT(Target, workspace, project, name, type, fileCount);
+BINLOG_ADAPT_STRUCT(XcodeTarget, workspace, project, name, type, fileCount);

@@ -296,11 +296,21 @@ module Public {
     predicate hasProvenance(Provenance provenance) { provenance = "manual" }
   }
 
-  /** A callable where there is no flow via the callable. */
-  class NeutralCallable extends SummarizedCallableBase {
+  /**
+   * A callable where there is no flow via the callable.
+   */
+  class NeutralSummaryCallable extends NeutralCallable {
+    NeutralSummaryCallable() { this.getKind() = "summary" }
+  }
+
+  /**
+   * A callable that has a neutral model.
+   */
+  class NeutralCallable extends NeutralCallableBase {
+    private string kind;
     private Provenance provenance;
 
-    NeutralCallable() { neutralSummaryElement(this, provenance) }
+    NeutralCallable() { neutralElement(this, kind, provenance) }
 
     /**
      * Holds if the neutral is auto generated.
@@ -316,6 +326,11 @@ module Public {
      * Holds if the neutral has provenance `p`.
      */
     predicate hasProvenance(Provenance p) { p = provenance }
+
+    /**
+     * Gets the kind of the neutral.
+     */
+    string getKind() { result = kind }
   }
 }
 
@@ -1318,6 +1333,11 @@ module Private {
       /** Gets the string representation of this callable used by `neutral/1`. */
       abstract string getCallableCsv();
 
+      /**
+       * Gets the kind of the neutral.
+       */
+      string getKind() { result = super.getKind() }
+
       string toString() { result = super.toString() }
     }
 
@@ -1358,12 +1378,13 @@ module Private {
 
     /**
      * Holds if a neutral model `csv` exists (semi-colon separated format). Used for testing purposes.
-     * The syntax is: "namespace;type;name;signature;provenance"",
+     * The syntax is: "namespace;type;name;signature;kind;provenance"",
      */
     query predicate neutral(string csv) {
       exists(RelevantNeutralCallable c |
         csv =
           c.getCallableCsv() // Callable information
+            + c.getKind() + ";" // kind
             + renderProvenanceNeutral(c) // provenance
       )
     }

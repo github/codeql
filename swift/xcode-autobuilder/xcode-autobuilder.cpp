@@ -24,12 +24,6 @@ constexpr codeql::SwiftDiagnostic noSwiftTarget{
     .action = "To analyze a custom set of source files, set up a [manual build "
               "command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
-constexpr codeql::SwiftDiagnostic spmNotSupported{
-    .id = "spm-not-supported",
-    .name = "Swift Package Manager is not supported",
-    .action = "Swift Package Manager builds are not currently supported by `autobuild`. Set up a "
-              "[manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
-
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};
   return ret;
@@ -44,38 +38,63 @@ static bool endsWith(std::string_view s, std::string_view suffix) {
   return s.size() >= suffix.size() && s.substr(s.size() - suffix.size()) == suffix;
 }
 
-static bool isNonSwiftOrTestTarget(const Target& t) {
+static bool isNonSwiftOrTestTarget(const XcodeTarget& t) {
   return t.fileCount == 0 || t.type == uiTest || t.type == unitTest ||
          // unknown target types can be legitimate, let's do a name-based heuristic then
          (t.type == unknownType && (endsWith(t.name, "Tests") || endsWith(t.name, "Test")));
 }
 
-static void autobuild(const CLIArgs& args) {
-  auto collected = collectTargets(args.workingDir);
-  auto& targets = collected.targets;
-  for (const auto& t : targets) {
+static void buildSwiftPackages(const std::vector<std::filesystem::path>& swiftPackages,
+                               bool dryRun) {
+  auto any_successful =
+      std::any_of(std::begin(swiftPackages), std::end(swiftPackages), [&](auto& packageFile) {
+        LOG_INFO("Building Swift package: {}", packageFile);
+        return buildSwiftPackage(packageFile, dryRun);
+      });
+  if (!any_successful) {
+    codeql::Log::flush();
+    exit(1);
+  }
+}
+
+static bool autobuild(const CLIArgs& args) {
+  auto structure = scanProjectStructure(args.workingDir);
+  auto& xcodeTargets = structure.xcodeTargets;
+  auto& swiftPackages = structure.swiftPackages;
+  for (const auto& t : xcodeTargets) {
     LOG_INFO("{}", t);
   }
   // Filter out targets that are tests or have no swift source files
-  targets.erase(std::remove_if(std::begin(targets), std::end(targets), isNonSwiftOrTestTarget),
-                std::end(targets));
+  xcodeTargets.erase(
+      std::remove_if(std::begin(xcodeTargets), std::end(xcodeTargets), isNonSwiftOrTestTarget),
+      std::end(xcodeTargets));
 
   // Sort targets by the amount of files in each
-  std::sort(std::begin(targets), std::end(targets),
-            [](Target& lhs, Target& rhs) { return lhs.fileCount > rhs.fileCount; });
-  if ((!collected.xcodeEncountered || targets.empty()) && collected.swiftPackageEncountered) {
-    DIAGNOSE_ERROR(spmNotSupported,
-                   "A Swift package was detected, but no viable Xcode target was found.");
-  } else if (!collected.xcodeEncountered) {
-    DIAGNOSE_ERROR(noProjectFound, "`autobuild` could not detect an Xcode project or workspace.");
-  } else if (targets.empty()) {
+  std::sort(std::begin(xcodeTargets), std::end(xcodeTargets),
+            [](XcodeTarget& lhs, XcodeTarget& rhs) { return lhs.fileCount > rhs.fileCount; });
+
+  if (structure.xcodeEncountered && xcodeTargets.empty() && swiftPackages.empty()) {
+    // Report error only when there are no Xcode targets and no Swift packages
     DIAGNOSE_ERROR(noSwiftTarget, "All targets found within Xcode projects or workspaces either "
                                   "contain no Swift source files, or are tests.");
-  } else {
-    LOG_INFO("Selected {}", targets.front());
-    buildTarget(targets.front(), args.dryRun);
-    return;
+    return false;
+  } else if (!structure.xcodeEncountered && swiftPackages.empty()) {
+    DIAGNOSE_ERROR(noProjectFound,
+                   "`autobuild` detected neither an Xcode project or workspace, nor a Swift package");
+    return false;
+  } else if (!xcodeTargets.empty()) {
+    LOG_INFO("Building Xcode target: {}", xcodeTargets.front());
+    installDependencies(structure, args.dryRun);
+    auto buildSucceeded = buildXcodeTarget(xcodeTargets.front(), args.dryRun);
+    // If build failed, try to build Swift packages
+    if (!buildSucceeded && !swiftPackages.empty()) {
+      buildSwiftPackages(swiftPackages, args.dryRun);
+    }
+    return buildSucceeded;
+  } else if (!swiftPackages.empty()) {
+    buildSwiftPackages(swiftPackages, args.dryRun);
   }
+  return true;
 }
 
 static CLIArgs parseCLIArgs(int argc, char** argv) {
@@ -96,7 +115,10 @@ static CLIArgs parseCLIArgs(int argc, char** argv) {
 
 int main(int argc, char** argv) {
   auto args = parseCLIArgs(argc, argv);
-  autobuild(args);
+  auto success = autobuild(args);
   codeql::Log::flush();
+  if (!success) {
+    return 1;
+  }
   return 0;
 }
