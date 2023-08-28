@@ -25,6 +25,10 @@
   * global (inter-procedural) taint-tracking analyses.
   */
  module TaintTracking {
-   import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTracking
-   import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTrackingImpl
+  import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTrackingParameter::Public
+  private import semmle.code.cpp.dataflow.internal.DataFlowImplSpecific
+  private import semmle.code.cpp.dataflow.internal.TaintTrackingImplSpecific
+  private import codeql.dataflow.TaintTracking
+  import TaintFlowMake<CppOldDataFlow, CppOldTaintTracking>
+  import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTrackingImpl
  }
