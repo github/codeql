@@ -1,5 +1,2 @@
 testFailures
-| realistic.cpp:61:14:61:55 | bufferLen | Unexpected result: ir= |
-| realistic.cpp:61:59:61:84 | // $ ast ir=53:47 ir=53:55 | Missing result:ir=53:47 |
-| realistic.cpp:61:59:61:84 | // $ ast ir=53:47 ir=53:55 | Missing result:ir=53:55 |
 failures

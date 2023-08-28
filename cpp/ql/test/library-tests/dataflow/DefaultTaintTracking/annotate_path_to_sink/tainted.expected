@@ -1,6 +1,4 @@
 WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted.ql:9,8-47)
 WARNING: Predicate tainted has been deprecated and may be removed in future (tainted.ql:20,49-74)
 testFailures
-| test_diff.cpp:100:10:100:14 | * ... | Unexpected result: ir-sink=98:17 |
-| test_diff.cpp:102:26:102:30 | (const char *)... | Unexpected result: ir-path=98:17 |
 failures
