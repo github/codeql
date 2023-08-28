@@ -8,3 +8,7 @@ function v() {
 
     const bar = undefined;
 }
+
+async function b() {
+    await using foo = null as any;
+}
