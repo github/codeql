@@ -5,7 +5,7 @@
 private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import TemplateInjectionCustomizations::SqlInjection
+import TemplateInjectionCustomizations::TemplateInjection
 
 module TemplateInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof Source }

@@ -16,7 +16,7 @@ private import TemplateConstructionConcept
  * "template injection"
  * vulnerabilities, as well as extension points for adding your own.
  */
-module SqlInjection {
+module TemplateInjection {
   /**
    * A data flow source for "template injection" vulnerabilities.
    */
