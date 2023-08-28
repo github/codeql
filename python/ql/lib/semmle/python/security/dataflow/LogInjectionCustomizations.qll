@@ -51,11 +51,11 @@ module LogInjection {
       this = any(Logging write).getAnInput() and
       // since the inner implementation of the `logging.Logger.warn` function is
       // ```py
-      // class Logger
+      // class Logger:
       //     def warn(self, msg, *args, **kwargs):
-      //     warnings.warn("The 'warn' method is deprecated, "
-      //         "use 'warning' instead", DeprecationWarning, 2)
-      //     self.warning(msg, *args, **kwargs)
+      //         warnings.warn("The 'warn' method is deprecated, "
+      //             "use 'warning' instead", DeprecationWarning, 2)
+      //         self.warning(msg, *args, **kwargs)
       // ```
       // any time we would report flow to such a logging sink, we can ALSO report
       // the flow to the `self.warning` sink -- obviously we don't want that.
