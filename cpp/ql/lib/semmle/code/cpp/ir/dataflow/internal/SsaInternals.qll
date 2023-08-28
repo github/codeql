@@ -684,8 +684,41 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
-private predicate isArgumentOfCallable(DataFlowCall call, ArgumentNode arg) {
-  arg.argumentOf(call, _)
+private predicate isArgumentOfCallableInstruction(DataFlowCall call, Instruction instr) {
+  isArgumentOfCallableOperand(call, unique( | | getAUse(instr)))
+}
+
+private predicate isArgumentOfCallableOperand(DataFlowCall call, Operand operand) {
+  operand.(ArgumentOperand).getCall() = call
+  or
+  exists(FieldAddressInstruction fai |
+    fai.getObjectAddressOperand() = operand and
+    isArgumentOfCallableInstruction(call, fai)
+  )
+  or
+  exists(Instruction deref |
+    isArgumentOfCallableInstruction(call, deref) and
+    isDereference(deref, operand, _)
+  )
+  or
+  exists(Instruction instr |
+    isArgumentOfCallableInstruction(call, instr) and
+    conversionFlow(operand, instr, _, _)
+  )
+}
+
+private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
+  isArgumentOfCallableOperand(call, n.asOperand())
+  or
+  exists(Operand op |
+    n.(IndirectOperand).hasOperandAndIndirectionIndex(op, _) and
+    isArgumentOfCallableOperand(call, op)
+  )
+  or
+  exists(Instruction instr |
+    n.(IndirectInstruction).hasInstructionAndIndirectionIndex(instr, _) and
+    isArgumentOfCallableInstruction(call, instr)
+  )
 }
 
 /** Holds if there is def-use or use-use flow from `pun` to `nodeTo`. */

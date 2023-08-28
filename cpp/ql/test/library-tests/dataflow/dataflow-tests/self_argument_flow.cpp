@@ -7,7 +7,7 @@ namespace {
 
   Foo* test_self_argument_flow() {
     Foo *info;
-    acquire(info->string); // $ SPURIOUS: self-arg-flow
+    acquire(info->string); // clean
 
     return info;
   }
