@@ -9,6 +9,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 module CommandInjection {
   /**
@@ -23,6 +24,10 @@ module CommandInjection {
    * A data flow sink for command-injection vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
+
+  private class DataExtensionSink extends Sink {
+    DataExtensionSink() { this = ModelOutput::getASinkNode("command-injection").asSink() }
+  }
 
   /**
    * A sanitizer for command-injection vulnerabilities.

@@ -10,6 +10,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.Sanitizers
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
@@ -25,6 +26,10 @@ module ServerSideRequestForgery {
    * A data flow sink for server side request forgery vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
+
+  private class DataExtensionSink extends Sink {
+    DataExtensionSink() { this = ModelOutput::getASinkNode("request-forgery").asSink() }
+  }
 
   /**
    * A sanitizer for server side request forgery vulnerabilities.

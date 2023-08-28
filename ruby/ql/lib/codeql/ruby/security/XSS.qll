@@ -13,6 +13,7 @@ private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -29,6 +30,10 @@ private module Shared {
    * A data flow sink for "server-side cross-site scripting" vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node { }
+
+  private class DataExtensionSink extends Sink {
+    DataExtensionSink() { this = ModelOutput::getASinkNode("html-injection").asSink() }
+  }
 
   /**
    * A sanitizer for "server-side cross-site scripting" vulnerabilities.

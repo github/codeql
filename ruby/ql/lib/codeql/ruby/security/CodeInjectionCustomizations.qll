@@ -4,6 +4,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -89,6 +90,10 @@ module CodeInjection {
 
     /** Holds if this sink is safe for an attacker that only controls a substring. */
     FlowState::State getAState() { any() }
+  }
+
+  private class DataExtensionSqlExecutionSink extends Sink {
+    DataExtensionSqlExecutionSink() { this = ModelOutput::getASinkNode("code-injection").asSink() }
   }
 
   /**

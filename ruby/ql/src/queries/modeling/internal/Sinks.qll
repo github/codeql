@@ -21,6 +21,7 @@ module Sinks {
           [
             "code-injection", "command-injection", "path-injection", "sql-injection",
             "sql-injection", "request-forgery", "url-redirection", "unsafe-deserialization",
+            "html-injection"
           ]
       }
 
