@@ -22,13 +22,14 @@ import experimental.semmle.python.security.TimingAttack
  * A configuration that tracks data flow from cryptographic operations
  * to equality test
  */
-private module PossibleTimingAttackAgainstHash implements DataFlow::ConfigSig {
+private module PossibleTimingAttackAgainstHashConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
 
-module PossibleTimingAttackAgainstHashFlow = TaintTracking::Global<PossibleTimingAttackAgainstHash>;
+module PossibleTimingAttackAgainstHashFlow =
+  TaintTracking::Global<PossibleTimingAttackAgainstHashConfig>;
 
 import PossibleTimingAttackAgainstHashFlow::PathGraph
 

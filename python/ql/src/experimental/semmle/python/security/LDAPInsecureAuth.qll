@@ -88,7 +88,7 @@ class LdapStringVar extends BinaryExpr {
 /**
  * A taint-tracking configuration for detecting LDAP insecure authentications.
  */
-private module LDAPInsecureAuthConfig implements DataFlow::ConfigSig {
+private module LdapInsecureAuthConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource or
     source.asExpr() instanceof LdapFullHost or
@@ -104,4 +104,4 @@ private module LDAPInsecureAuthConfig implements DataFlow::ConfigSig {
 }
 
 /** Global taint-tracking for detecting "LDAP insecure authentications" vulnerabilities. */
-module LDAPInsecureAuthFlow = TaintTracking::Global<LDAPInsecureAuthConfig>;
+module LdapInsecureAuthFlow = TaintTracking::Global<LdapInsecureAuthConfig>;

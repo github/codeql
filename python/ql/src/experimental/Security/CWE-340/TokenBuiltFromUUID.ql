@@ -39,7 +39,7 @@ class TokenAssignmentValueSink extends DataFlow::Node {
   }
 }
 
-private module TokenBuiltFromUUIDConfig implements DataFlow::ConfigSig {
+private module TokenBuiltFromUuidConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof PredictableResultSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TokenAssignmentValueSink }
@@ -54,10 +54,10 @@ private module TokenBuiltFromUUIDConfig implements DataFlow::ConfigSig {
 }
 
 /** Global taint-tracking for detecting "TokenBuiltFromUUID" vulnerabilities. */
-module TokenBuiltFromUUIDFlow = TaintTracking::Global<TokenBuiltFromUUIDConfig>;
+module TokenBuiltFromUuidFlow = TaintTracking::Global<TokenBuiltFromUuidConfig>;
 
-import TokenBuiltFromUUIDFlow::PathGraph
+import TokenBuiltFromUuidFlow::PathGraph
 
-from TokenBuiltFromUUIDFlow::PathNode source, TokenBuiltFromUUIDFlow::PathNode sink
-where TokenBuiltFromUUIDFlow::flowPath(source, sink)
+from TokenBuiltFromUuidFlow::PathNode source, TokenBuiltFromUuidFlow::PathNode sink
+where TokenBuiltFromUuidFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Token built from $@.", source.getNode(), "predictable value"

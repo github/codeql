@@ -21,7 +21,7 @@ module InsecureRandomness {
    * A taint-tracking configuration for reasoning about random values that are
    * not cryptographically secure.
    */
-  private module Configuration implements DataFlow::ConfigSig {
+  private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
@@ -30,5 +30,5 @@ module InsecureRandomness {
   }
 
   /** Global taint-tracking for detecting "random values that are not cryptographically secure" vulnerabilities. */
-  module Flow = TaintTracking::Global<Configuration>;
+  module Flow = TaintTracking::Global<Config>;
 }
