@@ -556,5 +556,9 @@
   "EncryptionKeySizes Python/Java": [
     "python/ql/lib/semmle/python/security/internal/EncryptionKeySizes.qll",
     "java/ql/lib/semmle/code/java/security/internal/EncryptionKeySizes.qll"
+  ],
+  "Python model summaries test extension": [
+    "python/ql/test/experimental/dataflow/model-summaries/InlineTaintTest.ext.yml",
+    "python/ql/test/experimental/dataflow/model-summaries/NormalDataflowTest.ext.yml"
   ]
 }

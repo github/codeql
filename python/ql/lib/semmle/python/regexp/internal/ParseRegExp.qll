@@ -617,7 +617,7 @@ class RegExp extends Expr instanceof StrConst {
   private predicate group_start(int start, int end) {
     this.non_capturing_group_start(start, end)
     or
-    this.flag_group_start(start, end, _)
+    this.flag_group_start(start, end)
     or
     this.named_group_start(start, end)
     or
@@ -679,12 +679,29 @@ class RegExp extends Expr instanceof StrConst {
     end = min(int i | i > start + 4 and this.getChar(i) = "?")
   }
 
-  private predicate flag_group_start(int start, int end, string c) {
+  /**
+   * Holds if a parse mode starts between `start` and `end`.
+   */
+  private predicate flag_group_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    end = start + 3 and
-    c = this.getChar(start + 2) and
-    c in ["i", "L", "m", "s", "u", "x"]
+    this.getChar(start + 2) in ["i", "L", "m", "s", "u", "x"] and
+    end = start + 2
+  }
+
+  /**
+   * Holds if a parse mode group is between `start` and `end`, and includes the
+   * mode flag `c`. For example the following span, with mode flag `i`:
+   * ```
+   * (?i)
+   * ```
+   */
+  private predicate flag_group(int start, int end, string c) {
+    exists(int inStart, int inEnd |
+      this.flag_group_start(start, inStart) and
+      this.groupContents(start, end, inStart, inEnd) and
+      this.getChar([inStart .. inEnd - 1]) = c
+    )
   }
 
   /**
@@ -692,7 +709,7 @@ class RegExp extends Expr instanceof StrConst {
    * it is defined by a prefix.
    */
   string getModeFromPrefix() {
-    exists(string c | this.flag_group_start(_, _, c) |
+    exists(string c | this.flag_group(_, _, c) |
       c = "i" and result = "IGNORECASE"
       or
       c = "L" and result = "LOCALE"

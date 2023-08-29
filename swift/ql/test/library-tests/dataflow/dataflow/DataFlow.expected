@@ -368,9 +368,12 @@ edges
 | test.swift:697:15:697:15 | matrix [Array element, Array element] | test.swift:697:15:697:23 | ...[...] [Array element] |
 | test.swift:697:15:697:23 | ...[...] [Array element] | test.swift:697:15:697:26 | ...[...] |
 | test.swift:700:5:700:5 | [post] matrix2 [Array element, Array element] | test.swift:701:15:701:15 | matrix2 [Array element, Array element] |
+| test.swift:700:5:700:5 | [post] matrix2 [Collection element, Array element] | test.swift:701:15:701:15 | matrix2 [Collection element, Array element] |
 | test.swift:700:5:700:14 | [post] getter for ...[...] [Array element] | test.swift:700:5:700:5 | [post] matrix2 [Array element, Array element] |
+| test.swift:700:5:700:14 | [post] getter for ...[...] [Array element] | test.swift:700:5:700:5 | [post] matrix2 [Collection element, Array element] |
 | test.swift:700:21:700:28 | call to source() | test.swift:700:5:700:14 | [post] getter for ...[...] [Array element] |
 | test.swift:701:15:701:15 | matrix2 [Array element, Array element] | test.swift:701:15:701:24 | ...[...] [Array element] |
+| test.swift:701:15:701:15 | matrix2 [Collection element, Array element] | test.swift:701:15:701:24 | ...[...] [Array element] |
 | test.swift:701:15:701:24 | ...[...] [Array element] | test.swift:701:15:701:27 | ...[...] |
 | test.swift:712:5:712:5 | [post] arr6 [Array element] | test.swift:713:15:713:15 | arr6 [Array element] |
 | test.swift:712:17:712:24 | call to source() | test.swift:712:5:712:5 | [post] arr6 [Array element] |
@@ -842,9 +845,11 @@ nodes
 | test.swift:697:15:697:23 | ...[...] [Array element] | semmle.label | ...[...] [Array element] |
 | test.swift:697:15:697:26 | ...[...] | semmle.label | ...[...] |
 | test.swift:700:5:700:5 | [post] matrix2 [Array element, Array element] | semmle.label | [post] matrix2 [Array element, Array element] |
+| test.swift:700:5:700:5 | [post] matrix2 [Collection element, Array element] | semmle.label | [post] matrix2 [Collection element, Array element] |
 | test.swift:700:5:700:14 | [post] getter for ...[...] [Array element] | semmle.label | [post] getter for ...[...] [Array element] |
 | test.swift:700:21:700:28 | call to source() | semmle.label | call to source() |
 | test.swift:701:15:701:15 | matrix2 [Array element, Array element] | semmle.label | matrix2 [Array element, Array element] |
+| test.swift:701:15:701:15 | matrix2 [Collection element, Array element] | semmle.label | matrix2 [Collection element, Array element] |
 | test.swift:701:15:701:24 | ...[...] [Array element] | semmle.label | ...[...] [Array element] |
 | test.swift:701:15:701:27 | ...[...] | semmle.label | ...[...] |
 | test.swift:712:5:712:5 | [post] arr6 [Array element] | semmle.label | [post] arr6 [Array element] |

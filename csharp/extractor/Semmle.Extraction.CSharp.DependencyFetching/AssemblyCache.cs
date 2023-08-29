@@ -59,10 +59,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // The OrderBy is used to ensure that we by default select the highest version number.
             foreach (var info in assemblyInfoByFileName.Values
                 .OrderBy(info => info.Name)
+                .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
                 .ThenBy(info => info.Version ?? emptyVersion))
             {
                 foreach (var index in info.IndexStrings)
+                {
                     assemblyInfoById[index] = info;
+                }
             }
         }
 

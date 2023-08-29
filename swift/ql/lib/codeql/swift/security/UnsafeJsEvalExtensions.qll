@@ -102,30 +102,6 @@ private class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
  */
 private class DefaultUnsafeJsEvalAdditionalFlowStep extends UnsafeJsEvalAdditionalFlowStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(Argument arg |
-      arg =
-        any(CallExpr ce |
-          ce.getStaticTarget()
-              .(FreeFunction)
-              .hasName([
-                  "JSStringCreateWithUTF8CString(_:)", "JSStringCreateWithCharacters(_:_:)",
-                  "JSStringRetain(_:)"
-                ])
-        ).getArgument(0)
-    |
-      nodeFrom.asExpr() = arg.getExpr() and
-      nodeTo.asExpr() = arg.getApplyExpr()
-    )
-    or
-    exists(CallExpr ce, Expr self, ClosureExpr closure |
-      ce.getStaticTarget().getName().matches("withUnsafeBufferPointer(%)") and
-      self = ce.getQualifier() and
-      ce.getArgument(0).getExpr() = closure
-    |
-      nodeFrom.asExpr() = self and
-      nodeTo.(DataFlow::ParameterNode).getParameter() = closure.getParam(0)
-    )
-    or
     exists(MemberRefExpr e, Expr self, VarDecl member |
       self.getType().getFullName().matches(["Unsafe%Buffer%", "Unsafe%Pointer%"]) and
       member.getName() = "baseAddress"
