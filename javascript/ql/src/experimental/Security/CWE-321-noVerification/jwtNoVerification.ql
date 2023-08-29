@@ -24,4 +24,4 @@ where
     n.getParameter(2).asSink().asExpr() = any(BoolLiteral b | b.getBoolValue() = true) and
     sink = n.getParameter(0).asSink()
   )
-select sink, "This Token is Decoding in unsafe mode"
+select sink, "This Token is Decoded in without signature validatoin"
