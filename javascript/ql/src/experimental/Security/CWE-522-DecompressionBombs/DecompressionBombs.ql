@@ -140,6 +140,10 @@ class BombConfiguration extends TaintTracking::Configuration {
     //node-tar
     readablePipeAdditionalTaintStep(pred, succ)
     or
+    streamPipelineAdditionalTaintStep(pred, succ)
+    or
+    promisesFileHandlePipeAdditionalTaintStep(pred, succ)
+    or
     exists(FileSystemReadAccess cn | pred = cn.getADataNode() and succ = cn.getAPathArgument())
     or
     exists(DataFlow::Node sinkhelper, AstNode an |
