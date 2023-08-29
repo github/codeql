@@ -1,3 +1,10 @@
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* Some queries that had repeated results corresponding to different levels of indirection for `argv` now only have a single result.
+* The `cpp/non-constant-format` query no longer considers an assignment on the right-hand side of another assignment to be a source of non-constant format strings. As a result, the query may now produce fewer results.
+
 ## 0.7.3
 
 No user-facing changes.

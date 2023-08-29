@@ -1,3 +1,9 @@
+## 0.9.2
+
+### Minor Analysis Improvements
+
+* Only the 2 level indirection of `argv` (corresponding to `**argv`) is consided for `FlowSource`.
+
 ## 0.9.1
 
 No user-facing changes.

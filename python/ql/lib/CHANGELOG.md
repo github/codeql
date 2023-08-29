@@ -1,3 +1,9 @@
+## 0.10.4
+
+### Minor Analysis Improvements
+
+* Regular expressions containing multiple parse mode flags are now interpretted correctly. For example `"(?is)abc.*"` with both the `i` and `s` flags.
+
 ## 0.10.3
 
 ### Minor Analysis Improvements
