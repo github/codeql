@@ -1,0 +1,2 @@
+| JWTInsecureParsingLestrratv2.go:31:13:31:49 | call to ParseInsecure | This call to Parse to accept JWT token does not check the signature, which may allow an attacker to forget tokens |
+| JWTInsecureParsingLesttrat.go:26:13:26:41 | call to Parse | This call to Parse to accept JWT token does not check the signature, which may allow an attacker to forget tokens |

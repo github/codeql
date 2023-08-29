@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "keygen",
+    srcs = [
+        "interface.go",
+        "keygen.go",
+    ],
+    importpath = "github.com/lestrrat-go/jwx/v2/jwe/internal/keygen",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/ecutil",
+        "//jwa",
+        "//jwe/internal/concatkdf",
+        "//jwk",
+        "//x25519",
+        "@org_golang_x_crypto//curve25519",
+    ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":keygen",
+    visibility = ["//jwe:__subpackages__"],
+)

@@ -1,0 +1,142 @@
+package_name: jwk
+output: jwk/options_gen.go
+interfaces:
+  - name: CacheOption
+    comment: |
+      CacheOption is a type of Option that can be passed to the
+      `jwk.Cache` object.
+  - name: AssignKeyIDOption
+  - name: FetchOption
+    methods:
+      - fetchOption
+      - parseOption
+      - registerOption
+    comment: |
+      FetchOption is a type of Option that can be passed to `jwk.Fetch()`
+      FetchOption also implements the `CacheOption`, and thus can
+      safely be passed to `(*jwk.Cache).Configure()`
+  - name: ParseOption
+    methods:
+      - fetchOption
+      - registerOption
+      - readFileOption
+    comment: |
+      ParseOption is a type of Option that can be passed to `jwk.Parse()`
+      ParseOption also implmentsthe `ReadFileOption` and `CacheOption`,
+      and thus safely be passed to `jwk.ReadFile` and `(*jwk.Cache).Configure()`
+  - name: ReadFileOption
+    comment: |
+      ReadFileOption is a type of `Option` that can be passed to `jwk.ReadFile`
+  - name: RegisterOption
+    comment: |
+      RegisterOption desribes options that can be passed to `(jwk.Cache).Register()`
+options:
+  - ident: HTTPClient
+    interface: FetchOption
+    argument_type: HTTPClient
+    comment: |
+      WithHTTPClient allows users to specify the "net/http".Client object that
+      is used when fetching jwk.Set objects.
+  - ident: ThumbprintHash
+    interface: AssignKeyIDOption
+    argument_type: crypto.Hash
+  - ident: RefreshInterval
+    interface: RegisterOption
+    argument_type: time.Duration
+    comment: |
+      WithRefreshInterval specifies the static interval between refreshes
+      of jwk.Set objects controlled by jwk.Cache.
+      
+      Providing this option overrides the adaptive token refreshing based
+      on Cache-Control/Expires header (and jwk.WithMinRefreshInterval),
+      and refreshes will *always* happen in this interval.
+  - ident: MinRefreshInterval
+    interface: RegisterOption
+    argument_type: time.Duration
+    comment: |
+      WithMinRefreshInterval specifies the minimum refresh interval to be used
+      when using `jwk.Cache`. This value is ONLY used if you did not specify
+      a user-supplied static refresh interval via `WithRefreshInterval`.
+      
+      This value is used as a fallback value when tokens are refreshed.
+      
+      When we fetch the key from a remote URL, we first look at the max-age
+      directive from Cache-Control response header. If this value is present,
+      we compare the max-age value and the value specified by this option
+      and take the larger one.
+      
+      Next we check for the Expires header, and similarly if the header is
+      present, we compare it against the value specified by this option,
+      and take the larger one.
+      
+      Finally, if neither of the above headers are present, we use the
+      value specified by this option as the next refresh timing
+      
+      If unspecified, the minimum refresh interval is 1 hour
+  - ident: LocalRegistry
+    option_name: withLocalRegistry
+    interface: ParseOption
+    argument_type: '*json.Registry'
+    comment: This option is only available for internal code. Users don't get to play with it
+  - ident: PEM
+    interface: ParseOption
+    argument_type: bool
+    comment: WithPEM specifies that the input to `Parse()` is a PEM encoded key.
+  - ident: FetchWhitelist
+    interface: FetchOption
+    argument_type: Whitelist
+    comment: |
+      WithFetchWhitelist specifies the Whitelist object to use when
+      fetching JWKs from a remote source. This option can be passed
+      to both `jwk.Fetch()`, `jwk.NewCache()`, and `(*jwk.Cache).Configure()`
+  - ident: IgnoreParseError
+    interface: ParseOption
+    argument_type: bool
+    comment: |
+      WithIgnoreParseError is only applicable when used with `jwk.Parse()`
+      (i.e. to parse JWK sets). If passed to `jwk.ParseKey()`, the function
+      will return an error no matter what the input is.
+      
+      DO NOT USE WITHOUT EXHAUSTING ALL OTHER ROUTES FIRST.
+      
+      The option specifies that errors found during parsing of individual
+      keys are ignored. For example, if you had keys A, B, C where B is
+      invalid (e.g. it does not contain the required fields), then the
+      resulting JWKS will contain keys A and C only.
+      
+      This options exists as an escape hatch for those times when a
+      key in a JWKS that is irrelevant for your use case is causing
+      your JWKS parsing to fail, and you want to get to the rest of the
+      keys in the JWKS.
+      
+      Again, DO NOT USE unless you have exhausted all other routes.
+      When you use this option, you will not be able to tell if you are
+      using a faulty JWKS, except for when there are JSON syntax errors.
+  - ident: FS
+    interface: ReadFileOption
+    argument_type: fs.FS
+    comment: |
+      WithFS specifies the source `fs.FS` object to read the file from.
+  - ident: PostFetcher
+    interface: RegisterOption
+    argument_type: PostFetcher
+    comment: |
+      WithPostFetcher specifies the PostFetcher object to be used on the
+      jwk.Set object obtained in `jwk.Cache`. This option can be used
+      to, for example, modify the jwk.Set to give it key IDs or algorithm
+      names after it has been fetched and parsed, but before it is cached.
+  - ident: RefreshWindow
+    interface: CacheOption
+    argument_type: time.Duration
+    comment: |
+      WithRefreshWindow specifies the interval between checks for refreshes.
+
+      See the documentation in `httprc.WithRefreshWindow` for more details.
+  - ident: ErrSink
+    interface: CacheOption
+    argument_type: ErrSink
+    comment: |
+      WithErrSink specifies the `httprc.ErrSink` object that handles errors
+      that occurred during the cache's execution.
+
+      See the documentation in `httprc.WithErrSink` for more details.
