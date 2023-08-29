@@ -1,0 +1,156 @@
+| closures.swift:7:17:7:17 | hello | closures.swift:2:16:2:25 | label |
+| closures.swift:7:17:7:17 | hello | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:7:17:7:17 | hello | closures.swift:2:33:2:42 | value |
+| closures.swift:7:17:7:17 | hello | closures.swift:2:59:2:59 | value |
+| closures.swift:7:17:7:17 | hello | closures.swift:7:10:7:31 | call to source(_:_:) |
+| closures.swift:7:17:7:17 | hello | closures.swift:7:26:7:26 | value |
+| closures.swift:7:17:7:17 | hello | closures.swift:12:6:12:6 | x |
+| closures.swift:7:17:7:17 | hello | closures.swift:12:10:12:16 | call to hello() |
+| closures.swift:11:23:11:23 | captureList | closures.swift:2:16:2:25 | label |
+| closures.swift:11:23:11:23 | captureList | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:11:23:11:23 | captureList | closures.swift:2:33:2:42 | value |
+| closures.swift:11:23:11:23 | captureList | closures.swift:2:59:2:59 | value |
+| closures.swift:11:23:11:23 | captureList | closures.swift:11:7:11:7 | y |
+| closures.swift:11:23:11:23 | captureList | closures.swift:11:7:11:10 | ... as ... |
+| closures.swift:11:23:11:23 | captureList | closures.swift:11:16:11:41 | call to source(_:_:) |
+| closures.swift:11:23:11:23 | captureList | closures.swift:11:38:11:38 | 123 |
+| closures.swift:21:18:21:18 | setEscape | closures.swift:2:16:2:25 | label |
+| closures.swift:21:18:21:18 | setEscape | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:21:18:21:18 | setEscape | closures.swift:2:33:2:42 | value |
+| closures.swift:21:18:21:18 | setEscape | closures.swift:2:59:2:59 | value |
+| closures.swift:21:18:21:18 | setEscape | closures.swift:21:7:21:7 | x |
+| closures.swift:21:18:21:18 | setEscape | closures.swift:21:11:21:32 | call to source(_:_:) |
+| closures.swift:21:18:21:18 | setEscape | closures.swift:21:31:21:31 | 0 |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:16:2:25 | label |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | SSA def(value) [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | SSA def(value) [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | SSA def(value) [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | SSA def(value) [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | SSA def(value) [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | value |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | value [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | value [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | value [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | value [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:33:2:42 | value [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:59:2:59 | value |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:59:2:59 | value [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:59:2:59 | value [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:59:2:59 | value [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:59:2:59 | value [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:2:59:2:59 | value [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | SSA def(x) |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | SSA def(x) [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | SSA def(x) [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | SSA def(x) [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | SSA def(x) [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | SSA def(x) [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | x |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | x [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | x [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | x [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | x [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:30:34:30 | x [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:35:34:35 | x |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:35:34:35 | x [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:35:34:35 | x [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:35:34:35 | x [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:35:34:35 | x [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:34:35:34:35 | x [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | SSA def(x) |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | SSA def(x) [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | SSA def(x) [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | SSA def(x) [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | SSA def(x) [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | SSA def(x) [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | x |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | x [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | x [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | x [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | x [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:7 | x [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:13 | ... as ... |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:13 | ... as ... [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:13 | ... as ... [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:13 | ... as ... [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:13 | ... as ... [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:7:35:13 | ... as ... [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:17:35:37 | call to source(_:_:) |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:17:35:37 | call to source(_:_:) [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:17:35:37 | call to source(_:_:) [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:17:35:37 | call to source(_:_:) [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:17:35:37 | call to source(_:_:) [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:17:35:37 | call to source(_:_:) [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:35:35:35 | 42 |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:35:35:35 | 42 [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:35:35:35 | 42 [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:35:35:35 | 42 [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:35:35:35 | 42 [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:35:35:35:35 | 42 [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:37:11:37:11 | x |
+| closures.swift:35:24:35:24 | logical | closures.swift:37:11:37:11 | x [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:37:11:37:11 | x [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:37:11:37:11 | x [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:37:11:37:11 | x [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:37:11:37:11 | x [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:17 | x |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:17 | x [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:17 | x [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:17 | x [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:17 | x [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:17 | x [some:0] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:18 | ...! |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:18 | ...! [some:0, ... (2)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:18 | ...! [some:0, ... (3)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:18 | ...! [some:0, ... (4)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:18 | ...! [some:0, ... (5)] |
+| closures.swift:35:24:35:24 | logical | closures.swift:38:17:38:18 | ...! [some:0] |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:2:16:2:25 | label |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:2:33:2:42 | value |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:2:59:2:59 | value |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:44:18:44:23 | SSA def(x) |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:44:18:44:23 | x |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:45:29:45:29 | x |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:48:43:48:65 | call to source(_:_:) |
+| closures.swift:48:50:48:50 | asyncTest | closures.swift:48:63:48:63 | 40 |
+| closures.swift:59:14:59:14 | foo | closures.swift:2:16:2:25 | label |
+| closures.swift:59:14:59:14 | foo | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:59:14:59:14 | foo | closures.swift:2:33:2:42 | value |
+| closures.swift:59:14:59:14 | foo | closures.swift:2:59:2:59 | value |
+| closures.swift:59:14:59:14 | foo | closures.swift:59:7:59:23 | call to source(_:_:) |
+| closures.swift:59:14:59:14 | foo | closures.swift:59:21:59:21 | 41 |
+| closures.swift:69:14:69:14 | bar | closures.swift:2:16:2:25 | label |
+| closures.swift:69:14:69:14 | bar | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:69:14:69:14 | bar | closures.swift:2:33:2:42 | value |
+| closures.swift:69:14:69:14 | bar | closures.swift:2:59:2:59 | value |
+| closures.swift:69:14:69:14 | bar | closures.swift:69:7:69:23 | call to source(_:_:) |
+| closures.swift:69:14:69:14 | bar | closures.swift:69:21:69:21 | 41 |
+| closures.swift:79:14:79:14 | baz | closures.swift:2:16:2:25 | label |
+| closures.swift:79:14:79:14 | baz | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:79:14:79:14 | baz | closures.swift:2:33:2:42 | value |
+| closures.swift:79:14:79:14 | baz | closures.swift:2:59:2:59 | value |
+| closures.swift:79:14:79:14 | baz | closures.swift:79:7:79:23 | call to source(_:_:) |
+| closures.swift:79:14:79:14 | baz | closures.swift:79:21:79:21 | 41 |
+| closures.swift:87:20:87:20 | sharedCapture | closures.swift:2:16:2:25 | label |
+| closures.swift:87:20:87:20 | sharedCapture | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:87:20:87:20 | sharedCapture | closures.swift:2:33:2:42 | value |
+| closures.swift:87:20:87:20 | sharedCapture | closures.swift:2:59:2:59 | value |
+| closures.swift:87:20:87:20 | sharedCapture | closures.swift:87:9:87:9 | x |
+| closures.swift:87:20:87:20 | sharedCapture | closures.swift:87:13:87:38 | call to source(_:_:) |
+| closures.swift:87:20:87:20 | sharedCapture | closures.swift:87:37:87:37 | 0 |
+| closures.swift:114:35:114:35 | setter1 | closures.swift:2:16:2:25 | label |
+| closures.swift:114:35:114:35 | setter1 | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:114:35:114:35 | setter1 | closures.swift:2:33:2:42 | value |
+| closures.swift:114:35:114:35 | setter1 | closures.swift:2:59:2:59 | value |
+| closures.swift:114:35:114:35 | setter1 | closures.swift:109:22:109:22 | y |
+| closures.swift:114:35:114:35 | setter1 | closures.swift:114:28:114:47 | call to source(_:_:) |
+| closures.swift:114:35:114:35 | setter1 | closures.swift:114:46:114:46 | 1 |
+| closures.swift:115:35:115:35 | setter2 | closures.swift:2:16:2:25 | label |
+| closures.swift:115:35:115:35 | setter2 | closures.swift:2:33:2:42 | SSA def(value) |
+| closures.swift:115:35:115:35 | setter2 | closures.swift:2:33:2:42 | value |
+| closures.swift:115:35:115:35 | setter2 | closures.swift:2:59:2:59 | value |
+| closures.swift:115:35:115:35 | setter2 | closures.swift:109:22:109:22 | y |
+| closures.swift:115:35:115:35 | setter2 | closures.swift:115:28:115:47 | call to source(_:_:) |
+| closures.swift:115:35:115:35 | setter2 | closures.swift:115:46:115:46 | 2 |
