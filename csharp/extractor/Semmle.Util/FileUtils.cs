@@ -10,7 +10,7 @@ namespace Semmle.Util
 {
     public static class FileUtils
     {
-        public const string nugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
+        public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 
         public static string ConvertToWindows(string path)
         {

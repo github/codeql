@@ -191,7 +191,7 @@ namespace Semmle.Autobuild.Shared
             })
             &
             BuildScript.DownloadFile(
-                FileUtils.nugetExeUrl,
+                FileUtils.NugetExeUrl,
                 path,
                 e => builder.Log(Severity.Warning, $"Failed to download 'nuget.exe': {e.Message}"))
             &

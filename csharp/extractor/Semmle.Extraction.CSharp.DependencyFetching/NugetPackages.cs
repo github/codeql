@@ -83,7 +83,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             progressMonitor.LogInfo("Attempting to download nuget.exe");
             try
             {
-                FileUtils.DownloadFile(FileUtils.nugetExeUrl, nuget);
+                FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget);
                 progressMonitor.LogInfo($"Downloaded nuget.exe to {nuget}");
                 return nuget;
             }
