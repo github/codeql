@@ -42,11 +42,11 @@ import codeql.swift.dataflow.TaintTracking
 import TestUtilities.InlineExpectationsTest
 
 private predicate defaultSource(DataFlow::Node source) {
-  source.asExpr().(MethodCallExpr).getStaticTarget().getName() = ["source", "taint"]
+  source.asExpr().(MethodCallExpr).getStaticTarget().getShortName() = ["source", "taint"]
 }
 
 private predicate defaultSink(DataFlow::Node sink) {
-  exists(MethodCallExpr ma | ma.getStaticTarget().hasName("sink") |
+  exists(MethodCallExpr ma | ma.getStaticTarget().getShortName() = "sink" |
     sink.asExpr() = ma.getAnArgument().getExpr()
   )
 }
