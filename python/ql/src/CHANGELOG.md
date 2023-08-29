@@ -1,3 +1,9 @@
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Updated path explanations for `@kind path-problem` queries to always include left hand side of assignments, making paths easier to understand.
+
 ## 0.8.3
 
 No user-facing changes.

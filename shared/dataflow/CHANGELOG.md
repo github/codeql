@@ -1,3 +1,9 @@
+## 0.0.3
+
+### Minor Analysis Improvements
+
+* The shared taint-tracking library is now part of the dataflow qlpack.
+
 ## 0.0.2
 
 ### Major Analysis Improvements
