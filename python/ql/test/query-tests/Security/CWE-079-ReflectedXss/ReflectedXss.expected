@@ -3,7 +3,6 @@ edges
 | reflected_xss.py:2:26:2:32 | GSSA Variable request | reflected_xss.py:9:18:9:24 | ControlFlowNode for request |
 | reflected_xss.py:2:26:2:32 | GSSA Variable request | reflected_xss.py:21:23:21:29 | ControlFlowNode for request |
 | reflected_xss.py:2:26:2:32 | GSSA Variable request | reflected_xss.py:27:23:27:29 | ControlFlowNode for request |
-| reflected_xss.py:2:26:2:32 | GSSA Variable request | reflected_xss.py:33:12:33:18 | ControlFlowNode for request |
 | reflected_xss.py:9:5:9:14 | SSA variable first_name | reflected_xss.py:10:26:10:53 | ControlFlowNode for BinaryExpr |
 | reflected_xss.py:9:18:9:24 | ControlFlowNode for request | reflected_xss.py:9:18:9:29 | ControlFlowNode for Attribute |
 | reflected_xss.py:9:18:9:29 | ControlFlowNode for Attribute | reflected_xss.py:9:18:9:45 | ControlFlowNode for Attribute() |
@@ -12,8 +11,6 @@ edges
 | reflected_xss.py:21:23:21:29 | ControlFlowNode for request | reflected_xss.py:21:5:21:8 | SSA variable data |
 | reflected_xss.py:27:5:27:8 | SSA variable data | reflected_xss.py:28:26:28:41 | ControlFlowNode for Attribute() |
 | reflected_xss.py:27:23:27:29 | ControlFlowNode for request | reflected_xss.py:27:5:27:8 | SSA variable data |
-| reflected_xss.py:33:5:33:8 | SSA variable data | reflected_xss.py:34:20:34:23 | ControlFlowNode for data |
-| reflected_xss.py:33:12:33:18 | ControlFlowNode for request | reflected_xss.py:33:5:33:8 | SSA variable data |
 nodes
 | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | reflected_xss.py:2:26:2:32 | GSSA Variable request | semmle.label | GSSA Variable request |
@@ -28,12 +25,8 @@ nodes
 | reflected_xss.py:27:5:27:8 | SSA variable data | semmle.label | SSA variable data |
 | reflected_xss.py:27:23:27:29 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | reflected_xss.py:28:26:28:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| reflected_xss.py:33:5:33:8 | SSA variable data | semmle.label | SSA variable data |
-| reflected_xss.py:33:12:33:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| reflected_xss.py:34:20:34:23 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
 subpaths
 #select
 | reflected_xss.py:10:26:10:53 | ControlFlowNode for BinaryExpr | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | reflected_xss.py:10:26:10:53 | ControlFlowNode for BinaryExpr | Cross-site scripting vulnerability due to a $@. | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | reflected_xss.py:22:26:22:41 | ControlFlowNode for Attribute() | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | reflected_xss.py:22:26:22:41 | ControlFlowNode for Attribute() | Cross-site scripting vulnerability due to a $@. | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | reflected_xss.py:28:26:28:41 | ControlFlowNode for Attribute() | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | reflected_xss.py:28:26:28:41 | ControlFlowNode for Attribute() | Cross-site scripting vulnerability due to a $@. | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
-| reflected_xss.py:34:20:34:23 | ControlFlowNode for data | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | reflected_xss.py:34:20:34:23 | ControlFlowNode for data | Cross-site scripting vulnerability due to a $@. | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |

@@ -453,7 +453,8 @@ module Flask {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
-        node = routeHandler.getAReturnValueFlowNode()
+        node = routeHandler.getAReturnValueFlowNode() and
+        not this instanceof Flask::Response::InstanceSource
       )
     }
 
