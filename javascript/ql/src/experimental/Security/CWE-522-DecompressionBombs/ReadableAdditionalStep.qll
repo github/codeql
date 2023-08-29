@@ -39,7 +39,7 @@ predicate readablePipeAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node su
     succ = cn.getParameter(i + 1).asSink()
   )
   or
-  // this step connect the first pipe parameter to the next parameter
+  // this step connect the first pipe parameter to all of the next parameters
   exists(API::Node cn, int i |
     i in [1 .. 10] and
     cn =
