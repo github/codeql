@@ -81,7 +81,17 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.controlflow.IRGuards
 private import AllocationToInvalidPointer as AllocToInvalidPointer
-private import RangeAnalysisUtil
+private import semmle.code.cpp.rangeanalysis.new.RangeAnalysisUtil
+
+/**
+ * Gets the virtual dispatch branching limit when calculating field flow while
+ * searching for flow from an out-of-bounds pointer to a dereference of the
+ * pointer.
+ *
+ * This can be overridden to a smaller value to improve performance (a
+ * value of 0 disables field flow), or a larger value to get more results.
+ */
+int invalidPointerToDereferenceFieldFlowBranchLimit() { result = 0 }
 
 private module InvalidPointerToDerefBarrier {
   private module BarrierConfig implements DataFlow::ConfigSig {
@@ -101,6 +111,8 @@ private module InvalidPointerToDerefBarrier {
     }
 
     predicate isSink(DataFlow::Node sink) { isSink(_, sink, _, _, _) }
+
+    int fieldFlowBranchLimit() { result = invalidPointerToDereferenceFieldFlowBranchLimit() }
   }
 
   private module BarrierFlow = DataFlow::Global<BarrierConfig>;
@@ -178,6 +190,8 @@ private module InvalidPointerToDerefConfig implements DataFlow::StateConfigSig {
     // Note that this is the only place where the `FlowState` is used in this configuration.
     node = InvalidPointerToDerefBarrier::getABarrierNode(pai)
   }
+
+  int fieldFlowBranchLimit() { result = invalidPointerToDereferenceFieldFlowBranchLimit() }
 }
 
 private import DataFlow::GlobalWithState<InvalidPointerToDerefConfig>

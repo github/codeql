@@ -660,7 +660,7 @@ module RangeStage<
    * - `upper = false` : `v >= b + delta`
    */
   private predicate boundedSsa(
-    SemSsaVariable v, SemSsaReadPosition pos, SemBound b, D::Delta delta, boolean upper,
+    SemSsaVariable v, SemBound b, D::Delta delta, SemSsaReadPosition pos, boolean upper,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
     exists(SemExpr mid, D::Delta d1, D::Delta d2, SemReason r1, SemReason r2 |
@@ -673,10 +673,13 @@ module RangeStage<
     )
     or
     exists(D::Delta d, SemReason r1, SemReason r2 |
-      boundedSsa(v, pos, b, d, upper, fromBackEdge, origdelta, r2) or
-      boundedPhi(v, b, d, upper, fromBackEdge, origdelta, r2)
+      boundedSsa(pragma[only_bind_into](v), pragma[only_bind_into](b), pragma[only_bind_into](d),
+        pragma[only_bind_into](pos), upper, fromBackEdge, origdelta, r2)
+      or
+      boundedPhi(pragma[only_bind_into](v), pragma[only_bind_into](b), pragma[only_bind_into](d),
+        upper, fromBackEdge, origdelta, r2)
     |
-      unequalIntegralSsa(v, pos, b, d, r1) and
+      unequalIntegralSsa(v, b, d, pos, r1) and
       (
         upper = true and delta = D::fromFloat(D::toFloat(d) - 1)
         or
@@ -694,7 +697,7 @@ module RangeStage<
    * Holds if `v != b + delta` at `pos` and `v` is of integral type.
    */
   private predicate unequalIntegralSsa(
-    SemSsaVariable v, SemSsaReadPosition pos, SemBound b, D::Delta delta, SemReason reason
+    SemSsaVariable v, SemBound b, D::Delta delta, SemSsaReadPosition pos, SemReason reason
   ) {
     exists(SemExpr e, D::Delta d1, D::Delta d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
@@ -746,7 +749,7 @@ module RangeStage<
   ) {
     edge.phiInput(phi, inp) and
     exists(D::Delta d, boolean fromBackEdge0 |
-      boundedSsa(inp, edge, b, d, upper, fromBackEdge0, origdelta, reason)
+      boundedSsa(inp, b, d, edge, upper, fromBackEdge0, origdelta, reason)
       or
       boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
       or
@@ -1022,7 +1025,7 @@ module RangeStage<
       reason = TSemNoReason()
       or
       exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
-        boundedSsa(v, bb, b, delta, upper, fromBackEdge, origdelta, reason) and
+        boundedSsa(v, b, delta, bb, upper, fromBackEdge, origdelta, reason) and
         e = v.getAUse() and
         bb.getBlock() = e.getBasicBlock()
       )

@@ -1,10 +1,10 @@
 /**
  * @name Invalid pointer dereference
- * @description Dereferencing a pointer that points past it allocation is undefined behavior
- *              and may lead to security vulnerabilities.
+ * @description Dereferencing an out-of-bounds pointer is undefined behavior and may lead to security vulnerabilities.
  * @kind path-problem
  * @problem.severity error
- * @precision high
+ * @security-severity 9.3
+ * @precision medium
  * @id cpp/invalid-pointer-deref
  * @tags reliability
  *       security
@@ -92,6 +92,12 @@ module FinalConfig implements DataFlow::StateConfigSig {
       operationIsOffBy(_, pai, _, _, _, sink, _) and
       state = TPointerArith(pai)
     )
+  }
+
+  int fieldFlowBranchLimit() {
+    result =
+      allocationToInvalidPointerFieldFlowBranchLimit()
+          .maximum(invalidPointerToDereferenceFieldFlowBranchLimit())
   }
 
   predicate isAdditionalFlowStep(
