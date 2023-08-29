@@ -52,7 +52,7 @@
         </ul>
 
         <p>
-            Note that special purpose algorithms, which are usually used to ensure that a message comes from a particular sender, exist for message authentication. These algorithms should be used when appropriate, as they address common vulnerabilities of simple hashing schemes in this context.
+            Note that special purpose algorithms, which are used to ensure that a message comes from a particular sender, exist for message authentication. These algorithms should be used when appropriate, as they address common vulnerabilities of simple hashing schemes in this context.
         </p>
 
     </recommendation>
