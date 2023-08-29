@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -153,7 +153,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 progressMonitor.LogInfo($"Found {views.Length} cshtml and razor files.");
 
-                // TODO: use SDK specified in global.json
                 var sdk = new Sdk(dotnet).GetNewestSdk();
                 if (sdk != null)
                 {
