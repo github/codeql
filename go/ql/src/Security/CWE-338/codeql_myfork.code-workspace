@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../../../.."
+		},
+		{
+			"name": "[JWT_good__or_bad source archive]",
+			"uri": "codeql-zip-archive://0-44/Users/kstubbin/JWT/JWT_good__or_bad/src.zip"
+		},
+		{
+			"name": "[lestrrat-JWT source archive]",
+			"uri": "codeql-zip-archive://0-49/Users/kstubbin/lesstrat-JWT/lestrrat-JWT/src.zip"
+		},
+		{
+			"name": "[python source archive]",
+			"uri": "codeql-zip-archive://0-146/Users/kstubbin/Library/Application Support/Code/User/workspaceStorage/db72dba15c9beaace6cf497bdbee92ec/GitHub.vscode-codeql/redash/python/src.zip"
+		}
+	],
+	"settings": {}
+}

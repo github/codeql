@@ -7,6 +7,10 @@ string packageLestrrat() {
     package("github.com/lestrrat-go/jwx/v2/jwt", "")
 
 }
+string packageLestrratv1() {
+  result =
+    package("github.com/lestrrat-go/jwx/jwt", "")
+}
 string packagePathModern() {
     result =
       package(["github.com/golang-jwt/jwt/v5", "github.com/golang-jwt/jwt/v4"], "")
@@ -51,9 +55,14 @@ string packagePathModern() {
         this.hasQualifiedName(packageLestrrat(), "Parse")
     }
   }
-  class LestrratSafeOptions extends Function{
-    LestrratSafeOptions() {
-        this.hasQualifiedName(packageLestrrat(), ["WithKey", "WithKeySet"])
+  class LestrratParsev1 extends Function{
+    LestrratParsev1() {
+        this.hasQualifiedName(packageLestrratv1(), "Parse")
+    }
+  }
+  class LestrratVerify extends Function {
+    LestrratVerify() {
+    this.hasQualifiedName(packageLestrratv1(), "WithVerify")
     }
   }
   class LestrratParseInsecure extends Function{
