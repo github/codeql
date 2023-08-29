@@ -2399,6 +2399,7 @@
 | UseUseExplosion.rb:24:5:25:7 | use | UseUseExplosion.rb:1:1:26:3 | C |
 | local_dataflow.rb:1:1:7:3 | self (foo) | local_dataflow.rb:3:8:3:10 | self |
 | local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:1:1:7:3 | self (foo) |
+| local_dataflow.rb:1:1:150:3 | <uninitialized> | local_dataflow.rb:10:9:10:9 | x |
 | local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
@@ -2424,21 +2425,33 @@
 | local_dataflow.rb:9:1:9:5 | array | local_dataflow.rb:10:14:10:18 | array |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:5 | array |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
+| local_dataflow.rb:10:5:13:3 | ... | local_dataflow.rb:10:1:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | <captured entry> self | local_dataflow.rb:11:1:11:2 | self |
+| local_dataflow.rb:10:5:13:3 | <captured exit> x | local_dataflow.rb:15:5:15:5 | x |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:9:10:9 | x |
-| local_dataflow.rb:10:5:13:3 | call to each | local_dataflow.rb:10:1:13:3 | ... = ... |
+| local_dataflow.rb:10:5:13:3 | call to each | local_dataflow.rb:10:5:13:3 | ... |
+| local_dataflow.rb:10:9:10:9 | ... = ... | local_dataflow.rb:10:9:10:9 | if ... |
+| local_dataflow.rb:10:9:10:9 | nil | local_dataflow.rb:10:9:10:9 | ... = ... |
+| local_dataflow.rb:10:9:10:9 | nil | local_dataflow.rb:10:9:10:9 | x |
+| local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:10:9:10:9 | phi |
 | local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:12:5:12:5 | x |
 | local_dataflow.rb:10:14:10:18 | [post] array | local_dataflow.rb:15:10:15:14 | array |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:15:10:15:14 | array |
 | local_dataflow.rb:11:1:11:2 | [post] self | local_dataflow.rb:12:3:12:5 | self |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:12:3:12:5 | self |
+| local_dataflow.rb:15:1:17:3 | <captured exit> x | local_dataflow.rb:19:5:19:5 | x |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | ... = ... |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | __synth__0__1 |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | __synth__0__1 |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:5:15:5 | x |
+| local_dataflow.rb:15:1:17:3 | call to each | local_dataflow.rb:15:1:17:3 | ... |
+| local_dataflow.rb:15:5:15:5 | ... = ... | local_dataflow.rb:15:5:15:5 | if ... |
+| local_dataflow.rb:15:5:15:5 | nil | local_dataflow.rb:15:5:15:5 | ... = ... |
+| local_dataflow.rb:15:5:15:5 | nil | local_dataflow.rb:15:5:15:5 | x |
+| local_dataflow.rb:15:5:15:5 | x | local_dataflow.rb:15:5:15:5 | phi |
 | local_dataflow.rb:15:10:15:14 | [post] array | local_dataflow.rb:19:10:19:14 | array |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:19:10:19:14 | array |
 | local_dataflow.rb:16:9:16:10 | 10 | local_dataflow.rb:16:3:16:10 | break |
@@ -2446,6 +2459,11 @@
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:5:19:5 | x |
+| local_dataflow.rb:19:1:21:3 | call to each | local_dataflow.rb:19:1:21:3 | ... |
+| local_dataflow.rb:19:5:19:5 | ... = ... | local_dataflow.rb:19:5:19:5 | if ... |
+| local_dataflow.rb:19:5:19:5 | nil | local_dataflow.rb:19:5:19:5 | ... = ... |
+| local_dataflow.rb:19:5:19:5 | nil | local_dataflow.rb:19:5:19:5 | x |
+| local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:19:5:19:5 | phi |
 | local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:20:6:20:6 | x |
 | local_dataflow.rb:24:2:24:8 | break | local_dataflow.rb:23:1:25:3 | while ... |
 | local_dataflow.rb:24:8:24:8 | 5 | local_dataflow.rb:24:2:24:8 | break |

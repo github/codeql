@@ -1,4 +1,3 @@
-failures
 testFailures
 | hash_extensions.rb:126:10:126:19 | call to sole | Unexpected result: hasValueFlow=b |
 edges

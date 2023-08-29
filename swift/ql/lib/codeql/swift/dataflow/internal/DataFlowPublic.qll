@@ -225,7 +225,12 @@ module Content {
     override string toString() { result = "Array element" }
   }
 
-  /** An element of a collection. */
+  /**
+   * An element of a collection. This is a broad class including:
+   *  - elements of collections, such as `Set<Element>`.
+   *  - elements of buffers, such as `UnsafeBufferPointer<Element>`.
+   *  - the pointee of a pointer, such as `UnsafePointer<Pointee>`.
+   */
   class CollectionContent extends Content, TCollectionContent {
     override string toString() { result = "Collection element" }
   }

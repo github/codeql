@@ -1250,3 +1250,40 @@ module LdapExecution {
     abstract DataFlow::Node getQuery();
   }
 }
+
+/**
+ * A data-flow node that collects methods binding a LDAP connection.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LdapBind::Range` instead.
+ */
+class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
+  /** Gets the argument containing the binding host */
+  DataFlow::Node getHost() { result = super.getHost() }
+
+  /** Gets the argument containing the binding expression. */
+  DataFlow::Node getPassword() { result = super.getPassword() }
+
+  /** Holds if the binding process use SSL. */
+  predicate usesSsl() { super.usesSsl() }
+}
+
+/** Provides classes for modeling LDAP bind-related APIs. */
+module LdapBind {
+  /**
+   * A data-flow node that collects methods binding a LDAP connection.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LdapBind` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument containing the binding host. */
+    abstract DataFlow::Node getHost();
+
+    /** Gets the argument containing the binding expression. */
+    abstract DataFlow::Node getPassword();
+
+    /** Holds if the binding process use SSL. */
+    abstract predicate usesSsl();
+  }
+}

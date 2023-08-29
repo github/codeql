@@ -24,7 +24,7 @@ Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
   exists(int n, int num_endpoints | num_endpoints = count(Endpoint e | c.appliesToEndpoint(e)) |
     result =
       rank[n](Endpoint e, Location loc |
-        loc = e.getLocation() and c.appliesToEndpoint(e)
+        loc = e.asTop().getLocation() and c.appliesToEndpoint(e)
       |
         e
         order by
@@ -43,7 +43,8 @@ Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
   ApplicationModeMetadataExtractor meta, DollarAtString package, DollarAtString type,
-  DollarAtString subtypes, DollarAtString name, DollarAtString signature, DollarAtString input
+  DollarAtString subtypes, DollarAtString name, DollarAtString signature, DollarAtString input,
+  DollarAtString isVarargsArray
 where
   endpoint = getSampleForCharacteristic(characteristic, 100) and
   confidence >= SharedCharacteristics::highConfidence() and
@@ -51,7 +52,7 @@ where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
   not erroneousEndpoints(endpoint, _, _, _, _, false) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input) and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, isVarargsArray) and
   // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
   // treated by the actual query as a sanitizer, since the final logic is something like
   // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as negative examples in the prompt, because
@@ -63,11 +64,13 @@ where
     characteristic2.hasImplications(positiveType, true, confidence2)
   ) and
   message = characteristic
-select endpoint, message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
+select endpoint.asNode(),
+  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   package, "package", //
   type, "type", //
   subtypes, "subtypes", //
   name, "name", //
   signature, "signature", //
-  input, "input" //
+  input, "input", //
+  isVarargsArray, "isVarargsArray" //

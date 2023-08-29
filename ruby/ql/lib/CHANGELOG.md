@@ -1,3 +1,14 @@
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Flow between positional arguments and splat parameters (`*args`) is now tracked more precisely.
+* Flow between splat arguments (`*args`) and positional parameters is now tracked more precisely.
+
+## 0.7.2
+
+No user-facing changes.
+
 ## 0.7.1
 
 ### New Features

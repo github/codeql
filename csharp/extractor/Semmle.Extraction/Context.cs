@@ -1,11 +1,11 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.Entities;
-using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Semmle.Util.Logging;
+using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction
 {

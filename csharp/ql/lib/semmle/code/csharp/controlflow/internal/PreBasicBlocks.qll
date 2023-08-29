@@ -12,7 +12,7 @@
 import csharp
 private import Completion
 private import ControlFlowGraphImpl
-private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow
+private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow as Cfg
 
 private predicate startsBB(ControlFlowElement cfe) {
   not succ(_, cfe, _) and
@@ -55,7 +55,7 @@ private predicate bbIDominates(PreBasicBlock dom, PreBasicBlock bb) =
 class PreBasicBlock extends ControlFlowElement {
   PreBasicBlock() { startsBB(this) }
 
-  PreBasicBlock getASuccessorByType(SuccessorType t) {
+  PreBasicBlock getASuccessorByType(Cfg::SuccessorType t) {
     succ(this.getLastElement(), result, any(Completion c | t = c.getAMatchingSuccessorType()))
   }
 
@@ -116,7 +116,7 @@ class ConditionBlock extends PreBasicBlock {
   }
 
   pragma[nomagic]
-  predicate controls(PreBasicBlock controlled, SuccessorTypes::ConditionalSuccessor s) {
+  predicate controls(PreBasicBlock controlled, Cfg::SuccessorTypes::ConditionalSuccessor s) {
     exists(PreBasicBlock succ, ConditionalCompletion c | this.immediatelyControls(succ, c) |
       succ.dominates(controlled) and
       s = c.getAMatchingSuccessorType()

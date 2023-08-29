@@ -1,3 +1,27 @@
+## 0.2.3
+
+### Major Analysis Improvements
+
+* Added `DataFlow::CollectionContent`, which will enable more accurate flow through collections.
+
+### Minor Analysis Improvements
+
+* Added local flow sources for `UITextInput` and related classes.
+* Flow through forced optional unwrapping (`!`) on the left side of assignment now works in most cases.
+* `Type.getName` now gets the name of the type alone without any enclosing types. Use `Type.getFullName` for the old behaviour.
+
+## 0.2.2
+
+### Major Analysis Improvements
+
+* Added `DataFlow::ArrayContent`, which will provide more accurate flow through arrays.
+
+### Minor Analysis Improvements
+
+* Flow through forced optional unwrapping (`!`) is modelled more accurately.
+* Added flow models for `Sequence.withContiguousStorageIfAvailable`.
+* Added taint flow for `NSUserActivity.referrerURL`.
+
 ## 0.2.1
 
 ### New Features

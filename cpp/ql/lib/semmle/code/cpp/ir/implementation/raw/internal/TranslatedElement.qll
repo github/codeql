@@ -84,9 +84,9 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   or
   // We do not yet translate destructors properly, so for now we ignore any
   // custom deallocator call, if present.
-  exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
+  exists(DeleteExpr deleteExpr | deleteExpr.getDeallocatorCall() = expr)
   or
-  exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
+  exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getDeallocatorCall() = expr)
   or
   exists(BuiltInVarArgsStart vaStartExpr |
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr

@@ -88,12 +88,10 @@ class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: Stri
             nextBatch.forEach { workPair ->
                 val (irDecl, possiblyLongSignature) = workPair
                 extractElement(irDecl, possiblyLongSignature, false) { trapFileBW, signature, manager ->
-                    val containingClass = getContainingClassOrSelf(irDecl)
-                    if (containingClass == null) {
-                        logger.errorElement("Unable to get containing class", irDecl)
+                    val binaryPath = getIrDeclarationBinaryPath(irDecl)
+                    if (binaryPath == null) {
+                        logger.errorElement("Unable to get binary path", irDecl)
                     } else {
-                        val binaryPath = getIrClassBinaryPath(containingClass)
-
                         // We want our comments to be the first thing in the file,
                         // so start off with a PlainTrapWriter
                         val tw = PlainTrapWriter(logger.loggerBase, TrapLabelManager(), trapFileBW, diagnosticTrapWriter)

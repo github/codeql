@@ -7,9 +7,9 @@ extensions:
       - ["hudson.model", "DownloadService", True, "loadJSONHTML", "(URL)", "", "Argument[0]", "request-forgery", "ai-manual"]
       - ["hudson.model", "DirectoryBrowserSupport", False, "DirectoryBrowserSupport", "(ModelObject,FilePath,String,String,boolean)", "", "Argument[1]", "path-injection", "ai-manual"]
       - ["hudson.model", "Items", True, "load", "(ItemGroup,File)", "", "Argument[1]", "path-injection", "ai-manual"]
-      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "download", "(DownloadJob,URL)", "", "Argument[1]", "request-forgery", "ai-manual"]
-      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[1]", "path-injection", "ai-manual"]
-      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[2]", "path-injection", "ai-manual"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "download", "(UpdateCenter$DownloadJob,URL)", "", "Argument[1]", "request-forgery", "ai-manual"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(UpdateCenter$DownloadJob,File,File)", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(UpdateCenter$DownloadJob,File,File)", "", "Argument[2]", "path-injection", "ai-manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

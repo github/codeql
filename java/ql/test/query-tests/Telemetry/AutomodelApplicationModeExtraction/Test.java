@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.io.File;
-
+import java.nio.file.FileVisitOption;
 
 class Test {
 	public static void main(String[] args) throws Exception {
@@ -31,7 +31,7 @@ class Test {
 
 	public static InputStream getInputStream(Path openPath) throws Exception {
 		return Files.newInputStream(
-			openPath // positive example (known sink)
+			openPath // positive example (known sink), candidate ("only" ai-modeled, and useful as a candidate in regression testing)
 		);
 	}
 
@@ -46,5 +46,13 @@ class Test {
 			f2 // negative example (modeled as not a sink)
 		);
 	}
+		
+	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
+		Files.walk(
+			p, // negative example (modeled as a taint step)
+			o, // the implicit varargs array is a candidate
+			o // not a candidate (only the first arg corresponding to a varargs array
+			  // is extracted)
+		);
+	}
 }
-

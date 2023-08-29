@@ -1,10 +1,10 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
 using System.IO;
-using System.Reflection.Metadata.Ecma335;
+using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Semmle.Extraction.CIL.Entities
 {

@@ -15,9 +15,15 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 
-class SummarizedCallableBase extends Callable {
-  SummarizedCallableBase() { this.isUnboundDeclaration() }
-}
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
+class SummarizedCallableBase = UnboundCallable;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = UnboundCallable;
 
 /**
  * A module for importing frameworks that define synthetic globals.
@@ -120,12 +126,12 @@ predicate summaryElement(Callable c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenace`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  */
-predicate neutralSummaryElement(Callable c, string provenance) {
+predicate neutralElement(Callable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, "summary", provenance) and
+    neutralModel(namespace, type, name, signature, kind, provenance) and
     c = interpretElement(namespace, type, false, name, signature, "")
   )
 }
@@ -205,10 +211,9 @@ string getMadRepresentationSpecific(SummaryComponent sc) {
   or
   sc = TWithContentSummaryComponent(_) and result = "WithElement"
   or
-  exists(ReturnKind rk |
+  exists(OutRefReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    not rk = getReturnValueKind() and
-    result = "ReturnValue[" + rk + "]"
+    result = "Argument[" + rk.getPosition() + "]"
   )
 }
 

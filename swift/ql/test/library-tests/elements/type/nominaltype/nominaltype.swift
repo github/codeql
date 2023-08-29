@@ -31,6 +31,25 @@ typealias C1_alias = C1
 
 typealias C2_alias = C2
 
+class Outer {
+	class Inner {
+		typealias InnerAlias = Int
+	}
+}
+
+protocol P1 {
+}
+
+protocol P2 {
+}
+
+typealias P1P2 = P1 & P2
+
+class Box<T> {
+}
+
+
+
 func test() {
 	var a : A
 	var a_alias : A_alias
@@ -45,4 +64,10 @@ func test() {
 	var c2 : C2
 	var c1_alias : C1_alias
 	var c2_alias : C2_alias
+	var o : Outer
+	var oi : Outer.Inner
+	var oia : Outer.Inner.InnerAlias
+	var aa : Any?
+	var p1p2 : P1P2
+	var boxInt : Box<Int>
 }
