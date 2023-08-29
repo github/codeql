@@ -826,17 +826,11 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(Conversion).getExpr() = ele and pred = "getExpr()"
     or
-    expr.(DeleteArrayExpr).getAllocatorCall() = ele and pred = "getAllocatorCall()"
+    expr.(DeleteOrDeleteArrayExpr).getDeallocatorCall() = ele and pred = "getDeallocatorCall()"
     or
-    expr.(DeleteArrayExpr).getDestructorCall() = ele and pred = "getDestructorCall()"
+    expr.(DeleteOrDeleteArrayExpr).getDestructorCall() = ele and pred = "getDestructorCall()"
     or
-    expr.(DeleteArrayExpr).getExpr() = ele and pred = "getExpr()"
-    or
-    expr.(DeleteExpr).getAllocatorCall() = ele and pred = "getAllocatorCall()"
-    or
-    expr.(DeleteExpr).getDestructorCall() = ele and pred = "getDestructorCall()"
-    or
-    expr.(DeleteExpr).getExpr() = ele and pred = "getExpr()"
+    expr.(DeleteOrDeleteArrayExpr).getExpr() = ele and pred = "getExpr()"
     or
     expr.(DestructorFieldDestruction).getExpr() = ele and pred = "getExpr()"
     or
