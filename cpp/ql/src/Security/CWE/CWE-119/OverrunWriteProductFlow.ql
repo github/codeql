@@ -20,27 +20,9 @@ import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.RangeAnalysisUtil
 import StringSizeFlow::PathGraph1
 import codeql.util.Unit
-
-pragma[nomagic]
-Instruction getABoundIn(SemBound b, IRFunction func) {
-  getSemanticExpr(result) = b.getExpr(0) and
-  result.getEnclosingIRFunction() = func
-}
-
-/**
- * Holds if `i <= b + delta`.
- */
-bindingset[i]
-pragma[inline_late]
-predicate bounded(Instruction i, Instruction b, int delta) {
-  exists(SemBound bound, IRFunction func |
-    semBounded(getSemanticExpr(i), bound, delta, true, _) and
-    b = getABoundIn(bound, func) and
-    i.getEnclosingIRFunction() = func
-  )
-}
 
 VariableAccess getAVariableAccess(Expr e) { e.getAChild*() = result }
 

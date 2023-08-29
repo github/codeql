@@ -18,7 +18,7 @@ private import AutomodelJavaUtil
 from
   Endpoint endpoint, string message, FrameworkModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString parameterName
+  DollarAtString input, DollarAtString parameterName, DollarAtString alreadyAiModeled
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
@@ -28,20 +28,25 @@ where
   // label it as a sink for one of the sink types of query B, for which it's already a known sink. This would result in
   // overlap between our detected sinks and the pre-existing modeling. We assume that, if a sink has already been
   // modeled in a MaD model, then it doesn't belong to any additional sink types, and we don't need to reexamine it.
-  not CharacteristicsImpl::isSink(endpoint, _, _) and
+  (
+    not CharacteristicsImpl::isSink(endpoint, _, _) and alreadyAiModeled = ""
+    or
+    alreadyAiModeled.matches("%ai-%") and
+    CharacteristicsImpl::isSink(endpoint, _, alreadyAiModeled)
+  ) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, parameterName) and
   includeAutomodelCandidate(package, type, name, signature) and
   // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
   // a non-sink, and we surface only endpoints that have at least one such sink type.
   message =
     strictconcat(AutomodelEndpointTypes::SinkType sinkType |
-      not CharacteristicsImpl::isKnownSink(endpoint, sinkType) and
+      not CharacteristicsImpl::isKnownSink(endpoint, sinkType, _) and
       CharacteristicsImpl::isSinkCandidate(endpoint, sinkType)
     |
       sinkType, ", "
     )
 select endpoint,
-  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
+  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //
@@ -50,4 +55,5 @@ select endpoint,
   name, "name", //
   signature, "signature", //
   input, "input", //
-  parameterName, "parameterName" //
+  parameterName, "parameterName", //
+  alreadyAiModeled, "alreadyAiModeled"
