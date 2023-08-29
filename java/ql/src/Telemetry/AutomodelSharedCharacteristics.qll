@@ -94,14 +94,15 @@ module SharedCharacteristics<CandidateSig Candidate> {
   /**
    * Holds if `sink` is a known sink of type `endpointType`.
    */
-  predicate isKnownSink(Candidate::Endpoint sink, Candidate::EndpointType endpointType) {
+  predicate isKnownSink(
+    Candidate::Endpoint sink, Candidate::EndpointType endpointType,
+    EndpointCharacteristic characteristic
+  ) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
     not endpointType instanceof Candidate::NegativeEndpointType and
-    exists(EndpointCharacteristic characteristic |
-      characteristic.appliesToEndpoint(sink) and
-      characteristic.hasImplications(endpointType, true, maximalConfidence())
-    )
+    characteristic.appliesToEndpoint(sink) and
+    characteristic.hasImplications(endpointType, true, maximalConfidence())
   }
 
   /**
@@ -275,15 +276,17 @@ module SharedCharacteristics<CandidateSig Candidate> {
     private class KnownSinkCharacteristic extends SinkCharacteristic {
       string madKind;
       Candidate::EndpointType endpointType;
+      string provenance;
 
       KnownSinkCharacteristic() {
         Candidate::isKnownKind(madKind, endpointType) and
         // bind "this" to a unique string differing from that of the SinkType classes
-        this = madKind + "-characteristic"
+        this = madKind + "_" + provenance + "_characteristic" and
+        Candidate::isSink(_, madKind, provenance)
       }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) {
-        Candidate::isSink(e, madKind, _)
+        Candidate::isSink(e, madKind, provenance)
       }
 
       override Candidate::EndpointType getSinkType() { result = endpointType }
