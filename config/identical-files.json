@@ -59,7 +59,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImplConsistency.qll"
   ],
