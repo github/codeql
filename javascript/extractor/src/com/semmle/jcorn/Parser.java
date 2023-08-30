@@ -2699,6 +2699,19 @@ public class Parser {
             || !Identifiers.isIdentifierChar(this.input.codePointAt(next + len), false));
   }
 
+  // matches "using [identifier]"
+  boolean isUsingDecl() {
+    if (this.type != TokenType.name
+        || this.options.ecmaVersion() < 8
+        || !this.value.equals("using")) return false;
+
+    Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
+    m.find(this.pos);
+    int next = m.end();
+    return !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
+        && Identifiers.isIdentifierChar(this.input.codePointAt(next + 1), false);
+  }
+
   /**
    * Parse a single statement.
    *
@@ -2749,7 +2762,7 @@ public class Parser {
       return this.parseThrowStatement(startLoc);
     } else if (starttype == TokenType._try) {
       return this.parseTryStatement(startLoc);
-    } else if (starttype == TokenType._const || starttype == TokenType._var || starttype == TokenType._using) {
+    } else if (starttype == TokenType._const || starttype == TokenType._var || this.isUsingDecl()) {
       if (kind == null) kind = String.valueOf(this.value);
       if (!declaration && !kind.equals("var")) this.unexpected();
       return this.parseVarStatement(startLoc, kind);
@@ -2859,7 +2872,7 @@ public class Parser {
     if (this.isAwaitUsing() && this.inAsync) {
       this.next(); // just skip the await and treat it as a `using` statement
     }
-    if (this.type == TokenType._var || this.type == TokenType._const || isLet || this.type == TokenType._using) {
+    if (this.type == TokenType._var || this.type == TokenType._const || isLet || (this.type == TokenType.name && this.value.equals("using"))) {
       Position initStartLoc = this.startLoc;
       String kind = isLet ? "let" : String.valueOf(this.value);
       this.next();

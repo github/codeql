@@ -19,3 +19,10 @@ async function h() {
 
     console.log("end");
 }
+
+function usesUsing() {
+    using("foo");
+    function using(foo) {
+        // ...
+    }
+}

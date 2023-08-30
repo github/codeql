@@ -180,7 +180,6 @@ public class TokenType {
       _try = new TokenType(kw("try")),
       _var = new TokenType(kw("var")),
       _const = new TokenType(kw("const")),
-      _using = new TokenType(kw("using")),
       _while = new TokenType(kw("while").isLoop()),
       _with = new TokenType(kw("with")),
       _new = new TokenType(kw("new").beforeExpr().startsExpr()),
