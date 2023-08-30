@@ -179,7 +179,13 @@ module Flask {
      * - https://flask.palletsprojects.com/en/2.2.x/api/#flask.json.jsonify
      */
     private class FlaskJsonifyCall extends InstanceSource, DataFlow::CallCfgNode {
-      FlaskJsonifyCall() { this = API::moduleImport("flask").getMember("jsonify").getACall() }
+      FlaskJsonifyCall() {
+        this = API::moduleImport("flask").getMember("jsonify").getACall()
+        or
+        this = API::moduleImport("flask").getMember("json").getMember("jsonify").getACall()
+        or
+        this = FlaskApp::instance().getMember("json").getMember("response").getACall()
+      }
 
       override DataFlow::Node getBody() { result in [this.getArg(_), this.getArgByName(_)] }
 
@@ -453,7 +459,8 @@ module Flask {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
-        node = routeHandler.getAReturnValueFlowNode()
+        node = routeHandler.getAReturnValueFlowNode() and
+        not this instanceof Flask::Response::InstanceSource
       )
     }
 

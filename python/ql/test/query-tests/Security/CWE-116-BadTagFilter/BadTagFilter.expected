@@ -1,6 +1,7 @@
 | tst.py:4:20:4:43 | <script.*?>.*?<\\/script> | This regular expression does not match script end tags like </script >. |
 | tst.py:5:20:5:43 | <script.*?>.*?<\\/script> | This regular expression does not match script end tags like </script >. |
 | tst.py:9:20:9:30 | <!--.*--!?> | This regular expression does not match comments containing newlines. |
+| tst.py:11:20:11:34 | (?i)<!--.*--!?> | This regular expression does not match comments containing newlines. |
 | tst.py:12:20:12:53 | <script.*?>(.\|\\s)*?<\\/script[^>]*> | This regular expression matches <script></script>, but not <script \\n></script> |
 | tst.py:13:20:13:51 | <script[^>]*?>.*?<\\/script[^>]*> | This regular expression matches <script>...</script>, but not <script >...\\n</script> |
 | tst.py:14:20:14:58 | <script(\\s\|\\w\|=\|")*?>.*?<\\/script[^>]*> | This regular expression does not match script tags where the attribute uses single-quotes. |

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Semmle.Util;
 
@@ -18,7 +17,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     {
         private readonly ProgressMonitor progressMonitor;
         private readonly IUnsafeFileReader unsafeFileReader;
-        private readonly Func<IEnumerable<string>> getFiles;
+        private readonly IEnumerable<string> files;
         private readonly HashSet<string> allPackages = new HashSet<string>();
         private readonly Initializer initialize;
 
@@ -50,17 +49,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         internal FileContent(ProgressMonitor progressMonitor,
-            Func<IEnumerable<string>> getFiles,
+            IEnumerable<string> files,
             IUnsafeFileReader unsafeFileReader)
         {
             this.progressMonitor = progressMonitor;
-            this.getFiles = getFiles;
+            this.files = files;
             this.unsafeFileReader = unsafeFileReader;
             this.initialize = new Initializer(DoInitialize);
         }
 
 
-        public FileContent(ProgressMonitor progressMonitor, Func<IEnumerable<string>> getFiles) : this(progressMonitor, getFiles, new UnsafeFileReader())
+        public FileContent(ProgressMonitor progressMonitor, IEnumerable<string> files) : this(progressMonitor, files, new UnsafeFileReader())
         { }
 
         private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix)
@@ -95,7 +94,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void DoInitialize()
         {
-            foreach (var file in getFiles())
+            foreach (var file in files)
             {
                 try
                 {

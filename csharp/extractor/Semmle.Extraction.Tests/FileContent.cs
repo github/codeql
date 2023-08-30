@@ -35,7 +35,7 @@ namespace Semmle.Extraction.Tests
     internal class TestFileContent : FileContent
     {
         public TestFileContent(List<string> lines) : base(new ProgressMonitor(new LoggerStub()),
-            () => new List<string>() { "test1.cs" },
+            new List<string>() { "test1.cs" },
             new UnsafeFileReaderStub(lines))
         { }
     }
