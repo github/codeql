@@ -2709,7 +2709,7 @@ public class Parser {
     m.find(this.pos);
     int next = m.end();
     return !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
-        && Identifiers.isIdentifierChar(this.input.codePointAt(next + 1), false);
+        && Identifiers.isIdentifierChar(this.input.codePointAt(next), false);
   }
 
   /**

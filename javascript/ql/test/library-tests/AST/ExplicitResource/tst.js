@@ -25,4 +25,5 @@ function usesUsing() {
     function using(foo) {
         // ...
     }
+    using(using);
 }
