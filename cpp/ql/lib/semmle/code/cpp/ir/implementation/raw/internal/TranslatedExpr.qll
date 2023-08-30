@@ -2018,15 +2018,11 @@ TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
 }
 
 /**
- * The IR translation of a call to `operator delete` as part of a `delete` or `delete[]`
+ * The IR translation of a `delete` or `delete[]`
  * expression.
  */
-class TranslatedDeallocatorCall extends TTranslatedDeallocatorCall, TranslatedCall {
+class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, TranslatedCall {
   override DeleteOrDeleteArrayExpr expr;
-
-  TranslatedDeallocatorCall() { this = TTranslatedDeallocatorCall(expr) }
-
-  final override string toString() { result = "Deallocator call for " + expr.toString() }
 
   final override Instruction getFirstCallTargetInstruction() {
     result = this.getInstruction(CallTargetTag())
@@ -2051,8 +2047,6 @@ class TranslatedDeallocatorCall extends TTranslatedDeallocatorCall, TranslatedCa
     kind instanceof GotoEdge and
     result = this.getFirstArgumentOrCallInstruction()
   }
-
-  final override predicate producesExprResult() { none() }
 
   override Function getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getDeallocator()
@@ -2079,7 +2073,7 @@ class TranslatedDeallocatorCall extends TTranslatedDeallocatorCall, TranslatedCa
   }
 }
 
-TranslatedDeallocatorCall getTranslatedDeallocatorCall(DeleteOrDeleteArrayExpr newExpr) {
+TranslatedDeleteOrDeleteArrayExpr getTranslatedDeleteOrDeleteArray(DeleteOrDeleteArrayExpr newExpr) {
   result.getAst() = newExpr
 }
 
@@ -3018,63 +3012,6 @@ class TranslatedNewArrayExpr extends TranslatedNewOrNewArrayExpr {
     // REVIEW: Figure out how we want to model array initialization in the IR.
     none()
   }
-}
-
-/**
- * The IR translation of a `delete` or `delete[]` expression.
- */
-abstract class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr {
-  override DeleteOrDeleteArrayExpr expr;
-
-  final override TranslatedElement getChild(int id) {
-    id = 0 and result = this.getDeallocatorCall()
-  }
-
-  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::Convert and
-    resultType = this.getResultType()
-  }
-
-  final override Instruction getFirstInstruction() {
-    result = this.getDeallocatorCall().getFirstInstruction()
-  }
-
-  final override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
-
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    kind instanceof GotoEdge and
-    tag = OnlyInstructionTag() and
-    result = this.getParent().getChildSuccessor(this)
-  }
-
-  final override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getDeallocatorCall() and result = this.getInstruction(OnlyInstructionTag())
-  }
-
-  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperandTag and
-    result = this.getDeallocatorCall().getResult()
-  }
-
-  private TranslatedDeallocatorCall getDeallocatorCall() {
-    result = getTranslatedDeallocatorCall(expr)
-  }
-}
-
-/**
- * The IR translation of a `delete` expression.
- */
-class TranslatedDeleteExpr extends TranslatedDeleteOrDeleteArrayExpr {
-  override DeleteExpr expr;
-}
-
-/**
- * The IR translation of a `delete[]` expression.
- */
-class TranslatedDeleteArrayExpr extends TranslatedDeleteOrDeleteArrayExpr {
-  override DeleteArrayExpr expr;
 }
 
 /**

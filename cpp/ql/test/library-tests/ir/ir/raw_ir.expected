@@ -5670,27 +5670,22 @@ ir.cpp:
 # 1016|     r1016_2(int *)             = Constant[0]                      : 
 # 1016|     v1016_3(void)              = Call[operator delete]            : func:r1016_1, 0:r1016_2
 # 1016|     mu1016_4(unknown)          = ^CallSideEffect                  : ~m?
-# 1016|     v1016_5(void)              = Convert                          : v1016_3
 # 1017|     r1017_1(glval<unknown>)    = FunctionAddress[operator delete] : 
 # 1017|     r1017_2(String *)          = Constant[0]                      : 
 # 1017|     v1017_3(void)              = Call[operator delete]            : func:r1017_1, 0:r1017_2
 # 1017|     mu1017_4(unknown)          = ^CallSideEffect                  : ~m?
-# 1017|     v1017_5(void)              = Convert                          : v1017_3
 # 1018|     r1018_1(glval<unknown>)    = FunctionAddress[operator delete] : 
 # 1018|     r1018_2(SizedDealloc *)    = Constant[0]                      : 
 # 1018|     v1018_3(void)              = Call[operator delete]            : func:r1018_1, 0:r1018_2
 # 1018|     mu1018_4(unknown)          = ^CallSideEffect                  : ~m?
-# 1018|     v1018_5(void)              = Convert                          : v1018_3
 # 1019|     r1019_1(glval<unknown>)    = FunctionAddress[operator delete] : 
 # 1019|     r1019_2(Overaligned *)     = Constant[0]                      : 
 # 1019|     v1019_3(void)              = Call[operator delete]            : func:r1019_1, 0:r1019_2
 # 1019|     mu1019_4(unknown)          = ^CallSideEffect                  : ~m?
-# 1019|     v1019_5(void)              = Convert                          : v1019_3
 # 1020|     r1020_1(glval<unknown>)    = VirtualDeleteFunctionAddress     : 
 # 1020|     r1020_2(PolymorphicBase *) = Constant[0]                      : 
 # 1020|     v1020_3(void)              = Call[?]                          : func:r1020_1, 0:r1020_2
 # 1020|     mu1020_4(unknown)          = ^CallSideEffect                  : ~m?
-# 1020|     v1020_5(void)              = Convert                          : v1020_3
 # 1021|     v1021_1(void)              = NoOp                             : 
 # 1015|     v1015_4(void)              = ReturnVoid                       : 
 # 1015|     v1015_5(void)              = AliasedUse                       : ~m?
@@ -5705,27 +5700,22 @@ ir.cpp:
 # 1025|     r1025_2(int *)             = Constant[0]                        : 
 # 1025|     v1025_3(void)              = Call[operator delete[]]            : func:r1025_1, 0:r1025_2
 # 1025|     mu1025_4(unknown)          = ^CallSideEffect                    : ~m?
-# 1025|     v1025_5(void)              = Convert                            : v1025_3
 # 1026|     r1026_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
 # 1026|     r1026_2(String *)          = Constant[0]                        : 
 # 1026|     v1026_3(void)              = Call[operator delete[]]            : func:r1026_1, 0:r1026_2
 # 1026|     mu1026_4(unknown)          = ^CallSideEffect                    : ~m?
-# 1026|     v1026_5(void)              = Convert                            : v1026_3
 # 1027|     r1027_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
 # 1027|     r1027_2(SizedDealloc *)    = Constant[0]                        : 
 # 1027|     v1027_3(void)              = Call[operator delete[]]            : func:r1027_1, 0:r1027_2
 # 1027|     mu1027_4(unknown)          = ^CallSideEffect                    : ~m?
-# 1027|     v1027_5(void)              = Convert                            : v1027_3
 # 1028|     r1028_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
 # 1028|     r1028_2(Overaligned *)     = Constant[0]                        : 
 # 1028|     v1028_3(void)              = Call[operator delete[]]            : func:r1028_1, 0:r1028_2
 # 1028|     mu1028_4(unknown)          = ^CallSideEffect                    : ~m?
-# 1028|     v1028_5(void)              = Convert                            : v1028_3
 # 1029|     r1029_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
 # 1029|     r1029_2(PolymorphicBase *) = Constant[0]                        : 
 # 1029|     v1029_3(void)              = Call[operator delete[]]            : func:r1029_1, 0:r1029_2
 # 1029|     mu1029_4(unknown)          = ^CallSideEffect                    : ~m?
-# 1029|     v1029_5(void)              = Convert                            : v1029_3
 # 1030|     v1030_1(void)              = NoOp                               : 
 # 1024|     v1024_4(void)              = ReturnVoid                         : 
 # 1024|     v1024_5(void)              = AliasedUse                         : ~m?
@@ -11144,7 +11134,6 @@ ir.cpp:
 # 2036|     r2036_3(int *)          = Load[x]                          : &:r2036_2, ~m?
 # 2036|     v2036_4(void)           = Call[operator delete]            : func:r2036_1, 0:r2036_3
 # 2036|     mu2036_5(unknown)       = ^CallSideEffect                  : ~m?
-# 2036|     v2036_6(void)           = Convert                          : v2036_4
 # 2037|     v2037_1(void)           = NoOp                             : 
 # 2033|     v2033_4(void)           = ReturnVoid                       : 
 # 2033|     v2033_5(void)           = AliasedUse                       : ~m?
@@ -11271,7 +11260,6 @@ ir.cpp:
 # 2059|     r2059_3(Base2 *)           = Load[b1]                                  : &:r2059_2, ~m?
 # 2059|     v2059_4(void)              = Call[?]                                   : func:r2059_1, 0:r2059_3
 # 2059|     mu2059_5(unknown)          = ^CallSideEffect                           : ~m?
-# 2059|     v2059_6(void)              = Convert                                   : v2059_4
 # 2061|     r2061_1(glval<Base2 *>)    = VariableAddress[b2]                       : 
 # 2061|     r2061_2(glval<unknown>)    = FunctionAddress[operator new]             : 
 # 2061|     r2061_3(unsigned long)     = Constant[16]                              : 
@@ -11290,7 +11278,6 @@ ir.cpp:
 # 2062|     r2062_3(Base2 *)           = Load[b2]                                  : &:r2062_2, ~m?
 # 2062|     v2062_4(void)              = Call[?]                                   : func:r2062_1, 0:r2062_3
 # 2062|     mu2062_5(unknown)          = ^CallSideEffect                           : ~m?
-# 2062|     v2062_6(void)              = Convert                                   : v2062_4
 # 2064|     r2064_1(glval<Derived2 *>) = VariableAddress[d]                        : 
 # 2064|     r2064_2(glval<unknown>)    = FunctionAddress[operator new]             : 
 # 2064|     r2064_3(unsigned long)     = Constant[16]                              : 
@@ -11308,7 +11295,6 @@ ir.cpp:
 # 2065|     r2065_3(Derived2 *)        = Load[d]                                   : &:r2065_2, ~m?
 # 2065|     v2065_4(void)              = Call[?]                                   : func:r2065_1, 0:r2065_3
 # 2065|     mu2065_5(unknown)          = ^CallSideEffect                           : ~m?
-# 2065|     v2065_6(void)              = Convert                                   : v2065_4
 # 2066|     v2066_1(void)              = Unreached                                 : 
 
 # 2056|   Block 1

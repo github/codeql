@@ -723,8 +723,6 @@ newtype TTranslatedElement =
   } or
   // An allocator call in a `new` or `new[]` expression
   TTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
-  // An deallocator call in a `delete` or `delete[]` expression
-  TTranslatedDeallocatorCall(DeleteOrDeleteArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // An allocation size for a `new` or `new[]` expression
   TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) { not ignoreExpr(newExpr) } or
   // The declaration/initialization part of a `ConditionDeclExpr`

@@ -352,7 +352,7 @@ class TranslatedCallSideEffects extends TranslatedSideEffects, TTranslatedCallSi
     result = getTranslatedAllocatorCall(expr).getInstruction(CallTag())
     or
     expr instanceof DeleteOrDeleteArrayExpr and
-    result = getTranslatedDeallocatorCall(expr).getInstruction(CallTag())
+    result = getTranslatedDeleteOrDeleteArray(expr).getInstruction(CallTag())
   }
 }
 
