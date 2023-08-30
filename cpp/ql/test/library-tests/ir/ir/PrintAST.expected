@@ -15740,6 +15740,112 @@ ir.cpp:
 # 2072|             Value = [VariableAccess] 116
 # 2072|             ValueCategory = prvalue(load)
 # 2073|     getStmt(2): [ReturnStmt] return ...
+# 2075| [TopLevelFunction] void exit(int)
+# 2075|   <params>: 
+# 2075|     getParameter(0): [Parameter] code
+# 2075|         Type = [IntType] int
+# 2077| [TopLevelFunction] int NonExit()
+# 2077|   <params>: 
+# 2077|   getEntryPoint(): [BlockStmt] { ... }
+# 2078|     getStmt(0): [DeclStmt] declaration
+# 2078|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2078|           Type = [IntType] int
+# 2078|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2078|           getExpr(): [FunctionCall] call to Add
+# 2078|               Type = [IntType] int
+# 2078|               ValueCategory = prvalue
+# 2078|             getArgument(0): [Literal] 3
+# 2078|                 Type = [IntType] int
+# 2078|                 Value = [Literal] 3
+# 2078|                 ValueCategory = prvalue
+# 2078|             getArgument(1): [Literal] 4
+# 2078|                 Type = [IntType] int
+# 2078|                 Value = [Literal] 4
+# 2078|                 ValueCategory = prvalue
+# 2079|     getStmt(1): [IfStmt] if (...) ... 
+# 2079|       getCondition(): [EQExpr] ... == ...
+# 2079|           Type = [BoolType] bool
+# 2079|           ValueCategory = prvalue
+# 2079|         getLeftOperand(): [VariableAccess] x
+# 2079|             Type = [IntType] int
+# 2079|             ValueCategory = prvalue(load)
+# 2079|         getRightOperand(): [Literal] 7
+# 2079|             Type = [IntType] int
+# 2079|             Value = [Literal] 7
+# 2079|             ValueCategory = prvalue
+# 2080|       getThen(): [ExprStmt] ExprStmt
+# 2080|         getExpr(): [FunctionCall] call to exit
+# 2080|             Type = [VoidType] void
+# 2080|             ValueCategory = prvalue
+# 2080|           getArgument(0): [Literal] 3
+# 2080|               Type = [IntType] int
+# 2080|               Value = [Literal] 3
+# 2080|               ValueCategory = prvalue
+# 2081|     getStmt(2): [ExprStmt] ExprStmt
+# 2081|       getExpr(): [FunctionCall] call to VoidFunc
+# 2081|           Type = [VoidType] void
+# 2081|           ValueCategory = prvalue
+# 2082|     getStmt(3): [ReturnStmt] return ...
+# 2082|       getExpr(): [VariableAccess] x
+# 2082|           Type = [IntType] int
+# 2082|           ValueCategory = prvalue(load)
+# 2085| [TopLevelFunction] void CallsNonExit()
+# 2085|   <params>: 
+# 2085|   getEntryPoint(): [BlockStmt] { ... }
+# 2086|     getStmt(0): [ExprStmt] ExprStmt
+# 2086|       getExpr(): [FunctionCall] call to VoidFunc
+# 2086|           Type = [VoidType] void
+# 2086|           ValueCategory = prvalue
+# 2087|     getStmt(1): [ExprStmt] ExprStmt
+# 2087|       getExpr(): [FunctionCall] call to exit
+# 2087|           Type = [VoidType] void
+# 2087|           ValueCategory = prvalue
+# 2087|         getArgument(0): [Literal] 3
+# 2087|             Type = [IntType] int
+# 2087|             Value = [Literal] 3
+# 2087|             ValueCategory = prvalue
+# 2088|     getStmt(2): [ReturnStmt] return ...
+# 2090| [TopLevelFunction] int TransNonExit()
+# 2090|   <params>: 
+# 2090|   getEntryPoint(): [BlockStmt] { ... }
+# 2091|     getStmt(0): [DeclStmt] declaration
+# 2091|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2091|           Type = [IntType] int
+# 2091|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2091|           getExpr(): [FunctionCall] call to Add
+# 2091|               Type = [IntType] int
+# 2091|               ValueCategory = prvalue
+# 2091|             getArgument(0): [Literal] 3
+# 2091|                 Type = [IntType] int
+# 2091|                 Value = [Literal] 3
+# 2091|                 ValueCategory = prvalue
+# 2091|             getArgument(1): [Literal] 4
+# 2091|                 Type = [IntType] int
+# 2091|                 Value = [Literal] 4
+# 2091|                 ValueCategory = prvalue
+# 2092|     getStmt(1): [IfStmt] if (...) ... 
+# 2092|       getCondition(): [EQExpr] ... == ...
+# 2092|           Type = [BoolType] bool
+# 2092|           ValueCategory = prvalue
+# 2092|         getLeftOperand(): [VariableAccess] x
+# 2092|             Type = [IntType] int
+# 2092|             ValueCategory = prvalue(load)
+# 2092|         getRightOperand(): [Literal] 7
+# 2092|             Type = [IntType] int
+# 2092|             Value = [Literal] 7
+# 2092|             ValueCategory = prvalue
+# 2093|       getThen(): [ExprStmt] ExprStmt
+# 2093|         getExpr(): [FunctionCall] call to CallsNonExit
+# 2093|             Type = [VoidType] void
+# 2093|             ValueCategory = prvalue
+# 2094|     getStmt(2): [ExprStmt] ExprStmt
+# 2094|       getExpr(): [FunctionCall] call to VoidFunc
+# 2094|           Type = [VoidType] void
+# 2094|           ValueCategory = prvalue
+# 2095|     getStmt(3): [ReturnStmt] return ...
+# 2095|       getExpr(): [VariableAccess] x
+# 2095|           Type = [IntType] int
+# 2095|           ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

@@ -10,6 +10,43 @@ predicate isInfeasibleInstructionSuccessor(Instruction instr, EdgeKind kind) {
   or
   instr.getSuccessor(kind) instanceof UnreachedInstruction and
   kind instanceof GotoEdge
+  or
+  isCallToNonExit(instr)
+}
+
+/**
+ * Holds if all calls to `f` never return
+ */
+private predicate isNonExitFunction(IRFunction f) {
+  // If all flows to the exit block are pass through an unreachable then f never returns.
+  any(UnreachedInstruction instr).getBlock().postDominates(f.getEntryBlock())
+  or
+  // If there is no flow to the exit block then f never returns.
+  not exists(IRBlock entry, IRBlock exit |
+    exit = f.getExitFunctionInstruction().getBlock() and
+    entry = f.getEntryBlock() and
+    exit = entry.getASuccessor*()
+  )
+  or
+  // If all flows to the exit block are pass through a call that never returns then f never returns.
+  exists(CallInstruction ci |
+    ci.getBlock().postDominates(f.getEntryBlock()) and
+    isCallToNonExit(ci)
+  )
+}
+
+/**
+ * Holds if the call `ci` never returns.
+ */
+private predicate isCallToNonExit(CallInstruction ci) {
+  exists(IRFunction callee, Language::Function staticTarget |
+    staticTarget = ci.getStaticCallTarget() and
+    staticTarget = callee.getFunction() and
+    // We can't tell if the call is virtual or not
+    // if the callee is virtual. So assume that the call is virtual.  
+    not staticTarget.isVirtual() and
+    isNonExitFunction(callee) 
+  )
 }
 
 pragma[noinline]
