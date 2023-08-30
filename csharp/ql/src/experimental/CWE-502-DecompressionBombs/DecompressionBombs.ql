@@ -190,6 +190,29 @@ class SharpZipLibDecompressionMethod extends MethodCall {
   }
 }
 
+class K4osLZ4Source extends DecompressionSource {
+  K4osLZ4Source() { exists(K4osLZ4InitializeMethod ma | this.asExpr() = ma.getArgument(0)) }
+}
+
+class K4osLZ4InitializeMethod extends MethodCall {
+  K4osLZ4InitializeMethod() {
+    this.getTarget().hasQualifiedName("K4os.Compression.LZ4.Streams", "LZ4Stream", "Decode")
+  }
+}
+
+class K4osLZ4DecompressionMethod extends MethodCall {
+  K4osLZ4DecompressionMethod() {
+    exists(string methodName | methodName = ["Read", "ReadAsync", "CopyToAsync", "CopyTo"] |
+      this.getTarget()
+          .hasQualifiedName("K4os.Compression.LZ4.Streams", "LZ4DecoderStream", methodName)
+    )
+  }
+}
+
+class K4osLZ4LibSink extends DecompressionSink {
+  K4osLZ4LibSink() { exists(K4osLZ4DecompressionMethod mc | this.asExpr() = mc.getArgument(0)) }
+}
+
 class SharpZipLibSink extends DecompressionSink {
   SharpZipLibSink() {
     exists(SharpZipLibDecompressionMethod mc | this.asExpr() = mc.getArgument(0))
@@ -215,10 +238,7 @@ private module DecompressionBombConfig implements DataFlow::ConfigSig {
     source instanceof RemoteFlowSource
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink instanceof DecompressionSink
-    // sink instanceof DataFlow::Node
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // var node2 = node1.ExtractToFile("./output.txt", true)
@@ -260,6 +280,16 @@ private module DecompressionBombConfig implements DataFlow::ConfigSig {
       c.getDeclaringType() instanceof SharpZipLibType and
       node1.asExpr() = c.getACall().getArgument(0) and
       node2.asExpr() = c.getACall()
+    )
+    or
+    exists(K4osLZ4DecompressionMethod mc |
+      node1.asExpr() = mc.getQualifier() and
+      node2.asExpr() = mc.getArgument(0)
+    )
+    or
+    exists(K4osLZ4InitializeMethod mc |
+      node2.asExpr() = mc and
+      node1.asExpr() = mc.getArgument(0)
     )
   }
 }
