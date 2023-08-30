@@ -51,6 +51,11 @@ class Node extends TNode {
    * Gets this node's underlying SSA definition, if any.
    */
   Ssa::Definition asDefinition() { none() }
+
+  /**
+   * Gets the parameter that corresponds to this node, if any.
+   */
+  ParamDecl getParameter() { none() }
 }
 
 /**
@@ -96,7 +101,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
     result = this.(ParameterNodeImpl).getEnclosingCallable()
   }
 
-  ParamDecl getParameter() { result = this.(ParameterNodeImpl).getParameter() }
+  override ParamDecl getParameter() { result = this.(ParameterNodeImpl).getParameter() }
 }
 
 /**
@@ -109,9 +114,7 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   override Ssa::Definition asDefinition() { result = def }
 }
 
-class InoutReturnNode extends Node instanceof InoutReturnNodeImpl {
-  ParamDecl getParameter() { result = super.getParameter() }
-}
+class InoutReturnNode extends Node instanceof InoutReturnNodeImpl { }
 
 /**
  * A node associated with an object after an operation that might have
@@ -127,6 +130,18 @@ class InoutReturnNode extends Node instanceof InoutReturnNodeImpl {
 class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
   /** Gets the node before the state update. */
   Node getPreUpdateNode() { result = super.getPreUpdateNode() }
+}
+
+/**
+ * A synthesized data flow node representing a closure object that tracks
+ * captured variables.
+ */
+class CaptureNode extends Node, TCaptureNode {
+  private CaptureFlow::SynthesizedCaptureNode cn;
+
+  CaptureNode() { this = TCaptureNode(cn) }
+
+  CaptureFlow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
 }
 
 /**
@@ -234,6 +249,17 @@ module Content {
    * DEPRECATED: An element of a collection. This is an alias for the general CollectionContent.
    */
   deprecated class ArrayContent = CollectionContent;
+
+  /** A captured variable. */
+  class CapturedVariableContent extends Content, TCapturedVariableContent {
+    CapturedVariable v;
+
+    CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+    CapturedVariable getVariable() { result = v }
+
+    override string toString() { result = v.toString() }
+  }
 }
 
 /**

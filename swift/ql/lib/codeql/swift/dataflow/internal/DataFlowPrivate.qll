@@ -10,6 +10,7 @@ private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 private import codeql.swift.frameworks.StandardLibrary.Array
 private import codeql.swift.frameworks.StandardLibrary.Dictionary
+private import codeql.dataflow.VariableCapture as VariableCapture
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
@@ -98,6 +99,16 @@ private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   }
 }
 
+private class CaptureNodeImpl extends CaptureNode, NodeImpl {
+  override Location getLocationImpl() { result = this.getSynthesizedCaptureNode().getLocation() }
+
+  override string toStringImpl() { result = this.getSynthesizedCaptureNode().toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = this.getSynthesizedCaptureNode().getEnclosingCallable()
+  }
+}
+
 private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
   exists(BasicBlock bb, int i | def.lastRefRedef(bb, i, next) |
     def.definesAt(_, bb, i) and
@@ -145,7 +156,8 @@ private module Cached {
     } or
     TDictionarySubscriptNode(SubscriptExpr e) {
       e.getBase().getType().getCanonicalType() instanceof CanonicalDictionaryType
-    }
+    } or
+    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn)
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
@@ -305,7 +317,8 @@ private module Cached {
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
     TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
-    TCollectionContent()
+    TCollectionContent() or
+    TCapturedVariableContent(CapturedVariable v)
 }
 
 /**
@@ -371,7 +384,7 @@ private module ParameterNodes {
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { none() }
 
     /** Gets the parameter associated with this node, if any. */
-    ParamDecl getParameter() { none() }
+    override ParamDecl getParameter() { none() }
   }
 
   class SourceParameterNode extends ParameterNodeImpl, TSourceParameterNode {
@@ -658,7 +671,7 @@ private module ReturnNodes {
       result = TDataFlowFunc(param.getDeclaringFunction())
     }
 
-    ParamDecl getParameter() { result = param }
+    override ParamDecl getParameter() { result = param }
 
     override Location getLocationImpl() { result = exit.getLocation() }
 
@@ -784,6 +797,136 @@ private module OutNodes {
 }
 
 import OutNodes
+
+private predicate closureFlowStep(Expr e1, Expr e2) {
+  // simpleLocalFlowStep(exprNode(e1), exprNode(e2)) // TODO: find out why the java version uses simpleAstFlowStep... probably due to non-monotonic recursion
+  // or
+  exists(Ssa::WriteDefinition def |
+    def.getARead().getNode().asAstNode() = e2 and
+    def.assigns(any(CfgNode cfg | cfg.getNode().asAstNode() = e1))
+  )
+}
+
+private module CaptureInput implements VariableCapture::InputSig {
+  private import swift as S
+  private import codeql.swift.controlflow.BasicBlocks as B
+
+  class Location = S::Location;
+
+  class BasicBlock instanceof B::BasicBlock {
+    string toString() { result = super.toString() }
+
+    Callable getEnclosingCallable() { result = super.getScope() }
+
+    Location getLocation() { result = super.getLocation() }
+  }
+
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.(B::BasicBlock).dominates(bb) }
+
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(B::BasicBlock).getASuccessor() }
+
+  //TODO: support capture of `this` in lambdas
+  class CapturedVariable instanceof S::CapturedDecl {
+    string toString() { result = super.toString() }
+
+    Callable getCallable() { result = super.getScope() }
+
+    Location getLocation() { result = super.getLocation() }
+  }
+
+  class CapturedParameter extends CapturedVariable {
+    CapturedParameter() { this.(S::CapturedDecl).getDecl() instanceof S::ParamDecl }
+  }
+
+  class Expr instanceof S::AstNode {
+    string toString() { result = super.toString() }
+
+    Location getLocation() { result = super.getLocation() }
+
+    predicate hasCfgNode(BasicBlock bb, int i) {
+      this = bb.(B::BasicBlock).getNode(i).getNode().asAstNode()
+    }
+  }
+
+  class VariableWrite extends Expr {
+    CapturedVariable variable;
+    Expr source;
+
+    VariableWrite() {
+      exists(S::VarDecl varDecl |
+        variable.(S::CapturedDecl).getDecl() = varDecl and
+        variable.getCallable() = this.(S::AstNode).getEnclosingCallable()
+      |
+        exists(S::Assignment a | this = a |
+          a.getDest().(DeclRefExpr).getDecl() = varDecl and
+          source = a.getSource()
+        )
+        or
+        exists(S::PatternBindingDecl pbd, S::NamedPattern np |
+          this = pbd and pbd.getAPattern() = np
+        |
+          np.getVarDecl() = varDecl and
+          source = np.getMatchingExpr()
+        )
+        // TODO: support multiple variables in LHS of =, in both of above cases.
+      )
+    }
+
+    CapturedVariable getVariable() { result = variable }
+
+    Expr getSource() { result = source }
+  }
+
+  class VariableRead extends Expr instanceof S::DeclRefExpr {
+    CapturedVariable v;
+
+    VariableRead() { this.getCapturedDecl() = v /* TODO: this should be an R-value only. */ }
+
+    CapturedVariable getVariable() { result = v }
+  }
+
+  class ClosureExpr extends Expr instanceof S::Callable {
+    ClosureExpr() { any(S::CapturedDecl c).getScope() = this }
+
+    predicate hasBody(Callable body) { this = body }
+
+    predicate hasAliasedAccess(Expr f) {
+      closureFlowStep+(this, f) and not closureFlowStep(f, _)
+    /* TODO: understand why this is intra-procedural */ }
+  }
+
+  class Callable extends S::Callable {
+    predicate isConstructor() { this instanceof S::Initializer }
+  }
+}
+
+class CapturedVariable = CaptureInput::CapturedVariable;
+
+class CapturedParameter = CaptureInput::CapturedParameter;
+
+module CaptureFlow = VariableCapture::Flow<CaptureInput>;
+
+private CaptureFlow::ClosureNode asClosureNode(Node n) {
+  result = n.(CaptureNode).getSynthesizedCaptureNode() or
+  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
+  result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
+    n.(PostUpdateNode).getPreUpdateNode().asExpr() or
+  result.(CaptureFlow::ParameterNode).getParameter().(CapturedDecl).getDecl() = n.getParameter() or
+  result.(CaptureFlow::ThisParameterNode).getCallable().getSelfParam() = n.getParameter() or
+  result.(CaptureFlow::MallocNode).getClosureExpr() = n.getCfgNode().getNode().asAstNode() // TODO: figure out why the java version had PostUpdateNode logic here
+}
+
+private predicate captureStoreStep(Node node1, Content::CapturedVariableContent c, Node node2) {
+  CaptureFlow::storeStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+}
+
+private predicate captureReadStep(Node node1, Content::CapturedVariableContent c, Node node2) {
+  CaptureFlow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+}
+
+predicate captureValueStep(Node node1, Node node2) {
+  CaptureFlow::localFlowStep(asClosureNode(node1), asClosureNode(node2))
+}
 
 predicate jumpStep(Node pred, Node succ) {
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
