@@ -8477,7 +8477,7 @@ ir.cpp:
 # 1018|       getExpr(): [DeleteExpr] delete
 # 1018|           Type = [VoidType] void
 # 1018|           ValueCategory = prvalue
-# 1018|         getAllocatorCall(): [FunctionCall] call to operator delete
+# 1018|         getDeallocatorCall(): [FunctionCall] call to operator delete
 # 1018|             Type = [VoidType] void
 # 1018|             ValueCategory = prvalue
 # 1018|         getExpr(): [Literal] 0
@@ -8555,7 +8555,7 @@ ir.cpp:
 # 1027|       getExpr(): [DeleteArrayExpr] delete[]
 # 1027|           Type = [VoidType] void
 # 1027|           ValueCategory = prvalue
-# 1027|         getAllocatorCall(): [FunctionCall] call to operator delete[]
+# 1027|         getDeallocatorCall(): [FunctionCall] call to operator delete[]
 # 1027|             Type = [VoidType] void
 # 1027|             ValueCategory = prvalue
 # 1027|         getExpr(): [Literal] 0

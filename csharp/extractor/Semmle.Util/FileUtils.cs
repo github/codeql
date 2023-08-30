@@ -1,13 +1,17 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Semmle.Util
 {
     public static class FileUtils
     {
+        public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
+
         public static string ConvertToWindows(string path)
         {
             return path.Replace('/', '\\');
@@ -91,5 +95,20 @@ namespace Semmle.Util
                 hex.AppendFormat("{0:x2}", b);
             return hex.ToString();
         }
+
+        private static async Task DownloadFileAsync(string address, string filename)
+        {
+            using var httpClient = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, address);
+            using var contentStream = await (await httpClient.SendAsync(request)).Content.ReadAsStreamAsync();
+            using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+            await contentStream.CopyToAsync(stream);
+        }
+
+        /// <summary>
+        /// Downloads the file at <paramref name="address"/> to <paramref name="fileName"/>.
+        /// </summary>
+        public static void DownloadFile(string address, string fileName) =>
+           DownloadFileAsync(address, fileName).Wait();
     }
 }

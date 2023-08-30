@@ -1,3 +1,9 @@
+## 0.1.3
+
+### New Features
+
+* Added library for serverless functions. Currently used by JavaScript and Python.
+
 ## 0.1.2
 
 No user-facing changes.

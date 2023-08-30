@@ -88,6 +88,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void MissingNuGet() =>
             LogError("Missing nuget.exe");
 
+        public void FoundNuGet(string path) =>
+            LogInfo($"Found nuget.exe at {path}");
+
         public void MissingDotNet() =>
             LogError("Missing dotnet CLI");
 
