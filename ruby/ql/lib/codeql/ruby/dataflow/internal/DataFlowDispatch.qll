@@ -438,8 +438,8 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
     THashSplatArgumentPosition() or
-    TSplatAllArgumentPosition() or
     TSplatArgumentPosition(int pos) { exists(Call c | c.getArgument(pos) instanceof SplatExpr) } or
+    TSynthSplatArgumentPosition() or
     TAnyArgumentPosition() or
     TAnyKeywordArgumentPosition()
 
@@ -468,11 +468,11 @@ private module Cached {
     // position for multiple parameter nodes in the same callable, we introduce this
     // synthetic parameter position.
     TSynthHashSplatParameterPosition() or
-    TSplatAllParameterPosition() or
     TSplatParameterPosition(int pos) {
       exists(Parameter p | p.getPosition() = pos and p instanceof SplatParameter)
     } or
     TSynthSplatParameterPosition() or
+    TSynthArgSplatParameterPosition() or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
 }
@@ -1295,7 +1295,8 @@ class ParameterPosition extends TParameterPosition {
 
   predicate isSynthSplat() { this = TSynthSplatParameterPosition() }
 
-  predicate isSplatAll() { this = TSplatAllParameterPosition() }
+  // A fake position to indicate that this parameter node holds content from a synth arg splat node
+  predicate isSynthArgSplat() { this = TSynthArgSplatParameterPosition() }
 
   predicate isSplat(int n) { this = TSplatParameterPosition(n) }
 
@@ -1324,13 +1325,13 @@ class ParameterPosition extends TParameterPosition {
     or
     this.isSynthHashSplat() and result = "synthetic **"
     or
-    this.isSplatAll() and result = "*"
-    or
     this.isAny() and result = "any"
     or
     this.isAnyNamed() and result = "any-named"
     or
     this.isSynthSplat() and result = "synthetic *"
+    or
+    this.isSynthArgSplat() and result = "synthetic * (from *args)"
     or
     exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
   }
@@ -1365,9 +1366,9 @@ class ArgumentPosition extends TArgumentPosition {
    */
   predicate isHashSplat() { this = THashSplatArgumentPosition() }
 
-  predicate isSplatAll() { this = TSplatAllArgumentPosition() }
-
   predicate isSplat(int n) { this = TSplatArgumentPosition(n) }
+
+  predicate isSynthSplat() { this = TSynthSplatArgumentPosition() }
 
   /** Gets a textual representation of this position. */
   string toString() {
@@ -1385,7 +1386,7 @@ class ArgumentPosition extends TArgumentPosition {
     or
     this.isHashSplat() and result = "**"
     or
-    this.isSplatAll() and result = "*"
+    this.isSynthSplat() and result = "synthetic *"
     or
     exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
   }
@@ -1416,9 +1417,11 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isSynthHashSplat() and apos.isHashSplat()
   or
-  ppos.isSplatAll() and apos.isSplatAll()
+  ppos.isSplat(0) and apos.isSynthSplat()
   or
-  ppos.isSynthSplat() and apos.isSplatAll()
+  ppos.isSynthSplat() and apos.isSplat(0)
+  or
+  apos.isSynthSplat() and ppos.isSynthArgSplat()
   or
   // Exact splat match
   exists(int n | apos.isSplat(n) and ppos.isSplat(n))

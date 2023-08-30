@@ -13,7 +13,15 @@ private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.controlflow.CfgNodes
 
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
 class SummarizedCallableBase = Function;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = Function;
 
 DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
@@ -62,10 +70,11 @@ predicate summaryElement(Function c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenance`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
+ * Note. Neutral models have not been implemented for Swift.
  */
-predicate neutralSummaryElement(Function c, string provenance) { none() }
+predicate neutralElement(NeutralCallableBase c, string kind, string provenance) { none() }
 
 /**
  * Holds if an external source specification exists for `e` with output specification

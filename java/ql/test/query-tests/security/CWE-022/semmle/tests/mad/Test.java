@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.activation.FileDataSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.AntClassLoader;
@@ -104,6 +105,10 @@ public class Test {
         FileCopyUtils.copy((File) source(), null);
         // "org.springframework.util;FileCopyUtils;false;copy;(File,File);;Argument[1];create-file;manual"
         FileCopyUtils.copy((File) null, (File) source());
+        // "javax.activation;FileDataSource;true;FileDataSource;(String);;Argument[0];path-injection;manual"
+        new FileDataSource((String) source());
+        // "javax.activation;FileDataSource;true;FileDataSource;(File);;Argument[0];path-injection;manual"
+        new FileDataSource((File) source());
     }
 
     void test(AntClassLoader acl) {

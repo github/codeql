@@ -661,7 +661,7 @@ func testOptionalKeyPath() {
     let s = S(x: source())
     let s2 = S2_Optional(s: s)
     let f = \S2_Optional.s?.x
-    sink(opt: s2[keyPath: f]) // $ MISSING: flow=661
+    sink(arg: s2[keyPath: f]!) // $ flow=661
 }
 
 func testSwap() {
@@ -758,4 +758,11 @@ func testWriteOptional() {
     sink(arg: mo2!.v1!) // $ MISSING:flow=748
     sink(arg: mo2!.v2!) // $ MISSING:flow=749
     sink(arg: mo2!.v3) // $ MISSING:flow=750
+}
+
+func testOptionalKeyPathForce() {
+    let s = S(x: source())
+    let s2 = S2_Optional(s: s)
+    let f = \S2_Optional.s!.x
+    sink(arg: s2[keyPath: f]) // $ flow=764
 }

@@ -1,4 +1,3 @@
-failures
 testFailures
 edges
 | Tuples.cs:7:18:7:34 | call to method Source<Object> : Object | Tuples.cs:10:21:10:22 | access to local variable o1 : Object |

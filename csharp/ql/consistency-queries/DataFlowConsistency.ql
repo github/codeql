@@ -10,7 +10,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     // TODO: Remove once static initializers are folded into the
     // static constructors
     exists(ControlFlow::Node cfn |
-      cfn.getElement() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
+      cfn.getAstNode() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
       cfn = n.getControlFlowNode()
     )
   }
@@ -19,7 +19,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     // TODO: Remove once static initializers are folded into the
     // static constructors
     exists(ControlFlow::Node cfn |
-      cfn.getElement() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
+      cfn.getAstNode() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
       cfn = call.getControlFlowNode()
     )
   }

@@ -1,12 +1,9 @@
 /** Provides classes for assertions. */
 
-private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.system.diagnostics.Contracts
 private import semmle.code.csharp.frameworks.test.VisualStudio
 private import semmle.code.csharp.frameworks.System
-private import ControlFlow
-private import ControlFlow::BasicBlocks
 
 private newtype TAssertionFailure =
   TExceptionAssertionFailure(Class c) or
