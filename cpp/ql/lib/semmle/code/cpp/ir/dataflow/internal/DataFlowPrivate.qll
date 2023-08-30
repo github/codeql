@@ -220,9 +220,10 @@ private module IndirectOperands {
     int indirectionIndex;
 
     IndirectOperandFromIRRepr() {
-      exists(Operand repr |
-        repr = Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex) and
-        nodeHasOperand(this, repr, indirectionIndex - 1)
+      exists(Operand repr, int indirectionIndexRepr |
+        Ssa::hasIRRepresentationOfIndirectOperand(operand, indirectionIndex, repr,
+          indirectionIndexRepr) and
+        nodeHasOperand(this, repr, indirectionIndexRepr)
       )
     }
 
@@ -262,9 +263,10 @@ private module IndirectInstructions {
     int indirectionIndex;
 
     IndirectInstructionFromIRRepr() {
-      exists(Instruction repr |
-        repr = Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex) and
-        nodeHasInstruction(this, repr, indirectionIndex - 1)
+      exists(Instruction repr, int indirectionIndexRepr |
+        Ssa::hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, repr,
+          indirectionIndexRepr) and
+        nodeHasInstruction(this, repr, indirectionIndexRepr)
       )
     }
 
@@ -690,7 +692,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1,
 private predicate numberOfLoadsFromOperandRec(
   Operand operandFrom, Operand operandTo, int ind, boolean certain
 ) {
-  exists(Instruction load | Ssa::isDereference(load, operandFrom) |
+  exists(Instruction load | Ssa::isDereference(load, operandFrom, _) |
     operandTo = operandFrom and ind = 0 and certain = true
     or
     numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1, certain)
@@ -714,7 +716,7 @@ private predicate numberOfLoadsFromOperand(
 ) {
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n, certain)
   or
-  not Ssa::isDereference(_, operandFrom) and
+  not Ssa::isDereference(_, operandFrom, _) and
   not conversionFlow(operandFrom, _, _, _) and
   operandFrom = operandTo and
   n = 0 and
