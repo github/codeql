@@ -320,6 +320,14 @@ private module IteratorIndirections {
   }
 }
 
+/**
+ * Holds if `deref` is the result of loading the value at the address
+ * represented by `address`.
+ *
+ * If `additional = true` then the dereference comes from an `Indirection`
+ * class (such as a call to an iterator's `operator*`), and if
+ * `additional = false` the dereference is a `LoadInstruction`.
+ */
 predicate isDereference(Instruction deref, Operand address, boolean additional) {
   any(Indirection ind).isAdditionalDereference(deref, address) and
   additional = true
