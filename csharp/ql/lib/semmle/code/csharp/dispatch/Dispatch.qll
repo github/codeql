@@ -862,9 +862,7 @@ private module Internal {
         or
         Unification::subsumes(t, qualifierType)
         or
-        t.(Unification::ConstrainedTypeParameter).unifiable(qualifierType)
-        or
-        qualifierType = t.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+        qualifierType = t.(TypeParameter).getAnUltimatelySuppliedType()
       )
     }
 
