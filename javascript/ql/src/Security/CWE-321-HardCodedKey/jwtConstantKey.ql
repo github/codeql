@@ -18,7 +18,7 @@ class JWTDecodeConfig extends TaintTracking::Configuration {
   JWTDecodeConfig() { this = "JWTConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof StringLiteral or source.asExpr() instanceof TemplateLiteral
+    source.asExpr() instanceof ConstantString 
   }
 
   override predicate isSink(DataFlow::Node sink) {
