@@ -8,7 +8,6 @@ private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
-private import DataFlowImplConsistency
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
 import DataFlowNodes::Private
@@ -570,12 +569,6 @@ ContentApprox getContentApprox(Content c) {
   )
   or
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
-}
-
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
-  }
 }
 
 /**

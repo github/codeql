@@ -56,7 +56,6 @@
     "swift/ql/lib/codeql/swift/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python/Ruby/Swift Consistency checks": [
-    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll",
