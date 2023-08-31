@@ -3,67 +3,73 @@
  * data-flow classes and predicates.
  */
 
-private import DataFlowImplSpecific::Private
-private import DataFlowImplSpecific::Public
-private import tainttracking1.TaintTrackingParameter::Private
-private import tainttracking1.TaintTrackingParameter::Public
+private import codeql.dataflow.DataFlow as DF
+private import codeql.dataflow.TaintTracking as TT
 
-module Consistency {
-  private newtype TConsistencyConfiguration = MkConsistencyConfiguration()
+signature module InputSig<DF::InputSig DataFlowLang> {
+  /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
+  default predicate uniqueEnclosingCallableExclude(DataFlowLang::Node n) { none() }
 
-  /** A class for configuring the consistency queries. */
-  class ConsistencyConfiguration extends TConsistencyConfiguration {
-    string toString() { none() }
+  /** Holds if `call` should be excluded from the consistency test `uniqueCallEnclosingCallable`. */
+  default predicate uniqueCallEnclosingCallableExclude(DataFlowLang::DataFlowCall call) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
-    predicate uniqueEnclosingCallableExclude(Node n) { none() }
+  /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
+  default predicate uniqueNodeLocationExclude(DataFlowLang::Node n) { none() }
 
-    /** Holds if `call` should be excluded from the consistency test `uniqueCallEnclosingCallable`. */
-    predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) { none() }
+  /** Holds if `n` should be excluded from the consistency test `missingLocation`. */
+  default predicate missingLocationExclude(DataFlowLang::Node n) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
-    predicate uniqueNodeLocationExclude(Node n) { none() }
+  /** Holds if `n` should be excluded from the consistency test `postWithInFlow`. */
+  default predicate postWithInFlowExclude(DataFlowLang::Node n) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `missingLocation`. */
-    predicate missingLocationExclude(Node n) { none() }
+  /** Holds if `n` should be excluded from the consistency test `argHasPostUpdate`. */
+  default predicate argHasPostUpdateExclude(DataFlowLang::ArgumentNode n) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `postWithInFlow`. */
-    predicate postWithInFlowExclude(Node n) { none() }
+  /** Holds if `n` should be excluded from the consistency test `reverseRead`. */
+  default predicate reverseReadExclude(DataFlowLang::Node n) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `argHasPostUpdate`. */
-    predicate argHasPostUpdateExclude(ArgumentNode n) { none() }
+  /** Holds if `n` should be excluded from the consistency test `postHasUniquePre`. */
+  default predicate postHasUniquePreExclude(DataFlowLang::PostUpdateNode n) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `reverseRead`. */
-    predicate reverseReadExclude(Node n) { none() }
+  /** Holds if `n` should be excluded from the consistency test `uniquePostUpdate`. */
+  default predicate uniquePostUpdateExclude(DataFlowLang::Node n) { none() }
 
-    /** Holds if `n` should be excluded from the consistency test `postHasUniquePre`. */
-    predicate postHasUniquePreExclude(PostUpdateNode n) { none() }
-
-    /** Holds if `n` should be excluded from the consistency test `uniquePostUpdate`. */
-    predicate uniquePostUpdateExclude(Node n) { none() }
-
-    /** Holds if `(call, ctx)` should be excluded from the consistency test `viableImplInCallContextTooLargeExclude`. */
-    predicate viableImplInCallContextTooLargeExclude(
-      DataFlowCall call, DataFlowCall ctx, DataFlowCallable callable
-    ) {
-      none()
-    }
-
-    /** Holds if `(c, pos, p)` should be excluded from the consistency test `uniqueParameterNodeAtPosition`. */
-    predicate uniqueParameterNodeAtPositionExclude(DataFlowCallable c, ParameterPosition pos, Node p) {
-      none()
-    }
-
-    /** Holds if `(c, pos, p)` should be excluded from the consistency test `uniqueParameterNodePosition`. */
-    predicate uniqueParameterNodePositionExclude(DataFlowCallable c, ParameterPosition pos, Node p) {
-      none()
-    }
-
-    /** Holds if `n` should be excluded from the consistency test `identityLocalStep`. */
-    predicate identityLocalStepExclude(Node n) { none() }
+  /** Holds if `(call, ctx)` should be excluded from the consistency test `viableImplInCallContextTooLargeExclude`. */
+  default predicate viableImplInCallContextTooLargeExclude(
+    DataFlowLang::DataFlowCall call, DataFlowLang::DataFlowCall ctx,
+    DataFlowLang::DataFlowCallable callable
+  ) {
+    none()
   }
 
-  private class RelevantNode extends Node {
+  /** Holds if `(c, pos, p)` should be excluded from the consistency test `uniqueParameterNodeAtPosition`. */
+  default predicate uniqueParameterNodeAtPositionExclude(
+    DataFlowLang::DataFlowCallable c, DataFlowLang::ParameterPosition pos, DataFlowLang::Node p
+  ) {
+    none()
+  }
+
+  /** Holds if `(c, pos, p)` should be excluded from the consistency test `uniqueParameterNodePosition`. */
+  default predicate uniqueParameterNodePositionExclude(
+    DataFlowLang::DataFlowCallable c, DataFlowLang::ParameterPosition pos, DataFlowLang::Node p
+  ) {
+    none()
+  }
+
+  /** Holds if `n` should be excluded from the consistency test `identityLocalStep`. */
+  default predicate identityLocalStepExclude(DataFlowLang::Node n) { none() }
+}
+
+module MakeConsistency<
+  DF::InputSig DataFlowLang, TT::InputSig<DataFlowLang> TaintTrackingLang,
+  InputSig<DataFlowLang> Input>
+{
+  private import DataFlowLang
+  private import TaintTrackingLang
+
+  final private class NodeFinal = Node;
+
+  private class RelevantNode extends NodeFinal {
     RelevantNode() {
       this instanceof ArgumentNode or
       this instanceof ParameterNode or
@@ -87,7 +93,7 @@ module Consistency {
       n instanceof RelevantNode and
       c = count(nodeGetEnclosingCallable(n)) and
       c != 1 and
-      not any(ConsistencyConfiguration conf).uniqueEnclosingCallableExclude(n) and
+      not Input::uniqueEnclosingCallableExclude(n) and
       msg = "Node should have one enclosing callable but has " + c + "."
     )
   }
@@ -96,7 +102,7 @@ module Consistency {
     exists(int c |
       c = count(call.getEnclosingCallable()) and
       c != 1 and
-      not any(ConsistencyConfiguration conf).uniqueCallEnclosingCallableExclude(call) and
+      not Input::uniqueCallEnclosingCallableExclude(call) and
       msg = "Call should have one enclosing callable but has " + c + "."
     )
   }
@@ -117,7 +123,7 @@ module Consistency {
           n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
         ) and
       c != 1 and
-      not any(ConsistencyConfiguration conf).uniqueNodeLocationExclude(n) and
+      not Input::uniqueNodeLocationExclude(n) and
       msg = "Node should have one location but has " + c + "."
     )
   }
@@ -127,7 +133,7 @@ module Consistency {
       c =
         strictcount(Node n |
           not n.hasLocationInfo(_, _, _, _, _) and
-          not any(ConsistencyConfiguration conf).missingLocationExclude(n)
+          not Input::missingLocationExclude(n)
         ) and
       msg = "Nodes without location: " + c
     )
@@ -193,28 +199,19 @@ module Consistency {
       n = getAnOutNode(call, _) and
       msg = "OutNode and call does not share enclosing callable."
       or
-      n.(ArgumentNode).argumentOf(call, _) and
+      isArgumentNode(n, call, _) and
       msg = "ArgumentNode and call does not share enclosing callable."
     ) and
     nodeGetEnclosingCallable(n) != call.getEnclosingCallable()
   }
 
-  // This predicate helps the compiler forget that in some languages
-  // it is impossible for a result of `getPreUpdateNode` to be an
-  // instance of `PostUpdateNode`.
-  private Node getPre(PostUpdateNode n) {
-    result = n.getPreUpdateNode()
-    or
-    none()
-  }
-
   query predicate postIsNotPre(PostUpdateNode n, string msg) {
-    getPre(n) = n and
+    n = n.getPreUpdateNode() and
     msg = "PostUpdateNode should not equal its pre-update node."
   }
 
   query predicate postHasUniquePre(PostUpdateNode n, string msg) {
-    not any(ConsistencyConfiguration conf).postHasUniquePreExclude(n) and
+    not Input::postHasUniquePreExclude(n) and
     exists(int c |
       c = count(n.getPreUpdateNode()) and
       c != 1 and
@@ -223,7 +220,7 @@ module Consistency {
   }
 
   query predicate uniquePostUpdate(Node n, string msg) {
-    not any(ConsistencyConfiguration conf).uniquePostUpdateExclude(n) and
+    not Input::uniquePostUpdateExclude(n) and
     1 < strictcount(PostUpdateNode post | post.getPreUpdateNode() = n) and
     msg = "Node has multiple PostUpdateNodes."
   }
@@ -237,26 +234,20 @@ module Consistency {
 
   query predicate reverseRead(Node n, string msg) {
     exists(Node n2 | readStep(n, _, n2) and hasPost(n2) and not hasPost(n)) and
-    not any(ConsistencyConfiguration conf).reverseReadExclude(n) and
+    not Input::reverseReadExclude(n) and
     msg = "Origin of readStep is missing a PostUpdateNode."
   }
 
   query predicate argHasPostUpdate(ArgumentNode n, string msg) {
     not hasPost(n) and
-    not any(ConsistencyConfiguration c).argHasPostUpdateExclude(n) and
+    not Input::argHasPostUpdateExclude(n) and
     msg = "ArgumentNode is missing PostUpdateNode."
   }
 
-  // This predicate helps the compiler forget that in some languages
-  // it is impossible for a `PostUpdateNode` to be the target of
-  // `simpleLocalFlowStep`.
-  private predicate isPostUpdateNode(Node n) { n instanceof PostUpdateNode or none() }
-
-  query predicate postWithInFlow(Node n, string msg) {
-    isPostUpdateNode(n) and
+  query predicate postWithInFlow(PostUpdateNode n, string msg) {
     not clearsContent(n, _) and
     simpleLocalFlowStep(_, n) and
-    not any(ConsistencyConfiguration c).postWithInFlowExclude(n) and
+    not Input::postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
 
@@ -265,13 +256,13 @@ module Consistency {
   ) {
     callable = viableImplInCallContext(call, ctx) and
     not callable = viableCallable(call) and
-    not any(ConsistencyConfiguration c).viableImplInCallContextTooLargeExclude(call, ctx, callable)
+    not Input::viableImplInCallContextTooLargeExclude(call, ctx, callable)
   }
 
   query predicate uniqueParameterNodeAtPosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
-    not any(ConsistencyConfiguration conf).uniqueParameterNodeAtPositionExclude(c, pos, p) and
+    not Input::uniqueParameterNodeAtPositionExclude(c, pos, p) and
     isParameterNode(p, c, pos) and
     not exists(unique(Node p0 | isParameterNode(p0, c, pos))) and
     msg = "Parameters with overlapping positions."
@@ -280,7 +271,7 @@ module Consistency {
   query predicate uniqueParameterNodePosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
-    not any(ConsistencyConfiguration conf).uniqueParameterNodePositionExclude(c, pos, p) and
+    not Input::uniqueParameterNodePositionExclude(c, pos, p) and
     isParameterNode(p, c, pos) and
     not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
     msg = "Parameter node with multiple positions."
@@ -293,7 +284,7 @@ module Consistency {
 
   query predicate identityLocalStep(Node n, string msg) {
     simpleLocalFlowStep(n, n) and
-    not any(ConsistencyConfiguration c).identityLocalStepExclude(n) and
+    not Input::identityLocalStepExclude(n) and
     msg = "Node steps to itself"
   }
 }

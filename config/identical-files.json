@@ -55,15 +55,6 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
-  "DataFlow Java/C++/C#/Python/Ruby/Swift Consistency checks": [
-    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
-    "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll",
-    "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImplConsistency.qll"
-  ],
   "DataFlow Java/C#/Go/Ruby/Python/Swift Flow Summaries": [
     "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
