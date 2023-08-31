@@ -92,6 +92,6 @@ def ok6():
     if math.random() > 0.5:
         redirect(untrusted, code=302) # NOT OK
     if url_has_allowed_host_and_scheme(untrusted, allowed_hosts=None):
-        return redirect(untrusted, code=302) # OK - but is flagged!
+        return redirect(untrusted, code=302) # OK
     
     return redirect("https://example.com", code=302) # OK
