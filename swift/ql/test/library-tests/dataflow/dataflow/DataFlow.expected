@@ -438,6 +438,7 @@ edges
 | test.swift:766:29:766:29 | KeyPathComponent [x] | test.swift:766:13:766:29 | exit #keyPath(...) |
 | test.swift:767:15:767:15 | s2 [s, some:0, x] | test.swift:766:13:766:29 | enter #keyPath(...) [s, some:0, x] |
 | test.swift:767:15:767:15 | s2 [s, some:0, x] | test.swift:767:15:767:28 | \\...[...] |
+| test.swift:775:12:775:21 | call to source() | test.swift:775:12:775:21 | OpenExistentialExpr |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
@@ -915,6 +916,8 @@ nodes
 | test.swift:766:29:766:29 | KeyPathComponent [x] | semmle.label | KeyPathComponent [x] |
 | test.swift:767:15:767:15 | s2 [s, some:0, x] | semmle.label | s2 [s, some:0, x] |
 | test.swift:767:15:767:28 | \\...[...] | semmle.label | \\...[...] |
+| test.swift:775:12:775:21 | OpenExistentialExpr | semmle.label | OpenExistentialExpr |
+| test.swift:775:12:775:21 | call to source() | semmle.label | call to source() |
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -1070,3 +1073,4 @@ subpaths
 | test.swift:756:15:756:21 | ...! | test.swift:746:14:746:21 | call to source() | test.swift:756:15:756:21 | ...! | result |
 | test.swift:757:15:757:19 | .v3 | test.swift:747:14:747:21 | call to source() | test.swift:757:15:757:19 | .v3 | result |
 | test.swift:767:15:767:28 | \\...[...] | test.swift:764:18:764:25 | call to source() | test.swift:767:15:767:28 | \\...[...] | result |
+| test.swift:775:12:775:21 | OpenExistentialExpr | test.swift:775:12:775:21 | call to source() | test.swift:775:12:775:21 | OpenExistentialExpr | result |

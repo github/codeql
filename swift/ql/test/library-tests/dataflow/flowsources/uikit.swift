@@ -86,5 +86,5 @@ func test(
   _ = myTextInput.harmless(in: range)! // GOOD (not input)
 
   let str = protocolTextInput.text(in: range)! // $ source=local
-  sink(arg: str) // $ MISSING: tainted
+  sink(arg: str) // $ tainted
 }

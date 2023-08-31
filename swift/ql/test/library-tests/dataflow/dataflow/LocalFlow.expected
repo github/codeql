@@ -926,3 +926,4 @@
 | test.swift:766:13:766:29 | enter #keyPath(...) | test.swift:766:26:766:26 | KeyPathComponent |
 | test.swift:774:30:774:33 | SSA def(x) | test.swift:775:12:775:12 | x |
 | test.swift:774:30:774:33 | x | test.swift:774:30:774:33 | SSA def(x) |
+| test.swift:775:12:775:21 | call to source() | test.swift:775:12:775:21 | OpenExistentialExpr |

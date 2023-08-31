@@ -772,5 +772,5 @@ protocol MyProtocol {
 }
 
 func testOpenExistentialExpr(x: MyProtocol) {
-	sink(arg: x.source()) // $ MISSING:flow=771
+	sink(arg: x.source()) // $ flow=775
 }
