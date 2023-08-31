@@ -12,7 +12,7 @@ import com.github.codeql.utils.*
 class PrimitiveTypeMapping(val logger: Logger, val pluginContext: IrPluginContext) {
     fun getPrimitiveInfo(s: IrSimpleType) =
         s.classOrNull?.let {
-            if ((it.owner.parent as? IrPackageFragment)?.fqName == StandardNames.BUILT_INS_PACKAGE_FQ_NAME)
+            if ((it.owner.parent as? IrPackageFragment)?.packageFqName == StandardNames.BUILT_INS_PACKAGE_FQ_NAME)
                 mapping[it.owner.name]
             else
                 null

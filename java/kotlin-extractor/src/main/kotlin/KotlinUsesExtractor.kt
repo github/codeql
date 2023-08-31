@@ -83,7 +83,7 @@ open class KotlinUsesExtractor(
     )
 
     fun extractFileClass(f: IrFile): Label<out DbClassorinterface> {
-        val pkg = f.fqName.asString()
+        val pkg = f.packageFqName.asString()
         val jvmName = getFileClassName(f)
         val id = extractFileClass(pkg, jvmName)
         if (tw.lm.fileClassLocationsExtracted.add(f)) {
@@ -848,7 +848,7 @@ open class KotlinUsesExtractor(
         when(dp) {
             is IrFile ->
                 if(canBeTopLevel) {
-                    usePackage(dp.fqName.asString())
+                    usePackage(dp.packageFqName.asString())
                 } else {
                     extractFileClass(dp)
                 }
