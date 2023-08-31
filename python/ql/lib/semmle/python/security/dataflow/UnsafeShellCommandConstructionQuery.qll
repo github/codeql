@@ -24,7 +24,8 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof CommandInjection::Sanitizer // using all sanitizers from `rb/command-injection`
+    node instanceof Sanitizer or
+    node instanceof CommandInjection::Sanitizer // using all sanitizers from `py/command-injection`
   }
 
   // override to require the path doesn't have unmatched return steps
