@@ -389,6 +389,12 @@ module NoSqlQuery {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the NoSql query to be executed. */
     abstract DataFlow::Node getQuery();
+
+    /** Holds if this query will unpack/interpret a dictionary */
+    abstract predicate interpretsDict();
+
+    /** Holds if this query can be dangerous when run on a user-controlled string */
+    abstract predicate vulnerableToStrings();
   }
 }
 
@@ -401,6 +407,12 @@ module NoSqlQuery {
 class NoSqlQuery extends DataFlow::Node instanceof NoSqlQuery::Range {
   /** Gets the argument that specifies the NoSql query to be executed. */
   DataFlow::Node getQuery() { result = super.getQuery() }
+
+  /** Holds if this query will unpack/interpret a dictionary */
+  predicate interpretsDict() { super.interpretsDict() }
+
+  /** Holds if this query can be dangerous when run on a user-controlled string */
+  predicate vulnerableToStrings() { super.vulnerableToStrings() }
 }
 
 /** Provides classes for modeling NoSql sanitization-related APIs. */

@@ -17,7 +17,12 @@ module Config implements DataFlow::StateConfigSig {
 
   predicate isSink(DataFlow::Node source, FlowState state) {
     source instanceof C::StringSink and
-    state instanceof C::StringInput
+    (
+      state instanceof C::StringInput
+      or
+      // since dictionaries can encode strings
+      state instanceof C::DictInput
+    )
     or
     source instanceof C::DictSink and
     state instanceof C::DictInput

@@ -91,15 +91,16 @@ private module NoSql {
     result = mongoDBInstance().getMember(["get_collection", "create_collection"]).getReturn()
   }
 
-  /** This class represents names of find_* relevant `Mongo` collection-level operation methods. */
-  private class MongoCollectionMethodNames extends string {
-    MongoCollectionMethodNames() {
-      this in [
-          "find", "find_raw_batches", "find_one", "find_one_and_delete", "find_and_modify",
-          "find_one_and_replace", "find_one_and_update", "find_one_or_404"
-        ]
-    }
+  /** Gets the name of a find_* relevant `Mongo` collection-level operation method. */
+  private string mongoCollectionMethodName() {
+    result in [
+        "find", "find_raw_batches", "find_one", "find_one_and_delete", "find_and_modify",
+        "find_one_and_replace", "find_one_and_update", "find_one_or_404"
+      ]
   }
+
+  /** Gets the name of a mongo query operator that will interpret JavaScript. */
+  private string mongoQueryOperator() { result in ["$where", "$function"] }
 
   /**
    * Gets a reference to a `Mongo` collection method call
@@ -114,10 +115,29 @@ private module NoSql {
    */
   private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSqlQuery::Range {
     MongoCollectionCall() {
-      this = mongoCollection().getMember(any(MongoCollectionMethodNames m)).getACall()
+      this = mongoCollection().getMember(mongoCollectionMethodName()).getACall()
     }
 
     override DataFlow::Node getQuery() { result = this.getArg(0) }
+
+    override predicate interpretsDict() { any() }
+
+    override predicate vulnerableToStrings() { none() }
+  }
+
+  private class MongoCollectionQueryOperator extends API::CallNode, NoSqlQuery::Range {
+    DataFlow::Node query;
+
+    MongoCollectionQueryOperator() {
+      this = mongoCollection().getMember(mongoCollectionMethodName()).getACall() and
+      query = this.getParameter(0).getSubscript(mongoQueryOperator()).asSink()
+    }
+
+    override DataFlow::Node getQuery() { result = query }
+
+    override predicate interpretsDict() { none() }
+
+    override predicate vulnerableToStrings() { any() }
   }
 
   /**
@@ -146,6 +166,10 @@ private module NoSql {
     }
 
     override DataFlow::Node getQuery() { result = this.getArgByName(_) }
+
+    override predicate interpretsDict() { any() }
+
+    override predicate vulnerableToStrings() { none() }
   }
 
   /** Gets a reference to `mongosanitizer.sanitizer.sanitize` */
@@ -175,5 +199,24 @@ private module NoSql {
     }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }
+  }
+
+  /**
+   * An equality operator can protect against dictionary interpretation.
+   * For instance, in `{'password': {"$eq": password} }`, if a dictionary is injected into
+   * `password`, it will not match.
+   */
+  private class EqualityOperator extends DataFlow::Node, NoSqlSanitizer::Range {
+    EqualityOperator() {
+      this =
+        mongoCollection()
+            .getMember(mongoCollectionMethodName())
+            .getParameter(0)
+            .getASubscript*()
+            .getSubscript("$eq")
+            .asSink()
+    }
+
+    override DataFlow::Node getAnInput() { result = this }
   }
 }

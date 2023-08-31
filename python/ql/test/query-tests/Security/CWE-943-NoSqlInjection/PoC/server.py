@@ -34,7 +34,7 @@ def as_dict():
 def as_dict_hardened():
     author_string = request.args['author']
     author = json.loads(author_string)
-    post = posts.find_one({'author': {"$eq": author}}) # $ SPURIOUS: result=BAD
+    post = posts.find_one({'author': {"$eq": author}}) # $ result=OK
     return show_post(post, author)
 
 @app.route('/byWhere', methods=['GET'])
@@ -43,7 +43,7 @@ def by_where():
     # Use `" | "a" === "a` as author
     # making the query `this.author === "" | "a" === "a"`
     # Found by http://127.0.0.1:5000/byWhere?author=%22%20|%20%22a%22%20===%20%22a
-    post = posts.find_one({'$where': 'this.author === "'+author+'"'}) # $ MISSING: result=BAD
+    post = posts.find_one({'$where': 'this.author === "'+author+'"'}) # $ result=BAD
     return show_post(post, author)
 
 @app.route('/', methods=['GET'])

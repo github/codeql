@@ -36,6 +36,14 @@ module NoSqlInjection {
 
   class RemoteFlowSourceAsStringSource extends RemoteFlowSource, StringSource { }
 
+  class NoSqlQueryAsStringSink extends StringSink {
+    NoSqlQueryAsStringSink() {
+      exists(NoSqlQuery noSqlQuery | this = noSqlQuery.getQuery() |
+        noSqlQuery.vulnerableToStrings()
+      )
+    }
+  }
+
   class NoSqlQueryAsDictSink extends DictSink {
     NoSqlQueryAsDictSink() { this = any(NoSqlQuery noSqlQuery).getQuery() }
   }
