@@ -41,11 +41,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         bool ScanNetFrameworkDlls { get; }
 
         /// <summary>
-        /// Whether to use mscorlib as a reference.
-        /// </summary>
-        bool UseMscorlib { get; }
-
-        /// <summary>
         /// Determine whether the given path should be excluded.
         /// </summary>
         /// <param name="path">The path to query.</param>
@@ -73,8 +68,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool UseSelfContainedDotnet { get; set; } = false;
 
         public bool ScanNetFrameworkDlls { get; set; } = true;
-
-        public bool UseMscorlib { get; set; } = true;
 
         public bool ExcludesFile(string path) =>
             Excludes.Any(path.Contains);

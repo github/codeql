@@ -85,11 +85,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            if (options.UseMscorlib)
-            {
-                UseReference(typeof(object).Assembly.Location);
-            }
-
             if (options.UseNuGet)
             {
                 dllDirNames.Add(packageDirectory.DirInfo.FullName);
