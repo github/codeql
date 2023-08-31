@@ -92,6 +92,7 @@ def compile_to_dir(build_dir, srcs, classpath, java_classpath, output):
     kotlin_arg_file = build_dir + '/kotlin.args'
     kotlin_args = ['-Werror',
                    '-opt-in=kotlin.RequiresOptIn',
+                   '-opt-in=org.jetbrains.kotlin.ir.symbols.IrSymbolInternals',
                    '-d', output,
                    '-module-name', 'codeql-kotlin-extractor',
                    '-no-reflect', '-no-stdlib',
