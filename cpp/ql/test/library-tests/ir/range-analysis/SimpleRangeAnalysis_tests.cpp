@@ -1008,12 +1008,12 @@ label:
 
 void test_overflow() {
   const int x = 2147483647; // 2^31-1
-  range(x);
+  range(x); // $ range===2147483647
   const int y = 256;
-  range(y);
+  range(y); // $ range===256
   if ((x + y) <= 512) {
-    range(x);
-    range(y);
+    range(x); // $ range===2147483647
+    range(y); // $ range===256
     range(x + y); // $ range===-2147483393
   }
 }
