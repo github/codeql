@@ -1,11 +1,11 @@
 /**
- * @name User-controlled file decompression
- * @description User-controlled data that flows into decompression library APIs without checking the compression rate is dangerous
+ * @name Uncontrolled file decompression
+ * @description Uncontrolled data that flows into decompression library APIs without checking the compression rate is dangerous
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
  * @precision high
- * @id java/user-controlled-file-decompression
+ * @id java/uncontrolled-file-decompression
  * @tags security
  *       experimental
  *       external/cwe/cwe-409
@@ -300,19 +300,55 @@ module Zip4j {
 }
 
 module Zip {
-  class TypeZipInputStream extends RefType {
-    TypeZipInputStream() {
+  class TypeInputStream extends RefType {
+    TypeInputStream() {
       this.getASupertype*()
           .hasQualifiedName("java.util.zip",
             ["ZipInputStream", "GZIPInputStream", "InflaterInputStream"])
     }
   }
 
+  class TypeInflator extends RefType {
+    TypeInflator() { this.hasQualifiedName("java.util.zip", "Inflater") }
+  }
+
+  predicate inflatorAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    // inflater.inflate(n2)
+    exists(MethodAccess ma |
+      ma.getReceiverType() instanceof TypeInflator and
+      ma.getArgument(0) = n2.asExpr() and
+      ma.getQualifier() = n1.asExpr() and
+      ma.getCallee().hasName("inflate")
+    )
+    or
+    // Inflater inflater = new Inflater();
+    // n2 = inflater.setInput(n1)
+    exists(MethodAccess ma |
+      ma.getReceiverType() instanceof TypeInflator and
+      n1.asExpr() = ma.getArgument(0) and
+      n2.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = ma.getQualifier() and
+      ma.getCallee().hasName("setInput")
+    )
+  }
+
+  class InflateCall extends MethodAccess {
+    InflateCall() {
+      this.getReceiverType() instanceof TypeInflator and
+      this.getCallee().hasName("inflate")
+    }
+
+    Expr getAWriteArgument() { result = this.getArgument(0) }
+
+    // look at Zip4j comments for this method
+    predicate isControlledRead() { none() }
+  }
+
+  // InflaterInputStream Izis = new InflaterInputStream(inputStream)
   predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(Call call |
       (
-        call.getCallee().getDeclaringType() instanceof TypeZipInputStream or
-        call.(MethodAccess).getReceiverType() instanceof TypeZipInputStream
+        call.getCallee().getDeclaringType() instanceof TypeInputStream or
+        call.(MethodAccess).getReceiverType() instanceof TypeInputStream
       ) and
       call.getArgument(0) = n1.asExpr() and
       call = n2.asExpr()
@@ -321,7 +357,7 @@ module Zip {
 
   class ReadInputStreamCall extends MethodAccess {
     ReadInputStreamCall() {
-      this.getReceiverType() instanceof TypeZipInputStream and
+      this.getReceiverType() instanceof TypeInputStream and
       this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
     }
 
@@ -369,6 +405,9 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
    */
   predicate isSink(DataFlow::Node sink, FlowState state) {
     (
+      sink.asExpr() = any(Zip::InflateCall r).getAWriteArgument() and
+      state = "Zip"
+      or
       exists(CommonsIO::IOUtils ma |
         sink.asExpr() = ma.getArgument(0) and
         state = ["Zip4j", "Zip", "ApacheCommons", "XserialSnappy"]
@@ -397,6 +436,10 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
+    Zip::inflatorAdditionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "Zip" and
+    stateTo = "Zip"
+    or
     (
       Zip::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
       stateFrom = "Zip"
