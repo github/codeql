@@ -5663,43 +5663,63 @@ ir.cpp:
 
 # 1015| void OperatorDelete()
 # 1015|   Block 0
-# 1015|     v1015_1(void)              = EnterFunction      : 
-# 1015|     mu1015_2(unknown)          = AliasedDefinition  : 
-# 1015|     mu1015_3(unknown)          = InitializeNonLocal : 
-# 1016|     r1016_1(int *)             = Constant[0]        : 
-# 1016|     v1016_2(void)              = NoOp               : 
-# 1017|     r1017_1(String *)          = Constant[0]        : 
-# 1017|     v1017_2(void)              = NoOp               : 
-# 1018|     r1018_1(SizedDealloc *)    = Constant[0]        : 
-# 1018|     v1018_2(void)              = NoOp               : 
-# 1019|     r1019_1(Overaligned *)     = Constant[0]        : 
-# 1019|     v1019_2(void)              = NoOp               : 
-# 1020|     r1020_1(PolymorphicBase *) = Constant[0]        : 
-# 1020|     v1020_2(void)              = NoOp               : 
-# 1021|     v1021_1(void)              = NoOp               : 
-# 1015|     v1015_4(void)              = ReturnVoid         : 
-# 1015|     v1015_5(void)              = AliasedUse         : ~m?
-# 1015|     v1015_6(void)              = ExitFunction       : 
+# 1015|     v1015_1(void)              = EnterFunction                    : 
+# 1015|     mu1015_2(unknown)          = AliasedDefinition                : 
+# 1015|     mu1015_3(unknown)          = InitializeNonLocal               : 
+# 1016|     r1016_1(glval<unknown>)    = FunctionAddress[operator delete] : 
+# 1016|     r1016_2(int *)             = Constant[0]                      : 
+# 1016|     v1016_3(void)              = Call[operator delete]            : func:r1016_1, 0:r1016_2
+# 1016|     mu1016_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1017|     r1017_1(glval<unknown>)    = FunctionAddress[operator delete] : 
+# 1017|     r1017_2(String *)          = Constant[0]                      : 
+# 1017|     v1017_3(void)              = Call[operator delete]            : func:r1017_1, 0:r1017_2
+# 1017|     mu1017_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1018|     r1018_1(glval<unknown>)    = FunctionAddress[operator delete] : 
+# 1018|     r1018_2(SizedDealloc *)    = Constant[0]                      : 
+# 1018|     v1018_3(void)              = Call[operator delete]            : func:r1018_1, 0:r1018_2
+# 1018|     mu1018_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1019|     r1019_1(glval<unknown>)    = FunctionAddress[operator delete] : 
+# 1019|     r1019_2(Overaligned *)     = Constant[0]                      : 
+# 1019|     v1019_3(void)              = Call[operator delete]            : func:r1019_1, 0:r1019_2
+# 1019|     mu1019_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1020|     r1020_1(glval<unknown>)    = VirtualDeleteFunctionAddress     : 
+# 1020|     r1020_2(PolymorphicBase *) = Constant[0]                      : 
+# 1020|     v1020_3(void)              = Call[?]                          : func:r1020_1, 0:r1020_2
+# 1020|     mu1020_4(unknown)          = ^CallSideEffect                  : ~m?
+# 1021|     v1021_1(void)              = NoOp                             : 
+# 1015|     v1015_4(void)              = ReturnVoid                       : 
+# 1015|     v1015_5(void)              = AliasedUse                       : ~m?
+# 1015|     v1015_6(void)              = ExitFunction                     : 
 
 # 1024| void OperatorDeleteArray()
 # 1024|   Block 0
-# 1024|     v1024_1(void)              = EnterFunction      : 
-# 1024|     mu1024_2(unknown)          = AliasedDefinition  : 
-# 1024|     mu1024_3(unknown)          = InitializeNonLocal : 
-# 1025|     r1025_1(int *)             = Constant[0]        : 
-# 1025|     v1025_2(void)              = NoOp               : 
-# 1026|     r1026_1(String *)          = Constant[0]        : 
-# 1026|     v1026_2(void)              = NoOp               : 
-# 1027|     r1027_1(SizedDealloc *)    = Constant[0]        : 
-# 1027|     v1027_2(void)              = NoOp               : 
-# 1028|     r1028_1(Overaligned *)     = Constant[0]        : 
-# 1028|     v1028_2(void)              = NoOp               : 
-# 1029|     r1029_1(PolymorphicBase *) = Constant[0]        : 
-# 1029|     v1029_2(void)              = NoOp               : 
-# 1030|     v1030_1(void)              = NoOp               : 
-# 1024|     v1024_4(void)              = ReturnVoid         : 
-# 1024|     v1024_5(void)              = AliasedUse         : ~m?
-# 1024|     v1024_6(void)              = ExitFunction       : 
+# 1024|     v1024_1(void)              = EnterFunction                      : 
+# 1024|     mu1024_2(unknown)          = AliasedDefinition                  : 
+# 1024|     mu1024_3(unknown)          = InitializeNonLocal                 : 
+# 1025|     r1025_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1025|     r1025_2(int *)             = Constant[0]                        : 
+# 1025|     v1025_3(void)              = Call[operator delete[]]            : func:r1025_1, 0:r1025_2
+# 1025|     mu1025_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1026|     r1026_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1026|     r1026_2(String *)          = Constant[0]                        : 
+# 1026|     v1026_3(void)              = Call[operator delete[]]            : func:r1026_1, 0:r1026_2
+# 1026|     mu1026_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1027|     r1027_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1027|     r1027_2(SizedDealloc *)    = Constant[0]                        : 
+# 1027|     v1027_3(void)              = Call[operator delete[]]            : func:r1027_1, 0:r1027_2
+# 1027|     mu1027_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1028|     r1028_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1028|     r1028_2(Overaligned *)     = Constant[0]                        : 
+# 1028|     v1028_3(void)              = Call[operator delete[]]            : func:r1028_1, 0:r1028_2
+# 1028|     mu1028_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1029|     r1029_1(glval<unknown>)    = FunctionAddress[operator delete[]] : 
+# 1029|     r1029_2(PolymorphicBase *) = Constant[0]                        : 
+# 1029|     v1029_3(void)              = Call[operator delete[]]            : func:r1029_1, 0:r1029_2
+# 1029|     mu1029_4(unknown)          = ^CallSideEffect                    : ~m?
+# 1030|     v1030_1(void)              = NoOp                               : 
+# 1024|     v1024_4(void)              = ReturnVoid                         : 
+# 1024|     v1024_5(void)              = AliasedUse                         : ~m?
+# 1024|     v1024_6(void)              = ExitFunction                       : 
 
 # 1034| void EmptyStructInit()
 # 1034|   Block 0
@@ -11090,6 +11110,198 @@ ir.cpp:
 # 2028|     r2028_12(glval<unsigned int>) = VariableAddress[#temp2028:7]     : 
 # 2028|     mu2028_13(unsigned int)       = Store[#temp2028:7]               : &:r2028_12, r2030_8
 #-----|   Goto -> Block 2
+
+# 2033| void NewDeleteMem()
+# 2033|   Block 0
+# 2033|     v2033_1(void)           = EnterFunction                    : 
+# 2033|     mu2033_2(unknown)       = AliasedDefinition                : 
+# 2033|     mu2033_3(unknown)       = InitializeNonLocal               : 
+# 2034|     r2034_1(glval<int *>)   = VariableAddress[x]               : 
+# 2034|     r2034_2(glval<unknown>) = FunctionAddress[operator new]    : 
+# 2034|     r2034_3(unsigned long)  = Constant[4]                      : 
+# 2034|     r2034_4(void *)         = Call[operator new]               : func:r2034_2, 0:r2034_3
+# 2034|     mu2034_5(unknown)       = ^CallSideEffect                  : ~m?
+# 2034|     mu2034_6(unknown)       = ^InitializeDynamicAllocation     : &:r2034_4
+# 2034|     r2034_7(int *)          = Convert                          : r2034_4
+# 2034|     mu2034_8(int *)         = Store[x]                         : &:r2034_1, r2034_7
+# 2035|     r2035_1(int)            = Constant[6]                      : 
+# 2035|     r2035_2(glval<int *>)   = VariableAddress[x]               : 
+# 2035|     r2035_3(int *)          = Load[x]                          : &:r2035_2, ~m?
+# 2035|     r2035_4(glval<int>)     = CopyValue                        : r2035_3
+# 2035|     mu2035_5(int)           = Store[?]                         : &:r2035_4, r2035_1
+# 2036|     r2036_1(glval<unknown>) = FunctionAddress[operator delete] : 
+# 2036|     r2036_2(glval<int *>)   = VariableAddress[x]               : 
+# 2036|     r2036_3(int *)          = Load[x]                          : &:r2036_2, ~m?
+# 2036|     v2036_4(void)           = Call[operator delete]            : func:r2036_1, 0:r2036_3
+# 2036|     mu2036_5(unknown)       = ^CallSideEffect                  : ~m?
+# 2037|     v2037_1(void)           = NoOp                             : 
+# 2033|     v2033_4(void)           = ReturnVoid                       : 
+# 2033|     v2033_5(void)           = AliasedUse                       : ~m?
+# 2033|     v2033_6(void)           = ExitFunction                     : 
+
+# 2039| void Base2::Base2()
+# 2039|   Block 0
+# 2039|     v2039_1(void)           = EnterFunction                : 
+# 2039|     mu2039_2(unknown)       = AliasedDefinition            : 
+# 2039|     mu2039_3(unknown)       = InitializeNonLocal           : 
+# 2039|     r2039_4(glval<unknown>) = VariableAddress[#this]       : 
+# 2039|     mu2039_5(glval<Base2>)  = InitializeParameter[#this]   : &:r2039_4
+# 2039|     r2039_6(glval<Base2>)   = Load[#this]                  : &:r2039_4, ~m?
+# 2039|     mu2039_7(Base2)         = InitializeIndirection[#this] : &:r2039_6
+# 2039|     v2039_8(void)           = NoOp                         : 
+# 2039|     v2039_9(void)           = ReturnIndirection[#this]     : &:r2039_6, ~m?
+# 2039|     v2039_10(void)          = ReturnVoid                   : 
+# 2039|     v2039_11(void)          = AliasedUse                   : ~m?
+# 2039|     v2039_12(void)          = ExitFunction                 : 
+
+# 2041| void Base2::operator delete(void*)
+# 2041|   Block 0
+# 2041|     v2041_1(void)          = EnterFunction            : 
+# 2041|     mu2041_2(unknown)      = AliasedDefinition        : 
+# 2041|     mu2041_3(unknown)      = InitializeNonLocal       : 
+# 2041|     r2041_4(glval<void *>) = VariableAddress[p]       : 
+# 2041|     mu2041_5(void *)       = InitializeParameter[p]   : &:r2041_4
+# 2041|     r2041_6(void *)        = Load[p]                  : &:r2041_4, ~m?
+# 2041|     mu2041_7(unknown)      = InitializeIndirection[p] : &:r2041_6
+# 2042|     v2042_1(void)          = NoOp                     : 
+# 2041|     v2041_8(void)          = ReturnIndirection[p]     : &:r2041_6, ~m?
+# 2041|     v2041_9(void)          = ReturnVoid               : 
+# 2041|     v2041_10(void)         = AliasedUse               : ~m?
+# 2041|     v2041_11(void)         = ExitFunction             : 
+
+# 2043| void Base2::~Base2()
+# 2043|   Block 0
+# 2043|     v2043_1(void)           = EnterFunction                : 
+# 2043|     mu2043_2(unknown)       = AliasedDefinition            : 
+# 2043|     mu2043_3(unknown)       = InitializeNonLocal           : 
+# 2043|     r2043_4(glval<unknown>) = VariableAddress[#this]       : 
+# 2043|     mu2043_5(glval<Base2>)  = InitializeParameter[#this]   : &:r2043_4
+# 2043|     r2043_6(glval<Base2>)   = Load[#this]                  : &:r2043_4, ~m?
+# 2043|     mu2043_7(Base2)         = InitializeIndirection[#this] : &:r2043_6
+# 2043|     v2043_8(void)           = NoOp                         : 
+# 2043|     v2043_9(void)           = ReturnIndirection[#this]     : &:r2043_6, ~m?
+# 2043|     v2043_10(void)          = ReturnVoid                   : 
+# 2043|     v2043_11(void)          = AliasedUse                   : ~m?
+# 2043|     v2043_12(void)          = ExitFunction                 : 
+
+# 2046| void Derived2::Derived2()
+# 2046|   Block 0
+# 2046|     v2046_1(void)             = EnterFunction                             : 
+# 2046|     mu2046_2(unknown)         = AliasedDefinition                         : 
+# 2046|     mu2046_3(unknown)         = InitializeNonLocal                        : 
+# 2046|     r2046_4(glval<unknown>)   = VariableAddress[#this]                    : 
+# 2046|     mu2046_5(glval<Derived2>) = InitializeParameter[#this]                : &:r2046_4
+# 2046|     r2046_6(glval<Derived2>)  = Load[#this]                               : &:r2046_4, ~m?
+# 2046|     mu2046_7(Derived2)        = InitializeIndirection[#this]              : &:r2046_6
+# 2046|     r2046_8(glval<Base2>)     = ConvertToNonVirtualBase[Derived2 : Base2] : mu2046_5
+# 2046|     r2046_9(glval<unknown>)   = FunctionAddress[Base2]                    : 
+# 2046|     v2046_10(void)            = Call[Base2]                               : func:r2046_9, this:r2046_8
+# 2046|     mu2046_11(unknown)        = ^CallSideEffect                           : ~m?
+# 2046|     mu2046_12(Base2)          = ^IndirectMayWriteSideEffect[-1]           : &:r2046_8
+# 2046|     v2046_13(void)            = NoOp                                      : 
+# 2046|     v2046_14(void)            = ReturnIndirection[#this]                  : &:r2046_6, ~m?
+# 2046|     v2046_15(void)            = ReturnVoid                                : 
+# 2046|     v2046_16(void)            = AliasedUse                                : ~m?
+# 2046|     v2046_17(void)            = ExitFunction                              : 
+
+# 2049| void Derived2::~Derived2()
+# 2049|   Block 0
+# 2049|     v2049_1(void)             = EnterFunction                             : 
+# 2049|     mu2049_2(unknown)         = AliasedDefinition                         : 
+# 2049|     mu2049_3(unknown)         = InitializeNonLocal                        : 
+# 2049|     r2049_4(glval<unknown>)   = VariableAddress[#this]                    : 
+# 2049|     mu2049_5(glval<Derived2>) = InitializeParameter[#this]                : &:r2049_4
+# 2049|     r2049_6(glval<Derived2>)  = Load[#this]                               : &:r2049_4, ~m?
+# 2049|     mu2049_7(Derived2)        = InitializeIndirection[#this]              : &:r2049_6
+# 2049|     v2049_8(void)             = NoOp                                      : 
+# 2049|     r2049_9(glval<Base2>)     = ConvertToNonVirtualBase[Derived2 : Base2] : mu2049_5
+# 2049|     r2049_10(glval<unknown>)  = FunctionAddress[~Base2]                   : 
+# 2049|     v2049_11(void)            = Call[~Base2]                              : func:r2049_10, this:r2049_9
+# 2049|     mu2049_12(unknown)        = ^CallSideEffect                           : ~m?
+# 2049|     v2049_13(void)            = ReturnIndirection[#this]                  : &:r2049_6, ~m?
+# 2049|     v2049_14(void)            = ReturnVoid                                : 
+# 2049|     v2049_15(void)            = AliasedUse                                : ~m?
+# 2049|     v2049_16(void)            = ExitFunction                              : 
+
+# 2051| void Derived2::operator delete(void*)
+# 2051|   Block 0
+# 2051|     v2051_1(void)          = EnterFunction            : 
+# 2051|     mu2051_2(unknown)      = AliasedDefinition        : 
+# 2051|     mu2051_3(unknown)      = InitializeNonLocal       : 
+# 2051|     r2051_4(glval<void *>) = VariableAddress[p]       : 
+# 2051|     mu2051_5(void *)       = InitializeParameter[p]   : &:r2051_4
+# 2051|     r2051_6(void *)        = Load[p]                  : &:r2051_4, ~m?
+# 2051|     mu2051_7(unknown)      = InitializeIndirection[p] : &:r2051_6
+# 2052|     v2052_1(void)          = NoOp                     : 
+# 2051|     v2051_8(void)          = ReturnIndirection[p]     : &:r2051_6, ~m?
+# 2051|     v2051_9(void)          = ReturnVoid               : 
+# 2051|     v2051_10(void)         = AliasedUse               : ~m?
+# 2051|     v2051_11(void)         = ExitFunction             : 
+
+# 2056| int virtual_delete()
+# 2056|   Block 0
+# 2056|     v2056_1(void)              = EnterFunction                             : 
+# 2056|     mu2056_2(unknown)          = AliasedDefinition                         : 
+# 2056|     mu2056_3(unknown)          = InitializeNonLocal                        : 
+# 2058|     r2058_1(glval<Base2 *>)    = VariableAddress[b1]                       : 
+# 2058|     r2058_2(glval<unknown>)    = FunctionAddress[operator new]             : 
+# 2058|     r2058_3(unsigned long)     = Constant[8]                               : 
+# 2058|     r2058_4(void *)            = Call[operator new]                        : func:r2058_2, 0:r2058_3
+# 2058|     mu2058_5(unknown)          = ^CallSideEffect                           : ~m?
+# 2058|     mu2058_6(unknown)          = ^InitializeDynamicAllocation              : &:r2058_4
+# 2058|     r2058_7(Base2 *)           = Convert                                   : r2058_4
+# 2058|     r2058_8(glval<unknown>)    = FunctionAddress[Base2]                    : 
+# 2058|     v2058_9(void)              = Call[Base2]                               : func:r2058_8, this:r2058_7
+# 2058|     mu2058_10(unknown)         = ^CallSideEffect                           : ~m?
+# 2058|     mu2058_11(Base2)           = ^IndirectMayWriteSideEffect[-1]           : &:r2058_7
+# 2058|     mu2058_12(Base2 *)         = Store[b1]                                 : &:r2058_1, r2058_7
+# 2059|     r2059_1(glval<unknown>)    = VirtualDeleteFunctionAddress              : 
+# 2059|     r2059_2(glval<Base2 *>)    = VariableAddress[b1]                       : 
+# 2059|     r2059_3(Base2 *)           = Load[b1]                                  : &:r2059_2, ~m?
+# 2059|     v2059_4(void)              = Call[?]                                   : func:r2059_1, 0:r2059_3
+# 2059|     mu2059_5(unknown)          = ^CallSideEffect                           : ~m?
+# 2061|     r2061_1(glval<Base2 *>)    = VariableAddress[b2]                       : 
+# 2061|     r2061_2(glval<unknown>)    = FunctionAddress[operator new]             : 
+# 2061|     r2061_3(unsigned long)     = Constant[16]                              : 
+# 2061|     r2061_4(void *)            = Call[operator new]                        : func:r2061_2, 0:r2061_3
+# 2061|     mu2061_5(unknown)          = ^CallSideEffect                           : ~m?
+# 2061|     mu2061_6(unknown)          = ^InitializeDynamicAllocation              : &:r2061_4
+# 2061|     r2061_7(Derived2 *)        = Convert                                   : r2061_4
+# 2061|     r2061_8(glval<unknown>)    = FunctionAddress[Derived2]                 : 
+# 2061|     v2061_9(void)              = Call[Derived2]                            : func:r2061_8, this:r2061_7
+# 2061|     mu2061_10(unknown)         = ^CallSideEffect                           : ~m?
+# 2061|     mu2061_11(Derived2)        = ^IndirectMayWriteSideEffect[-1]           : &:r2061_7
+# 2061|     r2061_12(Base2 *)          = ConvertToNonVirtualBase[Derived2 : Base2] : r2061_7
+# 2061|     mu2061_13(Base2 *)         = Store[b2]                                 : &:r2061_1, r2061_12
+# 2062|     r2062_1(glval<unknown>)    = VirtualDeleteFunctionAddress              : 
+# 2062|     r2062_2(glval<Base2 *>)    = VariableAddress[b2]                       : 
+# 2062|     r2062_3(Base2 *)           = Load[b2]                                  : &:r2062_2, ~m?
+# 2062|     v2062_4(void)              = Call[?]                                   : func:r2062_1, 0:r2062_3
+# 2062|     mu2062_5(unknown)          = ^CallSideEffect                           : ~m?
+# 2064|     r2064_1(glval<Derived2 *>) = VariableAddress[d]                        : 
+# 2064|     r2064_2(glval<unknown>)    = FunctionAddress[operator new]             : 
+# 2064|     r2064_3(unsigned long)     = Constant[16]                              : 
+# 2064|     r2064_4(void *)            = Call[operator new]                        : func:r2064_2, 0:r2064_3
+# 2064|     mu2064_5(unknown)          = ^CallSideEffect                           : ~m?
+# 2064|     mu2064_6(unknown)          = ^InitializeDynamicAllocation              : &:r2064_4
+# 2064|     r2064_7(Derived2 *)        = Convert                                   : r2064_4
+# 2064|     r2064_8(glval<unknown>)    = FunctionAddress[Derived2]                 : 
+# 2064|     v2064_9(void)              = Call[Derived2]                            : func:r2064_8, this:r2064_7
+# 2064|     mu2064_10(unknown)         = ^CallSideEffect                           : ~m?
+# 2064|     mu2064_11(Derived2)        = ^IndirectMayWriteSideEffect[-1]           : &:r2064_7
+# 2064|     mu2064_12(Derived2 *)      = Store[d]                                  : &:r2064_1, r2064_7
+# 2065|     r2065_1(glval<unknown>)    = VirtualDeleteFunctionAddress              : 
+# 2065|     r2065_2(glval<Derived2 *>) = VariableAddress[d]                        : 
+# 2065|     r2065_3(Derived2 *)        = Load[d]                                   : &:r2065_2, ~m?
+# 2065|     v2065_4(void)              = Call[?]                                   : func:r2065_1, 0:r2065_3
+# 2065|     mu2065_5(unknown)          = ^CallSideEffect                           : ~m?
+# 2066|     v2066_1(void)              = Unreached                                 : 
+
+# 2056|   Block 1
+# 2056|     r2056_4(glval<int>) = VariableAddress[#return] : 
+# 2056|     v2056_5(void)       = ReturnValue              : &:r2056_4, ~m?
+# 2056|     v2056_6(void)       = AliasedUse               : ~m?
+# 2056|     v2056_7(void)       = ExitFunction             : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
