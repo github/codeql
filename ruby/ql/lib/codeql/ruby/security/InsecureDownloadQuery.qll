@@ -2,7 +2,7 @@
  * Provides a dataflow configuration for reasoning about the download of sensitive file through insecure connection.
  *
  * Note, for performance reasons: only import this file if
- * `InsecureDownload::Configuration` is needed, otherwise
+ * `InsecureDownloadFlow` is needed, otherwise
  * `InsecureDownloadCustomizations` should be imported instead.
  */
 
@@ -12,6 +12,8 @@ import InsecureDownloadCustomizations::InsecureDownload
 
 /**
  * A taint tracking configuration for download of sensitive file through insecure connection.
+ *
+ * DEPRECATED: Use `InsecureDownloadFlow`.
  */
 deprecated class Configuration extends DataFlow::Configuration {
   Configuration() { this = "InsecureDownload" }
@@ -30,10 +32,7 @@ deprecated class Configuration extends DataFlow::Configuration {
   }
 }
 
-/**
- * A taint tracking configuration for download of sensitive file through insecure connection.
- */
-module Config implements DataFlow::StateConfigSig {
+private module InsecureDownloadConfig implements DataFlow::StateConfigSig {
   class FlowState = string;
 
   predicate isSource(DataFlow::Node source, DataFlow::FlowState label) {
@@ -47,4 +46,13 @@ module Config implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
-module Flow = DataFlow::GlobalWithState<Config>;
+/**
+ * Taint-tracking for download of sensitive file through insecure connection.
+ */
+module InsecureDownloadFlow = DataFlow::GlobalWithState<InsecureDownloadConfig>;
+
+/** DEPRECATED: Use `InsecureDownloadConfig` */
+deprecated module Config = InsecureDownloadConfig;
+
+/** DEPRECATED: Use `InsecureDownloadFlow` */
+deprecated module Flow = InsecureDownloadFlow;
