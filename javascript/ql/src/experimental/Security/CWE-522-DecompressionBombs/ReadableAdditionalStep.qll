@@ -42,7 +42,7 @@ predicate genaralStreamPipeAdditionalTaintStep(
 }
 
 predicate streamPipelineAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  // this step connect the a pipe parameter to the next parameter
+  // this step connect the a pipeline parameter to the next pipeline parameter
   exists(API::Node cn, int i |
     i in [0 .. 10] and
     cn = nodeJsStream().getMember("pipeline")
@@ -51,7 +51,7 @@ predicate streamPipelineAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node 
     succ = cn.getParameter(i + 1).asSink()
   )
   or
-  // this step connect the first pipe parameter to the next parameter
+  // this step connect the first pipeline parameter to the next parameters
   exists(API::Node cn, int i |
     i in [1 .. 10] and
     cn = nodeJsStream().getMember("pipeline")

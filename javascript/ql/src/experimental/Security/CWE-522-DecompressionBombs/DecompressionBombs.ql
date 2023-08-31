@@ -37,27 +37,19 @@ class BombConfiguration extends TaintTracking::Configuration {
       not exists(source.getALocalSource().getStringValue())
     )
     or
-    exists(AstNode e |
-      e =
-        API::moduleImport("tar")
-            .getMember(["x", "extract"])
-            .getParameter(0)
-            .asSink()
-            .asExpr()
-            .(ObjectExpr)
-            .getAChild()
-            .(Property)
-    |
-      source.asExpr() = e.getAChild() and
-      e.getAChild*().(Label).getName() = "file" and
-      not source.getALocalSource().mayHaveStringValue(_)
-    )
+    source =
+      API::moduleImport("tar")
+          .getMember(["x", "extract"])
+          .getParameter(0)
+          .getMember("file")
+          .asSink() and
+    not source.getALocalSource().mayHaveStringValue(_)
   }
 
   override predicate isSink(DataFlow::Node sink) {
     // jszip
     exists(API::Node loadAsync | loadAsync = API::moduleImport("jszip").getMember("loadAsync") |
-      sink = loadAsync.getParameter(0).asSink() and jsZipsanitizer(loadAsync)
+      sink = loadAsync.getParameter(0).asSink() and not jsZipsanitizer(loadAsync)
     )
     or
     // node-tar
@@ -69,32 +61,17 @@ class BombConfiguration extends TaintTracking::Configuration {
         sink = tarExtract.getACall()
         or
         // tar.x({file: filename})
-        // and we don't have a  "maxReadSize: ANum" option
-        sink.asExpr() =
-          tarExtract
-              .getParameter(0)
-              .asSink()
-              .asExpr()
-              .(ObjectExpr)
-              .getAChild()
-              .(Property)
-              .getAChild*() and
-        tarExtract
-            .getParameter(0)
-            .asSink()
-            .asExpr()
-            .(ObjectExpr)
-            .getAChild()
-            .(Property)
-            .getAChild*()
-            .(Label)
-            .getName() = "file"
+        sink = tarExtract.getParameter(0).getMember("file").asSink()
+        or
+        // tar.x({file: filename})
+        sink = tarExtract.getParameter(0).getMember("file").asSink()
       ) and
-      nodeTarSanitizer(tarExtract)
+      // and there shouldn't be a  "maxReadSize: ANum" option
+      not nodeTarSanitizer(tarExtract)
     )
     or
     // zlib
-    // we don't have a "maxOutputLength: ANum" option
+    // there shouldn't be a "maxOutputLength: ANumber" option
     exists(API::Node zlib |
       zlib =
         API::moduleImport("zlib")
@@ -103,7 +80,7 @@ class BombConfiguration extends TaintTracking::Configuration {
                 "createInflateRaw"
               ]) and
       sink = zlib.getACall() and
-      zlibSanitizer(zlib, 0)
+      not zlibSanitizer(zlib.getParameter(0))
       or
       zlib =
         API::moduleImport("zlib")
@@ -112,7 +89,7 @@ class BombConfiguration extends TaintTracking::Configuration {
                 "brotliDecompressSync", "inflateSync", "inflateRawSync", "inflate", "inflateRaw"
               ]) and
       sink = zlib.getACall().getArgument(0) and
-      zlibSanitizer(zlib, 1)
+      not zlibSanitizer(zlib.getParameter(1))
     )
     or
     // pako
@@ -189,7 +166,6 @@ class BombConfiguration extends TaintTracking::Configuration {
     )
     or
     // pred.pipe(succ)
-    // I saw many instances like response.pipe(succ) which I couldn't exactly model this pattern
     exists(DataFlow::MethodCallNode n |
       n.getMethodName() = "pipe" and
       succ = n.getArgument(0) and
@@ -200,34 +176,14 @@ class BombConfiguration extends TaintTracking::Configuration {
 }
 
 predicate nodeTarSanitizer(API::Node tarExtract) {
-  not tarExtract
-      .getParameter(0)
-      .asSink()
-      .asExpr()
-      .(ObjectExpr)
-      .getAChild()
-      .(Property)
-      .getAChild*()
-      .(Label)
-      .getName() = "maxReadSize"
+  exists(tarExtract.getParameter(0).getMember("maxReadSize"))
 }
 
 predicate jsZipsanitizer(API::Node loadAsync) {
-  not exists(loadAsync.getASuccessor*().getMember("_data").getMember("uncompressedSize"))
+  exists(loadAsync.getASuccessor*().getMember("_data").getMember("uncompressedSize"))
 }
 
-predicate zlibSanitizer(API::Node zlib, int numOfParameter) {
-  numOfParameter = [0, 1] and
-  not zlib.getParameter(numOfParameter)
-      .asSink()
-      .asExpr()
-      .(ObjectExpr)
-      .getAChild()
-      .(Property)
-      .getAChild*()
-      .(Label)
-      .getName() = "maxOutputLength"
-}
+predicate zlibSanitizer(API::Node zlib) { exists(zlib.getMember("maxOutputLength")) }
 
 from BombConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
