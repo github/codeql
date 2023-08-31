@@ -163,28 +163,13 @@ class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStac
 
 /**
  * Provides a set of special flow summaries to ensure that callbacks passed into
- * library methods will be passed as `self` arguments into themeselves. That is,
+ * library methods will be passed as `lambda-self` arguments into themselves. That is,
  * we are assuming that callbacks passed into library methods will be called, which is
  * needed for flow through captured variables.
  */
 private module LibraryCallbackSummaries {
   private predicate libraryCall(CfgNodes::ExprNodes::CallCfgNode call) {
     not exists(getTarget(call))
-  }
-
-  private class LibraryBlockMethod extends SummarizedCallable {
-    LibraryBlockMethod() { this = "<library method accepting a block>" }
-
-    final override MethodCall getACall() {
-      libraryCall(result.getAControlFlowNode()) and
-      result.hasBlock()
-    }
-
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[block]" and
-      output = "Argument[block].Parameter[lambda-self]" and
-      preservesValue = true
-    }
   }
 
   private DataFlow::LocalSourceNode trackLambdaCreation(TypeTracker t) {
@@ -205,20 +190,26 @@ private module LibraryCallbackSummaries {
   }
 
   private class LibraryLambdaMethod extends SummarizedCallable {
-    private int i;
-
-    LibraryLambdaMethod() {
-      this = "<library method accepting a lambda at index " + i + ">" and
-      i in [0 .. 10]
-    }
+    LibraryLambdaMethod() { this = "<library method accepting a callback>" }
 
     final override MethodCall getACall() {
-      libraryCallHasLambdaArg(result.getAControlFlowNode(), i)
+      libraryCall(result.getAControlFlowNode()) and
+      result.hasBlock()
+      or
+      libraryCallHasLambdaArg(result.getAControlFlowNode(), _)
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[" + i + "]" and
-      output = "Argument[" + i + "].Parameter[lambda-self]" and
+      (
+        input = "Argument[block]" and
+        output = "Argument[block].Parameter[lambda-self]"
+        or
+        exists(int i |
+          i in [0 .. 10] and
+          input = "Argument[" + i + "]" and
+          output = "Argument[" + i + "].Parameter[lambda-self]"
+        )
+      ) and
       preservesValue = true
     }
   }

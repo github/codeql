@@ -1219,7 +1219,11 @@ class LhsExprNode extends ExprNode {
   /** Gets the underlying AST node as a `LhsExpr`. */
   LhsExpr asLhsExprAstNode() { result = lhsExprCfgNode.getExpr() }
 
-  /** Gets a variable used in (or introduced by) this LHS. */
+  /**
+   * DEPRECATED: use `getVariable` instead.
+   *
+   * Gets a variable used in (or introduced by) this LHS.
+   */
   deprecated Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
 
   /** Gets the variable used in (or introduced by) this LHS. */
