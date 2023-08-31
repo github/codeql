@@ -35,11 +35,11 @@ private module Input implements InputSig<RubyDataFlow> {
       n.asExpr() = arg
     )
   }
+
+  predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
+    arg.asExpr().getASuccessor(any(SuccessorTypes::ConditionalSuccessor c)).getASuccessor() =
+      call.asCall()
+  }
 }
 
 import MakeConsistency<RubyDataFlow, RubyTaintTracking, Input>
-
-query predicate multipleToString(DataFlow::Node n, string s) {
-  s = strictconcat(n.toString(), ",") and
-  strictcount(n.toString()) > 1
-}

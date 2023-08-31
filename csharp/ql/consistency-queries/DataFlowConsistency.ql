@@ -75,8 +75,3 @@ private module Input implements InputSig<CsharpDataFlow> {
 }
 
 import MakeConsistency<CsharpDataFlow, CsharpTaintTracking, Input>
-
-query predicate multipleToString(DataFlow::Node n, string s) {
-  s = strictconcat(n.toString(), ",") and
-  strictcount(n.toString()) > 1
-}
