@@ -37,8 +37,14 @@ private module Input implements InputSig<RubyDataFlow> {
   }
 
   predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
-    arg.asExpr().getASuccessor(any(SuccessorTypes::ConditionalSuccessor c)).getASuccessor() =
-      call.asCall()
+    // An argument such as `x` in `if not x then ...` has two successors (and hence
+    // two calls); one for each Boolean outcome of `x`.
+    exists(CfgNodes::ExprCfgNode n |
+      arg.argumentOf(call, _) and
+      n = call.asCall() and
+      arg.asExpr().getASuccessor(any(SuccessorTypes::ConditionalSuccessor c)).getASuccessor*() = n and
+      n.getASplit() instanceof Split::ConditionalCompletionSplit
+    )
   }
 }
 
