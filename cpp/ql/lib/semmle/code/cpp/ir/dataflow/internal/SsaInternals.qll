@@ -108,7 +108,7 @@ private newtype TDefOrUseImpl =
   } or
   TUseImpl(BaseSourceVariableInstruction base, Operand operand, int indirectionIndex) {
     isUse(_, operand, base, _, indirectionIndex) and
-    not isDef(_, _, operand, _, _, _)
+    not isDef(true, _, operand, _, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
