@@ -72,6 +72,44 @@ private module Input implements InputSig<CsharpDataFlow> {
   }
 
   predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }
+
+  predicate missingArgumentCallExclude(ArgumentNode arg) {
+    // TODO: Remove once object initializers are modeled properly
+    arg.(Private::PostUpdateNodes::ObjectInitializerNode).getInitializer() instanceof
+      ObjectInitializer
+    or
+    // TODO: Remove once underlying issue is fixed
+    exists(QualifiableExpr qe |
+      qe.isConditional() and
+      qe.getQualifier() = arg.asExpr()
+    )
+  }
+
+  predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
+    isArgumentNode(arg, call, _) and
+    (
+      // TODO: Remove once object initializers are modeled properly
+      arg =
+        any(Private::PostUpdateNodes::ObjectInitializerNode init |
+          init.argumentOf(call, _) and
+          init.getInitializer().getNumberOfChildren() > 1
+        )
+      or
+      exists(ControlFlow::Nodes::ElementNode cfn, ControlFlow::Nodes::Split split |
+        exists(arg.asExprAtNode(cfn))
+      |
+        split = cfn.getASplit() and
+        not split = call.getControlFlowNode().getASplit()
+        or
+        split = call.getControlFlowNode().getASplit() and
+        not split = cfn.getASplit()
+      )
+      or
+      call instanceof TransitiveCapturedDataFlowCall
+      or
+      call.(NonDelegateDataFlowCall).getDispatchCall().isReflection()
+    )
+  }
 }
 
 import MakeConsistency<CsharpDataFlow, CsharpTaintTracking, Input>
