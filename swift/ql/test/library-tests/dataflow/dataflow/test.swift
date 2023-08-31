@@ -766,3 +766,11 @@ func testOptionalKeyPathForce() {
     let f = \S2_Optional.s!.x
     sink(arg: s2[keyPath: f]) // $ flow=764
 }
+
+protocol MyProtocol {
+	func source() -> Int
+}
+
+func testOpenExistentialExpr(x: MyProtocol) {
+	sink(arg: x.source()) // $ MISSING:flow=771
+}
