@@ -1,11 +1,11 @@
 #include <iostream>
 #include <vector>
 #include <filesystem>
-#include "swift/xcode-autobuilder/XcodeTarget.h"
-#include "swift/xcode-autobuilder/XcodeBuildRunner.h"
-#include "swift/xcode-autobuilder/XcodeProjectParser.h"
+#include "swift/swift-autobuilder/XcodeTarget.h"
+#include "swift/swift-autobuilder/BuildRunner.h"
+#include "swift/swift-autobuilder/ProjectParser.h"
 #include "swift/logging/SwiftLogging.h"
-#include "swift/xcode-autobuilder/CustomizingBuildLink.h"
+#include "swift/swift-autobuilder/CustomizingBuildLink.h"
 
 static constexpr std::string_view uiTest = "com.apple.product-type.bundle.ui-testing";
 static constexpr std::string_view unitTest = "com.apple.product-type.bundle.unit-test";
@@ -79,8 +79,9 @@ static bool autobuild(const CLIArgs& args) {
                                   "contain no Swift source files, or are tests.");
     return false;
   } else if (!structure.xcodeEncountered && swiftPackages.empty()) {
-    DIAGNOSE_ERROR(noProjectFound,
-                   "`autobuild` detected neither an Xcode project or workspace, nor a Swift package");
+    DIAGNOSE_ERROR(
+        noProjectFound,
+        "`autobuild` detected neither an Xcode project or workspace, nor a Swift package");
     return false;
   } else if (!xcodeTargets.empty()) {
     LOG_INFO("Building Xcode target: {}", xcodeTargets.front());

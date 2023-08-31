@@ -1,4 +1,4 @@
-#include "swift/xcode-autobuilder/XcodeProjectParser.h"
+#include "swift/swift-autobuilder/ProjectParser.h"
 
 #include <array>
 #include <iostream>
@@ -8,8 +8,8 @@
 #include <fstream>
 #include <CoreFoundation/CoreFoundation.h>
 
-#include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
-#include "swift/xcode-autobuilder/CFHelpers.h"
+#include "swift/swift-autobuilder/XcodeWorkspaceParser.h"
+#include "swift/swift-autobuilder/CFHelpers.h"
 
 namespace fs = std::filesystem;
 
