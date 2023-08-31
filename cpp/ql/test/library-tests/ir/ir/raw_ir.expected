@@ -11312,10 +11312,9 @@ ir.cpp:
 # 2071|     r2071_2(int)            = Constant[116]                              : 
 # 2071|     mu2071_3(int)           = Store[x]                                   : &:r2071_1, r2071_2
 # 2072|     r2072_1(glval<unknown>) = FunctionAddress[test_constant_folding_use] : 
-# 2072|     r2072_2(glval<int>)     = Constant[116]                              : 
-# 2072|     r2072_3(int)            = Load[?]                                    : &:r2072_2, ~m?
-# 2072|     v2072_4(void)           = Call[test_constant_folding_use]            : func:r2072_1, 0:r2072_3
-# 2072|     mu2072_5(unknown)       = ^CallSideEffect                            : ~m?
+# 2072|     r2072_2(int)            = Constant[116]                              : 
+# 2072|     v2072_3(void)           = Call[test_constant_folding_use]            : func:r2072_1, 0:r2072_2
+# 2072|     mu2072_4(unknown)       = ^CallSideEffect                            : ~m?
 # 2073|     v2073_1(void)           = NoOp                                       : 
 # 2070|     v2070_4(void)           = ReturnVoid                                 : 
 # 2070|     v2070_5(void)           = AliasedUse                                 : ~m?
