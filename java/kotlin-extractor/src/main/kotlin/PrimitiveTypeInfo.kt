@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.name.FqName
 import com.github.codeql.utils.*
+import com.github.codeql.utils.versions.packageFqName
 
 class PrimitiveTypeMapping(val logger: Logger, val pluginContext: IrPluginContext) {
     fun getPrimitiveInfo(s: IrSimpleType) =

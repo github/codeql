@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.getJvmName
 import com.github.codeql.utils.versions.getFileClassFqName
+import com.github.codeql.utils.versions.packageFqName
 import com.intellij.openapi.vfs.StandardFileSystems
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass

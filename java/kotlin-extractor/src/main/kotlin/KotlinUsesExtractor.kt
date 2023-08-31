@@ -5,6 +5,7 @@ import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.getFileClassFqName
 import com.github.codeql.utils.versions.getKotlinType
 import com.github.codeql.utils.versions.isRawType
+import com.github.codeql.utils.versions.packageFqName
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.*
