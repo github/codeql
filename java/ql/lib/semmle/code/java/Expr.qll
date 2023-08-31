@@ -1670,12 +1670,24 @@ abstract class InstanceAccess extends Expr {
   /** Holds if this instance access is to an enclosing instance of type `t`. */
   predicate isEnclosingInstanceAccess(RefType t) {
     t = this.getQualifier().getType().(RefType).getSourceDeclaration() and
-    t != this.getEnclosingCallable().getDeclaringType()
+    t != this.getEnclosingCallable().getDeclaringType() and
+    not this.isSuperInterfaceAccess()
     or
-    not exists(this.getQualifier()) and
+    (not exists(this.getQualifier()) or this.isSuperInterfaceAccess()) and
     exists(LambdaExpr lam | lam.asMethod() = this.getEnclosingCallable() |
       t = lam.getAnonymousClass().getEnclosingType()
     )
+  }
+
+  // A default method on an interface, `I`, may be invoked using `I.super.m()`.
+  // This always refers to the implemented interfaces of `this`. This form of
+  // qualified `super` cannot be combined with accessing an enclosing instance.
+  // JLS 15.11.2. "Accessing Superclass Members using super"
+  // JLS 15.12. "Method Invocation Expressions"
+  // JLS 15.12.1. "Compile-Time Step 1: Determine Type to Search"
+  private predicate isSuperInterfaceAccess() {
+    this instanceof SuperAccess and
+    this.getQualifier().getType().(RefType).getSourceDeclaration() instanceof Interface
   }
 }
 
