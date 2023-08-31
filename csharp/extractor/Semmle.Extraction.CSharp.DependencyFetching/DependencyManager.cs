@@ -103,8 +103,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     progressMonitor.MissingNuGet();
                 }
 
-                Restore(solutions);
-                Restore(allProjects);
+                var restoredProjects = RestoreSolutions(solutions);
+                var projects = allProjects.Except(restoredProjects);
+                RestoreProjects(projects);
                 DownloadMissingPackages(allFiles);
             }
 
@@ -351,16 +352,26 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         }
 
-        private bool Restore(string target, string? pathToNugetConfig = null) =>
-            dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName, pathToNugetConfig);
+        private bool RestoreProject(string project, string? pathToNugetConfig = null) =>
+            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, pathToNugetConfig);
 
-        private void Restore(IEnumerable<string> targets, string? pathToNugetConfig = null)
-        {
-            foreach (var target in targets)
-            {
-                Restore(target, pathToNugetConfig);
-            }
-        }
+        private bool RestoreSolution(string solution, out IList<string> projects) =>
+            dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, out projects);
+
+        /// <summary>
+        /// Executes `dotnet restore` on all solution files in solutions.
+        /// Returns a list of projects that are up to date with respect to restore.
+        /// </summary>
+        /// <param name="solutions">A list of paths to solution files.</param>
+        private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions) =>
+            solutions.SelectMany(solution =>
+                {
+                    RestoreSolution(solution, out var restoredProjects);
+                    return restoredProjects;
+                });
+
+        private void RestoreProjects(IEnumerable<string> projects) =>
+            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project => RestoreProject(project));
 
         private void DownloadMissingPackages(List<FileInfo> allFiles)
         {
@@ -401,10 +412,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     continue;
                 }
 
-                success = Restore(tempDir.DirInfo.FullName, nugetConfig);
+                success = RestoreProject(tempDir.DirInfo.FullName, nugetConfig);
 
                 // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
-
                 if (!success)
                 {
                     progressMonitor.FailedToRestoreNugetPackage(package);

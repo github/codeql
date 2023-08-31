@@ -18,7 +18,13 @@ namespace Semmle.Extraction.Tests
 
         public bool New(string folder) => true;
 
-        public bool RestoreToDirectory(string project, string directory, string? pathToNugetConfig = null) => true;
+        public bool RestoreProjectToDirectory(string project, string directory, string? pathToNugetConfig = null) => true;
+
+        public bool RestoreSolutionToDirectory(string solution, string directory, out IList<string> projects)
+        {
+            projects = new List<string>();
+            return true;
+        }
 
         public IList<string> GetListedRuntimes() => runtimes;
 
