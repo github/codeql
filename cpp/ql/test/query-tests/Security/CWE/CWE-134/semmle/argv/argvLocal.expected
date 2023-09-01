@@ -39,8 +39,6 @@ edges
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | i2 indirection |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | i2 indirection |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
@@ -65,8 +63,6 @@ edges
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
@@ -141,9 +137,6 @@ nodes
 | argvLocal.c:110:9:110:11 | * ... | semmle.label | * ... |
 | argvLocal.c:111:15:111:17 | * ... | semmle.label | * ... |
 | argvLocal.c:111:15:111:17 | * ... | semmle.label | * ... |
-| argvLocal.c:111:15:111:17 | * ... | semmle.label | i2 indirection |
-| argvLocal.c:111:15:111:17 | i2 indirection | semmle.label | * ... |
-| argvLocal.c:111:15:111:17 | i2 indirection | semmle.label | i2 indirection |
 | argvLocal.c:115:13:115:16 | argv | semmle.label | argv |
 | argvLocal.c:115:13:115:16 | argv | semmle.label | argv |
 | argvLocal.c:116:9:116:10 | i3 | semmle.label | i3 |
@@ -168,9 +161,6 @@ nodes
 | argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
 | argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
 | argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
-| argvLocal.c:135:9:135:12 | ... ++ | semmle.label | i4 |
-| argvLocal.c:135:9:135:12 | i4 | semmle.label | ... ++ |
-| argvLocal.c:135:9:135:12 | i4 | semmle.label | i4 |
 | argvLocal.c:136:15:136:18 | -- ... | semmle.label | -- ... |
 | argvLocal.c:136:15:136:18 | -- ... | semmle.label | -- ... |
 | argvLocal.c:136:15:136:18 | -- ... | semmle.label | -- ... |

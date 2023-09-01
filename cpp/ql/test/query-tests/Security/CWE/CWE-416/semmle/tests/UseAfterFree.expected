@@ -7,7 +7,6 @@ edges
 | test.cpp:138:7:138:10 | data | test.cpp:141:6:141:9 | data |
 | test.cpp:164:9:164:9 | c | test.cpp:165:2:165:2 | c |
 | test.cpp:164:9:164:9 | c | test.cpp:166:3:166:4 | * ... |
-| test.cpp:164:9:164:9 | c | test.cpp:166:3:166:4 | c |
 | test.cpp:181:7:181:10 | data | test.cpp:186:6:186:9 | data |
 | test.cpp:192:7:192:10 | data | test.cpp:197:6:197:9 | data |
 | test.cpp:203:7:203:10 | data | test.cpp:209:6:209:9 | data |
@@ -29,9 +28,6 @@ nodes
 | test.cpp:164:9:164:9 | c | semmle.label | c |
 | test.cpp:165:2:165:2 | c | semmle.label | c |
 | test.cpp:166:3:166:4 | * ... | semmle.label | * ... |
-| test.cpp:166:3:166:4 | * ... | semmle.label | c |
-| test.cpp:166:3:166:4 | c | semmle.label | * ... |
-| test.cpp:166:3:166:4 | c | semmle.label | c |
 | test.cpp:181:7:181:10 | data | semmle.label | data |
 | test.cpp:186:6:186:9 | data | semmle.label | data |
 | test.cpp:192:7:192:10 | data | semmle.label | data |
@@ -52,9 +48,6 @@ subpaths
 | test.cpp:141:6:141:9 | data | test.cpp:138:7:138:10 | data | test.cpp:141:6:141:9 | data | Memory may have been previously freed by $@. | test.cpp:138:2:138:5 | call to free | call to free |
 | test.cpp:165:2:165:2 | c | test.cpp:164:9:164:9 | c | test.cpp:165:2:165:2 | c | Memory may have been previously freed by $@. | test.cpp:164:2:164:10 | delete | delete |
 | test.cpp:166:3:166:4 | * ... | test.cpp:164:9:164:9 | c | test.cpp:166:3:166:4 | * ... | Memory may have been previously freed by $@. | test.cpp:164:2:164:10 | delete | delete |
-| test.cpp:166:3:166:4 | * ... | test.cpp:164:9:164:9 | c | test.cpp:166:3:166:4 | c | Memory may have been previously freed by $@. | test.cpp:164:2:164:10 | delete | delete |
-| test.cpp:166:3:166:4 | c | test.cpp:164:9:164:9 | c | test.cpp:166:3:166:4 | * ... | Memory may have been previously freed by $@. | test.cpp:164:2:164:10 | delete | delete |
-| test.cpp:166:3:166:4 | c | test.cpp:164:9:164:9 | c | test.cpp:166:3:166:4 | c | Memory may have been previously freed by $@. | test.cpp:164:2:164:10 | delete | delete |
 | test.cpp:186:6:186:9 | data | test.cpp:181:7:181:10 | data | test.cpp:186:6:186:9 | data | Memory may have been previously freed by $@. | test.cpp:181:2:181:5 | call to free | call to free |
 | test.cpp:197:6:197:9 | data | test.cpp:192:7:192:10 | data | test.cpp:197:6:197:9 | data | Memory may have been previously freed by $@. | test.cpp:192:2:192:5 | call to free | call to free |
 | test.cpp:209:6:209:9 | data | test.cpp:203:7:203:10 | data | test.cpp:209:6:209:9 | data | Memory may have been previously freed by $@. | test.cpp:203:2:203:5 | call to free | call to free |

@@ -414,9 +414,10 @@ class Node extends TIRDataFlowNode {
 }
 
 private string toExprString(Node n) {
-  result = n.asExpr().toString()
+  result = n.asExpr(0).toString()
   or
-  result = n.asIndirectExpr().toString() + " indirection"
+  not exists(n.asExpr()) and
+  result = n.asIndirectExpr(0, 1).toString() + " indirection"
 }
 
 /**
@@ -1506,7 +1507,7 @@ OperandNode operandNode(Operand operand) { result.getOperand() = operand }
  * _out of_ an expression, like when an argument is passed by reference, use
  * `definitionByReferenceNodeFromArgument` instead.
  */
-ExprNode exprNode(Expr e) { result.getExpr() = e }
+ExprNode exprNode(Expr e) { result.getExpr(_) = e }
 
 /**
  * Gets the `Node` corresponding to the value of evaluating `e`. Here, `e` may
@@ -1514,7 +1515,7 @@ ExprNode exprNode(Expr e) { result.getExpr() = e }
  * argument is passed by reference, use
  * `definitionByReferenceNodeFromArgument` instead.
  */
-ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
+ExprNode convertedExprNode(Expr e) { result.getConvertedExpr(_) = e }
 
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.

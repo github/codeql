@@ -89,9 +89,6 @@ nodes
 | test3.cpp:368:15:368:22 | password | semmle.label | password |
 | test3.cpp:388:15:388:22 | password | semmle.label | password |
 | test3.cpp:400:15:400:23 | & ... | semmle.label | & ... |
-| test3.cpp:400:15:400:23 | & ... | semmle.label | password |
-| test3.cpp:400:15:400:23 | password | semmle.label | & ... |
-| test3.cpp:400:15:400:23 | password | semmle.label | password |
 | test3.cpp:414:15:414:24 | password | semmle.label | password |
 | test3.cpp:420:15:420:24 | password | semmle.label | password |
 | test3.cpp:431:8:431:15 | password | semmle.label | password |
