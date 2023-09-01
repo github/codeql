@@ -2065,5 +2065,11 @@ int virtual_delete()
     delete d;
 }
 
+void test_constant_folding_use(int);
+
+void test_constant_folding() {
+  const int x = 116;
+  test_constant_folding_use(x);
+}
 
 // semmle-extractor-options: -std=c++17 --clang

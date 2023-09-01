@@ -15716,6 +15716,30 @@ ir.cpp:
 # 2065|               Type = [PointerType] Derived2 *
 # 2065|               ValueCategory = prvalue(load)
 # 2066|     getStmt(6): [ReturnStmt] return ...
+# 2068| [TopLevelFunction] void test_constant_folding_use(int)
+# 2068|   <params>: 
+# 2068|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2068|         Type = [IntType] int
+# 2070| [TopLevelFunction] void test_constant_folding()
+# 2070|   <params>: 
+# 2070|   getEntryPoint(): [BlockStmt] { ... }
+# 2071|     getStmt(0): [DeclStmt] declaration
+# 2071|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2071|           Type = [SpecifiedType] const int
+# 2071|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2071|           getExpr(): [Literal] 116
+# 2071|               Type = [IntType] int
+# 2071|               Value = [Literal] 116
+# 2071|               ValueCategory = prvalue
+# 2072|     getStmt(1): [ExprStmt] ExprStmt
+# 2072|       getExpr(): [FunctionCall] call to test_constant_folding_use
+# 2072|           Type = [VoidType] void
+# 2072|           ValueCategory = prvalue
+# 2072|         getArgument(0): [VariableAccess] x
+# 2072|             Type = [IntType] int
+# 2072|             Value = [VariableAccess] 116
+# 2072|             ValueCategory = prvalue(load)
+# 2073|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

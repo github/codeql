@@ -415,7 +415,9 @@ predicate hasTranslatedLoad(Expr expr) {
   not ignoreExpr(expr) and
   not isNativeCondition(expr) and
   not isFlexibleCondition(expr) and
-  not ignoreLoad(expr)
+  not ignoreLoad(expr) and
+  // don't insert a load since we'll just substitute the constant value.
+  not isIRConstant(expr)
 }
 
 /**

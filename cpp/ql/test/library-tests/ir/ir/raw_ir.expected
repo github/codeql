@@ -11303,6 +11303,23 @@ ir.cpp:
 # 2056|     v2056_6(void)       = AliasedUse               : ~m?
 # 2056|     v2056_7(void)       = ExitFunction             : 
 
+# 2070| void test_constant_folding()
+# 2070|   Block 0
+# 2070|     v2070_1(void)           = EnterFunction                              : 
+# 2070|     mu2070_2(unknown)       = AliasedDefinition                          : 
+# 2070|     mu2070_3(unknown)       = InitializeNonLocal                         : 
+# 2071|     r2071_1(glval<int>)     = VariableAddress[x]                         : 
+# 2071|     r2071_2(int)            = Constant[116]                              : 
+# 2071|     mu2071_3(int)           = Store[x]                                   : &:r2071_1, r2071_2
+# 2072|     r2072_1(glval<unknown>) = FunctionAddress[test_constant_folding_use] : 
+# 2072|     r2072_2(int)            = Constant[116]                              : 
+# 2072|     v2072_3(void)           = Call[test_constant_folding_use]            : func:r2072_1, 0:r2072_2
+# 2072|     mu2072_4(unknown)       = ^CallSideEffect                            : ~m?
+# 2073|     v2073_1(void)           = NoOp                                       : 
+# 2070|     v2070_4(void)           = ReturnVoid                                 : 
+# 2070|     v2070_5(void)           = AliasedUse                                 : ~m?
+# 2070|     v2070_6(void)           = ExitFunction                               : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
