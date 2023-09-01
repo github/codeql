@@ -85,6 +85,8 @@ class Sources extends ModelInput::SourceModelCsv {
 }
 
 class TypeModelFromCodeQL extends ModelInput::TypeModel {
+  override predicate isTypeUsed(string type) { type = "danger-constant" }
+
   override DataFlow::Node getASource(string type) {
     type = "danger-constant" and
     result.getStringValue() = "danger-constant"
