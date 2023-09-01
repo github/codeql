@@ -1042,6 +1042,51 @@ class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   }
 }
 
+private module GetConvertedResultExpression {
+  private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedExpr
+  private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
+
+  /**
+   * Gets the expression that should be returned as the result expression from `instr`.
+   *
+   * Note that this predicate may return multiple results in cases where a conversion belond to a
+   * different AST element than its operand.
+   */
+  Expr getConvertedResultExpression(Instruction instr) {
+    // Only fully converted instructions has a result for `asConvertedExpr`
+    not conversionFlow(unique( | | getAUse(instr)), _, false, false) and
+    result = getConvertedResultExpressionImpl(instr)
+    or
+    // If the conversion also has a result then we return multiple results
+    exists(Operand operand | conversionFlow(operand, instr, false, false) |
+      result = getConvertedResultExpressionImpl(operand.getDef())
+      or
+      result = getConvertedResultExpression(operand.getDef())
+    )
+  }
+
+  private Expr getConvertedResultExpressionImpl0(Instruction instr) {
+    exists(TranslatedAssignOperation tao |
+      result = tao.getExpr() and
+      instr = tao.getInstruction(any(AssignmentStoreTag tag))
+    )
+    or
+    exists(TranslatedCrementOperation tco |
+      result = tco.getExpr() and
+      instr = tco.getInstruction(any(CrementStoreTag tag))
+    )
+  }
+
+  private Expr getConvertedResultExpressionImpl(Instruction instr) {
+    result = getConvertedResultExpressionImpl0(instr)
+    or
+    not exists(getConvertedResultExpressionImpl0(instr)) and
+    result = instr.getConvertedResultExpression()
+  }
+}
+
+private import GetConvertedResultExpression
+
 /** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeOperand(OperandNode node, Expr e) {
   exists(Instruction def |
