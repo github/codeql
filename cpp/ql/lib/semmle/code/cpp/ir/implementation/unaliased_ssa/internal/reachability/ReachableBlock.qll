@@ -25,7 +25,7 @@ private predicate feasibleInstructionSuccessor(Instruction instr, EdgeKind kind)
  * Holds if calls to `f` may return
  */
 private predicate isReturningFunction(IRFunction f) {
-  hasBrokenCFG(f)
+  hasBrokenCfg(f)
   or
   exists(IRBlock exitBlock |
     f.getExitFunctionInstruction().getBlock() = exitBlock and
@@ -38,7 +38,7 @@ predicate noReturnFunction(IRFunction f) {
   not isReturningFunction(f)
 }
 
-predicate hasBrokenCFG(IRFunction f) {
+predicate hasBrokenCfg(IRFunction f) {
   exists(Instruction missingSucc |
     missingSucc.getEnclosingIRFunction() = f and
     not exists(missingSucc.getASuccessor()) and
@@ -69,11 +69,6 @@ private predicate isReturningCall(CallInstruction ci) {
     staticTarget = callee.getFunction() 
   )  
 }
-
-private predicate nonReturningCall(CallInstruction ci) {
-  not isReturningCall(ci)
-}
-
 
 pragma[noinline]
 predicate isFeasibleEdge(IRBlockBase block, EdgeKind kind) {
