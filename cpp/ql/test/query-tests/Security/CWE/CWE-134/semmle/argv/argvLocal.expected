@@ -57,12 +57,14 @@ edges
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:10 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:10 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | i4 |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
+| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | i4 |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
@@ -105,8 +107,6 @@ edges
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
@@ -164,11 +164,12 @@ nodes
 | argvLocal.c:131:9:131:14 | ... + ... | semmle.label | ... + ... |
 | argvLocal.c:132:15:132:20 | ... + ... | semmle.label | ... + ... |
 | argvLocal.c:132:15:132:20 | ... + ... | semmle.label | ... + ... |
+| argvLocal.c:135:9:135:10 | i4 | semmle.label | i4 |
+| argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
 | argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
 | argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
 | argvLocal.c:135:9:135:12 | ... ++ | semmle.label | i4 |
 | argvLocal.c:135:9:135:12 | i4 | semmle.label | ... ++ |
-| argvLocal.c:135:9:135:12 | i4 | semmle.label | i4 |
 | argvLocal.c:135:9:135:12 | i4 | semmle.label | i4 |
 | argvLocal.c:136:15:136:18 | -- ... | semmle.label | -- ... |
 | argvLocal.c:136:15:136:18 | -- ... | semmle.label | -- ... |
@@ -190,7 +191,6 @@ nodes
 | argvLocal.c:151:15:151:16 | i8 | semmle.label | i8 |
 | argvLocal.c:168:18:168:21 | argv | semmle.label | argv |
 | argvLocal.c:168:18:168:21 | argv | semmle.label | argv |
-| argvLocal.c:169:9:169:20 | i10 | semmle.label | i10 |
 | argvLocal.c:169:9:169:20 | i10 | semmle.label | i10 |
 | argvLocal.c:169:18:169:20 | i10 | semmle.label | i10 |
 | argvLocal.c:170:15:170:26 | i10 | semmle.label | i10 |

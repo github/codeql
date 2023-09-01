@@ -11,7 +11,6 @@ edges
 | test.cpp:46:18:46:26 | http:// indirection | test.cpp:49:11:49:16 | buffer indirection |
 | test.cpp:49:11:49:16 | buffer indirection | test.cpp:11:26:11:28 | url indirection |
 | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr indirection |
-| test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr indirection |
 | test.cpp:121:11:121:13 | ptr indirection | test.cpp:11:26:11:28 | url indirection |
 nodes
 | test.cpp:11:26:11:28 | url indirection | semmle.label | url indirection |
@@ -27,7 +26,6 @@ nodes
 | test.cpp:46:18:46:26 | http:// indirection | semmle.label | http:// indirection |
 | test.cpp:49:11:49:16 | buffer indirection | semmle.label | buffer indirection |
 | test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
-| test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
 | test.cpp:121:11:121:13 | ptr indirection | semmle.label | ptr indirection |
 subpaths
 #select
@@ -36,5 +34,4 @@ subpaths
 | test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
 | test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
 | test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
 | test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |

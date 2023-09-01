@@ -52,8 +52,6 @@ edges
 | tests.cpp:66:23:66:43 | call to XercesDOMParser | tests.cpp:69:2:69:2 | p indirection |
 | tests.cpp:73:23:73:43 | call to XercesDOMParser | tests.cpp:80:2:80:2 | p indirection |
 | tests.cpp:85:24:85:44 | call to XercesDOMParser | tests.cpp:88:3:88:3 | q indirection |
-| tests.cpp:85:24:85:44 | call to XercesDOMParser | tests.cpp:88:3:88:3 | q indirection |
-| tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:104:3:104:3 | q indirection |
 | tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:104:3:104:3 | q indirection |
 | tests.cpp:112:39:112:39 | p indirection | tests.cpp:113:2:113:2 | p indirection |
 | tests.cpp:116:39:116:39 | p indirection | tests.cpp:117:2:117:2 | p indirection |
@@ -134,9 +132,7 @@ nodes
 | tests.cpp:80:2:80:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:85:24:85:44 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:88:3:88:3 | q indirection | semmle.label | q indirection |
-| tests.cpp:88:3:88:3 | q indirection | semmle.label | q indirection |
 | tests.cpp:100:24:100:44 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
-| tests.cpp:104:3:104:3 | q indirection | semmle.label | q indirection |
 | tests.cpp:104:3:104:3 | q indirection | semmle.label | q indirection |
 | tests.cpp:112:39:112:39 | p indirection | semmle.label | p indirection |
 | tests.cpp:113:2:113:2 | p indirection | semmle.label | p indirection |
@@ -174,8 +170,6 @@ subpaths
 | tests.cpp:69:2:69:2 | p indirection | tests.cpp:66:23:66:43 | call to XercesDOMParser | tests.cpp:69:2:69:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:66:23:66:43 | call to XercesDOMParser | XML parser |
 | tests.cpp:80:2:80:2 | p indirection | tests.cpp:73:23:73:43 | call to XercesDOMParser | tests.cpp:80:2:80:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:73:23:73:43 | call to XercesDOMParser | XML parser |
 | tests.cpp:88:3:88:3 | q indirection | tests.cpp:85:24:85:44 | call to XercesDOMParser | tests.cpp:88:3:88:3 | q indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:85:24:85:44 | call to XercesDOMParser | XML parser |
-| tests.cpp:88:3:88:3 | q indirection | tests.cpp:85:24:85:44 | call to XercesDOMParser | tests.cpp:88:3:88:3 | q indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:85:24:85:44 | call to XercesDOMParser | XML parser |
-| tests.cpp:104:3:104:3 | q indirection | tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:104:3:104:3 | q indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:100:24:100:44 | call to XercesDOMParser | XML parser |
 | tests.cpp:104:3:104:3 | q indirection | tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:104:3:104:3 | q indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:100:24:100:44 | call to XercesDOMParser | XML parser |
 | tests.cpp:113:2:113:2 | p indirection | tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:113:2:113:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:122:23:122:43 | call to XercesDOMParser | XML parser |
 | tests.cpp:117:2:117:2 | p indirection | tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:117:2:117:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests.cpp:122:23:122:43 | call to XercesDOMParser | XML parser |
