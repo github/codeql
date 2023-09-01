@@ -588,7 +588,13 @@ private module Cached {
       n in [-1 .. 10] and
       splatPos = unique(int i | splatArgumentAt(c, i) and i > 0)
     } or
-    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
+    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+    TForbiddenRecursionGuard() {
+      none() and
+      // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+      // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+      (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
+    }
 
   class TSelfParameterNode = TSelfMethodParameterNode or TSelfToplevelParameterNode;
 
