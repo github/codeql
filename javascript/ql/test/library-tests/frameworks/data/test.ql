@@ -2,6 +2,17 @@ import javascript
 import testUtilities.ConsistencyChecking
 import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 
+class TypeModelFromCodeQL extends ModelInput::TypeModel {
+  override DataFlow::Node getASource(string type) {
+    type = "danger-constant" and
+    result.getStringValue() = "danger-constant"
+  }
+}
+
+class SourceFromDangerConstant extends ModelInput::SourceModelCsv {
+  override predicate row(string row) { row = "danger-constant;Member[danger];test-source" }
+}
+
 class BasicTaintTracking extends TaintTracking::Configuration {
   BasicTaintTracking() { this = "BasicTaintTracking" }
 

@@ -1,4 +1,5 @@
 consistencyIssue
+| library-tests/frameworks/data/test.js:261 | expected an alert, but found none | NOT OK |  |
 taintFlow
 | paramDecorator.ts:6:54:6:54 | x | paramDecorator.ts:7:10:7:10 | x |
 | test.js:5:30:5:37 | source() | test.js:5:8:5:38 | testlib ... urce()) |
