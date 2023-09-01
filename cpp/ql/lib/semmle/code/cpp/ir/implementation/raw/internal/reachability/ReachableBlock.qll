@@ -3,66 +3,104 @@ private import IR
 private import ConstantAnalysis
 
 predicate isInfeasibleInstructionSuccessor(Instruction instr, EdgeKind kind) {
-  exists(int conditionValue |
+  not feasibleInstructionSuccessor(instr, kind)
+}
+
+private predicate feasibleInstructionSuccessor(Instruction instr, EdgeKind kind) {
+  not exists(int conditionValue |
     conditionValue = getConstantValue(instr.(ConditionalBranchInstruction).getCondition()) and
     if conditionValue = 0 then kind instanceof TrueEdge else kind instanceof FalseEdge
-  )
-  or
-  instr.getSuccessor(kind) instanceof UnreachedInstruction and
-  kind instanceof GotoEdge
-  or
-  isCallToNonExit(instr)
-}
-
-/**
- * Holds if all calls to `f` never return
- */
-private predicate isNonExitFunction(IRFunction f) {
-  // If all flows to the exit block are pass through an unreachable then f never returns.
-  any(UnreachedInstruction instr).getBlock().postDominates(f.getEntryBlock())
-  or
-  // If there is no flow to the exit block then f never returns.
-  not exists(IRBlock entry, IRBlock exit |
-    exit = f.getExitFunctionInstruction().getBlock() and
-    entry = f.getEntryBlock() and
-    exit = entry.getASuccessor*()
-  )
-  or
-  // If all flows to the exit block are pass through a call that never returns then f never returns.
-  exists(CallInstruction ci |
-    ci.getBlock().postDominates(f.getEntryBlock()) and
-    isCallToNonExit(ci)
+  ) and
+  not (
+    instr.getSuccessor(kind) instanceof UnreachedInstruction and
+    kind instanceof GotoEdge
+  ) and
+  (
+    not instr instanceof CallInstruction or
+    isReturningCall(instr)
   )
 }
 
 /**
- * Holds if the call `ci` never returns.
+ * Holds if calls to `f` may return
  */
-private predicate isCallToNonExit(CallInstruction ci) {
+private predicate isReturningFunction(IRFunction f) {
+  hasBrokenCFG(f)
+  or
+  exists(IRBlock exitBlock |
+    f.getExitFunctionInstruction().getBlock() = exitBlock and
+    isBlockReachable(exitBlock) and
+    blockReachesExit(exitBlock)
+  )
+}
+
+predicate noReturnFunction(IRFunction f) {
+  not isReturningFunction(f)
+}
+
+predicate hasBrokenCFG(IRFunction f) {
+  exists(Instruction missingSucc |
+    missingSucc.getEnclosingIRFunction() = f and
+    not exists(missingSucc.getASuccessor()) and
+    not missingSucc instanceof ExitFunctionInstruction and
+    // Phi instructions aren't linked into the instruction-level flow graph.
+    not missingSucc instanceof PhiInstruction and
+    not missingSucc instanceof UnreachedInstruction
+  )
+}
+
+/**
+ * Holds if the call `ci` may return.
+ */
+private predicate isReturningCall(CallInstruction ci) {
   exists(IRFunction callee, Language::Function staticTarget |
     staticTarget = ci.getStaticCallTarget() and
     staticTarget = callee.getFunction() and
     // We can't tell if the call is virtual or not
-    // if the callee is virtual. So assume that the call is virtual.  
-    not staticTarget.isVirtual() and
-    isNonExitFunction(callee) 
+    // if the callee is virtual. So assume that the call is virtual.
+    (
+      staticTarget.isVirtual() or
+      isReturningFunction(callee)
+    )
   )
+  or
+  not exists(IRFunction callee, Language::Function staticTarget |
+    staticTarget = ci.getStaticCallTarget() and
+    staticTarget = callee.getFunction() 
+  )  
 }
 
+private predicate nonReturningCall(CallInstruction ci) {
+  not isReturningCall(ci)
+}
+
+
 pragma[noinline]
-predicate isInfeasibleEdge(IRBlockBase block, EdgeKind kind) {
-  isInfeasibleInstructionSuccessor(block.getLastInstruction(), kind)
+predicate isFeasibleEdge(IRBlockBase block, EdgeKind kind) {
+  feasibleInstructionSuccessor(block.getLastInstruction(), kind)
 }
 
 private IRBlock getAFeasiblePredecessorBlock(IRBlock successor) {
   exists(EdgeKind kind |
     result.getSuccessor(kind) = successor and
-    not isInfeasibleEdge(result, kind)
+    isFeasibleEdge(result, kind) and
+    blockReachesExit(result)
   )
 }
 
 private predicate isBlockReachable(IRBlock block) {
   exists(IRFunction f | getAFeasiblePredecessorBlock*(block) = f.getEntryBlock())
+}
+
+/**
+ * Holds if `block` reaches the last instruction in the function
+ */
+private predicate blockReachesExit(IRBlock block) {
+  not exists(int i, Instruction instr |
+    instr = block.getInstruction(i) and
+    i != block.getInstructionCount() - 1 and
+    not feasibleInstructionSuccessor(instr, _)
+  )
 }
 
 /**
