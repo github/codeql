@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.frameworks.data.ModelsAsData
 private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
@@ -115,6 +116,12 @@ newtype TNode =
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+  } or
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
   }
 
 /** Helper for `Node::getEnclosingCallable`. */
