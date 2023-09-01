@@ -1091,34 +1091,24 @@ private import GetConvertedResultExpression
 predicate exprNodeShouldBeOperand(OperandNode node, Expr e) {
   exists(Instruction def |
     unique( | | getAUse(def)) = node.getOperand() and
-    e = def.getConvertedResultExpression()
+    e = getConvertedResultExpression(def)
   )
 }
 
-private predicate indirectExprNodeShouldBeIndirectOperand0(
-  VariableAddressInstruction instr, RawIndirectOperand node, Expr e
-) {
-  instr = node.getOperand().getDef() and
-  e = instr.getAst().(Expr).getUnconverted()
-}
-
 /** Holds if `node` should be an `IndirectOperand` that maps `node.asIndirectExpr()` to `e`. */
-private predicate indirectExprNodeShouldBeIndirectOperand(RawIndirectOperand node, Expr e) {
-  exists(Instruction instr | instr = node.getOperand().getDef() |
-    exists(Expr e0 |
-      indirectExprNodeShouldBeIndirectOperand0(instr, node, e0) and
-      e = e0.getFullyConverted()
-    )
-    or
-    not indirectExprNodeShouldBeIndirectOperand0(_, node, _) and
-    e = instr.getConvertedResultExpression()
+private predicate indirectExprNodeShouldBeIndirectOperand(
+  IndirectOperand node, Expr e, int indirectionIndex
+) {
+  exists(Instruction def |
+    node.hasOperandAndIndirectionIndex(unique( | | getAUse(def)), indirectionIndex) and
+    e = getConvertedResultExpression(def)
   )
 }
 
 private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, Expr e) {
   exists(CallInstruction call |
     call.getStaticCallTarget() instanceof Constructor and
-    e = call.getConvertedResultExpression() and
+    e = getConvertedResultExpression(call) and
     call.getThisArgumentOperand() = node.getAddressOperand()
   )
 }
@@ -1127,37 +1117,17 @@ private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, 
 predicate exprNodeShouldBeInstruction(Node node, Expr e) {
   not exprNodeShouldBeOperand(_, e) and
   not exprNodeShouldBeIndirectOutNode(_, e) and
-  (
-    e = node.asInstruction().getConvertedResultExpression()
-    or
-    // The instruction that contains the result of an `AssignOperation` is
-    // the unloaded left operand (see the comments in `TranslatedAssignOperation`).
-    // That means that for cases like
-    // ```cpp
-    // int x = ...;
-    // x += 1;
-    // ```
-    // the result of `x += 1` is the `VariableAddressInstruction` that represents `x`. But
-    // that instruction doesn't receive the flow from this `AssignOperation`. So instead we
-    // map the operation to the `AddInstruction`.
-    node.asInstruction().getAst() = e.(AssignOperation)
-    or
-    // Same story for `CrementOperation`s (cf. the comments in the subclasses
-    // of `TranslatedCrementOperation`).
-    node.asInstruction().getAst() = e.(CrementOperation)
-  )
+  e = getConvertedResultExpression(node.asInstruction())
 }
 
 /** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */
-predicate indirectExprNodeShouldBeIndirectInstruction(IndirectInstruction node, Expr e) {
+predicate indirectExprNodeShouldBeIndirectInstruction(
+  IndirectInstruction node, Expr e, int indirectionIndex
+) {
+  not indirectExprNodeShouldBeIndirectOperand(_, e, indirectionIndex) and
   exists(Instruction instr |
-    node.hasInstructionAndIndirectionIndex(instr, _) and
-    not indirectExprNodeShouldBeIndirectOperand(_, e)
-  |
-    e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
-    or
-    not instr instanceof VariableAddressInstruction and
-    e = instr.getConvertedResultExpression()
+    node.hasInstructionAndIndirectionIndex(instr, indirectionIndex) and
+    e = getConvertedResultExpression(instr)
   )
 }
 
@@ -1169,27 +1139,19 @@ abstract private class ExprNodeBase extends Node {
   abstract Expr getConvertedExpr();
 
   /** Gets the non-conversion expression corresponding to this node, if any. */
-  abstract Expr getExpr();
+  final Expr getExpr() { result = this.getConvertedExpr().getUnconverted() }
 }
 
 private class InstructionExprNode extends ExprNodeBase, InstructionNode {
   InstructionExprNode() { exprNodeShouldBeInstruction(this, _) }
 
   final override Expr getConvertedExpr() { exprNodeShouldBeInstruction(this, result) }
-
-  final override Expr getExpr() { result = this.getConvertedExpr().getUnconverted() }
-
-  final override string toStringImpl() { result = this.getConvertedExpr().toString() }
 }
 
 private class OperandExprNode extends ExprNodeBase, OperandNode {
   OperandExprNode() { exprNodeShouldBeOperand(this, _) }
 
   final override Expr getConvertedExpr() { exprNodeShouldBeOperand(this, result) }
-
-  final override Expr getExpr() { result = this.getConvertedExpr().getUnconverted() }
-
-  final override string toStringImpl() { result = this.getConvertedExpr().toString() }
 }
 
 abstract private class IndirectExprNodeBase extends Node {
@@ -1200,36 +1162,26 @@ abstract private class IndirectExprNodeBase extends Node {
   abstract Expr getConvertedExpr(int indirectionIndex);
 
   /** Gets the non-conversion expression corresponding to this node, if any. */
-  abstract Expr getExpr(int indirectionIndex);
-}
-
-private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase, RawIndirectOperand {
-  IndirectOperandIndirectExprNode() { indirectExprNodeShouldBeIndirectOperand(this, _) }
-
-  final override Expr getConvertedExpr(int index) {
-    this.getIndirectionIndex() = index and
-    indirectExprNodeShouldBeIndirectOperand(this, result)
-  }
-
-  final override Expr getExpr(int index) {
-    this.getIndirectionIndex() = index and
-    result = this.getConvertedExpr(index).getUnconverted()
+  final Expr getExpr(int indirectionIndex) {
+    result = this.getConvertedExpr(indirectionIndex).getUnconverted()
   }
 }
 
-private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase,
-  RawIndirectInstruction
+private class IndirectOperandIndirectExprNode extends IndirectExprNodeBase instanceof IndirectOperand
 {
-  IndirectInstructionIndirectExprNode() { indirectExprNodeShouldBeIndirectInstruction(this, _) }
+  IndirectOperandIndirectExprNode() { indirectExprNodeShouldBeIndirectOperand(this, _, _) }
 
   final override Expr getConvertedExpr(int index) {
-    this.getIndirectionIndex() = index and
-    indirectExprNodeShouldBeIndirectInstruction(this, result)
+    indirectExprNodeShouldBeIndirectOperand(this, result, index)
   }
+}
 
-  final override Expr getExpr(int index) {
-    this.getIndirectionIndex() = index and
-    result = this.getConvertedExpr(index).getUnconverted()
+private class IndirectInstructionIndirectExprNode extends IndirectExprNodeBase instanceof IndirectInstruction
+{
+  IndirectInstructionIndirectExprNode() { indirectExprNodeShouldBeIndirectInstruction(this, _, _) }
+
+  final override Expr getConvertedExpr(int index) {
+    indirectExprNodeShouldBeIndirectInstruction(this, result, index)
   }
 }
 
@@ -1237,8 +1189,6 @@ private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgument
   IndirectArgumentOutExprNode() { exprNodeShouldBeIndirectOutNode(this, _) }
 
   final override Expr getConvertedExpr() { exprNodeShouldBeIndirectOutNode(this, result) }
-
-  final override Expr getExpr() { result = this.getConvertedExpr() }
 }
 
 /**

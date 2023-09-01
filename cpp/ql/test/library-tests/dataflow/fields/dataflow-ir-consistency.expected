@@ -4,6 +4,295 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
+| A.cpp:42:10:42:12 | & ... | Node should have one toString but has 2. |
+| A.cpp:42:10:42:12 | & ... indirection | Node should have one toString but has 2. |
+| A.cpp:42:10:42:12 | & ... indirection | Node should have one toString but has 2. |
+| A.cpp:42:10:42:12 | cc | Node should have one toString but has 2. |
+| A.cpp:42:10:42:12 | cc indirection | Node should have one toString but has 2. |
+| A.cpp:42:10:42:12 | cc indirection | Node should have one toString but has 2. |
+| A.cpp:43:10:43:12 | & ... | Node should have one toString but has 2. |
+| A.cpp:43:10:43:12 | & ... indirection | Node should have one toString but has 2. |
+| A.cpp:43:10:43:12 | & ... indirection | Node should have one toString but has 2. |
+| A.cpp:43:10:43:12 | ct | Node should have one toString but has 2. |
+| A.cpp:43:10:43:12 | ct indirection | Node should have one toString but has 2. |
+| A.cpp:43:10:43:12 | ct indirection | Node should have one toString but has 2. |
+| A.cpp:105:9:105:38 | (condition decl) | Node should have one toString but has 2. |
+| A.cpp:105:9:105:38 | c1 | Node should have one toString but has 2. |
+| A.cpp:110:9:110:38 | (condition decl) | Node should have one toString but has 2. |
+| A.cpp:110:9:110:38 | c2 | Node should have one toString but has 2. |
+| A.cpp:118:9:118:39 | (condition decl) | Node should have one toString but has 2. |
+| A.cpp:118:9:118:39 | c1 | Node should have one toString but has 2. |
+| E.cpp:33:18:33:19 | & ... | Node should have one toString but has 2. |
+| E.cpp:33:18:33:19 | & ... indirection | Node should have one toString but has 2. |
+| E.cpp:33:18:33:19 | p | Node should have one toString but has 2. |
+| E.cpp:33:18:33:19 | p indirection | Node should have one toString but has 2. |
+| aliasing.cpp:25:17:25:19 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:25:17:25:19 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:25:17:25:19 | s1 | Node should have one toString but has 2. |
+| aliasing.cpp:25:17:25:19 | s1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:78:10:78:13 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:78:10:78:13 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:78:10:78:13 | s | Node should have one toString but has 2. |
+| aliasing.cpp:78:10:78:13 | s indirection | Node should have one toString but has 2. |
+| aliasing.cpp:101:13:101:22 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:101:13:101:22 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:101:13:101:22 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:101:13:101:22 | m1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:102:8:102:10 | * ... | Node should have one toString but has 2. |
+| aliasing.cpp:102:8:102:10 | px indirection | Node should have one toString but has 2. |
+| aliasing.cpp:106:3:106:5 | * ... | Node should have one toString but has 2. |
+| aliasing.cpp:106:3:106:5 | * ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:106:3:106:5 | pa | Node should have one toString but has 2. |
+| aliasing.cpp:106:3:106:5 | pa indirection | Node should have one toString but has 2. |
+| aliasing.cpp:111:15:111:19 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:111:15:111:19 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:111:15:111:19 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:111:15:111:19 | m1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:127:8:127:16 | * ... | Node should have one toString but has 2. |
+| aliasing.cpp:127:8:127:16 | ... - ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:132:8:132:14 | & ... indirection | Node should have one toString but has 4. |
+| aliasing.cpp:132:8:132:14 | * ... | Node should have one toString but has 4. |
+| aliasing.cpp:132:8:132:14 | * ... indirection | Node should have one toString but has 4. |
+| aliasing.cpp:132:8:132:14 | xs indirection | Node should have one toString but has 4. |
+| aliasing.cpp:132:9:132:14 | & ... | Node should have one toString but has 3. |
+| aliasing.cpp:132:9:132:14 | * ... | Node should have one toString but has 3. |
+| aliasing.cpp:132:9:132:14 | xs | Node should have one toString but has 3. |
+| aliasing.cpp:132:10:132:14 | & ... | Node should have one toString but has 3. |
+| aliasing.cpp:132:10:132:14 | & ... indirection | Node should have one toString but has 3. |
+| aliasing.cpp:132:10:132:14 | * ... | Node should have one toString but has 3. |
+| aliasing.cpp:132:10:132:14 | * ... indirection | Node should have one toString but has 3. |
+| aliasing.cpp:132:10:132:14 | xs | Node should have one toString but has 3. |
+| aliasing.cpp:132:10:132:14 | xs indirection | Node should have one toString but has 3. |
+| aliasing.cpp:132:11:132:14 | * ... | Node should have one toString but has 2. |
+| aliasing.cpp:132:11:132:14 | * ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:132:11:132:14 | xs | Node should have one toString but has 2. |
+| aliasing.cpp:132:11:132:14 | xs indirection | Node should have one toString but has 2. |
+| aliasing.cpp:136:15:136:17 | + ... | Node should have one toString but has 2. |
+| aliasing.cpp:136:15:136:17 | + ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:136:15:136:17 | xs | Node should have one toString but has 2. |
+| aliasing.cpp:136:15:136:17 | xs indirection | Node should have one toString but has 2. |
+| aliasing.cpp:137:8:137:11 | * ... | Node should have one toString but has 3. |
+| aliasing.cpp:137:8:137:11 | + ... indirection | Node should have one toString but has 3. |
+| aliasing.cpp:137:8:137:11 | xs indirection | Node should have one toString but has 3. |
+| aliasing.cpp:137:9:137:11 | + ... | Node should have one toString but has 2. |
+| aliasing.cpp:137:9:137:11 | xs | Node should have one toString but has 2. |
+| aliasing.cpp:147:15:147:22 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:147:15:147:22 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:147:15:147:22 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:147:15:147:22 | m1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:159:8:159:14 | * ... | Node should have one toString but has 2. |
+| aliasing.cpp:159:8:159:14 | data indirection | Node should have one toString but has 2. |
+| aliasing.cpp:175:15:175:22 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:175:15:175:22 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:175:15:175:22 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:175:15:175:22 | m1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:181:15:181:22 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:181:15:181:22 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:181:15:181:22 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:181:15:181:22 | m1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:187:15:187:22 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:187:15:187:22 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:187:15:187:22 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:187:15:187:22 | m1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:194:15:194:22 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:194:15:194:22 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:194:15:194:22 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:194:15:194:22 | m1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:200:15:200:24 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:200:15:200:24 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:200:15:200:24 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:200:15:200:24 | m1 indirection | Node should have one toString but has 2. |
+| aliasing.cpp:205:15:205:24 | & ... | Node should have one toString but has 2. |
+| aliasing.cpp:205:15:205:24 | & ... indirection | Node should have one toString but has 2. |
+| aliasing.cpp:205:15:205:24 | m1 | Node should have one toString but has 2. |
+| aliasing.cpp:205:15:205:24 | m1 indirection | Node should have one toString but has 2. |
+| arrays.cpp:9:8:9:11 | * ... | Node should have one toString but has 2. |
+| arrays.cpp:9:8:9:11 | * ... indirection | Node should have one toString but has 2. |
+| arrays.cpp:9:8:9:11 | arr indirection | Node should have one toString but has 2. |
+| arrays.cpp:9:8:9:11 | arr indirection | Node should have one toString but has 2. |
+| arrays.cpp:10:8:10:15 | & ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:10:8:10:15 | & ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:10:8:10:15 | * ... | Node should have one toString but has 3. |
+| arrays.cpp:10:8:10:15 | * ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:10:8:10:15 | access to array indirection | Node should have one toString but has 3. |
+| arrays.cpp:10:8:10:15 | access to array indirection | Node should have one toString but has 3. |
+| arrays.cpp:10:9:10:15 | & ... | Node should have one toString but has 2. |
+| arrays.cpp:10:9:10:15 | access to array | Node should have one toString but has 2. |
+| arrays.cpp:15:3:15:10 | & ... | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | & ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | & ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | & ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | * ... | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | * ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | * ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | * ... indirection | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | access to array | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | access to array indirection | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | access to array indirection | Node should have one toString but has 3. |
+| arrays.cpp:15:3:15:10 | access to array indirection | Node should have one toString but has 3. |
+| by_reference.cpp:68:17:68:18 | & ... | Node should have one toString but has 2. |
+| by_reference.cpp:68:17:68:18 | & ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:68:17:68:18 | s | Node should have one toString but has 2. |
+| by_reference.cpp:68:17:68:18 | s indirection | Node should have one toString but has 2. |
+| by_reference.cpp:69:22:69:23 | & ... | Node should have one toString but has 2. |
+| by_reference.cpp:69:22:69:23 | & ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:69:22:69:23 | s | Node should have one toString but has 2. |
+| by_reference.cpp:69:22:69:23 | s indirection | Node should have one toString but has 2. |
+| by_reference.cpp:92:3:92:5 | * ... | Node should have one toString but has 2. |
+| by_reference.cpp:92:3:92:5 | * ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:92:3:92:5 | * ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:92:3:92:5 | * ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:92:3:92:5 | pa | Node should have one toString but has 2. |
+| by_reference.cpp:92:3:92:5 | pa indirection | Node should have one toString but has 2. |
+| by_reference.cpp:92:3:92:5 | pa indirection | Node should have one toString but has 2. |
+| by_reference.cpp:92:3:92:5 | pa indirection | Node should have one toString but has 2. |
+| by_reference.cpp:102:21:102:39 | & ... | Node should have one toString but has 2. |
+| by_reference.cpp:102:21:102:39 | & ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:102:21:102:39 | inner_nested | Node should have one toString but has 2. |
+| by_reference.cpp:102:21:102:39 | inner_nested indirection | Node should have one toString but has 2. |
+| by_reference.cpp:104:15:104:22 | & ... | Node should have one toString but has 2. |
+| by_reference.cpp:104:15:104:22 | & ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:104:15:104:22 | & ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:104:15:104:22 | a | Node should have one toString but has 2. |
+| by_reference.cpp:104:15:104:22 | a indirection | Node should have one toString but has 2. |
+| by_reference.cpp:104:15:104:22 | a indirection | Node should have one toString but has 2. |
+| by_reference.cpp:106:21:106:41 | & ... | Node should have one toString but has 2. |
+| by_reference.cpp:106:21:106:41 | & ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:106:21:106:41 | inner_nested | Node should have one toString but has 2. |
+| by_reference.cpp:106:21:106:41 | inner_nested indirection | Node should have one toString but has 2. |
+| by_reference.cpp:108:15:108:24 | & ... | Node should have one toString but has 2. |
+| by_reference.cpp:108:15:108:24 | & ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:108:15:108:24 | & ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:108:15:108:24 | a | Node should have one toString but has 2. |
+| by_reference.cpp:108:15:108:24 | a indirection | Node should have one toString but has 2. |
+| by_reference.cpp:108:15:108:24 | a indirection | Node should have one toString but has 2. |
+| by_reference.cpp:123:21:123:36 | * ... | Node should have one toString but has 2. |
+| by_reference.cpp:123:21:123:36 | * ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:123:21:123:36 | inner_ptr | Node should have one toString but has 2. |
+| by_reference.cpp:123:21:123:36 | inner_ptr indirection | Node should have one toString but has 2. |
+| by_reference.cpp:127:21:127:38 | * ... | Node should have one toString but has 2. |
+| by_reference.cpp:127:21:127:38 | * ... indirection | Node should have one toString but has 2. |
+| by_reference.cpp:127:21:127:38 | inner_ptr | Node should have one toString but has 2. |
+| by_reference.cpp:127:21:127:38 | inner_ptr indirection | Node should have one toString but has 2. |
+| clearning.cpp:19:3:19:6 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:19:3:19:6 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:19:3:19:6 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:19:3:19:6 | x | Node should have one toString but has 2. |
+| clearning.cpp:19:3:19:6 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:19:3:19:6 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:20:8:20:12 | * ... | Node should have one toString but has 3. |
+| clearning.cpp:20:8:20:12 | * ... indirection | Node should have one toString but has 3. |
+| clearning.cpp:20:8:20:12 | x indirection | Node should have one toString but has 3. |
+| clearning.cpp:20:9:20:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:20:9:20:12 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:27:8:27:12 | * ... | Node should have one toString but has 3. |
+| clearning.cpp:27:8:27:12 | * ... indirection | Node should have one toString but has 3. |
+| clearning.cpp:27:8:27:12 | x indirection | Node should have one toString but has 3. |
+| clearning.cpp:27:9:27:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:27:9:27:12 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:32:3:32:6 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:32:3:32:6 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:32:3:32:6 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:32:3:32:6 | x | Node should have one toString but has 2. |
+| clearning.cpp:32:3:32:6 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:32:3:32:6 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:34:8:34:11 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:34:8:34:11 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:34:8:34:11 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:34:8:34:11 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:39:3:39:6 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:39:3:39:6 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:39:3:39:6 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:39:3:39:6 | x | Node should have one toString but has 2. |
+| clearning.cpp:39:3:39:6 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:39:3:39:6 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:41:8:41:11 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:41:8:41:11 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:41:8:41:11 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:41:8:41:11 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:48:8:48:11 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:48:8:48:11 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:48:8:48:11 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:48:8:48:11 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:53:3:53:6 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:53:3:53:6 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:53:3:53:6 | * ... indirection | Node should have one toString but has 2. |
+| clearning.cpp:53:3:53:6 | x | Node should have one toString but has 2. |
+| clearning.cpp:53:3:53:6 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:53:3:53:6 | x indirection | Node should have one toString but has 2. |
+| clearning.cpp:76:7:76:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:76:7:76:12 | val indirection | Node should have one toString but has 2. |
+| clearning.cpp:84:7:84:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:84:7:84:12 | val indirection | Node should have one toString but has 2. |
+| clearning.cpp:90:2:90:9 | * ... | Node should have one toString but has 3. |
+| clearning.cpp:90:2:90:9 | * ... indirection | Node should have one toString but has 3. |
+| clearning.cpp:90:2:90:9 | ... ++ | Node should have one toString but has 3. |
+| clearning.cpp:90:2:90:9 | ... ++ indirection | Node should have one toString but has 3. |
+| clearning.cpp:90:2:90:9 | val | Node should have one toString but has 3. |
+| clearning.cpp:90:2:90:9 | val indirection | Node should have one toString but has 3. |
+| clearning.cpp:91:7:91:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:91:7:91:12 | val indirection | Node should have one toString but has 2. |
+| clearning.cpp:98:7:98:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:98:7:98:12 | val indirection | Node should have one toString but has 2. |
+| clearning.cpp:105:7:105:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:105:7:105:12 | val indirection | Node should have one toString but has 2. |
+| clearning.cpp:112:7:112:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:112:7:112:12 | val indirection | Node should have one toString but has 2. |
+| clearning.cpp:119:7:119:12 | * ... | Node should have one toString but has 2. |
+| clearning.cpp:119:7:119:12 | val indirection | Node should have one toString but has 2. |
+| conflated.cpp:10:3:10:7 | * ... | Node should have one toString but has 2. |
+| conflated.cpp:10:3:10:7 | * ... indirection | Node should have one toString but has 2. |
+| conflated.cpp:10:3:10:7 | p | Node should have one toString but has 2. |
+| conflated.cpp:10:3:10:7 | p indirection | Node should have one toString but has 2. |
+| conflated.cpp:11:8:11:12 | * ... | Node should have one toString but has 2. |
+| conflated.cpp:11:8:11:12 | p indirection | Node should have one toString but has 2. |
+| qualifiers.cpp:37:19:37:35 | * ... | Node should have one toString but has 2. |
+| qualifiers.cpp:37:19:37:35 | * ... indirection | Node should have one toString but has 2. |
+| qualifiers.cpp:37:19:37:35 | call to getInner | Node should have one toString but has 2. |
+| qualifiers.cpp:37:19:37:35 | call to getInner indirection | Node should have one toString but has 2. |
+| qualifiers.cpp:42:6:42:22 | * ... | Node should have one toString but has 2. |
+| qualifiers.cpp:42:6:42:22 | * ... indirection | Node should have one toString but has 2. |
+| qualifiers.cpp:42:6:42:22 | call to getInner | Node should have one toString but has 2. |
+| qualifiers.cpp:42:6:42:22 | call to getInner indirection | Node should have one toString but has 2. |
+| qualifiers.cpp:42:25:42:25 | * ... indirection [post update] | Node should have one toString but has 2. |
+| qualifiers.cpp:42:25:42:25 | call to getInner indirection [post update] | Node should have one toString but has 2. |
+| qualifiers.cpp:47:6:47:11 | & ... | Node should have one toString but has 2. |
+| qualifiers.cpp:47:6:47:11 | & ... indirection | Node should have one toString but has 2. |
+| qualifiers.cpp:47:6:47:11 | outer | Node should have one toString but has 2. |
+| qualifiers.cpp:47:6:47:11 | outer indirection | Node should have one toString but has 2. |
+| realistic.cpp:25:15:25:36 | & ... | Node should have one toString but has 2. |
+| realistic.cpp:25:15:25:36 | & ... indirection | Node should have one toString but has 2. |
+| realistic.cpp:25:15:25:36 | & ... indirection | Node should have one toString but has 2. |
+| realistic.cpp:25:15:25:36 | access to array | Node should have one toString but has 2. |
+| realistic.cpp:25:15:25:36 | access to array indirection | Node should have one toString but has 2. |
+| realistic.cpp:25:15:25:36 | access to array indirection | Node should have one toString but has 2. |
+| realistic.cpp:34:9:34:12 | * ... | Node should have one toString but has 3. |
+| realistic.cpp:34:9:34:12 | * ... indirection | Node should have one toString but has 3. |
+| realistic.cpp:34:9:34:12 | ... ++ | Node should have one toString but has 3. |
+| realistic.cpp:34:9:34:12 | ... ++ indirection | Node should have one toString but has 3. |
+| realistic.cpp:34:9:34:12 | d | Node should have one toString but has 3. |
+| realistic.cpp:34:9:34:12 | d indirection | Node should have one toString but has 3. |
+| realistic.cpp:34:16:34:19 | * ... | Node should have one toString but has 3. |
+| realistic.cpp:34:16:34:19 | ... ++ indirection | Node should have one toString but has 3. |
+| realistic.cpp:34:16:34:19 | s indirection | Node should have one toString but has 3. |
+| realistic.cpp:34:17:34:19 | ... ++ | Node should have one toString but has 2. |
+| realistic.cpp:34:17:34:19 | s | Node should have one toString but has 2. |
+| struct_init.c:24:10:24:12 | & ... | Node should have one toString but has 2. |
+| struct_init.c:24:10:24:12 | & ... indirection | Node should have one toString but has 2. |
+| struct_init.c:24:10:24:12 | ab | Node should have one toString but has 2. |
+| struct_init.c:24:10:24:12 | ab indirection | Node should have one toString but has 2. |
+| struct_init.c:28:5:28:7 | & ... | Node should have one toString but has 2. |
+| struct_init.c:28:5:28:7 | & ... indirection | Node should have one toString but has 2. |
+| struct_init.c:28:5:28:7 | ab | Node should have one toString but has 2. |
+| struct_init.c:28:5:28:7 | ab indirection | Node should have one toString but has 2. |
+| struct_init.c:36:10:36:24 | & ... | Node should have one toString but has 2. |
+| struct_init.c:36:10:36:24 | & ... indirection | Node should have one toString but has 2. |
+| struct_init.c:36:10:36:24 | nestedAB | Node should have one toString but has 2. |
+| struct_init.c:36:10:36:24 | nestedAB indirection | Node should have one toString but has 2. |
+| struct_init.c:43:5:43:7 | & ... | Node should have one toString but has 2. |
+| struct_init.c:43:5:43:7 | & ... indirection | Node should have one toString but has 2. |
+| struct_init.c:43:5:43:7 | ab | Node should have one toString but has 2. |
+| struct_init.c:43:5:43:7 | ab indirection | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal

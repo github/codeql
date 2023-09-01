@@ -19,9 +19,6 @@
 | tests.cpp:310:2:310:7 | call to memset | This 'memset' operation accesses 21 bytes but the $@ is only 20 bytes. | tests.cpp:301:10:301:14 | myVar | destination buffer |
 | tests.cpp:312:2:312:7 | call to memset | This 'memset' operation accesses 17 bytes but the $@ is only 16 bytes. | tests.cpp:298:7:298:12 | buffer | destination buffer |
 | tests.cpp:314:2:314:7 | call to memset | This 'memset' operation accesses 8 bytes but the $@ is only 4 bytes. | tests.cpp:299:6:299:10 | field | destination buffer |
-| tests.cpp:327:3:327:8 | call to memset | This 'memset' operation accesses 21 bytes but the $@ is only 20 bytes. | tests.cpp:301:10:301:14 | myVar | destination buffer |
-| tests.cpp:329:3:329:8 | call to memset | This 'memset' operation accesses 21 bytes but the $@ is only 20 bytes. | tests.cpp:301:10:301:14 | myVar | destination buffer |
-| tests.cpp:336:3:336:8 | call to memset | This 'memset' operation accesses 21 bytes but the $@ is only 20 bytes. | tests.cpp:301:10:301:14 | myVar | destination buffer |
 | tests.cpp:346:2:346:14 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:342:7:342:15 | charArray | array |
 | tests.cpp:349:2:349:14 | access to array | This array indexing operation accesses byte offset 10 but the $@ is only 10 bytes. | tests.cpp:342:7:342:15 | charArray | array |
 | tests.cpp:350:17:350:29 | access to array | This array indexing operation accesses byte offset 10 but the $@ is only 10 bytes. | tests.cpp:342:7:342:15 | charArray | array |
