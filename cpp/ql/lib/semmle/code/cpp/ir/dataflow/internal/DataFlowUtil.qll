@@ -1052,16 +1052,18 @@ private module GetConvertedResultExpression {
    * Note that this predicate may return multiple results in cases where a conversion belond to a
    * different AST element than its operand.
    */
-  Expr getConvertedResultExpression(Instruction instr) {
+  Expr getConvertedResultExpression(Instruction instr, int n) {
     // Only fully converted instructions has a result for `asConvertedExpr`
     not conversionFlow(unique( | | getAUse(instr)), _, false, false) and
-    result = getConvertedResultExpressionImpl(instr)
+    result = getConvertedResultExpressionImpl(instr) and
+    n = 0
     or
     // If the conversion also has a result then we return multiple results
     exists(Operand operand | conversionFlow(operand, instr, false, false) |
+      n = 1 and
       result = getConvertedResultExpressionImpl(operand.getDef())
       or
-      result = getConvertedResultExpression(operand.getDef())
+      result = getConvertedResultExpression(operand.getDef(), n - 1)
     )
   }
 
