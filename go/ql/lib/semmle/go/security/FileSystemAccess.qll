@@ -139,18 +139,6 @@ class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       mcn.hasQualifiedName("github.com/spf13/afero",
         ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
       this = mcn.getACall()
-      or
-      mcn.hasQualifiedName("github.com/spf13/afero", "Open") and
-      this = mcn.getACall()
-    )
-    or
-    exists(DataFlow::Function mcn |
-      mcn.hasQualifiedName("github.com/spf13/afero",
-        ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
-      this = mcn.getACall()
-      or
-      mcn.hasQualifiedName("github.com/spf13/afero", "Open") and
-      this = mcn.getACall()
     )
     or
     exists(DataFlow::Method mcn |
@@ -189,9 +177,6 @@ class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
 
   override DataFlow::Node getAPathArgument() {
     if
-      this.getTarget()
-          .hasQualifiedName("github.com/spf13/afero",
-            ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) or
       this.getTarget()
           .hasQualifiedName("github.com/spf13/afero",
             ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"])
