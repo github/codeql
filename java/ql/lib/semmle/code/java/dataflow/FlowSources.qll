@@ -286,7 +286,7 @@ deprecated class DatabaseInput = DbInput;
  * A node with input from a database.
  */
 private class DbInput extends LocalUserInput {
-  DbInput() { this.asExpr().(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
+  DbInput() { sourceNode(this, "database") }
 
   override string getThreatModel() { result = "database" }
 }
