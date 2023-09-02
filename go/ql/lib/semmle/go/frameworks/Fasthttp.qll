@@ -18,6 +18,28 @@ module Fasthttp {
   string fasthttpPackage() { result = "github.com/valyala/fasthttp" }
 
   module Functions {
+    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+      FileSystemAccess() {
+        exists(DataFlow::Function f |
+          f.hasQualifiedName("github.com/valyala/fasthttp",
+            [
+              "ServeFile", "ServeFileUncompressed", "ServeFileBytes", "ServeFileBytesUncompressed",
+              "SaveMultipartFile"
+            ]) and
+          this = f.getACall()
+        )
+      }
+
+      override DataFlow::Node getAPathArgument() {
+        this.getTarget().getName() =
+          [
+            "ServeFile", "ServeFileUncompressed", "ServeFileBytes", "ServeFileBytesUncompressed",
+            "SaveMultipartFile"
+          ] and
+        result = this.getArgument(1)
+      }
+    }
+
     private class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
       Redirect() {
         exists(DataFlow::Function f |
@@ -194,6 +216,20 @@ module Fasthttp {
   }
 
   module Response {
+    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+      FileSystemAccess() {
+        exists(DataFlow::Method mcn |
+          mcn.hasQualifiedName("github.com/valyala/fasthttp.Response", "SendFile") and
+          this = mcn.getACall()
+        )
+      }
+
+      override DataFlow::Node getAPathArgument() {
+        this.getTarget().getName() = "SendFile" and
+        result = this.getArgument(0)
+      }
+    }
+
     class HttpResponseBodySink extends SharedXss::Sink {
       HttpResponseBodySink() {
         exists(DataFlow::Method m |
@@ -209,6 +245,21 @@ module Fasthttp {
   }
 
   module RequestCtx {
+    class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+      FileSystemAccess() {
+        exists(DataFlow::Method mcn |
+          mcn.hasQualifiedName("github.com/valyala/fasthttp.RequestCtx",
+            ["SendFileBytes", "SendFile"]) and
+          this = mcn.getACall()
+        )
+      }
+
+      override DataFlow::Node getAPathArgument() {
+        this.getTarget().getName() = ["SendFile", "SendFileBytes"] and
+        result = this.getArgument(0)
+      }
+    }
+
     private class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
       Redirect() {
         exists(DataFlow::Function f |
