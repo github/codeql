@@ -233,10 +233,7 @@ deprecated class EnvInput extends DataFlow::Node {
  * environment variables.
  */
 private class EnvironmentInput extends LocalUserInput {
-  EnvironmentInput() {
-    // Results from various specific methods.
-    this.asExpr().(MethodAccess).getMethod() instanceof EnvReadMethod
-  }
+  EnvironmentInput() { sourceNode(this, "environment") }
 
   override string getThreatModel() { result = "environment" }
 }
@@ -268,10 +265,7 @@ private class CliInput extends LocalUserInput {
 private class FileInput extends LocalUserInput {
   FileInput() {
     // Access to files.
-    this.asExpr()
-        .(ConstructorCall)
-        .getConstructedType()
-        .hasQualifiedName("java.io", "FileInputStream")
+    sourceNode(this, "file")
   }
 
   override string getThreatModel() { result = "file" }
