@@ -70,8 +70,7 @@ module Fasthttp {
           f.hasQualifiedName("github.com/valyala/fasthttp",
             [
               "DialDualStack", "Dial", "DialTimeout", "DialDualStackTimeout", "Get", "GetDeadline",
-              "GetTimeout", "Post", "Do", "DoDeadline", "DoTimeout", "Write", "Write", "Write",
-              "Write", "Write"
+              "GetTimeout", "Post", "Do", "DoDeadline", "DoTimeout"
             ]) and
           this = f.getACall().getArgument(0)
         )
