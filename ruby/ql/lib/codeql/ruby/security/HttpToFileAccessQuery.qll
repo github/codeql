@@ -2,7 +2,7 @@
  * Provides a taint tracking configuration for reasoning about writing user-controlled data to files.
  *
  * Note, for performance reasons: only import this file if
- * `HttpToFileAccessFlow` is needed, otherwise
+ * `HttpToFileAccess::Configuration` is needed, otherwise
  * `HttpToFileAccessCustomizations` should be imported instead.
  */
 
@@ -10,10 +10,8 @@ private import HttpToFileAccessCustomizations::HttpToFileAccess
 
 /**
  * A taint tracking configuration for writing user-controlled data to files.
- *
- * DEPRECATED: Use `HttpToFileAccessFlow` instead
  */
-deprecated class Configuration extends TaintTracking::Configuration {
+class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "HttpToFileAccess" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -25,16 +23,3 @@ deprecated class Configuration extends TaintTracking::Configuration {
     node instanceof Sanitizer
   }
 }
-
-private module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
- * Taint-tracking for writing user-controlled data to files.
- */
-module HttpToFileAccessFlow = TaintTracking::Global<Config>;
