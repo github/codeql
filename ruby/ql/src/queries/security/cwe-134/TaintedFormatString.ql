@@ -13,9 +13,9 @@
 import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.security.TaintedFormatStringQuery
-import TaintedFormatStringFlow::PathGraph
+import DataFlow::PathGraph
 
-from TaintedFormatStringFlow::PathNode source, TaintedFormatStringFlow::PathNode sink
-where TaintedFormatStringFlow::flowPath(source, sink)
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Format string depends on a $@.", source.getNode(),
   "user-provided value"
