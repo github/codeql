@@ -24,15 +24,42 @@ class PostValidation extends DataFlow::FlowState {
  *
  * This configuration uses two flow states, `PreValidation` and `PostValidation`,
  * to track the requirement that a logical validation has been performed before the Unicode Transformation.
+ * DEPRECATED: Use `UnicodeBypassValidationFlow`
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnicodeBypassValidation" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    source instanceof RemoteFlowSource and state instanceof PreValidation
+    UnicodeBypassValidationConfig::isSource(source, state)
   }
 
   override predicate isAdditionalTaintStep(
+    DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
+    DataFlow::FlowState stateTo
+  ) {
+    UnicodeBypassValidationConfig::isAdditionalFlowStep(nodeFrom, stateFrom, nodeTo, stateTo)
+  }
+
+  /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+    UnicodeBypassValidationConfig::isSink(sink, state)
+  }
+}
+
+/**
+ * A taint-tracking configuration for detecting "Unicode transformation mishandling" vulnerabilities.
+ *
+ * This configuration uses two flow states, `PreValidation` and `PostValidation`,
+ * to track the requirement that a logical validation has been performed before the Unicode Transformation.
+ */
+private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowState;
+
+  predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+    source instanceof RemoteFlowSource and state instanceof PreValidation
+  }
+
+  predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
     DataFlow::FlowState stateTo
   ) {
@@ -80,7 +107,7 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     (
       exists(DataFlow::CallNode cn |
         cn.getMethodName() = "unicode_normalize" and
@@ -121,3 +148,8 @@ class Configuration extends TaintTracking::Configuration {
     state instanceof PostValidation
   }
 }
+
+/**
+ * Taint-tracking configuration for detecting "Unicode transformation mishandling" vulnerabilities.
+ */
+module UnicodeBypassValidationFlow = TaintTracking::GlobalWithState<UnicodeBypassValidationConfig>;
