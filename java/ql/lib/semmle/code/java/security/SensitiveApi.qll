@@ -33,6 +33,7 @@ class CryptoKeySink extends CredentialSinkNode {
 }
 
 /**
+ * DEPRECATED: Use the `PasswordSink` class instead.
  * Holds if callable `c` from a standard Java API expects a password parameter at index `i`.
  */
 deprecated predicate javaApiCallablePasswordParam(Callable c, int i) {
@@ -159,6 +160,7 @@ deprecated private predicate javaApiCallablePasswordParam(string s) {
 }
 
 /**
+ * DEPRECATED: Use the `UsernameSink` class instead.
  * Holds if callable `c` from a standard Java API expects a username parameter at index `i`.
  */
 deprecated predicate javaApiCallableUsernameParam(Callable c, int i) {
@@ -222,6 +224,7 @@ deprecated private predicate javaApiCallableUsernameParam(string s) {
 }
 
 /**
+ * DEPRECATED: Use the `CryptoKeySink` class instead.
  * Holds if callable `c` from a standard Java API expects a cryptographic key parameter at index `i`.
  */
 deprecated predicate javaApiCallableCryptoKeyParam(Callable c, int i) {
@@ -450,6 +453,7 @@ deprecated private predicate javaApiCallableCryptoKeyParam(string s) {
 }
 
 /**
+ * DEPRECATED: Use the `CredentialsSinkNode` class instead.
  * Holds if callable `c` from a known API expects a credential parameter at index `i`.
  */
 deprecated predicate otherApiCallableCredentialParam(Callable c, int i) {
