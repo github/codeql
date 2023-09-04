@@ -1038,6 +1038,8 @@ class DataFlowType extends TDataFlowType {
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
+predicate localMustFlowStep(Node node1, Node node2) { none() }
+
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
   any() // return the singleton DataFlowType until we support type pruning for Swift
