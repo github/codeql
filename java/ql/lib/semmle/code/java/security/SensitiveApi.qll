@@ -7,7 +7,7 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
- * A node which represents the use of a credential.
+ * A node that represents the use of a credential.
  */
 abstract class CredentialSinkNode extends DataFlow::Node { }
 
