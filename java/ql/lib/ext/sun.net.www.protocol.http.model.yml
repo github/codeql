@@ -5,4 +5,4 @@ extensions:
     data:
       - ["sun.net.www.protocol.http", "DigestAuthentication", False, "computeDigest", "", "", "Argument[2]", "credentials-password", "manual"]
       - ["sun.net.www.protocol.http", "DigestAuthentication", False, "encode", "", "", "Argument[1]", "credentials-password", "manual"]
-      - ["sun.net.www.protocol.http", "DigestAuthentication", False, "computeDigest", "", "", "Argument[1]", "credential-username", "manual"]
+      - ["sun.net.www.protocol.http", "DigestAuthentication", False, "computeDigest", "", "", "Argument[1]", "credentials-username", "manual"]

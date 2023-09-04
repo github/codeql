@@ -22,7 +22,7 @@ class PasswordSink extends CredentialSinkNode {
  * A node representing a username being passed to a method.
  */
 class UsernameSink extends CredentialSinkNode {
-  UsernameSink() { sinkNode(this, "credential-username") }
+  UsernameSink() { sinkNode(this, "credentials-username") }
 }
 
 /**
