@@ -109,8 +109,8 @@ private module Cached {
     TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
       cfn.getAstNode() = dc
     } or
-    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn, Callable target) {
-      transitiveCapturedCallTarget(cfn, target)
+    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn) {
+      transitiveCapturedCallTarget(cfn, _)
     } or
     TCilCall(CIL::Call call) {
       // No need to include calls that are compiled from source
@@ -389,11 +389,12 @@ class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDe
  */
 class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCall {
   private ControlFlow::Nodes::ElementNode cfn;
-  private Callable target;
 
-  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn, target) }
+  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn) }
 
-  override DataFlowCallable getARuntimeTarget() { result.asCallable() = target }
+  override DataFlowCallable getARuntimeTarget() {
+    transitiveCapturedCallTarget(cfn, result.asCallable())
+  }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 

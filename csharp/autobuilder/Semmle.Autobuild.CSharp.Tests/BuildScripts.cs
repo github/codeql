@@ -1,12 +1,12 @@
 ﻿using Xunit;
-using Semmle.Autobuild.Shared;
-using Semmle.Util;
-using System.Collections.Generic;
 using System;
-using System.Linq;
-using Microsoft.Build.Construction;
-using System.Xml;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Xml;
+using Microsoft.Build.Construction;
+using Semmle.Util;
+using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp.Tests
 {

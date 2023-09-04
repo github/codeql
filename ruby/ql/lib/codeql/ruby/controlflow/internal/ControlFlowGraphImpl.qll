@@ -1513,7 +1513,6 @@ private module Cached {
   newtype TSuccessorType =
     TSuccessorSuccessor() or
     TBooleanSuccessor(boolean b) { b in [false, true] } or
-    TEmptinessSuccessor(boolean isEmpty) { isEmpty in [false, true] } or
     TMatchingSuccessor(boolean isMatch) { isMatch in [false, true] } or
     TReturnSuccessor() or
     TBreakSuccessor() or

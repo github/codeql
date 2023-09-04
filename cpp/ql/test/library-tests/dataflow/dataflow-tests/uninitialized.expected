@@ -14,6 +14,8 @@
 | ref.cpp:120:17:120:18 | x3 | ref.cpp:129:10:129:11 | x3 |
 | ref.cpp:120:21:120:22 | x4 | ref.cpp:131:15:131:16 | x4 |
 | ref.cpp:120:21:120:22 | x4 | ref.cpp:132:10:132:11 | x4 |
+| self_argument_flow.cpp:9:10:9:13 | info | self_argument_flow.cpp:10:13:10:16 | info |
+| self_argument_flow.cpp:9:10:9:13 | info | self_argument_flow.cpp:12:12:12:15 | info |
 | test.cpp:75:7:75:8 | u1 | test.cpp:76:8:76:9 | u1 |
 | test.cpp:83:7:83:8 | u2 | test.cpp:84:13:84:14 | u2 |
 | test.cpp:83:7:83:8 | u2 | test.cpp:85:8:85:9 | u2 |
