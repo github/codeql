@@ -1,4 +1,4 @@
-#include "swift/xcode-autobuilder/XcodeBuildRunner.h"
+#include "swift/swift-autobuilder/BuildRunner.h"
 
 #include <vector>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include "absl/strings/str_join.h"
 
 #include "swift/logging/SwiftLogging.h"
-#include "swift/xcode-autobuilder/CustomizingBuildLink.h"
+#include "swift/swift-autobuilder/CustomizingBuildLink.h"
 
 constexpr codeql::SwiftDiagnostic buildCommandFailed{
     .id = "build-command-failed",

@@ -1,4 +1,4 @@
-#include "swift/xcode-autobuilder/CFHelpers.h"
+#include "swift/swift-autobuilder/CFHelpers.h"
 
 #include <iostream>
 
