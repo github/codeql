@@ -12,9 +12,9 @@
 
 // determine precision above
 import python
-import DataFlow::PathGraph
-import experimental.semmle.python.security.LDAPInsecureAuth
+import experimental.semmle.python.security.LdapInsecureAuth
+import LdapInsecureAuthFlow::PathGraph
 
-from LdapInsecureAuthConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from LdapInsecureAuthFlow::PathNode source, LdapInsecureAuthFlow::PathNode sink
+where LdapInsecureAuthFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This LDAP host is authenticated insecurely."

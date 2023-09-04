@@ -1,6 +1,5 @@
 /**
- * Provides a taint-tracking configuration for detecting reflected server-side
- * cross-site scripting vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "Email XSS" vulnerabilities.
  */
 
 import python
@@ -12,24 +11,18 @@ import experimental.semmle.python.Concepts
 import semmle.python.Concepts
 import semmle.python.ApiGraphs
 
-/**
- * A taint-tracking configuration for detecting reflected server-side cross-site
- * scripting vulnerabilities.
- */
-class ReflectedXssConfiguration extends TaintTracking::Configuration {
-  ReflectedXssConfiguration() { this = "ReflectedXssConfiguration" }
+private module EmailXssConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink = any(EmailSender email).getHtmlBody() }
 
-  override predicate isSink(DataFlow::Node sink) { sink = any(EmailSender email).getHtmlBody() }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
+  predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer = any(HtmlEscaping esc).getOutput()
     or
     sanitizer instanceof StringConstCompareBarrier
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(DataFlow::CallCfgNode htmlContentCall |
       htmlContentCall =
         API::moduleImport("sendgrid")
@@ -42,3 +35,6 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
     )
   }
 }
+
+/** Global taint-tracking for detecting "Email XSS" vulnerabilities. */
+module EmailXssFlow = TaintTracking::Global<EmailXssConfig>;
