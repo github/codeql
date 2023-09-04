@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.getJvmName
 import com.github.codeql.utils.versions.getFileClassFqName
+import com.github.codeql.utils.versions.packageFqName
 import com.intellij.openapi.vfs.StandardFileSystems
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
@@ -33,7 +34,7 @@ fun getFileClassName(f: IrFile) =
 fun getIrElementBinaryName(that: IrElement): String {
     if (that is IrFile) {
         val shortName = getFileClassName(that)
-        val pkg = that.fqName.asString()
+        val pkg = that.packageFqName.asString()
         return if (pkg.isEmpty()) shortName else "$pkg.$shortName"
     }
 
@@ -59,7 +60,7 @@ fun getIrElementBinaryName(that: IrElement): String {
         .forEach {
             when (it) {
                 is IrClass -> internalName.insert(0, getName(it) + "$")
-                is IrPackageFragment -> it.fqName.asString().takeIf { fqName -> fqName.isNotEmpty() }?.let { fqName -> internalName.insert(0, "$fqName.") }
+                is IrPackageFragment -> it.packageFqName.asString().takeIf { fqName -> fqName.isNotEmpty() }?.let { fqName -> internalName.insert(0, "$fqName.") }
             }
         }
     return internalName.toString()
