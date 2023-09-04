@@ -3,14 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.sun.crypto.provider", "JceKeyStore", False, "engineGetKey", "(String,char[])", "", "Argument[1]", "credential-password", "manual"]
-      - ["com.sun.crypto.provider", "JceKeyStore", False, "engineLoad", "(InputStream,char[])", "", "Argument[1]", "credential-password", "manual"]
-      - ["com.sun.crypto.provider", "JceKeyStore", False, "engineSetKeyEntry", "(String,Key,char[],Certificate[])", "", "Argument[2]", "credential-password", "manual"]
-      - ["com.sun.crypto.provider", "JceKeyStore", False, "engineStore", "(OutputStream,char[])", "", "Argument[1]", "credential-password", "manual"]
-      - ["com.sun.crypto.provider", "JceKeyStore", False, "getPreKeyedHash", "(char[])", "", "Argument[0]", "credential-password", "manual"]
-      - ["com.sun.crypto.provider", "KeyProtector", False, "KeyProtector", "(char[])", "", "Argument[0]", "credential-password", "manual"]
-      - ["com.sun.crypto.provider", "PBKDF2KeyImpl", False, "deriveKey", "(Mac,byte[],byte[],int,int)", "", "Argument[1]", "credential-password", "manual"]
-      - ["com.sun.crypto.provider", "PBKDF2KeyImpl", False, "getPasswordBytes", "(char[])", "", "Argument[0]", "credential-password", "manual"]
+      - ["com.sun.crypto.provider", "JceKeyStore", False, "engineGetKey", "(String,char[])", "", "Argument[1]", "credentials-password", "manual"]
+      - ["com.sun.crypto.provider", "JceKeyStore", False, "engineLoad", "(InputStream,char[])", "", "Argument[1]", "credentials-password", "manual"]
+      - ["com.sun.crypto.provider", "JceKeyStore", False, "engineSetKeyEntry", "(String,Key,char[],Certificate[])", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.sun.crypto.provider", "JceKeyStore", False, "engineStore", "(OutputStream,char[])", "", "Argument[1]", "credentials-password", "manual"]
+      - ["com.sun.crypto.provider", "JceKeyStore", False, "getPreKeyedHash", "(char[])", "", "Argument[0]", "credentials-password", "manual"]
+      - ["com.sun.crypto.provider", "KeyProtector", False, "KeyProtector", "(char[])", "", "Argument[0]", "credentials-password", "manual"]
+      - ["com.sun.crypto.provider", "PBKDF2KeyImpl", False, "deriveKey", "(Mac,byte[],byte[],int,int)", "", "Argument[1]", "credentials-password", "manual"]
+      - ["com.sun.crypto.provider", "PBKDF2KeyImpl", False, "getPasswordBytes", "(char[])", "", "Argument[0]", "credentials-password", "manual"]
       - ["com.sun.crypto.provider", "AESCipher", False, "engineUnwrap", "(byte[],String,int)", "", "Argument[0]", "crypto-parameter", "manual"]
       - ["com.sun.crypto.provider", "AESCrypt", False, "init", "(boolean,String,byte[])", "", "Argument[2]", "crypto-parameter", "manual"]
       - ["com.sun.crypto.provider", "AESWrapCipher", False, "engineUnwrap", "(byte[],String,int)", "", "Argument[0]", "crypto-parameter", "manual"]

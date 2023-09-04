@@ -4,5 +4,5 @@ extensions:
       extensible: sinkModel
     data:
       - ["com.azure.identity", "ClientSecretCredentialBuilder", False, "clientSecret", "(String)", "", "Argument[0]", "crypto-parameter", "manual"]
-      - ["com.azure.identity", "UsernamePasswordCredentialBuilder", False, "password", "(String)", "", "Argument[0]", "credential-password", "manual"]
+      - ["com.azure.identity", "UsernamePasswordCredentialBuilder", False, "password", "(String)", "", "Argument[0]", "credentials-password", "manual"]
       - ["com.azure.identity", "UsernamePasswordCredentialBuilder", False, "username", "(String)", "", "Argument[0]", "credential-username", "manual"]

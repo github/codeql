@@ -15,7 +15,7 @@ abstract class CredentialSinkNode extends DataFlow::Node { }
  * A node representing a password being passed to a method.
  */
 class PasswordSink extends CredentialSinkNode {
-  PasswordSink() { sinkNode(this, "credential-password") }
+  PasswordSink() { sinkNode(this, "credentials-password") }
 }
 
 /**
