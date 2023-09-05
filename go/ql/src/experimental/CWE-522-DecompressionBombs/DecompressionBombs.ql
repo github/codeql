@@ -16,6 +16,7 @@ import semmle.go.dataflow.Properties
 import semmle.go.security.FlowSources
 import CmdLineFlowSource
 
+
 module DecompressionBombs implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
 
@@ -24,9 +25,8 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
       source instanceof UntrustedFlowSource
       or
       source instanceof CmdLineFlowSource
-      // uncomment following source to be able to detect https://github.com/advisories/GHSA-jpxj-2jvg-6jv9
-      // or
-      // source.asParameter() = any(Parameter p)
+      or
+      source.asParameter() = any(Parameter p)
     ) and
     state =
       [
@@ -59,7 +59,7 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
         sink = f.getACall().getReceiver()
       )
       or
-      exists(DataFlow::Function f | f.hasQualifiedName("ioutil", "ReadAll") |
+      exists(DataFlow::Function f | f.hasQualifiedName("io/ioutil", "ReadAll") |
         sink = f.getACall().getArgument(0)
       )
       or
