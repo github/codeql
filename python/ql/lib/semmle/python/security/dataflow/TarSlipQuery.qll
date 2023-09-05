@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for detecting "tar slip" vulnerabilities.
+ * Provides a taint-tracking configuration for detecting "command injection" vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
  * `TarSlip::Configuration` is needed, otherwise
@@ -12,11 +12,9 @@ import semmle.python.dataflow.new.TaintTracking
 import TarSlipCustomizations::TarSlip
 
 /**
- * DEPRECATED: Use `TarSlipFlow` module instead.
- *
- * A taint-tracking configuration for detecting "tar slip" vulnerabilities.
+ * A taint-tracking configuration for detecting "command injection" vulnerabilities.
  */
-deprecated class Configuration extends TaintTracking::Configuration {
+class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "TarSlip" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -25,14 +23,3 @@ deprecated class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
-
-private module TarSlipConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/** Global taint-tracking for detecting "tar slip" vulnerabilities. */
-module TarSlipFlow = TaintTracking::Global<TarSlipConfig>;

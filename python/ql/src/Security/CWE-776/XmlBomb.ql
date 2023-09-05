@@ -14,10 +14,10 @@
 
 import python
 import semmle.python.security.dataflow.XmlBombQuery
-import XmlBombFlow::PathGraph
+import DataFlow::PathGraph
 
-from XmlBombFlow::PathNode source, XmlBombFlow::PathNode sink
-where XmlBombFlow::flowPath(source, sink)
+from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "XML parsing depends on a $@ without guarding against uncontrolled entity expansion.",
   source.getNode(), "user-provided value"

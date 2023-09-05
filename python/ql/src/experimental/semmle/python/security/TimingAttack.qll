@@ -1,6 +1,8 @@
 private import python
+private import semmle.python.dataflow.new.TaintTracking2
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.DataFlow2
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.frameworks.Flask
@@ -162,7 +164,9 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
 
   /** Holds if remote user input was used in the comparison. */
   predicate includesUserInput() {
-    UserInputInComparisonFlow::flowTo(DataFlow::exprNode(anotherParameter))
+    exists(UserInputInComparisonConfig config |
+      config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
+    )
   }
 }
 
@@ -173,7 +177,9 @@ class SecretSource extends DataFlow::Node {
   SecretSource() { secret = this.asExpr() }
 
   /** Holds if the secret was deliverd by remote user. */
-  predicate includesUserInput() { UserInputSecretFlow::flowTo(DataFlow::exprNode(secret)) }
+  predicate includesUserInput() {
+    exists(UserInputSecretConfig config | config.hasFlowTo(DataFlow2::exprNode(secret)))
+  }
 }
 
 /** A string for `match` that identifies strings that look like they represent secret data. */
@@ -261,21 +267,23 @@ private string sensitiveheaders() {
 /**
  * A config that tracks data flow from remote user input to Variable that hold sensitive info
  */
-module UserInputSecretConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+class UserInputSecretConfig extends TaintTracking::Configuration {
+  UserInputSecretConfig() { this = "UserInputSecretConfig" }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CredentialExpr }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CredentialExpr }
 }
-
-module UserInputSecretFlow = TaintTracking::Global<UserInputSecretConfig>;
 
 /**
  * A config that tracks data flow from remote user input to Equality test
  */
-module UserInputInComparisonConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+class UserInputInComparisonConfig extends TaintTracking2::Configuration {
+  UserInputInComparisonConfig() { this = "UserInputInComparisonConfig" }
 
-  predicate isSink(DataFlow::Node sink) {
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) {
     exists(Compare cmp, Expr left, Expr right, Cmpop cmpop |
       cmpop.getSymbol() = ["==", "in", "is not", "!="] and
       cmp.compares(left, cmpop, right) and
@@ -284,23 +292,21 @@ module UserInputInComparisonConfig implements DataFlow::ConfigSig {
   }
 }
 
-module UserInputInComparisonFlow = TaintTracking::Global<UserInputInComparisonConfig>;
-
 /**
  * A configuration tracing flow from  a client Secret obtained by an HTTP header to a len() function.
  */
-private module ExcludeLenFuncConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedSecret }
+private class ExcludeLenFunc extends TaintTracking2::Configuration {
+  ExcludeLenFunc() { this = "ExcludeLenFunc" }
 
-  predicate isSink(DataFlow::Node sink) {
+  override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedSecret }
+
+  override predicate isSink(DataFlow::Node sink) {
     exists(Call call |
       call.getFunc().(Name).getId() = "len" and
       sink.asExpr() = call.getArg(0)
     )
   }
 }
-
-module ExcludeLenFuncFlow = TaintTracking::Global<ExcludeLenFuncConfig>;
 
 /**
  * Holds if there is a fast-fail check.
@@ -337,7 +343,8 @@ class CompareSink extends DataFlow::Node {
    * Holds if there is a flow to len().
    */
   predicate flowtolen() {
-    // TODO: Fly by comment: I don't understand this code at all, seems very strange.
-    ExcludeLenFuncFlow::flowPath(_, _)
+    exists(ExcludeLenFunc config, DataFlow2::PathNode source, DataFlow2::PathNode sink |
+      config.hasFlowPath(source, sink)
+    )
   }
 }

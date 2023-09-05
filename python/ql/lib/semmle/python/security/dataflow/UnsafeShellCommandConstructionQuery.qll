@@ -14,11 +14,9 @@ private import CommandInjectionCustomizations::CommandInjection as CommandInject
 private import semmle.python.dataflow.new.BarrierGuards
 
 /**
- * DEPRECATED: Use `UnsafeShellCommandConstructionFlow` module instead.
- *
  * A taint-tracking configuration for detecting shell command constructed from library input vulnerabilities.
  */
-deprecated class Configuration extends TaintTracking::Configuration {
+class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnsafeShellCommandConstruction" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -35,23 +33,3 @@ deprecated class Configuration extends TaintTracking::Configuration {
     result instanceof DataFlow::FeatureHasSourceCallContext
   }
 }
-
-/**
- * A taint-tracking configuration for detecting "shell command constructed from library input" vulnerabilities.
- */
-module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  predicate isBarrier(DataFlow::Node node) {
-    node instanceof CommandInjection::Sanitizer // using all sanitizers from `py/command-injection`
-  }
-
-  // override to require the path doesn't have unmatched return steps
-  DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
-}
-
-/** Global taint-tracking for detecting "shell command constructed from library input" vulnerabilities. */
-module UnsafeShellCommandConstructionFlow =
-  TaintTracking::Global<UnsafeShellCommandConstructionConfig>;

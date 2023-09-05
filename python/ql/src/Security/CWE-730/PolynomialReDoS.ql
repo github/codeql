@@ -15,13 +15,13 @@
 
 import python
 import semmle.python.security.dataflow.PolynomialReDoSQuery
-import PolynomialReDoSFlow::PathGraph
+import DataFlow::PathGraph
 
 from
-  PolynomialReDoSFlow::PathNode source, PolynomialReDoSFlow::PathNode sink, Sink sinkNode,
+  Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode,
   PolynomialBackTrackingTerm regexp
 where
-  PolynomialReDoSFlow::flowPath(source, sink) and
+  config.hasFlowPath(source, sink) and
   sinkNode = sink.getNode() and
   regexp.getRootTerm() = sinkNode.getRegExp()
 //   not (

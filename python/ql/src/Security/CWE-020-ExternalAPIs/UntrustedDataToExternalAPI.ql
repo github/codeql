@@ -11,14 +11,14 @@
 
 import python
 import ExternalAPIs
-import UntrustedDataToExternalApiFlow::PathGraph
+import DataFlow::PathGraph
 
 from
-  UntrustedDataToExternalApiFlow::PathNode source, UntrustedDataToExternalApiFlow::PathNode sink,
+  UntrustedDataToExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
   ExternalApiUsedWithUntrustedData externalApi
 where
   sink.getNode() = externalApi.getUntrustedDataNode() and
-  UntrustedDataToExternalApiFlow::flowPath(source, sink)
+  config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "Call to " + externalApi.toString() + " with untrusted data from $@.", source.getNode(),
   source.toString()

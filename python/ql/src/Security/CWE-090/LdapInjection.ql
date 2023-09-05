@@ -14,14 +14,14 @@
 // Determine precision above
 import python
 import semmle.python.security.dataflow.LdapInjectionQuery
-import LdapInjectionFlow::PathGraph
+import DataFlow::PathGraph
 
-from LdapInjectionFlow::PathNode source, LdapInjectionFlow::PathNode sink, string parameterName
+from DataFlow::PathNode source, DataFlow::PathNode sink, string parameterName
 where
-  LdapInjectionDnFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
+  any(DnConfiguration dnConfig).hasFlowPath(source, sink) and
   parameterName = "DN"
   or
-  LdapInjectionFilterFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
+  any(FilterConfiguration filterConfig).hasFlowPath(source, sink) and
   parameterName = "filter"
 select sink.getNode(), source, sink,
   "LDAP query parameter (" + parameterName + ") depends on a $@.", source.getNode(),

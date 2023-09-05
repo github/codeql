@@ -96,7 +96,7 @@ newtype TAzureFlowState =
   MkUsesV1Encryption() or
   MkUsesNoEncryption()
 
-private module AzureBlobClientConfig implements DataFlow::StateConfigSig {
+module AzureBlobClientConfig implements DataFlow::StateConfigSig {
   class FlowState = TAzureFlowState;
 
   predicate isSource(DataFlow::Node node, FlowState state) {
@@ -147,10 +147,10 @@ private module AzureBlobClientConfig implements DataFlow::StateConfigSig {
   }
 }
 
-module AzureBlobClientFlow = DataFlow::GlobalWithState<AzureBlobClientConfig>;
+module AzureBlobClient = DataFlow::GlobalWithState<AzureBlobClientConfig>;
 
-import AzureBlobClientFlow::PathGraph
+import AzureBlobClient::PathGraph
 
-from AzureBlobClientFlow::PathNode source, AzureBlobClientFlow::PathNode sink
-where AzureBlobClientFlow::flowPath(source, sink)
+from AzureBlobClient::PathNode source, AzureBlobClient::PathNode sink
+where AzureBlobClient::flowPath(source, sink)
 select sink, source, sink, "Unsafe usage of v1 version of Azure Storage client-side encryption"

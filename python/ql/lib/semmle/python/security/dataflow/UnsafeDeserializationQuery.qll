@@ -12,11 +12,9 @@ import semmle.python.dataflow.new.TaintTracking
 import UnsafeDeserializationCustomizations::UnsafeDeserialization
 
 /**
- * DEPRECATED: Use `UnsafeDeserializationFlow` module instead.
- *
  * A taint-tracking configuration for detecting "code execution from deserialization" vulnerabilities.
  */
-deprecated class Configuration extends TaintTracking::Configuration {
+class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnsafeDeserialization" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -29,14 +27,3 @@ deprecated class Configuration extends TaintTracking::Configuration {
     guard instanceof SanitizerGuard
   }
 }
-
-private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/** Global taint-tracking for detecting "code execution from deserialization" vulnerabilities. */
-module UnsafeDeserializationFlow = TaintTracking::Global<UnsafeDeserializationConfig>;

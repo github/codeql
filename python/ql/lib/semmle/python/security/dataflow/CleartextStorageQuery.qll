@@ -16,11 +16,9 @@ private import semmle.python.dataflow.new.SensitiveDataSources
 import CleartextStorageCustomizations::CleartextStorage
 
 /**
- * DEPRECATED: Use `CleartextStorageFlow` module instead.
- *
  * A taint-tracking configuration for detecting "Clear-text storage of sensitive information".
  */
-deprecated class Configuration extends TaintTracking::Configuration {
+class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "CleartextStorage" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -33,14 +31,3 @@ deprecated class Configuration extends TaintTracking::Configuration {
     node instanceof Sanitizer
   }
 }
-
-private module CleartextStorageConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/** Global taint-tracking for detecting "Clear-text storage of sensitive information" vulnerabilities. */
-module CleartextStorageFlow = TaintTracking::Global<CleartextStorageConfig>;

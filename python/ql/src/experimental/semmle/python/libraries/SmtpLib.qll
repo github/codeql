@@ -2,7 +2,7 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
-private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.dataflow.new.TaintTracking2
 
 module SmtpLib {
   /** Gets a reference to `smtplib.SMTP_SSL` */
@@ -31,15 +31,15 @@ module SmtpLib {
    * argument. Used because of the impossibility to get local source nodes from `_subparts`'
    * `(List|Tuple)` elements.
    */
-  private module SmtpMessageConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { source = mimeText(_) }
+  private class SmtpMessageConfig extends TaintTracking2::Configuration {
+    SmtpMessageConfig() { this = "SMTPMessageConfig" }
 
-    predicate isSink(DataFlow::Node sink) {
+    override predicate isSource(DataFlow::Node source) { source = mimeText(_) }
+
+    override predicate isSink(DataFlow::Node sink) {
       sink = smtpMimeMultipartInstance().getACall().getArgByName("_subparts")
     }
   }
-
-  module SmtpMessageFlow = TaintTracking::Global<SmtpMessageConfig>;
 
   /**
    * Using the `MimeText` call retrieves the content argument whose type argument equals `mimetype`.
@@ -87,7 +87,8 @@ module SmtpLib {
         sink =
           [sendCall.getArg(2), sendCall.getArg(2).(DataFlow::MethodCallNode).getObject()]
               .getALocalSource() and
-        SmtpMessageFlow::flow(source, sink.(DataFlow::CallCfgNode).getArgByName("_subparts"))
+        any(SmtpMessageConfig a)
+            .hasFlow(source, sink.(DataFlow::CallCfgNode).getArgByName("_subparts"))
         or
         // via .attach()
         sink = smtpMimeMultipartInstance().getReturn().getMember("attach").getACall() and

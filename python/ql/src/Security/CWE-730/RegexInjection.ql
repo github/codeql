@@ -16,13 +16,13 @@
 import python
 private import semmle.python.Concepts
 import semmle.python.security.dataflow.RegexInjectionQuery
-import RegexInjectionFlow::PathGraph
+import DataFlow::PathGraph
 
 from
-  RegexInjectionFlow::PathNode source, RegexInjectionFlow::PathNode sink,
+  Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
   RegexExecution regexExecution
 where
-  RegexInjectionFlow::flowPath(source, sink) and
+  config.hasFlowPath(source, sink) and
   regexExecution = sink.getNode().(Sink).getRegexExecution()
 select sink.getNode(), source, sink,
   "This regular expression depends on a $@ and is executed by $@.", source.getNode(),

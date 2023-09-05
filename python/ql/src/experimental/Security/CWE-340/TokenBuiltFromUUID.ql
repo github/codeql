@@ -16,6 +16,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
+import DataFlow::PathGraph
 
 class PredictableResultSource extends DataFlow::Node {
   PredictableResultSource() {
@@ -39,12 +40,14 @@ class TokenAssignmentValueSink extends DataFlow::Node {
   }
 }
 
-private module TokenBuiltFromUuidConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof PredictableResultSource }
+class TokenBuiltFromUuidConfig extends TaintTracking::Configuration {
+  TokenBuiltFromUuidConfig() { this = "TokenBuiltFromUuidConfig" }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof TokenAssignmentValueSink }
+  override predicate isSource(DataFlow::Node source) { source instanceof PredictableResultSource }
 
-  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  override predicate isSink(DataFlow::Node sink) { sink instanceof TokenAssignmentValueSink }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(DataFlow::CallCfgNode call |
       call = API::builtin("str").getACall() and
       nodeFrom = call.getArg(0) and
@@ -53,11 +56,6 @@ private module TokenBuiltFromUuidConfig implements DataFlow::ConfigSig {
   }
 }
 
-/** Global taint-tracking for detecting "TokenBuiltFromUUID" vulnerabilities. */
-module TokenBuiltFromUuidFlow = TaintTracking::Global<TokenBuiltFromUuidConfig>;
-
-import TokenBuiltFromUuidFlow::PathGraph
-
-from TokenBuiltFromUuidFlow::PathNode source, TokenBuiltFromUuidFlow::PathNode sink
-where TokenBuiltFromUuidFlow::flowPath(source, sink)
+from DataFlow::PathNode source, DataFlow::PathNode sink, TokenBuiltFromUuidConfig config
+where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Token built from $@.", source.getNode(), "predictable value"

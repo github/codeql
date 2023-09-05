@@ -16,29 +16,33 @@ import python
 import semmle.python.security.dataflow.WeakSensitiveDataHashingQuery
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import WeakSensitiveDataHashingFlow::PathGraph
+import DataFlow::PathGraph
 
 from
-  WeakSensitiveDataHashingFlow::PathNode source, WeakSensitiveDataHashingFlow::PathNode sink,
-  string ending, string algorithmName, string classification
+  DataFlow::PathNode source, DataFlow::PathNode sink, string ending, string algorithmName,
+  string classification
 where
-  normalHashFunctionFlowPath(source, sink) and
-  algorithmName = sink.getNode().(NormalHashFunction::Sink).getAlgorithmName() and
-  classification = source.getNode().(NormalHashFunction::Source).getClassification() and
-  ending = "."
-  or
-  computationallyExpensiveHashFunctionFlowPath(source, sink) and
-  algorithmName = sink.getNode().(ComputationallyExpensiveHashFunction::Sink).getAlgorithmName() and
-  classification =
-    source.getNode().(ComputationallyExpensiveHashFunction::Source).getClassification() and
-  (
-    sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
+  exists(NormalHashFunction::Configuration config |
+    config.hasFlowPath(source, sink) and
+    algorithmName = sink.getNode().(NormalHashFunction::Sink).getAlgorithmName() and
+    classification = source.getNode().(NormalHashFunction::Source).getClassification() and
     ending = "."
-    or
-    not sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
-    ending =
-      " for " + classification +
-        " hashing, since it is not a computationally expensive hash function."
+  )
+  or
+  exists(ComputationallyExpensiveHashFunction::Configuration config |
+    config.hasFlowPath(source, sink) and
+    algorithmName = sink.getNode().(ComputationallyExpensiveHashFunction::Sink).getAlgorithmName() and
+    classification =
+      source.getNode().(ComputationallyExpensiveHashFunction::Source).getClassification() and
+    (
+      sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
+      ending = "."
+      or
+      not sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
+      ending =
+        " for " + classification +
+          " hashing, since it is not a computationally expensive hash function."
+    )
   )
 select sink.getNode(), source, sink,
   "$@ is used in a hashing algorithm (" + algorithmName + ") that is insecure" + ending,

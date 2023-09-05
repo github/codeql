@@ -16,13 +16,11 @@
 
 import python
 import semmle.python.security.dataflow.UnsafeShellCommandConstructionQuery
-import UnsafeShellCommandConstructionFlow::PathGraph
+import DataFlow::PathGraph
 
-from
-  UnsafeShellCommandConstructionFlow::PathNode source,
-  UnsafeShellCommandConstructionFlow::PathNode sink, Sink sinkNode
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
 where
-  UnsafeShellCommandConstructionFlow::flowPath(source, sink) and
+  config.hasFlowPath(source, sink) and
   sinkNode = sink.getNode()
 select sinkNode.getStringConstruction(), source, sink,
   "This " + sinkNode.describe() + " which depends on $@ is later used in a $@.", source.getNode(),

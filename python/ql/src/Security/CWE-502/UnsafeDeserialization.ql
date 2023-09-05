@@ -14,9 +14,9 @@
 
 import python
 import semmle.python.security.dataflow.UnsafeDeserializationQuery
-import UnsafeDeserializationFlow::PathGraph
+import DataFlow::PathGraph
 
-from UnsafeDeserializationFlow::PathNode source, UnsafeDeserializationFlow::PathNode sink
-where UnsafeDeserializationFlow::flowPath(source, sink)
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Unsafe deserialization depends on a $@.", source.getNode(),
   "user-provided value"

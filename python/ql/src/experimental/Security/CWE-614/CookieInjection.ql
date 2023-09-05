@@ -15,11 +15,13 @@ import semmle.python.dataflow.new.DataFlow
 import experimental.semmle.python.Concepts
 import experimental.semmle.python.CookieHeader
 import experimental.semmle.python.security.injection.CookieInjection
-import CookieInjectionFlow::PathGraph
+import DataFlow::PathGraph
 
-from CookieInjectionFlow::PathNode source, CookieInjectionFlow::PathNode sink, string insecure
+from
+  CookieInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  string insecure
 where
-  CookieInjectionFlow::flowPath(source, sink) and
+  config.hasFlowPath(source, sink) and
   if exists(sink.getNode().(CookieSink))
   then insecure = ",and its " + sink.getNode().(CookieSink).getFlag() + " flag is not properly set."
   else insecure = "."

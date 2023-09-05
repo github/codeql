@@ -39,8 +39,10 @@ class AllTarfileOpens extends API::CallNode {
   }
 }
 
-module UnsafeUnpackConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
+class UnsafeUnpackingConfig extends TaintTracking::Configuration {
+  UnsafeUnpackingConfig() { this = "UnsafeUnpackingConfig" }
+
+  override predicate isSource(DataFlow::Node source) {
     // A source coming from a remote location
     source instanceof RemoteFlowSource
     or
@@ -90,7 +92,7 @@ module UnsafeUnpackConfig implements DataFlow::ConfigSig {
     source.(AttrRead).getAttributeName() = "FILES"
   }
 
-  predicate isSink(DataFlow::Node sink) {
+  override predicate isSink(DataFlow::Node sink) {
     (
       // A sink capturing method calls to `unpack_archive`.
       sink = API::moduleImport("shutil").getMember("unpack_archive").getACall().getArg(0)
@@ -134,7 +136,7 @@ module UnsafeUnpackConfig implements DataFlow::ConfigSig {
     not sink.getScope().getLocation().getFile().inStdlib()
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // Reading the response
     nodeTo.(MethodCallNode).calls(nodeFrom, "read")
     or
@@ -209,6 +211,3 @@ module UnsafeUnpackConfig implements DataFlow::ConfigSig {
     )
   }
 }
-
-/** Global taint-tracking for detecting "UnsafeUnpacking" vulnerabilities. */
-module UnsafeUnpackFlow = TaintTracking::Global<UnsafeUnpackConfig>;

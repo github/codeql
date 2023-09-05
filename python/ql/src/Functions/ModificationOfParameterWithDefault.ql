@@ -13,11 +13,11 @@
 
 import python
 import semmle.python.functions.ModificationOfParameterWithDefault
-import ModificationOfParameterWithDefault::Flow::PathGraph
+import DataFlow::PathGraph
 
 from
-  ModificationOfParameterWithDefault::Flow::PathNode source,
-  ModificationOfParameterWithDefault::Flow::PathNode sink
-where ModificationOfParameterWithDefault::Flow::flowPath(source, sink)
+  ModificationOfParameterWithDefault::Configuration config, DataFlow::PathNode source,
+  DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This expression mutates a $@.", source.getNode(),
   "default value"

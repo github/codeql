@@ -12,14 +12,14 @@
 
 import python
 import semmle.python.security.dataflow.ServerSideRequestForgeryQuery
-import PartialServerSideRequestForgeryFlow::PathGraph
+import DataFlow::PathGraph
 
 from
-  PartialServerSideRequestForgeryFlow::PathNode source,
-  PartialServerSideRequestForgeryFlow::PathNode sink, Http::Client::Request request
+  PartialServerSideRequestForgeryConfiguration partialConfig, DataFlow::PathNode source,
+  DataFlow::PathNode sink, Http::Client::Request request
 where
   request = sink.getNode().(Sink).getRequest() and
-  PartialServerSideRequestForgeryFlow::flowPath(source, sink) and
+  partialConfig.hasFlowPath(source, sink) and
   not fullyControlledRequest(request)
 select request, source, sink, "Part of the URL of this request depends on a $@.", source.getNode(),
   "user-provided value"

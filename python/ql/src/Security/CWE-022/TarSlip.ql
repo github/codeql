@@ -14,9 +14,9 @@
 
 import python
 import semmle.python.security.dataflow.TarSlipQuery
-import TarSlipFlow::PathGraph
+import DataFlow::PathGraph
 
-from TarSlipFlow::PathNode source, TarSlipFlow::PathNode sink
-where TarSlipFlow::flowPath(source, sink)
+from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This file extraction depends on a $@.", source.getNode(),
   "potentially untrusted source"

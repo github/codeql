@@ -29,13 +29,12 @@ class CookieSink extends DataFlow::Node {
 /**
  * A taint-tracking configuration for detecting Cookie injections.
  */
-private module CookieInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+class CookieInjectionFlowConfig extends TaintTracking::Configuration {
+  CookieInjectionFlowConfig() { this = "CookieInjectionFlowConfig" }
 
-  predicate isSink(DataFlow::Node sink) {
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) {
     exists(Cookie c | sink in [c.getNameArg(), c.getValueArg()])
   }
 }
-
-/** Global taint-tracking for detecting "Cookie injections" vulnerabilities. */
-module CookieInjectionFlow = TaintTracking::Global<CookieInjectionConfig>;

@@ -15,10 +15,10 @@
 
 import python
 import experimental.semmle.python.security.ZipSlip
-import ZipSlipFlow::PathGraph
+import DataFlow::PathGraph
 
-from ZipSlipFlow::PathNode source, ZipSlipFlow::PathNode sink
-where ZipSlipFlow::flowPath(source, sink)
+from ZipSlipConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
 select source.getNode(), source, sink,
   "This unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
   "file system operation"
