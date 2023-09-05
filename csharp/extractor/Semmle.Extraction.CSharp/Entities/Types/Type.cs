@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -362,7 +363,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Details can be found in https://www.ecma-international.org/wp-content/uploads/ECMA-335_6th_edition_june_2012.pdf Chapter II.9.2 Generics and recursive inheritance graphs
         /// The dotnet runtime already implements this check as a runtime validation: https://github.com/dotnet/runtime/blob/e48e88d0fe9c2e494c0e6fd0c7c1fb54e7ddbdb1/src/coreclr/vm/generics.cpp#L748
         /// </summary>
-        public class GenericsRecursionGraph
+        private class GenericsRecursionGraph
         {
             private static readonly ConcurrentDictionary<INamedTypeSymbol, bool> resultCache = new(SymbolEqualityComparer.Default);
 
@@ -377,15 +378,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     return false;
                 }
 
-                if (resultCache.TryGetValue(namedTypeDefinition, out var result))
-                {
-                    return result;
-                }
-
-                result = new GenericsRecursionGraph(namedTypeDefinition).HasExpandingCycle();
-                resultCache.TryAdd(namedTypeDefinition, result);
-
-                return result;
+                return resultCache.GetOrAdd(namedTypeDefinition, nt => new GenericsRecursionGraph(nt).HasExpandingCycle());
             }
 
             private readonly INamedTypeSymbol startSymbol;
@@ -417,12 +410,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         if (reference.TypeArguments[i] is ITypeParameterSymbol source)
                         {
                             // non-expanding
-                            if (!edges.TryGetValue(source, out var targets))
-                            {
-                                targets = new List<(ITypeParameterSymbol, bool)>();
-                                edges.Add(source, targets);
-                            }
-                            targets.Add((target, false));
+                            edges.AddAnother(source, (target, false));
                         }
                         else if (reference.TypeArguments[i] is INamedTypeSymbol namedType)
                         {
@@ -430,33 +418,33 @@ namespace Semmle.Extraction.CSharp.Entities
                             var sources = GetAllNestedTypeParameters(namedType);
                             foreach (var s in sources)
                             {
-                                if (!edges.TryGetValue(s, out var targets))
-                                {
-                                    targets = new List<(ITypeParameterSymbol, bool)>();
-                                    edges.Add(s, targets);
-                                }
-                                targets.Add((target, true));
+                                edges.AddAnother(s, (target, true));
                             }
                         }
                     }
                 }
             }
 
-            private List<ITypeParameterSymbol> GetAllNestedTypeParameters(INamedTypeSymbol symbol)
+            private static List<ITypeParameterSymbol> GetAllNestedTypeParameters(INamedTypeSymbol symbol)
             {
                 var res = new List<ITypeParameterSymbol>();
 
-                foreach (var typeArgument in symbol.TypeArguments)
+                void AddTypeParameters(INamedTypeSymbol symbol)
                 {
-                    if (typeArgument is ITypeParameterSymbol typeParameter)
+                    foreach (var typeArgument in symbol.TypeArguments)
                     {
-                        res.Add(typeParameter);
-                    }
-                    else if (typeArgument is INamedTypeSymbol namedType)
-                    {
-                        res.AddRange(GetAllNestedTypeParameters(namedType));
+                        if (typeArgument is ITypeParameterSymbol typeParameter)
+                        {
+                            res.Add(typeParameter);
+                        }
+                        else if (typeArgument is INamedTypeSymbol namedType)
+                        {
+                            AddTypeParameters(namedType);
+                        }
                     }
                 }
+
+                AddTypeParameters(symbol);
 
                 return res;
             }
@@ -510,8 +498,8 @@ namespace Semmle.Extraction.CSharp.Entities
             private bool HasExpandingCycle(ITypeParameterSymbol start)
             {
                 var visited = new HashSet<ITypeParameterSymbol>(SymbolEqualityComparer.Default);
-                var recStack = new HashSet<ITypeParameterSymbol>(SymbolEqualityComparer.Default);
-                var hasExpandingCycle = HasExpandingCycle(start, visited, recStack, start, hasSeenExpandingEdge: false);
+                var path = new List<ITypeParameterSymbol>();
+                var hasExpandingCycle = HasExpandingCycle(start, visited, path, hasSeenExpandingEdge: false);
                 return hasExpandingCycle;
             }
 
@@ -527,13 +515,12 @@ namespace Semmle.Extraction.CSharp.Entities
             /// </summary>
             /// <param name="current">The current node that is being visited</param>
             /// <param name="visited">The nodes that have already been visited by any path.</param>
-            /// <param name="currentPath">The nodes already visited on the current path. Could be a List<> if the order was important.</param>
-            /// <param name="start">The start and end of the cycle. We're not looking for any cycle, but a cycle that goes back to the start.</param>
+            /// <param name="currentPath">The nodes already visited on the current path.</param>
             /// <param name="hasSeenExpandingEdge">Whether an expanding edge was already seen in this path. We're looking for a cycle that has at least one expanding edge.</param>
             /// <returns></returns>
-            private bool HasExpandingCycle(ITypeParameterSymbol current, HashSet<ITypeParameterSymbol> visited, HashSet<ITypeParameterSymbol> currentPath, ITypeParameterSymbol start, bool hasSeenExpandingEdge)
+            private bool HasExpandingCycle(ITypeParameterSymbol current, HashSet<ITypeParameterSymbol> visited, List<ITypeParameterSymbol> currentPath, bool hasSeenExpandingEdge)
             {
-                if (currentPath.Count > 0 && SymbolEqualityComparer.Default.Equals(current, start))
+                if (currentPath.Count > 0 && SymbolEqualityComparer.Default.Equals(current, currentPath[0]))
                 {
                     return hasSeenExpandingEdge;
                 }
@@ -550,13 +537,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 foreach (var outgoingEdge in outgoingEdges)
                 {
-                    if (HasExpandingCycle(outgoingEdge.To, visited, currentPath, start, hasSeenExpandingEdge: hasSeenExpandingEdge || outgoingEdge.IsExpanding))
+                    if (HasExpandingCycle(outgoingEdge.To, visited, currentPath, hasSeenExpandingEdge: hasSeenExpandingEdge || outgoingEdge.IsExpanding))
                     {
                         return true;
                     }
                 }
 
-                currentPath.Remove(current);
+                currentPath.RemoveAt(currentPath.Count - 1);
                 return false;
             }
         }
