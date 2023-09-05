@@ -375,7 +375,6 @@ private class ExcludedFromModeling extends CharacteristicsImpl::UninterestingToM
   ExcludedFromModeling() { this = "excluded from modeling" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     ModelExclusions::isUninterestingForModels(ApplicationModeGetCallable::getCallable(e))
   }
 }
