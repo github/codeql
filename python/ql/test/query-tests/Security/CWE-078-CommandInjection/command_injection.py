@@ -78,3 +78,50 @@ def restricted_characters():
     path = request.args.get('path', '')
     if re.match(r'^[a-zA-Z0-9_-]+$', path):
         os.system("ls " + path) # $SPURIOUS: result=BAD
+
+import asyncio
+from asyncio import subprocess
+
+@app.route("/asyncio-exec1")
+def asyncio_exec_command_injection1():
+    files = request.args.get('files', '')
+    asyncio.run(asyncio.create_subprocess_exec(files)) # $result=BAD
+
+@app.route("/asyncio-exec2")
+def asyncio_exec_command_injection2():
+    files = request.args.get('files', '')
+    asyncio.run(subprocess.create_subprocess_exec(files)) # $result=BAD
+
+@app.route("/asyncio-exec-args")
+def asyncio_exec_arg_injection():
+    files = request.args.get('files', '')
+    asyncio.run(asyncio.create_subprocess_exec("ls", files)) # $result=OK - only an argument injection, not a command injection
+
+@app.route("/asyncio-eventloop-command1")
+def asyncio_eventloop_exec_command_injection1():
+    files = request.args.get('files', '')
+    args = ["-a", "-l"]
+    loop = asyncio.new_event_loop()
+    try:
+        loop.run_until_complete(loop.subprocess_exec(asyncio.SubprocessProtocol, files, *args)) # $result=BAD
+    finally:
+        loop.close()
+
+@app.route("/asyncio-shell1")
+def asyncio_shell_command_injection1():
+    files = request.args.get('files', '')
+    asyncio.run(asyncio.create_subprocess_shell(files)) # $result=BAD
+
+@app.route("/asyncio-shell2")
+def asyncio_shell_command_injection1():
+    files = request.args.get('files', '')
+    asyncio.run(subprocess.create_subprocess_shell(files)) # $result=BAD
+
+@app.route("/asyncio-eventloop-shell1")
+def asyncio_eventloop_shell_command_injection1():
+    files = request.args.get('files', '')
+    loop = asyncio.new_event_loop()
+    try:
+        loop.run_until_complete(loop.subprocess_shell(asyncio.SubprocessProtocol, files)) # $result=BAD
+    finally:
+        loop.close()

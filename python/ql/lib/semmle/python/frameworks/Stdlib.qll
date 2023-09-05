@@ -4396,6 +4396,145 @@ private module StdlibPrivate {
       preservesValue = true
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // asyncio
+  // ---------------------------------------------------------------------------
+  /** Gets a reference to the `asyncio` module. */
+  API::Node asyncio() { result = API::moduleImport("asyncio") }
+
+  /** Provides models for the `asyncio` module. */
+  module AsyncIO {
+    /**
+     * A call to the `asyncio.create_subprocess_exec` function (also accessible via the `subprocess` module of `asyncio`)
+     *
+     * See https://docs.python.org/3/library/asyncio-subprocess.html#creating-subprocesses
+     */
+    private class CreateSubprocessExec extends SystemCommandExecution::Range,
+      FileSystemAccess::Range, DataFlow::CallCfgNode
+    {
+      CreateSubprocessExec() {
+        exists(string name |
+          name = "create_subprocess_exec" and
+          (
+            this = asyncio().getMember(name).getACall()
+            or
+            this = asyncio().getMember("subprocess").getMember(name).getACall()
+          )
+        )
+      }
+
+      override DataFlow::Node getCommand() {
+        result = this.getArg(0)
+        or
+        result = this.getArgByName("program")
+      }
+
+      override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) {
+        none() // this is a safe API.
+      }
+    }
+  }
+
+  /**
+   * A call to the `asyncio.create_subprocess_shell` function (also in the `subprocess` module of `asyncio`)
+   *
+   * See https://docs.python.org/3/library/asyncio-subprocess.html#creating-subprocesses
+   */
+  private class CreateSubprocessShell extends SystemCommandExecution::Range,
+    FileSystemAccess::Range, DataFlow::CallCfgNode
+  {
+    CreateSubprocessShell() {
+      exists(string name |
+        name = "create_subprocess_shell" and
+        (
+          this = asyncio().getMember(name).getACall()
+          or
+          this = asyncio().getMember("subprocess").getMember(name).getACall()
+        )
+      )
+    }
+
+    override DataFlow::Node getCommand() {
+      result = this.getArg(0)
+      or
+      result = this.getArgByName("cmd")
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
+  }
+
+  /**
+   * A source for an event loop (an object with basetype `AbstractEventLoop`).
+   *
+   * See https://docs.python.org/3/library/asyncio-eventloop.html
+   */
+  private class EventLoopSource extends DataFlow::LocalSourceNode, DataFlow::CallCfgNode {
+    EventLoopSource() {
+      this = asyncio().getMember("get_running_loop").getACall()
+      or
+      this = asyncio().getMember("get_event_loop").getACall() // deprecated in Python 3.10.0 and later
+      or
+      this = asyncio().getMember("new_event_loop").getACall()
+    }
+  }
+
+  /** Gets a reference to an event loop instance. */
+  private DataFlow::TypeTrackingNode eventLoopInstance(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof EventLoopSource
+    or
+    exists(DataFlow::TypeTracker t2 | result = eventLoopInstance(t2).track(t2, t))
+  }
+
+  /** Gets a reference to an event loop instance. */
+  DataFlow::Node eventLoopInstance() {
+    eventLoopInstance(DataFlow::TypeTracker::end()).flowsTo(result)
+  }
+
+  /**
+   * A call to `subprocess_exec` on an event loop instance.
+   *
+   * See https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.subprocess_exec
+   */
+  private class EventLoopSubprocessExec extends DataFlow::MethodCallNode,
+    SystemCommandExecution::Range, FileSystemAccess::Range
+  {
+    EventLoopSubprocessExec() { this.calls(eventLoopInstance(), "subprocess_exec") }
+
+    override DataFlow::Node getCommand() { result = this.getArg(1) }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      none() // this is a safe API.
+    }
+  }
+
+  /**
+   * A call to `subprocess_shell` on an event loop instance.
+   *
+   * See https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.subprocess_shell
+   */
+  private class EventLoopSubprocessShell extends DataFlow::MethodCallNode,
+    SystemCommandExecution::Range, FileSystemAccess::Range
+  {
+    EventLoopSubprocessShell() { this.calls(eventLoopInstance(), "subprocess_shell") }
+
+    override DataFlow::Node getCommand() {
+      result = this.getArg(1)
+      or
+      result = this.getArgByName("cmd")
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getCommand() }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
+  }
 }
 
 // ---------------------------------------------------------------------------
