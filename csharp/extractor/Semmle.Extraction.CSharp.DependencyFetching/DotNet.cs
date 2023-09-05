@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -13,63 +11,27 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal partial class DotNet : IDotNet
     {
+        private readonly IDotnetCommand dotnet;
         private readonly ProgressMonitor progressMonitor;
-        private readonly string dotnet;
 
-        public DotNet(IDependencyOptions options, ProgressMonitor progressMonitor)
+        internal DotNet(IDotnetCommand dotnet, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
-            this.dotnet = Path.Combine(options.DotNetPath ?? string.Empty, "dotnet");
+            this.dotnet = dotnet;
             Info();
         }
+
+        public DotNet(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotnetCommand(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
+
 
         private void Info()
         {
             // TODO: make sure the below `dotnet` version is matching the one specified in global.json
-            var res = RunCommand("--info");
+            var res = dotnet.RunCommand("--info");
             if (!res)
             {
-                throw new Exception($"{dotnet} --info failed.");
+                throw new Exception($"{dotnet.Exec} --info failed.");
             }
-        }
-
-        private ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput)
-        {
-            var startInfo = new ProcessStartInfo(dotnet, args)
-            {
-                UseShellExecute = false,
-                RedirectStandardOutput = redirectStandardOutput
-            };
-            // Set the .NET CLI language to English to avoid localized output.
-            startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
-            return startInfo;
-        }
-
-        private bool RunCommand(string args)
-        {
-            progressMonitor.RunningProcess($"{dotnet} {args}");
-            using var proc = Process.Start(MakeDotnetStartInfo(args, redirectStandardOutput: false));
-            proc?.WaitForExit();
-            var exitCode = proc?.ExitCode ?? -1;
-            if (exitCode != 0)
-            {
-                progressMonitor.CommandFailed(dotnet, args, exitCode);
-                return false;
-            }
-            return true;
-        }
-
-        private bool RunCommand(string args, out IList<string> output)
-        {
-            progressMonitor.RunningProcess($"{dotnet} {args}");
-            var pi = MakeDotnetStartInfo(args, redirectStandardOutput: true);
-            var exitCode = pi.ReadOutput(out output);
-            if (exitCode != 0)
-            {
-                progressMonitor.CommandFailed(dotnet, args, exitCode);
-                return false;
-            }
-            return true;
         }
 
         private static string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory) =>
@@ -82,7 +44,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 args += $" --configfile \"{pathToNugetConfig}\"";
             }
-            var success = RunCommand(args, out var output);
+            var success = dotnet.RunCommand(args, out var output);
             stdout = string.Join("\n", output);
             return success;
         }
@@ -91,7 +53,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var args = GetRestoreArgs(solutionFile, packageDirectory);
             args += " --verbosity normal";
-            if (RunCommand(args, out var output))
+            if (dotnet.RunCommand(args, out var output))
             {
                 var regex = RestoreProjectRegex();
                 projects = output
@@ -108,13 +70,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool New(string folder)
         {
             var args = $"new console --no-restore --output \"{folder}\"";
-            return RunCommand(args);
+            return dotnet.RunCommand(args);
         }
 
         public bool AddPackage(string folder, string package)
         {
             var args = $"add \"{folder}\" package \"{package}\" --no-restore";
-            return RunCommand(args);
+            return dotnet.RunCommand(args);
         }
 
         public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
@@ -123,7 +85,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private IList<string> GetListed(string args, string artifact)
         {
-            if (RunCommand(args, out var artifacts))
+            if (dotnet.RunCommand(args, out var artifacts))
             {
                 progressMonitor.LogInfo($"Found {artifact}s: {string.Join("\n", artifacts)}");
                 return artifacts;
@@ -134,7 +96,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool Exec(string execArgs)
         {
             var args = $"exec {execArgs}";
-            return RunCommand(args);
+            return dotnet.RunCommand(args);
         }
 
         [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
