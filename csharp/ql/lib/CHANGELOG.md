@@ -1,3 +1,9 @@
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* The `--nostdlib` extractor option for the standalone extractor has been removed.
+
 ## 0.7.3
 
 ### Minor Analysis Improvements
