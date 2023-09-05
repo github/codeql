@@ -25,17 +25,19 @@ private import AutomodelJavaUtil
 bindingset[limit]
 private Endpoint getSampleForSignature(
   int limit, string package, string type, string subtypes, string name, string signature,
-  string input, string isVarargs
+  string input, string isVarargs, string extensibleType
 ) {
   exists(int n, int num_endpoints, ApplicationModeMetadataExtractor meta |
     num_endpoints =
       count(Endpoint e |
+        e.getExtensibleType() = extensibleType and
         meta.hasMetadata(e, package, type, subtypes, name, signature, input, isVarargs)
       )
   |
     result =
       rank[n](Endpoint e, Location loc |
         loc = e.asTop().getLocation() and
+        e.getExtensibleType() = extensibleType and
         meta.hasMetadata(e, package, type, subtypes, name, signature, input, isVarargs)
       |
         e
@@ -55,13 +57,14 @@ private Endpoint getSampleForSignature(
 from
   Endpoint endpoint, string message, ApplicationModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString isVarargsArray, DollarAtString alreadyAiModeled
+  DollarAtString input, DollarAtString isVarargsArray, DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
+  endpoint.getExtensibleType() = "sinkModel" and
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
   ) and
   endpoint =
-    getSampleForSignature(9, package, type, subtypes, name, signature, input, isVarargsArray) and
+    getSampleForSignature(9, package, type, subtypes, name, signature, input, isVarargsArray, extensibleType) and
   // If a node is already a known sink for any of our existing ATM queries and is already modeled as a MaD sink, we
   // don't include it as a candidate. Otherwise, we might include it as a candidate for query A, but the model will
   // label it as a sink for one of the sink types of query B, for which it's already a known sink. This would result in
@@ -95,4 +98,4 @@ select endpoint.asNode(),
   input, "input", //
   isVarargsArray, "isVarargsArray", //
   alreadyAiModeled, "alreadyAiModeled", //
-  endpoint.getExtensibleType().(DollarAtString), "extensibleType"
+  extensibleType, "extensibleType"
