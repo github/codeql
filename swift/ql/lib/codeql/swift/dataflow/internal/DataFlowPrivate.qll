@@ -821,7 +821,9 @@ private module CaptureInput implements VariableCapture::InputSig {
     Location getLocation() { result = super.getLocation() }
   }
 
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.(B::BasicBlock).dominates(bb) }
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
+    result.(B::BasicBlock).immediatelyDominates(bb)
+  }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(B::BasicBlock).getASuccessor() }
 
