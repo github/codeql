@@ -329,7 +329,6 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     ApplicationModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
       TypeThrowable
   }
