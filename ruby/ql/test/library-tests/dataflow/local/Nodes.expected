@@ -1234,21 +1234,34 @@ arg
 | local_dataflow.rb:9:10:9:10 | 1 | local_dataflow.rb:9:9:9:15 | call to [] | position 0 |
 | local_dataflow.rb:9:12:9:12 | 2 | local_dataflow.rb:9:9:9:15 | call to [] | position 1 |
 | local_dataflow.rb:9:14:9:14 | 3 | local_dataflow.rb:9:9:9:15 | call to [] | position 2 |
+| local_dataflow.rb:10:5:13:3 | * | local_dataflow.rb:10:5:13:3 | call to each | synthetic * |
 | local_dataflow.rb:10:5:13:3 | { ... } | local_dataflow.rb:10:5:13:3 | call to each | block |
+| local_dataflow.rb:10:9:10:9 | * | local_dataflow.rb:10:9:10:9 | [false] ! ... | synthetic * |
+| local_dataflow.rb:10:9:10:9 | * | local_dataflow.rb:10:9:10:9 | [true] ! ... | synthetic * |
+| local_dataflow.rb:10:9:10:9 | * | local_dataflow.rb:10:9:10:9 | defined? ... | synthetic * |
 | local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [false] ! ... | self |
 | local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [true] ! ... | self |
 | local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:10:9:10:9 | defined? ... | self |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:10:5:13:3 | call to each | self |
+| local_dataflow.rb:11:1:11:2 | * | local_dataflow.rb:11:1:11:2 | call to do | synthetic * |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:11:1:11:2 | call to do | self |
 | local_dataflow.rb:12:3:12:5 | * | local_dataflow.rb:12:3:12:5 | call to p | synthetic * |
 | local_dataflow.rb:12:3:12:5 | self | local_dataflow.rb:12:3:12:5 | call to p | self |
 | local_dataflow.rb:12:5:12:5 | x | local_dataflow.rb:12:3:12:5 | call to p | position 0 |
+| local_dataflow.rb:15:1:17:3 | * | local_dataflow.rb:15:1:17:3 | call to each | synthetic * |
 | local_dataflow.rb:15:1:17:3 | { ... } | local_dataflow.rb:15:1:17:3 | call to each | block |
+| local_dataflow.rb:15:5:15:5 | * | local_dataflow.rb:15:5:15:5 | [false] ! ... | synthetic * |
+| local_dataflow.rb:15:5:15:5 | * | local_dataflow.rb:15:5:15:5 | [true] ! ... | synthetic * |
+| local_dataflow.rb:15:5:15:5 | * | local_dataflow.rb:15:5:15:5 | defined? ... | synthetic * |
 | local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [false] ! ... | self |
 | local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [true] ! ... | self |
 | local_dataflow.rb:15:5:15:5 | x | local_dataflow.rb:15:5:15:5 | defined? ... | self |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:15:1:17:3 | call to each | self |
+| local_dataflow.rb:19:1:21:3 | * | local_dataflow.rb:19:1:21:3 | call to each | synthetic * |
 | local_dataflow.rb:19:1:21:3 | { ... } | local_dataflow.rb:19:1:21:3 | call to each | block |
+| local_dataflow.rb:19:5:19:5 | * | local_dataflow.rb:19:5:19:5 | [false] ! ... | synthetic * |
+| local_dataflow.rb:19:5:19:5 | * | local_dataflow.rb:19:5:19:5 | [true] ! ... | synthetic * |
+| local_dataflow.rb:19:5:19:5 | * | local_dataflow.rb:19:5:19:5 | defined? ... | synthetic * |
 | local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [false] ! ... | self |
 | local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [true] ! ... | self |
 | local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:19:5:19:5 | defined? ... | self |
@@ -1262,6 +1275,7 @@ arg
 | local_dataflow.rb:42:6:42:6 | x | local_dataflow.rb:42:6:42:11 | ... == ... | self |
 | local_dataflow.rb:42:6:42:11 | * | local_dataflow.rb:42:6:42:11 | ... == ... | synthetic * |
 | local_dataflow.rb:42:11:42:11 | 4 | local_dataflow.rb:42:6:42:11 | ... == ... | position 0 |
+| local_dataflow.rb:49:1:53:3 | * | local_dataflow.rb:49:1:53:3 | call to m | synthetic * |
 | local_dataflow.rb:49:1:53:3 | self | local_dataflow.rb:49:1:53:3 | call to m | self |
 | local_dataflow.rb:49:3:53:3 | do ... end | local_dataflow.rb:49:1:53:3 | call to m | block |
 | local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:50:18:50:22 | ... < ... | self |
@@ -1393,6 +1407,7 @@ arg
 | local_dataflow.rb:112:8:112:16 | * | local_dataflow.rb:112:8:112:16 | call to source | synthetic * |
 | local_dataflow.rb:112:8:112:16 | call to source | local_dataflow.rb:112:8:112:20 | call to dup | self |
 | local_dataflow.rb:112:8:112:16 | self | local_dataflow.rb:112:8:112:16 | call to source | self |
+| local_dataflow.rb:112:8:112:20 | * | local_dataflow.rb:112:8:112:20 | call to dup | synthetic * |
 | local_dataflow.rb:112:8:112:20 | call to dup | local_dataflow.rb:112:3:112:21 | call to sink | position 0 |
 | local_dataflow.rb:112:15:112:15 | 1 | local_dataflow.rb:112:8:112:16 | call to source | position 0 |
 | local_dataflow.rb:113:3:113:25 | * | local_dataflow.rb:113:3:113:25 | call to sink | synthetic * |
@@ -1400,7 +1415,9 @@ arg
 | local_dataflow.rb:113:8:113:16 | * | local_dataflow.rb:113:8:113:16 | call to source | synthetic * |
 | local_dataflow.rb:113:8:113:16 | call to source | local_dataflow.rb:113:8:113:20 | call to dup | self |
 | local_dataflow.rb:113:8:113:16 | self | local_dataflow.rb:113:8:113:16 | call to source | self |
+| local_dataflow.rb:113:8:113:20 | * | local_dataflow.rb:113:8:113:20 | call to dup | synthetic * |
 | local_dataflow.rb:113:8:113:20 | call to dup | local_dataflow.rb:113:8:113:24 | call to dup | self |
+| local_dataflow.rb:113:8:113:24 | * | local_dataflow.rb:113:8:113:24 | call to dup | synthetic * |
 | local_dataflow.rb:113:8:113:24 | call to dup | local_dataflow.rb:113:3:113:25 | call to sink | position 0 |
 | local_dataflow.rb:113:15:113:15 | 1 | local_dataflow.rb:113:8:113:16 | call to source | position 0 |
 | local_dataflow.rb:117:3:117:24 | * | local_dataflow.rb:117:3:117:24 | call to sink | synthetic * |
@@ -1408,12 +1425,14 @@ arg
 | local_dataflow.rb:117:8:117:16 | * | local_dataflow.rb:117:8:117:16 | call to source | synthetic * |
 | local_dataflow.rb:117:8:117:16 | call to source | local_dataflow.rb:117:8:117:23 | call to tap | self |
 | local_dataflow.rb:117:8:117:16 | self | local_dataflow.rb:117:8:117:16 | call to source | self |
+| local_dataflow.rb:117:8:117:23 | * | local_dataflow.rb:117:8:117:23 | call to tap | synthetic * |
 | local_dataflow.rb:117:8:117:23 | call to tap | local_dataflow.rb:117:3:117:24 | call to sink | position 0 |
 | local_dataflow.rb:117:15:117:15 | 1 | local_dataflow.rb:117:8:117:16 | call to source | position 0 |
 | local_dataflow.rb:117:22:117:23 | { ... } | local_dataflow.rb:117:8:117:23 | call to tap | block |
 | local_dataflow.rb:118:3:118:11 | * | local_dataflow.rb:118:3:118:11 | call to source | synthetic * |
 | local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:3:118:31 | call to tap | self |
 | local_dataflow.rb:118:3:118:11 | self | local_dataflow.rb:118:3:118:11 | call to source | self |
+| local_dataflow.rb:118:3:118:31 | * | local_dataflow.rb:118:3:118:31 | call to tap | synthetic * |
 | local_dataflow.rb:118:10:118:10 | 1 | local_dataflow.rb:118:3:118:11 | call to source | position 0 |
 | local_dataflow.rb:118:17:118:31 | { ... } | local_dataflow.rb:118:3:118:31 | call to tap | block |
 | local_dataflow.rb:118:23:118:29 | * | local_dataflow.rb:118:23:118:29 | call to sink | synthetic * |
@@ -1424,7 +1443,9 @@ arg
 | local_dataflow.rb:119:8:119:16 | * | local_dataflow.rb:119:8:119:16 | call to source | synthetic * |
 | local_dataflow.rb:119:8:119:16 | call to source | local_dataflow.rb:119:8:119:23 | call to tap | self |
 | local_dataflow.rb:119:8:119:16 | self | local_dataflow.rb:119:8:119:16 | call to source | self |
+| local_dataflow.rb:119:8:119:23 | * | local_dataflow.rb:119:8:119:23 | call to tap | synthetic * |
 | local_dataflow.rb:119:8:119:23 | call to tap | local_dataflow.rb:119:8:119:30 | call to tap | self |
+| local_dataflow.rb:119:8:119:30 | * | local_dataflow.rb:119:8:119:30 | call to tap | synthetic * |
 | local_dataflow.rb:119:8:119:30 | call to tap | local_dataflow.rb:119:3:119:31 | call to sink | position 0 |
 | local_dataflow.rb:119:15:119:15 | 1 | local_dataflow.rb:119:8:119:16 | call to source | position 0 |
 | local_dataflow.rb:119:22:119:23 | { ... } | local_dataflow.rb:119:8:119:23 | call to tap | block |
@@ -1434,14 +1455,18 @@ arg
 | local_dataflow.rb:123:8:123:16 | * | local_dataflow.rb:123:8:123:16 | call to source | synthetic * |
 | local_dataflow.rb:123:8:123:16 | call to source | local_dataflow.rb:123:8:123:20 | call to dup | self |
 | local_dataflow.rb:123:8:123:16 | self | local_dataflow.rb:123:8:123:16 | call to source | self |
+| local_dataflow.rb:123:8:123:20 | * | local_dataflow.rb:123:8:123:20 | call to dup | synthetic * |
 | local_dataflow.rb:123:8:123:20 | call to dup | local_dataflow.rb:123:8:123:45 | call to tap | self |
+| local_dataflow.rb:123:8:123:45 | * | local_dataflow.rb:123:8:123:45 | call to tap | synthetic * |
 | local_dataflow.rb:123:8:123:45 | call to tap | local_dataflow.rb:123:8:123:49 | call to dup | self |
+| local_dataflow.rb:123:8:123:49 | * | local_dataflow.rb:123:8:123:49 | call to dup | synthetic * |
 | local_dataflow.rb:123:8:123:49 | call to dup | local_dataflow.rb:123:3:123:50 | call to sink | position 0 |
 | local_dataflow.rb:123:15:123:15 | 1 | local_dataflow.rb:123:8:123:16 | call to source | position 0 |
 | local_dataflow.rb:123:26:123:45 | { ... } | local_dataflow.rb:123:8:123:45 | call to tap | block |
 | local_dataflow.rb:123:32:123:43 | * | local_dataflow.rb:123:32:123:43 | call to puts | synthetic * |
 | local_dataflow.rb:123:32:123:43 | self | local_dataflow.rb:123:32:123:43 | call to puts | self |
 | local_dataflow.rb:123:37:123:43 | "hello" | local_dataflow.rb:123:32:123:43 | call to puts | position 0 |
+| local_dataflow.rb:127:3:127:8 | * | local_dataflow.rb:127:3:127:8 | call to rand | synthetic * |
 | local_dataflow.rb:127:3:127:8 | self | local_dataflow.rb:127:3:127:8 | call to rand | self |
 | local_dataflow.rb:132:6:132:11 | * | local_dataflow.rb:132:6:132:11 | call to use | synthetic * |
 | local_dataflow.rb:132:6:132:11 | self | local_dataflow.rb:132:6:132:11 | call to use | self |
@@ -1471,6 +1496,8 @@ arg
 | local_dataflow.rb:137:10:137:26 | * | local_dataflow.rb:137:10:137:26 | [false] ... && ... | synthetic * |
 | local_dataflow.rb:137:10:137:26 | * | local_dataflow.rb:137:10:137:26 | [true] ... && ... | synthetic * |
 | local_dataflow.rb:137:14:137:14 | x | local_dataflow.rb:137:10:137:15 | call to use | position 0 |
+| local_dataflow.rb:137:20:137:26 | * | local_dataflow.rb:137:20:137:26 | [false] ! ... | synthetic * |
+| local_dataflow.rb:137:20:137:26 | * | local_dataflow.rb:137:20:137:26 | [true] ! ... | synthetic * |
 | local_dataflow.rb:137:20:137:26 | [false] ! ... | local_dataflow.rb:137:10:137:26 | [false] ... && ... | position 0 |
 | local_dataflow.rb:137:20:137:26 | [true] ! ... | local_dataflow.rb:137:10:137:26 | [true] ... && ... | position 0 |
 | local_dataflow.rb:137:21:137:26 | * | local_dataflow.rb:137:21:137:26 | call to use | synthetic * |
@@ -1478,6 +1505,8 @@ arg
 | local_dataflow.rb:137:21:137:26 | call to use | local_dataflow.rb:137:20:137:26 | [true] ! ... | self |
 | local_dataflow.rb:137:21:137:26 | self | local_dataflow.rb:137:21:137:26 | call to use | self |
 | local_dataflow.rb:137:25:137:25 | x | local_dataflow.rb:137:21:137:26 | call to use | position 0 |
+| local_dataflow.rb:141:8:141:14 | * | local_dataflow.rb:141:8:141:14 | [false] ! ... | synthetic * |
+| local_dataflow.rb:141:8:141:14 | * | local_dataflow.rb:141:8:141:14 | [true] ! ... | synthetic * |
 | local_dataflow.rb:141:8:141:14 | [false] ! ... | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... | self |
 | local_dataflow.rb:141:8:141:14 | [false] ! ... | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | self |
 | local_dataflow.rb:141:8:141:14 | [true] ! ... | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | self |
@@ -1497,6 +1526,8 @@ arg
 | local_dataflow.rb:141:20:141:36 | * | local_dataflow.rb:141:20:141:36 | [false] ... && ... | synthetic * |
 | local_dataflow.rb:141:20:141:36 | * | local_dataflow.rb:141:20:141:36 | [true] ... && ... | synthetic * |
 | local_dataflow.rb:141:24:141:24 | x | local_dataflow.rb:141:20:141:25 | call to use | position 0 |
+| local_dataflow.rb:141:30:141:36 | * | local_dataflow.rb:141:30:141:36 | [false] ! ... | synthetic * |
+| local_dataflow.rb:141:30:141:36 | * | local_dataflow.rb:141:30:141:36 | [true] ! ... | synthetic * |
 | local_dataflow.rb:141:30:141:36 | [false] ! ... | local_dataflow.rb:141:20:141:36 | [false] ... && ... | position 0 |
 | local_dataflow.rb:141:30:141:36 | [true] ! ... | local_dataflow.rb:141:20:141:36 | [true] ... && ... | position 0 |
 | local_dataflow.rb:141:31:141:36 | * | local_dataflow.rb:141:31:141:36 | call to use | synthetic * |
