@@ -293,9 +293,22 @@ module Zip4j {
         call.(MethodAccess).getReceiverType() instanceof TypeZipInputStream
       ) and
       call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-      call.getArgument(0) = n1.asExpr() and
-      call = n2.asExpr()
+      call.getArgument(0) = n2.asExpr() and
+      call.getQualifier() = n1.asExpr()
     )
+  }
+}
+
+module CommonsIO {
+  class IOUtils extends MethodAccess {
+    IOUtils() {
+      this.getMethod()
+          .hasName([
+              "copy", "copyLarge", "read", "readFully", "readLines", "toBufferedInputStream",
+              "toByteArray", "toCharArray", "toString", "buffer"
+            ]) and
+      this.getMethod().getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils")
+    }
   }
 }
 
@@ -308,8 +321,40 @@ module Zip {
     }
   }
 
+  class ReadInputStreamCall extends MethodAccess {
+    ReadInputStreamCall() {
+      this.getReceiverType() instanceof TypeInputStream and
+      this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
+    }
+
+    Expr getAWriteArgument() { result = this.getArgument(0) }
+
+    // look at Zip4j comments for this method
+    predicate isControlledRead() { none() }
+  }
+
+  // *InputStream Izis = new *InputStream(inputStream)
+  predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(Call call |
+      (
+        call.getCallee().getDeclaringType() instanceof TypeInputStream or
+        call.(MethodAccess).getReceiverType() instanceof TypeInputStream
+      ) and
+      call.getArgument(0) = n1.asExpr() and
+      call = n2.asExpr()
+    )
+  }
+
   class TypeInflator extends RefType {
     TypeInflator() { this.hasQualifiedName("java.util.zip", "Inflater") }
+  }
+
+  class Inflatorsource extends Call {
+    Inflatorsource() {
+      exists(Call c | c.getCallee().(Constructor).getDeclaringType() instanceof TypeInflator |
+        this = c
+      )
+    }
   }
 
   predicate inflatorAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
@@ -343,41 +388,69 @@ module Zip {
     predicate isControlledRead() { none() }
   }
 
-  // InflaterInputStream Izis = new InflaterInputStream(inputStream)
-  predicate inputStreamAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+  class TypeZipFile extends RefType {
+    TypeZipFile() { this.hasQualifiedName("java.util.zip", "ZipFile") }
+  }
+
+  class ZipFilesource extends Call {
+    ZipFilesource() {
+      exists(Call c | c.getCallee().(Constructor).getDeclaringType() instanceof TypeZipFile |
+        this = c
+      )
+    }
+  }
+
+  // ZipFile zipFileAsn2 = new ZipFile(n1);
+  // InputStream n2 = zipFile.getInputStream(n1);
+  predicate zipFileadditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(MethodAccess ma |
+      ma.getReceiverType() instanceof TypeZipFile and
+      ma = n2.asExpr() and
+      ma.getQualifier() = n1.asExpr() and
+      ma.getCallee().hasName("getInputStream")
+    )
+    or
+    exists(Call c |
+      c.getCallee().getDeclaringType() instanceof TypeZipFile and
+      c.getArgument(0) = n1.asExpr() and
+      c = n2.asExpr()
+    )
+  }
+}
+
+module InputStream {
+  class TypeInputStream extends RefType {
+    TypeInputStream() { this.getASupertype*().hasQualifiedName("java.io", "InputStream") }
+  }
+
+  class Source extends Call {
+    Source() {
+      exists(Call c | c.getCallee().getDeclaringType() instanceof TypeInputStream | this = c)
+    }
+
+    DataFlow::Node getInputArgument() { result.asExpr() = this.(ConstructorCall).getArgument(0) }
+  }
+
+  class Read extends MethodAccess {
+    Read() {
+      this.getReceiverType() instanceof TypeInputStream and
+      this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
+    }
+  }
+
+  predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(Call call |
       (
         call.getCallee().getDeclaringType() instanceof TypeInputStream or
         call.(MethodAccess).getReceiverType() instanceof TypeInputStream
       ) and
-      call.getArgument(0) = n1.asExpr() and
-      call = n2.asExpr()
+      call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
+      call.getQualifier() = n1.asExpr() and
+      (
+        call.getArgument(0) = n2.asExpr() or
+        call = n2.asExpr()
+      )
     )
-  }
-
-  class ReadInputStreamCall extends MethodAccess {
-    ReadInputStreamCall() {
-      this.getReceiverType() instanceof TypeInputStream and
-      this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
-    }
-
-    Expr getAWriteArgument() { result = this.getArgument(0) }
-
-    // look at Zip4j comments for this method
-    predicate isControlledRead() { none() }
-  }
-}
-
-module CommonsIO {
-  class IOUtils extends MethodAccess {
-    IOUtils() {
-      this.getMethod()
-          .hasName([
-              "copy", "copyLarge", "read", "readFully", "readLines", "toBufferedInputStream",
-              "toByteArray", "toCharArray", "toString", "buffer"
-            ]) and
-      this.getMethod().getDeclaringType().hasQualifiedName("org.apache.commons.io", "IOUtils")
-    }
   }
 }
 
@@ -385,6 +458,8 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
+    // any()
+    // or
     (
       source instanceof RemoteFlowSource
       or
@@ -393,28 +468,36 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       source instanceof FormRemoteFlowSource
       or
       source instanceof FileUploadRemoteFlowSource
+      or
+      // TODO: we have to add Zip*InputStreams instead of general inputStream because of Flow State
+      source = any(InputStream::Source i).getInputArgument()
+      or
+      source.asExpr() instanceof Zip::Inflatorsource
     ) and
-    state = ["Zip4j", "Zip", "ApacheCommons", "XserialSnappy"]
+    state = ["Zip4j", "inflator", "Zip", "ApacheCommons", "XserialSnappy"]
+    or
+    source.asExpr() instanceof Zip::ZipFilesource and
+    state = "ZipFile"
   }
 
-  predicate isBarrier(DataFlow::Node sanitizer, FlowState state) { none() }
-
-  /**
-   * if getNumArgument > 1 then we can check for sanitizers before reading each Buffer of byte
-   * otherwise it can be hard to write sanitizers
-   */
   predicate isSink(DataFlow::Node sink, FlowState state) {
     (
-      sink.asExpr() = any(Zip::InflateCall r).getAWriteArgument() and
-      state = "Zip"
-      or
+      // any() and
+      // state = "Zip"
+      // or
       exists(CommonsIO::IOUtils ma |
         sink.asExpr() = ma.getArgument(0) and
-        state = ["Zip4j", "Zip", "ApacheCommons", "XserialSnappy"]
+        state = ["Zip4j", "inflator", "Zip", "ApacheCommons", "XserialSnappy"]
       )
       or
       sink.asExpr() = any(Zip4j::ReadInputStreamCall r).getAWriteArgument() and
       state = "Zip4j"
+      or
+      sink.asExpr() = any(Zip::InflateCall r).getAWriteArgument() and
+      state = "inflator"
+      or
+      sink.asExpr() instanceof InputStream::Read and
+      state = "ZipFile"
       or
       sink.asExpr() = any(Zip::ReadInputStreamCall r).getAWriteArgument() and
       state = "Zip"
@@ -433,34 +516,50 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
     )
   }
 
+  // predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  //   inputStreamAdditionalTaintStep(nodeFrom, nodeTo)
+  // }
   predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
+    InputStream::additionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "ZipFile" and
+    stateTo = "ZipFile"
+    or
     Zip::inflatorAdditionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "inflator" and
+    stateTo = "inflator"
+    or
+    Zip::zipFileadditionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "ZipFile" and
+    stateTo = "ZipFile"
+    or
+    Zip::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
     stateFrom = "Zip" and
     stateTo = "Zip"
     or
-    (
-      Zip::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
-      stateFrom = "Zip"
-      or
-      Zip4j::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
-      stateFrom = "Zip4j"
-      or
-      ApacheCommons::Factory::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
-      stateFrom = "ApacheCommons"
-      or
-      ApacheCommons::Compressors::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
-      stateFrom = "ApacheCommons"
-      or
-      ApacheCommons::Archivers::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
-      stateFrom = "ApacheCommons"
-      or
-      XserialSnappy::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
-      stateFrom = "XserialSnappy"
-    ) and
-    stateTo = ""
+    Zip4j::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "Zip4j" and
+    stateTo = "Zip4j"
+    or
+    ApacheCommons::Factory::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "ApacheCommons" and
+    stateTo = "ApacheCommons"
+    or
+    ApacheCommons::Compressors::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "ApacheCommons" and
+    stateTo = "ApacheCommons"
+    or
+    ApacheCommons::Archivers::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "ApacheCommons" and
+    stateTo = "ApacheCommons"
+    or
+    XserialSnappy::inputStreamAdditionalTaintStep(nodeFrom, nodeTo) and
+    stateFrom = "ApacheCommons" and
+    stateTo = "ApacheCommons"
   }
+
+  predicate isBarrier(DataFlow::Node sanitizer, FlowState state) { none() }
 }
 
 module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombsConfig>;
