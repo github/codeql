@@ -360,11 +360,10 @@ private class IsMaDTaintStepCharacteristic extends CharacteristicsImpl::NotASink
  * The reason is that we would expect data/taint flow into the method implementation to uncover
  * any sinks that are present there.
  */
-private class ArgumentToLocalCall extends CharacteristicsImpl::UninterestingToModelCharacteristic {
-  ArgumentToLocalCall() { this = "argument to local call" }
+private class LocalCall extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  LocalCall() { this = "local call" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     ApplicationModeGetCallable::getCallable(e).fromSource()
   }
 }

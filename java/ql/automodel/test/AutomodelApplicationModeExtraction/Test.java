@@ -36,7 +36,7 @@ class Test {
 	}
 
 	public static InputStream getInputStream(String openPath) throws Exception {
-		return Test.getInputStream( // the call is a source candidate
+		return Test.getInputStream( // the call is not a source candidate (argument to local call)
 			Paths.get(openPath) // no sink candidate (argument to local call); the call is a source candidate
 		);
 	}
