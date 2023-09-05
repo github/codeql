@@ -18,11 +18,11 @@ class Test {
 	}
 
 	public static void callSupplier(Supplier<String> supplier) {
-		supplier.get(); // Argument[this] is a candidate
+		supplier.get(); // Argument[this] is a sink candidate; the call is a source candidate
 	}
 
 	public static void copyFiles(Path source, Path target, CopyOption option) throws Exception {
-		Files.copy(
+		Files.copy( // the call is a source candidate
 			source, // positive example (known sink)
 			target, // positive example (known sink)
 			option // no candidate (not modeled, but source and target are modeled)
@@ -30,14 +30,14 @@ class Test {
 	}
 
 	public static InputStream getInputStream(Path openPath) throws Exception {
-		return Files.newInputStream(
+		return Files.newInputStream( // the call is a source candidate
 			openPath // positive example (known sink), candidate ("only" ai-modeled, and useful as a candidate in regression testing)
 		);
 	}
 
 	public static InputStream getInputStream(String openPath) throws Exception {
-		return Test.getInputStream(
-			Paths.get(openPath) // no candidate (argument to local call)
+		return Test.getInputStream( // the call is a source candidate
+			Paths.get(openPath) // no sink candidate (argument to local call); the call is a source candidate
 		);
 	}
 
@@ -48,7 +48,7 @@ class Test {
 	}
 		
 	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
-		Files.walk(
+		Files.walk( // the call is a source candidate
 			p, // negative example (modeled as a taint step)
 			o, // the implicit varargs array is a candidate
 			o // not a candidate (only the first arg corresponding to a varargs array

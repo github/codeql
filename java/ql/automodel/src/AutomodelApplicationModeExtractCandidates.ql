@@ -59,7 +59,6 @@ from
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
   DollarAtString input, DollarAtString isVarargsArray, DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
-  endpoint.getExtensibleType() = "sinkModel" and
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
   ) and
