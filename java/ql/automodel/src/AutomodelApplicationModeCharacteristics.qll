@@ -51,6 +51,8 @@ abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint 
 
   abstract DataFlow::Node asNode();
 
+  abstract string getExtensibleType();
+
   abstract string toString();
 }
 
@@ -69,6 +71,8 @@ class ExplicitArgument extends ApplicationModeEndpoint, TExplicitArgument {
 
   override DataFlow::Node asNode() { result = arg }
 
+  override string getExtensibleType() { result = "sinkModel" }
+
   override string toString() { result = arg.toString() }
 }
 
@@ -85,6 +89,8 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
   override Top asTop() { if exists(arg.asExpr()) then result = arg.asExpr() else result = call }
 
   override DataFlow::Node asNode() { result = arg }
+
+  override string getExtensibleType() { result = "sinkModel" }
 
   override string toString() { result = arg.toString() }
 }
@@ -110,6 +116,8 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
   override Top asTop() { result = this.getCall() }
 
   override DataFlow::Node asNode() { result = vararg }
+
+  override string getExtensibleType() { result = "sinkModel" }
 
   override string toString() { result = vararg.toString() }
 }
@@ -168,9 +176,11 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     )
   }
 
+  // XXX how to extend to support sources?
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
+    e.getExtensibleType() = "sinkModel" and
     ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
     ext = "" and
@@ -407,7 +417,10 @@ private class CannotBeTaintedCharacteristic extends CharacteristicsImpl::LikelyN
 {
   CannotBeTaintedCharacteristic() { this = "cannot be tainted" }
 
-  override predicate appliesToEndpoint(Endpoint e) { not this.isKnownOutNodeForStep(e) }
+  override predicate appliesToEndpoint(Endpoint e) {
+    // XXX consider source candidate endpoints
+    not this.isKnownOutNodeForStep(e)
+  }
 
   /**
    * Holds if the node `n` is known as the predecessor in a modeled flow step.

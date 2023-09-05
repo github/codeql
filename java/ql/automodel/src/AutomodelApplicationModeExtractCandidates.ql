@@ -85,7 +85,7 @@ where
       sinkType, ", "
     )
 select endpoint.asNode(),
-  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
+  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   package, "package", //
   type, "type", //
@@ -94,4 +94,5 @@ select endpoint.asNode(),
   signature, "signature", //
   input, "input", //
   isVarargsArray, "isVarargsArray", //
-  alreadyAiModeled, "alreadyAiModeled"
+  alreadyAiModeled, "alreadyAiModeled", //
+  endpoint.getExtensibleType().(DollarAtString), "extensibleType"
