@@ -42,7 +42,7 @@ class Test {
 	}
 
 	public static int compareFiles(File f1, File f2) {
-		return f1.compareTo(
+		return f1.compareTo( // compareTo call is a known sanitizer
 			f2 // negative example (modeled as not a sink)
 		);
 	}

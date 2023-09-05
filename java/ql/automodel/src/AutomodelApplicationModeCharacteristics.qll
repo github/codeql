@@ -35,7 +35,8 @@ newtype TApplicationModeEndpoint =
       argExpr.isVararg() and
       not exists(int i | i < idx and call.getArgument(i).(Argument).isVararg())
     )
-  }
+  } or
+  TMethodCall(Call call) { not call instanceof ConstructorCall }
 
 /**
  * An endpoint is a node that is a candidate for modeling.
@@ -120,6 +121,25 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
   override string getExtensibleType() { result = "sinkModel" }
 
   override string toString() { result = vararg.toString() }
+}
+
+/**
+ * An endpoint that represents a method call.
+ */
+class MethodCall extends ApplicationModeEndpoint, TMethodCall {
+  Call call;
+
+  MethodCall() { this = TMethodCall(call) }
+
+  override predicate isArgOf(Call c, int idx) { c = call and idx = -1 }
+
+  override Top asTop() { result = call }
+
+  override DataFlow::Node asNode() { result.asExpr() = call }
+
+  override string getExtensibleType() { result = "sourceModel" }
+
+  override string toString() { result = call.toString() }
 }
 
 /**
@@ -275,6 +295,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
+    e.getExtensibleType() = "sinkModel" and
     not ApplicationCandidatesImpl::isSink(e, _, _) and
     ApplicationModeGetCallable::getCallable(e).getName().matches("is%") and
     ApplicationModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
@@ -293,6 +314,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
+    e.getExtensibleType() = "sinkModel" and
     not ApplicationCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
       callable = ApplicationModeGetCallable::getCallable(e) and
@@ -309,6 +331,7 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
+    e.getExtensibleType() = "sinkModel" and
     ApplicationModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
       TypeThrowable
   }
@@ -323,9 +346,13 @@ private class IsMaDTaintStepCharacteristic extends CharacteristicsImpl::NotASink
   IsMaDTaintStepCharacteristic() { this = "taint step" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(e.asNode(), _, _) or
-    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(e.asNode(), _, _) or
-    FlowSummaryImpl::Private::Steps::summaryGetterStep(e.asNode(), _, _, _) or
+    e.getExtensibleType() = "sinkModel" and
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(e.asNode(), _, _)
+    or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(e.asNode(), _, _)
+    or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(e.asNode(), _, _, _)
+    or
     FlowSummaryImpl::Private::Steps::summarySetterStep(e.asNode(), _, _, _)
   }
 }
@@ -340,6 +367,7 @@ private class ArgumentToLocalCall extends CharacteristicsImpl::UninterestingToMo
   ArgumentToLocalCall() { this = "argument to local call" }
 
   override predicate appliesToEndpoint(Endpoint e) {
+    e.getExtensibleType() = "sinkModel" and
     ApplicationModeGetCallable::getCallable(e).fromSource()
   }
 }
@@ -351,6 +379,7 @@ private class ExcludedFromModeling extends CharacteristicsImpl::UninterestingToM
   ExcludedFromModeling() { this = "excluded from modeling" }
 
   override predicate appliesToEndpoint(Endpoint e) {
+    e.getExtensibleType() = "sinkModel" and
     ModelExclusions::isUninterestingForModels(ApplicationModeGetCallable::getCallable(e))
   }
 }
@@ -364,6 +393,7 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
+    e.getExtensibleType() = "sinkModel" and
     not ApplicationModeGetCallable::getCallable(e).isPublic()
   }
 }
@@ -386,6 +416,7 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
   }
 
   override predicate appliesToEndpoint(Endpoint e) {
+    e.getExtensibleType() = "sinkModel" and
     not ApplicationCandidatesImpl::isSink(e, _, _) and
     exists(Endpoint otherSink |
       ApplicationCandidatesImpl::isSink(otherSink, _, "manual") and
@@ -403,7 +434,10 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 private class FunctionValueCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
   FunctionValueCharacteristic() { this = "function value" }
 
-  override predicate appliesToEndpoint(Endpoint e) { e.asNode().asExpr() instanceof FunctionalExpr }
+  override predicate appliesToEndpoint(Endpoint e) {
+    e.getExtensibleType() = "sinkModel" and
+    e.asNode().asExpr() instanceof FunctionalExpr
+  }
 }
 
 /**
@@ -419,6 +453,7 @@ private class CannotBeTaintedCharacteristic extends CharacteristicsImpl::LikelyN
 
   override predicate appliesToEndpoint(Endpoint e) {
     // XXX consider source candidate endpoints
+    e.getExtensibleType() = "sinkModel" and
     not this.isKnownOutNodeForStep(e)
   }
 
