@@ -10,12 +10,12 @@ func verifyJWT(endpointHandler func(writer http.ResponseWriter, request *http.Re
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		if request.Header["Token"] != nil {
 			//Good, this specifiies an algorithim in the parser, and therefore does not need to check the algorithim in the key function
-			p := jwt.NewParser(jwt.WithValidMethods([]string{"HS256"}))
+			p := jwt.NewParser(jwt.WithValidMethods([]string{"RSA256"}))
 			p.Parse("test", func(token *jwt.Token) (interface{}, error) {
 				return "", nil
 
 			})
-			//Bad, this parses with a custom parser that does not specify the algorithim/method
+			//Bad, this parses with a custom parser that does not specify the algorithim/method and does not check the token's algorithm
 			p_bad := jwt.NewParser()
 			p_bad.Parse("test", func(token *jwt.Token) (interface{}, error) {
 				return "", nil
@@ -34,7 +34,7 @@ func verifyJWT(endpointHandler func(writer http.ResponseWriter, request *http.Re
 				return "", nil
 
 			})
-			//Bad, this parses using the default parser without checking the token Method and does not include a parser
+			//Bad, this parses using the default parser without checking the token Method
 			token_bad, err := jwt.Parse(request.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
 				return "", nil
 
@@ -65,6 +65,5 @@ func verifyJWT(endpointHandler func(writer http.ResponseWriter, request *http.Re
 				return
 			}
 		}
-		// response for if there's no token header
 	})
 }

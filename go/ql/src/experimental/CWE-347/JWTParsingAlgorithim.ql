@@ -30,4 +30,4 @@ and not exists(Field f |
  and f.getARead().getRoot() = c.getCall().getAnArgument()
  ))
 
-select c, "This Parse Call to Verify the JWT token is vulnerable to algorithim confusion"
+select c, "This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion"
