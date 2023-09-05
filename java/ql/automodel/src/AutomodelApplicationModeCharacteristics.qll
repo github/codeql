@@ -295,7 +295,6 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     not ApplicationCandidatesImpl::isSink(e, _, _) and
     ApplicationModeGetCallable::getCallable(e).getName().matches("is%") and
     ApplicationModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
@@ -314,7 +313,6 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     not ApplicationCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
       callable = ApplicationModeGetCallable::getCallable(e) and
