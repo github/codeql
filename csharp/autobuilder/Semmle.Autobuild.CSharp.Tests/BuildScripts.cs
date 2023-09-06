@@ -557,7 +557,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSuccess()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone --references:."] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -571,7 +571,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionFailed()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone --references:."] = 10;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 10;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -585,7 +585,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSolution()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --references:."] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -873,7 +873,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestSkipNugetBuildless()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --references:. --skip-nuget"] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --skip-nuget"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";

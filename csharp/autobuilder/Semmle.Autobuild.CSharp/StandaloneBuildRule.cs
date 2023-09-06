@@ -35,8 +35,6 @@ namespace Semmle.Autobuild.CSharp
                 if (solution is not null)
                     cmd.QuoteArgument(solution);
 
-                cmd.Argument("--references:.");
-
                 if (!builder.Options.NugetRestore)
                 {
                     cmd.Argument("--skip-nuget");
