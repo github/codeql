@@ -44,7 +44,7 @@ newtype TApplicationModeEndpoint =
 abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint {
   abstract Call getCall();
 
-  abstract int getArgIndex();
+  abstract string getMaDInput();
 
   abstract Top asTop();
 
@@ -66,7 +66,11 @@ class ExplicitArgument extends ApplicationModeEndpoint, TExplicitArgument {
 
   override Call getCall() { result = call }
 
-  override int getArgIndex() { this.asTop() = call.getArgument(result) }
+  private int getArgIndex() { this.asTop() = call.getArgument(result) }
+
+  override string getMaDInput() {
+    result = "Argument[" + this.getArgIndex() + "]"
+  }
 
   override Top asTop() { result = arg.asExpr() }
 
@@ -85,7 +89,7 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
 
   override Call getCall() { result = call }
 
-  override int getArgIndex() { result = -1 }
+  override string getMaDInput() { result = "Argument[this]" }
 
   override Top asTop() { if exists(arg.asExpr()) then result = arg.asExpr() else result = call }
 
@@ -114,7 +118,9 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
 
   override Call getCall() { result = call }
 
-  override int getArgIndex() { result = idx }
+  override string getMaDInput() {
+    result = "Argument[" + idx + "]"
+  }
 
   override Top asTop() { result = this.getCall() }
 
@@ -135,7 +141,7 @@ class MethodCall extends ApplicationModeEndpoint, TMethodCall {
 
   override Call getCall() { result = call }
 
-  override int getArgIndex() { result = -1 }
+  override string getMaDInput() { result = "Argument[this]" }
 
   override Top asTop() { result = call }
 
@@ -208,7 +214,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
     ext = "" and
-    input = AutomodelJavaUtil::getArgumentForIndex(e.getArgIndex())
+    input = e.getMaDInput()
   }
 
   /**
@@ -267,7 +273,7 @@ class ApplicationModeMetadataExtractor extends string {
   ) {
     exists(Callable callable |
       e.getCall().getCallee() = callable and
-      input = AutomodelJavaUtil::getArgumentForIndex(e.getArgIndex()) and
+      input = e.getMaDInput() and
       package = callable.getDeclaringType().getPackage().getName() and
       // we're using the erased types because the MaD convention is to not specify type parameters.
       // Whether something is or isn't a sink doesn't usually depend on the type parameters.
