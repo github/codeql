@@ -300,5 +300,4 @@ import DecompressionBomb::PathGraph
 
 from DecompressionBomb::PathNode source, DecompressionBomb::PathNode sink
 where DecompressionBomb::flowPath(source, sink)
-select sink.getNode(), source, sink, "This file extraction depends on a $@.", source.getNode(),
-  "potentially untrusted source"
+select sink.getNode(), source, sink, "This uncontrolled depends on a $@.", source.getNode(), "this"
