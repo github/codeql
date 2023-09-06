@@ -64,7 +64,7 @@ function RegisterExtractorPack(id)
 
                 -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
                 -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
-                if testMatch and (arg:match('%.exe$') or arg:match('%.dll'))  then
+                if testMatch and (arg:match('%.exe$') or arg:match('%.dll')) then
                     match = false
                     break
                 end
@@ -110,7 +110,7 @@ function RegisterExtractorPack(id)
                     invocation = {
                         path = AbsolutifyExtractorPath(id, compilerPath),
                         arguments = {
-                            commandLineString = table.concat(argv, " ")
+                            commandLineString = ArgvToCommandLineString(argv)
                         }
                     }
                 }
@@ -174,7 +174,7 @@ function RegisterExtractorPack(id)
                     seenCompilerCall = true
                 end
                 if seenCompilerCall then
-                    table.insert(extractorArgs, '"' .. arg .. '"')
+                    table.insert(extractorArgs, arg)
                 end
             end
 
@@ -184,7 +184,7 @@ function RegisterExtractorPack(id)
                     invocation = {
                         path = AbsolutifyExtractorPath(id, extractor),
                         arguments = {
-                            commandLineString = table.concat(extractorArgs, " ")
+                            commandLineString = ArgvToCommandLineString(extractorArgs)
                         }
                     }
                 }
