@@ -1,9 +1,16 @@
+/**
+ * Provides a taint-tracking configuration for detecting NoSQL injection vulnerabilities
+ */
+
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Concepts
 private import NoSQLInjectionCustomizations::NoSqlInjection as C
 
+/**
+ * A taint-tracking configuration for detecting NoSQL injection vulnerabilities.
+ */
 module Config implements DataFlow::StateConfigSig {
   class FlowState = C::FlowState;
 
