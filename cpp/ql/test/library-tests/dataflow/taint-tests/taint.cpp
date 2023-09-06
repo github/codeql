@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast,ir
+	sink(*p3); // $ SPURIOUS: ast
 }
 
 // --- return values ---
@@ -702,4 +702,12 @@ namespace strings {
 		*p++ = *s;
 		sink(p); // $ ast ir
 	}
+}
+
+char * strncpy (char *, const char *, unsigned long);
+
+void test_strncpy(char* d, char* s) {
+	argument_source(s);
+	strncpy(d, s, 16);
+	sink(d); // $ ast ir
 }

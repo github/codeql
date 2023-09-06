@@ -7,6 +7,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
+private import semmle.python.frameworks.data.ModelsAsData
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 
@@ -42,6 +43,15 @@ module ReflectedXss {
    * A source of remote user input, considered as a flow source.
    */
   class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+
+  /**
+   * A data flow sink for "reflected cross-site scripting" vulnerabilities.
+   */
+  private class SinkFromModel extends Sink {
+    SinkFromModel() {
+      this = ModelOutput::getASinkNode(["html-injection", "js-injection"]).asSink()
+    }
+  }
 
   /**
    * The body of a HTTP response that will be returned from a server, considered as a flow sink.

@@ -39,7 +39,15 @@ private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import semmle.python.dataflow.new.FlowSummary as FlowSummary
 
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
 class SummarizedCallableBase = string;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = string;
 
 /** View a `SummarizedCallable` as a `DataFlowCallable`. */
 DataFlowCallable inject(SummarizedCallable c) { result.asLibraryCallable() = c }
@@ -91,11 +99,11 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenance`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  * Note. Neutral models have not been implemented for Python.
  */
-predicate neutralSummaryElement(FlowSummary::SummarizedCallable c, string provenance) { none() }
+predicate neutralElement(NeutralCallableBase c, string kind, string provenance) { none() }
 
 /**
  * Gets the summary component for specification component `c`, if any.
@@ -128,10 +136,30 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
-  sc = TContentSummaryComponent(any(ListElementContent c)) and
-  result = "ListElement"
+private string getContentSpecific(Content cs) {
+  cs = TListElementContent() and result = "ListElement"
+  or
+  cs = TSetElementContent() and result = "SetElement"
+  or
+  exists(int index |
+    cs = TTupleElementContent(index) and result = "TupleElement[" + index.toString() + "]"
+  )
+  or
+  exists(string key |
+    cs = TDictionaryElementContent(key) and result = "DictionaryElement[" + key + "]"
+  )
+  or
+  cs = TDictionaryElementAnyContent() and result = "DictionaryElementAny"
+  or
+  exists(string attr | cs = TAttributeContent(attr) and result = "Attribute[" + attr + "]")
+}
+
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
+  exists(Content c |
+    sc = TContentSummaryComponent(c) and
+    result = getContentSpecific(c)
+  )
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */

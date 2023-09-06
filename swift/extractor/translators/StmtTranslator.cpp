@@ -73,7 +73,7 @@ codeql::ForEachStmt StmtTranslator::translateForEachStmt(const swift::ForEachStm
   auto entry = dispatcher.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher.fetchLabel(stmt.getBody());
-  entry.sequence = dispatcher.fetchLabel(stmt.getParsedSequence());
+  entry.sequence = dispatcher.fetchLabel(stmt.getTypeCheckedSequence());
   entry.pattern = dispatcher.fetchLabel(stmt.getPattern());
   entry.where = dispatcher.fetchOptionalLabel(stmt.getWhere());
   return entry;

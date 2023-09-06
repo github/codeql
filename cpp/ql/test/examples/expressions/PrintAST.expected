@@ -1308,6 +1308,11 @@ union_etc.cpp:
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = prvalue(load)
 #    6|     getStmt(1): [ReturnStmt] return ...
+#    7| [GlobalVariable] S s
+#    7|   getInitializer(): [Initializer] initializer for s
+#    7|     getExpr(): [ConstructorCall] call to S
+#    7|         Type = [VoidType] void
+#    7|         ValueCategory = prvalue
 #    9| [CopyAssignmentOperator] C& C::operator=(C const&)
 #    9|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -1332,6 +1337,7 @@ union_etc.cpp:
 #   12|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] U &&
+#   14| [GlobalVariable] C c
 #   16| [CopyAssignmentOperator] U& U::operator=(U const&)
 #   16|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -1356,6 +1362,7 @@ union_etc.cpp:
 #   18|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] C &&
+#   20| [GlobalVariable] U u
 #   22| [TopLevelFunction] int foo()
 #   22|   <params>: 
 #   22|   getEntryPoint(): [BlockStmt] { ... }

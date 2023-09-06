@@ -597,7 +597,7 @@ private module Digest {
         call = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("new")
       |
         this = call.getReturn().getAMethodCall(["digest", "update", "<<"]) and
-        algo.matchesName(call.getCallNode()
+        algo.matchesName(call.asCall()
               .getArgument(0)
               .asExpr()
               .getExpr()
@@ -619,7 +619,7 @@ private module Digest {
     Cryptography::HashingAlgorithm algo;
 
     DigestCallDirect() {
-      this = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("digest").getCallNode() and
+      this = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("digest").asCall() and
       algo.matchesName(this.getArgument(0).asExpr().getExpr().getConstantValue().getString())
     }
 

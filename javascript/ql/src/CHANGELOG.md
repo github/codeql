@@ -1,3 +1,36 @@
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* The `fs/promises` package is now recognised as an alias for `require('fs').promises`.
+* The `js/path-injection` query can now track taint through calls to `path.join()` with a spread argument, such as `path.join(baseDir, ...args)`.
+
+## 0.7.0
+
+### Bug Fixes
+
+* The query "Arbitrary file write during zip extraction ("Zip Slip")" (`js/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* Fixed an issue where calls to a method named `search` would lead to false positive alerts related to regular expressions.
+  This happened when the call was incorrectly seen as a call to `String.prototype.search`, since this function converts its first argument
+  to a regular expression. The analysis is now more restrictive about when to treat `search` calls as regular expression sinks.
+
 ## 0.6.2
 
 ### Major Analysis Improvements

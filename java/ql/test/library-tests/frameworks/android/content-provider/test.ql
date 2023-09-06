@@ -10,12 +10,4 @@ module ProviderTaintFlowConfig implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = DefaultFlowConfig::fieldFlowBranchLimit() }
 }
 
-module ProviderTaintFlow = TaintTracking::Global<ProviderTaintFlowConfig>;
-
-class ProviderInlineFlowTest extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
-
-  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
-    ProviderTaintFlow::flow(src, sink)
-  }
-}
+import TaintFlowTest<ProviderTaintFlowConfig>

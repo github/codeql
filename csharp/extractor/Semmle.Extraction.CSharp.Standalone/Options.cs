@@ -1,8 +1,7 @@
-using Semmle.Util.Logging;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Semmle.Util;
+using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp.DependencyFetching;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {
@@ -25,19 +24,16 @@ namespace Semmle.Extraction.CSharp.Standalone
                     SkipExtraction = value;
                     return true;
                 case "skip-nuget":
-                    UseNuGet = !value;
+                    dependencies.UseNuGet = !value;
                     return true;
                 case "all-references":
                     AnalyseCsProjFiles = !value;
                     return true;
-                case "stdlib":
-                    UseMscorlib = value;
-                    return true;
                 case "skip-dotnet":
-                    ScanNetFrameworkDlls = !value;
+                    dependencies.ScanNetFrameworkDlls = !value;
                     return true;
                 case "self-contained-dotnet":
-                    UseSelfContainedDotnet = value;
+                    dependencies.UseSelfContainedDotnet = value;
                     return true;
                 default:
                     return base.HandleFlag(key, value);
@@ -49,10 +45,10 @@ namespace Semmle.Extraction.CSharp.Standalone
             switch (key)
             {
                 case "exclude":
-                    Excludes.Add(value);
+                    dependencies.Excludes.Add(value);
                     return true;
                 case "references":
-                    DllDirs.Add(value);
+                    dependencies.DllDirs.Add(value);
                     return true;
                 default:
                     return base.HandleOption(key, value);
@@ -61,8 +57,8 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public override bool HandleArgument(string arg)
         {
-            SolutionFile = arg;
-            var fi = new FileInfo(SolutionFile);
+            dependencies.SolutionFile = arg;
+            var fi = new FileInfo(dependencies.SolutionFile);
             if (!fi.Exists)
             {
                 System.Console.WriteLine("Error: The solution {0} does not exist", fi.FullName);
@@ -78,45 +74,20 @@ namespace Semmle.Extraction.CSharp.Standalone
         }
 
         /// <summary>
-        /// Files/patterns to exclude.
-        /// </summary>
-        public IList<string> Excludes { get; } = new List<string>();
-
-
-        /// <summary>
         /// The directory containing the source code;
         /// </summary>
         public string SrcDir { get; } = System.IO.Directory.GetCurrentDirectory();
 
+        private readonly DependencyOptions dependencies = new DependencyOptions();
         /// <summary>
-        /// Whether to analyse NuGet packages.
+        /// Dependency fetching related options.
         /// </summary>
-        public bool UseNuGet { get; private set; } = true;
-
-        /// <summary>
-        /// Directories to search DLLs in.
-        /// </summary>
-        public IList<string> DllDirs { get; } = new List<string>();
-
-        /// <summary>
-        /// Whether to search the .Net framework directory.
-        /// </summary>
-        public bool ScanNetFrameworkDlls { get; private set; } = true;
-
-        /// <summary>
-        /// Whether to use mscorlib as a reference.
-        /// </summary>
-        public bool UseMscorlib { get; private set; } = true;
+        public IDependencyOptions Dependencies => dependencies;
 
         /// <summary>
         /// Whether to search .csproj files.
         /// </summary>
         public bool AnalyseCsProjFiles { get; private set; } = true;
-
-        /// <summary>
-        /// The solution file to analyse, or null if not specified.
-        /// </summary>
-        public string? SolutionFile { get; private set; }
 
         /// <summary>
         /// Whether the extraction phase should be skipped (dry-run).
@@ -134,24 +105,9 @@ namespace Semmle.Extraction.CSharp.Standalone
         public bool Help { get; private set; } = false;
 
         /// <summary>
-        /// Whether to use the packaged dotnet runtime.
-        /// </summary>
-        public bool UseSelfContainedDotnet { get; private set; } = false;
-
-        /// <summary>
-        /// Determine whether the given path should be excluded.
-        /// </summary>
-        /// <param name="path">The path to query.</param>
-        /// <returns>True iff the path matches an exclusion.</returns>
-        public bool ExcludesFile(string path)
-        {
-            return Excludes.Any(ex => path.Contains(ex));
-        }
-
-        /// <summary>
         /// Outputs the command line options to the console.
         /// </summary>
-        public static void ShowHelp(System.IO.TextWriter output)
+        public static void ShowHelp(TextWriter output)
         {
             output.WriteLine("C# standalone extractor\n\nExtracts a C# project in the current directory without performing a build.\n");
             output.WriteLine("Additional options:\n");
@@ -162,7 +118,6 @@ namespace Semmle.Extraction.CSharp.Standalone
             output.WriteLine("    --dry-run        Stop before extraction");
             output.WriteLine("    --skip-nuget     Do not download nuget packages");
             output.WriteLine("    --all-references Use all references (default is to only use references in .csproj files)");
-            output.WriteLine("    --nostdlib       Do not link mscorlib.dll (use only for extracting mscorlib itself)");
             output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
             output.WriteLine("    --verbose        Produce more output");
             output.WriteLine("    --pdb            Cross-reference information from PDBs where available");

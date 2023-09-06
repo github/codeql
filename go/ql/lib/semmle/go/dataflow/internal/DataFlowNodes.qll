@@ -489,13 +489,9 @@ module Public {
      * interface type.
      */
     Callable getACalleeIncludingExternals() {
-      result.asFunction() = this.getTarget()
+      result = this.getACalleeWithoutVirtualDispatch()
       or
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
-        result.asFuncLit() = calleeSource.asExpr()
-        or
-        calleeSource = result.asFunction().getARead()
-        or
         exists(Method declared, Method actual |
           calleeSource = declared.getARead() and
           actual.implements(declared) and
@@ -509,6 +505,19 @@ module Public {
      * we lack a definition, such as standard library functions).
      */
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
+
+    /**
+     * Gets the definition of a possible target of this call, excluding targets reachable via virtual dispatch.
+     */
+    Callable getACalleeWithoutVirtualDispatch() {
+      result.asFunction() = this.getTarget()
+      or
+      exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
+        result.asFuncLit() = calleeSource.asExpr()
+        or
+        calleeSource = result.asFunction().getARead()
+      )
+    }
 
     /**
      * Gets the name of the function, method or variable that is being called.
@@ -677,6 +686,24 @@ module Public {
 
     override predicate isParameterOf(DataFlowCallable call, int idx) {
       this.getSummarizedCallable() = call.asSummarizedCallable() and this.getPos() = idx
+    }
+  }
+
+  /** A representation of a parameter initialization, defined in source via an SSA node. */
+  class UnusedParameterNode extends ParameterNode, InstructionNode {
+    override IR::InitParameterInstruction insn;
+    Parameter parm;
+
+    UnusedParameterNode() {
+      insn = IR::initParamInstruction(parm) and
+      not exists(SsaExplicitDefinition ssa | ssa.getInstruction() = insn)
+    }
+
+    /** Gets the parameter this node initializes. */
+    override Parameter asParameter() { result = parm }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.asCallable().getFuncDef(), i)
     }
   }
 

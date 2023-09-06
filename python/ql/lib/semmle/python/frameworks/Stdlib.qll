@@ -4372,6 +4372,30 @@ private module StdlibPrivate {
       preservesValue = false
     }
   }
+
+  /**
+   * A flow summary for `os.getenv` / `os.getenvb`
+   *
+   * See https://devdocs.io/python~3.11/library/os#os.getenv
+   */
+  class OsGetEnv extends SummarizedCallable {
+    OsGetEnv() { this = "os.getenv" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("os").getMember(["getenv", "getenvb"]).getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("os").getMember(["getenv", "getenvb"]).getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input in ["Argument[1]", "Argument[default:]"] and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

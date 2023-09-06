@@ -276,6 +276,8 @@ private module Config implements FullStateConfigSig {
     getConfig(state).isSource(source) and getState(state) instanceof FlowStateEmpty
   }
 
+  predicate isSink(Node sink) { none() }
+
   predicate isSink(Node sink, FlowState state) {
     getConfig(state).isSink(sink, getState(state))
     or
@@ -312,6 +314,8 @@ private module Config implements FullStateConfigSig {
   predicate allowImplicitRead(Node node, ContentSet c) {
     any(Configuration config).allowImplicitRead(node, c)
   }
+
+  predicate neverSkip(Node node) { none() }
 
   int fieldFlowBranchLimit() { result = min(any(Configuration config).fieldFlowBranchLimit()) }
 

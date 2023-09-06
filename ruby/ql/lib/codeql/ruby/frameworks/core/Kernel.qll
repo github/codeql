@@ -19,7 +19,8 @@ module Kernel {
    */
   class KernelMethodCall extends DataFlow::CallNode {
     KernelMethodCall() {
-      this = API::getTopLevelMember("Kernel").getAMethodCall(_)
+      // Match Kernel calls using local flow, to avoid finding singleton calls on subclasses
+      this = DataFlow::getConstant("Kernel").getAMethodCall(_)
       or
       this.asExpr().getExpr() instanceof UnknownMethodCall and
       (

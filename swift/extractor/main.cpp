@@ -85,15 +85,18 @@ class Observer : public swift::FrontendObserver {
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
     auto& options = invocation.getFrontendOptions();
+    options.KeepASTContext = true;
     lockOutputSwiftModuleTraps(state, options);
     processFrontendOptions(state, options);
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    // remove default consumers to avoid double messaging
+    instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
-  void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
+  void performedCompilation(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
     codeql::extractExtractLazyDeclarations(state, compiler);

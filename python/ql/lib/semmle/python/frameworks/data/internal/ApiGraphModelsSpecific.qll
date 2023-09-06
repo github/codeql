@@ -108,6 +108,23 @@ API::Node getExtraSuccessorFromInvoke(API::CallNode node, AccessPathToken token)
   )
 }
 
+pragma[inline]
+API::Node getAFuzzySuccessor(API::Node node) {
+  result = node.getAMember()
+  or
+  result = node.getParameter(_)
+  or
+  result = node.getKeywordParameter(_)
+  or
+  result = node.getReturn()
+  or
+  result = node.getASubscript()
+  or
+  result = node.getAwaited()
+  or
+  result = node.getASubclass()
+}
+
 /**
  * Holds if `invoke` matches the PY-specific call site filter in `token`.
  */

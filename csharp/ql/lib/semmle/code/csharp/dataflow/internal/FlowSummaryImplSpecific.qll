@@ -15,9 +15,15 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 
-class SummarizedCallableBase extends Callable {
-  SummarizedCallableBase() { this.isUnboundDeclaration() }
-}
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
+class SummarizedCallableBase = UnboundCallable;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = UnboundCallable;
 
 /**
  * A module for importing frameworks that define synthetic globals.
@@ -120,12 +126,12 @@ predicate summaryElement(Callable c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenace`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  */
-predicate neutralSummaryElement(Callable c, string provenance) {
+predicate neutralElement(Callable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, "summary", provenance) and
+    neutralModel(namespace, type, name, signature, kind, provenance) and
     c = interpretElement(namespace, type, false, name, signature, "")
   )
 }
@@ -186,7 +192,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
+/** Gets the textual representation of the content in the format used for MaD models. */
 private string getContentSpecific(Content c) {
   c = TElementContent() and result = "Element"
   or
@@ -197,18 +203,17 @@ private string getContentSpecific(Content c) {
   exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   sc = TWithoutContentSummaryComponent(_) and result = "WithoutElement"
   or
   sc = TWithContentSummaryComponent(_) and result = "WithElement"
   or
-  exists(ReturnKind rk |
+  exists(OutRefReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    not rk = getReturnValueKind() and
-    result = "ReturnValue[" + rk + "]"
+    result = "Argument[" + rk.getPosition() + "]"
   )
 }
 

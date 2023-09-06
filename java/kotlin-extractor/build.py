@@ -92,6 +92,7 @@ def compile_to_dir(build_dir, srcs, classpath, java_classpath, output):
     kotlin_arg_file = build_dir + '/kotlin.args'
     kotlin_args = ['-Werror',
                    '-opt-in=kotlin.RequiresOptIn',
+                   '-opt-in=org.jetbrains.kotlin.ir.symbols.IrSymbolInternals',
                    '-d', output,
                    '-module-name', 'codeql-kotlin-extractor',
                    '-no-reflect', '-no-stdlib',
@@ -133,30 +134,6 @@ def find_sources(path):
     return glob.glob(path + '/**/*.kt', recursive=True) + glob.glob(path + '/**/*.java', recursive=True)
 
 
-def get_kotlin_lib_folder():
-    x = run_process([kotlinc, '-version', '-verbose'], capture_output=True)
-    output = x.stderr.decode(encoding='UTF-8', errors='strict')
-    m = re.match(
-        r'.*\nlogging: using Kotlin home directory ([^\n]+)\n.*', output)
-    if m is None:
-        raise Exception('Cannot determine kotlinc home directory')
-    kotlin_home = m.group(1)
-    print("Kotlin home directory: " + kotlin_home)
-    return kotlin_home + '/lib'
-
-
-def get_gradle_lib_folder():
-    x = run_process(['gradle', 'getHomeDir'], capture_output=True)
-    output = x.stdout.decode(encoding='UTF-8', errors='strict')
-    m = re.search(r'(?m)^> Task :getHomeDir\n([^\n]+)$', output)
-    if m is None:
-        print("gradle getHomeDir output:\n" + output, file=sys.stderr)
-        raise Exception('Cannot determine gradle home directory')
-    gradle_home = m.group(1)
-    print("Gradle home directory: " + gradle_home)
-    return gradle_home + '/lib'
-
-
 def find_jar(path, base):
     fn = path + '/' + base + '.jar'
     if not os.path.isfile(fn):
@@ -192,7 +169,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
         shutil.rmtree(tmp_src_dir)
     shutil.copytree('src', tmp_src_dir)
 
-    include_version_folder = tmp_src_dir + '/main/kotlin/utils/versions/to_include'
+    include_version_folder = tmp_src_dir + '/main/kotlin/utils/this_version'
     os.makedirs(include_version_folder)
 
     resource_dir = tmp_src_dir + '/main/resources/com/github/codeql'
@@ -216,11 +193,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
                 shutil.copytree(d, include_version_folder, dirs_exist_ok=True)
 
     # remove all version folders:
-    for version in kotlin_plugin_versions.many_versions:
-        d = tmp_src_dir + '/main/kotlin/utils/versions/v_' + \
-            version.replace('.', '_')
-        if os.path.exists(d):
-            shutil.rmtree(d)
+    shutil.rmtree(tmp_src_dir + '/main/kotlin/utils/versions')
 
     srcs = find_sources(tmp_src_dir)
 

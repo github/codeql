@@ -1,11 +1,14 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-_swift_prebuilt_version = "swift-5.8.1-RELEASE.208"
+# TODO: remove `remove-result-of.patch` once we update to a Swift version containing
+# https://github.com/apple/swift/commit/2ed2cea2
+# (probably when updating to 5.9)
+_swift_prebuilt_version = "swift-5.8.1-RELEASE.214"
 _swift_sha_map = {
-    "Linux-X64": "1d93286d6219e5c5746938ab9287d90efea98039f022cb1433296ccbc1684bc0",
-    "macOS-ARM64": "a29ce5143cb2c68190e337a35ebb163e961a58b9d8826fe7f8daf4d8381ee75d",
-    "macOS-X64": "a7e63ea732750c783142083df20a34c8d337b9b9ba210fa6a9e5ada7b7880189",
+    "Linux-X64": "009594131d2f6327e0033c4b7b0479a5730427575eb59a81a439fe0e343aa777",
+    "macOS-ARM64": "304a918e3699d404f57e967eff79b982388d8c5330c2135272c9f3a825920a39",
+    "macOS-X64": "c763c493e5782869b54887dc72df2aad00d59af7272c6d96377f1debb98741f2",
 }
 
 _swift_arch_map = {
@@ -39,6 +42,15 @@ def load_dependencies(workspace_name):
             ),
             build_file = _build(workspace_name, "swift-llvm-support"),
             sha256 = sha256,
+            patch_args = ["-p1"],
+            patches = [
+                "@%s//swift/third_party/swift-llvm-support:patches/%s.patch" % (workspace_name, patch_name)
+                for patch_name in (
+                    "remove-result-of",
+                    "remove-redundant-operators",
+                    "add-constructor-to-Compilation",
+                )
+            ],
         )
 
     _github_archive(

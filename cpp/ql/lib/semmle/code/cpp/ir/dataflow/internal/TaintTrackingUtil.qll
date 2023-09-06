@@ -57,7 +57,7 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
   )
   or
   // Taint flow from an address to its dereference.
-  Ssa::isDereference(instrTo, opFrom)
+  Ssa::isDereference(instrTo, opFrom, _)
   or
   // Unary instructions tend to preserve enough information in practice that we
   // want taint to flow through.
@@ -112,7 +112,7 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -160,7 +160,7 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
     FunctionInput modelIn, FunctionOutput modelOut
   |
     indirectArgument = callInput(call, modelIn) and
-    indirectArgument.getAddressOperand() = nodeIn.asOperand() and
+    indirectArgument.hasAddressOperandAndIndirectionIndex(nodeIn.asOperand(), _) and
     call.getStaticCallTarget() = func and
     (
       func.(DataFlowFunction).hasDataFlow(modelIn, modelOut)

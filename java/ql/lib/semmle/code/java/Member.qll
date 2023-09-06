@@ -33,6 +33,7 @@ class Member extends Element, Annotatable, Modifiable, @member {
    * Holds if this member has the specified name and is declared in the
    * specified package and type.
    */
+  pragma[nomagic]
   predicate hasQualifiedName(string package, string type, string name) {
     this.getDeclaringType().hasQualifiedName(package, type) and this.hasName(name)
   }
@@ -736,7 +737,6 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
   /** Gets the number of fields declared in this declaration. */
   int getNumField() { result = max(int idx | fieldDeclaredIn(_, this, idx) | idx) + 1 }
 
-  pragma[assume_small_delta]
   override string toString() {
     if this.getNumField() = 1
     then result = this.getTypeAccess() + " " + this.getField(0) + ";"

@@ -1,3 +1,141 @@
+## 0.7.3
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
+### Minor Analysis Improvements
+
+* Modified the `getSecureAlgorithmName` predicate in `Encryption.qll` to also include `SHA-256` and `SHA-512`. Previously only the versions of the names without dashes were considered secure.
+* Add support for `WithElement` and `WithoutElement` for MaD access paths.
+
+## 0.7.2
+
+### New Features
+
+* A `Diagnostic.getCompilationInfo()` predicate has been added.
+
+### Minor Analysis Improvements
+
+* Fixed a typo in the `StdlibRandomSource` class in `RandomDataSource.qll`, which caused the class to improperly model calls to the `nextBytes` method. Queries relying on `StdlibRandomSource` may see an increase in results.
+* Improved the precision of virtual dispatch of `java.io.InputStream` methods. Now, calls to these methods will not dispatch to arbitrary implementations of `InputStream` if there is a high-confidence alternative (like a models-as-data summary).
+* Added more dataflow steps for `java.io.InputStream`s that wrap other `java.io.InputStream`s.
+* Added models for the Struts 2 framework.
+* Improved the modeling of Struts 2 sources of untrusted data by tainting the whole object graph of the objects unmarshaled from an HTTP request.
+
+## 0.7.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+* A `Class.isFileClass()` predicate, to identify Kotlin file classes, has been added.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Added models for Apache Commons Lang3 `ToStringBuilder.reflectionToString` method.
+* Added support for the Kotlin method `apply`.
+* Added models for the following packages:
+
+  * java.io
+  * java.lang
+  * java.net
+  * java.nio.channels
+  * java.nio.file
+  * java.util.zip
+  * okhttp3
+  * org.gradle.api.file
+  * retrofit2
+
+## 0.7.0
+
+### Deprecated APIs
+
+* The `ExecCallable` class in `ExternalProcess.qll` has been deprecated.
+
+### Major Analysis Improvements
+
+* The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
+
+### Minor Analysis Improvements
+
+* Added automatically-generated dataflow models for `javax.portlet`.
+* Added a missing summary model for the method `java.net.URL.toString`.
+* Added automatically-generated dataflow models for the following frameworks and libraries:
+  * `hudson`
+  * `jenkins`
+  * `net.sf.json`
+  * `stapler`
+* Added more models for the Hudson framework.
+* Added more models for the Stapler framework.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+### New Features
+
+* Kotlin versions up to 1.9.0 are now supported.
+
+### Minor Analysis Improvements
+
+* Added flow through the block arguments of `kotlin.io.use` and `kotlin.with`.
+* Added models for the following packages:
+
+  * com.alibaba.druid.sql
+  * com.fasterxml.jackson.databind
+  * com.jcraft.jsch
+  * io.netty.handler.ssl
+  * okhttp3
+  * org.antlr.runtime
+  * org.fusesource.leveldbjni
+  * org.influxdb
+  * org.springframework.core.io
+  * org.yaml.snakeyaml
+* Deleted the deprecated `getRHS` predicate from the `LValue` class, use `getRhs` instead.
+* Deleted the deprecated `getCFGNode` predicate from the `SsaVariable` class, use `getCfgNode` instead.
+* Deleted many deprecated predicates and classes with uppercase `XML`, `JSON`, `URL`, `API`, etc. in their names. Use the PascalCased versions instead.
+* Added models for the following packages:
+
+  * java.lang
+  * java.nio.file
+* Added dataflow models for the Gson deserialization library.
+* Added models for the following packages:
+
+  * okhttp3
+* Added more dataflow models for the Play Framework.
+* Modified the models related to `java.nio.file.Files.copy` so that generic `[Input|Output]Stream` arguments are not considered file-related sinks.
+* Dataflow analysis has a new flow step through constructors of transitive subtypes of `java.io.InputStream` that wrap an underlying data source. Previously, the step only existed for direct subtypes of `java.io.InputStream`.
+* Path creation sinks modeled in `PathCreation.qll` have been added to the models-as-data sink kind `path-injection`.
+* Updated the regular expression in the `HostnameSanitizer` sanitizer in the `semmle.code.java.security.RequestForgery` library to better detect strings prefixed with a hostname.
+* Changed the `android-widget` Java source kind to `remote`. Any custom data extensions that use the `android-widget` source kind will need to be updated accordingly in order to continue working.
+* Updated the following Java sink kind names. Any custom data extensions will need to be updated accordingly in order to continue working.
+  * `sql` to `sql-injection`
+  * `url-redirect` to `url-redirection`
+  * `xpath` to `xpath-injection`
+  * `ssti` to `template-injection`
+  * `logging` to `log-injection`
+  * `groovy` to `groovy-injection`
+  * `jexl` to `jexl-injection`
+  * `mvel` to `mvel-injection`
+  * `xslt` to `xslt-injection`
+  * `ldap` to `ldap-injection`
+  * `pending-intent-sent` to `pending-intents`
+  * `intent-start` to `intent-redirection`
+  * `set-hostname-verifier` to `hostname-verification`
+  * `header-splitting` to `response-splitting`
+  * `xss` to `html-injection` and `js-injection`
+  * `write-file` to `file-system-store`
+  * `create-file` and `read-file` to `path-injection`
+  * `open-url` and `jdbc-url` to `request-forgery`
+
 ## 0.6.2
 
 ### Minor Analysis Improvements

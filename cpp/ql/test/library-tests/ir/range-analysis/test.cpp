@@ -70,3 +70,50 @@ int f4(int x) {
     }
   }
 }
+
+// No interesting ranges to check here - this irreducible CFG caused an infinite loop due to back edge detection
+void gotoLoop(bool b1, bool b2)
+{
+  int j;
+
+  if (b1)
+    return;
+
+  if (!b2)
+  {
+    for (j = 0; j < 10; ++j)
+    {
+     goto main_decode_loop;
+    }
+  }
+  else
+  {
+    for (j = 0; j < 10; ++j)
+    {
+      int x;
+      main_decode_loop:
+    }
+  }
+}
+
+void test_sub(int x, int y, int n) {
+  if(x > 0 && x < 500) {
+    if(y > 0 && y < 10) {
+      range(x - y); // $ range=<=498 range=>=-8
+    }
+
+    if(n > 0 && n < 100) {
+      for (int i = 0; i < n; i++)
+      {
+        range(n - i); // $ range=">=Phi: i-97" range=<=99 range=>=-97
+        range(i - n); // $ range="<=Phi: i-1" range=">=Phi: i-99" range=<=97 range=>=-99 
+      }
+
+      for (int i = n; i != 0; i--)
+      {
+        range(n - i); // $ SPURIOUS: overflow=+
+        range(i - n); // $ range=">=Phi: i-99"
+      }
+    }
+  }
+}

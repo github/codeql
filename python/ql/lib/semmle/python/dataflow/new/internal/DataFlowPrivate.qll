@@ -22,8 +22,8 @@ import DataFlowDispatch
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c, pos)
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.(ParameterNodeImpl).isParameterOf(c, pos)
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -304,8 +304,12 @@ module EssaFlow {
       // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
-      not with.isAsync() and
       contextManager.strictlyDominates(var)
+      // note: we allow this for both `with` and `async with`, since some
+      // implementations do `async def __aenter__(self): return self`, so you can do
+      // both:
+      // * `foo = x.foo(); await foo.async_method(); foo.close()` and
+      // * `async with x.foo() as foo: await foo.async_method()`.
     )
     or
     // Async with var definition
@@ -314,6 +318,12 @@ module EssaFlow {
     //  nodeTo is `x`, essa var
     //
     // This makes the cfg node the local source of the awaited value.
+    //
+    // We have this step in addition to the step above, to handle cases where the QL
+    // modeling of `f(42)` requires a `.getAwaited()` step (in API graphs) when not
+    // using `async with`, so you can do both:
+    // * `foo = await x.foo(); await foo.async_method(); foo.close()` and
+    // * `async with x.foo() as foo: await foo.async_method()`.
     exists(With with, ControlFlowNode var |
       nodeFrom.(CfgNode).getNode() = var and
       nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
@@ -463,6 +473,15 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   or
   // Setting the possible values of the variable at the end of import time
   nodeFrom = nodeTo.(ModuleVariableNode).getADefiningWrite()
+  or
+  // a parameter with a default value, since the parameter will be in the scope of the
+  // function, while the default value itself will be in the scope that _defines_ the
+  // function.
+  exists(ParameterDefinition param |
+    // note: we go to the _control-flow node_ of the parameter, and not the ESSA node of the parameter, since for type-tracking, the ESSA node is not a LocalSourceNode, so we would get in trouble.
+    nodeFrom.asCfgNode() = param.getDefault() and
+    nodeTo.asCfgNode() = param.getDefiningNode()
+  )
 }
 
 /**
@@ -486,15 +505,29 @@ class DataFlowType extends TDataFlowType {
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
-  // We include read- and store steps here to force them to be
-  // shown in path explanations.
-  // This hack is necessary, because we have included some of these
-  // steps as default taint steps, making them be suppressed in path
-  // explanations.
-  // We should revert this once, we can remove this steps from the
-  // default taint steps; this should be possible once we have
-  // implemented flow summaries and recursive content.
-  CastNode() { readStep(_, _, this) or storeStep(_, _, this) }
+  CastNode() { none() }
+}
+
+/**
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
+ */
+predicate neverSkipInPathGraph(Node n) {
+  // NOTE: We could use RHS of a definition, but since we have use-use flow, in an
+  // example like
+  // ```py
+  // x = SOURCE()
+  // if <cond>:
+  //     y = x
+  // SINK(x)
+  // ```
+  // we would end up saying that the path MUST not skip the x in `y = x`, which is just
+  // annoying and doesn't help the path explanation become clearer.
+  n.asVar() instanceof EssaDefinition and
+  // For a parameter we have flow from ControlFlowNode to SSA node, and then onwards
+  // with use-use flow, and since the CFN is already part of the path graph, we don't
+  // want to force showing the SSA node as well.
+  not n.asVar() instanceof ParameterDefinition
 }
 
 /**
@@ -556,9 +589,6 @@ predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
       r.getAttributeName(), nodeFrom) and
     nodeTo = r
   )
-  or
-  // Default value for parameter flows to that parameter
-  defaultValueFlowStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -584,7 +614,7 @@ predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
  * content `c`.
  */
-predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
+predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   listStoreStep(nodeFrom, c, nodeTo)
   or
   setStoreStep(nodeFrom, c, nodeTo)
@@ -779,23 +809,10 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode n
   )
 }
 
-predicate defaultValueFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
-  exists(Function f, Parameter p, ParameterDefinition def |
-    // `getArgByName` supports, unlike `getAnArg`, keyword-only parameters
-    p = f.getArgByName(_) and
-    nodeFrom.asExpr() = p.getDefault() and
-    // The following expresses
-    // nodeTo.(ParameterNode).getParameter() = p
-    // without non-monotonic recursion
-    def.getParameter() = p and
-    nodeTo.getNode() = def.getDefiningNode()
-  )
-}
-
 /**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
-predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
+predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
@@ -870,7 +887,7 @@ predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) 
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   matchClearStep(n, c)
   or
   attributeClearStep(n, c)
@@ -921,8 +938,6 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { 
  * the enclosing callable `c` (including the implicit `this` parameter).
  */
 predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

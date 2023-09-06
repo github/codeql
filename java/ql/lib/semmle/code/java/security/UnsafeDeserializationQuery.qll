@@ -28,6 +28,20 @@ private class ObjectInputStreamReadObjectMethod extends Method {
   }
 }
 
+/**
+ * A type extending `ObjectInputStream` that makes it safe to deserialize untrusted data.
+ *
+ * * See https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/serialization/ValidatingObjectInputStream.html
+ * * See https://github.com/ikkisoft/SerialKiller
+ */
+private class SafeObjectInputStreamType extends RefType {
+  SafeObjectInputStreamType() {
+    this.getASourceSupertype*()
+        .hasQualifiedName("org.apache.commons.io.serialization", "ValidatingObjectInputStream") or
+    this.getASourceSupertype*().hasQualifiedName("org.nibblesec.tools", "SerialKiller")
+  }
+}
+
 private class XmlDecoderReadObjectMethod extends Method {
   XmlDecoderReadObjectMethod() {
     this.getDeclaringType().hasQualifiedName("java.beans", "XMLDecoder") and
@@ -135,9 +149,7 @@ predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
     sink = ma.getQualifier() and
     not exists(DataFlow::ExprNode node |
       node.getExpr() = sink and
-      node.getTypeBound()
-          .(RefType)
-          .hasQualifiedName("org.apache.commons.io.serialization", "ValidatingObjectInputStream")
+      node.getTypeBound() instanceof SafeObjectInputStreamType
     )
     or
     m instanceof XmlDecoderReadObjectMethod and

@@ -1,5 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.ExternalFlow
 import TestUtilities.InlineFlowTest
 
 module OkHttpFlowConfig implements DataFlow::ConfigSig {
@@ -10,10 +11,4 @@ module OkHttpFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module OkHttpFlow = DataFlow::Global<OkHttpFlowConfig>;
-
-class OkHttpTest extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
-    OkHttpFlow::flow(src, sink)
-  }
-}
+import FlowTest<OkHttpFlowConfig, DefaultFlowConfig>

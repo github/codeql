@@ -14,7 +14,7 @@ CODEQL_PLATFORM = osx64
 endif
 endif
 
-CODEQL_TOOLS = $(addprefix codeql-tools/,autobuild.cmd autobuild.sh pre-finalize.cmd pre-finalize.sh index.cmd index.sh identify-environment.cmd identify-environment.sh tracing-config.lua)
+CODEQL_TOOLS = $(addprefix codeql-tools/,autobuild.cmd autobuild.sh baseline-config-empty.json baseline-config-vendor.json configure-baseline.cmd configure-baseline.sh identify-environment.cmd identify-environment.sh index.cmd index.sh pre-finalize.cmd pre-finalize.sh tracing-config.lua)
 
 EXTRACTOR_PACK_OUT = build/codeql-extractor-go
 

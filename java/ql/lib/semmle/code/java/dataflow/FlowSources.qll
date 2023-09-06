@@ -41,6 +41,7 @@ abstract class RemoteFlowSource extends DataFlow::Node {
  */
 private module FlowSources {
   private import semmle.code.java.frameworks.hudson.Hudson
+  private import semmle.code.java.frameworks.stapler.Stapler
 }
 
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
@@ -142,11 +143,10 @@ private class GuiceRequestParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "Guice request parameter" }
 }
 
-private class Struts2ActionSupportClassFieldReadSource extends RemoteFlowSource {
-  Struts2ActionSupportClassFieldReadSource() {
-    exists(Struts2ActionSupportClass c |
-      c.getASetterMethod().getField() = this.asExpr().(FieldRead).getField()
-    )
+private class Struts2ActionSupportClassFieldSource extends RemoteFlowSource {
+  Struts2ActionSupportClassFieldSource() {
+    this.(DataFlow::FieldValueNode).getField() =
+      any(Struts2ActionSupportClass c).getASetterMethod().getField()
   }
 
   override string getSourceType() { result = "Struts2 ActionSupport field" }
