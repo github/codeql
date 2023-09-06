@@ -42,11 +42,9 @@ newtype TApplicationModeEndpoint =
  * An endpoint is a node that is a candidate for modeling.
  */
 abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint {
-  abstract predicate isArgOf(Call c, int idx);
+  abstract Call getCall();
 
-  Call getCall() { this.isArgOf(result, _) }
-
-  int getArgIndex() { this.isArgOf(_, result) }
+  abstract int getArgIndex();
 
   abstract Top asTop();
 
@@ -66,7 +64,9 @@ class ExplicitArgument extends ApplicationModeEndpoint, TExplicitArgument {
 
   ExplicitArgument() { this = TExplicitArgument(call, arg) }
 
-  override predicate isArgOf(Call c, int idx) { c = call and this.asTop() = c.getArgument(idx) }
+  override Call getCall() { result = call }
+
+  override int getArgIndex() { this.asTop() = call.getArgument(result) }
 
   override Top asTop() { result = arg.asExpr() }
 
@@ -83,9 +83,9 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
 
   InstanceArgument() { this = TInstanceArgument(call, arg) }
 
-  override predicate isArgOf(Call c, int idx) {
-    c = call and this.asTop() = c.getQualifier() and idx = -1
-  }
+  override Call getCall() { result = call }
+
+  override int getArgIndex() { result = -1 }
 
   override Top asTop() { if exists(arg.asExpr()) then result = arg.asExpr() else result = call }
 
@@ -112,7 +112,9 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
 
   ImplicitVarargsArray() { this = TImplicitVarargsArray(call, vararg, idx) }
 
-  override predicate isArgOf(Call c, int i) { c = call and i = idx }
+  override Call getCall() { result = call }
+
+  override int getArgIndex() { result = idx }
 
   override Top asTop() { result = this.getCall() }
 
@@ -131,7 +133,9 @@ class MethodCall extends ApplicationModeEndpoint, TMethodCall {
 
   MethodCall() { this = TMethodCall(call) }
 
-  override predicate isArgOf(Call c, int idx) { c = call and idx = -1 }
+  override Call getCall() { result = call }
+
+  override int getArgIndex() { result = -1 }
 
   override Top asTop() { result = call }
 
