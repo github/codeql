@@ -46,11 +46,21 @@ abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint 
 
   abstract string getMaDInput();
 
+  abstract string getMaDOutput();
+
   abstract Top asTop();
 
   abstract DataFlow::Node asNode();
 
-  abstract string getExtensibleType();
+  string getExtensibleType() {
+    // XXX the sourceModel still implements a bogus getMaDInput() method, so we can't use this yet
+    if /* not exists(this.getMaDInput()) and */ exists(this.getMaDOutput())
+    then result = "sourceModel"
+    else
+      if exists(this.getMaDInput()) and not exists(this.getMaDOutput())
+      then result = "sinkModel"
+      else none() // if both exist, it would be a summaryModel (not yet supported)
+  }
 
   abstract string toString();
 }
@@ -68,15 +78,13 @@ class ExplicitArgument extends ApplicationModeEndpoint, TExplicitArgument {
 
   private int getArgIndex() { this.asTop() = call.getArgument(result) }
 
-  override string getMaDInput() {
-    result = "Argument[" + this.getArgIndex() + "]"
-  }
+  override string getMaDInput() { result = "Argument[" + this.getArgIndex() + "]" }
+
+  override string getMaDOutput() { none() }
 
   override Top asTop() { result = arg.asExpr() }
 
   override DataFlow::Node asNode() { result = arg }
-
-  override string getExtensibleType() { result = "sinkModel" }
 
   override string toString() { result = arg.toString() }
 }
@@ -91,11 +99,11 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
 
   override string getMaDInput() { result = "Argument[this]" }
 
+  override string getMaDOutput() { none() }
+
   override Top asTop() { if exists(arg.asExpr()) then result = arg.asExpr() else result = call }
 
   override DataFlow::Node asNode() { result = arg }
-
-  override string getExtensibleType() { result = "sinkModel" }
 
   override string toString() { result = arg.toString() }
 }
@@ -118,15 +126,13 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
 
   override Call getCall() { result = call }
 
-  override string getMaDInput() {
-    result = "Argument[" + idx + "]"
-  }
+  override string getMaDInput() { result = "Argument[" + idx + "]" }
+
+  override string getMaDOutput() { none() }
 
   override Top asTop() { result = this.getCall() }
 
   override DataFlow::Node asNode() { result = vararg }
-
-  override string getExtensibleType() { result = "sinkModel" }
 
   override string toString() { result = vararg.toString() }
 }
@@ -143,11 +149,11 @@ class MethodCall extends ApplicationModeEndpoint, TMethodCall {
 
   override string getMaDInput() { result = "Argument[this]" }
 
+  override string getMaDOutput() { result = "ReturnValue" }
+
   override Top asTop() { result = call }
 
   override DataFlow::Node asNode() { result.asExpr() = call }
-
-  override string getExtensibleType() { result = "sourceModel" }
 
   override string toString() { result = call.toString() }
 }
@@ -210,7 +216,6 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    e.getExtensibleType() = "sinkModel" and
     ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
     ext = "" and
@@ -269,11 +274,12 @@ class ApplicationModeMetadataExtractor extends string {
 
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
-    string input, string isVarargsArray
+    string input, string output, string isVarargsArray
   ) {
     exists(Callable callable |
       e.getCall().getCallee() = callable and
-      input = e.getMaDInput() and
+      (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
+      (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
       package = callable.getDeclaringType().getPackage().getName() and
       // we're using the erased types because the MaD convention is to not specify type parameters.
       // Whether something is or isn't a sink doesn't usually depend on the type parameters.
