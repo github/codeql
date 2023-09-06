@@ -127,6 +127,7 @@ newtype TNode =
     // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(f))
   } or
+  /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
   TForbiddenRecursionGuard() {
     none() and
     // We want to prune irrelevant models before materialising data flow nodes, so types contributed
