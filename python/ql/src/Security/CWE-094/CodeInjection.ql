@@ -16,9 +16,9 @@
 
 import python
 import semmle.python.security.dataflow.CodeInjectionQuery
-import DataFlow::PathGraph
+import CodeInjectionFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+where CodeInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
   "user-provided value"

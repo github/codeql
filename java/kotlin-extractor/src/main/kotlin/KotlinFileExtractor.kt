@@ -107,7 +107,7 @@ open class KotlinFileExtractor(
     fun extractFileContents(file: IrFile, id: Label<DbFile>) {
         with("file", file) {
             val locId = tw.getWholeFileLocation()
-            val pkg = file.fqName.asString()
+            val pkg = file.packageFqName.asString()
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)
             tw.writeCupackage(id, pkgId)
@@ -1901,8 +1901,9 @@ open class KotlinFileExtractor(
             verboseln("No match as didn't find target package")
             return false
         }
-        if (targetPkg.fqName.asString() != pName) {
-            verboseln("No match as package name is ${targetPkg.fqName.asString()}")
+        val targetName = targetPkg.packageFqName.asString()
+        if (targetName != pName) {
+            verboseln("No match as package name is $targetName")
             return false
         }
         verboseln("Match")
@@ -2556,8 +2557,9 @@ open class KotlinFileExtractor(
             verboseln("No match as didn't find target package")
             return false
         }
-        if (targetPkg.fqName.asString() != pkgName) {
-            verboseln("No match as package name is ${targetPkg.fqName.asString()} not $pkgName")
+        val targetName = targetPkg.packageFqName.asString()
+        if (targetName != pkgName) {
+            verboseln("No match as package name is $targetName not $pkgName")
             return false
         }
         verboseln("Match")
