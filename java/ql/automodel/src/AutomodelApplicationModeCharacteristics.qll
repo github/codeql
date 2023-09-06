@@ -36,12 +36,18 @@ newtype TApplicationModeEndpoint =
       not exists(int i | i < idx and call.getArgument(i).(Argument).isVararg())
     )
   } or
-  TMethodCall(Call call) { not call instanceof ConstructorCall }
+  TMethodCall(Call call) { not call instanceof ConstructorCall } or
+  TOverriddenParameter(Parameter p) {
+    not p.getCallable().callsConstructor(_) and
+    p.getCallable().(Method).overrides(_)
+  }
 
 /**
  * An endpoint is a node that is a candidate for modeling.
  */
 abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint {
+  abstract Callable getCallable();
+
   abstract Call getCall();
 
   abstract string getMaDInput();
@@ -74,6 +80,8 @@ class ExplicitArgument extends ApplicationModeEndpoint, TExplicitArgument {
 
   ExplicitArgument() { this = TExplicitArgument(call, arg) }
 
+  override Callable getCallable() { result = call.getCallee() }
+
   override Call getCall() { result = call }
 
   private int getArgIndex() { this.asTop() = call.getArgument(result) }
@@ -94,6 +102,8 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
   DataFlow::Node arg;
 
   InstanceArgument() { this = TInstanceArgument(call, arg) }
+
+  override Callable getCallable() { result = call.getCallee() }
 
   override Call getCall() { result = call }
 
@@ -124,13 +134,15 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
 
   ImplicitVarargsArray() { this = TImplicitVarargsArray(call, vararg, idx) }
 
+  override Callable getCallable() { result = call.getCallee() }
+
   override Call getCall() { result = call }
 
   override string getMaDInput() { result = "Argument[" + idx + "]" }
 
   override string getMaDOutput() { none() }
 
-  override Top asTop() { result = this.getCall() }
+  override Top asTop() { result = call }
 
   override DataFlow::Node asNode() { result = vararg }
 
@@ -145,6 +157,8 @@ class MethodCall extends ApplicationModeEndpoint, TMethodCall {
 
   MethodCall() { this = TMethodCall(call) }
 
+  override Callable getCallable() { result = call.getCallee() }
+
   override Call getCall() { result = call }
 
   override string getMaDInput() { result = "Argument[this]" }
@@ -156,6 +170,28 @@ class MethodCall extends ApplicationModeEndpoint, TMethodCall {
   override DataFlow::Node asNode() { result.asExpr() = call }
 
   override string toString() { result = call.toString() }
+}
+
+class OverriddenParameter extends ApplicationModeEndpoint, TOverriddenParameter {
+  Parameter p;
+
+  OverriddenParameter() { this = TOverriddenParameter(p) }
+
+  override Callable getCallable() { result = p.getCallable() }
+
+  override Call getCall() { none() }
+
+  private int getArgIndex() { p.getCallable().getParameter(result) = p }
+
+  override string getMaDInput() { none() }
+
+  override string getMaDOutput() { result = "Parameter[" + this.getArgIndex() + "]" }
+
+  override Top asTop() { result = p }
+
+  override DataFlow::Node asNode() { result.(DataFlow::ParameterNode).asParameter() = p }
+
+  override string toString() { result = p.toString() }
 }
 
 /**
@@ -208,7 +244,8 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   predicate isSource(Endpoint e, string kind, string provenance) {
     exists(string package, string type, string name, string signature, string ext, string output |
       sourceSpec(e, package, type, name, signature, ext, output) and
-      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind, provenance)
+      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind,
+        provenance)
     )
   }
 
@@ -230,7 +267,8 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   }
 
   additional predicate sourceSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext, string output
+    Endpoint e, string package, string type, string name, string signature, string ext,
+    string output
   ) {
     ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
@@ -293,7 +331,7 @@ class ApplicationModeMetadataExtractor extends string {
     string input, string output, string isVarargsArray
   ) {
     exists(Callable callable |
-      e.getCall().getCallee() = callable and
+      e.getCallable() = callable and
       (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
       (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
       package = callable.getDeclaringType().getPackage().getName() and
@@ -328,8 +366,8 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
 
   override predicate appliesToEndpoint(Endpoint e) {
     not ApplicationCandidatesImpl::isSink(e, _, _) and
-    ApplicationModeGetCallable::getCallable(e).getName().matches("is%") and
-    ApplicationModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
+    e.getCallable().getName().matches("is%") and
+    e.getCallable().getReturnType() instanceof BooleanType
   }
 }
 

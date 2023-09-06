@@ -61,3 +61,9 @@ class Test {
 		c.getInputStream(); // the call is a source example, c is a sink candidate
 	}
 }
+
+class OverrideTest {
+	public boolean equals(Object o) { // o is a source candidate because it overrides an existing method
+		return false;
+	}
+}
