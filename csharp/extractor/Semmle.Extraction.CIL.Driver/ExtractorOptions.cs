@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Reflection.PortableExecutable;
-using System.Reflection.Metadata;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
 using Semmle.Util;
-using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CIL.Driver
 {

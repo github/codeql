@@ -349,6 +349,7 @@ The following sink kinds are supported:
 - **response-splitting**: A sink that can be used for HTTP response splitting, such as in calls to **HttpServletResponse.setHeader**.
 - **sql-injection**: A sink that can be used for SQL injection, such as in a **Statement.executeQuery** call.
 - **template-injection**: A sink that can be used for server side template injection, such as in a **Velocity.evaluate** call.
+- **trust-boundary-violation**: A sink that can be used to cross a trust boundary, such as in a **HttpSession.setAttribute** call.
 - **url-redirection**: A sink that can be used to redirect the user to a malicious URL, such as in a **Response.temporaryRedirect** call.
 - **xpath-injection**: A sink that can be used for XPath injection, such as in a **XPath.evaluate** call.
 - **xslt-injection**: A sink that can be used for XSLT injection, such as in a **Transformer.transform** call.
@@ -397,6 +398,8 @@ The following components are supported:
 - **SyntheticGlobal[**\ `name`\ **]** selects the synthetic global with name `name`.
 - **ArrayElement** selects the elements of an array.
 - **Element** selects the elements of a collection-like container.
+- **WithoutElement** selects a collection-like container without its elements. This is for input only.
+- **WithElement** selects the elements of a collection-like container, but points to the container itself. This is for input only.
 - **MapKey** selects the element keys of a map.
 - **MapValue** selects the element values of a map.
 

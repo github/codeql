@@ -1,8 +1,8 @@
-﻿using Semmle.Extraction.CSharp;
+﻿using System.Linq;
+using Semmle.Util;
 using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
-using Semmle.Util;
-using System.Linq;
+using Semmle.Extraction.CSharp;
 
 namespace Semmle.Autobuild.CSharp
 {

@@ -1,5 +1,5 @@
 import csharp
 
 from File f
-where f.fromSource()
+where f.fromSource() or f.getExtension() = "cshtml"
 select f

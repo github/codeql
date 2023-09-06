@@ -1,2 +1,6 @@
+| tests2.cpp:59:3:59:10 | call to snprintf | This 'call to snprintf' operation is limited to 13 bytes but the destination is only 0 bytes. |
+| tests2.cpp:59:3:59:10 | call to snprintf | This 'call to snprintf' operation is limited to 13 bytes but the destination is only 2 bytes. |
+| tests2.cpp:63:3:63:10 | call to snprintf | This 'call to snprintf' operation is limited to 13 bytes but the destination is only 0 bytes. |
+| tests2.cpp:63:3:63:10 | call to snprintf | This 'call to snprintf' operation is limited to 13 bytes but the destination is only 3 bytes. |
 | tests.c:43:3:43:10 | call to snprintf | This 'call to snprintf' operation is limited to 111 bytes but the destination is only 110 bytes. |
 | tests.c:46:3:46:10 | call to snprintf | This 'call to snprintf' operation is limited to 111 bytes but the destination is only 110 bytes. |

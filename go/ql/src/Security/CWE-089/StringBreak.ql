@@ -17,10 +17,10 @@
 
 import go
 import semmle.go.security.StringBreak
-import DataFlow::PathGraph
+import StringBreak::Flow::PathGraph
 
-from StringBreak::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from StringBreak::Flow::PathNode source, StringBreak::Flow::PathNode sink
+where StringBreak::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink,
-  "If this $@ contains a " + cfg.getQuote().getType() + " quote, it could break out of " +
-    "the enclosing quotes.", source.getNode(), "JSON value"
+  "If this $@ contains a " + sink.getNode().(StringBreak::Sink).getQuote().getType() +
+    " quote, it could break out of " + "the enclosing quotes.", source.getNode(), "JSON value"

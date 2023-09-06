@@ -1,8 +1,9 @@
+using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
-using System.IO;
-using System.Linq;
+
 
 namespace Semmle.Extraction.CSharp.Entities
 {

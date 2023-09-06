@@ -1,11 +1,11 @@
 using System;
-using Semmle.Util.Logging;
-using System.Linq;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Semmle.Util;
+using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
+using Newtonsoft.Json.Linq;
 
 namespace Semmle.Autobuild.CSharp
 {

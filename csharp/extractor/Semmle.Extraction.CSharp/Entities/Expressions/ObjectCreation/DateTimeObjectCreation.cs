@@ -1,6 +1,6 @@
-using Microsoft.CodeAnalysis;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions

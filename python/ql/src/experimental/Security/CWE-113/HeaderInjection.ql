@@ -14,9 +14,9 @@
 // determine precision above
 import python
 import experimental.semmle.python.security.injection.HTTPHeaders
-import DataFlow::PathGraph
+import HeaderInjectionFlow::PathGraph
 
-from HeaderInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from HeaderInjectionFlow::PathNode source, HeaderInjectionFlow::PathNode sink
+where HeaderInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This HTTP header is constructed from a $@.", source.getNode(),
   "user-provided value"

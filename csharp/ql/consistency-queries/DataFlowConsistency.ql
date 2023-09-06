@@ -1,48 +1,49 @@
 import csharp
 import cil
-import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-import semmle.code.csharp.dataflow.internal.DataFlowPublic
-import semmle.code.csharp.dataflow.internal.DataFlowDispatch
-import semmle.code.csharp.dataflow.internal.DataFlowImplConsistency::Consistency
+private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
+private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
+private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private class MyConsistencyConfiguration extends ConsistencyConfiguration {
-  override predicate uniqueEnclosingCallableExclude(Node n) {
+private module Input implements InputSig<CsharpDataFlow> {
+  private import CsharpDataFlow
+
+  predicate uniqueEnclosingCallableExclude(Node n) {
     // TODO: Remove once static initializers are folded into the
     // static constructors
     exists(ControlFlow::Node cfn |
-      cfn.getElement() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
+      cfn.getAstNode() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
       cfn = n.getControlFlowNode()
     )
   }
 
-  override predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
+  predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
     // TODO: Remove once static initializers are folded into the
     // static constructors
     exists(ControlFlow::Node cfn |
-      cfn.getElement() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
+      cfn.getAstNode() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
       cfn = call.getControlFlowNode()
     )
   }
 
-  override predicate uniqueNodeLocationExclude(Node n) {
+  predicate uniqueNodeLocationExclude(Node n) {
     // Methods with multiple implementations
     n instanceof ParameterNode
     or
-    this.missingLocationExclude(n)
+    missingLocationExclude(n)
   }
 
-  override predicate missingLocationExclude(Node n) {
+  predicate missingLocationExclude(Node n) {
     // Some CIL methods are missing locations
     n.asParameter() instanceof CIL::Parameter
   }
 
-  override predicate postWithInFlowExclude(Node n) {
+  predicate postWithInFlowExclude(Node n) {
     n instanceof FlowSummaryNode
     or
     n.asExpr().(ObjectCreation).hasInitializer()
   }
 
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
+  predicate argHasPostUpdateExclude(ArgumentNode n) {
     n instanceof FlowSummaryNode
     or
     not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
@@ -54,7 +55,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     n.asExpr() instanceof CIL::Expr
   }
 
-  override predicate postHasUniquePreExclude(PostUpdateNode n) {
+  predicate postHasUniquePreExclude(PostUpdateNode n) {
     exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
       e = LocalFlow::getAPostUpdateNodeForArg(arg) and
       e != arg and
@@ -62,7 +63,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     )
   }
 
-  override predicate uniquePostUpdateExclude(Node n) {
+  predicate uniquePostUpdateExclude(Node n) {
     exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
       e = LocalFlow::getAPostUpdateNodeForArg(arg) and
       e != arg and
@@ -70,12 +71,12 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     )
   }
 
-  override predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }
-
-  override predicate identityLocalStepExclude(Node n) { none() }
+  predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }
 }
 
-query predicate multipleToString(Node n, string s) {
+import MakeConsistency<CsharpDataFlow, CsharpTaintTracking, Input>
+
+query predicate multipleToString(DataFlow::Node n, string s) {
   s = strictconcat(n.toString(), ",") and
   strictcount(n.toString()) > 1
 }

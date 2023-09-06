@@ -51,18 +51,14 @@ class AllowCredentialsHeaderWrite extends Http::HeaderWrite {
   AllowCredentialsHeaderWrite() { this.getHeaderName() = headerAllowCredentials() }
 }
 
-/**
- * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
- * flows to a HeaderWrite that writes an `Access-Control-Allow-Origin` header's value.
- */
-class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
-  FlowsUntrustedToAllowOriginHeader() { this = "from-untrusted-to-allow-origin-header-value" }
+module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+  additional predicate isSinkHW(DataFlow::Node sink, AllowOriginHeaderWrite hw) {
+    sink = hw.getValue()
+  }
 
-  predicate isSinkHW(DataFlow::Node sink, AllowOriginHeaderWrite hw) { sink = hw.getValue() }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(ControlFlow::ConditionGuardNode cgn |
       cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
     |
@@ -70,8 +66,14 @@ class FlowsUntrustedToAllowOriginHeader extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSinkHW(sink, _) }
+  predicate isSink(DataFlow::Node sink) { isSinkHW(sink, _) }
 }
+
+/**
+ * Tracks taint flowfor reasoning about when an `UntrustedFlowSource` flows to
+ * a `HeaderWrite` that writes an `Access-Control-Allow-Origin` header's value.
+ */
+module UntrustedToAllowOriginHeaderFlow = TaintTracking::Global<UntrustedToAllowOriginHeaderConfig>;
 
 /**
  * Holds if the provided `allowOriginHW` HeaderWrite's parent ResponseWriter
@@ -92,9 +94,9 @@ predicate allowCredentialsIsSetToTrue(AllowOriginHeaderWrite allowOriginHW) {
  * The `message` parameter is populated with the warning message to be returned by the query.
  */
 predicate flowsFromUntrustedToAllowOrigin(AllowOriginHeaderWrite allowOriginHW, string message) {
-  exists(FlowsUntrustedToAllowOriginHeader cfg, DataFlow::Node sink |
-    cfg.hasFlowTo(sink) and
-    cfg.isSinkHW(sink, allowOriginHW)
+  exists(DataFlow::Node sink |
+    UntrustedToAllowOriginHeaderFlow::flowTo(sink) and
+    UntrustedToAllowOriginHeaderConfig::isSinkHW(sink, allowOriginHW)
   |
     message =
       headerAllowOrigin() + " header is set to a user-defined value, and " +
@@ -120,18 +122,12 @@ class MapRead extends DataFlow::ElementReadNode {
   MapRead() { this.getBase().getType() instanceof MapType }
 }
 
-/**
- * A taint-tracking configuration for reasoning about when an UntrustedFlowSource
- * flows somewhere.
- */
-class FlowsFromUntrusted extends TaintTracking::Configuration {
-  FlowsFromUntrusted() { this = "from-untrusted" }
+module FromUntrustedConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+  predicate isSink(DataFlow::Node sink) { isSinkCgn(sink, _) }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSinkCgn(sink, _) }
-
-  predicate isSinkCgn(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
+  additional predicate isSinkCgn(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
     exists(IfStmt ifs |
       exists(Expr operand |
         operand = ifs.getCond().getAChildExpr*() and
@@ -166,11 +162,17 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
 }
 
 /**
+ * Tracks taint flow for reasoning about when an `UntrustedFlowSource` flows
+ * somewhere.
+ */
+module FromUntrustedFlow = TaintTracking::Global<FromUntrustedConfig>;
+
+/**
  * Holds if the provided `allowOriginHW` is also destination of a `UntrustedFlowSource`.
  */
 predicate flowsToGuardedByCheckOnUntrusted(AllowOriginHeaderWrite allowOriginHW) {
-  exists(FlowsFromUntrusted cfg, DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn |
-    cfg.hasFlowTo(sink) and cfg.isSinkCgn(sink, cgn)
+  exists(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn |
+    FromUntrustedFlow::flowTo(sink) and FromUntrustedConfig::isSinkCgn(sink, cgn)
   |
     cgn.dominates(allowOriginHW.getBasicBlock())
   )

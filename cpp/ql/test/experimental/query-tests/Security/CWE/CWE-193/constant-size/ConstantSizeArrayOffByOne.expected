@@ -69,12 +69,6 @@ edges
 | test.cpp:322:19:322:27 | ... + ... | test.cpp:325:24:325:26 | end |
 | test.cpp:324:23:324:26 | temp | test.cpp:324:23:324:32 | ... + ... |
 | test.cpp:324:23:324:32 | ... + ... | test.cpp:325:15:325:19 | temp2 |
-| test.cpp:351:9:351:11 | arr | test.cpp:351:9:351:14 | access to array |
-| test.cpp:351:9:351:11 | arr | test.cpp:351:18:351:25 | access to array |
-| test.cpp:351:18:351:20 | arr | test.cpp:351:9:351:14 | access to array |
-| test.cpp:351:18:351:20 | arr | test.cpp:351:18:351:25 | access to array |
-| test.cpp:351:29:351:31 | arr | test.cpp:351:9:351:14 | access to array |
-| test.cpp:351:29:351:31 | arr | test.cpp:351:18:351:25 | access to array |
 nodes
 | test.cpp:34:5:34:24 | access to array | semmle.label | access to array |
 | test.cpp:34:10:34:12 | buf | semmle.label | buf |
@@ -167,11 +161,6 @@ nodes
 | test.cpp:325:15:325:19 | temp2 | semmle.label | temp2 |
 | test.cpp:325:24:325:26 | end | semmle.label | end |
 | test.cpp:325:24:325:26 | end | semmle.label | end |
-| test.cpp:351:9:351:11 | arr | semmle.label | arr |
-| test.cpp:351:9:351:14 | access to array | semmle.label | access to array |
-| test.cpp:351:18:351:20 | arr | semmle.label | arr |
-| test.cpp:351:18:351:25 | access to array | semmle.label | access to array |
-| test.cpp:351:29:351:31 | arr | semmle.label | arr |
 subpaths
 #select
 | test.cpp:35:5:35:22 | PointerAdd: access to array | test.cpp:35:10:35:12 | buf | test.cpp:35:5:35:22 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:35:5:35:26 | Store: ... = ... | write |
@@ -194,6 +183,3 @@ subpaths
 | test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:322:19:322:22 | temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:330:13:330:24 | Store: ... = ... | write |
 | test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:322:19:322:22 | temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:331:13:331:24 | Store: ... = ... | write |
 | test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:322:19:322:22 | temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:333:13:333:24 | Store: ... = ... | write |
-| test.cpp:351:18:351:25 | PointerAdd: access to array | test.cpp:351:9:351:11 | arr | test.cpp:351:18:351:25 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:348:9:348:11 | arr | arr | test.cpp:351:18:351:25 | Load: access to array | read |
-| test.cpp:351:18:351:25 | PointerAdd: access to array | test.cpp:351:18:351:20 | arr | test.cpp:351:18:351:25 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:348:9:348:11 | arr | arr | test.cpp:351:18:351:25 | Load: access to array | read |
-| test.cpp:351:18:351:25 | PointerAdd: access to array | test.cpp:351:29:351:31 | arr | test.cpp:351:18:351:25 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:348:9:348:11 | arr | arr | test.cpp:351:18:351:25 | Load: access to array | read |

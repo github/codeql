@@ -1,6 +1,8 @@
 package com.github.codeql
 
 import com.github.codeql.utils.getJvmName
+import com.github.codeql.utils.versions.getFileClassFqName
+import com.github.codeql.utils.versions.packageFqName
 import com.intellij.openapi.vfs.StandardFileSystems
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
@@ -32,7 +34,7 @@ fun getFileClassName(f: IrFile) =
 fun getIrElementBinaryName(that: IrElement): String {
     if (that is IrFile) {
         val shortName = getFileClassName(that)
-        val pkg = that.fqName.asString()
+        val pkg = that.packageFqName.asString()
         return if (pkg.isEmpty()) shortName else "$pkg.$shortName"
     }
 
@@ -58,7 +60,7 @@ fun getIrElementBinaryName(that: IrElement): String {
         .forEach {
             when (it) {
                 is IrClass -> internalName.insert(0, getName(it) + "$")
-                is IrPackageFragment -> it.fqName.asString().takeIf { fqName -> fqName.isNotEmpty() }?.let { fqName -> internalName.insert(0, "$fqName.") }
+                is IrPackageFragment -> it.packageFqName.asString().takeIf { fqName -> fqName.isNotEmpty() }?.let { fqName -> internalName.insert(0, "$fqName.") }
             }
         }
     return internalName.toString()
@@ -108,14 +110,29 @@ private fun getRawIrClassBinaryPath(irClass: IrClass) =
 fun getIrClassBinaryPath(irClass: IrClass): String {
   return getRawIrClassBinaryPath(irClass)
   // Otherwise, make up a fake location:
-    ?: "/!unknown-binary-location/${getIrElementBinaryName(irClass).replace(".", "/")}.class"
+    ?: getUnknownBinaryLocation(getIrElementBinaryName(irClass))
 }
 
-fun getContainingClassOrSelf(decl: IrDeclaration): IrClass? {
-    return when(decl) {
-        is IrClass -> decl
-        else -> decl.parentClassOrNull
+fun getIrDeclarationBinaryPath(d: IrDeclaration): String? {
+    if (d is IrClass) {
+        return getIrClassBinaryPath(d)
     }
+    val parentClass = d.parentClassOrNull
+    if (parentClass != null) {
+        return getIrClassBinaryPath(parentClass)
+    }
+    if (d.parent is IrExternalPackageFragment) {
+        // This is in a file class.
+        val fqName = getFileClassFqName(d)
+        if (fqName != null) {
+            return getUnknownBinaryLocation(fqName.asString())
+        }
+    }
+    return null
+}
+
+private fun getUnknownBinaryLocation(s: String): String {
+    return "/!unknown-binary-location/${s.replace(".", "/")}.class"
 }
 
 fun getJavaEquivalentClassId(c: IrClass) =

@@ -661,7 +661,7 @@ func testOptionalKeyPath() {
     let s = S(x: source())
     let s2 = S2_Optional(s: s)
     let f = \S2_Optional.s?.x
-    sink(opt: s2[keyPath: f]) // $ MISSING: flow=661
+    sink(arg: s2[keyPath: f]!) // $ flow=661
 }
 
 func testSwap() {
@@ -760,40 +760,47 @@ func testWriteOptional() {
     sink(arg: mo2!.v3) // $ MISSING:flow=750
 }
 
+func testOptionalKeyPathForce() {
+    let s = S(x: source())
+    let s2 = S2_Optional(s: s)
+    let f = \S2_Optional.s!.x
+    sink(arg: s2[keyPath: f]) // $ flow=764
+}
+
 func testDictionary() {
     var dict1 = [1:2, 3:4, 5:6]
     sink(arg: dict1[1])
 
     dict1[1] = source()
 
-    sink(arg: dict1[1]) // $ flow=767
+    sink(arg: dict1[1]) // $ flow=774
 
     var dict2 = [source(): 1]
     sink(arg: dict2[1])
 
     for (key, value) in dict2 {
-        sink(arg: key) // $ MISSING: flow=771
+        sink(arg: key) // $ MISSING: flow=778
         sink(arg: value)
     }
 
     var dict3 = [1: source()]
-    sink(arg: dict3[1]) // $ flow=779
+    sink(arg: dict3[1]) // $ flow=786
 
     dict3[source()] = 2
 
-    sink(arg: dict3.randomElement()!.0) // $ flow=782
-    sink(arg: dict3.randomElement()!.1) // $ flow=779
+    sink(arg: dict3.randomElement()!.0) // $ flow=789
+    sink(arg: dict3.randomElement()!.1) // $ flow=786
 
     for (key, value) in dict3 {
-        sink(arg: key) // $ MISSING: flow=782
-        sink(arg: value) // $ MISSING: flow=779
+        sink(arg: key) // $ MISSING: flow=789
+        sink(arg: value) // $ MISSING: flow=786
     }
 
     var dict4 = [1:source()]
-    sink(arg: dict4.updateValue(1, forKey: source())!) // $ flow=792
-    sink(arg: dict4.updateValue(source(), forKey: 2)!) // $ SPURIOUS: flow=792
-    sink(arg: dict4.randomElement()!.0) // $ flow=793
-    sink(arg: dict4.randomElement()!.1) // $ flow=792 flow=794
-    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=793
-    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=792 flow=794
+    sink(arg: dict4.updateValue(1, forKey: source())!) // $ flow=799
+    sink(arg: dict4.updateValue(source(), forKey: 2)!) // $ SPURIOUS: flow=799
+    sink(arg: dict4.randomElement()!.0) // $ flow=800
+    sink(arg: dict4.randomElement()!.1) // $ flow=799 flow=801
+    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=800
+    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=799 flow=801
 }

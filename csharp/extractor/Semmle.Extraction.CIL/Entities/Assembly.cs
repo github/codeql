@@ -1,8 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Collections.Generic;
+using System.Reflection;
 using Semmle.Extraction.Entities;
-using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {

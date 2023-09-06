@@ -753,7 +753,15 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or
-  // assignment to a dictionary value via subscript operator, with intermediate step
+  // creation of an optional via implicit wrapping keypath component
+  exists(KeyPathComponent component |
+    component.isOptionalWrapping() and
+    node1.(KeyPathComponentNodeImpl).getComponent() = component and
+    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
+    // assignment to a dictionary value via subscript operator, with intermediate step
   // `dict[key] = value`
   exists(AssignExpr assign, SubscriptExpr subscript |
     subscript = assign.getDest() and
@@ -841,6 +849,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       or
       c.isSingleton(any(Content::ArrayContent ac)) and
       component.isSubscript()
+      or
+      c instanceof OptionalSomeContentSet and
+      (
+        component.isOptionalForcing()
+        or
+        component.isOptionalChaining()
+      )
     )
   |
     // the next node is either the next element in the chain
@@ -855,8 +870,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    subscript.getBase().getType() instanceof ArrayType and
-    c.isSingleton(any(Content::ArrayContent ac))
+    (
+      subscript.getBase().getType() instanceof ArrayType and
+      c.isSingleton(any(Content::ArrayContent ac))
+      or
+      c.isSingleton(any(Content::CollectionContent ac))
+    )
   )
   or
   // read of a dictionary value via subscript operator

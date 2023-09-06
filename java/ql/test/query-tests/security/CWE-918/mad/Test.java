@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.URL;
 import java.net.URLClassLoader;
+import javax.activation.URLDataSource;
 import javax.servlet.http.HttpServletRequest;
 import javafx.scene.web.WebEngine;
 import org.apache.commons.jelly.JellyContext;
@@ -59,6 +60,8 @@ public class Test {
         new JellyContext((URL) null, (URL) source()); // $ SSRF
         // "org.apache.commons.jelly;JellyContext;true;JellyContext;(URL);;Argument[0];open-url;ai-generated"
         new JellyContext((URL) source()); // $ SSRF
+        // "javax.activation;URLDataSource;true;URLDataSource;(URL);;Argument[0];request-forgery;manual"
+        new URLDataSource((URL) source()); // $ SSRF
     }
 
     public void test(WebEngine webEngine) {

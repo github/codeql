@@ -1,3 +1,28 @@
+## 0.7.3
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
+### Minor Analysis Improvements
+
+* Modified the `getSecureAlgorithmName` predicate in `Encryption.qll` to also include `SHA-256` and `SHA-512`. Previously only the versions of the names without dashes were considered secure.
+* Add support for `WithElement` and `WithoutElement` for MaD access paths.
+
+## 0.7.2
+
+### New Features
+
+* A `Diagnostic.getCompilationInfo()` predicate has been added.
+
+### Minor Analysis Improvements
+
+* Fixed a typo in the `StdlibRandomSource` class in `RandomDataSource.qll`, which caused the class to improperly model calls to the `nextBytes` method. Queries relying on `StdlibRandomSource` may see an increase in results.
+* Improved the precision of virtual dispatch of `java.io.InputStream` methods. Now, calls to these methods will not dispatch to arbitrary implementations of `InputStream` if there is a high-confidence alternative (like a models-as-data summary).
+* Added more dataflow steps for `java.io.InputStream`s that wrap other `java.io.InputStream`s.
+* Added models for the Struts 2 framework.
+* Improved the modeling of Struts 2 sources of untrusted data by tainting the whole object graph of the objects unmarshaled from an HTTP request.
+
 ## 0.7.1
 
 ### New Features
