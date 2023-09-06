@@ -1,6 +1,6 @@
 /**
- * @name User-controlled file decompression
- * @description User-controlled data that flows into decompression library APIs without checking the compression rate is dangerous
+ * @name Uncontrolled file decompression
+ * @description Uncontrolled decompressionwithout checking the compression rate is dangerous
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
