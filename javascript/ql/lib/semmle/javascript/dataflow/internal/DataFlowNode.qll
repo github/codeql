@@ -5,7 +5,6 @@
  */
 
 private import javascript
-private import semmle.javascript.frameworks.data.ModelsAsData
 
 /**
  * The raw data type underlying `DataFlow::Node`.
