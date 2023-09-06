@@ -9,8 +9,6 @@ edges
 | test.cpp:116:7:116:10 | data | test.cpp:119:6:119:9 | data |
 | test.cpp:127:7:127:10 | data | test.cpp:130:6:130:9 | data |
 | test.cpp:127:7:127:10 | data | test.cpp:130:6:130:9 | data |
-| test.cpp:138:7:138:10 | data | test.cpp:141:6:141:9 | data |
-| test.cpp:138:7:138:10 | data | test.cpp:141:6:141:9 | data |
 | test.cpp:164:9:164:9 | c | test.cpp:165:2:165:2 | c |
 | test.cpp:164:9:164:9 | c | test.cpp:166:3:166:4 | * ... |
 | test.cpp:164:9:164:9 | c | test.cpp:166:4:166:4 | c |
@@ -39,9 +37,6 @@ nodes
 | test.cpp:127:7:127:10 | data | semmle.label | data |
 | test.cpp:127:7:127:10 | data | semmle.label | data |
 | test.cpp:130:6:130:9 | data | semmle.label | data |
-| test.cpp:138:7:138:10 | data | semmle.label | data |
-| test.cpp:138:7:138:10 | data | semmle.label | data |
-| test.cpp:141:6:141:9 | data | semmle.label | data |
 | test.cpp:164:9:164:9 | c | semmle.label | c |
 | test.cpp:165:2:165:2 | c | semmle.label | c |
 | test.cpp:166:3:166:4 | * ... | semmle.label | * ... |
@@ -72,8 +67,6 @@ subpaths
 | test.cpp:119:6:119:9 | data | test.cpp:116:7:116:10 | data | test.cpp:119:6:119:9 | data | Memory may have been previously freed by $@. | test.cpp:116:2:116:5 | call to free | call to free |
 | test.cpp:130:6:130:9 | data | test.cpp:127:7:127:10 | data | test.cpp:130:6:130:9 | data | Memory may have been previously freed by $@. | test.cpp:127:2:127:5 | call to free | call to free |
 | test.cpp:130:6:130:9 | data | test.cpp:127:7:127:10 | data | test.cpp:130:6:130:9 | data | Memory may have been previously freed by $@. | test.cpp:127:2:127:5 | call to free | call to free |
-| test.cpp:141:6:141:9 | data | test.cpp:138:7:138:10 | data | test.cpp:141:6:141:9 | data | Memory may have been previously freed by $@. | test.cpp:138:2:138:5 | call to free | call to free |
-| test.cpp:141:6:141:9 | data | test.cpp:138:7:138:10 | data | test.cpp:141:6:141:9 | data | Memory may have been previously freed by $@. | test.cpp:138:2:138:5 | call to free | call to free |
 | test.cpp:165:2:165:2 | c | test.cpp:164:9:164:9 | c | test.cpp:165:2:165:2 | c | Memory may have been previously freed by $@. | test.cpp:164:2:164:10 | delete | delete |
 | test.cpp:166:3:166:4 | * ... | test.cpp:164:9:164:9 | c | test.cpp:166:3:166:4 | * ... | Memory may have been previously freed by $@. | test.cpp:164:2:164:10 | delete | delete |
 | test.cpp:166:4:166:4 | c | test.cpp:164:9:164:9 | c | test.cpp:166:4:166:4 | c | Memory may have been previously freed by $@. | test.cpp:164:2:164:10 | delete | delete |
