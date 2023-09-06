@@ -205,6 +205,13 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     isCustomSink(e, kind) and provenance = "custom-sink"
   }
 
+  predicate isSource(Endpoint e, string kind, string provenance) {
+    exists(string package, string type, string name, string signature, string ext, string output |
+      sourceSpec(e, package, type, name, signature, ext, output) and
+      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind, provenance)
+    )
+  }
+
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
       sinkSpec(e, package, type, name, signature, _, _) and
@@ -220,6 +227,15 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
     ext = "" and
     input = e.getMaDInput()
+  }
+
+  additional predicate sourceSpec(
+    Endpoint e, string package, string type, string name, string signature, string ext, string output
+  ) {
+    ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
+    ext = "" and
+    output = e.getMaDOutput()
   }
 
   /**

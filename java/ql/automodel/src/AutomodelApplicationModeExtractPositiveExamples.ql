@@ -13,7 +13,7 @@ private import AutomodelEndpointTypes
 private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, SinkType sinkType, ApplicationModeMetadataExtractor meta,
+  Endpoint endpoint, EndpointType endpointType, ApplicationModeMetadataExtractor meta,
   DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
   DollarAtString signature, DollarAtString input, DollarAtString output, DollarAtString isVarargsArray
 where
@@ -22,10 +22,10 @@ where
   not erroneousEndpoints(endpoint, _, _, _, _, false) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
-  CharacteristicsImpl::isKnownSink(endpoint, sinkType, _) and
+  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _) and
   exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
 select endpoint.asNode(),
-  sinkType + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
+  endpointType + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   package, "package", //
   type, "type", //

@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.io.File;
 import java.nio.file.FileVisitOption;
+import java.net.URLConnection;
 
 class Test {
 	public static void main(String[] args) throws Exception {
@@ -54,5 +55,9 @@ class Test {
 			o // not a candidate (only the first arg corresponding to a varargs array
 			  // is extracted)
 		);
+	}
+
+	public static void WebSocketExample(URLConnection c) throws Exception {
+		c.getInputStream(); // the call is a source example, c is a sink candidate
 	}
 }
