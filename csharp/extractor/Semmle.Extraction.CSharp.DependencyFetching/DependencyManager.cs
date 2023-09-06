@@ -31,6 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
         private TemporaryDirectory? razorWorkingDirectory;
+        private readonly Git git;
 
 
         /// <summary>
@@ -68,7 +69,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 ? new[] { options.SolutionFile }
                 : allFiles.SelectFileNamesByExtension(".sln");
 
-            var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
+            // If DLL reference paths are specified on the command-line, use those to discover
+            // assemblies. Otherwise (the default), query the git CLI to determine which DLL files
+            // are tracked as part of the repository.
+            this.git = new Git(this.progressMonitor);
+            var dllDirNames = options.DllDirs.Count == 0 ? this.git.ListFiles("*.dll") : options.DllDirs.Select(Path.GetFullPath).ToList();
 
             // Find DLLs in the .Net / Asp.Net Framework
             if (options.ScanNetFrameworkDlls)
