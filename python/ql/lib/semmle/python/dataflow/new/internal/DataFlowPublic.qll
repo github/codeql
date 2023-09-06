@@ -117,6 +117,7 @@ newtype TNode =
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
   } or
+  /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
   TForbiddenRecursionGuard() {
     none() and
     // We want to prune irrelevant models before materialising data flow nodes, so types contributed
