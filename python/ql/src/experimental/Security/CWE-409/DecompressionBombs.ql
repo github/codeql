@@ -137,7 +137,7 @@ module ZipFile {
    * zipfile.ZipFile()
    * ```
    */
-  private API::Node zipFileClass() {
+  API::Node zipFileClass() {
     result =
       [
         API::moduleImport("zipfile").getMember("ZipFile"),
@@ -253,7 +253,8 @@ module ZipFile {
    */
   predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(API::Node zipFileInstance | zipFileInstance = zipFileClass() |
-      nodeFrom = zipFileInstance.getACall().getParameter(0, "file").asSink() and
+      nodeFrom =
+        [zipFileInstance.getACall().getParameter(0, "file").asSink(), zipFileInstance.getACall()] and
       nodeTo =
         [
           sink(zipFileInstance).getACall(),
@@ -317,7 +318,8 @@ module TarFile {
 
   predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(API::Node tarfileInstance | tarfileInstance = tarfileInstance() |
-      nodeFrom = tarfileInstance.getACall().getParameter(0, "name").asSink() and
+      nodeFrom =
+        [tarfileInstance.getACall().getParameter(0, "name").asSink(), tarfileInstance.getACall()] and
       nodeTo =
         tarfileInstance.getReturn().getMember(["extractall", "extract", "extractfile"]).getACall()
     )
@@ -497,6 +499,10 @@ module BombsConfig implements DataFlow::ConfigSig {
     )
     or
     source instanceof FileAndFormRemoteFlowSource::FastAPI
+    or
+    source = TarFile::tarfileInstance().getACall()
+    or
+    source = ZipFile::zipFileClass().getACall()
   }
 
   predicate isSink(DataFlow::Node sink) {
