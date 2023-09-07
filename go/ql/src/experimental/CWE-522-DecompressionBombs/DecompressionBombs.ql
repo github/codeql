@@ -25,8 +25,6 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
       source instanceof UntrustedFlowSource
       or
       source instanceof CmdLineFlowSource
-      or
-      source.asParameter() = any(Parameter p)
     ) and
     state =
       [
