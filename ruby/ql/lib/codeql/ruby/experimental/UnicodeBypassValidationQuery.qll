@@ -52,8 +52,8 @@ deprecated class Configuration extends TaintTracking::Configuration {
     DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
     DataFlow::FlowState stateTo
   ) {
-    UnicodeBypassValidationConfig::isAdditionalFlowStep(nodeFrom, this.convertState(stateFrom), nodeTo,
-    this.convertState(stateTo))
+    UnicodeBypassValidationConfig::isAdditionalFlowStep(nodeFrom, this.convertState(stateFrom),
+      nodeTo, this.convertState(stateTo))
   }
 
   /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
