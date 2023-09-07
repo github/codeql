@@ -19,7 +19,7 @@ def subclass_objects():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
 
-    return Movie.objects(__raw__=json_search)
+    return Movie.objects(__raw__=json_search)  #$ result=BAD
 
 @app.route("/get_db_find")
 def get_db_find():
@@ -27,7 +27,7 @@ def get_db_find():
     json_search = json.loads(unsafe_search)
 
     retrieved_db = db.get_db()
-    return retrieved_db["Movie"].find({'name': json_search})
+    return retrieved_db["Movie"].find({'name': json_search})  #$ result=BAD
 
 # if __name__ == "__main__":
 #     app.run(debug=True)
