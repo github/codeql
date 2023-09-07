@@ -4429,6 +4429,11 @@ private module StdlibPrivate {
       }
     }
 
+ /**
+   * A call to the `asyncio.create_subprocess_shell` function (also accessible via the `subprocess` module of `asyncio`)
+   *
+   * See https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.create_subprocess_shell
+   */
     private class CreateSubprocessShell extends SystemCommandExecution::Range,
       FileSystemAccess::Range, API::CallNode
     {
