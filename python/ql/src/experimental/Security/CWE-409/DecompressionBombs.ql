@@ -1,11 +1,11 @@
 /**
- * @name User-controlled file decompression
- * @description User-controlled data that flows into decompression library APIs without checking the compression rate is dangerous
+ * @name Uncontrolled file decompression
+ * @description Uncontrolled data that flows into decompression library APIs without checking the compression rate is dangerous
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
  * @precision high
- * @id py/user-controlled-file-decompression
+ * @id py/uncontrolled-file-decompression
  * @tags security
  *       experimental
  *       external/cwe/cwe-409
@@ -530,5 +530,4 @@ import Bombs::PathGraph
 
 from Bombs::PathNode source, Bombs::PathNode sink
 where Bombs::flowPath(source, sink)
-select sink.getNode(), source, sink, "This file extraction depends on a $@.", source.getNode(),
-  "potentially untrusted source"
+select sink.getNode(), source, sink, "This file extraction is $@.", source.getNode(), "uncontrolled"
