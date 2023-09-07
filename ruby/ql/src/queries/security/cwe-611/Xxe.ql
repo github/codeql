@@ -35,7 +35,7 @@ private module XxeConfig implements DataFlow::ConfigSig {
 
 private module XxeFlow = TaintTracking::Global<XxeConfig>;
 
-private import XxeFlow::PathGraph
+import XxeFlow::PathGraph
 
 from XxeFlow::PathNode source, XxeFlow::PathNode sink
 where XxeFlow::flowPath(source, sink)

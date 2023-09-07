@@ -16,7 +16,7 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.security.CodeInjectionQuery
-private import CodeInjectionFlow::PathGraph
+import CodeInjectionFlow::PathGraph
 
 from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Source sourceNode
 where

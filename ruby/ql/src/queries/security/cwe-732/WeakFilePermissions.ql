@@ -58,7 +58,7 @@ private module PermissivePermissionsConfig implements DataFlow::ConfigSig {
 
 private module PermissivePermissionsFlow = DataFlow::Global<PermissivePermissionsConfig>;
 
-private import PermissivePermissionsFlow::PathGraph
+import PermissivePermissionsFlow::PathGraph
 
 from
   PermissivePermissionsFlow::PathNode source, PermissivePermissionsFlow::PathNode sink,

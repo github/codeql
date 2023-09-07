@@ -151,7 +151,7 @@ private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
 
 private module HardcodedCredentialsFlow = DataFlow::Global<HardcodedCredentialsConfig>;
 
-private import HardcodedCredentialsFlow::PathGraph
+import HardcodedCredentialsFlow::PathGraph
 
 from HardcodedCredentialsFlow::PathNode source, HardcodedCredentialsFlow::PathNode sink
 where HardcodedCredentialsFlow::flowPath(source, sink)

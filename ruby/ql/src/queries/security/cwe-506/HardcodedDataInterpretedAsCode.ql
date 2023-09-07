@@ -13,7 +13,7 @@
  */
 
 private import codeql.ruby.security.HardcodedDataInterpretedAsCodeQuery
-private import HardcodedDataInterpretedAsCodeFlow::PathGraph
+import HardcodedDataInterpretedAsCodeFlow::PathGraph
 
 from
   HardcodedDataInterpretedAsCodeFlow::PathNode source,

@@ -50,7 +50,7 @@ private module WeakParamsConfig implements DataFlow::ConfigSig {
 
 private module WeakParamsFlow = TaintTracking::Global<WeakParamsConfig>;
 
-private import WeakParamsFlow::PathGraph
+import WeakParamsFlow::PathGraph
 
 from WeakParamsFlow::PathNode source, WeakParamsFlow::PathNode sink
 where WeakParamsFlow::flowPath(source, sink)

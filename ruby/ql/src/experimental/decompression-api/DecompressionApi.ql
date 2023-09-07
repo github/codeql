@@ -43,7 +43,7 @@ private module DecompressionApiConfig implements DataFlow::ConfigSig {
 
 private module DecompressionApiFlow = TaintTracking::Global<DecompressionApiConfig>;
 
-private import DecompressionApiFlow::PathGraph
+import DecompressionApiFlow::PathGraph
 
 from DecompressionApiFlow::PathNode source, DecompressionApiFlow::PathNode sink
 where DecompressionApiFlow::flowPath(source, sink)

@@ -90,7 +90,7 @@ private module HttpVerbConfig implements DataFlow::ConfigSig {
 
 private module HttpVerbFlow = TaintTracking::Global<HttpVerbConfig>;
 
-private import HttpVerbFlow::PathGraph
+import HttpVerbFlow::PathGraph
 
 from HttpVerbFlow::PathNode source, HttpVerbFlow::PathNode sink
 where HttpVerbFlow::flowPath(source, sink)
