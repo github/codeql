@@ -44,25 +44,21 @@ deprecated class Configuration extends TaintTracking::Configuration {
 }
 
 private module Config implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowState;
+  class FlowState = FlowState::State;
 
-  predicate isSource(DataFlow::Node source, FlowState state) {
-    state = source.(Source).getAFlowState()
-  }
+  predicate isSource(DataFlow::Node source, FlowState state) { state = source.(Source).getAState() }
 
-  predicate isSink(DataFlow::Node sink, FlowState state) { state = sink.(Sink).getAFlowState() }
+  predicate isSink(DataFlow::Node sink, FlowState state) { state = sink.(Sink).getAState() }
 
   predicate isBarrier(DataFlow::Node node) {
-    node instanceof Sanitizer and not exists(node.(Sanitizer).getAFlowState())
+    node instanceof Sanitizer and not exists(node.(Sanitizer).getAState())
     or
     node instanceof StringConstCompareBarrier
     or
     node instanceof StringConstArrayInclusionCallBarrier
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) {
-    node.(Sanitizer).getAFlowState() = state
-  }
+  predicate isBarrier(DataFlow::Node node, FlowState state) { node.(Sanitizer).getAState() = state }
 }
 
 /**

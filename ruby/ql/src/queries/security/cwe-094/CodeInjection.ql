@@ -29,7 +29,7 @@ where
         otherSink) and
       otherSink.getNode() = sink.getNode()
     |
-      otherSink order by otherSink.getState()
+      otherSink order by otherSink.getState().toString()
     )
 select sink.getNode(), source, sink, "This code execution depends on a $@.", sourceNode,
   "user-provided value"
