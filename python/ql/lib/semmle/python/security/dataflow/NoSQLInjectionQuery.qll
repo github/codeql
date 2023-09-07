@@ -11,7 +11,7 @@ private import NoSQLInjectionCustomizations::NoSqlInjection as C
 /**
  * A taint-tracking configuration for detecting NoSQL injection vulnerabilities.
  */
-module Config implements DataFlow::StateConfigSig {
+module NoSQLInjectionConfig implements DataFlow::StateConfigSig {
   class FlowState = C::FlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
@@ -57,4 +57,4 @@ module Config implements DataFlow::StateConfigSig {
   }
 }
 
-module Flow = TaintTracking::GlobalWithState<Config>;
+module Flow = TaintTracking::GlobalWithState<NoSQLInjectionConfig>;
