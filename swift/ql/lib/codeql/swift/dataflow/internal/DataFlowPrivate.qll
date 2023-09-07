@@ -453,7 +453,7 @@ class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdat
   }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-    c.asSourceCallable() = this.getKeyPathExpr() and pos = TPositionalParameter(0) // TODO: new parameter type?
+    c.asSourceCallable() = this.getKeyPathExpr() and pos = TPositionalParameter(0)
   }
 
   override Location getLocationImpl() { result = exit.getLocation() }
@@ -569,7 +569,7 @@ private module ArgumentNodes {
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       call.asKeyPath() = keyPath and
-      pos = TPositionalArgument(0) // TODO: new parameter type?
+      pos = TPositionalArgument(0)
     }
   }
 }
