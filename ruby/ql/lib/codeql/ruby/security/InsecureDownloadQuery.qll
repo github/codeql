@@ -33,15 +33,13 @@ deprecated class Configuration extends DataFlow::Configuration {
 }
 
 private module InsecureDownloadConfig implements DataFlow::StateConfigSig {
-  class FlowState = string;
+  class FlowState = Label::State;
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowState label) {
-    source.(Source).getALabel() = label
+  predicate isSource(DataFlow::Node source, FlowState label) {
+    source.(Source).getAFlowLabel() = label
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowState label) {
-    sink.(Sink).getALabel() = label
-  }
+  predicate isSink(DataFlow::Node sink, FlowState label) { sink.(Sink).getAFlowLabel() = label }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
