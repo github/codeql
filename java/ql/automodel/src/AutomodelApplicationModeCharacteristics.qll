@@ -59,8 +59,7 @@ abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint 
   abstract DataFlow::Node asNode();
 
   string getExtensibleType() {
-    // XXX the sourceModel still implements a bogus getMaDInput() method, so we can't use this yet
-    if /* not exists(this.getMaDInput()) and */ exists(this.getMaDOutput())
+    if not exists(this.getMaDInput()) and exists(this.getMaDOutput())
     then result = "sourceModel"
     else
       if exists(this.getMaDInput()) and not exists(this.getMaDOutput())
@@ -161,7 +160,7 @@ class MethodCall extends ApplicationModeEndpoint, TMethodCall {
 
   override Call getCall() { result = call }
 
-  override string getMaDInput() { result = "Argument[this]" }
+  override string getMaDInput() { none() }
 
   override string getMaDOutput() { result = "ReturnValue" }
 
@@ -172,6 +171,10 @@ class MethodCall extends ApplicationModeEndpoint, TMethodCall {
   override string toString() { result = call.toString() }
 }
 
+/**
+ * An endpoint that represents a parameter of an overridden method that may be
+ * a source.
+ */
 class OverriddenParameter extends ApplicationModeEndpoint, TOverriddenParameter {
   Parameter p;
   Method overriddenMethod;
