@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Clone self (github/codeql)
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         path: codeql 
     - name: Set up Python 3.8
