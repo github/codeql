@@ -29,7 +29,7 @@ module CodeInjection {
       TFull() or
       TSubString()
 
-    /** Flow states used to distinguish whether an attacker controls the entire string. */
+    /** A flow state used to distinguish whether an attacker controls the entire string. */
     class State extends TState {
       string toString() { result = this.getStringRepresentation() }
 
@@ -44,12 +44,12 @@ module CodeInjection {
     }
 
     /**
-     * Flow state used for normal tainted data, where an attacker might only control a substring.
+     * A flow state used for normal tainted data, where an attacker might only control a substring.
      */
     class SubString extends State, TSubString { }
 
     /**
-     * Flow state used for data that is entirely controlled by the attacker.
+     * A flow state used for data that is entirely controlled by the attacker.
      */
     class Full extends State, TFull { }
   }
