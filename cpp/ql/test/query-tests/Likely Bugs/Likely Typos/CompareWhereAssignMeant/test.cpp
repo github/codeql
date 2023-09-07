@@ -61,3 +61,14 @@ template<typename T1, typename T2>
 auto sfinaeTrick(T1 x1, T2 x2) -> decltype(x1 == x2, bool()) { // GOOD
   return x1 == x2;
 }
+
+void report_error(const char*);
+
+#define DOES_NOT_THROW(E) do { try { E; } catch (...) { report_error(""); } } while(0)
+#define ID(X) (X)
+
+void test_inside_macro_expansion(int x, int y) {
+  DOES_NOT_THROW(x == y); // GOOD
+  x == y; // BAD
+  x == ID(y); // BAD
+}

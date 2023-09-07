@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -31,6 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
         private TemporaryDirectory? razorWorkingDirectory;
+        private readonly Git git;
 
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                this.dotnet = new DotNet(progressMonitor);
+                this.dotnet = new DotNet(options, progressMonitor);
             }
             catch
             {
@@ -59,15 +60,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
-
-            this.fileContent = new FileContent(progressMonitor, () => GetFiles("*.*"));
-            this.allSources = GetFiles("*.cs").ToList();
-            var allProjects = GetFiles("*.csproj");
+            var allFiles = GetAllFiles().ToList();
+            var smallFiles = allFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
+            this.fileContent = new FileContent(progressMonitor, smallFiles);
+            this.allSources = allFiles.SelectFileNamesByExtension(".cs").ToList();
+            var allProjects = allFiles.SelectFileNamesByExtension(".csproj");
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
-                : GetFiles("*.sln");
+                : allFiles.SelectFileNamesByExtension(".sln");
 
-            var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
+            // If DLL reference paths are specified on the command-line, use those to discover
+            // assemblies. Otherwise (the default), query the git CLI to determine which DLL files
+            // are tracked as part of the repository.
+            this.git = new Git(this.progressMonitor);
+            var dllDirNames = options.DllDirs.Count == 0 ? this.git.ListFiles("*.dll") : options.DllDirs.Select(Path.GetFullPath).ToList();
 
             // Find DLLs in the .Net / Asp.Net Framework
             if (options.ScanNetFrameworkDlls)
@@ -84,11 +90,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            if (options.UseMscorlib)
-            {
-                UseReference(typeof(object).Assembly.Location);
-            }
-
             if (options.UseNuGet)
             {
                 dllDirNames.Add(packageDirectory.DirInfo.FullName);
@@ -102,13 +103,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     progressMonitor.MissingNuGet();
                 }
 
-                // TODO: remove the below when the required SDK is installed
-                using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
-                {
-                    Restore(solutions);
-                    Restore(allProjects);
-                    DownloadMissingPackages();
-                }
+                Restore(solutions);
+                Restore(allProjects);
+                DownloadMissingPackages(allFiles);
             }
 
             assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
@@ -136,7 +133,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
             {
-                GenerateSourceFilesFromWebViews();
+                GenerateSourceFilesFromWebViews(allFiles);
             }
 
             progressMonitor.Summary(
@@ -151,19 +148,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DateTime.Now - startTime);
         }
 
-        private void GenerateSourceFilesFromWebViews()
+        private void GenerateSourceFilesFromWebViews(List<FileInfo> allFiles)
         {
             progressMonitor.LogInfo($"Generating source files from cshtml and razor files.");
 
-            var views = GetFiles("*.cshtml")
-                .Concat(GetFiles("*.razor"))
-                .ToArray();
+            var views = allFiles.SelectFileNamesByExtension(".cshtml", ".razor").ToArray();
 
             if (views.Length > 0)
             {
                 progressMonitor.LogInfo($"Found {views.Length} cshtml and razor files.");
 
-                // TODO: use SDK specified in global.json
                 var sdk = new Sdk(dotnet).GetNewestSdk();
                 if (sdk != null)
                 {
@@ -185,15 +179,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info)) { }
 
-        private IEnumerable<string> GetFiles(string pattern, bool recurseSubdirectories = true) =>
-             sourceDir.GetFiles(pattern, new EnumerationOptions
-             {
-                 RecurseSubdirectories = recurseSubdirectories,
-                 MatchCasing = MatchCasing.CaseInsensitive
-             })
-                .Where(d => d.Extension != ".dll")
-                .Select(d => d.FullName)
-                .Where(d => !options.ExcludesFile(d));
+        private IEnumerable<FileInfo> GetAllFiles() =>
+             sourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true })
+                .Where(d => d.Extension != ".dll" && !options.ExcludesFile(d.FullName));
 
         /// <summary>
         /// Computes a unique temp directory for the packages associated
@@ -374,14 +362,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private void DownloadMissingPackages()
+        private void DownloadMissingPackages(List<FileInfo> allFiles)
         {
-            var nugetConfigs = GetFiles("nuget.config", recurseSubdirectories: true).ToArray();
+            var nugetConfigs = allFiles.SelectFileNamesByName("nuget.config").ToArray();
             string? nugetConfig = null;
             if (nugetConfigs.Length > 1)
             {
                 progressMonitor.MultipleNugetConfig(nugetConfigs);
-                nugetConfig = GetFiles("nuget.config", recurseSubdirectories: false).FirstOrDefault();
+                nugetConfig = allFiles
+                    .SelectRootFiles(sourceDir)
+                    .SelectFileNamesByName("nuget.config")
+                    .FirstOrDefault();
                 if (nugetConfig == null)
                 {
                     progressMonitor.NoTopLevelNugetConfig();
@@ -393,8 +384,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName)
-                .Select(d => Path.GetFileName(d)
-                .ToLowerInvariant());
+                .Select(d => Path.GetFileName(d).ToLowerInvariant());
             var notYetDownloadedPackages = fileContent.AllPackages.Except(alreadyDownloadedPackages);
             foreach (var package in notYetDownloadedPackages)
             {

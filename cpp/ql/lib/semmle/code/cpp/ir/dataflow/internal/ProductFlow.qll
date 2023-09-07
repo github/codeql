@@ -87,6 +87,30 @@ module ProductFlow {
      * dataflow graph.
      */
     default predicate isBarrierIn2(DataFlow::Node node) { none() }
+
+    /**
+     * Gets the virtual dispatch branching limit when calculating field flow in the first
+     * projection of the product dataflow graph.
+     *
+     * This can be overridden to a smaller value to improve performance (a
+     * value of 0 disables field flow), or a larger value to get more results.
+     */
+    default int fieldFlowBranchLimit1() {
+      // NOTE: This should be synchronized with the default value in the shared dataflow library
+      result = 2
+    }
+
+    /**
+     * Gets the virtual dispatch branching limit when calculating field flow in the second
+     * projection of the product dataflow graph.
+     *
+     * This can be overridden to a smaller value to improve performance (a
+     * value of 0 disables field flow), or a larger value to get more results.
+     */
+    default int fieldFlowBranchLimit2() {
+      // NOTE: This should be synchronized with the default value in the shared dataflow library
+      result = 2
+    }
   }
 
   /**
@@ -272,6 +296,30 @@ module ProductFlow {
      * dataflow graph.
      */
     default predicate isBarrierIn2(DataFlow::Node node) { none() }
+
+    /**
+     * Gets the virtual dispatch branching limit when calculating field flow in the first
+     * projection of the product dataflow graph.
+     *
+     * This can be overridden to a smaller value to improve performance (a
+     * value of 0 disables field flow), or a larger value to get more results.
+     */
+    default int fieldFlowBranchLimit1() {
+      // NOTE: This should be synchronized with the default value in the shared dataflow library
+      result = 2
+    }
+
+    /**
+     * Gets the virtual dispatch branching limit when calculating field flow in the second
+     * projection of the product dataflow graph.
+     *
+     * This can be overridden to a smaller value to improve performance (a
+     * value of 0 disables field flow), or a larger value to get more results.
+     */
+    default int fieldFlowBranchLimit2() {
+      // NOTE: This should be synchronized with the default value in the shared dataflow library
+      result = 2
+    }
   }
 
   /**
@@ -335,6 +383,8 @@ module ProductFlow {
       }
 
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn1(node) }
+
+      int fieldFlowBranchLimit() { result = Config::fieldFlowBranchLimit1() }
     }
 
     private module Flow1 = DataFlow::GlobalWithState<Config1>;
@@ -367,6 +417,8 @@ module ProductFlow {
       }
 
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn2(node) }
+
+      int fieldFlowBranchLimit() { result = Config::fieldFlowBranchLimit2() }
     }
 
     private module Flow2 = DataFlow::GlobalWithState<Config2>;

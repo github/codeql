@@ -4,7 +4,7 @@
 | tst.rb:19:43:19:62 | (?:[^'\\\\]\|\\\\\\\\\|\\\\.)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\\\\\'. |
 | tst.rb:19:67:19:86 | (?:[^)\\\\]\|\\\\\\\\\|\\\\.)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\\\\\'. |
 | tst.rb:31:50:31:51 | .* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\|\|\\n'. |
-| tst.rb:36:19:36:28 | (\\\\\\/\|.)*? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\/'. |
+| tst.rb:36:19:36:28 | (\\\\\\/\|.)*? | This part of the regular expression may cause exponential backtracking on strings starting with '/' and containing many repetitions of '\\\\/'. |
 | tst.rb:41:23:41:24 | .* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '#'. |
 | tst.rb:47:27:47:29 | .*? | This part of the regular expression may cause exponential backtracking on strings starting with '"' and containing many repetitions of '""'. |
 | tst.rb:47:33:47:35 | .*? | This part of the regular expression may cause exponential backtracking on strings starting with ''' and containing many repetitions of ''''. |

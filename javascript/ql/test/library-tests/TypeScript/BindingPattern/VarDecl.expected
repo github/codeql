@@ -1,3 +1,15 @@
+#select
 | tst.tsx:1:10:1:10 | f |
 | tst.tsx:1:12:1:12 | o |
 | tst.tsx:2:14:2:14 | v |
+| tst.tsx:6:10:6:10 | v |
+| tst.tsx:7:11:7:13 | foo |
+| tst.tsx:9:11:9:13 | bar |
+| tst.tsx:12:16:12:16 | b |
+| tst.tsx:13:17:13:19 | foo |
+consts
+| tst.tsx:2:3:2:26 | const { ...  } = o; |
+| tst.tsx:9:5:9:26 | const b ... efined; |
+usings
+| tst.tsx:7:5:7:28 | using f ... as any; |
+| tst.tsx:13:5:13:34 | await u ... as any; |

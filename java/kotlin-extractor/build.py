@@ -92,6 +92,7 @@ def compile_to_dir(build_dir, srcs, classpath, java_classpath, output):
     kotlin_arg_file = build_dir + '/kotlin.args'
     kotlin_args = ['-Werror',
                    '-opt-in=kotlin.RequiresOptIn',
+                   '-opt-in=org.jetbrains.kotlin.ir.symbols.IrSymbolInternals',
                    '-d', output,
                    '-module-name', 'codeql-kotlin-extractor',
                    '-no-reflect', '-no-stdlib',
@@ -168,7 +169,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
         shutil.rmtree(tmp_src_dir)
     shutil.copytree('src', tmp_src_dir)
 
-    include_version_folder = tmp_src_dir + '/main/kotlin/utils/versions/to_include'
+    include_version_folder = tmp_src_dir + '/main/kotlin/utils/this_version'
     os.makedirs(include_version_folder)
 
     resource_dir = tmp_src_dir + '/main/resources/com/github/codeql'
@@ -192,11 +193,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
                 shutil.copytree(d, include_version_folder, dirs_exist_ok=True)
 
     # remove all version folders:
-    for version in kotlin_plugin_versions.many_versions:
-        d = tmp_src_dir + '/main/kotlin/utils/versions/v_' + \
-            version.replace('.', '_')
-        if os.path.exists(d):
-            shutil.rmtree(d)
+    shutil.rmtree(tmp_src_dir + '/main/kotlin/utils/versions')
 
     srcs = find_sources(tmp_src_dir)
 
