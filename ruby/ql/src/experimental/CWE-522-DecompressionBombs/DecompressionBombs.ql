@@ -72,7 +72,10 @@ module DecompressionBombs {
      * `ZipEntry.extract`
      */
     class ZipSink extends DecompressionBombSink {
-      ZipSink() { this = zipInputStream().getMethod(["open", "new"]).getReturn().asSource() }
+      ZipSink() {
+        this = zipInputStream().getMethod(["open", "new"]).getReturn().asSource() and
+        not this.getLocation().getFile().getBaseName().matches("%spec%")
+      }
     }
 
     predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -84,25 +87,18 @@ module DecompressionBombs {
   }
 
   module ZipFile {
-    // // Because of additional step and ZipSink predicates, I couldn't use unary predicate
-    // // I put the explanation because I think there should be a soloution to not use other rubyZipNode predicate
-    // API::Node rubyZipNode() {
-    //   result = zipFile() or
-    //   result = rubyZipNode().getMethod(_).getReturn() or
-    //   result = rubyZipNode().getMethod(_).getBlock().getParameter(_) or
-    //   result = rubyZipNode().getMethod(_).getParameter(0) or
-    //   result = rubyZipNode().getAnElement()
-    // }
-    API::Node rubyZipNode(API::Node n) {
-      result = n
+    API::Node rubyZipNode() {
+      result = zipFile()
       or
-      result = rubyZipNode(n).getMethod(_).getReturn()
+      result = rubyZipNode().getMethod(_)
       or
-      result = rubyZipNode(n).getMethod(_).getBlock().getParameter(_)
+      result = rubyZipNode().getReturn()
       or
-      result = rubyZipNode(n).getMethod(_).getParameter(0)
+      result = rubyZipNode().getParameter(_)
       or
-      result = rubyZipNode(n).getAnElement()
+      result = rubyZipNode().getAnElement()
+      or
+      result = rubyZipNode().getBlock()
     }
 
     /**
@@ -113,18 +109,16 @@ module DecompressionBombs {
      */
     class ZipSink extends DecompressionBombSink {
       ZipSink() {
-        exists(API::Node zipnodes | zipnodes = zipFile() |
-          this = rubyZipNode(zipnodes).getMethod(["extract", "read"]).getReturn().asSource() and
-          not exists(
-            rubyZipNode(zipnodes).getMethod("size").getReturn().getMethod(">").getParameter(0)
-          )
+        exists(API::Node zipnodes | zipnodes = rubyZipNode() |
+          this = zipnodes.getMethod(["extract", "read"]).getReturn().asSource() and
+          not exists(zipnodes.getMethod("size").getReturn().getMethod(">").getParameter(0))
         )
       }
     }
 
     predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(API::Node zipnodes | zipnodes = zipFile() |
-        nodeTo = rubyZipNode(zipnodes).getMethod(["extract", "read"]).getReturn().asSource() and
+      exists(API::Node zipnodes | zipnodes = rubyZipNode() |
+        nodeTo = zipnodes.getMethod(["extract", "read"]).getReturn().asSource() and
         nodeFrom = zipnodes.getMethod(["new", "open"]).getParameter(0).asSink()
       )
     }
@@ -132,7 +126,7 @@ module DecompressionBombs {
     /**
      * `Zip::File`
      */
-    private API::Node zipFile() { result = API::getTopLevelMember("Zip").getMember("File") }
+    API::Node zipFile() { result = API::getTopLevelCall("Zip").getMember("File") }
   }
 }
 
@@ -148,9 +142,15 @@ class IoCopyStream extends DataFlow::CallNode {
 class Bombs extends TaintTracking::Configuration {
   Bombs() { this = "Decompression Bombs" }
 
+  override predicate isSanitizer(DataFlow::Node node) {
+    not node.getLocation().hasLocationInfo("%spec%", _, _, _, _)
+  }
+
   override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource or
-    source instanceof DataFlow::LocalSourceNode
+    source instanceof RemoteFlowSource
+    // or
+    // source instanceof DataFlow::LocalSourceNode
+    // source = API::getTopLevelCall("Zip").getMember("InputStream").getASuccessor*()
   }
 
   override predicate isSink(DataFlow::Node sink) {
