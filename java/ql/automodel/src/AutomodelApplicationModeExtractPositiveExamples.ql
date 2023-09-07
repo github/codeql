@@ -15,7 +15,8 @@ private import AutomodelJavaUtil
 from
   Endpoint endpoint, EndpointType endpointType, ApplicationModeMetadataExtractor meta,
   DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
-  DollarAtString signature, DollarAtString input, DollarAtString output, DollarAtString isVarargsArray
+  DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString isVarargsArray
 where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
