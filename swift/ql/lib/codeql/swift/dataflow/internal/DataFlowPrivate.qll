@@ -761,7 +761,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c instanceof OptionalSomeContentSet
   )
   or
-    // assignment to a dictionary value via subscript operator, with intermediate step
+  // assignment to a dictionary value via subscript operator, with intermediate step
   // `dict[key] = value`
   exists(AssignExpr assign, SubscriptExpr subscript |
     subscript = assign.getDest() and
