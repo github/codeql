@@ -12,35 +12,11 @@
 
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.RangeAnalysisUtil
+import semmle.code.cpp.ir.ValueNumbering
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.DataFlow
 import ArrayAddressToDerefFlow::PathGraph
-
-pragma[nomagic]
-Instruction getABoundIn(SemBound b, IRFunction func) {
-  getSemanticExpr(result) = b.getExpr(0) and
-  result.getEnclosingIRFunction() = func
-}
-
-/**
- * Holds if `i <= b + delta`.
- */
-pragma[inline]
-predicate boundedImpl(Instruction i, Instruction b, int delta) {
-  exists(SemBound bound, IRFunction func |
-    semBounded(getSemanticExpr(i), bound, delta, true, _) and
-    b = getABoundIn(bound, func) and
-    pragma[only_bind_out](i.getEnclosingIRFunction()) = func
-  )
-}
-
-bindingset[i]
-pragma[inline_late]
-predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
-
-bindingset[b]
-pragma[inline_late]
-predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
 
 bindingset[delta]
 predicate isInvalidPointerDerefSinkImpl(
@@ -65,7 +41,7 @@ predicate isInvalidPointerDerefSinkImpl(
 pragma[inline]
 predicate isInvalidPointerDerefSink1(DataFlow::Node sink, Instruction i, string operation) {
   exists(AddressOperand addr, int delta |
-    bounded1(addr.getDef(), sink.asInstruction(), delta) and
+    boundedByValueNumber(addr.getDef(), valueNumber(sink.asInstruction()), delta) and
     isInvalidPointerDerefSinkImpl(delta, i, addr, operation)
   )
 }
@@ -73,7 +49,7 @@ predicate isInvalidPointerDerefSink1(DataFlow::Node sink, Instruction i, string 
 pragma[inline]
 predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string operation) {
   exists(AddressOperand addr, int delta |
-    bounded2(addr.getDef(), sink.asInstruction(), delta) and
+    boundedByValueNumber(addr.getDef(), valueNumber(sink.asInstruction()), delta) and
     isInvalidPointerDerefSinkImpl(delta, i, addr, operation)
   )
 }

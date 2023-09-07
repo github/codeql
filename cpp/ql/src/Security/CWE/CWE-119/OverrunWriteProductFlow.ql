@@ -21,6 +21,7 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.rangeanalysis.new.RangeAnalysisUtil
+import semmle.code.cpp.ir.ValueNumbering
 import StringSizeFlow::PathGraph1
 import codeql.util.Unit
 
@@ -36,8 +37,8 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
     // Get the unique variable in a size expression like `x` in `malloc(x + 1)`.
     va = unique( | | getAVariableAccess(size)) and
     // Compute `delta` as the constant difference between `x` and `x + 1`.
-    bounded(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
-      any(LoadInstruction load | load.getUnconvertedResultExpression() = va), delta) and
+    boundedByValueNumber(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
+      valueNumber(any(LoadInstruction load | load.getUnconvertedResultExpression() = va)), delta) and
     n.asExpr() = va and
     state = delta
   )
@@ -56,7 +57,7 @@ predicate isSinkPairImpl(
     pragma[only_bind_into](func)
         .hasArrayWithVariableSize(pragma[only_bind_into](bufIndex),
           pragma[only_bind_into](sizeIndex)) and
-    bounded(c.getArgument(sizeIndex), sizeInstr, delta) and
+    boundedByValueNumber(c.getArgument(sizeIndex), valueNumber(sizeInstr), delta) and
     eBuf = bufInstr.getUnconvertedResultExpression()
   )
 }
