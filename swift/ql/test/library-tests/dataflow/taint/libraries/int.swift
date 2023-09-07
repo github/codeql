@@ -161,7 +161,7 @@ func taintCollections(array: inout Array<Int>, contiguousArray: inout Contiguous
 
   dictionary[0] = source2()
   sink(arg: dictionary)
-  sink(arg: dictionary[0]!) // tainted=162
+  sink(arg: dictionary[0]!) // $ tainted=162
   dictionary.withContiguousStorageIfAvailable({
     buffer in
     sink(arg: buffer)
