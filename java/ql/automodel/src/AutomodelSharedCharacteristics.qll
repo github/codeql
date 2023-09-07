@@ -96,6 +96,12 @@ module SharedCharacteristics<CandidateSig Candidate> {
 
   predicate isNeutral = Candidate::isNeutral/1;
 
+  predicate isModeled(Candidate::Endpoint e, string kind, string extensibleKind, string provenance) {
+    Candidate::isSink(e, kind, provenance) and extensibleKind = "sinkModel"
+    or
+    Candidate::isSource(e, kind, provenance) and extensibleKind = "sourceModel"
+  }
+
   /**
    * Holds if `endpoint` is modeled as `endpointType` (endpoint type must not be negative).
    */

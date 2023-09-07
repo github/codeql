@@ -72,10 +72,10 @@ where
   // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
   // types, and we don't need to reexamine it.
   (
-    not CharacteristicsImpl::isSink(endpoint, _, _) and alreadyAiModeled = ""
+    not CharacteristicsImpl::isModeled(endpoint, _, _, _) and alreadyAiModeled = ""
     or
     alreadyAiModeled.matches("%ai-%") and
-    CharacteristicsImpl::isSink(endpoint, _, alreadyAiModeled)
+    CharacteristicsImpl::isModeled(endpoint, _, _, alreadyAiModeled)
   ) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
   includeAutomodelCandidate(package, type, name, signature) and
