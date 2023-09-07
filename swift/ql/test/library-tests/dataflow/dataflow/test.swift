@@ -612,7 +612,7 @@ func inoutConstructor() {
 }
 
 struct S {
-  let x: Int
+  var x: Int
 
   init(x: Int) {
     self.x = x
@@ -629,7 +629,7 @@ func testKeyPath() {
 }
 
 struct S2 {
-  let s: S
+  var s: S
 
   init(s: S) {
     self.s = s
@@ -765,4 +765,12 @@ func testOptionalKeyPathForce() {
     let s2 = S2_Optional(s: s)
     let f = \S2_Optional.s!.x
     sink(arg: s2[keyPath: f]) // $ flow=764
+}
+
+func testNestedKeyPathWrite() {
+  var s2 = S2(s: S(x: 1))
+  sink(arg: s2.s.x)
+  var f = \S2.s.x
+  s2[keyPath: f] = source()
+  sink(arg: s2.s.x) // $ flow=774
 }

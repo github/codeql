@@ -57,6 +57,22 @@ private class KeyPathComponentNodeImpl extends TKeyPathComponentNode, NodeImpl {
   KeyPathComponent getComponent() { result = component }
 }
 
+private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdateNode, NodeImpl {
+  KeyPathComponent component;
+
+  KeyPathComponentPostUpdateNode() { this = TKeyPathComponentPostUpdateNode(component) }
+
+  override Location getLocationImpl() { result = component.getLocation() }
+
+  override string toStringImpl() { result = "[post] " + component.toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = component.getKeyPathExpr()
+  }
+
+  KeyPathComponent getComponent() { result = component }
+}
+
 private class PatternNodeImpl extends PatternNode, NodeImpl {
   override Location getLocationImpl() { result = pattern.getLocation() }
 
@@ -96,6 +112,9 @@ private module Cached {
     TKeyPathParameterNode(EntryNode entry) { entry.getScope() instanceof KeyPathExpr } or
     TKeyPathReturnNode(ExitNode exit) { exit.getScope() instanceof KeyPathExpr } or
     TKeyPathComponentNode(KeyPathComponent component) or
+    TKeyPathParameterPostUpdateNode(EntryNode entry) { entry.getScope() instanceof KeyPathExpr } or
+    TKeyPathReturnPostUpdateNode(ExitNode exit) { exit.getScope() instanceof KeyPathExpr } or
+    TKeyPathComponentPostUpdateNode(KeyPathComponent component) or
     TExprPostUpdateNode(CfgNode n) {
       // Obviously, the base of setters needs a post-update node
       n = any(PropertySetterCfgNode setter).getBase()
@@ -104,6 +123,8 @@ private module Cached {
       n = any(PropertyGetterCfgNode getter).getBase()
       or
       n = any(PropertyObserverCfgNode getter).getBase()
+      or
+      n = any(KeyPathApplicationExprCfgNode expr).getBase()
       or
       // Arguments that are `inout` expressions needs a post-update node,
       // as well as any class-like argument (since a field can be modified).
@@ -226,6 +247,17 @@ private module Cached {
     // the first component in the chain.
     nodeTo.(KeyPathComponentNodeImpl).getComponent() =
       nodeFrom.(KeyPathParameterNode).getComponent(0)
+    or
+    nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() = 
+      nodeTo.(KeyPathParameterPostUpdateNode).getComponent(0)
+    or
+    // Flow to the result of a keypath assignment
+    // TODO: is there a cleaner way to do this?
+    exists(KeyPathApplicationExpr apply, AssignExpr assign |
+      apply = assign.getDest() and
+      nodeTo.asExpr() = apply and
+      nodeFrom.asExpr() = assign.getSource()
+    )
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
@@ -383,6 +415,56 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
 
+class KeyPathParameterPostUpdateNode extends NodeImpl, ReturnNode, PostUpdateNodeImpl,
+  TKeyPathParameterPostUpdateNode
+{
+  private EntryNode entry;
+
+  KeyPathParameterPostUpdateNode() { this = TKeyPathParameterPostUpdateNode(entry) }
+
+  override KeyPathParameterNode getPreUpdateNode() {
+    result.getKeyPathExpr() = this.getKeyPathExpr()
+  }
+
+  override Location getLocationImpl() { result = entry.getLocation() }
+
+  override string toStringImpl() { result = "[post] " + entry.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result.asSourceCallable() = entry.getScope() }
+
+  KeyPathComponent getComponent(int i) { result = entry.getScope().(KeyPathExpr).getComponent(i) }
+
+  KeyPathComponent getAComponent() { result = this.getComponent(_) }
+
+  KeyPathExpr getKeyPathExpr() { result = entry.getScope() }
+
+  override ReturnKind getKind() { result.(ParamReturnKind).getIndex() = -1 }
+}
+
+class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdateNodeImpl,
+  TKeyPathReturnPostUpdateNode
+{
+  private ExitNode exit;
+
+  KeyPathReturnPostUpdateNode() { this = TKeyPathReturnPostUpdateNode(exit) }
+
+  override KeyPathParameterNode getPreUpdateNode() {
+    result.getKeyPathExpr() = this.getKeyPathExpr()
+  }
+
+  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    c.asSourceCallable() = this.getKeyPathExpr() and pos = TPositionalParameter(0) // TODO: new parameter type?
+  }
+
+  override Location getLocationImpl() { result = exit.getLocation() }
+
+  override string toStringImpl() { result = "[post] " + exit.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result.asSourceCallable() = exit.getScope() }
+
+  KeyPathExpr getKeyPathExpr() { result = exit.getScope() }
+}
+
 /** A data-flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
@@ -474,6 +556,20 @@ private module ArgumentNodes {
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       call.asKeyPath() = keyPath and
       pos = TThisArgument()
+    }
+  }
+
+  class KeyPathAssignmentArgumentNode extends ArgumentNode {
+    private KeyPathApplicationExprCfgNode keyPath;
+
+    KeyPathAssignmentArgumentNode() {
+      keyPath = this.getCfgNode() and
+      exists(AssignExpr assign | assign.getDest() = keyPath.getNode().asAstNode())
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.asKeyPath() = keyPath and
+      pos = TPositionalArgument(0) // TODO: new parameter type?
     }
   }
 }
@@ -733,6 +829,24 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.(KeyPathComponentNodeImpl).getComponent() = component and
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
     c instanceof OptionalSomeContentSet
+  )
+  or
+  // store through a component in a key-path expression chain
+  exists(KeyPathComponent component |
+    component = node2.(KeyPathComponentPostUpdateNode).getComponent() and
+    (
+      c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
+      or
+      c.isSingleton(any(Content::ArrayContent ac)) and
+      component.isSubscript()
+    )
+  |
+    // the previous node is either the next element in the chain
+    node1.(KeyPathComponentPostUpdateNode).getComponent() = component.getNextComponent()
+    or
+    // or the return node, if this is the last component in the chain
+    not exists(component.getNextComponent()) and
+    node1.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
