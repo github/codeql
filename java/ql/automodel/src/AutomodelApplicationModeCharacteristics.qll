@@ -177,7 +177,16 @@ class OverriddenParameter extends ApplicationModeEndpoint, TOverriddenParameter 
 
   OverriddenParameter() { this = TOverriddenParameter(p) }
 
-  override Callable getCallable() { result = p.getCallable() }
+  override Callable getCallable() {
+    // XXX: we're returning the overriding callable here. This means that the
+    // candidate model will be about the overriding method, not the overridden
+    // method (which is more general).
+    // Doing it this way:
+    //  - (+) makes the decision easier for the user
+    //  - (+) is simplest, implementation-wise
+    //  - (-) produces a less general model
+    result = p.getCallable()
+  }
 
   override Call getCall() { none() }
 
