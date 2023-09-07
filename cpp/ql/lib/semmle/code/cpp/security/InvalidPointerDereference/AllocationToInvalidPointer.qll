@@ -70,8 +70,8 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
     // Get the unique variable in a size expression like `x` in `malloc(x + 1)`.
     va = unique( | | getAVariableAccess(size)) and
     // Compute `delta` as the constant difference between `x` and `x + 1`.
-    bounded1(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
-      any(LoadInstruction load | load.getUnconvertedResultExpression() = va), delta) and
+    boundedByValueNumber(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
+      valueNumber(any(LoadInstruction load | load.getUnconvertedResultExpression() = va)), delta) and
     n.asExpr() = va and
     state = delta
   )
@@ -167,7 +167,7 @@ private module SizeBarrier {
       small = value.getAUse() and
       operandGuardChecks(pragma[only_bind_into](g), pragma[only_bind_into](small), large,
         pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
-      bounded(result, value.getAnInstruction(), delta) and
+      boundedByValueNumber(result, value, delta) and
       g.controls(result.getBlock(), edge) and
       k < getASizeAddend(large)
     )
@@ -321,7 +321,7 @@ private predicate pointerAddInstructionHasBounds0(
     pai.getLeft() = allocSink.asInstruction() and
     sizeInstr = sizeSink.asInstruction() and
     // pai.getRight() <= sizeSink + delta
-    bounded1(right, sizeInstr, delta) and
+    boundedByValueNumber(right, valueNumber(sizeInstr), delta) and
     not right = SizeBarrier::getABarrierInstruction(delta) and
     not sizeInstr = SizeBarrier::getABarrierInstruction(delta)
   )
