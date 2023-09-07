@@ -1,6 +1,7 @@
 package com.github.codeql.test;
 
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +48,7 @@ class Test {
 			f2 // negative example (modeled as not a sink)
 		);
 	}
-		
+
 	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
 		Files.walk( // the call is a source candidate
 			p, // negative example (modeled as a taint step)
@@ -62,8 +63,8 @@ class Test {
 	}
 }
 
-class OverrideTest {
-	public boolean equals(Object o) { // o is a source candidate because it overrides an existing method
-		return false;
+class OverrideTest extends Exception {
+	public void printStackTrace(PrintWriter writer) { // writer is a source candidate because it overrides an existing method
+		return;
 	}
 }

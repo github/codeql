@@ -37,9 +37,9 @@ newtype TApplicationModeEndpoint =
     )
   } or
   TMethodCall(Call call) { not call instanceof ConstructorCall } or
-  TOverriddenParameter(Parameter p) {
+  TOverriddenParameter(Parameter p, Method overriddenMethod) {
     not p.getCallable().callsConstructor(_) and
-    p.getCallable().(Method).overrides(_)
+    p.getCallable().(Method).overrides(overriddenMethod)
   }
 
 /**
@@ -174,18 +174,16 @@ class MethodCall extends ApplicationModeEndpoint, TMethodCall {
 
 class OverriddenParameter extends ApplicationModeEndpoint, TOverriddenParameter {
   Parameter p;
+  Method overriddenMethod;
 
-  OverriddenParameter() { this = TOverriddenParameter(p) }
+  OverriddenParameter() { this = TOverriddenParameter(p, overriddenMethod) }
 
   override Callable getCallable() {
-    // XXX: we're returning the overriding callable here. This means that the
-    // candidate model will be about the overriding method, not the overridden
-    // method (which is more general).
-    // Doing it this way:
-    //  - (+) makes the decision easier for the user
-    //  - (+) is simplest, implementation-wise
-    //  - (-) produces a less general model
-    result = p.getCallable()
+    // NB: we're returning the overridden callable here. This means that the
+    // candidate model will be about the overridden method, not the overriding
+    // method. This is a more general model, that also applies to other
+    // subclasses of the overridden class.
+    result = overriddenMethod
   }
 
   override Call getCall() { none() }
@@ -269,8 +267,8 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
+    e.getCallable().hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(e.getCallable()) and
     ext = "" and
     input = e.getMaDInput()
   }
@@ -279,8 +277,8 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     Endpoint e, string package, string type, string name, string signature, string ext,
     string output
   ) {
-    ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
+    e.getCallable().hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(e.getCallable()) and
     ext = "" and
     output = e.getMaDOutput()
   }
