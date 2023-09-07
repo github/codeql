@@ -31,7 +31,12 @@ module CodeInjection {
 
     /** Flow states used to distinguish whether an attacker controls the entire string. */
     class State extends TState {
-      string toString() {
+      string toString() { result = this.getStringRepresentation() }
+
+      /**
+       * Gets a canonical string representation of this state.
+       */
+      string getStringRepresentation() {
         this = TSubString() and result = "substring"
         or
         this = TFull() and result = "full"
