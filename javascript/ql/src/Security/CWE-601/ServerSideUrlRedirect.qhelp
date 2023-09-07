@@ -38,10 +38,18 @@ before doing the redirection:
 <sample src="examples/ServerSideUrlRedirectGood.js"/>
 
 <p>
-Alternatively, we can check that the target URL does not redirect to a different host:
+Alternatively, we can check that the target URL does not redirect to a different host
+by parsing it relative to a base URL with a known host and verifying that the host
+stays the same:
 </p>
 
 <sample src="examples/ServerSideUrlRedirectGood2.js"/>
+
+<p>
+Note that as written, the above code will allow redirects to URLs on <code>example.com</code>,
+which is harmless but perhaps not intended. Substitute your own domain name for
+<code>example.com</code> to prevent this.
+</p>
 
 </example>
 
