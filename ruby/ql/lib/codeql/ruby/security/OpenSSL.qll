@@ -411,7 +411,7 @@ private predicate cipherInstantiationGeneric(
   exists(string cipherName | cipher.matchesName(cipherName) |
     // `OpenSSL::Cipher.new('<cipherName>')`
     call = cipherApi().getAnInstantiation() and
-    cipherName = getStringArgument(call, 0) and
+    call.getArgument(0) = cipherNameSource(_, cipherName) and
     if cipher.getAlgorithm().isStreamCipher()
     then cipherMode = TStreamCipher()
     else cipherMode.isBlockMode(getBlockModeFromCipherName(cipherName))
@@ -539,6 +539,17 @@ private DataFlow::LocalSourceNode cipherInstance(
   result.(CipherInstantiation).getCipherMode() = cipherMode
   or
   exists(TypeTracker t2 | result = cipherInstance(t2, cipher, cipherMode).track(t2, t))
+}
+
+/**
+ * Gets a node which has the string value `name`, which is the name of an `OpenSslCipher`.
+ */
+private DataFlow::LocalSourceNode cipherNameSource(TypeTracker t, string name) {
+  exists(OpenSslCipher cipher |
+    t.start() and cipher.matchesName(name) and result.getConstantValue().isStringlikeValue(name)
+  )
+  or
+  exists(TypeTracker t2 | result = cipherNameSource(t2, name).track(t2, t))
 }
 
 /** A node with flow from `OpenSSL::Cipher.new`. */

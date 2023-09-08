@@ -367,6 +367,11 @@ private Method lookupMethod(Module m, string name, boolean exact) {
   exact = false
 }
 
+// TODO: should this extend Callable or something?
+abstract class AdditionalCallTarget extends CfgScope {
+  abstract CfgNodes::ExprNodes::CallCfgNode getCall();
+}
+
 cached
 private module Cached {
   cached
@@ -411,6 +416,8 @@ private module Cached {
     )
     or
     result = blockCall(call)
+    or
+    result = any(AdditionalCallTarget t | t.getCall() = call)
   }
 
   /** Gets a viable run-time target for the call `call`. */

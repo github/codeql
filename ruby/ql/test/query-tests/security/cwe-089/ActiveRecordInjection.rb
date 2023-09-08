@@ -178,3 +178,13 @@ class RegressionController < ActionController::Base
     Regression.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
   end
 end
+
+class Post < ActiveRecord::Base
+  scope :created_after, ->(time) { where("created_at > #{time}",) }
+end
+
+class PostsController < ActionController::Base
+  def index
+    Post.created_after(params[:time])
+  end
+end

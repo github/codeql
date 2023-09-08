@@ -401,6 +401,17 @@ private class AccessLocalsKeySummary extends SummarizedCallable {
   }
 }
 
+/**
+ * A summary for calls to `original_filename`, which is
+ */
+private class OriginalFilenameSummary extends SimpleSummarizedCallable {
+  OriginalFilenameSummary() { this = "original_filename" }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[self]" and output = "ReturnValue" and preservesValue = false
+  }
+}
+
 /** A call to `render inline: foo`, considered as a ERB template rendering. */
 private class RailsTemplateRendering extends TemplateRendering::Range, DataFlow::CallNode {
   private DataFlow::Node template;

@@ -105,5 +105,9 @@ class Foo < ActionController::Base
         # .shellescape
         system("cat #{file.shellescape}") # OK, because file is shell escaped
         
+        x = params[:y]
+        system(x)
+        z = params[:y][:z]
+        system(z)
     end
 end

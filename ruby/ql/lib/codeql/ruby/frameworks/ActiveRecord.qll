@@ -10,6 +10,16 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Stdlib
 private import codeql.ruby.frameworks.Core
+private import codeql.ruby.controlflow.CfgNodes::ExprNodes
+
+private class ScopeCallTarget extends AdditionalCallTarget {
+
+
+  ScopeCallTarget() { exists(MethodCall scopeCall |
+    scopeCall.getMethodName() = "scope"  ) }
+
+  override CallCfgNode getCall() { none() }
+}
 
 /// See https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html
 private string activeRecordPersistenceInstanceMethodName() {
