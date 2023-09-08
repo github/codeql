@@ -486,7 +486,9 @@ module Stmts {
       override ForEachStmt ast;
 
       final override predicate propagatesAbnormal(ControlFlowElement child) {
-        child.asAstNode() = ast.getSequence().getFullyConverted()
+        child.asAstNode() = ast.getIteratorVar()
+        or
+        child.asAstNode() = ast.getNextCall()
         or
         child.asAstNode() = ast.getPattern().getFullyUnresolved()
       }
@@ -495,7 +497,7 @@ module Stmts {
         // Unlike most other statements, `foreach` statements are not modeled in
         // pre-order, because we use the `foreach` node itself to represent the
         // emptiness test that determines whether to execute the loop body
-        astFirst(ast.getSequence().getFullyConverted(), first)
+        astFirst(ast.getIteratorVar(), first)
       }
 
       final override predicate last(ControlFlowElement last, Completion c) {
@@ -518,8 +520,13 @@ module Stmts {
       }
 
       override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-        // Flow from last element of iterator expression to emptiness test
-        astLast(ast.getSequence().getFullyConverted(), pred, c) and
+        // Flow from last element of iterator expression to first element of iterator call
+        astLast(ast.getIteratorVar(), pred, c) and
+        c instanceof NormalCompletion and
+        astFirst(ast.getNextCall(), succ)
+        or
+        // Flow from iterator call to emptiness test
+        astLast(ast.getNextCall(), pred, c) and
         c instanceof NormalCompletion and
         succ.asAstNode() = ast
         or
@@ -555,7 +562,7 @@ module Stmts {
         // Flow from last element of loop body back to emptiness test.
         astLast(ast.getBody(), pred, c) and
         c.continuesLoop(ast) and
-        succ.asAstNode() = ast
+        astFirst(ast.getNextCall(), succ)
       }
     }
   }
