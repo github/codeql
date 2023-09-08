@@ -1001,6 +1001,7 @@ subpaths
 | test.swift:765:29:765:29 | s [some:0, x] | test.swift:655:8:655:12 | s [some:0, x] | test.swift:655:3:657:3 | self[return] [s, some:0, x] | test.swift:765:14:765:30 | call to S2_Optional.init(s:) [s, some:0, x] |
 | test.swift:767:15:767:15 | s2 [s, some:0, x] | test.swift:766:13:766:29 | enter #keyPath(...) [s, some:0, x] | test.swift:766:13:766:29 | exit #keyPath(...) | test.swift:767:15:767:28 | \\...[...] |
 | test.swift:774:3:774:16 | \\...[...] | test.swift:773:11:773:17 | [post] exit #keyPath(...) | test.swift:773:11:773:17 | [post] enter #keyPath(...) [s, x] | test.swift:774:3:774:3 | [post] s2 [s, x] |
+| test.swift:774:3:774:16 | \\...[...] | test.swift:773:11:773:17 | [post] exit #keyPath(...) | test.swift:773:15:773:15 | [post] KeyPathComponent [s, x] | test.swift:774:3:774:3 | [post] s2 [s, x] |
 | test.swift:775:13:775:13 | s2 [s, x] | test.swift:632:7:632:7 | self [s, x] | file://:0:0:0:0 | .s [x] | test.swift:775:13:775:16 | .s [x] |
 | test.swift:775:13:775:16 | .s [x] | test.swift:615:7:615:7 | self [x] | file://:0:0:0:0 | .x | test.swift:775:13:775:18 | .x |
 #select

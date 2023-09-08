@@ -57,7 +57,7 @@ private class KeyPathComponentNodeImpl extends TKeyPathComponentNode, NodeImpl {
   KeyPathComponent getComponent() { result = component }
 }
 
-private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdateNode, NodeImpl {
+private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdateNode, NodeImpl, PostUpdateNodeImpl {
   KeyPathComponent component;
 
   KeyPathComponentPostUpdateNode() { this = TKeyPathComponentPostUpdateNode(component) }
@@ -68,6 +68,10 @@ private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdate
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = component.getKeyPathExpr()
+  }
+
+  override KeyPathComponentNodeImpl getPreUpdateNode() {
+    result.getComponent() = this.getComponent()
   }
 
   KeyPathComponent getComponent() { result = component }
@@ -448,7 +452,7 @@ class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdat
 
   KeyPathReturnPostUpdateNode() { this = TKeyPathReturnPostUpdateNode(exit) }
 
-  override KeyPathParameterNode getPreUpdateNode() {
+  override KeyPathReturnNodeImpl getPreUpdateNode() {
     result.getKeyPathExpr() = this.getKeyPathExpr()
   }
 
@@ -829,24 +833,6 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.(KeyPathComponentNodeImpl).getComponent() = component and
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
     c instanceof OptionalSomeContentSet
-  )
-  or
-  // store through a component in a key-path expression chain
-  exists(KeyPathComponent component |
-    component = node2.(KeyPathComponentPostUpdateNode).getComponent() and
-    (
-      c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
-      or
-      c.isSingleton(any(Content::ArrayContent ac)) and
-      component.isSubscript()
-    )
-  |
-    // the previous node is either the next element in the chain
-    node1.(KeyPathComponentPostUpdateNode).getComponent() = component.getNextComponent()
-    or
-    // or the return node, if this is the last component in the chain
-    not exists(component.getNextComponent()) and
-    node1.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
