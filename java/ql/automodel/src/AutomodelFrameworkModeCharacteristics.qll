@@ -117,6 +117,10 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     )
   }
 
+  predicate isSource(Endpoint e, string kind, string provenance) {
+    none() // TODO: implement
+  }
+
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
       sinkSpec(e, package, type, name, signature, _, _) and

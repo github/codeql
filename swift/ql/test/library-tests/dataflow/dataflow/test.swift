@@ -767,10 +767,48 @@ func testOptionalKeyPathForce() {
     sink(arg: s2[keyPath: f]) // $ flow=764
 }
 
+func testDictionary() {
+    var dict1 = [1:2, 3:4, 5:6]
+    sink(arg: dict1[1])
+
+    dict1[1] = source()
+
+    sink(arg: dict1[1]) // $ flow=774
+
+    var dict2 = [source(): 1]
+    sink(arg: dict2[1])
+
+    for (key, value) in dict2 {
+        sink(arg: key) // $ MISSING: flow=778
+        sink(arg: value)
+    }
+
+    var dict3 = [1: source()]
+    sink(arg: dict3[1]) // $ flow=786
+
+    dict3[source()] = 2
+
+    sink(arg: dict3.randomElement()!.0) // $ flow=789
+    sink(arg: dict3.randomElement()!.1) // $ flow=786
+
+    for (key, value) in dict3 {
+        sink(arg: key) // $ MISSING: flow=789
+        sink(arg: value) // $ MISSING: flow=786
+    }
+
+    var dict4 = [1:source()]
+    sink(arg: dict4.updateValue(1, forKey: source())!) // $ flow=799
+    sink(arg: dict4.updateValue(source(), forKey: 2)!) // $ SPURIOUS: flow=799
+    sink(arg: dict4.randomElement()!.0) // $ flow=800
+    sink(arg: dict4.randomElement()!.1) // $ flow=799 flow=801
+    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=800
+    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=799 flow=801
+}
+
 func testNestedKeyPathWrite() {
   var s2 = S2(s: S(x: 1))
   sink(arg: s2.s.x)
   var f = \S2.s.x
   s2[keyPath: f] = source()
-  sink(arg: s2.s.x) // $ flow=774
+  sink(arg: s2.s.x) // $ flow=812
 }

@@ -405,9 +405,6 @@ predicate hasUnreachedInstruction(IRFunction func) {
   exists(Call c |
     c.getEnclosingFunction() = func.getFunction() and
     any(Options opt).exits(c.getTarget())
-  ) and
-  not exists(TranslatedUnreachableReturnStmt return |
-    return.getEnclosingFunction().getFunction() = func.getFunction()
   )
 }
 

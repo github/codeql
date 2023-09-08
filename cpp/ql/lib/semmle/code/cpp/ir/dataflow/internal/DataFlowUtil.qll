@@ -254,9 +254,7 @@ class Node extends TIRDataFlowNode {
    * after the `f` has returned.
    */
   Expr asDefiningArgument(int index) {
-    // Subtract one because `DefinitionByReferenceNode` is defined to be in
-    // the range `[0 ... n - 1]` for some `n` instead of `[1 ... n]`.
-    this.(DefinitionByReferenceNode).getIndirectionIndex() = index - 1 and
+    this.(DefinitionByReferenceNode).getIndirectionIndex() = index and
     result = this.(DefinitionByReferenceNode).getArgument()
   }
 
