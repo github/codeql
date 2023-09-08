@@ -36,7 +36,7 @@ newtype TApplicationModeEndpoint =
       not exists(int i | i < idx and call.getArgument(i).(Argument).isVararg())
     )
   } or
-  TMethodCall(Call call) { not call instanceof ConstructorCall } or
+  TMethodReturnValue(Call call) { not call instanceof ConstructorCall } or
   TOverriddenParameter(Parameter p, Method overriddenMethod) {
     not p.getCallable().callsConstructor(_) and
     p.getCallable().(Method).overrides(overriddenMethod)
@@ -168,10 +168,10 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
  * An endpoint that represents a method call. The `ReturnValue` of a method call
  * may be a source.
  */
-class MethodCall extends ApplicationModeEndpoint, TMethodCall {
+class MethodReturnValue extends ApplicationModeEndpoint, TMethodReturnValue {
   Call call;
 
-  MethodCall() { this = TMethodCall(call) }
+  MethodReturnValue() { this = TMethodReturnValue(call) }
 
   override Callable getCallable() { result = call.getCallee() }
 
