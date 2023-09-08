@@ -375,22 +375,42 @@ type GoVersionInfo struct {
 }
 
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
-func tryReadGoDirective(buildInfo BuildInfo) GoVersionInfo {
+func tryReadGoDirective(buildInfo BuildInfo) (GoVersionInfo, GoVersionInfo) {
+	noVersionInfo := GoVersionInfo{"", false}
+	compilerVersion := noVersionInfo
+	toolchainVersion := noVersionInfo
+
 	if buildInfo.DepMode == GoGetWithModules {
 		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
+		toolchainRe := regexp.MustCompile(`(?m)^toolchain[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
 		goMod, err := os.ReadFile(filepath.Join(buildInfo.BaseDir, "go.mod"))
 		if err != nil {
 			log.Println("Failed to read go.mod to check for missing Go version")
 		} else {
 			matches := versionRe.FindSubmatch(goMod)
+			toolchainMatches := toolchainRe.FindSubmatch(goMod)
+
 			if matches != nil {
 				if len(matches) > 1 {
-					return GoVersionInfo{string(matches[1]), true}
+					compilerVersion = GoVersionInfo{string(matches[1]), true}
+				}
+			}
+
+			if toolchainMatches != nil {
+				if len(toolchainMatches) > 1 {
+					toolchainVersion = GoVersionInfo{string(toolchainMatches[1]), true}
 				}
 			}
 		}
 	}
-	return GoVersionInfo{"", false}
+
+	// If no `toolchain` directive is specified, Go assumes that its value is the same as that
+	// specified in a `go` directive
+	if !toolchainVersion.Found && compilerVersion.Found {
+		toolchainVersion = compilerVersion
+	}
+
+	return compilerVersion, toolchainVersion
 }
 
 // Returns the appropriate ModMode for the current project
@@ -778,7 +798,7 @@ func installDependenciesAndBuild() {
 		os.Setenv("GO111MODULE", "auto")
 	}
 
-	goVersionInfo := tryReadGoDirective(buildInfo)
+	goVersionInfo, _ := tryReadGoDirective(buildInfo)
 
 	if goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, getEnvGoSemVer()) > 0 {
 		diagnostics.EmitNewerGoVersionNeeded()
@@ -1099,7 +1119,7 @@ func isGoInstalled() bool {
 func identifyEnvironment() {
 	var v versionInfo
 	buildInfo := getBuildInfo(false)
-	goVersionInfo := tryReadGoDirective(buildInfo)
+	goVersionInfo, _ := tryReadGoDirective(buildInfo)
 	v.goModVersion, v.goModVersionFound = goVersionInfo.Version, goVersionInfo.Found
 
 	v.goEnvVersionFound = isGoInstalled()
