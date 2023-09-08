@@ -1444,6 +1444,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isSynthSplat() and apos.isSynthSplat()
   or
+  ppos.isSynthSplat() and apos.isSplat(0)
+  or
   apos.isSynthSplat() and ppos.isSynthArgSplat()
   or
   // Exact splat match

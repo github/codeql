@@ -478,7 +478,9 @@ private module Cached {
     TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) or
     TSynthSplatArgumentElementNode(CfgNodes::ExprNodes::CallCfgNode c, int n) {
       n in [-1 .. 10] and
-      exists(Argument arg, ArgumentPosition pos | pos.isSplat(_) and arg.isArgumentOf(c, pos))
+      exists(Argument arg, ArgumentPosition pos |
+        pos.isSplat(any(int p | p > 0)) and arg.isArgumentOf(c, pos)
+      )
     } or
     TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
 
@@ -1666,10 +1668,6 @@ predicate synthSplatArgumentElementReadStep(
   )
 }
 
-predicate readStepFromSynthSplatParam(SynthSplatParameterNode node1, ContentSet c, Node node2) {
-  readStep(node1, c, node2)
-}
-
 /**
  * Holds if there is a read step of content `c` from `node1` to `node2`.
  */
@@ -1708,6 +1706,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     )
   or
   VariableCapture::readStep(node1, any(Content::CapturedVariableContent v | c.isSingleton(v)), node2)
+  or
+  // Read from SynthSplatParameterNode into SynthSplatParameterElementNode
+  // This models flow from elements in a splat argument to elements in a splat parameter, where there are preceding positional parameters.
+  node2 =
+    any(SynthSplatParameterElementNode e |
+      node1.(SynthSplatParameterNode).isParameterOf(e.getEnclosingCallable(), _) and
+      c = getPositionalContent(e.getReadPosition())
+    )
   or
   readStepCommon(node1, c, node2)
 }
