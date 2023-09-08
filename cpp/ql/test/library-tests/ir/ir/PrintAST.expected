@@ -1798,6 +1798,23 @@ ir.c:
 #   10|                 Type = [CTypedefType] MyCoords
 #   10|                 ValueCategory = lvalue
 #   11|     getStmt(3): [ReturnStmt] return ...
+#   13| [TopLevelFunction] void CStyleCast(void*)
+#   13|   <params>: 
+#   13|     getParameter(0): [Parameter] src
+#   13|         Type = [VoidPointerType] void *
+#   14|   getEntryPoint(): [BlockStmt] { ... }
+#   15|     getStmt(0): [DeclStmt] declaration
+#   15|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of dst
+#   15|           Type = [CharPointerType] char *
+#   15|         getVariable().getInitializer(): [Initializer] initializer for dst
+#   15|           getExpr(): [VariableAccess] src
+#   15|               Type = [VoidPointerType] void *
+#   15|               ValueCategory = prvalue(load)
+#   15|           getExpr().getFullyConverted(): [CStyleCast] (char *)...
+#   15|               Conversion = [PointerConversion] pointer conversion
+#   15|               Type = [CharPointerType] char *
+#   15|               ValueCategory = prvalue
+#   16|     getStmt(1): [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   <params>: 
@@ -8460,7 +8477,7 @@ ir.cpp:
 # 1018|       getExpr(): [DeleteExpr] delete
 # 1018|           Type = [VoidType] void
 # 1018|           ValueCategory = prvalue
-# 1018|         getAllocatorCall(): [FunctionCall] call to operator delete
+# 1018|         getDeallocatorCall(): [FunctionCall] call to operator delete
 # 1018|             Type = [VoidType] void
 # 1018|             ValueCategory = prvalue
 # 1018|         getExpr(): [Literal] 0
@@ -8538,7 +8555,7 @@ ir.cpp:
 # 1027|       getExpr(): [DeleteArrayExpr] delete[]
 # 1027|           Type = [VoidType] void
 # 1027|           ValueCategory = prvalue
-# 1027|         getAllocatorCall(): [FunctionCall] call to operator delete[]
+# 1027|         getDeallocatorCall(): [FunctionCall] call to operator delete[]
 # 1027|             Type = [VoidType] void
 # 1027|             ValueCategory = prvalue
 # 1027|         getExpr(): [Literal] 0
@@ -15536,6 +15553,193 @@ ir.cpp:
 # 2030|                 Type = [IntType] int
 # 2030|                 ValueCategory = prvalue
 # 2031|     getStmt(2): [ReturnStmt] return ...
+# 2033| [TopLevelFunction] void NewDeleteMem()
+# 2033|   <params>: 
+# 2033|   getEntryPoint(): [BlockStmt] { ... }
+# 2034|     getStmt(0): [DeclStmt] declaration
+# 2034|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2034|           Type = [IntPointerType] int *
+# 2034|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2034|           getExpr(): [NewExpr] new
+# 2034|               Type = [IntPointerType] int *
+# 2034|               ValueCategory = prvalue
+# 2035|     getStmt(1): [ExprStmt] ExprStmt
+# 2035|       getExpr(): [AssignExpr] ... = ...
+# 2035|           Type = [IntType] int
+# 2035|           ValueCategory = lvalue
+# 2035|         getLValue(): [PointerDereferenceExpr] * ...
+# 2035|             Type = [IntType] int
+# 2035|             ValueCategory = lvalue
+# 2035|           getOperand(): [VariableAccess] x
+# 2035|               Type = [IntPointerType] int *
+# 2035|               ValueCategory = prvalue(load)
+# 2035|         getRValue(): [Literal] 6
+# 2035|             Type = [IntType] int
+# 2035|             Value = [Literal] 6
+# 2035|             ValueCategory = prvalue
+# 2036|     getStmt(2): [ExprStmt] ExprStmt
+# 2036|       getExpr(): [DeleteExpr] delete
+# 2036|           Type = [VoidType] void
+# 2036|           ValueCategory = prvalue
+# 2036|         getExpr(): [VariableAccess] x
+# 2036|             Type = [IntPointerType] int *
+# 2036|             ValueCategory = prvalue(load)
+# 2037|     getStmt(3): [ReturnStmt] return ...
+# 2039| [CopyAssignmentOperator] Base2& Base2::operator=(Base2 const&)
+# 2039|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Base2 &
+# 2039| [Constructor] void Base2::Base2()
+# 2039|   <params>: 
+# 2039|   <initializations>: 
+# 2039|   getEntryPoint(): [BlockStmt] { ... }
+# 2039|     getStmt(0): [ReturnStmt] return ...
+# 2039| [CopyConstructor] void Base2::Base2(Base2 const&)
+# 2039|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Base2 &
+# 2041| [MemberFunction] void Base2::operator delete(void*)
+# 2041|   <params>: 
+# 2041|     getParameter(0): [Parameter] p
+# 2041|         Type = [VoidPointerType] void *
+# 2041|   getEntryPoint(): [BlockStmt] { ... }
+# 2042|     getStmt(0): [ReturnStmt] return ...
+# 2043| [Destructor,VirtualFunction] void Base2::~Base2()
+# 2043|   <params>: 
+# 2043|   getEntryPoint(): [BlockStmt] { ... }
+# 2043|     getStmt(0): [ReturnStmt] return ...
+# 2043|   <destructions>: 
+# 2046| [CopyAssignmentOperator] Derived2& Derived2::operator=(Derived2 const&)
+# 2046|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Derived2 &
+# 2046| [Constructor] void Derived2::Derived2()
+# 2046|   <params>: 
+# 2046|   <initializations>: 
+# 2046|     getInitializer(0): [ConstructorDirectInit] call to Base2
+# 2046|         Type = [VoidType] void
+# 2046|         ValueCategory = prvalue
+# 2046|   getEntryPoint(): [BlockStmt] { ... }
+# 2046|     getStmt(0): [ReturnStmt] return ...
+# 2046| [CopyConstructor] void Derived2::Derived2(Derived2 const&)
+# 2046|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Derived2 &
+# 2049| [Destructor,VirtualFunction] void Derived2::~Derived2()
+# 2049|   <params>: 
+# 2049|   getEntryPoint(): [BlockStmt] { ... }
+# 2049|     getStmt(0): [ReturnStmt] return ...
+# 2049|   <destructions>: 
+# 2049|     getDestruction(0): [DestructorDirectDestruction] call to ~Base2
+# 2049|         Type = [VoidType] void
+# 2049|         ValueCategory = prvalue
+# 2051| [MemberFunction] void Derived2::operator delete(void*)
+# 2051|   <params>: 
+# 2051|     getParameter(0): [Parameter] p
+# 2051|         Type = [VoidPointerType] void *
+# 2051|   getEntryPoint(): [BlockStmt] { ... }
+# 2052|     getStmt(0): [ReturnStmt] return ...
+# 2056| [TopLevelFunction] int virtual_delete()
+# 2056|   <params>: 
+# 2057|   getEntryPoint(): [BlockStmt] { ... }
+# 2058|     getStmt(0): [DeclStmt] declaration
+# 2058|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b1
+# 2058|           Type = [PointerType] Base2 *
+# 2058|         getVariable().getInitializer(): [Initializer] initializer for b1
+# 2058|           getExpr(): [NewExpr] new
+# 2058|               Type = [PointerType] Base2 *
+# 2058|               ValueCategory = prvalue
+# 2058|             getInitializer(): [ConstructorCall] call to Base2
+# 2058|                 Type = [VoidType] void
+# 2058|                 ValueCategory = prvalue
+# 2059|     getStmt(1): [ExprStmt] ExprStmt
+# 2059|       getExpr(): [DeleteExpr] delete
+# 2059|           Type = [VoidType] void
+# 2059|           ValueCategory = prvalue
+# 2059|         getDeallocatorCall(): [FunctionCall] call to operator delete
+# 2059|             Type = [VoidType] void
+# 2059|             ValueCategory = prvalue
+# 2059|         getDestructorCall(): [DestructorCall] call to ~Base2
+# 2059|             Type = [VoidType] void
+# 2059|             ValueCategory = prvalue
+# 2059|           getQualifier(): [VariableAccess] b1
+# 2059|               Type = [PointerType] Base2 *
+# 2059|               ValueCategory = prvalue(load)
+# 2061|     getStmt(2): [DeclStmt] declaration
+# 2061|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b2
+# 2061|           Type = [PointerType] Base2 *
+# 2061|         getVariable().getInitializer(): [Initializer] initializer for b2
+# 2061|           getExpr(): [NewExpr] new
+# 2061|               Type = [PointerType] Derived2 *
+# 2061|               ValueCategory = prvalue
+# 2061|             getInitializer(): [ConstructorCall] call to Derived2
+# 2061|                 Type = [VoidType] void
+# 2061|                 ValueCategory = prvalue
+# 2061|           getExpr().getFullyConverted(): [CStyleCast] (Base2 *)...
+# 2061|               Conversion = [BaseClassConversion] base class conversion
+# 2061|               Type = [PointerType] Base2 *
+# 2061|               ValueCategory = prvalue
+# 2062|     getStmt(3): [ExprStmt] ExprStmt
+# 2062|       getExpr(): [DeleteExpr] delete
+# 2062|           Type = [VoidType] void
+# 2062|           ValueCategory = prvalue
+# 2062|         getDeallocatorCall(): [FunctionCall] call to operator delete
+# 2062|             Type = [VoidType] void
+# 2062|             ValueCategory = prvalue
+# 2062|         getDestructorCall(): [DestructorCall] call to ~Base2
+# 2062|             Type = [VoidType] void
+# 2062|             ValueCategory = prvalue
+# 2062|           getQualifier(): [VariableAccess] b2
+# 2062|               Type = [PointerType] Base2 *
+# 2062|               ValueCategory = prvalue(load)
+# 2064|     getStmt(4): [DeclStmt] declaration
+# 2064|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 2064|           Type = [PointerType] Derived2 *
+# 2064|         getVariable().getInitializer(): [Initializer] initializer for d
+# 2064|           getExpr(): [NewExpr] new
+# 2064|               Type = [PointerType] Derived2 *
+# 2064|               ValueCategory = prvalue
+# 2064|             getInitializer(): [ConstructorCall] call to Derived2
+# 2064|                 Type = [VoidType] void
+# 2064|                 ValueCategory = prvalue
+# 2065|     getStmt(5): [ExprStmt] ExprStmt
+# 2065|       getExpr(): [DeleteExpr] delete
+# 2065|           Type = [VoidType] void
+# 2065|           ValueCategory = prvalue
+# 2065|         getDeallocatorCall(): [FunctionCall] call to operator delete
+# 2065|             Type = [VoidType] void
+# 2065|             ValueCategory = prvalue
+# 2065|         getDestructorCall(): [DestructorCall] call to ~Derived2
+# 2065|             Type = [VoidType] void
+# 2065|             ValueCategory = prvalue
+# 2065|           getQualifier(): [VariableAccess] d
+# 2065|               Type = [PointerType] Derived2 *
+# 2065|               ValueCategory = prvalue(load)
+# 2066|     getStmt(6): [ReturnStmt] return ...
+# 2068| [TopLevelFunction] void test_constant_folding_use(int)
+# 2068|   <params>: 
+# 2068|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2068|         Type = [IntType] int
+# 2070| [TopLevelFunction] void test_constant_folding()
+# 2070|   <params>: 
+# 2070|   getEntryPoint(): [BlockStmt] { ... }
+# 2071|     getStmt(0): [DeclStmt] declaration
+# 2071|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2071|           Type = [SpecifiedType] const int
+# 2071|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2071|           getExpr(): [Literal] 116
+# 2071|               Type = [IntType] int
+# 2071|               Value = [Literal] 116
+# 2071|               ValueCategory = prvalue
+# 2072|     getStmt(1): [ExprStmt] ExprStmt
+# 2072|       getExpr(): [FunctionCall] call to test_constant_folding_use
+# 2072|           Type = [VoidType] void
+# 2072|           ValueCategory = prvalue
+# 2072|         getArgument(0): [VariableAccess] x
+# 2072|             Type = [IntType] int
+# 2072|             Value = [VariableAccess] 116
+# 2072|             ValueCategory = prvalue(load)
+# 2073|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

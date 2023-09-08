@@ -9,6 +9,7 @@ private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 private import codeql.swift.frameworks.StandardLibrary.Array
+private import codeql.swift.frameworks.StandardLibrary.Dictionary
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
@@ -114,6 +115,9 @@ private module Cached {
           any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr(),
           any(SubscriptExpr se).getBase()
         ])
+    } or
+    TDictionarySubscriptNode(SubscriptExpr e) {
+      e.getBase().getType().getCanonicalType() instanceof CanonicalDictionaryType
     }
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
@@ -295,6 +299,28 @@ import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+
+/**
+ * The intermediate node for a dictionary subscript operation `dict[key]`. In a write, this is used
+ * as the destination of the `storeStep`s that add `TupleContent`s and the source of the storeStep
+ * that adds `CollectionContent`. In a read, this is the destination of the `readStep` that pops
+ * `CollectionContent` and the source of the `readStep` that pops `TupleContent[0]`
+ */
+private class DictionarySubscriptNode extends NodeImpl, TDictionarySubscriptNode {
+  SubscriptExpr expr;
+
+  DictionarySubscriptNode() { this = TDictionarySubscriptNode(expr) }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = expr.getEnclosingCallable()
+  }
+
+  override string toStringImpl() { result = "DictionarySubscriptNode" }
+
+  override Location getLocationImpl() { result = expr.getLocation() }
+
+  SubscriptExpr getExpr() { result = expr }
+}
 
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
@@ -727,6 +753,40 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::ArrayContent ac))
   )
   or
+  // creation of an optional via implicit wrapping keypath component
+  exists(KeyPathComponent component |
+    component.isOptionalWrapping() and
+    node1.(KeyPathComponentNodeImpl).getComponent() = component and
+    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
+  // assignment to a dictionary value via subscript operator, with intermediate step
+  // `dict[key] = value`
+  exists(AssignExpr assign, SubscriptExpr subscript |
+    subscript = assign.getDest() and
+    (
+      subscript.getArgument(0).getExpr() = node1.asExpr() and
+      node2.(DictionarySubscriptNode).getExpr() = subscript and
+      c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 0))
+      or
+      assign.getSource() = node1.asExpr() and
+      node2.(DictionarySubscriptNode).getExpr() = subscript and
+      c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
+      or
+      node1.(DictionarySubscriptNode).getExpr() = subscript and
+      node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
+      c.isSingleton(any(Content::CollectionContent cc))
+    )
+  )
+  or
+  // creation of a dictionary `[key: value, ...]`
+  exists(DictionaryExpr dict |
+    node1.asExpr() = dict.getAnElement() and
+    node2.asExpr() = dict and
+    c.isSingleton(any(Content::CollectionContent cc))
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
 }
@@ -789,6 +849,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       or
       c.isSingleton(any(Content::ArrayContent ac)) and
       component.isSubscript()
+      or
+      c instanceof OptionalSomeContentSet and
+      (
+        component.isOptionalForcing()
+        or
+        component.isOptionalChaining()
+      )
     )
   |
     // the next node is either the next element in the chain
@@ -803,8 +870,23 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    subscript.getBase().getType() instanceof ArrayType and
-    c.isSingleton(any(Content::ArrayContent ac))
+    (
+      subscript.getBase().getType() instanceof ArrayType and
+      c.isSingleton(any(Content::ArrayContent ac))
+      or
+      c.isSingleton(any(Content::CollectionContent ac))
+    )
+  )
+  or
+  // read of a dictionary value via subscript operator
+  exists(SubscriptExpr subscript |
+    subscript.getBase() = node1.asExpr() and
+    node2.(DictionarySubscriptNode).getExpr() = subscript and
+    c.isSingleton(any(Content::CollectionContent cc))
+    or
+    subscript = node2.asExpr() and
+    node1.(DictionarySubscriptNode).getExpr() = subscript and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
@@ -817,7 +899,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
-  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode() and
+  (
+    c.isSingleton(any(Content::FieldContent fc)) or
+    c.isSingleton(any(Content::TupleContent tc)) or
+    c.isSingleton(any(Content::EnumContent ec))
+  )
 }
 
 /**

@@ -1,58 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal interface IDotNet
-    {
-        bool RestoreToDirectory(string project, string directory, string? pathToNugetConfig = null);
-        bool New(string folder);
-        bool AddPackage(string folder, string package);
-        IList<string> GetListedRuntimes();
-    }
-
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
     internal class DotNet : IDotNet
     {
-        private const string dotnet = "dotnet";
         private readonly ProgressMonitor progressMonitor;
+        private readonly string dotnet;
 
-        public DotNet(ProgressMonitor progressMonitor)
+        public DotNet(IDependencyOptions options, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
+            this.dotnet = Path.Combine(options.DotNetPath ?? string.Empty, "dotnet");
             Info();
         }
 
         private void Info()
         {
             // TODO: make sure the below `dotnet` version is matching the one specified in global.json
-            progressMonitor.RunningProcess($"{dotnet} --info");
-            using var proc = Process.Start(dotnet, "--info");
-            proc.WaitForExit();
-            var ret = proc.ExitCode;
-
-            if (ret != 0)
+            var res = RunCommand("--info");
+            if (!res)
             {
-                progressMonitor.CommandFailed(dotnet, "--info", ret);
-                throw new Exception($"{dotnet} --info failed with exit code {ret}.");
+                throw new Exception($"{dotnet} --info failed.");
             }
         }
+
+        private ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput) =>
+            new ProcessStartInfo(dotnet, args)
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = redirectStandardOutput
+            };
 
         private bool RunCommand(string args)
         {
             progressMonitor.RunningProcess($"{dotnet} {args}");
-            using var proc = Process.Start(dotnet, args);
-            proc.WaitForExit();
-            if (proc.ExitCode != 0)
+            using var proc = Process.Start(this.MakeDotnetStartInfo(args, redirectStandardOutput: false));
+            proc?.WaitForExit();
+            var exitCode = proc?.ExitCode ?? -1;
+            if (exitCode != 0)
             {
-                progressMonitor.CommandFailed(dotnet, args, proc.ExitCode);
+                progressMonitor.CommandFailed(dotnet, args, exitCode);
                 return false;
             }
-
             return true;
         }
 
@@ -76,23 +72,28 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return RunCommand(args);
         }
 
-        public IList<string> GetListedRuntimes()
+        public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
+
+        public IList<string> GetListedSdks() => GetListed("--list-sdks", "SDK");
+
+        private IList<string> GetListed(string args, string artifact)
         {
-            const string args = "--list-runtimes";
             progressMonitor.RunningProcess($"{dotnet} {args}");
-            var pi = new ProcessStartInfo(dotnet, args)
-            {
-                RedirectStandardOutput = true,
-                UseShellExecute = false
-            };
-            var exitCode = pi.ReadOutput(out var runtimes);
+            var pi = this.MakeDotnetStartInfo(args, redirectStandardOutput: true);
+            var exitCode = pi.ReadOutput(out var artifacts);
             if (exitCode != 0)
             {
                 progressMonitor.CommandFailed(dotnet, args, exitCode);
                 return new List<string>();
             }
-            progressMonitor.LogInfo($"Found runtimes: {string.Join("\n", runtimes)}");
-            return runtimes;
+            progressMonitor.LogInfo($"Found {artifact}s: {string.Join("\n", artifacts)}");
+            return artifacts;
+        }
+
+        public bool Exec(string execArgs)
+        {
+            var args = $"exec {execArgs}";
+            return RunCommand(args);
         }
     }
 }

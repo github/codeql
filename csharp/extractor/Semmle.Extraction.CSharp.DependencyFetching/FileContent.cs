@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Semmle.Util;
 
@@ -12,23 +11,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     // This class is used to read a set of files and decide different properties about the
     // content (by reading the content of the files only once).
     // The implementation is lazy, so the properties are only calculated when
-    // the first property is accessed. 
+    // the first property is accessed.
     // </summary>
     internal partial class FileContent
     {
         private readonly ProgressMonitor progressMonitor;
         private readonly IUnsafeFileReader unsafeFileReader;
-        private readonly Func<IEnumerable<string>> getFiles;
-        private readonly Func<HashSet<string>> getAlreadyDownloadedPackages;
-        private readonly HashSet<string> notYetDownloadedPackages = new HashSet<string>();
+        private readonly IEnumerable<string> files;
+        private readonly HashSet<string> allPackages = new HashSet<string>();
         private readonly Initializer initialize;
 
-        public HashSet<string> NotYetDownloadedPackages
+        public HashSet<string> AllPackages
         {
             get
             {
                 initialize.Run();
-                return notYetDownloadedPackages;
+                return allPackages;
             }
         }
 
@@ -50,23 +48,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        internal FileContent(Func<HashSet<string>> getAlreadyDownloadedPackages,
-            ProgressMonitor progressMonitor,
-            Func<IEnumerable<string>> getFiles,
+        internal FileContent(ProgressMonitor progressMonitor,
+            IEnumerable<string> files,
             IUnsafeFileReader unsafeFileReader)
         {
-            this.getAlreadyDownloadedPackages = getAlreadyDownloadedPackages;
             this.progressMonitor = progressMonitor;
-            this.getFiles = getFiles;
+            this.files = files;
             this.unsafeFileReader = unsafeFileReader;
             this.initialize = new Initializer(DoInitialize);
         }
 
 
-        public FileContent(TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor, Func<IEnumerable<string>> getFiles) : this(() => Directory.GetDirectories(packageDirectory.DirInfo.FullName)
-                .Select(d => Path.GetFileName(d)
-                .ToLowerInvariant())
-                .ToHashSet(), progressMonitor, getFiles, new UnsafeFileReader())
+        public FileContent(ProgressMonitor progressMonitor, IEnumerable<string> files) : this(progressMonitor, files, new UnsafeFileReader())
         { }
 
         private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix)
@@ -101,22 +94,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void DoInitialize()
         {
-            var alreadyDownloadedPackages = getAlreadyDownloadedPackages();
-            foreach (var file in getFiles())
+            foreach (var file in files)
             {
                 try
                 {
                     foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
                     {
 
-                        // Find the not yet downloaded packages.
+                        // Find all the packages.
                         foreach (var valueMatch in PackageReference().EnumerateMatches(line))
                         {
                             // We can't get the group from the ValueMatch, so doing it manually:
                             var packageName = GetGroup(line, valueMatch, "Include");
-                            if (!string.IsNullOrEmpty(packageName) && !alreadyDownloadedPackages.Contains(packageName))
+                            if (!string.IsNullOrEmpty(packageName))
                             {
-                                notYetDownloadedPackages.Add(packageName);
+                                allPackages.Add(packageName);
                             }
                         }
 

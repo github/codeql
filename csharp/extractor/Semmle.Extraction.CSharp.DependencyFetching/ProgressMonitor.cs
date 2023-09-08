@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void LogInfo(string message) =>
             logger.Log(Severity.Info, message);
 
-        private void LogDebug(string message) =>
+        public void LogDebug(string message) =>
             logger.Log(Severity.Debug, message);
 
         private void LogError(string message) =>
@@ -88,6 +88,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void MissingNuGet() =>
             LogError("Missing nuget.exe");
 
+        public void FoundNuGet(string path) =>
+            LogInfo($"Found nuget.exe at {path}");
+
         public void MissingDotNet() =>
             LogError("Missing dotnet CLI");
 
@@ -108,5 +111,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         internal void NoTopLevelNugetConfig() =>
             LogInfo("Could not find a top-level nuget.config file.");
+
+        internal void RazorSourceGeneratorMissing(string fullPath) =>
+            LogInfo($"Razor source generator folder {fullPath} does not exist.");
+
+        internal void CscMissing(string cscPath) =>
+            LogInfo($"Csc.exe not found at {cscPath}.");
+
+        internal void RazorCscArgs(string args) =>
+            LogInfo($"Running CSC to generate Razor source files. Args: {args}.");
     }
 }

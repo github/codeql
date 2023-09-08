@@ -245,12 +245,7 @@ private class Argument extends CfgNodes::ExprCfgNode {
     this.getExpr() instanceof HashSplatExpr and
     arg.isHashSplat()
     or
-    this = call.getArgument(0) and
-    not exists(call.getArgument(1)) and
-    this.getExpr() instanceof SplatExpr and
-    arg.isSplatAll()
-    or
-    exists(int pos | pos > 0 or exists(call.getArgument(pos + 1)) |
+    exists(int pos |
       this = call.getArgument(pos) and
       this.getExpr() instanceof SplatExpr and
       arg.isSplat(pos)
@@ -370,9 +365,7 @@ private module Cached {
     } or
     TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
       exists(Argument arg, ArgumentPosition pos | pos.isPositional(_) | arg.isArgumentOf(c, pos)) and
-      not exists(Argument arg, ArgumentPosition pos | pos.isSplat(_) or pos.isSplatAll() |
-        arg.isArgumentOf(c, pos)
-      )
+      not exists(Argument arg, ArgumentPosition pos | pos.isSplat(_) | arg.isArgumentOf(c, pos))
     }
 
   class TSourceParameterNode =
@@ -565,9 +558,7 @@ import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
-  exists(SsaImpl::DefinitionExt def | def = n.(SsaDefinitionExtNode).getDefinitionExt() |
-    not def instanceof Ssa::WriteDefinition
-  )
+  n.(SsaDefinitionExtNode).isHidden()
   or
   n = LocalFlow::getParameterDefNode(_)
   or
@@ -599,6 +590,13 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
 
   /** Gets the underlying variable. */
   Variable getVariable() { result = def.getSourceVariable() }
+
+  /** Holds if this node should be hidden from path explanations. */
+  predicate isHidden() {
+    not def instanceof Ssa::WriteDefinition
+    or
+    isDesugarNode(def.(Ssa::WriteDefinition).getWriteAccess().getExpr())
+  }
 
   override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
 
@@ -697,11 +695,7 @@ private module ParameterNodes {
         parameter = callable.getAParameter().(HashSplatParameter) and
         pos.isHashSplat()
         or
-        parameter = callable.getParameter(0).(SplatParameter) and
-        not exists(callable.getParameter(1)) and
-        pos.isSplatAll()
-        or
-        exists(int n | n > 0 |
+        exists(int n |
           parameter = callable.getParameter(n).(SplatParameter) and
           pos.isSplat(n) and
           // There are no positional parameters after the splat
@@ -1604,7 +1598,11 @@ class CastNode extends Node {
  */
 predicate neverSkipInPathGraph(Node n) {
   // ensure that all variable assignments are included in the path graph
-  n.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
+  n =
+    any(SsaDefinitionExtNode def |
+      def.getDefinitionExt() instanceof Ssa::WriteDefinition and
+      not def.isHidden()
+    )
 }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;

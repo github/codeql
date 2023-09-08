@@ -17,66 +17,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private const string aspNetCoreApp = "Microsoft.AspNetCore.App";
 
         private readonly IDotNet dotNet;
-        private readonly Lazy<Dictionary<string, RuntimeVersion>> newestRuntimes;
-        private Dictionary<string, RuntimeVersion> NewestRuntimes => newestRuntimes.Value;
+        private readonly Lazy<Dictionary<string, DotnetVersion>> newestRuntimes;
+        private Dictionary<string, DotnetVersion> NewestRuntimes => newestRuntimes.Value;
         private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
         public Runtime(IDotNet dotNet)
         {
             this.dotNet = dotNet;
             this.newestRuntimes = new(GetNewestRuntimes);
-        }
-
-        internal record RuntimeVersion : IComparable<RuntimeVersion>
-        {
-            private readonly string dir;
-            private readonly Version version;
-            private readonly Version? preReleaseVersion;
-            private readonly string? preReleaseVersionType;
-            private bool IsPreRelease => preReleaseVersionType is not null && preReleaseVersion is not null;
-            public string FullPath
-            {
-                get
-                {
-                    var preRelease = IsPreRelease ? $"-{preReleaseVersionType}.{preReleaseVersion}" : "";
-                    var version = this.version + preRelease;
-                    return Path.Combine(dir, version);
-                }
-            }
-
-            public RuntimeVersion(string dir, string version, string preReleaseVersionType, string preReleaseVersion)
-            {
-                this.dir = dir;
-                this.version = Version.Parse(version);
-                if (!string.IsNullOrEmpty(preReleaseVersion) && !string.IsNullOrEmpty(preReleaseVersionType))
-                {
-                    this.preReleaseVersionType = preReleaseVersionType;
-                    this.preReleaseVersion = Version.Parse(preReleaseVersion);
-                }
-            }
-
-            public int CompareTo(RuntimeVersion? other)
-            {
-                var c = version.CompareTo(other?.version);
-                if (c == 0 && IsPreRelease)
-                {
-                    if (!other!.IsPreRelease)
-                    {
-                        return -1;
-                    }
-
-                    // Both are pre-release like runtime versions.
-                    // The pre-release version types are sorted alphabetically (e.g. alpha, beta, preview, rc)
-                    // and the pre-release version types are more important that the pre-release version numbers.
-                    return preReleaseVersionType != other!.preReleaseVersionType
-                        ? preReleaseVersionType!.CompareTo(other!.preReleaseVersionType)
-                        : preReleaseVersion!.CompareTo(other!.preReleaseVersion);
-                }
-
-                return c;
-            }
-
-            public override string ToString() => FullPath;
         }
 
         [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-([a-z]+)\.(\d+\.\d+\.\d+))?\s\[(.+)\]$")]
@@ -88,16 +36,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// It is assume that the format of a listed runtime is something like:
         /// Microsoft.NETCore.App 7.0.2 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
         /// </summary>
-        private static Dictionary<string, RuntimeVersion> ParseRuntimes(IList<string> listed)
+        private static Dictionary<string, DotnetVersion> ParseRuntimes(IList<string> listed)
         {
             // Parse listed runtimes.
-            var runtimes = new Dictionary<string, RuntimeVersion>();
+            var runtimes = new Dictionary<string, DotnetVersion>();
+            var regex = RuntimeRegex();
             listed.ForEach(r =>
             {
-                var match = RuntimeRegex().Match(r);
+                var match = regex.Match(r);
                 if (match.Success)
                 {
-                    runtimes.AddOrUpdateToLatest(match.Groups[1].Value, new RuntimeVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
+                    runtimes.AddOrUpdateToLatest(match.Groups[1].Value, new DotnetVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
                 }
             });
 
@@ -107,7 +56,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Returns a dictionary mapping runtimes to their newest version.
         /// </summary>
-        internal Dictionary<string, RuntimeVersion> GetNewestRuntimes()
+        internal Dictionary<string, DotnetVersion> GetNewestRuntimes()
         {
             var listed = dotNet.GetListedRuntimes();
             return ParseRuntimes(listed);
@@ -145,6 +94,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private string? GetVersion(string framework)
+        {
+            if (NewestRuntimes.TryGetValue(framework, out var version))
+            {
+                var refAssemblies = version.FullPathReferenceAssemblies;
+                return Directory.Exists(refAssemblies)
+                    ? refAssemblies
+                    : version.FullPath;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Gets the .NET runtime location to use for extraction.
         /// </summary>
@@ -156,9 +117,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // Location of the newest .NET Core Runtime.
-            if (NewestRuntimes.TryGetValue(netCoreApp, out var netCoreVersion))
+            if (GetVersion(netCoreApp) is string path)
             {
-                return netCoreVersion.FullPath;
+                return path;
             }
 
             if (DesktopRuntimes.Any())
@@ -173,14 +134,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Gets the ASP.NET runtime location to use for extraction, if one exists.
         /// </summary>
-        public string? GetAspRuntime()
-        {
-            // Location of the newest ASP.NET Core Runtime.
-            if (NewestRuntimes.TryGetValue(aspNetCoreApp, out var aspNetCoreVersion))
-            {
-                return aspNetCoreVersion.FullPath;
-            }
-            return null;
-        }
+        public string? GetAspRuntime() => GetVersion(aspNetCoreApp);
     }
 }

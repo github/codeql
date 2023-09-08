@@ -1623,12 +1623,11 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Ap argAp, Ap ap
         ) {
           exists(ApApprox argApa, Typ argT |
-            flowIntoCallApa(call, _, pragma[only_bind_into](arg), pragma[only_bind_into](p),
-              allowsFieldFlow, argApa) and
+            returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
+              pragma[only_bind_into](argAp), ap) and
+            flowIntoCallApa(call, _, pragma[only_bind_into](arg), p, allowsFieldFlow, argApa) and
             fwdFlow(arg, _, _, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
               argApa) and
-            returnFlowsThrough(_, _, _, _, p, pragma[only_bind_into](argT),
-              pragma[only_bind_into](argAp), ap) and
             if allowsFieldFlow = false then argAp instanceof ApNil else any()
           )
         }
@@ -2375,7 +2374,8 @@ module MakeImpl<InputSig Lang> {
 
       ApOption apSome(Ap ap) { result = TApproxAccessPathFrontSome(ap) }
 
-      import BooleanCallContext
+      import Level1CallContext
+      import NoLocalCallContext
 
       predicate localStep(
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,

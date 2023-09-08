@@ -1,20 +1,12 @@
-failures
 testFailures
 edges
 | ssa_flow.rb:12:9:12:9 | [post] a [element 0] | ssa_flow.rb:16:10:16:10 | a [element 0] |
-| ssa_flow.rb:12:9:12:9 | [post] a [element 0] | ssa_flow.rb:16:10:16:10 | a [element 0] |
 | ssa_flow.rb:12:16:12:23 | call to taint | ssa_flow.rb:12:9:12:9 | [post] a [element 0] |
-| ssa_flow.rb:12:16:12:23 | call to taint | ssa_flow.rb:12:9:12:9 | [post] a [element 0] |
-| ssa_flow.rb:16:10:16:10 | a [element 0] | ssa_flow.rb:16:10:16:13 | ...[...] |
 | ssa_flow.rb:16:10:16:10 | a [element 0] | ssa_flow.rb:16:10:16:13 | ...[...] |
 nodes
 | ssa_flow.rb:12:9:12:9 | [post] a [element 0] | semmle.label | [post] a [element 0] |
-| ssa_flow.rb:12:9:12:9 | [post] a [element 0] | semmle.label | [post] a [element 0] |
-| ssa_flow.rb:12:16:12:23 | call to taint | semmle.label | call to taint |
 | ssa_flow.rb:12:16:12:23 | call to taint | semmle.label | call to taint |
 | ssa_flow.rb:16:10:16:10 | a [element 0] | semmle.label | a [element 0] |
-| ssa_flow.rb:16:10:16:10 | a [element 0] | semmle.label | a [element 0] |
-| ssa_flow.rb:16:10:16:13 | ...[...] | semmle.label | ...[...] |
 | ssa_flow.rb:16:10:16:13 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select

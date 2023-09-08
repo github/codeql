@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -39,16 +41,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         bool ScanNetFrameworkDlls { get; }
 
         /// <summary>
-        /// Whether to use mscorlib as a reference.
-        /// </summary>
-        bool UseMscorlib { get; }
-
-        /// <summary>
         /// Determine whether the given path should be excluded.
         /// </summary>
         /// <param name="path">The path to query.</param>
         /// <returns>True iff the path matches an exclusion.</returns>
         bool ExcludesFile(string path);
+
+        /// <summary>
+        /// The number of threads to use.
+        /// </summary>
+        int Threads { get; }
+
+        /// <summary>
+        /// The path to the local ".dotnet" directory, if any.
+        /// </summary>
+        string? DotNetPath { get; }
     }
 
     public class DependencyOptions : IDependencyOptions
@@ -67,9 +74,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public bool ScanNetFrameworkDlls { get; set; } = true;
 
-        public bool UseMscorlib { get; set; } = true;
-
         public bool ExcludesFile(string path) =>
             Excludes.Any(path.Contains);
+
+        public int Threads { get; set; } = EnvironmentVariables.GetDefaultNumberOfThreads();
+
+        public string? DotNetPath { get; set; } = null;
     }
 }
