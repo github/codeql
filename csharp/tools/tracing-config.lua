@@ -84,6 +84,10 @@ function RegisterExtractorPack(id)
                 dotnetRunNeedsSeparator = false
                 dotnetRunInjectionIndex = i
             end
+            -- if we encounter a whitespace, we explicitly need to quote the argument.
+            if OperatingSystem == 'windows' and arg:match('%s') then
+                argv[i] = '"' .. arg .. '"'
+            end
         end
         if match then
             local injections = { '-p:UseSharedCompilation=false', '-p:EmitCompilerGeneratedFiles=true' }
