@@ -11,7 +11,7 @@ predicate isInfeasibleInstructionSuccessor(Instruction instr, EdgeKind kind) {
   instr.getSuccessor(kind) instanceof UnreachedInstruction and
   kind instanceof GotoEdge
   or
-  isCallToNonReturningFunction(instr)
+  isCallToNonReturningFunction(instr) and exists(instr.getSuccessor(kind))
 }
 
 /**
