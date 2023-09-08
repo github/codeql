@@ -1185,6 +1185,8 @@ module MakeImpl<InputSig Lang> {
 
         bindingset[typ, contentType]
         predicate typecheckStore(Typ typ, DataFlowType contentType);
+
+        default predicate enableTypeFlow() { any() }
       }
 
       module Stage<StageParam Param> implements StageSig {
@@ -1541,6 +1543,8 @@ module MakeImpl<InputSig Lang> {
         }
 
         private module FwdTypeFlowInput implements TypeFlowInput {
+          predicate enableTypeFlow = Param::enableTypeFlow/0;
+
           predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
             flowIntoCallApa(call, c, _, _, _, _)
           }
@@ -1845,6 +1849,8 @@ module MakeImpl<InputSig Lang> {
         }
 
         private module RevTypeFlowInput implements TypeFlowInput {
+          predicate enableTypeFlow = Param::enableTypeFlow/0;
+
           predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
             flowOutOfCallAp(call, c, _, _, _, _)
           }
@@ -2306,6 +2312,8 @@ module MakeImpl<InputSig Lang> {
 
       bindingset[typ, contentType]
       predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
+
+      predicate enableTypeFlow() { none() }
     }
 
     private module Stage2 implements StageSig {

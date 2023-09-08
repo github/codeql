@@ -971,6 +971,8 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   signature module TypeFlowInput {
+    predicate enableTypeFlow();
+
     /** Holds if the edge is possibly needed in the direction `call` to `c`. */
     predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c);
 
@@ -1036,24 +1038,27 @@ module MakeImplCommon<InputSig Lang> {
      */
     pragma[nomagic]
     private predicate trackedArgTypeCand(ArgNode arg) {
-      exists(ParamNode p, DataFlowType at, DataFlowType pt |
-        at = getNodeType(arg) and
-        pt = getNodeType(p) and
-        relevantCallEdge(_, _, arg, p) and
-        typeStrongerThan0(pt, at)
-      )
-      or
-      exists(ParamNode p, DataFlowType at, DataFlowType pt |
-        at = getNodeType(arg) and
-        pt = getNodeType(p) and
-        paramMustFlow(p, arg) and
-        relevantCallEdge(_, _, arg, _) and
-        typeStrongerThan0(at, pt)
-      )
-      or
-      exists(ParamNode p |
-        trackedParamTypeCand(p) and
-        relevantCallEdge(_, _, arg, p)
+      Input::enableTypeFlow() and
+      (
+        exists(ParamNode p, DataFlowType at, DataFlowType pt |
+          at = getNodeType(arg) and
+          pt = getNodeType(p) and
+          relevantCallEdge(_, _, arg, p) and
+          typeStrongerThan0(pt, at)
+        )
+        or
+        exists(ParamNode p, DataFlowType at, DataFlowType pt |
+          at = getNodeType(arg) and
+          pt = getNodeType(p) and
+          paramMustFlow(p, arg) and
+          relevantCallEdge(_, _, arg, _) and
+          typeStrongerThan0(at, pt)
+        )
+        or
+        exists(ParamNode p |
+          trackedParamTypeCand(p) and
+          relevantCallEdge(_, _, arg, p)
+        )
       )
     }
 
@@ -1276,10 +1281,14 @@ module MakeImplCommon<InputSig Lang> {
     predicate typeFlowValidEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
       Input::relevantCallEdgeIn(call, c) and
       cc = [true, false] and
-      forall(ArgNode arg, ParamNode p |
-        callEdge(call, c, arg, p) and trackedArgType(arg) and paramMustFlow(_, arg)
-      |
-        validArgParamIn(arg, p, cc)
+      (
+        not Input::enableTypeFlow()
+        or
+        forall(ArgNode arg, ParamNode p |
+          callEdge(call, c, arg, p) and trackedArgType(arg) and paramMustFlow(_, arg)
+        |
+          validArgParamIn(arg, p, cc)
+        )
       )
     }
 
@@ -1313,8 +1322,12 @@ module MakeImplCommon<InputSig Lang> {
      */
     predicate typeFlowValidEdgeOut(DataFlowCall call, DataFlowCallable c) {
       Input::relevantCallEdgeOut(call, c) and
-      forall(ArgNode arg, ParamNode p | callEdge(call, c, arg, p) and trackedParamType(p) |
-        validArgParamOut(arg, p)
+      (
+        not Input::enableTypeFlow()
+        or
+        forall(ArgNode arg, ParamNode p | callEdge(call, c, arg, p) and trackedParamType(p) |
+          validArgParamOut(arg, p)
+        )
       )
     }
   }
