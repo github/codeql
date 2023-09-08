@@ -789,3 +789,11 @@ void test_sometimes_calls_sink_switch() {
   sometimes_calls_sink_switch(0, 0);
   sometimes_calls_sink_switch(source(), 0);
 }
+
+void intPointerSource(int *ref_source, const int* another_arg);
+
+void test() {
+  MyStruct a;
+  intPointerSource(a.content, a.content);
+  indirect_sink(a.content); // $ ast MISSING: ir
+}
