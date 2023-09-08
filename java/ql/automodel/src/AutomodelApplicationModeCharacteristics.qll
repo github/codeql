@@ -46,16 +46,32 @@ newtype TApplicationModeEndpoint =
  * An endpoint is a node that is a candidate for modeling.
  */
 abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint {
+  /**
+   * Gets the callable to be modeled that this endpoint represents.
+   */
   abstract Callable getCallable();
 
   abstract Call getCall();
 
+  /**
+   * Gets the input (if any) for this endpoint, eg.: `Argument[0]`.
+   *
+   * For endpoints that are source candidates, this will be `none()`.
+   */
   abstract string getMaDInput();
 
+  /**
+   * Gets the output (if any) for this endpoint, eg.: `ReturnValue`.
+   *
+   * For endpoints that are sink candidates, this will be `none()`.
+   */
   abstract string getMaDOutput();
 
   abstract Top asTop();
 
+  /**
+   * Converts the endpoint to a node that can be used in a data flow graph.
+   */
   abstract DataFlow::Node asNode();
 
   string getExtensibleType() {
@@ -149,7 +165,8 @@ class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArra
 }
 
 /**
- * An endpoint that represents a method call.
+ * An endpoint that represents a method call. The `ReturnValue` of a method call
+ * may be a source.
  */
 class MethodCall extends ApplicationModeEndpoint, TMethodCall {
   Call call;
