@@ -544,7 +544,6 @@ private class CannotBeTaintedCharacteristic extends CharacteristicsImpl::LikelyN
   CannotBeTaintedCharacteristic() { this = "cannot be tainted" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    // XXX consider source candidate endpoints
     e.getExtensibleType() = "sinkModel" and
     not this.isKnownOutNodeForStep(e)
   }
