@@ -11,6 +11,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.Sanitizers
 private import codeql.ruby.frameworks.ActionController
+private import codeql.ruby.security.UrlConcatenation
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -32,6 +33,16 @@ module UrlRedirect {
    * A sanitizer for "URL redirection" vulnerabilities.
    */
   abstract class Sanitizer extends DataFlow::Node { }
+
+  /**
+   * An in-sanitizer for "URL redirection" vulnerabilities.
+   */
+  abstract class SanitizerIn extends DataFlow::Node { }
+
+  /**
+   * An out-sanitizer for "URL redirection" vulnerabilities.
+   */
+  abstract class SanitizerOut extends DataFlow::Node { }
 
   /**
    * DEPRECATED: Use `Sanitizer` instead.
@@ -120,6 +131,27 @@ module UrlRedirect {
    * We currently don't catch these cases.
    */
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
+
+  /**
+   * A sanitizer for the hostname of a URL.
+   */
+  class HostnameSanitizer extends Sanitizer {
+    HostnameSanitizer() { this = DataFlow::BarrierGuard<hostnameGuard/3>::getABarrierNode() }
+  }
+
+  /**
+   * An in-sanitizer for the hostname of a URL.
+   */
+  class HostnameSanitizerIn extends SanitizerIn {
+    HostnameSanitizerIn() { hostnameSanitizingPrefixEdge(_, this) }
+  }
+
+  /**
+   * An out-sanitizer for the hostname of a URL.
+   */
+  class HostnameSanitizerOut extends SanitizerOut {
+    HostnameSanitizerOut() { hostnameSanitizingPrefixEdge(this, _) }
+  }
 
   /**
    * These methods return a new `ActionController::Parameters` or a `Hash` containing a subset of
