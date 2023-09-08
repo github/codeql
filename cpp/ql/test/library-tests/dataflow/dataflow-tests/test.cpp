@@ -795,5 +795,5 @@ void intPointerSource(int *ref_source, const int* another_arg);
 void test() {
   MyStruct a;
   intPointerSource(a.content, a.content);
-  indirect_sink(a.content); // $ ast MISSING: ir
+  indirect_sink(a.content); // $ ast ir
 }
