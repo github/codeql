@@ -139,7 +139,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     type = getVoidType()
     or
     tag = DynamicInitializationFlagConstantTag() and
-    opcode instanceof Opcode::Constant and
+    opcode instanceof Opcode::Literal and
     type = getBoolType()
     or
     tag = DynamicInitializationFlagStoreTag() and
@@ -188,7 +188,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     result.getVariable() = var
   }
 
-  final override string getInstructionConstantValue(InstructionTag tag) {
+  final override string getInstructionLiteralValue(InstructionTag tag) {
     tag = DynamicInitializationFlagConstantTag() and result = "1"
   }
 

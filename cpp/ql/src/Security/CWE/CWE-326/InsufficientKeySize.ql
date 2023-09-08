@@ -56,7 +56,7 @@ where
   sink.getNode().asExpr() = fc.getArgument(param) and
   fc.getTarget().hasGlobalName(name) and
   minimumBits = getMinimumKeyStrength(name, param) and
-  bits = source.getNode().asInstruction().(ConstantValueInstruction).getValue().toInt() and
+  bits = source.getNode().asInstruction().(ConstantInstruction).getValue().toInt() and
   bits < minimumBits and
   bits != 0
 select fc, source, sink,

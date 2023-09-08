@@ -40,7 +40,10 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
  * its value in the IR. This does not include address constants as we have no
  * means to express those as QL values.
  */
-predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
+predicate isIRConstant(Expr expr) { 
+   expr instanceof Literal or
+   expr instanceof SizeofOperator
+}
 
 // Pulled out for performance. See
 // https://github.com/github/codeql-coreql-team/issues/1044.
@@ -180,8 +183,7 @@ private predicate translateStmt(Stmt stmt) { translateFunction(stmt.getEnclosing
  * a value.
  */
 private predicate isNativeCondition(Expr expr) {
-  expr instanceof BinaryLogicalOperation and
-  not isIRConstant(expr)
+  expr instanceof BinaryLogicalOperation
 }
 
 /**
@@ -193,8 +195,7 @@ private predicate isFlexibleCondition(Expr expr) {
     expr instanceof ParenthesisExpr or
     expr instanceof NotExpr
   ) and
-  usedAsCondition(expr) and
-  not isIRConstant(expr)
+  usedAsCondition(expr)
 }
 
 /**
@@ -253,8 +254,6 @@ private predicate isInheritanceConversionWithImplicitLoad(InheritanceConversion 
 private predicate isPRValueFieldAccessWithImplicitLoad(Expr expr) {
   expr instanceof ValueFieldAccess and
   expr.isPRValueCategory() and
-  // No need to do a load if we're replacing the result with a constant anyway.
-  not isIRConstant(expr) and
   // Model an array prvalue as the address of the array, just like an array glvalue.
   not expr.getUnspecifiedType() instanceof ArrayType
 }
@@ -954,7 +953,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction specified by `tag` is a `ConstantValueInstruction`, gets
    * the constant value for that instruction.
    */
-  string getInstructionConstantValue(InstructionTag tag) { none() }
+  string getInstructionLiteralValue(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is an `IndexedInstruction`, gets the

@@ -6,13 +6,20 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2100:3:2100:11 | VariableAddress: return ... | Instruction 'VariableAddress: return ...' has no successors in function '$@'. | ir.cpp:2098:5:2098:16 | int enumConstant() | int enumConstant() |
+| ir.cpp:2104:3:2104:22 | VariableAddress: return ... | Instruction 'VariableAddress: return ...' has no successors in function '$@'. | ir.cpp:2103:5:2103:15 | int alignofTest() | int alignofTest() |
+| ir.cpp:2112:5:2112:23 | VariableAddress: return ... | Instruction 'VariableAddress: return ...' has no successors in function '$@'. | ir.cpp:2111:5:2111:16 | int noExceptTest() | int noExceptTest() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
 containsLoopOfForwardEdges
+missingIRType
+multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
@@ -24,8 +31,5 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-missingCanonicalLanguageType
-multipleCanonicalLanguageTypes
-missingIRType
-multipleIRTypes
+| ir.cpp:2127:27:2127:29 | VariableAddress: two | Variable address instruction 'VariableAddress: two' has no associated variable, in function '$@'. | ir.cpp:2127:16:2127:16 | int i | int i |
 missingCppType

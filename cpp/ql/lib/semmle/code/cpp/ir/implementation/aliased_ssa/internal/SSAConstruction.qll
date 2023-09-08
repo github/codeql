@@ -461,6 +461,11 @@ private module Cached {
   }
 
   cached
+  string getInstructionConstantValue(Instruction instr) {
+    result = getOldInstruction(instr).(RawIR::ConstantInstruction).getValue()
+  }
+
+  cached
   IRFunctionBase getInstructionEnclosingIRFunction(Instruction instr) {
     result = getOldInstruction(instr).getEnclosingIRFunction()
     or

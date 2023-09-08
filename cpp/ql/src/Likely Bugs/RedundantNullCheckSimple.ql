@@ -18,7 +18,7 @@ import semmle.code.cpp.ir.ValueNumbering
 import PathGraph
 
 /** An instruction that represents a null pointer. */
-class NullInstruction extends ConstantValueInstruction {
+class NullInstruction extends ConstantInstruction {
   NullInstruction() {
     this.getValue() = "0" and
     this.getResultIRType() instanceof IRAddressType

@@ -420,19 +420,21 @@ test.cpp:
 #   49|     m49_12(unknown)            = InitializeIndirection[chars] : &:r49_11
 #   49|         valnum = unique
 #   50|     r50_1(glval<char *>)       = VariableAddress[ptr]         : 
-#   50|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
+#   50|         valnum = r50_1, r55_3, r56_12, r56_2, r56_20, r59_1
 #   50|     m50_2(char *)              = Uninitialized[ptr]           : &:r50_1
 #   50|         valnum = unique
 #   51|     r51_1(glval<unsigned int>) = VariableAddress[result]      : 
 #   51|         valnum = r51_1, r62_1, r65_2
-#   51|     r51_2(unsigned int)        = Constant[0]                  : 
-#   51|         valnum = m51_3, r51_2
-#   51|     m51_3(unsigned int)        = Store[result]                : &:r51_1, r51_2
-#   51|         valnum = m51_3, r51_2
+#   51|     r51_2(int)                 = Constant[0]                  : 
+#   51|         valnum = r51_2, r53_7, r56_17, r59_6
+#   51|     r51_3(unsigned int)        = Convert                      : r51_2
+#   51|         valnum = m51_4, r51_3
+#   51|     m51_4(unsigned int)        = Store[result]                : &:r51_1, r51_3
+#   51|         valnum = m51_4, r51_3
 #-----|   Goto -> Block 1
 
 #   53|   Block 1
-#   53|     m53_1(unsigned int)  = Phi                  : from 0:m51_3, from 8:m62_5
+#   53|     m53_1(unsigned int)  = Phi                  : from 0:m51_4, from 8:m62_5
 #   53|         valnum = m53_1, m65_4, r62_2, r65_3
 #   53|     r53_2(glval<char *>) = VariableAddress[str] : 
 #   53|         valnum = r49_5, r53_2, r56_6
@@ -442,11 +444,13 @@ test.cpp:
 #   53|         valnum = r53_4, r56_8
 #   53|     r53_5(int)           = Convert              : r53_4
 #   53|         valnum = r53_5, r56_9
-#   53|     r53_6(int)           = Constant[0]          : 
+#   53|     r53_6(char)          = Constant[0]          : 
 #   53|         valnum = r53_6, r56_16, r59_5
-#   53|     r53_7(bool)          = CompareNE            : r53_5, r53_6
+#   53|     r53_7(int)           = Convert              : r53_6
+#   53|         valnum = r51_2, r53_7, r56_17, r59_6
+#   53|     r53_8(bool)          = CompareNE            : r53_5, r53_7
 #   53|         valnum = unique
-#   53|     v53_8(void)          = ConditionalBranch    : r53_7
+#   53|     v53_9(void)          = ConditionalBranch    : r53_8
 #-----|   False -> Block 9
 #-----|   True -> Block 2
 
@@ -456,18 +460,18 @@ test.cpp:
 #   55|     r55_2(char *)        = Load[chars]            : &:r55_1, m49_10
 #   55|         valnum = m49_10, m55_4, r49_11, r55_2
 #   55|     r55_3(glval<char *>) = VariableAddress[ptr]   : 
-#   55|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
+#   55|         valnum = r50_1, r55_3, r56_12, r56_2, r56_20, r59_1
 #   55|     m55_4(char *)        = Store[ptr]             : &:r55_3, r55_2
 #   55|         valnum = m49_10, m55_4, r49_11, r55_2
 #-----|   Goto -> Block 3
 
 #   56|   Block 3
-#   56|     m56_1(char *)        = Phi                  : from 2:m55_4, from 5:m56_23
-#   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
+#   56|     m56_1(char *)        = Phi                  : from 2:m55_4, from 5:m56_24
+#   56|         valnum = m56_1, r56_13, r56_21, r56_3, r59_2
 #   56|     r56_2(glval<char *>) = VariableAddress[ptr] : 
-#   56|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
+#   56|         valnum = r50_1, r55_3, r56_12, r56_2, r56_20, r59_1
 #   56|     r56_3(char *)        = Load[ptr]            : &:r56_2, m56_1
-#   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
+#   56|         valnum = m56_1, r56_13, r56_21, r56_3, r59_2
 #   56|     r56_4(char)          = Load[?]              : &:r56_3, ~m49_4
 #   56|         valnum = r56_14, r56_4, r59_3
 #   56|     r56_5(int)           = Convert              : r56_4
@@ -488,48 +492,52 @@ test.cpp:
 
 #   56|   Block 4
 #   56|     r56_12(glval<char *>) = VariableAddress[ptr] : 
-#   56|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
+#   56|         valnum = r50_1, r55_3, r56_12, r56_2, r56_20, r59_1
 #   56|     r56_13(char *)        = Load[ptr]            : &:r56_12, m56_1
-#   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
+#   56|         valnum = m56_1, r56_13, r56_21, r56_3, r59_2
 #   56|     r56_14(char)          = Load[?]              : &:r56_13, ~m49_4
 #   56|         valnum = r56_14, r56_4, r59_3
 #   56|     r56_15(int)           = Convert              : r56_14
 #   56|         valnum = r56_15, r56_5, r59_4
-#   56|     r56_16(int)           = Constant[0]          : 
+#   56|     r56_16(char)          = Constant[0]          : 
 #   56|         valnum = r53_6, r56_16, r59_5
-#   56|     r56_17(bool)          = CompareNE            : r56_15, r56_16
+#   56|     r56_17(int)           = Convert              : r56_16
+#   56|         valnum = r51_2, r53_7, r56_17, r59_6
+#   56|     r56_18(bool)          = CompareNE            : r56_15, r56_17
 #   56|         valnum = unique
-#   56|     v56_18(void)          = ConditionalBranch    : r56_17
+#   56|     v56_19(void)          = ConditionalBranch    : r56_18
 #-----|   False -> Block 6
 #-----|   True -> Block 5
 
 #   56|   Block 5
-#   56|     r56_19(glval<char *>) = VariableAddress[ptr] : 
-#   56|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
-#   56|     r56_20(char *)        = Load[ptr]            : &:r56_19, m56_1
-#   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
-#   56|     r56_21(int)           = Constant[1]          : 
+#   56|     r56_20(glval<char *>) = VariableAddress[ptr] : 
+#   56|         valnum = r50_1, r55_3, r56_12, r56_2, r56_20, r59_1
+#   56|     r56_21(char *)        = Load[ptr]            : &:r56_20, m56_1
+#   56|         valnum = m56_1, r56_13, r56_21, r56_3, r59_2
+#   56|     r56_22(int)           = Constant[1]          : 
 #   56|         valnum = unique
-#   56|     r56_22(char *)        = PointerAdd[1]        : r56_20, r56_21
-#   56|         valnum = m56_23, r56_22
-#   56|     m56_23(char *)        = Store[ptr]           : &:r56_19, r56_22
-#   56|         valnum = m56_23, r56_22
+#   56|     r56_23(char *)        = PointerAdd[1]        : r56_21, r56_22
+#   56|         valnum = m56_24, r56_23
+#   56|     m56_24(char *)        = Store[ptr]           : &:r56_20, r56_23
+#   56|         valnum = m56_24, r56_23
 #-----|   Goto (back edge) -> Block 3
 
 #   59|   Block 6
 #   59|     r59_1(glval<char *>) = VariableAddress[ptr] : 
-#   59|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
+#   59|         valnum = r50_1, r55_3, r56_12, r56_2, r56_20, r59_1
 #   59|     r59_2(char *)        = Load[ptr]            : &:r59_1, m56_1
-#   59|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
+#   59|         valnum = m56_1, r56_13, r56_21, r56_3, r59_2
 #   59|     r59_3(char)          = Load[?]              : &:r59_2, ~m49_4
 #   59|         valnum = r56_14, r56_4, r59_3
 #   59|     r59_4(int)           = Convert              : r59_3
 #   59|         valnum = r56_15, r56_5, r59_4
-#   59|     r59_5(int)           = Constant[0]          : 
+#   59|     r59_5(char)          = Constant[0]          : 
 #   59|         valnum = r53_6, r56_16, r59_5
-#   59|     r59_6(bool)          = CompareEQ            : r59_4, r59_5
+#   59|     r59_6(int)           = Convert              : r59_5
+#   59|         valnum = r51_2, r53_7, r56_17, r59_6
+#   59|     r59_7(bool)          = CompareEQ            : r59_4, r59_6
 #   59|         valnum = unique
-#   59|     v59_7(void)          = ConditionalBranch    : r59_6
+#   59|     v59_8(void)          = ConditionalBranch    : r59_7
 #-----|   False -> Block 8
 #-----|   True -> Block 7
 
@@ -669,13 +677,13 @@ test.cpp:
 #   84|     m84_4(unknown)       = Chi                      : total:m84_2, partial:m84_3
 #   84|         valnum = unique
 #   84|     r84_5(glval<int>)    = VariableAddress[x]       : 
-#   84|         valnum = r84_5, r88_11
+#   84|         valnum = r84_5, r88_12
 #   84|     m84_6(int)           = InitializeParameter[x]   : &:r84_5
-#   84|         valnum = m84_6, m88_14, r88_12
+#   84|         valnum = m84_6, m88_15, r88_13
 #   84|     r84_7(glval<int>)    = VariableAddress[y]       : 
-#   84|         valnum = r84_7, r88_15
+#   84|         valnum = r84_7, r88_16
 #   84|     m84_8(int)           = InitializeParameter[y]   : &:r84_7
-#   84|         valnum = m84_8, m88_18, r88_16
+#   84|         valnum = m84_8, m88_19, r88_17
 #   84|     r84_9(glval<void *>) = VariableAddress[p]       : 
 #   84|         valnum = r84_9, r88_1
 #   84|     m84_10(void *)       = InitializeParameter[p]   : &:r84_9
@@ -685,58 +693,60 @@ test.cpp:
 #   84|     m84_12(unknown)      = InitializeIndirection[p] : &:r84_11
 #   84|         valnum = unique
 #   86|     r86_1(glval<int>)    = VariableAddress[v]       : 
-#   86|         valnum = r86_1, r88_9
+#   86|         valnum = r86_1, r88_10
 #   86|     m86_2(int)           = Uninitialized[v]         : &:r86_1
 #   86|         valnum = unique
 #   88|     r88_1(glval<void *>) = VariableAddress[p]       : 
 #   88|         valnum = r84_9, r88_1
 #   88|     r88_2(void *)        = Load[p]                  : &:r88_1, m84_10
 #   88|         valnum = m84_10, r84_11, r88_2
-#   88|     r88_3(void *)        = Constant[0]              : 
+#   88|     r88_3(int)           = Constant[0]              : 
 #   88|         valnum = unique
-#   88|     r88_4(bool)          = CompareNE                : r88_2, r88_3
+#   88|     r88_4(void *)        = Convert                  : r88_3
 #   88|         valnum = unique
-#   88|     v88_5(void)          = ConditionalBranch        : r88_4
+#   88|     r88_5(bool)          = CompareNE                : r88_2, r88_4
+#   88|         valnum = unique
+#   88|     v88_6(void)          = ConditionalBranch        : r88_5
 #-----|   False -> Block 3
 #-----|   True -> Block 2
 
 #   88|   Block 1
-#   88|     m88_6(int)        = Phi                        : from 2:m88_14, from 3:m88_18
-#   88|         valnum = m88_10, m88_6, r88_8
-#   88|     r88_7(glval<int>) = VariableAddress[#temp88:7] : 
-#   88|         valnum = r88_13, r88_17, r88_7
-#   88|     r88_8(int)        = Load[#temp88:7]            : &:r88_7, m88_6
-#   88|         valnum = m88_10, m88_6, r88_8
-#   88|     r88_9(glval<int>) = VariableAddress[v]         : 
-#   88|         valnum = r86_1, r88_9
-#   88|     m88_10(int)       = Store[v]                   : &:r88_9, r88_8
-#   88|         valnum = m88_10, m88_6, r88_8
-#   89|     v89_1(void)       = NoOp                       : 
-#   84|     v84_13(void)      = ReturnIndirection[p]       : &:r84_11, m84_12
-#   84|     v84_14(void)      = ReturnVoid                 : 
-#   84|     v84_15(void)      = AliasedUse                 : m84_3
-#   84|     v84_16(void)      = ExitFunction               : 
+#   88|     m88_7(int)         = Phi                        : from 2:m88_15, from 3:m88_19
+#   88|         valnum = m88_11, m88_7, r88_9
+#   88|     r88_8(glval<int>)  = VariableAddress[#temp88:7] : 
+#   88|         valnum = r88_14, r88_18, r88_8
+#   88|     r88_9(int)         = Load[#temp88:7]            : &:r88_8, m88_7
+#   88|         valnum = m88_11, m88_7, r88_9
+#   88|     r88_10(glval<int>) = VariableAddress[v]         : 
+#   88|         valnum = r86_1, r88_10
+#   88|     m88_11(int)        = Store[v]                   : &:r88_10, r88_9
+#   88|         valnum = m88_11, m88_7, r88_9
+#   89|     v89_1(void)        = NoOp                       : 
+#   84|     v84_13(void)       = ReturnIndirection[p]       : &:r84_11, m84_12
+#   84|     v84_14(void)       = ReturnVoid                 : 
+#   84|     v84_15(void)       = AliasedUse                 : m84_3
+#   84|     v84_16(void)       = ExitFunction               : 
 
 #   88|   Block 2
-#   88|     r88_11(glval<int>) = VariableAddress[x]         : 
-#   88|         valnum = r84_5, r88_11
-#   88|     r88_12(int)        = Load[x]                    : &:r88_11, m84_6
-#   88|         valnum = m84_6, m88_14, r88_12
-#   88|     r88_13(glval<int>) = VariableAddress[#temp88:7] : 
-#   88|         valnum = r88_13, r88_17, r88_7
-#   88|     m88_14(int)        = Store[#temp88:7]           : &:r88_13, r88_12
-#   88|         valnum = m84_6, m88_14, r88_12
+#   88|     r88_12(glval<int>) = VariableAddress[x]         : 
+#   88|         valnum = r84_5, r88_12
+#   88|     r88_13(int)        = Load[x]                    : &:r88_12, m84_6
+#   88|         valnum = m84_6, m88_15, r88_13
+#   88|     r88_14(glval<int>) = VariableAddress[#temp88:7] : 
+#   88|         valnum = r88_14, r88_18, r88_8
+#   88|     m88_15(int)        = Store[#temp88:7]           : &:r88_14, r88_13
+#   88|         valnum = m84_6, m88_15, r88_13
 #-----|   Goto -> Block 1
 
 #   88|   Block 3
-#   88|     r88_15(glval<int>) = VariableAddress[y]         : 
-#   88|         valnum = r84_7, r88_15
-#   88|     r88_16(int)        = Load[y]                    : &:r88_15, m84_8
-#   88|         valnum = m84_8, m88_18, r88_16
-#   88|     r88_17(glval<int>) = VariableAddress[#temp88:7] : 
-#   88|         valnum = r88_13, r88_17, r88_7
-#   88|     m88_18(int)        = Store[#temp88:7]           : &:r88_17, r88_16
-#   88|         valnum = m84_8, m88_18, r88_16
+#   88|     r88_16(glval<int>) = VariableAddress[y]         : 
+#   88|         valnum = r84_7, r88_16
+#   88|     r88_17(int)        = Load[y]                    : &:r88_16, m84_8
+#   88|         valnum = m84_8, m88_19, r88_17
+#   88|     r88_18(glval<int>) = VariableAddress[#temp88:7] : 
+#   88|         valnum = r88_14, r88_18, r88_8
+#   88|     m88_19(int)        = Store[#temp88:7]           : &:r88_18, r88_17
+#   88|         valnum = m84_8, m88_19, r88_17
 #-----|   Goto -> Block 1
 
 #   91| int regression_test00()

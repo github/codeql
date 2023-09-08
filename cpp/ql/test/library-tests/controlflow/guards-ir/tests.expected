@@ -662,8 +662,8 @@ irGuardsEnsure
 | test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:8:17:8 | Load: x | < | test.c:17:12:17:12 | Constant: 0 | 0 | 18 | 18 |
 | test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:12:17:12 | Constant: 0 | >= | test.c:17:8:17:8 | Load: x | 1 | 17 | 17 |
 | test.c:17:8:17:12 | CompareLT: ... < ... | test.c:17:12:17:12 | Constant: 0 | >= | test.c:17:8:17:8 | Load: x | 1 | 18 | 18 |
-| test.c:17:17:17:21 | CompareGT: ... > ... | test.c:17:17:17:17 | Load: y | >= | test.c:17:21:17:21 | Constant: (long)... | 1 | 18 | 18 |
-| test.c:17:17:17:21 | CompareGT: ... > ... | test.c:17:21:17:21 | Constant: (long)... | < | test.c:17:17:17:17 | Load: y | 0 | 18 | 18 |
+| test.c:17:17:17:21 | CompareGT: ... > ... | test.c:17:17:17:17 | Load: y | >= | test.c:17:21:17:21 | Convert: (long)... | 1 | 18 | 18 |
+| test.c:17:17:17:21 | CompareGT: ... > ... | test.c:17:21:17:21 | Convert: (long)... | < | test.c:17:17:17:17 | Load: y | 0 | 18 | 18 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 2 | 2 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 31 | 31 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 34 | 34 |
@@ -732,14 +732,14 @@ irGuardsEnsure
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 45 | 45 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 46 | 46 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | >= | test.c:44:12:44:12 | Load: z | 0 | 52 | 52 |
-| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | >= | test.c:45:20:45:20 | Constant: (long)... | 1 | 46 | 46 |
-| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:20:45:20 | Constant: (long)... | < | test.c:45:16:45:16 | Load: y | 0 | 46 | 46 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | >= | test.c:45:20:45:20 | Convert: (long)... | 1 | 46 | 46 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:20:45:20 | Convert: (long)... | < | test.c:45:16:45:16 | Load: y | 0 | 46 | 46 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | test.c:58:14:58:14 | Constant: 0 | 0 | 58 | 58 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | test.c:58:14:58:14 | Constant: 0 | 0 | 62 | 62 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:14:58:14 | Constant: 0 | != | test.c:58:9:58:9 | Load: x | 0 | 58 | 58 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:14:58:14 | Constant: 0 | != | test.c:58:9:58:9 | Load: x | 0 | 62 | 62 |
-| test.c:58:19:58:23 | CompareLT: ... < ... | test.c:58:19:58:19 | Load: y | >= | test.c:58:23:58:23 | Constant: (long)... | 0 | 62 | 62 |
-| test.c:58:19:58:23 | CompareLT: ... < ... | test.c:58:23:58:23 | Constant: (long)... | < | test.c:58:19:58:19 | Load: y | 1 | 62 | 62 |
+| test.c:58:19:58:23 | CompareLT: ... < ... | test.c:58:19:58:19 | Load: y | >= | test.c:58:23:58:23 | Convert: (long)... | 0 | 62 | 62 |
+| test.c:58:19:58:23 | CompareLT: ... < ... | test.c:58:23:58:23 | Convert: (long)... | < | test.c:58:19:58:19 | Load: y | 1 | 62 | 62 |
 | test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:9:75:9 | Load: x | != | test.c:75:14:75:14 | Constant: 0 | 0 | 79 | 79 |
 | test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:9:75:9 | Load: x | == | test.c:75:14:75:14 | Constant: 0 | 0 | 76 | 76 |
 | test.c:75:9:75:14 | CompareEQ: ... == ... | test.c:75:14:75:14 | Constant: 0 | != | test.c:75:9:75:9 | Load: x | 0 | 79 | 79 |
@@ -748,8 +748,8 @@ irGuardsEnsure
 | test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:8:85:8 | Load: x | == | test.c:85:13:85:13 | Constant: 0 | 0 | 86 | 86 |
 | test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:13:85:13 | Constant: 0 | == | test.c:85:8:85:8 | Load: x | 0 | 85 | 85 |
 | test.c:85:8:85:13 | CompareEQ: ... == ... | test.c:85:13:85:13 | Constant: 0 | == | test.c:85:8:85:8 | Load: x | 0 | 86 | 86 |
-| test.c:85:18:85:23 | CompareNE: ... != ... | test.c:85:18:85:18 | Load: y | != | test.c:85:23:85:23 | Constant: (long)... | 0 | 86 | 86 |
-| test.c:85:18:85:23 | CompareNE: ... != ... | test.c:85:23:85:23 | Constant: (long)... | != | test.c:85:18:85:18 | Load: y | 0 | 86 | 86 |
+| test.c:85:18:85:23 | CompareNE: ... != ... | test.c:85:18:85:18 | Load: y | != | test.c:85:23:85:23 | Convert: (long)... | 0 | 86 | 86 |
+| test.c:85:18:85:23 | CompareNE: ... != ... | test.c:85:23:85:23 | Convert: (long)... | != | test.c:85:18:85:18 | Load: y | 0 | 86 | 86 |
 | test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | != | test.c:94:16:94:16 | Constant: 0 | 0 | 95 | 95 |
 | test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 70 | 70 |
 | test.c:94:11:94:16 | CompareNE: ... != ... | test.c:94:11:94:11 | Load: x | == | test.c:94:16:94:16 | Constant: 0 | 0 | 99 | 99 |
@@ -784,8 +784,8 @@ irGuardsEnsure
 | test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:9:109:9 | Load: x | != | test.c:109:14:109:14 | Constant: 0 | 0 | 113 | 113 |
 | test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:14:109:14 | Constant: 0 | != | test.c:109:9:109:9 | Load: x | 0 | 109 | 109 |
 | test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:14:109:14 | Constant: 0 | != | test.c:109:9:109:9 | Load: x | 0 | 113 | 113 |
-| test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:19:109:19 | Load: y | >= | test.c:109:23:109:23 | Constant: (long)... | 0 | 113 | 113 |
-| test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:23:109:23 | Constant: (long)... | < | test.c:109:19:109:19 | Load: y | 1 | 113 | 113 |
+| test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:19:109:19 | Load: y | >= | test.c:109:23:109:23 | Convert: (long)... | 0 | 113 | 113 |
+| test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:23:109:23 | Convert: (long)... | < | test.c:109:19:109:19 | Load: y | 1 | 113 | 113 |
 | test.c:156:9:156:19 | CompareEQ: ... == ... | test.c:156:9:156:9 | Load: x | == | test.c:156:14:156:14 | Load: y | 42 | 156 | 157 |
 | test.c:156:9:156:19 | CompareEQ: ... == ... | test.c:156:9:156:9 | Load: x | == | test.c:156:14:156:19 | PointerAdd: ... + ... | 0 | 156 | 157 |
 | test.c:156:9:156:19 | CompareEQ: ... == ... | test.c:156:14:156:14 | Load: y | == | test.c:156:9:156:9 | Load: x | -42 | 156 | 157 |
@@ -804,9 +804,9 @@ irGuardsEnsure
 | test.c:165:9:165:18 | CompareLT: ... < ... | test.c:165:13:165:18 | PointerSub: ... - ... | >= | test.c:165:9:165:9 | Load: x | 1 | 165 | 166 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:10 | Call: call to get | != | test.cpp:18:8:18:12 | Constant: (bool)... | 0 | 19 | 19 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:12 | Constant: (bool)... | != | test.cpp:18:8:18:10 | Call: call to get | 0 | 19 | 19 |
-| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | test.cpp:31:12:31:13 | Constant: - ... | 0 | 34 | 34 |
-| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | test.cpp:31:12:31:13 | Constant: - ... | 0 | 30 | 30 |
-| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | test.cpp:31:12:31:13 | Constant: - ... | 0 | 32 | 32 |
-| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | != | test.cpp:31:7:31:7 | Load: x | 0 | 34 | 34 |
-| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | == | test.cpp:31:7:31:7 | Load: x | 0 | 30 | 30 |
-| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Constant: - ... | == | test.cpp:31:7:31:7 | Load: x | 0 | 32 | 32 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | test.cpp:31:12:31:13 | Negate: - ... | 0 | 34 | 34 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | test.cpp:31:12:31:13 | Negate: - ... | 0 | 30 | 30 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | test.cpp:31:12:31:13 | Negate: - ... | 0 | 32 | 32 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Negate: - ... | != | test.cpp:31:7:31:7 | Load: x | 0 | 34 | 34 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Negate: - ... | == | test.cpp:31:7:31:7 | Load: x | 0 | 30 | 30 |
+| test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:12:31:13 | Negate: - ... | == | test.cpp:31:7:31:7 | Load: x | 0 | 32 | 32 |

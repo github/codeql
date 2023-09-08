@@ -57,7 +57,7 @@ private newtype TOpcode =
   TFunctionAddress() or
   TVirtualDeleteFunctionAddress() or
   TElementsAddress() or
-  TConstant() or
+  TLiteral() or
   TStringConstant() or
   TConditionalBranch() or
   TSwitch() or
@@ -902,8 +902,8 @@ module Opcode {
    *
    * See the `ConstantInstruction` documentation for more details.
    */
-  class Constant extends Opcode, TConstant {
-    final override string toString() { result = "Constant" }
+  class Literal extends Opcode, TLiteral {
+    final override string toString() { result = "Literal" }
   }
 
   /**

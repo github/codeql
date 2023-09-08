@@ -312,12 +312,12 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
         // Create a constant zero whose size is the size of the remaining
         // space in the target array.
         tag = ZeroPadStringConstantTag() and
-        opcode instanceof Opcode::Constant and
+        opcode instanceof Opcode::Literal and
         resultType = getUnknownOpaqueType(elementCount * this.getElementType().getSize())
         or
         // The index of the first element to be zero initialized.
         tag = ZeroPadStringElementIndexTag() and
-        opcode instanceof Opcode::Constant and
+        opcode instanceof Opcode::Literal and
         resultType = getIntType()
         or
         // Compute the address of the first element to be zero initialized.
@@ -406,7 +406,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     result = max(this.getElementType().getSize())
   }
 
-  override string getInstructionConstantValue(InstructionTag tag) {
+  override string getInstructionLiteralValue(InstructionTag tag) {
     exists(int startIndex |
       this.zeroInitRange(startIndex, _) and
       (
@@ -592,7 +592,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
     TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType)
     or
     tag = this.getFieldDefaultValueTag() and
-    opcode instanceof Opcode::Constant and
+    opcode instanceof Opcode::Literal and
     resultType = getTypeForPRValue(field.getType())
     or
     tag = this.getFieldDefaultValueStoreTag() and
@@ -614,7 +614,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
     )
   }
 
-  override string getInstructionConstantValue(InstructionTag tag) {
+  override string getInstructionLiteralValue(InstructionTag tag) {
     tag = this.getFieldDefaultValueTag() and
     result = getZeroValue(field.getUnspecifiedType())
   }
@@ -673,7 +673,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = this.getElementIndexTag() and
-    opcode instanceof Opcode::Constant and
+    opcode instanceof Opcode::Literal and
     resultType = getIntType()
     or
     tag = this.getElementAddressTag() and
@@ -703,7 +703,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = max(this.getElementType().getSize())
   }
 
-  override string getInstructionConstantValue(InstructionTag tag) {
+  override string getInstructionLiteralValue(InstructionTag tag) {
     tag = this.getElementIndexTag() and
     result = this.getElementIndex().toString()
   }
@@ -785,7 +785,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     TranslatedElementInitialization.super.hasInstruction(opcode, tag, resultType)
     or
     tag = this.getElementDefaultValueTag() and
-    opcode instanceof Opcode::Constant and
+    opcode instanceof Opcode::Literal and
     resultType = this.getDefaultValueType()
     or
     tag = this.getElementDefaultValueStoreTag() and
@@ -809,8 +809,8 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     )
   }
 
-  override string getInstructionConstantValue(InstructionTag tag) {
-    result = TranslatedElementInitialization.super.getInstructionConstantValue(tag)
+  override string getInstructionLiteralValue(InstructionTag tag) {
+    result = TranslatedElementInitialization.super.getInstructionLiteralValue(tag)
     or
     tag = this.getElementDefaultValueTag() and
     result = getZeroValue(this.getElementType())

@@ -353,7 +353,7 @@ ssa.cpp:
 #-----|   Goto -> Block 1
 
 #   69|   Block 1
-#   69|     m69_1(char *)     = Phi                : from 0:m68_7, from 2:m70_6
+#   69|     m69_1(char *)     = Phi                : from 0:m68_7, from 2:m70_7
 #   69|     m69_2(int)        = Phi                : from 0:m68_5, from 2:m69_7
 #   69|     r69_3(glval<int>) = VariableAddress[n] : 
 #   69|     r69_4(int)        = Load[n]            : &:r69_3, m69_2
@@ -368,15 +368,16 @@ ssa.cpp:
 #-----|   True -> Block 2
 
 #   70|   Block 2
-#   70|     r70_1(char)          = Constant[0]        : 
-#   70|     r70_2(glval<char *>) = VariableAddress[p] : 
-#   70|     r70_3(char *)        = Load[p]            : &:r70_2, m69_1
-#   70|     r70_4(int)           = Constant[1]        : 
-#   70|     r70_5(char *)        = PointerAdd[1]      : r70_3, r70_4
-#   70|     m70_6(char *)        = Store[p]           : &:r70_2, r70_5
-#   70|     r70_7(char *)        = CopyValue          : r70_3
-#   70|     r70_8(glval<char>)   = CopyValue          : r70_7
-#   70|     mu70_9(char)         = Store[?]           : &:r70_8, r70_1
+#   70|     r70_1(int)           = Constant[0]        : 
+#   70|     r70_2(char)          = Convert            : r70_1
+#   70|     r70_3(glval<char *>) = VariableAddress[p] : 
+#   70|     r70_4(char *)        = Load[p]            : &:r70_3, m69_1
+#   70|     r70_5(int)           = Constant[1]        : 
+#   70|     r70_6(char *)        = PointerAdd[1]      : r70_4, r70_5
+#   70|     m70_7(char *)        = Store[p]           : &:r70_3, r70_6
+#   70|     r70_8(char *)        = CopyValue          : r70_4
+#   70|     r70_9(glval<char>)   = CopyValue          : r70_8
+#   70|     mu70_10(char)        = Store[?]           : &:r70_9, r70_2
 #-----|   Goto (back edge) -> Block 1
 
 #   71|   Block 3
@@ -978,10 +979,11 @@ ssa.cpp:
 #  209|     r209_5(glval<int>)     = VariableAddress[x]                 : 
 #  209|     r209_6(int *)          = CopyValue                          : r209_5
 #  209|     r209_7(void *)         = Convert                            : r209_6
-#  209|     r209_8(int)            = Constant[4]                        : 
-#  209|     r209_9(void *)         = Call[memcpy]                       : func:r209_1, 0:r209_4, 1:r209_7, 2:r209_8
-#  209|     v209_10(void)          = ^SizedBufferReadSideEffect[1]      : &:r209_7, r209_8, ~m?
-#  209|     mu209_11(unknown)      = ^SizedBufferMustWriteSideEffect[0] : &:r209_4, r209_8
+#  209|     r209_8(unsigned long)  = Constant[4]                        : 
+#  209|     r209_9(int)            = Convert                            : r209_8
+#  209|     r209_10(void *)        = Call[memcpy]                       : func:r209_1, 0:r209_4, 1:r209_7, 2:r209_9
+#  209|     v209_11(void)          = ^SizedBufferReadSideEffect[1]      : &:r209_7, r209_9, ~m?
+#  209|     mu209_12(unknown)      = ^SizedBufferMustWriteSideEffect[0] : &:r209_4, r209_9
 #  210|     r210_1(glval<int>)     = VariableAddress[#return]           : 
 #  210|     r210_2(glval<int>)     = VariableAddress[y]                 : 
 #  210|     r210_3(int)            = Load[y]                            : &:r210_2, ~m?
@@ -1020,32 +1022,36 @@ ssa.cpp:
 #  219|     mu219_2(char[2])        = Uninitialized[d]         : &:r219_1
 #  219|     r219_3(int)             = Constant[0]              : 
 #  219|     r219_4(glval<char>)     = PointerAdd[1]            : r219_1, r219_3
-#  219|     r219_5(char)            = Constant[0]              : 
-#  219|     mu219_6(char)           = Store[?]                 : &:r219_4, r219_5
-#  219|     r219_7(int)             = Constant[1]              : 
-#  219|     r219_8(glval<char>)     = PointerAdd[1]            : r219_1, r219_7
-#  219|     r219_9(char)            = Constant[0]              : 
-#  219|     mu219_10(char)          = Store[?]                 : &:r219_8, r219_9
+#  219|     r219_5(int)             = Constant[0]              : 
+#  219|     r219_6(char)            = Convert                  : r219_5
+#  219|     mu219_7(char)           = Store[?]                 : &:r219_4, r219_6
+#  219|     r219_8(int)             = Constant[1]              : 
+#  219|     r219_9(glval<char>)     = PointerAdd[1]            : r219_1, r219_8
+#  219|     r219_10(char)           = Constant[0]              : 
+#  219|     mu219_11(char)          = Store[?]                 : &:r219_9, r219_10
 #  220|     r220_1(glval<char[2]>)  = VariableAddress[e]       : 
 #  220|     mu220_2(char[2])        = Uninitialized[e]         : &:r220_1
 #  220|     r220_3(int)             = Constant[0]              : 
 #  220|     r220_4(glval<char>)     = PointerAdd[1]            : r220_1, r220_3
-#  220|     r220_5(char)            = Constant[0]              : 
-#  220|     mu220_6(char)           = Store[?]                 : &:r220_4, r220_5
-#  220|     r220_7(int)             = Constant[1]              : 
-#  220|     r220_8(glval<char>)     = PointerAdd[1]            : r220_1, r220_7
-#  220|     r220_9(char)            = Constant[1]              : 
-#  220|     mu220_10(char)          = Store[?]                 : &:r220_8, r220_9
+#  220|     r220_5(int)             = Constant[0]              : 
+#  220|     r220_6(char)            = Convert                  : r220_5
+#  220|     mu220_7(char)           = Store[?]                 : &:r220_4, r220_6
+#  220|     r220_8(int)             = Constant[1]              : 
+#  220|     r220_9(glval<char>)     = PointerAdd[1]            : r220_1, r220_8
+#  220|     r220_10(int)            = Constant[1]              : 
+#  220|     r220_11(char)           = Convert                  : r220_10
+#  220|     mu220_12(char)          = Store[?]                 : &:r220_9, r220_11
 #  221|     r221_1(glval<char[3]>)  = VariableAddress[f]       : 
 #  221|     mu221_2(char[3])        = Uninitialized[f]         : &:r221_1
 #  221|     r221_3(int)             = Constant[0]              : 
 #  221|     r221_4(glval<char>)     = PointerAdd[1]            : r221_1, r221_3
-#  221|     r221_5(char)            = Constant[0]              : 
-#  221|     mu221_6(char)           = Store[?]                 : &:r221_4, r221_5
-#  221|     r221_7(int)             = Constant[1]              : 
-#  221|     r221_8(glval<char>)     = PointerAdd[1]            : r221_1, r221_7
-#  221|     r221_9(unknown[2])      = Constant[0]              : 
-#  221|     mu221_10(unknown[2])    = Store[?]                 : &:r221_8, r221_9
+#  221|     r221_5(int)             = Constant[0]              : 
+#  221|     r221_6(char)            = Convert                  : r221_5
+#  221|     mu221_7(char)           = Store[?]                 : &:r221_4, r221_6
+#  221|     r221_8(int)             = Constant[1]              : 
+#  221|     r221_9(glval<char>)     = PointerAdd[1]            : r221_1, r221_8
+#  221|     r221_10(unknown[2])     = Constant[0]              : 
+#  221|     mu221_11(unknown[2])    = Store[?]                 : &:r221_9, r221_10
 #  222|     v222_1(void)            = NoOp                     : 
 #  213|     v213_4(void)            = ReturnVoid               : 
 #  213|     v213_5(void)            = AliasedUse               : ~m?

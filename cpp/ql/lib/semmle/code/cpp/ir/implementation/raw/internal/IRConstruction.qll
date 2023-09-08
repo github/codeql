@@ -115,10 +115,10 @@ module Raw {
   }
 
   cached
-  string getInstructionConstantValue(Instruction instruction) {
+  string getInstructionLiteralValue(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction)
-          .getInstructionConstantValue(getInstructionTag(instruction))
+          .getInstructionLiteralValue(getInstructionTag(instruction))
   }
 
   cached
@@ -387,6 +387,14 @@ predicate getInstructionOpcode(Opcode opcode, TStageInstruction instr) {
   or
   instr instanceof TRawUnreachedInstruction and
   opcode instanceof Opcode::Unreached
+}
+
+string getInstructionConstantValue(TStageInstruction instr) {
+  exists(TranslatedExpr expr |
+    result = expr.getExpr().getValue() and instr = expr.getResult()
+  )
+  or
+  result = Raw::getInstructionLiteralValue(instr)
 }
 
 IRFunctionBase getInstructionEnclosingIRFunction(TStageInstruction instr) {
