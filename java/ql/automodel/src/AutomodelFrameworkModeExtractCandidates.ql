@@ -40,7 +40,7 @@ where
   // a non-sink, and we surface only endpoints that have at least one such sink type.
   message =
     strictconcat(AutomodelEndpointTypes::SinkType sinkType |
-      not CharacteristicsImpl::isKnownSink(endpoint, sinkType, _) and
+      not CharacteristicsImpl::isKnownAs(endpoint, sinkType, _) and
       CharacteristicsImpl::isSinkCandidate(endpoint, sinkType)
     |
       sinkType, ", "
