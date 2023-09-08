@@ -779,7 +779,7 @@ func testDictionary() {
     sink(arg: dict2[1])
 
     for (key, value) in dict2 {
-        sink(arg: key) // $ MISSING: flow=778
+        sink(arg: key) // $ flow=778
         sink(arg: value)
     }
 
@@ -792,8 +792,8 @@ func testDictionary() {
     sink(arg: dict3.randomElement()!.1) // $ flow=786
 
     for (key, value) in dict3 {
-        sink(arg: key) // $ MISSING: flow=789
-        sink(arg: value) // $ MISSING: flow=786
+        sink(arg: key) // $ flow=789
+        sink(arg: value) // $ flow=786
     }
 
     var dict4 = [1:source()]
@@ -803,4 +803,15 @@ func testDictionary() {
     sink(arg: dict4.randomElement()!.1) // $ flow=799 flow=801
     sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=800
     sink(arg: dict4.values.randomElement()) // $ MISSING: flow=799 flow=801
+}
+
+func testSetForEach() {
+    var set1 = Set([source()])
+    
+    for elem in set1 {
+        sink(arg: elem) // $ flow=809
+    }
+
+    var generator = set1.makeIterator()
+    sink(arg: generator.next()!) // $ flow=809
 }

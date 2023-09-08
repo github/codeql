@@ -941,10 +941,16 @@
 | test.swift:779:15:779:15 | &... | test.swift:781:25:781:25 | dict2 |
 | test.swift:779:15:779:15 | [post] dict2 | test.swift:779:15:779:15 | &... |
 | test.swift:779:15:779:15 | dict2 | test.swift:779:15:779:15 | &... |
+| test.swift:781:5:781:5 | $generator | test.swift:781:5:781:5 | &... |
+| test.swift:781:5:781:5 | &... | test.swift:781:5:781:5 | $generator |
+| test.swift:781:5:781:5 | [post] $generator | test.swift:781:5:781:5 | &... |
 | test.swift:781:10:781:10 | SSA def(key) | test.swift:782:19:782:19 | key |
 | test.swift:781:10:781:10 | key | test.swift:781:10:781:10 | SSA def(key) |
 | test.swift:781:15:781:15 | SSA def(value) | test.swift:783:19:783:19 | value |
 | test.swift:781:15:781:15 | value | test.swift:781:15:781:15 | SSA def(value) |
+| test.swift:781:25:781:25 | $generator | test.swift:781:25:781:25 | SSA def($generator) |
+| test.swift:781:25:781:25 | SSA def($generator) | test.swift:781:5:781:5 | $generator |
+| test.swift:781:25:781:25 | call to makeIterator() | test.swift:781:25:781:25 | $generator |
 | test.swift:786:9:786:9 | SSA def(dict3) | test.swift:787:15:787:15 | dict3 |
 | test.swift:786:9:786:9 | dict3 | test.swift:786:9:786:9 | SSA def(dict3) |
 | test.swift:786:17:786:29 | [...] | test.swift:786:9:786:9 | dict3 |
@@ -960,10 +966,16 @@
 | test.swift:792:15:792:15 | [post] dict3 | test.swift:794:25:794:25 | dict3 |
 | test.swift:792:15:792:15 | dict3 | test.swift:794:25:794:25 | dict3 |
 | test.swift:792:15:792:35 | call to randomElement() | test.swift:792:15:792:36 | ...! |
+| test.swift:794:5:794:5 | $generator | test.swift:794:5:794:5 | &... |
+| test.swift:794:5:794:5 | &... | test.swift:794:5:794:5 | $generator |
+| test.swift:794:5:794:5 | [post] $generator | test.swift:794:5:794:5 | &... |
 | test.swift:794:10:794:10 | SSA def(key) | test.swift:795:19:795:19 | key |
 | test.swift:794:10:794:10 | key | test.swift:794:10:794:10 | SSA def(key) |
 | test.swift:794:15:794:15 | SSA def(value) | test.swift:796:19:796:19 | value |
 | test.swift:794:15:794:15 | value | test.swift:794:15:794:15 | SSA def(value) |
+| test.swift:794:25:794:25 | $generator | test.swift:794:25:794:25 | SSA def($generator) |
+| test.swift:794:25:794:25 | SSA def($generator) | test.swift:794:5:794:5 | $generator |
+| test.swift:794:25:794:25 | call to makeIterator() | test.swift:794:25:794:25 | $generator |
 | test.swift:799:9:799:9 | SSA def(dict4) | test.swift:800:15:800:15 | dict4 |
 | test.swift:799:9:799:9 | dict4 | test.swift:799:9:799:9 | SSA def(dict4) |
 | test.swift:799:17:799:28 | [...] | test.swift:799:9:799:9 | dict4 |
@@ -983,3 +995,22 @@
 | test.swift:803:15:803:35 | call to randomElement() | test.swift:803:15:803:36 | ...! |
 | test.swift:804:15:804:15 | [post] dict4 | test.swift:805:15:805:15 | dict4 |
 | test.swift:804:15:804:15 | dict4 | test.swift:805:15:805:15 | dict4 |
+| test.swift:809:9:809:9 | SSA def(set1) | test.swift:811:17:811:17 | set1 |
+| test.swift:809:9:809:9 | set1 | test.swift:809:9:809:9 | SSA def(set1) |
+| test.swift:809:16:809:30 | call to Set<Element>.init(_:) | test.swift:809:9:809:9 | set1 |
+| test.swift:811:5:811:5 | $elem$generator | test.swift:811:5:811:5 | &... |
+| test.swift:811:5:811:5 | &... | test.swift:811:5:811:5 | $elem$generator |
+| test.swift:811:5:811:5 | [post] $elem$generator | test.swift:811:5:811:5 | &... |
+| test.swift:811:9:811:9 | SSA def(elem) | test.swift:812:19:812:19 | elem |
+| test.swift:811:9:811:9 | elem | test.swift:811:9:811:9 | SSA def(elem) |
+| test.swift:811:17:811:17 | $elem$generator | test.swift:811:17:811:17 | SSA def($elem$generator) |
+| test.swift:811:17:811:17 | SSA def($elem$generator) | test.swift:811:5:811:5 | $elem$generator |
+| test.swift:811:17:811:17 | [post] set1 | test.swift:815:21:815:21 | set1 |
+| test.swift:811:17:811:17 | call to makeIterator() | test.swift:811:17:811:17 | $elem$generator |
+| test.swift:811:17:811:17 | set1 | test.swift:815:21:815:21 | set1 |
+| test.swift:815:9:815:9 | SSA def(generator) | test.swift:816:15:816:15 | generator |
+| test.swift:815:9:815:9 | generator | test.swift:815:9:815:9 | SSA def(generator) |
+| test.swift:815:21:815:39 | call to makeIterator() | test.swift:815:9:815:9 | generator |
+| test.swift:816:15:816:15 | [post] generator | test.swift:816:15:816:15 | &... |
+| test.swift:816:15:816:15 | generator | test.swift:816:15:816:15 | &... |
+| test.swift:816:15:816:30 | call to next() | test.swift:816:15:816:31 | ...! |

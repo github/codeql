@@ -888,6 +888,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.(DictionarySubscriptNode).getExpr() = subscript and
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
   )
+  // read of an optional into the loop variable via foreach
+  or
+  exists(ForEachStmt for |
+    node1.asExpr() = for.getNextCall() and
+    node2.asPattern() = for.getPattern() and
+    c instanceof OptionalSomeContentSet
+  )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
