@@ -482,3 +482,14 @@ func EmitGoModVersionSupportedLowerEqualGoEnv(msg string) {
 		noLocation,
 	)
 }
+
+func EmitNewerSystemGoRequired(requiredVersion string) {
+	emitDiagnostic(
+		"go/autobuilder/newer-system-go-version-required",
+		"The Go version installed on the system is too old to support this project",
+		"At least Go version `"+requiredVersion+"` is required to build this project, but the version installed on the system is older. [Install a newer version](https://github.com/actions/setup-go#basic).",
+		severityError,
+		fullVisibility,
+		noLocation,
+	)
+}

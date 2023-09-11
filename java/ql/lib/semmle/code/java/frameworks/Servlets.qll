@@ -397,3 +397,8 @@ class GetServletResourceAsStreamMethod extends Method {
     this.hasName("getResourceAsStream")
   }
 }
+
+/** The interface `javax.servlet.http.HttpSession` */
+class HttpServletSession extends RefType {
+  HttpServletSession() { this.hasQualifiedName("javax.servlet.http", "HttpSession") }
+}

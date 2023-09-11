@@ -15,6 +15,16 @@ private import semmle.code.java.dataflow.internal.AccessPathSyntax as AccessPath
 class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 
 /**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase extends Callable {
+  NeutralCallableBase() { this.isSourceDeclaration() }
+
+  /** Gets a call that targets this neutral. */
+  Call getACall() { result.getCallee().getSourceDeclaration() = this }
+}
+
+/**
  * A module for importing frameworks that define synthetic globals.
  */
 private module SyntheticGlobals {
@@ -156,13 +166,13 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenance`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  */
-predicate neutralSummaryElement(SummarizedCallableBase c, string provenance) {
+predicate neutralElement(NeutralCallableBase c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, "summary", provenance) and
-    c.asCallable() = interpretElement(namespace, type, false, name, signature, "")
+    neutralModel(namespace, type, name, signature, kind, provenance) and
+    c = interpretElement(namespace, type, false, name, signature, "")
   )
 }
 

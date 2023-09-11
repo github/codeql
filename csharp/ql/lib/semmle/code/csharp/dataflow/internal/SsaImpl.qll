@@ -1159,6 +1159,7 @@ private predicate adjacentDefReachesUncertainRead(
   )
 }
 
+pragma[nomagic]
 private predicate adjacentDefReachesUncertainReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {

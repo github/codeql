@@ -750,9 +750,11 @@ module MakeImplCommon<InputSig Lang> {
        * makes a difference.
        */
       cached
-      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-        result = viableImplInCallContextExt(call, ctx) and
-        reducedViableImplInCallContext(call, _, ctx)
+      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx) {
+        exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
+          result = viableImplInCallContextExt(call, outer) and
+          reducedViableImplInCallContext(call, _, outer)
+        )
       }
 
       /**
@@ -772,15 +774,20 @@ module MakeImplCommon<InputSig Lang> {
       }
 
       /**
-       * Gets a viable run-time dispatch target for the call `call` in the
-       * context `ctx`. This is restricted to those calls and results for which
-       * the return flow from the result to `call` restricts the possible context
-       * `ctx`.
+       * Gets a viable call site for the return from `callable` in call context
+       * `ctx`. This is restricted to those callables and contexts for which
+       * the possible call sites are restricted.
        */
       cached
-      DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
-        result = viableImplInCallContextExt(call, ctx) and
-        reducedViableImplInReturn(result, call)
+      DataFlowCall prunedViableImplInCallContextReverse(
+        DataFlowCallable callable, CallContextReturn ctx
+      ) {
+        exists(DataFlowCallable c0, DataFlowCall call0 |
+          callEnclosingCallable(call0, callable) and
+          ctx = TReturn(c0, call0) and
+          c0 = viableImplInCallContextExt(call0, result) and
+          reducedViableImplInReturn(c0, call0)
+        )
       }
     }
 
@@ -1278,72 +1285,39 @@ module MakeImplCommon<InputSig Lang> {
     result = getReturnPosition0(ret, ret.getKind())
   }
 
-  /**
-   * Checks whether `inner` can return to `call` in the call context `innercc`.
-   * Assumes a context of `inner = viableCallableExt(call)`.
-   */
-  bindingset[innercc, inner, call]
-  predicate checkCallContextReturn(CallContext innercc, DataFlowCallable inner, DataFlowCall call) {
-    innercc instanceof CallContextAny
-    or
-    exists(DataFlowCallable c0, DataFlowCall call0 |
-      callEnclosingCallable(call0, inner) and
-      innercc = TReturn(c0, call0) and
-      c0 = prunedViableImplInCallContextReverse(call0, call)
+  /** Holds if `call` does not have a reduced set of dispatch targets in call context `ctx`. */
+  bindingset[call, ctx]
+  predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx) {
+    exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
+      not reducedViableImplInCallContext(call, _, outer)
     )
+    or
+    ctx instanceof CallContextSomeCall
+    or
+    ctx instanceof CallContextAny
+    or
+    ctx instanceof CallContextReturn
   }
 
   /**
-   * Checks whether `call` can resolve to `calltarget` in the call context `cc`.
-   * Assumes a context of `calltarget = viableCallableExt(call)`.
-   */
-  bindingset[cc, call, calltarget]
-  predicate checkCallContextCall(CallContext cc, DataFlowCall call, DataFlowCallable calltarget) {
-    exists(DataFlowCall ctx | cc = TSpecificCall(ctx) |
-      if reducedViableImplInCallContext(call, _, ctx)
-      then calltarget = prunedViableImplInCallContext(call, ctx)
-      else any()
-    )
-    or
-    cc instanceof CallContextSomeCall
-    or
-    cc instanceof CallContextAny
-    or
-    cc instanceof CallContextReturn
-  }
-
-  /**
-   * Resolves a return from `callable` in `cc` to `call`. This is equivalent to
-   * `callable = viableCallableExt(call) and checkCallContextReturn(cc, callable, call)`.
+   * Resolves a return from `callable` in `cc` to `call`.
    */
   bindingset[cc, callable]
   predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
     cc instanceof CallContextAny and callable = viableCallableExt(call)
     or
-    exists(DataFlowCallable c0, DataFlowCall call0 |
-      callEnclosingCallable(call0, callable) and
-      cc = TReturn(c0, call0) and
-      c0 = prunedViableImplInCallContextReverse(call0, call)
-    )
+    call = prunedViableImplInCallContextReverse(callable, cc)
   }
 
   /**
-   * Resolves a call from `call` in `cc` to `result`. This is equivalent to
-   * `result = viableCallableExt(call) and checkCallContextCall(cc, call, result)`.
+   * Resolves a call from `call` in `cc` to `result`.
    */
   bindingset[call, cc]
   DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
-    exists(DataFlowCall ctx | cc = TSpecificCall(ctx) |
-      if reducedViableImplInCallContext(call, _, ctx)
-      then result = prunedViableImplInCallContext(call, ctx)
-      else result = viableCallableExt(call)
-    )
+    result = prunedViableImplInCallContext(call, cc)
     or
-    result = viableCallableExt(call) and cc instanceof CallContextSomeCall
-    or
-    result = viableCallableExt(call) and cc instanceof CallContextAny
-    or
-    result = viableCallableExt(call) and cc instanceof CallContextReturn
+    noPrunedViableImplInCallContext(call, cc) and
+    result = viableCallableExt(call)
   }
 
   /** An optional Boolean value. */

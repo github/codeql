@@ -8,7 +8,6 @@ private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
-private import DataFlowImplConsistency
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
 import DataFlowNodes::Private
@@ -113,11 +112,6 @@ private module CaptureInput implements VariableCapture::InputSig {
     VariableWrite() { super.getDestVar() = v }
 
     CapturedVariable getVariable() { result = v }
-
-    Expr getSource() {
-      result = this.(VariableAssign).getSource() or
-      result = this.(AssignOp)
-    }
   }
 
   class VariableRead extends Expr instanceof RValue {
@@ -155,14 +149,27 @@ class CapturedParameter = CaptureInput::CapturedParameter;
 module CaptureFlow = VariableCapture::Flow<CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
-  result = n.(CaptureNode).getSynthesizedCaptureNode() or
-  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
+  result = n.(CaptureNode).getSynthesizedCaptureNode()
+  or
+  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr()
+  or
   result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
-    n.(PostUpdateNode).getPreUpdateNode().asExpr() or
-  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter() or
-  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable() or
+    n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  or
+  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter()
+  or
+  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable()
+  or
   exprNode(result.(CaptureFlow::MallocNode).getClosureExpr()).(PostUpdateNode).getPreUpdateNode() =
     n
+  or
+  exists(CaptureInput::VariableWrite write |
+    result.(CaptureFlow::VariableWriteSourceNode).getVariableWrite() = write
+  |
+    n.asExpr() = write.(VariableAssign).getSource()
+    or
+    n.asExpr() = write.(AssignOp)
+  )
 }
 
 private predicate captureStoreStep(Node node1, CapturedVariableContent c, Node node2) {
@@ -570,12 +577,6 @@ ContentApprox getContentApprox(Content c) {
   )
   or
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
-}
-
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
-  }
 }
 
 /**

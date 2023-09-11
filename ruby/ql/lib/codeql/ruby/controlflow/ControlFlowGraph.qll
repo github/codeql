@@ -73,16 +73,14 @@ module SuccessorTypes {
   }
 
   /**
-   * A conditional control flow successor. Either a Boolean successor (`BooleanSuccessor`),
-   * an emptiness successor (`EmptinessSuccessor`), or a matching successor
-   * (`MatchingSuccessor`)
+   * A conditional control flow successor. Either a Boolean successor (`BooleanSuccessor`)
+   * or a matching successor (`MatchingSuccessor`)
    */
   class ConditionalSuccessor extends SuccessorType {
     boolean value;
 
     ConditionalSuccessor() {
       this = CfgImpl::TBooleanSuccessor(value) or
-      this = CfgImpl::TEmptinessSuccessor(value) or
       this = CfgImpl::TMatchingSuccessor(value)
     }
 
@@ -108,41 +106,6 @@ module SuccessorTypes {
    * `x >= 0` has both a `true` successor and a `false` successor.
    */
   class BooleanSuccessor extends ConditionalSuccessor, CfgImpl::TBooleanSuccessor { }
-
-  /**
-   * An emptiness control flow successor.
-   *
-   * For example, this program fragment:
-   *
-   * ```rb
-   * for arg in args do
-   *   puts arg
-   * end
-   * puts "done";
-   * ```
-   *
-   * has a control flow graph containing emptiness successors:
-   *
-   * ```
-   *           args
-   *            |
-   *          for------<-----
-   *           / \           \
-   *          /   \          |
-   *         /     \         |
-   *        /       \        |
-   *     empty    non-empty  |
-   *       |          \      |
-   *  puts "done"      \     |
-   *                  arg    |
-   *                    |    |
-   *                puts arg |
-   *                     \___/
-   * ```
-   */
-  class EmptinessSuccessor extends ConditionalSuccessor, CfgImpl::TEmptinessSuccessor {
-    override string toString() { if value = true then result = "empty" else result = "non-empty" }
-  }
 
   /**
    * A matching control flow successor.
