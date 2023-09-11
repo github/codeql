@@ -1,4 +1,3 @@
-failures
 testFailures
 edges
 | params_flow.rb:9:16:9:17 | p1 | params_flow.rb:10:10:10:11 | p1 |

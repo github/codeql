@@ -683,6 +683,15 @@ class RegExp extends Expr instanceof StrConst {
    * Holds if a parse mode starts between `start` and `end`.
    */
   private predicate flag_group_start(int start, int end) {
+    this.flag_group_start_no_modes(start, _) and
+    end = max(int i | this.mode_character(start, i) | i + 1)
+  }
+
+  /**
+   * Holds if the initial part of a parse mode, not containing any
+   * mode characters is between `start` and `end`.
+   */
+  private predicate flag_group_start_no_modes(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
     this.getChar(start + 2) in ["i", "L", "m", "s", "u", "x"] and
@@ -690,17 +699,27 @@ class RegExp extends Expr instanceof StrConst {
   }
 
   /**
-   * Holds if a parse mode group is between `start` and `end`, and includes the
-   * mode flag `c`. For example the following span, with mode flag `i`:
+   * Holds if `pos` contains a mo character from the
+   * flag group starting at `start`.
+   */
+  private predicate mode_character(int start, int pos) {
+    this.flag_group_start_no_modes(start, pos)
+    or
+    this.mode_character(start, pos - 1) and
+    this.getChar(pos) in ["i", "L", "m", "s", "u", "x"]
+  }
+
+  /**
+   * Holds if a parse mode group includes the mode flag `c`.
+   * For example the following parse mode group, with mode flag `i`:
    * ```
    * (?i)
    * ```
    */
-  private predicate flag_group(int start, int end, string c) {
-    exists(int inStart, int inEnd |
-      this.flag_group_start(start, inStart) and
-      this.groupContents(start, end, inStart, inEnd) and
-      this.getChar([inStart .. inEnd - 1]) = c
+  private predicate flag(string c) {
+    exists(int pos |
+      this.mode_character(_, pos) and
+      this.getChar(pos) = c
     )
   }
 
@@ -709,7 +728,7 @@ class RegExp extends Expr instanceof StrConst {
    * it is defined by a prefix.
    */
   string getModeFromPrefix() {
-    exists(string c | this.flag_group(_, _, c) |
+    exists(string c | this.flag(c) |
       c = "i" and result = "IGNORECASE"
       or
       c = "L" and result = "LOCALE"

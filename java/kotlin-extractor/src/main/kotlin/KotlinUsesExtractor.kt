@@ -5,6 +5,7 @@ import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.getFileClassFqName
 import com.github.codeql.utils.versions.getKotlinType
 import com.github.codeql.utils.versions.isRawType
+import com.github.codeql.utils.versions.packageFqName
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.*
@@ -83,7 +84,7 @@ open class KotlinUsesExtractor(
     )
 
     fun extractFileClass(f: IrFile): Label<out DbClassorinterface> {
-        val pkg = f.fqName.asString()
+        val pkg = f.packageFqName.asString()
         val jvmName = getFileClassName(f)
         val id = extractFileClass(pkg, jvmName)
         if (tw.lm.fileClassLocationsExtracted.add(f)) {
@@ -848,7 +849,7 @@ open class KotlinUsesExtractor(
         when(dp) {
             is IrFile ->
                 if(canBeTopLevel) {
-                    usePackage(dp.fqName.asString())
+                    usePackage(dp.packageFqName.asString())
                 } else {
                     extractFileClass(dp)
                 }

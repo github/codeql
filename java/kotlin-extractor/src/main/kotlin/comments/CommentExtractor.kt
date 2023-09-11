@@ -3,8 +3,8 @@ package com.github.codeql.comments
 import com.github.codeql.*
 import com.github.codeql.utils.IrVisitorLookup
 import com.github.codeql.utils.isLocalFunction
+import com.github.codeql.utils.Psi2IrFacade
 import com.github.codeql.utils.versions.getPsi2Ir
-import com.github.codeql.utils.versions.Psi2IrFacade
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.config.KotlinCompilerVersion

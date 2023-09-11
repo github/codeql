@@ -58,6 +58,7 @@ public class StmtKinds {
     declKinds.put("var", 18);
     declKinds.put("const", 22);
     declKinds.put("let", 23);
+    declKinds.put("using", 40);
   }
 
   public static int getStmtKind(final Statement stmt) {
