@@ -798,9 +798,21 @@ private module OutNodes {
 
 import OutNodes
 
+/**
+ * Holds if there is a data flow step from `e1` to `e2` that only steps from
+ * child to parent in the AST.
+ */
+private predicate simpleAstFlowStep(Expr e1, Expr e2) {
+  e2.(IfExpr).getBranch(_) = e1
+  or
+  e2.(AssignExpr).getSource() = e1
+  or
+  e2.(ArrayExpr).getAnElement() = e1
+}
+
 private predicate closureFlowStep(Expr e1, Expr e2) {
-  // simpleLocalFlowStep(exprNode(e1), exprNode(e2)) // TODO: find out why the java version uses simpleAstFlowStep... probably due to non-monotonic recursion
-  // or
+  simpleAstFlowStep(e1, e2)
+  or
   exists(Ssa::WriteDefinition def |
     def.getARead().getNode().asAstNode() = e2 and
     def.assigns(any(CfgNode cfg | cfg.getNode().asAstNode() = e1))
@@ -892,9 +904,7 @@ private module CaptureInput implements VariableCapture::InputSig {
 
     predicate hasBody(Callable body) { this = body }
 
-    predicate hasAliasedAccess(Expr f) {
-      closureFlowStep+(this, f) and not closureFlowStep(f, _)
-    /* TODO: understand why this is intra-procedural */ }
+    predicate hasAliasedAccess(Expr f) { closureFlowStep+(this, f) and not closureFlowStep(f, _) }
   }
 
   class Callable extends S::Callable {
