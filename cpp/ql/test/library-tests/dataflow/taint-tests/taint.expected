@@ -3,5 +3,5 @@ WARNING: Module DataFlow has been deprecated and may be removed in future (taint
 WARNING: Module DataFlow has been deprecated and may be removed in future (taint.ql:61,22-30)
 WARNING: Module DataFlow has been deprecated and may be removed in future (taint.ql:68,25-33)
 WARNING: Module TaintTracking has been deprecated and may be removed in future (taint.ql:73,20-33)
-failures
 testFailures
+failures

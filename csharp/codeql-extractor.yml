@@ -1,4 +1,6 @@
 name: "csharp"
+aliases:
+  - "c#"
 display_name: "C#"
 version: 1.22.1
 column_kind: "utf16"

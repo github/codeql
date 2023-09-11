@@ -64,7 +64,7 @@ function RegisterExtractorPack(id)
 
                 -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
                 -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
-                if testMatch and (arg:match('%.exe$') or arg:match('%.dll'))  then
+                if testMatch and (arg:match('%.exe$') or arg:match('%.dll')) then
                     match = false
                     break
                 end
@@ -110,7 +110,7 @@ function RegisterExtractorPack(id)
                     invocation = {
                         path = AbsolutifyExtractorPath(id, compilerPath),
                         arguments = {
-                            commandLineString = table.concat(argv, " ")
+                            commandLineString = ArgvToCommandLineString(argv)
                         }
                     }
                 }
@@ -150,6 +150,8 @@ function RegisterExtractorPack(id)
     end
 
     local windowsMatchers = {
+        CreatePatternMatcher({ '^semmle%.extraction%.csharp%.standalone%.exe$' },
+            MatchCompilerName, nil, { trace = false }),
         DotnetMatcherBuild,
         MsBuildMatcher,
         CreatePatternMatcher({ '^csc.*%.exe$' }, MatchCompilerName, extractor, {
@@ -172,7 +174,7 @@ function RegisterExtractorPack(id)
                     seenCompilerCall = true
                 end
                 if seenCompilerCall then
-                    table.insert(extractorArgs, '"' .. arg .. '"')
+                    table.insert(extractorArgs, arg)
                 end
             end
 
@@ -182,7 +184,7 @@ function RegisterExtractorPack(id)
                     invocation = {
                         path = AbsolutifyExtractorPath(id, extractor),
                         arguments = {
-                            commandLineString = table.concat(extractorArgs, " ")
+                            commandLineString = ArgvToCommandLineString(extractorArgs)
                         }
                     }
                 }
@@ -191,6 +193,9 @@ function RegisterExtractorPack(id)
         end
     }
     local posixMatchers = {
+        -- The compiler name is case sensitive on Linux and lower cased on MacOS
+        CreatePatternMatcher({ '^semmle%.extraction%.csharp%.standalone$', '^Semmle%.Extraction%.CSharp%.Standalone$' },
+            MatchCompilerName, nil, { trace = false }),
         DotnetMatcherBuild,
         CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$' }, MatchCompilerName,
             extractor, {

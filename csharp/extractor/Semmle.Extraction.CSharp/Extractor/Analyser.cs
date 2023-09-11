@@ -1,13 +1,13 @@
 using System;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Semmle.Extraction.CSharp.Populators;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Diagnostics;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp.Populators;
 
 namespace Semmle.Extraction.CSharp
 {

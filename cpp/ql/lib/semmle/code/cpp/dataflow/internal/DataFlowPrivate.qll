@@ -2,7 +2,6 @@ private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
-private import DataFlowImplConsistency
 private import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
@@ -296,22 +295,6 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
-
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    // Is the null pointer (or something that's not really a pointer)
-    exists(n.asExpr().getValue())
-    or
-    // Isn't a pointer or is a pointer to const
-    forall(DerivedType dt | dt = n.asExpr().getActualType() |
-      dt.getBaseType().isConst()
-      or
-      dt.getBaseType() instanceof RoutineType
-    )
-    // The above list of cases isn't exhaustive, but it narrows down the
-    // consistency alerts enough that most of them are interesting.
-  }
-}
 
 /**
  * Gets an additional term that is added to the `join` and `branch` computations to reflect

@@ -1,4 +1,4 @@
-load("@rules_pkg//:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", "strip_prefix")
+load("@rules_pkg//:mappings.bzl", "pkg_filegroup", "pkg_files", "strip_prefix")
 load("@rules_pkg//:install.bzl", "pkg_install")
 load("//:defs.bzl", "codeql_platform")
 load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
@@ -57,8 +57,8 @@ pkg_filegroup(
 )
 
 pkg_runfiles(
-    name = "xcode-autobuilder",
-    srcs = ["//swift/xcode-autobuilder"],
+    name = "swift-autobuilder",
+    srcs = ["//swift/swift-autobuilder"],
     prefix = "tools/" + codeql_platform,
 )
 
@@ -93,7 +93,7 @@ pkg_filegroup(
         ],
     }) + select({
         "@platforms//os:macos": [
-            ":xcode-autobuilder",
+            ":swift-autobuilder",
         ],
         "//conditions:default": [
             ":diagnostics",
@@ -130,7 +130,7 @@ generate_cmake(
         "//swift/logging/tests/assertion-diagnostics:assert-false",
     ] + select({
         "@platforms//os:linux": ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
-        "@platforms//os:macos": ["//swift/xcode-autobuilder"],
+        "@platforms//os:macos": ["//swift/swift-autobuilder"],
     }),
     visibility = ["//visibility:public"],
 )

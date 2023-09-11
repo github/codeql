@@ -22,6 +22,12 @@ conditionalExprs
 | conditionals.rb:61:1:64:3 | if ... | IfExpr | conditionals.rb:61:4:61:8 | ... > ... | conditionals.rb:63:1:63:4 | else ... | false |
 | conditionals.rb:67:1:70:3 | if ... | IfExpr | conditionals.rb:67:4:67:8 | ... > ... | conditionals.rb:67:10:67:13 | then ... | true |
 | conditionals.rb:67:1:70:3 | if ... | IfExpr | conditionals.rb:67:4:67:8 | ... > ... | conditionals.rb:68:1:69:5 | else ... | false |
+| loops.rb:9:5:9:5 | if ... | IfExpr | loops.rb:9:5:9:5 | ! ... | loops.rb:9:5:9:5 | ... = ... | true |
+| loops.rb:16:5:16:5 | if ... | IfExpr | loops.rb:16:5:16:5 | ! ... | loops.rb:16:5:16:5 | ... = ... | true |
+| loops.rb:22:5:22:7 | if ... | IfExpr | loops.rb:22:5:22:7 | ! ... | loops.rb:22:5:22:7 | ... = ... | true |
+| loops.rb:22:10:22:14 | if ... | IfExpr | loops.rb:22:10:22:14 | ! ... | loops.rb:22:10:22:14 | ... = ... | true |
+| loops.rb:28:6:28:8 | if ... | IfExpr | loops.rb:28:6:28:8 | ! ... | loops.rb:28:6:28:8 | ... = ... | true |
+| loops.rb:28:11:28:15 | if ... | IfExpr | loops.rb:28:11:28:15 | ! ... | loops.rb:28:11:28:15 | ... = ... | true |
 ifExprs
 | conditionals.rb:10:1:12:3 | if ... | IfExpr | conditionals.rb:10:4:10:8 | ... > ... | conditionals.rb:10:10:11:5 | then ... | (none) | false |
 | conditionals.rb:15:1:19:3 | if ... | IfExpr | conditionals.rb:15:4:15:9 | ... == ... | conditionals.rb:15:10:16:5 | then ... | else ... | false |

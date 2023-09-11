@@ -746,6 +746,7 @@
 | test.swift:663:9:663:9 | f | test.swift:663:9:663:9 | SSA def(f) |
 | test.swift:663:13:663:29 | #keyPath(...) | test.swift:663:9:663:9 | f |
 | test.swift:663:13:663:29 | enter #keyPath(...) | test.swift:663:26:663:26 | KeyPathComponent |
+| test.swift:664:15:664:28 | \\...[...] | test.swift:664:15:664:29 | ...! |
 | test.swift:668:9:668:9 | SSA def(x) | test.swift:672:9:672:9 | x |
 | test.swift:668:9:668:9 | x | test.swift:668:9:668:9 | SSA def(x) |
 | test.swift:668:13:668:20 | call to source() | test.swift:668:9:668:9 | x |
@@ -913,32 +914,138 @@
 | test.swift:759:15:759:15 | mo2 | test.swift:760:15:760:15 | mo2 |
 | test.swift:759:15:759:20 | .v2 | test.swift:759:15:759:22 | ...! |
 | test.swift:760:15:760:15 | mo2 | test.swift:760:15:760:18 | ...! |
-| test.swift:763:19:763:28 | SSA def(args) | test.swift:764:15:764:15 | args |
-| test.swift:763:19:763:28 | args | test.swift:763:19:763:28 | SSA def(args) |
-| test.swift:764:15:764:15 | args | test.swift:765:15:765:15 | args |
-| test.swift:768:19:768:24 | SSA def(v) | test.swift:769:15:769:15 | v |
-| test.swift:768:19:768:24 | v | test.swift:768:19:768:24 | SSA def(v) |
-| test.swift:768:29:768:40 | SSA def(args) | test.swift:770:15:770:15 | args |
-| test.swift:768:29:768:40 | args | test.swift:768:29:768:40 | SSA def(args) |
-| test.swift:770:15:770:15 | args | test.swift:771:15:771:15 | args |
-| test.swift:771:15:771:15 | [post] args | test.swift:772:15:772:15 | args |
-| test.swift:771:15:771:15 | args | test.swift:772:15:772:15 | args |
-| test.swift:775:19:775:24 | SSA def(v) | test.swift:776:15:776:15 | v |
-| test.swift:775:19:775:24 | v | test.swift:775:19:775:24 | SSA def(v) |
-| test.swift:775:29:775:40 | SSA def(args) | test.swift:777:15:777:15 | args |
-| test.swift:775:29:775:40 | args | test.swift:775:29:775:40 | SSA def(args) |
-| test.swift:777:15:777:15 | args | test.swift:778:15:778:15 | args |
-| test.swift:778:15:778:15 | [post] args | test.swift:779:15:779:15 | args |
-| test.swift:778:15:778:15 | args | test.swift:779:15:779:15 | args |
-| test.swift:779:15:779:15 | [post] args | test.swift:781:16:781:16 | args |
-| test.swift:779:15:779:15 | args | test.swift:781:16:781:16 | args |
-| test.swift:781:9:781:9 | SSA def(arg) | test.swift:782:19:782:19 | arg |
-| test.swift:781:9:781:9 | arg | test.swift:781:9:781:9 | SSA def(arg) |
-| test.swift:781:16:781:16 | args | test.swift:786:15:786:15 | args |
-| test.swift:785:9:785:9 | SSA def(myKeyPath) | test.swift:786:29:786:29 | myKeyPath |
-| test.swift:785:9:785:9 | myKeyPath | test.swift:785:9:785:9 | SSA def(myKeyPath) |
-| test.swift:785:21:785:29 | #keyPath(...) | test.swift:785:9:785:9 | myKeyPath |
-| test.swift:785:21:785:29 | enter #keyPath(...) | test.swift:785:27:785:29 | KeyPathComponent |
-| test.swift:790:24:790:31 | [...] | test.swift:790:24:790:31 | [...] |
-| test.swift:791:28:791:31 | [...] | test.swift:791:28:791:31 | [...] |
-| test.swift:792:21:792:31 | [...] | test.swift:792:21:792:31 | [...] |
+| test.swift:764:9:764:9 | SSA def(s) | test.swift:765:29:765:29 | s |
+| test.swift:764:9:764:9 | s | test.swift:764:9:764:9 | SSA def(s) |
+| test.swift:764:13:764:26 | call to S.init(x:) | test.swift:764:9:764:9 | s |
+| test.swift:765:9:765:9 | SSA def(s2) | test.swift:767:15:767:15 | s2 |
+| test.swift:765:9:765:9 | s2 | test.swift:765:9:765:9 | SSA def(s2) |
+| test.swift:765:14:765:30 | call to S2_Optional.init(s:) | test.swift:765:9:765:9 | s2 |
+| test.swift:766:9:766:9 | SSA def(f) | test.swift:767:27:767:27 | f |
+| test.swift:766:9:766:9 | f | test.swift:766:9:766:9 | SSA def(f) |
+| test.swift:766:13:766:29 | #keyPath(...) | test.swift:766:9:766:9 | f |
+| test.swift:766:13:766:29 | enter #keyPath(...) | test.swift:766:26:766:26 | KeyPathComponent |
+| test.swift:771:9:771:9 | SSA def(dict1) | test.swift:772:15:772:15 | dict1 |
+| test.swift:771:9:771:9 | dict1 | test.swift:771:9:771:9 | SSA def(dict1) |
+| test.swift:771:17:771:31 | [...] | test.swift:771:9:771:9 | dict1 |
+| test.swift:772:15:772:15 | &... | test.swift:774:5:774:5 | dict1 |
+| test.swift:772:15:772:15 | [post] dict1 | test.swift:772:15:772:15 | &... |
+| test.swift:772:15:772:15 | dict1 | test.swift:772:15:772:15 | &... |
+| test.swift:774:5:774:5 | &... | test.swift:776:15:776:15 | dict1 |
+| test.swift:774:5:774:5 | [post] dict1 | test.swift:774:5:774:5 | &... |
+| test.swift:774:5:774:5 | dict1 | test.swift:774:5:774:5 | &... |
+| test.swift:776:15:776:15 | [post] dict1 | test.swift:776:15:776:15 | &... |
+| test.swift:776:15:776:15 | dict1 | test.swift:776:15:776:15 | &... |
+| test.swift:778:9:778:9 | SSA def(dict2) | test.swift:779:15:779:15 | dict2 |
+| test.swift:778:9:778:9 | dict2 | test.swift:778:9:778:9 | SSA def(dict2) |
+| test.swift:778:17:778:29 | [...] | test.swift:778:9:778:9 | dict2 |
+| test.swift:779:15:779:15 | &... | test.swift:781:25:781:25 | dict2 |
+| test.swift:779:15:779:15 | [post] dict2 | test.swift:779:15:779:15 | &... |
+| test.swift:779:15:779:15 | dict2 | test.swift:779:15:779:15 | &... |
+| test.swift:781:10:781:10 | SSA def(key) | test.swift:782:19:782:19 | key |
+| test.swift:781:10:781:10 | key | test.swift:781:10:781:10 | SSA def(key) |
+| test.swift:781:15:781:15 | SSA def(value) | test.swift:783:19:783:19 | value |
+| test.swift:781:15:781:15 | value | test.swift:781:15:781:15 | SSA def(value) |
+| test.swift:786:9:786:9 | SSA def(dict3) | test.swift:787:15:787:15 | dict3 |
+| test.swift:786:9:786:9 | dict3 | test.swift:786:9:786:9 | SSA def(dict3) |
+| test.swift:786:17:786:29 | [...] | test.swift:786:9:786:9 | dict3 |
+| test.swift:787:15:787:15 | &... | test.swift:789:5:789:5 | dict3 |
+| test.swift:787:15:787:15 | [post] dict3 | test.swift:787:15:787:15 | &... |
+| test.swift:787:15:787:15 | dict3 | test.swift:787:15:787:15 | &... |
+| test.swift:789:5:789:5 | &... | test.swift:791:15:791:15 | dict3 |
+| test.swift:789:5:789:5 | [post] dict3 | test.swift:789:5:789:5 | &... |
+| test.swift:789:5:789:5 | dict3 | test.swift:789:5:789:5 | &... |
+| test.swift:791:15:791:15 | [post] dict3 | test.swift:792:15:792:15 | dict3 |
+| test.swift:791:15:791:15 | dict3 | test.swift:792:15:792:15 | dict3 |
+| test.swift:791:15:791:35 | call to randomElement() | test.swift:791:15:791:36 | ...! |
+| test.swift:792:15:792:15 | [post] dict3 | test.swift:794:25:794:25 | dict3 |
+| test.swift:792:15:792:15 | dict3 | test.swift:794:25:794:25 | dict3 |
+| test.swift:792:15:792:35 | call to randomElement() | test.swift:792:15:792:36 | ...! |
+| test.swift:794:10:794:10 | SSA def(key) | test.swift:795:19:795:19 | key |
+| test.swift:794:10:794:10 | key | test.swift:794:10:794:10 | SSA def(key) |
+| test.swift:794:15:794:15 | SSA def(value) | test.swift:796:19:796:19 | value |
+| test.swift:794:15:794:15 | value | test.swift:794:15:794:15 | SSA def(value) |
+| test.swift:799:9:799:9 | SSA def(dict4) | test.swift:800:15:800:15 | dict4 |
+| test.swift:799:9:799:9 | dict4 | test.swift:799:9:799:9 | SSA def(dict4) |
+| test.swift:799:17:799:28 | [...] | test.swift:799:9:799:9 | dict4 |
+| test.swift:800:15:800:15 | &... | test.swift:801:15:801:15 | dict4 |
+| test.swift:800:15:800:15 | [post] dict4 | test.swift:800:15:800:15 | &... |
+| test.swift:800:15:800:15 | dict4 | test.swift:800:15:800:15 | &... |
+| test.swift:800:15:800:52 | call to updateValue(_:forKey:) | test.swift:800:15:800:53 | ...! |
+| test.swift:801:15:801:15 | &... | test.swift:802:15:802:15 | dict4 |
+| test.swift:801:15:801:15 | [post] dict4 | test.swift:801:15:801:15 | &... |
+| test.swift:801:15:801:15 | dict4 | test.swift:801:15:801:15 | &... |
+| test.swift:801:15:801:52 | call to updateValue(_:forKey:) | test.swift:801:15:801:53 | ...! |
+| test.swift:802:15:802:15 | [post] dict4 | test.swift:803:15:803:15 | dict4 |
+| test.swift:802:15:802:15 | dict4 | test.swift:803:15:803:15 | dict4 |
+| test.swift:802:15:802:35 | call to randomElement() | test.swift:802:15:802:36 | ...! |
+| test.swift:803:15:803:15 | [post] dict4 | test.swift:804:15:804:15 | dict4 |
+| test.swift:803:15:803:15 | dict4 | test.swift:804:15:804:15 | dict4 |
+| test.swift:803:15:803:35 | call to randomElement() | test.swift:803:15:803:36 | ...! |
+| test.swift:804:15:804:15 | [post] dict4 | test.swift:805:15:805:15 | dict4 |
+| test.swift:804:15:804:15 | dict4 | test.swift:805:15:805:15 | dict4 |
+| test.swift:809:3:809:3 | SSA def(self) | test.swift:810:5:810:5 | self |
+| test.swift:809:3:809:3 | self | test.swift:809:3:809:3 | SSA def(self) |
+| test.swift:809:8:809:13 | SSA def(v) | test.swift:810:14:810:14 | v |
+| test.swift:809:8:809:13 | v | test.swift:809:8:809:13 | SSA def(v) |
+| test.swift:810:5:810:5 | [post] self | test.swift:809:3:811:3 | self[return] |
+| test.swift:810:5:810:5 | self | test.swift:809:3:811:3 | self[return] |
+| test.swift:813:8:813:8 | SSA def(self) | test.swift:813:31:813:31 | self |
+| test.swift:813:8:813:8 | self | test.swift:813:8:813:8 | SSA def(self) |
+| test.swift:813:31:813:31 | [post] self | test.swift:813:3:813:33 | self[return] |
+| test.swift:813:31:813:31 | self | test.swift:813:3:813:33 | self[return] |
+| test.swift:815:7:815:7 | self | test.swift:815:7:815:7 | SSA def(self) |
+| test.swift:815:7:815:7 | self | test.swift:815:7:815:7 | SSA def(self) |
+| test.swift:815:7:815:7 | self | test.swift:815:7:815:7 | SSA def(self) |
+| test.swift:815:7:815:7 | value | test.swift:815:7:815:7 | SSA def(value) |
+| test.swift:819:9:819:9 | SSA def(s1) | test.swift:822:15:822:15 | s1 |
+| test.swift:819:9:819:9 | s1 | test.swift:819:9:819:9 | SSA def(s1) |
+| test.swift:819:14:819:25 | call to S3.init(_:) | test.swift:819:9:819:9 | s1 |
+| test.swift:820:9:820:9 | SSA def(s2) | test.swift:823:15:823:15 | s2 |
+| test.swift:820:9:820:9 | s2 | test.swift:820:9:820:9 | SSA def(s2) |
+| test.swift:820:14:820:18 | call to S3.init(_:) | test.swift:820:9:820:9 | s2 |
+| test.swift:822:15:822:15 | [post] s1 | test.swift:824:15:824:15 | s1 |
+| test.swift:822:15:822:15 | s1 | test.swift:824:15:824:15 | s1 |
+| test.swift:823:15:823:15 | [post] s2 | test.swift:825:15:825:15 | s2 |
+| test.swift:823:15:823:15 | s2 | test.swift:825:15:825:15 | s2 |
+| test.swift:824:15:824:15 | [post] s1 | test.swift:827:5:827:5 | s1 |
+| test.swift:824:15:824:15 | s1 | test.swift:827:5:827:5 | s1 |
+| test.swift:825:15:825:15 | [post] s2 | test.swift:828:5:828:5 | s2 |
+| test.swift:825:15:825:15 | s2 | test.swift:828:5:828:5 | s2 |
+| test.swift:827:5:827:5 | [post] s1 | test.swift:830:15:830:15 | s1 |
+| test.swift:827:5:827:5 | s1 | test.swift:830:15:830:15 | s1 |
+| test.swift:828:5:828:5 | [post] s2 | test.swift:831:15:831:15 | s2 |
+| test.swift:828:5:828:5 | s2 | test.swift:831:15:831:15 | s2 |
+| test.swift:830:15:830:15 | [post] s1 | test.swift:832:15:832:15 | s1 |
+| test.swift:830:15:830:15 | s1 | test.swift:832:15:832:15 | s1 |
+| test.swift:831:15:831:15 | [post] s2 | test.swift:833:15:833:15 | s2 |
+| test.swift:831:15:831:15 | s2 | test.swift:833:15:833:15 | s2 |
+| test.swift:836:19:836:28 | SSA def(args) | test.swift:837:15:837:15 | args |
+| test.swift:836:19:836:28 | args | test.swift:836:19:836:28 | SSA def(args) |
+| test.swift:837:15:837:15 | args | test.swift:838:15:838:15 | args |
+| test.swift:841:19:841:24 | SSA def(v) | test.swift:842:15:842:15 | v |
+| test.swift:841:19:841:24 | v | test.swift:841:19:841:24 | SSA def(v) |
+| test.swift:841:29:841:40 | SSA def(args) | test.swift:843:15:843:15 | args |
+| test.swift:841:29:841:40 | args | test.swift:841:29:841:40 | SSA def(args) |
+| test.swift:843:15:843:15 | args | test.swift:844:15:844:15 | args |
+| test.swift:844:15:844:15 | [post] args | test.swift:845:15:845:15 | args |
+| test.swift:844:15:844:15 | args | test.swift:845:15:845:15 | args |
+| test.swift:848:19:848:24 | SSA def(v) | test.swift:849:15:849:15 | v |
+| test.swift:848:19:848:24 | v | test.swift:848:19:848:24 | SSA def(v) |
+| test.swift:848:29:848:40 | SSA def(args) | test.swift:850:15:850:15 | args |
+| test.swift:848:29:848:40 | args | test.swift:848:29:848:40 | SSA def(args) |
+| test.swift:850:15:850:15 | args | test.swift:851:15:851:15 | args |
+| test.swift:851:15:851:15 | [post] args | test.swift:852:15:852:15 | args |
+| test.swift:851:15:851:15 | args | test.swift:852:15:852:15 | args |
+| test.swift:852:15:852:15 | [post] args | test.swift:854:16:854:16 | args |
+| test.swift:852:15:852:15 | args | test.swift:854:16:854:16 | args |
+| test.swift:854:9:854:9 | SSA def(arg) | test.swift:855:19:855:19 | arg |
+| test.swift:854:9:854:9 | arg | test.swift:854:9:854:9 | SSA def(arg) |
+| test.swift:854:16:854:16 | [post] args | test.swift:859:15:859:15 | args |
+| test.swift:854:16:854:16 | args | test.swift:859:15:859:15 | args |
+| test.swift:858:9:858:9 | SSA def(myKeyPath) | test.swift:859:29:859:29 | myKeyPath |
+| test.swift:858:9:858:9 | myKeyPath | test.swift:858:9:858:9 | SSA def(myKeyPath) |
+| test.swift:858:21:858:29 | #keyPath(...) | test.swift:858:9:858:9 | myKeyPath |
+| test.swift:858:21:858:29 | enter #keyPath(...) | test.swift:858:27:858:29 | KeyPathComponent |
+| test.swift:863:24:863:31 | [...] | test.swift:863:24:863:31 | [...] |
+| test.swift:864:28:864:31 | [...] | test.swift:864:28:864:31 | [...] |
+| test.swift:865:21:865:31 | [...] | test.swift:865:21:865:31 | [...] |

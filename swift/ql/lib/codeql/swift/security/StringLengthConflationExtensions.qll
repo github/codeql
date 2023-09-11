@@ -158,7 +158,7 @@ private class ExtraStringLengthConflationSource extends StringLengthConflationSo
         or
         stringType = TStringUnicodeScalars()
       ) and
-      memberRef.getBase().getType().(NominalType).getName() = stringType.getName() and
+      memberRef.getBase().getType().(NominalType).getFullName() = stringType.getName() and
       memberRef.getMember().(VarDecl).getName() = "count" and
       this.asExpr() = memberRef
     )
@@ -218,8 +218,8 @@ private class ExtraStringLengthConflationSink extends StringLengthConflationSink
         stringType = TStringUnicodeScalars()
       ) and
       (
-        call.getQualifier().getType().(NominalType).getName() = stringType.getName() or
-        call.getQualifier().getType().(InOutType).getObjectType().(NominalType).getName() =
+        call.getQualifier().getType().(NominalType).getFullName() = stringType.getName() or
+        call.getQualifier().getType().(InOutType).getObjectType().(NominalType).getFullName() =
           stringType.getName()
       ) and
       (

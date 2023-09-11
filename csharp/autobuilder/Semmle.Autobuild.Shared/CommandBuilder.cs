@@ -55,7 +55,7 @@ namespace Semmle.Autobuild.Shared
         }
 
         private static readonly char[] specialChars = { ' ', '\t', '\n', '\v', '\"' };
-        private static readonly char[] cmdMetacharacter = { '(', ')', '%', '!', '^', '\"', '<', '>', '&', '|' };
+        private static readonly char[] cmdMetacharacter = { '(', ')', '%', '!', '^', '\"', '<', '>', '&', '|', ' ' };
 
         /// <summary>
         /// Appends the given argument to the command line.

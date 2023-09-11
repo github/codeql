@@ -105,8 +105,6 @@ predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
     or
     e instanceof NewArrayExpr
     or
-    e instanceof AssignExpr
-    or
     exists(Variable v | v = e.(VariableAccess).getTarget() |
       v.getType().(ArrayType).getBaseType() instanceof CharType and
       exists(AssignExpr ae |

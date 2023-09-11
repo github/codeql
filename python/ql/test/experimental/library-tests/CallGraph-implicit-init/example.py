@@ -17,6 +17,6 @@ Since PEP 420 was accepted in Python 3, this test is Python 3 only.
 from foo.bar.a import afunc
 from foo_explicit.bar.a import explicit_afunc
 
-afunc() # $ MISSING: pt,tt=afunc
+afunc() # $ pt,tt="foo/bar/a.py:afunc"
 
 explicit_afunc() # $ pt,tt="foo_explicit/bar/a.py:explicit_afunc"

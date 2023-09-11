@@ -518,3 +518,19 @@ func testAvailable() -> Int {
 
   return x
 }
+
+func testAsyncFor () async {
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
+                for i in 1...100 {
+                    continuation.yield(i)
+                }
+                continuation.finish()
+            }
+    })
+
+    for try await i in stream {
+        print(i)
+    }
+}
