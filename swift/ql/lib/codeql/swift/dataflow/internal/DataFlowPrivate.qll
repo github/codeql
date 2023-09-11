@@ -1042,6 +1042,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  captureStoreStep(node1, any(Content::CapturedVariableContent cvc | c.isSingleton(cvc)), node2)
 }
 
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
@@ -1146,6 +1148,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  captureReadStep(node1, any(Content::CapturedVariableContent cvc | c.isSingleton(cvc)), node2)
 }
 
 /**
