@@ -254,9 +254,10 @@ private predicate isNameSpacePackage(Folder f, string name) {
   legalShortName(name) and
   name = f.getStem() and
   not isRegularPackage(f, name) and
-  // it has to be imported in this folder
+  // it has to be imported in a file
+  // either in this folder or next to this folder
   name =
-    any(ImportExpr i | i.getLocation().getFile().getParent() = f)
+    any(ImportExpr i | i.getLocation().getFile().getParent() in [f, f.getParent()])
         .getName()
         .regexpReplaceAll("\\..*", "") and
   name != "" and
