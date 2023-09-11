@@ -33,7 +33,9 @@ class CleartextStoragePreferencesAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
-/** The `DataFlow::Node` of an expression that gets written to the user defaults database */
+/**
+ * The `DataFlow::Node` of an expression that gets written to the user defaults database.
+ */
 private class UserDefaultsStore extends CleartextStoragePreferencesSink {
   UserDefaultsStore() {
     exists(CallExpr call |
@@ -45,7 +47,9 @@ private class UserDefaultsStore extends CleartextStoragePreferencesSink {
   override string getStoreName() { result = "the user defaults database" }
 }
 
-/** The `DataFlow::Node` of an expression that gets written to the iCloud-backed NSUbiquitousKeyValueStore */
+/**
+ * The `DataFlow::Node` of an expression that gets written to the iCloud-backed `NSUbiquitousKeyValueStore`.
+ */
 private class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink {
   NSUbiquitousKeyValueStore() {
     exists(CallExpr call |
