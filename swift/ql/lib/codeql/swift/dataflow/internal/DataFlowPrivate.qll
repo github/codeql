@@ -291,6 +291,9 @@ private module Cached {
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
       nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    or
+    // flow step according to the closure capture library
+    captureValueStep(nodeFrom, nodeTo)
   }
 
   /**
