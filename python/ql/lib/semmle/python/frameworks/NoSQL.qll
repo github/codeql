@@ -123,40 +123,49 @@ private module NoSql {
   }
 
   /** The `$where` query operator executes a string as JavaScript. */
-  private class WhereQueryOperator extends API::CallNode, NoSqlQuery::Range {
+  private class WhereQueryOperator extends DataFlow::Node, Decoding::Range {
+    API::Node dictionary;
     DataFlow::Node query;
 
     WhereQueryOperator() {
-      this = mongoCollection().getMember(mongoCollectionMethodName()).getACall() and
-      query = this.getParameter(0).getSubscript("$where").asSink()
+      dictionary =
+        mongoCollection().getMember(mongoCollectionMethodName()).getACall().getParameter(0) and
+      query = dictionary.getSubscript("$where").asSink() and
+      this = dictionary.asSink()
     }
 
-    override DataFlow::Node getQuery() { result = query }
+    override DataFlow::Node getAnInput() { result = query }
 
-    override predicate interpretsDict() { none() }
+    override DataFlow::Node getOutput() { result = this }
 
-    override predicate vulnerableToStrings() { any() }
+    override string getFormat() { result = "NoSQL" }
+
+    override predicate mayExecuteInput() { any() }
   }
 
   /** The `$function` query operator executes its `body` string as JavaScript. */
-  private class FunctionQueryOperator extends API::CallNode, NoSqlQuery::Range {
+  private class FunctionQueryOperator extends DataFlow::Node, Decoding::Range {
+    API::Node dictionary;
     DataFlow::Node query;
 
     FunctionQueryOperator() {
-      this = mongoCollection().getMember(mongoCollectionMethodName()).getACall() and
-      query =
-        this.getParameter(0)
-            .getASubscript*()
-            .getSubscript("$function")
-            .getSubscript("body")
-            .asSink()
+      dictionary =
+        mongoCollection()
+            .getMember(mongoCollectionMethodName())
+            .getACall()
+            .getParameter(0)
+            .getASubscript*() and
+      query = dictionary.getSubscript("$function").getSubscript("body").asSink() and
+      this = dictionary.asSink()
     }
 
-    override DataFlow::Node getQuery() { result = query }
+    override DataFlow::Node getAnInput() { result = query }
 
-    override predicate interpretsDict() { none() }
+    override DataFlow::Node getOutput() { result = this }
 
-    override predicate vulnerableToStrings() { any() }
+    override string getFormat() { result = "NoSQL" }
+
+    override predicate mayExecuteInput() { any() }
   }
 
   /**

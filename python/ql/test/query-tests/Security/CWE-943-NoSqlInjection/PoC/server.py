@@ -50,7 +50,7 @@ def by_where():
 def by_function():
     author = request.args['author']
     search = {
-        "body": 'function(author) { return(author === "'+author+'") }', # $ result=BAD
+        "body": 'function(author) { return(author === "'+author+'") }',
         "args": [ "$author" ],
         "lang": "js"
     }
@@ -64,11 +64,11 @@ def by_function():
 def by_function_arg():
     author = request.args['author']
     search = {
-        "body": 'function(author, target) { return(author === target) }', # $ result=OK
+        "body": 'function(author, target) { return(author === target) }',
         "args": [ "$author", author ],
         "lang": "js"
     }
-    post = posts.find_one({'$expr': {'$function': search}}) # $ SPURIOUS: result=BAD
+    post = posts.find_one({'$expr': {'$function': search}}) # $ result=OK
     return show_post(post, author)
 
 @app.route('/', methods=['GET'])

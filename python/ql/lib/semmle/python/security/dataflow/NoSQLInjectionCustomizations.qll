@@ -75,7 +75,7 @@ module NoSqlInjection {
 
   /** A JSON decoding converts a string to a dictionary. */
   class JsonDecoding extends Decoding, StringToDictConversion {
-    JsonDecoding() { this.getFormat() = "JSON" }
+    JsonDecoding() { this.getFormat() in ["JSON", "NoSQL"] }
 
     override DataFlow::Node getAnInput() { result = Decoding.super.getAnInput() }
 
