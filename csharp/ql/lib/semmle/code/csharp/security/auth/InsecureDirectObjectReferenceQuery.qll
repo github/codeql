@@ -39,6 +39,36 @@ private predicate checksUser(ActionMethod m) {
   )
 }
 
+/** Holds if `m`, its containing class, or a parent class has an attribute that extends `AuthorizeAttribute` */
+private predicate hasAuthorizeAttribute(ActionMethod m) {
+  exists(Attribute attr |
+    attr.getType()
+        .getABaseType*()
+        .hasQualifiedName("Microsoft.AspNetCore.Authorization", "AuthorizeAttribute")
+  |
+    attr = m.getAnAttribute() or
+    attr = m.getDeclaringType().getABaseType*().getAnAttribute()
+  )
+}
+
+/** Holds if `m`, its containing class, or a parent class has an attribute that extends `AllowAnonymousAttribute` */
+private predicate hasAllowAnonymousAttribute(ActionMethod m) {
+  exists(Attribute attr |
+    attr.getType()
+        .getABaseType*()
+        .hasQualifiedName("Microsoft.AspNetCore.Authorization", "AllowAnonymousAttribute")
+  |
+    attr = m.getAnAttribute() or
+    attr = m.getDeclaringType().getABaseType*().getAnAttribute()
+  )
+}
+
+/** Hols if `m` is authorized via an `Authorize` attribute */
+private predicate isAuthorizedViaAttribute(ActionMethod m) {
+  hasAuthorizeAttribute(m) and
+  not hasAllowAnonymousAttribute(m)
+}
+
 /**
  * Holds if `m` is a method that modifies a particular resource based on
  * an ID provided by user input, but does not check anything based on the current user
@@ -48,5 +78,6 @@ predicate hasInsecureDirectObjectReference(ActionMethod m) {
   needsChecks(m) and
   hasIdParameter(m) and
   not checksUser(m) and
-  exists(m.getBody())
+  not isAuthorizedViaAttribute(m) and
+  exists(m.getBody().getAChildStmt())
 }
