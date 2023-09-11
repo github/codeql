@@ -34,7 +34,7 @@ class Macro extends PreprocessorDirective, @ppd_define {
    * Gets the name of the macro.  For example, `MAX` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
    */
-  string getName() { result = this.getHead().splitAt("(", 0) }
+  string getName() { result = this.getHead().regexpCapture("([^(]*+).*", 1) }
 
   /** Holds if the macro has name `name`. */
   predicate hasName(string name) { this.getName() = name }

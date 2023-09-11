@@ -1,9 +1,9 @@
-using Semmle.Util;
-using Semmle.Util.Logging;
 using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {

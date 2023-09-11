@@ -4,7 +4,9 @@
 
 import java
 private import frameworks.jackson.JacksonSerializability
+private import frameworks.google.GsonSerializability
 private import frameworks.google.GoogleHttpClientApi
+private import frameworks.struts.Struts2Serializability
 
 /**
  * A serializable field may be read without code referencing it,

@@ -151,7 +151,6 @@ private module SsaImpl {
   }
 
   /** Holds if a phi node for `v` is needed at the beginning of basic block `b`. */
-  pragma[assume_small_delta]
   cached
   predicate phiNode(BaseSsaSourceVariable v, BasicBlock b) {
     liveAtEntry(v, b) and
@@ -482,9 +481,6 @@ class BaseSsaVariable extends TBaseSsaVariable {
     this = TSsaUpdate(_, result, _, _) or
     this = TSsaEntryDef(_, result)
   }
-
-  /** DEPRECATED: Alias for getCfgNode */
-  deprecated ControlFlowNode getCFGNode() { result = this.getCfgNode() }
 
   string toString() { none() }
 

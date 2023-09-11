@@ -10,25 +10,12 @@ module Generated {
 
     /**
      * Gets the element of this enum element pattern.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    EnumElementDecl getImmediateElement() {
+    EnumElementDecl getElement() {
       result =
         Synth::convertEnumElementDeclFromRaw(Synth::convertEnumElementPatternToRaw(this)
               .(Raw::EnumElementPattern)
               .getElement())
-    }
-
-    /**
-     * Gets the element of this enum element pattern.
-     */
-    final EnumElementDecl getElement() {
-      exists(EnumElementDecl immediate |
-        immediate = this.getImmediateElement() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Kinds;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -209,6 +209,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 // we're generating a default expression:
                 return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
+            }
+
+            if (type.SpecialType is SpecialType.None)
+            {
+                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
             }
 
             if (type.SpecialType is SpecialType.System_DateTime)

@@ -97,9 +97,6 @@ module Shared {
     }
   }
 
-  /** DEPRECATED: Alias for ContainsHtmlGuard */
-  deprecated class ContainsHTMLGuard = ContainsHtmlGuard;
-
   /**
    * Holds if `str` is used in a switch-case that has cases matching HTML escaping.
    */

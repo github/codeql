@@ -1,18 +1,18 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Semmle.Util;
-using System.Text;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using Semmle.Util.Logging;
-using System.Collections.Concurrent;
-using System.Globalization;
-using System.Threading;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -381,8 +381,17 @@ namespace Semmle.Extraction.CSharp
                 references => ResolveReferences(compilerArguments, analyser, canonicalPathCache, references),
                 (analyser, syntaxTrees) =>
                 {
+                    var paths = compilerArguments.SourceFiles
+                        .Select(src => src.Path)
+                        .ToList();
+
+                    if (compilerArguments.GeneratedFilesOutputDirectory is not null)
+                    {
+                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", SearchOption.AllDirectories));
+                    }
+
                     return ReadSyntaxTrees(
-                        compilerArguments.SourceFiles.Select(src => canonicalPathCache.GetCanonicalPath(src.Path)),
+                        paths.Select(canonicalPathCache.GetCanonicalPath),
                         analyser,
                         compilerArguments.ParseOptions,
                         compilerArguments.Encoding,

@@ -27,7 +27,7 @@ module Generated {
     final Element getParent() {
       exists(Element immediate |
         immediate = this.getImmediateParent() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 

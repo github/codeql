@@ -1,4 +1,4 @@
-package test/subdir
+package subdir
 
 func Test() {
 }

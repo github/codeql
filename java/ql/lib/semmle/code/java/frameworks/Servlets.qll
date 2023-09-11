@@ -128,9 +128,6 @@ class HttpServletRequestGetRequestUrlMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUrlMethod */
-deprecated class HttpServletRequestGetRequestURLMethod = HttpServletRequestGetRequestUrlMethod;
-
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
@@ -339,9 +336,6 @@ class ServletWebXmlListenerType extends RefType {
   }
 }
 
-/** DEPRECATED: Alias for ServletWebXmlListenerType */
-deprecated class ServletWebXMLListenerType = ServletWebXmlListenerType;
-
 /** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
 predicate isServletRequestMethod(Method m) {
   m.getDeclaringType() instanceof ServletClass and
@@ -402,4 +396,9 @@ class GetServletResourceAsStreamMethod extends Method {
     this.getDeclaringType() instanceof ServletContext and
     this.hasName("getResourceAsStream")
   }
+}
+
+/** The interface `javax.servlet.http.HttpSession` */
+class HttpServletSession extends RefType {
+  HttpServletSession() { this.hasQualifiedName("javax.servlet.http", "HttpSession") }
 }

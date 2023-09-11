@@ -54,6 +54,7 @@ class Sinks extends ModelInput::SinkModelCsv {
         "testlib;Member[typevar].TypeVar[ABC].Member[mySink].Argument[0];test-sink",
         "testlib;Member[typevar].TypeVar[ABC].TypeVar[ABC].Member[mySink].Argument[1];test-sink",
         "testlib;Member[typevar].TypeVar[LeftRight].Member[mySink].Argument[0];test-sink",
+        "testlib;Fuzzy.Member[fuzzyCall].Argument[0];test-sink"
       ]
   }
 }

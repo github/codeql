@@ -160,8 +160,6 @@ module ThroughFlowConfig implements DataFlow::StateConfigSig {
     exists(Type t | t = n.getType() and not isRelevantType(t))
   }
 
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
-
   DataFlow::FlowFeature getAFeature() {
     result instanceof DataFlow::FeatureEqualSourceSinkCallContext
   }

@@ -254,9 +254,7 @@ class Node extends TIRDataFlowNode {
    * after the `f` has returned.
    */
   Expr asDefiningArgument(int index) {
-    // Subtract one because `DefinitionByReferenceNode` is defined to be in
-    // the range `[0 ... n - 1]` for some `n` instead of `[1 ... n]`.
-    this.(DefinitionByReferenceNode).getIndirectionIndex() = index - 1 and
+    this.(DefinitionByReferenceNode).getIndirectionIndex() = index and
     result = this.(DefinitionByReferenceNode).getArgument()
   }
 
@@ -274,7 +272,7 @@ class Node extends TIRDataFlowNode {
    * represents the value of `**x` going into `f`.
    */
   Expr asIndirectArgument(int index) {
-    this.(SideEffectOperandNode).getIndirectionIndex() = index and
+    this.(SideEffectOperandNode).hasAddressOperandAndIndirectionIndex(_, index) and
     result = this.(SideEffectOperandNode).getArgument()
   }
 
@@ -317,7 +315,7 @@ class Node extends TIRDataFlowNode {
     index = 0 and
     result = this.(ExplicitParameterNode).getParameter()
     or
-    this.(IndirectParameterNode).getIndirectionIndex() = index and
+    this.(IndirectParameterNode).hasInstructionAndIndirectionIndex(_, index) and
     result = this.(IndirectParameterNode).getParameter()
   }
 
@@ -550,11 +548,14 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    * `fromBackEdge` is true if data flows along a back-edge,
    * and `false` otherwise.
    */
+  cached
   final Node getAnInput(boolean fromBackEdge) {
     localFlowStep(result, this) and
-    if phi.getBasicBlock().dominates(result.getBasicBlock())
-    then fromBackEdge = true
-    else fromBackEdge = false
+    exists(IRBlock bPhi, IRBlock bResult |
+      bPhi = phi.getBasicBlock() and bResult = result.getBasicBlock()
+    |
+      if bPhi.dominates(bResult) then fromBackEdge = true else fromBackEdge = false
+    )
   }
 
   /** Gets a node that is used as input to this phi node. */
@@ -577,15 +578,20 @@ class SsaPhiNode extends Node, TSsaPhiNode {
  *
  * A node representing a value after leaving a function.
  */
-class SideEffectOperandNode extends Node, IndirectOperand {
+class SideEffectOperandNode extends Node instanceof IndirectOperand {
   CallInstruction call;
   int argumentIndex;
 
-  SideEffectOperandNode() { operand = call.getArgumentOperand(argumentIndex) }
+  SideEffectOperandNode() {
+    IndirectOperand.super.hasOperandAndIndirectionIndex(call.getArgumentOperand(argumentIndex), _)
+  }
 
   CallInstruction getCallInstruction() { result = call }
 
-  Operand getAddressOperand() { result = operand }
+  /** Gets the underlying operand and the underlying indirection index. */
+  predicate hasAddressOperandAndIndirectionIndex(Operand operand, int indirectionIndex) {
+    IndirectOperand.super.hasOperandAndIndirectionIndex(operand, indirectionIndex)
+  }
 
   int getArgumentIndex() { result = argumentIndex }
 
@@ -665,10 +671,10 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
  *
  * A node representing an indirection of a parameter.
  */
-class IndirectParameterNode extends Node, IndirectInstruction {
+class IndirectParameterNode extends Node instanceof IndirectInstruction {
   InitializeParameterInstruction init;
 
-  IndirectParameterNode() { this.getInstruction() = init }
+  IndirectParameterNode() { IndirectInstruction.super.hasInstructionAndIndirectionIndex(init, _) }
 
   int getArgumentIndex() { init.hasIndex(result) }
 
@@ -677,7 +683,12 @@ class IndirectParameterNode extends Node, IndirectInstruction {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
+  override Declaration getFunction() { result = init.getEnclosingFunction() }
+
+  /** Gets the underlying operand and the underlying indirection index. */
+  predicate hasInstructionAndIndirectionIndex(Instruction instr, int index) {
+    IndirectInstruction.super.hasInstructionAndIndirectionIndex(instr, index)
+  }
 
   override Location getLocationImpl() { result = this.getParameter().getLocation() }
 
@@ -699,7 +710,8 @@ class IndirectReturnNode extends Node {
   IndirectReturnNode() {
     this instanceof FinalParameterNode
     or
-    this.(IndirectOperand).getOperand() = any(ReturnValueInstruction ret).getReturnAddressOperand()
+    this.(IndirectOperand)
+        .hasOperandAndIndirectionIndex(any(ReturnValueInstruction ret).getReturnAddressOperand(), _)
   }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
@@ -722,7 +734,7 @@ class IndirectReturnNode extends Node {
   int getIndirectionIndex() {
     result = this.(FinalParameterNode).getIndirectionIndex()
     or
-    result = this.(IndirectOperand).getIndirectionIndex()
+    this.(IndirectOperand).hasOperandAndIndirectionIndex(_, result)
   }
 }
 
@@ -770,26 +782,12 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PartialDef
   override Expr getDefinedExpr() { result = operand.getDef().getUnconvertedResultExpression() }
 }
 
-pragma[nomagic]
-predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int indirectionIndex) {
-  Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
-  operandForFullyConvertedCall(operand, call)
-}
-
-pragma[nomagic]
-predicate indirectReturnOutNodeInstruction0(
-  CallInstruction call, Instruction instr, int indirectionIndex
-) {
-  Ssa::hasRawIndirectInstruction(call, indirectionIndex) and
-  instructionForFullyConvertedCall(instr, call)
-}
-
 /**
  * Holds if `node` is an indirect operand with columns `(operand, indirectionIndex)`, and
  * `operand` represents a use of the fully converted value of `call`.
  */
 private predicate hasOperand(Node node, CallInstruction call, int indirectionIndex, Operand operand) {
-  indirectReturnOutNodeOperand0(call, operand, indirectionIndex) and
+  operandForFullyConvertedCall(operand, call) and
   hasOperandAndIndex(node, operand, indirectionIndex)
 }
 
@@ -802,7 +800,7 @@ private predicate hasOperand(Node node, CallInstruction call, int indirectionInd
 private predicate hasInstruction(
   Node node, CallInstruction call, int indirectionIndex, Instruction instr
 ) {
-  indirectReturnOutNodeInstruction0(call, instr, indirectionIndex) and
+  instructionForFullyConvertedCall(instr, call) and
   hasInstructionAndIndex(node, instr, indirectionIndex)
 }
 
@@ -1106,7 +1104,8 @@ predicate exprNodeShouldBeInstruction(Node node, Expr e) {
 /** Holds if `node` should be an `IndirectInstruction` that maps `node.asIndirectExpr()` to `e`. */
 predicate indirectExprNodeShouldBeIndirectInstruction(IndirectInstruction node, Expr e) {
   exists(Instruction instr |
-    instr = node.getInstruction() and not indirectExprNodeShouldBeIndirectOperand(_, e)
+    node.hasInstructionAndIndirectionIndex(instr, _) and
+    not indirectExprNodeShouldBeIndirectOperand(_, e)
   |
     e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
     or
@@ -1307,8 +1306,8 @@ pragma[noinline]
 private predicate indirectParameterNodeHasArgumentIndexAndIndex(
   IndirectParameterNode node, int argumentIndex, int indirectionIndex
 ) {
-  node.getArgumentIndex() = argumentIndex and
-  node.getIndirectionIndex() = indirectionIndex
+  node.hasInstructionAndIndirectionIndex(_, indirectionIndex) and
+  node.getArgumentIndex() = argumentIndex
 }
 
 /** A synthetic parameter to model the pointed-to object of a pointer parameter. */
@@ -1479,18 +1478,14 @@ VariableNode variableNode(Variable v) {
  */
 Node uninitializedNode(LocalVariable v) { none() }
 
-pragma[noinline]
 predicate hasOperandAndIndex(IndirectOperand indirectOperand, Operand operand, int indirectionIndex) {
-  indirectOperand.getOperand() = operand and
-  indirectOperand.getIndirectionIndex() = indirectionIndex
+  indirectOperand.hasOperandAndIndirectionIndex(operand, indirectionIndex)
 }
 
-pragma[noinline]
 predicate hasInstructionAndIndex(
   IndirectInstruction indirectInstr, Instruction instr, int indirectionIndex
 ) {
-  indirectInstr.getInstruction() = instr and
-  indirectInstr.getIndirectionIndex() = indirectionIndex
+  indirectInstr.hasInstructionAndIndirectionIndex(instr, indirectionIndex)
 }
 
 cached
@@ -1526,6 +1521,25 @@ private module Cached {
     )
   }
 
+  /**
+   * Holds if `operand.getDef() = instr`, but there exists a `StoreInstruction` that
+   * writes to an address that is equivalent to the value computed by `instr` in
+   * between `instr` and `operand`, and therefore there should not be flow from `*instr`
+   * to `*operand`.
+   */
+  pragma[nomagic]
+  private predicate isStoredToBetween(Instruction instr, Operand operand) {
+    simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand)) and
+    exists(StoreInstruction store, IRBlock block, int storeIndex, int instrIndex, int operandIndex |
+      store.getDestinationAddress() = instr and
+      block.getInstruction(storeIndex) = store and
+      block.getInstruction(instrIndex) = instr and
+      block.getInstruction(operandIndex) = operand.getUse() and
+      instrIndex < storeIndex and
+      storeIndex < operandIndex
+    )
+  }
+
   private predicate indirectionInstructionFlow(
     RawIndirectInstruction nodeFrom, IndirectOperand nodeTo
   ) {
@@ -1535,7 +1549,8 @@ private module Cached {
       simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand))
     |
       hasOperandAndIndex(nodeTo, operand, pragma[only_bind_into](indirectionIndex)) and
-      hasInstructionAndIndex(nodeFrom, instr, pragma[only_bind_into](indirectionIndex))
+      hasInstructionAndIndex(nodeFrom, instr, pragma[only_bind_into](indirectionIndex)) and
+      not isStoredToBetween(instr, operand)
     )
   }
 
@@ -1656,8 +1671,7 @@ module ExprFlowCached {
   private predicate isIndirectBaseOfArrayAccess(IndirectOperand n, Expr e) {
     exists(LoadInstruction load, PointerArithmeticInstruction pai |
       pai = load.getSourceAddress() and
-      pai.getLeftOperand() = n.getOperand() and
-      n.getIndirectionIndex() = 1 and
+      n.hasOperandAndIndirectionIndex(pai.getLeftOperand(), 1) and
       e = load.getConvertedResultExpression()
     )
   }
@@ -1825,6 +1839,20 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
+
+  /** Gets the indirection index of this `Content`. */
+  abstract int getIndirectionIndex();
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if a write to this `Content` implies that `c` is
+   * also cleared.
+   *
+   * For example, a write to a field `f` implies that any content of
+   * the form `*f` is also cleared.
+   */
+  abstract predicate impliesClearOf(Content c);
 }
 
 /** A reference through a non-union instance field. */
@@ -1842,9 +1870,20 @@ class FieldContent extends Content, TFieldContent {
 
   Field getField() { result = f }
 
+  /** Gets the indirection index of this `FieldContent`. */
   pragma[inline]
-  int getIndirectionIndex() {
+  override int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
+
+  override predicate impliesClearOf(Content c) {
+    exists(FieldContent fc |
+      fc = c and
+      fc.getField() = f and
+      // If `this` is `f` then `c` is cleared if it's of the
+      // form `*f`, `**f`, etc.
+      fc.getIndirectionIndex() >= indirectionIndex
+    )
   }
 }
 
@@ -1870,8 +1909,20 @@ class UnionContent extends Content, TUnionContent {
 
   /** Gets the indirection index of this `UnionContent`. */
   pragma[inline]
-  int getIndirectionIndex() {
+  override int getIndirectionIndex() {
     pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
+
+  override predicate impliesClearOf(Content c) {
+    exists(UnionContent uc |
+      uc = c and
+      uc.getUnion() = u and
+      // If `this` is `u` then `c` is cleared if it's of the
+      // form `*u`, `**u`, etc. (and we ignore `bytes` because
+      // we know the entire union is overwritten because it's a
+      // union).
+      uc.getIndirectionIndex() >= indirectionIndex
+    )
   }
 }
 

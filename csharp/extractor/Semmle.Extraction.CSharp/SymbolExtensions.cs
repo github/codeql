@@ -1,10 +1,10 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp
             Nullability = nullability;
         }
 
-        public static AnnotatedTypeSymbol? CreateNotAnnotated(ITypeSymbol symbol) =>
+        public static AnnotatedTypeSymbol? CreateNotAnnotated(ITypeSymbol? symbol) =>
             symbol is null ? (AnnotatedTypeSymbol?)null : new AnnotatedTypeSymbol(symbol, NullableAnnotation.None);
     }
 

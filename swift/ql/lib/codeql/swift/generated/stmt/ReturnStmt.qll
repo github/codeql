@@ -25,7 +25,7 @@ module Generated {
     final Expr getResult() {
       exists(Expr immediate |
         immediate = this.getImmediateResult() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 

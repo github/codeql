@@ -66,3 +66,7 @@ class HtmlSanitizer extends Sanitizer instanceof HtmlSanitizerCall { }
 class JsonStringifySanitizer extends Sanitizer {
   JsonStringifySanitizer() { this = any(JsonStringifyCall c).getOutput() }
 }
+
+private class SinkFromModel extends Sink {
+  SinkFromModel() { this = ModelOutput::getASinkNode("log-injection").asSink() }
+}

@@ -90,7 +90,7 @@ class ExprNode extends Node, TExprNode_ {
    */
   Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
     this = TExprNode(cfn) and
-    result = cfn.getElement()
+    result = cfn.getAstNode()
   }
 }
 
@@ -105,16 +105,6 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
       super.isParameterOf(c, ppos) and
       result = c.asCallable().getParameter(ppos.getPosition())
     )
-  }
-
-  /**
-   * DEPRECATED
-   *
-   * Holds if this node is the parameter of callable `c` at the specified
-   * (zero-based) position.
-   */
-  deprecated predicate isParameterOf(DataFlowCallable c, int i) {
-    super.isParameterOf(c, any(ParameterPosition pos | i = pos.getPosition()))
   }
 }
 

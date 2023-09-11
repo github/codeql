@@ -37,9 +37,10 @@ def _get_class(cls: type) -> schema.Class:
                         derived={d.__name__ for d in cls.__subclasses__()},
                         # getattr to inherit from bases
                         group=getattr(cls, "_group", ""),
+                        hideable=getattr(cls, "_hideable", False),
                         # in the following we don't use `getattr` to avoid inheriting
                         pragmas=cls.__dict__.get("_pragmas", []),
-                        ipa=cls.__dict__.get("_ipa", None),
+                        synth=cls.__dict__.get("_synth", None),
                         properties=[
                             a | _PropertyNamer(n)
                             for n, a in cls.__dict__.get("__annotations__", {}).items()
@@ -64,34 +65,46 @@ def _toposort_classes_by_group(classes: typing.Dict[str, schema.Class]) -> typin
     return ret
 
 
-def _fill_ipa_information(classes: typing.Dict[str, schema.Class]):
-    """ Take a dictionary where the `ipa` field is filled for all explicitly synthesized classes
+def _fill_synth_information(classes: typing.Dict[str, schema.Class]):
+    """ Take a dictionary where the `synth` field is filled for all explicitly synthesized classes
     and update it so that all non-final classes that have only synthesized final descendants
-    get `True` as` value for the `ipa` field
+    get `True` as` value for the `synth` field
     """
     if not classes:
         return
 
-    is_ipa: typing.Dict[str, bool] = {}
+    is_synth: typing.Dict[str, bool] = {}
 
-    def fill_is_ipa(name: str):
-        if name not in is_ipa:
+    def fill_is_synth(name: str):
+        if name not in is_synth:
             cls = classes[name]
             for d in cls.derived:
-                fill_is_ipa(d)
-            if cls.ipa is not None:
-                is_ipa[name] = True
+                fill_is_synth(d)
+            if cls.synth is not None:
+                is_synth[name] = True
             elif not cls.derived:
-                is_ipa[name] = False
+                is_synth[name] = False
             else:
-                is_ipa[name] = all(is_ipa[d] for d in cls.derived)
+                is_synth[name] = all(is_synth[d] for d in cls.derived)
 
     root = next(iter(classes))
-    fill_is_ipa(root)
+    fill_is_synth(root)
 
     for name, cls in classes.items():
-        if cls.ipa is None and is_ipa[name]:
-            cls.ipa = True
+        if cls.synth is None and is_synth[name]:
+            cls.synth = True
+
+
+def _fill_hideable_information(classes: typing.Dict[str, schema.Class]):
+    """ Update the class map propagating the `hideable` attribute upwards in the hierarchy """
+    todo = [cls for cls in classes.values() if cls.hideable]
+    while todo:
+        cls = todo.pop()
+        for base in cls.bases:
+            supercls = classes[base]
+            if not supercls.hideable:
+                supercls.hideable = True
+                todo.append(supercls)
 
 
 def load(m: types.ModuleType) -> schema.Schema:
@@ -121,7 +134,8 @@ def load(m: types.ModuleType) -> schema.Schema:
             null = name
             cls.is_null_class = True
 
-    _fill_ipa_information(classes)
+    _fill_synth_information(classes)
+    _fill_hideable_information(classes)
 
     return schema.Schema(includes=includes, classes=_toposort_classes_by_group(classes), null=null)
 

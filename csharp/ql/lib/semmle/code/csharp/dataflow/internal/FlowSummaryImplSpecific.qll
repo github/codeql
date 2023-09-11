@@ -15,8 +15,21 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 
-class SummarizedCallableBase extends Callable {
-  SummarizedCallableBase() { this.isUnboundDeclaration() }
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
+class SummarizedCallableBase = UnboundCallable;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = UnboundCallable;
+
+/**
+ * A module for importing frameworks that define synthetic globals.
+ */
+private module SyntheticGlobals {
+  private import semmle.code.csharp.frameworks.EntityFramework
 }
 
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
@@ -24,11 +37,8 @@ DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
 
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) {
@@ -44,7 +54,21 @@ DataFlowType getContentType(Content c) {
   )
 }
 
-private DataFlowType getReturnTypeBase(DotNet::Callable c, ReturnKind rk) {
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+    exists(int i |
+      pos.getPosition() = i and
+      t = c.getParameter(i).getType()
+    )
+    or
+    pos.isThisParameter() and
+    t = c.getDeclaringType()
+  )
+}
+
+/** Gets the return type of kind `rk` for callable `c`. */
+DataFlowType getReturnType(DotNet::Callable c, ReturnKind rk) {
   exists(Type t | result = Gvn::getGlobalValueNumber(t) |
     rk instanceof NormalReturnKind and
     (
@@ -56,15 +80,6 @@ private DataFlowType getReturnTypeBase(DotNet::Callable c, ReturnKind rk) {
     or
     t = c.getParameter(rk.(OutRefReturnKind).getPosition()).getType()
   )
-}
-
-/** Gets the return type of kind `rk` for callable `c`. */
-bindingset[c]
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getReturnTypeBase(c, rk)
-  or
-  rk =
-    any(JumpReturnKind jrk | result = getReturnTypeBase(jrk.getTarget(), jrk.getTargetReturnKind()))
 }
 
 /**
@@ -111,12 +126,12 @@ predicate summaryElement(Callable c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenace`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  */
-predicate neutralSummaryElement(Callable c, string provenance) {
+predicate neutralElement(Callable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, "summary", provenance) and
+    neutralModel(namespace, type, name, signature, kind, provenance) and
     c = interpretElement(namespace, type, false, name, signature, "")
   )
 }
@@ -177,7 +192,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
+/** Gets the textual representation of the content in the format used for MaD models. */
 private string getContentSpecific(Content c) {
   c = TElementContent() and result = "Element"
   or
@@ -188,18 +203,17 @@ private string getContentSpecific(Content c) {
   exists(SyntheticField f | c = TSyntheticFieldContent(f) and result = "SyntheticField[" + f + "]")
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   sc = TWithoutContentSummaryComponent(_) and result = "WithoutElement"
   or
   sc = TWithContentSummaryComponent(_) and result = "WithElement"
   or
-  exists(ReturnKind rk |
+  exists(OutRefReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + rk + "]" and
-    not rk instanceof NormalReturnKind
+    result = "Argument[" + rk.getPosition() + "]"
   )
 }
 

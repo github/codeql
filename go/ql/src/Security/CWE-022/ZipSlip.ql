@@ -1,8 +1,8 @@
 /**
- * @name Arbitrary file write during zip extraction ("zip slip")
- * @description Extracting files from a malicious zip archive without validating that the
- *              destination file path is within the destination directory can cause files outside
- *              the destination directory to be overwritten.
+ * @name Arbitrary file access during archive extraction ("Zip Slip")
+ * @description Extracting files from a malicious ZIP file, or similar type of archive, without
+ *              validating that the destination file path is within the destination directory
+ *              can allow an attacker to unexpectedly gain access to resources.
  * @kind path-problem
  * @id go/zipslip
  * @problem.severity error
@@ -13,11 +13,11 @@
  */
 
 import go
-import semmle.go.security.ZipSlip::ZipSlip
-import DataFlow::PathGraph
+import semmle.go.security.ZipSlip
+import ZipSlip::Flow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from ZipSlip::Flow::PathNode source, ZipSlip::Flow::PathNode sink
+where ZipSlip::Flow::flowPath(source, sink)
 select source.getNode(), source, sink,
   "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
   "file system operation"

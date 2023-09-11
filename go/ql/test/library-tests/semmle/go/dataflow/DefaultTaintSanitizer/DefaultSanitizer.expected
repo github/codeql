@@ -1,0 +1,10 @@
+edges
+| Builtin.go:6:2:6:2 | definition of b | Builtin.go:8:9:8:17 | type conversion |
+| Builtin.go:7:2:7:15 | selection of Body | Builtin.go:6:2:6:2 | definition of b |
+nodes
+| Builtin.go:6:2:6:2 | definition of b | semmle.label | definition of b |
+| Builtin.go:7:2:7:15 | selection of Body | semmle.label | selection of Body |
+| Builtin.go:8:9:8:17 | type conversion | semmle.label | type conversion |
+subpaths
+#select
+| Builtin.go:8:9:8:17 | type conversion | Builtin.go:7:2:7:15 | selection of Body | Builtin.go:8:9:8:17 | type conversion | Found taint flow |

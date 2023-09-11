@@ -139,7 +139,7 @@ Parameterized modules
 =====================
 
 Parameterized modules are QL's approach to generic programming.
-Similar to explicit modules, parameterized modules are defined within other modules using the keywork ``module``.
+Similar to explicit modules, parameterized modules are defined within other modules using the keyword ``module``.
 In addition to the module name, parameterized modules declare one or more parameters between the name and the module body.
 
 For example, consider the module ``M``, which takes two predicate parameters and defines a new predicate
@@ -264,7 +264,12 @@ Import statements are used for importing modules. They are of the form:
 Import statements are usually listed at the beginning of the module. Each
 import statement imports one module. You can import multiple modules by 
 including multiple import statements (one for each module you want to import).
-An import statement can also be :ref:`annotated <private>` with ``private``.
+
+An import statement can also be :ref:`annotated <annotations-overview>` with
+``private`` or ``deprecated``. If an import statement is annotated with
+``private`` then the imported names are not reexported. If an imported name is
+only reachable through deprecated imports in a given context then usage of the
+name in that context will generate deprecation warnings.
 
 You can import a module under a different name using the ``as`` keyword, 
 for example ``import javascript as js``.

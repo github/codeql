@@ -74,12 +74,7 @@ private class OsLogNonRedactedType extends Type {
 private class OsLogPrivacyRef extends MemberRefExpr {
   string optionName;
 
-  OsLogPrivacyRef() {
-    exists(FieldDecl f | this.getMember() = f |
-      f.getEnclosingDecl().asNominalTypeDecl().getName() = "OSLogPrivacy" and
-      optionName = f.getName()
-    )
-  }
+  OsLogPrivacyRef() { this.getMember().(FieldDecl).hasQualifiedName("OSLogPrivacy", optionName) }
 
   /** Holds if this is a safe privacy option (private or sensitive). */
   predicate isSafe() { optionName = ["private", "sensitive"] }

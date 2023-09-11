@@ -14,15 +14,15 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 
-class JmsFlowTest extends InlineExpectationsTest {
-  JmsFlowTest() { this = "JmsFlowTest" }
+module JmsFlowTest implements TestSig {
+  string getARelevantTag() { result = "tainted" }
 
-  override string getARelevantTag() { result = "tainted" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "tainted" and
     exists(TestFlow::PathNode sink | TestFlow::flowPath(_, sink) |
       location = sink.getNode().getLocation() and element = sink.getNode().toString() and value = ""
     )
   }
 }
+
+import MakeTest<JmsFlowTest>

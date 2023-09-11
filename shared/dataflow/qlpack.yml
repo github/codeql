@@ -1,0 +1,8 @@
+name: codeql/dataflow
+version: 0.0.3-dev
+groups: shared
+library: true
+dependencies:
+  codeql/ssa: ${workspace}
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

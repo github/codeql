@@ -34,9 +34,6 @@ class AstNode extends Node, TAstNode {
   override Location getLocation() { result = n.getLocation() }
 }
 
-/** DEPRECATED: Alias for AstNode */
-deprecated class ASTNode = AstNode;
-
 class IRNode extends Node, TIRNode {
   IR::DataFlow::Node n;
 
