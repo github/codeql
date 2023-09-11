@@ -91,6 +91,6 @@ struct MyOuter {
 }
 
 func test3(mo : MyOuter, connection : NWConnection) {
-	connection.send(content: mo.password.value, completion: .idempotent) // BAD [NOT DETECTED]
+	connection.send(content: mo.password.value, completion: .idempotent) // BAD
 	connection.send(content: mo.harmless.value, completion: .idempotent) // GOOD
 }

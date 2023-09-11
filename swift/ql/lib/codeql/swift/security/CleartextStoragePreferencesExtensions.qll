@@ -90,6 +90,17 @@ private class CleartextStoragePreferencesDefaultBarrier extends CleartextStorage
 }
 
 /**
+ * An additional taint step for cleartext preferences storage vulnerabilities.
+ */
+private class CleartextStoragePreferencesFieldAdditionalFlowStep extends CleartextStoragePreferencesAdditionalFlowStep
+{
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // if an object is sensitive, its fields are always sensitive.
+    nodeTo.asExpr().(MemberRefExpr).getBase() = nodeFrom.asExpr()
+  }
+}
+
+/**
  * A sink defined in a CSV model.
  */
 private class DefaultCleartextStoragePreferencesSink extends CleartextStoragePreferencesSink {

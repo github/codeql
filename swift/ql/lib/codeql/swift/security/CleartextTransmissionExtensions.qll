@@ -61,6 +61,17 @@ private class CleartextTransmissionDefaultBarrier extends CleartextTransmissionB
 }
 
 /**
+ * An additional taint step for cleartext transmission vulnerabilities.
+ */
+private class CleartextTransmissionFieldAdditionalFlowStep extends CleartextTransmissionAdditionalFlowStep
+{
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // if an object is sensitive, its fields are always sensitive.
+    nodeTo.asExpr().(MemberRefExpr).getBase() = nodeFrom.asExpr()
+  }
+}
+
+/**
  * A sink defined in a CSV model.
  */
 private class DefaultCleartextTransmissionSink extends CleartextTransmissionSink {

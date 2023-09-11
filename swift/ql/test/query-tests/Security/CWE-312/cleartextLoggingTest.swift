@@ -170,6 +170,6 @@ struct MyOuter {
 }
 
 func test3(mo : MyOuter) {
-	NSLog(mo.password.value) // BAD [NOT DETECTED]
-	NSLog(mo.harmless.value) // GOOD
+	NSLog(mo.password.value) // $ hasCleartextLogging=173
+	NSLog(mo.harmless.value) // Safe
 }

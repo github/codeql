@@ -79,6 +79,6 @@ struct MyOuter {
 }
 
 func test5(mo : MyOuter) {
-	UserDefaults.standard.set(mo.password.value, forKey: "myKey") // BAD [NOT DETECTED]
+	UserDefaults.standard.set(mo.password.value, forKey: "myKey") // BAD
 	UserDefaults.standard.set(mo.harmless.value, forKey: "myKey") // GOOD
 }
