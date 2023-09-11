@@ -44,9 +44,10 @@ from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
   ApplicationModeMetadataExtractor meta, DollarAtString package, DollarAtString type,
   DollarAtString subtypes, DollarAtString name, DollarAtString signature, DollarAtString input,
-  DollarAtString output, DollarAtString isVarargsArray
+  DollarAtString output, DollarAtString isVarargsArray, DollarAtString extensibleType
 where
   endpoint = getSampleForCharacteristic(characteristic, 100) and
+  extensibleType = endpoint.getExtensibleType() and
   confidence >= SharedCharacteristics::highConfidence() and
   characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
@@ -74,4 +75,5 @@ select endpoint.asNode(),
   signature, "signature", //
   input, "input", //
   output, "output", //
-  isVarargsArray, "isVarargsArray" //
+  isVarargsArray, "isVarargsArray", //
+  extensibleType, "extensibleType"
