@@ -16,8 +16,9 @@ from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence,
   DollarAtString message, FrameworkModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString parameterName
+  DollarAtString input, DollarAtString parameterName, DollarAtString extensibleType
 where
+  endpoint.getExtensibleType() = extensibleType and
   characteristic.appliesToEndpoint(endpoint) and
   confidence >= SharedCharacteristics::highConfidence() and
   characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
@@ -46,4 +47,5 @@ select endpoint,
   name, "name", //
   signature, "signature", //
   input, "input", //
-  parameterName, "parameterName" //
+  parameterName, "parameterName", //
+  extensibleType, "extensibleType"

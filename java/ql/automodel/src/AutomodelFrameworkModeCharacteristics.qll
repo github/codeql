@@ -48,6 +48,10 @@ abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
 
   abstract Top asTop();
 
+  string getExtensibleType() {
+    result = "sinkModel"
+  }
+
   string toString() { result = this.asTop().toString() }
 
   Location getLocation() { result = this.asTop().getLocation() }

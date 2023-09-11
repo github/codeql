@@ -18,8 +18,10 @@ private import AutomodelJavaUtil
 from
   Endpoint endpoint, string message, FrameworkModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString parameterName, DollarAtString alreadyAiModeled
+  DollarAtString input, DollarAtString parameterName, DollarAtString alreadyAiModeled,
+  DollarAtString extensibleType
 where
+  endpoint.getExtensibleType() = extensibleType and
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
   ) and
@@ -56,4 +58,5 @@ select endpoint,
   signature, "signature", //
   input, "input", //
   parameterName, "parameterName", //
-  alreadyAiModeled, "alreadyAiModeled"
+  alreadyAiModeled, "alreadyAiModeled", //
+  extensibleType, "extensibleType"
