@@ -46,30 +46,29 @@ def by_where():
     post = posts.find_one({'$where': 'this.author === "'+author+'"'}) # $ result=BAD
     return show_post(post, author)
 
-
 @app.route('/byFunction', methods=['GET'])
 def by_function():
     author = request.args['author']
     search = {
-        "body": 'function(author) { return(author === "'+author+'") }',
+        "body": 'function(author) { return(author === "'+author+'") }', # $ result=BAD
         "args": [ "$author" ],
         "lang": "js"
     }
     # Use `" | "a" === "a` as author
     # making the query `this.author === "" | "a" === "a"`
     # Found by http://127.0.0.1:5000/byFunction?author=%22%20|%20%22a%22%20===%20%22a
-    post = posts.find_one({'$expr': {'$function': search}}) # $ MISING: result=BAD
+    post = posts.find_one({'$expr': {'$function': search}}) # $ result=BAD
     return show_post(post, author)
 
 @app.route('/byFunctionArg', methods=['GET'])
 def by_function_arg():
     author = request.args['author']
     search = {
-        "body": 'function(author, target) { return(author === target) }',
+        "body": 'function(author, target) { return(author === target) }', # $ result=OK
         "args": [ "$author", author ],
         "lang": "js"
     }
-    post = posts.find_one({'$expr': {'$function': search}}) # $ result=OK
+    post = posts.find_one({'$expr': {'$function': search}}) # $ SPURIOUS: result=BAD
     return show_post(post, author)
 
 @app.route('/', methods=['GET'])

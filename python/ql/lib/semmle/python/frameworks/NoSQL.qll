@@ -99,9 +99,6 @@ private module NoSql {
       ]
   }
 
-  /** Gets the name of a mongo query operator that will interpret JavaScript. */
-  private string mongoQueryOperator() { result in ["$where", "$function"] }
-
   /**
    * Gets a reference to a `Mongo` collection method call
    *
@@ -125,12 +122,34 @@ private module NoSql {
     override predicate vulnerableToStrings() { none() }
   }
 
-  private class MongoCollectionQueryOperator extends API::CallNode, NoSqlQuery::Range {
+  /** The `$where` query operator executes a string as JavaScript. */
+  private class WhereQueryOperator extends API::CallNode, NoSqlQuery::Range {
     DataFlow::Node query;
 
-    MongoCollectionQueryOperator() {
+    WhereQueryOperator() {
       this = mongoCollection().getMember(mongoCollectionMethodName()).getACall() and
-      query = this.getParameter(0).getSubscript(mongoQueryOperator()).asSink()
+      query = this.getParameter(0).getSubscript("$where").asSink()
+    }
+
+    override DataFlow::Node getQuery() { result = query }
+
+    override predicate interpretsDict() { none() }
+
+    override predicate vulnerableToStrings() { any() }
+  }
+
+  /** The `$function` query operator executes its `body` string as JavaScript. */
+  private class FunctionQueryOperator extends API::CallNode, NoSqlQuery::Range {
+    DataFlow::Node query;
+
+    FunctionQueryOperator() {
+      this = mongoCollection().getMember(mongoCollectionMethodName()).getACall() and
+      query =
+        this.getParameter(0)
+            .getASubscript*()
+            .getSubscript("$function")
+            .getSubscript("body")
+            .asSink()
     }
 
     override DataFlow::Node getQuery() { result = query }
