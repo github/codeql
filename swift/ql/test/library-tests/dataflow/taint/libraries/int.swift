@@ -147,7 +147,7 @@ func taintCollections(array: inout Array<Int>, contiguousArray: inout Contiguous
     sink(arg: buffer) // $ tainted=142
     sink(arg: buffer[0]) // $ tainted=142
     sink(arg: array)
-    sink(arg: array[0]) // $ MISSING: tainted=142
+    sink(arg: array[0]) // $ tainted=142
   })
 
   contiguousArray[0] = source2()
