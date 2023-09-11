@@ -44,7 +44,7 @@ from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
   ApplicationModeMetadataExtractor meta, DollarAtString package, DollarAtString type,
   DollarAtString subtypes, DollarAtString name, DollarAtString signature, DollarAtString input,
-  DollarAtString isVarargsArray
+  DollarAtString output, DollarAtString isVarargsArray
 where
   endpoint = getSampleForCharacteristic(characteristic, 100) and
   confidence >= SharedCharacteristics::highConfidence() and
@@ -52,7 +52,7 @@ where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
   not erroneousEndpoints(endpoint, _, _, _, _, false) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, isVarargsArray) and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
   // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
   // treated by the actual query as a sanitizer, since the final logic is something like
   // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as negative examples in the prompt, because
@@ -65,7 +65,7 @@ where
   ) and
   message = characteristic
 select endpoint.asNode(),
-  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
+  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   package, "package", //
   type, "type", //
@@ -73,4 +73,5 @@ select endpoint.asNode(),
   name, "name", //
   signature, "signature", //
   input, "input", //
+  output, "output", //
   isVarargsArray, "isVarargsArray" //

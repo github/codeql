@@ -39,6 +39,9 @@ predicate isKnownKind(string kind, AutomodelEndpointTypes::EndpointType type) {
   or
   kind = "command-injection" and
   type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
+  or
+  kind = "remote" and
+  type instanceof AutomodelEndpointTypes::RemoteSourceType
 }
 
 /** Gets the models-as-data description for the method argument with the index `index`. */

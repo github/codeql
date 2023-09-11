@@ -924,3 +924,62 @@
 | test.swift:766:9:766:9 | f | test.swift:766:9:766:9 | SSA def(f) |
 | test.swift:766:13:766:29 | #keyPath(...) | test.swift:766:9:766:9 | f |
 | test.swift:766:13:766:29 | enter #keyPath(...) | test.swift:766:26:766:26 | KeyPathComponent |
+| test.swift:771:9:771:9 | SSA def(dict1) | test.swift:772:15:772:15 | dict1 |
+| test.swift:771:9:771:9 | dict1 | test.swift:771:9:771:9 | SSA def(dict1) |
+| test.swift:771:17:771:31 | [...] | test.swift:771:9:771:9 | dict1 |
+| test.swift:772:15:772:15 | &... | test.swift:774:5:774:5 | dict1 |
+| test.swift:772:15:772:15 | [post] dict1 | test.swift:772:15:772:15 | &... |
+| test.swift:772:15:772:15 | dict1 | test.swift:772:15:772:15 | &... |
+| test.swift:774:5:774:5 | &... | test.swift:776:15:776:15 | dict1 |
+| test.swift:774:5:774:5 | [post] dict1 | test.swift:774:5:774:5 | &... |
+| test.swift:774:5:774:5 | dict1 | test.swift:774:5:774:5 | &... |
+| test.swift:776:15:776:15 | [post] dict1 | test.swift:776:15:776:15 | &... |
+| test.swift:776:15:776:15 | dict1 | test.swift:776:15:776:15 | &... |
+| test.swift:778:9:778:9 | SSA def(dict2) | test.swift:779:15:779:15 | dict2 |
+| test.swift:778:9:778:9 | dict2 | test.swift:778:9:778:9 | SSA def(dict2) |
+| test.swift:778:17:778:29 | [...] | test.swift:778:9:778:9 | dict2 |
+| test.swift:779:15:779:15 | &... | test.swift:781:25:781:25 | dict2 |
+| test.swift:779:15:779:15 | [post] dict2 | test.swift:779:15:779:15 | &... |
+| test.swift:779:15:779:15 | dict2 | test.swift:779:15:779:15 | &... |
+| test.swift:781:10:781:10 | SSA def(key) | test.swift:782:19:782:19 | key |
+| test.swift:781:10:781:10 | key | test.swift:781:10:781:10 | SSA def(key) |
+| test.swift:781:15:781:15 | SSA def(value) | test.swift:783:19:783:19 | value |
+| test.swift:781:15:781:15 | value | test.swift:781:15:781:15 | SSA def(value) |
+| test.swift:786:9:786:9 | SSA def(dict3) | test.swift:787:15:787:15 | dict3 |
+| test.swift:786:9:786:9 | dict3 | test.swift:786:9:786:9 | SSA def(dict3) |
+| test.swift:786:17:786:29 | [...] | test.swift:786:9:786:9 | dict3 |
+| test.swift:787:15:787:15 | &... | test.swift:789:5:789:5 | dict3 |
+| test.swift:787:15:787:15 | [post] dict3 | test.swift:787:15:787:15 | &... |
+| test.swift:787:15:787:15 | dict3 | test.swift:787:15:787:15 | &... |
+| test.swift:789:5:789:5 | &... | test.swift:791:15:791:15 | dict3 |
+| test.swift:789:5:789:5 | [post] dict3 | test.swift:789:5:789:5 | &... |
+| test.swift:789:5:789:5 | dict3 | test.swift:789:5:789:5 | &... |
+| test.swift:791:15:791:15 | [post] dict3 | test.swift:792:15:792:15 | dict3 |
+| test.swift:791:15:791:15 | dict3 | test.swift:792:15:792:15 | dict3 |
+| test.swift:791:15:791:35 | call to randomElement() | test.swift:791:15:791:36 | ...! |
+| test.swift:792:15:792:15 | [post] dict3 | test.swift:794:25:794:25 | dict3 |
+| test.swift:792:15:792:15 | dict3 | test.swift:794:25:794:25 | dict3 |
+| test.swift:792:15:792:35 | call to randomElement() | test.swift:792:15:792:36 | ...! |
+| test.swift:794:10:794:10 | SSA def(key) | test.swift:795:19:795:19 | key |
+| test.swift:794:10:794:10 | key | test.swift:794:10:794:10 | SSA def(key) |
+| test.swift:794:15:794:15 | SSA def(value) | test.swift:796:19:796:19 | value |
+| test.swift:794:15:794:15 | value | test.swift:794:15:794:15 | SSA def(value) |
+| test.swift:799:9:799:9 | SSA def(dict4) | test.swift:800:15:800:15 | dict4 |
+| test.swift:799:9:799:9 | dict4 | test.swift:799:9:799:9 | SSA def(dict4) |
+| test.swift:799:17:799:28 | [...] | test.swift:799:9:799:9 | dict4 |
+| test.swift:800:15:800:15 | &... | test.swift:801:15:801:15 | dict4 |
+| test.swift:800:15:800:15 | [post] dict4 | test.swift:800:15:800:15 | &... |
+| test.swift:800:15:800:15 | dict4 | test.swift:800:15:800:15 | &... |
+| test.swift:800:15:800:52 | call to updateValue(_:forKey:) | test.swift:800:15:800:53 | ...! |
+| test.swift:801:15:801:15 | &... | test.swift:802:15:802:15 | dict4 |
+| test.swift:801:15:801:15 | [post] dict4 | test.swift:801:15:801:15 | &... |
+| test.swift:801:15:801:15 | dict4 | test.swift:801:15:801:15 | &... |
+| test.swift:801:15:801:52 | call to updateValue(_:forKey:) | test.swift:801:15:801:53 | ...! |
+| test.swift:802:15:802:15 | [post] dict4 | test.swift:803:15:803:15 | dict4 |
+| test.swift:802:15:802:15 | dict4 | test.swift:803:15:803:15 | dict4 |
+| test.swift:802:15:802:35 | call to randomElement() | test.swift:802:15:802:36 | ...! |
+| test.swift:803:15:803:15 | [post] dict4 | test.swift:804:15:804:15 | dict4 |
+| test.swift:803:15:803:15 | dict4 | test.swift:804:15:804:15 | dict4 |
+| test.swift:803:15:803:35 | call to randomElement() | test.swift:803:15:803:36 | ...! |
+| test.swift:804:15:804:15 | [post] dict4 | test.swift:805:15:805:15 | dict4 |
+| test.swift:804:15:804:15 | dict4 | test.swift:805:15:805:15 | dict4 |

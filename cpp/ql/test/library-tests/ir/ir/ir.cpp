@@ -2072,4 +2072,27 @@ void test_constant_folding() {
   test_constant_folding_use(x);
 }
 
+void exit(int code);
+
+int NonExit() {
+    int x = Add(3,4);
+    if (x == 7)
+        exit(3);
+    VoidFunc();
+    return x;
+}
+
+void CallsNonExit() {
+    VoidFunc();
+    exit(3);
+}
+
+int TransNonExit() {
+    int x = Add(3,4);
+    if (x == 7)
+        CallsNonExit();
+    VoidFunc();
+    return x;
+}
+
 // semmle-extractor-options: -std=c++17 --clang
