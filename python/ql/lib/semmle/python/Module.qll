@@ -221,12 +221,17 @@ private predicate transitively_imported_from_entry_point(File file) {
   )
 }
 
+/**
+ * Holds if the folder `f` is a regular Python package,
+ * containing an `__init__.py` file.
+ */
 private predicate isRegularPackage(Folder f, string name) {
   legalShortName(name) and
   name = f.getStem() and
   exists(f.getFile("__init__.py"))
 }
 
+/** Holds if the file `f` could be resolved to a module named `name`. */
 private predicate isPotentialModuleFile(File file, string name) {
   legalShortName(name) and
   name = file.getStem() and
@@ -239,7 +244,12 @@ private predicate isPotentialModuleFile(File file, string name) {
   name != ""
 }
 
-// See https://peps.python.org/pep-0420/#specification
+/**
+ * Holds if the folder `f` is a namespace package named `name`.
+ *
+ * See https://peps.python.org/pep-0420/#specification
+ * for details on namespace packages.
+ */
 private predicate isNameSpacePackage(Folder f, string name) {
   legalShortName(name) and
   name = f.getStem() and
@@ -259,22 +269,34 @@ private predicate isNameSpacePackage(Folder f, string name) {
   )
 }
 
+/**
+ * Holds if the folder `f` is a package (either a regular package
+ * or a namespace package) named `name`.
+ */
 private predicate isPackage(Folder f, string name) {
   isRegularPackage(f, name)
   or
   isNameSpacePackage(f, name)
 }
 
+/**
+ * Holds if the file `f` is a module named `name`.
+ */
 private predicate isModuleFile(File file, string name) {
   isPotentialModuleFile(file, name) and
   not isPackage(file.getParent(), _)
 }
 
+/**
+ * Holds if the folder `f` is a package named `name`
+ * and does reside inside another package.
+ */
 private predicate isOutermostPackage(Folder f, string name) {
   isPackage(f, name) and
   not isPackage(f.getParent(), _)
 }
 
+/** Gets the name of the module that `c` resolves to, if any. */
 cached
 string moduleNameFromFile(Container c) {
   // package
