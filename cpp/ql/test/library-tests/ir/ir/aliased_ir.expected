@@ -12345,18 +12345,18 @@ ir.cpp:
 
 # 2107| int offsetOfTest()
 # 2107|   Block 0
-# 2107|     v2107_1(void)          = EnterFunction               : 
-# 2107|     m2107_2(unknown)       = AliasedDefinition           : 
-# 2107|     m2107_3(unknown)       = InitializeNonLocal          : 
-# 2107|     m2107_4(unknown)       = Chi                         : total:m2107_2, partial:m2107_3
-# 2108|     r2108_1(glval<int>)    = VariableAddress[#return]    : 
-# 2108|     r2108_2(unsigned long) = BuiltIn[__builtin_offsetof] : 
-# 2108|     r2108_3(int)           = Convert                     : r2108_2
-# 2108|     m2108_4(int)           = Store[#return]              : &:r2108_1, r2108_3
-# 2107|     r2107_5(glval<int>)    = VariableAddress[#return]    : 
-# 2107|     v2107_6(void)          = ReturnValue                 : &:r2107_5, m2108_4
-# 2107|     v2107_7(void)          = AliasedUse                  : m2107_3
-# 2107|     v2107_8(void)          = ExitFunction                : 
+# 2107|     v2107_1(void)          = EnterFunction            : 
+# 2107|     m2107_2(unknown)       = AliasedDefinition        : 
+# 2107|     m2107_3(unknown)       = InitializeNonLocal       : 
+# 2107|     m2107_4(unknown)       = Chi                      : total:m2107_2, partial:m2107_3
+# 2108|     r2108_1(glval<int>)    = VariableAddress[#return] : 
+# 2108|     r2108_2(unsigned long) = Constant[4]              : 
+# 2108|     r2108_3(int)           = Convert                  : r2108_2
+# 2108|     m2108_4(int)           = Store[#return]           : &:r2108_1, r2108_3
+# 2107|     r2107_5(glval<int>)    = VariableAddress[#return] : 
+# 2107|     v2107_6(void)          = ReturnValue              : &:r2107_5, m2108_4
+# 2107|     v2107_7(void)          = AliasedUse               : m2107_3
+# 2107|     v2107_8(void)          = ExitFunction             : 
 
 # 2111| int noExceptTest()
 # 2111|   Block 0
