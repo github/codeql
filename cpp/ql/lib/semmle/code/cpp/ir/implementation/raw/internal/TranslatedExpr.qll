@@ -1956,9 +1956,7 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
     result = this.getExtent().getResult()
   }
 
-  private TranslatedExpr getExtent() {
-    result = getTranslatedExpr(expr.getExtent().getFullyConverted())
-  }
+  TranslatedExpr getExtent() { result = getTranslatedExpr(expr.getExtent().getFullyConverted()) }
 }
 
 /**

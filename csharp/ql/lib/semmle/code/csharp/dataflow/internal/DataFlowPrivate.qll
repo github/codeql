@@ -1181,7 +1181,7 @@ private module ArgumentNodes {
     ExplicitArgumentNode() {
       this.asExpr() instanceof Argument
       or
-      this.asExpr() = any(CIL::Call call).getAnArgument()
+      this.asExpr() = any(CilDataFlowCall cc).getCilCall().getAnArgument()
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {

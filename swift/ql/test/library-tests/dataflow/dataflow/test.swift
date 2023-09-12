@@ -805,10 +805,38 @@ func testDictionary() {
     sink(arg: dict4.values.randomElement()) // $ MISSING: flow=799 flow=801
 }
 
+struct S3 {
+  init(_ v: Int) {
+    self.v = v
+  }
+
+  func getv() -> Int { return v }
+
+  var v: Int
+}
+
+func testStruct() {
+    var s1 = S3(source())
+    var s2 = S3(0)
+
+    sink(arg: s1.v) // $ flow=819
+    sink(arg: s2.v)
+    sink(arg: s1.getv()) // $ flow=819
+    sink(arg: s2.getv())
+
+    s1.v = 0
+    s2.v = source()
+
+    sink(arg: s1.v)
+    sink(arg: s2.v) // $ flow=828
+    sink(arg: s1.getv())
+    sink(arg: s2.getv()) // $ flow=828
+}
+
 func testNestedKeyPathWrite() {
   var s2 = S2(s: S(x: 1))
   sink(arg: s2.s.x)
   var f = \S2.s.x
   s2[keyPath: f] = source()
-  sink(arg: s2.s.x) // $ flow=812
+  sink(arg: s2.s.x) // $ flow=840
 }

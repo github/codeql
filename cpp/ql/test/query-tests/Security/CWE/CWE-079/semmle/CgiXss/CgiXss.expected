@@ -1,7 +1,6 @@
 edges
 | search.c:14:24:14:28 | query | search.c:17:8:17:12 | query |
 | search.c:14:24:14:28 | query | search.c:17:8:17:12 | query |
-| search.c:14:24:14:28 | query | search.c:17:8:17:12 | query |
 | search.c:22:24:22:28 | query | search.c:23:39:23:43 | query |
 | search.c:22:24:22:28 | query | search.c:23:39:23:43 | query |
 | search.c:51:21:51:26 | call to getenv | search.c:55:17:55:25 | raw_query |
@@ -13,7 +12,6 @@ edges
 subpaths
 nodes
 | search.c:14:24:14:28 | query | semmle.label | query |
-| search.c:17:8:17:12 | query | semmle.label | query |
 | search.c:17:8:17:12 | query | semmle.label | query |
 | search.c:17:8:17:12 | query | semmle.label | query |
 | search.c:22:24:22:28 | query | semmle.label | query |
