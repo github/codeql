@@ -757,13 +757,16 @@ private predicate fromPhiNodeToUse(PhiNode phi, SourceVariable sv, IRBlock bb1, 
 
 /** Holds if `nodeTo` receives flow from the phi node `nodeFrom`. */
 predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
-  exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1, UseOrPhi use |
+  exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1 |
     phi = nodeFrom.getPhiNode() and
-    phi.definesAt(sv, bb1, i1, _) and
-    useToNode(use, nodeTo)
+    phi.definesAt(sv, bb1, i1, _)
   |
-    fromPhiNodeToUse(phi, sv, bb1, i1, use)
+    exists(UseOrPhi use |
+      useToNode(use, nodeTo) and
+      fromPhiNodeToUse(phi, sv, bb1, i1, use)
+    )
     or
+    not fromPhiNodeToUse(phi, sv, _, _, _) and
     exists(PhiNode phiTo |
       phi != phiTo and
       lastRefRedefExt(phi, _, _, phiTo) and
