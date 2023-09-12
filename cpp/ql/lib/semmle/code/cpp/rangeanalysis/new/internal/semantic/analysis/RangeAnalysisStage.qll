@@ -1012,18 +1012,42 @@ module RangeStage<
   ) {
     not ignoreExprBound(e) and
     (
-      e = b.getExpr(delta) and
-      (upper = true or upper = false) and
       fromBackEdge = false and
-      origdelta = delta and
-      reason = TSemNoReason()
+      baseCaseBound(e, b, delta, upper, origdelta, reason)
       or
-      baseBound(e, delta, upper) and
-      b instanceof SemZeroBound and
-      fromBackEdge = false and
-      origdelta = delta and
-      reason = TSemNoReason()
-      or
+      recursiveBound(e, b, delta, upper, fromBackEdge, origdelta, reason) and
+      // Don't infer other non-offset bounds for non-constants.
+      (not isConstant(e) or not b instanceof SemZeroBound)
+    )
+  }
+
+  predicate baseCaseBound(
+    SemExpr e, SemBound b, D::Delta delta, boolean upper, D::Delta origdelta, SemReason reason
+  ) {
+    e = b.getExpr(delta) and
+    (upper = true or upper = false) and
+    origdelta = delta and
+    reason = TSemNoReason()
+    or
+    baseBound(e, delta, upper) and
+    b instanceof SemZeroBound and
+    origdelta = delta and
+    reason = TSemNoReason()
+  }
+
+  predicate isConstant(SemExpr e) {
+    exists(D::Delta d, SemZeroBound zb |
+      baseCaseBound(e, zb, d, true, _, _) and
+      baseCaseBound(e, zb, d, false, _, _)
+    )
+  }
+
+  predicate recursiveBound(
+    SemExpr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta,
+    SemReason reason
+  ) {
+    not ignoreExprBound(e) and
+    (
       exists(SemSsaVariable v, SemSsaReadPositionBlock bb |
         boundedSsa(v, b, delta, bb, upper, fromBackEdge, origdelta, reason) and
         e = v.getAUse() and
