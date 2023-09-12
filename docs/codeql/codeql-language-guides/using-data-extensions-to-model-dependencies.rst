@@ -1,10 +1,7 @@
-.. _customizing-library-models-for-java:
+.. _using-data-extensions-to-model-dependencies:
 
-:orphan:
-:nosearch:
-
-Customizing Library Models for Java
-===================================
+Using data extensions to model your Java/Kotlin dependencies
+============================================================
 
 .. include:: ../reusables/beta-note-customizing-library-models.rst
 

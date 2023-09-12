@@ -18,6 +18,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    basic-query-for-java-code
    codeql-library-for-java
    analyzing-data-flow-in-java
+   using-data-extensions-to-model-dependencies
    types-in-java
    overflow-prone-comparisons-in-java
    navigating-the-call-graph
@@ -31,6 +32,8 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`CodeQL library for Java <codeql-library-for-java>`: When analyzing Java code, you can use the large collection of classes in the CodeQL library for Java.
 
 -  :doc:`Analyzing data flow in Java <analyzing-data-flow-in-java>`: You can use CodeQL to track the flow of data through a Java program to its use. 
+
+-  :doc:`Using data extensions to model your Java/Kotlin dependencies`: You can model frameworks and libraries that your code base depends on using data extensions and publish them as CodeQL model packs.
 
 -  :doc:`Java types <types-in-java>`: You can use CodeQL to find out information about data types used in Java code. This allows you to write queries to identify specific type-related issues.
 
