@@ -11541,10 +11541,9 @@ ir.cpp:
 # 2098|     mu2098_2(unknown)   = AliasedDefinition        : 
 # 2098|     mu2098_3(unknown)   = InitializeNonLocal       : 
 # 2100|     r2100_1(glval<int>) = VariableAddress[#return] : 
-
-# 2100|   Block 1
-# 2100|     r2100_2(int)        = Convert                  : 
-# 2100|     mu2100_3(int)       = Store[#return]           : &:r2100_1, r2100_2
+# 2100|     r2100_2(E)          = Constant[0]              : 
+# 2100|     r2100_3(int)        = Convert                  : r2100_2
+# 2100|     mu2100_4(int)       = Store[#return]           : &:r2100_1, r2100_3
 # 2098|     r2098_4(glval<int>) = VariableAddress[#return] : 
 # 2098|     v2098_5(void)       = ReturnValue              : &:r2098_4, ~m?
 # 2098|     v2098_6(void)       = AliasedUse               : ~m?
@@ -11552,18 +11551,17 @@ ir.cpp:
 
 # 2103| int alignofTest()
 # 2103|   Block 0
-# 2103|     v2103_1(void)       = EnterFunction            : 
-# 2103|     mu2103_2(unknown)   = AliasedDefinition        : 
-# 2103|     mu2103_3(unknown)   = InitializeNonLocal       : 
-# 2104|     r2104_1(glval<int>) = VariableAddress[#return] : 
-
-# 2104|   Block 1
-# 2104|     r2104_2(int)        = Convert                  : 
-# 2104|     mu2104_3(int)       = Store[#return]           : &:r2104_1, r2104_2
-# 2103|     r2103_4(glval<int>) = VariableAddress[#return] : 
-# 2103|     v2103_5(void)       = ReturnValue              : &:r2103_4, ~m?
-# 2103|     v2103_6(void)       = AliasedUse               : ~m?
-# 2103|     v2103_7(void)       = ExitFunction             : 
+# 2103|     v2103_1(void)          = EnterFunction            : 
+# 2103|     mu2103_2(unknown)      = AliasedDefinition        : 
+# 2103|     mu2103_3(unknown)      = InitializeNonLocal       : 
+# 2104|     r2104_1(glval<int>)    = VariableAddress[#return] : 
+# 2104|     r2104_2(unsigned long) = Constant[4]              : 
+# 2104|     r2104_3(int)           = Convert                  : r2104_2
+# 2104|     mu2104_4(int)          = Store[#return]           : &:r2104_1, r2104_3
+# 2103|     r2103_4(glval<int>)    = VariableAddress[#return] : 
+# 2103|     v2103_5(void)          = ReturnValue              : &:r2103_4, ~m?
+# 2103|     v2103_6(void)          = AliasedUse               : ~m?
+# 2103|     v2103_7(void)          = ExitFunction             : 
 
 # 2107| int offsetOfTest()
 # 2107|   Block 0

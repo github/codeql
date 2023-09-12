@@ -40,9 +40,11 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
  * its value in the IR. This does not include address constants as we have no
  * means to express those as QL values.
  */
-predicate isIRConstant(Expr expr) { 
-   expr instanceof Literal or
-   expr instanceof SizeofOperator
+predicate isIRConstant(Expr expr) {
+  expr instanceof Literal or
+  expr instanceof SizeofOperator or
+  expr instanceof AlignofOperator or
+  expr instanceof EnumConstantAccess
 }
 
 // Pulled out for performance. See
@@ -182,9 +184,7 @@ private predicate translateStmt(Stmt stmt) { translateFunction(stmt.getEnclosing
  * Holds if `expr` is most naturally evaluated as control flow, rather than as
  * a value.
  */
-private predicate isNativeCondition(Expr expr) {
-  expr instanceof BinaryLogicalOperation
-}
+private predicate isNativeCondition(Expr expr) { expr instanceof BinaryLogicalOperation }
 
 /**
  * Holds if `expr` can be evaluated as either a condition or a value expression,

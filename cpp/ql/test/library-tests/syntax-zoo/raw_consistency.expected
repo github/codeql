@@ -3,7 +3,6 @@ missingOperand
 | condition_decls.cpp:26:10:26:24 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:25:6:25:21 | void switch_decl_bind(int) | void switch_decl_bind(int) |
 | condition_decls.cpp:41:9:41:23 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
 | condition_decls.cpp:48:39:48:53 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
-| enum.c:6:9:6:9 | Convert: (int)... | Instruction 'Convert' is missing an expected operand with tag 'Unary' in function '$@'. | enum.c:5:12:5:12 | int f() | int f() |
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | void misc3() | void misc3() |
 | try_catch.cpp:23:5:23:18 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
 unexpectedOperand
@@ -21,7 +20,6 @@ instructionWithoutSuccessor
 | condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:25:6:25:21 | void switch_decl_bind(int) | void switch_decl_bind(int) |
 | condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
 | condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
-| enum.c:6:2:6:10 | VariableAddress: return ... | Instruction 'VariableAddress: return ...' has no successors in function '$@'. | enum.c:5:12:5:12 | int f() | int f() |
 | file://:0:0:0:0 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | condition_decls.cpp:15:6:15:17 | void if_decl_bind(int) | void if_decl_bind(int) |
 | file://:0:0:0:0 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
 | file://:0:0:0:0 | CompareNE: (bool)... | Instruction 'CompareNE: (bool)...' has no successors in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
@@ -45,7 +43,6 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | VacuousDestructorCall.cpp:2:29:2:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
-| enum.c:6:2:6:10 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | enum.c:5:12:5:12 | int f() | int f() |
 | misc.c:165:47:165:47 | Arg(1) | Operand 'Arg(1)' is not dominated by its definition in function '$@'. | misc.c:163:6:163:18 | void offsetof_test() | void offsetof_test() |
 | ms_try_except.cpp:9:19:9:19 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
 | ms_try_except.cpp:9:19:9:19 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ms_try_except.cpp:2:6:2:18 | void ms_try_except(int) | void ms_try_except(int) |
