@@ -1,3 +1,9 @@
+/**
+ * @name Find new subclasses to model
+ * @id py/meta/find-subclasses-to-model
+ * @kind table
+ */
+
 import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
