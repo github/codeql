@@ -18,8 +18,8 @@ private import AutomodelJavaUtil
 from
   Endpoint endpoint, string message, FrameworkModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString parameterName, DollarAtString alreadyAiModeled,
-  DollarAtString extensibleType
+  DollarAtString input, DollarAtString output, DollarAtString parameterName,
+  DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
   endpoint.getExtensibleType() = extensibleType and
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
@@ -36,7 +36,7 @@ where
     alreadyAiModeled.matches("%ai-%") and
     CharacteristicsImpl::isSink(endpoint, _, alreadyAiModeled)
   ) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, parameterName) and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
   includeAutomodelCandidate(package, type, name, signature) and
   // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
   // a non-sink, and we surface only endpoints that have at least one such sink type.
@@ -48,7 +48,7 @@ where
       sinkType, ", "
     )
 select endpoint,
-  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
+  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //
@@ -57,6 +57,7 @@ select endpoint,
   name, "name", //
   signature, "signature", //
   input, "input", //
+  output, "output", //
   parameterName, "parameterName", //
   alreadyAiModeled, "alreadyAiModeled", //
   extensibleType, "extensibleType"

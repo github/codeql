@@ -16,7 +16,8 @@ from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence,
   DollarAtString message, FrameworkModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString parameterName, DollarAtString extensibleType
+  DollarAtString input, DollarAtString output, DollarAtString parameterName,
+  DollarAtString extensibleType
 where
   endpoint.getExtensibleType() = extensibleType and
   characteristic.appliesToEndpoint(endpoint) and
@@ -25,7 +26,7 @@ where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
   not erroneousEndpoints(endpoint, _, _, _, _, false) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, parameterName) and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
   // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
   // treated by the actual query as a sanitizer, since the final logic is something like
   // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as negative examples in the prompt, because
@@ -47,5 +48,6 @@ select endpoint,
   name, "name", //
   signature, "signature", //
   input, "input", //
+  output, "output", //
   parameterName, "parameterName", //
   extensibleType, "extensibleType"

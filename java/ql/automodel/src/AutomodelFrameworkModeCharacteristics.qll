@@ -38,6 +38,20 @@ abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
   abstract int getIndex();
 
   /**
+   * Gets the input (if any) for this endpoint, eg.: `Argument[0]`.
+   *
+   * For endpoints that are source candidates, this will be `none()`.
+   */
+  abstract string getMaDInput();
+
+  /**
+   * Gets the output (if any) for this endpoint, eg.: `ReturnValue`.
+   *
+   * For endpoints that are sink candidates, this will be `none()`.
+   */
+  abstract string getMaDOutput();
+
+  /**
    * Returns the name of the parameter of the endpoint.
    */
   abstract string getParamName();
@@ -63,6 +77,10 @@ class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParamete
 
   override int getIndex() { result = param.getPosition() }
 
+  override string getMaDInput() { result = "Argument[" + param.getPosition() + "]" }
+
+  override string getMaDOutput() { none() }
+
   override string getParamName() { result = param.getName() }
 
   override Callable getEnclosingCallable() { result = param.getCallable() }
@@ -80,6 +98,10 @@ class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
   }
 
   override int getIndex() { result = -1 }
+
+  override string getMaDInput() { result = "Argument[this]" }
+
+  override string getMaDOutput() { none() }
 
   override string getParamName() { result = "this" }
 
@@ -100,10 +122,11 @@ class ReturnValue extends FrameworkModeEndpoint, TReturnValue {
     result = -1
   }
 
-  override string getParamName() {
-    // FIXME bogus value
-    result = "return value"
-  }
+  override string getMaDInput() { none() }
+
+  override string getMaDOutput() { result = "ReturnValue" }
+
+  override string getParamName() { none() }
 
   override Callable getEnclosingCallable() { result = callable }
 
@@ -163,7 +186,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     FrameworkModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
     ext = "" and
-    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex())
+    input = e.getMaDInput()
   }
 
   /**
@@ -213,11 +236,12 @@ class FrameworkModeMetadataExtractor extends string {
 
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
-    string input, string parameterName
+    string input, string output, string parameterName
   ) {
-    parameterName = e.getParamName() and
+    (if exists(e.getParamName()) then parameterName = e.getParamName() else parameterName = "") and
     name = e.getEnclosingCallable().getName() and
-    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex()) and
+    (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
+    (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
     package = e.getEnclosingCallable().getDeclaringType().getPackage().getName() and
     type = e.getEnclosingCallable().getDeclaringType().getErasure().(RefType).nestedName() and
     subtypes = AutomodelJavaUtil::considerSubtypes(e.getEnclosingCallable()).toString() and
@@ -285,8 +309,8 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
  * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
  * are considered worth modeling.
  */
-private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingToModelCharacteristic {
-  NotAModelApiParameter() { this = "not a model API parameter" }
+private class NotAModelApi extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  NotAModelApi() { this = "not a model API" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     not e.getEnclosingCallable() instanceof ModelExclusions::ModelApi
