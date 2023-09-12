@@ -5,5 +5,5 @@ WARNING: Module DataFlow has been deprecated and may be removed in future (test.
 WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:40,25-33)
 WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:42,17-25)
 WARNING: Module DataFlow has been deprecated and may be removed in future (test.ql:46,20-28)
-failures
 testFailures
+failures
