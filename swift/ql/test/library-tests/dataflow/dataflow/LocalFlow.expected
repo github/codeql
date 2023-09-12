@@ -1014,3 +1014,20 @@
 | test.swift:816:15:816:15 | [post] generator | test.swift:816:15:816:15 | &... |
 | test.swift:816:15:816:15 | generator | test.swift:816:15:816:15 | &... |
 | test.swift:816:15:816:30 | call to next() | test.swift:816:15:816:31 | ...! |
+| test.swift:820:9:820:9 | SSA def(stream) | test.swift:830:24:830:24 | stream |
+| test.swift:820:9:820:9 | stream | test.swift:820:9:820:9 | SSA def(stream) |
+| test.swift:820:18:828:6 | call to AsyncStream<Element>.init(_:bufferingPolicy:_:) | test.swift:820:9:820:9 | stream |
+| test.swift:823:17:823:17 | $generator | test.swift:823:17:823:17 | &... |
+| test.swift:823:17:823:17 | &... | test.swift:823:17:823:17 | $generator |
+| test.swift:823:17:823:17 | [post] $generator | test.swift:823:17:823:17 | &... |
+| test.swift:823:26:823:26 | $generator | test.swift:823:26:823:26 | SSA def($generator) |
+| test.swift:823:26:823:26 | SSA def($generator) | test.swift:823:17:823:17 | $generator |
+| test.swift:823:26:823:30 | call to makeIterator() | test.swift:823:26:823:26 | $generator |
+| test.swift:830:5:830:5 | $i$generator | test.swift:830:5:830:5 | &... |
+| test.swift:830:5:830:5 | &... | test.swift:830:5:830:5 | $i$generator |
+| test.swift:830:5:830:5 | [post] $i$generator | test.swift:830:5:830:5 | &... |
+| test.swift:830:19:830:19 | SSA def(i) | test.swift:831:19:831:19 | i |
+| test.swift:830:19:830:19 | i | test.swift:830:19:830:19 | SSA def(i) |
+| test.swift:830:24:830:24 | $i$generator | test.swift:830:24:830:24 | SSA def($i$generator) |
+| test.swift:830:24:830:24 | SSA def($i$generator) | test.swift:830:5:830:5 | $i$generator |
+| test.swift:830:24:830:24 | call to makeAsyncIterator() | test.swift:830:24:830:24 | $i$generator |

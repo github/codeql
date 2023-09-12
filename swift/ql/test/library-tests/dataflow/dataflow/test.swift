@@ -815,3 +815,19 @@ func testSetForEach() {
     var generator = set1.makeIterator()
     sink(arg: generator.next()!) // $ flow=809
 }
+
+func testAsyncFor () async {
+    var stream = AsyncStream(Int.self, bufferingPolicy: .bufferingNewest(5), {
+        continuation in
+            Task.detached {
+                for _ in 1...100 {
+                    continuation.yield(source())
+                }
+                continuation.finish()
+            }
+    })
+
+    for try await i in stream {
+        sink(arg: i) // $ MISSING: flow=824
+    }
+}
