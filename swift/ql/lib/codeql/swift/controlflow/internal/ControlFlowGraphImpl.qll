@@ -523,10 +523,10 @@ module Stmts {
         // Flow from last element of iterator expression to first element of iterator call
         astLast(ast.getIteratorVar(), pred, c) and
         c instanceof NormalCompletion and
-        astFirst(ast.getNextCall(), succ)
+        astFirst(ast.getNextCall().getFullyConverted(), succ)
         or
         // Flow from iterator call to emptiness test
-        astLast(ast.getNextCall(), pred, c) and
+        astLast(ast.getNextCall().getFullyConverted(), pred, c) and
         c instanceof NormalCompletion and
         succ.asAstNode() = ast
         or
@@ -554,12 +554,12 @@ module Stmts {
           c instanceof TrueCompletion and
           astFirst(ast.getBody(), succ)
           or
-          // or to the emptiness test if the condition is false.
+          // or to the getNextCall if the condition is false.
           c instanceof FalseCompletion and
-          succ.asAstNode() = ast
+          astFirst(ast.getNextCall(), succ)
         )
         or
-        // Flow from last element of loop body back to emptiness test.
+        // Flow from last element of loop body back to getNextCall
         astLast(ast.getBody(), pred, c) and
         c.continuesLoop(ast) and
         astFirst(ast.getNextCall(), succ)
