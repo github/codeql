@@ -255,7 +255,7 @@ int test_unary(int a) {
     range(c); // $ range=<=7 range=>=-11
     range(b+c); // $ range=<=18 range=>=-18
     total += b+c;
-    range(total); // $ range="<=Phi: - ...+18" range=">=Phi: - ...-18" range="<=Phi: 0+29" range=<=37 range=">=Phi: 0-29" range=>=-37
+    range(total); // $ range="<=Phi: 7+18" range=">=Phi: 7-18" range="<=Phi: 0+29" range=<=37 range=">=Phi: 0-29" range=>=-37
   }
   if (-7 <= a && a <= 1) {
     range(a); // $ range=<=1 range=>=-7
@@ -265,7 +265,7 @@ int test_unary(int a) {
     range(c); // $ range=<=7 range=>=-1
     range(b+c); // $ range=<=8 range=>=-8
     total += b+c;
-    range(total); // $ range="<=Phi: - ...+8" range="<=Phi: - ...+26" range=">=Phi: - ...-8" range=">=Phi: - ...-26" range="<=Phi: 0+37" range=<=45 range=">=Phi: 0-37" range=>=-45
+    range(total); // $ range="<=Phi: 7+8" range="<=Phi: 7+26" range=">=Phi: 7-8" range=">=Phi: 7-26" range="<=Phi: 0+37" range=<=45 range=">=Phi: 0-37" range=>=-45
   }
   if (-7 <= a && a <= 0) {
     range(a); // $ range=<=0 range=>=-7
@@ -273,9 +273,9 @@ int test_unary(int a) {
     range(b); // $ range=<=0 range=>=-7
     int c = -a;
     range(c); // $ range=<=7 range=>=0
-    range(b+c); // $ range=>=-7 range=<=7 MISSING:range="<=- ...+0"
+    range(b+c); // $ range=>=-7 range=<=7 MISSING:range="<=7+0"
     total += b+c;
-    range(total); // $ range="<=Phi: - ...+7" range="<=Phi: - ...+15" range="<=Phi: - ...+33" range=">=Phi: - ...-7" range=">=Phi: - ...-15" range=">=Phi: - ...-33" range="<=Phi: 0+44" range=<=52 Unexpected result: range=">=Phi: 0-44" range=>=-52
+    range(total); // $ range="<=Phi: 7+7" range="<=Phi: 7+15" range="<=Phi: 7+33" range=">=Phi: 7-7" range=">=Phi: 7-15" range=">=Phi: 7-33" range="<=Phi: 0+44" range=<=52 Unexpected result: range=">=Phi: 0-44" range=>=-52
   }
   if (-7 <= a && a <= -2) {
     range(a); // $ range=<=-2 range=>=-7
@@ -285,9 +285,9 @@ int test_unary(int a) {
     range(c); // $ range=<=7 range=>=2
     range(b+c); // $ range=<=5 range=>=-5
     total += b+c;
-    range(total); // $ range="<=Phi: - ...+5" range="<=Phi: - ...+12" range="<=Phi: - ...+20" range="<=Phi: - ...+38" range=">=Phi: - ...-5" range=">=Phi: - ...-12" range=">=Phi: - ...-20" range=">=Phi: - ...-38" range="<=Phi: 0+49" range=<=57 range=">=Phi: 0-49" range=>=-57
+    range(total); // $ range="<=Phi: 7+5" range="<=Phi: 7+12" range="<=Phi: 7+20" range="<=Phi: 7+38" range=">=Phi: 7-5" range=">=Phi: 7-12" range=">=Phi: 7-20" range=">=Phi: 7-38" range="<=Phi: 0+49" range=<=57 range=">=Phi: 0-49" range=>=-57
   }
-  range(total); // $ range="<=Phi: - ...+5" range="<=Phi: - ...+12" range="<=Phi: - ...+20" range="<=Phi: - ...+38" range=">=Phi: - ...-5" range=">=Phi: - ...-12" range=">=Phi: - ...-20" range=">=Phi: - ...-38" range="<=Phi: 0+49" range=<=57 range=">=Phi: 0-49" range=>=-57
+  range(total); // $ range="<=Phi: 7+5" range="<=Phi: 7+12" range="<=Phi: 7+20" range="<=Phi: 7+38" range=">=Phi: 7-5" range=">=Phi: 7-12" range=">=Phi: 7-20" range=">=Phi: 7-38" range="<=Phi: 0+49" range=<=57 range=">=Phi: 0-49" range=>=-57
   return total;
 }
 
@@ -453,7 +453,7 @@ int test_mult04(int a, int b) {
     int r = a*b;  // -391 .. 0
     range(r); // $ range=<=0 range=>=-391
     total += r;
-    range(total); // $ range="<=Phi: - ...+0" range=<=0 range=">=Phi: - ...-391" range=>=-782
+    range(total); // $ range="<=Phi: 17+0" range=<=0 range=">=Phi: 17-391" range=>=-782
   }
   if (-17 <= a && a <= 0 && -13 <= b && b <= 23) {
     range(a); // $ range=<=0 range=>=-17
@@ -469,7 +469,7 @@ int test_mult04(int a, int b) {
     int r = a*b;  // 0 .. 221
     range(r); // $ range=<=221 range=>=0 
     total += r;
-    range(total); // $ range="<=Phi: - ...+221"
+    range(total); // $ range="<=Phi: 17+221"
   }
   if (-17 <= a && a <= 0 && -13 <= b && b <= -7) {
     range(a); // $ range=<=0 range=>=-17
@@ -477,9 +477,9 @@ int test_mult04(int a, int b) {
     int r = a*b;  // 0 .. 221
     range(r); // $ range=<=221 range=>=0
     total += r;
-    range(total); // $ range="<=Phi: - ...+221" range="<=Phi: - ...+442"
+    range(total); // $ range="<=Phi: 17+221" range="<=Phi: 17+442"
   }
-  range(total); // $ range="<=Phi: - ...+221" range="<=Phi: - ...+442"
+  range(total); // $ range="<=Phi: 17+221" range="<=Phi: 17+442"
   return total;
 }
 
@@ -501,7 +501,7 @@ int test_mult05(int a, int b) {
     int r = a*b;  // -391 .. 0
     range(r); // $ range=<=0 range=>=-391
     total += r;
-    range(total); // $ range="<=Phi: - ...+0" range=<=0 range=">=Phi: - ...-391" range=>=-782
+    range(total); // $ range="<=Phi: 17+0" range=<=0 range=">=Phi: 17-391" range=>=-782
   }
   if (-17 <= a && a <= -2 && -13 <= b && b <= 23) {
     range(a); // $ range=<=-2 range=>=-17
@@ -517,7 +517,7 @@ int test_mult05(int a, int b) {
     int r = a*b;  // 0 .. 221
     range(r); // $ range=<=221 range=>=0
     total += r;
-    range(total); // $ range="<=Phi: - ...+221"
+    range(total); // $ range="<=Phi: 17+221"
   }
   if (-17 <= a && a <= -2 && -13 <= b && b <= -7) {
     range(a); // $ range=<=-2 range=>=-17
@@ -525,9 +525,9 @@ int test_mult05(int a, int b) {
     int r = a*b;  // 14 .. 221
     range(r); // $ range=<=221 range=>=14
     total += r;
-    range(total); // $ range="<=Phi: - ...+221" range="<=Phi: - ...+442"
+    range(total); // $ range="<=Phi: 17+221" range="<=Phi: 17+442"
   }
-  range(total); // $ range="<=Phi: - ...+221" range="<=Phi: - ...+442"
+  range(total); // $ range="<=Phi: 17+221" range="<=Phi: 17+442"
   return total;
 }
 
@@ -693,7 +693,7 @@ int test_unsigned_mult01(unsigned int a, unsigned b) {
     int r = a*b;  // 0 .. 253
     range(r);// $ range=>=0 range=<=253
     total += r;
-    range(total); // $ range=">=Phi: (unsigned int)...+0" range=>=0 range=<=506 range="<=Phi: (unsigned int)...+253"
+    range(total); // $ range=">=Phi: 3+0" range=>=0 range=<=506 range="<=Phi: 3+253"
   }
   if (3 <= a && a <= 11 && 13 <= b && b <= 23) {
     range(a); // $ range=<=11 range=>=3
@@ -701,9 +701,9 @@ int test_unsigned_mult01(unsigned int a, unsigned b) {
     int r = a*b;  // 39 .. 253
     range(r); // $ range=>=39 range=<=253
     total += r;
-    range(total); // $ range=>=39 range=<=759 range="<=Phi: (unsigned int)...+253" range="<=Phi: (unsigned int)...+506" range=">=Phi: (unsigned int)...+39"
+    range(total); // $ range=>=39 range=<=759 range="<=Phi: 3+253" range="<=Phi: 3+506" range=">=Phi: 3+39"
   }
-  range(total); // $ range=>=0 range=<=759 range=">=Phi: (unsigned int)...+0" range="<=Phi: (unsigned int)...+506" range="<=Phi: (unsigned int)...+253"
+  range(total); // $ range=>=0 range=<=759 range=">=Phi: 3+0" range="<=Phi: 3+506" range="<=Phi: 3+253"
   return total;
 }
 
@@ -722,16 +722,16 @@ int test_unsigned_mult02(unsigned b) {
     int r = 11*b;  // 0 .. 253
     range(r); // $ range=>=0 range=<=253
     total += r;
-    range(total); // $ range=">=Phi: (unsigned int)...+0" range=>=0 range="<=Phi: (unsigned int)...+253" range=<=506
+    range(total); // $ range=">=Phi: 0+0" range=>=0 range="<=Phi: 0+253" range=<=506
   }
   if (13 <= b && b <= 23) {
     range(b); // $ range=<=23 range=>=13
     int r = 11*b;  // 143 .. 253
     range(r); // $ range=>=143 range=<=253
     total += r;
-    range(total); // $ range="<=Phi: (unsigned int)...+253" range="<=Phi: (unsigned int)...+506" range=">=Phi: (unsigned int)...+143" range=>=143 range=<=759
+    range(total); // $ range="<=Phi: 13+253" range="<=Phi: 0+506" range=">=Phi: 0+143" range=>=143 range=<=759
   }
-  range(total); // $ range=>=0 range=<=759 range=">=Phi: (unsigned int)...+0" range="<=Phi: (unsigned int)...+506" range="<=Phi: (unsigned int)...+253"
+  range(total); // $ range=>=0 range=<=759 range=">=Phi: 0+0" range="<=Phi: 0+506" range="<=Phi: 13+253"
   return total;
 }
 
