@@ -109,6 +109,15 @@ module NotExposed {
     fullyQualifiedToApiGraphPath(fullyQualifiedName) = spec.getAlreadyModeledClass().getPath()
   }
 
+  predicate isAllowedModule(Module mod) {
+    // for now, we only want to model things in site-packages (since we know these are
+    // libraries used by real code)
+    mod.getFile().getAbsolutePath().matches("%/site-packages/%")
+    or
+    // for CI testing
+    mod.getFile().getRelativePath().matches("%/find_subclass_test.py")
+  }
+
   predicate isTestCode(AstNode ast) {
     ast.getScope*() instanceof TestScope
     or
@@ -164,7 +173,8 @@ module NotExposed {
       mod.declaredInAll(importMember.getName())
     ) and
     not alreadyExplicitlyModeled(spec, newAliasFullyQualified) and
-    not isTestCode(importMember)
+    not isTestCode(importMember) and
+    isAllowedModule(mod)
   }
 
   /** same as `newDirectAlias` predicate, but handling `from <module> import *`, considering all `<member>`, where `<module>.<member>` belongs to `spec`. */
@@ -192,7 +202,8 @@ module NotExposed {
       mod.declaredInAll(relevantName)
     ) and
     not alreadyExplicitlyModeled(spec, newAliasFullyQualified) and
-    not isTestCode(importStar)
+    not isTestCode(importStar) and
+    isAllowedModule(mod)
   }
 
   /** Holds if `classExpr` defines a new subclass that belongs to `spec`, which has the fully qualified name `newSubclassQualified`. */
@@ -205,6 +216,7 @@ module NotExposed {
     newSubclassQualified = mod.getName() + "." + classExpr.getName() and
     loc = classExpr.getLocation() and
     not alreadyExplicitlyModeled(spec, newSubclassQualified) and
-    not isTestCode(classExpr)
+    not isTestCode(classExpr) and
+    isAllowedModule(mod)
   }
 }
