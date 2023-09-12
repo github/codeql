@@ -76,7 +76,6 @@ where
   not exists(FindSubclassesSpec subclass | subclass.getSuperClass() = spec |
     newModel(subclass, newModelFullyQualified, _, mod, _)
   ) and
-  not exists(mod.getLocation().getFile().getRelativePath()) and
   fullyQualifiedToYamlFormat(newModelFullyQualified, type2, path) and
   not Extensions::typeModel(spec, type2, path)
 select spec.(string), type2, path
