@@ -25,7 +25,8 @@ newtype JavaRelatedLocationType =
 
 newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) or
-  TQualifier(Callable c)
+  TQualifier(Callable c) or
+  TReturnValue(Callable c)
 
 /**
  * A framework mode endpoint.
@@ -48,9 +49,7 @@ abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
 
   abstract Top asTop();
 
-  string getExtensibleType() {
-    result = "sinkModel"
-  }
+  abstract string getExtensibleType();
 
   string toString() { result = this.asTop().toString() }
 
@@ -69,6 +68,8 @@ class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParamete
   override Callable getEnclosingCallable() { result = param.getCallable() }
 
   override Top asTop() { result = param }
+
+  override string getExtensibleType() { result = "sinkModel" }
 }
 
 class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
@@ -85,6 +86,30 @@ class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
   override Callable getEnclosingCallable() { result = callable }
 
   override Top asTop() { result = callable }
+
+  override string getExtensibleType() { result = "sinkModel" }
+}
+
+class ReturnValue extends FrameworkModeEndpoint, TReturnValue {
+  Callable callable;
+
+  ReturnValue() { this = TReturnValue(callable) and callable.fromSource() }
+
+  override int getIndex() {
+    // FIXME bogus value
+    result = -1
+  }
+
+  override string getParamName() {
+    // FIXME bogus value
+    result = "return value"
+  }
+
+  override Callable getEnclosingCallable() { result = callable }
+
+  override Top asTop() { result = callable }
+
+  override string getExtensibleType() { result = "sourceModel" }
 }
 
 /**
