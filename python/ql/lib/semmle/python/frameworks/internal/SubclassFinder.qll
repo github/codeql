@@ -64,6 +64,10 @@ module NotExposed {
 
   bindingset[this]
   abstract class FindSubclassesSpec extends string {
+    /**
+     * Gets an API node for a class that has already been modeled. You can include
+     * `.getASubclass*()` without causing problems, but it is not needed.
+     */
     abstract API::Node getAlreadyModeledClass();
 
     FindSubclassesSpec getSuperClass() { none() }
@@ -94,8 +98,14 @@ module NotExposed {
     )
   }
 
+  /**
+   * Holds if `fullyQualifiedName` is already explicitly modeled in the `spec`.
+   *
+   * For specs that do `.getASubclass*()`, items found by following a `.getASubclass`
+   * edge will not be considered explicitly modeled.
+   */
   bindingset[fullyQualifiedName]
-  predicate alreadyModeled(FindSubclassesSpec spec, string fullyQualifiedName) {
+  predicate alreadyExplicitlyModeled(FindSubclassesSpec spec, string fullyQualifiedName) {
     fullyQualifiedToApiGraphPath(fullyQualifiedName) = spec.getAlreadyModeledClass().getPath()
   }
 
@@ -153,7 +163,7 @@ module NotExposed {
       or
       mod.declaredInAll(importMember.getName())
     ) and
-    not alreadyModeled(spec, newAliasFullyQualified) and
+    not alreadyExplicitlyModeled(spec, newAliasFullyQualified) and
     isNonTestProjectCode(importMember)
   }
 
@@ -181,7 +191,7 @@ module NotExposed {
       or
       mod.declaredInAll(relevantName)
     ) and
-    not alreadyModeled(spec, newAliasFullyQualified) and
+    not alreadyExplicitlyModeled(spec, newAliasFullyQualified) and
     isNonTestProjectCode(importStar)
   }
 
@@ -194,7 +204,7 @@ module NotExposed {
     classExpr.getScope() = mod and
     newSubclassQualified = mod.getName() + "." + classExpr.getName() and
     loc = classExpr.getLocation() and
-    not alreadyModeled(spec, newSubclassQualified) and
+    not alreadyExplicitlyModeled(spec, newSubclassQualified) and
     isNonTestProjectCode(classExpr)
   }
 }
