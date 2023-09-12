@@ -1113,6 +1113,13 @@ private module GetConvertedResultExpression {
       result = tas.getExtent().getExpr() and
       instr = tas.getInstruction(any(AllocationExtentConvertTag tag))
     )
+    or
+    // There's no instruction that returns `ParenthesisExpr`, but some queries
+    // expect this
+    exists(TranslatedTransparentConversion ttc |
+      result = ttc.getExpr().(ParenthesisExpr) and
+      instr = ttc.getResult()
+    )
   }
 
   private Expr getConvertedResultExpressionImpl(Instruction instr) {
