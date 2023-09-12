@@ -58,7 +58,9 @@ private class KeyPathComponentNodeImpl extends TKeyPathComponentNode, NodeImpl {
   KeyPathComponent getComponent() { result = component }
 }
 
-private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdateNode, NodeImpl, PostUpdateNodeImpl {
+private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdateNode, NodeImpl,
+  PostUpdateNodeImpl
+{
   KeyPathComponent component;
 
   KeyPathComponentPostUpdateNode() { this = TKeyPathComponentPostUpdateNode(component) }
@@ -256,11 +258,10 @@ private module Cached {
     nodeTo.(KeyPathComponentNodeImpl).getComponent() =
       nodeFrom.(KeyPathParameterNode).getComponent(0)
     or
-    nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() = 
+    nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() =
       nodeTo.(KeyPathParameterPostUpdateNode).getComponent(0)
     or
     // Flow to the result of a keypath assignment
-    // TODO: is there a cleaner way to do this?
     exists(KeyPathApplicationExpr apply, AssignExpr assign |
       apply = assign.getDest() and
       nodeTo.asExpr() = apply and
