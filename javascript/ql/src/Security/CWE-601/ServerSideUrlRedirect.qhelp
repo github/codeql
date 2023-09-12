@@ -18,7 +18,7 @@ redirects on the server; then choose from that list based on the user input prov
 </p>
 <p>
 If this is not possible, then the user input should be validated in some other way,
-for example by verifying that the target URL is on the same host as the current page.
+for example, by verifying that the target URL is on the same host as the current page.
 </p>
 </recommendation>
 
