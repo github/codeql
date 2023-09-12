@@ -1088,14 +1088,30 @@ private module GetConvertedResultExpression {
   }
 
   private Expr getConvertedResultExpressionImpl0(Instruction instr) {
+    // For an expression such as `i += 2` we pretend that the generated
+    // `StoreInstruction` contains the result of the expression even though
+    // this isn't totally aligned with the C/C++ standard.
     exists(TranslatedAssignOperation tao |
       result = tao.getExpr() and
       instr = tao.getInstruction(any(AssignmentStoreTag tag))
     )
     or
+    // Similarly for `i++` and `++i` we pretend that the generated
+    // `StoreInstruction` is contains the result of the expression even though
+    // this isn't totally aligned with the C/C++ standard.
     exists(TranslatedCrementOperation tco |
       result = tco.getExpr() and
       instr = tco.getInstruction(any(CrementStoreTag tag))
+    )
+    or
+    // IR construction inserts an additional cast to a `size_t` on the extent
+    // of a `new[]` expression. The resulting `ConvertInstruction` doesn't have
+    // a result for `getConvertedResultExpression`. We remap this here so that
+    // this `ConvertInstruction` maps to the result of the expression that
+    // represents the extent.
+    exists(TranslatedNonConstantAllocationSize tas |
+      result = tas.getExtent().getExpr() and
+      instr = tas.getInstruction(any(AllocationExtentConvertTag tag))
     )
   }
 
