@@ -61,11 +61,19 @@ var goVersion = ""
 // Returns the current Go version as returned by 'go version', e.g. go1.14.4
 func getEnvGoVersion() string {
 	if goVersion == "" {
-		gover, err := exec.Command("go", "version").CombinedOutput()
+		// Since Go 1.21, running 'go version' in a directory with a 'go.mod' file will attempt to
+		// download the version of Go specified in there. That may either fail or result in us just
+		// being told what's already in 'go.mod'. Setting 'GOTOOLCHAIN' to 'local' will force it
+		// to use the local Go toolchain instead.
+		cmd := exec.Command("go", "version")
+		cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
+		out, err := cmd.CombinedOutput()
+
 		if err != nil {
 			log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
 		}
-		goVersion = parseGoVersion(string(gover))
+
+		goVersion = parseGoVersion(string(out))
 	}
 	return goVersion
 }
