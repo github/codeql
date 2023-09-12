@@ -19,7 +19,10 @@ private import AutomodelSharedGetCallable as AutomodelSharedGetCallable
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
-newtype JavaRelatedLocationType = CallContext()
+newtype JavaRelatedLocationType =
+  CallContext() or
+  MethodDoc() or
+  ClassDoc()
 
 newtype TApplicationModeEndpoint =
   TExplicitArgument(Call call, DataFlow::Node arg) {
@@ -312,6 +315,12 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
     type = CallContext() and
     result = e.getCall()
+    or
+    type = MethodDoc() and
+    result = e.getCallable().(Documentable).getJavadoc()
+    or
+    type = ClassDoc() and
+    result = e.getCallable().getDeclaringType().(Documentable).getJavadoc()
   }
 }
 
