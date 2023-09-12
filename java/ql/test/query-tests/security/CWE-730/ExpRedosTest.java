@@ -434,7 +434,7 @@ class ExpRedosTest {
         "((aa|a*+)b)*c", // $ MISSING: hasExpRedos
 
         // BAD - testsing
-        "(?is)(a|aa?)*b" // $ hasExpRedos hasPrefixMsg="starting with 'is' and " hasPump=a
+        "(?is)(a|aa?)*b" // $ hasExpRedos hasPrefixMsg= hasPump=a
     };
 
     void test() {

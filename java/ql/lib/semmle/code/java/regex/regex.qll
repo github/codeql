@@ -473,9 +473,10 @@ abstract class RegexString extends StringLiteral {
   }
 
   /**
-   * Holds if a parse mode starts between `start` and `end`.
+   * Holds if the initial part of a parse mode, not containing any
+   * mode characters is between `start` and `end`.
    */
-  private predicate flagGroupStart(int start, int end) {
+  private predicate flagGroupStartNoModes(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
     this.getChar(start + 2) in ["i", "m", "s", "u", "x", "U"] and
@@ -483,17 +484,35 @@ abstract class RegexString extends StringLiteral {
   }
 
   /**
-   * Holds if a parse mode group is between `start` and `end`, and includes the
-   * mode flag `c`. For example the following span, with mode flag `i`:
+   * Holds if `pos` contains a mode character from the
+   * flag group starting at `start`.
+   */
+  private predicate modeCharacter(int start, int pos) {
+    this.flagGroupStartNoModes(start, pos)
+    or
+    this.modeCharacter(start, pos - 1) and
+    this.getChar(pos) in ["i", "m", "s", "u", "x", "U"]
+  }
+
+  /**
+   * Holds if a parse mode group is between `start` and `end`.
+   */
+  private predicate flagGroupStart(int start, int end) {
+    this.flagGroupStartNoModes(start, _) and
+    end = max(int i | this.modeCharacter(start, i) | i + 1)
+  }
+
+  /**
+   * Holds if a parse mode group of this regex includes the mode flag `c`.
+   * For example the following parse mode group, with mode flag `i`:
    * ```
    * (?i)
    * ```
    */
-  private predicate flagGroup(int start, int end, string c) {
-    exists(int inStart, int inEnd |
-      this.flagGroupStart(start, inStart) and
-      this.groupContents(start, end, inStart, inEnd) and
-      this.getChar([inStart .. inEnd - 1]) = c
+  private predicate flag(string c) {
+    exists(int pos |
+      this.modeCharacter(_, pos) and
+      this.getChar(pos) = c
     )
   }
 
@@ -502,7 +521,7 @@ abstract class RegexString extends StringLiteral {
    * it is defined by a prefix.
    */
   string getModeFromPrefix() {
-    exists(string c | this.flagGroup(_, _, c) |
+    exists(string c | this.flag(c) |
       c = "i" and result = "IGNORECASE"
       or
       c = "m" and result = "MULTILINE"
