@@ -47,7 +47,7 @@ stays the same:
 
 <p>
 Note that as written, the above code will allow redirects to URLs on <code>example.com</code>,
-which is harmless but perhaps not intended. Substitute your own domain name for
+which is harmless but perhaps not intended. You can substitute your own domain (if known) for
 <code>example.com</code> to prevent this.
 </p>
 

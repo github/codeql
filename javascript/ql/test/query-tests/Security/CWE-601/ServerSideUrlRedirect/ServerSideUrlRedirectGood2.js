@@ -3,6 +3,7 @@ const app = require("express")();
 function isLocalUrl(path) {
   try {
     return (
+      // TODO: consider substituting your own domain for example.com
       new URL(path, "https://example.com").origin === "https://example.com"
     );
   } catch (e) {
