@@ -1555,8 +1555,9 @@ module MakeImpl<InputSig Lang> {
 
           pragma[nomagic]
           predicate dataFlowTakenCallEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
-            exists(ParamNodeEx p, Cc outercc |
-              fwdFlowIn(call, p, _, outercc, _, _, _, _, _, _, _) and
+            exists(ParamNodeEx p, Cc outercc, FlowState state, Cc innercc, Typ t, Ap ap |
+              fwdFlowIn(call, p, state, outercc, innercc, _, _, _, t, ap, _) and
+              fwdFlow1(p, state, innercc, _, _, _, t, _, ap, _) and
               c = p.getEnclosingCallable() and
               if outercc instanceof CcCall then cc = true else cc = false
             )
@@ -1564,7 +1565,10 @@ module MakeImpl<InputSig Lang> {
 
           pragma[nomagic]
           predicate dataFlowTakenCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-            fwdFlowOut(call, c, _, _, _, _, _, _, _, _, _)
+            exists(NodeEx node, FlowState state, Cc cc, Typ t, Ap ap |
+              fwdFlowOut(call, c, node, state, cc, _, _, _, t, ap, _) and
+              fwdFlow1(node, state, cc, _, _, _, t, _, ap, _)
+            )
           }
 
           predicate dataFlowNonCallEntry(DataFlowCallable c, boolean cc) {
@@ -1585,12 +1589,12 @@ module MakeImpl<InputSig Lang> {
 
         private module FwdTypeFlow = TypeFlow<FwdTypeFlowInput>;
 
-        private predicate flowIntoCallApaValid(
+        private predicate flowIntoCallApaTaken(
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
           boolean allowsFieldFlow, ApApprox apa
         ) {
           flowIntoCallApa(call, c, arg, p, allowsFieldFlow, apa) and
-          FwdTypeFlow::typeFlowValidEdgeIn(call, c, _)
+          FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _)
         }
 
         pragma[nomagic]
@@ -1692,7 +1696,7 @@ module MakeImpl<InputSig Lang> {
           exists(ApApprox argApa, Typ argT |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
               pragma[only_bind_into](argAp), ap) and
-            flowIntoCallApaValid(call, _, pragma[only_bind_into](arg), p, allowsFieldFlow, argApa) and
+            flowIntoCallApaTaken(call, _, pragma[only_bind_into](arg), p, allowsFieldFlow, argApa) and
             fwdFlow(arg, _, _, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
               argApa) and
             if allowsFieldFlow = false then argAp instanceof ApNil else any()
@@ -1704,7 +1708,7 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
         ) {
           exists(ApApprox apa, boolean allowsFieldFlow |
-            flowIntoCallApaValid(call, c, arg, p, allowsFieldFlow, apa) and
+            flowIntoCallApaTaken(call, c, arg, p, allowsFieldFlow, apa) and
             fwdFlow(arg, _, _, _, _, _, _, ap, apa) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
@@ -1721,8 +1725,8 @@ module MakeImpl<InputSig Lang> {
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           |
-            FwdTypeFlow::typeFlowValidEdgeIn(call, c, _) or
-            FwdTypeFlow::typeFlowValidEdgeOut(call, c)
+            FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+            FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
           )
         }
 
