@@ -220,11 +220,6 @@ module Content {
     override string toString() { result = this.getSignature() }
   }
 
-  /** An element of an array at an unknown index */
-  class ArrayContent extends Content, TArrayContent {
-    override string toString() { result = "Array element" }
-  }
-
   /**
    * An element of a collection. This is a broad class including:
    *  - elements of collections, such as `Set<Element>`.
