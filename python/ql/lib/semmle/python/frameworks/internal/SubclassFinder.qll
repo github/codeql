@@ -77,7 +77,7 @@ module NotExposed {
    * Holds if `newModelFullyQualified` describes either a new subclass, or a new alias, belonging to `spec` that we should include in our automated modeling.
    * This new element is defined by `ast`, which is defined at `loc` in the module `mod`.
    */
-  query predicate newModel(
+  predicate newModel(
     FindSubclassesSpec spec, string newModelFullyQualified, AstNode ast, Module mod, Location loc
   ) {
     (
