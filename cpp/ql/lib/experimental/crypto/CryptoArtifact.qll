@@ -1,5 +1,5 @@
 import cpp
-private import experimental.semmle.code.cpp.crypto.CryptoAlgorithmNames
+private import experimental.crypto.CryptoAlgorithmNames
 import semmle.code.cpp.ir.dataflow.TaintTracking
 
 
