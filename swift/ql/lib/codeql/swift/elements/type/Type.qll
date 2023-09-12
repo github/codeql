@@ -1,4 +1,5 @@
 private import codeql.swift.generated.type.Type
+private import codeql.swift.elements.type.AnyGenericType
 
 /**
  * A Swift type.
@@ -53,5 +54,7 @@ class Type extends Generated::Type {
    * typealias B_alias = B
    * ```
    */
-  Type getABaseType() { none() }
+  Type getABaseType() { result = this.(AnyGenericType).getDeclaration().getABaseType() }
+
+  Type getADerivedType() { result.getABaseType() = this }
 }
