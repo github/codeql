@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.frameworks.Servlets
 private import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.security.SensitiveApi
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.RandomQuery
@@ -65,6 +66,8 @@ private class SensitiveActionSink extends WeakRandomnessSink {
 private class CryptographicSink extends WeakRandomnessSink {
   CryptographicSink() { sinkNode(this, "crypto-parameter") }
 }
+
+private class CredentialsSink extends WeakRandomnessSink instanceof CredentialsSinkNode { }
 
 /**
  * Holds if there is a method access which converts `bytes` to the string `str`.
