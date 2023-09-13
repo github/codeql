@@ -454,7 +454,7 @@ private module Cached {
     } or
     TSynthSplatParameterElementNode(DataFlowCallable c, int n) {
       exists(c.asCallable()) and // exclude library callables
-      isParameterNode(_, c, any(ParameterPosition p | p.isSplat(_))) and
+      isParameterNode(_, c, any(ParameterPosition p | p.isSplat(any(int i | i > 0)))) and
       n in [0 .. 10]
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
@@ -1214,7 +1214,7 @@ module ArgumentNodes {
    * part of the method signature, such that those cannot end up in the hash-splat
    * parameter.
    */
-  class SynthHashSplatArgumentNode extends ArgumentNode, TSynthHashSplatArgumentNode {
+  class SynthHashSplatArgumentNode extends ArgumentNode, NodeImpl, TSynthHashSplatArgumentNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
     SynthHashSplatArgumentNode() { this = TSynthHashSplatArgumentNode(c) }
@@ -1227,12 +1227,6 @@ module ArgumentNodes {
       call = c and
       pos.isHashSplat()
     }
-  }
-
-  private class SynthHashSplatArgumentNodeImpl extends NodeImpl, TSynthHashSplatArgumentNode {
-    CfgNodes::ExprNodes::CallCfgNode c;
-
-    SynthHashSplatArgumentNodeImpl() { this = TSynthHashSplatArgumentNode(c) }
 
     override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
 
@@ -1541,6 +1535,23 @@ predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
   )
 }
 
+// Store from TSynthSplatArgumentElementNode(n)
+// into TSynthSplatArgumentNode[n]
+predicate synthSplatArgumentElementStoreStep(
+  SynthSplatArgumentElementNode node1, ContentSet c, SynthSplatArgumentNode node2
+) {
+  exists(CfgNodes::ExprNodes::CallCfgNode call, int n |
+    node2 = TSynthSplatArgumentNode(call) and
+    node1 = TSynthSplatArgumentElementNode(call, n) and
+    (
+      c = getPositionalContent(n)
+      or
+      n = -1 and
+      c.isSingleton(TUnknownElementContent())
+    )
+  )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
@@ -1578,18 +1589,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c = getPositionalContent(elemNode.getStorePosition() - splatPos)
   )
   or
-  // Store from TSynthSplatArgumentElementNode(n)
-  // into TSynthSplatArgumentNode[n]
-  exists(CfgNodes::ExprNodes::CallCfgNode call, int n |
-    node2 = TSynthSplatArgumentNode(call) and
-    node1 = TSynthSplatArgumentElementNode(call, n) and
-    (
-      c = getPositionalContent(n)
-      or
-      n = -1 and
-      c.isSingleton(TUnknownElementContent())
-    )
-  )
+  synthSplatArgumentElementStoreStep(node1, c, node2)
   or
   storeStepCommon(node1, c, node2)
   or
@@ -1604,19 +1604,6 @@ predicate readStepCommon(Node node1, ContentSet c, Node node2) {
   node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
   or
   node2 = node1.(SynthSplatParameterNode).getAParameter(c)
-  or
-  // TODO: convert into the above form
-  synthSplatArgumentElementReadStep(node1, c, node2)
-  or
-  // read from SynthSplatParameterNode[n] to nth positional parameter
-  exists(SynthSplatParameterNode paramNode, NormalParameterNode posNode, int n |
-    paramNode = node1 and
-    posNode = node2 and
-    posNode
-        .isParameterOf(paramNode.getEnclosingCallable(),
-          any(ParameterPosition p | p.isPositional(n))) and
-    c = getPositionalContent(n)
-  )
 }
 
 // read from splat arg to synth splat arg element
@@ -1677,6 +1664,9 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       node1.(SynthSplatParameterNode).isParameterOf(e.getEnclosingCallable(), _) and
       c = getPositionalContent(e.getReadPosition())
     )
+  or
+  // TODO: convert into the above form
+  synthSplatArgumentElementReadStep(node1, c, node2)
   or
   readStepCommon(node1, c, node2)
 }

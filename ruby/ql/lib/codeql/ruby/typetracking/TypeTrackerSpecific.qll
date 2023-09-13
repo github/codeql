@@ -339,6 +339,11 @@ predicate readStoreStepIntoSourceNode(
     nodeTo = mid.getSplatParameterNode(_) and
     storeContent = DataFlowPrivate::getPositionalContent(mid.getStorePosition())
   )
+  or
+  exists(DataFlowPrivate::SynthSplatArgumentElementNode mid |
+    DataFlowPrivate::synthSplatArgumentElementReadStep(nodeFrom, loadContent, mid) and
+    DataFlowPrivate::synthSplatArgumentElementStoreStep(mid, storeContent, nodeTo)
+  )
 }
 
 /**
