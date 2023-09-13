@@ -26,7 +26,15 @@ newtype JavaRelatedLocationType =
 newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) or
   TQualifier(Callable c) or
-  TReturnValue(Callable c)
+  TReturnValue(Callable c) or
+  TOverloadableParameter(Method m, Parameter p) {
+    p.getCallable() = m and
+    m instanceof ModelExclusions::ModelApi and
+    m.fromSource() and
+    not m.getDeclaringType().isFinal() and
+    not m.isFinal() and
+    not m.isStatic()
+  }
 
 /**
  * A framework mode endpoint.
@@ -131,6 +139,27 @@ class ReturnValue extends FrameworkModeEndpoint, TReturnValue {
   override Callable getEnclosingCallable() { result = callable }
 
   override Top asTop() { result = callable }
+
+  override string getExtensibleType() { result = "sourceModel" }
+}
+
+class OverloadableParameter extends FrameworkModeEndpoint, TOverloadableParameter {
+  Method method;
+  Parameter param;
+
+  OverloadableParameter() { this = TOverloadableParameter(method, param) }
+
+  override int getIndex() { result = param.getPosition() }
+
+  override string getMaDInput() { none() }
+
+  override string getMaDOutput() { result = "Parameter[" + param.getPosition() + "]" }
+
+  override string getParamName() { result = param.getName() }
+
+  override Callable getEnclosingCallable() { result = method }
+
+  override Top asTop() { result = param }
 
   override string getExtensibleType() { result = "sourceModel" }
 }
