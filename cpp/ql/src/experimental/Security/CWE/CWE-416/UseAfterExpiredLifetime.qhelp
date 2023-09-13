@@ -20,8 +20,10 @@ Use RAII ("Resource Acquisition Is Initialization") to manage the lifetime of ob
 </recommendation>
 <example>
 <p>
-The following two functions demonstrate common lifetime violations when working with the C++ standard library.
+The following two examples demonstrate common lifetime violations when working with the C++ standard library.
+</p>
 
+<p>
 The <code>bad_call_c_api</code> function contains a use of an expired lifetime.
 First, a temporary object of type <code>std::string</code> is constructed, and a pointer to its internal buffer is stored in a local variable.
 Once the <code>c_str()</code> call returns, the temporary object is destroyed, and the memory pointed to by <code>p</code> is freed.
@@ -31,6 +33,7 @@ The <code>good_call_c_api</code> function contains a fixed version of the first 
 The variable <code>hello</code> is declared as a local variable, and the pointer to its internal buffer is stored in <code>p</code>.
 The lifetime of hello outlives the call to <code>c_api</code>, so the pointer stored in <code>p</code> remains valid throughout the call to <code>c_api</code>.
 </p>
+<sample src="UseAfterExpiredLifetime_c_api_call.cpp" />
 
 <p>
 The <code>bad_remove_even_numbers</code> function demonstrates a potential issue with iterator invalidation.
@@ -39,9 +42,8 @@ For example, calling <code>erase</code> on an object of type <code>std::vector&l
 
 The <code>good_remove_even_numbers</code> function contains a fixd version of the third example.
 The <code>erase</code> function returns an iterator to the element following the last element removed, and this return value is used to ensure that <code>it</code> remains valid after the call to <code>erase</code>.
-
 </p>
-<sample src="UseAfterExpiredLifetime.cpp" />
+<sample src="UseAfterExpiredLifetime_iterator_invalidation.cpp" />
 
 </example>
 <references>
@@ -57,6 +59,9 @@ OWASP:
 </li>
 <li>
 <a href="https://en.cppreference.com/w/cpp/container">Containers library</a>
+</li>
+<li>
+<a href="https://en.cppreference.com/w/cpp/language/raii">RAII</a>
 </li>
 
 </references>
