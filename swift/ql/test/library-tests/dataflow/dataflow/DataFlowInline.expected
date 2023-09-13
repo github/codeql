@@ -1,12 +1,2 @@
 failures
 testFailures
-| test.swift:846:15:846:21 | ...[...] | Unexpected result: flow=871 |
-| test.swift:846:24:847:1 | // $ flow=863\n | Missing result:flow=863 |
-| test.swift:850:15:850:15 | v | Unexpected result: flow=872 |
-| test.swift:850:18:851:1 | // $ flow=864\n | Missing result:flow=864 |
-| test.swift:859:15:859:21 | ...[...] | Unexpected result: flow=873 |
-| test.swift:859:24:860:1 | // $ SPURIOUS: flow=865\n | Fixed spurious result:flow=865 |
-| test.swift:860:15:860:21 | ...[...] | Unexpected result: flow=873 |
-| test.swift:860:24:861:1 | // $ flow=865\n | Missing result:flow=865 |
-| test.swift:867:15:867:38 | \\...[...] | Unexpected result: flow=873 |
-| test.swift:867:41:868:1 | // $ flow=865\n | Missing result:flow=865 |

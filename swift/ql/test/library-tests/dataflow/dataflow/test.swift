@@ -843,11 +843,11 @@ func testNestedKeyPathWrite() {
 
 func testVarargs1(args: Int...) {
     sink(arg: args)
-    sink(arg: args[0]) // $ flow=863
+    sink(arg: args[0]) // $ flow=871
 }
 
 func testVarargs2(_ v: Int, _ args: Int...) {
-    sink(arg: v) // $ flow=864
+    sink(arg: v) // $ flow=872
     sink(arg: args)
     sink(arg: args[0])
     sink(arg: args[1])
@@ -856,15 +856,15 @@ func testVarargs2(_ v: Int, _ args: Int...) {
 func testVarargs3(_ v: Int, _ args: Int...) {
     sink(arg: v)
     sink(arg: args)
-    sink(arg: args[0]) // $ SPURIOUS: flow=865
-    sink(arg: args[1]) // $ flow=865
+    sink(arg: args[0]) // $ SPURIOUS: flow=873
+    sink(arg: args[1]) // $ flow=873
 
     for arg in args {
-        sink(arg: arg) // $ MISSING: flow=865
+        sink(arg: arg) // $ MISSING: flow=873
     }
 
     let myKeyPath = \[Int][1]
-    sink(arg: args[keyPath: myKeyPath]) // $ flow=865
+    sink(arg: args[keyPath: myKeyPath]) // $ flow=873
 }
 
 func testVarargsCaller() {
