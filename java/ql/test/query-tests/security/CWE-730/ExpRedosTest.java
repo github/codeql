@@ -433,7 +433,7 @@ class ExpRedosTest {
         // BAD - but not detected due to the way possessive quantifiers are approximated
         "((aa|a*+)b)*c", // $ MISSING: hasExpRedos
 
-        // BAD - testsing
+        // BAD - testing mode flag groups
         "(?is)(a|aa?)*b" // $ hasExpRedos hasPrefixMsg= hasPump=a
     };
 
