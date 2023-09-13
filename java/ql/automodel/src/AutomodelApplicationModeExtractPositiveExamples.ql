@@ -16,18 +16,21 @@ from
   Endpoint endpoint, EndpointType endpointType, ApplicationModeMetadataExtractor meta,
   DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
   DollarAtString signature, DollarAtString input, DollarAtString output,
-  DollarAtString isVarargsArray
+  DollarAtString isVarargsArray, DollarAtString extensibleType
 where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
   not erroneousEndpoints(endpoint, _, _, _, _, false) and
+  extensibleType = endpoint.getExtensibleType() and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
   CharacteristicsImpl::isKnownAs(endpoint, endpointType, _) and
   exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
 select endpoint.asNode(),
-  endpointType + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
+  endpointType + "\nrelated locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //
   type, "type", //
   subtypes, "subtypes", //
@@ -35,4 +38,5 @@ select endpoint.asNode(),
   signature, "signature", //
   input, "input", //
   output, "output", //
-  isVarargsArray, "isVarargsArray"
+  isVarargsArray, "isVarargsArray", //
+  extensibleType, "extensibleType"

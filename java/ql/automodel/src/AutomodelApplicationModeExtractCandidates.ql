@@ -89,8 +89,11 @@ where
       sinkType, ", "
     )
 select endpoint.asNode(),
-  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
+  message + "\nrelated locations: $@, $@, $@." +
+    "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //
   type, "type", //
   subtypes, "subtypes", //
