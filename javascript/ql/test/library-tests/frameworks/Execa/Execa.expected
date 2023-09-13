@@ -1,0 +1,64 @@
+test_FileSystemAccess
+| tst.js:18:9:18:23 | { shell: true } |
+| tst.js:20:9:20:24 | { shell: false } |
+| tst.js:24:13:24:22 | 'aCommand' |
+| tst.js:24:25:24:36 | ['example1'] |
+| tst.js:26:13:26:18 | 'echo' |
+| tst.js:26:21:26:32 | ['example1'] |
+| tst.js:28:13:28:47 | 'echo e ... ple 11' |
+| tst.js:28:50:28:64 | { shell: true } |
+| tst.js:29:13:29:29 | 'echo example 10' |
+| tst.js:29:32:29:52 | ['; ech ... le 11'] |
+| tst.js:29:55:29:69 | { shell: true } |
+| tst.js:32:11:32:16 | 'echo' |
+| tst.js:32:19:32:35 | ['example5 sync'] |
+| tst.js:34:20:34:42 | "echo " ... gument" |
+| tst.js:35:20:35:52 | `echo $ ... ndSync` |
+| tst.js:37:18:37:20 | arg |
+| tst.js:39:18:39:39 | "echo 1 ... echo 2" |
+| tst.js:39:42:39:56 | { shell: true } |
+| tst.js:45:9:45:29 | { input ... sink' } |
+| tst.js:46:13:46:17 | 'cat' |
+| tst.js:46:20:46:40 | { input ... sink' } |
+| tst.js:47:13:47:18 | 'echo' |
+| tst.js:47:21:47:32 | ['example2'] |
+| tst.js:48:13:48:18 | 'echo' |
+| tst.js:48:21:48:32 | ['example3'] |
+| tst.js:49:13:49:18 | 'echo' |
+| tst.js:49:21:49:32 | ['example4'] |
+| tst.js:49:35:49:47 | { all: true } |
+test_MissingFileSystemAccess
+test_SystemCommandExecution
+| tst.js:1:71:1:71 | $ |
+| tst.js:4:7:4:7 | $ |
+| tst.js:5:7:5:7 | $ |
+| tst.js:6:1:6:1 | $ |
+| tst.js:6:1:6:6 | $.sync |
+| tst.js:10:7:10:7 | $ |
+| tst.js:12:7:12:7 | $ |
+| tst.js:13:1:13:1 | $ |
+| tst.js:13:1:13:6 | $.sync |
+| tst.js:15:1:15:1 | $ |
+| tst.js:15:1:15:6 | $.sync |
+| tst.js:16:7:16:7 | $ |
+| tst.js:18:7:18:7 | $ |
+| tst.js:18:7:18:24 | $({ shell: true }) |
+| tst.js:20:7:20:7 | $ |
+| tst.js:20:7:20:25 | $({ shell: false }) |
+| tst.js:24:7:24:37 | execa(' ... ple1']) |
+| tst.js:26:7:26:33 | execa(' ... ple1']) |
+| tst.js:28:7:28:65 | execa(' ... true }) |
+| tst.js:29:7:29:70 | execa(' ... true }) |
+| tst.js:32:1:32:36 | execaSy ... sync']) |
+| tst.js:34:7:34:43 | execaCo ... ument") |
+| tst.js:35:7:35:53 | execaCo ... dSync`) |
+| tst.js:37:1:37:21 | execaCo ... nc(arg) |
+| tst.js:39:1:39:57 | execaCo ... true }) |
+| tst.js:43:7:43:7 | $ |
+| tst.js:45:7:45:7 | $ |
+| tst.js:45:7:45:30 | $({ inp ... ink' }) |
+| tst.js:46:7:46:41 | execa(' ... ink' }) |
+| tst.js:47:7:47:33 | execa(' ... ple2']) |
+| tst.js:48:7:48:33 | execa(' ... ple3']) |
+| tst.js:49:7:49:48 | execa(' ... true }) |
+test_FileNameSource
