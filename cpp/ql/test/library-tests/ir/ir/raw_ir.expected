@@ -11663,14 +11663,13 @@ ir.cpp:
 # 2127|     mu2127_2(unknown)       = AliasedDefinition       : 
 # 2127|     r2127_3(glval<int>)     = VariableAddress[i]      : 
 # 2127|     r2127_4(glval<unknown>) = FunctionAddress[addOne] : 
-# 2127|     r2127_5(glval<int>)     = VariableAddress         : 
-# 2127|     r2127_6(int)            = Load[?]                 : &:r2127_5, ~m?
-# 2127|     r2127_7(int)            = Call[addOne]            : func:r2127_4, 0:r2127_6
-# 2127|     mu2127_8(unknown)       = ^CallSideEffect         : ~m?
-# 2127|     mu2127_9(int)           = Store[i]                : &:r2127_3, r2127_7
-# 2127|     v2127_10(void)          = ReturnVoid              : 
-# 2127|     v2127_11(void)          = AliasedUse              : ~m?
-# 2127|     v2127_12(void)          = ExitFunction            : 
+# 2127|     r2127_5(int)            = Constant[2]             : 
+# 2127|     r2127_6(int)            = Call[addOne]            : func:r2127_4, 0:r2127_5
+# 2127|     mu2127_7(unknown)       = ^CallSideEffect         : ~m?
+# 2127|     mu2127_8(int)           = Store[i]                : &:r2127_3, r2127_6
+# 2127|     v2127_9(void)           = ReturnVoid              : 
+# 2127|     v2127_10(void)          = AliasedUse              : ~m?
+# 2127|     v2127_11(void)          = ExitFunction            : 
 
 # 2128| int j
 # 2128|   Block 0

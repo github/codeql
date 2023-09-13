@@ -41,12 +41,29 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
  * means to express those as QL values.
  */
 predicate isIRConstant(Expr expr) {
-  expr instanceof Literal or
-  expr instanceof SizeofOperator or
-  expr instanceof AlignofOperator or
-  expr instanceof NoExceptExpr or
-  expr instanceof BuiltInOperationBuiltInOffsetOf or
+  expr instanceof Literal
+  or
+  expr instanceof SizeofOperator
+  or
+  expr instanceof AlignofOperator
+  or
+  expr instanceof NoExceptExpr
+  or
+  expr instanceof BuiltInOperationBuiltInOffsetOf
+  or
   expr instanceof EnumConstantAccess
+  or
+  /*
+   * A static local variable can be constant-initialised with a local variable. 
+   * In that case we use a literal for that constant as the local is in a different 
+   * IRFunction. 
+   */
+  expr instanceof VariableAccess and
+  exists(LocalVariable lv |
+    lv = expr.(VariableAccess).getTarget() and
+    not lv.isStatic()
+  ) and
+  getEnclosingDeclaration(expr) instanceof StaticInitializedStaticLocalVariable
 }
 
 // Pulled out for performance. See

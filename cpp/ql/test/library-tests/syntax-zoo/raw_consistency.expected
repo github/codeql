@@ -60,5 +60,4 @@ thisArgumentIsNonPointer
 | pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 | pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 nonUniqueIRVariable
-| staticlocals.cpp:27:27:27:29 | VariableAddress: two | Variable address instruction 'VariableAddress: two' has no associated variable, in function '$@'. | staticlocals.cpp:27:16:27:16 | int i | int i |
 missingCppType
