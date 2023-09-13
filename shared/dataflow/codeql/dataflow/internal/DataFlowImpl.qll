@@ -1459,8 +1459,7 @@ module MakeImpl<InputSig Lang> {
         pragma[nomagic]
         private predicate fwdFlowInCand(
           DataFlowCall call, DataFlowCallable inner, ParamNodeEx p, FlowState state, Cc outercc,
-          CcCall innercc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
-          ApApprox apa
+          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
           exists(ArgNodeEx arg, boolean allowsFieldFlow |
             fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
@@ -1471,7 +1470,6 @@ module MakeImpl<InputSig Lang> {
             ) and
             flowIntoCallApaInlineLate(call, inner, arg, p, allowsFieldFlow, apa)
           |
-            innercc = getCallContextCall(call, inner) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
@@ -1482,9 +1480,9 @@ module MakeImpl<InputSig Lang> {
           ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
           exists(DataFlowCallable inner, boolean cc |
-            fwdFlowInCand(call, inner, p, state, outercc, innercc, summaryCtx, argT, argAp, t, ap,
-              apa) and
+            fwdFlowInCand(call, inner, p, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
             FwdTypeFlow::typeFlowValidEdgeIn(call, inner, cc) and
+            innercc = getCallContextCall(call, inner) and
             if outercc instanceof CcCall then cc = true else cc = false
           )
         }
