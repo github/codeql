@@ -1,0 +1,8 @@
+| com/github/codeql/test/NonPublicClass.java:5:5:5:28 | println(...) | java.io.PrintStream#println(String) | true | supported | rt.jar |  | sink | type | source | classification |
+| com/github/codeql/test/PublicClass.java:7:5:7:27 | println(...) | java.io.PrintStream#println(String) | true | supported | rt.jar |  | sink | type | source | classification |
+| com/github/codeql/test/PublicClass.java:11:5:11:27 | println(...) | java.io.PrintStream#println(String) | true | supported | rt.jar |  | sink | type | source | classification |
+| com/github/codeql/test/PublicClass.java:15:5:15:45 | println(...) | java.io.PrintStream#println(Object) | true | supported | rt.jar |  | sink | type | source | classification |
+| com/github/codeql/test/PublicClass.java:15:24:15:44 | get(...) | java.nio.file.Paths#get(String,String[]) | true | supported | rt.jar |  | sink | type | source | classification |
+| com/github/codeql/test/PublicClass.java:15:24:15:44 | get(...) | java.nio.file.Paths#get(String,String[]) | true | supported | rt.jar |  | summary | type | source | classification |
+| com/github/codeql/test/PublicClass.java:19:5:19:27 | println(...) | java.io.PrintStream#println(String) | true | supported | rt.jar |  | sink | type | source | classification |
+| com/github/codeql/test/PublicInterface.java:7:7:7:29 | println(...) | java.io.PrintStream#println(String) | true | supported | rt.jar |  | sink | type | source | classification |
