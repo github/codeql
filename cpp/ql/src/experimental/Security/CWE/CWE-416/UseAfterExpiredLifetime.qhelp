@@ -13,7 +13,7 @@ If the object is accessed after its lifetime has ended, the program may crash or
 <recommendation>
 
 <p>
-Ensure that no objct is accessed after its lifetime has ended.
+Ensure that no object is accessed after its lifetime has ended.
 Use RAII ("Resource Acquisition Is Initialization") to manage the lifetime of objects, and avoid manual memory management, if possible.
 </p>
 
