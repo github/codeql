@@ -6,7 +6,7 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - taggit
-    - Member[managers].Member[TagField]
+    - Member[forms].Member[TagField]
   - - Django.Forms.Field~Subclass
     - taggit
-    - Member[forms].Member[TagField]
+    - Member[managers].Member[TagField]
