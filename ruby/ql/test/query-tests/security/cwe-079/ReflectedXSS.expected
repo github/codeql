@@ -9,9 +9,9 @@ edges
 | app/controllers/foo/bars_controller.rb:17:21:17:26 | call to params | app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] |
 | app/controllers/foo/bars_controller.rb:17:21:17:36 | ...[...] | app/views/foo/bars/show.html.erb:2:18:2:30 | @user_website |
 | app/controllers/foo/bars_controller.rb:18:5:18:6 | dt | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt |
-| app/controllers/foo/bars_controller.rb:18:5:18:6 | dt | app/controllers/foo/bars_controller.rb:26:53:26:54 | dt |
 | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | app/controllers/foo/bars_controller.rb:18:10:18:22 | ...[...] |
 | app/controllers/foo/bars_controller.rb:18:10:18:22 | ...[...] | app/controllers/foo/bars_controller.rb:18:5:18:6 | dt |
+| app/controllers/foo/bars_controller.rb:19:22:19:23 | dt | app/controllers/foo/bars_controller.rb:26:53:26:54 | dt |
 | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt | app/views/foo/bars/show.html.erb:40:3:40:16 | @instance_text |
 | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | app/controllers/foo/bars_controller.rb:24:39:24:59 | ...[...] |
 | app/controllers/foo/bars_controller.rb:24:39:24:59 | ...[...] | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... |
