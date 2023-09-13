@@ -243,7 +243,7 @@ private module Postgres {
 /**
  * Provides classes modeling the `sqlite3` package.
  */
-private module Sqlite {
+private module Sqlite3 {
   /** Gets an expression that constructs or returns a Sqlite database instance. */
   API::Node database() { result = API::Node::ofType("sqlite3", "Database") }
 
@@ -257,6 +257,36 @@ private module Sqlite {
       result = this.getCallback(1).getParameter(1) or
       PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
     }
+
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
+  }
+
+  /** An expression that is passed to the `query` method and hence interpreted as SQL. */
+  class QueryString extends SQL::SqlString {
+    QueryString() { this = any(QueryCall qc).getAQueryArgument() }
+  }
+}
+
+/**
+ * Provides classes modeling the `sqlite` package.
+ */
+private module Sqlite {
+  /** Gets an expression that constructs or returns a Sqlite database instance. */
+  API::Node database() {
+    result =
+      [
+        API::moduleImport("sqlite").getMember("open").getReturn(),
+        API::moduleImport("sqlite").getMember("open").getReturn().getPromised()
+      ]
+  }
+
+  /** A call to a Sqlite query method. */
+  private class QueryCall extends DatabaseAccess, API::CallNode {
+    QueryCall() {
+      this = database().getMember(["all", "each", "exec", "get", "prepare", "run"]).getACall()
+    }
+
+    override DataFlow::Node getAResult() { result = this.getReturn().asSource() }
 
     override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
