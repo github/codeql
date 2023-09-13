@@ -50,7 +50,7 @@ Data extensions use union semantics, which means that the tuples of all extensio
 Publish data extension files in a CodeQL model pack to share
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can group one or more data extention files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see "`Creating a CodeQL model pack <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack>`__ and `Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs`__ in the CodeQL CLI documentation.
+You can group one or more data extention files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see "`Creating a CodeQL model pack <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack/>`__ and `Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs/>`__ in the CodeQL CLI documentation.
 
 Extensible predicates in the CodeQL library for Java/Kotlin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,14 +62,14 @@ The CodeQL library for Java and Kotlin analysis exposes the following extensible
 - ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to summarize how data values from a source flow outside the repository in a dependency of the main code base.
 - ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the data flow analysis.
 
-The extensible predicates are populated using data extensions specified in YAML files. For more information about extensible predicates, see ":ref:`extensible-predicates`."
+The extensible predicates are populated using data extensions specified in YAML files. For more information about extensible predicates, see ":doc:`extensible-predicates`."
 
 Examples of data extension definitions
 --------------------------------------
 
 The examples in this section are taken from the standard CodeQL Java query pack published by GitHub. They demonstrate how to add tuples to extend extensible predicates that are used by the standard queries.
 
-For details of the *mini DSLs* that define models for each extensible predicate, see ":ref:`extensible-predicate-reference`."
+For details of the *mini DSLs* that define models for each extensible predicate, see ":doc:`extensible-predicates`."
 
 Example: Taint sink in the ``java.sql`` package
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

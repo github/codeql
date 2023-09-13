@@ -25,11 +25,12 @@ At a high level, there are two main components to using data extensions. The que
 This example of an extensible predicate for a source is taken from the core Java libraries https://github.com/github/codeql/blob/main/java/ql/lib/semmle/code/java/dataflow/ExternalFlowExtensions.qll#L8-L11
 
 .. code-block:: ql
-extensible predicate sourceModel(
-  string package, string type, boolean subtypes, string name, 
-  string signature, string ext, string output, string kind, 
-  string provenance
-);
+
+    extensible predicate sourceModel(
+      string package, string type, boolean subtypes, string name, 
+      string signature, string ext, string output, string kind, 
+      string provenance
+    );
 
 An extensible predicate is a CodeQL predicate with the following restrictions:
 

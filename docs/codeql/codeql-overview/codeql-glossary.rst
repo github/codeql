@@ -41,7 +41,7 @@ CodeQL packs
 
 CodeQL packs are used to create, share, depend on, and run CodeQL queries, libraries, and models. You can publish your own CodeQL packs and download packs created by others. CodeQL query packs may contain queries, library files, query suites, and metadata. CodeQL library packs include one or more CodeQL libraries. CodeQL model packs include one or more data extension files that extend the core libraries by modeling additional libraries and frameworks (dependencies of your code base).
 
-.. _data-extensions::
+.. _data-extensions:
 
 Data extensions
 ---------------

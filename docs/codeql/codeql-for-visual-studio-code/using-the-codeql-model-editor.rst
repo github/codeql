@@ -30,8 +30,10 @@ To set up the CodeQL model editor, you need to be using CodeQL for VS Code 1.8.7
 
 .. code-block:: json
 
-   "codeQL.canary": true, CHECK THIS
-   "codeQL.model.editor": true,
+    "codeQL.canary": true, 
+    "codeQL.model.editor": true,
+
+CHECK THIS ^^^
 
 Open the user settings editor (JSON) using the command palette (Ctrl/Cmd+Shift+P) and using the command “Preferences: Open User Settings (JSON)”, add these two settings to the file.
 
