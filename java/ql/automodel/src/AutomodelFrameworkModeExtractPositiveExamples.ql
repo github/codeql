@@ -15,7 +15,8 @@ private import AutomodelJavaUtil
 from
   Endpoint endpoint, SinkType sinkType, FrameworkModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString output, DollarAtString parameterName, DollarAtString extensibleType
+  DollarAtString input, DollarAtString output, DollarAtString parameterName,
+  DollarAtString extensibleType
 where
   endpoint.getExtensibleType() = extensibleType and
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
