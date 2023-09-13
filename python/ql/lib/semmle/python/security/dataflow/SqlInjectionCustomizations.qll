@@ -9,7 +9,6 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
-private import semmle.python.Frameworks
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
