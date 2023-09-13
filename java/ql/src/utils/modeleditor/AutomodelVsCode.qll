@@ -94,9 +94,9 @@ class CallableMethod extends Callable {
   pragma[nomagic]
   predicate isNeutral() {
     exists(
-      string namespace, string type, string name, string signature, string kind, string provenance
+      string namespace, string type, string name, string signature
     |
-      neutralModel(namespace, type, name, signature, kind, provenance) and
+      neutralModel(namespace, type, name, signature, _, _) and
       this = interpretElement(namespace, type, false, name, signature, "")
     )
   }
