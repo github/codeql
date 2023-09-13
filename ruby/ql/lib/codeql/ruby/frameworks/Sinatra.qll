@@ -285,7 +285,7 @@ module Sinatra {
   }
 
   /** Holds if `n` is a `self` parameter belonging to block `b`. */
-  private predicate blockSelfParameterNode(DataFlowPrivate::LambdaSelfParameterNode n, Block b) {
+  private predicate blockSelfParameterNode(DataFlowPrivate::LambdaSelfReferenceNode n, Block b) {
     n.getCallable() = b
   }
 }

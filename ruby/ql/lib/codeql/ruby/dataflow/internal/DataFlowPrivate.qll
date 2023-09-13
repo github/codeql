@@ -375,7 +375,7 @@ module VariableCapture {
     or
     result.(Flow::ParameterNode).getParameter().getParameterNode() = n
     or
-    result.(Flow::ThisParameterNode).getCallable() = n.(LambdaSelfParameterNode).getCallable()
+    result.(Flow::ThisParameterNode).getCallable() = n.(LambdaSelfReferenceNode).getCallable()
   }
 
   predicate storeStep(Node node1, Content::CapturedVariableContent c, Node node2) {
@@ -443,7 +443,7 @@ private module Cached {
       p instanceof SplatParameter
     } or
     TSelfParameterNode(MethodBase m) or
-    TLambdaSelfParameterNode(Callable c) { lambdaCreationExpr(_, _, c) } or
+    TLambdaSelfReferenceNode(Callable c) { lambdaCreationExpr(_, _, c) } or
     TBlockParameterNode(MethodBase m) or
     TSynthHashSplatParameterNode(DataFlowCallable c) {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
@@ -696,7 +696,7 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof SynthSplatParameterElementNode
   or
-  n instanceof LambdaSelfParameterNode
+  n instanceof LambdaSelfReferenceNode
   or
   n instanceof CaptureNode
 }
@@ -892,10 +892,10 @@ private module ParameterNodes {
    * "lambda self" from "normal self", as lambdas may also access outer `self`
    * variables (through variable capture).
    */
-  class LambdaSelfParameterNode extends ParameterNodeImpl, TLambdaSelfParameterNode {
+  class LambdaSelfReferenceNode extends ParameterNodeImpl, TLambdaSelfReferenceNode {
     private Callable callable;
 
-    LambdaSelfParameterNode() { this = TLambdaSelfParameterNode(callable) }
+    LambdaSelfReferenceNode() { this = TLambdaSelfReferenceNode(callable) }
 
     final Callable getCallable() { result = callable }
 
@@ -1674,7 +1674,7 @@ predicate expectsContent(Node n, ContentSet c) {
 }
 
 private newtype TDataFlowType =
-  TLambdaDataFlowType(Callable c) { c = any(LambdaSelfParameterNode n).getCallable() } or
+  TLambdaDataFlowType(Callable c) { c = any(LambdaSelfReferenceNode n).getCallable() } or
   TUnknownDataFlowType()
 
 class DataFlowType extends TDataFlowType {
@@ -1695,14 +1695,14 @@ private predicate mustHaveLambdaType(CfgNodes::ExprCfgNode e, Callable c) {
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
-  result = TLambdaDataFlowType(n.(LambdaSelfParameterNode).getCallable())
+  result = TLambdaDataFlowType(n.(LambdaSelfReferenceNode).getCallable())
   or
   exists(Callable c |
     mustHaveLambdaType(n.asExpr(), c) and
     result = TLambdaDataFlowType(c)
   )
   or
-  not n instanceof LambdaSelfParameterNode and
+  not n instanceof LambdaSelfReferenceNode and
   not mustHaveLambdaType(n.asExpr(), _) and
   result = TUnknownDataFlowType()
 }
