@@ -2095,4 +2095,38 @@ int TransNonExit() {
     return x;
 }
 
+int enumConstant() {
+  enum E { A, B, C };
+  return A;
+}
+
+int alignofTest() {
+  return alignof(int);
+}
+
+int offsetOfTest() {
+    return __builtin_offsetof(Point, y); 
+}
+
+int noExceptTest() {
+    return noexcept(0);
+}
+
+constexpr int constant = 20;
+int constexprTest() {
+    constexpr int x = 5;
+    return x + constant;
+}
+
+constexpr int addOne(int x) {
+  return x + 1;
+}
+
+int constexprTest2() {
+    constexpr int two = 2;
+    static int i = addOne(two);
+    static int j = addOne(2);
+    return j;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

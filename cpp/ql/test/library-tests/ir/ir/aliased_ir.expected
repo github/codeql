@@ -12215,6 +12215,152 @@ ir.cpp:
 # 2090|     v2090_8(void)           = AliasedUse                : ~m2094_4
 # 2090|     v2090_9(void)           = ExitFunction              : 
 
+# 2098| int enumConstant()
+# 2098|   Block 0
+# 2098|     v2098_1(void)       = EnterFunction            : 
+# 2098|     m2098_2(unknown)    = AliasedDefinition        : 
+# 2098|     m2098_3(unknown)    = InitializeNonLocal       : 
+# 2098|     m2098_4(unknown)    = Chi                      : total:m2098_2, partial:m2098_3
+# 2100|     r2100_1(glval<int>) = VariableAddress[#return] : 
+# 2100|     r2100_2(int)        = Constant[0]              : 
+# 2100|     m2100_3(int)        = Store[#return]           : &:r2100_1, r2100_2
+# 2098|     r2098_5(glval<int>) = VariableAddress[#return] : 
+# 2098|     v2098_6(void)       = ReturnValue              : &:r2098_5, m2100_3
+# 2098|     v2098_7(void)       = AliasedUse               : m2098_3
+# 2098|     v2098_8(void)       = ExitFunction             : 
+
+# 2103| int alignofTest()
+# 2103|   Block 0
+# 2103|     v2103_1(void)       = EnterFunction            : 
+# 2103|     m2103_2(unknown)    = AliasedDefinition        : 
+# 2103|     m2103_3(unknown)    = InitializeNonLocal       : 
+# 2103|     m2103_4(unknown)    = Chi                      : total:m2103_2, partial:m2103_3
+# 2104|     r2104_1(glval<int>) = VariableAddress[#return] : 
+# 2104|     r2104_2(int)        = Constant[4]              : 
+# 2104|     m2104_3(int)        = Store[#return]           : &:r2104_1, r2104_2
+# 2103|     r2103_5(glval<int>) = VariableAddress[#return] : 
+# 2103|     v2103_6(void)       = ReturnValue              : &:r2103_5, m2104_3
+# 2103|     v2103_7(void)       = AliasedUse               : m2103_3
+# 2103|     v2103_8(void)       = ExitFunction             : 
+
+# 2107| int offsetOfTest()
+# 2107|   Block 0
+# 2107|     v2107_1(void)       = EnterFunction            : 
+# 2107|     m2107_2(unknown)    = AliasedDefinition        : 
+# 2107|     m2107_3(unknown)    = InitializeNonLocal       : 
+# 2107|     m2107_4(unknown)    = Chi                      : total:m2107_2, partial:m2107_3
+# 2108|     r2108_1(glval<int>) = VariableAddress[#return] : 
+# 2108|     r2108_2(int)        = Constant[4]              : 
+# 2108|     m2108_3(int)        = Store[#return]           : &:r2108_1, r2108_2
+# 2107|     r2107_5(glval<int>) = VariableAddress[#return] : 
+# 2107|     v2107_6(void)       = ReturnValue              : &:r2107_5, m2108_3
+# 2107|     v2107_7(void)       = AliasedUse               : m2107_3
+# 2107|     v2107_8(void)       = ExitFunction             : 
+
+# 2111| int noExceptTest()
+# 2111|   Block 0
+# 2111|     v2111_1(void)       = EnterFunction            : 
+# 2111|     m2111_2(unknown)    = AliasedDefinition        : 
+# 2111|     m2111_3(unknown)    = InitializeNonLocal       : 
+# 2111|     m2111_4(unknown)    = Chi                      : total:m2111_2, partial:m2111_3
+# 2112|     r2112_1(glval<int>) = VariableAddress[#return] : 
+# 2112|     r2112_2(int)        = Constant[1]              : 
+# 2112|     m2112_3(int)        = Store[#return]           : &:r2112_1, r2112_2
+# 2111|     r2111_5(glval<int>) = VariableAddress[#return] : 
+# 2111|     v2111_6(void)       = ReturnValue              : &:r2111_5, m2112_3
+# 2111|     v2111_7(void)       = AliasedUse               : m2111_3
+# 2111|     v2111_8(void)       = ExitFunction             : 
+
+# 2115| int constant
+# 2115|   Block 0
+# 2115|     v2115_1(void)       = EnterFunction             : 
+# 2115|     m2115_2(unknown)    = AliasedDefinition         : 
+# 2115|     r2115_3(glval<int>) = VariableAddress[constant] : 
+# 2115|     r2115_4(int)        = Constant[20]              : 
+# 2115|     m2115_5(int)        = Store[constant]           : &:r2115_3, r2115_4
+# 2115|     m2115_6(unknown)    = Chi                       : total:m2115_2, partial:m2115_5
+# 2115|     v2115_7(void)       = ReturnVoid                : 
+# 2115|     v2115_8(void)       = AliasedUse                : ~m2115_6
+# 2115|     v2115_9(void)       = ExitFunction              : 
+
+# 2116| int constexprTest()
+# 2116|   Block 0
+# 2116|     v2116_1(void)       = EnterFunction            : 
+# 2116|     m2116_2(unknown)    = AliasedDefinition        : 
+# 2116|     m2116_3(unknown)    = InitializeNonLocal       : 
+# 2116|     m2116_4(unknown)    = Chi                      : total:m2116_2, partial:m2116_3
+# 2117|     r2117_1(glval<int>) = VariableAddress[x]       : 
+# 2117|     r2117_2(int)        = Constant[5]              : 
+# 2117|     m2117_3(int)        = Store[x]                 : &:r2117_1, r2117_2
+# 2118|     r2118_1(glval<int>) = VariableAddress[#return] : 
+# 2118|     r2118_2(int)        = Constant[25]             : 
+# 2118|     m2118_3(int)        = Store[#return]           : &:r2118_1, r2118_2
+# 2116|     r2116_5(glval<int>) = VariableAddress[#return] : 
+# 2116|     v2116_6(void)       = ReturnValue              : &:r2116_5, m2118_3
+# 2116|     v2116_7(void)       = AliasedUse               : m2116_3
+# 2116|     v2116_8(void)       = ExitFunction             : 
+
+# 2121| int addOne(int)
+# 2121|   Block 0
+# 2121|     v2121_1(void)       = EnterFunction            : 
+# 2121|     m2121_2(unknown)    = AliasedDefinition        : 
+# 2121|     m2121_3(unknown)    = InitializeNonLocal       : 
+# 2121|     m2121_4(unknown)    = Chi                      : total:m2121_2, partial:m2121_3
+# 2121|     r2121_5(glval<int>) = VariableAddress[x]       : 
+# 2121|     m2121_6(int)        = InitializeParameter[x]   : &:r2121_5
+# 2122|     r2122_1(glval<int>) = VariableAddress[#return] : 
+# 2122|     r2122_2(glval<int>) = VariableAddress[x]       : 
+# 2122|     r2122_3(int)        = Load[x]                  : &:r2122_2, m2121_6
+# 2122|     r2122_4(int)        = Constant[1]              : 
+# 2122|     r2122_5(int)        = Add                      : r2122_3, r2122_4
+# 2122|     m2122_6(int)        = Store[#return]           : &:r2122_1, r2122_5
+# 2121|     r2121_7(glval<int>) = VariableAddress[#return] : 
+# 2121|     v2121_8(void)       = ReturnValue              : &:r2121_7, m2122_6
+# 2121|     v2121_9(void)       = AliasedUse               : m2121_3
+# 2121|     v2121_10(void)      = ExitFunction             : 
+
+# 2125| int constexprTest2()
+# 2125|   Block 0
+# 2125|     v2125_1(void)       = EnterFunction            : 
+# 2125|     m2125_2(unknown)    = AliasedDefinition        : 
+# 2125|     m2125_3(unknown)    = InitializeNonLocal       : 
+# 2125|     m2125_4(unknown)    = Chi                      : total:m2125_2, partial:m2125_3
+# 2126|     r2126_1(glval<int>) = VariableAddress[two]     : 
+# 2126|     r2126_2(int)        = Constant[2]              : 
+# 2126|     m2126_3(int)        = Store[two]               : &:r2126_1, r2126_2
+# 2129|     r2129_1(glval<int>) = VariableAddress[#return] : 
+# 2129|     r2129_2(glval<int>) = VariableAddress[j]       : 
+# 2129|     r2129_3(int)        = Load[j]                  : &:r2129_2, ~m2125_3
+# 2129|     m2129_4(int)        = Store[#return]           : &:r2129_1, r2129_3
+# 2125|     r2125_5(glval<int>) = VariableAddress[#return] : 
+# 2125|     v2125_6(void)       = ReturnValue              : &:r2125_5, m2129_4
+# 2125|     v2125_7(void)       = AliasedUse               : m2125_3
+# 2125|     v2125_8(void)       = ExitFunction             : 
+
+# 2127| int i
+# 2127|   Block 0
+# 2127|     v2127_1(void)       = EnterFunction      : 
+# 2127|     m2127_2(unknown)    = AliasedDefinition  : 
+# 2127|     r2127_3(glval<int>) = VariableAddress[i] : 
+# 2127|     r2127_4(int)        = Constant[3]        : 
+# 2127|     m2127_5(int)        = Store[i]           : &:r2127_3, r2127_4
+# 2127|     m2127_6(unknown)    = Chi                : total:m2127_2, partial:m2127_5
+# 2127|     v2127_7(void)       = ReturnVoid         : 
+# 2127|     v2127_8(void)       = AliasedUse         : ~m2127_6
+# 2127|     v2127_9(void)       = ExitFunction       : 
+
+# 2128| int j
+# 2128|   Block 0
+# 2128|     v2128_1(void)       = EnterFunction      : 
+# 2128|     m2128_2(unknown)    = AliasedDefinition  : 
+# 2128|     r2128_3(glval<int>) = VariableAddress[j] : 
+# 2128|     r2128_4(int)        = Constant[3]        : 
+# 2128|     m2128_5(int)        = Store[j]           : &:r2128_3, r2128_4
+# 2128|     m2128_6(unknown)    = Chi                : total:m2128_2, partial:m2128_5
+# 2128|     v2128_7(void)       = ReturnVoid         : 
+# 2128|     v2128_8(void)       = AliasedUse         : ~m2128_6
+# 2128|     v2128_9(void)       = ExitFunction       : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
