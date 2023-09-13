@@ -18,7 +18,6 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    basic-query-for-java-code
    codeql-library-for-java
    analyzing-data-flow-in-java
-   using-data-extensions-to-model-dependencies
    types-in-java
    overflow-prone-comparisons-in-java
    navigating-the-call-graph
@@ -26,14 +25,13 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    javadoc
    working-with-source-locations
    abstract-syntax-tree-classes-for-working-with-java-programs
+   using-data-extensions-to-model-java-dependencies
 
 -  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for Java <codeql-library-for-java>`: When analyzing Java code, you can use the large collection of classes in the CodeQL library for Java.
 
 -  :doc:`Analyzing data flow in Java <analyzing-data-flow-in-java>`: You can use CodeQL to track the flow of data through a Java program to its use. 
-
--  :doc:`Using data extensions to model your Java/Kotlin dependencies`: You can model frameworks and libraries that your code base depends on using data extensions and publish them as CodeQL model packs.
 
 -  :doc:`Java types <types-in-java>`: You can use CodeQL to find out information about data types used in Java code. This allows you to write queries to identify specific type-related issues.
 
@@ -48,3 +46,5 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`Working with source locations <working-with-source-locations>`: You can use the location of entities within Java code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
 
 -  :doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-java-programs>`: CodeQL has a large selection of classes for representing the abstract syntax tree of Java programs.
+
+-  :doc:`Data extensions to model your Java/Kotlin dependencies`: You can model frameworks and libraries that your code base depends on using data extensions and publish them as CodeQL model packs.
