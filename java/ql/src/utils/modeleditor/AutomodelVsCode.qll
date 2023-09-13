@@ -93,9 +93,7 @@ class CallableMethod extends Callable {
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
   predicate isNeutral() {
-    exists(
-      string namespace, string type, string name, string signature
-    |
+    exists(string namespace, string type, string name, string signature |
       neutralModel(namespace, type, name, signature, _, _) and
       this = interpretElement(namespace, type, false, name, signature, "")
     )
