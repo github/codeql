@@ -27,7 +27,7 @@ newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) or
   TQualifier(Callable c) or
   TReturnValue(Callable c) or
-  TOverloadableParameter(Method m, Parameter p) {
+  TOverridableParameter(Method m, Parameter p) {
     p.getCallable() = m and
     m instanceof ModelExclusions::ModelApi and
     m.fromSource() and
@@ -143,11 +143,11 @@ class ReturnValue extends FrameworkModeEndpoint, TReturnValue {
   override string getExtensibleType() { result = "sourceModel" }
 }
 
-class OverloadableParameter extends FrameworkModeEndpoint, TOverloadableParameter {
+class OverridableParameter extends FrameworkModeEndpoint, TOverridableParameter {
   Method method;
   Parameter param;
 
-  OverloadableParameter() { this = TOverloadableParameter(method, param) }
+  OverridableParameter() { this = TOverridableParameter(method, param) }
 
   override int getIndex() { result = param.getPosition() }
 
