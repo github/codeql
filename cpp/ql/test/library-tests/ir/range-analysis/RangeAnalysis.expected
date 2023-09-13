@@ -1,4 +1,2 @@
 testFailures
-| SimpleRangeAnalysis_tests.cpp:732:11:732:15 | Load: total | Unexpected result: range=">=Phi: 13+143" |
-| SimpleRangeAnalysis_tests.cpp:734:9:734:13 | Load: total | Unexpected result: range=">=Phi: 13+0" |
 failures

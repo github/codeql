@@ -729,9 +729,9 @@ int test_unsigned_mult02(unsigned b) {
     int r = 11*b;  // 143 .. 253
     range(r); // $ range=>=143 range=<=253
     total += r;
-    range(total); // $ range="<=Phi: 13+253" range="<=Phi: 0+506" range=">=Phi: 0+143" range=>=143 range=<=759
+    range(total); // $ range="<=Phi: 13+253" range="<=Phi: 0+506" range=">=Phi: 0+143" range=">=Phi: 13+143" range=>=143 range=<=759
   }
-  range(total); // $ range=>=0 range=<=759 range=">=Phi: 0+0" range="<=Phi: 0+506" range="<=Phi: 13+253"
+  range(total); // $ range=>=0 range=<=759 range=">=Phi: 0+0" range="<=Phi: 0+506"  range=">=Phi: 13+0"  range="<=Phi: 13+253"
   return total;
 }
 
