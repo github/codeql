@@ -25,6 +25,9 @@ module InsecureDownload {
      */
     abstract deprecated DataFlow::FlowState getALabel();
 
+    /**
+     * Gets a flow-label for this source.
+     */
     abstract Label::State getAFlowLabel();
   }
 
@@ -43,6 +46,9 @@ module InsecureDownload {
      */
     abstract deprecated DataFlow::FlowState getALabel();
 
+    /**
+     * Gets a flow-label where this sink is vulnerable.
+     */
     abstract Label::State getAFlowLabel();
   }
 
@@ -83,8 +89,11 @@ module InsecureDownload {
      * Flow-labels for reasoning about download of sensitive file through insecure connection.
      */
     newtype State =
+      /** A flow-label for a URL that is downloaded over an insecure connection. */
       InsecureState() or
+      /** A flow-label for a URL that is sensitive. */
       SensitiveState() or
+      /** A flow-label for file URLs that are both sensitive and downloaded over an insecure connection. */
       SensitiveInsecureState()
   }
 

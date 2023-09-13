@@ -35,7 +35,9 @@ module HardcodedDataInterpretedAsCode {
      * Flow states used to distinguish value-preserving flow from taint flow.
      */
     newtype State =
+      /** Flow state used to track value-preserving flow. */
       Data() or
+      /** Flow state used to tainted data (non-value preserving flow). */
       Taint()
   }
 

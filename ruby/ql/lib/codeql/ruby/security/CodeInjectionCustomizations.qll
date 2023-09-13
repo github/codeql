@@ -31,6 +31,9 @@ module CodeInjection {
 
     /** A flow state used to distinguish whether an attacker controls the entire string. */
     class State extends TState {
+      /**
+       * Gets a string representation of this state.
+       */
       string toString() { result = this.getStringRepresentation() }
 
       /**
