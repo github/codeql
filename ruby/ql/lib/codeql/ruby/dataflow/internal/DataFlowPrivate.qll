@@ -916,7 +916,7 @@ private module ParameterNodes {
    * The value of a block parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  class BlockParameterNode extends ParameterNodeImpl, ArgumentNode, TBlockParameterNode {
+  class BlockParameterNode extends ParameterNodeImpl, TBlockParameterNode {
     private MethodBase method;
 
     BlockParameterNode() { this = TBlockParameterNode(method) }
@@ -933,16 +933,6 @@ private module ParameterNodes {
 
     CfgNodes::ExprNodes::CallCfgNode getAYieldCall() {
       this.getMethod() = result.getExpr().(YieldCall).getEnclosingMethod()
-    }
-
-    // needed for variable capture flow
-    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
-      call = this.getAYieldCall() and
-      pos.isLambdaSelf()
-    }
-
-    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      this.sourceArgumentOf(call.asCall(), pos)
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -1199,7 +1189,7 @@ abstract class ArgumentNode extends Node {
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
-private module ArgumentNodes {
+module ArgumentNodes {
   /** A data-flow node that represents an explicit call argument. */
   class ExplicitArgumentNode extends ArgumentNode {
     Argument arg;
@@ -1212,6 +1202,20 @@ private module ArgumentNodes {
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
       arg.isArgumentOf(call, pos)
+    }
+  }
+
+  class BlockParameterArgumentNode extends BlockParameterNode, ArgumentNode {
+    BlockParameterArgumentNode() { exists(this.getAYieldCall()) }
+
+    // needed for variable capture flow
+    override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
+      call = this.getAYieldCall() and
+      pos.isLambdaSelf()
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      this.sourceArgumentOf(call.asCall(), pos)
     }
   }
 
