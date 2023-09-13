@@ -1,0 +1,870 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[admin].Member[filters].Member[ContentTypeModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[admin].Member[filters].Member[FilteredModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[URLOrAbsolutePathField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[collections].Member[CollectionChoiceField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[comments].Member[BooleanField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[models].Member[TagField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[tags].Member[TagField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[blocks].Member[base].Member[BlockField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[forms].Member[PageChoiceField]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[views].Member[PagesAPIViewSet]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[views].Member[PagesAdminAPIViewSet]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[urls].Member[JavaScriptCatalog]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[urls].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[urls].Member[reports].Member[AgingPagesView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[urls].Member[reports].Member[LockedPagesView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[urls].Member[reports].Member[LogEntriesView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[urls].Member[reports].Member[WorkflowTasksView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[urls].Member[reports].Member[WorkflowView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[LogoutView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[PasswordResetCompleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[PasswordResetConfirmView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[PasswordResetDoneView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[PasswordResetView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[bulk_action].Member[base_bulk_action].Member[BulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[bulk_action].Member[base_bulk_action].Member[FormView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[AnchorLinkView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[BaseLinkFormView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[BrowseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[ChosenMultipleView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[EmailLinkView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[ExternalLinkView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[PhoneLinkView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[SearchView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[collections].Member[Create]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[collections].Member[Delete]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[collections].Member[Edit]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[collections].Member[Index]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[dismissibles].Member[DismissiblesView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[dismissibles].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[base].Member[BaseOperationView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[base].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[BaseChooseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[ChooseResultsView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[ChooseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[ChosenMultipleView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[ChosenView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[history].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[history].Member[WorkflowHistoryDetailView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[history].Member[WorkflowHistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[lock].Member[BaseOperationView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[lock].Member[LockView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[lock].Member[UnlockView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[BaseCreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[BaseDeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[BaseDetailView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[BaseListView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[BaseUpdateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[RevisionsCompareView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[RevisionsUnscheduleView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[UnpublishView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[preview].Member[PreviewOnCreate]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[preview].Member[PreviewOnEdit]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[preview].Member[PreviewRevision]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[preview].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[workflow].Member[BaseWorkflowFormView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[workflow].Member[CollectWorkflowActionData]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[workflow].Member[ConfirmWorkflowCancellation]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[workflow].Member[PreviewRevisionForTask]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[workflow].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[workflow].Member[WorkflowAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[workflow].Member[WorkflowStatus]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[home].Member[HomeView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[home].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[delete].Member[DeleteBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[delete].Member[PageBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[move].Member[MoveBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[move].Member[PageBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[page_bulk_action].Member[PageBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[publish].Member[PageBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[publish].Member[PublishBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[unpublish].Member[PageBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[unpublish].Member[UnpublishBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[create].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[create].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[edit].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[edit].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[history].Member[PageHistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[history].Member[WorkflowHistoryDetailView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[history].Member[WorkflowHistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[lock].Member[LockView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[lock].Member[UnlockView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[preview].Member[PreviewOnCreate]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[preview].Member[PreviewOnEdit]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[revisions].Member[PreviewRevision]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[revisions].Member[RevisionsCompareView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[revisions].Member[RevisionsCompare]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[revisions].Member[RevisionsUnscheduleView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[revisions].Member[RevisionsUnschedule]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[revisions].Member[RevisionsView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[unpublish].Member[UnpublishView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[unpublish].Member[Unpublish]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[workflow].Member[BaseWorkflowFormView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[workflow].Member[CollectWorkflowActionData]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[workflow].Member[ConfirmWorkflowCancellation]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[workflow].Member[PreviewRevisionForTask]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[workflow].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[workflow].Member[WorkflowAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[workflow].Member[WorkflowStatus]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[aging_pages].Member[AgingPagesView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[audit_logging].Member[LogEntriesView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[base].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[base].Member[PageReportView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[base].Member[ReportView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[locked_pages].Member[LockedPagesView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[workflows].Member[WorkflowTasksView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[workflows].Member[WorkflowView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[BaseTaskChooserView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[CreateTask]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[Create]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[DisableTask]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[Disable]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[EditTask]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[Edit]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[Index]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[TaskChooserCreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[TaskChooserResultsView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[TaskChooserView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[TaskIndex]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[api].Member[v2].Member[views].Member[BaseAPIViewSet]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[api].Member[v2].Member[views].Member[GenericViewSet]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[api].Member[v2].Member[views].Member[PagesAPIViewSet]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[ChooseParentView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[FormView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[HistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[InspectView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[InstanceSpecificView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[ModelFormView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[WMABaseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[documents].Member[views].Member[chooser].Member[BaseChooseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[documents].Member[views].Member[chooser].Member[BaseDocumentChooseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[documents].Member[views].Member[chooser].Member[DocumentChooseResultsView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[documents].Member[views].Member[chooser].Member[DocumentChooseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[documents].Member[views].Member[chooser].Member[DocumentChooserUploadView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[documents].Member[views].Member[chooser].Member[DocumentChosenView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[documents].Member[views].Member[chooser].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[images].Member[views].Member[serve].Member[SendFileView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[images].Member[views].Member[serve].Member[ServeView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[images].Member[views].Member[serve].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[chooser].Member[BaseChooseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[chooser].Member[BaseSnippetChooseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[chooser].Member[ChooseResultsView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[chooser].Member[ChooseView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[chooser].Member[ChosenMultipleView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[chooser].Member[ChosenView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[chooser].Member[SnippetChosenMultipleView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[chooser].Member[SnippetChosenView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[CollectWorkflowActionDataView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[ConfirmWorkflowCancellationView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[HistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[LockView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[ModelIndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[PreviewOnCreate]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[PreviewOnEdit]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[PreviewRevisionView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[PreviewRevision]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[ReportView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[RevisionsCompareView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[RevisionsUnscheduleView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[UnlockView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[UnpublishView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[UsageView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[WorkflowActionView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[WorkflowHistoryDetailView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[WorkflowHistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[WorkflowPreviewView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[WorkflowStatusView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[groups].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[groups].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[groups].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[groups].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[groups].Member[Index]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[users].Member[Create]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[users].Member[Delete]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[users].Member[Edit]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[users].Member[Index]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[account].Member[AvatarPreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[account].Member[LocalePreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[account].Member[NameEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[account].Member[NotificationPreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[auth].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[auth].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[auth].Member[PasswordChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[auth].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[AnchorLinkChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[BaseFilterForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[CollectionFilterMixin]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[EmailLinkChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[ExternalLinkChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[LocaleFilterMixin]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[PhoneLinkChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[choosers].Member[SearchFilterMixin]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[collections].Member[BaseCollectionMemberForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[collections].Member[CollectionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[collections].Member[CollectionViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[comments].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[comments].Member[CommentReplyForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[models].Member[ClusterForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[models].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[pages].Member[CopyForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[pages].Member[MoveForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[pages].Member[PageViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[pages].Member[WagtailAdminPageForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[search].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[view_restrictions].Member[BaseViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[workflows].Member[BaseTaskForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[workflows].Member[TaskChooserSearchForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[workflows].Member[WorkflowContentTypeForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[workflows].Member[WorkflowPageForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[panels].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[panels].Member[base].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[panels].Member[comment_panel].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[panels].Member[page_utils].Member[WagtailAdminPageForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[search].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[AvatarPreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[LocalePreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[NameEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[NotificationPreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[PasswordChangeForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[account].Member[PasswordResetForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[AnchorLinkChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[EmailLinkChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[ExternalLinkChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[PhoneLinkChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[chooser].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[collection_privacy].Member[CollectionViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[collections].Member[CollectionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[BaseFilterForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[CollectionFilterMixin]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[LocaleFilterMixin]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[chooser].Member[SearchFilterMixin]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[Form]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[page_privacy].Member[PageViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[move].Member[MoveForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[page_bulk_action].Member[DefaultPageForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[copy].Member[CopyForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[move].Member[MoveForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[search].Member[SearchForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[TaskChooserSearchForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[WorkflowContentTypeForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[contrib].Member[forms].Member[forms].Member[BaseForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[contrib].Member[forms].Member[forms].Member[SelectDateForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[contrib].Member[forms].Member[forms].Member[WagtailAdminFormPageForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[forms].Member[ParentChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[documents].Member[views].Member[serve].Member[PasswordViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[forms].Member[PasswordViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[forms].Member[TaskStateCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[models].Member[TaskStateCommentForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[forms].Member[GroupForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[forms].Member[PagePermissionsForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[forms].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[forms].Member[UserEditForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[forms].Member[UserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[forms].Member[UsernameForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[groups].Member[GroupForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[users].Member[UserCreationForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[users].Member[UserEditForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[views].Member[PasswordViewRestrictionForm]

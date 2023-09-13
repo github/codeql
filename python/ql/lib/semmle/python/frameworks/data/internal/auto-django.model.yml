@@ -12,6 +12,51 @@ extensions:
     - Member[contrib].Member[auth].Member[forms].Member[UsernameField]
   - - Django.Forms.Field~Subclass
     - django
+    - Member[contrib].Member[gis].Member[forms].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[FileField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[FilePathField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[ImageField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[JSONField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[RegexField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[URLField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[fields].Member[GeometryCollectionField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[fields].Member[GeometryField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[fields].Member[LineStringField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[fields].Member[MultiLineStringField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[fields].Member[MultiPointField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[fields].Member[MultiPolygonField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[fields].Member[PointField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[fields].Member[PolygonField]
+  - - Django.Forms.Field~Subclass
+    - django
     - Member[contrib].Member[postgres].Member[forms].Member[array].Member[SimpleArrayField]
   - - Django.Forms.Field~Subclass
     - django
@@ -283,6 +328,21 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - django
     - Member[contrib].Member[auth].Member[views].Member[SetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - django
+    - Member[contrib].Member[contenttypes].Member[forms].Member[ModelForm]
+  - - django.forms.BaseForm~Subclass
+    - django
+    - Member[contrib].Member[flatpages].Member[admin].Member[FlatpageForm]
+  - - django.forms.BaseForm~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[BaseForm]
+  - - django.forms.BaseForm~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[Form]
+  - - django.forms.BaseForm~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[ModelForm]
   - - django.forms.BaseForm~Subclass
     - django
     - Member[forms].Member[BaseForm]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - django_file_form
+    - Member[fields].Member[FileField]
+  - - Django.Forms.Field~Subclass
+    - django_file_form
+    - Member[fields].Member[MultipleUploadedFileField]
+  - - Django.Forms.Field~Subclass
+    - django_file_form
+    - Member[fields].Member[UploadedFileField]
+  - - Django.Forms.Field~Subclass
+    - django_file_form
+    - Member[forms].Member[CharField]
+  - - django.forms.BaseForm~Subclass
+    - django_file_form
+    - Member[forms].Member[Form]

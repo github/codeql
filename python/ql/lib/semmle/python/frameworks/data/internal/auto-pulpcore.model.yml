@@ -1,0 +1,240 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - pulpcore
+    - Member[filters].Member[ExpressionFilterField]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[urls].Member[APIRootView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[urls].Member[PulpAPIRootView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[urls].Member[SpectacularJSONAPIView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[urls].Member[SpectacularRedocView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[urls].Member[SpectacularSwaggerView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[urls].Member[SpectacularYAMLAPIView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[importer].Member[APIView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[importer].Member[PulpImporterImportCheckView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[orphans].Member[APIView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[orphans].Member[OrphansView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[repair].Member[APIView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[repair].Member[RepairView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[status].Member[APIView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[status].Member[StatusView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[access_policy].Member[AccessPolicyViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[acs].Member[AlternateContentSourceViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[base].Member[NamedModelViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[content].Member[ArtifactViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[content].Member[BaseContentViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[content].Member[ContentViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[content].Member[ListContentViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[content].Member[NamedModelViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[content].Member[ReadOnlyContentViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[content].Member[SigningServiceViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[domain].Member[DomainViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[exporter].Member[ExportViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[exporter].Member[ExporterViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[exporter].Member[FilesystemExportViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[exporter].Member[FilesystemExporterViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[exporter].Member[PulpExportViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[exporter].Member[PulpExporterViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[importer].Member[ImportViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[importer].Member[ImporterViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[importer].Member[PulpImportViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[importer].Member[PulpImporterViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[orphans].Member[OrphansCleanupViewset]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[orphans].Member[ViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[ArtifactDistributionViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[BaseContentGuardViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[BaseDistributionViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[BasePublicationViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[ContentGuardViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[ContentRedirectContentGuardViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[DistributionViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[ListContentGuardViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[ListDistributionViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[ListPublicationViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[PublicationViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[RBACContentGuardViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[publication].Member[ReadOnlyDistributionViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[reclaim].Member[ReclaimSpaceViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[reclaim].Member[ViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[replica].Member[UpstreamPulpViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[BaseRepositoryViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[GenericViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[ImmutableRepositoryViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[ListRemoteViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[ListRepositoryVersionViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[ListRepositoryViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[ReadOnlyRepositoryViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[RemoteViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[RepositoryVersionViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[RepositoryViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[task].Member[TaskGroupViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[task].Member[TaskScheduleViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[task].Member[TaskViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[task].Member[WorkerViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[upload].Member[UploadViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[GroupRoleViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[GroupUserViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[GroupViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[RoleViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[UserRoleViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[UserViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[content].Member[authentication].Member[APIView]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[plugin].Member[viewsets].Member[content].Member[NoArtifactContentUploadViewSet]
+  - - Django.Views.View~Subclass
+    - pulpcore
+    - Member[plugin].Member[viewsets].Member[content].Member[SingleArtifactContentUploadViewSet]

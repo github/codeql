@@ -1,0 +1,102 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[IdempotentSessionWizardView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[PhoneDeleteView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[PhoneSetupView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[urls].Member[PhoneDeleteView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[urls].Member[PhoneSetupView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[BackupTokensView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[FormView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[LoginView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[QRGeneratorView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[SetupCompleteView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[SetupView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[View]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[profile].Member[DisableView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[profile].Member[FormView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[profile].Member[ProfileView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[profile].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[utils].Member[IdempotentSessionWizardView]
+  - - Django.Views.View~Subclass
+    - two_factor
+    - Member[views].Member[utils].Member[SessionWizardView]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[forms].Member[AuthenticationTokenForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[forms].Member[BackupTokenForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[forms].Member[DeviceValidationForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[forms].Member[DisableForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[forms].Member[MethodForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[forms].Member[TOTPDeviceForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[forms].Member[PhoneNumberForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[forms].Member[PhoneNumberMethodForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[DeviceValidationForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[Form]
+  - - django.forms.BaseForm~Subclass
+    - two_factor
+    - Member[views].Member[utils].Member[ManagementForm]

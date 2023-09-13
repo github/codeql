@@ -18,6 +18,9 @@ extensions:
     - Member[serializers].Member[ImageField]
   - - Django.Views.View~Subclass
     - rest_framework
+    - Member[authtoken].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
     - Member[compat].Member[View]
   - - Django.Views.View~Subclass
     - rest_framework

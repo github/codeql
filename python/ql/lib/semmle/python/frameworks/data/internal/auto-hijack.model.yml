@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - hijack
+    - Member[views].Member[AcquireUserView]
+  - - Django.Views.View~Subclass
+    - hijack
+    - Member[views].Member[ReleaseUserView]
+  - - Django.Views.View~Subclass
+    - hijack
+    - Member[views].Member[View]
