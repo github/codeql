@@ -970,7 +970,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-      c.isSingleton(any(Content::CollectionContent ac))
+    c.isSingleton(any(Content::CollectionContent ac))
   )
   or
   // read of a dictionary value via subscript operator
@@ -1092,9 +1092,7 @@ class DataFlowExpr = Expr;
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) {
-  c instanceof Content::CollectionContent
-}
+predicate forceHighPrecision(Content c) { c instanceof Content::CollectionContent }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
