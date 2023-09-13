@@ -2708,7 +2708,8 @@ public class Parser {
     Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
     m.find(this.pos);
     int next = m.end();
-    return !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
+    return this.input.length() > next &&
+        !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
         && Identifiers.isIdentifierChar(this.input.codePointAt(next), false);
   }
 
