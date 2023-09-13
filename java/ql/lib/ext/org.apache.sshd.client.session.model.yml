@@ -4,8 +4,8 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.sshd.client.session", "AbstractClientSession", True, "addPasswordIdentity", "(String)", "", "Argument[0]", "credentials-password", "manual"]
-      - ["org.apache.sshd.client.session", "AbstractClientSession", True, "addPublicKeyIdentity", "", "", "Argument[0]", "crypto-parameter", "manual"]
-      - ["org.apache.sshd.client.session", "AbstractClientSession", True, "setServerKey", "", "", "Argument[0]", "crypto-parameter", "manual"]
+      - ["org.apache.sshd.client.session", "AbstractClientSession", True, "addPublicKeyIdentity", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["org.apache.sshd.client.session", "AbstractClientSession", True, "setServerKey", "", "", "Argument[0]", "credentials-key", "manual"]
       - ["org.apache.sshd.client.session", "ClientSessionCreator", True, "connect", "(String,SocketAddress)", "", "Argument[0]", "credentials-username", "manual"]
       - ["org.apache.sshd.client.session", "ClientSessionCreator", True, "connect", "(String,SocketAddress,AttributeRepository)", "", "Argument[0]", "credentials-username", "manual"]
       - ["org.apache.sshd.client.session", "ClientSessionCreator", True, "connect", "(String,SocketAddress,SocketAddress)", "", "Argument[0]", "credentials-username", "manual"]

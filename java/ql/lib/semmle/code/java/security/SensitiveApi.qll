@@ -29,7 +29,7 @@ class UsernameSink extends CredentialsSinkNode {
  * A node representing a cryptographic key being passed to a method.
  */
 class CryptoKeySink extends CredentialsSinkNode {
-  CryptoKeySink() { sinkNode(this, "crypto-parameter") }
+  CryptoKeySink() { sinkNode(this, "credentials-key") }
 }
 
 /**
