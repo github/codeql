@@ -33,6 +33,13 @@ class CryptoKeySink extends CredentialsSinkNode {
 }
 
 /**
+ * A node representing a cryptographic initialization vector being passed to a method.
+ */
+class InitializationVectorSink extends CredentialsSinkNode {
+  InitializationVectorSink() { sinkNode(this, "encryption-iv") }
+}
+
+/**
  * DEPRECATED: Use the `PasswordSink` class instead.
  * Holds if callable `c` from a standard Java API expects a password parameter at index `i`.
  */
