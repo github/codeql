@@ -8,6 +8,4 @@ extensions:
       - ["sun.security.pkcs11", "ConstructKeys", False, "constructPrivateKey", "(byte[],String)", "", "Argument[0]", "crypto-parameter", "manual"]
       - ["sun.security.pkcs11", "ConstructKeys", False, "constructPublicKey", "(byte[],String)", "", "Argument[0]", "crypto-parameter", "manual"]
       - ["sun.security.pkcs11", "ConstructKeys", False, "constructSecretKey", "(byte[],String)", "", "Argument[0]", "crypto-parameter", "manual"]
-      - ["sun.security.pkcs11", "P11Cipher", False, "engineUnwrap", "(byte[],String,int)", "", "Argument[0]", "crypto-parameter", "manual"]
-      - ["sun.security.pkcs11", "P11RSACipher", False, "engineUnwrap", "(byte[],String,int)", "", "Argument[0]", "crypto-parameter", "manual"]
       - ["sun.security.pkcs11", "P11SecretKeyFactory", False, "fixDESParity", "(byte[],int)", "", "Argument[0]", "crypto-parameter", "manual"]
