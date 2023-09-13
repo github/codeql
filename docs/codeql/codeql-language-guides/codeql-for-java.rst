@@ -25,7 +25,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    javadoc
    working-with-source-locations
    abstract-syntax-tree-classes-for-working-with-java-programs
-   using-data-extensions-to-model-java-dependencies
+   data-extensions-to-model-java-dependencies
 
 -  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query.
 
@@ -47,4 +47,4 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-java-programs>`: CodeQL has a large selection of classes for representing the abstract syntax tree of Java programs.
 
--  :doc:`Data extensions to model your Java/Kotlin dependencies`: You can model frameworks and libraries that your code base depends on using data extensions and publish them as CodeQL model packs.
+-  :doc:`Data extensions to model your Java/Kotlin dependencies <data-extensions-to-model-java-dependencies>`: You can model frameworks and libraries that your code base depends on using data extensions and publish them as CodeQL model packs.

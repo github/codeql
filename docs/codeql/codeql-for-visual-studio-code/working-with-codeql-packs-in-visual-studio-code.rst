@@ -16,8 +16,8 @@ You use CodeQL packs to share your expertise in query writing, CodeQL library de
 There are three types of CodeQL pack, each with a specific purpose.
 
 - Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and pre-compiled representations of each query, in addition to the query sources. This ensures consistent and efficient execution of the queries in the pack.
-- Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled separately.
 - Model packs are used to model dependencies that are not supported by the standard CodeQL libraries. When you add a model pack to your analysis, all extensible queries also analyze the sources and sinks of the dependencies defined in the pack.
+- Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled separately.
 
 Using the CodeQL packs shipped with the CLI in Visual Studio Code
 -----------------------------------------------------------------
@@ -31,7 +31,7 @@ Working with CodeQL query packs
 One of the main benefits of working with a CodeQL query pack is that all dependecies are resolved, not just those defined within the query and standard libraries.
 
 Creating and editing CodeQL query packs 
-'''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 To create a new query pack, you will need to use the CodeQL CLI from a terminal, which you can do within Visual Studio Code or outside of it with the ``codeql pack init`` command. Once you create an empty pack, you can edit the ``qlpack.yml`` file or run the ``codeql pack add`` command to add dependencies or change the name or version. For detailed information, see "`Creating and working with CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/creating-and-working-with-codeql-packs>`__."
 
 You can create or edit queries in a CodeQL pack in Visual Studio Code as you would with any CodeQL query, using the standard code editing features such as autocomplete suggestions to find elements to use from the pack's dependencies. 
@@ -39,7 +39,7 @@ You can create or edit queries in a CodeQL pack in Visual Studio Code as you wou
 You can then use the CodeQL CLI to publish your pack to share with others. For detailed information, see "`Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/publishing-and-using-codeql-packs>`__."
 
 Viewing CodeQL query packs and their dependencies
-'''''''''''''''''''''''''''''''''''''''''''''''''
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 To download a query pack that someone else has created, run the **CodeQL: Download Packs** command from the Command Palette.
 You can download all the core query packs, or enter the full name of a specific pack to download. For example, to download the core queries for analyzing Java and Kotlin, enter ``codeql/java-queries``.
 
@@ -56,4 +56,4 @@ The CodeQL extension for Visual Studio Code includes a dedicated editor for crea
 
 TODO a little more, but mostly about the general use, because editing will be in a new article.
 
-For headings use '''''''' in this section
+For headings use ~~~~~~~~ in this section
