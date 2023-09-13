@@ -16,6 +16,21 @@ public class CommentController : Controller {
         return View();
     }
 
+    // GOOD: The Authorize attribute is used
+    [Authorize]
+    public ActionResult Edit3(int commentId, string text) {
+        editComment(commentId, text);
+        return View();
+    }
+
+    // BAD: The AllowAnonymous attribute overrides the Authorize attribute
+    [Authorize]
+    [AllowAnonymous]
+    public ActionResult Edit4(int commentId, string text) {
+        editComment(commentId, text);
+        return View();
+    }
+
     void editComment(int commentId, string text) { }
 
     bool canEditComment(int commentId, string userName) { return false; }
