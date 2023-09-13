@@ -1,0 +1,5 @@
+| PublicClass.cs:7:17:7:21 | stuff | GitHub.CodeQL.PublicClass#stuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
+| PublicClass.cs:12:24:12:34 | staticStuff | GitHub.CodeQL.PublicClass#staticStuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
+| PublicClass.cs:17:20:17:33 | nonPublicStuff | GitHub.CodeQL.PublicClass#nonPublicStuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
+| PublicInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL.PublicInterface#stuff(System.String) | false | supported | PublicInterface.cs | library |  | type | unknown | classification |
+| PublicInterface.cs:9:17:9:27 | staticStuff | GitHub.CodeQL.PublicInterface#staticStuff(System.String) | false | supported | PublicInterface.cs | library |  | type | unknown | classification |

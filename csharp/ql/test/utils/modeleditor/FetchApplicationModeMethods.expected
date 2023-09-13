@@ -1,0 +1,8 @@
+| NonPublicClass.cs:9:9:9:31 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicClass.cs:9:9:9:30 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicClass.cs:14:9:14:30 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicClass.cs:19:9:19:51 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicClass.cs:19:33:19:50 | call to method ReadLine | System.Console#ReadLine() | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicClass.cs:19:33:19:50 | call to method ReadLine | System.Console#ReadLine() | true | supported | System.Console | 7.0.0.0 | source | type | source | classification |
+| PublicClass.cs:24:9:24:30 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicInterface.cs:11:9:11:30 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
