@@ -84,6 +84,19 @@ class Sources extends ModelInput::SourceModelCsv {
   }
 }
 
+class TypeModelFromCodeQL extends ModelInput::TypeModel {
+  override predicate isTypeUsed(string type) { type = "danger-constant" }
+
+  override DataFlow::Node getASource(string type) {
+    type = "danger-constant" and
+    result.getStringValue() = "danger-constant"
+  }
+}
+
+class SourceFromDangerConstant extends ModelInput::SourceModelCsv {
+  override predicate row(string row) { row = "danger-constant;Member[danger];test-source" }
+}
+
 class BasicTaintTracking extends TaintTracking::Configuration {
   BasicTaintTracking() { this = "BasicTaintTracking" }
 

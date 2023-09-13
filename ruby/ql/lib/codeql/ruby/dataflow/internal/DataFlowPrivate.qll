@@ -366,6 +366,12 @@ private module Cached {
     TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
       exists(Argument arg, ArgumentPosition pos | pos.isPositional(_) | arg.isArgumentOf(c, pos)) and
       not exists(Argument arg, ArgumentPosition pos | pos.isSplat(_) | arg.isArgumentOf(c, pos))
+    } or
+    TForbiddenRecursionGuard() {
+      none() and
+      // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+      // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+      (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
     }
 
   class TSourceParameterNode =

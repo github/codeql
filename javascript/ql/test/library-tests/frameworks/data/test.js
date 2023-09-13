@@ -256,3 +256,9 @@ function fuzzy() {
   fuzzyCall(source()); // OK - does not come from 'testlib'
   require('blah').fuzzyCall(source()); // OK - does not come from 'testlib'
 }
+
+function dangerConstant() {
+  sink("danger-constant".danger); // NOT OK
+  sink("danger-constant".safe); // OK
+  sink("danger-constant"); // OK
+}

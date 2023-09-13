@@ -74,6 +74,7 @@ taintFlow
 | test.js:249:28:249:35 | source() | test.js:249:28:249:35 | source() |
 | test.js:252:15:252:22 | source() | test.js:252:15:252:22 | source() |
 | test.js:254:32:254:39 | source() | test.js:254:32:254:39 | source() |
+| test.js:261:8:261:31 | "danger ... .danger | test.js:261:8:261:31 | "danger ... .danger |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |
