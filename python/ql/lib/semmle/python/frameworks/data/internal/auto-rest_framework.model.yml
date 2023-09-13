@@ -4,75 +4,75 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
-  - - Django.Views.View~Subclass
+  - - Django.Forms.Field~Subclass
     - rest_framework
-    - Member[generics].Member[ListAPIView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[generics].Member[RetrieveUpdateAPIView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[routers].Member[SchemaView]
+    - Member[fields].Member[FilePathField]
   - - Django.Forms.Field~Subclass
     - rest_framework
     - Member[fields].Member[ImageField]
-  - - Django.Views.View~Subclass
+  - - Django.Forms.Field~Subclass
     - rest_framework
-    - Member[viewsets].Member[GenericViewSet]
+    - Member[serializers].Member[FilePathField]
   - - Django.Forms.Field~Subclass
     - rest_framework
     - Member[serializers].Member[ImageField]
   - - Django.Views.View~Subclass
     - rest_framework
-    - Member[schemas].Member[views].Member[SchemaView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[generics].Member[RetrieveUpdateDestroyAPIView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[viewsets].Member[ModelViewSet]
-  - - Django.Forms.Field~Subclass
-    - rest_framework
-    - Member[fields].Member[FilePathField]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[viewsets].Member[ViewSet]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[generics].Member[RetrieveAPIView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[views].Member[View]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[generics].Member[RetrieveDestroyAPIView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[generics].Member[UpdateAPIView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[generics].Member[CreateAPIView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[viewsets].Member[ReadOnlyModelViewSet]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[generics].Member[ListCreateAPIView]
-  - - Django.Views.View~Subclass
-    - rest_framework
-    - Member[routers].Member[APIRootView]
-  - - Django.Forms.Field~Subclass
-    - rest_framework
-    - Member[serializers].Member[FilePathField]
+    - Member[compat].Member[View]
   - - Django.Views.View~Subclass
     - rest_framework
     - Member[decorators].Member[APIView]
   - - Django.Views.View~Subclass
     - rest_framework
-    - Member[schemas].Member[views].Member[APIView]
+    - Member[generics].Member[CreateAPIView]
   - - Django.Views.View~Subclass
     - rest_framework
     - Member[generics].Member[DestroyAPIView]
   - - Django.Views.View~Subclass
     - rest_framework
-    - Member[compat].Member[View]
+    - Member[generics].Member[ListAPIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[generics].Member[ListCreateAPIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[generics].Member[RetrieveAPIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[generics].Member[RetrieveDestroyAPIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[generics].Member[RetrieveUpdateAPIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[generics].Member[RetrieveUpdateDestroyAPIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[generics].Member[UpdateAPIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[routers].Member[APIRootView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[routers].Member[SchemaView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[schemas].Member[views].Member[APIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[schemas].Member[views].Member[SchemaView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[views].Member[View]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[viewsets].Member[GenericViewSet]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[viewsets].Member[ModelViewSet]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[viewsets].Member[ReadOnlyModelViewSet]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[viewsets].Member[ViewSet]

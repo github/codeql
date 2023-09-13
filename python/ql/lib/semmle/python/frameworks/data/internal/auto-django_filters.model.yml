@@ -6,31 +6,7 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - django_filters
-    - Member[fields].Member[MultipleChoiceField]
-  - - Django.Forms.Field~Subclass
-    - django_filters
-    - Member[fields].Member[ModelChoiceField]
-  - - Django.Forms.Field~Subclass
-    - django_filters
-    - Member[fields].Member[IsoDateTimeField]
-  - - Django.Forms.Field~Subclass
-    - django_filters
-    - Member[fields].Member[DateTimeRangeField]
-  - - Django.Forms.Field~Subclass
-    - django_filters
-    - Member[fields].Member[ModelMultipleChoiceField]
-  - - Django.Forms.Field~Subclass
-    - django_filters
-    - Member[fields].Member[TimeRangeField]
-  - - Django.Forms.Field~Subclass
-    - django_filters
-    - Member[fields].Member[RangeField]
-  - - Django.Forms.Field~Subclass
-    - django_filters
-    - Member[fields].Member[IsoDateTimeRangeField]
-  - - Django.Forms.Field~Subclass
-    - django_filters
-    - Member[fields].Member[DateRangeField]
+    - Member[fields].Member[BaseCSVField]
   - - Django.Forms.Field~Subclass
     - django_filters
     - Member[fields].Member[BaseRangeField]
@@ -39,7 +15,31 @@ extensions:
     - Member[fields].Member[ChoiceField]
   - - Django.Forms.Field~Subclass
     - django_filters
+    - Member[fields].Member[DateRangeField]
+  - - Django.Forms.Field~Subclass
+    - django_filters
+    - Member[fields].Member[DateTimeRangeField]
+  - - Django.Forms.Field~Subclass
+    - django_filters
+    - Member[fields].Member[IsoDateTimeField]
+  - - Django.Forms.Field~Subclass
+    - django_filters
+    - Member[fields].Member[IsoDateTimeRangeField]
+  - - Django.Forms.Field~Subclass
+    - django_filters
     - Member[fields].Member[LookupChoiceField]
   - - Django.Forms.Field~Subclass
     - django_filters
-    - Member[fields].Member[BaseCSVField]
+    - Member[fields].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - django_filters
+    - Member[fields].Member[ModelMultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - django_filters
+    - Member[fields].Member[MultipleChoiceField]
+  - - Django.Forms.Field~Subclass
+    - django_filters
+    - Member[fields].Member[RangeField]
+  - - Django.Forms.Field~Subclass
+    - django_filters
+    - Member[fields].Member[TimeRangeField]

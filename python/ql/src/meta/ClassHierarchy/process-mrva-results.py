@@ -16,17 +16,6 @@ assert mad_path.exists(), mad_path
 
 package_data = defaultdict(set)
 
-# gather data
-for f in glob.glob(f"{sys.argv[1]}/**/results/results.bqrs", recursive=True):
-    print(f"Processing {f}")
-
-    json_data = subprocess.check_output(["codeql", "bqrs", "decode", "--format=json", f])
-    select = json.loads(json_data)
-
-    for t in select["#select"]["tuples"]:
-        pkg = t[1]
-        package_data[pkg].add(tuple(t))
-
 # process data
 
 def wrap_in_template(data):
@@ -42,7 +31,7 @@ def wrap_in_template(data):
         ]
     }
 
-def parse_from_file(path):
+def parse_from_file(path: Path) -> set:
     if not path.exists():
         return set()
 
@@ -55,13 +44,38 @@ def parse_from_file(path):
 
     return set(tuple(x) for x in raw_data["extensions"][0]["data"])
 
+
+def gather_from_mrva():
+    for f in glob.glob(f"{sys.argv[1]}/**/results/results.bqrs", recursive=True):
+        print(f"Processing {f}")
+
+        json_data = subprocess.check_output(["codeql", "bqrs", "decode", "--format=json", f])
+        select = json.loads(json_data)
+
+        for t in select["#select"]["tuples"]:
+            pkg = t[1]
+            package_data[pkg].add(tuple(t))
+
+def gather_from_existing():
+    for f in glob.glob(f"{mad_path}/auto-*.model.yml", recursive=True):
+        print(f"Processing {f}")
+
+        all_data = parse_from_file(Path(f))
+        pkg = f.split("/")[-1].split(".")[0][5:]
+        package_data[pkg].update(all_data)
+
+gather_from_mrva()
+
 for pkg in package_data:
     pkg_path = mad_path / f"auto-{pkg}.model.yml"
+
+    print(f"Writing {pkg_path}")
 
     all_data = parse_from_file(pkg_path)
     all_data.update(package_data[pkg])
 
     as_lists = [list(t) for t in all_data]
+    as_lists.sort()
 
     data_for_yaml = wrap_in_template(as_lists)
 

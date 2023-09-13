@@ -4,21 +4,6 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
-  - - django.forms.BaseForm~Subclass
-    - formtools
-    - Member[wizard].Member[forms].Member[ManagementForm]
-  - - Django.Views.View~Subclass
-    - formtools
-    - Member[wizard].Member[views].Member[WizardView]
-  - - Django.Views.View~Subclass
-    - formtools
-    - Member[wizard].Member[views].Member[TemplateView]
-  - - Django.Views.View~Subclass
-    - formtools
-    - Member[wizard].Member[views].Member[NamedUrlWizardView]
-  - - Django.Views.View~Subclass
-    - formtools
-    - Member[wizard].Member[views].Member[SessionWizardView]
   - - Django.Views.View~Subclass
     - formtools
     - Member[wizard].Member[views].Member[CookieWizardView]
@@ -28,3 +13,18 @@ extensions:
   - - Django.Views.View~Subclass
     - formtools
     - Member[wizard].Member[views].Member[NamedUrlSessionWizardView]
+  - - Django.Views.View~Subclass
+    - formtools
+    - Member[wizard].Member[views].Member[NamedUrlWizardView]
+  - - Django.Views.View~Subclass
+    - formtools
+    - Member[wizard].Member[views].Member[SessionWizardView]
+  - - Django.Views.View~Subclass
+    - formtools
+    - Member[wizard].Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - formtools
+    - Member[wizard].Member[views].Member[WizardView]
+  - - django.forms.BaseForm~Subclass
+    - formtools
+    - Member[wizard].Member[forms].Member[ManagementForm]

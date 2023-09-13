@@ -6,7 +6,7 @@ extensions:
   data:
   - - django.forms.BaseForm~Subclass
     - modelcluster
-    - Member[forms].Member[ModelForm]
+    - Member[forms].Member[ClusterForm]
   - - django.forms.BaseForm~Subclass
     - modelcluster
-    - Member[forms].Member[ClusterForm]
+    - Member[forms].Member[ModelForm]

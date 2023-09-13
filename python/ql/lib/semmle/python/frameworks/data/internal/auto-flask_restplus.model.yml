@@ -6,9 +6,6 @@ extensions:
   data:
   - - flask.MethodView~Subclass
     - flask_restplus
-    - Member[resource].Member[MethodView]
-  - - flask.MethodView~Subclass
-    - flask_restplus
     - Member[Resource]
   - - flask.MethodView~Subclass
     - flask_restplus
@@ -16,6 +13,9 @@ extensions:
   - - flask.MethodView~Subclass
     - flask_restplus
     - Member[api].Member[SwaggerView]
+  - - flask.MethodView~Subclass
+    - flask_restplus
+    - Member[resource].Member[MethodView]
   - - flask.MethodView~Subclass
     - flask_restplus
     - Member[resource].Member[Resource]
