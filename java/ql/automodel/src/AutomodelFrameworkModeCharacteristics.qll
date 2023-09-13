@@ -34,6 +34,13 @@ newtype TFrameworkModeEndpoint =
     not m.getDeclaringType().isFinal() and
     not m.isFinal() and
     not m.isStatic()
+  } or
+  TOverridableQualifier(Method m) {
+    m instanceof ModelExclusions::ModelApi and
+    m.fromSource() and
+    not m.getDeclaringType().isFinal() and
+    not m.isFinal() and
+    not m.isStatic()
   }
 
 /**
@@ -160,6 +167,26 @@ class OverridableParameter extends FrameworkModeEndpoint, TOverridableParameter 
   override Callable getEnclosingCallable() { result = method }
 
   override Top asTop() { result = param }
+
+  override string getExtensibleType() { result = "sourceModel" }
+}
+
+class OverridableQualifier extends FrameworkModeEndpoint, TOverridableQualifier {
+  Method m;
+
+  OverridableQualifier() { this = TOverridableQualifier(m) }
+
+  override int getIndex() { result = -1 }
+
+  override string getMaDInput() { none() }
+
+  override string getMaDOutput() { result = "Parameter[this]" }
+
+  override string getParamName() { result = "this" }
+
+  override Callable getEnclosingCallable() { result = m }
+
+  override Top asTop() { result = m }
 
   override string getExtensibleType() { result = "sourceModel" }
 }
