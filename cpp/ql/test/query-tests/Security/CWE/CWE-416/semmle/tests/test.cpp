@@ -138,7 +138,7 @@ void test9()
 	free(data);
 	noReturnWrapper();
 	use_if_nonzero(data); // GOOD
-	use(data); // GOOD [FALSE POSITIVE]
+	use(data); // GOOD
 }
 
 void test10()

@@ -159,3 +159,17 @@ func test3(x: String) {
 	NSLog(z.harmless) // Safe
 	NSLog(z.password) // $ hasCleartextLogging=160
 }
+
+struct MyOuter {
+	struct MyInner {
+		var value: String
+	}
+
+	var password: MyInner
+	var harmless: MyInner
+}
+
+func test3(mo : MyOuter) {
+	NSLog(mo.password.value) // $ hasCleartextLogging=173
+	NSLog(mo.harmless.value) // Safe
+}

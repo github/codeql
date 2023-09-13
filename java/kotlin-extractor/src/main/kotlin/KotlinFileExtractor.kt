@@ -4858,9 +4858,16 @@ open class KotlinFileExtractor(
                 logger.errorElement("Cannot find class for kPropertyType. ${kPropertyType.classFqName?.asString()}", propertyReferenceExpr)
                 return
             }
-            val parameterTypes = kPropertyType.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            val parameterTypes: List<IrType>? = kPropertyType.arguments.map {
+                if (it is IrType) {
+                    it
+                } else {
+                    logger.errorElement("Unexpected: Non-IrType (${it.javaClass}) property reference parameter.", propertyReferenceExpr)
+                    null
+                }
+            }.requireNoNullsOrNull()
             if (parameterTypes == null) {
-                logger.errorElement("Unexpected: Non-IrType parameter.", propertyReferenceExpr)
+                logger.errorElement("Unexpected: One or more non-IrType property reference parameters.", propertyReferenceExpr)
                 return
             }
 
@@ -5041,9 +5048,16 @@ open class KotlinFileExtractor(
                 return
             }
 
-            val parameterTypes = type.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            val parameterTypes: List<IrType>? = type.arguments.map {
+                if (it is IrType) {
+                    it
+                } else {
+                    logger.errorElement("Unexpected: Non-IrType (${it.javaClass}) function reference parameter.", functionReferenceExpr)
+                    null
+                }
+            }.requireNoNullsOrNull()
             if (parameterTypes == null) {
-                logger.errorElement("Unexpected: Non-IrType parameter.", functionReferenceExpr)
+                logger.errorElement("Unexpected: One or more non-IrType function reference parameters.", functionReferenceExpr)
                 return
             }
 

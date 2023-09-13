@@ -1181,7 +1181,7 @@ private module ArgumentNodes {
     ExplicitArgumentNode() {
       this.asExpr() instanceof Argument
       or
-      this.asExpr() = any(CIL::Call call).getAnArgument()
+      this.asExpr() = any(CilDataFlowCall cc).getCilCall().getAnArgument()
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -2032,7 +2032,7 @@ abstract class PostUpdateNode extends Node {
   abstract Node getPreUpdateNode();
 }
 
-private module PostUpdateNodes {
+module PostUpdateNodes {
   class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
     private ObjectCreation oc;
 
