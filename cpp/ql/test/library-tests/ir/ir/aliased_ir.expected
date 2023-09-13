@@ -12365,6 +12365,13 @@ ir.cpp:
 # 2111|     m2111_3(unknown)    = InitializeNonLocal       : 
 # 2111|     m2111_4(unknown)    = Chi                      : total:m2111_2, partial:m2111_3
 # 2112|     r2112_1(glval<int>) = VariableAddress[#return] : 
+# 2112|     r2112_2(bool)       = Constant[1]              : 
+# 2112|     r2112_3(int)        = Convert                  : r2112_2
+# 2112|     m2112_4(int)        = Store[#return]           : &:r2112_1, r2112_3
+# 2111|     r2111_5(glval<int>) = VariableAddress[#return] : 
+# 2111|     v2111_6(void)       = ReturnValue              : &:r2111_5, m2112_4
+# 2111|     v2111_7(void)       = AliasedUse               : m2111_3
+# 2111|     v2111_8(void)       = ExitFunction             : 
 
 # 2115| int constant
 # 2115|   Block 0

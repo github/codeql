@@ -44,6 +44,7 @@ predicate isIRConstant(Expr expr) {
   expr instanceof Literal or
   expr instanceof SizeofOperator or
   expr instanceof AlignofOperator or
+  expr instanceof NoExceptExpr or
   expr instanceof BuiltInOperationBuiltInOffsetOf or
   expr instanceof EnumConstantAccess
 }

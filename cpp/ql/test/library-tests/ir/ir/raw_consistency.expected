@@ -1,5 +1,4 @@
 missingOperand
-| ir.cpp:2112:12:2112:22 | Convert: (int)... | Instruction 'Convert' is missing an expected operand with tag 'Unary' in function '$@'. | ir.cpp:2111:5:2111:16 | int noExceptTest() | int noExceptTest() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -7,8 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:2112:5:2112:23 | VariableAddress: return ... | Instruction 'VariableAddress: return ...' has no successors in function '$@'. | ir.cpp:2111:5:2111:16 | int noExceptTest() | int noExceptTest() |
-| ir.cpp:2112:21:2112:21 | Constant: 0 | Instruction 'Constant: 0' has no successors in function '$@'. | ir.cpp:2111:5:2111:16 | int noExceptTest() | int noExceptTest() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -24,7 +21,6 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | ir.cpp:1486:8:1486:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1486:8:1486:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
-| ir.cpp:2112:5:2112:23 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:2111:5:2111:16 | int noExceptTest() | int noExceptTest() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:39:15:39:15 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:32:6:32:6 | void h(int) | void h(int) |
