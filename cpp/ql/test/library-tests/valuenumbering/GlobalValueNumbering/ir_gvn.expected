@@ -76,7 +76,7 @@ test.cpp:
 #   10|         valnum = unique
 #   10|     r10_3(glval<int>) = VariableAddress[global01] : 
 #   10|         valnum = unique
-#   10|     r10_4(int)        = Constant[1]               : 
+#   10|     r10_4(int)        = Literal[1]                : 
 #   10|         valnum = m10_5, r10_4
 #   10|     m10_5(int)        = Store[global01]           : &:r10_3, r10_4
 #   10|         valnum = m10_5, r10_4
@@ -175,7 +175,7 @@ test.cpp:
 #   21|         valnum = unique
 #   21|     r21_3(glval<int>) = VariableAddress[global02] : 
 #   21|         valnum = unique
-#   21|     r21_4(int)        = Constant[2]               : 
+#   21|     r21_4(int)        = Literal[2]                : 
 #   21|         valnum = m21_5, r21_4
 #   21|     m21_5(int)        = Store[global02]           : &:r21_3, r21_4
 #   21|         valnum = m21_5, r21_4
@@ -281,7 +281,7 @@ test.cpp:
 #   35|         valnum = unique
 #   35|     r35_3(glval<int>) = VariableAddress[global03] : 
 #   35|         valnum = unique
-#   35|     r35_4(int)        = Constant[3]               : 
+#   35|     r35_4(int)        = Literal[3]                : 
 #   35|         valnum = m35_5, r35_4
 #   35|     m35_5(int)        = Store[global03]           : &:r35_3, r35_4
 #   35|         valnum = m35_5, r35_4
@@ -348,7 +348,7 @@ test.cpp:
 #   43|         valnum = r40_1, r43_9, r45_9, r46_1
 #   43|     m43_10(int)                 = Store[x]                  : &:r43_9, r43_8
 #   43|         valnum = m43_10, m45_10, m46_4, r43_8, r45_8, r46_2
-#   44|     r44_1(int)                  = Constant[0]               : 
+#   44|     r44_1(int)                  = Literal[0]                : 
 #   44|         valnum = m44_5, r44_1
 #   44|     r44_2(glval<int *>)         = VariableAddress[p2]       : 
 #   44|         valnum = r39_9, r44_2
@@ -425,7 +425,7 @@ test.cpp:
 #   50|         valnum = unique
 #   51|     r51_1(glval<unsigned int>) = VariableAddress[result]      : 
 #   51|         valnum = r51_1, r62_1, r65_2
-#   51|     r51_2(int)                 = Constant[0]                  : 
+#   51|     r51_2(int)                 = Literal[0]                   : 
 #   51|         valnum = r51_2, r53_7, r56_17, r59_6
 #   51|     r51_3(unsigned int)        = Convert                      : r51_2
 #   51|         valnum = m51_4, r51_3
@@ -444,7 +444,7 @@ test.cpp:
 #   53|         valnum = r53_4, r56_8
 #   53|     r53_5(int)           = Convert              : r53_4
 #   53|         valnum = r53_5, r56_9
-#   53|     r53_6(char)          = Constant[0]          : 
+#   53|     r53_6(char)          = Literal[0]           : 
 #   53|         valnum = r53_6, r56_16, r59_5
 #   53|     r53_7(int)           = Convert              : r53_6
 #   53|         valnum = r51_2, r53_7, r56_17, r59_6
@@ -499,7 +499,7 @@ test.cpp:
 #   56|         valnum = r56_14, r56_4, r59_3
 #   56|     r56_15(int)           = Convert              : r56_14
 #   56|         valnum = r56_15, r56_5, r59_4
-#   56|     r56_16(char)          = Constant[0]          : 
+#   56|     r56_16(char)          = Literal[0]           : 
 #   56|         valnum = r53_6, r56_16, r59_5
 #   56|     r56_17(int)           = Convert              : r56_16
 #   56|         valnum = r51_2, r53_7, r56_17, r59_6
@@ -514,7 +514,7 @@ test.cpp:
 #   56|         valnum = r50_1, r55_3, r56_12, r56_2, r56_20, r59_1
 #   56|     r56_21(char *)        = Load[ptr]            : &:r56_20, m56_1
 #   56|         valnum = m56_1, r56_13, r56_21, r56_3, r59_2
-#   56|     r56_22(int)           = Constant[1]          : 
+#   56|     r56_22(int)           = Literal[1]           : 
 #   56|         valnum = unique
 #   56|     r56_23(char *)        = PointerAdd[1]        : r56_21, r56_22
 #   56|         valnum = m56_24, r56_23
@@ -531,7 +531,7 @@ test.cpp:
 #   59|         valnum = r56_14, r56_4, r59_3
 #   59|     r59_4(int)           = Convert              : r59_3
 #   59|         valnum = r56_15, r56_5, r59_4
-#   59|     r59_5(char)          = Constant[0]          : 
+#   59|     r59_5(char)          = Literal[0]           : 
 #   59|         valnum = r53_6, r56_16, r59_5
 #   59|     r59_6(int)           = Convert              : r59_5
 #   59|         valnum = r51_2, r53_7, r56_17, r59_6
@@ -550,7 +550,7 @@ test.cpp:
 #   62|         valnum = r51_1, r62_1, r65_2
 #   62|     r62_2(unsigned int)        = Load[result]            : &:r62_1, m53_1
 #   62|         valnum = m53_1, m65_4, r62_2, r65_3
-#   62|     r62_3(unsigned int)        = Constant[1]             : 
+#   62|     r62_3(unsigned int)        = Literal[1]              : 
 #   62|         valnum = unique
 #   62|     r62_4(unsigned int)        = Add                     : r62_2, r62_3
 #   62|         valnum = m62_5, r62_4
@@ -700,7 +700,7 @@ test.cpp:
 #   88|         valnum = r84_9, r88_1
 #   88|     r88_2(void *)        = Load[p]                  : &:r88_1, m84_10
 #   88|         valnum = m84_10, r84_11, r88_2
-#   88|     r88_3(int)           = Constant[0]              : 
+#   88|     r88_3(int)           = Literal[0]               : 
 #   88|         valnum = unique
 #   88|     r88_4(void *)        = Convert                  : r88_3
 #   88|         valnum = unique
@@ -760,7 +760,7 @@ test.cpp:
 #   91|         valnum = unique
 #   92|     r92_1(glval<int>) = VariableAddress[x]       : 
 #   92|         valnum = r92_1, r92_3, r93_2
-#   92|     r92_2(int)        = Constant[10]             : 
+#   92|     r92_2(int)        = Literal[10]              : 
 #   92|         valnum = m92_4, m92_6, m93_4, r92_2, r92_5, r93_3
 #   92|     r92_3(glval<int>) = VariableAddress[x]       : 
 #   92|         valnum = r92_1, r92_3, r93_2

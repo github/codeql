@@ -903,7 +903,7 @@ module Opcode {
    * See the `ConstantInstruction` documentation for more details.
    */
   class Literal extends Opcode, TLiteral {
-    final override string toString() { result = "Constant" }
+    final override string toString() { result = "Literal" }
   }
 
   /**
