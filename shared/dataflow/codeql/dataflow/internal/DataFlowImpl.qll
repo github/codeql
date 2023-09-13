@@ -1517,7 +1517,7 @@ module MakeImpl<InputSig Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowOutCand(
-          DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state, CcNoCall outercc,
+          DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state,
           ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
           exists(RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc |
@@ -1531,7 +1531,6 @@ module MakeImpl<InputSig Lang> {
                 innercc)
             )
           |
-            outercc = getCallContextReturn(inner, call) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
@@ -1540,8 +1539,9 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state, CcNoCall outercc,
           ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
-          fwdFlowOutCand(call, inner, out, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
-          FwdTypeFlow::typeFlowValidEdgeOut(call, inner)
+          fwdFlowOutCand(call, inner, out, state, summaryCtx, argT, argAp, t, ap, apa) and
+          FwdTypeFlow::typeFlowValidEdgeOut(call, inner) and
+          outercc = getCallContextReturn(inner, call)
         }
 
         private module FwdTypeFlowInput implements TypeFlowInput {
