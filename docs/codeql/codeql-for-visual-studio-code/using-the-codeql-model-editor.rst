@@ -11,6 +11,8 @@ You can view, write, and edit all types of CodeQL packs in Visual Studio Code us
 
 TODO - EDIT THIS CONTENT!
 
+Explain how to find the data extension files that you've created and test them. Also how to save to the right location in a GitHub repository for default and advanced setup to use.
+
 About the CodeQL model editor
 -----------------------------
 
@@ -64,4 +66,15 @@ Known limitations
 
 Only Java is supported
 It's not possible to place the extension pack in a different directory than the root of a workspace folder
+
+How to use data extensions in CodeQL for VS Code
+When a query is run in CodeQL for VS Code, by default, the IDE will load data extensions for the given pack and its transitive dependencies as defined in the How to use Data Extensions in the CodeQL CLI section.
+
+To include extension packs in a VS Code workspace, there is a new setting called codeQL.runningQueries.useExtensionPacks. By default, this value is "none", which means that extension packs are not loaded for query evaluations. The other option is "all", which means that before running a query, the IDE will locate all extension packs in the workspace and load them during evaluation.
+
+In the future, we may define other options to selectively load a subset of extension packs.
+
+To use this option, simply set codeQL.runningQueries.useExtensionPacks to "all" and run queries as before. This option applies both to locally run queries and to variant analysis queries run remotely.
+
+For more information on the engineering and product decisions around extension packs in the VS Code extension, see Customization support in the CodeQL VS Code extension.
 
