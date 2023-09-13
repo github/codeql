@@ -360,6 +360,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         /// <summary>
         /// Executes `dotnet restore` on all solution files in solutions.
+        /// As opposed to RestoreProjects this is not run in parallel using PLINQ
+        /// as `dotnet restore` on a solution already uses multiple threads for restoring
+        /// the projects (this can be disabled with the `--disable-parallel` flag).
         /// Returns a list of projects that are up to date with respect to restore.
         /// </summary>
         /// <param name="solutions">A list of paths to solution files.</param>
@@ -370,6 +373,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return restoredProjects;
                 });
 
+        /// <summary>
+        /// Executes `dotnet restore` on all projects in projects.
+        /// This is done in parallel for performance reasons.
+        /// To ensure that output is not interleaved, the output of each
+        /// restore is collected and printed.
+        /// </summary>
+        /// <param name="projects">A list of paths to project files.</param>
         private void RestoreProjects(IEnumerable<string> projects)
         {
             var stdoutLines = projects
