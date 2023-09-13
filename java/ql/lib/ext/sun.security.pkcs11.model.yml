@@ -5,7 +5,4 @@ extensions:
     data:
       - ["sun.security.pkcs11", "P11KeyStore$PasswordCallbackHandler", False, "PasswordCallbackHandler", "(char[])", "", "Argument[0]", "credentials-password", "manual"]
       - ["sun.security.pkcs11", "Secmod$KeyStoreLoadParameter", False, "KeyStoreLoadParameter", "(TrustType,char[])", "", "Argument[1]", "credentials-password", "manual"]
-      - ["sun.security.pkcs11", "ConstructKeys", False, "constructPrivateKey", "(byte[],String)", "", "Argument[0]", "crypto-parameter", "manual"]
-      - ["sun.security.pkcs11", "ConstructKeys", False, "constructPublicKey", "(byte[],String)", "", "Argument[0]", "crypto-parameter", "manual"]
-      - ["sun.security.pkcs11", "ConstructKeys", False, "constructSecretKey", "(byte[],String)", "", "Argument[0]", "crypto-parameter", "manual"]
       - ["sun.security.pkcs11", "P11SecretKeyFactory", False, "fixDESParity", "(byte[],int)", "", "Argument[0]", "crypto-parameter", "manual"]
