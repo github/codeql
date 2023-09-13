@@ -13,14 +13,6 @@ private import semmle.python.frameworks.FastApi
 private import semmle.python.frameworks.Django
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
-// FIXME: I think the implementation below for `getAlreadyModeledClass` is wrong, since
-// it uses `.getASubclass*()` for flask/fastAPI (and initially also Django, I just fixed
-// it for django while discovering this problem). Basically, I fear that it if library
-// defines class A and B, where B is a subclass of A, the automated modeling might only
-// find B...
-//
-// I doesn't seem to be the case, which is probably why I didn't discover this, but on
-// top of my head I can't really tell why.
 class FlaskViewClasses extends FindSubclassesSpec {
   FlaskViewClasses() { this = "flask.View~Subclass" }
 
