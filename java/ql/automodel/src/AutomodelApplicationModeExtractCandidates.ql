@@ -55,7 +55,7 @@ private Endpoint getSampleForSignature(
 }
 
 from
-  Endpoint endpoint, string message, ApplicationModeMetadataExtractor meta, DollarAtString package,
+  Endpoint endpoint, ApplicationModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
   DollarAtString input, DollarAtString output, DollarAtString isVarargsArray,
   DollarAtString alreadyAiModeled, DollarAtString extensibleType
@@ -63,6 +63,7 @@ where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
   ) and
+  CharacteristicsImpl::isSinkCandidate(endpoint, _) and
   endpoint =
     getSampleForSignature(9, package, type, subtypes, name, signature, input, output,
       isVarargsArray, extensibleType) and
@@ -78,19 +79,9 @@ where
     CharacteristicsImpl::isModeled(endpoint, _, _, alreadyAiModeled)
   ) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
-  includeAutomodelCandidate(package, type, name, signature) and
-  // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
-  // a non-sink, and we surface only endpoints that have at least one such sink type.
-  message =
-    strictconcat(AutomodelEndpointTypes::SinkType sinkType |
-      not CharacteristicsImpl::isKnownAs(endpoint, sinkType, _) and
-      CharacteristicsImpl::isSinkCandidate(endpoint, sinkType)
-    |
-      sinkType, ", "
-    )
+  includeAutomodelCandidate(package, type, name, signature)
 select endpoint.asNode(),
-  message + "\nrelated locations: $@, $@, $@." +
-    "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
+  "related locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
