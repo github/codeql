@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.forms.BaseForm~Subclass
+    - import_export
+    - Member[forms].Member[ActionForm]
+  - - django.forms.BaseForm~Subclass
+    - import_export
+    - Member[forms].Member[ConfirmImportForm]
+  - - django.forms.BaseForm~Subclass
+    - import_export
+    - Member[forms].Member[ExportForm]
+  - - django.forms.BaseForm~Subclass
+    - import_export
+    - Member[forms].Member[ImportForm]

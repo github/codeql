@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - django_summernote
+    - Member[urls].Member[SummernoteEditor]
+  - - Django.Views.View~Subclass
+    - django_summernote
+    - Member[urls].Member[SummernoteUploadAttachment]
+  - - Django.Views.View~Subclass
+    - django_summernote
+    - Member[views].Member[SummernoteEditor]
+  - - Django.Views.View~Subclass
+    - django_summernote
+    - Member[views].Member[SummernoteUploadAttachment]
+  - - Django.Views.View~Subclass
+    - django_summernote
+    - Member[views].Member[TemplateView]
+  - - Django.Views.View~Subclass
+    - django_summernote
+    - Member[views].Member[View]
+  - - django.forms.BaseForm~Subclass
+    - django_summernote
+    - Member[forms].Member[AttachmentAdminForm]
+  - - django.forms.BaseForm~Subclass
+    - django_summernote
+    - Member[forms].Member[UploadForm]
+  - - django.forms.BaseForm~Subclass
+    - django_summernote
+    - Member[views].Member[UploadForm]

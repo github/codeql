@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[forms].Member[AuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[forms].Member[OTPAuthenticationForm]
+  - - django.forms.BaseForm~Subclass
+    - django_otp
+    - Member[forms].Member[OTPTokenForm]
