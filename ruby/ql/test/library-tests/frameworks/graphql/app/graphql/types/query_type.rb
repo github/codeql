@@ -42,5 +42,23 @@ module Types
     def foo(arg)
       system("echo #{arg}")
     end
+
+    field :with_enum, String, null: false, description: "A field with an enum argument" do
+      argument :enum, Types::MediaCategory, "An enum", required: true
+      argument :arg2, String, "Another arg", required: true
+    end
+    def with_enum(**args)
+      system("echo #{args[:enum]}")
+      system("echo #{args[:arg2]}")
+    end
+
+    field :with_nested_enum, String, null: false, description: "A field with a nested enum argument" do
+      argument :inner, Types::Post, "Post", required: true
+    end
+    def with_nested_enum(**args)
+      system("echo #{args[:inner]}")
+      system("echo #{args[:inner][:title]}")
+      system("echo #{args[:inner][:media_category]}")
+    end
   end
 end
