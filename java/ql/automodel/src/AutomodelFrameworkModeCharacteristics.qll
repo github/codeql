@@ -199,12 +199,20 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   }
 
   predicate isSource(Endpoint e, string kind, string provenance) {
-    none() // TODO: implement
+    exists(string package, string type, string name, string signature, string ext, string output |
+      sourceSpec(e, package, type, name, signature, ext, output) and
+      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind,
+        provenance)
+    )
   }
 
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
-      sinkSpec(e, package, type, name, signature, _, _) and
+      (
+        sinkSpec(e, package, type, name, signature, _, _)
+        or
+        sourceSpec(e, package, type, name, signature, _, _)
+      ) and
       ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
     )
   }
@@ -216,6 +224,16 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
     ext = "" and
     input = e.getMaDInput()
+  }
+
+  additional predicate sourceSpec(
+    Endpoint e, string package, string type, string name, string signature, string ext,
+    string output
+  ) {
+    e.getEnclosingCallable().hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(e.getEnclosingCallable()) and
+    ext = "" and
+    output = e.getMaDOutput()
   }
 
   /**
