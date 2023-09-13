@@ -1,4 +1,5 @@
 using Xunit;
+using System;
 using System.Collections.Generic;
 using Semmle.Extraction.CSharp.DependencyFetching;
 
@@ -18,11 +19,15 @@ namespace Semmle.Extraction.Tests
 
         public bool New(string folder) => true;
 
-        public bool RestoreProjectToDirectory(string project, string directory, string? pathToNugetConfig = null) => true;
-
-        public bool RestoreSolutionToDirectory(string solution, string directory, out IList<string> projects)
+        public bool RestoreProjectToDirectory(string project, string directory, out string stdout, string? pathToNugetConfig = null)
         {
-            projects = new List<string>();
+            stdout = "";
+            return true;
+        }
+
+        public bool RestoreSolutionToDirectory(string solution, string directory, out IEnumerable<string> projects)
+        {
+            projects = Array.Empty<string>();
             return true;
         }
 

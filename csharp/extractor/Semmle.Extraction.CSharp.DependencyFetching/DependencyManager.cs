@@ -352,10 +352,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         }
 
-        private bool RestoreProject(string project, string? pathToNugetConfig = null) =>
-            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, pathToNugetConfig);
+        private bool RestoreProject(string project, out string stdout, string? pathToNugetConfig = null) =>
+            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, out stdout, pathToNugetConfig);
 
-        private bool RestoreSolution(string solution, out IList<string> projects) =>
+        private bool RestoreSolution(string solution, out IEnumerable<string> projects) =>
             dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, out projects);
 
         /// <summary>
@@ -370,8 +370,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return restoredProjects;
                 });
 
-        private void RestoreProjects(IEnumerable<string> projects) =>
-            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project => RestoreProject(project));
+        private void RestoreProjects(IEnumerable<string> projects)
+        {
+            var stdoutLines = projects
+                .AsParallel()
+                .WithDegreeOfParallelism(options.Threads)
+                .Select(project =>
+                    {
+                        RestoreProject(project, out var stdout);
+                        return stdout;
+                    })
+                .ToList();
+            foreach (var line in stdoutLines)
+            {
+                Console.WriteLine(line);
+            }
+        }
 
         private void DownloadMissingPackages(List<FileInfo> allFiles)
         {
@@ -412,7 +426,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     continue;
                 }
 
-                success = RestoreProject(tempDir.DirInfo.FullName, nugetConfig);
+                success = RestoreProject(tempDir.DirInfo.FullName, out var stdout, nugetConfig);
+                Console.WriteLine(stdout);
 
                 // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
                 if (!success)

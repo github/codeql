@@ -33,12 +33,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput) =>
-            new ProcessStartInfo(dotnet, args)
+        private ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput)
+        {
+            var startInfo = new ProcessStartInfo(dotnet, args)
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = redirectStandardOutput
             };
+            // Set the .NET CLI language to English to avoid localized output.
+            startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
+            return startInfo;
+        }
 
         private bool RunCommand(string args)
         {
@@ -70,17 +75,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private static string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory) =>
             $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
 
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, string? pathToNugetConfig = null)
+        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, out string stdout, string? pathToNugetConfig = null)
         {
             var args = GetRestoreArgs(projectFile, packageDirectory);
             if (pathToNugetConfig != null)
             {
                 args += $" --configfile \"{pathToNugetConfig}\"";
             }
-            return RunCommand(args);
+            var success = RunCommand(args, out var output);
+            stdout = string.Join("\n", output);
+            return success;
         }
 
-        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, out IList<string> projects)
+        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, out IEnumerable<string> projects)
         {
             var args = GetRestoreArgs(solutionFile, packageDirectory);
             args += " --verbosity normal";
@@ -90,12 +97,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 projects = output
                     .Select(line => regex.Match(line))
                     .Where(match => match.Success)
-                    .Select(match => match.Groups[1].Value)
-                    .ToList();
+                    .Select(match => match.Groups[1].Value);
                 return true;
             }
 
-            projects = new List<string>();
+            projects = Array.Empty<string>();
             return false;
         }
 
