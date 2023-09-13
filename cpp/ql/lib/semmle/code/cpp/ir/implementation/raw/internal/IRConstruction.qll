@@ -390,9 +390,7 @@ predicate getInstructionOpcode(Opcode opcode, TStageInstruction instr) {
 }
 
 string getInstructionConstantValue(TStageInstruction instr) {
-  exists(TranslatedExpr expr |
-    result = expr.getExpr().getValue() and instr = expr.getResult()
-  )
+  exists(TranslatedExpr expr | result = expr.getExpr().getValue() and instr = expr.getResult())
   or
   result = Raw::getInstructionLiteralValue(instr)
 }

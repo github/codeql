@@ -54,10 +54,11 @@ predicate isIRConstant(Expr expr) {
   expr instanceof EnumConstantAccess
   or
   /*
-   * A static local variable can be constant-initialised with a local variable. 
-   * In that case we use a literal for that constant as the local is in a different 
-   * IRFunction. 
+   * A static local variable can be constant-initialised with a local variable.
+   * In that case we use a literal for that constant as the local is in a different
+   * IRFunction.
    */
+
   expr instanceof VariableAccess and
   exists(LocalVariable lv |
     lv = expr.(VariableAccess).getTarget() and
