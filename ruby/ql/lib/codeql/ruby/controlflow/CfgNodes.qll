@@ -7,7 +7,6 @@ private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.ast.internal.Literal
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
-private import internal.Splitting
 
 /** An entry node for a given scope. */
 class EntryNode extends CfgNode, CfgImpl::EntryNode {

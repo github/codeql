@@ -33,11 +33,17 @@ private module Input implements InputSig<RubyDataFlow> {
       n.asExpr() = arg
     )
   }
+
+  predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
+    // An argument such as `x` in `if not x then ...` has two successors (and hence
+    // two calls); one for each Boolean outcome of `x`.
+    exists(CfgNodes::ExprCfgNode n |
+      arg.argumentOf(call, _) and
+      n = call.asCall() and
+      arg.asExpr().getASuccessor(any(SuccessorTypes::ConditionalSuccessor c)).getASuccessor*() = n and
+      n.getASplit() instanceof Split::ConditionalCompletionSplit
+    )
+  }
 }
 
 import MakeConsistency<RubyDataFlow, RubyTaintTracking, Input>
-
-query predicate multipleToString(DataFlow::Node n, string s) {
-  s = strictconcat(n.toString(), ",") and
-  strictcount(n.toString()) > 1
-}
