@@ -70,31 +70,4 @@ module UrlRedirect {
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
   class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
-
-  private import semmle.python.ApiGraphs
-
-  private predicate djangoUrlHasAllowedHostAndScheme(
-    DataFlow::GuardNode g, ControlFlowNode node, boolean branch
-  ) {
-    exists(API::CallNode call |
-      call =
-        API::moduleImport("django")
-            .getMember("utils")
-            .getMember("http")
-            .getMember("url_has_allowed_host_and_scheme")
-            .getACall() and
-      g = call.asCfgNode() and
-      node = call.getParameter(0, "url").asSink().asCfgNode() and
-      branch = true
-    )
-  }
-
-  /**
-   * A call to `django.utils.http.url_has_allowed_host_and_scheme`, considered as a sanitizer-guard.
-   */
-  private class DjangoAllowedUrl extends Sanitizer {
-    DjangoAllowedUrl() {
-      this = DataFlow::BarrierGuard<djangoUrlHasAllowedHostAndScheme/3>::getABarrierNode()
-    }
-  }
 }
