@@ -20,38 +20,67 @@ func fasthttpClient() {
 	log.Println(resByte)
 
 	// #SSRF
+	res := &fasthttp.Response{}
+	req := &fasthttp.Request{}
+	uri := fasthttp.AcquireURI()
+	uri2 := fasthttp.AcquireURI()
 	fasthttp.Get(resByte, "http://127.0.0.1:8909")
 	fasthttp.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{})
 	fasthttp.GetTimeout(resByte, "http://127.0.0.1:8909", 5)
 	fasthttp.Post(resByte, "http://127.0.0.1:8909", nil)
 	log.Println(string(resByte))
+	fasthttp.Do(req, res)
+	fasthttp.DoRedirects(req, res, 2)
+	fasthttp.DoDeadline(req, res, time.Time{})
+	fasthttp.DoTimeout(req, res, 5)
 
-	// #SSRF
+	// additional steps
+	uri.SetHost("UserControlled.com:80")
+	uri.SetHostBytes([]byte("UserControlled.com:80"))
+	uri.Update("http://httpbin.org/ip")
+	uri.UpdateBytes([]byte("http://httpbin.org/ip"))
+	uri.Parse(nil, []byte("http://httpbin.org/ip"))
+	uri.CopyTo(uri2)
+
+	req.SetHost("UserControlled.com:80")
+	req.SetHostBytes([]byte("UserControlled.com:80"))
+	req.SetRequestURI("https://UserControlled.com")
+	req.SetRequestURIBytes([]byte("https://UserControlled.com"))
+	req.SetURI(uri)
+
+	hostClient := &fasthttp.HostClient{
+		Addr: "localhost:8080",
+	}
+	hostClient.Get(resByte, "http://127.0.0.1:8909")
+	hostClient.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{})
+	hostClient.GetTimeout(resByte, "http://127.0.0.1:8909", 5)
+	hostClient.Post(resByte, "http://127.0.0.1:8909", nil)
+	hostClient.Do(req, res)
+	hostClient.DoDeadline(req, res, time.Time{})
+	hostClient.DoRedirects(req, res, 2)
+	hostClient.DoTimeout(req, res, 5)
+
+	var lbclient fasthttp.LBClient
+	lbclient.Clients = append(lbclient.Clients, hostClient)
+	lbclient.Do(req, res)
+	lbclient.DoDeadline(req, res, time.Time{})
+	lbclient.DoTimeout(req, res, 5)
+
 	client := fasthttp.Client{}
 	client.Get(resByte, "http://127.0.0.1:8909")
 	client.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{})
 	client.GetTimeout(resByte, "http://127.0.0.1:8909", 5)
 	client.Post(resByte, "http://127.0.0.1:8909", nil)
-
-	res := &fasthttp.Response{}
-	req := &fasthttp.Request{}
-	uri := fasthttp.URI{}
-	// additional steps
-	uri.SetHost("UserControlled.com:80")
-	uri.SetHostBytes([]byte("UserControlled.com:80"))
-	req.SetHost("UserControlled.com:80")
-	req.SetHostBytes([]byte("UserControlled.com:80"))
-	req.SetRequestURI("https://UserControlled.com")
-	req.SetRequestURIBytes([]byte("https://UserControlled.com"))
-	req.SetURI(&uri)
-	fasthttp.Do(req, res)
-	fasthttp.DoDeadline(req, res, time.Time{})
-	fasthttp.DoTimeout(req, res, 5)
 	client.Do(req, res)
 	client.DoDeadline(req, res, time.Time{})
+	client.DoRedirects(req, res, 2)
 	client.DoTimeout(req, res, 5)
 
-	// #SSRF
+	pipelineClient := fasthttp.PipelineClient{}
+	pipelineClient.Do(req, res)
+	pipelineClient.DoDeadline(req, res, time.Time{})
+	pipelineClient.DoTimeout(req, res, 5)
+
 	tcpDialer := fasthttp.TCPDialer{}
 	tcpDialer.Dial("127.0.0.1:8909")
 	tcpDialer.DialTimeout("127.0.0.1:8909", 5)
@@ -59,29 +88,34 @@ func fasthttpClient() {
 	tcpDialer.DialDualStackTimeout("127.0.0.1:8909", 5)
 }
 
+func main() {
+	fasthttpServer()
+	fasthttpClient()
+}
+
 func fasthttpServer() {
 	ln, err := net.Listen("tcp4", "127.0.0.1:8080")
 	if err != nil {
 		log.Fatalf("error in net.Listen: %v", err)
 	}
-	requestHandler := func(ctx *fasthttp.RequestCtx) {
-		filePath := ctx.QueryArgs().Peek("filePath")
+	requestHandler := func(requestCtx *fasthttp.RequestCtx) {
+		filePath := requestCtx.QueryArgs().Peek("filePath")
 		// File System Access
-		_ = ctx.Response.SendFile(string(filePath))
-		ctx.SendFile(string(filePath))
-		ctx.SendFileBytes(filePath)
-		fileHeader, _ := ctx.FormFile("file")
+		_ = requestCtx.Response.SendFile(string(filePath))
+		requestCtx.SendFile(string(filePath))
+		requestCtx.SendFileBytes(filePath)
+		fileHeader, _ := requestCtx.FormFile("file")
 		_ = fasthttp.SaveMultipartFile(fileHeader, string(filePath))
-		fasthttp.ServeFile(ctx, string(filePath))
-		fasthttp.ServeFileUncompressed(ctx, string(filePath))
-		fasthttp.ServeFileBytes(ctx, filePath)
-		fasthttp.ServeFileBytesUncompressed(ctx, filePath)
+		fasthttp.ServeFile(requestCtx, string(filePath))
+		fasthttp.ServeFileUncompressed(requestCtx, string(filePath))
+		fasthttp.ServeFileBytes(requestCtx, filePath)
+		fasthttp.ServeFileBytesUncompressed(requestCtx, filePath)
 
 		dstWriter := &bufio.Writer{}
 		dstReader := &bufio.Reader{}
 		// user controlled methods as source
 		requestHeader := &fasthttp.RequestHeader{}
-		ctx.Request.Header.CopyTo(requestHeader)
+		requestCtx.Request.Header.CopyTo(requestHeader)
 		requestHeader.Write(dstWriter)
 		requestHeader.Header()
 		requestHeader.TrailerHeader()
@@ -102,82 +136,76 @@ func fasthttpServer() {
 		requestHeader.Referer()
 		requestHeader.RawHeaders()
 		// multipart.Form is already implemented
-		//ctx.MultipartForm()
-		ctx.URI().Path()
-		ctx.URI().PathOriginal()
+		// requestCtx.MultipartForm()
+		requestCtx.URI().Path()
+		requestCtx.URI().PathOriginal()
 		newURI := &fasthttp.URI{}
-		ctx.URI().CopyTo(newURI)
-		ctx.URI().FullURI()
-		ctx.URI().LastPathSegment()
-		ctx.URI().QueryString()
-		ctx.URI().String()
-		ctx.URI().WriteTo(dstWriter)
+		requestCtx.URI().CopyTo(newURI)
+		requestCtx.URI().FullURI()
+		requestCtx.URI().LastPathSegment()
+		requestCtx.URI().QueryString()
+		requestCtx.URI().String()
+		requestCtx.URI().WriteTo(dstWriter)
 
 		newArgs := &fasthttp.Args{}
-		//or ctx.PostArgs()
-		ctx.URI().QueryArgs().CopyTo(newArgs)
-		ctx.URI().QueryArgs().Peek("arg1")
-		ctx.URI().QueryArgs().PeekBytes([]byte("arg1"))
-		ctx.URI().QueryArgs().PeekMulti("arg1")
-		ctx.URI().QueryArgs().PeekMultiBytes([]byte("arg1"))
-		ctx.URI().QueryArgs().QueryString()
-		ctx.URI().QueryArgs().String()
-		ctx.URI().QueryArgs().WriteTo(dstWriter)
+		//or requestCtx.PostArgs()
+		requestCtx.URI().QueryArgs().CopyTo(newArgs)
+		requestCtx.URI().QueryArgs().Peek("arg1")
+		requestCtx.URI().QueryArgs().PeekBytes([]byte("arg1"))
+		requestCtx.URI().QueryArgs().PeekMulti("arg1")
+		requestCtx.URI().QueryArgs().PeekMultiBytes([]byte("arg1"))
+		requestCtx.URI().QueryArgs().QueryString()
+		requestCtx.URI().QueryArgs().String()
+		requestCtx.URI().QueryArgs().WriteTo(dstWriter)
 		// not sure what is the best way to write query for following
-		//ctx.URI().QueryArgs().VisitAll(type func(,))
+		//requestCtx.URI().QueryArgs().VisitAll(type func(,))
 
-		ctx.Path()
+		requestCtx.Path()
 		// multipart.Form is already implemented
-		// ctx.FormFile("FileName")
-		// ctx.FormValue("ValueName")
-		ctx.Referer()
-		ctx.PostBody()
-		ctx.RequestBodyStream()
-		ctx.RequestURI()
-		ctx.UserAgent()
-		ctx.Host()
+		// requestCtx.FormFile("FileName")
+		// requestCtx.FormValue("ValueName")
+		requestCtx.Referer()
+		requestCtx.PostBody()
+		requestCtx.RequestBodyStream()
+		requestCtx.RequestURI()
+		requestCtx.UserAgent()
+		requestCtx.Host()
 
-		ctx.Request.Host()
-		ctx.Request.Body()
-		ctx.Request.RequestURI()
-		ctx.Request.BodyGunzip()
-		ctx.Request.BodyInflate()
-		ctx.Request.BodyUnbrotli()
-		ctx.Request.BodyStream()
-		ctx.Request.BodyWriteTo(dstWriter)
-		ctx.Request.WriteTo(dstWriter)
-		ctx.Request.BodyUncompressed()
-		ctx.Request.ReadBody(dstReader, 100, 1000)
-		ctx.Request.ReadLimitBody(dstReader, 100)
-		ctx.Request.ContinueReadBodyStream(dstReader, 100, true)
-		ctx.Request.ContinueReadBody(dstReader, 100)
+		requestCtx.Request.Host()
+		requestCtx.Request.Body()
+		requestCtx.Request.RequestURI()
+		requestCtx.Request.BodyGunzip()
+		requestCtx.Request.BodyInflate()
+		requestCtx.Request.BodyUnbrotli()
+		requestCtx.Request.BodyStream()
+		requestCtx.Request.BodyWriteTo(dstWriter)
+		requestCtx.Request.WriteTo(dstWriter)
+		requestCtx.Request.BodyUncompressed()
+		requestCtx.Request.ReadBody(dstReader, 100, 1000)
+		requestCtx.Request.ReadLimitBody(dstReader, 100)
+		requestCtx.Request.ContinueReadBodyStream(dstReader, 100, true)
+		requestCtx.Request.ContinueReadBody(dstReader, 100)
 		// not sure what is the best way to write query for following
-		//ctx.Request.Header.VisitAllCookie()
+		//requestCtx.Request.Header.VisitAllCookie()
 
 		// Xss Sinks
-		ctx.Response.AppendBody([]byte("user Controlled"))
-		ctx.Response.AppendBodyString("user Controlled")
-		rspWriter := ctx.Response.BodyWriter()
+		requestCtx.Response.AppendBody([]byte("user Controlled"))
+		requestCtx.Response.AppendBodyString("user Controlled")
+		rspWriter := requestCtx.Response.BodyWriter()
 		rspWriter.Write([]byte("XSS"))
-		ctx.Response.SetBody([]byte("user Controlled"))
-		ctx.Response.SetBodyString("user Controlled")
-		ctx.Response.SetBodyRaw([]byte("user Controlled"))
-		ctx.Response.SetBodyStream(dstReader, 100)
-		dstByte := []byte("init")
-		// sanitizers
-		fasthttp.AppendQuotedArg(dstByte, []byte("xsss"))
-		fasthttp.AppendHTMLEscape(dstByte, "xss")
-		fasthttp.AppendHTMLEscapeBytes(dstByte, []byte("xss"))
+		requestCtx.Response.SetBody([]byte("user Controlled"))
+		requestCtx.Response.SetBodyString("user Controlled")
+		requestCtx.Response.SetBodyRaw([]byte("user Controlled"))
+		requestCtx.Response.SetBodyStream(dstReader, 100)
 
-		// TODO: unstrusted Remote IP from Header?
-		// TODO: open redirect Sinks
-		req := &fasthttp.Request{}
-		res := &fasthttp.Response{}
-		// there are additional steps from other scope
-		req.SetRequestURI("https://userControlled.com")
-		fasthttp.DoRedirects(req, res, 2)
-		ctx.Redirect("https://userControlled.com", 301)
-		ctx.RedirectBytes([]byte("https://userControlled.com"), 301)
+		// sanitizers
+		requestCtx.Response.AppendBody(fasthttp.AppendQuotedArg([]byte(""), []byte("<>\"':()&")))       // %3C%3E%22%27%3A%28%29%26
+		requestCtx.Response.AppendBody(fasthttp.AppendHTMLEscape([]byte(""), "<>\"':()&"))              // &lt;&gt;&#34;&#39;:()&amp;
+		requestCtx.Response.AppendBody(fasthttp.AppendHTMLEscapeBytes([]byte(""), []byte("<>\"':()&"))) // &lt;&gt;&#34;&#39;:()&amp;
+
+		// open redirect Sinks
+		requestCtx.Redirect("https://userControlled.com", 301)
+		requestCtx.RedirectBytes([]byte("https://userControlled.com"), 301)
 	}
 	if err := fasthttp.Serve(ln, requestHandler); err != nil {
 		log.Fatalf("error in Serve: %v", err)
