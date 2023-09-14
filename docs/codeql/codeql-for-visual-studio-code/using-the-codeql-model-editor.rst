@@ -16,7 +16,7 @@ Explain how to find the data extension files that you've created and test them. 
 About the CodeQL model editor
 -----------------------------
 
-The CodeQL model editor is a new feature in CodeQL for VS Code to support GitHub staff creating CodeQL models for libraries and frameworks written in Java and C#.
+The CodeQL model editor guides you through the process of creating CodeQL models for libraries and frameworks that you rely on that are not supported by the standard CodeQL Libraries.
 
 The editor takes a CodeQL database and runs some telemetry queries to identify uses of APIs that can be used to reason about the dataflow through the codebase. There are two modes of operation:
 
@@ -26,21 +26,22 @@ The editor takes a CodeQL database and runs some telemetry queries to identify u
 Setting up the CodeQL model editor
 ----------------------------------
 
-To set up the CodeQL model editor, you need to be using CodeQL for VS Code 1.8.7 or later with the following settings: 
+To set up the CodeQL model editor, you need to be using CodeQL for VS Code 1.8.12 or later with the following settings: 
 
 .. code-block:: json
 
-    "codeQL.canary": true, 
+{
+    "codeQL.canary": true,
     "codeQL.model.editor": true,
+    "codeQL.runningQueries.useModelPacks": true,
+}
 
-CHECK THIS ^^^
+CHECK THIS ^^^ - is canary still needed?
 
 Open the user settings editor (JSON) using the command palette (Ctrl/Cmd+Shift+P) and using the command “Preferences: Open User Settings (JSON)”, add these two settings to the file.
 
 If you want to test the CodeQL model packs you generate in VS Code then this setting is also required:
-   ``"codeQL.runningQueries.useExtensionPacks": true`` CHECK THIS
-
-WHAT DOES ``"codeQL.model.llmGeneration": true,`` do?
+   ``"codeQL.runningQueries.useExtensionPacks": true`` CHECK THIS - should it be ``"codeQL.runningQueries.useModelPacks": true``
 
 Using the CodeQL model editor
 -----------------------------
