@@ -6180,3 +6180,36 @@ cfg.swift:
 
 #  534| i
 #-----|  -> (Any) ...
+
+#  538| enter testNilCoalescing(x:)
+#-----|  -> testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:) (abnormal)
+#-----|  -> exit testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:) (normal)
+#-----|  -> exit testNilCoalescing(x:)
+
+#  538| testNilCoalescing(x:)
+#-----|  -> x
+
+#  538| x
+#-----|  -> ??(_:_:)
+
+#  539| return ...
+#-----| return -> exit testNilCoalescing(x:) (normal)
+
+#  539| x
+#-----|  -> { ... }
+
+#  539| ... ??(_:_:) ...
+#-----| exception -> exit testNilCoalescing(x:) (abnormal)
+#-----|  -> return ...
+
+#  539| ??(_:_:)
+#-----|  -> x
+
+#  539| { ... }
+#-----|  -> ... ??(_:_:) ...

@@ -3300,6 +3300,21 @@ cfg.swift:
 #  526|     Type = Int
 #  533| [ConcreteVarDecl] i
 #  533|     Type = Int
+#  538| [NamedFunction] testNilCoalescing(x:)
+#  538|     InterfaceType = (Int?) -> Int
+#  538|   getParam(0): [ParamDecl] x
+#  538|       Type = Int?
+#  538|   getBody(): [BraceStmt] { ... }
+#  539|     getElement(0): [ReturnStmt] return ...
+#  539|       getResult(): [BinaryExpr] ... ??(_:_:) ...
+#  539|         getFunction(): [DeclRefExpr] ??(_:_:)
+#  539|         getArgument(0): [Argument] : x
+#  539|           getExpr(): [DeclRefExpr] x
+#  539|         getArgument(1): [Argument] : { ... }
+#  539|           getExpr(): [AutoClosureExpr] { ... }
+#  539|             getBody(): [BraceStmt] { ... }
+#  539|               getElement(0): [ReturnStmt] return ...
+#  539|                 getResult(): [IntegerLiteralExpr] 0
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...
