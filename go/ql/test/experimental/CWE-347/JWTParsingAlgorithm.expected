@@ -1,2 +1,2 @@
-| JWTParsingAlgorithim.go:20:4:23:5 | call to Parse | This Parse Call to Verify the JWT token is vulnerable to algorithim confusion |
-| JWTParsingAlgorithim.go:38:22:41:5 | call to Parse | This Parse Call to Verify the JWT token is vulnerable to algorithim confusion |
+| JWTParsingAlgorithm.go:20:4:23:5 | call to Parse | This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion |
+| JWTParsingAlgorithm.go:38:22:41:5 | call to Parse | This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion |
