@@ -12,7 +12,11 @@ You can use data extensions to model the methods and callables that control data
 About this article
 ------------------
 
-This article explains how data extensions interact with standard queries and the syntax used to define extensions. If you want to create your own data extensions, you should use the CodeQL model editor in the CodeQL extension for Visual Studio Code. For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql-model-editor>`."
+This article contains reference material about how data extensions interact with standard queries and the syntax used to define extensions.
+
+If you want to create your own data extensions, you should use the CodeQL model editor in the CodeQL extension for Visual Studio Code. The model editor automatically guides you through the process of defining models, displaying the properties you need to define and the options available. You can save the resulting models as data extensions and use them without worrying about the syntax.
+
+For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql-model-editor>`."
 
 About data extensions
 ---------------------

@@ -13,7 +13,7 @@ You can use data extensions to model the methods and callables that control data
 About this article
 ------------------
 
-This reference article describes of each inputs to the extensible predicates, including access paths, kinds, and provenance.
+This reference article describes the available inputs for the extensible predicates, including access paths, kinds, and provenance.
 
 Sources, sinks, summaries, and neutrals are commonly known as models. These models support several shared arguments and a few model-specific arguments. The arguments populate a series of columns for each extensible predicate.
 

@@ -52,8 +52,4 @@ To view the full definition of an element of a query, you can right-click and ch
 Working with CodeQL model packs
 -------------------------------
 
-The CodeQL extension for Visual Studio Code includes a dedicated editor for creating and editing model packs. 
-
-TODO a little more, but mostly about the general use, because editing will be in a new article.
-
-For headings use ~~~~~~~~ in this section
+The CodeQL extension for Visual Studio Code includes a dedicated editor for creating and editing model packs. For information on using the model editor, see ":ref:`Using the CodeQL model editor <using-the-codeql-model-editor>`."
