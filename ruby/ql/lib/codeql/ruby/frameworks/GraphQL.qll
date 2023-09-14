@@ -254,9 +254,15 @@ class GraphqlFieldDefinitionMethodCall extends GraphqlSchemaObjectClassMethodCal
   /** Gets the name of this GraphQL field. */
   string getFieldName() { result = this.getArgument(0).getConstantValue().getStringlikeValue() }
 
+  /**
+   * Gets the type of this field.
+   */
   GraphqlType getFieldType() { result = this.getArgument(1) }
 
-  GraphqlFieldArgumentDefinitionMethodCall getArgumentCall() {
+  /**
+   * Gets an argument call inside this field definition.
+   */
+  GraphqlFieldArgumentDefinitionMethodCall getAnArgumentCall() {
     result.getEnclosingCallable() = this.getBlock()
   }
 }
@@ -300,20 +306,20 @@ private class GraphqlFieldArgumentDefinitionMethodCall extends GraphqlSchemaObje
   GraphqlType getArgumentType() { result = this.getArgument(1) }
 }
 
-private DataFlow::LocalSourceNode graphQlEnum() {
-  result =
-    API::getTopLevelMember("GraphQL")
-        .getMember("Schema")
-        .getMember("Enum")
-        .getADescendentModule()
-        .getAnImmediateReference()
-}
-
 private class GraphqlType extends ConstantAccess {
+  /**
+   * Gets the module corresponding to this type, if it exists.
+   */
   Module getModule() { result.getAnImmediateReference() = this }
 
+  /**
+   * Gets a field of this type, if it is an object type.
+   */
   GraphqlType getAField() { result = this.getField(_) }
 
+  /**
+   * Gets the field of this type named `name`, if it exists.
+   */
   GraphqlType getField(string name) {
     result =
       any(GraphqlFieldDefinitionMethodCall field |
@@ -322,10 +328,22 @@ private class GraphqlType extends ConstantAccess {
       ).getFieldType()
   }
 
-  predicate isEnum() { graphQlEnum().asExpr().getExpr() = this }
+  /**
+   * Holds if this type is an enum.
+   */
+  predicate isEnum() {
+    API::getTopLevelMember("GraphQL")
+        .getMember("Schema")
+        .getMember("Enum")
+        .getADescendentModule()
+        .getAnImmediateReference()
+        .asExpr()
+        .getExpr() = this
+  }
 
-  predicate isUserControlled() { this.getName() = ["String", "ID", "JSON"] }
-
+  /**
+   * Holds if this type is scalar - i.e. it is neither an object or an enum.
+   */
   predicate isScalar() { not exists(this.getAField()) and not this.isEnum() }
 }
 
@@ -401,7 +419,7 @@ class GraphqlFieldResolutionMethod extends Method, Http::Server::RequestHandler:
   override Parameter getARoutedParameter() {
     result = this.getAParameter() and
     exists(GraphqlFieldArgumentDefinitionMethodCall argDefn |
-      argDefn = this.getDefinition().getArgumentCall()
+      argDefn = this.getDefinition().getAnArgumentCall()
     |
       result.(KeywordParameter).hasName(argDefn.getArgumentName())
     )
@@ -426,7 +444,7 @@ private DataFlow::CallNode parameterAccess(
   HashSplatParameter param, string key, GraphqlType type
 ) {
   param = method.getARoutedParameter() and
-  def = method.getDefinition().getArgumentCall() and
+  def = method.getDefinition().getAnArgumentCall() and
   (
     // Direct access to the params hash
     def.getArgumentType() = type and
