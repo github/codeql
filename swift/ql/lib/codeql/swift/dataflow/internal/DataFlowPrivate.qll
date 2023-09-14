@@ -983,8 +983,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.(DictionarySubscriptNode).getExpr() = subscript and
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
   )
-  // read of an optional into the loop variable via foreach
   or
+  // read of an optional into the loop variable via foreach
   exists(ForEachStmt for |
     node1.asExpr() = for.getNextCall() and
     node2.asPattern() = for.getPattern() and
