@@ -4,4 +4,4 @@ import TestUtils
 
 from EnumDecl x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getBaseType(index)
+select x, index, x.getInheritedType(index)

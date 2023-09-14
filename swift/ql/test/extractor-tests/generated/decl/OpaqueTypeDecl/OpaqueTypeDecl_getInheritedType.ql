@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from ModuleDecl x, int index
+from OpaqueTypeDecl x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getBaseType(index)
+select x, index, x.getInheritedType(index)
