@@ -5,3 +5,6 @@ public class Test {
   }
 
 }
+
+// Diagnostic Matches: 1 javac errors
+// Diagnostic Matches: Unable to extract method reference Unavailable.f()::g with no owner type
