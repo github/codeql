@@ -31,48 +31,42 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
     or
     exists(DataFlow::Function f |
       (
-        f.hasQualifiedName("archive/zip", ["OpenReader", "NewReader"]) and
-        state = "ZipOpenReader"
+        f.hasQualifiedName("archive/zip", ["OpenReader", "NewReader"])
         or
-        f.hasQualifiedName("github.com/klauspost/compress/zip", ["NewReader", "OpenReader"]) and
-        state = "ZipKlauspost"
+        f.hasQualifiedName("github.com/klauspost/compress/zip", ["NewReader", "OpenReader"])
         or
-        f.hasQualifiedName("github.com/ulikunitz/xz", "NewReader") and
-        state = "XzNewReader"
+        f.hasQualifiedName("github.com/ulikunitz/xz", "NewReader")
         or
         f.hasQualifiedName([
             "compress/gzip", "github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"
-          ], "NewReader") and
-        state = "GzipNewReader"
+          ], "NewReader")
         or
         f.hasQualifiedName([
             "compress/bzip2", "github.com/dsnet/compress/bzip2", "github.com/cosnicolaou/pbzip2"
-          ], "NewReader") and
-        state = "Bzip2NewReader"
+          ], "NewReader")
         or
-        f.hasQualifiedName(["github.com/dsnet/compress/flate"], "NewReader") and
-        state = "FlateNewReader"
+        f.hasQualifiedName(["github.com/dsnet/compress/flate"], "NewReader")
         or
         f.hasQualifiedName(["compress/flate", "github.com/klauspost/compress/flate"],
-          ["NewReaderDict", "NewReader"]) and
-        state = "FlateNewReader"
+          ["NewReaderDict", "NewReader"])
         or
-        f.hasQualifiedName(["compress/zlib", "github.com/klauspost/compress/zlib"], "NewReader") and
-        state = "ZlibNewReader"
+        f.hasQualifiedName(["compress/zlib", "github.com/klauspost/compress/zlib"], "NewReader")
         or
         f.hasQualifiedName(["github.com/klauspost/compress/zstd", "github.com/DataDog/zstd"],
-          "NewReader") and
-        state = "ZstdNewReader"
+          "NewReader")
         or
         f.hasQualifiedName(["github.com/golang/snappy", "github.com/klauspost/compress/snappy"],
-          "NewReader") and
-        state = "SnapyNewReader"
+          "NewReader")
         or
-        f.hasQualifiedName("github.com/klauspost/compress/s2", "NewReader") and
-        state = "S2NewReader"
+        f.hasQualifiedName("github.com/klauspost/compress/s2", "NewReader")
       ) and
       source = f.getACall().getResult(0) and
-      not TaintTracking::localExprTaint(any(StringLit c), source.asExpr())
+      not TaintTracking::localExprTaint(any(StringLit c), source.asExpr()) and
+      state =
+        [
+          "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
+          "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost"
+        ]
     )
   }
 
