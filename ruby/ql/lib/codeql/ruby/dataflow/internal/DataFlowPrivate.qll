@@ -474,6 +474,7 @@ private module Cached {
     } or
     TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) or
     TSynthSplatArgumentElementNode(CfgNodes::ExprNodes::CallCfgNode c, int n) {
+      // we use -1 to represent data at an unknown index
       n in [-1 .. 10] and
       exists(Argument arg, ArgumentPosition pos |
         pos.isSplat(any(int p | p > 0)) and arg.isArgumentOf(c, pos)
@@ -1546,7 +1547,7 @@ predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
 }
 
 /**
- * A store step from a `SynthSplatArgumentElementNode` into a `SynthSplatArgumentNode`.
+ * Holds if data can flow from a `SynthSplatArgumentElementNode` into a `SynthSplatArgumentNode` via a store step.
  * For example in
  *
  * ```rb
@@ -1627,7 +1628,7 @@ predicate readStepCommon(Node node1, ContentSet c, Node node2) {
 }
 
 /**
- * A read step from a splat argument to a `SynthSplatArgumentElementNode`.
+ * Holds if data can flow from a splat argument to a `SynthSplatArgumentElementNode` via a read step.
  * For example in
  * ```rb
  * foo(x, y, *[1, 2])
