@@ -247,15 +247,19 @@
 | test.swift:272:15:272:25 | call to signum() | test.swift:272:15:272:25 | OptionalEvaluationExpr |
 | test.swift:274:15:274:15 | x | test.swift:274:15:274:20 | ... ??(_:_:) ... |
 | test.swift:274:15:274:15 | x | test.swift:275:15:275:15 | x |
+| test.swift:274:20:274:20 | 0 | test.swift:274:15:274:20 | ... ??(_:_:) ... |
 | test.swift:274:20:274:20 | { ... } | test.swift:274:15:274:20 | ... ??(_:_:) ... |
 | test.swift:275:15:275:15 | x | test.swift:275:15:275:27 | ... ??(_:_:) ... |
 | test.swift:275:15:275:15 | x | test.swift:279:15:279:15 | x |
+| test.swift:275:20:275:27 | call to source() | test.swift:275:15:275:27 | ... ??(_:_:) ... |
 | test.swift:275:20:275:27 | { ... } | test.swift:275:15:275:27 | ... ??(_:_:) ... |
 | test.swift:276:15:276:15 | y | test.swift:276:15:276:20 | ... ??(_:_:) ... |
 | test.swift:276:15:276:15 | y | test.swift:277:15:277:15 | y |
+| test.swift:276:20:276:20 | 0 | test.swift:276:15:276:20 | ... ??(_:_:) ... |
 | test.swift:276:20:276:20 | { ... } | test.swift:276:15:276:20 | ... ??(_:_:) ... |
 | test.swift:277:15:277:15 | y | test.swift:277:15:277:27 | ... ??(_:_:) ... |
 | test.swift:277:15:277:15 | y | test.swift:281:15:281:15 | y |
+| test.swift:277:20:277:27 | call to source() | test.swift:277:15:277:27 | ... ??(_:_:) ... |
 | test.swift:277:20:277:27 | { ... } | test.swift:277:15:277:27 | ... ??(_:_:) ... |
 | test.swift:279:15:279:15 | x | test.swift:279:26:279:26 | x |
 | test.swift:279:15:279:15 | x | test.swift:280:15:280:15 | x |
