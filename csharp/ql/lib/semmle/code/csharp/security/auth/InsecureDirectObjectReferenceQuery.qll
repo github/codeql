@@ -44,9 +44,11 @@ private predicate hasAuthorizeAttribute(ActionMethod m) {
   exists(Attribute attr |
     attr.getType()
         .getABaseType*()
-        .hasQualifiedName("Microsoft.AspNetCore.Authorization", "AuthorizeAttribute")
+        .hasQualifiedName([
+            "Microsoft.AspNetCore.Authorization", "System.Web.Mvc", "System.Web.Http"
+          ], "AuthorizeAttribute")
   |
-    attr = m.getAnAttribute() or
+    attr = m.getOverridee*().getAnAttribute() or
     attr = m.getDeclaringType().getABaseType*().getAnAttribute()
   )
 }
@@ -56,14 +58,16 @@ private predicate hasAllowAnonymousAttribute(ActionMethod m) {
   exists(Attribute attr |
     attr.getType()
         .getABaseType*()
-        .hasQualifiedName("Microsoft.AspNetCore.Authorization", "AllowAnonymousAttribute")
+        .hasQualifiedName([
+            "Microsoft.AspNetCore.Authorization", "System.Web.Mvc", "System.Web.Http"
+          ], "AllowAnonymousAttribute")
   |
-    attr = m.getAnAttribute() or
+    attr = m.getOverridee*().getAnAttribute() or
     attr = m.getDeclaringType().getABaseType*().getAnAttribute()
   )
 }
 
-/** Hols if `m` is authorized via an `Authorize` attribute */
+/** Holds if `m` is authorized via an `Authorize` attribute */
 private predicate isAuthorizedViaAttribute(ActionMethod m) {
   hasAuthorizeAttribute(m) and
   not hasAllowAnonymousAttribute(m)
