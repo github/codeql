@@ -6,14 +6,18 @@ import go
  * Provides models of commonly used functions in common JWT packages.
  */
 module JWT {
+  /** Gets the package name `github.com/lestrrat-go/jwx` v2. */
   string packageLestrrat() { result = package("github.com/lestrrat-go/jwx/v2/jwt", "") }
 
+  /** Gets the package name `github.com/lestrrat-go/jwx` v1. */
   string packageLestrratv1() { result = package("github.com/lestrrat-go/jwx/jwt", "") }
 
+  /** Gets the package name `github.com/golang-jwt/jwt` v4 and v5. */
   string packagePathModern() {
     result = package(["github.com/golang-jwt/jwt/v5", "github.com/golang-jwt/jwt/v4"], "")
   }
 
+  /** Gets the package name `github.com/golang-jwt/jwt` v1 */
   string packagePathOld() { result = package("github.com/golang-jwt/jwt", "") }
 
   /**

@@ -37,6 +37,3 @@ func ExampleJWT_Parse() {
 	_ = tok
 	// OUTPUT:
 }
-func main() {
-	ExampleJWT_Parse()
-}

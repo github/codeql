@@ -8,7 +8,7 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwt"
 )
 
-func ExampleJWT_Parse() {
+func ExampleJWT_Parse2() {
 	jwkSymmetricKey, _ := jwk.FromRaw([]byte(`abracadabra`))
 	tok, err := jwt.NewBuilder().
 		Issuer(`github.com/lestrrat-go/jwx`).
@@ -34,7 +34,4 @@ func ExampleJWT_Parse() {
 	}
 	_ = tok
 	// OUTPUT:
-}
-func main() {
-	ExampleJWT_Parse()
 }
