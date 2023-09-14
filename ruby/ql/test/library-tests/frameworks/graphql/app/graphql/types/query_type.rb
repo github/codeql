@@ -59,6 +59,7 @@ module Types
       system("echo #{args[:inner]}")
       system("echo #{args[:inner][:title]}")
       system("echo #{args[:inner][:media_category]}")
+      system("echo #{args[:inner][:direction]}")
     end
   end
 end

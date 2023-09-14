@@ -268,6 +268,29 @@ class GraphqlFieldDefinitionMethodCall extends GraphqlSchemaObjectClassMethodCal
 }
 
 /**
+ * A call to `argument` in a GraphQL InputObject class.
+ */
+class GraphqlInputObjectArgumentDefinitionCall extends DataFlow::CallNode {
+  GraphqlInputObjectArgumentDefinitionCall() {
+    this =
+      graphQlSchema()
+          .getMember("InputObject")
+          .getADescendentModule()
+          .getAnOwnModuleSelf()
+          .getAMethodCall()
+  }
+
+  /** Gets the name of the argument (i.e. the first argument to this `argument` method call) */
+  string getArgumentName() { result = this.getArgument(0).getConstantValue().getStringlikeValue() }
+
+  /** Gets the type of this argument */
+  GraphqlType getArgumentType() { result = this.getArgument(1).asExpr().getExpr() }
+
+  /** Gets the class representing the receiver of this method. */
+  ClassDeclaration getReceiverClass() { result = this.asExpr().getExpr().getEnclosingModule() }
+}
+
+/**
  * A `MethodCall` that represents calling the class method `argument` inside the
  * block for a `field` definition on a GraphQL object.
  *
@@ -313,19 +336,23 @@ private class GraphqlType extends ConstantAccess {
   Module getModule() { result.getAnImmediateReference() = this }
 
   /**
-   * Gets a field of this type, if it is an object type.
+   * Gets the type of a field/argument of this type, if it is an object type.
    */
-  GraphqlType getAField() { result = this.getField(_) }
+  GraphqlType getAFieldOrArgument() { result = this.getFieldOrArgument(_) }
 
   /**
-   * Gets the field of this type named `name`, if it exists.
+   * Gets the type of the `name` field/argument of this type, if it exists.
    */
-  GraphqlType getField(string name) {
+  GraphqlType getFieldOrArgument(string name) {
     result =
       any(GraphqlFieldDefinitionMethodCall field |
         field.getFieldName() = name and
         this.getModule().getADeclaration() = field.getReceiverClass()
-      ).getFieldType()
+      ).getFieldType() or
+    result =
+      any(GraphqlInputObjectArgumentDefinitionCall arg |
+        arg.getArgumentName() = name and this.getModule().getADeclaration() = arg.getReceiverClass()
+      ).getArgumentType()
   }
 
   /**
@@ -344,7 +371,7 @@ private class GraphqlType extends ConstantAccess {
   /**
    * Holds if this type is scalar - i.e. it is neither an object or an enum.
    */
-  predicate isScalar() { not exists(this.getAField()) and not this.isEnum() }
+  predicate isScalar() { not exists(this.getAFieldOrArgument()) and not this.isEnum() }
 }
 
 /**
@@ -440,34 +467,35 @@ private DataFlow::CallNode hashAccess(DataFlow::Node recv, string key) {
 }
 
 private DataFlow::CallNode parameterAccess(
-  GraphqlFieldResolutionMethod method, GraphqlFieldArgumentDefinitionMethodCall def,
-  HashSplatParameter param, string key, GraphqlType type
+  GraphqlFieldResolutionMethod method, HashSplatParameter param, GraphqlType type
 ) {
-  param = method.getAParameter() and
-  def = method.getDefinition().getAnArgumentCall() and
-  (
-    // Direct access to the params hash
-    def.getArgumentType() = type and
-    def.getArgumentName() = key and
-    exists(DataFlow::Node paramRead |
-      paramRead.asExpr().getExpr() = param.getVariable().getAnAccess().(VariableReadAccess) and
-      result = hashAccess(paramRead, key)
-    )
-    or
-    // Nested access
-    exists(GraphqlType type2 |
-      parameterAccess(method, _, param, _, type2)
-          .(DataFlow::LocalSourceNode)
-          .flowsTo(result.getReceiver()) and
-      result = hashAccess(_, key) and
-      type2.getField(key) = type
+  exists(GraphqlFieldArgumentDefinitionMethodCall def, string key |
+    param = method.getAParameter() and
+    def = method.getDefinition().getAnArgumentCall() and
+    (
+      // Direct access to the params hash
+      def.getArgumentType() = type and
+      def.getArgumentName() = key and
+      exists(DataFlow::Node paramRead |
+        paramRead.asExpr().getExpr() = param.getVariable().getAnAccess().(VariableReadAccess) and
+        result = hashAccess(paramRead, key)
+      )
+      or
+      // Nested access
+      exists(GraphqlType type2 |
+        parameterAccess(method, param, type2)
+            .(DataFlow::LocalSourceNode)
+            .flowsTo(result.getReceiver()) and
+        result = hashAccess(_, key) and
+        type2.getFieldOrArgument(key) = type
+      )
     )
   )
 }
 
 private class GraphqlParameterAccess extends RemoteFlowSource::Range {
   GraphqlParameterAccess() {
-    exists(GraphqlType type | this = parameterAccess(_, _, _, _, type) and type.isScalar())
+    exists(GraphqlType type | this = parameterAccess(_, _, type) and type.isScalar())
   }
 
   override string getSourceType() { result = "GraphQL" }
