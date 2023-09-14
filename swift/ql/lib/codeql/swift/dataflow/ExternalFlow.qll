@@ -497,6 +497,7 @@ predicate parseContent(AccessPathToken component, Content content) {
   or
   parseEnum(component, content)
   or
+  // map legacy "ArrayElement" specification components to `CollectionContent`
   component.getName() = "ArrayElement" and
   content instanceof Content::CollectionContent
   or
