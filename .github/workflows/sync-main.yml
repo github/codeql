@@ -1,7 +1,7 @@
 name: Sync Main
 on:
   schedule:
-    - cron:  '05 * * * *'
+    - cron:  '55 * * * *'
   workflow_dispatch:
 jobs:
   sync-main:
