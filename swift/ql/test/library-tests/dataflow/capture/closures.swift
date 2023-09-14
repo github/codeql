@@ -18,7 +18,7 @@ func captureList() {
 var escape: (() -> Int)? = nil
 
 func setEscape() {
-  var x = source("setEscape", 0)
+  let x = source("setEscape", 0)
   escape = {
     sink(x) // $ MISSING: hasValueFlow=setEscape
     return x + 1
@@ -31,11 +31,15 @@ func callEscape() {
 }
 
 func logical() -> Bool {
-  let f: ((Int) -> Int)? = { x in x + 1 }
+  let f: ((Int) -> Int)? = { x in
+    sink(x) // $ hasValueFlow=logical
+    return x + 1
+  }
+
   let x: Int? = source("logical", 42)
   return f != nil
       && (x != nil
-          && f!(x!) == 43) // $ MISSING: hasValueFlow=logical
+          && f!(x!) == 43)
 }
 
 func asyncTest() {
@@ -121,6 +125,21 @@ func sharedCaptureMultipleWriters() {
   callSink2()
 }
 
+func taintCollections(array: inout Array<Int>) {
+  array[0] = source("array", 0)
+  sink(array)
+  sink(array[0]) // $ hasValueFlow=array
+  array.withContiguousStorageIfAvailable({
+    buffer in
+    sink(array)
+    sink(array[0]) // $ hasValueFlow=array
+  })
+}
+
+func simplestTest() {
+  let x = source("simplestTest", 0)
+  sink(x) // $ hasValueFlow=simplestTest
+}
 
 func main() {
   print("captureList():")

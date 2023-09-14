@@ -42,12 +42,12 @@ import codeql.swift.dataflow.TaintTracking
 import TestUtilities.InlineExpectationsTest
 
 private predicate defaultSource(DataFlow::Node source) {
-  source.asExpr().(MethodCallExpr).getStaticTarget().getShortName() = ["source", "taint"]
+  source.asExpr().(CallExpr).getStaticTarget().(Function).getShortName() = ["source", "taint"]
 }
 
 private predicate defaultSink(DataFlow::Node sink) {
-  exists(MethodCallExpr ma | ma.getStaticTarget().getShortName() = "sink" |
-    sink.asExpr() = ma.getAnArgument().getExpr()
+  exists(CallExpr ca | ca.getStaticTarget().(Function).getShortName() = "sink" |
+    sink.asExpr() = ca.getAnArgument().getExpr()
   )
 }
 
@@ -67,7 +67,7 @@ private module NoFlowConfig implements DataFlow::ConfigSig {
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
-  src.asExpr().(MethodCallExpr).getAnArgument().getExpr().(StringLiteralExpr).getValue() = result
+  src.asExpr().(CallExpr).getAnArgument().getExpr().(StringLiteralExpr).getValue() = result
 }
 
 module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
