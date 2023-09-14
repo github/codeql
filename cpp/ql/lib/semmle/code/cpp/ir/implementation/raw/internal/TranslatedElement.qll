@@ -49,7 +49,9 @@ predicate isIRConstant(Expr expr) {
   or
   expr instanceof NoExceptExpr
   or
-  expr instanceof BuiltInOperationBuiltInOffsetOf
+  expr instanceof BuiltInOperation and exists(expr.getValue())
+  or
+  expr instanceof TypeidOperator and exists(expr.getValue())
   or
   expr instanceof EnumConstantAccess
   or
