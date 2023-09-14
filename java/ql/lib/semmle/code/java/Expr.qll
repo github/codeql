@@ -1244,7 +1244,11 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = "new " + this.getConstructor().getName() + "(...)" }
+  override string toString() {
+    result = "new " + this.getConstructor().getName() + "(...)"
+    or
+    not exists(this.getConstructor()) and result = "<ClassInstanceExpr that calls a missing constructor>"
+  }
 
   override string getAPrimaryQlClass() { result = "ClassInstanceExpr" }
 }
