@@ -229,6 +229,11 @@ module Content {
   class CollectionContent extends Content, TCollectionContent {
     override string toString() { result = "Collection element" }
   }
+
+  /**
+   * DEPRECATED: An element of a collection. This is an alias for the general CollectionContent.
+   */
+  deprecated class ArrayContent = CollectionContent;
 }
 
 /**
