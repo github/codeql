@@ -15,5 +15,5 @@ void test_guard_condition(int source, bool b)
     use(source);
   }
 
-  gard_condition_sink(source); // $ SPURIOUS: guard-condition-regression
+  gard_condition_sink(source); // clean
 }
