@@ -86,3 +86,10 @@ bool bok_is_void2 = __is_void(int);
 
 bool bok_is_volatile1 = __is_volatile(volatile int);
 bool bok_is_volatile2 = __is_volatile(int);
+
+struct S2 {
+    S2() {}
+};
+
+bool bok_is_trivial1 = __is_trivial(int);
+bool bok_is_trivial2 = __is_trivial(S2);

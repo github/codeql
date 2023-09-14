@@ -1755,7 +1755,6 @@ case @expr.kind of
             | @istriviallydestructibleexpr
             | @istriviallyassignableexpr
             | @isnothrowassignableexpr
-            | @istrivialexpr
             | @isstandardlayoutexpr
             | @istriviallycopyableexpr
             | @isliteraltypeexpr
