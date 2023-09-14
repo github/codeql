@@ -1,7 +1,7 @@
 name: Sync Main
 on:
   schedule:
-    - cron:  '0 12 * * *'
+    - cron:  '55 * * * *'
   push:
     branches:
       - 'main'
