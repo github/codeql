@@ -300,5 +300,5 @@ import DecompressionBombsFlow::PathGraph
 
 from DecompressionBombsFlow::PathNode source, DecompressionBombsFlow::PathNode sink
 where DecompressionBombsFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This decompression $@.", source.getNode(),
+select sink.getNode(), source, sink, "This decompression is $@.", source.getNode(),
   "decompressing compressed data without managing output size"
