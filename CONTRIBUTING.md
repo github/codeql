@@ -77,4 +77,3 @@ Please do get in touch (privacy@github.com) if you have any questions about this
 ## Bazel
 Please notice that any bazel targets and definitions in this repository are currently experimental
 and for internal use only.
-
