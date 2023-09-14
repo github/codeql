@@ -309,8 +309,14 @@ predicate isUserDefinedNew(SingletonMethod new) {
 }
 
 private Callable viableSourceCallableNonInit(RelevantCall call) {
-  result = getTarget(call) and
-  not result = blockCall(call) // handled by `lambdaCreation`/`lambdaCall`
+  result = getTargetInstance(call, _)
+  or
+  result = getTargetSingleton(call, _)
+  or
+  exists(Module cls, string method |
+    superCall(call, cls, method) and
+    result = lookupMethod(cls.getAnImmediateAncestor(), method)
+  )
 }
 
 private Callable viableSourceCallableInit(RelevantCall call) { result = getInitializeTarget(call) }
@@ -400,14 +406,7 @@ private module Cached {
 
   cached
   CfgScope getTarget(RelevantCall call) {
-    result = getTargetInstance(call, _)
-    or
-    result = getTargetSingleton(call, _)
-    or
-    exists(Module cls, string method |
-      superCall(call, cls, method) and
-      result = lookupMethod(cls.getAnImmediateAncestor(), method)
-    )
+    result = viableSourceCallableNonInit(call)
     or
     result = blockCall(call)
   }
