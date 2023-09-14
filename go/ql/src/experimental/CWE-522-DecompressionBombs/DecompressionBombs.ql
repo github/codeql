@@ -27,17 +27,12 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
       //   or
       // exists(Parameter p | p.getARead() = source | p.hasQualifiedName("io", "Reader"))
     ) and
-    state =
-      [
-        "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
-        "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "IOMethods",
-        "ZipKlauspost"
-      ]
+    state = ""
     or
     exists(DataFlow::Function f |
       (
         f.hasQualifiedName("archive/zip", ["OpenReader", "NewReader"]) and
-        state = ""
+        state = "ZipOpenReader"
         or
         f.hasQualifiedName("github.com/klauspost/compress/zip", ["NewReader", "OpenReader"]) and
         state = "ZipKlauspost"
@@ -137,24 +132,6 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
       |
         sink = f.getACall().getReceiver()
       )
-    ) and
-    state =
-      [
-        "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
-        "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost"
-      ]
-  }
-
-  predicate isBarrier(DataFlow::Node node, FlowState state) {
-    //here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
-    // exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
-    //   node = f.getACall().getArgument([0, 1]) and
-    //   TaintTracking::localExprTaint(f.getACall().getResult(_).asExpr(),
-    //     any(RelationalComparisonExpr e).getAChildExpr*())
-    // )
-    // or
-    exists(DataFlow::Function f | f.hasQualifiedName("io", "LimitReader") |
-      node = f.getACall().getArgument(0) and f.getACall().getArgument(1).isConst()
     ) and
     state =
       [
@@ -291,6 +268,25 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
       toState = "S2NewReader"
     )
   }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    // //here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
+    // // exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
+    // //   node = f.getACall().getArgument([0, 1]) and
+    // //   TaintTracking::localExprTaint(f.getACall().getResult(_).asExpr(),
+    // //     any(RelationalComparisonExpr e).getAChildExpr*())
+    // // )
+    // // or
+    // exists(DataFlow::Function f | f.hasQualifiedName("io", "LimitReader") |
+    //   node = f.getACall().getArgument(0) and f.getACall().getArgument(1).isConst()
+    // ) and
+    // state =
+    //   [
+    //     "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
+    //     "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost"
+    //   ]
+    none()
+  }
 }
 
 // // here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
@@ -310,5 +306,5 @@ import DecompressionBombsFlow::PathGraph
 
 from DecompressionBombsFlow::PathNode source, DecompressionBombsFlow::PathNode sink
 where DecompressionBombsFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This file extraction $@.", source.getNode(),
-  "decompressing data controlling output size"
+select sink.getNode(), source, sink, "This decompression $@.", source.getNode(),
+  "decompressing compressed data without managing output size"
