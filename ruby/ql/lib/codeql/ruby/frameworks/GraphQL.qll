@@ -443,7 +443,7 @@ private DataFlow::CallNode parameterAccess(
   GraphqlFieldResolutionMethod method, GraphqlFieldArgumentDefinitionMethodCall def,
   HashSplatParameter param, string key, GraphqlType type
 ) {
-  param = method.getARoutedParameter() and
+  param = method.getAParameter() and
   def = method.getDefinition().getAnArgumentCall() and
   (
     // Direct access to the params hash
