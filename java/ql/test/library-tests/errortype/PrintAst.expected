@@ -1,5 +1,4 @@
 Test.java:
-#    6| [TypeAccess] NoSuchClass
 #    0| [CompilationUnit] Test
 #-----|   -1: (Imports)
 #    1|     1: [ImportType] import NoSuchClass
@@ -10,5 +9,7 @@ Test.java:
 #    6|         0: [LocalVariableDeclStmt] var ...;
 #    6|           0: [TypeAccess] NoSuchClass
 #    6|           1: [LocalVariableDeclExpr] nsc
+#    6|             0: [ClassInstanceExpr] <ClassInstanceExpr that calls a missing constructor>
+#    6|               -3: [TypeAccess] NoSuchClass
 #    7|         1: [ReturnStmt] return ...
 #    7|           0: [VarAccess] nsc
