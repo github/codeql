@@ -1280,6 +1280,16 @@ module ArgumentNodes {
     override string toStringImpl() { result = "*" }
   }
 
+  /**
+   * A data-flow node that holds data from values inside splat arguments.
+   * For example, in the following call
+   *
+   * ```rb
+   * foo(1, 2, *[3, 4])
+   * ```
+   *
+   * We add read steps such that `3` flows into `SynthSplatArgumentElementNode(2)` and `4` flows into `SynthSplatArgumentElementNode(3)`.
+   */
   class SynthSplatArgumentElementNode extends NodeImpl, TSynthSplatArgumentElementNode {
     CfgNodes::ExprNodes::CallCfgNode c;
     int n;
@@ -1535,8 +1545,18 @@ predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
   )
 }
 
-// Store from TSynthSplatArgumentElementNode(n)
-// into TSynthSplatArgumentNode[n]
+/**
+ * A store step from a `SynthSplatArgumentElementNode` into a `SynthSplatArgumentNode`.
+ * For example in
+ *
+ * ```rb
+ * foo(1, 2, *[3, 4])
+ * ```
+ *
+ * We have flow from `3` into `SynthSplatArgumentElementNode(2)`. This step stores the value from this node into element `2` of the `SynthSplatArgumentNode`.
+ *
+ * This allows us to match values inside splat arguments to the correct parameter in the callable.
+ */
 predicate synthSplatArgumentElementStoreStep(
   SynthSplatArgumentElementNode node1, ContentSet c, SynthSplatArgumentNode node2
 ) {
@@ -1606,7 +1626,15 @@ predicate readStepCommon(Node node1, ContentSet c, Node node2) {
   node2 = node1.(SynthSplatParameterNode).getAParameter(c)
 }
 
-// read from splat arg to synth splat arg element
+/**
+ * A read step from a splat argument to a `SynthSplatArgumentElementNode`.
+ * For example in
+ * ```rb
+ * foo(x, y, *[1, 2])
+ * ```
+ *
+ * we read `1` into `SynthSplatArgumentElementNode(2)` and `2` into `SynthSplatArgumentElementNode(3)`.
+ */
 predicate synthSplatArgumentElementReadStep(
   Node node1, ContentSet c, SynthSplatArgumentElementNode node2
 ) {
@@ -1665,7 +1693,6 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       c = getPositionalContent(e.getReadPosition())
     )
   or
-  // TODO: convert into the above form
   synthSplatArgumentElementReadStep(node1, c, node2)
   or
   readStepCommon(node1, c, node2)
