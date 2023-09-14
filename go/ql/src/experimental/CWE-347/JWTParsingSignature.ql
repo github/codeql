@@ -14,13 +14,13 @@ import go
 import JWT
 import DataFlow
 
-from CallNode c, LestrratParsev1 lp
+from CallNode c
 where
   c.getTarget() instanceof LestrratParseInsecure
   or
   c.getTarget() instanceof UnafeJwtParserMethod
   or
-  c.getTarget() = lp and
+  c.getTarget() instanceof LestrratParsev1 and
   not exists(LestrratVerify lv |
     c.getCall().getAnArgument() = lv.getACall().asExpr() and
     not c.getCall().getArgument(0) = lv.getACall().asExpr()

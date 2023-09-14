@@ -17,21 +17,21 @@ module JWT {
   string packagePathOld() { result = package("github.com/golang-jwt/jwt", "") }
 
   /**
-   * Call in golang-jwt to create new parser.
+   * A function in golang-jwt to create new parser.
    */
   class NewParser extends Function {
     NewParser() { this.hasQualifiedName(packagePathModern(), "NewParser") }
   }
 
   /**
-   * Call to WithValidMethods in golang-jwt to specify allowed algorithms.
+   * A function in golang-jwt to specify allowed algorithms.
    */
   class WithValidMethods extends Function {
     WithValidMethods() { this.hasQualifiedName(packagePathModern(), "WithValidMethods") }
   }
 
   /**
-   * Methods to parse token that check token signature.
+   * The methods to parse token that check token signature.
    */
   class SafeJwtParserMethod extends Method {
     SafeJwtParserMethod() {
@@ -40,7 +40,7 @@ module JWT {
   }
 
   /**
-   * Functions to parse token that check token signature.
+   * The function to parse token that check token signature.
    */
   class SafeJwtParserFunc extends Function {
     SafeJwtParserFunc() {
@@ -49,7 +49,7 @@ module JWT {
   }
 
   /**
-   * Methods to parse token that don't token signature.
+   * The methods to parse token that don't token signature.
    */
   class UnafeJwtParserMethod extends Method {
     UnafeJwtParserMethod() {
@@ -58,28 +58,28 @@ module JWT {
   }
 
   /**
-   * v2 Function to parse token that check token signature.
+   * A v2 Function to parse token that check token signature.
    */
   class LestrratParse extends Function {
     LestrratParse() { this.hasQualifiedName(packageLestrrat(), "Parse") }
   }
 
   /**
-   * v1 Function to parse token that check token signature.
+   * A v1 Function to parse token that check token signature.
    */
   class LestrratParsev1 extends Function {
     LestrratParsev1() { this.hasQualifiedName(packageLestrratv1(), "Parse") }
   }
 
   /**
-   * Funciton included as parse option to verify token.
+   * A function included as parse option to verify token.
    */
   class LestrratVerify extends Function {
     LestrratVerify() { this.hasQualifiedName(packageLestrratv1(), "WithVerify") }
   }
 
   /**
-   * Funciton to parse token that don't check signature.
+   * The function to parse token that doesn't check signature.
    */
   class LestrratParseInsecure extends Function {
     LestrratParseInsecure() { this.hasQualifiedName(packageLestrrat(), "ParseInsecure") }
