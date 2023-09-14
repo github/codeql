@@ -2,6 +2,8 @@
 
 import csharp
 import semmle.code.csharp.dataflow.flowsources.Remote
+import DataFlow as DF
+import TaintTracking as TT
 import ActionMethods
 
 /**
@@ -12,8 +14,6 @@ import ActionMethods
 // Other queries check that there are authorization checks in place for admin methods.
 private predicate needsChecks(ActionMethod m) { m.isEdit() and not m.isAdmin() }
 
-private Expr getParentExpr(Expr ex) { result.getAChildExpr() = ex }
-
 /**
  * Holds if `m` has a parameter or access a remote flow source
  * that may indicate that it's used as the ID for some resource
@@ -23,9 +23,10 @@ private predicate hasIdParameter(ActionMethod m) {
     src.asParameter().getName().toLowerCase().matches(["%id", "%idx"])
     or
     // handle cases like `Request.QueryString["Id"]`
-    exists(StringLiteral idStr |
+    exists(StringLiteral idStr, IndexerCall idx |
       idStr.getValue().toLowerCase().matches(["%id", "%idx"]) and
-      getParentExpr*(src.asExpr()) = getParentExpr*(idStr)
+      TT::localTaint(src, DataFlow::exprNode(idx.getQualifier())) and
+      DF::localExprFlow(idStr, idx.getArgument(0))
     )
   )
 }
