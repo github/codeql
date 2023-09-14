@@ -11,3 +11,7 @@ public class Test {
   }
 
 }
+
+// Diagnostic Matches: Erroneous node in tree: (ERROR)
+// Diagnostic Matches: In file Test.java:8:15 no end location for JCMethodInvocation : yield(x)
+// Diagnostic Matches: 1 errors during annotation processing
