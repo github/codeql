@@ -686,6 +686,9 @@
 | test.swift:611:36:611:36 | [post] n | test.swift:611:35:611:36 | &... |
 | test.swift:611:36:611:36 | n | test.swift:611:35:611:36 | &... |
 | test.swift:615:7:615:7 | self | test.swift:615:7:615:7 | SSA def(self) |
+| test.swift:615:7:615:7 | self | test.swift:615:7:615:7 | SSA def(self) |
+| test.swift:615:7:615:7 | self | test.swift:615:7:615:7 | SSA def(self) |
+| test.swift:615:7:615:7 | value | test.swift:615:7:615:7 | SSA def(value) |
 | test.swift:617:3:617:3 | SSA def(self) | test.swift:618:5:618:5 | self |
 | test.swift:617:3:617:3 | self | test.swift:617:3:617:3 | SSA def(self) |
 | test.swift:617:8:617:11 | SSA def(x) | test.swift:618:14:618:14 | x |
@@ -699,13 +702,19 @@
 | test.swift:624:7:624:7 | f | test.swift:624:7:624:7 | SSA def(f) |
 | test.swift:624:11:624:14 | #keyPath(...) | test.swift:624:7:624:7 | f |
 | test.swift:624:11:624:14 | enter #keyPath(...) | test.swift:624:14:624:14 | KeyPathComponent |
+| test.swift:624:14:624:14 | [post] KeyPathComponent | test.swift:624:11:624:14 | [post] enter #keyPath(...) |
+| test.swift:625:13:625:13 | [post] s | test.swift:628:13:628:13 | s |
 | test.swift:625:13:625:13 | s | test.swift:628:13:628:13 | s |
 | test.swift:627:7:627:7 | SSA def(inferred) | test.swift:628:24:628:24 | inferred |
 | test.swift:627:7:627:7 | inferred | test.swift:627:7:627:7 | SSA def(inferred) |
 | test.swift:627:7:627:32 | ... as ... | test.swift:627:7:627:7 | inferred |
 | test.swift:627:36:627:38 | #keyPath(...) | test.swift:627:7:627:32 | ... as ... |
 | test.swift:627:36:627:38 | enter #keyPath(...) | test.swift:627:38:627:38 | KeyPathComponent |
+| test.swift:627:38:627:38 | [post] KeyPathComponent | test.swift:627:36:627:38 | [post] enter #keyPath(...) |
 | test.swift:632:7:632:7 | self | test.swift:632:7:632:7 | SSA def(self) |
+| test.swift:632:7:632:7 | self | test.swift:632:7:632:7 | SSA def(self) |
+| test.swift:632:7:632:7 | self | test.swift:632:7:632:7 | SSA def(self) |
+| test.swift:632:7:632:7 | value | test.swift:632:7:632:7 | SSA def(value) |
 | test.swift:634:3:634:3 | SSA def(self) | test.swift:635:5:635:5 | self |
 | test.swift:634:3:634:3 | self | test.swift:634:3:634:3 | SSA def(self) |
 | test.swift:634:8:634:11 | SSA def(s) | test.swift:635:14:635:14 | s |
@@ -722,6 +731,7 @@
 | test.swift:642:7:642:7 | f | test.swift:642:7:642:7 | SSA def(f) |
 | test.swift:642:11:642:17 | #keyPath(...) | test.swift:642:7:642:7 | f |
 | test.swift:642:11:642:17 | enter #keyPath(...) | test.swift:642:15:642:15 | KeyPathComponent |
+| test.swift:642:15:642:15 | [post] KeyPathComponent | test.swift:642:11:642:17 | [post] enter #keyPath(...) |
 | test.swift:647:9:647:9 | SSA def(array) | test.swift:649:15:649:15 | array |
 | test.swift:647:9:647:9 | array | test.swift:647:9:647:9 | SSA def(array) |
 | test.swift:647:17:647:26 | [...] | test.swift:647:9:647:9 | array |
@@ -729,6 +739,7 @@
 | test.swift:648:9:648:9 | f | test.swift:648:9:648:9 | SSA def(f) |
 | test.swift:648:13:648:22 | #keyPath(...) | test.swift:648:9:648:9 | f |
 | test.swift:648:13:648:22 | enter #keyPath(...) | test.swift:648:20:648:22 | KeyPathComponent |
+| test.swift:648:20:648:22 | [post] KeyPathComponent | test.swift:648:13:648:22 | [post] enter #keyPath(...) |
 | test.swift:653:7:653:7 | self | test.swift:653:7:653:7 | SSA def(self) |
 | test.swift:655:3:655:3 | SSA def(self) | test.swift:656:5:656:5 | self |
 | test.swift:655:3:655:3 | self | test.swift:655:3:655:3 | SSA def(self) |
@@ -746,6 +757,7 @@
 | test.swift:663:9:663:9 | f | test.swift:663:9:663:9 | SSA def(f) |
 | test.swift:663:13:663:29 | #keyPath(...) | test.swift:663:9:663:9 | f |
 | test.swift:663:13:663:29 | enter #keyPath(...) | test.swift:663:26:663:26 | KeyPathComponent |
+| test.swift:663:26:663:26 | [post] KeyPathComponent | test.swift:663:13:663:29 | [post] enter #keyPath(...) |
 | test.swift:664:15:664:28 | \\...[...] | test.swift:664:15:664:29 | ...! |
 | test.swift:668:9:668:9 | SSA def(x) | test.swift:672:9:672:9 | x |
 | test.swift:668:9:668:9 | x | test.swift:668:9:668:9 | SSA def(x) |
@@ -924,6 +936,7 @@
 | test.swift:766:9:766:9 | f | test.swift:766:9:766:9 | SSA def(f) |
 | test.swift:766:13:766:29 | #keyPath(...) | test.swift:766:9:766:9 | f |
 | test.swift:766:13:766:29 | enter #keyPath(...) | test.swift:766:26:766:26 | KeyPathComponent |
+| test.swift:766:26:766:26 | [post] KeyPathComponent | test.swift:766:13:766:29 | [post] enter #keyPath(...) |
 | test.swift:771:9:771:9 | SSA def(dict1) | test.swift:772:15:772:15 | dict1 |
 | test.swift:771:9:771:9 | dict1 | test.swift:771:9:771:9 | SSA def(dict1) |
 | test.swift:771:17:771:31 | [...] | test.swift:771:9:771:9 | dict1 |
@@ -995,39 +1008,88 @@
 | test.swift:803:15:803:35 | call to randomElement() | test.swift:803:15:803:36 | ...! |
 | test.swift:804:15:804:15 | [post] dict4 | test.swift:805:15:805:15 | dict4 |
 | test.swift:804:15:804:15 | dict4 | test.swift:805:15:805:15 | dict4 |
-| test.swift:809:9:809:9 | SSA def(set1) | test.swift:811:17:811:17 | set1 |
-| test.swift:809:9:809:9 | set1 | test.swift:809:9:809:9 | SSA def(set1) |
-| test.swift:809:16:809:30 | call to Set<Element>.init(_:) | test.swift:809:9:809:9 | set1 |
-| test.swift:811:5:811:5 | $elem$generator | test.swift:811:5:811:5 | &... |
-| test.swift:811:5:811:5 | &... | test.swift:811:5:811:5 | $elem$generator |
-| test.swift:811:5:811:5 | [post] $elem$generator | test.swift:811:5:811:5 | &... |
-| test.swift:811:9:811:9 | SSA def(elem) | test.swift:812:19:812:19 | elem |
-| test.swift:811:9:811:9 | elem | test.swift:811:9:811:9 | SSA def(elem) |
-| test.swift:811:17:811:17 | $elem$generator | test.swift:811:17:811:17 | SSA def($elem$generator) |
-| test.swift:811:17:811:17 | SSA def($elem$generator) | test.swift:811:5:811:5 | $elem$generator |
-| test.swift:811:17:811:17 | [post] set1 | test.swift:815:21:815:21 | set1 |
-| test.swift:811:17:811:17 | call to makeIterator() | test.swift:811:17:811:17 | $elem$generator |
-| test.swift:811:17:811:17 | set1 | test.swift:815:21:815:21 | set1 |
-| test.swift:815:9:815:9 | SSA def(generator) | test.swift:816:15:816:15 | generator |
-| test.swift:815:9:815:9 | generator | test.swift:815:9:815:9 | SSA def(generator) |
-| test.swift:815:21:815:39 | call to makeIterator() | test.swift:815:9:815:9 | generator |
-| test.swift:816:15:816:15 | [post] generator | test.swift:816:15:816:15 | &... |
-| test.swift:816:15:816:15 | generator | test.swift:816:15:816:15 | &... |
-| test.swift:816:15:816:30 | call to next() | test.swift:816:15:816:31 | ...! |
-| test.swift:820:9:820:9 | SSA def(stream) | test.swift:830:24:830:24 | stream |
-| test.swift:820:9:820:9 | stream | test.swift:820:9:820:9 | SSA def(stream) |
-| test.swift:820:18:828:6 | call to AsyncStream<Element>.init(_:bufferingPolicy:_:) | test.swift:820:9:820:9 | stream |
-| test.swift:823:17:823:17 | $generator | test.swift:823:17:823:17 | &... |
-| test.swift:823:17:823:17 | &... | test.swift:823:17:823:17 | $generator |
-| test.swift:823:17:823:17 | [post] $generator | test.swift:823:17:823:17 | &... |
-| test.swift:823:26:823:26 | $generator | test.swift:823:26:823:26 | SSA def($generator) |
-| test.swift:823:26:823:26 | SSA def($generator) | test.swift:823:17:823:17 | $generator |
-| test.swift:823:26:823:30 | call to makeIterator() | test.swift:823:26:823:26 | $generator |
-| test.swift:830:5:830:5 | $i$generator | test.swift:830:5:830:5 | &... |
-| test.swift:830:5:830:5 | &... | test.swift:830:5:830:5 | $i$generator |
-| test.swift:830:5:830:5 | [post] $i$generator | test.swift:830:5:830:5 | &... |
-| test.swift:830:19:830:19 | SSA def(i) | test.swift:831:19:831:19 | i |
-| test.swift:830:19:830:19 | i | test.swift:830:19:830:19 | SSA def(i) |
-| test.swift:830:24:830:24 | $i$generator | test.swift:830:24:830:24 | SSA def($i$generator) |
-| test.swift:830:24:830:24 | SSA def($i$generator) | test.swift:830:5:830:5 | $i$generator |
-| test.swift:830:24:830:24 | call to makeAsyncIterator() | test.swift:830:24:830:24 | $i$generator |
+| test.swift:809:3:809:3 | SSA def(self) | test.swift:810:5:810:5 | self |
+| test.swift:809:3:809:3 | self | test.swift:809:3:809:3 | SSA def(self) |
+| test.swift:809:8:809:13 | SSA def(v) | test.swift:810:14:810:14 | v |
+| test.swift:809:8:809:13 | v | test.swift:809:8:809:13 | SSA def(v) |
+| test.swift:810:5:810:5 | [post] self | test.swift:809:3:811:3 | self[return] |
+| test.swift:810:5:810:5 | self | test.swift:809:3:811:3 | self[return] |
+| test.swift:813:8:813:8 | SSA def(self) | test.swift:813:31:813:31 | self |
+| test.swift:813:8:813:8 | self | test.swift:813:8:813:8 | SSA def(self) |
+| test.swift:813:31:813:31 | [post] self | test.swift:813:3:813:33 | self[return] |
+| test.swift:813:31:813:31 | self | test.swift:813:3:813:33 | self[return] |
+| test.swift:815:7:815:7 | self | test.swift:815:7:815:7 | SSA def(self) |
+| test.swift:815:7:815:7 | self | test.swift:815:7:815:7 | SSA def(self) |
+| test.swift:815:7:815:7 | self | test.swift:815:7:815:7 | SSA def(self) |
+| test.swift:815:7:815:7 | value | test.swift:815:7:815:7 | SSA def(value) |
+| test.swift:819:9:819:9 | SSA def(s1) | test.swift:822:15:822:15 | s1 |
+| test.swift:819:9:819:9 | s1 | test.swift:819:9:819:9 | SSA def(s1) |
+| test.swift:819:14:819:25 | call to S3.init(_:) | test.swift:819:9:819:9 | s1 |
+| test.swift:820:9:820:9 | SSA def(s2) | test.swift:823:15:823:15 | s2 |
+| test.swift:820:9:820:9 | s2 | test.swift:820:9:820:9 | SSA def(s2) |
+| test.swift:820:14:820:18 | call to S3.init(_:) | test.swift:820:9:820:9 | s2 |
+| test.swift:822:15:822:15 | [post] s1 | test.swift:824:15:824:15 | s1 |
+| test.swift:822:15:822:15 | s1 | test.swift:824:15:824:15 | s1 |
+| test.swift:823:15:823:15 | [post] s2 | test.swift:825:15:825:15 | s2 |
+| test.swift:823:15:823:15 | s2 | test.swift:825:15:825:15 | s2 |
+| test.swift:824:15:824:15 | [post] s1 | test.swift:827:5:827:5 | s1 |
+| test.swift:824:15:824:15 | s1 | test.swift:827:5:827:5 | s1 |
+| test.swift:825:15:825:15 | [post] s2 | test.swift:828:5:828:5 | s2 |
+| test.swift:825:15:825:15 | s2 | test.swift:828:5:828:5 | s2 |
+| test.swift:827:5:827:5 | [post] s1 | test.swift:830:15:830:15 | s1 |
+| test.swift:827:5:827:5 | s1 | test.swift:830:15:830:15 | s1 |
+| test.swift:828:5:828:5 | [post] s2 | test.swift:831:15:831:15 | s2 |
+| test.swift:828:5:828:5 | s2 | test.swift:831:15:831:15 | s2 |
+| test.swift:830:15:830:15 | [post] s1 | test.swift:832:15:832:15 | s1 |
+| test.swift:830:15:830:15 | s1 | test.swift:832:15:832:15 | s1 |
+| test.swift:831:15:831:15 | [post] s2 | test.swift:833:15:833:15 | s2 |
+| test.swift:831:15:831:15 | s2 | test.swift:833:15:833:15 | s2 |
+| test.swift:837:7:837:7 | SSA def(s2) | test.swift:838:13:838:13 | s2 |
+| test.swift:837:7:837:7 | s2 | test.swift:837:7:837:7 | SSA def(s2) |
+| test.swift:837:12:837:25 | call to S2.init(s:) | test.swift:837:7:837:7 | s2 |
+| test.swift:838:13:838:13 | [post] s2 | test.swift:840:3:840:3 | s2 |
+| test.swift:838:13:838:13 | s2 | test.swift:840:3:840:3 | s2 |
+| test.swift:839:7:839:7 | SSA def(f) | test.swift:840:15:840:15 | f |
+| test.swift:839:7:839:7 | f | test.swift:839:7:839:7 | SSA def(f) |
+| test.swift:839:11:839:17 | #keyPath(...) | test.swift:839:7:839:7 | f |
+| test.swift:839:11:839:17 | enter #keyPath(...) | test.swift:839:15:839:15 | KeyPathComponent |
+| test.swift:839:15:839:15 | [post] KeyPathComponent | test.swift:839:11:839:17 | [post] enter #keyPath(...) |
+| test.swift:840:3:840:3 | [post] s2 | test.swift:841:13:841:13 | s2 |
+| test.swift:840:3:840:3 | s2 | test.swift:841:13:841:13 | s2 |
+| test.swift:840:20:840:27 | call to source() | test.swift:840:3:840:16 | \\...[...] |
+| test.swift:845:9:845:9 | SSA def(set1) | test.swift:847:17:847:17 | set1 |
+| test.swift:845:9:845:9 | set1 | test.swift:845:9:845:9 | SSA def(set1) |
+| test.swift:845:16:845:30 | call to Set<Element>.init(_:) | test.swift:845:9:845:9 | set1 |
+| test.swift:847:5:847:5 | $elem$generator | test.swift:847:5:847:5 | &... |
+| test.swift:847:5:847:5 | &... | test.swift:847:5:847:5 | $elem$generator |
+| test.swift:847:5:847:5 | [post] $elem$generator | test.swift:847:5:847:5 | &... |
+| test.swift:847:9:847:9 | SSA def(elem) | test.swift:848:19:848:19 | elem |
+| test.swift:847:9:847:9 | elem | test.swift:847:9:847:9 | SSA def(elem) |
+| test.swift:847:17:847:17 | $elem$generator | test.swift:847:17:847:17 | SSA def($elem$generator) |
+| test.swift:847:17:847:17 | SSA def($elem$generator) | test.swift:847:5:847:5 | $elem$generator |
+| test.swift:847:17:847:17 | [post] set1 | test.swift:851:21:851:21 | set1 |
+| test.swift:847:17:847:17 | call to makeIterator() | test.swift:847:17:847:17 | $elem$generator |
+| test.swift:847:17:847:17 | set1 | test.swift:851:21:851:21 | set1 |
+| test.swift:851:9:851:9 | SSA def(generator) | test.swift:852:15:852:15 | generator |
+| test.swift:851:9:851:9 | generator | test.swift:851:9:851:9 | SSA def(generator) |
+| test.swift:851:21:851:39 | call to makeIterator() | test.swift:851:9:851:9 | generator |
+| test.swift:852:15:852:15 | [post] generator | test.swift:852:15:852:15 | &... |
+| test.swift:852:15:852:15 | generator | test.swift:852:15:852:15 | &... |
+| test.swift:852:15:852:30 | call to next() | test.swift:852:15:852:31 | ...! |
+| test.swift:856:9:856:9 | SSA def(stream) | test.swift:866:24:866:24 | stream |
+| test.swift:856:9:856:9 | stream | test.swift:856:9:856:9 | SSA def(stream) |
+| test.swift:856:18:864:6 | call to AsyncStream<Element>.init(_:bufferingPolicy:_:) | test.swift:856:9:856:9 | stream |
+| test.swift:859:17:859:17 | $generator | test.swift:859:17:859:17 | &... |
+| test.swift:859:17:859:17 | &... | test.swift:859:17:859:17 | $generator |
+| test.swift:859:17:859:17 | [post] $generator | test.swift:859:17:859:17 | &... |
+| test.swift:859:26:859:26 | $generator | test.swift:859:26:859:26 | SSA def($generator) |
+| test.swift:859:26:859:26 | SSA def($generator) | test.swift:859:17:859:17 | $generator |
+| test.swift:859:26:859:30 | call to makeIterator() | test.swift:859:26:859:26 | $generator |
+| test.swift:866:5:866:5 | $i$generator | test.swift:866:5:866:5 | &... |
+| test.swift:866:5:866:5 | &... | test.swift:866:5:866:5 | $i$generator |
+| test.swift:866:5:866:5 | [post] $i$generator | test.swift:866:5:866:5 | &... |
+| test.swift:866:19:866:19 | SSA def(i) | test.swift:867:19:867:19 | i |
+| test.swift:866:19:866:19 | i | test.swift:866:19:866:19 | SSA def(i) |
+| test.swift:866:24:866:24 | $i$generator | test.swift:866:24:866:24 | SSA def($i$generator) |
+| test.swift:866:24:866:24 | SSA def($i$generator) | test.swift:866:5:866:5 | $i$generator |
+| test.swift:866:24:866:24 | call to makeAsyncIterator() | test.swift:866:24:866:24 | $i$generator |

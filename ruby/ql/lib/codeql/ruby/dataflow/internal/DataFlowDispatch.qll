@@ -21,8 +21,7 @@ private class SelfLocalSourceNode extends DataFlow::LocalSourceNode {
   SelfLocalSourceNode() {
     self = this.(SelfParameterNodeImpl).getSelfVariable()
     or
-    self = this.(SsaSelfDefinitionNode).getVariable() and
-    not LocalFlow::localFlowSsaParamInput(_, this)
+    self = this.(SsaSelfDefinitionNode).getVariable()
   }
 
   /** Gets the `self` variable. */
@@ -310,8 +309,14 @@ predicate isUserDefinedNew(SingletonMethod new) {
 }
 
 private Callable viableSourceCallableNonInit(RelevantCall call) {
-  result = getTarget(call) and
-  not result = blockCall(call) // handled by `lambdaCreation`/`lambdaCall`
+  result = getTargetInstance(call, _)
+  or
+  result = getTargetSingleton(call, _)
+  or
+  exists(Module cls, string method |
+    superCall(call, cls, method) and
+    result = lookupMethod(cls.getAnImmediateAncestor(), method)
+  )
 }
 
 private Callable viableSourceCallableInit(RelevantCall call) { result = getInitializeTarget(call) }
@@ -401,14 +406,7 @@ private module Cached {
 
   cached
   CfgScope getTarget(RelevantCall call) {
-    result = getTargetInstance(call, _)
-    or
-    result = getTargetSingleton(call, _)
-    or
-    exists(Module cls, string method |
-      superCall(call, cls, method) and
-      result = lookupMethod(cls.getAnImmediateAncestor(), method)
-    )
+    result = viableSourceCallableNonInit(call)
     or
     result = blockCall(call)
   }
@@ -424,6 +422,7 @@ private module Cached {
   cached
   newtype TArgumentPosition =
     TSelfArgumentPosition() or
+    TLambdaSelfArgumentPosition() or
     TBlockArgumentPosition() or
     TPositionalArgumentPosition(int pos) {
       exists(Call c | exists(c.getArgument(pos)))
@@ -446,6 +445,7 @@ private module Cached {
   cached
   newtype TParameterPosition =
     TSelfParameterPosition() or
+    TLambdaSelfParameterPosition() or
     TBlockParameterPosition() or
     TPositionalParameterPosition(int pos) {
       pos = any(Parameter p).getPosition()
@@ -941,20 +941,24 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
   private predicate paramReturnFlow(
     DataFlow::Node nodeFrom, DataFlow::PostUpdateNode nodeTo, StepSummary summary
   ) {
-    exists(RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p, Expr nodeFromPreExpr |
+    exists(
+      RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p,
+      CfgNodes::ExprCfgNode nodeFromPreExpr
+    |
       TypeTrackerSpecific::callStep(call, arg, p) and
       nodeTo.getPreUpdateNode() = arg and
       summary.toString() = "return" and
       (
-        nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+        nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
         or
-        nodeFromPreExpr = nodeFrom.asExpr().getExpr() and
-        singletonMethodOnInstance(_, _, nodeFromPreExpr)
+        nodeFromPreExpr = nodeFrom.asExpr() and
+        singletonMethodOnInstance(_, _, nodeFromPreExpr.getExpr())
       )
     |
-      nodeFromPreExpr = p.getParameter().(NamedParameter).getVariable().getAnAccess()
+      nodeFromPreExpr =
+        LocalFlow::getParameterDefNode(p.getParameter()).getDefinitionExt().getARead()
       or
-      nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfVariable().getAnAccess()
+      nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfDefinition().getARead()
     )
   }
 
@@ -1276,6 +1280,9 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
+  /** Holds if this position represents a reference to a lambda itself. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfParameterPosition() }
+
   /** Holds if this position represents a block parameter. */
   predicate isBlock() { this = TBlockParameterPosition() }
 
@@ -1313,6 +1320,8 @@ class ParameterPosition extends TParameterPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     this.isBlock() and result = "block"
     or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
@@ -1341,6 +1350,9 @@ class ParameterPosition extends TParameterPosition {
 class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a `self` argument. */
   predicate isSelf() { this = TSelfArgumentPosition() }
+
+  /** Holds if this position represents a lambda `self` argument. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfArgumentPosition() }
 
   /** Holds if this position represents a block argument. */
   predicate isBlock() { this = TBlockArgumentPosition() }
@@ -1374,6 +1386,8 @@ class ArgumentPosition extends TArgumentPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     this.isBlock() and result = "block"
     or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
@@ -1393,15 +1407,23 @@ class ArgumentPosition extends TArgumentPosition {
 }
 
 pragma[nomagic]
-private predicate parameterPositionIsNotSelf(ParameterPosition ppos) { not ppos.isSelf() }
+private predicate parameterPositionIsNotSelf(ParameterPosition ppos) {
+  not ppos.isSelf() and
+  not ppos.isLambdaSelf()
+}
 
 pragma[nomagic]
-private predicate argumentPositionIsNotSelf(ArgumentPosition apos) { not apos.isSelf() }
+private predicate argumentPositionIsNotSelf(ArgumentPosition apos) {
+  not apos.isSelf() and
+  not apos.isLambdaSelf()
+}
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[nomagic]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
+  or
+  ppos.isLambdaSelf() and apos.isLambdaSelf()
   or
   ppos.isBlock() and apos.isBlock()
   or
@@ -1441,8 +1463,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
  * This is a temporary hook to support technical debt in the Go language; do not use.
  */
 pragma[inline]
-predicate golangSpecificParamArgFilter(
-  DataFlowCall call, DataFlow::ParameterNode p, ArgumentNode arg
-) {
+predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNodeImpl p, ArgumentNode arg) {
   any()
 }

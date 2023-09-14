@@ -11330,6 +11330,105 @@ ir.cpp:
 # 2070|     v2070_5(void)           = AliasedUse                                 : ~m?
 # 2070|     v2070_6(void)           = ExitFunction                               : 
 
+# 2077| int NonExit()
+# 2077|   Block 0
+# 2077|     v2077_1(void)           = EnterFunction        : 
+# 2077|     mu2077_2(unknown)       = AliasedDefinition    : 
+# 2077|     mu2077_3(unknown)       = InitializeNonLocal   : 
+# 2078|     r2078_1(glval<int>)     = VariableAddress[x]   : 
+# 2078|     r2078_2(glval<unknown>) = FunctionAddress[Add] : 
+# 2078|     r2078_3(int)            = Constant[3]          : 
+# 2078|     r2078_4(int)            = Constant[4]          : 
+# 2078|     r2078_5(int)            = Call[Add]            : func:r2078_2, 0:r2078_3, 1:r2078_4
+# 2078|     mu2078_6(unknown)       = ^CallSideEffect      : ~m?
+# 2078|     mu2078_7(int)           = Store[x]             : &:r2078_1, r2078_5
+# 2079|     r2079_1(glval<int>)     = VariableAddress[x]   : 
+# 2079|     r2079_2(int)            = Load[x]              : &:r2079_1, ~m?
+# 2079|     r2079_3(int)            = Constant[7]          : 
+# 2079|     r2079_4(bool)           = CompareEQ            : r2079_2, r2079_3
+# 2079|     v2079_5(void)           = ConditionalBranch    : r2079_4
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2080|   Block 1
+# 2080|     r2080_1(glval<unknown>) = FunctionAddress[exit] : 
+# 2080|     r2080_2(int)            = Constant[3]           : 
+# 2080|     v2080_3(void)           = Call[exit]            : func:r2080_1, 0:r2080_2
+# 2080|     mu2080_4(unknown)       = ^CallSideEffect       : ~m?
+# 2077|     v2077_4(void)           = Unreached             : 
+
+# 2081|   Block 2
+# 2081|     r2081_1(glval<unknown>) = FunctionAddress[VoidFunc] : 
+# 2081|     v2081_2(void)           = Call[VoidFunc]            : func:r2081_1
+# 2081|     mu2081_3(unknown)       = ^CallSideEffect           : ~m?
+# 2082|     r2082_1(glval<int>)     = VariableAddress[#return]  : 
+# 2082|     r2082_2(glval<int>)     = VariableAddress[x]        : 
+# 2082|     r2082_3(int)            = Load[x]                   : &:r2082_2, ~m?
+# 2082|     mu2082_4(int)           = Store[#return]            : &:r2082_1, r2082_3
+# 2077|     r2077_5(glval<int>)     = VariableAddress[#return]  : 
+# 2077|     v2077_6(void)           = ReturnValue               : &:r2077_5, ~m?
+# 2077|     v2077_7(void)           = AliasedUse                : ~m?
+# 2077|     v2077_8(void)           = ExitFunction              : 
+
+# 2085| void CallsNonExit()
+# 2085|   Block 0
+# 2085|     v2085_1(void)           = EnterFunction             : 
+# 2085|     mu2085_2(unknown)       = AliasedDefinition         : 
+# 2085|     mu2085_3(unknown)       = InitializeNonLocal        : 
+# 2086|     r2086_1(glval<unknown>) = FunctionAddress[VoidFunc] : 
+# 2086|     v2086_2(void)           = Call[VoidFunc]            : func:r2086_1
+# 2086|     mu2086_3(unknown)       = ^CallSideEffect           : ~m?
+# 2087|     r2087_1(glval<unknown>) = FunctionAddress[exit]     : 
+# 2087|     r2087_2(int)            = Constant[3]               : 
+# 2087|     v2087_3(void)           = Call[exit]                : func:r2087_1, 0:r2087_2
+# 2087|     mu2087_4(unknown)       = ^CallSideEffect           : ~m?
+# 2085|     v2085_4(void)           = Unreached                 : 
+
+# 2088|   Block 1
+# 2088|     v2088_1(void) = NoOp         : 
+# 2085|     v2085_5(void) = ReturnVoid   : 
+# 2085|     v2085_6(void) = AliasedUse   : ~m?
+# 2085|     v2085_7(void) = ExitFunction : 
+
+# 2090| int TransNonExit()
+# 2090|   Block 0
+# 2090|     v2090_1(void)           = EnterFunction        : 
+# 2090|     mu2090_2(unknown)       = AliasedDefinition    : 
+# 2090|     mu2090_3(unknown)       = InitializeNonLocal   : 
+# 2091|     r2091_1(glval<int>)     = VariableAddress[x]   : 
+# 2091|     r2091_2(glval<unknown>) = FunctionAddress[Add] : 
+# 2091|     r2091_3(int)            = Constant[3]          : 
+# 2091|     r2091_4(int)            = Constant[4]          : 
+# 2091|     r2091_5(int)            = Call[Add]            : func:r2091_2, 0:r2091_3, 1:r2091_4
+# 2091|     mu2091_6(unknown)       = ^CallSideEffect      : ~m?
+# 2091|     mu2091_7(int)           = Store[x]             : &:r2091_1, r2091_5
+# 2092|     r2092_1(glval<int>)     = VariableAddress[x]   : 
+# 2092|     r2092_2(int)            = Load[x]              : &:r2092_1, ~m?
+# 2092|     r2092_3(int)            = Constant[7]          : 
+# 2092|     r2092_4(bool)           = CompareEQ            : r2092_2, r2092_3
+# 2092|     v2092_5(void)           = ConditionalBranch    : r2092_4
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2093|   Block 1
+# 2093|     r2093_1(glval<unknown>) = FunctionAddress[CallsNonExit] : 
+# 2093|     v2093_2(void)           = Call[CallsNonExit]            : func:r2093_1
+# 2093|     mu2093_3(unknown)       = ^CallSideEffect               : ~m?
+#-----|   Goto -> Block 2
+
+# 2094|   Block 2
+# 2094|     r2094_1(glval<unknown>) = FunctionAddress[VoidFunc] : 
+# 2094|     v2094_2(void)           = Call[VoidFunc]            : func:r2094_1
+# 2094|     mu2094_3(unknown)       = ^CallSideEffect           : ~m?
+# 2095|     r2095_1(glval<int>)     = VariableAddress[#return]  : 
+# 2095|     r2095_2(glval<int>)     = VariableAddress[x]        : 
+# 2095|     r2095_3(int)            = Load[x]                   : &:r2095_2, ~m?
+# 2095|     mu2095_4(int)           = Store[#return]            : &:r2095_1, r2095_3
+# 2090|     r2090_4(glval<int>)     = VariableAddress[#return]  : 
+# 2090|     v2090_5(void)           = ReturnValue               : &:r2090_4, ~m?
+# 2090|     v2090_6(void)           = AliasedUse                : ~m?
+# 2090|     v2090_7(void)           = ExitFunction              : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

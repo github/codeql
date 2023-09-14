@@ -415,6 +415,9 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
 
   CilDataFlowCall() { this = TCilCall(call) }
 
+  /** Gets the underlying CIL call. */
+  CIL::Call getCilCall() { result = call }
+
   override DataFlowCallable getARuntimeTarget() {
     // There is no dispatch library for CIL, so do not consider overrides for now
     result.getUnderlyingCallable() = getCallableForDataFlow(call.getTarget())

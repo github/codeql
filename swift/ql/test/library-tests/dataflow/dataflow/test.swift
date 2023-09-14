@@ -612,7 +612,7 @@ func inoutConstructor() {
 }
 
 struct S {
-  let x: Int
+  var x: Int
 
   init(x: Int) {
     self.x = x
@@ -629,7 +629,7 @@ func testKeyPath() {
 }
 
 struct S2 {
-  let s: S
+  var s: S
 
   init(s: S) {
     self.s = s
@@ -805,15 +805,51 @@ func testDictionary() {
     sink(arg: dict4.values.randomElement()) // $ MISSING: flow=799 flow=801
 }
 
+struct S3 {
+  init(_ v: Int) {
+    self.v = v
+  }
+
+  func getv() -> Int { return v }
+
+  var v: Int
+}
+
+func testStruct() {
+    var s1 = S3(source())
+    var s2 = S3(0)
+
+    sink(arg: s1.v) // $ flow=819
+    sink(arg: s2.v)
+    sink(arg: s1.getv()) // $ flow=819
+    sink(arg: s2.getv())
+
+    s1.v = 0
+    s2.v = source()
+
+    sink(arg: s1.v)
+    sink(arg: s2.v) // $ flow=828
+    sink(arg: s1.getv())
+    sink(arg: s2.getv()) // $ flow=828
+}
+
+func testNestedKeyPathWrite() {
+  var s2 = S2(s: S(x: 1))
+  sink(arg: s2.s.x)
+  var f = \S2.s.x
+  s2[keyPath: f] = source()
+  sink(arg: s2.s.x) // $ flow=840
+}
+
 func testSetForEach() {
     var set1 = Set([source()])
     
     for elem in set1 {
-        sink(arg: elem) // $ flow=809
+        sink(arg: elem) // $ flow=845
     }
 
     var generator = set1.makeIterator()
-    sink(arg: generator.next()!) // $ flow=809
+    sink(arg: generator.next()!) // $ flow=845
 }
 
 func testAsyncFor () async {
@@ -828,6 +864,6 @@ func testAsyncFor () async {
     })
 
     for try await i in stream {
-        sink(arg: i) // $ MISSING: flow=824
+        sink(arg: i) // $ MISSING: flow=860
     }
 }
