@@ -21,7 +21,7 @@ module Jwt {
 
     override DataFlow::Node getKey() { result = this.getArgument(1) }
 
-    override predicate signs() {
+    override predicate signsPayload() {
       not (this.getKey().getConstantValue().isStringlikeValue("") or this.getKey().(DataFlow::ExprNode).getConstantValue().isNil())
     }
   }
