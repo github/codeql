@@ -11,17 +11,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal partial class DotNet : IDotNet
     {
-        private readonly IDotnetCommand dotnet;
+        private readonly IDotNetCliInvoker dotnet;
         private readonly ProgressMonitor progressMonitor;
 
-        internal DotNet(IDotnetCommand dotnet, ProgressMonitor progressMonitor)
+        internal DotNet(IDotNetCliInvoker dotnet, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
             this.dotnet = dotnet;
             Info();
         }
 
-        public DotNet(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotnetCommand(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
+        public DotNet(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
 
 
         private void Info()

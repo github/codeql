@@ -7,13 +7,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Low level utilities to run the "dotnet" command.
     /// </summary>
-    internal sealed class DotnetCommand : IDotnetCommand
+    internal sealed class DotNetCliInvoker : IDotNetCliInvoker
     {
         private readonly ProgressMonitor progressMonitor;
 
         public string Exec { get; }
 
-        public DotnetCommand(ProgressMonitor progressMonitor, string exec)
+        public DotNetCliInvoker(ProgressMonitor progressMonitor, string exec)
         {
             this.progressMonitor = progressMonitor;
             this.Exec = exec;

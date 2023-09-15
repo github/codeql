@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal interface IDotnetCommand
+    internal interface IDotNetCliInvoker
     {
         /// <summary>
         /// The name of the dotnet executable.

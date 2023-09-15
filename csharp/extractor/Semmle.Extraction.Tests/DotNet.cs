@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace Semmle.Extraction.Tests
 {
-    internal class DotnetCommandStub : IDotnetCommand
+    internal class DotNetCliInvokerStub : IDotNetCliInvoker
     {
         private readonly IList<string> output;
         private string lastArgs = "";
         public bool Success { get; set; } = true;
 
-        public DotnetCommandStub(IList<string> output)
+        public DotNetCliInvokerStub(IList<string> output)
         {
             this.output = output;
         }
@@ -38,8 +38,8 @@ namespace Semmle.Extraction.Tests
     public class DotNetTests
     {
 
-        private static IDotNet MakeDotnet(IDotnetCommand dotnetCommand) =>
-            new DotNet(dotnetCommand, new ProgressMonitor(new LoggerStub()));
+        private static IDotNet MakeDotnet(IDotNetCliInvoker dotnetCliInvoker) =>
+            new DotNet(dotnetCliInvoker, new ProgressMonitor(new LoggerStub()));
 
         private static IList<string> MakeDotnetRestoreOutput() =>
             new List<string> {
@@ -61,13 +61,13 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetInfo()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(new List<string>());
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
 
             // Execute
-            var _ = MakeDotnet(dotnetCommand);
+            var _ = MakeDotnet(dotnetCliInvoker);
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("--info", lastArgs);
         }
 
@@ -75,12 +75,12 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetInfoFailure()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(new List<string>()) { Success = false };
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>()) { Success = false };
 
             // Execute
             try
             {
-                var _ = MakeDotnet(dotnetCommand);
+                var _ = MakeDotnet(dotnetCliInvoker);
             }
 
             // Verify
@@ -96,14 +96,14 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetRestoreProjectToDirectory1()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(new List<string>());
-            var dotnet = MakeDotnet(dotnetCommand);
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
             dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", out var _);
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true", lastArgs);
         }
 
@@ -111,14 +111,14 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetRestoreProjectToDirectory2()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(new List<string>());
-            var dotnet = MakeDotnet(dotnetCommand);
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
             dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", out var _, "myconfig.config");
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --configfile \"myconfig.config\"", lastArgs);
         }
 
@@ -126,14 +126,14 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetRestoreSolutionToDirectory1()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(MakeDotnetRestoreOutput());
-            var dotnet = MakeDotnet(dotnetCommand);
+            var dotnetCliInvoker = new DotNetCliInvokerStub(MakeDotnetRestoreOutput());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
             dotnet.RestoreSolutionToDirectory("mysolution.sln", "mypackages", out var projects);
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("restore --no-dependencies \"mysolution.sln\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
             Assert.Equal(2, projects.Count());
             Assert.Contains("/path/to/project.csproj", projects);
@@ -144,15 +144,15 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetRestoreSolutionToDirectory2()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(MakeDotnetRestoreOutput());
-            var dotnet = MakeDotnet(dotnetCommand);
-            dotnetCommand.Success = false;
+            var dotnetCliInvoker = new DotNetCliInvokerStub(MakeDotnetRestoreOutput());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
+            dotnetCliInvoker.Success = false;
 
             // Execute
             dotnet.RestoreSolutionToDirectory("mysolution.sln", "mypackages", out var projects);
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("restore --no-dependencies \"mysolution.sln\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
             Assert.Empty(projects);
         }
@@ -161,14 +161,14 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetNew()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(new List<string>());
-            var dotnet = MakeDotnet(dotnetCommand);
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
             dotnet.New("myfolder");
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("new console --no-restore --output \"myfolder\"", lastArgs);
         }
 
@@ -176,14 +176,14 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetAddPackage()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(new List<string>());
-            var dotnet = MakeDotnet(dotnetCommand);
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
             dotnet.AddPackage("myfolder", "mypackage");
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("add \"myfolder\" package \"mypackage\" --no-restore", lastArgs);
         }
 
@@ -191,14 +191,14 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetGetListedRuntimes1()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(MakeDotnetListRuntimesOutput());
-            var dotnet = MakeDotnet(dotnetCommand);
+            var dotnetCliInvoker = new DotNetCliInvokerStub(MakeDotnetListRuntimesOutput());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
             var runtimes = dotnet.GetListedRuntimes();
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("--list-runtimes", lastArgs);
             Assert.Equal(2, runtimes.Count);
             Assert.Contains("Microsoft.AspNetCore.App 7.0.2 [/path/dotnet/shared/Microsoft.AspNetCore.App]", runtimes);
@@ -209,15 +209,15 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetGetListedRuntimes2()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(MakeDotnetListRuntimesOutput());
-            var dotnet = MakeDotnet(dotnetCommand);
-            dotnetCommand.Success = false;
+            var dotnetCliInvoker = new DotNetCliInvokerStub(MakeDotnetListRuntimesOutput());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
+            dotnetCliInvoker.Success = false;
 
             // Execute
             var runtimes = dotnet.GetListedRuntimes();
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("--list-runtimes", lastArgs);
             Assert.Empty(runtimes);
         }
@@ -226,14 +226,14 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetExec()
         {
             // Setup
-            var dotnetCommand = new DotnetCommandStub(new List<string>());
-            var dotnet = MakeDotnet(dotnetCommand);
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
             dotnet.Exec("myarg1 myarg2");
 
             // Verify
-            var lastArgs = dotnetCommand.GetLastArgs();
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("exec myarg1 myarg2", lastArgs);
         }
     }
