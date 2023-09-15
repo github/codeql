@@ -86,6 +86,10 @@ module Django {
         }
       }
 
+      private class MaDSubclass extends ModeledSubclass {
+        MaDSubclass() { this = ModelOutput::getATypeNode("Django.Views.View~Subclass") }
+      }
+
       /** Gets a reference to the `django.views.generic.View` class or any subclass. */
       API::Node subclassRef() { result = any(ModeledSubclass subclass).getASubclass*() }
     }
@@ -293,6 +297,10 @@ module Django {
                 .getMember("models")
                 .getMember(["InlineForeignKeyField", "ModelChoiceField", "ModelMultipleChoiceField"])
         }
+      }
+
+      private class MaDSubclass extends ModeledSubclass {
+        MaDSubclass() { this = ModelOutput::getATypeNode("Django.Forms.Field~Subclass") }
       }
 
       /** Gets a reference to the `django.forms.fields.Field` class or any subclass. */
