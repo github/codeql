@@ -1268,7 +1268,7 @@ class JwtEncoding extends DataFlow::Node instanceof JwtEncoding::Range {
   DataFlow::Node getKey() { result = super.getKey() }
 
   /** Checks if the payloads gets signed while encoding. */
-  predicate signs() { super.signs() }
+  predicate signsPayload() { super.signsPayload() }
 }
 
 /** Provides a class for modeling new Jwt token encoding APIs. */
