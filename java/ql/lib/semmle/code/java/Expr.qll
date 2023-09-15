@@ -1247,7 +1247,8 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   override string toString() {
     result = "new " + this.getConstructor().getName() + "(...)"
     or
-    not exists(this.getConstructor()) and result = "<ClassInstanceExpr that calls a missing constructor>"
+    not exists(this.getConstructor()) and
+    result = "<ClassInstanceExpr that calls a missing constructor>"
   }
 
   override string getAPrimaryQlClass() { result = "ClassInstanceExpr" }
