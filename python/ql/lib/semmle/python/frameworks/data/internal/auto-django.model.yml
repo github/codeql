@@ -358,3 +358,9 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - django
     - Member[views].Member[generic].Member[edit].Member[Form]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - django
+    - Member[core].Member[servers].Member[basehttp].Member[ThreadedWSGIServer]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - django
+    - Member[core].Member[servers].Member[basehttp].Member[WSGIServer]
