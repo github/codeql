@@ -2129,4 +2129,20 @@ int constexprTest2() {
     return j;
 }
 
+template<typename _Tp>
+struct nl {};
+
+
+template<>
+struct nl<unsigned short> {
+    constexpr static int foo() {
+        return 5;
+    }
+};
+
+int ParensCall() {
+    return 5 <= (nl<unsigned short>::foo)() ;
+}
+
+
 // semmle-extractor-options: -std=c++17 --clang

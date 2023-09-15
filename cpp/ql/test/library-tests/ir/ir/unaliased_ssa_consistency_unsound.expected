@@ -6,6 +6,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir20.cpp:8:19:8:19 | Constant: 2 | Instruction 'Constant: 2' has no successors in function '$@'. | ir20.cpp:7:22:7:34 | std::strong_ordering spaceshipTest() | std::strong_ordering spaceshipTest() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

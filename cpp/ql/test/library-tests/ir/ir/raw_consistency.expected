@@ -1,4 +1,5 @@
 missingOperand
+| ir20.cpp:8:12:8:20 | Store: (...) | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir20.cpp:7:22:7:34 | std::strong_ordering spaceshipTest() | std::strong_ordering spaceshipTest() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -6,6 +7,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir20.cpp:8:19:8:19 | Constant: 2 | Instruction 'Constant: 2' has no successors in function '$@'. | ir20.cpp:7:22:7:34 | std::strong_ordering spaceshipTest() | std::strong_ordering spaceshipTest() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -20,6 +22,7 @@ multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+| ir20.cpp:8:5:8:21 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir20.cpp:7:22:7:34 | std::strong_ordering spaceshipTest() | std::strong_ordering spaceshipTest() |
 | ir.cpp:1486:8:1486:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1486:8:1486:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |

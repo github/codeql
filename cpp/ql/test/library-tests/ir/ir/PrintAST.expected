@@ -16003,6 +16003,78 @@ ir.cpp:
 # 2129|       getExpr(): [VariableAccess] j
 # 2129|           Type = [IntType] int
 # 2129|           ValueCategory = prvalue(load)
+# 2132| [TopLevelFunction] unsigned short foo()
+# 2132|   <params>: 
+# 2132|   getEntryPoint(): [BlockStmt] { ... }
+# 2133|     getStmt(0): [ReturnStmt] return ...
+# 2133|       getExpr(): [Literal] 5
+# 2133|           Type = [IntType] int
+# 2133|           Value = [Literal] 5
+# 2133|           ValueCategory = prvalue
+# 2133|       getExpr().getFullyConverted(): [CStyleCast] (unsigned short)...
+# 2133|           Conversion = [IntegralConversion] integral conversion
+# 2133|           Type = [ShortType] unsigned short
+# 2133|           Value = [CStyleCast] 5
+# 2133|           ValueCategory = prvalue
+# 2137| [TopLevelFunction] int ParensCall()
+# 2137|   <params>: 
+# 2137|   getEntryPoint(): [BlockStmt] { ... }
+# 2138|     getStmt(0): [IfStmt] if (...) ... 
+# 2138|       getCondition(): [LEExpr] ... <= ...
+# 2138|           Type = [BoolType] bool
+# 2138|           ValueCategory = prvalue
+# 2138|         getLesserOperand(): [Literal] 5
+# 2138|             Type = [IntType] int
+# 2138|             Value = [Literal] 5
+# 2138|             ValueCategory = prvalue
+# 2138|         getGreaterOperand(): [FunctionCall] call to foo
+# 2138|             Type = [ShortType] unsigned short
+# 2138|             ValueCategory = prvalue
+# 2138|         getGreaterOperand().getFullyConverted(): [ParenthesisExpr] (...)
+# 2138|             Type = [FunctionPointerType] ..(*)(..)
+# 2138|             ValueCategory = prvalue
+# 2138|         getGreaterOperand().getFullyConverted(): [CStyleCast] (int)...
+# 2138|             Conversion = [IntegralConversion] integral conversion
+# 2138|             Type = [IntType] int
+# 2138|             ValueCategory = prvalue
+# 2138|       getThen(): [BlockStmt] { ... }
+# 2139|         getStmt(0): [ReturnStmt] return ...
+# 2139|           getExpr(): [Literal] 1
+# 2139|               Type = [IntType] int
+# 2139|               Value = [Literal] 1
+# 2139|               ValueCategory = prvalue
+# 2141|     getStmt(1): [ReturnStmt] return ...
+# 2141|       getExpr(): [Literal] 0
+# 2141|           Type = [IntType] int
+# 2141|           Value = [Literal] 0
+# 2141|           ValueCategory = prvalue
+ir20.cpp:
+#    2| [CopyAssignmentOperator] std::strong_ordering& std::strong_ordering::operator=(std::strong_ordering const&)
+#    2|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const strong_ordering &
+#    2| [MoveAssignmentOperator] std::strong_ordering& std::strong_ordering::operator=(std::strong_ordering&&)
+#    2|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] strong_ordering &&
+#    7| [TopLevelFunction] std::strong_ordering spaceshipTest()
+#    7|   <params>: 
+#    7|   getEntryPoint(): [BlockStmt] { ... }
+#    8|     getStmt(0): [ReturnStmt] return ...
+#    8|       getExpr(): [SpaceshipExpr] ... <=> ...
+#    8|           Type = [Class] strong_ordering
+#    8|           ValueCategory = prvalue
+#    8|         getChild(0): [Literal] 1
+#    8|             Type = [IntType] int
+#    8|             Value = [Literal] 1
+#    8|             ValueCategory = prvalue
+#    8|         getChild(1): [Literal] 2
+#    8|             Type = [IntType] int
+#    8|             Value = [Literal] 2
+#    8|             ValueCategory = prvalue
+#    8|       getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#    8|           Type = [Class] strong_ordering
+#    8|           ValueCategory = prvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

@@ -12475,6 +12475,75 @@ ir.cpp:
 # 2128|     v2128_12(void)          = AliasedUse              : ~m2128_10
 # 2128|     v2128_13(void)          = ExitFunction            : 
 
+# 2132| unsigned short foo()
+# 2132|   Block 0
+# 2132|     v2132_1(void)                  = EnterFunction            : 
+# 2132|     m2132_2(unknown)               = AliasedDefinition        : 
+# 2132|     m2132_3(unknown)               = InitializeNonLocal       : 
+# 2132|     m2132_4(unknown)               = Chi                      : total:m2132_2, partial:m2132_3
+# 2133|     r2133_1(glval<unsigned short>) = VariableAddress[#return] : 
+# 2133|     r2133_2(int)                   = Literal[5]               : 
+# 2133|     r2133_3(unsigned short)        = Convert                  : r2133_2
+# 2133|     m2133_4(unsigned short)        = Store[#return]           : &:r2133_1, r2133_3
+# 2132|     r2132_5(glval<unsigned short>) = VariableAddress[#return] : 
+# 2132|     v2132_6(void)                  = ReturnValue              : &:r2132_5, m2133_4
+# 2132|     v2132_7(void)                  = AliasedUse               : m2132_3
+# 2132|     v2132_8(void)                  = ExitFunction             : 
+
+# 2137| int ParensCall()
+# 2137|   Block 0
+# 2137|     v2137_1(void)           = EnterFunction        : 
+# 2137|     m2137_2(unknown)        = AliasedDefinition    : 
+# 2137|     m2137_3(unknown)        = InitializeNonLocal   : 
+# 2137|     m2137_4(unknown)        = Chi                  : total:m2137_2, partial:m2137_3
+# 2138|     r2138_1(int)            = Literal[5]           : 
+# 2138|     r2138_2(glval<unknown>) = FunctionAddress[foo] : 
+# 2138|     r2138_3(unsigned short) = Call[foo]            : func:r2138_2
+# 2138|     m2138_4(unknown)        = ^CallSideEffect      : ~m2137_4
+# 2138|     m2138_5(unknown)        = Chi                  : total:m2137_4, partial:m2138_4
+#-----|   Goto -> Block 3
+#-----|   Goto -> Block 2
+
+# 2137|   Block 1
+# 2137|     m2137_5(int)        = Phi                      : from 4:m2139_3, from 5:m2141_3
+# 2137|     r2137_6(glval<int>) = VariableAddress[#return] : 
+# 2137|     v2137_7(void)       = ReturnValue              : &:r2137_6, m2137_5
+# 2137|     v2137_8(void)       = AliasedUse               : ~m2138_5
+# 2137|     v2137_9(void)       = ExitFunction             : 
+
+# 2138|   Block 2
+# 2138|     r2138_6(bool) = CompareLE         : r2138_1
+# 2138|     v2138_7(void) = ConditionalBranch : r2138_6
+#-----|   False -> Block 5
+#-----|   True -> Block 4
+
+# 2138|   Block 3
+# 2138|     r2138_8(int) = Convert : r2138_3
+#-----|   Goto -> Block 2
+
+# 2139|   Block 4
+# 2139|     r2139_1(glval<int>) = VariableAddress[#return] : 
+# 2139|     r2139_2(int)        = Literal[1]               : 
+# 2139|     m2139_3(int)        = Store[#return]           : &:r2139_1, r2139_2
+#-----|   Goto -> Block 1
+
+# 2141|   Block 5
+# 2141|     r2141_1(glval<int>) = VariableAddress[#return] : 
+# 2141|     r2141_2(int)        = Literal[0]               : 
+# 2141|     m2141_3(int)        = Store[#return]           : &:r2141_1, r2141_2
+#-----|   Goto -> Block 1
+
+ir20.cpp:
+#    7| std::strong_ordering spaceshipTest()
+#    7|   Block 0
+#    7|     v7_1(void)                   = EnterFunction            : 
+#    7|     m7_2(unknown)                = AliasedDefinition        : 
+#    7|     m7_3(unknown)                = InitializeNonLocal       : 
+#    7|     m7_4(unknown)                = Chi                      : total:m7_2, partial:m7_3
+#    8|     r8_1(glval<strong_ordering>) = VariableAddress[#return] : 
+#    8|     r8_2(int)                    = Literal[1]               : 
+#    8|     r8_3(int)                    = Literal[2]               : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
