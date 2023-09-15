@@ -12,4 +12,4 @@ private import codeql.ruby.Concepts
 
 from JwtEncoding jwtEncoding
 where not jwtEncoding.signsPayload()
-select jwtEncoding.getPayload(), "This JWT encoding uses empty key or none algorithm."
+select jwtEncoding.getPayload(), "This JWT encoding uses an empty key or none algorithm."
