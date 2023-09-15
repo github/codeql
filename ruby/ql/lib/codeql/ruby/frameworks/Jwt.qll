@@ -33,7 +33,7 @@ module Jwt {
     override DataFlow::Node getPayload() { result = this.getArgument(0) }
 
     override DataFlow::Node getAlgorithm() {
-      result.asExpr().getExpr() = this.getArgument(3).asExpr().getExpr().(Pair).getValue() or
+      result = this.getArgument(3).(DataFlow::PairNode).getValue() or
       result =
         this.getArgument(3)
             .(DataFlow::HashLiteralNode)
