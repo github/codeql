@@ -18,7 +18,7 @@ Ensure that the current user is authorized to access the resource of the provide
 <p>In the following example, in the case marked BAD, there is no authorization check, so any user is able to edit any comment.
 In the case marked GOOD, there is a check that the current usr matches the author of the comment.</p>
 <sample src="WebFormsExample.cs" />
-<p>The following example shows a similar case for the ASP.NET Core framweork.</p>
+<p>The following example shows a similar case for the ASP.NET Core framework.</p>
 <sample src="MVCExample.cs" />
 
 

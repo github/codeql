@@ -9,7 +9,7 @@ public class ProfileController : Controller {
         return View();
     }
 
-    // BAD: The AllowAnonymous attribute therides the Authorize attribute on the class.
+    // BAD: The AllowAnonymous attribute overrides the Authorize attribute on the class.
     [AllowAnonymous]
     public ActionResult Edit2(int profileId, string text) {
         editProfileName(profileId, text);
