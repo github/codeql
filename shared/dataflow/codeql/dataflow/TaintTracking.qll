@@ -59,7 +59,8 @@ module TaintFlowMake<DF::InputSig DataFlowLang, InputSig<DataFlowLang> TaintTrac
         Config::isSink(node) or
         Config::isSink(node, _) or
         Config::isAdditionalFlowStep(node, _) or
-        Config::isAdditionalFlowStep(node, _, _, _)
+        Config::isAdditionalFlowStep(node, _, _, _) or
+        defaultAdditionalTaintStep(node, _)
       ) and
       defaultImplicitTaintRead(node, c)
     }
