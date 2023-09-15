@@ -12,6 +12,7 @@ private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.FastApi
 private import semmle.python.frameworks.Django
 private import semmle.python.frameworks.Tornado
+private import semmle.python.frameworks.Stdlib
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -63,6 +64,14 @@ class TornadoRequestHandler extends FindSubclassesSpec {
 
   override API::Node getAlreadyModeledClass() {
     result = Tornado::TornadoModule::Web::RequestHandler::subclassRef()
+  }
+}
+
+class WSGIServer extends FindSubclassesSpec {
+  WSGIServer() { this = "wsgiref.simple_server.WSGIServer~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = StdlibPrivate::WsgirefSimpleServer::subclassRef()
   }
 }
 
