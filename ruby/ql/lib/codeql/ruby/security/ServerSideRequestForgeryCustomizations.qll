@@ -10,6 +10,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.Sanitizers
+private import codeql.ruby.security.UrlConcatenation
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
@@ -32,6 +33,16 @@ module ServerSideRequestForgery {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * An in-sanitizer for server side request forgery vulnerabilities.
+   */
+  abstract class SanitizerIn extends DataFlow::Node { }
+
+  /**
+   * A out-sanitizer for server side request forgery vulnerabilities.
+   */
+  abstract class SanitizerOut extends DataFlow::Node { }
+
+  /**
    * DEPRECATED: Use `Sanitizer` instead.
    *
    * A sanitizer guard for "URL redirection" vulnerabilities.
@@ -48,4 +59,25 @@ module ServerSideRequestForgery {
 
   /** A string interpolation with a fixed prefix, considered as a flow sanitizer. */
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
+
+  /**
+   * A sanitizer for the hostname of a URL.
+   */
+  class HostnameSanitizer extends Sanitizer {
+    HostnameSanitizer() { this = DataFlow::BarrierGuard<hostnameGuard/3>::getABarrierNode() }
+  }
+
+  /**
+   * An in-sanitizer for the hostname of a URL.
+   */
+  class HostnameSanitizerIn extends SanitizerIn {
+    HostnameSanitizerIn() { hostnameSanitizingPrefixEdge(_, this) }
+  }
+
+  /**
+   * An out-sanitizer for the hostname of a URL.
+   */
+  class HostnameSanitizerOut extends SanitizerOut {
+    HostnameSanitizerOut() { hostnameSanitizingPrefixEdge(this, _) }
+  }
 }
