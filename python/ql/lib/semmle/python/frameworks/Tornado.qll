@@ -12,6 +12,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.regex
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -87,7 +88,11 @@ module Tornado {
        */
       module RequestHandler {
         /** Gets a reference to the `tornado.web.RequestHandler` class or any subclass. */
-        API::Node subclassRef() { result = web().getMember("RequestHandler").getASubclass*() }
+        API::Node subclassRef() {
+          result = web().getMember("RequestHandler").getASubclass*()
+          or
+          result = ModelOutput::getATypeNode("tornado.web.RequestHandler~Subclass").getASubclass*()
+        }
 
         /** A RequestHandler class (most likely in project code). */
         class RequestHandlerClass extends Class {

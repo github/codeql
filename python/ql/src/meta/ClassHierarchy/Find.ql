@@ -11,6 +11,7 @@ import semmle.python.frameworks.internal.SubclassFinder::NotExposed
 private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.FastApi
 private import semmle.python.frameworks.Django
+private import semmle.python.frameworks.Tornado
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -54,6 +55,14 @@ class DjangoField extends FindSubclassesSpec {
 
   override API::Node getAlreadyModeledClass() {
     result = any(Django::Forms::Field::ModeledSubclass subclass)
+  }
+}
+
+class TornadoRequestHandler extends FindSubclassesSpec {
+  TornadoRequestHandler() { this = "tornado.web.RequestHandler~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = Tornado::TornadoModule::Web::RequestHandler::subclassRef()
   }
 }
 
