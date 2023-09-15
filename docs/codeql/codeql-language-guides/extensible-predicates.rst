@@ -6,7 +6,7 @@
 Extensible predicates and their interaction with data extensions
 ================================================================
 
-You can use data extensions to model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
+You can use data extensions to model the methods and callables that control dataflow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
 
 .. include:: ../reusables/beta-note-model-packs-java.rst
 
@@ -20,7 +20,7 @@ Sources, sinks, summaries, and neutrals are commonly known as models. These mode
 About extensible predicates
 ---------------------------
 
-At a high level, there are two main components to using data extensions. The query writer defines one or more extensible predicates in their query libraries. CLI and code scanning users who want to augment these predicates supply one or more extension files whose data gets injected into the extensible predicate during evaluation. The extension files are either stored directly in the repository where the code base to be analyzed is hosted, or downloaded as CodeQL model packs.
+At a high level, there are two main components to using data extensions. The query writer defines one or more extensible predicates in their query libraries. CLI and code scanning users who want to augment these predicates supply one or more extension files whose data gets injected into the extensible predicate during evaluation. The extension files are either stored directly in the repository where the codebase to be analyzed is hosted, or downloaded as CodeQL model packs.
 
 This example of an extensible predicate for a source is taken from the core Java libraries https://github.com/github/codeql/blob/main/java/ql/lib/semmle/code/java/dataflow/ExternalFlowExtensions.qll#L8-L11
 
@@ -99,7 +99,7 @@ The following sink kinds are supported:
 - ``request-forgery``: A sink that controls the URL of a request, such as in an ``HttpRequest.newBuilder`` call.
 - ``response-splitting``: A sink that can be used for HTTP response splitting, such as in calls to ``HttpServletResponse.setHeader``.
 - ``sql-injection``: A sink that can be used for SQL injection, such as in a ``Statement.executeQuery`` call.
-- ``template-injection``: A sink that can be used for server side template injection, such as in a ``Velocity.evaluate`` call.
+- ``template-injection``: A sink that can be used for server-side template injection, such as in a ``Velocity.evaluate`` call.
 - ``trust-boundary-violation``: A sink that can be used to cross a trust boundary, such as in a ``HttpSession.setAttribute`` call.
 - ``url-redirection``: A sink that can be used to redirect the user to a malicious URL, such as in a ``Response.temporaryRedirect`` call.
 - ``xpath-injection``: A sink that can be used for XPath injection, such as in a ``XPath.evaluate`` call.
@@ -123,8 +123,8 @@ neutralModel(package, type, name, signature, kind, provenance)
 --------------------------------------------------------------
 
 This extensible predicate is not typically needed externally, but is included here for completeness.
-It has limited impact on data flow analysis.
-Manual neutrals are considered high confidence dispatch call targets and can reduce the number of dispatch call targets during data flow analysis (a performance optimization).
+It has limited impact on dataflow analysis.
+Manual neutrals are considered high-confidence dispatch call targets and can reduce the number of dispatch call targets during data flow analysis (a performance optimization).
 
 - ``kind``: Kind of the neutral. For neutrals the kind can be ``summary``, ``source``, or ``sink`` to indicate that the callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
 
@@ -175,7 +175,7 @@ and verification is one of:
 - ``generated``: The model was generated, but not verified by a human.
 
 The provenance is used to distinguish between models that are manually added (or verified) to the extensible predicate and models that are automatically generated.
-Furthermore, it impacts the data flow analysis in the following way:
+Furthermore, it impacts the dataflow analysis in the following way:
 
 - A ``manual`` model takes precedence over ``generated`` models. If a ``manual`` model exists for an element then all ``generated`` models are ignored.
 - A ``generated`` model is ignored during analysis, if the source code of the element it is modeling is available.

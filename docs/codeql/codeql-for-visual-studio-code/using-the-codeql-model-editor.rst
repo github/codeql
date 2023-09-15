@@ -12,15 +12,15 @@ You can view, write, and edit all types of CodeQL packs in Visual Studio Code us
 About the CodeQL model editor
 -----------------------------
 
-The CodeQL model editor guides you through modeling the calls to external dependencies in your application or fully modeling all the public entry and exit points in an external dependency
+The CodeQL model editor guides you through modeling the calls to external dependencies in your application or fully modeling all the public entry and exit points in an external dependency.
 
 When you open the model editor, it analyzes the currently selected CodeQL database and identifies where the application uses external APIs and all public methods. An external (or third party) API is any API that is not part of the CodeQL database you have selected.
 
 The model editor has two different modes:
 
-- Application mode (default view): The editor lists each external framework used by the seelcted CodeQL database. When you expand a framework, a list of all calls to and from the external API is shown with the options available to model dataflow through each call. This mode is most useful for improving the CodeQL results for the specific codebase.
+- Application mode (default view): The editor lists each external framework used by the selected CodeQL database. When you expand a framework, a list of all calls to and from the external API is shown with the options available to model dataflow through each call. This mode is most useful for improving the CodeQL results for the specific codebase.
 
-- Dependency mode: The editor identifies the all publicly accessible APIs in the selected CodeQL database. This view guides you through modeling each public API that the codebase makes available. When you have finished modeling the entire API, you can save the model and use it to improve the CodeQL analysis for all codebases that use the dependency.
+- Dependency mode: The editor identifies all of the publicly accessible APIs in the selected CodeQL database. This view guides you through modeling each public API that the codebase makes available. When you have finished modeling the entire API, you can save the model and use it to improve the CodeQL analysis for all codebases that use the dependency.
 
 Displaying the CodeQL model editor
 ----------------------------------
@@ -38,7 +38,7 @@ Modeling the calls your codebase makes to external APIs
 You typically use this method when you are looking at a specific codebase where you want to improve the precision of CodeQL results. This is usually when the codebase uses frameworks or libraries that are not supported by CodeQL but they are not used by other teams in your organization. 
 
 #. Select the CodeQL database that you want to improve CodeQL coverage for.
-#. Display the CodeQL model editor, by default the editor runs in application mode, so the list of external APIs used by the selected codebase is shown.
+#. Display the CodeQL model editor. By default the editor runs in application mode, so the list of external APIs used by the selected codebase is shown.
 
    .. image:: ../images/codeql-for-visual-studio-code/model-application-mode.png
       :width: 800
@@ -58,10 +58,10 @@ You typically use this method when you are looking at a specific codebase where 
    - **Sink**: choose the **Input** element to model.
    - **Flow summary**: choose the **Input** and **Output** elements to model.
 
-#. Define the **Kind** of data flow for the model.
+#. Define the **Kind** of dataflow for the model.
 #. When you have finished modeling, click **Save all** or  **Save** (shown at the bottom right of each expanded list of calls). The percentage of calls modeled in the editor is updated.
 
-The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-packe>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL.
+The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-pack>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL.
 
 The models are stored in a series of YAML data extension files, one for each external API. For example:
 
@@ -76,7 +76,7 @@ Modeling the public API of a codebase
 You typically use this method when you want to model a framework or library that your organization uses in more than one codebase. Once you have finished creating and testing the model, you can publish the CodeQL model pack to the GitHub Container Registry for your whole organization to use.
 
 #. Select the CodeQL database that you want to model.
-#. Display the CodeQL model editor, by default the editor runs in application mode. Click **Model as dependency** to display dependency mode. The screen changes to show the public API of the framework or library.
+#. Display the CodeQL model editor. By default the editor runs in application mode. Click **Model as dependency** to display dependency mode. The screen changes to show the public API of the framework or library.
 
    .. image:: ../images/codeql-for-visual-studio-code/model-dependency-mode.png
       :width: 800
@@ -96,10 +96,10 @@ You typically use this method when you want to model a framework or library that
    - **Sink**: choose the **Input** element to model.
    - **Flow summary**: choose the **Input** and **Output** elements to model.
 
-#. Define the **Kind** of data flow for the model.
+#. Define the **Kind** of dataflow for the model.
 #. When you have finished modeling, click **Save all** or  **Save** (shown at the bottom right of each expanded list of calls). The percentage of calls modeled in the editor is updated.
 
-The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-packe>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL.
+The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-pack>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL.
 
 The models are stored in a series of YAML data extension files, one for each public method. For example:
 

@@ -21,9 +21,9 @@ For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql
 About data extensions
 ---------------------
 
-You can customize analysis by defining models (summaries, sinks, and sources) of your code's dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as a methods and callables. When you run data flow analysis, these models expand the potential sources and sinks tracked by data flow analysis and improve the precision of results.
+You can customize analysis by defining models (summaries, sinks, and sources) of your code's dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as a methods and callables. When you run dataflow analysis, these models expand the potential sources and sinks tracked by data flow analysis and improve the precision of results.
 
-Most of the security queries search for paths from a source of untrusted input to a sink that represents a vulnerability, this is known as taint tracking. Each source is a starting point for data flow analysis to track tainted data and each sink is an end point.
+Most of the security queries search for paths from a source of untrusted input to a sink that represents a vulnerability. This is known as taint tracking. Each source is a starting point for dataflow analysis to track tainted data and each sink is an end point.
 
 Taint tracking queries also need to know how data can flow through elements that are not included in the source code. These are modeled as summaries. A summary model enables queries to synthesize the flow behavior through elements in dependency code that is not stored in your repository.
 
@@ -63,7 +63,7 @@ The CodeQL library for Java and Kotlin analysis exposes the following extensible
 
 - ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data.
 - ``sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data maybe used in a way that makes the code vulnerable.
-- ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to summarize how data values from a source flow outside the repository in a dependency of the main code base.
+- ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to summarize how data values from a source flow outside the repository in a dependency of the main codebase.
 - ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the data flow analysis.
 
 The extensible predicates are populated using data extensions specified in YAML files. For more information about extensible predicates, see ":doc:`extensible-predicates`."
