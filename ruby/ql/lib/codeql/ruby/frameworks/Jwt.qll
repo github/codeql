@@ -45,7 +45,7 @@ module Jwt {
 
     override DataFlow::Node getOptions() { result = this.getArgument(3) }
 
-    override predicate verifies() {
+    override predicate verifiesSignature() {
       not this.getArgument(2).getConstantValue().isBoolean(false) and
       not this.getAlgorithm().getConstantValue().isStringlikeValue("none")
       or

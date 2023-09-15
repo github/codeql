@@ -1311,7 +1311,7 @@ class JwtDecoding extends DataFlow::Node instanceof JwtDecoding::Range {
   DataFlow::Node getOptions() { result = super.getOptions() }
 
   /** Checks if the signature gets verified while decoding. */
-  predicate verifies() { super.verifies() }
+  predicate verifiesSignature() { super.verifiesSignature() }
 }
 
 /** Provides a class for modeling new Jwt token encoding APIs. */
@@ -1336,6 +1336,6 @@ module JwtDecoding {
     abstract DataFlow::Node getOptions();
 
     /** Checks if the signature gets verified while decoding. */
-    abstract predicate verifies();
+    abstract predicate verifiesSignature();
   }
 }

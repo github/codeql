@@ -12,5 +12,5 @@
 private import codeql.ruby.Concepts
 
 from JwtDecoding jwtDecoding
-where not jwtDecoding.verifies()
+where not jwtDecoding.verifiesSignature()
 select jwtDecoding.getPayload(), "is not verified with a cryptographic secret or public key."
