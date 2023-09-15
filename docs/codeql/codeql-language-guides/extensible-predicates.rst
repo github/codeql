@@ -173,6 +173,7 @@ And `VERIFICATION` is one of:
 
 - ``manual``: The model was verified by a human.
 - ``generated``: The model was generated, but not verified by a human.
+
 The provenance is used to distinguish between models that are manually added (or verified) to the extensible predicate and models that are automatically generated.
 Furthermore, it impacts the dataflow analysis in the following way:
 
