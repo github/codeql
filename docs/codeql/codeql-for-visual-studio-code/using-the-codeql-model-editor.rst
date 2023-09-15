@@ -65,7 +65,7 @@ The models are stored in your workspace at ``.github/codeql/extensions/<codeql-m
 
 The models are stored in a series of YAML data extension files, one for each external API. For example:
 
-.. code-block::
+.. code-block:: none
 
    .github/codeql/extensions/sofa-jraft-java # the model pack directory
       models
@@ -105,7 +105,7 @@ The models are stored in your workspace at ``.github/codeql/extensions/<codeql-m
 
 The models are stored in a series of YAML data extension files, one for each public method. For example:
 
-.. code-block::
+.. code-block:: none
 
    .github/codeql/extensions/sofa-jraft-java          # the model pack directory
       models
