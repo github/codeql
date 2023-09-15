@@ -23,9 +23,6 @@ exists(string tmpMsg |
                 not name = ["SECP256R1", "PRIME256V1",//P-256 
                     "SECP384R1",       //P-384
                     "SECP521R1",       //P-521
-                    "NUMSP256T1",
-                    "NUMSP384T1",
-                    "NUMSP512T1",
                     "ED25519", "X25519"] and
                     tmpMsg = "Use of weak curve algorithm " + name + "."
         )
