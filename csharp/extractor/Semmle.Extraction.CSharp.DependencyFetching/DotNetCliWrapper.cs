@@ -9,19 +9,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
-    internal partial class DotNet : IDotNet
+    internal partial class DotNetCliWrapper : IDotNet
     {
         private readonly IDotNetCliInvoker dotnet;
         private readonly ProgressMonitor progressMonitor;
 
-        internal DotNet(IDotNetCliInvoker dotnet, ProgressMonitor progressMonitor)
+        internal DotNetCliWrapper(IDotNetCliInvoker dotnet, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
             this.dotnet = dotnet;
             Info();
         }
 
-        public DotNet(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
+        public DotNetCliWrapper(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
 
 
         private void Info()
