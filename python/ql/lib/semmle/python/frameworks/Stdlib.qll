@@ -17,6 +17,7 @@ private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 // modeling split over multiple files to keep this file from becoming too big
 private import semmle.python.frameworks.Stdlib.Urllib
 private import semmle.python.frameworks.Stdlib.Urllib2
+private import semmle.python.frameworks.data.ModelsAsData
 
 /** Provides models for the Python standard library. */
 module Stdlib {
@@ -298,7 +299,7 @@ module Stdlib {
  * policy, and the code is not in a polished enough state that we want to do so -- at
  * least not without having convincing use-cases for it :)
  */
-private module StdlibPrivate {
+module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // os
   // ---------------------------------------------------------------------------
@@ -2101,17 +2102,20 @@ private module StdlibPrivate {
   // wsgiref.simple_server
   // ---------------------------------------------------------------------------
   /** Provides models for the `wsgiref.simple_server` module. */
-  private module WsgirefSimpleServer {
+  module WsgirefSimpleServer {
+    API::Node subclassRef() {
+      result =
+        API::moduleImport("wsgiref")
+            .getMember("simple_server")
+            .getMember("WSGIServer")
+            .getASubclass*()
+      or
+      result =
+        ModelOutput::getATypeNode("wsgiref.simple_server.WSGIServer~Subclass").getASubclass*()
+    }
+
     class WsgiServerSubclass extends Class, SelfRefMixin {
-      WsgiServerSubclass() {
-        this.getParent() =
-          API::moduleImport("wsgiref")
-              .getMember("simple_server")
-              .getMember("WSGIServer")
-              .getASubclass*()
-              .asSource()
-              .asExpr()
-      }
+      WsgiServerSubclass() { this.getParent() = subclassRef().asSource().asExpr() }
     }
 
     /**
@@ -2128,13 +2132,7 @@ private module StdlibPrivate {
         exists(DataFlow::Node appArg, DataFlow::CallCfgNode setAppCall |
           (
             setAppCall =
-              API::moduleImport("wsgiref")
-                  .getMember("simple_server")
-                  .getMember("WSGIServer")
-                  .getASubclass*()
-                  .getReturn()
-                  .getMember("set_app")
-                  .getACall()
+              WsgirefSimpleServer::subclassRef().getReturn().getMember("set_app").getACall()
             or
             setAppCall
                 .(DataFlow::MethodCallNode)
