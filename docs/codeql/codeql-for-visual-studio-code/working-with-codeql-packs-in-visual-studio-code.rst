@@ -13,10 +13,10 @@ About CodeQL packs
 ------------------
 You use CodeQL packs to share your expertise in query writing, CodeQL library development, and modeling dependencies with other users. The CodeQL package management system ensures that when you publish a CodeQL pack it is ready to use, without any compilation. Anything the CodeQL pack depends on is explicitly defined within the pack. You can publish your own CodeQL packs and download packs created by others. For more information, see "`About CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs>`__."
 
-There are three types of CodeQL pack, each with a specific purpose.
+There are three types of CodeQL packs, each with a specific purpose.
 
 - Query packs are designed to be run. When a query pack is published, the bundle includes all the transitive dependencies and pre-compiled representations of each query, in addition to the query sources. This ensures consistent and efficient execution of the queries in the pack.
-- Model packs are used to model dependencies that are not supported by the standard CodeQL libraries. When you add a model pack to your analysis, all extensible queries also analyze the sources and sinks of the dependencies defined in the pack.
+- Model packs are used to model dependencies that are not supported by the standard CodeQL libraries. When you add a model pack to your analysis, all relevant queries also recognize the sources, sinks and flow steps of the dependencies defined in the pack.
 - Library packs are designed to be used by query packs (or other library packs) and do not contain queries themselves. The libraries are not compiled separately.
 
 Using the CodeQL packs shipped with the CLI in Visual Studio Code
