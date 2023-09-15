@@ -65,10 +65,12 @@ The models are stored in your workspace at ``.github/codeql/extensions/<codeql-m
 
 The models are stored in a series of YAML data extension files, one for each external API. For example:
 
-- ``.github/codeql/extensions/sofa-jraft-java`` - model pack
-    - ``models``
-        - ``jmh-core.model.yml`` - model of calls to the ``jmh-core@1.20`` dependency.
-        - ``rocksdbjni.model.yml`` - model of calls to the ``rocksdbjni@7.7.3`` dependency.
+.. code-block::
+
+   .github/codeql/extensions/sofa-jraft-java # the model pack directory
+      models
+         jmh-core.model.yml                  # models calls to jmh-core@1.20
+         rocksdbjni.model.yml                # models calls to rocksdbjni@7.7.3
 
 Modeling the public API of a codebase
 -------------------------------------
@@ -103,10 +105,12 @@ The models are stored in your workspace at ``.github/codeql/extensions/<codeql-m
 
 The models are stored in a series of YAML data extension files, one for each public method. For example:
 
-- ``.github/codeql/extensions/sofa-jraft-java`` - model pack
-    - ``models``
-        - ``com.alipay.sofa.jraft.option.model.yml`` - model of public methods in this Java package.
-        - ``com.alipay.sofa.jraft.rhea.options.model.yml`` - model of public methods in this Java package.
+.. code-block::
+
+   .github/codeql/extensions/sofa-jraft-java          # the model pack directory
+      models
+         com.alipay.sofa.jraft.option.model.yml       # models public methods in package
+         com.alipay.sofa.jraft.rhea.options.model.yml # models public methods in package
 
 The editor will create a separate model file for each package that you model.
 

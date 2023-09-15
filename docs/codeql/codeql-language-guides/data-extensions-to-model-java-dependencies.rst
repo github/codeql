@@ -73,7 +73,7 @@ Examples of data extension definitions
 
 The examples in this section are taken from the standard CodeQL Java query pack published by GitHub. They demonstrate how to add tuples to extend extensible predicates that are used by the standard queries.
 
-For details of the *mini DSLs* that define models for each extensible predicate, see ":doc:`extensible-predicates`."
+For details of the mini domain-specific langauge that defines models for each extensible predicate, see ":doc:`extensible-predicates`."
 
 Example: Taint sink in the ``java.sql`` package
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
