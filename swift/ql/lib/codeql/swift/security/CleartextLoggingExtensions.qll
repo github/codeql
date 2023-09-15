@@ -83,6 +83,16 @@ private class OsLogPrivacyRef extends MemberRefExpr {
   predicate isPublic() { optionName = "public" }
 }
 
+/**
+ * An additional taint step for cleartext logging vulnerabilities.
+ */
+private class CleartextLoggingFieldAdditionalFlowStep extends CleartextLoggingAdditionalFlowStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // if an object is sensitive, its fields are always sensitive.
+    nodeTo.asExpr().(MemberRefExpr).getBase() = nodeFrom.asExpr()
+  }
+}
+
 private class LoggingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =

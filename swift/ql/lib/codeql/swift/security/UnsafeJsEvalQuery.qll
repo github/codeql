@@ -30,10 +30,7 @@ module UnsafeJsEvalConfig implements DataFlow::ConfigSig {
       or
       isAdditionalFlowStep(node, _)
     ) and
-    (
-      c.getAReadContent() instanceof DataFlow::Content::ArrayContent or
-      c.getAReadContent() instanceof DataFlow::Content::CollectionContent
-    )
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
   }
 }
 

@@ -1,8 +1,137 @@
 <!DOCTYPE qhelp PUBLIC
-"-//Semmle//qhelp//EN"
-"qhelp.dtd">
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
 <qhelp>
 
-	<include src="IncompleteSanitization.qhelp" />
+<overview>
+<p>
+Sanitizing untrusted input is a common technique for preventing injection attacks and other security 
+vulnerabilities. Regular expressions are often used to perform this sanitization. However, when the 
+regular expression matches multiple consecutive characters, replacing it just once 
+can result in the unsafe text reappearing in the sanitized input.
+</p>
+<p>
+Attackers can exploit this issue by crafting inputs that, when sanitized with an ineffective regular 
+expression, still contain malicious code or content. This can lead to code execution, data exposure, 
+or other vulnerabilities.
+</p>
+</overview>
 
+<recommendation>
+<p>
+To prevent this issue, it is highly recommended to use a well-tested sanitization library whenever 
+possible. These libraries are more likely to handle corner cases and ensure effective sanitization.
+</p>
+
+<p>
+If a library is not an option, you can consider alternative strategies to fix the issue. For example, 
+applying the regular expression replacement repeatedly until no more replacements can be performed, or rewriting the regular 
+expression to match single characters instead of the entire unsafe text.
+</p>
+</recommendation>
+
+<example>
+<p>
+Consider the following JavaScript code that aims to remove all HTML comment start and end tags:
+</p>
+
+<sample language="javascript">
+str.replace(/&lt;!--|--!?&gt;/g, "");   
+</sample>
+
+<p>
+Given the input string "&lt;!&lt;!--- comment ---&gt;&gt;", the output will be "&lt;!-- comment --&gt;", 
+which still contains an HTML comment.
+</p>
+
+<p>
+One possible fix for this issue is to apply the regular expression replacement repeatedly until no
+more replacements can be performed. This ensures that the unsafe text does not re-appear in the sanitized input, effectively 
+removing all instances of the targeted pattern:
+</p>
+
+<sample language="javascript">
+function removeHtmlComments(input) {  
+  let previous;  
+  do {  
+    previous = input;  
+    input = input.replace(/&lt;!--|--!?&gt;/g, "");  
+  } while (input !== previous);  
+  return input;  
+}  
+</sample>
+</example>
+
+<example>
+<p>
+Another example is the following regular expression intended to remove script tags:
+</p>
+
+<sample language="javascript">
+str.replace(/&lt;script\b[^&lt;]*(?:(?!&lt;\/script&gt;)&lt;[^&lt;]*)*&lt;\/script&gt;/g, "");  
+</sample>
+
+<p>
+If the input string is "&lt;scrip&lt;script&gt;is removed&lt;/script&gt;t&gt;alert(123)&lt;/script&gt;", 
+the output will be "&lt;script&gt;alert(123)&lt;/script&gt;", which still contains a script tag.
+</p>
+<p>
+A fix for this issue is to rewrite the regular expression to match single characters 
+("&lt;" and "&gt;") instead of the entire unsafe text. This simplifies the sanitization process 
+and ensures that all potentially unsafe characters are removed:
+</p>
+<sample language="javascript">
+function removeAllHtmlTags(input) {  
+  return input.replace(/&lt;|&gt;/g, "");  
+}
+</sample>
+<p>
+Another potential fix is to use the popular <code>sanitize-html</code> npm library. 
+It keeps most of the safe HTML tags while removing all unsafe tags and attributes.
+</p>
+<sample language="javascript">
+const sanitizeHtml = require("sanitize-html");
+function removeAllHtmlTags(input) {  
+  return sanitizeHtml(input);  
+}
+</sample>
+
+</example>
+
+<example>
+<p>
+Lastly, consider a path sanitizer using the regular expression <code>/\.\.\//</code>:
+</p>
+
+<sample language="javascript">
+str.replace(/\.\.\//g, "");  
+</sample>
+
+<p>
+The regular expression attempts to strip out all occurences of <code>/../</code> from <code>str</code>.
+This will not work as expected: for the string <code>/./.././</code>, for example, it will remove the single
+occurrence of <code>/../</code> in the middle, but the remainder of the string then becomes
+<code>/../</code>, which is another instance of the substring we were trying to remove.
+</p>
+
+<p>
+A possible fix for this issue is to use the "sanitize-filename" npm library for path sanitization. 
+This library is specifically designed to handle path sanitization, and should handle all corner cases
+and ensure effective sanitization:
+</p>
+
+<sample language="javascript">
+const sanitize = require("sanitize-filename");  
+  
+function sanitizePath(input) {  
+  return sanitize(input);  
+}  
+</sample>
+
+</example>
+
+<references>
+<li>OWASP Top 10: <a href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection">A1 Injection</a>.</li>
+<li>Stack Overflow: <a href="https://stackoverflow.com/questions/6659351/removing-all-script-tags-from-html-with-js-regular-expression">Removing all script tags from HTML with JS regular expression</a>.</li>
+</references>
 </qhelp>

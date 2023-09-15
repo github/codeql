@@ -58,6 +58,16 @@ signature module InputSig<DF::InputSig DataFlowLang> {
 
   /** Holds if `n` should be excluded from the consistency test `identityLocalStep`. */
   default predicate identityLocalStepExclude(DataFlowLang::Node n) { none() }
+
+  /** Holds if `arg` should be excluded from the consistency test `missingArgumentCall`. */
+  default predicate missingArgumentCallExclude(DataFlowLang::ArgumentNode arg) { none() }
+
+  /** Holds if `(arg, call)` should be excluded from the consistency test `multipleArgumentCall`. */
+  default predicate multipleArgumentCallExclude(
+    DataFlowLang::ArgumentNode arg, DataFlowLang::DataFlowCall call
+  ) {
+    none()
+  }
 }
 
 module MakeConsistency<
@@ -144,13 +154,6 @@ module MakeConsistency<
       c = count(n.toString()) and
       c != 1 and
       msg = "Node should have one toString but has " + c + "."
-    )
-  }
-
-  query predicate missingToString(string msg) {
-    exists(int c |
-      c = strictcount(Node n | not exists(n.toString())) and
-      msg = "Nodes without toString: " + c
     )
   }
 
@@ -286,5 +289,21 @@ module MakeConsistency<
     simpleLocalFlowStep(n, n) and
     not Input::identityLocalStepExclude(n) and
     msg = "Node steps to itself"
+  }
+
+  query predicate missingArgumentCall(ArgumentNode arg, string msg) {
+    not Input::missingArgumentCallExclude(arg) and
+    not isArgumentNode(arg, _, _) and
+    msg = "Missing call for argument node."
+  }
+
+  query predicate multipleArgumentCall(ArgumentNode arg, DataFlowCall call, string msg) {
+    isArgumentNode(arg, call, _) and
+    not Input::multipleArgumentCallExclude(arg, call) and
+    strictcount(DataFlowCall call0 |
+      isArgumentNode(arg, call0, _) and
+      not Input::multipleArgumentCallExclude(arg, call0)
+    ) > 1 and
+    msg = "Multiple calls for argument node."
   }
 }
