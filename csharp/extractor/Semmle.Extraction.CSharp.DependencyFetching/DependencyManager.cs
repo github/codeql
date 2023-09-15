@@ -30,9 +30,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly DotNet dotnet;
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
-        private TemporaryDirectory? razorWorkingDirectory;
-        private readonly Git git;
-
+        private readonly TemporaryDirectory tempWorkingDirectory;
 
         /// <summary>
         /// Performs C# dependency fetching.
@@ -60,20 +58,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
-            var allFiles = GetAllFiles().ToList();
-            var smallFiles = allFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
-            this.fileContent = new FileContent(progressMonitor, smallFiles);
-            this.allSources = allFiles.SelectFileNamesByExtension(".cs").ToList();
-            var allProjects = allFiles.SelectFileNamesByExtension(".csproj");
+            tempWorkingDirectory = new TemporaryDirectory(GetTemporaryWorkingDirectory());
+
+            var allFiles = GetAllFiles();
+            var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
+            var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
+            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
+            this.fileContent = new FileContent(progressMonitor, smallNonBinaryFiles);
+            this.allSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
+            var allProjects = allNonBinaryFiles.SelectFileNamesByExtension(".csproj");
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
-                : allFiles.SelectFileNamesByExtension(".sln");
-
-            // If DLL reference paths are specified on the command-line, use those to discover
-            // assemblies. Otherwise (the default), query the git CLI to determine which DLL files
-            // are tracked as part of the repository.
-            this.git = new Git(this.progressMonitor);
-            var dllDirNames = options.DllDirs.Count == 0 ? this.git.ListFiles("*.dll") : options.DllDirs.Select(Path.GetFullPath).ToList();
+                : allNonBinaryFiles.SelectFileNamesByExtension(".sln");
+            var dllDirNames = options.DllDirs.Count == 0
+                ? allFiles.SelectFileNamesByExtension(".dll").ToList()
+                : options.DllDirs.Select(Path.GetFullPath).ToList();
 
             // Find DLLs in the .Net / Asp.Net Framework
             if (options.ScanNetFrameworkDlls)
@@ -106,7 +105,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var restoredProjects = RestoreSolutions(solutions);
                 var projects = allProjects.Except(restoredProjects);
                 RestoreProjects(projects);
-                DownloadMissingPackages(allFiles);
+                DownloadMissingPackages(allNonBinaryFiles);
             }
 
             assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
@@ -134,8 +133,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
             {
-                GenerateSourceFilesFromWebViews(allFiles);
+                GenerateSourceFilesFromWebViews(allNonBinaryFiles);
             }
+
+            GenerateSourceFileFromImplicitUsings();
 
             progressMonitor.Summary(
                 AllSourceFiles.Count(),
@@ -147,6 +148,46 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 succeededProjects + failedProjects,
                 failedProjects,
                 DateTime.Now - startTime);
+        }
+
+        private void GenerateSourceFileFromImplicitUsings()
+        {
+            var usings = new HashSet<string>();
+            if (!fileContent.UseImplicitUsings)
+            {
+                return;
+            }
+
+            // Hardcoded values from https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview#implicit-using-directives
+            usings.UnionWith(new[] { "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
+                "System.Threading.Tasks" });
+
+            if (fileContent.UseAspNetDlls)
+            {
+                usings.UnionWith(new[] { "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
+                    "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
+                    "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" });
+            }
+
+            usings.UnionWith(fileContent.CustomImplicitUsings);
+
+            if (usings.Count > 0)
+            {
+                var tempDir = GetTemporaryWorkingDirectory("implicitUsings");
+                var path = Path.Combine(tempDir, "GlobalUsings.g.cs");
+                using (var writer = new StreamWriter(path))
+                {
+                    writer.WriteLine("// <auto-generated/>");
+                    writer.WriteLine("");
+
+                    foreach (var u in usings.OrderBy(u => u))
+                    {
+                        writer.WriteLine($"global using global::{u};");
+                    }
+                }
+
+                this.allSources.Add(path);
+            }
         }
 
         private void GenerateSourceFilesFromWebViews(List<FileInfo> allFiles)
@@ -165,8 +206,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     try
                     {
                         var razor = new Razor(sdk, dotnet, progressMonitor);
-                        razorWorkingDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "razor"));
-                        var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, razorWorkingDirectory.ToString());
+                        var targetDir = GetTemporaryWorkingDirectory("razor");
+                        var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, targetDir);
                         this.allSources.AddRange(generatedFiles);
                     }
                     catch (Exception ex)
@@ -180,16 +221,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info)) { }
 
-        private IEnumerable<FileInfo> GetAllFiles() =>
-             sourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true })
-                .Where(d => d.Extension != ".dll" && !options.ExcludesFile(d.FullName));
+        private IEnumerable<FileInfo> GetAllFiles()
+        {
+            var files = sourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true })
+                .Where(d => !options.ExcludesFile(d.FullName));
+
+            if (options.DotNetPath != null)
+            {
+                files = files.Where(f => !f.FullName.StartsWith(options.DotNetPath, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return files;
+        }
 
         /// <summary>
         /// Computes a unique temp directory for the packages associated
         /// with this source tree. Use a SHA1 of the directory name.
         /// </summary>
         /// <returns>The full path of the temp directory.</returns>
-        private static string ComputeTempDirectory(string srcDir, string subfolderName = "packages")
+        private static string ComputeTempDirectory(string srcDir)
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
             var sha = SHA1.HashData(bytes);
@@ -197,7 +247,35 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(Path.GetTempPath(), "GitHub", subfolderName, sb.ToString());
+            return Path.Combine(Path.GetTempPath(), "GitHub", "packages", sb.ToString());
+        }
+
+        private static string GetTemporaryWorkingDirectory()
+        {
+            var tempFolder = EnvironmentVariables.GetScratchDirectory();
+
+            if (string.IsNullOrEmpty(tempFolder))
+            {
+                var tempPath = Path.GetTempPath();
+                var name = Guid.NewGuid().ToString("N").ToUpper();
+                tempFolder = Path.Combine(tempPath, "GitHub", name);
+            }
+
+            return tempFolder;
+        }
+
+        /// <summary>
+        /// Creates a temporary directory with the given subfolder name.
+        /// The created directory might be inside the repo folder, and it is deleted when the object is disposed.
+        /// </summary>
+        /// <param name="subfolder"></param>
+        /// <returns></returns>
+        private string GetTemporaryWorkingDirectory(string subfolder)
+        {
+            var temp = Path.Combine(tempWorkingDirectory.ToString(), subfolder);
+            Directory.CreateDirectory(temp);
+
+            return temp;
         }
 
         /// <summary>
@@ -424,7 +502,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var package in notYetDownloadedPackages)
             {
                 progressMonitor.NugetInstall(package);
-                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
+                using var tempDir = new TemporaryDirectory(GetTemporaryWorkingDirectory(package));
                 var success = dotnet.New(tempDir.DirInfo.FullName);
                 if (!success)
                 {
@@ -467,7 +545,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void Dispose()
         {
             packageDirectory?.Dispose();
-            razorWorkingDirectory?.Dispose();
+            tempWorkingDirectory?.Dispose();
         }
     }
 }
