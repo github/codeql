@@ -1,5 +1,8 @@
 import go
 
+/**
+ * Provide File system access sinks of [fasthttp](https://github.com/valyala/fasthttp) web framework
+ */
 class FastHttpFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   FastHttpFileSystemAccess() {
     exists(DataFlow::Method mcn |
@@ -33,6 +36,9 @@ class FastHttpFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNo
   }
 }
 
+/**
+ * Provide File system access sinks of `net/http` package
+ */
 class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
   HttpServeFile() {
     exists(DataFlow::Function mcn |
@@ -44,6 +50,9 @@ class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
   override DataFlow::Node getAPathArgument() { result = this.getArgument(2) }
 }
 
+/**
+ * Provide File system access sinks of [beego](https://github.com/beego/beego) web framework
+ */
 class BeegoFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   BeegoFileSystemAccess() {
     exists(DataFlow::Method mcn |
@@ -67,6 +76,9 @@ class BeegoFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode 
   }
 }
 
+/**
+ * Provide File system access sinks of [beego](https://github.com/beego/beego) web framework
+ */
 class EchoFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   EchoFileSystemAccess() {
     exists(DataFlow::Method mcn |
@@ -78,6 +90,9 @@ class EchoFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }
 
+/**
+ * Provide File system access sinks of [gin](https://github.com/gin-gonic/gin) web framework
+ */
 class GinFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   GinFileSystemAccess() {
     exists(DataFlow::Method mcn |
@@ -94,6 +109,9 @@ class GinFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   }
 }
 
+/**
+ * Provide File system access sinks of [iris](https://github.com/kataras/iris) web framework
+ */
 class IrisFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   IrisFileSystemAccess() {
     exists(DataFlow::Method mcn |
@@ -115,6 +133,9 @@ class IrisFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   }
 }
 
+/**
+ * Provide File system access sinks of [fiber](https://github.com/gofiber/fiber) web framework
+ */
 class FiberSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   FiberSystemAccess() {
     exists(DataFlow::Method mcn |
@@ -133,6 +154,10 @@ class FiberSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   }
 }
 
+/**
+ * Provide File system access sinks of [afero](https://github.com/spf13/afero) filesystem framework
+ * The Only Type that is not vulnerable to path traversal is `afero.IOFS`
+ */
 class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   AferoSystemAccess() {
     exists(DataFlow::Function mcn |
