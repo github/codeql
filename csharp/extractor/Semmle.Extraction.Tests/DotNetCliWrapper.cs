@@ -38,7 +38,7 @@ namespace Semmle.Extraction.Tests
     public class DotNetCliWrapperTests
     {
         private static IDotNet MakeDotnet(IDotNetCliInvoker dotnetCliInvoker) =>
-            new DotNetCliWrapper(dotnetCliInvoker, new ProgressMonitor(new LoggerStub()));
+            DotNetCliWrapper.Make(dotnetCliInvoker, new ProgressMonitor(new LoggerStub()));
 
         private static IList<string> MakeDotnetRestoreOutput() =>
             new List<string> {

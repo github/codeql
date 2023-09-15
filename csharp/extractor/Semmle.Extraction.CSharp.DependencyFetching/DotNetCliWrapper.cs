@@ -14,15 +14,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDotNetCliInvoker dotnet;
         private readonly ProgressMonitor progressMonitor;
 
-        internal DotNetCliWrapper(IDotNetCliInvoker dotnet, ProgressMonitor progressMonitor)
+        private DotNetCliWrapper(IDotNetCliInvoker dotnet, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
             this.dotnet = dotnet;
             Info();
         }
 
-        public DotNetCliWrapper(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
+        private DotNetCliWrapper(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
 
+        internal static IDotNet Make(IDotNetCliInvoker dotnet, ProgressMonitor progressMonitor) => new DotNetCliWrapper(dotnet, progressMonitor);
+
+        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor) => new DotNetCliWrapper(options, progressMonitor);
 
         private void Info()
         {
