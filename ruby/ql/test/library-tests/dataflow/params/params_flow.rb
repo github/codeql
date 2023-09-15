@@ -71,8 +71,8 @@ def splatmid(x, y, *z, w, r)
     sink y # $ hasValueFlow=28 $ hasValueFlow=46 $ hasValueFlow=33
     sink z[0] # MISSING: $ hasValueFlow=47 $ hasValueFlow=29 $ hasValueFlow=34
     sink z[1] # $ MISSING: hasValueFlow=48 $ hasValueFlow=35
-    sink w # $ hasValueFlow=30 $ hasValueFlow=50 $ MISSING: hasValueFlow=36 $ SPURIOUS: hasValueFlow=35 $ hasValueFlow=48
-    sink r # $ hasValueFlow=31 $ hasValueFlow=51 $ MISSING: hasValueFlow=37 $ SPURIOUS: hasValueFlow=36 $ hasValueFlow=49
+    sink w # $ hasValueFlow=30 $ hasValueFlow=50 $ MISSING: hasValueFlow=36
+    sink r # $ hasValueFlow=31 $ hasValueFlow=51 $ MISSING: hasValueFlow=37
 end
 
 splatmid(taint(27), taint(28), taint(29), taint(30), taint(31))
@@ -99,7 +99,7 @@ def splatmidsmall(a, *splats, b)
     sink a # $ hasValueFlow=52 $ hasValueFlow=55
     sink splats[0] # $ MISSING: hasValueFlow=53
     sink splats[1]
-    sink b # $ hasValueFlow=57 $ hasValueFlow=54
+    sink b # $ hasValueFlow=57 $ MISSING: hasValueFlow=54
 end
 
 splatmidsmall(taint(52), *[taint(53), taint(54)])

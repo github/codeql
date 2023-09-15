@@ -103,11 +103,11 @@ def m14(w, x, y, z)
     sink z # $ hasValueFlow=a
 end
 
-def  m15
+def m15
     a = source "a"
     b = source "b"
-    sink s15(**a) # $ SPURIOUS: hasTaintFlow=a MISSING: hasValueFlow=a
-    sink s15(0, 1, foo: b, **a) # $ SPURIOUS: hasTaintFlow=a MISSING: hasValueFlow=a
+    sink s15(foo: a, bar: b)[:foo] # $ hasValueFlow=a
+    sink s15(foo: a, bar: b)[:bar] # $ hasValueFlow=b
 end
 
 def m16
@@ -121,19 +121,20 @@ def m16
     sink s16(b: b, **h) # $ hasValueFlow=a hasValueFlow=b
 end
 
-def m17(h, x)
+def m17
     a = source "a"
-    s17(a, **h, foo: x)
-    sink h # $ hasValueFlow=a
-    sink x
+    b = source "b"
+    sink s17(a, b) # $ hasTaintFlow=a $ hasTaintFlow=b
+    sink s17(a, b)[0] # $ hasValueFlow=a
+    sink s17(a, b)[1] # $ hasValueFlow=b
 end
 
-def m18(x)
+def m18
     a = source "a"
-    s18(a, **h, foo: x)
-    sink h
-    sink h[:foo] # $ MISSING: hasValueFlow=a
-    sink x # $ MISSING: hasValueFlow=a
+    b = source "b"
+    arr = [a, b]
+    sink s18(*arr) # $ hasValueFlow=a $ hasValueFlow=b
+    sink s18(a) # $ hasValueFlow=a
 end
 
 def m19(i)

@@ -550,6 +550,73 @@ module Content {
   }
 
   /**
+   * INTERNAL: Do not use.
+   *
+   * An element inside a synthetic splat argument. All positional arguments
+   * (including splat arguments) are implicitly stored inside a synthetic
+   * splat argument. For example, in
+   *
+   * ```rb
+   * foo(1, 2, 3)
+   * ```
+   *
+   * we have an implicit splat argument containing `[1, 2, 3]`.
+   */
+  class SplatContent extends ElementContent, TSplatContent {
+    private int i;
+    private boolean shifted;
+
+    SplatContent() { this = TSplatContent(i, shifted) }
+
+    /** Gets the position of this splat element. */
+    int getPosition() { result = i }
+
+    /**
+     * Holds if this element represents a value from an actual splat argument
+     * that had its index shifted. For example, in
+     *
+     * ```rb
+     * foo(x, *args)
+     * ```
+     *
+     * the elements of `args` will have their index shifted by 1 before being
+     * put into the synthetic splat argument.
+     */
+    predicate isShifted() { shifted = true }
+
+    override string toString() {
+      exists(string s |
+        (if this.isShifted() then s = " (shifted)" else s = "") and
+        result = "splat position " + i + s
+      )
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * An element inside a synthetic hash-splat argument. All keyword arguments
+   * are implicitly stored inside a synthetic hash-splat argument. For example,
+   * in
+   *
+   * ```rb
+   * foo(a: 1, b: 2, c: 3)
+   * ```
+   *
+   * we have an implicit hash-splat argument containing `{:a => 1, :b => 2, :c => 3}`.
+   */
+  class HashSplatContent extends ElementContent, THashSplatContent {
+    private ConstantValue cv;
+
+    HashSplatContent() { this = THashSplatContent(cv) }
+
+    /** Gets the hash key. */
+    ConstantValue getKey() { result = cv }
+
+    override string toString() { result = "hash-splat position " + cv }
+  }
+
+  /**
    * A value stored behind a getter/setter pair.
    *
    * This is used (only) by type-tracking, as a heuristic since getter/setter pairs tend to operate
@@ -705,6 +772,8 @@ class ContentSet extends TContentSet {
     or
     exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
       result = c or
+      result = TSplatContent(c.getIndex().getInt(), _) or
+      result = THashSplatContent(c.getIndex()) or
       result = TUnknownElementContent()
     )
     or
@@ -712,7 +781,9 @@ class ContentSet extends TContentSet {
       this = TElementLowerBoundContent(lower, includeUnknown)
     |
       exists(int i |
-        result.(Content::KnownElementContent).getIndex().isInt(i) and
+        result.(Content::KnownElementContent).getIndex().isInt(i) or
+        result = TSplatContent(i, _)
+      |
         i >= lower
       )
       or
@@ -724,6 +795,11 @@ class ContentSet extends TContentSet {
       this = TElementContentOfTypeContent(type, includeUnknown)
     |
       type = result.(Content::KnownElementContent).getIndex().getValueType()
+      or
+      type = "int" and
+      result instanceof Content::SplatContent
+      or
+      type = result.(Content::HashSplatContent).getKey().getValueType()
       or
       includeUnknown = true and
       result = TUnknownElementContent()

@@ -427,6 +427,14 @@ module VariableCapture {
   }
 }
 
+private predicate splatParameterAt(Callable c, int pos) {
+  c.getParameter(pos) instanceof SplatParameter
+}
+
+private predicate splatArgumentAt(CfgNodes::ExprNodes::CallCfgNode c, int pos) {
+  exists(Argument arg, ArgumentPosition apos | arg.isArgumentOf(c, apos) and apos.isSplat(pos))
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -452,12 +460,11 @@ private module Cached {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
     TSynthSplatParameterNode(DataFlowCallable c) {
-      exists(c.asCallable()) and // exclude library callables
+      exists(c.asCallable()) and // exclude library callables (for now)
       isParameterNode(_, c, any(ParameterPosition p | p.isPositional(_)))
     } or
-    TSynthSplatParameterElementNode(DataFlowCallable c, int n) {
-      exists(c.asCallable()) and // exclude library callables
-      isParameterNode(_, c, any(ParameterPosition p | p.isSplat(any(int i | i > 0)))) and
+    TSynthSplatParameterShiftNode(DataFlowCallable c, int splatPos, int n) {
+      splatPos = unique(int i | splatParameterAt(c.asCallable(), i) and i > 0) and
       n in [0 .. 10]
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
@@ -476,12 +483,10 @@ private module Cached {
       c.getAnArgument() instanceof CfgNodes::ExprNodes::PairCfgNode
     } or
     TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) or
-    TSynthSplatArgumentElementNode(CfgNodes::ExprNodes::CallCfgNode c, int n) {
+    TSynthSplatArgumentShiftNode(CfgNodes::ExprNodes::CallCfgNode c, int splatPos, int n) {
       // we use -1 to represent data at an unknown index
       n in [-1 .. 10] and
-      exists(Argument arg, ArgumentPosition pos |
-        pos.isSplat(any(int p | p > 0)) and arg.isArgumentOf(c, pos)
-      )
+      splatPos = unique(int i | splatArgumentAt(c, i) and i > 0)
     } or
     TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
 
@@ -646,6 +651,8 @@ private module Cached {
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
     } or
+    TSplatContent(int i, Boolean shifted) { i in [0 .. 10] } or
+    THashSplatContent(ConstantValue cv) { not cv.isInt(_) } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     // Only used by type-tracking
     TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
@@ -669,11 +676,14 @@ private module Cached {
     TUnknownElementContentApprox() or
     TKnownIntegerElementContentApprox() or
     TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
+    TSplatContentApprox(Boolean shifted) or
+    THashSplatContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
     TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent } or
     TCapturedVariableContentApprox(VariableCapture::CapturedVariable v)
 }
 
-class TElementContent = TKnownElementContent or TUnknownElementContent;
+class TElementContent =
+  TKnownElementContent or TUnknownElementContent or TSplatContent or THashSplatContent;
 
 import Cached
 
@@ -695,7 +705,9 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof SynthSplatArgumentNode
   or
-  n instanceof SynthSplatParameterElementNode
+  n instanceof SynthSplatParameterShiftNode
+  or
+  n instanceof SynthSplatArgumentShiftNode
   or
   n instanceof LambdaSelfReferenceNode
   or
@@ -952,15 +964,15 @@ private module ParameterNodes {
   }
 
   /**
+   * A synthetic data-flow node to allow for flow into keyword parameters from
+   * hash-splat arguments.
+   *
    * For all methods containing keyword parameters, we construct a synthesized
    * (hidden) parameter node to contain all keyword arguments. This allows us
    * to handle cases like
    *
    * ```rb
-   * def foo(p1:, p2:)
-   *   sink(p1)
-   *   sink(p2)
-   * end
+   * def foo(p1:, p2:); end
    *
    * args = {:p1 => taint(1), :p2 => taint(2) }
    * foo(**args)
@@ -969,36 +981,34 @@ private module ParameterNodes {
    * by adding read steps out of the synthesized parameter node to the relevant
    * keyword parameters.
    *
-   * Note that this will introduce a bit of redundancy in cases like
+   * In order to avoid redundancy (and improve performance) in cases like
    *
    * ```rb
    * foo(p1: taint(1), p2: taint(2))
    * ```
    *
-   * where direct keyword matching is possible, since we construct a synthesized hash
-   * splat argument (`SynthHashSplatArgumentNode`) at the call site, which means that
-   * `taint(1)` will flow into `p1` both via normal keyword matching and via the synthesized
-   * nodes (and similarly for `p2`). However, this redundancy is OK since
-   *  (a) it means that type-tracking through keyword arguments also works in most cases,
-   *  (b) read/store steps can be avoided when direct keyword matching is possible, and
-   *      hence access path limits are not a concern, and
-   *  (c) since the synthesized nodes are hidden, the reported data-flow paths will be
-   *      collapsed anyway.
+   * where direct keyword matching is possible, we use a special `HashSplatContent`
+   * (instead of reusing `KnownElementContent`) when we construct a synthesized hash
+   * splat argument (`SynthHashSplatArgumentNode`) at the call site, and then only
+   * add read steps out of this node for actual hash-splat arguments (which will use
+   * a normal `KnownElementContent`).
    */
   class SynthHashSplatParameterNode extends ParameterNodeImpl, TSynthHashSplatParameterNode {
     private DataFlowCallable callable;
 
     SynthHashSplatParameterNode() { this = TSynthHashSplatParameterNode(callable) }
 
-    /**
-     * Gets a keyword parameter that will be the result of reading `c` out of this
-     * synthesized node.
-     */
-    ParameterNode getAKeywordParameter(ContentSet c) {
+    /** Holds if a read-step should be added into parameter `p`. */
+    predicate readInto(ParameterNode p, ContentSet c) {
       exists(string name |
-        isParameterNode(result, callable, any(ParameterPosition p | p.isKeyword(name)))
+        isParameterNode(p, callable, any(ParameterPosition pos | pos.isKeyword(name)))
       |
-        c = getKeywordContent(name) or
+        // Important: do not include `HashSplatContent` here, as normal parameter matching is possible
+        exists(ConstantValue::ConstantSymbolValue key |
+          c.isSingleton(TKnownElementContent(key)) and
+          key.isSymbol(name)
+        )
+        or
         c.isSingleton(TUnknownElementContent())
       )
     }
@@ -1015,13 +1025,16 @@ private module ParameterNodes {
 
     final override Location getLocationImpl() { result = callable.getLocation() }
 
-    final override string toStringImpl() { result = "**kwargs" }
+    final override string toStringImpl() { result = "synthetic hash-splat parameter" }
   }
 
   /**
-   * A synthetic data-flow node to allow flow to positional parameters from a splat argument.
+   * A synthetic data-flow node to allow for flow into positional parameters from
+   * splat arguments.
    *
-   * For example, in the following code:
+   * For all methods containing positional parameters, we construct a synthesized
+   * (hidden) parameter node to contain all positional arguments. This allows us
+   * to handle cases like
    *
    * ```rb
    * def foo(x, y, z); end
@@ -1029,45 +1042,47 @@ private module ParameterNodes {
    * foo(a, *[b, c])
    * ```
    *
-   * We want `b` to flow to `y` and `c` to flow to `z`. We do this by constructing
-   * a `SynthSplatParameterNode` for the method `foo`, and matching the splat argument to this
-   * parameter node via `parameterMatch/2`. We then add read steps from this node to parameters
-   * `y` and `z`, for content at indices 0 and 1 respectively (see `readStep`).
+   * by adding read steps out of the synthesized parameter node to the relevant
+   * positional parameters.
    *
-   * This node stores the index of the splat argument it is matched to, which allows us to shift
-   * indices correctly when adding read steps. Without this, in the example above we would erroneously
-   * get a read step to `x` at index 0 and `y` at index 1 etc.
+   * In order to avoid redundancy (and improve performance) in cases like
    *
-   * We don't yet correctly handle cases where a positional argument follows the splat argument, e.g. in
+   * ```rb
+   * foo(a, b, c)
+   * ```
+   *
+   * where direct positional matching is possible, we use a special `SplatContent`
+   * (instead of reusing `KnownElementContent`) when we construct a synthesized
+   * splat argument (`SynthSplatArgumentNode`) at the call site, and then only
+   * add read steps out of this node for actual splat arguments (which will use
+   * `KnownElementContent` or `TSplatContent(_, true)`).
+   *
+   * We don't yet correctly handle cases where a positional argument follows the
+   * splat argument, e.g. in
+   *
    * ```rb
    * foo(a, *[b], c)
    * ```
+   *
+   * but this appears to be rare in practice.
    */
   class SynthSplatParameterNode extends ParameterNodeImpl, TSynthSplatParameterNode {
     private DataFlowCallable callable;
 
     SynthSplatParameterNode() { this = TSynthSplatParameterNode(callable) }
 
-    /**
-     * Gets a parameter which will contain the value given by `c`.
-     * For example, if the synth splat parameter is for the following method and method call:
-     *
-     * ```rb
-     * def foo(x, y, a:, *rest); end
-     *
-     * foo(arg1, *args)
-     * ```
-     *
-     * then `getAParameter(element 0) = y`.
-     */
-    ParameterNode getAParameter(ContentSet c) {
+    /** Holds if a read-step should be added into parameter `p`. */
+    predicate readInto(ParameterNode p, ContentSet c) {
       exists(int n |
-        isParameterNode(result, callable, (any(ParameterPosition p | p.isPositional(n)))) and
-        (
-          c = getPositionalContent(n)
-          or
-          c.isSingleton(TUnknownElementContent())
-        )
+        isParameterNode(p, callable, any(ParameterPosition pos | pos.isPositional(n))) and
+        not exists(int i | splatParameterAt(callable.asCallable(), i) and i < n)
+      |
+        // Important: do not include `TSplatContent(_, false)` here, as normal parameter matching is possible
+        c = getSplatContent(n, true)
+        or
+        c = getArrayContent(n)
+        or
+        c.isSingleton(TUnknownElementContent())
       )
     }
 
@@ -1083,28 +1098,50 @@ private module ParameterNodes {
 
     final override Location getLocationImpl() { result = callable.getLocation() }
 
-    final override string toStringImpl() { result = "synthetic *args" }
+    final override string toStringImpl() { result = "synthetic splat parameter" }
   }
 
   /**
-   * A node that holds the content of a specific positional argument.
-   * See `SynthSplatArgumentNode` for more information.
+   * A data-flow node that holds data from values inside the synthetic splat parameter,
+   * which need to have their indices shifted before being passed onto real splat
+   * parameters.
+   *
+   * For example, in
+   *
+   * ```rb
+   * def foo(a, b, *rest); end
+   * ```
+   *
+   * the elements of the synthetic splat parameter (`SynthSplatParameterNode`) need to
+   * have their indices shifted by `2` before being passed into `rest`.
    */
-  class SynthSplatParameterElementNode extends NodeImpl, TSynthSplatParameterElementNode {
+  class SynthSplatParameterShiftNode extends NodeImpl, TSynthSplatParameterShiftNode {
     private DataFlowCallable callable;
+    private int splatPos;
     private int pos;
 
-    SynthSplatParameterElementNode() { this = TSynthSplatParameterElementNode(callable, pos) }
+    SynthSplatParameterShiftNode() { this = TSynthSplatParameterShiftNode(callable, splatPos, pos) }
 
-    pragma[nomagic]
-    NormalParameterNode getSplatParameterNode(int splatPos) {
-      result
-          .isParameterOf(this.getEnclosingCallable(), any(ParameterPosition p | p.isSplat(splatPos)))
+    /**
+     * Holds if a read-step should be added from synthetic splat parameter `synthSplat`
+     * into this node.
+     */
+    predicate readFrom(SynthSplatParameterNode synthSplat, ContentSet cs) {
+      synthSplat.isParameterOf(callable, _) and
+      (
+        cs = getSplatContent(pos + splatPos, _)
+        or
+        cs = getArrayContent(pos + splatPos)
+      )
     }
 
-    int getStorePosition() { result = pos }
-
-    int getReadPosition() { result = pos }
+    /**
+     * Holds if a store-step should be added from this node into splat parameter `splat`.
+     */
+    predicate storeInto(NormalParameterNode splat, ContentSet cs) {
+      splat.isParameterOf(callable, any(ParameterPosition p | p.isSplat(splatPos))) and
+      cs = getArrayContent(pos)
+    }
 
     final override CfgScope getCfgScope() { result = callable.asCallable() }
 
@@ -1112,7 +1149,9 @@ private module ParameterNodes {
 
     final override Location getLocationImpl() { result = callable.getLocation() }
 
-    final override string toStringImpl() { result = "synthetic *args[" + pos + "]" }
+    final override string toStringImpl() {
+      result = "synthetic splat parameter shift [" + pos + "]"
+    }
   }
 
   /** A parameter for a library callable with a flow summary. */
@@ -1211,104 +1250,189 @@ module ArgumentNodes {
     }
   }
 
+  abstract class SynthHashSplatOrSplatArgumentNode extends ArgumentNode, NodeImpl {
+    CfgNodes::ExprNodes::CallCfgNode call_;
+
+    final string getMethodName() {
+      result = call_.(CfgNodes::ExprNodes::MethodCallCfgNode).getMethodName()
+      or
+      not call_ instanceof CfgNodes::ExprNodes::MethodCallCfgNode and
+      result = call_.getExpr().getEnclosingMethod().getName() + "_yield"
+    }
+
+    final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      this.sourceArgumentOf(call.asCall(), pos)
+    }
+
+    final override CfgScope getCfgScope() { result = call_.getExpr().getCfgScope() }
+
+    final override Location getLocationImpl() { result = call_.getLocation() }
+  }
+
   /**
    * A data-flow node that represents all keyword arguments wrapped in a hash.
    *
    * The callee is responsible for filtering out the keyword arguments that are
    * part of the method signature, such that those cannot end up in the hash-splat
-   * parameter.
+   * parameter. See also `SynthHashSplatParameterNode`.
    */
-  class SynthHashSplatArgumentNode extends ArgumentNode, NodeImpl, TSynthHashSplatArgumentNode {
-    CfgNodes::ExprNodes::CallCfgNode c;
+  class SynthHashSplatArgumentNode extends SynthHashSplatOrSplatArgumentNode,
+    TSynthHashSplatArgumentNode
+  {
+    SynthHashSplatArgumentNode() { this = TSynthHashSplatArgumentNode(call_) }
 
-    SynthHashSplatArgumentNode() { this = TSynthHashSplatArgumentNode(c) }
+    /**
+     * Holds if a store-step should be added from argument `arg` into this synthetic
+     * hash-splat argument.
+     */
+    predicate storeFrom(Node arg, ContentSet c) {
+      exists(ConstantValue cv |
+        if call_ instanceof CfgNodes::ExprNodes::HashLiteralCfgNode
+        then
+          /*
+           * Needed for cases like
+           *
+           * ```rb
+           * hash = { a: taint, b: safe }
+           *
+           * def foo(a:, b:)
+           *   sink(a)
+           * end
+           *
+           * foo(**hash)
+           * ```
+           */
 
-    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      this.sourceArgumentOf(call.asCall(), pos)
+          c.isSingleton(TKnownElementContent(cv))
+        else c.isSingleton(THashSplatContent(cv))
+      |
+        // symbol key
+        exists(ArgumentPosition keywordPos, string name |
+          arg.asExpr().(Argument).isArgumentOf(call_, keywordPos) and
+          keywordPos.isKeyword(name) and
+          cv.isSymbol(name)
+        )
+        or
+        // non-symbol key
+        exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key |
+          arg.asExpr() = pair.getValue() and
+          pair = call_.getAnArgument() and
+          key = pair.getKey() and
+          cv = key.getConstantValue() and
+          not cv.isSymbol(_)
+        )
+      )
     }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
-      call = c and
-      pos.isHashSplat()
+      call = call_ and
+      pos.isSynthHashSplat()
     }
 
-    override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
-
-    override Location getLocationImpl() { result = c.getLocation() }
-
-    override string toStringImpl() { result = "**" }
+    override string toStringImpl() { result = "synthetic hash-splat argument" }
   }
 
   /**
-   * A data-flow node that represents all arguments passed to the call.
-   * We use this to model data flow via splat parameters.
-   * Consider this example:
+   * A data-flow node that represents all positional arguments wrapped in an array.
    *
-   * ```rb
-   * def foo(x, y, *z)
-   * end
-   *
-   * foo(1, 2, 3, 4)
-   * ```
-   *
-   * 1. We want `3` to flow to `z[0]` and `4` to flow to `z[1]`. We model this by first storing all arguments
-   *   in a synthetic argument node `SynthSplatArgumentNode` (see `storeStepCommon`).
-   * 2. We match this to an analogous parameter node `SynthSplatParameterNode` on the callee side
-   *   (see `parameterMatch`).
-   * 3. For each content element stored in the `SynthSplatParameterNode`, we add a read step to a separate
-   *   `SynthSplatParameterElementNode`, which is parameterized by the element index (see `readStep`).
-   * 4. Finally, we add store steps from these `SynthSplatParameterElementNode`s to the real splat parameter node
-   *   (see `storeStep`).
-   *   We only add store steps for elements that will not flow to the earlier positional parameters.
-   *   In practice that means we ignore elements at index `<= N`, where `N` is the index of the splat parameter.
-   *   For the remaining elements we subtract `N` from their index and store them in the splat parameter.
+   * The callee is responsible for filtering out the positional arguments that are
+   * part of the method signature, such that those cannot end up in the splat
+   * parameter. See also `SynthSplatParameterNode`.
    */
-  class SynthSplatArgumentNode extends ArgumentNode, NodeImpl, TSynthSplatArgumentNode {
-    CfgNodes::ExprNodes::CallCfgNode c;
+  class SynthSplatArgumentNode extends SynthHashSplatOrSplatArgumentNode, TSynthSplatArgumentNode {
+    SynthSplatArgumentNode() { this = TSynthSplatArgumentNode(call_) }
 
-    SynthSplatArgumentNode() { this = TSynthSplatArgumentNode(c) }
+    /**
+     * Holds if a store-step should be added from argument `arg` into this synthetic
+     * splat argument.
+     */
+    predicate storeFrom(Node arg, ContentSet c) {
+      exists(ArgumentPosition pos, int n |
+        arg.asExpr().(Argument).isArgumentOf(call_, pos) and
+        pos.isPositional(n) and
+        not exists(int i | splatArgumentAt(call_, i) and i < n) and
+        if call_ instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode
+        then
+          /*
+           * Needed for cases like
+           *
+           * ```rb
+           * arr = [taint, safe]
+           *
+           * def foo(a, b)
+           *   sink(a)
+           * end
+           *
+           * foo(*arr)
+           * ```
+           */
 
-    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      this.sourceArgumentOf(call.asCall(), pos)
+          c = getArrayContent(n)
+        else c = getSplatContent(n, false)
+      )
     }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
-      call = c and
+      call = call_ and
       pos.isSynthSplat()
     }
 
-    override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
-
-    override Location getLocationImpl() { result = c.getLocation() }
-
-    override string toStringImpl() { result = "*" }
+    override string toStringImpl() { result = "synthetic splat argument" }
   }
 
   /**
-   * A data-flow node that holds data from values inside splat arguments.
+   * A data-flow node that holds data from values inside splat arguments, which
+   * need to have their indices shifted.
+   *
    * For example, in the following call
    *
    * ```rb
-   * foo(1, 2, *[3, 4])
+   * foo(a, b, *[c, d])
    * ```
    *
-   * We add read steps such that `3` flows into `SynthSplatArgumentElementNode(2)` and `4` flows into `SynthSplatArgumentElementNode(3)`.
+   * `c` and `d` need to have their indices shifted by `2`.
    */
-  class SynthSplatArgumentElementNode extends NodeImpl, TSynthSplatArgumentElementNode {
+  class SynthSplatArgumentShiftNode extends NodeImpl, TSynthSplatArgumentShiftNode {
     CfgNodes::ExprNodes::CallCfgNode c;
+    int splatPos;
     int n;
 
-    SynthSplatArgumentElementNode() { this = TSynthSplatArgumentElementNode(c, n) }
+    SynthSplatArgumentShiftNode() { this = TSynthSplatArgumentShiftNode(c, splatPos, n) }
 
-    CfgNodes::ExprNodes::CallCfgNode getCall() { result = c }
+    /**
+     * Holds if a read-step should be added from splat argument `splatArg` into this node.
+     */
+    predicate readFrom(Node splatArg, ContentSet cs) {
+      splatArg.asExpr().(Argument).isArgumentOf(c, any(ArgumentPosition p | p.isSplat(splatPos))) and
+      (
+        cs = getSplatContent(n - splatPos, _)
+        or
+        cs = getArrayContent(n - splatPos)
+        or
+        n = -1 and
+        cs.isSingleton(TUnknownElementContent())
+      )
+    }
 
-    int getPosition() { result = n }
+    /**
+     * Holds if a store-step should be added from this node into synthetic splat
+     * argument `synthSplat`.
+     */
+    predicate storeInto(SynthSplatArgumentNode synthSplat, ContentSet cs) {
+      synthSplat = TSynthSplatArgumentNode(c) and
+      (
+        cs = getSplatContent(n, true)
+        or
+        n = -1 and
+        cs.isSingleton(TUnknownElementContent())
+      )
+    }
 
     override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
 
     override Location getLocationImpl() { result = c.getLocation() }
 
-    override string toStringImpl() { result = "*[" + n + "]" }
+    override string toStringImpl() { result = "synthetic splat argument shift [" + n + "]" }
   }
 }
 
@@ -1502,78 +1626,24 @@ predicate jumpStep(Node pred, Node succ) {
   any(AdditionalJumpStep s).step(pred, succ)
 }
 
-private ContentSet getKeywordContent(string name) {
-  exists(ConstantValue::ConstantSymbolValue key |
-    result.isSingleton(TKnownElementContent(key)) and
-    key.isSymbol(name)
-  )
-}
-
-ContentSet getPositionalContent(int n) {
+private ContentSet getArrayContent(int n) {
   exists(ConstantValue::ConstantIntegerValue i |
     result.isSingleton(TKnownElementContent(i)) and
     i.isInt(n)
   )
 }
 
+private ContentSet getSplatContent(int n, boolean adjusted) {
+  result.isSingleton(TSplatContent(n, adjusted))
+}
+
 /**
  * Subset of `storeStep` that should be shared with type-tracking.
  */
 predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
-  // Wrap all key-value arguments in a synthesized hash-splat argument node
-  exists(CfgNodes::ExprNodes::CallCfgNode call | node2 = TSynthHashSplatArgumentNode(call) |
-    // symbol key
-    exists(ArgumentPosition keywordPos, string name |
-      node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
-      keywordPos.isKeyword(name) and
-      c = getKeywordContent(name)
-    )
-    or
-    // non-symbol key
-    exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key, ConstantValue cv |
-      node1.asExpr() = pair.getValue() and
-      pair = call.getAnArgument() and
-      key = pair.getKey() and
-      cv = key.getConstantValue() and
-      not cv.isSymbol(_) and
-      c.isSingleton(TKnownElementContent(cv))
-    )
-  )
+  node2.(SynthHashSplatArgumentNode).storeFrom(node1, c)
   or
-  // Wrap all positional arguments in a synthesized splat argument node
-  exists(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos |
-    node2 = TSynthSplatArgumentNode(call) and
-    node1.asExpr().(Argument).isArgumentOf(call, pos)
-  |
-    exists(int n | pos.isPositional(n) and c = getPositionalContent(n))
-  )
-}
-
-/**
- * Holds if data can flow from a `SynthSplatArgumentElementNode` into a `SynthSplatArgumentNode` via a store step.
- * For example in
- *
- * ```rb
- * foo(1, 2, *[3, 4])
- * ```
- *
- * We have flow from `3` into `SynthSplatArgumentElementNode(2)`. This step stores the value from this node into element `2` of the `SynthSplatArgumentNode`.
- *
- * This allows us to match values inside splat arguments to the correct parameter in the callable.
- */
-predicate synthSplatArgumentElementStoreStep(
-  SynthSplatArgumentElementNode node1, ContentSet c, SynthSplatArgumentNode node2
-) {
-  exists(CfgNodes::ExprNodes::CallCfgNode call, int n |
-    node2 = TSynthSplatArgumentNode(call) and
-    node1 = TSynthSplatArgumentElementNode(call, n) and
-    (
-      c = getPositionalContent(n)
-      or
-      n = -1 and
-      c.isSingleton(TUnknownElementContent())
-    )
-  )
+  node2.(SynthSplatArgumentNode).storeFrom(node1, c)
 }
 
 /**
@@ -1607,13 +1677,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
   or
-  exists(SynthSplatParameterElementNode elemNode, int splatPos |
-    node1 = elemNode and
-    node2 = elemNode.getSplatParameterNode(splatPos) and
-    c = getPositionalContent(elemNode.getStorePosition() - splatPos)
-  )
+  node1.(SynthSplatParameterShiftNode).storeInto(node2, c)
   or
-  synthSplatArgumentElementStoreStep(node1, c, node2)
+  node1.(SynthSplatArgumentShiftNode).storeInto(node2, c)
   or
   storeStepCommon(node1, c, node2)
   or
@@ -1625,37 +1691,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  * Subset of `readStep` that should be shared with type-tracking.
  */
 predicate readStepCommon(Node node1, ContentSet c, Node node2) {
-  node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
+  node1.(SynthHashSplatParameterNode).readInto(node2, c)
   or
-  node2 = node1.(SynthSplatParameterNode).getAParameter(c)
-}
-
-/**
- * Holds if data can flow from a splat argument to a `SynthSplatArgumentElementNode` via a read step.
- * For example in
- * ```rb
- * foo(x, y, *[1, 2])
- * ```
- *
- * we read `1` into `SynthSplatArgumentElementNode(2)` and `2` into `SynthSplatArgumentElementNode(3)`.
- */
-predicate synthSplatArgumentElementReadStep(
-  Node node1, ContentSet c, SynthSplatArgumentElementNode node2
-) {
-  exists(int splatPos, CfgNodes::ExprNodes::CallCfgNode call |
-    node1.asExpr().(Argument).isArgumentOf(call, any(ArgumentPosition p | p.isSplat(splatPos))) and
-    splatPos > 0 and
-    node2.getCall() = call and
-    (
-      exists(int n |
-        node2.getPosition() = n + splatPos and
-        c = getPositionalContent(n)
-      )
-      or
-      node2.getPosition() = -1 and
-      c.isSingleton(TUnknownElementContent())
-    )
-  )
+  node1.(SynthSplatParameterNode).readInto(node2, c)
 }
 
 /**
@@ -1690,14 +1728,9 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   VariableCapture::readStep(node1, any(Content::CapturedVariableContent v | c.isSingleton(v)), node2)
   or
-  // Read from SynthSplatParameterNode into SynthSplatParameterElementNode
-  node2 =
-    any(SynthSplatParameterElementNode e |
-      node1.(SynthSplatParameterNode).isParameterOf(e.getEnclosingCallable(), _) and
-      c = getPositionalContent(e.getReadPosition())
-    )
+  node2.(SynthSplatParameterShiftNode).readFrom(node1, c)
   or
-  synthSplatArgumentElementReadStep(node1, c, node2)
+  node2.(SynthSplatArgumentShiftNode).readFrom(node1, c)
   or
   readStepCommon(node1, c, node2)
 }
@@ -1714,13 +1747,14 @@ predicate clearsContent(Node n, ContentSet c) {
   // the hash-splat parameter
   exists(
     DataFlowCallable callable, HashSplatParameter hashSplatParam, ParameterNodeImpl keywordParam,
-    ParameterPosition keywordPos, string name
+    ParameterPosition keywordPos, ConstantValue::ConstantSymbolValue cv, string name
   |
     n = TNormalParameterNode(hashSplatParam) and
     callable.asCallable() = hashSplatParam.getCallable() and
     keywordParam.isParameterOf(callable, keywordPos) and
     keywordPos.isKeyword(name) and
-    c = getKeywordContent(name)
+    c.isKnownOrUnknownElement(TKnownElementContent(cv)) and
+    cv.isSymbol(name)
   )
 }
 
@@ -1734,6 +1768,16 @@ predicate expectsContent(Node n, ContentSet c) {
 
 private newtype TDataFlowType =
   TLambdaDataFlowType(Callable c) { c = any(LambdaSelfReferenceNode n).getCallable() } or
+  // In order to reduce the set of cons-candidates, we annotate all implicit (hash) splat
+  // creations with the name of the method that they are passed into. This includes
+  // array/hash literals as well (where the name is simply `[]`), because of how they
+  // are modeled (see `Array.qll` and `Hash.qll`).
+  TSynthHashSplatArgumentType(string methodName) {
+    methodName = any(SynthHashSplatArgumentNode n).getMethodName()
+  } or
+  TSynthSplatArgumentType(string methodName) {
+    methodName = any(SynthSplatArgumentNode n).getMethodName()
+  } or
   TUnknownDataFlowType()
 
 class DataFlowType extends TDataFlowType {
@@ -1741,12 +1785,14 @@ class DataFlowType extends TDataFlowType {
 }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
-  t1 = TLambdaDataFlowType(_) and
+  t1 != TUnknownDataFlowType() and
   t2 = TUnknownDataFlowType()
 }
 
-private predicate mustHaveLambdaType(CfgNodes::ExprCfgNode e, Callable c) {
-  exists(VariableCapture::ClosureExpr ce | ce.hasBody(c) |
+private predicate mustHaveLambdaType(ExprNode n, Callable c) {
+  exists(VariableCapture::ClosureExpr ce, CfgNodes::ExprCfgNode e |
+    e = n.asExpr() and ce.hasBody(c)
+  |
     e = ce or
     ce.hasAliasedAccess(e)
   )
@@ -1759,12 +1805,17 @@ DataFlowType getNodeType(Node n) {
   result = TLambdaDataFlowType(n.(LambdaSelfReferenceNode).getCallable())
   or
   exists(Callable c |
-    mustHaveLambdaType(n.asExpr(), c) and
+    mustHaveLambdaType(n, c) and
     result = TLambdaDataFlowType(c)
   )
   or
+  result = TSynthHashSplatArgumentType(n.(SynthHashSplatArgumentNode).getMethodName())
+  or
+  result = TSynthSplatArgumentType(n.(SynthSplatArgumentNode).getMethodName())
+  or
   not n instanceof LambdaSelfReferenceNode and
-  not mustHaveLambdaType(n.asExpr(), _) and
+  not mustHaveLambdaType(n, _) and
+  not n instanceof SynthHashSplatOrSplatArgumentNode and
   result = TUnknownDataFlowType()
 }
 
@@ -1773,7 +1824,7 @@ string ppReprType(DataFlowType t) { none() }
 
 pragma[inline]
 private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
-  t1 = TLambdaDataFlowType(_) and
+  t1 != TUnknownDataFlowType() and
   t2 = TUnknownDataFlowType()
 }
 
@@ -1975,6 +2026,17 @@ class ContentApprox extends TContentApprox {
       result = "approximated element " + approx
     )
     or
+    exists(boolean shifted, string s |
+      this = TSplatContentApprox(shifted) and
+      (if shifted = true then s = " (shifted)" else s = "") and
+      result = "approximated splat position" + s
+    )
+    or
+    exists(string s |
+      this = THashSplatContentApprox(s) and
+      result = "approximated hash-splat position " + s
+    )
+    or
     exists(Content c |
       this = TNonElementContentApprox(c) and
       result = c.toString()
@@ -1988,9 +2050,9 @@ class ContentApprox extends TContentApprox {
  * We take two characters from the serialized index as the projection,
  * since for symbols this will include the first character.
  */
-private string approxKnownElementIndex(Content::KnownElementContent c) {
-  not c.getIndex().isInt(_) and
-  exists(string s | s = c.getIndex().serialize() |
+private string approxKnownElementIndex(ConstantValue cv) {
+  not cv.isInt(_) and
+  exists(string s | s = cv.serialize() |
     s.length() < 2 and
     result = s
     or
@@ -2011,7 +2073,15 @@ ContentApprox getContentApprox(Content c) {
   c.(Content::KnownElementContent).getIndex().isInt(_) and
   result = TKnownIntegerElementContentApprox()
   or
-  result = TKnownElementContentApprox(approxKnownElementIndex(c))
+  result =
+    TKnownElementContentApprox(approxKnownElementIndex(c.(Content::KnownElementContent).getIndex()))
+  or
+  exists(boolean shifted |
+    c = TSplatContent(_, shifted) and
+    result = TSplatContentApprox(shifted)
+  )
+  or
+  result = THashSplatContentApprox(approxKnownElementIndex(c.(Content::HashSplatContent).getKey()))
   or
   result = TNonElementContentApprox(c)
 }
