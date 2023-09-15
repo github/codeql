@@ -3,7 +3,7 @@
  * @description Using user input to control which object is modified without
  *              proper authorization checks allows an attacker to modify arbitrary objects.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @security-severity 7.5
  * @precision medium
  * @id cs/web/insecure-direct-object-reference
