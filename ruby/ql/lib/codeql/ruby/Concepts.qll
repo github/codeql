@@ -1290,7 +1290,7 @@ module JwtEncoding {
     abstract DataFlow::Node getKey();
 
     /** Checks if the payloads gets signed while encoding. */
-    abstract predicate signs();
+    abstract predicate signsPayload();
   }
 }
 
