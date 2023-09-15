@@ -19,14 +19,19 @@ namespace Semmle.Util
                 return -1;
             }
 
-            string? s;
-            do
+            if (pi.RedirectStandardOutput && !pi.UseShellExecute)
             {
-                s = process.StandardOutput.ReadLine();
-                if (s is not null)
-                    stdout.Add(s);
+                string? s;
+                do
+                {
+                    s = process.StandardOutput.ReadLine();
+                    if (s is not null)
+                    {
+                        stdout.Add(s);
+                    }
+                }
+                while (s is not null);
             }
-            while (s is not null);
             process.WaitForExit();
             return process.ExitCode;
         }

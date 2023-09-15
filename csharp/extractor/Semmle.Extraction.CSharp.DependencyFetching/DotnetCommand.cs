@@ -31,24 +31,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return startInfo;
         }
 
-        public bool RunCommand(string args)
+        private bool RunCommandAux(string args, bool redirectStandardOutput, out IList<string> output)
         {
             progressMonitor.RunningProcess($"{Exec} {args}");
-            using var proc = Process.Start(MakeDotnetStartInfo(args, redirectStandardOutput: false));
-            proc?.WaitForExit();
-            var exitCode = proc?.ExitCode ?? -1;
-            if (exitCode != 0)
-            {
-                progressMonitor.CommandFailed(Exec, args, exitCode);
-                return false;
-            }
-            return true;
-        }
-
-        public bool RunCommand(string args, out IList<string> output)
-        {
-            progressMonitor.RunningProcess($"{Exec} {args}");
-            var pi = MakeDotnetStartInfo(args, redirectStandardOutput: true);
+            var pi = MakeDotnetStartInfo(args, redirectStandardOutput);
             var exitCode = pi.ReadOutput(out output);
             if (exitCode != 0)
             {
@@ -57,5 +43,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             return true;
         }
+
+        public bool RunCommand(string args) =>
+            RunCommandAux(args, redirectStandardOutput: false, out _);
+
+        public bool RunCommand(string args, out IList<string> output) =>
+            RunCommandAux(args, redirectStandardOutput: true, out output);
     }
 }
