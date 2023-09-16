@@ -6,6 +6,7 @@ import javascript
 import semmle.javascript.security.dataflow.RequestForgeryCustomizations
 import semmle.javascript.security.dataflow.UrlConcatenation
 
+//TODO: comments
 // I don't know where should i put following class
 private class DynamicImport extends SystemCommandExecution, DataFlow::ExprNode {
   DynamicImport() { this = any(DynamicImportExpr e).getAChildExpr().flow() }
@@ -180,7 +181,7 @@ module Execa {
     }
 
     predicate isArgumentInjectable(DataFlow::Node arg) {
-      // first arg is the command so we should check whether it is begening with a command that vulnerable to argument command injection or not
+      // first arg is the command so we should check whether it is beginning with a command that is vulnerable to argument command injection or not
       // execaCommand("echo " + sink);
       // execaCommand(`echo ${sink}`);
       argumentIsInjectable(this.getParameter(0).asSink().asExpr().getChildExpr(0).getStringValue()) and
