@@ -917,25 +917,46 @@ module RangeStage<
     bounded(cast.getOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
+  pragma[nomagic]
+  private predicate initialBoundedUpper(SemExpr e) {
+    exists(D::Delta d |
+      initialBounded(e, _, d, false, _, _, _) and
+      D::toFloat(d) >= 0
+    )
+  }
+
+  private predicate noOverflow0(SemExpr e, boolean upper) {
+    exists(boolean lower | lower = upper.booleanNot() |
+      semExprDoesNotOverflow(lower, e)
+      or
+      upper = [true, false] and
+      not potentiallyOverflowingExpr(lower, e)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate initialBoundedLower(SemExpr e) {
+    exists(D::Delta d |
+      initialBounded(e, _, d, true, _, _, _) and
+      D::toFloat(d) <= 0
+    )
+  }
+
+  pragma[nomagic]
+  private predicate noOverflow(SemExpr e, boolean upper) {
+    noOverflow0(e, upper)
+    or
+    upper = true and initialBoundedUpper(e)
+    or
+    upper = false and initialBoundedLower(e)
+  }
+
   predicate bounded(
     SemExpr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta,
     SemReason reason
   ) {
     initialBounded(e, b, delta, upper, fromBackEdge, origdelta, reason) and
-    (
-      semExprDoesNotOverflow(upper.booleanNot(), e)
-      or
-      not potentiallyOverflowingExpr(upper.booleanNot(), e)
-      or
-      exists(D::Delta otherDelta |
-        initialBounded(e, _, otherDelta, upper.booleanNot(), _, _, _) and
-        (
-          upper = true and D::toFloat(otherDelta) >= 0
-          or
-          upper = false and D::toFloat(otherDelta) <= 0
-        )
-      )
-    )
+    noOverflow(e, upper)
   }
 
   predicate potentiallyOverflowingExpr(boolean positively, SemExpr expr) {
