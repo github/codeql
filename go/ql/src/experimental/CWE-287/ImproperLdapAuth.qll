@@ -33,23 +33,6 @@ private class GoLdapBindSink extends LdapAuthSink {
 }
 
 /**
- * A vulnerable argument to `go-ldap` or `ldap`'s `UnauthenticatedBind` function (Only v3).
- */
-private class GoLdapAnonymousBindSink extends LdapAuthSink {
-  GoLdapAnonymousBindSink() {
-    exists(Method meth, string base, string t, string m |
-      t = ["Conn"] and
-      meth.hasQualifiedName([
-          "github.com/go-ldap/ldap", "github.com/go-ldap/ldap/v3", "gopkg.in/ldap.v3"
-        ], t, m) and
-      this = meth.getACall().getArgument(0)
-    |
-      base = ["UnauthenticatedBind"] and m = base
-    )
-  }
-}
-
-/**
  * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
  *
  * This is overapproximate: we do not attempt to reason about the correctness of the regexp.

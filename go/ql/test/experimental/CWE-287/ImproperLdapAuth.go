@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"regexp"
 
-	ldap "github.com/go-ldap/ldap/v3"
+	ldap "gopkg.in/ldap.v2"
 )
 
 func bad(w http.ResponseWriter, req *http.Request) (interface{}, error) {
