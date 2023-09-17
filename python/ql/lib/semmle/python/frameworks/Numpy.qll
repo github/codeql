@@ -17,22 +17,26 @@ private module Numpy {
   /**
    * A call to `numpy.load`
    * See https://pypi.org/project/numpy/
-   *
    */
-  private class PandasReadPickleCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PandasReadPickleCall() {
-      this = API::moduleImport("numpy").getMember("load").getACall() and
-      this.getArgByName("allow_pickle").asExpr() = any(True t)
+  private class NumpyLoadCall extends Decoding::Range, API::CallNode {
+    NumpyLoadCall() { this = API::moduleImport("numpy").getMember("load").getACall() }
+
+    override predicate mayExecuteInput() {
+      this.getParameter(2, "allow_pickle")
+          .getAValueReachingSink()
+          .asExpr()
+          .(ImmutableLiteral)
+          .booleanValue() = true
     }
 
-    override predicate mayExecuteInput() { any() }
-
-    override DataFlow::Node getAnInput() {
-      result in [this.getArg(0), this.getArgByName("filename")]
-    }
+    override DataFlow::Node getAnInput() { result = this.getParameter(0, "filename").asSink() }
 
     override DataFlow::Node getOutput() { result = this }
 
-    override string getFormat() { result = "numpy" }
+    override string getFormat() {
+      result = "numpy"
+      or
+      this.mayExecuteInput() and result = "pickle"
+    }
   }
 }
