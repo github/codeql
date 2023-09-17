@@ -18,8 +18,8 @@ private module Joblib {
    * See https://pypi.org/project/joblib/
    *
    */
-  private class PandasReadPickleCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PandasReadPickleCall() { this = API::moduleImport("joblib").getMember("load").getACall() }
+  private class JoblibLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
+    JoblibLoadCall() { this = API::moduleImport("joblib").getMember("load").getACall() }
 
     override predicate mayExecuteInput() { any() }
 
