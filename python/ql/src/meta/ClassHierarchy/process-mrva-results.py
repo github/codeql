@@ -45,8 +45,8 @@ def parse_from_file(path: Path) -> set:
     return set(tuple(x) for x in raw_data["extensions"][0]["data"])
 
 
-def gather_from_mrva():
-    for f in glob.glob(f"{sys.argv[1]}/**/results/results.bqrs", recursive=True):
+def gather_from_bqrs_results():
+    for f in glob.glob(f"{sys.argv[1]}/**/results.bqrs", recursive=True):
         print(f"Processing {f}")
 
         json_data = subprocess.check_output(["codeql", "bqrs", "decode", "--format=json", f])
@@ -64,7 +64,7 @@ def gather_from_existing():
         pkg = f.split("/")[-1].split(".")[0][5:]
         package_data[pkg].update(all_data)
 
-gather_from_mrva()
+gather_from_bqrs_results()
 
 for pkg in package_data:
     pkg_path = mad_path / f"auto-{pkg}.model.yml"
