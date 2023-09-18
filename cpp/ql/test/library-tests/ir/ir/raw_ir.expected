@@ -120,6 +120,46 @@ bad_asts.cpp:
 #   26|     v26_10(void)          = AliasedUse               : ~m?
 #   26|     v26_11(void)          = ExitFunction             : 
 
+#   30| short Bad::foo()
+#   30|   Block 0
+#   30|     v30_1(void)         = EnterFunction            : 
+#   30|     mu30_2(unknown)     = AliasedDefinition        : 
+#   30|     mu30_3(unknown)     = InitializeNonLocal       : 
+#   31|     r31_1(glval<short>) = VariableAddress[#return] : 
+#   31|     r31_2(int)          = Literal[5]               : 
+#   31|     r31_3(short)        = Convert                  : r31_2
+#   31|     mu31_4(short)       = Store[#return]           : &:r31_1, r31_3
+#   30|     r30_4(glval<short>) = VariableAddress[#return] : 
+#   30|     v30_5(void)         = ReturnValue              : &:r30_4, ~m?
+#   30|     v30_6(void)         = AliasedUse               : ~m?
+#   30|     v30_7(void)         = ExitFunction             : 
+
+#   34| int Bad::ParensCall()
+#   34|   Block 0
+#   34|     v34_1(void)           = EnterFunction            : 
+#   34|     mu34_2(unknown)       = AliasedDefinition        : 
+#   34|     mu34_3(unknown)       = InitializeNonLocal       : 
+#   36|     r36_1(glval<int>)     = VariableAddress[#return] : 
+#   36|     r36_2(int)            = Literal[5]               : 
+#   36|     r36_3(glval<unknown>) = FunctionAddress[foo]     : 
+#   36|     r36_4(short)          = Call[foo]                : func:r36_3
+#   36|     mu36_5(unknown)       = ^CallSideEffect          : ~m?
+#-----|   Goto -> Block 2
+#-----|   Goto -> Block 1
+
+#   36|   Block 1
+#   36|     r36_6(bool)       = CompareLE                : r36_2
+#   36|     r36_7(int)        = Convert                  : r36_6
+#   36|     mu36_8(int)       = Store[#return]           : &:r36_1, r36_7
+#   34|     r34_4(glval<int>) = VariableAddress[#return] : 
+#   34|     v34_5(void)       = ReturnValue              : &:r34_4, ~m?
+#   34|     v34_6(void)       = AliasedUse               : ~m?
+#   34|     v34_7(void)       = ExitFunction             : 
+
+#   36|   Block 2
+#   36|     r36_9(int) = Convert : r36_4
+#-----|   Goto -> Block 1
+
 bad_stmts.cpp:
 #    5| void Bad::errorExpr()
 #    5|   Block 0
@@ -11667,83 +11707,82 @@ ir.cpp:
 # 2128|     v2128_10(void)          = AliasedUse              : ~m?
 # 2128|     v2128_11(void)          = ExitFunction            : 
 
-# 2138| int nl<unsigned short>::foo()
-# 2138|   Block 0
-# 2138|     v2138_1(void)       = EnterFunction            : 
-# 2138|     mu2138_2(unknown)   = AliasedDefinition        : 
-# 2138|     mu2138_3(unknown)   = InitializeNonLocal       : 
-# 2139|     r2139_1(glval<int>) = VariableAddress[#return] : 
-# 2139|     r2139_2(int)        = Literal[5]               : 
-# 2139|     mu2139_3(int)       = Store[#return]           : &:r2139_1, r2139_2
-# 2138|     r2138_4(glval<int>) = VariableAddress[#return] : 
-# 2138|     v2138_5(void)       = ReturnValue              : &:r2138_4, ~m?
-# 2138|     v2138_6(void)       = AliasedUse               : ~m?
-# 2138|     v2138_7(void)       = ExitFunction             : 
+# 2132| int ConstTernary(int, int)
+# 2132|   Block 0
+# 2132|     v2132_1(void)       = EnterFunction          : 
+# 2132|     mu2132_2(unknown)   = AliasedDefinition      : 
+# 2132|     mu2132_3(unknown)   = InitializeNonLocal     : 
+# 2132|     r2132_4(glval<int>) = VariableAddress[y]     : 
+# 2132|     mu2132_5(int)       = InitializeParameter[y] : &:r2132_4
+# 2132|     r2132_6(glval<int>) = VariableAddress[z]     : 
+# 2132|     mu2132_7(int)       = InitializeParameter[z] : &:r2132_6
+# 2133|     r2133_1(glval<int>) = VariableAddress[a]     : 
+# 2133|     r2133_2(int)        = Literal[1]             : 
+# 2133|     r2133_3(int)        = Literal[0]             : 
+# 2133|     r2133_4(bool)       = CompareNE              : r2133_2, r2133_3
+# 2133|     r2133_5(glval<int>) = VariableAddress[y]     : 
+# 2133|     r2133_6(int)        = Load[y]                : &:r2133_5, ~m?
+# 2133|     r2133_7(int)        = CopyValue              : r2133_6
+# 2133|     mu2133_8(int)       = Store[a]               : &:r2133_1, r2133_7
+# 2134|     r2134_1(glval<int>) = VariableAddress[b]     : 
+# 2134|     r2134_2(int)        = Literal[0]             : 
+# 2134|     r2134_3(int)        = Literal[0]             : 
+# 2134|     r2134_4(bool)       = CompareNE              : r2134_2, r2134_3
+# 2134|     r2134_5(glval<int>) = VariableAddress[z]     : 
+# 2134|     r2134_6(int)        = Load[z]                : &:r2134_5, ~m?
+# 2134|     r2134_7(int)        = CopyValue              : r2134_6
+# 2134|     mu2134_8(int)       = Store[b]               : &:r2134_1, r2134_7
+# 2135|     r2135_1(glval<int>) = VariableAddress[c]     : 
+# 2135|     r2135_2(int)        = Literal                : 
+# 2135|     r2135_3(int)        = Literal[0]             : 
+# 2135|     r2135_4(bool)       = CompareNE              : r2135_2, r2135_3
+# 2135|     v2135_5(void)       = ConditionalBranch      : r2135_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
 
-# 2143| int ParensCall()
-# 2143|   Block 0
-# 2143|     v2143_1(void)           = EnterFunction            : 
-# 2143|     mu2143_2(unknown)       = AliasedDefinition        : 
-# 2143|     mu2143_3(unknown)       = InitializeNonLocal       : 
-# 2144|     r2144_1(glval<int>)     = VariableAddress[#return] : 
-# 2144|     r2144_2(int)            = Literal[5]               : 
-# 2144|     r2144_3(glval<unknown>) = FunctionAddress[foo]     : 
-# 2144|     r2144_4(int)            = Call[foo]                : func:r2144_3
-# 2144|     mu2144_5(unknown)       = ^CallSideEffect          : ~m?
-# 2144|     r2144_6(bool)           = CompareLE                : r2144_2, r2144_4
-# 2144|     r2144_7(int)            = Convert                  : r2144_6
-# 2144|     mu2144_8(int)           = Store[#return]           : &:r2144_1, r2144_7
-# 2143|     r2143_4(glval<int>)     = VariableAddress[#return] : 
-# 2143|     v2143_5(void)           = ReturnValue              : &:r2143_4, ~m?
-# 2143|     v2143_6(void)           = AliasedUse               : ~m?
-# 2143|     v2143_7(void)           = ExitFunction             : 
+# 2135|   Block 1
+# 2135|     r2135_6(glval<int>)  = VariableAddress[#temp2135:13] : 
+# 2135|     r2135_7(int)         = Load[#temp2135:13]            : &:r2135_6, ~m?
+# 2135|     mu2135_8(int)        = Store[c]                      : &:r2135_1, r2135_7
+# 2136|     r2136_1(glval<int>)  = VariableAddress[d]            : 
+# 2136|     r2136_2(int)         = Literal[1]                    : 
+# 2136|     r2136_3(int)         = Literal[0]                    : 
+# 2136|     r2136_4(bool)        = CompareNE                     : r2136_2, r2136_3
+# 2136|     r2136_5(glval<int>)  = VariableAddress[y]            : 
+# 2136|     r2136_6(int)         = Load[y]                       : &:r2136_5, ~m?
+# 2136|     r2136_7(int)         = CopyValue                     : r2136_6
+# 2136|     mu2136_8(int)        = Store[d]                      : &:r2136_1, r2136_7
+# 2137|     r2137_1(glval<int>)  = VariableAddress[#return]      : 
+# 2137|     r2137_2(glval<int>)  = VariableAddress[a]            : 
+# 2137|     r2137_3(int)         = Load[a]                       : &:r2137_2, ~m?
+# 2137|     r2137_4(glval<int>)  = VariableAddress[b]            : 
+# 2137|     r2137_5(int)         = Load[b]                       : &:r2137_4, ~m?
+# 2137|     r2137_6(int)         = Add                           : r2137_3, r2137_5
+# 2137|     r2137_7(glval<int>)  = VariableAddress[c]            : 
+# 2137|     r2137_8(int)         = Load[c]                       : &:r2137_7, ~m?
+# 2137|     r2137_9(int)         = Add                           : r2137_6, r2137_8
+# 2137|     r2137_10(glval<int>) = VariableAddress[d]            : 
+# 2137|     r2137_11(int)        = Load[d]                       : &:r2137_10, ~m?
+# 2137|     r2137_12(int)        = Add                           : r2137_9, r2137_11
+# 2137|     mu2137_13(int)       = Store[#return]                : &:r2137_1, r2137_12
+# 2132|     r2132_8(glval<int>)  = VariableAddress[#return]      : 
+# 2132|     v2132_9(void)        = ReturnValue                   : &:r2132_8, ~m?
+# 2132|     v2132_10(void)       = AliasedUse                    : ~m?
+# 2132|     v2132_11(void)       = ExitFunction                  : 
 
-# 2147| int ConstTernary(int, int)
-# 2147|   Block 0
-# 2147|     v2147_1(void)       = EnterFunction            : 
-# 2147|     mu2147_2(unknown)   = AliasedDefinition        : 
-# 2147|     mu2147_3(unknown)   = InitializeNonLocal       : 
-# 2147|     r2147_4(glval<int>) = VariableAddress[y]       : 
-# 2147|     mu2147_5(int)       = InitializeParameter[y]   : &:r2147_4
-# 2147|     r2147_6(glval<int>) = VariableAddress[z]       : 
-# 2147|     mu2147_7(int)       = InitializeParameter[z]   : &:r2147_6
-# 2148|     r2148_1(glval<int>) = VariableAddress[a]       : 
-# 2148|     r2148_2(int)        = Literal[1]               : 
-# 2148|     r2148_3(int)        = Literal[0]               : 
-# 2148|     r2148_4(bool)       = CompareNE                : r2148_2, r2148_3
-# 2148|     r2148_5(glval<int>) = VariableAddress[y]       : 
-# 2148|     r2148_6(int)        = Load[y]                  : &:r2148_5, ~m?
-# 2148|     r2148_7(int)        = CopyValue                : r2148_6
-# 2148|     mu2148_8(int)       = Store[a]                 : &:r2148_1, r2148_7
-# 2149|     r2149_1(glval<int>) = VariableAddress[b]       : 
-# 2149|     r2149_2(int)        = Literal[0]               : 
-# 2149|     r2149_3(int)        = Literal[0]               : 
-# 2149|     r2149_4(bool)       = CompareNE                : r2149_2, r2149_3
-# 2149|     r2149_5(glval<int>) = VariableAddress[z]       : 
-# 2149|     r2149_6(int)        = Load[z]                  : &:r2149_5, ~m?
-# 2149|     r2149_7(int)        = CopyValue                : r2149_6
-# 2149|     mu2149_8(int)       = Store[b]                 : &:r2149_1, r2149_7
-# 2150|     r2150_1(glval<int>) = VariableAddress[c]       : 
-# 2150|     r2150_2(int)        = Literal[1]               : 
-# 2150|     r2150_3(int)        = Literal[0]               : 
-# 2150|     r2150_4(bool)       = CompareNE                : r2150_2, r2150_3
-# 2150|     r2150_5(int)        = Literal[1]               : 
-# 2150|     r2150_6(int)        = CopyValue                : r2150_5
-# 2150|     mu2150_7(int)       = Store[c]                 : &:r2150_1, r2150_6
-# 2151|     r2151_1(glval<int>) = VariableAddress[#return] : 
-# 2151|     r2151_2(glval<int>) = VariableAddress[a]       : 
-# 2151|     r2151_3(int)        = Load[a]                  : &:r2151_2, ~m?
-# 2151|     r2151_4(glval<int>) = VariableAddress[b]       : 
-# 2151|     r2151_5(int)        = Load[b]                  : &:r2151_4, ~m?
-# 2151|     r2151_6(int)        = Add                      : r2151_3, r2151_5
-# 2151|     r2151_7(glval<int>) = VariableAddress[c]       : 
-# 2151|     r2151_8(int)        = Load[c]                  : &:r2151_7, ~m?
-# 2151|     r2151_9(int)        = Add                      : r2151_6, r2151_8
-# 2151|     mu2151_10(int)      = Store[#return]           : &:r2151_1, r2151_9
-# 2147|     r2147_8(glval<int>) = VariableAddress[#return] : 
-# 2147|     v2147_9(void)       = ReturnValue              : &:r2147_8, ~m?
-# 2147|     v2147_10(void)      = AliasedUse               : ~m?
-# 2147|     v2147_11(void)      = ExitFunction             : 
+# 2135|   Block 2
+# 2135|     r2135_9(glval<int>)  = VariableAddress[y]            : 
+# 2135|     r2135_10(int)        = Load[y]                       : &:r2135_9, ~m?
+# 2135|     r2135_11(glval<int>) = VariableAddress[#temp2135:13] : 
+# 2135|     mu2135_12(int)       = Store[#temp2135:13]           : &:r2135_11, r2135_10
+#-----|   Goto -> Block 1
+
+# 2135|   Block 3
+# 2135|     r2135_13(glval<int>) = VariableAddress[z]            : 
+# 2135|     r2135_14(int)        = Load[z]                       : &:r2135_13, ~m?
+# 2135|     r2135_15(glval<int>) = VariableAddress[#temp2135:13] : 
+# 2135|     mu2135_16(int)       = Store[#temp2135:13]           : &:r2135_15, r2135_14
+#-----|   Goto -> Block 1
 
 perf-regression.cpp:
 #    6| void Big::Big()

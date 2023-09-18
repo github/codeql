@@ -1,4 +1,5 @@
 missingOperand
+| bad_asts.cpp:36:12:36:23 | CompareLE: ... <= ... | Instruction 'CompareLE' is missing an expected operand with tag 'Right' in function '$@'. | bad_asts.cpp:34:7:34:16 | int Bad::ParensCall() | int Bad::ParensCall() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -7,6 +8,7 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 ambiguousSuccessors
+| bad_asts.cpp:36:18:36:20 | Chi: call to foo | Instruction 'Chi: call to foo' has 2 successors of kind 'Goto' in function '$@'. | bad_asts.cpp:34:7:34:16 | int Bad::ParensCall() | int Bad::ParensCall() |
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
