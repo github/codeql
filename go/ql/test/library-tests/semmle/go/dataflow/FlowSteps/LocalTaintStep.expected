@@ -231,6 +231,8 @@
 | file://:0:0:0:0 | [summary param] -1 in ReadAt | file://:0:0:0:0 | [summary] to write: Argument[0] in ReadAt |
 | file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDir |
 | file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDir |
+| file://:0:0:0:0 | [summary param] -1 in ReadDir | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadDir |
+| file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadFile |
 | file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadFile |
 | file://:0:0:0:0 | [summary param] -1 in ReadFile | file://:0:0:0:0 | [summary] to write: ReturnValue in ReadFile |
 | file://:0:0:0:0 | [summary param] -1 in Recv | file://:0:0:0:0 | [summary] to write: ReturnValue in Recv |
@@ -238,6 +240,10 @@
 | file://:0:0:0:0 | [summary param] -1 in ResolveReference | file://:0:0:0:0 | [summary] to write: ReturnValue in ResolveReference |
 | file://:0:0:0:0 | [summary param] -1 in Slice | file://:0:0:0:0 | [summary] to write: ReturnValue in Slice |
 | file://:0:0:0:0 | [summary param] -1 in Slice3 | file://:0:0:0:0 | [summary] to write: ReturnValue in Slice3 |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
+| file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
 | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
 | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
 | file://:0:0:0:0 | [summary param] -1 in String | file://:0:0:0:0 | [summary] to write: ReturnValue in String |
