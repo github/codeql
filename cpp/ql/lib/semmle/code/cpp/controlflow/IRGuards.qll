@@ -238,6 +238,7 @@ private class GuardConditionFromIR extends GuardCondition {
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
+  pragma[noinline]
   private predicate controlsBlock(BasicBlock controlled, boolean testIsTrue) {
     exists(IRBlock irb |
       ir.(IRGuardCondition).controls(irb, testIsTrue) and
