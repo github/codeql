@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[ratings].Member[views].Member[RateView]
+  - - Django.Views.View~Subclass
+    - pinax
+    - Member[ratings].Member[views].Member[View]

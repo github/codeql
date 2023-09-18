@@ -1,0 +1,165 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationDelete]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationDetail]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationList]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationRegistration]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ApplicationUpdate]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[AuthorizationView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[AuthorizedTokenDeleteView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[AuthorizedTokensListView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ClientProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ClientProtectedScopedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ConnectDiscoveryInfoView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[IntrospectTokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[JwksInfoView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ReadWriteScopedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[RevokeTokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[ScopedProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[TokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[UserInfoView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationDelete]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationDetail]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationList]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationRegistration]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ApplicationUpdate]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[ListView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[application].Member[UpdateView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[AuthorizationView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[BaseAuthorizationView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[FormView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[RevokeTokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[TokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[View]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[ClientProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[ClientProtectedScopedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[ProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[ReadWriteScopedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[ScopedProtectedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[generic].Member[View]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[introspect].Member[ClientProtectedScopedResourceView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[introspect].Member[IntrospectTokenView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[oidc].Member[ConnectDiscoveryInfoView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[oidc].Member[JwksInfoView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[oidc].Member[UserInfoView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[oidc].Member[View]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[token].Member[AuthorizedTokenDeleteView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[token].Member[AuthorizedTokensListView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[token].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - oauth2_provider
+    - Member[views].Member[token].Member[ListView]
+  - - django.forms.BaseForm~Subclass
+    - oauth2_provider
+    - Member[forms].Member[AllowForm]
+  - - django.forms.BaseForm~Subclass
+    - oauth2_provider
+    - Member[views].Member[base].Member[AllowForm]
