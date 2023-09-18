@@ -226,8 +226,8 @@ func taintThroughSimpleStringOperations() {
   sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ tainted=217
   sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ tainted=217
   sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ tainted=217
-  sink(arg: String(format: "%s", tainted)) // $ MISSING: tainted=217
-  sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ MISSING: tainted=218
+  sink(arg: String(format: "%s", tainted)) // $ tainted=217
+  sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ tainted=218
 
   sink(arg: String(repeating: clean, count: 2))
   sink(arg: String(repeating: tainted, count: 2)) // $ tainted=217

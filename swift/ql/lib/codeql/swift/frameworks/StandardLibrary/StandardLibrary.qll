@@ -3,6 +3,7 @@
  */
 
 private import Array
+private import CInterop
 private import Collection
 private import CustomUrlSchemes
 private import Data

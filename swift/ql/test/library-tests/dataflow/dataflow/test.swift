@@ -840,3 +840,35 @@ func testNestedKeyPathWrite() {
   s2[keyPath: f] = source()
   sink(arg: s2.s.x) // $ flow=840
 }
+
+func testVarargs1(args: Int...) {
+    sink(arg: args)
+    sink(arg: args[0]) // $ flow=871
+}
+
+func testVarargs2(_ v: Int, _ args: Int...) {
+    sink(arg: v) // $ flow=872
+    sink(arg: args)
+    sink(arg: args[0])
+    sink(arg: args[1])
+}
+
+func testVarargs3(_ v: Int, _ args: Int...) {
+    sink(arg: v)
+    sink(arg: args)
+    sink(arg: args[0]) // $ SPURIOUS: flow=873
+    sink(arg: args[1]) // $ flow=873
+
+    for arg in args {
+        sink(arg: arg) // $ MISSING: flow=873
+    }
+
+    let myKeyPath = \[Int][1]
+    sink(arg: args[keyPath: myKeyPath]) // $ flow=873
+}
+
+func testVarargsCaller() {
+    testVarargs1(args: source())
+    testVarargs2(source(), 2, 3)
+    testVarargs3(1, 2, source())
+}

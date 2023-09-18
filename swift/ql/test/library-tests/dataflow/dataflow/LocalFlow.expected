@@ -1045,3 +1045,34 @@
 | test.swift:840:3:840:3 | [post] s2 | test.swift:841:13:841:13 | s2 |
 | test.swift:840:3:840:3 | s2 | test.swift:841:13:841:13 | s2 |
 | test.swift:840:20:840:27 | call to source() | test.swift:840:3:840:16 | \\...[...] |
+| test.swift:844:19:844:28 | SSA def(args) | test.swift:845:15:845:15 | args |
+| test.swift:844:19:844:28 | args | test.swift:844:19:844:28 | SSA def(args) |
+| test.swift:845:15:845:15 | args | test.swift:846:15:846:15 | args |
+| test.swift:849:19:849:24 | SSA def(v) | test.swift:850:15:850:15 | v |
+| test.swift:849:19:849:24 | v | test.swift:849:19:849:24 | SSA def(v) |
+| test.swift:849:29:849:40 | SSA def(args) | test.swift:851:15:851:15 | args |
+| test.swift:849:29:849:40 | args | test.swift:849:29:849:40 | SSA def(args) |
+| test.swift:851:15:851:15 | args | test.swift:852:15:852:15 | args |
+| test.swift:852:15:852:15 | [post] args | test.swift:853:15:853:15 | args |
+| test.swift:852:15:852:15 | args | test.swift:853:15:853:15 | args |
+| test.swift:856:19:856:24 | SSA def(v) | test.swift:857:15:857:15 | v |
+| test.swift:856:19:856:24 | v | test.swift:856:19:856:24 | SSA def(v) |
+| test.swift:856:29:856:40 | SSA def(args) | test.swift:858:15:858:15 | args |
+| test.swift:856:29:856:40 | args | test.swift:856:29:856:40 | SSA def(args) |
+| test.swift:858:15:858:15 | args | test.swift:859:15:859:15 | args |
+| test.swift:859:15:859:15 | [post] args | test.swift:860:15:860:15 | args |
+| test.swift:859:15:859:15 | args | test.swift:860:15:860:15 | args |
+| test.swift:860:15:860:15 | [post] args | test.swift:862:16:862:16 | args |
+| test.swift:860:15:860:15 | args | test.swift:862:16:862:16 | args |
+| test.swift:862:9:862:9 | SSA def(arg) | test.swift:863:19:863:19 | arg |
+| test.swift:862:9:862:9 | arg | test.swift:862:9:862:9 | SSA def(arg) |
+| test.swift:862:16:862:16 | [post] args | test.swift:867:15:867:15 | args |
+| test.swift:862:16:862:16 | args | test.swift:867:15:867:15 | args |
+| test.swift:866:9:866:9 | SSA def(myKeyPath) | test.swift:867:29:867:29 | myKeyPath |
+| test.swift:866:9:866:9 | myKeyPath | test.swift:866:9:866:9 | SSA def(myKeyPath) |
+| test.swift:866:21:866:29 | #keyPath(...) | test.swift:866:9:866:9 | myKeyPath |
+| test.swift:866:21:866:29 | enter #keyPath(...) | test.swift:866:27:866:29 | KeyPathComponent |
+| test.swift:866:27:866:29 | [post] KeyPathComponent | test.swift:866:21:866:29 | [post] enter #keyPath(...) |
+| test.swift:871:24:871:31 | [...] | test.swift:871:24:871:31 | [...] |
+| test.swift:872:28:872:31 | [...] | test.swift:872:28:872:31 | [...] |
+| test.swift:873:21:873:31 | [...] | test.swift:873:21:873:31 | [...] |
