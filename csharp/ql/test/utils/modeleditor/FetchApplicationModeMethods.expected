@@ -5,4 +5,7 @@
 | PublicClass.cs:19:33:19:50 | call to method ReadLine | System.Console#ReadLine() | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
 | PublicClass.cs:19:33:19:50 | call to method ReadLine | System.Console#ReadLine() | true | supported | System.Console | 7.0.0.0 | source | type | source | classification |
 | PublicClass.cs:24:9:24:30 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicGenericClass.cs:9:9:9:30 | call to method WriteLine | System.Console#WriteLine(System.Object) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicGenericClass.cs:14:9:14:30 | call to method WriteLine | System.Console#WriteLine(System.Object) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
+| PublicGenericInterface.cs:13:9:13:30 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
 | PublicInterface.cs:13:9:13:30 | call to method WriteLine | System.Console#WriteLine(System.String) | true | supported | System.Console | 7.0.0.0 | neutral | type | source | classification |
