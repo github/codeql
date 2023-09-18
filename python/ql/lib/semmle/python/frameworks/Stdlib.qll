@@ -1730,8 +1730,21 @@ module StdlibPrivate {
      * See https://docs.python.org/3/library/cgi.html.
      */
     module FieldStorage {
-      /** Gets a reference to the `cgi.FieldStorage` class. */
-      API::Node classRef() { result = cgi().getMember("FieldStorage") }
+      /**
+       * DEPRECATED: Use `subclassRef` predicate instead.
+       *
+       * Gets a reference to the `cgi.FieldStorage` class.
+       */
+      deprecated API::Node classRef() {
+        result = API::moduleImport("cgi").getMember("FieldStorage")
+      }
+
+      /** Gets a reference to the `cgi.FieldStorage` class or any subclass. */
+      API::Node subclassRef() {
+        result = API::moduleImport("cgi").getMember("FieldStorage").getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("cgi.FieldStorage~Subclass").getASubclass*()
+      }
 
       /**
        * A source of instances of `cgi.FieldStorage`, extend this class to model new instances.
@@ -1754,13 +1767,13 @@ module StdlibPrivate {
       private class ClassInstantiation extends InstanceSource, RemoteFlowSource::Range,
         DataFlow::CallCfgNode
       {
-        ClassInstantiation() { this = classRef().getACall() }
+        ClassInstantiation() { this = subclassRef().getACall() }
 
         override string getSourceType() { result = "cgi.FieldStorage" }
       }
 
       /** Gets a reference to an instance of `cgi.FieldStorage`. */
-      API::Node instance() { result = classRef().getReturn() }
+      API::Node instance() { result = subclassRef().getReturn() }
 
       /** Gets a reference to the `getvalue` method on a `cgi.FieldStorage` instance. */
       API::Node getvalueRef() { result = instance().getMember("getvalue") }
