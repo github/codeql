@@ -9,13 +9,19 @@ private import codeql.ruby.TaintTracking
 private import codeql.ruby.ApiGraphs
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 
-/** A state signifying that a logical validation has not been performed. */
-class PreValidation extends DataFlow::FlowState {
+/**
+ * A state signifying that a logical validation has not been performed.
+ * DEPRECATED: Use `PreValidationState()`
+ */
+deprecated class PreValidation extends DataFlow::FlowState {
   PreValidation() { this = "PreValidation" }
 }
 
-/** A state signifying that a logical validation has been performed. */
-class PostValidation extends DataFlow::FlowState {
+/**
+ * A state signifying that a logical validation has been performed.
+ * DEPRECATED: Use `PostValidationState()`
+ */
+deprecated class PostValidation extends DataFlow::FlowState {
   PostValidation() { this = "PostValidation" }
 }
 
