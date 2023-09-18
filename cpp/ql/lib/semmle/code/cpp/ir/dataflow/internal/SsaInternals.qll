@@ -766,7 +766,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     or
     exists(PhiNode phiTo |
       phi != phiTo and
-      lastRefRedefExt(phi, _, _, phiTo) and
+      lastRefRedefExt(phi, bb1, i1, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
   )

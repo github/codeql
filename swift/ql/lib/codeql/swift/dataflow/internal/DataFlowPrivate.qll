@@ -300,7 +300,6 @@ private module Cached {
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
     TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
-    TArrayContent() or
     TCollectionContent()
 }
 
@@ -845,7 +844,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(ArrayExpr arr |
     node1.asExpr() = arr.getAnElement() and
     node2.asExpr() = arr and
-    c.isSingleton(any(Content::ArrayContent ac))
+    c.isSingleton(any(Content::CollectionContent ac))
   )
   or
   // array assignment `a[n] = x`
@@ -854,7 +853,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
     subscript = assign.getDest() and
     subscript.getBase().getType() instanceof ArrayType and
-    c.isSingleton(any(Content::ArrayContent ac))
+    c.isSingleton(any(Content::CollectionContent ac))
   )
   or
   // creation of an optional via implicit wrapping keypath component
@@ -951,7 +950,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     (
       c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
       or
-      c.isSingleton(any(Content::ArrayContent ac)) and
+      c.isSingleton(any(Content::CollectionContent ac)) and
       component.isSubscript()
       or
       c instanceof OptionalSomeContentSet and
@@ -974,15 +973,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
-    (
-      (
-        subscript.getBase().getType() instanceof ArrayType or
-        subscript.getBase().getType() instanceof VariadicSequenceType
-      ) and
-      c.isSingleton(any(Content::ArrayContent ac))
-      or
-      c.isSingleton(any(Content::CollectionContent ac))
-    )
+    c.isSingleton(any(Content::CollectionContent ac))
   )
   or
   // read of a dictionary value via subscript operator
@@ -1104,9 +1095,7 @@ class DataFlowExpr = Expr;
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) {
-  c instanceof Content::ArrayContent or c instanceof Content::CollectionContent
-}
+predicate forceHighPrecision(Content c) { c instanceof Content::CollectionContent }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.

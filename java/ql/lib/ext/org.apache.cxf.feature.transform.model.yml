@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.cxf.transform", "XSLTUtils", True, "transform", "(Templates,InputStream)", "", "Argument[0]", "xslt-injection", "manual"]
+      - ["org.apache.cxf.transform", "XSLTUtils", True, "transform", "(Templates,Reader)", "", "Argument[0]", "xslt-injection", "manual"]
+      - ["org.apache.cxf.transform", "XSLTUtils", True, "transform", "(Templates,Document)", "", "Argument[0]", "xslt-injection", "manual"]

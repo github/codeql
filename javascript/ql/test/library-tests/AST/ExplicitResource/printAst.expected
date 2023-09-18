@@ -4,8 +4,11 @@ nodes
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| tst.html:1:5:1:9 | [ExprStmt] using | semmle.label | [ExprStmt] using |
+| tst.html:1:5:1:9 | [ExprStmt] using | semmle.order | 1 |
+| tst.html:1:5:1:9 | [VarRef] using | semmle.label | [VarRef] using |
 | tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | semmle.label | [FunctionDeclStmt] functio ... } } |
-| tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | semmle.order | 1 |
+| tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | semmle.order | 2 |
 | tst.js:1:10:1:10 | [VarDecl] g | semmle.label | [VarDecl] g |
 | tst.js:1:14:10:1 | [BlockStmt] { u ... } } | semmle.label | [BlockStmt] { u ... } } |
 | tst.js:2:5:2:33 | [DeclStmt] using stream = ... | semmle.label | [DeclStmt] using stream = ... |
@@ -28,7 +31,7 @@ nodes
 | tst.js:6:45:9:5 | [BlockStmt] { ... ; } | semmle.label | [BlockStmt] { ... ; } |
 | tst.js:8:9:8:14 | [BreakStmt] break; | semmle.label | [BreakStmt] break; |
 | tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | semmle.label | [FunctionDeclStmt] async f ... nd"); } |
-| tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | semmle.order | 2 |
+| tst.js:12:1:21:1 | [FunctionDeclStmt] async f ... nd"); } | semmle.order | 3 |
 | tst.js:12:16:12:16 | [VarDecl] h | semmle.label | [VarDecl] h |
 | tst.js:12:20:21:1 | [BlockStmt] { a ... nd"); } | semmle.label | [BlockStmt] { a ... nd"); } |
 | tst.js:13:5:13:39 | [DeclStmt] using stream = ... | semmle.label | [DeclStmt] using stream = ... |
@@ -51,7 +54,7 @@ nodes
 | tst.js:20:13:20:15 | [Label] log | semmle.label | [Label] log |
 | tst.js:20:17:20:21 | [Literal] "end" | semmle.label | [Literal] "end" |
 | tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | semmle.label | [FunctionDeclStmt] functio ... ing); } |
-| tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | semmle.order | 3 |
+| tst.js:23:1:29:1 | [FunctionDeclStmt] functio ... ing); } | semmle.order | 4 |
 | tst.js:23:10:23:18 | [VarDecl] usesUsing | semmle.label | [VarDecl] usesUsing |
 | tst.js:23:22:29:1 | [BlockStmt] { u ... ing); } | semmle.label | [BlockStmt] { u ... ing); } |
 | tst.js:24:5:24:9 | [VarRef] using | semmle.label | [VarRef] using |
@@ -77,6 +80,8 @@ edges
 | file://:0:0:0:0 | (Arguments) | tst.js:28:11:28:15 | [VarRef] using | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.js:25:20:25:22 | [SimpleParameter] foo | semmle.label | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.js:25:20:25:22 | [SimpleParameter] foo | semmle.order | 0 |
+| tst.html:1:5:1:9 | [ExprStmt] using | tst.html:1:5:1:9 | [VarRef] using | semmle.label | 1 |
+| tst.html:1:5:1:9 | [ExprStmt] using | tst.html:1:5:1:9 | [VarRef] using | semmle.order | 1 |
 | tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:10:1:10 | [VarDecl] g | semmle.label | 0 |
 | tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:10:1:10 | [VarDecl] g | semmle.order | 0 |
 | tst.js:1:1:10:1 | [FunctionDeclStmt] functio ... } } | tst.js:1:14:10:1 | [BlockStmt] { u ... } } | semmle.label | 5 |
