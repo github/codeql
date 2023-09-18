@@ -22,7 +22,7 @@ private predicate isUninteresting(DotNet::Callable c) {
 }
 
 /**
- * An callable method from either the C# Standard Library, a 3rd party library, or from the source.
+ * A callable method or accessor from either the C# Standard Library, a 3rd party library, or from the source.
  */
 class Endpoint extends DotNet::Callable {
   Endpoint() {
