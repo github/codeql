@@ -16,7 +16,7 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import Telemetry.TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
-private predicate isUninteresting(DotNet::Declaration c) {
+private predicate isUninteresting(DotNet::Callable c) {
   c.getDeclaringType() instanceof TestLibrary or
   c.(Constructor).isParameterless() or
   c.getDeclaringType() instanceof AnonymousClass
@@ -25,7 +25,7 @@ private predicate isUninteresting(DotNet::Declaration c) {
 /**
  * An callable method from either the C# Standard Library, a 3rd party library, or from the source.
  */
-class CallableMethod extends DotNet::Declaration {
+class CallableMethod extends DotNet::Callable {
   CallableMethod() {
     [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic() and
     not isUninteresting(this)
