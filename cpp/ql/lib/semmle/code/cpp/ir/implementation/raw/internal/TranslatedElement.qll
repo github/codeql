@@ -67,6 +67,9 @@ predicate isIRConstant(Expr expr) {
     not lv.isStatic()
   ) and
   getEnclosingDeclaration(expr) instanceof StaticInitializedStaticLocalVariable
+  or
+  exists(Function callee | callee = expr.(Call).getTarget() and
+  callee.getName() = "__builtin_constant_p")
 }
 
 // Pulled out for performance. See
