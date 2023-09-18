@@ -843,17 +843,20 @@ private module CaptureInput implements VariableCapture::InputSig {
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.(B::BasicBlock).getASuccessor() }
 
   //TODO: support capture of `this` in lambdas
-  class CapturedVariable instanceof S::CapturedDecl {
+  class CapturedVariable instanceof S::VarDecl {
+    CapturedVariable() {
+      any(S::CapturedDecl capturedDecl).getDecl() = this and
+      exists(this.getEnclosingCallable())
+    }
+
     string toString() { result = super.toString() }
 
-    Callable getCallable() { result = super.getScope() }
+    Callable getCallable() { result = super.getEnclosingCallable() }
 
     Location getLocation() { result = super.getLocation() }
   }
 
-  class CapturedParameter extends CapturedVariable {
-    CapturedParameter() { this.(S::CapturedDecl).getDecl() instanceof S::ParamDecl }
-  }
+  class CapturedParameter extends CapturedVariable instanceof S::ParamDecl { }
 
   class Expr instanceof S::AstNode {
     string toString() { result = super.toString() }
@@ -870,23 +873,16 @@ private module CaptureInput implements VariableCapture::InputSig {
     Expr source;
 
     VariableWrite() {
-      exists(S::VarDecl varDecl |
-        variable.(S::CapturedDecl).getDecl() = varDecl and
-        variable.getCallable() = this.(S::AstNode).getEnclosingCallable()
-      |
-        exists(S::Assignment a | this = a |
-          a.getDest().(DeclRefExpr).getDecl() = varDecl and
-          source = a.getSource()
-        )
-        or
-        exists(S::PatternBindingDecl pbd, S::NamedPattern np |
-          this = pbd and pbd.getAPattern() = np
-        |
-          np.getVarDecl() = varDecl and
-          source = np.getMatchingExpr()
-        )
-        // TODO: support multiple variables in LHS of =, in both of above cases.
+      exists(S::Assignment a | this = a |
+        a.getDest().(DeclRefExpr).getDecl() = variable and
+        source = a.getSource()
       )
+      or
+      exists(S::PatternBindingDecl pbd, S::NamedPattern np | this = pbd and pbd.getAPattern() = np |
+        np.getVarDecl() = variable and
+        source = np.getMatchingExpr()
+      )
+      // TODO: support multiple variables in LHS of =, in both of above cases.
     }
 
     CapturedVariable getVariable() { result = variable }
@@ -897,7 +893,7 @@ private module CaptureInput implements VariableCapture::InputSig {
   class VariableRead extends Expr instanceof S::DeclRefExpr {
     CapturedVariable v;
 
-    VariableRead() { this.getCapturedDecl() = v /* TODO: this should be an R-value only. */ }
+    VariableRead() { this.getDecl() = v /* TODO: this should be an R-value only. */ }
 
     CapturedVariable getVariable() { result = v }
   }
@@ -926,7 +922,7 @@ private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
   result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
     n.(PostUpdateNode).getPreUpdateNode().asExpr() or
-  result.(CaptureFlow::ParameterNode).getParameter().(CapturedDecl).getDecl() = n.getParameter() or
+  result.(CaptureFlow::ParameterNode).getParameter() = n.getParameter() or
   result.(CaptureFlow::ThisParameterNode).getCallable().getSelfParam() = n.getParameter() or
   result.(CaptureFlow::MallocNode).getClosureExpr() = n.getCfgNode().getNode().asAstNode() // TODO: figure out why the java version had PostUpdateNode logic here
 }
