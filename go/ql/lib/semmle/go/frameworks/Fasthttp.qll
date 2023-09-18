@@ -384,7 +384,7 @@ module Fasthttp {
      */
     module Response {
       /**
-       * Following Method need path sanitizer before using it, so it is a dangerous method
+       * The Method does not check input path against path traversal attacks, so it is a dangerous method
        */
       class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
         FileSystemAccess() {
