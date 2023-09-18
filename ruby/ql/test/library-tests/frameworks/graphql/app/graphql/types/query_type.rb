@@ -61,5 +61,12 @@ module Types
       system("echo #{args[:inner][:media_category]}")
       system("echo #{args[:inner][:direction]}")
     end
+
+    field :with_array, String do
+      argument :list, [String], "Names"
+    end
+    def with_array(list:)
+      system("echo #{list[0]}")
+    end
   end
 end

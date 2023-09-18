@@ -327,6 +327,16 @@ private class GraphqlFieldArgumentDefinitionMethodCall extends GraphqlSchemaObje
 
   /** Gets the type of this argument */
   GraphqlType getArgumentType() { result = this.getArgument(1) }
+
+  /**
+   * Gets the element type of this argument, if it is an array.
+   * For example if the argument type is `[String]`, this predicate yields `String`.
+   */
+  GraphqlType getArgumentElementType() {
+    result =
+      any(ArrayLiteral lit | lit = this.getArgument(1) and lit.getNumberOfElements() = 1)
+          .getElement(0)
+  }
 }
 
 private class GraphqlType extends ConstantAccess {
@@ -446,7 +456,8 @@ class GraphqlFieldResolutionMethod extends Method, Http::Server::RequestHandler:
   override Parameter getARoutedParameter() {
     result = this.getAParameter() and
     exists(GraphqlFieldArgumentDefinitionMethodCall argDefn |
-      argDefn = this.getDefinition().getAnArgumentCall()
+      argDefn = this.getDefinition().getAnArgumentCall() and
+      [argDefn.getArgumentType(), argDefn.getArgumentElementType()].isScalar()
     |
       result.(KeywordParameter).hasName(argDefn.getArgumentName())
     )
@@ -474,7 +485,7 @@ private DataFlow::CallNode parameterAccess(
     def = method.getDefinition().getAnArgumentCall() and
     (
       // Direct access to the params hash
-      def.getArgumentType() = type and
+      [def.getArgumentType(), def.getArgumentElementType()] = type and
       def.getArgumentName() = key and
       exists(DataFlow::Node paramRead |
         paramRead.asExpr().getExpr() = param.getVariable().getAnAccess().(VariableReadAccess) and
