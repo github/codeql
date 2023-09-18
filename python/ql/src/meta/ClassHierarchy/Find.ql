@@ -75,6 +75,14 @@ class WSGIServer extends FindSubclassesSpec {
   }
 }
 
+class StdlibBaseHttpRequestHandler extends FindSubclassesSpec {
+  StdlibBaseHttpRequestHandler() { this = "http.server.BaseHTTPRequestHandler~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = StdlibPrivate::BaseHttpRequestHandler::subclassRef()
+  }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |

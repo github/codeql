@@ -2014,7 +2014,7 @@ module StdlibPrivate {
    *  - https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler
    *  - https://docs.python.org/2.7/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler
    */
-  private module HttpRequestHandler {
+  module BaseHttpRequestHandler {
     /** Gets a reference to the `BaseHttpRequestHandler` class or any subclass. */
     API::Node subclassRef() {
       result =
@@ -2028,6 +2028,9 @@ module StdlibPrivate {
           API::moduleImport("http").getMember("server").getMember("SimpleHTTPRequestHandler"),
           API::moduleImport("http").getMember("server").getMember("CGIHTTPRequestHandler"),
         ].getASubclass*()
+      or
+      result =
+        ModelOutput::getATypeNode("http.server.BaseHTTPRequestHandler~Subclass").getASubclass*()
     }
 
     /** A HttpRequestHandler class definition (most likely in project code). */
