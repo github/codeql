@@ -464,10 +464,10 @@ type_decls(  //dir=decl
 );
 
 #keyset[id, index]
-type_decl_inherited_types(  //dir=decl
+type_decl_base_types(  //dir=decl
   int id: @type_decl ref,
   int index: int ref,
-  int inherited_type: @type_or_none ref
+  int base_type: @type_or_none ref
 );
 
 @abstract_type_param_decl =

@@ -20,26 +20,52 @@ class TypeDecl extends Generated::TypeDecl {
   override string toString() { result = this.getName() }
 
   /**
-   * Gets the declaration of the `index`th base type of this type declaration (0-based).
+   * Gets the `index`th base type of this type declaration (0-based).
+   *
+   * This is the same as `getImmediateInheritedType`.
+   * DEPRECATED: either use `getImmediateInheritedType` or unindexed `getABaseType`.
    */
-  TypeDecl getBaseTypeDecl(int i) { result = this.getBaseType(i).(AnyGenericType).getDeclaration() }
+  deprecated Type getImmediateBaseType(int index) { result = this.getImmediateInheritedType(index) }
+
+  /**
+   * Gets the `index`th base type of this type declaration (0-based).
+   * This is the same as `getInheritedType`.
+   * DEPRECATED: use `getInheritedType` or unindexed `getABaseType`.
+   */
+  deprecated Type getBaseType(int index) { result = this.getInheritedType(index) }
+
+  /**
+   * Gets any of the base types of this type declaration.
+   */
+  Type getABaseType() {
+    // TODO generalize this to resolve `TypeAliasDecl`s and consider bases added by extensions
+    result = this.getAnInheritedType()
+  }
+
+  /**
+   * Gets the declaration of the `index`th base type of this type declaration (0-based).
+   * DEPRECATED: The index is not very meaningful here. Use `getABaseTypeDecl`.
+   */
+  deprecated TypeDecl getBaseTypeDecl(int i) {
+    result = this.getBaseType(i).(AnyGenericType).getDeclaration()
+  }
 
   /**
    * Gets the declaration of any of the base types of this type declaration.
    */
-  TypeDecl getABaseTypeDecl() { result = this.getBaseTypeDecl(_) }
+  TypeDecl getABaseTypeDecl() { result = this.getABaseType().(AnyGenericType).getDeclaration() }
 
   /**
    * Gets a declaration that has this type as its `index`th base type.
    *
-   * DEPRECATED: The index is not very meaningful here. Use `getADerivedTypeDecl` or `getBaseTypeDecl`.
+   * DEPRECATED: The index is not very meaningful here. Use `getADerivedTypeDecl` or `getABaseTypeDecl`.
    */
   deprecated TypeDecl getDerivedTypeDecl(int i) { result.getBaseTypeDecl(i) = this }
 
   /**
    * Gets the declaration of any type derived from this type declaration.
    */
-  TypeDecl getADerivedTypeDecl() { result.getBaseTypeDecl(_) = this }
+  TypeDecl getADerivedTypeDecl() { result.getABaseTypeDecl() = this }
 
   /**
    * Gets the full name of this `TypeDecl`. For example in:
