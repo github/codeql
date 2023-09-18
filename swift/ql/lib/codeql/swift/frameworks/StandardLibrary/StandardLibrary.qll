@@ -3,6 +3,7 @@
  */
 
 private import Array
+private import CInterop
 private import Collection
 private import CustomUrlSchemes
 private import Data
@@ -14,6 +15,7 @@ private import NsData
 private import NsObject
 private import NsString
 private import NsUrl
+private import PointerTypes
 private import Sequence
 private import Set
 private import String

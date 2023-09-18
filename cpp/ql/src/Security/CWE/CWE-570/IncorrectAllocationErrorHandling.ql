@@ -17,21 +17,6 @@ import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.controlflow.Guards
 
-/**
- * A C++ `delete` or `delete[]` expression.
- */
-class DeleteOrDeleteArrayExpr extends Expr {
-  DeleteOrDeleteArrayExpr() { this instanceof DeleteExpr or this instanceof DeleteArrayExpr }
-
-  DeallocationFunction getDeallocator() {
-    result = [this.(DeleteExpr).getDeallocator(), this.(DeleteArrayExpr).getDeallocator()]
-  }
-
-  Destructor getDestructor() {
-    result = [this.(DeleteExpr).getDestructor(), this.(DeleteArrayExpr).getDestructor()]
-  }
-}
-
 /** Gets the `Constructor` invoked when `newExpr` allocates memory. */
 Constructor getConstructorForAllocation(NewOrNewArrayExpr newExpr) {
   result.getACallToThisFunction() = newExpr.getInitializer()

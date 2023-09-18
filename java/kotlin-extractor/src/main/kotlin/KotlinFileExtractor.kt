@@ -107,7 +107,7 @@ open class KotlinFileExtractor(
     fun extractFileContents(file: IrFile, id: Label<DbFile>) {
         with("file", file) {
             val locId = tw.getWholeFileLocation()
-            val pkg = file.fqName.asString()
+            val pkg = file.packageFqName.asString()
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)
             tw.writeCupackage(id, pkgId)
@@ -1901,8 +1901,9 @@ open class KotlinFileExtractor(
             verboseln("No match as didn't find target package")
             return false
         }
-        if (targetPkg.fqName.asString() != pName) {
-            verboseln("No match as package name is ${targetPkg.fqName.asString()}")
+        val targetName = targetPkg.packageFqName.asString()
+        if (targetName != pName) {
+            verboseln("No match as package name is $targetName")
             return false
         }
         verboseln("Match")
@@ -2556,8 +2557,9 @@ open class KotlinFileExtractor(
             verboseln("No match as didn't find target package")
             return false
         }
-        if (targetPkg.fqName.asString() != pkgName) {
-            verboseln("No match as package name is ${targetPkg.fqName.asString()} not $pkgName")
+        val targetName = targetPkg.packageFqName.asString()
+        if (targetName != pkgName) {
+            verboseln("No match as package name is $targetName not $pkgName")
             return false
         }
         verboseln("Match")
@@ -4856,9 +4858,16 @@ open class KotlinFileExtractor(
                 logger.errorElement("Cannot find class for kPropertyType. ${kPropertyType.classFqName?.asString()}", propertyReferenceExpr)
                 return
             }
-            val parameterTypes = kPropertyType.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            val parameterTypes: List<IrType>? = kPropertyType.arguments.map {
+                if (it is IrType) {
+                    it
+                } else {
+                    logger.errorElement("Unexpected: Non-IrType (${it.javaClass}) property reference parameter.", propertyReferenceExpr)
+                    null
+                }
+            }.requireNoNullsOrNull()
             if (parameterTypes == null) {
-                logger.errorElement("Unexpected: Non-IrType parameter.", propertyReferenceExpr)
+                logger.errorElement("Unexpected: One or more non-IrType property reference parameters.", propertyReferenceExpr)
                 return
             }
 
@@ -5039,9 +5048,16 @@ open class KotlinFileExtractor(
                 return
             }
 
-            val parameterTypes = type.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            val parameterTypes: List<IrType>? = type.arguments.map {
+                if (it is IrType) {
+                    it
+                } else {
+                    logger.errorElement("Unexpected: Non-IrType (${it.javaClass}) function reference parameter.", functionReferenceExpr)
+                    null
+                }
+            }.requireNoNullsOrNull()
             if (parameterTypes == null) {
-                logger.errorElement("Unexpected: Non-IrType parameter.", functionReferenceExpr)
+                logger.errorElement("Unexpected: One or more non-IrType function reference parameters.", functionReferenceExpr)
                 return
             }
 

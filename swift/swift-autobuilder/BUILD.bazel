@@ -1,0 +1,19 @@
+load("//swift:rules.bzl", "swift_cc_binary")
+
+swift_cc_binary(
+    name = "swift-autobuilder",
+    srcs = glob([
+        "*.cpp",
+        "*.h",
+    ]),
+    linkopts = [
+        "-lxml2",
+        "-framework CoreFoundation",
+    ],
+    target_compatible_with = ["@platforms//os:macos"],
+    visibility = ["//swift:__subpackages__"],
+    deps = [
+        "//swift/logging",
+        "@absl//absl/strings",
+    ],
+)
