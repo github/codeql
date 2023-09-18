@@ -27,9 +27,9 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    // flow out from array content at the sink.
+    // flow out from collection content at the sink.
     isSink(node) and
-    c.getAReadContent() instanceof DataFlow::Content::ArrayContent
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
   }
 }
 
