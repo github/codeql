@@ -90,5 +90,60 @@ namespace Semmle.Extraction.Tests
             Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), allPackages);
             Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), allPackages);
         }
+
+        private static void ImplicitUsingsTest(string line, bool expected)
+        {
+            // Setup
+            var lines = new List<string>()
+                {
+                    line
+                };
+            var fileContent = new TestFileContent(lines);
+
+            // Execute
+            var useImplicitUsings = fileContent.UseImplicitUsings;
+
+            // Verify
+            Assert.Equal(expected, useImplicitUsings);
+        }
+
+        [Fact]
+        public void TestFileContent_ImplicitUsings0()
+        {
+            ImplicitUsingsTest("<ImplicitUsings>false</ImplicitUsings>", false);
+        }
+
+        [Fact]
+        public void TestFileContent_ImplicitUsings1()
+        {
+            ImplicitUsingsTest("<ImplicitUsings>true</ImplicitUsings>", true);
+        }
+
+        [Fact]
+        public void TestFileContent_ImplicitUsings2()
+        {
+            ImplicitUsingsTest("<ImplicitUsings>enable</ImplicitUsings>", true);
+        }
+
+        [Fact]
+        public void TestFileContent_ImplicitUsingsAdditional()
+        {
+            // Setup
+            var lines = new List<string>()
+                {
+                    "<Using Include=\"Ns0.Ns1\" />",
+                    "<Using Include=\"Ns2\" />",
+                    "<Using Remove=\"Ns3\" />",
+                };
+            var fileContent = new TestFileContent(lines);
+
+            // Execute
+            var customImplicitUsings = fileContent.CustomImplicitUsings;
+
+            // Verify
+            Assert.Equal(2, customImplicitUsings.Count);
+            Assert.Contains("Ns0.Ns1", customImplicitUsings);
+            Assert.Contains("Ns2", customImplicitUsings);
+        }
     }
 }
