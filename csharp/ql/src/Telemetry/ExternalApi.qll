@@ -12,20 +12,7 @@ private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSumma
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
-pragma[nomagic]
-private predicate isTestNamespace(Namespace ns) {
-  ns.getFullName()
-      .matches([
-          "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
-        ])
-}
-
-/**
- * A test library.
- */
-class TestLibrary extends RefType {
-  TestLibrary() { isTestNamespace(this.getNamespace()) }
-}
+private import TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(DotNet::Callable c) {
