@@ -141,6 +141,9 @@ extensions:
     - Member[forms].Member[models].Member[ModelMultipleChoiceField]
   - - Django.Views.View~Subclass
     - django
+    - Member[contrib].Member[admin].Member[options].Member[AutocompleteJsonView]
+  - - Django.Views.View~Subclass
+    - django
     - Member[contrib].Member[admin].Member[options].Member[RedirectView]
   - - Django.Views.View~Subclass
     - django
