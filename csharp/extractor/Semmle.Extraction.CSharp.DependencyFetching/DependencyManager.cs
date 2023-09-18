@@ -499,29 +499,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName)
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
             var notYetDownloadedPackages = fileContent.AllPackages.Except(alreadyDownloadedPackages);
-            foreach (var package in notYetDownloadedPackages)
+
+            var stdoutLines = notYetDownloadedPackages
+                .AsParallel()
+                .WithDegreeOfParallelism(options.Threads)
+                .Select(package =>
+                    {
+                        progressMonitor.NugetInstall(package);
+                        using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
+                        var success = dotnet.New(tempDir.DirInfo.FullName, out var stdout1);
+                        if (!success)
+                        {
+                            return new[] { stdout1 };
+                        }
+
+                        success = dotnet.AddPackage(tempDir.DirInfo.FullName, package, out var stdout2);
+                        if (!success)
+                        {
+                            return new[] { stdout1, stdout2 };
+                        }
+
+                        success = RestoreProject(tempDir.DirInfo.FullName, out var stdout3, nugetConfig);
+                        // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+                        if (!success)
+                        {
+                            progressMonitor.FailedToRestoreNugetPackage(package);
+                        }
+                        return new[] { stdout1, stdout2, stdout3 };
+                    })
+                .ToList();
+            foreach (var line in stdoutLines.SelectMany(l => l))
             {
-                progressMonitor.NugetInstall(package);
-                using var tempDir = new TemporaryDirectory(GetTemporaryWorkingDirectory(package));
-                var success = dotnet.New(tempDir.DirInfo.FullName);
-                if (!success)
-                {
-                    continue;
-                }
-                success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
-                if (!success)
-                {
-                    continue;
-                }
-
-                success = RestoreProject(tempDir.DirInfo.FullName, out var stdout, nugetConfig);
-                Console.WriteLine(stdout);
-
-                // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
-                if (!success)
-                {
-                    progressMonitor.FailedToRestoreNugetPackage(package);
-                }
+                Console.WriteLine(line);
             }
         }
 

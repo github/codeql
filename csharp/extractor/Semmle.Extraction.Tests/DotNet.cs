@@ -164,7 +164,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.New("myfolder");
+            dotnet.New("myfolder", out var _);
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -179,7 +179,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.AddPackage("myfolder", "mypackage");
+            dotnet.AddPackage("myfolder", "mypackage", out var _);
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
