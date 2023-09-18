@@ -1,5 +1,9 @@
 | PublicClass.cs:7:17:7:21 | stuff | GitHub.CodeQL.PublicClass#stuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
 | PublicClass.cs:12:24:12:34 | staticStuff | GitHub.CodeQL.PublicClass#staticStuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
 | PublicClass.cs:17:20:17:33 | nonPublicStuff | GitHub.CodeQL.PublicClass#nonPublicStuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
+| PublicClass.cs:27:45:27:47 | get_PublicProperty | GitHub.CodeQL.PublicClass#get_PublicProperty() | false | supported | PublicClass.cs | library |  | type | unknown | classification |
+| PublicClass.cs:27:50:27:52 | set_PublicProperty | GitHub.CodeQL.PublicClass#set_PublicProperty(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
 | PublicInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL.PublicInterface#stuff(System.String) | false | supported | PublicInterface.cs | library |  | type | unknown | classification |
-| PublicInterface.cs:9:17:9:27 | staticStuff | GitHub.CodeQL.PublicInterface#staticStuff(System.String) | false | supported | PublicInterface.cs | library |  | type | unknown | classification |
+| PublicInterface.cs:9:29:9:31 | get_PublicProperty | GitHub.CodeQL.PublicInterface#get_PublicProperty() | false | supported | PublicInterface.cs | library |  | type | unknown | classification |
+| PublicInterface.cs:9:34:9:36 | set_PublicProperty | GitHub.CodeQL.PublicInterface#set_PublicProperty(System.String) | false | supported | PublicInterface.cs | library |  | type | unknown | classification |
+| PublicInterface.cs:11:17:11:27 | staticStuff | GitHub.CodeQL.PublicInterface#staticStuff(System.String) | false | supported | PublicInterface.cs | library |  | type | unknown | classification |

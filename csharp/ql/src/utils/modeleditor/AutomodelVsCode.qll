@@ -27,7 +27,7 @@ private predicate isUninteresting(DotNet::Declaration c) {
  */
 class CallableMethod extends DotNet::Declaration {
   CallableMethod() {
-    this.(Modifiable).isEffectivelyPublic() and
+    [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic() and
     not isUninteresting(this)
   }
 

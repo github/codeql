@@ -2,7 +2,7 @@ using System;
 
 namespace GitHub.CodeQL;
 
-public class PublicClass
+public class PublicClass : PublicInterface
 {
     public void stuff(String arg)
     {
@@ -23,4 +23,6 @@ public class PublicClass
     {
         Console.WriteLine(arg);
     }
+
+    string PublicInterface.PublicProperty { get; set; }
 }
