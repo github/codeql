@@ -159,7 +159,8 @@ module NotExposed {
     FindSubclassesSpec spec, string newAliasFullyQualified, ImportMember importMember, Module mod,
     Location loc
   ) {
-    importMember = newOrExistingModeling(spec).getAValueReachableFromSource().asExpr() and
+    importMember =
+      newOrExistingModeling(spec).getASubclass*().getAValueReachableFromSource().asExpr() and
     importMember.getScope() = mod and
     loc = importMember.getLocation() and
     (
