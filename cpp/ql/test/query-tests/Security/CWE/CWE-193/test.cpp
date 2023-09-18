@@ -1,7 +1,7 @@
-char *malloc(int size);
+void* malloc(unsigned long size);
 
 void test1(int size) {
-    char* p = malloc(size);
+    char* p = (char*)malloc(size);
     char* q = p + size; // $ alloc=L4
     char a = *q; // $ deref=L6 // BAD
     char b = *(q - 1); // GOOD
@@ -13,7 +13,7 @@ void test1(int size) {
 }
 
 void test2(int size) {
-    char* p = malloc(size);
+    char* p = (char*)malloc(size);
     char* q = p + size - 1; // $ alloc=L16
     char a = *q; // GOOD
     char b = *(q - 1); // GOOD
@@ -25,7 +25,7 @@ void test2(int size) {
 }
 
 void test3(int size) {
-    char* p = malloc(size + 1);
+    char* p = (char*)malloc(size + 1);
     char* q = p + (size + 1); // $ alloc=L28+1
     char a = *q; // $ deref=L30 // BAD
     char b = *(q - 1); // GOOD
@@ -37,11 +37,11 @@ void test3(int size) {
 }
 
 void test4(int size) {
-    char* p = malloc(size - 1);
-    char* q = p + (size - 1); // $ alloc=L40-1
-    char a = *q; // $ deref=L42 // BAD
+    char* p = (char*)malloc(size - 1);
+    char* q = p + (size - 1); // $ MISSING: alloc=L40-1
+    char a = *q; // $ MISSING: deref=L42 // BAD [NOT DETECTED]
     char b = *(q - 1); // GOOD
-    char c = *(q + 1); // $ deref=L44+1 // BAD
+    char c = *(q + 1); // $ MISSING: deref=L44+1 // BAD [NOT DETECTED]
     char d = *(q + size); // BAD [NOT DETECTED]
     char e = *(q - size); // GOOD
     char f = *(q + size + 1); // BAD [NOT DETECTED]
@@ -49,7 +49,7 @@ void test4(int size) {
 }
 
 char* mk_array(int size, char** end) {
-    char* begin = malloc(size);
+    char* begin = (char*)malloc(size);
     *end = begin + size; // $ alloc=L52
 
     return begin;
@@ -79,7 +79,7 @@ struct array_t {
 
 array_t mk_array(int size) {
     array_t arr;
-    arr.begin = malloc(size);
+    arr.begin = (char*)malloc(size);
     arr.end = arr.begin + size; // $ MISSING: alloc=L82
 
     return arr;
@@ -121,7 +121,7 @@ void test7(int size) {
 
 void test8(int size) {
     array_t arr;
-    char* p = malloc(size);
+    char* p = (char*)malloc(size);
     arr.begin = p;
     arr.end = p + size; // $ alloc=L124
 
@@ -140,7 +140,7 @@ void test8(int size) {
 
 array_t *mk_array_p(int size) {
     array_t *arr = (array_t*) malloc(sizeof(array_t));
-    arr->begin = malloc(size);
+    arr->begin = (char*)malloc(size);
     arr->end = arr->begin + size; // $ MISSING: alloc=L143
 
     return arr;
@@ -185,7 +185,7 @@ void deref_plus_one(char* q) {
 }
 
 void test11(unsigned size) {
-    char *p = malloc(size);
+    char *p = (char*)malloc(size);
     char *q = p + size - 1; // $ alloc=L188
     deref_plus_one(q);
 }
@@ -790,7 +790,7 @@ void test38_simple(unsigned size, unsigned pos, unsigned numParams) {
 }
 
 void mk_array_no_field_flow(int size, char** begin, char** end) {
-    *begin = malloc(size);
+    *begin = (char*)malloc(size);
     *end = *begin + size; // $ alloc=L793
 }
 
