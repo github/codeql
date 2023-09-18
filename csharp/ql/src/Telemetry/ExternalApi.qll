@@ -11,7 +11,6 @@ private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlow
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
-
 private import TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
