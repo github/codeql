@@ -83,6 +83,14 @@ class StdlibBaseHttpRequestHandler extends FindSubclassesSpec {
   }
 }
 
+class StdlibCgiFieldStorage extends FindSubclassesSpec {
+  StdlibCgiFieldStorage() { this = "cgi.FieldStorage~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = StdlibPrivate::Cgi::FieldStorage::subclassRef()
+  }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
