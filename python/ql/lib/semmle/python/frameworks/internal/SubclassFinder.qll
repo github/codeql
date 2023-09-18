@@ -7,6 +7,7 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.ImportResolution
 private import semmle.python.ApiGraphs
 private import semmle.python.filters.Tests
 
@@ -85,7 +86,8 @@ module NotExposed {
       or
       newDirectAlias(spec, newModelFullyQualified, ast, mod, loc)
       or
-      newImportStar(spec, newModelFullyQualified, ast, mod, _, _, loc)
+      newImportAlias(spec, newModelFullyQualified, mod, _, _, loc) and
+      ast = mod
     )
   }
 
@@ -177,18 +179,22 @@ module NotExposed {
     isAllowedModule(mod)
   }
 
-  /** same as `newDirectAlias` predicate, but handling `from <module> import *`, considering all `<member>`, where `<module>.<member>` belongs to `spec`. */
-  predicate newImportStar(
-    FindSubclassesSpec spec, string newAliasFullyQualified, ImportStar importStar, Module mod,
-    API::Node relevantClass, string relevantName, Location loc
+  /**
+   * same as `newDirectAlias` predicate, but written in a generic way to handle any import (also import *).
+   *
+   * it might be safe to delete `newDirectAlias` with this in place, but have not done the testing yet.
+   */
+  predicate newImportAlias(
+    FindSubclassesSpec spec, string newAliasFullyQualified, Module mod, DataFlow::Node def,
+    string relevantName, Location loc
   ) {
-    relevantClass = newOrExistingModeling(spec) and
-    loc = importStar.getLocation() and
-    importStar.getScope() = mod and
-    // WHAT A HACK :D :D
-    relevantClass.getPath() =
-      relevantClass.getAPredecessor().getPath() + ".getMember(\"" + relevantName + "\")" and
-    relevantClass.getAPredecessor().getAValueReachableFromSource().asExpr() = importStar.getModule() and
+    loc = mod.getLocation() and
+    exists(API::Node relevantClass, ClassExpr classExpr |
+      relevantClass = newOrExistingModeling(spec).getASubclass*() and
+      ImportResolution::module_export(mod, relevantName, def) and
+      classExpr = relevantClass.asSource().asExpr() and
+      classExpr = def.asVar().getDefinition().(AssignmentDefinition).getValue().getNode()
+    ) and
     (
       mod.isPackageInit() and
       newAliasFullyQualified = mod.getPackageName() + "." + relevantName
@@ -202,7 +208,7 @@ module NotExposed {
       mod.declaredInAll(relevantName)
     ) and
     not alreadyExplicitlyModeled(spec, newAliasFullyQualified) and
-    not isTestCode(importStar) and
+    not isTestCode(mod) and
     isAllowedModule(mod)
   }
 
