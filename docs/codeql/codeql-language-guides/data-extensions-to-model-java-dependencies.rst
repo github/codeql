@@ -1,7 +1,7 @@
-.. _data-extensions-to-model-dependencies:
+.. _customizing-library-models-for-java-and-kotlin:
 
-Data extensions to model your Java/Kotlin dependencies
-======================================================
+Customizing library models for Java and Kotlin
+==============================================
 
 You can use data extensions to model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
 
