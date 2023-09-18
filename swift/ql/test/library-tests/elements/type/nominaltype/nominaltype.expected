@@ -4,13 +4,13 @@
 | nominaltype.swift:87:6:87:6 | a_alias | A_alias | getAliasedType:A, getFullName:A_alias, getName:A_alias, getUnderlyingType:A |
 | nominaltype.swift:88:6:88:6 | a_optional_alias | A_optional_alias | getAliasedType:A?, getFullName:A_optional_alias, getName:A_optional_alias, getUnderlyingType:A? |
 | nominaltype.swift:89:6:89:6 | b1 | B1 | getABaseType:A, getFullName:B1, getName:B1, getUnderlyingType:B1 |
-| nominaltype.swift:90:6:90:6 | b2 | B2 | getABaseType:A_alias, getFullName:B2, getName:B2, getUnderlyingType:B2 |
-| nominaltype.swift:91:6:91:6 | b1_alias | B1_alias | getABaseType:A, getAliasedType:B1, getFullName:B1_alias, getName:B1_alias, getUnderlyingType:B1 |
-| nominaltype.swift:92:6:92:6 | b2_alias | B2_alias | getABaseType:A_alias, getAliasedType:B2, getFullName:B2_alias, getName:B2_alias, getUnderlyingType:B2 |
+| nominaltype.swift:90:6:90:6 | b2 | B2 | getABaseType:A, getFullName:B2, getName:B2, getUnderlyingType:B2 |
+| nominaltype.swift:91:6:91:6 | b1_alias | B1_alias | getAliasedType:B1, getFullName:B1_alias, getName:B1_alias, getUnderlyingType:B1 |
+| nominaltype.swift:92:6:92:6 | b2_alias | B2_alias | getAliasedType:B2, getFullName:B2_alias, getName:B2_alias, getUnderlyingType:B2 |
 | nominaltype.swift:93:6:93:6 | p | P | getFullName:P, getName:P, getUnderlyingType:P |
 | nominaltype.swift:94:6:94:6 | p_alias | P_alias | getFullName:P_alias, getName:P_alias, getUnderlyingType:P_alias |
 | nominaltype.swift:95:6:95:6 | c1 | C1 | getABaseType:P, getFullName:C1, getName:C1, getUnderlyingType:C1 |
-| nominaltype.swift:96:6:96:6 | c2 | C2 | getABaseType:P_alias, getFullName:C2, getName:C2, getUnderlyingType:C2 |
+| nominaltype.swift:96:6:96:6 | c2 | C2 | getABaseType:P, getFullName:C2, getName:C2, getUnderlyingType:C2 |
 | nominaltype.swift:97:6:97:6 | o | Outer | getFullName:Outer, getName:Outer, getUnderlyingType:Outer |
 | nominaltype.swift:98:6:98:6 | oi | Outer.Inner | getFullName:Outer.Inner, getName:Inner, getUnderlyingType:Outer.Inner |
 | nominaltype.swift:99:6:99:6 | oia | Outer.Inner.InnerAlias | getAliasedType:A, getFullName:Outer.Inner.InnerAlias, getName:InnerAlias, getUnderlyingType:A |

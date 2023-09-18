@@ -35,11 +35,17 @@ class TypeDecl extends Generated::TypeDecl {
   deprecated Type getBaseType(int index) { result = this.getInheritedType(index) }
 
   /**
-   * Gets any of the base types of this type declaration.
+   * Gets any of the base types of this type declaration. Expands type aliases, for example
+   * in the following code, `B` has base type `A`.
+   * ```
+   * typealias A_alias = A
+   *
+   * class B : A_alias {}
+   * ```
    */
   Type getABaseType() {
-    // TODO generalize this to resolve `TypeAliasDecl`s and consider bases added by extensions
-    result = this.getAnInheritedType()
+    // TODO generalize this to consider bases added by extensions
+    result = this.getAnInheritedType().getUnderlyingType()
   }
 
   /**
@@ -51,7 +57,13 @@ class TypeDecl extends Generated::TypeDecl {
   }
 
   /**
-   * Gets the declaration of any of the base types of this type declaration.
+   * Gets the declaration of any of the base types of this type declaration. Expands type
+   * aliases, for example in the following code, `B` has base type decl `A`.
+   * ```
+   * typealias A_alias = A
+   *
+   * class B : A_alias {}
+   * ```
    */
   TypeDecl getABaseTypeDecl() { result = this.getABaseType().(AnyGenericType).getDeclaration() }
 
@@ -63,7 +75,13 @@ class TypeDecl extends Generated::TypeDecl {
   deprecated TypeDecl getDerivedTypeDecl(int i) { result.getBaseTypeDecl(i) = this }
 
   /**
-   * Gets the declaration of any type derived from this type declaration.
+   * Gets the declaration of any type derived from this type declaration. Expands type aliases,
+   * for example in the following code, `B` is derived from `A`.
+   * ```
+   * typealias A_alias = A
+   *
+   * class B : A_alias {}
+   * ```
    */
   TypeDecl getADerivedTypeDecl() { result.getABaseTypeDecl() = this }
 
