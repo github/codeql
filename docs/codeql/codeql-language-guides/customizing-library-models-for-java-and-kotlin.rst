@@ -66,7 +66,7 @@ The CodeQL library for Java and Kotlin analysis exposes the following extensible
 - ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
 - ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis.
 
-The extensible predicates are populated using data extensions specified in YAML files.
+The extensible predicates are populated using the models defined in data extension files.
 
 Examples of custom model definitions
 ------------------------------------
