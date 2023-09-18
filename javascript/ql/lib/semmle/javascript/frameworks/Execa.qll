@@ -6,9 +6,10 @@ import javascript
 import semmle.javascript.security.dataflow.RequestForgeryCustomizations
 import semmle.javascript.security.dataflow.UrlConcatenation
 
-//TODO: comments
-// I don't know where should i put following class
-private class DynamicImport extends SystemCommandExecution, DataFlow::ExprNode {
+/**
+ * The dynamic import expression input can be a `data:` URL which loads any module from that data
+ */
+class DynamicImport extends SystemCommandExecution, DataFlow::ExprNode {
   DynamicImport() { this = any(DynamicImportExpr e).getAChildExpr().flow() }
 
   override DataFlow::Node getACommandArgument() { result = this }
@@ -24,7 +25,10 @@ private class DynamicImport extends SystemCommandExecution, DataFlow::ExprNode {
  * Provide model for [Execa](https://github.com/sindresorhus/execa) package
  */
 module Execa {
-  private class ExecaRead extends FileSystemReadAccess, DataFlow::Node {
+  /**
+   * The Execa input file option
+   */
+  class ExecaRead extends FileSystemReadAccess, DataFlow::Node {
     API::Node execaNode;
 
     ExecaRead() {
@@ -47,6 +51,9 @@ module Execa {
     }
   }
 
+  /**
+   * A call to `execa.execa` or `execa.execaSync`
+   */
   class ExecaCall extends API::CallNode {
     string name;
 
@@ -62,7 +69,10 @@ module Execa {
     string getName() { result = name }
   }
 
-  private class ExecaExec extends SystemCommandExecution, ExecaCall {
+  /**
+   * The system command execution nodes for `execa.execa` or `execa.execaSync` functions
+   */
+  class ExecaExec extends SystemCommandExecution, ExecaCall {
     ExecaExec() { name = ["execa", "execaSync"] }
 
     override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
@@ -79,9 +89,7 @@ module Execa {
     }
 
     predicate isArgumentInjectable(DataFlow::Node arg) {
-      // arguments can be vulnerable if the arguments belongs to a command that is vulnerable to command execution through argument itself
-      // like `-oProxyCommand=touch file` by ssh command
-      // function execa(file: string,arguments?: readonly string[],options?: Options<BufferEncodingOption>): ExecaChildProcess<Buffer>;
+      // execa(file: string,arguments?: readonly string[],options?: Options<BufferEncodingOption>)
       arg = this.getParameter(1).getUnknownMember().asSink() and
       argumentIsInjectable(this.getParameter(0).asSink().getStringValue())
     }
@@ -93,7 +101,10 @@ module Execa {
     }
   }
 
-  class ExecaScriptExpr extends DataFlow::ExprNode {
+  /**
+   * A call to `execa.$` or `execa.$.sync` tag functions
+   */
+  private class ExecaScriptExpr extends DataFlow::ExprNode {
     string name;
 
     ExecaScriptExpr() {
@@ -116,7 +127,10 @@ module Execa {
     string getName() { result = name }
   }
 
-  private class ExecaScriptEec extends SystemCommandExecution, ExecaScriptExpr {
+  /**
+   * The system command execution nodes for `execa.$` or `execa.$.sync` tag functions
+   */
+  class ExecaScriptEec extends SystemCommandExecution, ExecaScriptExpr {
     ExecaScriptEec() { name = ["Sync", "ASync"] }
 
     override DataFlow::Node getACommandArgument() {
@@ -147,7 +161,10 @@ module Execa {
     }
   }
 
-  class ExecaCommandCall extends API::CallNode {
+  /**
+   * A call to `execa.execaCommandSync` or `execa.execaCommand`
+   */
+  private class ExecaCommandCall extends API::CallNode {
     string name;
 
     ExecaCommandCall() {
@@ -162,7 +179,10 @@ module Execa {
     string getName() { result = name }
   }
 
-  private class ExecaCommandExec extends SystemCommandExecution, ExecaCommandCall {
+  /**
+   * The system command execution nodes for `execa.execaCommand` or `execa.execaCommandSync` functions
+   */
+  class ExecaCommandExec extends SystemCommandExecution, ExecaCommandCall {
     ExecaCommandExec() { name = ["execaCommand", "execaCommandSync"] }
 
     override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
@@ -193,14 +213,14 @@ module Execa {
   }
 
   // parent = left`result`
-  TemplateLiteral templateLiteralChildAsSink(Expr left) {
+  private TemplateLiteral templateLiteralChildAsSink(Expr left) {
     exists(TaggedTemplateExpr parent |
       parent.getTemplate() = result and
       left = parent.getChildExpr(0)
     )
   }
 
-  class CommandsVulnerableToArgumentInjection extends string {
+  private class CommandsVulnerableToArgumentInjection extends string {
     CommandsVulnerableToArgumentInjection() {
       // Thanks to https://sonarsource.github.io/argument-injection-vectors/#+command
       this =
@@ -215,10 +235,10 @@ module Execa {
 
   // Check whether a command is vulnerable to argument injection or not
   bindingset[cmd]
-  predicate argumentIsInjectable(string cmd) {
+  private predicate argumentIsInjectable(string cmd) {
     // "cmd args" or "cmd"
     exists(CommandsVulnerableToArgumentInjection c |
-      // full/relative path to command like `/usr/bin/cmd` or `somedir/cmd`
+      // full/relative path to command like `/usr/bin/cmd` or `someDir/cmd`
       cmd.matches("%/" + c)
       or
       // command like `cmd args`
@@ -229,14 +249,14 @@ module Execa {
     )
   }
 
-  // Check whether Execa has shell enabled options or not, get Parameter responsible for opstions
-  predicate isExecaShellEnable(API::Node n) {
+  // Check whether Execa has shell enabled options or not, get Parameter responsible for options
+  private predicate isExecaShellEnable(API::Node n) {
     n.getMember("shell").asSink().asExpr().(BooleanLiteral).getValue() = "true" and
     exists(n.getMember("shell"))
   }
 
-  // Check whether Execa has shell enabled options or not, get Parameter responsible for opstions
-  predicate isExecaShellEnableWithExpr(Expr n) {
+  // Check whether Execa has shell enabled options or not, get Parameter responsible for options
+  private predicate isExecaShellEnableWithExpr(Expr n) {
     exists(ObjectExpr o, Property p | o = n.getAChildExpr*() |
       o.getAChild() = p and
       p.getAChild().(Label).getName() = "shell" and
