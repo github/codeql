@@ -118,6 +118,12 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(BuiltInVarArgsStart vaStartExpr |
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
+  or
+  exists(ConditionalExpr cexpr, int const |
+    not cexpr.isTwoOperand() and
+    const = cexpr.getCondition().getUnconverted().getValue().toInt() and
+    if const = 0 then expr = cexpr.getThen() else expr = cexpr.getElse()
+  )
 }
 
 /**
@@ -235,9 +241,12 @@ private predicate usedAsCondition(Expr expr) {
   exists(IfStmt ifStmt | ifStmt.getCondition().getFullyConverted() = expr)
   or
   exists(ConditionalExpr condExpr |
+    condExpr.getCondition().getFullyConverted() = expr and
     // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
     // be reused as a value if the condition is true.
-    condExpr.getCondition().getFullyConverted() = expr and not condExpr.isTwoOperand()
+    not condExpr.isTwoOperand() and
+    // Constant ternary operations just ignore the condition
+    not exists(expr.getValue().toInt())
   )
   or
   exists(NotExpr notExpr |

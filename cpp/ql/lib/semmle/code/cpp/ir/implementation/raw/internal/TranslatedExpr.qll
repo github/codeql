@@ -2300,12 +2300,82 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
 }
 
 /**
+ * The IR translation of the `?:` operator. This class has the portions of the implementation that
+ * are shared between the standard three-operand form (`a ? b : c`) and the GCC-extension
+ * two-operand form (`a ?: c`).
+ */
+class TranslatedConstantConditionalExpr extends TranslatedNonConstantExpr {
+  override ConditionalExpr expr;
+
+  TranslatedConstantConditionalExpr() {
+    exists(expr.getCondition().getUnconverted().getValue().toInt()) and
+    not expr.isTwoOperand()
+  }
+
+  predicate conditionIsTrue() { expr.getCondition().getValue().toInt() != 0 }
+
+  TranslatedExpr getResultExpr() {
+    if this.conditionIsTrue()
+    then result = getTranslatedExpr(expr.getThen().getFullyConverted())
+    else result = getTranslatedExpr(expr.getElse().getFullyConverted())
+  }
+
+  TranslatedExpr getCondition() { result = getTranslatedExpr(expr.getCondition().getFullyConverted()) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    not this.resultIsVoid() and
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::CopyValue and
+    resultType = this.getResultExpr().getResultType()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    operandTag instanceof UnaryOperandTag and
+    tag = OnlyInstructionTag() and
+    result = this.getResultExpr().getResult()
+  }
+
+  final override Instruction getResult() {
+    not this.resultIsVoid() and
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getResultExpr() and
+    result = this.getInstruction(OnlyInstructionTag())
+    or
+    child = this.getCondition() and result = this.getResultExpr().getFirstInstruction()
+  }
+
+  final override TranslatedElement getChild(int id) {
+    id = 0 and result = this.getCondition()
+    or
+    id = 1 and result = this.getResultExpr()
+  }
+
+  final override Instruction getFirstInstruction() {
+    result = this.getCondition().getFirstInstruction()
+  }
+
+  private predicate resultIsVoid() { this.getResultType().getIRType() instanceof IRVoidType }
+}
+
+/**
  * The IR translation of the ternary conditional operator (`a ? b : c`).
  * For this version, we expand the condition as a `TranslatedCondition`, rather than a
  * `TranslatedExpr`, to simplify the control flow in the presence of short-circuit logical operators.
  */
 class TranslatedTernaryConditionalExpr extends TranslatedConditionalExpr, ConditionContext {
-  TranslatedTernaryConditionalExpr() { not expr.isTwoOperand() }
+  TranslatedTernaryConditionalExpr() {
+    not expr.isTwoOperand() and
+    not exists(expr.getCondition().getValue().toInt())
+  }
 
   final override TranslatedElement getChild(int id) {
     id = 0 and result = this.getCondition()

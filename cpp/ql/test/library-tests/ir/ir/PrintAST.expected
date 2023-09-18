@@ -16003,78 +16003,138 @@ ir.cpp:
 # 2129|       getExpr(): [VariableAccess] j
 # 2129|           Type = [IntType] int
 # 2129|           ValueCategory = prvalue(load)
-# 2132| [TopLevelFunction] unsigned short foo()
-# 2132|   <params>: 
-# 2132|   getEntryPoint(): [BlockStmt] { ... }
-# 2133|     getStmt(0): [ReturnStmt] return ...
-# 2133|       getExpr(): [Literal] 5
-# 2133|           Type = [IntType] int
-# 2133|           Value = [Literal] 5
-# 2133|           ValueCategory = prvalue
-# 2133|       getExpr().getFullyConverted(): [CStyleCast] (unsigned short)...
-# 2133|           Conversion = [IntegralConversion] integral conversion
-# 2133|           Type = [ShortType] unsigned short
-# 2133|           Value = [CStyleCast] 5
-# 2133|           ValueCategory = prvalue
-# 2137| [TopLevelFunction] int ParensCall()
+# 2137| [CopyAssignmentOperator] nl<unsigned short>& nl<unsigned short>::operator=(nl<unsigned short> const&)
 # 2137|   <params>: 
-# 2137|   getEntryPoint(): [BlockStmt] { ... }
-# 2138|     getStmt(0): [IfStmt] if (...) ... 
-# 2138|       getCondition(): [LEExpr] ... <= ...
-# 2138|           Type = [BoolType] bool
-# 2138|           ValueCategory = prvalue
-# 2138|         getLesserOperand(): [Literal] 5
-# 2138|             Type = [IntType] int
-# 2138|             Value = [Literal] 5
-# 2138|             ValueCategory = prvalue
-# 2138|         getGreaterOperand(): [FunctionCall] call to foo
-# 2138|             Type = [ShortType] unsigned short
-# 2138|             ValueCategory = prvalue
-# 2138|         getGreaterOperand().getFullyConverted(): [ParenthesisExpr] (...)
-# 2138|             Type = [FunctionPointerType] ..(*)(..)
-# 2138|             ValueCategory = prvalue
-# 2138|         getGreaterOperand().getFullyConverted(): [CStyleCast] (int)...
-# 2138|             Conversion = [IntegralConversion] integral conversion
-# 2138|             Type = [IntType] int
-# 2138|             ValueCategory = prvalue
-# 2138|       getThen(): [BlockStmt] { ... }
-# 2139|         getStmt(0): [ReturnStmt] return ...
-# 2139|           getExpr(): [Literal] 1
-# 2139|               Type = [IntType] int
-# 2139|               Value = [Literal] 1
-# 2139|               ValueCategory = prvalue
-# 2141|     getStmt(1): [ReturnStmt] return ...
-# 2141|       getExpr(): [Literal] 0
-# 2141|           Type = [IntType] int
-# 2141|           Value = [Literal] 0
-# 2141|           ValueCategory = prvalue
-ir20.cpp:
-#    2| [CopyAssignmentOperator] std::strong_ordering& std::strong_ordering::operator=(std::strong_ordering const&)
-#    2|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [LValueReferenceType] const strong_ordering &
-#    2| [MoveAssignmentOperator] std::strong_ordering& std::strong_ordering::operator=(std::strong_ordering&&)
-#    2|   <params>: 
+#-----|         Type = [LValueReferenceType] const nl<unsigned short> &
+# 2137| [MoveAssignmentOperator] nl<unsigned short>& nl<unsigned short>::operator=(nl<unsigned short>&&)
+# 2137|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
-#-----|         Type = [RValueReferenceType] strong_ordering &&
-#    7| [TopLevelFunction] std::strong_ordering spaceshipTest()
-#    7|   <params>: 
-#    7|   getEntryPoint(): [BlockStmt] { ... }
-#    8|     getStmt(0): [ReturnStmt] return ...
-#    8|       getExpr(): [SpaceshipExpr] ... <=> ...
-#    8|           Type = [Class] strong_ordering
-#    8|           ValueCategory = prvalue
-#    8|         getChild(0): [Literal] 1
-#    8|             Type = [IntType] int
-#    8|             Value = [Literal] 1
-#    8|             ValueCategory = prvalue
-#    8|         getChild(1): [Literal] 2
-#    8|             Type = [IntType] int
-#    8|             Value = [Literal] 2
-#    8|             ValueCategory = prvalue
-#    8|       getExpr().getFullyConverted(): [ParenthesisExpr] (...)
-#    8|           Type = [Class] strong_ordering
-#    8|           ValueCategory = prvalue
+#-----|         Type = [RValueReferenceType] nl<unsigned short> &&
+# 2138| [MemberFunction] int nl<unsigned short>::foo()
+# 2138|   <params>: 
+# 2138|   getEntryPoint(): [BlockStmt] { ... }
+# 2139|     getStmt(0): [ReturnStmt] return ...
+# 2139|       getExpr(): [Literal] 5
+# 2139|           Type = [IntType] int
+# 2139|           Value = [Literal] 5
+# 2139|           ValueCategory = prvalue
+# 2143| [TopLevelFunction] int ParensCall()
+# 2143|   <params>: 
+# 2143|   getEntryPoint(): [BlockStmt] { ... }
+# 2144|     getStmt(0): [ReturnStmt] return ...
+# 2144|       getExpr(): [LEExpr] ... <= ...
+# 2144|           Type = [BoolType] bool
+# 2144|           Value = [LEExpr] 1
+# 2144|           ValueCategory = prvalue
+# 2144|         getLesserOperand(): [Literal] 5
+# 2144|             Type = [IntType] int
+# 2144|             Value = [Literal] 5
+# 2144|             ValueCategory = prvalue
+# 2144|         getGreaterOperand(): [FunctionCall] call to foo
+# 2144|             Type = [IntType] int
+# 2144|             Value = [FunctionCall] 5
+# 2144|             ValueCategory = prvalue
+# 2144|         getGreaterOperand().getFullyConverted(): [ParenthesisExpr] (...)
+# 2144|             Type = [FunctionPointerType] ..(*)(..)
+# 2144|             ValueCategory = prvalue
+# 2144|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2144|           Conversion = [IntegralConversion] integral conversion
+# 2144|           Type = [IntType] int
+# 2144|           Value = [CStyleCast] 1
+# 2144|           ValueCategory = prvalue
+# 2147| [TopLevelFunction] int ConstTernary(int, int)
+# 2147|   <params>: 
+# 2147|     getParameter(0): [Parameter] y
+# 2147|         Type = [IntType] int
+# 2147|     getParameter(1): [Parameter] z
+# 2147|         Type = [IntType] int
+# 2147|   getEntryPoint(): [BlockStmt] { ... }
+# 2148|     getStmt(0): [DeclStmt] declaration
+# 2148|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2148|           Type = [IntType] int
+# 2148|         getVariable().getInitializer(): [Initializer] initializer for a
+# 2148|           getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2148|               Type = [IntType] int
+# 2148|               ValueCategory = prvalue
+# 2148|             getCondition(): [Literal] 1
+# 2148|                 Type = [IntType] int
+# 2148|                 Value = [Literal] 1
+# 2148|                 ValueCategory = prvalue
+# 2148|             getThen(): [VariableAccess] y
+# 2148|                 Type = [IntType] int
+# 2148|                 ValueCategory = prvalue(load)
+# 2148|             getElse(): [VariableAccess] z
+# 2148|                 Type = [IntType] int
+# 2148|                 ValueCategory = prvalue(load)
+# 2148|             getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2148|                 Conversion = [BoolConversion] conversion to bool
+# 2148|                 Type = [BoolType] bool
+# 2148|                 Value = [CStyleCast] 1
+# 2148|                 ValueCategory = prvalue
+# 2149|     getStmt(1): [DeclStmt] declaration
+# 2149|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2149|           Type = [IntType] int
+# 2149|         getVariable().getInitializer(): [Initializer] initializer for b
+# 2149|           getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2149|               Type = [IntType] int
+# 2149|               ValueCategory = prvalue
+# 2149|             getCondition(): [Literal] 0
+# 2149|                 Type = [IntType] int
+# 2149|                 Value = [Literal] 0
+# 2149|                 ValueCategory = prvalue
+# 2149|             getThen(): [VariableAccess] y
+# 2149|                 Type = [IntType] int
+# 2149|                 ValueCategory = prvalue(load)
+# 2149|             getElse(): [VariableAccess] z
+# 2149|                 Type = [IntType] int
+# 2149|                 ValueCategory = prvalue(load)
+# 2149|             getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2149|                 Conversion = [BoolConversion] conversion to bool
+# 2149|                 Type = [BoolType] bool
+# 2149|                 Value = [CStyleCast] 0
+# 2149|                 ValueCategory = prvalue
+# 2150|     getStmt(2): [DeclStmt] declaration
+# 2150|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2150|           Type = [IntType] int
+# 2150|         getVariable().getInitializer(): [Initializer] initializer for c
+# 2150|           getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2150|               Type = [IntType] int
+# 2150|               Value = [ConditionalExpr] 1
+# 2150|               ValueCategory = prvalue
+# 2150|             getCondition(): [Literal] 1
+# 2150|                 Type = [IntType] int
+# 2150|                 Value = [Literal] 1
+# 2150|                 ValueCategory = prvalue
+# 2150|             getThen(): [Literal] 1
+# 2150|                 Type = [IntType] int
+# 2150|                 Value = [Literal] 1
+# 2150|                 ValueCategory = prvalue
+# 2150|             getElse(): [Literal] 0
+# 2150|                 Type = [IntType] int
+# 2150|                 Value = [Literal] 0
+# 2150|                 ValueCategory = prvalue
+# 2150|             getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2150|                 Conversion = [BoolConversion] conversion to bool
+# 2150|                 Type = [BoolType] bool
+# 2150|                 Value = [CStyleCast] 1
+# 2150|                 ValueCategory = prvalue
+# 2151|     getStmt(3): [ReturnStmt] return ...
+# 2151|       getExpr(): [AddExpr] ... + ...
+# 2151|           Type = [IntType] int
+# 2151|           ValueCategory = prvalue
+# 2151|         getLeftOperand(): [AddExpr] ... + ...
+# 2151|             Type = [IntType] int
+# 2151|             ValueCategory = prvalue
+# 2151|           getLeftOperand(): [VariableAccess] a
+# 2151|               Type = [IntType] int
+# 2151|               ValueCategory = prvalue(load)
+# 2151|           getRightOperand(): [VariableAccess] b
+# 2151|               Type = [IntType] int
+# 2151|               ValueCategory = prvalue(load)
+# 2151|         getRightOperand(): [VariableAccess] c
+# 2151|             Type = [IntType] int
+# 2151|             ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
