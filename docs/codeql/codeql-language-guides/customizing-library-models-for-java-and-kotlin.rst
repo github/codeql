@@ -57,7 +57,7 @@ Publish data extension files in a CodeQL model pack to share
 You can group one or more data extention files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see "`Creating a CodeQL model pack <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack/>`__ and `Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs/>`__ in the CodeQL CLI documentation.
 
 Extensible predicates used to create custom models in Java and Kotlin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The CodeQL library for Java and Kotlin analysis exposes the following extensible predicates:
 
@@ -69,7 +69,7 @@ The CodeQL library for Java and Kotlin analysis exposes the following extensible
 The extensible predicates are populated using data extensions specified in YAML files.
 
 Examples of custom model definitions
---------------------------------------
+------------------------------------
 
 The examples in this section are taken from the standard CodeQL Java query pack published by GitHub. They demonstrate how to add tuples to extend extensible predicates that are used by the standard queries.
 
