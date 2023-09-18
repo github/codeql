@@ -6,10 +6,7 @@
 | PublicGenericClass.cs:7:17:7:21 | stuff | GitHub.CodeQL.PublicGenericClass<,>#stuff(T) | false | supported | PublicGenericClass.cs | library |  | type | unknown | classification |
 | PublicGenericClass.cs:12:17:12:26 | stuff2<> | GitHub.CodeQL.PublicGenericClass<,>#stuff2<>(T2) | false | supported | PublicGenericClass.cs | library |  | type | unknown | classification |
 | PublicGenericInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL.PublicGenericInterface<>#stuff(T) | false | supported | PublicGenericInterface.cs | library |  | type | unknown | classification |
-| PublicGenericInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL.PublicGenericInterface<>#stuff(T) | false | supported | PublicGenericInterface.cs | library |  | type | unknown | classification |
 | PublicGenericInterface.cs:9:10:9:19 | stuff2<> | GitHub.CodeQL.PublicGenericInterface<>#stuff2<>(T2) | false | supported | PublicGenericInterface.cs | library |  | type | unknown | classification |
-| PublicGenericInterface.cs:9:10:9:19 | stuff2<> | GitHub.CodeQL.PublicGenericInterface<>#stuff2<>(T2) | false | supported | PublicGenericInterface.cs | library |  | type | unknown | classification |
-| PublicGenericInterface.cs:11:17:11:27 | staticStuff | GitHub.CodeQL.PublicGenericInterface<>#staticStuff(System.String) | false | supported | PublicGenericInterface.cs | library |  | type | unknown | classification |
 | PublicGenericInterface.cs:11:17:11:27 | staticStuff | GitHub.CodeQL.PublicGenericInterface<>#staticStuff(System.String) | false | supported | PublicGenericInterface.cs | library |  | type | unknown | classification |
 | PublicInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL.PublicInterface#stuff(System.String) | false | supported | PublicInterface.cs | library |  | type | unknown | classification |
 | PublicInterface.cs:9:29:9:31 | get_PublicProperty | GitHub.CodeQL.PublicInterface#get_PublicProperty() | false | supported | PublicInterface.cs | library |  | type | unknown | classification |
