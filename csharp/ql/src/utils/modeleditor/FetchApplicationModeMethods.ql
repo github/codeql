@@ -8,7 +8,7 @@
  */
 
 private import csharp
-private import AutomodelVsCode
+private import ModelEditor
 
 class ExternalEndpoint extends Endpoint {
   ExternalEndpoint() {

@@ -10,7 +10,7 @@
 private import csharp
 private import dotnet
 private import semmle.code.csharp.frameworks.Test
-private import AutomodelVsCode
+private import ModelEditor
 
 class PublicEndpointFromSource extends Endpoint {
   PublicEndpointFromSource() { this.fromSource() and not this.getFile() instanceof TestFile }
