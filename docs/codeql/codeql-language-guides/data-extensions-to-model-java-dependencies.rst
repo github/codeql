@@ -3,7 +3,7 @@
 Customizing library models for Java and Kotlin
 ==============================================
 
-You can use data extensions to model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
+You can model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
 
 .. include:: ../reusables/kotlin-beta-note.rst
 
@@ -12,9 +12,9 @@ You can use data extensions to model the methods and callables that control data
 About this article
 ------------------
 
-This article contains reference material about how data extensions interact with standard queries and the syntax used to define extensions.
+This article contains reference material about how to define custom models for sources, sinks and flow summaries for Java dependencies in data extension files.
 
-If you want to create your own data extensions, you should use the CodeQL model editor in the CodeQL extension for Visual Studio Code. The model editor automatically guides you through the process of defining models, displaying the properties you need to define and the options available. You can save the resulting models as data extensions and use them without worrying about the syntax.
+The best way to create your own models is using the CodeQL model editor in the CodeQL extension for Visual Studio Code. The model editor automatically guides you through the process of defining models, displaying the properties you need to define and the options available. You can save the resulting models as data extension files in CodeQL model packs and use them without worrying about the syntax.
 
 For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql-model-editor>`."
 
@@ -56,7 +56,7 @@ Publish data extension files in a CodeQL model pack to share
 
 You can group one or more data extention files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see "`Creating a CodeQL model pack <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack/>`__ and `Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs/>`__ in the CodeQL CLI documentation.
 
-Extensible predicates in the CodeQL library for Java/Kotlin
+Extensible predicates used to create custom models in Java and Kotlin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The CodeQL library for Java and Kotlin analysis exposes the following extensible predicates:
@@ -68,7 +68,7 @@ The CodeQL library for Java and Kotlin analysis exposes the following extensible
 
 The extensible predicates are populated using data extensions specified in YAML files.
 
-Examples of data extension definitions
+Examples of custom model definitions
 --------------------------------------
 
 The examples in this section are taken from the standard CodeQL Java query pack published by GitHub. They demonstrate how to add tuples to extend extensible predicates that are used by the standard queries.
