@@ -57,6 +57,30 @@ extensions:
     - Member[contrib].Member[gis].Member[forms].Member[fields].Member[PolygonField]
   - - Django.Forms.Field~Subclass
     - django
+    - Member[contrib].Member[postgres].Member[forms].Member[DateRangeField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[postgres].Member[forms].Member[DateTimeRangeField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[postgres].Member[forms].Member[DecimalRangeField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[postgres].Member[forms].Member[HStoreField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[postgres].Member[forms].Member[IntegerRangeField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[postgres].Member[forms].Member[JSONField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[postgres].Member[forms].Member[SimpleArrayField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[postgres].Member[forms].Member[SplitArrayField]
+  - - Django.Forms.Field~Subclass
+    - django
     - Member[contrib].Member[postgres].Member[forms].Member[array].Member[SimpleArrayField]
   - - Django.Forms.Field~Subclass
     - django

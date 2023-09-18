@@ -27,10 +27,22 @@ extensions:
     - Member[admin].Member[forms].Member[tags].Member[TagField]
   - - Django.Forms.Field~Subclass
     - wagtail
+    - Member[admin].Member[panels].Member[BlockField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[admin].Member[panels].Member[field_panel].Member[BlockField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[blocks].Member[BlockField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
     - Member[blocks].Member[base].Member[BlockField]
   - - Django.Forms.Field~Subclass
     - wagtail
     - Member[contrib].Member[modeladmin].Member[forms].Member[PageChoiceField]
+  - - Django.Forms.Field~Subclass
+    - wagtail
+    - Member[fields].Member[BlockField]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[api].Member[views].Member[PagesAPIViewSet]
