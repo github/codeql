@@ -15,6 +15,17 @@ func captureList() {
   }()
 }
 
+func setAndCallEscape() {
+  let x = source("setAndCallEscape", 0)
+
+  let escape = {
+    sink(x) // $ MISSING: hasValueFlow=setAndCallEscape
+    return x + 1
+  }
+
+  sink(escape()) // $ MISSING: hasTaintFlow=setAndCallEscape
+}
+
 var escape: (() -> Int)? = nil
 
 func setEscape() {
@@ -132,7 +143,7 @@ func taintCollections(array: inout Array<Int>) {
   array.withContiguousStorageIfAvailable({
     buffer in
     sink(array)
-    sink(array[0]) // $ hasValueFlow=array
+    sink(array[0]) // $ MISSING: hasValueFlow=array
   })
 }
 
