@@ -2095,4 +2095,13 @@ int TransNonExit() {
     return x;
 }
 
+void newArrayCorrectType(size_t n) {
+  new int[n];  // No constructor
+  new(1.0f) int[n];  // Placement new, no constructor
+  new String[n];  // Constructor
+  new Overaligned[n];  // Aligned new
+  new DefaultCtorWithDefaultParam[n];
+  new int[n] { 0, 1, 2 };
+}
+
 // semmle-extractor-options: -std=c++17 --clang
