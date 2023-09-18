@@ -11429,6 +11429,74 @@ ir.cpp:
 # 2090|     v2090_6(void)           = AliasedUse                : ~m?
 # 2090|     v2090_7(void)           = ExitFunction              : 
 
+# 2098| void newArrayCorrectType(size_t)
+# 2098|   Block 0
+# 2098|     v2098_1(void)                          = EnterFunction                   : 
+# 2098|     mu2098_2(unknown)                      = AliasedDefinition               : 
+# 2098|     mu2098_3(unknown)                      = InitializeNonLocal              : 
+# 2098|     r2098_4(glval<unsigned long>)          = VariableAddress[n]              : 
+# 2098|     mu2098_5(unsigned long)                = InitializeParameter[n]          : &:r2098_4
+# 2099|     r2099_1(glval<unknown>)                = FunctionAddress[operator new[]] : 
+# 2099|     r2099_2(glval<unsigned long>)          = VariableAddress[n]              : 
+# 2099|     r2099_3(unsigned long)                 = Load[n]                         : &:r2099_2, ~m?
+# 2099|     r2099_4(unsigned long)                 = Constant[4]                     : 
+# 2099|     r2099_5(unsigned long)                 = Mul                             : r2099_3, r2099_4
+# 2099|     r2099_6(void *)                        = Call[operator new[]]            : func:r2099_1, 0:r2099_5
+# 2099|     mu2099_7(unknown)                      = ^CallSideEffect                 : ~m?
+# 2099|     mu2099_8(unknown)                      = ^InitializeDynamicAllocation    : &:r2099_6
+# 2099|     r2099_9(int *)                         = Convert                         : r2099_6
+# 2100|     r2100_1(glval<unknown>)                = FunctionAddress[operator new[]] : 
+# 2100|     r2100_2(glval<unsigned long>)          = VariableAddress[n]              : 
+# 2100|     r2100_3(unsigned long)                 = Load[n]                         : &:r2100_2, ~m?
+# 2100|     r2100_4(unsigned long)                 = Constant[4]                     : 
+# 2100|     r2100_5(unsigned long)                 = Mul                             : r2100_3, r2100_4
+# 2100|     r2100_6(float)                         = Constant[1.0]                   : 
+# 2100|     r2100_7(void *)                        = Call[operator new[]]            : func:r2100_1, 0:r2100_5, 1:r2100_6
+# 2100|     mu2100_8(unknown)                      = ^CallSideEffect                 : ~m?
+# 2100|     mu2100_9(unknown)                      = ^InitializeDynamicAllocation    : &:r2100_7
+# 2100|     r2100_10(int *)                        = Convert                         : r2100_7
+# 2101|     r2101_1(glval<unknown>)                = FunctionAddress[operator new[]] : 
+# 2101|     r2101_2(glval<unsigned long>)          = VariableAddress[n]              : 
+# 2101|     r2101_3(unsigned long)                 = Load[n]                         : &:r2101_2, ~m?
+# 2101|     r2101_4(unsigned long)                 = Constant[8]                     : 
+# 2101|     r2101_5(unsigned long)                 = Mul                             : r2101_3, r2101_4
+# 2101|     r2101_6(void *)                        = Call[operator new[]]            : func:r2101_1, 0:r2101_5
+# 2101|     mu2101_7(unknown)                      = ^CallSideEffect                 : ~m?
+# 2101|     mu2101_8(unknown)                      = ^InitializeDynamicAllocation    : &:r2101_6
+# 2101|     r2101_9(String *)                      = Convert                         : r2101_6
+# 2102|     r2102_1(glval<unknown>)                = FunctionAddress[operator new[]] : 
+# 2102|     r2102_2(glval<unsigned long>)          = VariableAddress[n]              : 
+# 2102|     r2102_3(unsigned long)                 = Load[n]                         : &:r2102_2, ~m?
+# 2102|     r2102_4(unsigned long)                 = Constant[256]                   : 
+# 2102|     r2102_5(unsigned long)                 = Mul                             : r2102_3, r2102_4
+# 2102|     r2102_6(align_val_t)                   = Constant[128]                   : 
+# 2102|     r2102_7(void *)                        = Call[operator new[]]            : func:r2102_1, 0:r2102_5, 1:r2102_6
+# 2102|     mu2102_8(unknown)                      = ^CallSideEffect                 : ~m?
+# 2102|     mu2102_9(unknown)                      = ^InitializeDynamicAllocation    : &:r2102_7
+# 2102|     r2102_10(Overaligned *)                = Convert                         : r2102_7
+# 2103|     r2103_1(glval<unknown>)                = FunctionAddress[operator new[]] : 
+# 2103|     r2103_2(glval<unsigned long>)          = VariableAddress[n]              : 
+# 2103|     r2103_3(unsigned long)                 = Load[n]                         : &:r2103_2, ~m?
+# 2103|     r2103_4(unsigned long)                 = Constant[1]                     : 
+# 2103|     r2103_5(unsigned long)                 = Mul                             : r2103_3, r2103_4
+# 2103|     r2103_6(void *)                        = Call[operator new[]]            : func:r2103_1, 0:r2103_5
+# 2103|     mu2103_7(unknown)                      = ^CallSideEffect                 : ~m?
+# 2103|     mu2103_8(unknown)                      = ^InitializeDynamicAllocation    : &:r2103_6
+# 2103|     r2103_9(DefaultCtorWithDefaultParam *) = Convert                         : r2103_6
+# 2104|     r2104_1(glval<unknown>)                = FunctionAddress[operator new[]] : 
+# 2104|     r2104_2(glval<unsigned long>)          = VariableAddress[n]              : 
+# 2104|     r2104_3(unsigned long)                 = Load[n]                         : &:r2104_2, ~m?
+# 2104|     r2104_4(unsigned long)                 = Constant[4]                     : 
+# 2104|     r2104_5(unsigned long)                 = Mul                             : r2104_3, r2104_4
+# 2104|     r2104_6(void *)                        = Call[operator new[]]            : func:r2104_1, 0:r2104_5
+# 2104|     mu2104_7(unknown)                      = ^CallSideEffect                 : ~m?
+# 2104|     mu2104_8(unknown)                      = ^InitializeDynamicAllocation    : &:r2104_6
+# 2104|     r2104_9(int *)                         = Convert                         : r2104_6
+# 2105|     v2105_1(void)                          = NoOp                            : 
+# 2098|     v2098_6(void)                          = ReturnVoid                      : 
+# 2098|     v2098_7(void)                          = AliasedUse                      : ~m?
+# 2098|     v2098_8(void)                          = ExitFunction                    : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

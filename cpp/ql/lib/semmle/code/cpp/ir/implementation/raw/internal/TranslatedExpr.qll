@@ -1906,8 +1906,10 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     resultType = getTypeForPRValue(expr.getAllocator().getParameter(0).getType()) and
     (
+      this.extentNeedsConversion() and
       // Convert the extent to `size_t`, because the AST doesn't do this already.
-      tag = AllocationExtentConvertTag() and opcode instanceof Opcode::Convert
+      tag = AllocationExtentConvertTag() and
+      opcode instanceof Opcode::Convert
       or
       tag = AllocationElementSizeTag() and opcode instanceof Opcode::Constant
       or
@@ -1918,6 +1920,7 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
+      this.extentNeedsConversion() and
       tag = AllocationExtentConvertTag() and
       result = this.getInstruction(AllocationElementSizeTag())
       or
@@ -1933,7 +1936,9 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
 
   final override Instruction getChildSuccessor(TranslatedElement child) {
     child = this.getExtent() and
-    result = this.getInstruction(AllocationExtentConvertTag())
+    if this.extentNeedsConversion()
+    then result = this.getInstruction(AllocationExtentConvertTag())
+    else result = this.getInstruction(AllocationElementSizeTag())
   }
 
   final override string getInstructionConstantValue(InstructionTag tag) {
@@ -1945,18 +1950,32 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
     tag = AllocationSizeTag() and
     (
       operandTag instanceof LeftOperandTag and
-      result = this.getInstruction(AllocationExtentConvertTag())
+      (
+        if this.extentNeedsConversion()
+        then result = this.getInstruction(AllocationExtentConvertTag())
+        else result = this.getExtent().getResult()
+      )
       or
       operandTag instanceof RightOperandTag and
       result = this.getInstruction(AllocationElementSizeTag())
     )
     or
+    this.extentNeedsConversion() and
     tag = AllocationExtentConvertTag() and
     operandTag instanceof UnaryOperandTag and
     result = this.getExtent().getResult()
   }
 
   TranslatedExpr getExtent() { result = getTranslatedExpr(expr.getExtent().getFullyConverted()) }
+
+  /**
+   * Holds if the result of `expr.getExtent()` does not have the same type as
+   * the allocator's size parameter.
+   */
+  private predicate extentNeedsConversion() {
+    expr.getExtent().getFullyConverted().getUnspecifiedType() !=
+      expr.getAllocator().getParameter(0).getUnspecifiedType()
+  }
 }
 
 /**
