@@ -25,7 +25,7 @@ The model editor has two different modes:
 Displaying the CodeQL model editor
 ----------------------------------
 
-#. Open your CodeQL workspace in VS Code, for example, the vscode-codeql-starter workspace.
+#. Open your CodeQL workspace in VS Code, for example, the ``vscode-codeql-starter`` workspace.
    If you haven't updated the ``ql`` submodule for a while, update it from ``main`` to ensure that you have the queries used to gather data for the model editor.
 #. Open the CodeQL extension and select the CodeQL database that you want to model from the "Databases" section of the left side pane.
 #. Use the command palette to run the “CodeQL: Open Model Editor (Beta)” command.
@@ -35,7 +35,7 @@ Displaying the CodeQL model editor
 Modeling the calls your codebase makes to external APIs
 -------------------------------------------------------
 
-You typically use this approach when you are looking at a specific codebase where you want to improve the precision of CodeQL results. This is usually when the codebase uses frameworks or libraries that are not supported by CodeQL and if the source code of the framework or library is not included in the analysis.. 
+You typically use this approach when you are looking at a specific codebase where you want to improve the precision of CodeQL results. This is usually when the codebase uses frameworks or libraries that are not supported by CodeQL and if the source code of the framework or library is not included in the analysis.
 
 #. Select the CodeQL database that you want to improve CodeQL coverage for.
 #. Display the CodeQL model editor. By default the editor runs in application mode, so the list of external APIs used by the selected codebase is shown.
@@ -59,7 +59,7 @@ You typically use this approach when you are looking at a specific codebase wher
    - **Flow summary**: choose the **Input** and **Output** elements to model.
 
 #. Define the **Kind** of dataflow for the model.
-#. When you have finished modeling, click **Save all** or  **Save** (shown at the bottom right of each expanded list of calls). The percentage of calls modeled in the editor is updated.
+#. When you have finished modeling, click **Save all** or **Save** (shown at the bottom right of each expanded list of calls). The percentage of calls modeled in the editor is updated.
 
 The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-pack>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL.
 
@@ -99,7 +99,7 @@ You typically use this method when you want to model a framework or library that
    - **Flow summary**: choose the **Input** and **Output** elements to model.
 
 #. Define the **Kind** of dataflow for the model.
-#. When you have finished modeling, click **Save all** or  **Save** (shown at the bottom right of each expanded list of calls). The percentage of calls modeled in the editor is updated.
+#. When you have finished modeling, click **Save all** or **Save** (shown at the bottom right of each expanded list of calls). The percentage of calls modeled in the editor is updated.
 
 The models are stored in your workspace at ``.github/codeql/extensions/<codeql-model-pack>``, where ``<codeql-model-pack>`` is the name of the CodeQL database that you selected. That is, the name of the repository, hyphen, the language analyzed by CodeQL.
 

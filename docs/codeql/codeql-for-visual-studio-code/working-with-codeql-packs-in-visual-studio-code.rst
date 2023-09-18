@@ -28,7 +28,7 @@ You can write and run query packs that depend on the CodeQL standard libraries, 
 Working with CodeQL query packs
 -------------------------------
 
-One of the main benefits of working with a CodeQL query pack is that all dependecies are resolved, not just those defined within the query and standard libraries.
+One of the main benefits of working with a CodeQL query pack is that all dependencies are resolved, not just those defined within the query and standard libraries.
 
 Creating and editing CodeQL query packs 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

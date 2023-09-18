@@ -21,7 +21,7 @@ For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql
 About data extensions
 ---------------------
 
-You can customize analysis by defining models (summaries, sinks, and sources) of your code's dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as a methods and callables. When you run dataflow analysis, these models expand the potential sources and sinks tracked by data flow analysis and improve the precision of results.
+You can customize analysis by defining models (summaries, sinks, and sources) of your code's dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as methods and callables. When you run dataflow analysis, these models expand the potential sources and sinks tracked by data flow analysis and improve the precision of results.
 
 Most of the security queries search for paths from a source of untrusted input to a sink that represents a vulnerability. This is known as taint tracking. Each source is a starting point for dataflow analysis to track tainted data and each sink is an end point.
 
@@ -64,7 +64,7 @@ The CodeQL library for Java and Kotlin analysis exposes the following extensible
 - ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data.
 - ``sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data maybe used in a way that makes the code vulnerable.
 - ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
-- ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the data flow analysis.
+- ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis.
 
 The extensible predicates are populated using data extensions specified in YAML files. For more information about extensible predicates, see ":doc:`extensible-predicates`."
 
@@ -258,7 +258,7 @@ For the remaining values for both rows:
 - The ninth value ``value`` is the kind of the flow. ``value`` means that the value is preserved.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
 
-That is, the first row specifies that values can flow from the elements of the qualifier stream into the first argument of the function provided to ``map``.  The second row sepcifies that values can flow from the return value of the function to the elements of the stream returned from ``map``.
+That is, the first row specifies that values can flow from the elements of the qualifier stream into the first argument of the function provided to ``map``.  The second row specifies that values can flow from the return value of the function to the elements of the stream returned from ``map``.
 
 Example: Add a ``neutral`` method
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
