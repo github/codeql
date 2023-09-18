@@ -10,22 +10,23 @@
 private import csharp
 private import AutomodelVsCode
 
-class ExternalApi extends CallableMethod {
-  ExternalApi() {
+class ExternalEndpoint extends Endpoint {
+  ExternalEndpoint() {
     this.isUnboundDeclaration() and
     this.fromLibrary()
   }
 }
 
-private Call aUsage(ExternalApi api) { result.getTarget().getUnboundDeclaration() = api }
+private Call aUsage(ExternalEndpoint api) { result.getTarget().getUnboundDeclaration() = api }
 
 from
-  ExternalApi api, string apiName, boolean supported, Call usage, string type, string classification
+  ExternalEndpoint endpoint, string apiName, boolean supported, Call usage, string type,
+  string classification
 where
-  apiName = api.getApiName() and
-  supported = isSupported(api) and
-  usage = aUsage(api) and
-  type = supportedType(api) and
+  apiName = endpoint.getApiName() and
+  supported = isSupported(endpoint) and
+  usage = aUsage(endpoint) and
+  type = supportedType(endpoint) and
   classification = methodClassification(usage)
-select usage, apiName, supported.toString(), "supported", api.dllName(), api.dllVersion(), type,
-  "type", classification, "classification"
+select usage, apiName, supported.toString(), "supported", endpoint.dllName(), endpoint.dllVersion(),
+  type, "type", classification, "classification"

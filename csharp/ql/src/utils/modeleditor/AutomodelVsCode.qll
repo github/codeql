@@ -12,7 +12,6 @@ private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSumma
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.frameworks.Test
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
-
 private import Telemetry.TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
@@ -25,8 +24,8 @@ private predicate isUninteresting(DotNet::Callable c) {
 /**
  * An callable method from either the C# Standard Library, a 3rd party library, or from the source.
  */
-class CallableMethod extends DotNet::Callable {
-  CallableMethod() {
+class Endpoint extends DotNet::Callable {
+  Endpoint() {
     [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic() and
     not isUninteresting(this)
   }
@@ -121,23 +120,23 @@ class CallableMethod extends DotNet::Callable {
   }
 }
 
-boolean isSupported(CallableMethod callableMethod) {
-  callableMethod.isSupported() and result = true
+boolean isSupported(Endpoint endpoint) {
+  endpoint.isSupported() and result = true
   or
-  not callableMethod.isSupported() and
+  not endpoint.isSupported() and
   result = false
 }
 
-string supportedType(CallableMethod method) {
-  method.isSink() and result = "sink"
+string supportedType(Endpoint endpoint) {
+  endpoint.isSink() and result = "sink"
   or
-  method.isSource() and result = "source"
+  endpoint.isSource() and result = "source"
   or
-  method.hasSummary() and result = "summary"
+  endpoint.hasSummary() and result = "summary"
   or
-  method.isNeutral() and result = "neutral"
+  endpoint.isNeutral() and result = "neutral"
   or
-  not method.isSupported() and result = ""
+  not endpoint.isSupported() and result = ""
 }
 
 string methodClassification(Call method) {
