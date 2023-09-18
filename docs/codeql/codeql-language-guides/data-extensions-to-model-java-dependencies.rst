@@ -21,7 +21,7 @@ For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql
 About data extensions
 ---------------------
 
-You can customize analysis by defining models (summaries, sinks, and sources) of your code's dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as methods and callables. When you run dataflow analysis, these models expand the potential sources and sinks tracked by data flow analysis and improve the precision of results.
+You can customize analysis by defining models (summaries, sinks, and sources) of your code's dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as methods and callables. When you run dataflow analysis, these models expand the potential sources and sinks tracked by dataflow analysis and improve the precision of results.
 
 Most of the security queries search for paths from a source of untrusted input to a sink that represents a vulnerability. This is known as taint tracking. Each source is a starting point for dataflow analysis to track tainted data and each sink is an end point.
 
