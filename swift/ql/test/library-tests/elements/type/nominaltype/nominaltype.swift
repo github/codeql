@@ -29,10 +29,6 @@ class C1 : P {
 class C2 : P_alias {
 }
 
-typealias C1_alias = C1
-
-typealias C2_alias = C2
-
 // ---
 
 class Outer {
@@ -79,7 +75,7 @@ protocol P4 {
 
 typealias P4_alias = P4
 
-extension D2_alias : P4_alias {
+extension D2 : P4_alias {
 }
 
 // ---
@@ -98,13 +94,11 @@ func test() {
 	var p_alias : P_alias
 	var c1 : C1
 	var c2 : C2
-	var c1_alias : C1_alias
-	var c2_alias : C2_alias
 	var o : Outer
 	var oi : Outer.Inner
 	var oia : Outer.Inner.InnerAlias
 	var p1p2 : P1P2
 	var boxInt : Box<A>
 	var d1: D1
-	var d2: D2_alias
+	var d2: D2
 }
