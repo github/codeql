@@ -2132,8 +2132,9 @@ int constexprTest2() {
 int ConstTernary(int y, int z) {
     int a = 1 ? y : z;
     int b = 0 ? y : z;
-    int c = 1 ? 1 : 0;
-    return a + b + c;
+    int c = __builtin_constant_p(y) ? y : z;
+    int d = __builtin_constant_p(2) ? y : z;
+    return a + b + c + d;
 }
 
 // semmle-extractor-options: -std=c++17 --clang
