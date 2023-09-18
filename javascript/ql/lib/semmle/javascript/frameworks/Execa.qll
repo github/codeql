@@ -20,8 +20,10 @@ private class DynamicImport extends SystemCommandExecution, DataFlow::ExprNode {
   override DataFlow::Node getOptionsArg() { none() }
 }
 
+/**
+ * Provide model for [Execa](https://github.com/sindresorhus/execa) package
+ */
 module Execa {
-  // https://github.com/sindresorhus/execa
   private class ExecaRead extends FileSystemReadAccess, DataFlow::Node {
     API::Node execaNode;
 
@@ -77,7 +79,7 @@ module Execa {
     }
 
     predicate isArgumentInjectable(DataFlow::Node arg) {
-      // arguments can be vulnerable if the arguemnts belongs to a command that is vulnerable to command execution through argument itself
+      // arguments can be vulnerable if the arguments belongs to a command that is vulnerable to command execution through argument itself
       // like `-oProxyCommand=touch file` by ssh command
       // function execa(file: string,arguments?: readonly string[],options?: Options<BufferEncodingOption>): ExecaChildProcess<Buffer>;
       arg = this.getParameter(1).getUnknownMember().asSink() and
@@ -123,22 +125,18 @@ module Execa {
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // $({shell: true})`${sink} ${sink} .. ${sink}`
-      // ISSUE: $`cmd args` I can't reach the tag function argument easyily
+      // ISSUE: $`cmd args` I can't reach the tag function argument easily
       exists(TemplateLiteral tmpL | templateLiteralChildAsSink(this.asExpr()) = tmpL |
         arg.asExpr() = tmpL.getAChildExpr+() and
         isExecaShellEnableWithExpr(this.asExpr().(CallExpr).getArgument(0))
       )
     }
 
-    predicate isArgumentInjectable(DataFlow::Node arg) {
-      // first arg only can execute one command so it is not vulnerable when we can inject something into it
-      // but if the commmand is an executable like ssh then their arguments can be injected
-      // and execute a command (a payload like `-oProxyCommand=touch file`)
-      // $({shell: true})`${Can Not Be sink} ${sink} .. ${sink}`
+    override DataFlow::Node getArgumentList() {
+      // $`${Can Not Be sink} ${sink} .. ${sink}`
       exists(TemplateLiteral tmpL | templateLiteralChildAsSink(this.asExpr()) = tmpL |
-        arg.asExpr() = tmpL.getAChildExpr+() and
-        not arg.asExpr() = tmpL.getChildExpr(0) and
-        argumentIsInjectable(tmpL.getChildExpr(0).getStringValue())
+        result.asExpr() = tmpL.getAChildExpr+() and
+        not result.asExpr() = tmpL.getChildExpr(0)
       )
     }
 
@@ -169,6 +167,13 @@ module Execa {
 
     override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
 
+    override DataFlow::Node getArgumentList() {
+      // execaCommand("echo " + sink);
+      // execaCommand(`echo ${sink}`);
+      result.asExpr() = this.getParameter(0).asSink().asExpr().getAChildExpr+() and
+      not result.asExpr() = this.getArgument(0).asExpr().getChildExpr(0)
+    }
+
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // execaCommandSync(sink1 + sink2, {shell: true})
       arg.asExpr() = this.getArgument(0).asExpr().getAChildExpr+() and
@@ -178,15 +183,6 @@ module Execa {
       // it makes sanitizing really hard to select whether it is vulnerable to argument injection or not
       arg = this.getParameter(0).asSink() and
       not exists(this.getArgument(0).asExpr().getChildExpr(1))
-    }
-
-    predicate isArgumentInjectable(DataFlow::Node arg) {
-      // first arg is the command so we should check whether it is beginning with a command that is vulnerable to argument command injection or not
-      // execaCommand("echo " + sink);
-      // execaCommand(`echo ${sink}`);
-      argumentIsInjectable(this.getParameter(0).asSink().asExpr().getChildExpr(0).getStringValue()) and
-      arg.asExpr() = this.getParameter(0).asSink().asExpr().getAChildExpr+() and
-      not arg.asExpr() = this.getArgument(0).asExpr().getChildExpr(0)
     }
 
     override predicate isSync() { name = "execaCommandSync" }
