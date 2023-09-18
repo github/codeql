@@ -6,6 +6,9 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - django_tables2
+    - Member[SingleTableView]
+  - - Django.Views.View~Subclass
+    - django_tables2
     - Member[views].Member[ListView]
   - - Django.Views.View~Subclass
     - django_tables2

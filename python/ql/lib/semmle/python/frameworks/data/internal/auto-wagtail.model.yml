@@ -45,6 +45,9 @@ extensions:
     - Member[fields].Member[BlockField]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[api].Member[urls].Member[PagesAdminAPIViewSet]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[api].Member[views].Member[PagesAPIViewSet]
   - - Django.Views.View~Subclass
     - wagtail
@@ -90,10 +93,16 @@ extensions:
     - Member[admin].Member[views].Member[account].Member[PasswordResetView]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[bulk_action].Member[BulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[bulk_action].Member[base_bulk_action].Member[BulkAction]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[bulk_action].Member[base_bulk_action].Member[FormView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[bulk_action].Member[registry].Member[BulkAction]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[chooser].Member[AnchorLinkView]
@@ -123,13 +132,25 @@ extensions:
     - Member[admin].Member[views].Member[chooser].Member[View]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[collections].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[collections].Member[Create]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[collections].Member[DeleteView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[collections].Member[Delete]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[collections].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[collections].Member[Edit]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[collections].Member[IndexView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[collections].Member[Index]
@@ -139,6 +160,30 @@ extensions:
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[dismissibles].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[BaseOperationView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[RevisionsCompareView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[RevisionsUnscheduleView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[UnpublishView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[generic].Member[base].Member[BaseOperationView]
@@ -264,6 +309,18 @@ extensions:
     - Member[admin].Member[views].Member[home].Member[TemplateView]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[DeleteBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[MoveBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[PublishBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[UnpublishBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[delete].Member[DeleteBulkAction]
   - - Django.Views.View~Subclass
     - wagtail
@@ -274,6 +331,9 @@ extensions:
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[move].Member[PageBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[page_bulk_action].Member[BulkAction]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[bulk_actions].Member[page_bulk_action].Member[PageBulkAction]
@@ -304,6 +364,9 @@ extensions:
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[history].Member[PageHistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[history].Member[ReportView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[history].Member[WorkflowHistoryDetailView]
@@ -369,10 +432,22 @@ extensions:
     - Member[admin].Member[views].Member[pages].Member[workflow].Member[WorkflowStatus]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[reports].Member[PageReportView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[ReportView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[reports].Member[aging_pages].Member[AgingPagesView]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[reports].Member[aging_pages].Member[PageReportView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[reports].Member[audit_logging].Member[LogEntriesView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[audit_logging].Member[ReportView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[reports].Member[base].Member[IndexView]
@@ -387,6 +462,12 @@ extensions:
     - Member[admin].Member[views].Member[reports].Member[locked_pages].Member[LockedPagesView]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[reports].Member[locked_pages].Member[PageReportView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[reports].Member[workflows].Member[ReportView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[reports].Member[workflows].Member[WorkflowTasksView]
   - - Django.Views.View~Subclass
     - wagtail
@@ -399,7 +480,13 @@ extensions:
     - Member[admin].Member[views].Member[workflows].Member[CreateTask]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[workflows].Member[Create]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[DeleteView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[workflows].Member[DisableTask]
@@ -411,7 +498,13 @@ extensions:
     - Member[admin].Member[views].Member[workflows].Member[EditTask]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[workflows].Member[Edit]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[workflows].Member[IndexView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[workflows].Member[Index]
@@ -432,6 +525,18 @@ extensions:
     - Member[admin].Member[views].Member[workflows].Member[TemplateView]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[wagtail_hooks].Member[DeleteBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[wagtail_hooks].Member[MoveBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[wagtail_hooks].Member[PublishBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[wagtail_hooks].Member[UnpublishBulkAction]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[api].Member[v2].Member[views].Member[BaseAPIViewSet]
   - - Django.Views.View~Subclass
     - wagtail
@@ -439,6 +544,27 @@ extensions:
   - - Django.Views.View~Subclass
     - wagtail
     - Member[api].Member[v2].Member[views].Member[PagesAPIViewSet]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[options].Member[ChooseParentView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[options].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[options].Member[DeleteView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[options].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[options].Member[HistoryView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[options].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[options].Member[InspectView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[contrib].Member[modeladmin].Member[views].Member[ChooseParentView]
@@ -618,16 +744,34 @@ extensions:
     - Member[users].Member[views].Member[groups].Member[Index]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[users].Member[views].Member[users].Member[CreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[users].Member[views].Member[users].Member[Create]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[users].Member[views].Member[users].Member[DeleteView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[users].Member[views].Member[users].Member[Delete]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[users].Member[views].Member[users].Member[EditView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[users].Member[views].Member[users].Member[Edit]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[users].Member[views].Member[users].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[users].Member[views].Member[users].Member[Index]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[WagtailAdminPageForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[account].Member[AvatarPreferencesForm]
@@ -681,6 +825,9 @@ extensions:
     - Member[admin].Member[forms].Member[collections].Member[BaseCollectionMemberForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
+    - Member[admin].Member[forms].Member[collections].Member[BaseViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
     - Member[admin].Member[forms].Member[collections].Member[CollectionForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
@@ -693,10 +840,19 @@ extensions:
     - Member[admin].Member[forms].Member[comments].Member[CommentReplyForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
+    - Member[admin].Member[forms].Member[comments].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
     - Member[admin].Member[forms].Member[models].Member[ClusterForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
+    - Member[admin].Member[forms].Member[models].Member[PermissionedForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
     - Member[admin].Member[forms].Member[models].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[pages].Member[BaseViewRestrictionForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[pages].Member[CopyForm]
@@ -706,6 +862,9 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[pages].Member[PageViewRestrictionForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[pages].Member[WagtailAdminModelForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[pages].Member[WagtailAdminPageForm]
@@ -723,6 +882,9 @@ extensions:
     - Member[admin].Member[forms].Member[workflows].Member[TaskChooserSearchForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
+    - Member[admin].Member[forms].Member[workflows].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
     - Member[admin].Member[forms].Member[workflows].Member[WorkflowContentTypeForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
@@ -730,6 +892,12 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[panels].Member[CommentForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[panels].Member[WagtailAdminModelForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[panels].Member[WagtailAdminPageForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[panels].Member[base].Member[WagtailAdminModelForm]
@@ -837,7 +1005,16 @@ extensions:
     - Member[contrib].Member[forms].Member[forms].Member[WagtailAdminFormPageForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
+    - Member[contrib].Member[forms].Member[forms].Member[WagtailAdminPageForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[contrib].Member[forms].Member[models].Member[WagtailAdminFormPageForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
     - Member[contrib].Member[modeladmin].Member[forms].Member[ParentChooserForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[contrib].Member[modeladmin].Member[views].Member[ParentChooserForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[documents].Member[views].Member[serve].Member[PasswordViewRestrictionForm]

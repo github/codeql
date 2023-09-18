@@ -16,6 +16,12 @@ extensions:
   - - Django.Forms.Field~Subclass
     - django_file_form
     - Member[forms].Member[CharField]
+  - - Django.Forms.Field~Subclass
+    - django_file_form
+    - Member[forms].Member[MultipleUploadedFileField]
+  - - Django.Forms.Field~Subclass
+    - django_file_form
+    - Member[forms].Member[UploadedFileField]
   - - django.forms.BaseForm~Subclass
     - django_file_form
     - Member[forms].Member[Form]

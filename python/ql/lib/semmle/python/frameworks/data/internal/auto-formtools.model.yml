@@ -28,3 +28,6 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - formtools
     - Member[wizard].Member[forms].Member[ManagementForm]
+  - - django.forms.BaseForm~Subclass
+    - formtools
+    - Member[wizard].Member[views].Member[ManagementForm]

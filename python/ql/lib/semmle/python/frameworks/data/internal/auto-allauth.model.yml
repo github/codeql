@@ -93,6 +93,30 @@ extensions:
     - Member[account].Member[forms].Member[_DummyCustomSignupForm]
   - - django.forms.BaseForm~Subclass
     - allauth
+    - Member[account].Member[views].Member[AddEmailForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[views].Member[ChangePasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[views].Member[LoginForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[views].Member[ResetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[views].Member[ResetPasswordKeyForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[views].Member[SetPasswordForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[views].Member[SignupForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
+    - Member[account].Member[views].Member[UserTokenForm]
+  - - django.forms.BaseForm~Subclass
+    - allauth
     - Member[socialaccount].Member[admin].Member[SocialAppForm]
   - - django.forms.BaseForm~Subclass
     - allauth
