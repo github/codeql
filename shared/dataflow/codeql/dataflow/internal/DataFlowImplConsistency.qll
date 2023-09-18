@@ -262,21 +262,33 @@ module MakeConsistency<
     not Input::viableImplInCallContextTooLargeExclude(call, ctx, callable)
   }
 
+  private predicate uniqueParameterNodeAtPositionInclude(
+    DataFlowCallable c, ParameterPosition pos, Node p
+  ) {
+    not Input::uniqueParameterNodeAtPositionExclude(c, pos, p) and
+    isParameterNode(p, c, pos)
+  }
+
   query predicate uniqueParameterNodeAtPosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
-    not Input::uniqueParameterNodeAtPositionExclude(c, pos, p) and
-    isParameterNode(p, c, pos) and
-    not exists(unique(Node p0 | isParameterNode(p0, c, pos))) and
+    uniqueParameterNodeAtPositionInclude(c, pos, p) and
+    not exists(unique(Node p0 | uniqueParameterNodeAtPositionInclude(c, pos, p0))) and
     msg = "Parameters with overlapping positions."
+  }
+
+  private predicate uniqueParameterNodePositionInclude(
+    DataFlowCallable c, ParameterPosition pos, Node p
+  ) {
+    not Input::uniqueParameterNodePositionExclude(c, pos, p) and
+    isParameterNode(p, c, pos)
   }
 
   query predicate uniqueParameterNodePosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
-    not Input::uniqueParameterNodePositionExclude(c, pos, p) and
-    isParameterNode(p, c, pos) and
-    not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
+    uniqueParameterNodePositionInclude(c, pos, p) and
+    not exists(unique(ParameterPosition pos0 | uniqueParameterNodePositionInclude(c, pos0, p))) and
     msg = "Parameter node with multiple positions."
   }
 
@@ -297,13 +309,14 @@ module MakeConsistency<
     msg = "Missing call for argument node."
   }
 
-  query predicate multipleArgumentCall(ArgumentNode arg, DataFlowCall call, string msg) {
+  private predicate multipleArgumentCallInclude(ArgumentNode arg, DataFlowCall call) {
     isArgumentNode(arg, call, _) and
-    not Input::multipleArgumentCallExclude(arg, call) and
-    strictcount(DataFlowCall call0 |
-      isArgumentNode(arg, call0, _) and
-      not Input::multipleArgumentCallExclude(arg, call0)
-    ) > 1 and
+    not Input::multipleArgumentCallExclude(arg, call)
+  }
+
+  query predicate multipleArgumentCall(ArgumentNode arg, DataFlowCall call, string msg) {
+    multipleArgumentCallInclude(arg, call) and
+    strictcount(DataFlowCall call0 | multipleArgumentCallInclude(arg, call0)) > 1 and
     msg = "Multiple calls for argument node."
   }
 }
