@@ -19,9 +19,6 @@ from
   DollarAtString extensibleType
 where
   endpoint.getExtensibleType() = extensibleType and
-  // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
-  // certain about in the prompt.
-  not erroneousEndpoints(endpoint, _, _, _, _, false) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
   CharacteristicsImpl::isKnownAs(endpoint, sinkType, _)
