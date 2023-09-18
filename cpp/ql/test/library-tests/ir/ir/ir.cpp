@@ -2129,5 +2129,11 @@ int constexprTest2() {
     return j;
 }
 
+int ConstTernary(int y, int z) {
+    int a = 1 ? y : z;
+    int b = 0 ? y : z;
+    int c = 1 ? 1 : 0;
+    return a + b + c;
+}
 
 // semmle-extractor-options: -std=c++17 --clang
