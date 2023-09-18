@@ -6,6 +6,15 @@ extensions:
   data:
   - - django.forms.BaseForm~Subclass
     - import_export
+    - Member[admin].Member[ConfirmImportForm]
+  - - django.forms.BaseForm~Subclass
+    - import_export
+    - Member[admin].Member[ExportForm]
+  - - django.forms.BaseForm~Subclass
+    - import_export
+    - Member[admin].Member[ImportForm]
+  - - django.forms.BaseForm~Subclass
+    - import_export
     - Member[forms].Member[ActionForm]
   - - django.forms.BaseForm~Subclass
     - import_export

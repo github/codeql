@@ -6,6 +6,9 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - url_or_relative_url_field
+    - Member[fields].Member[URLOrRelativeURLFormField]
+  - - Django.Forms.Field~Subclass
+    - url_or_relative_url_field
     - Member[forms].Member[URLField]
   - - Django.Forms.Field~Subclass
     - url_or_relative_url_field

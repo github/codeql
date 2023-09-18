@@ -21,10 +21,34 @@ extensions:
     - Member[contrib].Member[gis].Member[forms].Member[FilePathField]
   - - Django.Forms.Field~Subclass
     - django
+    - Member[contrib].Member[gis].Member[forms].Member[GeometryCollectionField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[GeometryField]
+  - - Django.Forms.Field~Subclass
+    - django
     - Member[contrib].Member[gis].Member[forms].Member[ImageField]
   - - Django.Forms.Field~Subclass
     - django
     - Member[contrib].Member[gis].Member[forms].Member[JSONField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[LineStringField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[MultiLineStringField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[MultiPointField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[MultiPolygonField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[PointField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[forms].Member[PolygonField]
   - - Django.Forms.Field~Subclass
     - django
     - Member[contrib].Member[gis].Member[forms].Member[RegexField]
