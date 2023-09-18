@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - dal_queryset_sequence
+    - Member[fields].Member[GenericForeignKeyModelField]
+  - - Django.Forms.Field~Subclass
+    - dal_queryset_sequence
+    - Member[fields].Member[QuerySetSequenceModelField]
+  - - Django.Forms.Field~Subclass
+    - dal_queryset_sequence
+    - Member[fields].Member[QuerySetSequenceModelMultipleField]
+  - - Django.Views.View~Subclass
+    - dal_queryset_sequence
+    - Member[views].Member[BaseQuerySetSequenceView]
+  - - Django.Views.View~Subclass
+    - dal_queryset_sequence
+    - Member[views].Member[BaseQuerySetView]
