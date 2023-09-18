@@ -832,3 +832,20 @@ void test7_no_field_flow(int size) {
   mk_array_no_field_flow(size, &begin, &end);
   test7_callee_no_field_flow(begin, end);
 }
+
+void test15_with_malloc(unsigned long index) {
+  unsigned long size = index + 13;
+  if(size < index) {
+    return;
+  }
+  int* newname = (int*)malloc(size);
+  newname[index] = 0; // $ SPURIOUS: alloc=L841 deref=L842 // GOOD [FALSE POSITIVE]
+}
+
+void test16_with_malloc(unsigned long index) {
+  unsigned long size = index + 13;
+  if(size >= index) {
+    int* newname = (int*)malloc(size);
+    newname[index] = 0; // $ SPURIOUS: alloc=L848 deref=L849 // GOOD [FALSE POSITIVE]
+  }
+}
