@@ -35,8 +35,9 @@ class TypeDecl extends Generated::TypeDecl {
   deprecated Type getBaseType(int index) { result = this.getInheritedType(index) }
 
   /**
-   * Gets any of the base types of this type declaration. Expands type aliases, for example
-   * in the following code, `B` has base type `A`.
+   * Gets any of the base types of this type declaration. Expands protocols added in
+   * extensions and expands type aliases. For example in the following code, `B` has
+   * base type `A`:
    * ```
    * typealias A_alias = A
    *
@@ -44,8 +45,14 @@ class TypeDecl extends Generated::TypeDecl {
    * ```
    */
   Type getABaseType() {
-    // TODO generalize this to consider bases added by extensions
+    // direct base type
     result = this.getAnInheritedType().getUnderlyingType()
+    or
+    // protocol added in an extension of the type
+    exists(ExtensionDecl ed |
+      ed.getExtendedTypeDecl() = this and
+      ed.getAProtocol().getType() = result
+    )
   }
 
   /**
@@ -57,8 +64,9 @@ class TypeDecl extends Generated::TypeDecl {
   }
 
   /**
-   * Gets the declaration of any of the base types of this type declaration. Expands type
-   * aliases, for example in the following code, `B` has base type decl `A`.
+   * Gets the declaration of any of the base types of this type declaration. Expands
+   * protocols added in extensions and expands type aliases. For example in the following
+   * code, `B` has base type `A`.
    * ```
    * typealias A_alias = A
    *
@@ -75,8 +83,9 @@ class TypeDecl extends Generated::TypeDecl {
   deprecated TypeDecl getDerivedTypeDecl(int i) { result.getBaseTypeDecl(i) = this }
 
   /**
-   * Gets the declaration of any type derived from this type declaration. Expands type aliases,
-   * for example in the following code, `B` is derived from `A`.
+   * Gets the declaration of any type derived from this type declaration. Expands protocols
+   * added in extensions and expands type aliases. For example in the following code, `B`
+   * is derived from `A`.
    * ```
    * typealias A_alias = A
    *

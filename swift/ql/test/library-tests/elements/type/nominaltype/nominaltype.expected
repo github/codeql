@@ -1,4 +1,4 @@
-| nominaltype.swift:84:6:84:6 | i | Int | getABaseType:FixedWidthInteger, getABaseType:SignedInteger, getABaseType:_ExpressibleByBuiltinIntegerLiteral, getFullName:Int, getName:Int, getUnderlyingType:Int |
+| nominaltype.swift:84:6:84:6 | i | Int | getABaseType:CVarArg, getABaseType:CodingKeyRepresentable, getABaseType:CustomReflectable, getABaseType:Decodable, getABaseType:Encodable, getABaseType:Equatable, getABaseType:FixedWidthInteger, getABaseType:Hashable, getABaseType:MirrorPath, getABaseType:SIMDScalar, getABaseType:Sendable, getABaseType:SignedInteger, getABaseType:_CustomPlaygroundQuickLookable, getABaseType:_ExpressibleByBuiltinIntegerLiteral, getABaseType:_HasCustomAnyHashableRepresentation, getFullName:Int, getName:Int, getUnderlyingType:Int |
 | nominaltype.swift:85:6:85:6 | j | Any? | getFullName:Any?, getName:Any?, getUnderlyingType:Any? |
 | nominaltype.swift:86:6:86:6 | a | A | getFullName:A, getName:A, getUnderlyingType:A |
 | nominaltype.swift:87:6:87:6 | a_alias | A_alias | getAliasedType:A, getFullName:A_alias, getName:A_alias, getUnderlyingType:A |
@@ -16,5 +16,5 @@
 | nominaltype.swift:99:6:99:6 | oia | Outer.Inner.InnerAlias | getAliasedType:A, getFullName:Outer.Inner.InnerAlias, getName:InnerAlias, getUnderlyingType:A |
 | nominaltype.swift:100:6:100:6 | p1p2 | P1P2 | getFullName:P1P2, getName:P1P2, getUnderlyingType:P1P2 |
 | nominaltype.swift:101:6:101:6 | boxInt | Box<A> | getFullName:Box<A>, getName:Box<A>, getUnderlyingType:Box<A> |
-| nominaltype.swift:102:6:102:6 | d1 | D1 | getFullName:D1, getName:D1, getUnderlyingType:D1 |
-| nominaltype.swift:103:6:103:6 | d2 | D2 | getFullName:D2, getName:D2, getUnderlyingType:D2 |
+| nominaltype.swift:102:6:102:6 | d1 | D1 | getABaseType:P3, getFullName:D1, getName:D1, getUnderlyingType:D1 |
+| nominaltype.swift:103:6:103:6 | d2 | D2 | getABaseType:P4, getFullName:D2, getName:D2, getUnderlyingType:D2 |

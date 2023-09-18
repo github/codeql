@@ -43,8 +43,8 @@ class Type extends Generated::Type {
   Type getUnderlyingType() { result = this }
 
   /**
-   * Gets any base type of this type. Expands type aliases, for example in the following
-   * code, `B` has base type `A`.
+   * Gets any base type of this type. Expands protocols added in extensions and expands
+   * type aliases. For example in the following code, `B` has base type `A`:
    * ```
    * typealias A_alias = A
    *
