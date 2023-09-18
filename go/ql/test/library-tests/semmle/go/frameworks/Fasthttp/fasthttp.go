@@ -188,7 +188,8 @@ func fasthttpServer() {
 		// not sure what is the best way to write query for following
 		//requestCtx.Request.Header.VisitAllCookie()
 
-		// Xss Sinks
+		// Response methods
+		// Xss Sinks Related method
 		requestCtx.Response.AppendBody([]byte("user Controlled"))
 		requestCtx.Response.AppendBodyString("user Controlled")
 		rspWriter := requestCtx.Response.BodyWriter()
@@ -197,6 +198,15 @@ func fasthttpServer() {
 		requestCtx.Response.SetBodyString("user Controlled")
 		requestCtx.Response.SetBodyRaw([]byte("user Controlled"))
 		requestCtx.Response.SetBodyStream(dstReader, 100)
+		// mostly related to header writers
+		requestCtx.Response.Header.Set("Content-Type", "")
+		requestCtx.Response.Header.Add("Content-Type", "")
+		requestCtx.Response.Header.SetContentTypeBytes([]byte(""))
+		requestCtx.Response.Header.SetContentType("")
+		requestCtx.Success("", []byte("body"))
+		requestCtx.SuccessString("", "body")
+		requestCtx.SetContentType("")
+		requestCtx.SetContentTypeBytes([]byte(""))
 
 		// sanitizers
 		requestCtx.Response.AppendBody(fasthttp.AppendQuotedArg([]byte(""), []byte("<>\"':()&")))       // %3C%3E%22%27%3A%28%29%26
