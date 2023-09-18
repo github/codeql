@@ -58,7 +58,7 @@ class ZeroBound extends Bound, TBoundZero {
   override string toString() { result = "0" }
 
   override Instruction getInstruction(int delta) {
-    result.(ConstantValueInstruction).getValue().toInt() = delta
+    result.(ConstantInstruction).getValue().toInt() = delta
   }
 
   override Location getLocation() { result instanceof UnknownDefaultLocation }

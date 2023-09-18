@@ -28,7 +28,7 @@ private Instruction getMemoryAddressInstruction(Instruction i) {
   ) and
   not result instanceof FieldAddressInstruction and
   not result instanceof VariableAddressInstruction and
-  not result instanceof ConstantValueInstruction
+  not result instanceof ConstantInstruction
 }
 
 /**

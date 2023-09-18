@@ -238,13 +238,19 @@ private class GuardConditionFromIR extends GuardCondition {
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
+  pragma[noinline]
   private predicate controlsBlock(BasicBlock controlled, boolean testIsTrue) {
     exists(IRBlock irb |
-      forex(IRGuardCondition inst | inst = ir | inst.controls(irb, testIsTrue)) and
-      irb.getAnInstruction().getAst().(ControlFlowNode).getBasicBlock() = controlled and
+      ir.(IRGuardCondition).controls(irb, testIsTrue) and
+      controlled = getBasicBlockFromIrBlock(irb) and
       not isUnreachedBlock(irb)
     )
   }
+}
+
+pragma[noinline]
+private BasicBlock getBasicBlockFromIrBlock(IRBlock irb) {
+  result = irb.getAnInstruction().getAst().(ControlFlowNode).getBasicBlock()
 }
 
 /**

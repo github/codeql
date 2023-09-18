@@ -6,6 +6,8 @@
 #-----|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] __va_list_tag &&
+#-----| [TopLevelFunction] int __builtin_constant_p()
+#-----|   <params>: 
 #-----| [Operator,TopLevelFunction] void operator delete(void*)
 #-----|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -207,6 +209,44 @@ bad_asts.cpp:
 #   27|                 Type = [SpecifiedType] const Point
 #   27|                 ValueCategory = lvalue
 #   28|     getStmt(1): [ReturnStmt] return ...
+#   30| [TopLevelFunction] short Bad::foo()
+#   30|   <params>: 
+#   30|   getEntryPoint(): [BlockStmt] { ... }
+#   31|     getStmt(0): [ReturnStmt] return ...
+#   31|       getExpr(): [Literal] 5
+#   31|           Type = [IntType] int
+#   31|           Value = [Literal] 5
+#   31|           ValueCategory = prvalue
+#   31|       getExpr().getFullyConverted(): [CStyleCast] (short)...
+#   31|           Conversion = [IntegralConversion] integral conversion
+#   31|           Type = [ShortType] short
+#   31|           Value = [CStyleCast] 5
+#   31|           ValueCategory = prvalue
+#   34| [TopLevelFunction] int Bad::ParensCall()
+#   34|   <params>: 
+#   34|   getEntryPoint(): [BlockStmt] { ... }
+#   36|     getStmt(0): [ReturnStmt] return ...
+#   36|       getExpr(): [LEExpr] ... <= ...
+#   36|           Type = [BoolType] bool
+#   36|           ValueCategory = prvalue
+#   36|         getLesserOperand(): [Literal] 5
+#   36|             Type = [IntType] int
+#   36|             Value = [Literal] 5
+#   36|             ValueCategory = prvalue
+#   36|         getGreaterOperand(): [FunctionCall] call to foo
+#   36|             Type = [ShortType] short
+#   36|             ValueCategory = prvalue
+#   36|         getGreaterOperand().getFullyConverted(): [ParenthesisExpr] (...)
+#   36|             Type = [FunctionPointerType] ..(*)(..)
+#   36|             ValueCategory = prvalue
+#   36|         getGreaterOperand().getFullyConverted(): [CStyleCast] (int)...
+#   36|             Conversion = [IntegralConversion] integral conversion
+#   36|             Type = [IntType] int
+#   36|             ValueCategory = prvalue
+#   36|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+#   36|           Conversion = [IntegralConversion] integral conversion
+#   36|           Type = [IntType] int
+#   36|           ValueCategory = prvalue
 bad_stmts.cpp:
 #    5| [TopLevelFunction] void Bad::errorExpr()
 #    5|   <params>: 
@@ -15846,6 +15886,281 @@ ir.cpp:
 # 2095|       getExpr(): [VariableAccess] x
 # 2095|           Type = [IntType] int
 # 2095|           ValueCategory = prvalue(load)
+# 2098| [TopLevelFunction] int enumConstant()
+# 2098|   <params>: 
+# 2098|   getEntryPoint(): [BlockStmt] { ... }
+# 2099|     getStmt(0): [DeclStmt] declaration
+# 2099|       getDeclarationEntry(0): [TypeDeclarationEntry] definition of E
+# 2099|           Type = [LocalEnum] E
+# 2100|     getStmt(1): [ReturnStmt] return ...
+# 2100|       getExpr(): [EnumConstantAccess] A
+# 2100|           Type = [LocalEnum] E
+# 2100|           Value = [EnumConstantAccess] 0
+# 2100|           ValueCategory = prvalue
+# 2100|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2100|           Conversion = [IntegralConversion] integral conversion
+# 2100|           Type = [IntType] int
+# 2100|           Value = [CStyleCast] 0
+# 2100|           ValueCategory = prvalue
+# 2103| [TopLevelFunction] int alignofTest()
+# 2103|   <params>: 
+# 2103|   getEntryPoint(): [BlockStmt] { ... }
+# 2104|     getStmt(0): [ReturnStmt] return ...
+# 2104|       getExpr(): [] alignof(int)
+# 2104|           Type = [LongType] unsigned long
+# 2104|           Value = [] 4
+# 2104|           ValueCategory = prvalue
+# 2104|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2104|           Conversion = [IntegralConversion] integral conversion
+# 2104|           Type = [IntType] int
+# 2104|           Value = [CStyleCast] 4
+# 2104|           ValueCategory = prvalue
+# 2107| [TopLevelFunction] int offsetOfTest()
+# 2107|   <params>: 
+# 2107|   getEntryPoint(): [BlockStmt] { ... }
+# 2108|     getStmt(0): [ReturnStmt] return ...
+# 2108|       getExpr(): [BuiltInOperationBuiltInOffsetOf] __builtin_offsetof
+# 2108|           Type = [LongType] unsigned long
+# 2108|           Value = [BuiltInOperationBuiltInOffsetOf] 4
+# 2108|           ValueCategory = prvalue
+# 2108|         getChild(0): [TypeName] Point
+# 2108|             Type = [Struct] Point
+# 2108|             ValueCategory = prvalue
+# 2108|         getChild(1): [ValueFieldAccess] y
+# 2108|             Type = [IntType] int
+# 2108|             ValueCategory = lvalue
+# 2108|           getQualifier(): [PointerDereferenceExpr] * ...
+# 2108|               Type = [Struct] Point
+# 2108|               ValueCategory = lvalue
+# 2108|             getOperand(): [Literal] 0
+# 2108|                 Type = [PointerType] Point *
+# 2108|                 Value = [Literal] 0
+# 2108|                 ValueCategory = prvalue
+# 2108|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2108|           Conversion = [IntegralConversion] integral conversion
+# 2108|           Type = [IntType] int
+# 2108|           Value = [CStyleCast] 4
+# 2108|           ValueCategory = prvalue
+# 2111| [TopLevelFunction] int noExceptTest()
+# 2111|   <params>: 
+# 2111|   getEntryPoint(): [BlockStmt] { ... }
+# 2112|     getStmt(0): [ReturnStmt] return ...
+# 2112|       getExpr(): [NoExceptExpr] noexcept(...)
+# 2112|           Type = [BoolType] bool
+# 2112|           Value = [NoExceptExpr] 1
+# 2112|           ValueCategory = prvalue
+# 2112|         getExpr(): [Literal] 0
+# 2112|             Type = [IntType] int
+# 2112|             Value = [Literal] 0
+# 2112|             ValueCategory = prvalue
+# 2112|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2112|           Conversion = [IntegralConversion] integral conversion
+# 2112|           Type = [IntType] int
+# 2112|           Value = [CStyleCast] 1
+# 2112|           ValueCategory = prvalue
+# 2115| [GlobalVariable] int constant
+# 2115|   getInitializer(): [Initializer] initializer for constant
+# 2115|     getExpr(): [Literal] 20
+# 2115|         Type = [IntType] int
+# 2115|         Value = [Literal] 20
+# 2115|         ValueCategory = prvalue
+# 2116| [TopLevelFunction] int constexprTest()
+# 2116|   <params>: 
+# 2116|   getEntryPoint(): [BlockStmt] { ... }
+# 2117|     getStmt(0): [DeclStmt] declaration
+# 2117|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2117|           Type = [IntType] int
+# 2117|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2117|           getExpr(): [Literal] 5
+# 2117|               Type = [IntType] int
+# 2117|               Value = [Literal] 5
+# 2117|               ValueCategory = prvalue
+# 2118|     getStmt(1): [ReturnStmt] return ...
+# 2118|       getExpr(): [AddExpr] ... + ...
+# 2118|           Type = [IntType] int
+# 2118|           Value = [AddExpr] 25
+# 2118|           ValueCategory = prvalue
+# 2118|         getLeftOperand(): [VariableAccess] x
+# 2118|             Type = [IntType] int
+# 2118|             Value = [VariableAccess] 5
+# 2118|             ValueCategory = prvalue(load)
+# 2118|         getRightOperand(): [VariableAccess] constant
+# 2118|             Type = [IntType] int
+# 2118|             Value = [VariableAccess] 20
+# 2118|             ValueCategory = prvalue(load)
+# 2121| [TopLevelFunction] int addOne(int)
+# 2121|   <params>: 
+# 2121|     getParameter(0): [Parameter] x
+# 2121|         Type = [IntType] int
+# 2121|   getEntryPoint(): [BlockStmt] { ... }
+# 2122|     getStmt(0): [ReturnStmt] return ...
+# 2122|       getExpr(): [AddExpr] ... + ...
+# 2122|           Type = [IntType] int
+# 2122|           ValueCategory = prvalue
+# 2122|         getLeftOperand(): [VariableAccess] x
+# 2122|             Type = [IntType] int
+# 2122|             ValueCategory = prvalue(load)
+# 2122|         getRightOperand(): [Literal] 1
+# 2122|             Type = [IntType] int
+# 2122|             Value = [Literal] 1
+# 2122|             ValueCategory = prvalue
+# 2125| [TopLevelFunction] int constexprTest2()
+# 2125|   <params>: 
+# 2125|   getEntryPoint(): [BlockStmt] { ... }
+# 2126|     getStmt(0): [DeclStmt] declaration
+# 2126|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of two
+# 2126|           Type = [IntType] int
+# 2126|         getVariable().getInitializer(): [Initializer] initializer for two
+# 2126|           getExpr(): [Literal] 2
+# 2126|               Type = [IntType] int
+# 2126|               Value = [Literal] 2
+# 2126|               ValueCategory = prvalue
+# 2127|     getStmt(1): [DeclStmt] declaration
+# 2127|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 2127|           Type = [IntType] int
+# 2127|         getVariable().getInitializer(): [Initializer] initializer for i
+# 2127|           getExpr(): [FunctionCall] call to addOne
+# 2127|               Type = [IntType] int
+# 2127|               Value = [FunctionCall] 3
+# 2127|               ValueCategory = prvalue
+# 2127|             getArgument(0): [VariableAccess] two
+# 2127|                 Type = [IntType] int
+# 2127|                 Value = [VariableAccess] 2
+# 2127|                 ValueCategory = prvalue(load)
+# 2128|     getStmt(2): [DeclStmt] declaration
+# 2128|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of j
+# 2128|           Type = [IntType] int
+# 2128|         getVariable().getInitializer(): [Initializer] initializer for j
+# 2128|           getExpr(): [FunctionCall] call to addOne
+# 2128|               Type = [IntType] int
+# 2128|               Value = [FunctionCall] 3
+# 2128|               ValueCategory = prvalue
+# 2128|             getArgument(0): [Literal] 2
+# 2128|                 Type = [IntType] int
+# 2128|                 Value = [Literal] 2
+# 2128|                 ValueCategory = prvalue
+# 2129|     getStmt(3): [ReturnStmt] return ...
+# 2129|       getExpr(): [VariableAccess] j
+# 2129|           Type = [IntType] int
+# 2129|           ValueCategory = prvalue(load)
+# 2132| [TopLevelFunction] int ConstTernary(int, int)
+# 2132|   <params>: 
+# 2132|     getParameter(0): [Parameter] y
+# 2132|         Type = [IntType] int
+# 2132|     getParameter(1): [Parameter] z
+# 2132|         Type = [IntType] int
+# 2132|   getEntryPoint(): [BlockStmt] { ... }
+# 2133|     getStmt(0): [DeclStmt] declaration
+# 2133|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2133|           Type = [IntType] int
+# 2133|         getVariable().getInitializer(): [Initializer] initializer for a
+# 2133|           getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2133|               Type = [IntType] int
+# 2133|               ValueCategory = prvalue
+# 2133|             getCondition(): [Literal] 1
+# 2133|                 Type = [IntType] int
+# 2133|                 Value = [Literal] 1
+# 2133|                 ValueCategory = prvalue
+# 2133|             getThen(): [VariableAccess] y
+# 2133|                 Type = [IntType] int
+# 2133|                 ValueCategory = prvalue(load)
+# 2133|             getElse(): [VariableAccess] z
+# 2133|                 Type = [IntType] int
+# 2133|                 ValueCategory = prvalue(load)
+# 2133|             getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2133|                 Conversion = [BoolConversion] conversion to bool
+# 2133|                 Type = [BoolType] bool
+# 2133|                 Value = [CStyleCast] 1
+# 2133|                 ValueCategory = prvalue
+# 2134|     getStmt(1): [DeclStmt] declaration
+# 2134|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2134|           Type = [IntType] int
+# 2134|         getVariable().getInitializer(): [Initializer] initializer for b
+# 2134|           getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2134|               Type = [IntType] int
+# 2134|               ValueCategory = prvalue
+# 2134|             getCondition(): [Literal] 0
+# 2134|                 Type = [IntType] int
+# 2134|                 Value = [Literal] 0
+# 2134|                 ValueCategory = prvalue
+# 2134|             getThen(): [VariableAccess] y
+# 2134|                 Type = [IntType] int
+# 2134|                 ValueCategory = prvalue(load)
+# 2134|             getElse(): [VariableAccess] z
+# 2134|                 Type = [IntType] int
+# 2134|                 ValueCategory = prvalue(load)
+# 2134|             getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2134|                 Conversion = [BoolConversion] conversion to bool
+# 2134|                 Type = [BoolType] bool
+# 2134|                 Value = [CStyleCast] 0
+# 2134|                 ValueCategory = prvalue
+# 2135|     getStmt(2): [DeclStmt] declaration
+# 2135|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2135|           Type = [IntType] int
+# 2135|         getVariable().getInitializer(): [Initializer] initializer for c
+# 2135|           getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2135|               Type = [IntType] int
+# 2135|               ValueCategory = prvalue
+# 2135|             getCondition(): [FunctionCall] call to __builtin_constant_p
+# 2135|                 Type = [IntType] int
+# 2135|                 ValueCategory = prvalue
+# 2135|               getArgument(0): [VariableAccess] y
+# 2135|                   Type = [IntType] int
+# 2135|                   ValueCategory = prvalue(load)
+# 2135|             getThen(): [VariableAccess] y
+# 2135|                 Type = [IntType] int
+# 2135|                 ValueCategory = prvalue(load)
+# 2135|             getElse(): [VariableAccess] z
+# 2135|                 Type = [IntType] int
+# 2135|                 ValueCategory = prvalue(load)
+# 2135|             getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2135|                 Conversion = [BoolConversion] conversion to bool
+# 2135|                 Type = [BoolType] bool
+# 2135|                 ValueCategory = prvalue
+# 2136|     getStmt(3): [DeclStmt] declaration
+# 2136|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
+# 2136|           Type = [IntType] int
+# 2136|         getVariable().getInitializer(): [Initializer] initializer for d
+# 2136|           getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2136|               Type = [IntType] int
+# 2136|               ValueCategory = prvalue
+# 2136|             getCondition(): [Literal] 1
+# 2136|                 Type = [IntType] int
+# 2136|                 Value = [Literal] 1
+# 2136|                 ValueCategory = prvalue
+# 2136|             getThen(): [VariableAccess] y
+# 2136|                 Type = [IntType] int
+# 2136|                 ValueCategory = prvalue(load)
+# 2136|             getElse(): [VariableAccess] z
+# 2136|                 Type = [IntType] int
+# 2136|                 ValueCategory = prvalue(load)
+# 2136|             getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2136|                 Conversion = [BoolConversion] conversion to bool
+# 2136|                 Type = [BoolType] bool
+# 2136|                 Value = [CStyleCast] 1
+# 2136|                 ValueCategory = prvalue
+# 2137|     getStmt(4): [ReturnStmt] return ...
+# 2137|       getExpr(): [AddExpr] ... + ...
+# 2137|           Type = [IntType] int
+# 2137|           ValueCategory = prvalue
+# 2137|         getLeftOperand(): [AddExpr] ... + ...
+# 2137|             Type = [IntType] int
+# 2137|             ValueCategory = prvalue
+# 2137|           getLeftOperand(): [AddExpr] ... + ...
+# 2137|               Type = [IntType] int
+# 2137|               ValueCategory = prvalue
+# 2137|             getLeftOperand(): [VariableAccess] a
+# 2137|                 Type = [IntType] int
+# 2137|                 ValueCategory = prvalue(load)
+# 2137|             getRightOperand(): [VariableAccess] b
+# 2137|                 Type = [IntType] int
+# 2137|                 ValueCategory = prvalue(load)
+# 2137|           getRightOperand(): [VariableAccess] c
+# 2137|               Type = [IntType] int
+# 2137|               ValueCategory = prvalue(load)
+# 2137|         getRightOperand(): [VariableAccess] d
+# 2137|             Type = [IntType] int
+# 2137|             ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

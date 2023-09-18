@@ -433,6 +433,28 @@ class Instruction extends Construction::TStageInstruction {
   final Instruction getAPredecessor() { result = this.getPredecessor(_) }
 }
 
+class ConstantInstruction extends Instruction {
+  ConstantInstruction() { exists(Construction::getInstructionConstantValue(this)) }
+
+  final string getValue() { result = Construction::getInstructionConstantValue(this) }
+}
+
+class IntegerConstantInstruction extends ConstantInstruction {
+  IntegerConstantInstruction() {
+    exists(IRType resultType |
+      resultType = this.getResultIRType() and
+      (resultType instanceof IRIntegerType or resultType instanceof IRBooleanType)
+    )
+  }
+}
+
+/**
+ * An instruction whose result is a constant value of a floating type.
+ */
+class FloatConstantInstruction extends ConstantInstruction {
+  FloatConstantInstruction() { this.getResultIRType() instanceof IRFloatingPointType }
+}
+
 /**
  * An instruction that refers to a variable.
  *
@@ -506,22 +528,6 @@ class FunctionInstruction extends Instruction {
    * Gets the function that this instruction references.
    */
   final Language::Function getFunctionSymbol() { result = funcSymbol }
-}
-
-/**
- * An instruction whose result is a compile-time constant value.
- */
-class ConstantValueInstruction extends Instruction {
-  string value;
-
-  ConstantValueInstruction() { value = Raw::getInstructionConstantValue(this) }
-
-  final override string getImmediateString() { result = value }
-
-  /**
-   * Gets the constant value of this instruction's result.
-   */
-  final string getValue() { result = value }
 }
 
 /**
@@ -986,15 +992,26 @@ class ExitFunctionInstruction extends Instruction {
 /**
  * An instruction whose result is a constant value.
  */
-class ConstantInstruction extends ConstantValueInstruction {
-  ConstantInstruction() { this.getOpcode() instanceof Opcode::Constant }
+class LiteralInstruction extends Instruction {
+  string value;
+
+  LiteralInstruction() {
+    this.getOpcode() instanceof Opcode::Literal and value = Raw::getInstructionLiteralValue(this)
+  }
+
+  final override string getImmediateString() { result = value }
+
+  /**
+   * Gets the constant value of this instruction's result.
+   */
+  final string getValue() { result = value }
 }
 
 /**
  * An instruction whose result is a constant value of integer or Boolean type.
  */
-class IntegerConstantInstruction extends ConstantInstruction {
-  IntegerConstantInstruction() {
+class IntegerLiteralInstruction extends LiteralInstruction {
+  IntegerLiteralInstruction() {
     exists(IRType resultType |
       resultType = this.getResultIRType() and
       (resultType instanceof IRIntegerType or resultType instanceof IRBooleanType)
@@ -1005,8 +1022,8 @@ class IntegerConstantInstruction extends ConstantInstruction {
 /**
  * An instruction whose result is a constant value of floating-point type.
  */
-class FloatConstantInstruction extends ConstantInstruction {
-  FloatConstantInstruction() { this.getResultIRType() instanceof IRFloatingPointType }
+class FloatLiteralInstruction extends LiteralInstruction {
+  FloatLiteralInstruction() { this.getResultIRType() instanceof IRFloatingPointType }
 }
 
 /**

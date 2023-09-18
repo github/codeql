@@ -35,7 +35,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     // t1 = -1
     tag = TryExceptGenerateNegativeOne() and
-    opcode instanceof Opcode::Constant and
+    opcode instanceof Opcode::Literal and
     resultType = getIntType()
     or
     // t2 = cmp t1, condition
@@ -50,7 +50,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     or
     // t1 = 0
     tag = TryExceptGenerateZero() and
-    opcode instanceof Opcode::Constant and
+    opcode instanceof Opcode::Literal and
     resultType = getIntType()
     or
     // t2 = cmp t1, condition
@@ -65,7 +65,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     or
     // t1 = 1
     tag = TryExceptGenerateOne() and
-    opcode instanceof Opcode::Constant and
+    opcode instanceof Opcode::Literal and
     resultType = getIntType()
     or
     // t2 = cmp t1, condition
@@ -125,7 +125,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     result = this.getInstruction(TryExceptCompareOne())
   }
 
-  override string getInstructionConstantValue(InstructionTag tag) {
+  override string getInstructionLiteralValue(InstructionTag tag) {
     tag = TryExceptGenerateNegativeOne() and
     result = "-1"
     or

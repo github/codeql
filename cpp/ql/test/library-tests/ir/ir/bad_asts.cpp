@@ -26,4 +26,13 @@ namespace Bad {
   void CallCopyConstructor(const Point& a) {
     Point b = a;  // Copy constructor contains literal expressions with no values.
   }
+
+  short foo() {
+    return 5;
+  }
+
+  int ParensCall() {
+    // Two conversions added to the call
+    return 5 <= (foo)() ;
+  }
 }

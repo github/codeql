@@ -40,7 +40,37 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
  * its value in the IR. This does not include address constants as we have no
  * means to express those as QL values.
  */
-predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
+predicate isIRConstant(Expr expr) {
+  expr instanceof Literal
+  or
+  expr instanceof SizeofOperator
+  or
+  expr instanceof AlignofOperator
+  or
+  expr instanceof NoExceptExpr
+  or
+  expr instanceof BuiltInOperation and exists(expr.getValue())
+  or
+  expr instanceof TypeidOperator and exists(expr.getValue())
+  or
+  expr instanceof EnumConstantAccess
+  or
+  /*
+   * A static local variable can be constant-initialised with a local variable.
+   * In that case we use a literal for that constant as the local is in a different
+   * IRFunction.
+   */
+
+  expr instanceof VariableAccess and
+  exists(LocalVariable lv |
+    lv = expr.(VariableAccess).getTarget() and
+    not lv.isStatic()
+  ) and
+  getEnclosingDeclaration(expr) instanceof StaticInitializedStaticLocalVariable
+  or
+  exists(Function callee | callee = expr.(Call).getTarget() and
+  callee.getName() = "__builtin_constant_p")
+}
 
 // Pulled out for performance. See
 // https://github.com/github/codeql-coreql-team/issues/1044.
@@ -90,6 +120,12 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // va_start doesn't evaluate its argument, so we don't need to translate it.
   exists(BuiltInVarArgsStart vaStartExpr |
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
+  )
+  or
+  exists(ConditionalExpr cexpr, int const |
+    not cexpr.isTwoOperand() and
+    const = cexpr.getCondition().getUnconverted().getValue().toInt() and
+    if const = 0 then expr = cexpr.getThen() else expr = cexpr.getElse()
   )
 }
 
@@ -179,10 +215,7 @@ private predicate translateStmt(Stmt stmt) { translateFunction(stmt.getEnclosing
  * Holds if `expr` is most naturally evaluated as control flow, rather than as
  * a value.
  */
-private predicate isNativeCondition(Expr expr) {
-  expr instanceof BinaryLogicalOperation and
-  not isIRConstant(expr)
-}
+private predicate isNativeCondition(Expr expr) { expr instanceof BinaryLogicalOperation }
 
 /**
  * Holds if `expr` can be evaluated as either a condition or a value expression,
@@ -193,8 +226,7 @@ private predicate isFlexibleCondition(Expr expr) {
     expr instanceof ParenthesisExpr or
     expr instanceof NotExpr
   ) and
-  usedAsCondition(expr) and
-  not isIRConstant(expr)
+  usedAsCondition(expr)
 }
 
 /**
@@ -212,9 +244,12 @@ private predicate usedAsCondition(Expr expr) {
   exists(IfStmt ifStmt | ifStmt.getCondition().getFullyConverted() = expr)
   or
   exists(ConditionalExpr condExpr |
+    condExpr.getCondition().getFullyConverted() = expr and
     // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
     // be reused as a value if the condition is true.
-    condExpr.getCondition().getFullyConverted() = expr and not condExpr.isTwoOperand()
+    not condExpr.isTwoOperand() and
+    // Constant ternary operations just ignore the condition
+    not exists(expr.getValue().toInt())
   )
   or
   exists(NotExpr notExpr |
@@ -253,8 +288,6 @@ private predicate isInheritanceConversionWithImplicitLoad(InheritanceConversion 
 private predicate isPRValueFieldAccessWithImplicitLoad(Expr expr) {
   expr instanceof ValueFieldAccess and
   expr.isPRValueCategory() and
-  // No need to do a load if we're replacing the result with a constant anyway.
-  not isIRConstant(expr) and
   // Model an array prvalue as the address of the array, just like an array glvalue.
   not expr.getUnspecifiedType() instanceof ArrayType
 }
@@ -954,7 +987,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction specified by `tag` is a `ConstantValueInstruction`, gets
    * the constant value for that instruction.
    */
-  string getInstructionConstantValue(InstructionTag tag) { none() }
+  string getInstructionLiteralValue(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is an `IndexedInstruction`, gets the
