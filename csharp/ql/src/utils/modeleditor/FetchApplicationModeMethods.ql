@@ -13,8 +13,7 @@ private import AutomodelVsCode
 class ExternalApi extends CallableMethod {
   ExternalApi() {
     this.isUnboundDeclaration() and
-    this.fromLibrary() and
-    this.(Modifiable).isEffectivelyPublic()
+    this.fromLibrary()
   }
 }
 
