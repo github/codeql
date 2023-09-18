@@ -546,7 +546,11 @@ module LocalFlow {
     )
     or
     hasNodePath(any(LocalExprStepConfiguration x), node1, node2) and
-    (node2 instanceof SsaDefinitionExtNode or node2.asExpr() instanceof Cast)
+    (
+      node2 instanceof SsaDefinitionExtNode or
+      node2.asExpr() instanceof Cast or
+      node2.asExpr() instanceof AssignExpr
+    )
     or
     exists(SsaImpl::Definition def |
       def = getSsaDefinitionExt(node1) and

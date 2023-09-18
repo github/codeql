@@ -1002,7 +1002,7 @@ module MakeImplCommon<InputSig Lang> {
    * flow between parameter and argument nodes in the cases where it is possible
    * for a type to first be weakened and then strengthened again. When the
    * stronger types at the end-points of such a type flow path are incompatible,
-   * the call relevant call edges can be excluded as impossible.
+   * the relevant call edges can be excluded as impossible.
    *
    * The predicates `relevantCallEdgeIn` and `relevantCallEdgeOut` give the
    * graph to be explored prior to the recursion, and the other three predicates
@@ -1021,7 +1021,7 @@ module MakeImplCommon<InputSig Lang> {
     }
 
     /**
-     * Holds if a sequence calls may propagates the value of `p` to some
+     * Holds if a sequence of calls may propagate the value of `p` to some
      * argument-to-parameter call edge that strengthens the static type.
      */
     pragma[nomagic]
@@ -1033,7 +1033,7 @@ module MakeImplCommon<InputSig Lang> {
     }
 
     /**
-     * Holds if a sequence calls may propagates the value of `arg` to some
+     * Holds if a sequence of calls may propagate the value of `arg` to some
      * argument-to-parameter call edge that strengthens the static type.
      */
     pragma[nomagic]
@@ -1048,6 +1048,9 @@ module MakeImplCommon<InputSig Lang> {
         )
         or
         exists(ParamNode p, DataFlowType at, DataFlowType pt |
+          // A call edge may implicitly strengthen a type by ensuring that a
+          // specific argument node was reached if the type of that argument was
+          // strengthened via a cast.
           at = getNodeType(arg) and
           pt = getNodeType(p) and
           paramMustFlow(p, arg) and
@@ -1072,6 +1075,10 @@ module MakeImplCommon<InputSig Lang> {
         DataFlowCall call1, DataFlowCallable c1, ArgNode argOut, DataFlowCall call2,
         DataFlowCallable c2, ArgNode argIn
       |
+        // Data flow may exit `call1` and enter `call2`. If a stronger type is
+        // known for `argOut`, `argIn` may reach a strengthening, and both are
+        // determined by the same parameter `p` so we know they're equal, then
+        // we should track those nodes.
         trackedParamTypeCand(p) and
         callEdge(call1, c1, argOut, _) and
         Input::relevantCallEdgeOut(call1, c1) and
@@ -1153,6 +1160,15 @@ module MakeImplCommon<InputSig Lang> {
     }
 
     /**
+     * Gets the strongest of the two types `t1` and `t2`. If neither type is
+     * stronger then compatibility is checked and `t1` is returned.
+     */
+    bindingset[t1, t2]
+    DataFlowType getStrongestType(DataFlowType t1, DataFlowType t2) {
+      if typeStrongerThan(t2, t1) then result = t2 else (compatibleTypes(t1, t2) and result = t1)
+    }
+
+    /**
      * Holds if `t` is a possible type for an argument reaching the tracked
      * parameter `p` through an in-going edge in the current data flow stage.
      */
@@ -1179,7 +1195,7 @@ module MakeImplCommon<InputSig Lang> {
         cc = true and
         typeFlowParamTypeCand(p, t1) and
         nodeDataFlowType(p, t2) and
-        if typeStrongerThan(t2, t1) then t = t2 else (compatibleTypes(t1, t2) and t = t1)
+        t = getStrongestType(t1, t2)
       )
       or
       exists(ArgNode arg, DataFlowType t1, DataFlowType t2 |
@@ -1187,7 +1203,7 @@ module MakeImplCommon<InputSig Lang> {
         typeFlowArgTypeFromReturn(arg, t1) and
         paramMustFlow(p, arg) and
         nodeDataFlowType(p, t2) and
-        if typeStrongerThan(t2, t1) then t = t2 else (compatibleTypes(t1, t2) and t = t1)
+        t = getStrongestType(t1, t2)
       )
       or
       exists(DataFlowCall call |
@@ -1208,7 +1224,7 @@ module MakeImplCommon<InputSig Lang> {
         dataFlowTakenCallEdgeOut(_, _, arg, p) and
         (if trackedParamType(p) then typeFlowParamType(p, t1, false) else nodeDataFlowType(p, t1)) and
         nodeDataFlowType(arg, t2) and
-        if typeStrongerThan(t2, t1) then t = t2 else (compatibleTypes(t1, t2) and t = t1)
+        t = getStrongestType(t1, t2)
       )
     }
 
@@ -1224,7 +1240,7 @@ module MakeImplCommon<InputSig Lang> {
           paramMustFlow(p, arg) and
           typeFlowParamType(p, t1, cc) and
           nodeDataFlowType(arg, t2) and
-          if typeStrongerThan(t2, t1) then t = t2 else (compatibleTypes(t1, t2) and t = t1)
+          t = getStrongestType(t1, t2)
         )
         or
         cc = [true, false] and
