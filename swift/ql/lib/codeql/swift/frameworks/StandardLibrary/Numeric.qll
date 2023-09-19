@@ -46,6 +46,8 @@ private class NumericFieldsInheritTaint extends TaintInheritingContent,
   NumericFieldsInheritTaint() {
     this.getField().hasQualifiedName("FixedWidthInteger", ["littleEndian", "bigEndian"])
     or
-    this.getField().hasQualifiedName(["Double", "Float", "Float80", "FloatingPoint"], ["exponent", "significand"])
+    this.getField()
+        .hasQualifiedName(["Double", "Float", "Float80", "FloatingPoint"],
+          ["exponent", "significand"])
   }
 }
