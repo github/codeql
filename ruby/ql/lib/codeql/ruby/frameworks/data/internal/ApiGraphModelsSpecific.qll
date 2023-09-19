@@ -243,7 +243,7 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
   or
   name = ["Argument", "Parameter"] and
   (
-    argument = ["self", "block", "any", "any-named"]
+    argument = ["self", "lambda-self", "block", "any", "any-named"]
     or
     argument.regexpMatch("\\w+:") // keyword argument
   )

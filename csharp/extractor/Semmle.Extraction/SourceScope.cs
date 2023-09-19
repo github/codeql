@@ -1,5 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Linq;
+﻿using System.Linq;
+using Microsoft.CodeAnalysis;
+
 
 namespace Semmle.Extraction
 {

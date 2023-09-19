@@ -1,3 +1,14 @@
+## 0.2.3
+
+No user-facing changes.
+
+## 0.2.2
+
+### New Queries
+
+* Added new query "Command injection" (`swift/command-line-injection`). The query finds places where user input is used to execute system commands without proper escaping.
+* Added new query "Bad HTML filtering regexp" (`swift/bad-tag-filter`). This query finds regular expressions that match HTML tags in a way that is not robust and can easily lead to security issues.
+
 ## 0.2.1
 
 ### New Queries

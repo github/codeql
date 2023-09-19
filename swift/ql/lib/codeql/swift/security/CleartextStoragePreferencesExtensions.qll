@@ -33,7 +33,9 @@ class CleartextStoragePreferencesAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
-/** The `DataFlow::Node` of an expression that gets written to the user defaults database */
+/**
+ * The `DataFlow::Node` of an expression that gets written to the user defaults database.
+ */
 private class UserDefaultsStore extends CleartextStoragePreferencesSink {
   UserDefaultsStore() {
     exists(CallExpr call |
@@ -45,7 +47,9 @@ private class UserDefaultsStore extends CleartextStoragePreferencesSink {
   override string getStoreName() { result = "the user defaults database" }
 }
 
-/** The `DataFlow::Node` of an expression that gets written to the iCloud-backed NSUbiquitousKeyValueStore */
+/**
+ * The `DataFlow::Node` of an expression that gets written to the iCloud-backed `NSUbiquitousKeyValueStore`.
+ */
 private class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink {
   NSUbiquitousKeyValueStore() {
     exists(CallExpr call |
@@ -82,6 +86,17 @@ private class CleartextStoragePreferencesDefaultBarrier extends CleartextStorage
   CleartextStoragePreferencesDefaultBarrier() {
     this.asExpr() instanceof EncryptedExpr or
     this.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
+}
+
+/**
+ * An additional taint step for cleartext preferences storage vulnerabilities.
+ */
+private class CleartextStoragePreferencesFieldAdditionalFlowStep extends CleartextStoragePreferencesAdditionalFlowStep
+{
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // if an object is sensitive, its fields are always sensitive.
+    nodeTo.asExpr().(MemberRefExpr).getBase() = nodeFrom.asExpr()
   }
 }
 

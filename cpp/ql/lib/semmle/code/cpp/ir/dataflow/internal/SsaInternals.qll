@@ -74,7 +74,7 @@ predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectOperand(op, indirectionIndex))
+    not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
   )
 }
 
@@ -88,14 +88,15 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
     type = getResultLanguageType(instr) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectInstruction(instr, indirectionIndex))
+    not hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, _, _)
   )
 }
 
 cached
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address, int indirectionIndex) {
-    exists(Instruction base | isDef(_, _, address, base, _, indirectionIndex) |
+  TDefImpl(BaseSourceVariableInstruction base, Operand address, int indirectionIndex) {
+    isDef(_, _, address, base, _, indirectionIndex) and
+    (
       // We only include the definition if the SSA pruning stage
       // concluded that the definition is live after the write.
       any(SsaInternals0::Def def).getAddressOperand() = address
@@ -105,9 +106,9 @@ private newtype TDefOrUseImpl =
       base.(VariableAddressInstruction).getAstVariable() instanceof GlobalLikeVariable
     )
   } or
-  TUseImpl(Operand operand, int indirectionIndex) {
-    isUse(_, operand, _, _, indirectionIndex) and
-    not isDef(_, _, operand, _, _, _)
+  TUseImpl(BaseSourceVariableInstruction base, Operand operand, int indirectionIndex) {
+    isUse(_, operand, base, _, indirectionIndex) and
+    not isDef(true, _, operand, _, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
@@ -193,7 +194,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
 
   /**
    * Gets the instruction that computes the base of this definition or use.
-   * This is always a `VariableAddressInstruction` or an `AllocationInstruction`.
+   * This is always a `VariableAddressInstruction` or an `CallInstruction`.
    */
   abstract BaseSourceVariableInstruction getBase();
 
@@ -265,15 +266,17 @@ abstract class DefImpl extends DefOrUseImpl {
 }
 
 private class DirectDef extends DefImpl, TDefImpl {
-  DirectDef() { this = TDefImpl(address, ind) }
+  BaseSourceVariableInstruction base;
 
-  override BaseSourceVariableInstruction getBase() { isDef(_, _, address, result, _, _) }
+  DirectDef() { this = TDefImpl(base, address, ind) }
 
-  override int getIndirection() { isDef(_, _, address, _, result, ind) }
+  override BaseSourceVariableInstruction getBase() { result = base }
 
-  override Node0Impl getValue() { isDef(_, result, address, _, _, _) }
+  override int getIndirection() { isDef(_, _, address, base, result, ind) }
 
-  override predicate isCertain() { isDef(true, _, address, _, _, ind) }
+  override Node0Impl getValue() { isDef(_, result, address, base, _, _) }
+
+  override predicate isCertain() { isDef(true, _, address, base, _, ind) }
 }
 
 private class IteratorDef extends DefImpl, TIteratorDef {
@@ -316,6 +319,7 @@ abstract class UseImpl extends DefOrUseImpl {
 
 abstract private class OperandBasedUse extends UseImpl {
   Operand operand;
+  BaseSourceVariableInstruction base;
 
   bindingset[ind]
   OperandBasedUse() { any() }
@@ -323,24 +327,24 @@ abstract private class OperandBasedUse extends UseImpl {
   final override predicate hasIndexInBlock(IRBlock block, int index) {
     // See the comment in `ssa0`'s `OperandBasedUse` for an explanation of this
     // predicate's implementation.
-    exists(BaseSourceVariableInstruction base | base = this.getBase() |
-      if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
-      then
-        exists(Operand op, int indirectionIndex, int indirection |
-          indirectionIndex = this.getIndirectionIndex() and
-          indirection = this.getIndirection() and
-          op =
-            min(Operand cand, int i |
-              isUse(_, cand, base, indirection, indirectionIndex) and
-              block.getInstruction(i) = cand.getUse()
-            |
-              cand order by i
-            ) and
-          block.getInstruction(index) = op.getUse()
-        )
-      else operand.getUse() = block.getInstruction(index)
-    )
+    if base.getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
+    then
+      exists(Operand op, int indirectionIndex, int indirection |
+        indirectionIndex = this.getIndirectionIndex() and
+        indirection = this.getIndirection() and
+        op =
+          min(Operand cand, int i |
+            isUse(_, cand, base, indirection, indirectionIndex) and
+            block.getInstruction(i) = cand.getUse()
+          |
+            cand order by i
+          ) and
+        block.getInstruction(index) = op.getUse()
+      )
+    else operand.getUse() = block.getInstruction(index)
   }
+
+  final override BaseSourceVariableInstruction getBase() { result = base }
 
   final Operand getOperand() { result = operand }
 
@@ -348,25 +352,19 @@ abstract private class OperandBasedUse extends UseImpl {
 }
 
 private class DirectUse extends OperandBasedUse, TUseImpl {
-  DirectUse() { this = TUseImpl(operand, ind) }
+  DirectUse() { this = TUseImpl(base, operand, ind) }
 
-  override int getIndirection() { isUse(_, operand, _, result, ind) }
+  override int getIndirection() { isUse(_, operand, base, result, ind) }
 
-  override BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, ind) }
-
-  override predicate isCertain() { isUse(true, operand, _, _, ind) }
+  override predicate isCertain() { isUse(true, operand, base, _, ind) }
 
   override Node getNode() { nodeHasOperand(result, operand, ind) }
 }
 
 private class IteratorUse extends OperandBasedUse, TIteratorUse {
-  BaseSourceVariableInstruction container;
+  IteratorUse() { this = TIteratorUse(operand, base, ind) }
 
-  IteratorUse() { this = TIteratorUse(operand, container, ind) }
-
-  override int getIndirection() { isIteratorUse(container, operand, result, ind) }
-
-  override BaseSourceVariableInstruction getBase() { result = container }
+  override int getIndirection() { isIteratorUse(base, operand, result, ind) }
 
   override predicate isCertain() { none() }
 
@@ -449,9 +447,16 @@ class GlobalUse extends UseImpl, TGlobalUse {
   IRFunction getIRFunction() { result = f }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    exists(ExitFunctionInstruction exit |
-      exit = f.getExitFunctionInstruction() and
-      block.getInstruction(index) = exit
+    // Similar to the `FinalParameterUse` case, we want to generate flow out of
+    // globals at any exit so that we can flow out of non-returning functions.
+    // Obviously this isn't correct as we can't actually flow but the global flow
+    // requires this if we want to flow into children.
+    exists(Instruction return |
+      return instanceof ReturnInstruction or
+      return instanceof UnreachedInstruction
+    |
+      block.getInstruction(index) = return and
+      return.getEnclosingIRFunction() = f
     )
   }
 
@@ -612,7 +617,7 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
       hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
       hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
       instr = op2.getDef() and
-      isDereference(instr, op1)
+      isDereference(instr, op1, _)
     )
   )
 }
@@ -686,8 +691,41 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
-private predicate isArgumentOfCallable(DataFlowCall call, ArgumentNode arg) {
-  arg.argumentOf(call, _)
+private predicate isArgumentOfCallableInstruction(DataFlowCall call, Instruction instr) {
+  isArgumentOfCallableOperand(call, unique( | | getAUse(instr)))
+}
+
+private predicate isArgumentOfCallableOperand(DataFlowCall call, Operand operand) {
+  operand.(ArgumentOperand).getCall() = call
+  or
+  exists(FieldAddressInstruction fai |
+    fai.getObjectAddressOperand() = operand and
+    isArgumentOfCallableInstruction(call, fai)
+  )
+  or
+  exists(Instruction deref |
+    isArgumentOfCallableInstruction(call, deref) and
+    isDereference(deref, operand, _)
+  )
+  or
+  exists(Instruction instr |
+    isArgumentOfCallableInstruction(call, instr) and
+    conversionFlow(operand, instr, _, _)
+  )
+}
+
+private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
+  isArgumentOfCallableOperand(call, n.asOperand())
+  or
+  exists(Operand op |
+    n.(IndirectOperand).hasOperandAndIndirectionIndex(op, _) and
+    isArgumentOfCallableOperand(call, op)
+  )
+  or
+  exists(Instruction instr |
+    n.(IndirectInstruction).hasInstructionAndIndirectionIndex(instr, _) and
+    isArgumentOfCallableInstruction(call, instr)
+  )
 }
 
 /** Holds if there is def-use or use-use flow from `pun` to `nodeTo`. */
@@ -728,7 +766,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     or
     exists(PhiNode phiTo |
       phi != phiTo and
-      lastRefRedefExt(phi, _, _, phiTo) and
+      lastRefRedefExt(phi, bb1, i1, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
   )

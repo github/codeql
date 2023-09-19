@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {

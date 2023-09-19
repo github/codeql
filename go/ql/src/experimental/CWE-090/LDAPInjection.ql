@@ -12,9 +12,9 @@
 
 import go
 import LDAPInjection
-import DataFlow::PathGraph
+import LdapInjectionFlow::PathGraph
 
-from LdapInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from LdapInjectionFlow::PathNode source, LdapInjectionFlow::PathNode sink
+where LdapInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "LDAP query parameter depends on a $@.", source.getNode(),
   "user-provided value"

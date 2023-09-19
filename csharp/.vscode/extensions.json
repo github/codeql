@@ -1,9 +1,9 @@
 {
     "recommendations": [
+        "gaoshan0621.csharp-format-usings",
         "github.vscode-codeql",
         "ms-dotnettools.csharp",
-        "formulahendry.dotnet-test-explorer",
-        "hbenl.vscode-test-explorer"
+        "ms-dotnettools.csdevkit"
     ],
     "unwantedRecommendations": []
 }

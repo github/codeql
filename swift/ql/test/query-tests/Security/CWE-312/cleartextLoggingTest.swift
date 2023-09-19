@@ -84,20 +84,20 @@ struct Logger {
 // --- tests ---
 
 func test1(password: String, passwordHash : String, passphrase: String, pass_phrase: String) {
-	print(password) // $ MISSING: hasCleartextLogging=87
-	print(password, separator: "") // $ MISSING: $ hasCleartextLogging=88
+	print(password) // $ hasCleartextLogging=87
+	print(password, separator: "") // $ $ hasCleartextLogging=88
 	print("", separator: password) // $ hasCleartextLogging=89
-	print(password, separator: "", terminator: "") // $ MISSING: hasCleartextLogging=90
+	print(password, separator: "", terminator: "") // $ hasCleartextLogging=90
 	print("", separator: password, terminator: "") // $ hasCleartextLogging=91
 	print("", separator: "", terminator: password) // $ hasCleartextLogging=92
     print(passwordHash) // Safe
 
     NSLog(password) // $ hasCleartextLogging=95
-    NSLog("%@", password as! CVarArg) // $ MISSING: hasCleartextLogging=96
-    NSLog("%@ %@", "" as! CVarArg, password as! CVarArg) // $ MISSING: hasCleartextLogging=97
+    NSLog("%@", password as! CVarArg) // $ hasCleartextLogging=96
+    NSLog("%@ %@", "" as! CVarArg, password as! CVarArg) // $ hasCleartextLogging=97
     NSLog("\(password)") // $ hasCleartextLogging=98
-    NSLogv("%@", getVaList([password as! CVarArg])) // $ MISSING: hasCleartextLogging=99
-    NSLogv("%@ %@", getVaList(["" as! CVarArg, password as! CVarArg])) // $ MISSING: hasCleartextLogging=100
+    NSLogv("%@", getVaList([password as! CVarArg])) // $ hasCleartextLogging=99
+    NSLogv("%@ %@", getVaList(["" as! CVarArg, password as! CVarArg])) // $ hasCleartextLogging=100
     NSLog(passwordHash) // SAfe
     NSLogv("%@", getVaList([passwordHash as! CVarArg])) // Safe
 
@@ -158,4 +158,18 @@ func test3(x: String) {
 	let z = MyClass()
 	NSLog(z.harmless) // Safe
 	NSLog(z.password) // $ hasCleartextLogging=160
+}
+
+struct MyOuter {
+	struct MyInner {
+		var value: String
+	}
+
+	var password: MyInner
+	var harmless: MyInner
+}
+
+func test3(mo : MyOuter) {
+	NSLog(mo.password.value) // $ hasCleartextLogging=173
+	NSLog(mo.harmless.value) // Safe
 }

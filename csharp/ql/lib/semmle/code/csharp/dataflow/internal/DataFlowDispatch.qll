@@ -104,13 +104,13 @@ private module Cached {
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
       DataFlowImplCommon::forceCachingInSameStage() and
-      cfn.getElement() = dc.getCall()
+      cfn.getAstNode() = dc.getCall()
     } or
     TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
-      cfn.getElement() = dc
+      cfn.getAstNode() = dc
     } or
-    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn, Callable target) {
-      transitiveCapturedCallTarget(cfn, target)
+    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn) {
+      transitiveCapturedCallTarget(cfn, _)
     } or
     TCilCall(CIL::Call call) {
       // No need to include calls that are compiled from source
@@ -389,11 +389,12 @@ class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDe
  */
 class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCall {
   private ControlFlow::Nodes::ElementNode cfn;
-  private Callable target;
 
-  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn, target) }
+  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn) }
 
-  override DataFlowCallable getARuntimeTarget() { result.asCallable() = target }
+  override DataFlowCallable getARuntimeTarget() {
+    transitiveCapturedCallTarget(cfn, result.asCallable())
+  }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
@@ -413,6 +414,9 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
   private CIL::Call call;
 
   CilDataFlowCall() { this = TCilCall(call) }
+
+  /** Gets the underlying CIL call. */
+  CIL::Call getCilCall() { result = call }
 
   override DataFlowCallable getARuntimeTarget() {
     // There is no dispatch library for CIL, so do not consider overrides for now

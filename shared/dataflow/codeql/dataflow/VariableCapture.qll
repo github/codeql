@@ -95,9 +95,6 @@ signature module InputSig {
     /** Gets the variable that is the target of this write. */
     CapturedVariable getVariable();
 
-    /** Gets the expression that is the source of this write. */
-    Expr getSource();
-
     /** Gets the location of this write. */
     Location getLocation();
 
@@ -210,6 +207,22 @@ signature module OutputSig<InputSig I> {
     I::ClosureExpr getClosureExpr();
   }
 
+  /**
+   * A node representing the incoming value about to be written at the given assignment.
+   *
+   * The captured-variable library will generate flows out of this node, and assume that other
+   * parts of the language implementation produce the relevant data flows into this node.
+   *
+   * For ordinary assignments, this could be mapped to the right-hand side of the assignment.
+   *
+   * For more general cases, where an lvalue has no direct corresponding rvalue, this can be mapped
+   * to a data-flow node that wraps the lvalue, with language-specific incoming data flows.
+   */
+  class VariableWriteSourceNode extends ClosureNode {
+    /** Gets the variable write for which this node is the incoming value being written to the variable. */
+    I::VariableWrite getVariableWrite();
+  }
+
   /** Holds if `post` is a `PostUpdateNode` for `pre`. */
   predicate capturePostUpdateNode(SynthesizedCaptureNode post, SynthesizedCaptureNode pre);
 
@@ -239,7 +252,6 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     private class RelevantExpr extends FinalExpr {
       RelevantExpr() {
         this instanceof VariableRead or
-        any(VariableWrite vw).getSource() = this or
         this instanceof ClosureExpr or
         any(ClosureExpr ce).hasAliasedAccess(this)
       }
@@ -353,14 +365,6 @@ module Flow<InputSig Input> implements OutputSig<Input> {
 
     query predicate uniqueWriteTarget(string msg) { uniqueWriteTarget(_, msg) }
 
-    private predicate uniqueWriteSource(VariableWrite vw, string msg) {
-      msg = "VariableWrite has no source expression" and not exists(vw.getSource())
-      or
-      msg = "VariableWrite has multiple source expressions" and 2 <= strictcount(vw.getSource())
-    }
-
-    query predicate uniqueWriteSource(string msg) { uniqueWriteSource(_, msg) }
-
     private predicate uniqueWriteCfgNode(VariableWrite vw, string msg) {
       msg = "VariableWrite has no cfg node" and not vw.hasCfgNode(_, _)
       or
@@ -369,16 +373,6 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     }
 
     query predicate uniqueWriteCfgNode(string msg) { uniqueWriteCfgNode(_, msg) }
-
-    private predicate localWriteStep(VariableWrite vw, string msg) {
-      exists(BasicBlock bb |
-        vw.hasCfgNode(bb, _) and
-        bb.getEnclosingCallable() != vw.getVariable().getCallable() and
-        msg = "VariableWrite is not a local step"
-      )
-    }
-
-    query predicate localWriteStep(string msg) { localWriteStep(_, msg) }
 
     query predicate uniqueReadVariable(VariableRead vr, string msg) {
       msg = "VariableRead has no source variable" and not exists(vr.getVariable())
@@ -390,13 +384,14 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       msg = "ClosureExpr has no body" and not ce.hasBody(_)
     }
 
-    query predicate closureAliasMustBeLocal(ClosureExpr ce, Expr access, string msg) {
+    query predicate closureAliasMustBeInSameScope(ClosureExpr ce, Expr access, string msg) {
       exists(BasicBlock bb1, BasicBlock bb2 |
         ce.hasAliasedAccess(access) and
         ce.hasCfgNode(bb1, _) and
         access.hasCfgNode(bb2, _) and
-        bb1.getEnclosingCallable() != bb2.getEnclosingCallable() and
-        msg = "ClosureExpr has non-local alias - these are ignored"
+        not bb1.getEnclosingCallable() = callableGetEnclosingCallable*(bb2.getEnclosingCallable()) and
+        msg =
+          "ClosureExpr has an alias outside the scope of its enclosing callable - these are ignored"
       )
     }
 
@@ -434,12 +429,10 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       n = strictcount(Expr e | uniqueLocation(e, msg)) or
       n = strictcount(Expr e | uniqueCfgNode(e, msg)) or
       n = strictcount(VariableWrite vw | uniqueWriteTarget(vw, msg)) or
-      n = strictcount(VariableWrite vw | uniqueWriteSource(vw, msg)) or
       n = strictcount(VariableWrite vw | uniqueWriteCfgNode(vw, msg)) or
-      n = strictcount(VariableWrite vw | localWriteStep(vw, msg)) or
       n = strictcount(VariableRead vr | uniqueReadVariable(vr, msg)) or
       n = strictcount(ClosureExpr ce | closureMustHaveBody(ce, msg)) or
-      n = strictcount(ClosureExpr ce, Expr access | closureAliasMustBeLocal(ce, access, msg)) or
+      n = strictcount(ClosureExpr ce, Expr access | closureAliasMustBeInSameScope(ce, access, msg)) or
       n = strictcount(CapturedVariable v, Callable c | variableAccessAstNesting(v, c, msg)) or
       n = strictcount(Callable c | uniqueCallableLocation(c, msg))
     }
@@ -517,8 +510,37 @@ module Flow<InputSig Input> implements OutputSig<Input> {
   }
 
   /** Gets the enclosing callable of `ce`. */
-  private Callable closureExprGetCallable(ClosureExpr ce) {
+  private Callable closureExprGetEnclosingCallable(ClosureExpr ce) {
     exists(BasicBlock bb | ce.hasCfgNode(bb, _) and result = bb.getEnclosingCallable())
+  }
+
+  /** Gets the enclosing callable of `inner`. */
+  pragma[nomagic]
+  private Callable callableGetEnclosingCallable(Callable inner) {
+    exists(ClosureExpr closure |
+      closure.hasBody(inner) and
+      result = closureExprGetEnclosingCallable(closure)
+    )
+  }
+
+  /**
+   * Gets a callable that contains `ce`, or a reference to `ce` into which `ce` could be inlined without
+   * bringing any variables out of scope.
+   *
+   * If `ce` was to be inlined into that reference, the resulting callable
+   * would become the enclosing callable, and thus capture the same variables as `ce`.
+   * In some sense, we model captured aliases as if this inlining has happened.
+   */
+  private Callable closureExprGetAReferencingCallable(ClosureExpr ce) {
+    result = closureExprGetEnclosingCallable(ce)
+    or
+    exists(Expr expr, BasicBlock bb |
+      ce.hasAliasedAccess(expr) and
+      expr.hasCfgNode(bb, _) and
+      result = bb.getEnclosingCallable() and
+      // The reference to `ce` is allowed to occur in a more deeply nested context
+      closureExprGetEnclosingCallable(ce) = callableGetEnclosingCallable*(result)
+    )
   }
 
   /**
@@ -533,7 +555,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     )
     or
     exists(ClosureExpr ce |
-      c = closureExprGetCallable(ce) and
+      c = closureExprGetAReferencingCallable(ce) and
       closureCaptures(ce, v) and
       c != v.getCallable()
     )
@@ -561,15 +583,15 @@ module Flow<InputSig Input> implements OutputSig<Input> {
 
   /**
    * Holds if `access` is a reference to `ce` evaluated in the `i`th node of `bb`.
-   * The reference is restricted to be in the same callable as `ce` as a
+   * The reference is restricted to be nested within the same callable as `ce` as a
    * precaution, even though this is expected to hold for all the given aliased
    * accesses.
    */
-  private predicate localClosureAccess(ClosureExpr ce, Expr access, BasicBlock bb, int i) {
+  private predicate localOrNestedClosureAccess(ClosureExpr ce, Expr access, BasicBlock bb, int i) {
     ce.hasAliasedAccess(access) and
     access.hasCfgNode(bb, i) and
     pragma[only_bind_out](bb.getEnclosingCallable()) =
-      pragma[only_bind_out](closureExprGetCallable(ce))
+      pragma[only_bind_out](closureExprGetAReferencingCallable(ce))
   }
 
   /**
@@ -586,7 +608,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     exists(ClosureExpr ce | closureCaptures(ce, v) |
       ce.hasCfgNode(bb, i) and ce = closure
       or
-      localClosureAccess(ce, closure, bb, i)
+      localOrNestedClosureAccess(ce, closure, bb, i)
     ) and
     if v.getCallable() != bb.getEnclosingCallable() then topScope = false else topScope = true
   }
@@ -688,13 +710,12 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     TExprNode(Expr expr, boolean isPost) {
       expr instanceof VariableRead and isPost = [false, true]
       or
-      exists(VariableWrite vw | expr = vw.getSource() and isPost = false)
-      or
       synthRead(_, _, _, _, expr) and isPost = [false, true]
     } or
     TParamNode(CapturedParameter p) or
     TThisParamNode(Callable c) { captureAccess(_, c) } or
-    TMallocNode(ClosureExpr ce) { hasConstructorCapture(ce, _) }
+    TMallocNode(ClosureExpr ce) { hasConstructorCapture(ce, _) } or
+    TVariableWriteSourceNode(VariableWrite write)
 
   class ClosureNode extends TClosureNode {
     /** Gets a textual representation of this node. */
@@ -720,6 +741,11 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       result = "this" and this = TThisParamNode(_)
       or
       result = "malloc" and this = TMallocNode(_)
+      or
+      exists(VariableWrite write |
+        this = TVariableWriteSourceNode(write) and
+        result = "Source of write to " + write.getVariable().toString()
+      )
     }
 
     /** Gets the location of this node. */
@@ -747,6 +773,10 @@ module Flow<InputSig Input> implements OutputSig<Input> {
       exists(Callable c | this = TThisParamNode(c) and result = c.getLocation())
       or
       exists(ClosureExpr ce | this = TMallocNode(ce) and result = ce.getLocation())
+      or
+      exists(VariableWrite write |
+        this = TVariableWriteSourceNode(write) and result = write.getLocation()
+      )
     }
   }
 
@@ -806,6 +836,10 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     ClosureExpr getClosureExpr() { this = TMallocNode(result) }
   }
 
+  class VariableWriteSourceNode extends ClosureNode, TVariableWriteSourceNode {
+    VariableWrite getVariableWrite() { this = TVariableWriteSourceNode(result) }
+  }
+
   predicate capturePostUpdateNode(SynthesizedCaptureNode post, SynthesizedCaptureNode pre) {
     exists(CapturedVariable v, BasicBlock bb, int i |
       pre = TSynthRead(v, bb, i, false) and post = TSynthRead(v, bb, i, true)
@@ -850,7 +884,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     or
     exists(VariableWrite vw, CapturedVariable v |
       captureWrite(v, bb, i, true, vw) and
-      n = TExprNode(vw.getSource(), false) and
+      n = TVariableWriteSourceNode(vw) and
       isPost = false and
       cc = TVariable(v)
     )
@@ -897,7 +931,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     // write to v inside the closure body
     exists(BasicBlock bb, int i, VariableWrite vw |
       captureWrite(v, bb, i, false, vw) and
-      node1 = TExprNode(vw.getSource(), false) and
+      node1 = TVariableWriteSourceNode(vw) and
       node2 = TSynthThisQualifier(bb, i, true)
     )
   }

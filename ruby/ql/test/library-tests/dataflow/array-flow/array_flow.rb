@@ -355,7 +355,7 @@ def m40(i)
     a = [0, 1, source(40.1), [0, source(40.2)]]
     sink(a.dig(0))
     sink(a.dig(2)) # $ hasValueFlow=40.1
-    sink(a.dig(i)) # $ hasValueFlow=40.1
+    sink(a.dig(i)) # $ hasValueFlow=40.1 $ hasTaintFlow=40.2
     sink(a.dig(3,0))
     sink(a.dig(3,1)) # $ hasValueFlow=40.2
 end
@@ -1214,8 +1214,9 @@ def m111(i)
     b = a.slice i
     # If `i` is an integer:
     sink b # $ hasValueFlow=111.1 $ hasValueFlow=111.2
-    # If `i` is a range/aseq:
-    sink b[0] # $ hasValueFlow=111.1 $ hasValueFlow=111.2
+    # Could in principle happen if `i` is a range/aseq, but we don't model that
+    # Instead, flow happens because the array read is lifted to a taint step
+    sink b[0] # $ SPURIOUS: hasTaintFlow=111.1 $ SPURIOUS: hasTaintFlow=111.2
 
     b = a.slice(2, 3)
     sink b[0] # $ hasValueFlow=111.1

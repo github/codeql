@@ -11,17 +11,16 @@
  */
 
 import go
-import semmle.go.security.RequestForgery::RequestForgery
+import semmle.go.security.RequestForgery
 import semmle.go.security.SafeUrlFlow
-import DataFlow::PathGraph
+import RequestForgery::Flow::PathGraph
 
 from
-  Configuration cfg, SafeUrlFlow::Configuration scfg, DataFlow::PathNode source,
-  DataFlow::PathNode sink, DataFlow::Node request
+  RequestForgery::Flow::PathNode source, RequestForgery::Flow::PathNode sink, DataFlow::Node request
 where
-  cfg.hasFlowPath(source, sink) and
-  request = sink.getNode().(Sink).getARequest() and
+  RequestForgery::Flow::flowPath(source, sink) and
+  request = sink.getNode().(RequestForgery::Sink).getARequest() and
   // this excludes flow from safe parts of request URLs, for example the full URL
-  not scfg.hasFlow(_, sink.getNode())
+  not SafeUrlFlow::Flow::flow(_, sink.getNode())
 select request, source, sink, "The $@ of this request depends on a $@.", sink.getNode(),
-  sink.getNode().(Sink).getKind(), source, "user-provided value"
+  sink.getNode().(RequestForgery::Sink).getKind(), source, "user-provided value"

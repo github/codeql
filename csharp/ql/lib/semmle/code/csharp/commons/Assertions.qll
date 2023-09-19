@@ -1,12 +1,9 @@
 /** Provides classes for assertions. */
 
-private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.system.diagnostics.Contracts
 private import semmle.code.csharp.frameworks.test.VisualStudio
 private import semmle.code.csharp.frameworks.System
-private import ControlFlow
-private import ControlFlow::BasicBlocks
 
 private newtype TAssertionFailure =
   TExceptionAssertionFailure(Class c) or
@@ -302,6 +299,12 @@ class NUnitAssertNonNullMethod extends NullnessAssertMethod, NUnitAssertMethod {
   override int getAnAssertionIndex(boolean b) { result = this.getAnAssertionIndex() and b = false }
 }
 
+pragma[nomagic]
+private predicate parameterAssertion(Assertion a, int index, Parameter p) {
+  strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
+  a.getExpr(index) = p.getAnAccess()
+}
+
 /** A method that forwards to another assertion method. */
 class ForwarderAssertMethod extends AssertMethod {
   private Assertion a;
@@ -310,10 +313,9 @@ class ForwarderAssertMethod extends AssertMethod {
 
   ForwarderAssertMethod() {
     p = this.getAParameter() and
-    strictcount(AssignableDefinition def | def.getTarget() = p) = 1 and
     forex(ControlFlowElement body | body = this.getBody() |
       bodyAsserts(this, body, a) and
-      a.getExpr(forwarderIndex) = p.getAnAccess()
+      parameterAssertion(a, forwarderIndex, p)
     )
   }
 

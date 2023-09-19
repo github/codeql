@@ -476,22 +476,30 @@ private predicate parseField(AccessPathToken c, Content::FieldContent f) {
   )
 }
 
-private predicate parseEnum(AccessPathToken c, Content::EnumContent f) {
+private predicate parseTuple(AccessPathToken c, Content::TupleContent t) {
+  c.getName() = "TupleElement" and
+  t.getIndex() = c.getAnArgument().toInt()
+}
+
+private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
   c.getName() = "EnumElement" and
-  c.getAnArgument() = f.getSignature()
+  c.getAnArgument() = e.getSignature()
   or
   c.getName() = "OptionalSome" and
-  f.getSignature() = "some:0"
+  e.getSignature() = "some:0"
 }
 
 /** Holds if the specification component parses as a `Content`. */
 predicate parseContent(AccessPathToken component, Content content) {
   parseField(component, content)
   or
+  parseTuple(component, content)
+  or
   parseEnum(component, content)
   or
+  // map legacy "ArrayElement" specification components to `CollectionContent`
   component.getName() = "ArrayElement" and
-  content instanceof Content::ArrayContent
+  content instanceof Content::CollectionContent
   or
   component.getName() = "CollectionElement" and
   content instanceof Content::CollectionContent
