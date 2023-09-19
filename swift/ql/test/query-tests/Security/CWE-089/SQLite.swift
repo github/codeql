@@ -74,7 +74,7 @@ func test_sqlite_swift_api(db: Connection) throws {
 	try db.execute(unsafeQuery2) // BAD
 	try db.execute(unsafeQuery3) // BAD
 	try db.execute(safeQuery1) // GOOD
-	try db.execute(safeQuery2) // GOOD [FALSE POSITIVE]
+	try db.execute(safeQuery2) // GOOD
 
 	// --- prepared statements ---
 

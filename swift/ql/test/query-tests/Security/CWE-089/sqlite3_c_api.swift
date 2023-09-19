@@ -134,7 +134,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>)
 	let result2 = sqlite3_exec(db, unsafeQuery2, nil, nil, nil) // BAD
 	let result3 = sqlite3_exec(db, unsafeQuery3, nil, nil, nil) // BAD
 	let result4 = sqlite3_exec(db, safeQuery1, nil, nil, nil) // GOOD
-	let result5 = sqlite3_exec(db, safeQuery2, nil, nil, nil) // GOOD [FALSE POSITIVE]
+	let result5 = sqlite3_exec(db, safeQuery2, nil, nil, nil) // GOOD
 
 	// --- prepared statements ---
 
