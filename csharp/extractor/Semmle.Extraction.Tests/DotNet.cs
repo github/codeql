@@ -35,10 +35,10 @@ namespace Semmle.Extraction.Tests
         public string GetLastArgs() => lastArgs;
     }
 
-    public class DotNetCliWrapperTests
+    public class DotNetTests
     {
         private static IDotNet MakeDotnet(IDotNetCliInvoker dotnetCliInvoker) =>
-            DotNetCliWrapper.Make(dotnetCliInvoker, new ProgressMonitor(new LoggerStub()));
+            DotNet.Make(dotnetCliInvoker, new ProgressMonitor(new LoggerStub()));
 
         private static IList<string> MakeDotnetRestoreOutput() =>
             new List<string> {

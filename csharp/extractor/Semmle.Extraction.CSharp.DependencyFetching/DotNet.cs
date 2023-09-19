@@ -9,31 +9,31 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
-    internal partial class DotNetCliWrapper : IDotNet
+    internal partial class DotNet : IDotNet
     {
-        private readonly IDotNetCliInvoker dotnet;
+        private readonly IDotNetCliInvoker dotnetCliInvoker;
         private readonly ProgressMonitor progressMonitor;
 
-        private DotNetCliWrapper(IDotNetCliInvoker dotnet, ProgressMonitor progressMonitor)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
-            this.dotnet = dotnet;
+            this.dotnetCliInvoker = dotnetCliInvoker;
             Info();
         }
 
-        private DotNetCliWrapper(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
+        private DotNet(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
 
-        internal static IDotNet Make(IDotNetCliInvoker dotnet, ProgressMonitor progressMonitor) => new DotNetCliWrapper(dotnet, progressMonitor);
+        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor) => new DotNet(dotnetCliInvoker, progressMonitor);
 
-        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor) => new DotNetCliWrapper(options, progressMonitor);
+        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor) => new DotNet(options, progressMonitor);
 
         private void Info()
         {
             // TODO: make sure the below `dotnet` version is matching the one specified in global.json
-            var res = dotnet.RunCommand("--info");
+            var res = dotnetCliInvoker.RunCommand("--info");
             if (!res)
             {
-                throw new Exception($"{dotnet.Exec} --info failed.");
+                throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
             }
         }
 
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 args += $" --configfile \"{pathToNugetConfig}\"";
             }
-            var success = dotnet.RunCommand(args, out var output);
+            var success = dotnetCliInvoker.RunCommand(args, out var output);
             stdout = string.Join("\n", output);
             return success;
         }
@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var args = GetRestoreArgs(solutionFile, packageDirectory);
             args += " --verbosity normal";
-            if (dotnet.RunCommand(args, out var output))
+            if (dotnetCliInvoker.RunCommand(args, out var output))
             {
                 var regex = RestoreProjectRegex();
                 projects = output
@@ -73,13 +73,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool New(string folder)
         {
             var args = $"new console --no-restore --output \"{folder}\"";
-            return dotnet.RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public bool AddPackage(string folder, string package)
         {
             var args = $"add \"{folder}\" package \"{package}\" --no-restore";
-            return dotnet.RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private IList<string> GetListed(string args, string artifact)
         {
-            if (dotnet.RunCommand(args, out var artifacts))
+            if (dotnetCliInvoker.RunCommand(args, out var artifacts))
             {
                 progressMonitor.LogInfo($"Found {artifact}s: {string.Join("\n", artifacts)}");
                 return artifacts;
@@ -99,7 +99,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool Exec(string execArgs)
         {
             var args = $"exec {execArgs}";
-            return dotnet.RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
