@@ -104,8 +104,7 @@ class GolangJwtParseFromRequest extends Function {
     exists(DataFlow::Function f |
       f.hasQualifiedName([
           "github.com/golang-jwt/jwt/request", "github.com/golang-jwt/jwt/v4/request",
-          "github.com/dgrijalva/jwt-go/request", "github.com/golang-jwt/jwt/v4/request",
-          "github.com/dgrijalva/jwt-go/v5/request"
+          "github.com/dgrijalva/jwt-go/request", "github.com/dgrijalva/jwt-go/v4/request"
         ], "ParseFromRequest")
     |
       this = f
@@ -125,8 +124,7 @@ class GolangJwtParseFromRequestWithClaims extends Function {
     exists(DataFlow::Function f |
       f.hasQualifiedName([
           "github.com/golang-jwt/jwt/request", "github.com/golang-jwt/jwt/v4/request",
-          "github.com/dgrijalva/jwt-go/request", "github.com/golang-jwt/jwt/v4/request",
-          "github.com/dgrijalva/jwt-go/v5/request"
+          "github.com/dgrijalva/jwt-go/request", "github.com/dgrijalva/jwt-go/v4/request"
         ], "ParseFromRequestWithClaims")
     |
       this = f
@@ -181,13 +179,17 @@ class GoJoseUnsafeClaims extends Function {
 predicate golangJwtIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(DataFlow::Function f, DataFlow::CallNode call |
     f.hasQualifiedName([
-        "github.com/golang-jwt/jwt", "github.com/golang-jwt/jwt/v4", "github.com/golang-jwt/jwt/v5",
-        "github.com/dgrijalva/jwt-go", "github.com/dgrijalva/jwt-go/v4"
+        "github.com/golang-jwt/jwt", "github.com/golang-jwt/jwt/v4", "github.com/golang-jwt/jwt/v5"
       ],
       [
         "ParseECPrivateKeyFromPEM", "ParseECPublicKeyFromPEM", "ParseEdPrivateKeyFromPEM",
         "ParseEdPublicKeyFromPEM", "ParseRSAPrivateKeyFromPEM", "ParseRSAPublicKeyFromPEM",
         "RegisterSigningMethod"
+      ]) or
+    f.hasQualifiedName(["github.com/dgrijalva/jwt-go", "github.com/dgrijalva/jwt-go/v4"],
+      [
+        "ParseECPrivateKeyFromPEM", "ParseECPublicKeyFromPEM", "ParseRSAPrivateKeyFromPEM",
+        "ParseRSAPrivateKeyFromPEMWithPassword", "ParseRSAPublicKeyFromPEM"
       ])
   |
     call = f.getACall() and
@@ -209,15 +211,6 @@ predicate golangJwtIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node 
     nodeFrom = f.getBase() and
     nodeTo = f
   )
-}
-
-predicate test(DataFlow::Function f, DataFlow::CallNode call) {
-  f.hasQualifiedName([
-      "gopkg.in/square/go-jose/jwt", "gopkg.in/square/go-jose.v2/jwt",
-      "gopkg.in/square/go-jose.v3/jwt", "github.com/go-jose/go-jose/jwt",
-      "github.com/go-jose/go-jose/v3/jwt"
-    ], ["ParseEncrypted", "ParseSigned",]) and
-  call = f.getACall().getArgument(0)
 }
 
 predicate goJoseIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -253,7 +246,7 @@ predicate goJoseIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nod
         "gopkg.in/square/go-jose.v2/jwt.NestedJSONWebToken",
         "gopkg.in/square/go-jose.v3/jwt.NestedJSONWebToken",
         "github.com/go-jose/go-jose/jwt.NestedJSONWebToken",
-        "github.com/go-jose/go-jose/v3/jw.NestedJSONWebTokent"
+        "github.com/go-jose/go-jose/v3/jw.NestedJSONWebToken"
       ], "Decrypt")
   |
     call = f.getACall() and

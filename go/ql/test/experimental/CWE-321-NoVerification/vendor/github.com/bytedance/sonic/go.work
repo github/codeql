@@ -1,8 +1,0 @@
-go 1.18
-
-use (
-	.
-	./generic_test
-	./fuzz
-	./external_jsonlib_test
-)
