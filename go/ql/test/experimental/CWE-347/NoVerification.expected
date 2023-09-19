@@ -4,9 +4,6 @@ edges
 | go-jose.v3/go-jose.v3.go:49:19:49:29 | definition of signedToken | go-jose.v3/go-jose.v3.go:51:37:51:47 | signedToken |
 | go-jose.v3/go-jose.v3.go:51:21:51:48 | call to ParseSigned | go-jose.v3/go-jose.v3.go:53:12:53:23 | DecodedToken |
 | go-jose.v3/go-jose.v3.go:51:37:51:47 | signedToken | go-jose.v3/go-jose.v3.go:51:21:51:48 | call to ParseSigned |
-| golang-jwt-v5/golang-jwt-v5.go:33:17:33:38 | call to Param | golang-jwt-v5/golang-jwt-v5.go:34:16:34:26 | signedToken |
-| golang-jwt-v5/golang-jwt-v5.go:34:16:34:26 | signedToken | golang-jwt-v5/golang-jwt-v5.go:57:19:57:29 | definition of signedToken |
-| golang-jwt-v5/golang-jwt-v5.go:57:19:57:29 | definition of signedToken | golang-jwt-v5/golang-jwt-v5.go:59:58:59:68 | signedToken |
 nodes
 | go-jose.v3/go-jose.v3.go:27:17:27:38 | call to Param | semmle.label | call to Param |
 | go-jose.v3/go-jose.v3.go:28:16:28:26 | signedToken | semmle.label | signedToken |
@@ -14,11 +11,6 @@ nodes
 | go-jose.v3/go-jose.v3.go:51:21:51:48 | call to ParseSigned | semmle.label | call to ParseSigned |
 | go-jose.v3/go-jose.v3.go:51:37:51:47 | signedToken | semmle.label | signedToken |
 | go-jose.v3/go-jose.v3.go:53:12:53:23 | DecodedToken | semmle.label | DecodedToken |
-| golang-jwt-v5/golang-jwt-v5.go:33:17:33:38 | call to Param | semmle.label | call to Param |
-| golang-jwt-v5/golang-jwt-v5.go:34:16:34:26 | signedToken | semmle.label | signedToken |
-| golang-jwt-v5/golang-jwt-v5.go:57:19:57:29 | definition of signedToken | semmle.label | definition of signedToken |
-| golang-jwt-v5/golang-jwt-v5.go:59:58:59:68 | signedToken | semmle.label | signedToken |
 subpaths
 #select
 | go-jose.v3/go-jose.v3.go:53:12:53:23 | DecodedToken | go-jose.v3/go-jose.v3.go:27:17:27:38 | call to Param | go-jose.v3/go-jose.v3.go:53:12:53:23 | DecodedToken | This  $@. | go-jose.v3/go-jose.v3.go:27:17:27:38 | call to Param | decode |
-| golang-jwt-v5/golang-jwt-v5.go:59:58:59:68 | signedToken | golang-jwt-v5/golang-jwt-v5.go:33:17:33:38 | call to Param | golang-jwt-v5/golang-jwt-v5.go:59:58:59:68 | signedToken | This  $@. | golang-jwt-v5/golang-jwt-v5.go:33:17:33:38 | call to Param | decode |
