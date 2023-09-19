@@ -229,14 +229,14 @@ void test15(unsigned index) {
     return;
   }
   int* newname = new int[size];
-  newname[index] = 0; // $ alloc=L231 deref=L232 // GOOD [FALSE POSITIVE]
+  newname[index] = 0; // GOOD
 }
 
 void test16(unsigned index) {
   unsigned size = index + 13;
   if(size >= index) {
     int* newname = new int[size];
-    newname[index] = 0; // $ alloc=L238 deref=L239 // GOOD [FALSE POSITIVE]
+    newname[index] = 0; // GOOD
   }
 }
 
