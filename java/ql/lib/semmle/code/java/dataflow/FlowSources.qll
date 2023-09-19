@@ -60,9 +60,11 @@ class ThreatModelFlowSource extends DataFlow::Node {
 }
 
 /** A data flow source of remote user input. */
-abstract class RemoteFlowSource extends DataFlow::Node {
+abstract class RemoteFlowSource extends SourceNode {
   /** Gets a string that describes the type of this remote flow source. */
   abstract string getSourceType();
+
+  override string getThreatModel() { result = "remote" }
 }
 
 /**
@@ -204,14 +206,47 @@ abstract class UserInput extends DataFlow::Node { }
 private class RemoteUserInput extends UserInput instanceof RemoteFlowSource { }
 
 /** A node with input that may be controlled by a local user. */
-abstract class LocalUserInput extends UserInput { }
+abstract class LocalUserInput extends UserInput, SourceNode {
+  override string getThreatModel() { result = "local" }
+}
 
 /**
+ * DEPRECATED: Use the threat models feature.
+ * That is, use `ThreatModelFlowSource` as the class of nodes for sources
+ * and set up the threat model configuration to filter source nodes.
+ * Alternatively, use `getThreatModel` to filter nodes to create the
+ * class of nodes you need.
+ *
  * A node with input from the local environment, such as files, standard in,
  * environment variables, and main method parameters.
  */
-class EnvInput extends LocalUserInput {
+deprecated class EnvInput extends DataFlow::Node {
   EnvInput() {
+    this instanceof EnvironmentInput or
+    this instanceof CliInput or
+    this instanceof FileInput
+  }
+}
+
+/**
+ * A node with input from the local environment, such as
+ * environment variables.
+ */
+private class EnvironmentInput extends LocalUserInput {
+  EnvironmentInput() {
+    // Results from various specific methods.
+    this.asExpr().(MethodAccess).getMethod() instanceof EnvReadMethod
+  }
+
+  override string getThreatModel() { result = "environment" }
+}
+
+/**
+ * A node with input from the command line, such as standard in
+ * and main method parameters.
+ */
+private class CliInput extends LocalUserInput {
+  CliInput() {
     // Parameters to a main method.
     exists(MainMethod main | this.asParameter() = main.getParameter(0))
     or
@@ -220,23 +255,35 @@ class EnvInput extends LocalUserInput {
       f.getAnAnnotation().getType().getQualifiedName() = "org.kohsuke.args4j.Argument"
     )
     or
-    // Results from various specific methods.
-    this.asExpr().(MethodAccess).getMethod() instanceof EnvReadMethod
-    or
     // Access to `System.in`.
     exists(Field f | this.asExpr() = f.getAnAccess() | f instanceof SystemIn)
-    or
+  }
+
+  override string getThreatModel() { result = "cli" }
+}
+
+/**
+ * A node with input from the local environment, such as files.
+ */
+private class FileInput extends LocalUserInput {
+  FileInput() {
     // Access to files.
     this.asExpr()
         .(ConstructorCall)
         .getConstructedType()
         .hasQualifiedName("java.io", "FileInputStream")
   }
+
+  override string getThreatModel() { result = "file" }
 }
 
-/** A node with input from a database. */
-class DatabaseInput extends LocalUserInput {
+/**
+ * A node with input from a database.
+ */
+private class DatabaseInput extends LocalUserInput {
   DatabaseInput() { this.asExpr().(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
+
+  override string getThreatModel() { result = "database" }
 }
 
 /** A method that reads from the environment, such as `System.getProperty` or `System.getenv`. */
