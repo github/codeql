@@ -6077,14 +6077,11 @@ cfg.swift:
 #  525| Task<(), Never>.Type
 #-----|  -> default priority
 
-#  525| return
-#-----| return -> exit { ... } (normal)
-
 #  525| .detached(priority:operation:)
 #-----|  -> Task<(), Never>.Type
 
 #  525| call to detached(priority:operation:)
-#-----|  -> return
+#-----|  -> exit { ... } (normal)
 
 #  525| default priority
 #-----|  -> { ... }

@@ -226,7 +226,6 @@ methodlookup.swift:
 #   47|               getFunction(): [MethodLookupExpr] .instanceMethod()
 #   47|                 getBase(): [DeclRefExpr] baz
 #   47|                 getMethodRef(): [DeclRefExpr] instanceMethod()
-#   47|                 getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz) -> @MainActor () -> ()) ...
 #   47|             getElement(2).getFullyConverted(): [AwaitExpr] await ...
 #   48|             getElement(3): [CallExpr] call to { ... }
 #   48|               getFunction(): [CallExpr] call to Baz.instanceMethod()
