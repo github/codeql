@@ -71,6 +71,26 @@ def by_function_arg():
     post = posts.find_one({'$expr': {'$function': search}}) # $ result=OK
     return show_post(post, author)
 
+@app.route('/byGroup', methods=['GET'])
+def by_group():
+    author = request.args['author']
+    accumulator = {
+        "init": 'function() { return "Not found" }',
+        "accumulate": 'function(state, author) { return (author === "'+author+'") ? author : state }',
+        "accumulateArgs": ["$author"],
+        "merge": 'function(state1, state2) { return (state1 === "Not found") ? state2 : state1 }'
+    }
+    group = {
+        "_id": "null",
+        "author": { "$accumulator": accumulator }
+    }
+    # Use `" | "a" === "a` as author
+    # making the query `this.author === "" | "a" === "a"`
+    # Found by http://127.0.0.1:5000/byGroup?author=%22%20|%20%22a%22%20===%20%22a
+    post = posts.aggregate([{ "$group": group }]).next() # $ MISSING: result=BAD
+    app.logger.error("post", post)
+    return show_post(post, author)
+
 @app.route('/', methods=['GET'])
 def show_routes():
     links = []
