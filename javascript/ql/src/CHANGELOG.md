@@ -1,3 +1,9 @@
+## 0.7.5
+
+### Bug Fixes
+
+* Fixed an extractor crash that could occur in projects containing TypeScript files larger than 10 MB.
+
 ## 0.7.4
 
 ### Minor Analysis Improvements
