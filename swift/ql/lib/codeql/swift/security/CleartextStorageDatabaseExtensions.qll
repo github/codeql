@@ -114,7 +114,7 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
 }
 
 /**
- * An barrier for cleartext database storage vulnerabilities.
+ * A barrier for cleartext database storage vulnerabilities.
  *  - encryption; encrypted values are not cleartext.
  *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
