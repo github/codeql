@@ -1073,11 +1073,11 @@ private module GetConvertedResultExpression {
   /**
    * Gets the expression that should be returned as the result expression from `instr`.
    *
-   * Note that this predicate may return multiple results in cases where a conversion belond to a
+   * Note that this predicate may return multiple results in cases where a conversion belongs to a
    * different AST element than its operand.
    */
   Expr getConvertedResultExpression(Instruction instr, int n) {
-    // Only fully converted instructions has a result for `asConvertedExpr`
+    // Only fully converted instructions have a result for `asConvertedExpr`
     not conversionFlow(unique(Operand op |
         // The address operand of a `InitializeDynamicAllocationInstruction` is
         // special: we need to handle it during dataflow (since it's
