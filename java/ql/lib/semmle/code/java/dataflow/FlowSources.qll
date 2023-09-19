@@ -29,6 +29,35 @@ import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlowConfiguration
+
+/**
+ * A data flow source.
+ */
+abstract class SourceNode extends DataFlow::Node {
+  /**
+   * Gets a string that represents the source kind with respect to threat modeling.
+   */
+  abstract string getThreatModel();
+}
+
+/**
+ * A class of data flow sources that respects the
+ * current threat model configuration.
+ */
+class ThreatModelFlowSource extends DataFlow::Node {
+  ThreatModelFlowSource() {
+    // Expansive threat model.
+    currentThreatModel("all") and
+    (this instanceof SourceNode or sourceNode(this, _))
+    or
+    exists(string kind |
+      // Specific threat model.
+      currentThreatModel(kind) and
+      (this.(SourceNode).getThreatModel() = kind or sourceNode(this, kind))
+    )
+  }
+}
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends DataFlow::Node {
