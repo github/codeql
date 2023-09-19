@@ -226,6 +226,7 @@ func taintThroughSimpleStringOperations() {
   sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ tainted=217
   sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ tainted=217
   sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ tainted=217
+  sink(arg: String.localizedStringWithFormat("%i %s %i", 1, tainted, 3)) // $ tainted=217
   sink(arg: String(format: "%s", tainted)) // $ tainted=217
   sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ tainted=218
 
@@ -235,7 +236,6 @@ func taintThroughSimpleStringOperations() {
   sink(arg: tainted.dropFirst(10)) // $ tainted=217
   sink(arg: tainted.dropLast(10)) // $ tainted=217
   sink(arg: tainted.substring(from: tainted.startIndex)) // $ tainted=217
-
   sink(arg: tainted.lowercased()) // $ tainted=217
   sink(arg: tainted.uppercased()) // $ tainted=217
   sink(arg: tainted.lowercased(with: nil)) // $ tainted=217
