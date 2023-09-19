@@ -93,8 +93,7 @@ module InstructionConsistency {
       message =
         "Instruction '" + instr.getOpcode().toString() +
           "' is missing an expected operand with tag '" + tag.toString() + "' in function '$@'." and
-      irFunc = getInstructionIRFunction(instr, irFuncText) and
-      exists(irFunc.getLocation().getFile().getRelativePath())
+      irFunc = getInstructionIRFunction(instr, irFuncText)
     )
   }
 

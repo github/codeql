@@ -2308,19 +2308,17 @@ class TranslatedConstantConditionalExpr extends TranslatedNonConstantExpr {
   override ConditionalExpr expr;
 
   TranslatedConstantConditionalExpr() {
-    exists(expr.getCondition().getUnconverted().getValue().toInt()) and
+    exists(expr.getCondition().getFullyConverted().getValue().toInt()) and
     not expr.isTwoOperand()
   }
 
-  predicate conditionIsTrue() { expr.getCondition().getValue().toInt() != 0 }
+  predicate conditionIsTrue() { expr.getCondition().getFullyConverted().getValue().toInt() != 0 }
 
   TranslatedExpr getResultExpr() {
     if this.conditionIsTrue()
     then result = getTranslatedExpr(expr.getThen().getFullyConverted())
     else result = getTranslatedExpr(expr.getElse().getFullyConverted())
   }
-
-  TranslatedExpr getCondition() { result = getTranslatedExpr(expr.getCondition().getFullyConverted()) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     not this.resultIsVoid() and
@@ -2349,18 +2347,14 @@ class TranslatedConstantConditionalExpr extends TranslatedNonConstantExpr {
   override Instruction getChildSuccessor(TranslatedElement child) {
     child = this.getResultExpr() and
     result = this.getInstruction(OnlyInstructionTag())
-    or
-    child = this.getCondition() and result = this.getResultExpr().getFirstInstruction()
   }
 
   final override TranslatedElement getChild(int id) {
-    id = 0 and result = this.getCondition()
-    or
     id = 1 and result = this.getResultExpr()
   }
 
   final override Instruction getFirstInstruction() {
-    result = this.getCondition().getFirstInstruction()
+    result = this.getResultExpr().getFirstInstruction()
   }
 
   private predicate resultIsVoid() { this.getResultType().getIRType() instanceof IRVoidType }

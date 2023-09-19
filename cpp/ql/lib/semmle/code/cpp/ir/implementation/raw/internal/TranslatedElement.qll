@@ -68,8 +68,10 @@ predicate isIRConstant(Expr expr) {
   ) and
   getEnclosingDeclaration(expr) instanceof StaticInitializedStaticLocalVariable
   or
-  exists(Function callee | callee = expr.(Call).getTarget() and
-  callee.getName() = "__builtin_constant_p")
+  exists(Function callee |
+    callee = expr.(Call).getTarget() and
+    callee.getName() = "__builtin_constant_p"
+  )
 }
 
 // Pulled out for performance. See
@@ -124,8 +126,12 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   or
   exists(ConditionalExpr cexpr, int const |
     not cexpr.isTwoOperand() and
-    const = cexpr.getCondition().getUnconverted().getValue().toInt() and
-    if const = 0 then expr = cexpr.getThen() else expr = cexpr.getElse()
+    const = cexpr.getCondition().getFullyConverted().getValue().toInt() and
+    (
+      (if const = 0 then expr = cexpr.getThen().getFullyConverted() else expr = cexpr.getElse().getFullyConverted())
+      or
+      expr = cexpr.getCondition().getFullyConverted()
+    )
   )
 }
 
@@ -247,9 +253,7 @@ private predicate usedAsCondition(Expr expr) {
     condExpr.getCondition().getFullyConverted() = expr and
     // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
     // be reused as a value if the condition is true.
-    not condExpr.isTwoOperand() and
-    // Constant ternary operations just ignore the condition
-    not exists(expr.getValue().toInt())
+    not condExpr.isTwoOperand()
   )
   or
   exists(NotExpr notExpr |
