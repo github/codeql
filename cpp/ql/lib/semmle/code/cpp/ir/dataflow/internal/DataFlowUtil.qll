@@ -1069,11 +1069,11 @@ private module GetConvertedResultExpression {
   /**
    * Gets the expression that should be returned as the result expression from `instr`.
    *
-   * Note that this predicate may return multiple results in cases where a conversion belond to a
+   * Note that this predicate may return multiple results in cases where a conversion belongs to a
    * different AST element than its operand.
    */
   Expr getConvertedResultExpression(Instruction instr, int n) {
-    // Only fully converted instructions has a result for `asConvertedExpr`
+    // Only fully converted instructions have a result for `asConvertedExpr`
     not conversionFlow(unique( | | getAUse(instr)), _, false, false) and
     result = getConvertedResultExpressionImpl(instr) and
     n = 0
