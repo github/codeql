@@ -1,7 +1,10 @@
 import go
 
 /**
+ * A class that contains the following function and method:
+ *
  * func (p *Parser) Parse(tokenString string, keyFunc Keyfunc)
+ *
  * func Parse(tokenString string, keyFunc Keyfunc)
  */
 class GolangJwtParse extends Function {
@@ -33,7 +36,10 @@ class GolangJwtParse extends Function {
 }
 
 /**
+ * A class that contains the following function and method:
+ *
  * func (p *Parser) Parse(tokenString string, keyFunc Keyfunc)
+ *
  * func Parse(tokenString string, keyFunc Keyfunc)
  */
 class GolangJwtValidField extends DataFlow::FieldReadNode {
@@ -48,7 +54,10 @@ class GolangJwtValidField extends DataFlow::FieldReadNode {
 }
 
 /**
+ * A class that contains the following function and method:
+ *
  * func (p *Parser) ParseWithClaims(tokenString string, claims Claims, keyFunc Keyfunc)
+ *
  * func ParseWithClaims(tokenString string, claims Claims, keyFunc Keyfunc)
  */
 class GolangJwtParseWithClaims extends Function {
@@ -80,6 +89,8 @@ class GolangJwtParseWithClaims extends Function {
 }
 
 /**
+ * A class that contains the following method:
+ *
  * func (p *Parser) ParseUnverified(tokenString string, claims Claims)
  */
 class GolangJwtParseUnverified extends Function {
@@ -97,6 +108,8 @@ class GolangJwtParseUnverified extends Function {
 }
 
 /**
+ * A class that contains the following function:
+ *
  * func ParseFromRequest(req *http.Request, extractor Extractor, keyFunc jwt.Keyfunc, options ...ParseFromRequestOption)
  */
 class GolangJwtParseFromRequest extends Function {
@@ -117,6 +130,8 @@ class GolangJwtParseFromRequest extends Function {
 }
 
 /**
+ * A class that contains the following function:
+ *
  * func ParseFromRequestWithClaims(req *http.Request, extractor Extractor, claims jwt.Claims, keyFunc jwt.Keyfunc)
  */
 class GolangJwtParseFromRequestWithClaims extends Function {
@@ -137,6 +152,8 @@ class GolangJwtParseFromRequestWithClaims extends Function {
 }
 
 /**
+ * A class that contains the following method:
+ *
  *func (t *JSONWebToken) Claims(key interface{}, dest ...interface{})
  */
 class GoJoseClaims extends Function {
@@ -159,7 +176,9 @@ class GoJoseClaims extends Function {
 }
 
 /**
- *  func (t *JSONWebToken) UnsafeClaimsWithoutVerification(dest ...interface{})
+ * A class that contains the following method:
+ *
+ * func (t *JSONWebToken) UnsafeClaimsWithoutVerification(dest ...interface{})
  */
 class GoJoseUnsafeClaims extends Function {
   GoJoseUnsafeClaims() {
@@ -176,6 +195,9 @@ class GoJoseUnsafeClaims extends Function {
   }
 }
 
+/**
+ * Holds if there are additioanl steps related to parsing the secret keys
+ */
 predicate golangJwtIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(DataFlow::Function f, DataFlow::CallNode call |
     f.hasQualifiedName([
@@ -213,6 +235,9 @@ predicate golangJwtIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node 
   )
 }
 
+/**
+ * Holds if there are additioanl steps related to parsing the secret keys
+ */
 predicate goJoseIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(DataFlow::Function f, DataFlow::CallNode call |
     f.hasQualifiedName([
