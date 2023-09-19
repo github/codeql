@@ -12,7 +12,6 @@ private import ModelEditor
 
 class ExternalEndpoint extends Endpoint {
   ExternalEndpoint() {
-    this.isUnboundDeclaration() and
     this.fromLibrary()
   }
 }

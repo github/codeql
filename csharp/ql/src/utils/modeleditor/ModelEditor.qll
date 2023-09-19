@@ -28,8 +28,7 @@ class Endpoint extends DotNet::Callable {
   Endpoint() {
     [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic() and
     not isUninteresting(this) and
-    this.isUnboundDeclaration() and
-    this.getDeclaringType().isUnboundDeclaration()
+    this.isUnboundDeclaration()
   }
 
   /**
