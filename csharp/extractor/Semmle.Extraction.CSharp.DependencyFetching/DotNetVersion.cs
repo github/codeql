@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal record DotnetVersion : IComparable<DotnetVersion>
+    internal record DotNetVersion : IComparable<DotNetVersion>
     {
         private readonly string dir;
         private readonly Version version;
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
 
-        public DotnetVersion(string dir, string version, string preReleaseVersionType, string preReleaseVersion)
+        public DotNetVersion(string dir, string version, string preReleaseVersionType, string preReleaseVersion)
         {
             this.dir = dir;
             this.version = Version.Parse(version);
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public int CompareTo(DotnetVersion? other)
+        public int CompareTo(DotNetVersion? other)
         {
             var c = version.CompareTo(other?.version);
             if (c == 0 && IsPreRelease)
