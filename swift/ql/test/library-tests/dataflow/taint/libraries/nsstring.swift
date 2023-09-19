@@ -244,7 +244,7 @@ func taintThroughInterpolatedStrings() {
 
   let harmless = NSString(string: "harmless")
   let myRange = NSRange(location:0, length: 128)
-  sink(arg: NSString.localizedStringWithFormat(NSString(string: "%i %s %i"), 1, sourceInt(), 3)) // $ MISSING: tainted=247
+  sink(arg: NSString.localizedStringWithFormat(NSString(string: "%i %i %i"), 1, sourceInt(), 3)) // $ tainted=247
   sink(arg: NSString.localizedStringWithFormat(sourceNSString(), 1, 2, 3)) // $ tainted=248
   sink(arg: sourceNSString().character(at: 0)) // $ tainted=249
   sink(arg: sourceNSString().cString(using: 0)!) // $ tainted=250
