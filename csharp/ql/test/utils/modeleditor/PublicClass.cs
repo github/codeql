@@ -14,9 +14,15 @@ public class PublicClass : PublicInterface
         Console.WriteLine(arg);
     }
 
-    protected void nonPublicStuff(String arg)
+    protected void protectedStuff(String arg)
     {
         Console.WriteLine(arg + Console.ReadLine());
+    }
+
+    private void privateStuff(String arg)
+    {
+        Console.Write(Console.BackgroundColor);
+        Console.ForegroundColor = ConsoleColor.Red;
     }
 
     internal void internalStuff(String arg)

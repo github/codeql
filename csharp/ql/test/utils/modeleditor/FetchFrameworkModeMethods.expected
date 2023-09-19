@@ -1,8 +1,8 @@
 | PublicClass.cs:7:17:7:21 | stuff | GitHub.CodeQL.PublicClass#stuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
 | PublicClass.cs:12:24:12:34 | staticStuff | GitHub.CodeQL.PublicClass#staticStuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
-| PublicClass.cs:17:20:17:33 | nonPublicStuff | GitHub.CodeQL.PublicClass#nonPublicStuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
-| PublicClass.cs:27:45:27:47 | get_PublicProperty | GitHub.CodeQL.PublicClass#get_PublicProperty() | false | supported | PublicClass.cs | library |  | type | unknown | classification |
-| PublicClass.cs:27:50:27:52 | set_PublicProperty | GitHub.CodeQL.PublicClass#set_PublicProperty(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
+| PublicClass.cs:17:20:17:33 | protectedStuff | GitHub.CodeQL.PublicClass#protectedStuff(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
+| PublicClass.cs:33:45:33:47 | get_PublicProperty | GitHub.CodeQL.PublicClass#get_PublicProperty() | false | supported | PublicClass.cs | library |  | type | unknown | classification |
+| PublicClass.cs:33:50:33:52 | set_PublicProperty | GitHub.CodeQL.PublicClass#set_PublicProperty(System.String) | false | supported | PublicClass.cs | library |  | type | unknown | classification |
 | PublicGenericClass.cs:7:17:7:21 | stuff | GitHub.CodeQL.PublicGenericClass<,>#stuff(T) | false | supported | PublicGenericClass.cs | library |  | type | unknown | classification |
 | PublicGenericClass.cs:12:17:12:26 | stuff2<> | GitHub.CodeQL.PublicGenericClass<,>#stuff2<>(T2) | false | supported | PublicGenericClass.cs | library |  | type | unknown | classification |
 | PublicGenericInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL.PublicGenericInterface<>#stuff(T) | false | supported | PublicGenericInterface.cs | library |  | type | unknown | classification |
