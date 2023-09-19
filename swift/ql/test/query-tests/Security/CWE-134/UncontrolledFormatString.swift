@@ -92,9 +92,9 @@ func tests() {
 
     let taintedVal = Int(tainted)!
     let taintedSan = "\(taintedVal)"
-    let q = String(format: taintedSan) // GOOD: sufficiently sanitized [FALSE POSITIVE]
+    let q = String(format: taintedSan) // GOOD: sufficiently sanitized
 
     let taintedVal2 = Int(tainted) ?? 0
     let taintedSan2 = String(taintedVal2)
-    let r = String(format: taintedSan2) // GOOD: sufficiently sanitized [FALSE POSITIVE]
+    let r = String(format: taintedSan2) // GOOD: sufficiently sanitized
 }
