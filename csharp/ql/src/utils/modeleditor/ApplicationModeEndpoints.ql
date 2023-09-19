@@ -1,19 +1,17 @@
 /**
- * @name Fetch model editor methods (application mode)
- * @description A list of 3rd party APIs used in the codebase. Excludes test and generated code.
+ * @name Fetch endpoints for use in the model editor (application mode)
+ * @description A list of 3rd party endpoints (methods and attributes) used in the codebase. Excludes test and generated code.
  * @kind problem
  * @problem.severity recommendation
- * @id csharp/utils/modeleditor/fetch-application-mode-methods
- * @tags modeleditor fetch methods application-mode
+ * @id csharp/utils/modeleditor/application-mode-endpoints
+ * @tags modeleditor endpoints application-mode
  */
 
 private import csharp
 private import ModelEditor
 
 class ExternalEndpoint extends Endpoint {
-  ExternalEndpoint() {
-    this.fromLibrary()
-  }
+  ExternalEndpoint() { this.fromLibrary() }
 }
 
 private Call aUsage(ExternalEndpoint api) { result.getTarget().getUnboundDeclaration() = api }
