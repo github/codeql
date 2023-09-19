@@ -19,23 +19,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.Exec = exec;
         }
 
-        private ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput)
+        private ProcessStartInfo MakeDotnetStartInfo(string args)
         {
             var startInfo = new ProcessStartInfo(Exec, args)
             {
                 UseShellExecute = false,
-                RedirectStandardOutput = redirectStandardOutput
+                RedirectStandardOutput = true
             };
             // Set the .NET CLI language to English to avoid localized output.
             startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
             return startInfo;
         }
 
-        private bool RunCommandAux(string args, bool redirectStandardOutput, out IList<string> output)
+        private bool RunCommandAux(string args, out IList<string> output)
         {
             progressMonitor.RunningProcess($"{Exec} {args}");
-            var pi = MakeDotnetStartInfo(args, redirectStandardOutput);
-            var exitCode = pi.ReadOutput(out output);
+            var pi = MakeDotnetStartInfo(args);
+            var exitCode = pi.ReadOutput(out output, true);
             if (exitCode != 0)
             {
                 progressMonitor.CommandFailed(Exec, args, exitCode);
@@ -45,9 +45,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         public bool RunCommand(string args) =>
-            RunCommandAux(args, redirectStandardOutput: false, out _);
+            RunCommandAux(args, out _);
 
         public bool RunCommand(string args, out IList<string> output) =>
-            RunCommandAux(args, redirectStandardOutput: true, out output);
+            RunCommandAux(args, out output);
     }
 }

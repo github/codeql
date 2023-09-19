@@ -15,23 +15,11 @@ namespace Semmle.Extraction.Tests
             this.runtimes = runtimes;
             this.sdks = sdks;
         }
-        public bool AddPackage(string folder, string package, out string stdout)
-        {
-            stdout = "";
-            return true;
-        }
+        public bool AddPackage(string folder, string package) => true;
 
-        public bool New(string folder, out string stdout)
-        {
-            stdout = "";
-            return true;
-        }
+        public bool New(string folder) => true;
 
-        public bool RestoreProjectToDirectory(string project, string directory, out string stdout, string? pathToNugetConfig = null)
-        {
-            stdout = "";
-            return true;
-        }
+        public bool RestoreProjectToDirectory(string project, string directory, string? pathToNugetConfig = null) => true;
 
         public bool RestoreSolutionToDirectory(string solution, string directory, out IEnumerable<string> projects)
         {

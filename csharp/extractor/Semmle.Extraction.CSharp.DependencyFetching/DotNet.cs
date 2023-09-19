@@ -37,17 +37,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private bool RunCommand(string args, out string stdout)
-        {
-            var success = dotnetCliInvoker.RunCommand(args, out var output);
-            stdout = string.Join("\n", output);
-            return success;
-        }
-
         private static string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory) =>
             $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
 
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, out string stdout, string? pathToNugetConfig = null)
+        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, string? pathToNugetConfig = null)
         {
             var args = GetRestoreArgs(projectFile, packageDirectory);
             if (pathToNugetConfig != null)
@@ -55,7 +48,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += $" --configfile \"{pathToNugetConfig}\"";
             }
 
-            return RunCommand(args, out stdout);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, out IEnumerable<string> projects)
@@ -76,16 +69,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return false;
         }
 
-        public bool New(string folder, out string stdout)
+        public bool New(string folder)
         {
             var args = $"new console --no-restore --output \"{folder}\"";
-            return RunCommand(args, out stdout);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
-        public bool AddPackage(string folder, string package, out string stdout)
+        public bool AddPackage(string folder, string package)
         {
             var args = $"add \"{folder}\" package \"{package}\" --no-restore";
-            return RunCommand(args, out stdout);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
@@ -94,9 +87,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private IList<string> GetListed(string args, string artifact)
         {
-            if (dotnetCliInvoker.RunCommand(args, out IList<string> artifacts))
+            if (dotnetCliInvoker.RunCommand(args, out var artifacts))
             {
-                progressMonitor.LogInfo($"Found {artifact}s: {string.Join("\n", artifacts)}");
                 return artifacts;
             }
             return new List<string>();

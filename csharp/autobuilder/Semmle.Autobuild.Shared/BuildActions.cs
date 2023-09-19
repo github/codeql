@@ -237,7 +237,7 @@ namespace Semmle.Autobuild.Shared
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment, out IList<string> stdOut)
         {
             var pi = GetProcessStartInfo(cmd, args, workingDirectory, environment, true);
-            return pi.ReadOutput(out stdOut);
+            return pi.ReadOutput(out stdOut, printToConsole: false);
         }
 
         void IBuildActions.DirectoryDelete(string dir, bool recursive) => Directory.Delete(dir, recursive);

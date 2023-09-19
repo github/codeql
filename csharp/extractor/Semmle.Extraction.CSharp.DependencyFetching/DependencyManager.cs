@@ -219,7 +219,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info)) { }
+        public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info, logThreadId: true)) { }
 
         private IEnumerable<FileInfo> GetAllFiles()
         {
@@ -430,8 +430,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         }
 
-        private bool RestoreProject(string project, out string stdout, string? pathToNugetConfig = null) =>
-            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, out stdout, pathToNugetConfig);
+        private bool RestoreProject(string project, string? pathToNugetConfig = null) =>
+            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, pathToNugetConfig);
 
         private bool RestoreSolution(string solution, out IEnumerable<string> projects) =>
             dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, out projects);
@@ -454,25 +454,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Executes `dotnet restore` on all projects in projects.
         /// This is done in parallel for performance reasons.
-        /// To ensure that output is not interleaved, the output of each
-        /// restore is collected and printed.
         /// </summary>
         /// <param name="projects">A list of paths to project files.</param>
         private void RestoreProjects(IEnumerable<string> projects)
         {
-            var stdoutLines = projects
-                .AsParallel()
-                .WithDegreeOfParallelism(options.Threads)
-                .Select(project =>
-                    {
-                        RestoreProject(project, out var stdout);
-                        return stdout;
-                    })
-                .ToList();
-            foreach (var line in stdoutLines)
+            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
-                Console.WriteLine(line);
-            }
+                RestoreProject(project);
+            });
         }
 
         private void DownloadMissingPackages(List<FileInfo> allFiles)
@@ -500,38 +489,29 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
             var notYetDownloadedPackages = fileContent.AllPackages.Except(alreadyDownloadedPackages);
 
-            var stdoutLines = notYetDownloadedPackages
-                .AsParallel()
-                .WithDegreeOfParallelism(options.Threads)
-                .Select(package =>
-                    {
-                        progressMonitor.NugetInstall(package);
-                        using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
-                        var success = dotnet.New(tempDir.DirInfo.FullName, out var stdout1);
-                        if (!success)
-                        {
-                            return new[] { stdout1 };
-                        }
-
-                        success = dotnet.AddPackage(tempDir.DirInfo.FullName, package, out var stdout2);
-                        if (!success)
-                        {
-                            return new[] { stdout1, stdout2 };
-                        }
-
-                        success = RestoreProject(tempDir.DirInfo.FullName, out var stdout3, nugetConfig);
-                        // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
-                        if (!success)
-                        {
-                            progressMonitor.FailedToRestoreNugetPackage(package);
-                        }
-                        return new[] { stdout1, stdout2, stdout3 };
-                    })
-                .ToList();
-            foreach (var line in stdoutLines.SelectMany(l => l))
+            Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
-                Console.WriteLine(line);
-            }
+                progressMonitor.NugetInstall(package);
+                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
+                var success = dotnet.New(tempDir.DirInfo.FullName);
+                if (!success)
+                {
+                    return;
+                }
+
+                success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
+                if (!success)
+                {
+                    return;
+                }
+
+                success = RestoreProject(tempDir.DirInfo.FullName, nugetConfig);
+                // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+                if (!success)
+                {
+                    progressMonitor.FailedToRestoreNugetPackage(package);
+                }
+            });
         }
 
         private void AnalyseSolutions(IEnumerable<string> solutions)
