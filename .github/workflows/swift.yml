@@ -39,31 +39,31 @@ jobs:
   build-and-test-macos:
     runs-on: macos-12-xl
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
   build-and-test-linux:
     runs-on: ubuntu-latest-xl
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
   qltests-linux:
     needs: build-and-test-linux
     runs-on: ubuntu-latest-xl
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
   qltests-macos:
     if : ${{ github.event_name == 'pull_request' }}
     needs: build-and-test-macos
     runs-on: macos-12-xl
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
   integration-tests-linux:
     needs: build-and-test-linux
     runs-on: ubuntu-latest-xl
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./swift/actions/run-integration-tests
   integration-tests-macos:
     if : ${{ github.event_name == 'pull_request' }}
@@ -71,13 +71,13 @@ jobs:
     runs-on: macos-12-xl
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./swift/actions/run-integration-tests
   codegen:
     if : ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: bazelbuild/setup-bazelisk@v2
       - uses: actions/setup-python@v4
         with:
@@ -102,6 +102,6 @@ jobs:
     if : ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/fetch-codeql
       - uses: ./swift/actions/database-upgrade-scripts

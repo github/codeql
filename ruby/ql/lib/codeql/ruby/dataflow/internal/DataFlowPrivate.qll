@@ -558,9 +558,7 @@ import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
-  exists(SsaImpl::DefinitionExt def | def = n.(SsaDefinitionExtNode).getDefinitionExt() |
-    not def instanceof Ssa::WriteDefinition
-  )
+  n.(SsaDefinitionExtNode).isHidden()
   or
   n = LocalFlow::getParameterDefNode(_)
   or
@@ -592,6 +590,13 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
 
   /** Gets the underlying variable. */
   Variable getVariable() { result = def.getSourceVariable() }
+
+  /** Holds if this node should be hidden from path explanations. */
+  predicate isHidden() {
+    not def instanceof Ssa::WriteDefinition
+    or
+    isDesugarNode(def.(Ssa::WriteDefinition).getWriteAccess().getExpr())
+  }
 
   override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
 
@@ -1593,7 +1598,11 @@ class CastNode extends Node {
  */
 predicate neverSkipInPathGraph(Node n) {
   // ensure that all variable assignments are included in the path graph
-  n.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
+  n =
+    any(SsaDefinitionExtNode def |
+      def.getDefinitionExt() instanceof Ssa::WriteDefinition and
+      not def.isHidden()
+    )
 }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;

@@ -2018,6 +2018,66 @@ TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
 }
 
 /**
+ * The IR translation of a `delete` or `delete[]`
+ * expression.
+ */
+class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, TranslatedCall {
+  override DeleteOrDeleteArrayExpr expr;
+
+  final override Instruction getFirstCallTargetInstruction() {
+    result = this.getInstruction(CallTargetTag())
+  }
+
+  final override Instruction getCallTargetResult() { result = this.getInstruction(CallTargetTag()) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    TranslatedCall.super.hasInstruction(opcode, tag, resultType)
+    or
+    tag = CallTargetTag() and
+    resultType = getFunctionGLValueType() and
+    if exists(expr.getDeallocator())
+    then opcode instanceof Opcode::FunctionAddress
+    else opcode instanceof Opcode::VirtualDeleteFunctionAddress
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    result = TranslatedCall.super.getInstructionSuccessor(tag, kind)
+    or
+    tag = CallTargetTag() and
+    kind instanceof GotoEdge and
+    result = this.getFirstArgumentOrCallInstruction()
+  }
+
+  override Function getInstructionFunction(InstructionTag tag) {
+    tag = CallTargetTag() and result = expr.getDeallocator()
+  }
+
+  final override Type getCallResultType() { result = expr.getType() }
+
+  final override TranslatedExpr getQualifier() { none() }
+
+  final override predicate hasArguments() {
+    // All deallocator calls have at least one argument.
+    any()
+  }
+
+  final override int getNumberOfArguments() {
+    // We ignore the other arguments for now as we would have to synthesize them.
+    result = 1
+  }
+
+  final override TranslatedExpr getArgument(int index) {
+    // The only argument we define is the pointer to be deallocated.
+    index = 0 and
+    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
+  }
+}
+
+TranslatedDeleteOrDeleteArrayExpr getTranslatedDeleteOrDeleteArray(DeleteOrDeleteArrayExpr newExpr) {
+  result.getAst() = newExpr
+}
+
+/**
  * Abstract class implemented by any `TranslatedElement` that has a child
  * expression that is a call to a constructor or destructor, in order to
  * provide a pointer to the object being constructed or destroyed.
@@ -2951,78 +3011,6 @@ class TranslatedNewArrayExpr extends TranslatedNewOrNewArrayExpr {
   final override TranslatedInitialization getInitialization() {
     // REVIEW: Figure out how we want to model array initialization in the IR.
     none()
-  }
-}
-
-/**
- * A placeholder for the translation of a `delete[]` expression.
- *
- * Proper translation is not yet implemented, but this stub implementation
- * ensures that code following a `delete[]` is not unreachable.
- */
-class TranslatedDeleteArrayExprPlaceHolder extends TranslatedSingleInstructionExpr {
-  override DeleteArrayExpr expr;
-
-  final override Instruction getFirstInstruction() {
-    result = this.getOperand().getFirstInstruction()
-  }
-
-  final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
-
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    result = this.getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
-  }
-
-  final override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getOperand() and result = this.getInstruction(OnlyInstructionTag())
-  }
-
-  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
-    none()
-  }
-
-  final override Opcode getOpcode() { result instanceof Opcode::NoOp }
-
-  private TranslatedExpr getOperand() {
-    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
-  }
-}
-
-/**
- * A placeholder for the translation of a `delete` expression.
- *
- * Proper translation is not yet implemented, but this stub implementation
- * ensures that code following a `delete` is not unreachable.
- */
-class TranslatedDeleteExprPlaceHolder extends TranslatedSingleInstructionExpr {
-  override DeleteExpr expr;
-
-  final override Instruction getFirstInstruction() {
-    result = this.getOperand().getFirstInstruction()
-  }
-
-  final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
-
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    result = this.getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
-  }
-
-  final override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getOperand() and result = this.getInstruction(OnlyInstructionTag())
-  }
-
-  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
-    none()
-  }
-
-  final override Opcode getOpcode() { result instanceof Opcode::NoOp }
-
-  private TranslatedExpr getOperand() {
-    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
 }
 

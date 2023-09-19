@@ -1,9 +1,9 @@
-using Semmle.Util;
-using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Shared
 {

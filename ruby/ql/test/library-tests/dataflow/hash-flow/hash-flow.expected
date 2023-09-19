@@ -81,8 +81,7 @@ edges
 | hash_flow.rb:96:30:96:33 | hash [element :a] | hash_flow.rb:96:13:96:34 | call to try_convert [element :a] |
 | hash_flow.rb:97:10:97:14 | hash2 [element :a] | hash_flow.rb:97:10:97:18 | ...[...] |
 | hash_flow.rb:105:5:105:5 | b | hash_flow.rb:106:10:106:10 | b |
-| hash_flow.rb:105:21:105:30 | __synth__0 | hash_flow.rb:105:5:105:5 | b |
-| hash_flow.rb:105:21:105:30 | call to taint | hash_flow.rb:105:21:105:30 | __synth__0 |
+| hash_flow.rb:105:21:105:30 | call to taint | hash_flow.rb:105:5:105:5 | b |
 | hash_flow.rb:113:5:113:5 | b | hash_flow.rb:115:10:115:10 | b |
 | hash_flow.rb:113:9:113:12 | [post] hash [element :a] | hash_flow.rb:114:10:114:13 | hash [element :a] |
 | hash_flow.rb:113:9:113:34 | call to store | hash_flow.rb:113:5:113:5 | b |
@@ -1063,7 +1062,6 @@ nodes
 | hash_flow.rb:97:10:97:14 | hash2 [element :a] | semmle.label | hash2 [element :a] |
 | hash_flow.rb:97:10:97:18 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:105:5:105:5 | b | semmle.label | b |
-| hash_flow.rb:105:21:105:30 | __synth__0 | semmle.label | __synth__0 |
 | hash_flow.rb:105:21:105:30 | call to taint | semmle.label | call to taint |
 | hash_flow.rb:106:10:106:10 | b | semmle.label | b |
 | hash_flow.rb:113:5:113:5 | b | semmle.label | b |
