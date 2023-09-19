@@ -1066,6 +1066,10 @@ private module GetConvertedResultExpression {
   private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedExpr
   private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
 
+  private Operand getAnInitializeDynamicAllocationInstructionAddress() {
+    result = any(InitializeDynamicAllocationInstruction init).getAllocationAddressOperand()
+  }
+
   /**
    * Gets the expression that should be returned as the result expression from `instr`.
    *
@@ -1074,7 +1078,16 @@ private module GetConvertedResultExpression {
    */
   Expr getConvertedResultExpression(Instruction instr, int n) {
     // Only fully converted instructions has a result for `asConvertedExpr`
-    not conversionFlow(unique( | | getAUse(instr)), _, false, false) and
+    not conversionFlow(unique(Operand op |
+        // The address operand of a `InitializeDynamicAllocationInstruction` is
+        // special: we need to handle it during dataflow (since it's
+        // effectively a store to an indirection), but it doesn't appear in
+        // source syntax, so dataflow node <-> expression conversion shouldn't
+        // care about it.
+        op = getAUse(instr) and not op = getAnInitializeDynamicAllocationInstructionAddress()
+      |
+        op
+      ), _, false, false) and
     result = getConvertedResultExpressionImpl(instr) and
     n = 0
     or
