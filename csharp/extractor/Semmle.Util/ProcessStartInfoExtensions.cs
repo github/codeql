@@ -8,38 +8,56 @@ namespace Semmle.Util
     {
         /// <summary>
         /// Runs this process, and returns the exit code, as well as the contents
-        /// of stdout in <paramref name="stdout"/>. If <paramref name="printToConsole"/>
-        /// is true, then stdout is printed to the console and each line is prefixed
-        /// with the thread id.
+        /// of stdout in <paramref name="stdout"/>.
         /// </summary>
-        public static int ReadOutput(this ProcessStartInfo pi, out IList<string> stdout, bool printToConsole)
+        public static int ReadOutput(this ProcessStartInfo pi, out IList<string> stdout, Action<string>? onOut, Action<string>? onError)
         {
-            stdout = new List<string>();
-            using var process = Process.Start(pi);
-
-            if (process is null)
+            var @out = new List<string>();
+            using var process = new Process
             {
-                return -1;
-            }
+                StartInfo = pi
+            };
 
-            if (pi.RedirectStandardOutput && !pi.UseShellExecute)
+            if (process.StartInfo.RedirectStandardOutput && !pi.UseShellExecute)
             {
-                string? s;
-                do
+                process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
                 {
-                    s = process.StandardOutput.ReadLine();
-                    if (s is not null)
+                    if (e.Data == null)
                     {
-                        if (printToConsole)
-                        {
-                            Console.WriteLine($"[{Environment.CurrentManagedThreadId:D3}] {s}");
-                        }
-                        stdout.Add(s);
+                        return;
                     }
-                }
-                while (s is not null);
+
+                    onOut?.Invoke(e.Data);
+                    @out.Add(e.Data);
+                });
             }
+            if (process.StartInfo.RedirectStandardError && !pi.UseShellExecute)
+            {
+                process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
+                {
+                    if (e.Data == null)
+                    {
+                        return;
+                    }
+
+                    onError?.Invoke(e.Data);
+                });
+            }
+
+            process.Start();
+
+            if (process.StartInfo.RedirectStandardError)
+            {
+                process.BeginErrorReadLine();
+            }
+
+            if (process.StartInfo.RedirectStandardOutput)
+            {
+                process.BeginOutputReadLine();
+            }
+
             process.WaitForExit();
+            stdout = @out;
             return process.ExitCode;
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Semmle.Util;
@@ -24,7 +25,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var startInfo = new ProcessStartInfo(Exec, args)
             {
                 UseShellExecute = false,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
             };
             // Set the .NET CLI language to English to avoid localized output.
             startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
@@ -35,7 +37,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             progressMonitor.RunningProcess($"{Exec} {args}");
             var pi = MakeDotnetStartInfo(args);
-            var exitCode = pi.ReadOutput(out output, true);
+            var threadId = $"[{Environment.CurrentManagedThreadId:D3}]";
+            void onOut(string s)
+            {
+                Console.Out.WriteLine($"{threadId} {s}");
+            }
+            void onError(string s)
+            {
+                Console.Error.WriteLine($"{threadId} {s}");
+            }
+            var exitCode = pi.ReadOutput(out output, onOut, onError);
             if (exitCode != 0)
             {
                 progressMonitor.CommandFailed(Exec, args, exitCode);
