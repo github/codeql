@@ -1725,6 +1725,7 @@ module MakeImpl<InputSig Lang> {
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           |
+            // both directions are needed for flow-through
             FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
             FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
           )
@@ -1894,6 +1895,7 @@ module MakeImpl<InputSig Lang> {
 
         private module RevTypeFlow = TypeFlow<RevTypeFlowInput>;
 
+        pragma[nomagic]
         private predicate flowIntoCallApValid(
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
         ) {
@@ -1901,6 +1903,7 @@ module MakeImpl<InputSig Lang> {
           RevTypeFlow::typeFlowValidEdgeOut(call, c)
         }
 
+        pragma[nomagic]
         private predicate flowOutOfCallApValid(
           DataFlowCall call, RetNodeEx ret, ReturnPosition pos, NodeEx out, Ap ap, boolean cc
         ) {
@@ -2071,8 +2074,12 @@ module MakeImpl<InputSig Lang> {
             flowIntoCallAp(call, c, arg, p, ap) and
             revFlow(arg, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
             revFlow(p, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
+            // allowsFieldFlow has already been checked in flowIntoCallAp, since
+            // `Ap` is at least as precise as a boolean from Stage 2 and
+            // forward, so no need to check it again later.
             allowsFieldFlow = true
           |
+            // both directions are needed for flow-through
             RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
             RevTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
           )
