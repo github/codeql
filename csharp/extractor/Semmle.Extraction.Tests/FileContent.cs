@@ -1,18 +1,9 @@
 using Xunit;
 using System.Collections.Generic;
-using Semmle.Util.Logging;
 using Semmle.Extraction.CSharp.DependencyFetching;
 
 namespace Semmle.Extraction.Tests
 {
-
-    internal class LoggerStub : ILogger
-    {
-        public void Log(Severity severity, string message) { }
-
-        public void Dispose() { }
-    }
-
     internal class UnsafeFileReaderStub : IUnsafeFileReader
     {
         private readonly List<string> lines;

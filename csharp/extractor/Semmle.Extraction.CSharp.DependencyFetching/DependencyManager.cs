@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private int conflictedReferences = 0;
         private readonly IDependencyOptions options;
         private readonly DirectoryInfo sourceDir;
-        private readonly DotNet dotnet;
+        private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
         private readonly TemporaryDirectory tempWorkingDirectory;
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                this.dotnet = new DotNet(options, progressMonitor);
+                this.dotnet = DotNet.Make(options, progressMonitor);
             }
             catch
             {
