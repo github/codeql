@@ -87,8 +87,7 @@ def by_group():
     # Use `" | "a" === "a` as author
     # making the query `this.author === "" | "a" === "a"`
     # Found by http://127.0.0.1:5000/byGroup?author=%22%20|%20%22a%22%20===%20%22a
-    post = posts.aggregate([{ "$group": group }]).next() # $ MISSING: result=BAD
-    app.logger.error("post", post)
+    post = posts.aggregate([{ "$group": group }]).next() # $ result=BAD
     return show_post(post, author)
 
 @app.route('/', methods=['GET'])

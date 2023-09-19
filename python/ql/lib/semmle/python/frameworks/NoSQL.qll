@@ -122,6 +122,16 @@ private module NoSql {
     override predicate vulnerableToStrings() { none() }
   }
 
+  private class MongoCollectionAggregation extends API::CallNode, NoSqlQuery::Range {
+    MongoCollectionAggregation() { this = mongoCollection().getMember("aggregate").getACall() }
+
+    override DataFlow::Node getQuery() { result = this.getParameter(0).getASubscript().asSink() }
+
+    override predicate interpretsDict() { any() }
+
+    override predicate vulnerableToStrings() { none() }
+  }
+
   /** The `$where` query operator executes a string as JavaScript. */
   private class WhereQueryOperator extends DataFlow::Node, Decoding::Range {
     API::Node dictionary;
@@ -143,7 +153,11 @@ private module NoSql {
     override predicate mayExecuteInput() { any() }
   }
 
-  /** The `$function` query operator executes its `body` string as JavaScript. */
+  /**
+   * The `$function` query operator executes its `body` string as JavaScript.
+   *
+   * See https://www.mongodb.com/docs/manual/reference/operator/aggregation/function/#mongodb-expression-exp.-function
+   */
   private class FunctionQueryOperator extends DataFlow::Node, Decoding::Range {
     API::Node dictionary;
     DataFlow::Node query;
@@ -154,8 +168,39 @@ private module NoSql {
             .getMember(mongoCollectionMethodName())
             .getACall()
             .getParameter(0)
-            .getASubscript*() and
-      query = dictionary.getSubscript("$function").getSubscript("body").asSink() and
+            .getASubscript*()
+            .getSubscript("$function") and
+      query = dictionary.getSubscript("body").asSink() and
+      this = dictionary.asSink()
+    }
+
+    override DataFlow::Node getAnInput() { result = query }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getFormat() { result = "NoSQL" }
+
+    override predicate mayExecuteInput() { any() }
+  }
+
+  /**
+   * The `$accumulator` query operator executes strings in some of its fields as JavaScript.
+   *
+   * See https://www.mongodb.com/docs/manual/reference/operator/aggregation/accumulator/#mongodb-group-grp.-accumulator
+   */
+  private class AccumulatorQueryOperator extends DataFlow::Node, Decoding::Range {
+    API::Node dictionary;
+    DataFlow::Node query;
+
+    AccumulatorQueryOperator() {
+      dictionary =
+        mongoCollection()
+            .getMember("aggregate")
+            .getACall()
+            .getParameter(0)
+            .getASubscript*()
+            .getSubscript("$accumulator") and
+      query = dictionary.getSubscript(["init", "accumulate", "merge", "finalize"]).asSink() and
       this = dictionary.asSink()
     }
 
