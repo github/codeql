@@ -3248,51 +3248,49 @@ cfg.swift:
 #  524|             getParam(0): [ParamDecl] continuation
 #  524|                 Type = AsyncStream<Int>.Continuation
 #  523|             getBody(): [BraceStmt] { ... }
-#  525|               getElement(0): [BraceStmt] { ... }
-#  525|                 getElement(0): [CallExpr] call to detached(priority:operation:)
-#  525|                   getFunction(): [MethodLookupExpr] .detached(priority:operation:)
-#  525|                     getBase(): [TypeExpr] Task<(), Never>.Type
-#  525|                       getTypeRepr(): [TypeRepr] Task<(), Never>
-#  525|                     getMethodRef(): [DeclRefExpr] detached(priority:operation:)
-#  525|                   getArgument(0): [Argument] priority: default priority
-#  525|                     getExpr(): [DefaultArgumentExpr] default priority
-#  525|                   getArgument(1): [Argument] operation: { ... }
-#  525|                     getExpr(): [ExplicitClosureExpr] { ... }
-#  525|                       getBody(): [BraceStmt] { ... }
-#  526|                         getElement(0): [ForEachStmt] for ... in ... { ... }
-#  526|                           getPattern(): [NamedPattern] i
-#-----|                           getIteratorVar(): [PatternBindingDecl] var ... = ...
-#  526|                             getInit(0): [CallExpr] call to makeIterator()
-#  526|                               getFunction(): [MethodLookupExpr] .makeIterator()
-#  526|                                 getBase(): [BinaryExpr] ... ....(_:_:) ...
-#  526|                                   getFunction(): [MethodLookupExpr] ....(_:_:)
-#  526|                                     getBase(): [TypeExpr] Int.Type
-#  526|                                       getTypeRepr(): [TypeRepr] Int
-#  526|                                     getMethodRef(): [DeclRefExpr] ...(_:_:)
-#  526|                                   getArgument(0): [Argument] : 1
-#  526|                                     getExpr(): [IntegerLiteralExpr] 1
-#  526|                                   getArgument(1): [Argument] : 100
-#  526|                                     getExpr(): [IntegerLiteralExpr] 100
-#-----|                                 getMethodRef(): [DeclRefExpr] makeIterator()
-#  526|                             getPattern(0): [NamedPattern] $i$generator
-#  526|                           getNextCall(): [CallExpr] call to next()
-#  526|                             getFunction(): [MethodLookupExpr] .next()
-#  526|                               getBase(): [DeclRefExpr] $i$generator
-#  526|                               getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                               getMethodRef(): [DeclRefExpr] next()
-#  526|                           getBody(): [BraceStmt] { ... }
-#  527|                             getElement(0): [CallExpr] call to yield(_:)
-#  527|                               getFunction(): [MethodLookupExpr] .yield(_:)
-#  527|                                 getBase(): [DeclRefExpr] continuation
-#  527|                                 getMethodRef(): [DeclRefExpr] yield(_:)
-#  527|                               getArgument(0): [Argument] : i
-#  527|                                 getExpr(): [DeclRefExpr] i
-#  529|                         getElement(1): [CallExpr] call to finish()
-#  529|                           getFunction(): [MethodLookupExpr] .finish()
-#  529|                             getBase(): [DeclRefExpr] continuation
-#  529|                             getMethodRef(): [DeclRefExpr] finish()
-#  527|                       getCapture(0): [CapturedDecl] continuation
-#  525|                 getElement(1): [ReturnStmt] return
+#  525|               getElement(0): [CallExpr] call to detached(priority:operation:)
+#  525|                 getFunction(): [MethodLookupExpr] .detached(priority:operation:)
+#  525|                   getBase(): [TypeExpr] Task<(), Never>.Type
+#  525|                     getTypeRepr(): [TypeRepr] Task<(), Never>
+#  525|                   getMethodRef(): [DeclRefExpr] detached(priority:operation:)
+#  525|                 getArgument(0): [Argument] priority: default priority
+#  525|                   getExpr(): [DefaultArgumentExpr] default priority
+#  525|                 getArgument(1): [Argument] operation: { ... }
+#  525|                   getExpr(): [ExplicitClosureExpr] { ... }
+#  525|                     getBody(): [BraceStmt] { ... }
+#  526|                       getElement(0): [ForEachStmt] for ... in ... { ... }
+#  526|                         getPattern(): [NamedPattern] i
+#-----|                         getIteratorVar(): [PatternBindingDecl] var ... = ...
+#  526|                           getInit(0): [CallExpr] call to makeIterator()
+#  526|                             getFunction(): [MethodLookupExpr] .makeIterator()
+#  526|                               getBase(): [BinaryExpr] ... ....(_:_:) ...
+#  526|                                 getFunction(): [MethodLookupExpr] ....(_:_:)
+#  526|                                   getBase(): [TypeExpr] Int.Type
+#  526|                                     getTypeRepr(): [TypeRepr] Int
+#  526|                                   getMethodRef(): [DeclRefExpr] ...(_:_:)
+#  526|                                 getArgument(0): [Argument] : 1
+#  526|                                   getExpr(): [IntegerLiteralExpr] 1
+#  526|                                 getArgument(1): [Argument] : 100
+#  526|                                   getExpr(): [IntegerLiteralExpr] 100
+#-----|                               getMethodRef(): [DeclRefExpr] makeIterator()
+#  526|                           getPattern(0): [NamedPattern] $i$generator
+#  526|                         getNextCall(): [CallExpr] call to next()
+#  526|                           getFunction(): [MethodLookupExpr] .next()
+#  526|                             getBase(): [DeclRefExpr] $i$generator
+#  526|                             getBase().getFullyConverted(): [InOutExpr] &...
+#-----|                             getMethodRef(): [DeclRefExpr] next()
+#  526|                         getBody(): [BraceStmt] { ... }
+#  527|                           getElement(0): [CallExpr] call to yield(_:)
+#  527|                             getFunction(): [MethodLookupExpr] .yield(_:)
+#  527|                               getBase(): [DeclRefExpr] continuation
+#  527|                               getMethodRef(): [DeclRefExpr] yield(_:)
+#  527|                             getArgument(0): [Argument] : i
+#  527|                               getExpr(): [DeclRefExpr] i
+#  529|                       getElement(1): [CallExpr] call to finish()
+#  529|                         getFunction(): [MethodLookupExpr] .finish()
+#  529|                           getBase(): [DeclRefExpr] continuation
+#  529|                           getMethodRef(): [DeclRefExpr] finish()
+#  527|                     getCapture(0): [CapturedDecl] continuation
 #  523|       getPattern(0): [NamedPattern] stream
 #  533|     getElement(1): [ForEachStmt] for ... in ... { ... }
 #  533|       getPattern(): [NamedPattern] i
