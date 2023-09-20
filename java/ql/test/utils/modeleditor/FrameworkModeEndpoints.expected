@@ -1,5 +1,10 @@
 | com/github/codeql/test/PublicClass.java:6:15:6:19 | stuff | com.github.codeql.test.PublicClass#stuff(String) | false | supported | test | library |  | type | unknown | classification |
 | com/github/codeql/test/PublicClass.java:10:22:10:32 | staticStuff | com.github.codeql.test.PublicClass#staticStuff(String) | false | supported | test | library |  | type | unknown | classification |
 | com/github/codeql/test/PublicClass.java:14:18:14:31 | nonPublicStuff | com.github.codeql.test.PublicClass#nonPublicStuff(String) | false | supported | test | library |  | type | unknown | classification |
+| com/github/codeql/test/PublicGenericClass.java:6:15:6:19 | stuff | com.github.codeql.test.PublicGenericClass#stuff(Object) | false | supported | test | library |  | type | unknown | classification |
+| com/github/codeql/test/PublicGenericClass.java:10:20:10:25 | stuff2 | com.github.codeql.test.PublicGenericClass#stuff2(Object) | false | supported | test | library |  | type | unknown | classification |
+| com/github/codeql/test/PublicGenericInterface.java:4:17:4:21 | stuff | com.github.codeql.test.PublicGenericInterface#stuff(Object) | false | supported | test | library |  | type | unknown | classification |
+| com/github/codeql/test/PublicGenericInterface.java:5:22:5:27 | stuff2 | com.github.codeql.test.PublicGenericInterface#stuff2(Object) | false | supported | test | library |  | type | unknown | classification |
+| com/github/codeql/test/PublicGenericInterface.java:7:24:7:34 | staticStuff | com.github.codeql.test.PublicGenericInterface#staticStuff(String) | false | supported | test | library |  | type | unknown | classification |
 | com/github/codeql/test/PublicInterface.java:4:17:4:21 | stuff | com.github.codeql.test.PublicInterface#stuff(String) | false | supported | test | library |  | type | unknown | classification |
 | com/github/codeql/test/PublicInterface.java:6:24:6:34 | staticStuff | com.github.codeql.test.PublicInterface#staticStuff(String) | false | supported | test | library |  | type | unknown | classification |
