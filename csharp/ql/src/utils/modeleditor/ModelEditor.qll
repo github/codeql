@@ -2,16 +2,9 @@
 
 private import csharp
 private import dotnet
-private import semmle.code.csharp.dispatch.Dispatch
-private import semmle.code.csharp.dataflow.ExternalFlow
-private import semmle.code.csharp.dataflow.FlowSummary
-private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.frameworks.Test
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import Telemetry.TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
@@ -69,44 +62,17 @@ class Endpoint extends DotNet::Callable {
     not exists(this.getDllVersion()) and result = ""
   }
 
-  /** Gets a node that is an input to a call to this API. */
-  private ArgumentNode getAnInput() {
-    result
-        .getCall()
-        .(DataFlowDispatch::NonDelegateDataFlowCall)
-        .getATarget(_)
-        .getUnboundDeclaration() = this
-  }
-
-  /** Gets a node that is an output from a call to this API. */
-  private DataFlow::Node getAnOutput() {
-    exists(
-      Call c, DataFlowDispatch::NonDelegateDataFlowCall dc, DataFlowImplCommon::ReturnKindExt ret
-    |
-      dc.getDispatchCall().getCall() = c and
-      c.getTarget().getUnboundDeclaration() = this
-    |
-      result = ret.getAnOutNode(dc)
-    )
-  }
-
   /** Holds if this API has a supported summary. */
   pragma[nomagic]
-  predicate hasSummary() {
-    this instanceof SummarizedCallable
-    or
-    defaultAdditionalTaintStep(this.getAnInput(), _)
-  }
+  abstract predicate hasSummary();
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
-  predicate isSource() {
-    this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
-  }
+  abstract predicate isSource();
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  predicate isSink() { sinkNode(this.getAnInput(), _) }
+  abstract predicate isSink();
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
