@@ -740,6 +740,12 @@ class ContentSet extends TContentSet {
  */
 signature predicate guardChecksSig(CfgNodes::AstCfgNode g, CfgNode e, boolean branch);
 
+bindingset[def1, def2]
+pragma[inline_late]
+private predicate sameSourceVariable(Ssa::Definition def1, Ssa::Definition def2) {
+  def1.getSourceVariable() = def2.getSourceVariable()
+}
+
 /**
  * Provides a set of barrier nodes for a guard that validates an expression.
  *
@@ -784,9 +790,9 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     |
       def.getARead() = testedNode and
       guardChecks(g, testedNode, branch) and
-      def.getSourceVariable() = result.getSourceVariable() and
       guardControlsBlock(g, call.getBasicBlock(), branch) and
-      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock() and
+      sameSourceVariable(def, result)
     )
   }
 }
@@ -849,9 +855,9 @@ abstract deprecated class BarrierGuard extends CfgNodes::ExprCfgNode {
     |
       def.getARead() = testedNode and
       this.checks(testedNode, branch) and
-      def.getSourceVariable() = result.getSourceVariable() and
       this.controlsBlock(call.getBasicBlock(), branch) and
-      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock() and
+      sameSourceVariable(def, result)
     )
   }
 
