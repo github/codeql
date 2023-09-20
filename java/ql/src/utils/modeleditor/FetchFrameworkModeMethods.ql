@@ -9,7 +9,7 @@
 
 private import java
 private import semmle.code.java.dataflow.internal.ModelExclusions
-private import AutomodelVsCode
+private import ModelEditor
 
 class PublicMethodFromSource extends CallableMethod, ModelApi { }
 

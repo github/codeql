@@ -8,7 +8,7 @@
  */
 
 private import java
-private import AutomodelVsCode
+private import ModelEditor
 
 class ExternalApi extends CallableMethod {
   ExternalApi() { not this.fromSource() }
