@@ -132,6 +132,26 @@ private module NoSql {
     override predicate vulnerableToStrings() { none() }
   }
 
+  private class MongoMapReduce extends API::CallNode, NoSqlQuery::Range {
+    MongoMapReduce() { this = mongoCollection().getMember("map_reduce").getACall() }
+
+    override DataFlow::Node getQuery() { result in [this.getArg(0), this.getArg(1)] }
+
+    override predicate interpretsDict() { none() }
+
+    override predicate vulnerableToStrings() { any() }
+  }
+
+  private class MongoMapReduceQuery extends API::CallNode, NoSqlQuery::Range {
+    MongoMapReduceQuery() { this = mongoCollection().getMember("map_reduce").getACall() }
+
+    override DataFlow::Node getQuery() { result in [this.getArgByName("query")] }
+
+    override predicate interpretsDict() { any() }
+
+    override predicate vulnerableToStrings() { none() }
+  }
+
   /** The `$where` query operator executes a string as JavaScript. */
   private class WhereQueryOperator extends DataFlow::Node, Decoding::Range {
     API::Node dictionary;
