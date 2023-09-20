@@ -23,4 +23,20 @@ public class PublicClass {
   void packagePrivateStuff(String arg) {
     System.out.println(arg);
   }
+
+  public String summaryStuff(String arg) {
+    return arg;
+  }
+
+  public String sourceStuff() {
+    return "stuff";
+  }
+
+  public void sinkStuff(String arg) {
+    // do nothing
+  }
+
+  public void neutralStuff(String arg) {
+    // do nothing
+  }
 }
