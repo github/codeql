@@ -1354,6 +1354,9 @@ class ParameterNode extends Node {
    * pointer-indirection parameters are at further negative positions.
    */
   predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
+
+  /** Gets the `Parameter` associated with this node, if it exists. */
+  Parameter getParameter() { none() }
 }
 
 /** An explicit positional parameter, including `this`, but not `...`. */
@@ -1376,10 +1379,9 @@ private class ExplicitParameterNode extends ParameterNode, DirectParameterNode {
     f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
   }
 
-  /** Gets the `Parameter` associated with this node. */
-  Parameter getParameter() { result = instr.getParameter() }
-
   override string toStringImpl() { result = instr.getParameter().toString() }
+
+  override Parameter getParameter() { result = instr.getParameter() }
 }
 
 /** An implicit `this` parameter. */
