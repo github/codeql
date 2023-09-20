@@ -272,9 +272,9 @@ func taintThroughSimpleStringOperations() {
   sink(arg: [tainted, tainted].joined()) // $ MISSING: tainted=217
 
   sink(arg: clean.description)
-  sink(arg: tainted.description) // $ MISSING: tainted=217
+  sink(arg: tainted.description) // $ tainted=217
   sink(arg: clean.debugDescription)
-  sink(arg: tainted.debugDescription) // $ MISSING: tainted=217
+  sink(arg: tainted.debugDescription) // $ tainted=217
   sink(arg: clean.utf8)
   sink(arg: tainted.utf8) // $ tainted=217
   sink(arg: clean.utf16)
@@ -584,7 +584,7 @@ func taintedThroughConversion() {
   sink(arg: String(0))
   sink(arg: String(source())) // $ tainted=585
   sink(arg: Int(0).description)
-  sink(arg: source().description) // $ MISSING: tainted=587
+  sink(arg: source().description) // $ tainted=587
   sink(arg: String(describing: 0))
   sink(arg: String(describing: source())) // $ tainted=589
 

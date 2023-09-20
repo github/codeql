@@ -147,5 +147,20 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
             "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
             "precomposedStringWithCompatibilityMapping", "removingPercentEncoding"
           ])
+    or
+    exists(FieldDecl fieldDecl, Decl declaringDecl, TypeDecl namedTypeDecl |
+      (
+        (
+          namedTypeDecl.getFullName() = "CustomStringConvertible" and
+          fieldDecl.getName() = "description"
+        ) or (
+          namedTypeDecl.getFullName() = "CustomDebugStringConvertible" and
+          fieldDecl.getName() = "debugDescription"
+        )
+      ) and
+      declaringDecl.getAMember() = fieldDecl and
+      declaringDecl.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*() and
+      this.getField() = fieldDecl
+    )
   }
 }
