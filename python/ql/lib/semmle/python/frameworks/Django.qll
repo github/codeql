@@ -608,6 +608,8 @@ module PrivateDjango {
                   .getMember("models")
                   .getMember("PolymorphicModel")
                   .getASubclass*()
+            or
+            result = ModelOutput::getATypeNode("Django.db.models.Model~Subclass").getASubclass*()
           }
 
           /**
