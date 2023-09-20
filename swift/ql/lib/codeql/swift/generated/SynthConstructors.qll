@@ -127,6 +127,7 @@ import codeql.swift.elements.expr.ProtocolMetatypeToObjectExprConstructor
 import codeql.swift.elements.expr.RebindSelfInInitializerExprConstructor
 import codeql.swift.elements.expr.RegexLiteralExprConstructor
 import codeql.swift.elements.expr.SequenceExprConstructor
+import codeql.swift.elements.expr.SingleValueStmtExprConstructor
 import codeql.swift.elements.expr.StringLiteralExprConstructor
 import codeql.swift.elements.expr.StringToPointerExprConstructor
 import codeql.swift.elements.expr.SubscriptExprConstructor

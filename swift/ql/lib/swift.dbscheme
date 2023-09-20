@@ -757,6 +757,7 @@ arguments(  //dir=expr
 | @property_wrapper_value_placeholder_expr
 | @rebind_self_in_initializer_expr
 | @sequence_expr
+| @single_value_stmt_expr
 | @super_ref_expr
 | @tap_expr
 | @tuple_element_expr
@@ -1134,6 +1135,11 @@ sequence_expr_elements(  //dir=expr
   int id: @sequence_expr ref,
   int index: int ref,
   int element: @expr_or_none ref
+);
+
+single_value_stmt_exprs(  //dir=expr
+  unique int id: @single_value_stmt_expr,
+  int stmt: @stmt_or_none ref
 );
 
 super_ref_exprs(  //dir=expr

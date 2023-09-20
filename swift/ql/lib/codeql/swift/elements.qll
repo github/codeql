@@ -160,6 +160,7 @@ import codeql.swift.elements.expr.ProtocolMetatypeToObjectExpr
 import codeql.swift.elements.expr.RebindSelfInInitializerExpr
 import codeql.swift.elements.expr.RegexLiteralExpr
 import codeql.swift.elements.expr.SequenceExpr
+import codeql.swift.elements.expr.SingleValueStmtExpr
 import codeql.swift.elements.expr.StringLiteralExpr
 import codeql.swift.elements.expr.StringToPointerExpr
 import codeql.swift.elements.expr.SubscriptExpr

@@ -582,6 +582,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TSingleValueStmtExpr(Raw::SingleValueStmtExpr id) { constructSingleValueStmtExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TStringLiteralExpr(Raw::StringLiteralExpr id) { constructStringLiteralExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1172,8 +1176,8 @@ module Synth {
         TOneWayExpr or TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
         TOtherInitializerRefExpr or TOverloadedDeclRefExpr or
         TPropertyWrapperValuePlaceholderExpr or TRebindSelfInInitializerExpr or TSequenceExpr or
-        TSuperRefExpr or TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or
-        TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
+        TSingleValueStmtExpr or TSuperRefExpr or TTapExpr or TTupleElementExpr or TTupleExpr or
+        TTypeExpr or TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
         TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
 
   /**
@@ -2372,6 +2376,15 @@ module Synth {
    */
   cached
   TSequenceExpr convertSequenceExprFromRaw(Raw::Element e) { result = TSequenceExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TSingleValueStmtExpr`, if possible.
+   */
+  cached
+  TSingleValueStmtExpr convertSingleValueStmtExprFromRaw(Raw::Element e) {
+    result = TSingleValueStmtExpr(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3655,6 +3668,8 @@ module Synth {
     result = convertRebindSelfInInitializerExprFromRaw(e)
     or
     result = convertSequenceExprFromRaw(e)
+    or
+    result = convertSingleValueStmtExprFromRaw(e)
     or
     result = convertSuperRefExprFromRaw(e)
     or
@@ -5180,6 +5195,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TSingleValueStmtExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertSingleValueStmtExprToRaw(TSingleValueStmtExpr e) {
+    e = TSingleValueStmtExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TStringLiteralExpr` to a raw DB element, if possible.
    */
   cached
@@ -6460,6 +6484,8 @@ module Synth {
     result = convertRebindSelfInInitializerExprToRaw(e)
     or
     result = convertSequenceExprToRaw(e)
+    or
+    result = convertSingleValueStmtExprToRaw(e)
     or
     result = convertSuperRefExprToRaw(e)
     or

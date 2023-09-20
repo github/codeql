@@ -119,6 +119,7 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::AppliedPropertyWrapperExpr translateAppliedPropertyWrapperExpr(
       const swift::AppliedPropertyWrapperExpr& expr);
   codeql::RegexLiteralExpr translateRegexLiteralExpr(const swift::RegexLiteralExpr& expr);
+  codeql::SingleValueStmtExpr translateSingleValueStmtExpr(const swift::SingleValueStmtExpr& expr);
 
  private:
   void fillClosureExpr(const swift::AbstractClosureExpr& expr, codeql::ClosureExpr& entry);

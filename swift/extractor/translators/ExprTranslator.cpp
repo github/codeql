@@ -636,4 +636,11 @@ codeql::RegexLiteralExpr ExprTranslator::translateRegexLiteralExpr(
   return entry;
 }
 
+codeql::SingleValueStmtExpr ExprTranslator::translateSingleValueStmtExpr(
+    const swift::SingleValueStmtExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.stmt = dispatcher.fetchLabel(expr.getStmt());
+  return entry;
+}
+
 }  // namespace codeql

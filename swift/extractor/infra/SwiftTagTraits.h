@@ -205,7 +205,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::CopyExpr, void)  // TODO (introduced in 5.9)
   MAP(swift::ConsumeExpr, void)  // TODO (introduced in 5.9)
   MAP(swift::MaterializePackExpr, void)  // TODO (introduced in 5.9)
-  MAP(swift::SingleValueStmtExpr, void)  // TODO (introduced in 5.9)
+  MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
 #endif
 
 MAP(swift::Decl, DeclTag)

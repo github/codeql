@@ -1567,6 +1567,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class SingleValueStmtExpr extends @single_value_stmt_expr, Expr {
+    override string toString() { result = "SingleValueStmtExpr" }
+
+    /**
+     * Gets the statement of this single value statement expression.
+     */
+    Stmt getStmt() { single_value_stmt_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class SuperRefExpr extends @super_ref_expr, Expr {
     override string toString() { result = "SuperRefExpr" }
 
