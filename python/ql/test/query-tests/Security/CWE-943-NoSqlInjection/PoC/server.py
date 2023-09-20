@@ -90,6 +90,21 @@ def by_group():
     post = posts.aggregate([{ "$group": group }]).next() # $ result=BAD
     return show_post(post, author)
 
+# works with pymongo 3.9, `map_reduce` is removed in pymongo 4.0
+@app.route('/byMapReduce', methods=['GET'])
+def by_map_reduce():
+    author = request.args['author']
+    mapper = 'function() { emit(this.author, this.author === "'+author+'") }'
+    reducer = "function(key, values) { return values.some( x => x ) }"
+    results = posts.map_reduce(mapper, reducer, "results")
+    # Use `" | "a" === "a` as author
+    # making the query `this.author === "" | "a" === "a"`
+    # Found by http://127.0.0.1:5000/byMapReduce?author=%22%20|%20%22a%22%20===%20%22a
+    post = results.find_one({'value': True}) # $ MISSING: result=BAD
+    if(post):
+        post["author"] = post["_id"]
+    return show_post(post, author)
+
 @app.route('/', methods=['GET'])
 def show_routes():
     links = []
