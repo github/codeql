@@ -198,3 +198,9 @@ void test_strndupa_dealloc() {
 	char *cpy = strndupa(msg, 4);
     free(cpy); // BAD [NOT DETECTED]
 }
+
+void test_free_malloc() {
+	void *a = malloc(10);
+	void *b;
+	free(b = a);
+}
