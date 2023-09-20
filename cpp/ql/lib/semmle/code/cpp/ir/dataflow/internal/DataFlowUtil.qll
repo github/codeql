@@ -1356,7 +1356,7 @@ class ParameterNode extends Node {
   predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
 
   /** Gets the `Parameter` associated with this node, if it exists. */
-  Parameter getParameter() { none() }
+  Parameter getParameter() { none() } // overridden by subclasses
 }
 
 /** An explicit positional parameter, including `this`, but not `...`. */
