@@ -805,7 +805,12 @@ module TypeTracking<TypeTrackingInput I> {
     private predicate sourceSimpleLocalSmallSteps(Node src, Node n) {
       source(src) and
       not src instanceof LocalSourceNode and
-      simpleLocalSmallStep*(src, n)
+      src = n
+      or
+      exists(Node mid |
+        sourceSimpleLocalSmallSteps(src, mid) and
+        simpleLocalSmallStep(mid, n)
+      )
     }
 
     private predicate firstStep(TypeTracker tt, Node src, LocalSourceNode n2) {
