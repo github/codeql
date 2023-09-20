@@ -1,6 +1,6 @@
-| com/github/codeql/test/PublicClass.java:6:15:6:19 | stuff | com.github.codeql.test.PublicClass#stuff(String) | false | supported | test | library |  | type | unknown | classification |
-| com/github/codeql/test/PublicClass.java:10:22:10:32 | staticStuff | com.github.codeql.test.PublicClass#staticStuff(String) | false | supported | test | library |  | type | unknown | classification |
-| com/github/codeql/test/PublicClass.java:14:18:14:31 | nonPublicStuff | com.github.codeql.test.PublicClass#nonPublicStuff(String) | false | supported | test | library |  | type | unknown | classification |
+| com/github/codeql/test/PublicClass.java:7:15:7:19 | stuff | com.github.codeql.test.PublicClass#stuff(String) | false | supported | test | library |  | type | unknown | classification |
+| com/github/codeql/test/PublicClass.java:11:22:11:32 | staticStuff | com.github.codeql.test.PublicClass#staticStuff(String) | false | supported | test | library |  | type | unknown | classification |
+| com/github/codeql/test/PublicClass.java:15:18:15:31 | protectedStuff | com.github.codeql.test.PublicClass#protectedStuff(String) | false | supported | test | library |  | type | unknown | classification |
 | com/github/codeql/test/PublicGenericClass.java:6:15:6:19 | stuff | com.github.codeql.test.PublicGenericClass#stuff(Object) | false | supported | test | library |  | type | unknown | classification |
 | com/github/codeql/test/PublicGenericClass.java:10:20:10:25 | stuff2 | com.github.codeql.test.PublicGenericClass#stuff2(Object) | false | supported | test | library |  | type | unknown | classification |
 | com/github/codeql/test/PublicGenericInterface.java:4:17:4:21 | stuff | com.github.codeql.test.PublicGenericInterface#stuff(Object) | false | supported | test | library |  | type | unknown | classification |
