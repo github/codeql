@@ -5,15 +5,15 @@
    * - Language
      - Identifier
    * - C/C++ 
-     - ``cpp``
+     - ``c-cpp``
    * - C# 
      - ``csharp``
    * - Go
      - ``go``
    * - Java/Kotlin
-     - ``java``
+     - ``java-kotlin``
    * - JavaScript/TypeScript
-     - ``javascript``
+     - ``javascript-typescript``
    * - Python
      - ``python``
    * - Ruby

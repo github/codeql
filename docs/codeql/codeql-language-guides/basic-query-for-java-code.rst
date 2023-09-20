@@ -70,7 +70,7 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
 | Query part                                                                                       | Purpose                                                                                                           | Details                                                                                           |
 +==================================================================================================+===================================================================================================================+===================================================================================================+
-| ``import java``                                                                                  | Imports the standard CodeQL libraries for Java and Kotlin.                                                        | Every query begins with one or more ``import`` statements.                                        |
+| ``import java-kotlin``                                                                                  | Imports the standard CodeQL libraries for Java and Kotlin.                                                        | Every query begins with one or more ``import`` statements.                                        |
 +--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
 | ``from MethodAccess ma``                                                                         | Defines the variables for the query.                                                                              | We use:                                                                                           |
 |                                                                                                  | Declarations are of the form:                                                                                     |                                                                                                   |
@@ -133,7 +133,7 @@ Further reading
 
 .. Article-specific substitutions for the reusables used in docs/codeql/reusables/vs-code-basic-instructions
 
-.. |language-text| replace:: Java
+.. |language-text| replace:: Java/Kotlin
 
 .. |language-code| replace:: ``java``
 
