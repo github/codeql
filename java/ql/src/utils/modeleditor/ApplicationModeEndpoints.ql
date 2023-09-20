@@ -8,11 +8,8 @@
  */
 
 private import java
+private import ApplicationModeEndpointsQuery
 private import ModelEditor
-
-class ExternalEndpoint extends Endpoint {
-  ExternalEndpoint() { not this.fromSource() }
-}
 
 private Call aUsage(ExternalEndpoint endpoint) {
   result.getCallee().getSourceDeclaration() = endpoint

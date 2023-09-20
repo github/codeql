@@ -8,10 +8,8 @@
  */
 
 private import java
-private import semmle.code.java.dataflow.internal.ModelExclusions
+private import FrameworkModeEndpointsQuery
 private import ModelEditor
-
-class PublicEndpointFromSource extends Endpoint, ModelApi { }
 
 from PublicEndpointFromSource endpoint, string apiName, boolean supported, string type
 where
