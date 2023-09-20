@@ -33,11 +33,6 @@ module ServerSideRequestForgery {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * An in-sanitizer for server side request forgery vulnerabilities.
-   */
-  abstract class SanitizerIn extends DataFlow::Node { }
-
-  /**
    * A out-sanitizer for server side request forgery vulnerabilities.
    */
   abstract class SanitizerOut extends DataFlow::Node { }
@@ -65,13 +60,6 @@ module ServerSideRequestForgery {
    */
   class HostnameSanitizer extends Sanitizer {
     HostnameSanitizer() { this = DataFlow::BarrierGuard<hostnameGuard/3>::getABarrierNode() }
-  }
-
-  /**
-   * An in-sanitizer for the hostname of a URL.
-   */
-  class HostnameSanitizerIn extends SanitizerIn {
-    HostnameSanitizerIn() { hostnameSanitizingPrefixEdge(_, this) }
   }
 
   /**

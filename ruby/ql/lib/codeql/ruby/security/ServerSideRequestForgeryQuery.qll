@@ -30,8 +30,6 @@ deprecated class Configuration extends TaintTracking::Configuration {
     node instanceof StringConstArrayInclusionCallBarrier
   }
 
-  override predicate isSanitizerIn(DataFlow::Node node) { node instanceof SanitizerIn }
-
   override predicate isSanitizerOut(DataFlow::Node node) { node instanceof SanitizerOut }
 
   deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
@@ -49,8 +47,6 @@ private module ServerSideRequestForgeryConfig implements DataFlow::ConfigSig {
     node instanceof StringConstCompareBarrier or
     node instanceof StringConstArrayInclusionCallBarrier
   }
-
-  predicate isBarrierIn(DataFlow::Node node) { node instanceof SanitizerIn }
 
   predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerOut }
 }

@@ -35,11 +35,6 @@ module UrlRedirect {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * An in-sanitizer for "URL redirection" vulnerabilities.
-   */
-  abstract class SanitizerIn extends DataFlow::Node { }
-
-  /**
    * An out-sanitizer for "URL redirection" vulnerabilities.
    */
   abstract class SanitizerOut extends DataFlow::Node { }
@@ -137,13 +132,6 @@ module UrlRedirect {
    */
   class HostnameSanitizer extends Sanitizer {
     HostnameSanitizer() { this = DataFlow::BarrierGuard<hostnameGuard/3>::getABarrierNode() }
-  }
-
-  /**
-   * An in-sanitizer for the hostname of a URL.
-   */
-  class HostnameSanitizerIn extends SanitizerIn {
-    HostnameSanitizerIn() { hostnameSanitizingPrefixEdge(_, this) }
   }
 
   /**
