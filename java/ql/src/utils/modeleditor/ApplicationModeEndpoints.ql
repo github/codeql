@@ -1,10 +1,10 @@
 /**
- * @name Fetch model editor methods (application mode)
- * @description A list of 3rd party APIs used in the codebase. Excludes test and generated code.
+ * @name Fetch endpoints for use in the model editor (application mode)
+ * @description A list of 3rd party endpoints (methods) used in the codebase. Excludes test and generated code.
  * @kind problem
  * @problem.severity recommendation
- * @id java/utils/modeleditor/fetch-application-mode-methods
- * @tags modeleditor fetch methods application-mode
+ * @id java/utils/modeleditor/application-mode-endpoints
+ * @tags modeleditor endpoints application-mode
  */
 
 private import java

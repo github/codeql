@@ -1,10 +1,10 @@
 /**
- * @name Fetch model editor methods (framework mode)
- * @description A list of APIs callable by consumers. Excludes test and generated code.
+ * @name Fetch endpoints for use in the model editor (framework mode)
+ * @description A list of endpoints accessible (methods) for consumers of the library. Excludes test and generated code.
  * @kind problem
  * @problem.severity recommendation
- * @id java/utils/modeleditor/fetch-framework-mode-methods
- * @tags modeleditor fetch methods framework-mode
+ * @id java/utils/modeleditor/framework-mode-endpoints
+ * @tags modeleditor endpoints framework-mode
  */
 
 private import java
