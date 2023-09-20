@@ -32,4 +32,14 @@ public class CommentController : Controller {
             return ForbidResult();
         }
     }
+
+    // GOOD: Only users with the `admin` role can access this method.
+    [Authorize(Roles="admin")]
+    public async Task<IActionResult> Edit3(int commentId, string text) {
+        Comment comment = _commentRepository.Find(commentId);
+        
+        comment.Text = text;
+
+        return View();
+    }
 }
