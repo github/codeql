@@ -1566,6 +1566,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that may wrap a statement which produces a single value.
    */
   class SingleValueStmtExpr extends @single_value_stmt_expr, Expr {
     override string toString() { result = "SingleValueStmtExpr" }

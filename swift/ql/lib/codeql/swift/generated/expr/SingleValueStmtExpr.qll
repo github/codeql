@@ -5,6 +5,9 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.Stmt
 
 module Generated {
+  /**
+   * An expression that may wrap a statement which produces a single value.
+   */
   class SingleValueStmtExpr extends Synth::TSingleValueStmtExpr, Expr {
     override string getAPrimaryQlClass() { result = "SingleValueStmtExpr" }
 
