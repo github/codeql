@@ -58,6 +58,27 @@ extensions:
   - - Django.Views.View~Subclass
     - allauth
     - Member[account].Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[adapter].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[forms].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[models].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[models].Member[EmailConfirmation]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[views].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[account].Member[views].Member[EmailConfirmation]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[adapter].Member[EmailAddress]
   - - django.forms.BaseForm~Subclass
     - allauth
     - Member[account].Member[forms].Member[AddEmailForm]
