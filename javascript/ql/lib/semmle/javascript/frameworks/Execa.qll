@@ -88,12 +88,6 @@ module Execa {
       isExecaShellEnable(this.getParameter(1))
     }
 
-    predicate isArgumentInjectable(DataFlow::Node arg) {
-      // execa(file: string,arguments?: readonly string[],options?: Options<BufferEncodingOption>)
-      arg = this.getParameter(1).getUnknownMember().asSink() and
-      argumentIsInjectable(this.getParameter(0).asSink().getStringValue())
-    }
-
     override predicate isSync() { name = "execaSync" }
 
     override DataFlow::Node getOptionsArg() {
@@ -134,7 +128,7 @@ module Execa {
     ExecaScriptEec() { name = ["Sync", "ASync"] }
 
     override DataFlow::Node getACommandArgument() {
-      result.asExpr() = templateLiteralChildAsSink(this.asExpr()).getAChildExpr+()
+      result.asExpr() = templateLiteralChildAsSink(this.asExpr()).getChildExpr(0)
     }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
@@ -182,10 +176,29 @@ module Execa {
   /**
    * The system command execution nodes for `execa.execaCommand` or `execa.execaCommandSync` functions
    */
+  class ExecaCommandExec2 extends SystemCommandExecution, DataFlow::CallNode {
+    ExecaCommandExec2() { this = API::moduleImport("execa").getMember("execaCommand").getACall() }
+
+    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
+
+    override DataFlow::Node getArgumentList() { result = this.getArgument(0) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getArgument(0) }
+
+    override predicate isSync() { none() }
+
+    override DataFlow::Node getOptionsArg() { result = this }
+  }
+
+  /**
+   * The system command execution nodes for `execa.execaCommand` or `execa.execaCommandSync` functions
+   */
   class ExecaCommandExec extends SystemCommandExecution, ExecaCommandCall {
     ExecaCommandExec() { name = ["execaCommand", "execaCommandSync"] }
 
-    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getACommandArgument() {
+      result = this.(DataFlow::CallNode).getArgument(0)
+    }
 
     override DataFlow::Node getArgumentList() {
       // execaCommand("echo " + sink);
@@ -212,7 +225,7 @@ module Execa {
     }
   }
 
-  // parent = left`result`
+  // Holds if left parameter is the the left child of a template literal and returns the template literal
   private TemplateLiteral templateLiteralChildAsSink(Expr left) {
     exists(TaggedTemplateExpr parent |
       parent.getTemplate() = result and
@@ -220,42 +233,13 @@ module Execa {
     )
   }
 
-  private class CommandsVulnerableToArgumentInjection extends string {
-    CommandsVulnerableToArgumentInjection() {
-      // Thanks to https://sonarsource.github.io/argument-injection-vectors/#+command
-      this =
-        [
-          "chrome", "git-blame", "git-clone", "git-fetch", "git-grep", "git-ls-remote", "hg",
-          "psql", "qt5", "ssh", "tar", "zip", "aria2c", "tcpdump", "sysctl", "split", "sed",
-          "pidstat", "php", "nohup", "crontab", "crontab", "crontab", "crontab", "sh", "zsh",
-          "bash", "cmd.exe", "cmd"
-        ]
-    }
-  }
-
-  // Check whether a command is vulnerable to argument injection or not
-  bindingset[cmd]
-  private predicate argumentIsInjectable(string cmd) {
-    // "cmd args" or "cmd"
-    exists(CommandsVulnerableToArgumentInjection c |
-      // full/relative path to command like `/usr/bin/cmd` or `someDir/cmd`
-      cmd.matches("%/" + c)
-      or
-      // command like `cmd args`
-      cmd.matches(c + " %")
-      or
-      // only the command `cmd`
-      cmd = c
-    )
-  }
-
-  // Check whether Execa has shell enabled options or not, get Parameter responsible for options
+  // Holds whether Execa has shell enabled options or not, get Parameter responsible for options
   private predicate isExecaShellEnable(API::Node n) {
     n.getMember("shell").asSink().asExpr().(BooleanLiteral).getValue() = "true" and
     exists(n.getMember("shell"))
   }
 
-  // Check whether Execa has shell enabled options or not, get Parameter responsible for options
+  // Holds whether Execa has shell enabled options or not, get Parameter responsible for options
   private predicate isExecaShellEnableWithExpr(Expr n) {
     exists(ObjectExpr o, Property p | o = n.getAChildExpr*() |
       o.getAChild() = p and

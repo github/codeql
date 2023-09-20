@@ -40,10 +40,10 @@ execaCommandSync("echo 1 " + "; echo 2", { shell: true });
 
 // FileSystemAccess
 // Piping stdout to a file
-await $`echo example8`.pipeStdout('tmp')
+await $`echo example8`.pipeStdout(file)
 // Piping stdin from a file
-await $({ inputFile: 'sink' })`cat`
-await execa('cat', { inputFile: 'sink' });
-await execa('echo', ['example2']).pipeStdout('tmpdir/sink.txt');
-await execa('echo', ['example3']).pipeStderr('tmpdir/sink.txt');
-await execa('echo', ['example4'], { all: true }).pipeAll('tmpdir/sink.txt');
+await $({ inputFile: file })`cat`
+await execa('cat', { inputFile: file });
+await execa('echo', ['example2']).pipeStdout(file);
+await execa('echo', ['example3']).pipeStderr(file);
+await execa('echo', ['example4'], { all: true }).pipeAll(file);

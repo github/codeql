@@ -17,9 +17,9 @@ test_FileSystemAccess
 | tst.js:37:18:37:20 | arg |
 | tst.js:39:18:39:39 | "echo 1 ... echo 2" |
 | tst.js:39:42:39:56 | { shell: true } |
-| tst.js:45:9:45:29 | { input ... sink' } |
+| tst.js:45:9:45:27 | { inputFile: file } |
 | tst.js:46:13:46:17 | 'cat' |
-| tst.js:46:20:46:40 | { input ... sink' } |
+| tst.js:46:20:46:38 | { inputFile: file } |
 | tst.js:47:13:47:18 | 'echo' |
 | tst.js:47:21:47:32 | ['example2'] |
 | tst.js:48:13:48:18 | 'echo' |
@@ -28,6 +28,10 @@ test_FileSystemAccess
 | tst.js:49:21:49:32 | ['example4'] |
 | tst.js:49:35:49:47 | { all: true } |
 test_MissingFileSystemAccess
+| tst.js:43:35:43:38 | file |
+| tst.js:47:46:47:49 | file |
+| tst.js:48:46:48:49 | file |
+| tst.js:49:58:49:61 | file |
 test_SystemCommandExecution
 | tst.js:1:71:1:71 | $ |
 | tst.js:4:7:4:7 | $ |
@@ -56,8 +60,8 @@ test_SystemCommandExecution
 | tst.js:39:1:39:57 | execaCo ... true }) |
 | tst.js:43:7:43:7 | $ |
 | tst.js:45:7:45:7 | $ |
-| tst.js:45:7:45:30 | $({ inp ... ink' }) |
-| tst.js:46:7:46:41 | execa(' ... ink' }) |
+| tst.js:45:7:45:28 | $({ inp ... file }) |
+| tst.js:46:7:46:39 | execa(' ... file }) |
 | tst.js:47:7:47:33 | execa(' ... ple2']) |
 | tst.js:48:7:48:33 | execa(' ... ple3']) |
 | tst.js:49:7:49:48 | execa(' ... true }) |
