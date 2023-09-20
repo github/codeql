@@ -389,8 +389,8 @@ func tryReadGoDirective(buildInfo BuildInfo) (GoVersionInfo, GoVersionInfo) {
 	toolchainVersion := noVersionInfo
 
 	if buildInfo.DepMode == GoGetWithModules {
-		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
-		toolchainRe := regexp.MustCompile(`(?m)^toolchain[ \t\r]+go([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
+		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)`)
+		toolchainRe := regexp.MustCompile(`(?m)^toolchain[ \t\r]+go([0-9]+\.[0-9]+(\.[0-9]+)?)`)
 		goMod, err := os.ReadFile(filepath.Join(buildInfo.BaseDir, "go.mod"))
 		if err != nil {
 			log.Println("Failed to read go.mod to check for missing Go version")
