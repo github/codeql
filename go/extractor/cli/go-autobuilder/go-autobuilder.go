@@ -383,11 +383,7 @@ type GoVersionInfo struct {
 }
 
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
-func tryReadGoDirective(buildInfo BuildInfo) (GoVersionInfo, GoVersionInfo) {
-	noVersionInfo := GoVersionInfo{"", false}
-	compilerVersion := noVersionInfo
-	toolchainVersion := noVersionInfo
-
+func tryReadGoDirective(buildInfo BuildInfo) (compilerVersion GoVersionInfo, toolchainVersion GoVersionInfo) {
 	if buildInfo.DepMode == GoGetWithModules {
 		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)`)
 		toolchainRe := regexp.MustCompile(`(?m)^toolchain[ \t\r]+go([0-9]+\.[0-9]+(\.[0-9]+)?)`)
