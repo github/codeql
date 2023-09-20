@@ -77,13 +77,11 @@ class ExternalApi extends DotNet::Callable {
 
   /** Gets a node that is an output from a call to this API. */
   private DataFlow::Node getAnOutput() {
-    exists(
-      Call c, DataFlowDispatch::NonDelegateDataFlowCall dc, DataFlowImplCommon::ReturnKindExt ret
-    |
+    exists(Call c, DataFlowDispatch::NonDelegateDataFlowCall dc |
       dc.getDispatchCall().getCall() = c and
       c.getTarget().getUnboundDeclaration() = this
     |
-      result = ret.getAnOutNode(dc)
+      result = DataFlowDispatch::getAnOutNode(dc, _)
     )
   }
 
@@ -119,18 +117,17 @@ class ExternalApi extends DotNet::Callable {
 }
 
 /**
- * Gets the nested name of the declaration.
+ * Gets the nested name of the type `t`.
  *
- * If the declaration is not a nested type, the result is the same as \`getName()\`.
+ * If the type is not a nested type, the result is the same as \`getName()\`.
  * Otherwise the name of the nested type is prefixed with a \`+\` and appended to
  * the name of the enclosing type, which might be a nested type as well.
  */
-private string nestedName(Declaration declaration) {
-  not exists(declaration.getDeclaringType().getUnboundDeclaration()) and
-  result = declaration.getName()
+private string nestedName(Type t) {
+  not exists(t.getDeclaringType().getUnboundDeclaration()) and
+  result = t.getName()
   or
-  nestedName(declaration.getDeclaringType().getUnboundDeclaration()) + "+" + declaration.getName() =
-    result
+  nestedName(t.getDeclaringType().getUnboundDeclaration()) + "+" + t.getName() = result
 }
 
 /**
