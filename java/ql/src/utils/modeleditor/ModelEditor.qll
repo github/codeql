@@ -1,12 +1,8 @@
 /** Provides classes and predicates related to handling APIs for the VS Code extension. */
 
 private import java
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.FlowSummary
-private import semmle.code.java.dataflow.internal.DataFlowPrivate
-private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.internal.ModelExclusions
 
@@ -58,37 +54,17 @@ class Endpoint extends Callable {
     not exists(this.getJarVersion()) and result = ""
   }
 
-  /** Gets a node that is an input to a call to this API. */
-  private DataFlow::Node getAnInput() {
-    exists(Call call | call.getCallee().getSourceDeclaration() = this |
-      result.asExpr().(Argument).getCall() = call or
-      result.(ArgumentNode).getCall().asCall() = call
-    )
-  }
-
-  /** Gets a node that is an output from a call to this API. */
-  private DataFlow::Node getAnOutput() {
-    exists(Call call | call.getCallee().getSourceDeclaration() = this |
-      result.asExpr() = call or
-      result.(DataFlow::PostUpdateNode).getPreUpdateNode().(ArgumentNode).getCall().asCall() = call
-    )
-  }
-
   /** Holds if this API has a supported summary. */
   pragma[nomagic]
-  predicate hasSummary() {
-    this = any(SummarizedCallable sc).asCallable() or
-    TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
-  }
+  predicate hasSummary() { this = any(SummarizedCallable sc).asCallable() }
 
+  /** Holds if this API is a known source. */
   pragma[nomagic]
-  predicate isSource() {
-    this.getAnOutput() instanceof RemoteFlowSource or sourceNode(this.getAnOutput(), _)
-  }
+  abstract predicate isSource();
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  predicate isSink() { sinkNode(this.getAnInput(), _) }
+  abstract predicate isSink();
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
