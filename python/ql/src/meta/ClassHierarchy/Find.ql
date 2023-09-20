@@ -59,6 +59,14 @@ class DjangoField extends FindSubclassesSpec {
   }
 }
 
+class DjangoModel extends FindSubclassesSpec {
+  DjangoModel() { this = "Django.db.models.Model~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DB::Models::Model::subclassRef()
+  }
+}
+
 class TornadoRequestHandler extends FindSubclassesSpec {
   TornadoRequestHandler() { this = "tornado.web.RequestHandler~Subclass" }
 
