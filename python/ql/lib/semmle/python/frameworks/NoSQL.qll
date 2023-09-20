@@ -110,7 +110,7 @@ private module NoSql {
    *
    * `mongo.db.user.find({'name': safe_search})` would be a collection method call.
    */
-  private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSqlQuery::Range {
+  private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSqlExecution::Range {
     MongoCollectionCall() {
       this = mongoCollection().getMember(mongoCollectionMethodName()).getACall()
     }
@@ -122,7 +122,7 @@ private module NoSql {
     override predicate vulnerableToStrings() { none() }
   }
 
-  private class MongoCollectionAggregation extends API::CallNode, NoSqlQuery::Range {
+  private class MongoCollectionAggregation extends API::CallNode, NoSqlExecution::Range {
     MongoCollectionAggregation() { this = mongoCollection().getMember("aggregate").getACall() }
 
     override DataFlow::Node getQuery() { result = this.getParameter(0).getASubscript().asSink() }
@@ -132,7 +132,7 @@ private module NoSql {
     override predicate vulnerableToStrings() { none() }
   }
 
-  private class MongoMapReduce extends API::CallNode, NoSqlQuery::Range {
+  private class MongoMapReduce extends API::CallNode, NoSqlExecution::Range {
     MongoMapReduce() { this = mongoCollection().getMember("map_reduce").getACall() }
 
     override DataFlow::Node getQuery() { result in [this.getArg(0), this.getArg(1)] }
@@ -142,7 +142,7 @@ private module NoSql {
     override predicate vulnerableToStrings() { any() }
   }
 
-  private class MongoMapReduceQuery extends API::CallNode, NoSqlQuery::Range {
+  private class MongoMapReduceQuery extends API::CallNode, NoSqlExecution::Range {
     MongoMapReduceQuery() { this = mongoCollection().getMember("map_reduce").getACall() }
 
     override DataFlow::Node getQuery() { result in [this.getArgByName("query")] }
@@ -248,7 +248,7 @@ private module NoSql {
    *
    * `Movie.objects(__raw__=json_search)` would be the result.
    */
-  private class MongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSqlQuery::Range {
+  private class MongoEngineObjectsCall extends DataFlow::CallCfgNode, NoSqlExecution::Range {
     MongoEngineObjectsCall() {
       this =
         [mongoEngine(), flask_MongoEngine()]

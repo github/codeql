@@ -379,7 +379,7 @@ module SqlExecution {
 }
 
 /** Provides a class for modeling NoSql execution APIs. */
-module NoSqlQuery {
+module NoSqlExecution {
   /**
    * A data-flow node that executes NoSQL queries.
    *
@@ -404,7 +404,7 @@ module NoSqlQuery {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `NoSQLQuery::Range` instead.
  */
-class NoSqlQuery extends DataFlow::Node instanceof NoSqlQuery::Range {
+class NoSqlExecution extends DataFlow::Node instanceof NoSqlExecution::Range {
   /** Gets the argument that specifies the NoSql query to be executed. */
   DataFlow::Node getQuery() { result = super.getQuery() }
 

@@ -60,17 +60,17 @@ module NoSqlInjection {
   class RemoteFlowSourceAsStringSource extends RemoteFlowSource, StringSource { }
 
   /** A NoSQL query that is vulnerable to user controlled strings. */
-  class NoSqlQueryAsStringSink extends StringSink {
-    NoSqlQueryAsStringSink() {
-      exists(NoSqlQuery noSqlQuery | this = noSqlQuery.getQuery() |
-        noSqlQuery.vulnerableToStrings()
+  class NoSqlExecutionAsStringSink extends StringSink {
+    NoSqlExecutionAsStringSink() {
+      exists(NoSqlExecution noSqlExecution | this = noSqlExecution.getQuery() |
+        noSqlExecution.vulnerableToStrings()
       )
     }
   }
 
   /** A NoSQL query that is vulnerable to user controlled dictionaries. */
-  class NoSqlQueryAsDictSink extends DictSink {
-    NoSqlQueryAsDictSink() { this = any(NoSqlQuery noSqlQuery).getQuery() }
+  class NoSqlExecutionAsDictSink extends DictSink {
+    NoSqlExecutionAsDictSink() { this = any(NoSqlExecution noSqlExecution).getQuery() }
   }
 
   /** A JSON decoding converts a string to a dictionary. */
