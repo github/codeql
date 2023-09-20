@@ -1,6 +1,5 @@
 private import csharp
 private import semmle.code.csharp.dataflow.ExternalFlow
-private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -8,6 +7,9 @@ private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import ModelEditor
 
+/**
+ * A class of effectively public callables in library code.
+ */
 class ExternalEndpoint extends Endpoint {
   ExternalEndpoint() { this.fromLibrary() }
 
@@ -22,18 +24,16 @@ class ExternalEndpoint extends Endpoint {
 
   /** Gets a node that is an output from a call to this API. */
   private DataFlow::Node getAnOutput() {
-    exists(
-      Call c, DataFlowDispatch::NonDelegateDataFlowCall dc, DataFlowImplCommon::ReturnKindExt ret
-    |
+    exists(Call c, DataFlowDispatch::NonDelegateDataFlowCall dc |
       dc.getDispatchCall().getCall() = c and
       c.getTarget().getUnboundDeclaration() = this
     |
-      result = ret.getAnOutNode(dc)
+      result = DataFlowDispatch::getAnOutNode(dc, _)
     )
   }
 
   override predicate hasSummary() {
-    this instanceof SummarizedCallable
+    Endpoint.super.hasSummary()
     or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }

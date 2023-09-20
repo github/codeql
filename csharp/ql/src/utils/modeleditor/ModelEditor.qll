@@ -1,14 +1,14 @@
 /** Provides classes and predicates related to handling APIs for the VS Code extension. */
 
 private import csharp
-private import dotnet
+private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.frameworks.Test
 private import Telemetry.TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
-private predicate isUninteresting(DotNet::Callable c) {
+private predicate isUninteresting(Callable c) {
   c.getDeclaringType() instanceof TestLibrary or
   c.(Constructor).isParameterless() or
   c.getDeclaringType() instanceof AnonymousClass
@@ -17,7 +17,7 @@ private predicate isUninteresting(DotNet::Callable c) {
 /**
  * A callable method or accessor from either the C# Standard Library, a 3rd party library, or from the source.
  */
-class Endpoint extends DotNet::Callable {
+class Endpoint extends Callable {
   Endpoint() {
     [this.(Modifiable), this.(Accessor).getDeclaration()].isEffectivelyPublic() and
     not isUninteresting(this) and
@@ -64,7 +64,7 @@ class Endpoint extends DotNet::Callable {
 
   /** Holds if this API has a supported summary. */
   pragma[nomagic]
-  abstract predicate hasSummary();
+  predicate hasSummary() { this instanceof SummarizedCallable }
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
@@ -88,10 +88,7 @@ class Endpoint extends DotNet::Callable {
 }
 
 boolean isSupported(Endpoint endpoint) {
-  endpoint.isSupported() and result = true
-  or
-  not endpoint.isSupported() and
-  result = false
+  if endpoint.isSupported() then result = true else result = false
 }
 
 string supportedType(Endpoint endpoint) {
@@ -114,16 +111,15 @@ string methodClassification(Call method) {
 }
 
 /**
- * Gets the nested name of the declaration.
+ * Gets the nested name of the type `t`.
  *
- * If the declaration is not a nested type, the result is the same as `getName()`.
+ * If the type is not a nested type, the result is the same as `getName()`.
  * Otherwise the name of the nested type is prefixed with a `+` and appended to
  * the name of the enclosing type, which might be a nested type as well.
  */
-private string nestedName(Declaration declaration) {
-  not exists(declaration.getDeclaringType().getUnboundDeclaration()) and
-  result = declaration.getName()
+private string nestedName(Type t) {
+  not exists(t.getDeclaringType().getUnboundDeclaration()) and
+  result = t.getName()
   or
-  nestedName(declaration.getDeclaringType().getUnboundDeclaration()) + "+" + declaration.getName() =
-    result
+  nestedName(t.getDeclaringType().getUnboundDeclaration()) + "+" + t.getName() = result
 }
