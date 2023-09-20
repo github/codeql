@@ -31,7 +31,7 @@ private predicate externalCallNeverDereferences(FormattingFunctionCall call, int
 
 predicate isUse0(DataFlow::Node n, Expr e) {
   e = n.asExpr() and
-  not isFree(_, e, _) and
+  not isFree(n, _, _) and
   (
     e = any(PointerDereferenceExpr pde).getOperand()
     or
@@ -43,7 +43,7 @@ predicate isUse0(DataFlow::Node n, Expr e) {
     or
     // Assume any function without a body will dereference the pointer
     exists(int i, Call call, Function f |
-      n.asExpr() = call.getArgument(i) and
+      e = call.getArgument(i) and
       f = call.getTarget() and
       not f.hasEntryPoint() and
       // Exclude known functions we know won't dereference the pointer.
