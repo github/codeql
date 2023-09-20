@@ -20,8 +20,8 @@ private predicate isUninteresting(Callable c) {
 /**
  * A callable method from either the Standard Library, a 3rd party library or from the source.
  */
-class CallableMethod extends Callable {
-  CallableMethod() { not isUninteresting(this) }
+class Endpoint extends Callable {
+  Endpoint() { not isUninteresting(this) }
 
   /**
    * Gets information about the external API in the form expected by the MaD modeling framework.
@@ -108,30 +108,30 @@ class CallableMethod extends Callable {
   }
 }
 
-boolean isSupported(CallableMethod method) {
-  method.isSupported() and result = true
+boolean isSupported(Endpoint endpoint) {
+  endpoint.isSupported() and result = true
   or
-  not method.isSupported() and result = false
+  not endpoint.isSupported() and result = false
 }
 
-string supportedType(CallableMethod method) {
-  method.isSink() and result = "sink"
+string supportedType(Endpoint endpoint) {
+  endpoint.isSink() and result = "sink"
   or
-  method.isSource() and result = "source"
+  endpoint.isSource() and result = "source"
   or
-  method.hasSummary() and result = "summary"
+  endpoint.hasSummary() and result = "summary"
   or
-  method.isNeutral() and result = "neutral"
+  endpoint.isNeutral() and result = "neutral"
   or
-  not method.isSupported() and result = ""
+  not endpoint.isSupported() and result = ""
 }
 
-string methodClassification(Call method) {
-  isInTestFile(method.getLocation().getFile()) and result = "test"
+string usageClassification(Call usage) {
+  isInTestFile(usage.getLocation().getFile()) and result = "test"
   or
-  method.getFile() instanceof GeneratedFile and result = "generated"
+  usage.getFile() instanceof GeneratedFile and result = "generated"
   or
-  not isInTestFile(method.getLocation().getFile()) and
-  not method.getFile() instanceof GeneratedFile and
+  not isInTestFile(usage.getLocation().getFile()) and
+  not usage.getFile() instanceof GeneratedFile and
   result = "source"
 }

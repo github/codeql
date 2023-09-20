@@ -10,20 +10,22 @@
 private import java
 private import ModelEditor
 
-class ExternalApi extends CallableMethod {
-  ExternalApi() { not this.fromSource() }
+class ExternalEndpoint extends Endpoint {
+  ExternalEndpoint() { not this.fromSource() }
 }
 
-private Call aUsage(ExternalApi api) { result.getCallee().getSourceDeclaration() = api }
+private Call aUsage(ExternalEndpoint endpoint) {
+  result.getCallee().getSourceDeclaration() = endpoint
+}
 
 from
-  ExternalApi externalApi, string apiName, boolean supported, Call usage, string type,
+  ExternalEndpoint endpoint, string apiName, boolean supported, Call usage, string type,
   string classification
 where
-  apiName = externalApi.getApiName() and
-  supported = isSupported(externalApi) and
-  usage = aUsage(externalApi) and
-  type = supportedType(externalApi) and
-  classification = methodClassification(usage)
-select usage, apiName, supported.toString(), "supported", externalApi.jarContainer(),
-  externalApi.jarVersion(), type, "type", classification, "classification"
+  apiName = endpoint.getApiName() and
+  supported = isSupported(endpoint) and
+  usage = aUsage(endpoint) and
+  type = supportedType(endpoint) and
+  classification = usageClassification(usage)
+select usage, apiName, supported.toString(), "supported", endpoint.jarContainer(),
+  endpoint.jarVersion(), type, "type", classification, "classification"
