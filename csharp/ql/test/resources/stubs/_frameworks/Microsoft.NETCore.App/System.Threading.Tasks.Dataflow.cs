@@ -22,7 +22,7 @@ namespace System
                     public bool Post(TInput item) => throw null;
                     public override string ToString() => throw null;
                 }
-                public sealed class BatchBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T[]>, System.Threading.Tasks.Dataflow.ISourceBlock<T[]>, System.Threading.Tasks.Dataflow.ITargetBlock<T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T[]>
+                public sealed class BatchBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T[]>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T[]>, System.Threading.Tasks.Dataflow.ISourceBlock<T[]>, System.Threading.Tasks.Dataflow.ITargetBlock<T>
                 {
                     public int BatchSize { get => throw null; }
                     public void Complete() => throw null;
@@ -80,7 +80,7 @@ namespace System
                     public bool TryReceive(System.Predicate<System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>, System.Collections.Generic.IList<T3>>> filter, out System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>, System.Collections.Generic.IList<T3>> item) => throw null;
                     public bool TryReceiveAll(out System.Collections.Generic.IList<System.Tuple<System.Collections.Generic.IList<T1>, System.Collections.Generic.IList<T2>, System.Collections.Generic.IList<T3>>> items) => throw null;
                 }
-                public sealed class BroadcastBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>
+                public sealed class BroadcastBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>
                 {
                     public void Complete() => throw null;
                     public System.Threading.Tasks.Task Completion { get => throw null; }
@@ -96,7 +96,7 @@ namespace System
                     public bool TryReceive(System.Predicate<T> filter, out T item) => throw null;
                     bool System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>.TryReceiveAll(out System.Collections.Generic.IList<T> items) => throw null;
                 }
-                public sealed class BufferBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>
+                public sealed class BufferBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>
                 {
                     public void Complete() => throw null;
                     public System.Threading.Tasks.Task Completion { get => throw null; }
@@ -151,7 +151,7 @@ namespace System
                     public int MaxMessagesPerTask { get => throw null; set { } }
                     public string NameFormat { get => throw null; set { } }
                     public System.Threading.Tasks.TaskScheduler TaskScheduler { get => throw null; set { } }
-                    public static int Unbounded;
+                    public const int Unbounded = default;
                 }
                 public class DataflowLinkOptions
                 {
@@ -253,7 +253,7 @@ namespace System
                     public bool TryReceive(System.Predicate<System.Tuple<T1, T2, T3>> filter, out System.Tuple<T1, T2, T3> item) => throw null;
                     public bool TryReceiveAll(out System.Collections.Generic.IList<System.Tuple<T1, T2, T3>> items) => throw null;
                 }
-                public sealed class TransformBlock<TInput, TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<TInput, TOutput>, System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ITargetBlock<TInput>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput>
+                public sealed class TransformBlock<TInput, TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<TInput, TOutput>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ITargetBlock<TInput>
                 {
                     public void Complete() => throw null;
                     public System.Threading.Tasks.Task Completion { get => throw null; }
@@ -273,7 +273,7 @@ namespace System
                     public bool TryReceive(System.Predicate<TOutput> filter, out TOutput item) => throw null;
                     public bool TryReceiveAll(out System.Collections.Generic.IList<TOutput> items) => throw null;
                 }
-                public sealed class TransformManyBlock<TInput, TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<TInput, TOutput>, System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ITargetBlock<TInput>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput>
+                public sealed class TransformManyBlock<TInput, TOutput> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<TInput, TOutput>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>, System.Threading.Tasks.Dataflow.ITargetBlock<TInput>
                 {
                     public void Complete() => throw null;
                     public System.Threading.Tasks.Task Completion { get => throw null; }
@@ -295,7 +295,7 @@ namespace System
                     public bool TryReceive(System.Predicate<TOutput> filter, out TOutput item) => throw null;
                     public bool TryReceiveAll(out System.Collections.Generic.IList<TOutput> items) => throw null;
                 }
-                public sealed class WriteOnceBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>
+                public sealed class WriteOnceBlock<T> : System.Threading.Tasks.Dataflow.IDataflowBlock, System.Threading.Tasks.Dataflow.IPropagatorBlock<T, T>, System.Threading.Tasks.Dataflow.IReceivableSourceBlock<T>, System.Threading.Tasks.Dataflow.ISourceBlock<T>, System.Threading.Tasks.Dataflow.ITargetBlock<T>
                 {
                     public void Complete() => throw null;
                     public System.Threading.Tasks.Task Completion { get => throw null; }

@@ -8,7 +8,7 @@ namespace Microsoft
         {
             namespace HttpResults
             {
-                public sealed class Accepted : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public sealed class Accepted : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public string Location { get => throw null; }
@@ -16,7 +16,7 @@ namespace Microsoft
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class Accepted<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class Accepted<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public string Location { get => throw null; }
@@ -26,7 +26,7 @@ namespace Microsoft
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
-                public sealed class AcceptedAtRoute : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public sealed class AcceptedAtRoute : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
@@ -35,7 +35,7 @@ namespace Microsoft
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class AcceptedAtRoute<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class AcceptedAtRoute<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
@@ -46,14 +46,14 @@ namespace Microsoft
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
-                public sealed class BadRequest : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public sealed class BadRequest : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class BadRequest<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class BadRequest<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
@@ -68,14 +68,14 @@ namespace Microsoft
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public Microsoft.AspNetCore.Authentication.AuthenticationProperties Properties { get => throw null; }
                 }
-                public sealed class Conflict : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public sealed class Conflict : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class Conflict<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class Conflict<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
@@ -84,14 +84,14 @@ namespace Microsoft
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
-                public sealed class ContentHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult
+                public sealed class ContentHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public string ContentType { get => throw null; }
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public string ResponseContent { get => throw null; }
                     public int? StatusCode { get => throw null; }
                 }
-                public sealed class Created : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public sealed class Created : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public string Location { get => throw null; }
@@ -99,7 +99,7 @@ namespace Microsoft
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class Created<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class Created<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public string Location { get => throw null; }
@@ -109,7 +109,7 @@ namespace Microsoft
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
-                public sealed class CreatedAtRoute : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public sealed class CreatedAtRoute : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
@@ -118,7 +118,7 @@ namespace Microsoft
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class CreatedAtRoute<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class CreatedAtRoute<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
@@ -134,7 +134,7 @@ namespace Microsoft
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public static Microsoft.AspNetCore.Http.HttpResults.EmptyHttpResult Instance { get => throw null; }
                 }
-                public sealed class FileContentHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult
+                public sealed class FileContentHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; }
                     public bool EnableRangeProcessing { get => throw null; }
@@ -145,7 +145,7 @@ namespace Microsoft
                     public long? FileLength { get => throw null; }
                     public System.DateTimeOffset? LastModified { get => throw null; }
                 }
-                public sealed class FileStreamHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult
+                public sealed class FileStreamHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; }
                     public bool EnableRangeProcessing { get => throw null; }
@@ -162,7 +162,7 @@ namespace Microsoft
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public Microsoft.AspNetCore.Authentication.AuthenticationProperties Properties { get => throw null; }
                 }
-                public sealed class JsonHttpResult<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>, Microsoft.AspNetCore.Http.IContentTypeHttpResult
+                public sealed class JsonHttpResult<TValue> : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public string ContentType { get => throw null; }
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -171,37 +171,21 @@ namespace Microsoft
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
-                public class NoContent : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public class NoContent : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class NotFound : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public sealed class NotFound : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class NotFound<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
-                {
-                    public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
-                    static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
-                    public int StatusCode { get => throw null; }
-                    int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
-                    public TValue Value { get => throw null; }
-                    object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
-                }
-                public sealed class Ok : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
-                {
-                    public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
-                    static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
-                    public int StatusCode { get => throw null; }
-                    int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
-                }
-                public sealed class Ok<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class NotFound<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
@@ -210,7 +194,23 @@ namespace Microsoft
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
-                public sealed class PhysicalFileHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult
+                public sealed class Ok : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                {
+                    public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                    static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
+                    public int StatusCode { get => throw null; }
+                    int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
+                }
+                public sealed class Ok<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                {
+                    public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                    static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
+                    public int StatusCode { get => throw null; }
+                    int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
+                    public TValue Value { get => throw null; }
+                    object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
+                }
+                public sealed class PhysicalFileHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; }
                     public bool EnableRangeProcessing { get => throw null; }
@@ -221,7 +221,7 @@ namespace Microsoft
                     public string FileName { get => throw null; }
                     public System.DateTimeOffset? LastModified { get => throw null; }
                 }
-                public sealed class ProblemHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Mvc.ProblemDetails>
+                public sealed class ProblemHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Mvc.ProblemDetails>
                 {
                     public string ContentType { get => throw null; }
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -231,7 +231,7 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                     Microsoft.AspNetCore.Mvc.ProblemDetails Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Mvc.ProblemDetails>.Value { get => throw null; }
                 }
-                public sealed class PushStreamHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult
+                public sealed class PushStreamHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; }
                     public bool EnableRangeProcessing { get => throw null; }
@@ -258,7 +258,7 @@ namespace Microsoft
                     public string RouteName { get => throw null; }
                     public Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; }
                 }
-                public sealed class Results<TResult1, TResult2> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult
+                public sealed class Results<TResult1, TResult2> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2>(TResult1 result) => throw null;
@@ -266,7 +266,7 @@ namespace Microsoft
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public Microsoft.AspNetCore.Http.IResult Result { get => throw null; }
                 }
-                public sealed class Results<TResult1, TResult2, TResult3> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult
+                public sealed class Results<TResult1, TResult2, TResult3> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3>(TResult1 result) => throw null;
@@ -275,7 +275,7 @@ namespace Microsoft
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public Microsoft.AspNetCore.Http.IResult Result { get => throw null; }
                 }
-                public sealed class Results<TResult1, TResult2, TResult3, TResult4> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult
+                public sealed class Results<TResult1, TResult2, TResult3, TResult4> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3, TResult4>(TResult1 result) => throw null;
@@ -285,7 +285,7 @@ namespace Microsoft
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public Microsoft.AspNetCore.Http.IResult Result { get => throw null; }
                 }
-                public sealed class Results<TResult1, TResult2, TResult3, TResult4, TResult5> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult where TResult5 : Microsoft.AspNetCore.Http.IResult
+                public sealed class Results<TResult1, TResult2, TResult3, TResult4, TResult5> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult where TResult5 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3, TResult4, TResult5>(TResult1 result) => throw null;
@@ -296,7 +296,7 @@ namespace Microsoft
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public Microsoft.AspNetCore.Http.IResult Result { get => throw null; }
                 }
-                public sealed class Results<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult where TResult5 : Microsoft.AspNetCore.Http.IResult where TResult6 : Microsoft.AspNetCore.Http.IResult
+                public sealed class Results<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.INestedHttpResult, Microsoft.AspNetCore.Http.IResult where TResult1 : Microsoft.AspNetCore.Http.IResult where TResult2 : Microsoft.AspNetCore.Http.IResult where TResult3 : Microsoft.AspNetCore.Http.IResult where TResult4 : Microsoft.AspNetCore.Http.IResult where TResult5 : Microsoft.AspNetCore.Http.IResult where TResult6 : Microsoft.AspNetCore.Http.IResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6>(TResult1 result) => throw null;
@@ -333,14 +333,14 @@ namespace Microsoft
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class UnprocessableEntity : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                public sealed class UnprocessableEntity : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
                 }
-                public sealed class UnprocessableEntity<TValue> : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class UnprocessableEntity<TValue> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
@@ -349,14 +349,14 @@ namespace Microsoft
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
-                public sealed class Utf8ContentHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult
+                public sealed class Utf8ContentHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
                 {
                     public string ContentType { get => throw null; }
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public System.ReadOnlyMemory<byte> ResponseContent { get => throw null; }
                     public int? StatusCode { get => throw null; }
                 }
-                public sealed class ValidationProblem : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Http.HttpValidationProblemDetails>
+                public sealed class ValidationProblem : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Http.HttpValidationProblemDetails>
                 {
                     public string ContentType { get => throw null; }
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -367,7 +367,7 @@ namespace Microsoft
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                     Microsoft.AspNetCore.Http.HttpValidationProblemDetails Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Http.HttpValidationProblemDetails>.Value { get => throw null; }
                 }
-                public sealed class VirtualFileHttpResult : Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IContentTypeHttpResult
+                public sealed class VirtualFileHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IFileHttpResult, Microsoft.AspNetCore.Http.IResult
                 {
                     public string ContentType { get => throw null; }
                     public bool EnableRangeProcessing { get => throw null; }

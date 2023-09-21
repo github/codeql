@@ -133,7 +133,7 @@ namespace System
                 public struct HeaderStringValues : System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<string>
                 {
                     public int Count { get => throw null; }
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator
                     {
                         public string Current { get => throw null; }
                         object System.Collections.IEnumerator.Current { get => throw null; }
@@ -182,7 +182,7 @@ namespace System
                     public bool Contains(string headerName) => throw null;
                     bool System.Collections.Generic.IReadOnlyDictionary<string, System.Net.Http.Headers.HeaderStringValues>.ContainsKey(string key) => throw null;
                     public int Count { get => throw null; }
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, System.Net.Http.Headers.HeaderStringValues>>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, System.Net.Http.Headers.HeaderStringValues>>, System.Collections.IEnumerator
                     {
                         public System.Collections.Generic.KeyValuePair<string, System.Net.Http.Headers.HeaderStringValues> Current { get => throw null; }
                         object System.Collections.IEnumerator.Current { get => throw null; }
@@ -663,7 +663,7 @@ namespace System
                 public System.Version Version { get => throw null; set { } }
                 public System.Net.Http.HttpVersionPolicy VersionPolicy { get => throw null; set { } }
             }
-            public sealed class HttpRequestOptions : System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
+            public sealed class HttpRequestOptions : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
             {
                 void System.Collections.Generic.IDictionary<string, object>.Add(string key, object value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Add(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;

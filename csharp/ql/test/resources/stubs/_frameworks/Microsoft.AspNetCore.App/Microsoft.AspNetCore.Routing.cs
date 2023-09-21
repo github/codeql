@@ -119,68 +119,68 @@ namespace Microsoft
                 {
                     public AlphaRouteConstraint() : base(default(System.Text.RegularExpressions.Regex)) => throw null;
                 }
-                public class BoolRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class BoolRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public BoolRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class CompositeRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class CompositeRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Routing.IRouteConstraint> Constraints { get => throw null; }
                     public CompositeRouteConstraint(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Routing.IRouteConstraint> constraints) => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class DateTimeRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class DateTimeRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public DateTimeRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class DecimalRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class DecimalRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public DecimalRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class DoubleRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class DoubleRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public DoubleRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class FileNameRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class FileNameRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public FileNameRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class FloatRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class FloatRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public FloatRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class GuidRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class GuidRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public GuidRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class HttpMethodRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy
+                public class HttpMethodRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public System.Collections.Generic.IList<string> AllowedMethods { get => throw null; }
                     public HttpMethodRouteConstraint(params string[] allowedMethods) => throw null;
                     public virtual bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                 }
-                public class IntRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class IntRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public IntRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class LengthRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class LengthRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public LengthRouteConstraint(int length) => throw null;
                     public LengthRouteConstraint(int minLength, int maxLength) => throw null;
@@ -189,53 +189,53 @@ namespace Microsoft
                     public int MaxLength { get => throw null; }
                     public int MinLength { get => throw null; }
                 }
-                public class LongRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class LongRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public LongRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class MaxLengthRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class MaxLengthRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public MaxLengthRouteConstraint(int maxLength) => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                     public int MaxLength { get => throw null; }
                 }
-                public class MaxRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class MaxRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public MaxRouteConstraint(long max) => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                     public long Max { get => throw null; }
                 }
-                public class MinLengthRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class MinLengthRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public MinLengthRouteConstraint(int minLength) => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                     public int MinLength { get => throw null; }
                 }
-                public class MinRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class MinRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public MinRouteConstraint(long min) => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                     public long Min { get => throw null; }
                 }
-                public class NonFileNameRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class NonFileNameRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public NonFileNameRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class OptionalRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy
+                public class OptionalRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public OptionalRouteConstraint(Microsoft.AspNetCore.Routing.IRouteConstraint innerConstraint) => throw null;
                     public Microsoft.AspNetCore.Routing.IRouteConstraint InnerConstraint { get => throw null; }
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                 }
-                public class RangeRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class RangeRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public RangeRouteConstraint(long min, long max) => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -247,7 +247,7 @@ namespace Microsoft
                 {
                     public RegexInlineRouteConstraint(string regexPattern) : base(default(System.Text.RegularExpressions.Regex)) => throw null;
                 }
-                public class RegexRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class RegexRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public System.Text.RegularExpressions.Regex Constraint { get => throw null; }
                     public RegexRouteConstraint(System.Text.RegularExpressions.Regex regex) => throw null;
@@ -255,12 +255,12 @@ namespace Microsoft
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy.MatchesLiteral(string parameterName, string literal) => throw null;
                 }
-                public class RequiredRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy
+                public class RequiredRouteConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public RequiredRouteConstraint() => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
                 }
-                public class StringRouteConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy
+                public class StringRouteConstraint : Microsoft.AspNetCore.Routing.Matching.IParameterLiteralNodeMatchingPolicy, Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public StringRouteConstraint(string value) => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -479,7 +479,7 @@ namespace Microsoft
                     protected EndpointSelector() => throw null;
                     public abstract System.Threading.Tasks.Task SelectAsync(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.Matching.CandidateSet candidates);
                 }
-                public sealed class HostMatcherPolicy : Microsoft.AspNetCore.Routing.MatcherPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointComparerPolicy, Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy
+                public sealed class HostMatcherPolicy : Microsoft.AspNetCore.Routing.MatcherPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointComparerPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy, Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy
                 {
                     bool Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy.AppliesToEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy.AppliesToEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
@@ -490,7 +490,7 @@ namespace Microsoft
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Routing.Matching.PolicyNodeEdge> GetEdges(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
                     public override int Order { get => throw null; }
                 }
-                public sealed class HttpMethodMatcherPolicy : Microsoft.AspNetCore.Routing.MatcherPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointComparerPolicy, Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy
+                public sealed class HttpMethodMatcherPolicy : Microsoft.AspNetCore.Routing.MatcherPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointComparerPolicy, Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy, Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy
                 {
                     bool Microsoft.AspNetCore.Routing.Matching.INodeBuilderPolicy.AppliesToEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
                     bool Microsoft.AspNetCore.Routing.Matching.IEndpointSelectorPolicy.AppliesToEndpoints(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> endpoints) => throw null;
@@ -684,7 +684,7 @@ namespace Microsoft
                 protected override Microsoft.AspNetCore.Routing.VirtualPathData OnVirtualPathGenerated(Microsoft.AspNetCore.Routing.VirtualPathContext context) => throw null;
                 public string RouteTemplate { get => throw null; }
             }
-            public abstract class RouteBase : Microsoft.AspNetCore.Routing.IRouter, Microsoft.AspNetCore.Routing.INamedRouter
+            public abstract class RouteBase : Microsoft.AspNetCore.Routing.INamedRouter, Microsoft.AspNetCore.Routing.IRouter
             {
                 protected virtual Microsoft.AspNetCore.Routing.IInlineConstraintResolver ConstraintResolver { get => throw null; set { } }
                 public virtual System.Collections.Generic.IDictionary<string, Microsoft.AspNetCore.Routing.IRouteConstraint> Constraints { get => throw null; set { } }
@@ -750,7 +750,7 @@ namespace Microsoft
                 public int Order { get => throw null; set { } }
                 public Microsoft.AspNetCore.Routing.Patterns.RoutePattern RoutePattern { get => throw null; set { } }
             }
-            public sealed class RouteGroupBuilder : Microsoft.AspNetCore.Routing.IEndpointRouteBuilder, Microsoft.AspNetCore.Builder.IEndpointConventionBuilder
+            public sealed class RouteGroupBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder, Microsoft.AspNetCore.Routing.IEndpointRouteBuilder
             {
                 void Microsoft.AspNetCore.Builder.IEndpointConventionBuilder.Add(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> convention) => throw null;
                 Microsoft.AspNetCore.Builder.IApplicationBuilder Microsoft.AspNetCore.Routing.IEndpointRouteBuilder.CreateApplicationBuilder() => throw null;

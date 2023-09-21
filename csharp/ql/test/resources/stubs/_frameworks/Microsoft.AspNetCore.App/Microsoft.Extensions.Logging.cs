@@ -51,7 +51,7 @@ namespace Microsoft
             {
                 Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
             }
-            public class LoggerFactory : Microsoft.Extensions.Logging.ILoggerFactory, System.IDisposable
+            public class LoggerFactory : System.IDisposable, Microsoft.Extensions.Logging.ILoggerFactory
             {
                 public void AddProvider(Microsoft.Extensions.Logging.ILoggerProvider provider) => throw null;
                 protected virtual bool CheckDisposed() => throw null;

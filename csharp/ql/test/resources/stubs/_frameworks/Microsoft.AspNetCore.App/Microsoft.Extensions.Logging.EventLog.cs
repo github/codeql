@@ -8,7 +8,7 @@ namespace Microsoft
         {
             namespace EventLog
             {
-                public class EventLogLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, System.IDisposable, Microsoft.Extensions.Logging.ISupportExternalScope
+                public class EventLogLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider, Microsoft.Extensions.Logging.ISupportExternalScope
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string name) => throw null;
                     public EventLogLoggerProvider() => throw null;

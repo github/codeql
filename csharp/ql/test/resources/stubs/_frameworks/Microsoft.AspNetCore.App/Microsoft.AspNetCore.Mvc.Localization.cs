@@ -69,7 +69,7 @@ namespace Microsoft
                     public string Value { get => throw null; }
                     public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
-                public class ViewLocalizer : Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer, Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer, Microsoft.AspNetCore.Mvc.ViewFeatures.IViewContextAware
+                public class ViewLocalizer : Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer, Microsoft.AspNetCore.Mvc.ViewFeatures.IViewContextAware, Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer
                 {
                     public void Contextualize(Microsoft.AspNetCore.Mvc.Rendering.ViewContext viewContext) => throw null;
                     public ViewLocalizer(Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizerFactory localizerFactory, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment) => throw null;

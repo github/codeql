@@ -81,7 +81,7 @@ namespace System
             public string Description { get => throw null; }
             public string DisplayName { get => throw null; }
             protected virtual string[] GetSupportedAttributes() => throw null;
-            public static event System.EventHandler<System.Diagnostics.InitializingSwitchEventArgs> Initializing { add { } remove { } }
+            public static event System.EventHandler<System.Diagnostics.InitializingSwitchEventArgs> Initializing;
             protected virtual void OnSwitchSettingChanged() => throw null;
             protected virtual void OnValueChanged() => throw null;
             public void Refresh() => throw null;
@@ -117,7 +117,7 @@ namespace System
             public static int IndentSize { get => throw null; set { } }
             public static System.Diagnostics.TraceListenerCollection Listeners { get => throw null; }
             public static void Refresh() => throw null;
-            public static event System.EventHandler Refreshing { add { } remove { } }
+            public static event System.EventHandler Refreshing;
             public static void TraceError(string message) => throw null;
             public static void TraceError(string format, params object[] args) => throw null;
             public static void TraceInformation(string message) => throw null;
@@ -263,7 +263,7 @@ namespace System
             public System.Diagnostics.SourceLevels DefaultLevel { get => throw null; }
             public void Flush() => throw null;
             protected virtual string[] GetSupportedAttributes() => throw null;
-            public static event System.EventHandler<System.Diagnostics.InitializingTraceSourceEventArgs> Initializing { add { } remove { } }
+            public static event System.EventHandler<System.Diagnostics.InitializingTraceSourceEventArgs> Initializing;
             public System.Diagnostics.TraceListenerCollection Listeners { get => throw null; }
             public string Name { get => throw null; }
             public System.Diagnostics.SourceSwitch Switch { get => throw null; set { } }

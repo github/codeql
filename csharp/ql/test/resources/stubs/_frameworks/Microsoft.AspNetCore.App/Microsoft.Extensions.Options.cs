@@ -195,7 +195,7 @@ namespace Microsoft
                 public virtual TOptions Get(string name) => throw null;
                 public TOptions Value { get => throw null; }
             }
-            public class OptionsMonitor<TOptions> : Microsoft.Extensions.Options.IOptionsMonitor<TOptions>, System.IDisposable where TOptions : class
+            public class OptionsMonitor<TOptions> : System.IDisposable, Microsoft.Extensions.Options.IOptionsMonitor<TOptions> where TOptions : class
             {
                 public OptionsMonitor(Microsoft.Extensions.Options.IOptionsFactory<TOptions> factory, System.Collections.Generic.IEnumerable<Microsoft.Extensions.Options.IOptionsChangeTokenSource<TOptions>> sources, Microsoft.Extensions.Options.IOptionsMonitorCache<TOptions> cache) => throw null;
                 public TOptions CurrentValue { get => throw null; }

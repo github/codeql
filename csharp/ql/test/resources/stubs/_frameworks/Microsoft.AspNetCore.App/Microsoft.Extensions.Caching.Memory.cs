@@ -24,7 +24,7 @@ namespace Microsoft
             }
             namespace Memory
             {
-                public class MemoryCache : Microsoft.Extensions.Caching.Memory.IMemoryCache, System.IDisposable
+                public class MemoryCache : System.IDisposable, Microsoft.Extensions.Caching.Memory.IMemoryCache
                 {
                     public void Clear() => throw null;
                     public void Compact(double percentage) => throw null;

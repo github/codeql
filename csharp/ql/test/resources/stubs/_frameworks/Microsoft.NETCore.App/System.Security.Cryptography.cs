@@ -1056,7 +1056,7 @@ namespace System
                 public byte[] X;
                 public byte[] Y;
             }
-            public class FromBase64Transform : System.IDisposable, System.Security.Cryptography.ICryptoTransform
+            public class FromBase64Transform : System.Security.Cryptography.ICryptoTransform, System.IDisposable
             {
                 public virtual bool CanReuseTransform { get => throw null; }
                 public bool CanTransformMultipleBlocks { get => throw null; }
@@ -1075,7 +1075,7 @@ namespace System
                 IgnoreWhiteSpaces = 0,
                 DoNotIgnoreWhiteSpaces = 1,
             }
-            public abstract class HashAlgorithm : System.IDisposable, System.Security.Cryptography.ICryptoTransform
+            public abstract class HashAlgorithm : System.Security.Cryptography.ICryptoTransform, System.IDisposable
             {
                 public virtual bool CanReuseTransform { get => throw null; }
                 public virtual bool CanTransformMultipleBlocks { get => throw null; }
@@ -1164,8 +1164,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public static bool TryHashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
@@ -1189,8 +1189,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public static bool TryHashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
@@ -1213,8 +1213,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public static bool TryHashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
@@ -1237,8 +1237,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public bool ProduceLegacyHmacValues { get => throw null; set { } }
@@ -1262,8 +1262,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public bool ProduceLegacyHmacValues { get => throw null; set { } }
@@ -1341,8 +1341,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class MD5CryptoServiceProvider : System.Security.Cryptography.MD5
@@ -1825,8 +1825,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class SHA1CryptoServiceProvider : System.Security.Cryptography.SHA1
@@ -1861,8 +1861,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class SHA256CryptoServiceProvider : System.Security.Cryptography.SHA256
@@ -1897,8 +1897,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class SHA384CryptoServiceProvider : System.Security.Cryptography.SHA384
@@ -1933,8 +1933,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public static int HashSizeInBits;
-                public static int HashSizeInBytes;
+                public const int HashSizeInBits = default;
+                public const int HashSizeInBytes = default;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class SHA512CryptoServiceProvider : System.Security.Cryptography.SHA512
@@ -2036,7 +2036,7 @@ namespace System
                 protected virtual bool TryEncryptEcbCore(System.ReadOnlySpan<byte> plaintext, System.Span<byte> destination, System.Security.Cryptography.PaddingMode paddingMode, out int bytesWritten) => throw null;
                 public bool ValidKeySize(int bitLength) => throw null;
             }
-            public class ToBase64Transform : System.IDisposable, System.Security.Cryptography.ICryptoTransform
+            public class ToBase64Transform : System.Security.Cryptography.ICryptoTransform, System.IDisposable
             {
                 public virtual bool CanReuseTransform { get => throw null; }
                 public bool CanTransformMultipleBlocks { get => throw null; }
@@ -2312,7 +2312,7 @@ namespace System
                     public bool HasPathLengthConstraint { get => throw null; }
                     public int PathLengthConstraint { get => throw null; }
                 }
-                public class X509Certificate : System.IDisposable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+                public class X509Certificate : System.Runtime.Serialization.IDeserializationCallback, System.IDisposable, System.Runtime.Serialization.ISerializable
                 {
                     public static System.Security.Cryptography.X509Certificates.X509Certificate CreateFromCertFile(string filename) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509Certificate CreateFromSignedFile(string filename) => throw null;
@@ -2470,7 +2470,7 @@ namespace System
                     public bool TryExportCertificatePems(System.Span<char> destination, out int charsWritten) => throw null;
                     public bool TryExportPkcs7Pem(System.Span<char> destination, out int charsWritten) => throw null;
                 }
-                public sealed class X509Certificate2Enumerator : System.Collections.Generic.IEnumerator<System.Security.Cryptography.X509Certificates.X509Certificate2>, System.Collections.IEnumerator, System.IDisposable
+                public sealed class X509Certificate2Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Security.Cryptography.X509Certificates.X509Certificate2>, System.Collections.IEnumerator
                 {
                     public System.Security.Cryptography.X509Certificates.X509Certificate2 Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2530,7 +2530,7 @@ namespace System
                     public System.Security.Cryptography.X509Certificates.X509ChainStatus[] ChainElementStatus { get => throw null; }
                     public string Information { get => throw null; }
                 }
-                public sealed class X509ChainElementCollection : System.Collections.Generic.IEnumerable<System.Security.Cryptography.X509Certificates.X509ChainElement>, System.Collections.IEnumerable, System.Collections.ICollection
+                public sealed class X509ChainElementCollection : System.Collections.ICollection, System.Collections.Generic.IEnumerable<System.Security.Cryptography.X509Certificates.X509ChainElement>, System.Collections.IEnumerable
                 {
                     public void CopyTo(System.Security.Cryptography.X509Certificates.X509ChainElement[] array, int index) => throw null;
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -2542,7 +2542,7 @@ namespace System
                     public object SyncRoot { get => throw null; }
                     public System.Security.Cryptography.X509Certificates.X509ChainElement this[int index] { get => throw null; }
                 }
-                public sealed class X509ChainElementEnumerator : System.Collections.Generic.IEnumerator<System.Security.Cryptography.X509Certificates.X509ChainElement>, System.Collections.IEnumerator, System.IDisposable
+                public sealed class X509ChainElementEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Security.Cryptography.X509Certificates.X509ChainElement>, System.Collections.IEnumerator
                 {
                     public System.Security.Cryptography.X509Certificates.X509ChainElement Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2638,7 +2638,7 @@ namespace System
                     public X509Extension(string oid, byte[] rawData, bool critical) => throw null;
                     public X509Extension(string oid, System.ReadOnlySpan<byte> rawData, bool critical) => throw null;
                 }
-                public sealed class X509ExtensionCollection : System.Collections.Generic.IEnumerable<System.Security.Cryptography.X509Certificates.X509Extension>, System.Collections.IEnumerable, System.Collections.ICollection
+                public sealed class X509ExtensionCollection : System.Collections.ICollection, System.Collections.Generic.IEnumerable<System.Security.Cryptography.X509Certificates.X509Extension>, System.Collections.IEnumerable
                 {
                     public int Add(System.Security.Cryptography.X509Certificates.X509Extension extension) => throw null;
                     public void CopyTo(System.Security.Cryptography.X509Certificates.X509Extension[] array, int index) => throw null;
@@ -2653,7 +2653,7 @@ namespace System
                     public System.Security.Cryptography.X509Certificates.X509Extension this[int index] { get => throw null; }
                     public System.Security.Cryptography.X509Certificates.X509Extension this[string oid] { get => throw null; }
                 }
-                public sealed class X509ExtensionEnumerator : System.Collections.Generic.IEnumerator<System.Security.Cryptography.X509Certificates.X509Extension>, System.Collections.IEnumerator, System.IDisposable
+                public sealed class X509ExtensionEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Security.Cryptography.X509Certificates.X509Extension>, System.Collections.IEnumerator
                 {
                     public System.Security.Cryptography.X509Certificates.X509Extension Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }

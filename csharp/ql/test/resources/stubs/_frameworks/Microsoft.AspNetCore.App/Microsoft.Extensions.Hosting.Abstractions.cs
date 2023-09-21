@@ -14,7 +14,7 @@ namespace Microsoft
         }
         namespace Hosting
         {
-            public abstract class BackgroundService : Microsoft.Extensions.Hosting.IHostedService, System.IDisposable
+            public abstract class BackgroundService : System.IDisposable, Microsoft.Extensions.Hosting.IHostedService
             {
                 protected BackgroundService() => throw null;
                 public virtual void Dispose() => throw null;

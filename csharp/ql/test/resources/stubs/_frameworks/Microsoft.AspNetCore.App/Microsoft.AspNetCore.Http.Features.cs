@@ -226,13 +226,13 @@ namespace Microsoft
                 string Name { get; }
                 System.IO.Stream OpenReadStream();
             }
-            public interface IFormFileCollection : System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.Http.IFormFile>
+            public interface IFormFileCollection : System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.IFormFile>
             {
                 Microsoft.AspNetCore.Http.IFormFile GetFile(string name);
                 System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.IFormFile> GetFiles(string name);
                 Microsoft.AspNetCore.Http.IFormFile this[string name] { get; }
             }
-            public interface IHeaderDictionary : System.Collections.Generic.IDictionary<string, Microsoft.Extensions.Primitives.StringValues>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable
+            public interface IHeaderDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.Generic.IDictionary<string, Microsoft.Extensions.Primitives.StringValues>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable
             {
                 virtual Microsoft.Extensions.Primitives.StringValues Accept { get => throw null; set { } }
                 virtual Microsoft.Extensions.Primitives.StringValues AcceptCharset { get => throw null; set { } }

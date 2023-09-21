@@ -222,8 +222,8 @@ namespace Microsoft
                 }
                 public static class HeaderQuality
                 {
-                    public static double Match;
-                    public static double NoMatch;
+                    public const double Match = default;
+                    public const double NoMatch = default;
                 }
                 public static class HeaderUtilities
                 {

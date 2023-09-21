@@ -8,7 +8,7 @@ namespace Microsoft
         {
             namespace EventSource
             {
-                public class EventSourceLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, System.IDisposable
+                public class EventSourceLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => throw null;
                     public EventSourceLoggerProvider(Microsoft.Extensions.Logging.EventSource.LoggingEventSource eventSource) => throw null;
@@ -18,10 +18,10 @@ namespace Microsoft
                 {
                     public static class Keywords
                     {
-                        public static System.Diagnostics.Tracing.EventKeywords FormattedMessage;
-                        public static System.Diagnostics.Tracing.EventKeywords JsonMessage;
-                        public static System.Diagnostics.Tracing.EventKeywords Message;
-                        public static System.Diagnostics.Tracing.EventKeywords Meta;
+                        public const System.Diagnostics.Tracing.EventKeywords FormattedMessage = default;
+                        public const System.Diagnostics.Tracing.EventKeywords JsonMessage = default;
+                        public const System.Diagnostics.Tracing.EventKeywords Message = default;
+                        public const System.Diagnostics.Tracing.EventKeywords Meta = default;
                     }
                     protected override void OnEventCommand(System.Diagnostics.Tracing.EventCommandEventArgs command) => throw null;
                 }

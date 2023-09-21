@@ -118,7 +118,7 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApplicationModels.PageParameterModel> Parameters { get => throw null; }
                     public System.Collections.Generic.IDictionary<object, object> Properties { get => throw null; }
                 }
-                public class PageParameterModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ParameterModelBase, Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IBindingModel
+                public class PageParameterModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ParameterModelBase, Microsoft.AspNetCore.Mvc.ApplicationModels.IBindingModel, Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel
                 {
                     public PageParameterModel(System.Reflection.ParameterInfo parameterInfo, System.Collections.Generic.IReadOnlyList<object> attributes) : base(default(Microsoft.AspNetCore.Mvc.ApplicationModels.ParameterModelBase)) => throw null;
                     public PageParameterModel(Microsoft.AspNetCore.Mvc.ApplicationModels.PageParameterModel other) : base(default(Microsoft.AspNetCore.Mvc.ApplicationModels.ParameterModelBase)) => throw null;
@@ -160,7 +160,7 @@ namespace Microsoft
                     public PageRouteModelProviderContext() => throw null;
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModel> RouteModels { get => throw null; }
                 }
-                public class PageRouteTransformerConvention : Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelConvention, Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention
+                public class PageRouteTransformerConvention : Microsoft.AspNetCore.Mvc.ApplicationModels.IPageConvention, Microsoft.AspNetCore.Mvc.ApplicationModels.IPageRouteModelConvention
                 {
                     public void Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.PageRouteModel model) => throw null;
                     public PageRouteTransformerConvention(Microsoft.AspNetCore.Routing.IOutboundParameterTransformer parameterTransformer) => throw null;
@@ -175,7 +175,7 @@ namespace Microsoft
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> Arguments { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterHandlerMethodEventData(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IReadOnlyDictionary<string, object> arguments, Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.HandlerMethodDescriptor handlerMethodDescriptor, object instance, Microsoft.AspNetCore.Mvc.IActionResult result) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.HandlerMethodDescriptor HandlerMethodDescriptor { get => throw null; }
                     public object Instance { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; }
@@ -186,7 +186,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterPageFilterOnPageHandlerExecutedEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext handlerExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext HandlerExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -196,7 +196,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterPageFilterOnPageHandlerExecutingEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext handlerExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext HandlerExecutingContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -206,7 +206,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterPageFilterOnPageHandlerExecutionEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext handlerExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext HandlerExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -216,7 +216,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterPageFilterOnPageHandlerSelectedEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext handlerSelectedContext, Microsoft.AspNetCore.Mvc.Filters.IPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext HandlerSelectedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -226,7 +226,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterPageFilterOnPageHandlerSelectionEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext handlerSelectedContext, Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext HandlerSelectedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -237,7 +237,7 @@ namespace Microsoft
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> Arguments { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeHandlerMethodEventData(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IReadOnlyDictionary<string, object> arguments, Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.HandlerMethodDescriptor handlerMethodDescriptor, object instance) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.HandlerMethodDescriptor HandlerMethodDescriptor { get => throw null; }
                     public object Instance { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -247,7 +247,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforePageFilterOnPageHandlerExecutedEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext handlerExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutedContext HandlerExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -257,7 +257,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforePageFilterOnPageHandlerExecutingEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext handlerExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext HandlerExecutingContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -267,7 +267,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforePageFilterOnPageHandlerExecutionEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext handlerExecutionContext, Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerExecutingContext HandlerExecutionContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -277,7 +277,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforePageFilterOnPageHandlerSelectedEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext handlerSelectedContext, Microsoft.AspNetCore.Mvc.Filters.IPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext HandlerSelectedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -287,7 +287,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforePageFilterOnPageHandlerSelectionEventData(Microsoft.AspNetCore.Mvc.RazorPages.CompiledPageActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext handlerSelectedContext, Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IAsyncPageFilter Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.PageHandlerSelectedContext HandlerSelectedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }

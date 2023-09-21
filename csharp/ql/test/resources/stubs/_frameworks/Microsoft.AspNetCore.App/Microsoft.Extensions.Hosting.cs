@@ -101,7 +101,7 @@ namespace Microsoft
                     public void NotifyStopped() => throw null;
                     public void StopApplication() => throw null;
                 }
-                public class ConsoleLifetime : Microsoft.Extensions.Hosting.IHostLifetime, System.IDisposable
+                public class ConsoleLifetime : System.IDisposable, Microsoft.Extensions.Hosting.IHostLifetime
                 {
                     public ConsoleLifetime(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions> options, Microsoft.Extensions.Hosting.IHostEnvironment environment, Microsoft.Extensions.Hosting.IHostApplicationLifetime applicationLifetime, Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions> hostOptions) => throw null;
                     public ConsoleLifetime(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions> options, Microsoft.Extensions.Hosting.IHostEnvironment environment, Microsoft.Extensions.Hosting.IHostApplicationLifetime applicationLifetime, Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions> hostOptions, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;

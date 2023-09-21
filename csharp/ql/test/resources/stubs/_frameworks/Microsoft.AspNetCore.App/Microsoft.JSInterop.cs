@@ -20,7 +20,7 @@ namespace Microsoft
             public bool LeaveOpen { get => throw null; }
             public System.IO.Stream Stream { get => throw null; }
         }
-        public interface IJSInProcessObjectReference : Microsoft.JSInterop.IJSObjectReference, System.IAsyncDisposable, System.IDisposable
+        public interface IJSInProcessObjectReference : System.IAsyncDisposable, System.IDisposable, Microsoft.JSInterop.IJSObjectReference
         {
             TValue Invoke<TValue>(string identifier, params object[] args);
         }
@@ -43,7 +43,7 @@ namespace Microsoft
             long Length { get; }
             System.Threading.Tasks.ValueTask<System.IO.Stream> OpenReadStreamAsync(long maxAllowedSize = default(long), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
         }
-        public interface IJSUnmarshalledObjectReference : Microsoft.JSInterop.IJSInProcessObjectReference, Microsoft.JSInterop.IJSObjectReference, System.IAsyncDisposable, System.IDisposable
+        public interface IJSUnmarshalledObjectReference : System.IAsyncDisposable, System.IDisposable, Microsoft.JSInterop.IJSInProcessObjectReference, Microsoft.JSInterop.IJSObjectReference
         {
             TResult InvokeUnmarshalled<TResult>(string identifier);
             TResult InvokeUnmarshalled<T0, TResult>(string identifier, T0 arg0);
@@ -59,13 +59,13 @@ namespace Microsoft
         }
         namespace Implementation
         {
-            public class JSInProcessObjectReference : Microsoft.JSInterop.Implementation.JSObjectReference, Microsoft.JSInterop.IJSInProcessObjectReference, Microsoft.JSInterop.IJSObjectReference, System.IAsyncDisposable, System.IDisposable
+            public class JSInProcessObjectReference : Microsoft.JSInterop.Implementation.JSObjectReference, System.IAsyncDisposable, System.IDisposable, Microsoft.JSInterop.IJSInProcessObjectReference, Microsoft.JSInterop.IJSObjectReference
             {
                 protected JSInProcessObjectReference(Microsoft.JSInterop.JSInProcessRuntime jsRuntime, long id) : base(default(Microsoft.JSInterop.JSRuntime), default(long)) => throw null;
                 public void Dispose() => throw null;
                 public TValue Invoke<TValue>(string identifier, params object[] args) => throw null;
             }
-            public class JSObjectReference : Microsoft.JSInterop.IJSObjectReference, System.IAsyncDisposable
+            public class JSObjectReference : System.IAsyncDisposable, Microsoft.JSInterop.IJSObjectReference
             {
                 protected JSObjectReference(Microsoft.JSInterop.JSRuntime jsRuntime, long id) => throw null;
                 public System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
@@ -79,7 +79,7 @@ namespace Microsoft
                 public static long ReadJSObjectReferenceIdentifier(ref System.Text.Json.Utf8JsonReader reader) => throw null;
                 public static void WriteJSObjectReference(System.Text.Json.Utf8JsonWriter writer, Microsoft.JSInterop.Implementation.JSObjectReference objectReference) => throw null;
             }
-            public sealed class JSStreamReference : Microsoft.JSInterop.Implementation.JSObjectReference, Microsoft.JSInterop.IJSStreamReference, System.IAsyncDisposable
+            public sealed class JSStreamReference : Microsoft.JSInterop.Implementation.JSObjectReference, System.IAsyncDisposable, Microsoft.JSInterop.IJSStreamReference
             {
                 public long Length { get => throw null; }
                 System.Threading.Tasks.ValueTask<System.IO.Stream> Microsoft.JSInterop.IJSStreamReference.OpenReadStreamAsync(long maxAllowedSize, System.Threading.CancellationToken cancellationToken) => throw null;
@@ -160,7 +160,7 @@ namespace Microsoft
             public static System.Threading.Tasks.ValueTask InvokeVoidAsync(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.Threading.CancellationToken cancellationToken, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask InvokeVoidAsync(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.TimeSpan timeout, params object[] args) => throw null;
         }
-        public abstract class JSRuntime : Microsoft.JSInterop.IJSRuntime, System.IDisposable
+        public abstract class JSRuntime : System.IDisposable, Microsoft.JSInterop.IJSRuntime
         {
             protected virtual void BeginInvokeJS(long taskId, string identifier, string argsJson) => throw null;
             protected abstract void BeginInvokeJS(long taskId, string identifier, string argsJson, Microsoft.JSInterop.JSCallResultType resultType, long targetInstanceId);

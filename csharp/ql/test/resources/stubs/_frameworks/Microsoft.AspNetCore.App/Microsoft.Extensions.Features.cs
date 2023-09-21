@@ -8,7 +8,7 @@ namespace Microsoft
         {
             namespace Features
             {
-                public class FeatureCollection : Microsoft.AspNetCore.Http.Features.IFeatureCollection, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Type, object>>, System.Collections.IEnumerable
+                public class FeatureCollection : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Type, object>>, System.Collections.IEnumerable, Microsoft.AspNetCore.Http.Features.IFeatureCollection
                 {
                     public FeatureCollection() => throw null;
                     public FeatureCollection(int initialCapacity) => throw null;

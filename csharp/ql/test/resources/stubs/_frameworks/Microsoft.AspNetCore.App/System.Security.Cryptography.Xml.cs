@@ -126,23 +126,23 @@ namespace System
                     public static void ReplaceElement(System.Xml.XmlElement inputElement, System.Security.Cryptography.Xml.EncryptedData encryptedData, bool content) => throw null;
                     public System.Xml.XmlResolver Resolver { get => throw null; set { } }
                     public int XmlDSigSearchDepth { get => throw null; set { } }
-                    public static string XmlEncAES128KeyWrapUrl;
-                    public static string XmlEncAES128Url;
-                    public static string XmlEncAES192KeyWrapUrl;
-                    public static string XmlEncAES192Url;
-                    public static string XmlEncAES256KeyWrapUrl;
-                    public static string XmlEncAES256Url;
-                    public static string XmlEncDESUrl;
-                    public static string XmlEncElementContentUrl;
-                    public static string XmlEncElementUrl;
-                    public static string XmlEncEncryptedKeyUrl;
-                    public static string XmlEncNamespaceUrl;
-                    public static string XmlEncRSA15Url;
-                    public static string XmlEncRSAOAEPUrl;
-                    public static string XmlEncSHA256Url;
-                    public static string XmlEncSHA512Url;
-                    public static string XmlEncTripleDESKeyWrapUrl;
-                    public static string XmlEncTripleDESUrl;
+                    public const string XmlEncAES128KeyWrapUrl = default;
+                    public const string XmlEncAES128Url = default;
+                    public const string XmlEncAES192KeyWrapUrl = default;
+                    public const string XmlEncAES192Url = default;
+                    public const string XmlEncAES256KeyWrapUrl = default;
+                    public const string XmlEncAES256Url = default;
+                    public const string XmlEncDESUrl = default;
+                    public const string XmlEncElementContentUrl = default;
+                    public const string XmlEncElementUrl = default;
+                    public const string XmlEncEncryptedKeyUrl = default;
+                    public const string XmlEncNamespaceUrl = default;
+                    public const string XmlEncRSA15Url = default;
+                    public const string XmlEncRSAOAEPUrl = default;
+                    public const string XmlEncSHA256Url = default;
+                    public const string XmlEncSHA512Url = default;
+                    public const string XmlEncTripleDESKeyWrapUrl = default;
+                    public const string XmlEncTripleDESUrl = default;
                 }
                 public class EncryptionMethod
                 {
@@ -379,30 +379,30 @@ namespace System
                     public System.Security.Cryptography.Xml.SignedInfo SignedInfo { get => throw null; }
                     public System.Security.Cryptography.AsymmetricAlgorithm SigningKey { get => throw null; set { } }
                     public string SigningKeyName { get => throw null; set { } }
-                    public static string XmlDecryptionTransformUrl;
-                    public static string XmlDsigBase64TransformUrl;
-                    public static string XmlDsigC14NTransformUrl;
-                    public static string XmlDsigC14NWithCommentsTransformUrl;
-                    public static string XmlDsigCanonicalizationUrl;
-                    public static string XmlDsigCanonicalizationWithCommentsUrl;
-                    public static string XmlDsigDSAUrl;
-                    public static string XmlDsigEnvelopedSignatureTransformUrl;
-                    public static string XmlDsigExcC14NTransformUrl;
-                    public static string XmlDsigExcC14NWithCommentsTransformUrl;
-                    public static string XmlDsigHMACSHA1Url;
-                    public static string XmlDsigMinimalCanonicalizationUrl;
-                    public static string XmlDsigNamespaceUrl;
-                    public static string XmlDsigRSASHA1Url;
-                    public static string XmlDsigRSASHA256Url;
-                    public static string XmlDsigRSASHA384Url;
-                    public static string XmlDsigRSASHA512Url;
-                    public static string XmlDsigSHA1Url;
-                    public static string XmlDsigSHA256Url;
-                    public static string XmlDsigSHA384Url;
-                    public static string XmlDsigSHA512Url;
-                    public static string XmlDsigXPathTransformUrl;
-                    public static string XmlDsigXsltTransformUrl;
-                    public static string XmlLicenseTransformUrl;
+                    public const string XmlDecryptionTransformUrl = default;
+                    public const string XmlDsigBase64TransformUrl = default;
+                    public const string XmlDsigC14NTransformUrl = default;
+                    public const string XmlDsigC14NWithCommentsTransformUrl = default;
+                    public const string XmlDsigCanonicalizationUrl = default;
+                    public const string XmlDsigCanonicalizationWithCommentsUrl = default;
+                    public const string XmlDsigDSAUrl = default;
+                    public const string XmlDsigEnvelopedSignatureTransformUrl = default;
+                    public const string XmlDsigExcC14NTransformUrl = default;
+                    public const string XmlDsigExcC14NWithCommentsTransformUrl = default;
+                    public const string XmlDsigHMACSHA1Url = default;
+                    public const string XmlDsigMinimalCanonicalizationUrl = default;
+                    public const string XmlDsigNamespaceUrl = default;
+                    public const string XmlDsigRSASHA1Url = default;
+                    public const string XmlDsigRSASHA256Url = default;
+                    public const string XmlDsigRSASHA384Url = default;
+                    public const string XmlDsigRSASHA512Url = default;
+                    public const string XmlDsigSHA1Url = default;
+                    public const string XmlDsigSHA256Url = default;
+                    public const string XmlDsigSHA384Url = default;
+                    public const string XmlDsigSHA512Url = default;
+                    public const string XmlDsigXPathTransformUrl = default;
+                    public const string XmlDsigXsltTransformUrl = default;
+                    public const string XmlLicenseTransformUrl = default;
                 }
                 public abstract class Transform
                 {

@@ -34,7 +34,7 @@ namespace System
             }
             public struct JsonElement
             {
-                public struct ArrayEnumerator : System.Collections.Generic.IEnumerable<System.Text.Json.JsonElement>, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Text.Json.JsonElement>, System.Collections.IEnumerator, System.IDisposable
+                public struct ArrayEnumerator : System.IDisposable, System.Collections.Generic.IEnumerable<System.Text.Json.JsonElement>, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Text.Json.JsonElement>, System.Collections.IEnumerator
                 {
                     public System.Text.Json.JsonElement Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -70,7 +70,7 @@ namespace System
                 public ushort GetUInt16() => throw null;
                 public uint GetUInt32() => throw null;
                 public ulong GetUInt64() => throw null;
-                public struct ObjectEnumerator : System.Collections.Generic.IEnumerable<System.Text.Json.JsonProperty>, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Text.Json.JsonProperty>, System.Collections.IEnumerator, System.IDisposable
+                public struct ObjectEnumerator : System.IDisposable, System.Collections.Generic.IEnumerable<System.Text.Json.JsonProperty>, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Text.Json.JsonProperty>, System.Collections.IEnumerator
                 {
                     public System.Text.Json.JsonProperty Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -414,7 +414,7 @@ namespace System
                 {
                     public bool PropertyNameCaseInsensitive { get => throw null; set { } }
                 }
-                public sealed class JsonObject : System.Text.Json.Nodes.JsonNode, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Text.Json.Nodes.JsonNode>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.Text.Json.Nodes.JsonNode>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<string, System.Text.Json.Nodes.JsonNode>
+                public sealed class JsonObject : System.Text.Json.Nodes.JsonNode, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Text.Json.Nodes.JsonNode>>, System.Collections.Generic.IDictionary<string, System.Text.Json.Nodes.JsonNode>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.Text.Json.Nodes.JsonNode>>, System.Collections.IEnumerable
                 {
                     public void Add(System.Collections.Generic.KeyValuePair<string, System.Text.Json.Nodes.JsonNode> property) => throw null;
                     public void Add(string propertyName, System.Text.Json.Nodes.JsonNode value) => throw null;

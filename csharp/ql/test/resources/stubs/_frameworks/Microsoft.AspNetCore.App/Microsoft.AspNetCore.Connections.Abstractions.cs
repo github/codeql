@@ -56,7 +56,7 @@ namespace Microsoft
                 protected ConnectionHandler() => throw null;
                 public abstract System.Threading.Tasks.Task OnConnectedAsync(Microsoft.AspNetCore.Connections.ConnectionContext connection);
             }
-            public class ConnectionItems : System.Collections.Generic.IDictionary<object, object>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object, object>>, System.Collections.IEnumerable
+            public class ConnectionItems : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object, object>>, System.Collections.Generic.IDictionary<object, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object, object>>, System.Collections.IEnumerable
             {
                 void System.Collections.Generic.IDictionary<object, object>.Add(object key, object value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object, object>>.Add(System.Collections.Generic.KeyValuePair<object, object> item) => throw null;
@@ -83,7 +83,7 @@ namespace Microsoft
                 public ConnectionResetException(string message) => throw null;
                 public ConnectionResetException(string message, System.Exception inner) => throw null;
             }
-            public class DefaultConnectionContext : Microsoft.AspNetCore.Connections.ConnectionContext, Microsoft.AspNetCore.Connections.Features.IConnectionIdFeature, Microsoft.AspNetCore.Connections.Features.IConnectionItemsFeature, Microsoft.AspNetCore.Connections.Features.IConnectionTransportFeature, Microsoft.AspNetCore.Connections.Features.IConnectionUserFeature, Microsoft.AspNetCore.Connections.Features.IConnectionLifetimeFeature, Microsoft.AspNetCore.Connections.Features.IConnectionEndPointFeature
+            public class DefaultConnectionContext : Microsoft.AspNetCore.Connections.ConnectionContext, Microsoft.AspNetCore.Connections.Features.IConnectionEndPointFeature, Microsoft.AspNetCore.Connections.Features.IConnectionIdFeature, Microsoft.AspNetCore.Connections.Features.IConnectionItemsFeature, Microsoft.AspNetCore.Connections.Features.IConnectionLifetimeFeature, Microsoft.AspNetCore.Connections.Features.IConnectionTransportFeature, Microsoft.AspNetCore.Connections.Features.IConnectionUserFeature
             {
                 public override void Abort(Microsoft.AspNetCore.Connections.ConnectionAbortedException abortReason) => throw null;
                 public System.IO.Pipelines.IDuplexPipe Application { get => throw null; set { } }

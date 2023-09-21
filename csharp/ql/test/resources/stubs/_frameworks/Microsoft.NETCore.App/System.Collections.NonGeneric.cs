@@ -52,7 +52,7 @@ namespace System
             public void RemoveAt(int index) => throw null;
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
-        public abstract class DictionaryBase : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IDictionary
+        public abstract class DictionaryBase : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
         {
             void System.Collections.IDictionary.Add(object key, object value) => throw null;
             public void Clear() => throw null;
@@ -83,7 +83,7 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
             System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
         }
-        public class Queue : System.Collections.ICollection, System.Collections.IEnumerable, System.ICloneable
+        public class Queue : System.ICloneable, System.Collections.ICollection, System.Collections.IEnumerable
         {
             public virtual void Clear() => throw null;
             public virtual object Clone() => throw null;
@@ -114,7 +114,7 @@ namespace System
             bool System.Collections.ICollection.IsSynchronized { get => throw null; }
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
-        public class SortedList : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IDictionary, System.ICloneable
+        public class SortedList : System.ICloneable, System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
         {
             public virtual void Add(object key, object value) => throw null;
             public virtual int Capacity { get => throw null; set { } }
@@ -163,7 +163,7 @@ namespace System
                 public CollectionsUtil() => throw null;
             }
         }
-        public class Stack : System.Collections.ICollection, System.Collections.IEnumerable, System.ICloneable
+        public class Stack : System.ICloneable, System.Collections.ICollection, System.Collections.IEnumerable
         {
             public virtual void Clear() => throw null;
             public virtual object Clone() => throw null;

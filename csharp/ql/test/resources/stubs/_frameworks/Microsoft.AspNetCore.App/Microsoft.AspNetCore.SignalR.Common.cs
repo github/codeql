@@ -89,13 +89,13 @@ namespace Microsoft
                 }
                 public static class HubProtocolConstants
                 {
-                    public static int CancelInvocationMessageType;
-                    public static int CloseMessageType;
-                    public static int CompletionMessageType;
-                    public static int InvocationMessageType;
-                    public static int PingMessageType;
-                    public static int StreamInvocationMessageType;
-                    public static int StreamItemMessageType;
+                    public const int CancelInvocationMessageType = default;
+                    public const int CloseMessageType = default;
+                    public const int CompletionMessageType = default;
+                    public const int InvocationMessageType = default;
+                    public const int PingMessageType = default;
+                    public const int StreamInvocationMessageType = default;
+                    public const int StreamItemMessageType = default;
                 }
                 public static partial class HubProtocolExtensions
                 {

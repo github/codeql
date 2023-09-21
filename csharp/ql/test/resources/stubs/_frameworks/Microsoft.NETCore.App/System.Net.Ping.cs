@@ -38,7 +38,7 @@ namespace System
                 public Ping() => throw null;
                 protected override void Dispose(bool disposing) => throw null;
                 protected void OnPingCompleted(System.Net.NetworkInformation.PingCompletedEventArgs e) => throw null;
-                public event System.Net.NetworkInformation.PingCompletedEventHandler PingCompleted { add { } remove { } }
+                public event System.Net.NetworkInformation.PingCompletedEventHandler PingCompleted;
                 public System.Net.NetworkInformation.PingReply Send(System.Net.IPAddress address) => throw null;
                 public System.Net.NetworkInformation.PingReply Send(System.Net.IPAddress address, int timeout) => throw null;
                 public System.Net.NetworkInformation.PingReply Send(System.Net.IPAddress address, int timeout, byte[] buffer) => throw null;

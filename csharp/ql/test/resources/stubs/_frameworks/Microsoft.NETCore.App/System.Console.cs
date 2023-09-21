@@ -9,7 +9,7 @@ namespace System
         public static void Beep(int frequency, int duration) => throw null;
         public static int BufferHeight { get => throw null; set { } }
         public static int BufferWidth { get => throw null; set { } }
-        public static event System.ConsoleCancelEventHandler CancelKeyPress { add { } remove { } }
+        public static event System.ConsoleCancelEventHandler CancelKeyPress;
         public static bool CapsLock { get => throw null; }
         public static void Clear() => throw null;
         public static int CursorLeft { get => throw null; set { } }

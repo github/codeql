@@ -97,7 +97,7 @@ namespace System
                 public static System.Collections.Immutable.ImmutableArray<T> ToImmutableArray<T>(this System.ReadOnlySpan<T> items) => throw null;
                 public static System.Collections.Immutable.ImmutableArray<T> ToImmutableArray<T>(this System.Span<T> items) => throw null;
             }
-            public struct ImmutableArray<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.ICollection, System.Collections.IList, System.Collections.Immutable.IImmutableList<T>, System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.IEquatable<System.Collections.Immutable.ImmutableArray<T>>
+            public struct ImmutableArray<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.IEquatable<System.Collections.Immutable.ImmutableArray<T>>, System.Collections.Immutable.IImmutableList<T>, System.Collections.Generic.IList<T>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable
             {
                 public System.Collections.Immutable.ImmutableArray<T> Add(T item) => throw null;
                 void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
@@ -300,7 +300,7 @@ namespace System
                 public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> ToImmutableDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> elementSelector, System.Collections.Generic.IEqualityComparer<TKey> keyComparer) => throw null;
                 public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> ToImmutableDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> elementSelector, System.Collections.Generic.IEqualityComparer<TKey> keyComparer, System.Collections.Generic.IEqualityComparer<TValue> valueComparer) => throw null;
             }
-            public sealed class ImmutableDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary, System.Collections.Immutable.IImmutableDictionary<TKey, TValue>
+            public sealed class ImmutableDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Immutable.IImmutableDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
             {
                 public System.Collections.Immutable.ImmutableDictionary<TKey, TValue> Add(TKey key, TValue value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
@@ -309,7 +309,7 @@ namespace System
                 System.Collections.Immutable.IImmutableDictionary<TKey, TValue> System.Collections.Immutable.IImmutableDictionary<TKey, TValue>.Add(TKey key, TValue value) => throw null;
                 public System.Collections.Immutable.ImmutableDictionary<TKey, TValue> AddRange(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> pairs) => throw null;
                 System.Collections.Immutable.IImmutableDictionary<TKey, TValue> System.Collections.Immutable.IImmutableDictionary<TKey, TValue>.AddRange(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> pairs) => throw null;
-                public sealed class Builder : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary
+                public sealed class Builder : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
                 {
                     public void Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
                     public void Add(TKey key, TValue value) => throw null;
@@ -364,7 +364,7 @@ namespace System
                 void System.Collections.ICollection.CopyTo(System.Array array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
                 public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<TKey, TValue> Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -426,7 +426,7 @@ namespace System
                 public static System.Collections.Immutable.ImmutableHashSet<TSource> ToImmutableHashSet<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IEqualityComparer<TSource> equalityComparer) => throw null;
                 public static System.Collections.Immutable.ImmutableHashSet<TSource> ToImmutableHashSet<TSource>(this System.Collections.Immutable.ImmutableHashSet<TSource>.Builder builder) => throw null;
             }
-            public sealed class ImmutableHashSet<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.ISet<T>, System.Collections.Generic.IReadOnlySet<T>, System.Collections.ICollection, System.Collections.Immutable.IImmutableSet<T>
+            public sealed class ImmutableHashSet<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Immutable.IImmutableSet<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlySet<T>, System.Collections.Generic.ISet<T>
             {
                 public System.Collections.Immutable.ImmutableHashSet<T> Add(T item) => throw null;
                 void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
@@ -467,7 +467,7 @@ namespace System
                 void System.Collections.ICollection.CopyTo(System.Array array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
                 public static System.Collections.Immutable.ImmutableHashSet<T> Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -551,7 +551,7 @@ namespace System
                 public static System.Collections.Immutable.ImmutableList<TSource> ToImmutableList<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
                 public static System.Collections.Immutable.ImmutableList<TSource> ToImmutableList<TSource>(this System.Collections.Immutable.ImmutableList<TSource>.Builder builder) => throw null;
             }
-            public sealed class ImmutableList<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.ICollection, System.Collections.IList, System.Collections.Immutable.IImmutableList<T>
+            public sealed class ImmutableList<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Immutable.IImmutableList<T>, System.Collections.Generic.IList<T>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>
             {
                 public System.Collections.Immutable.ImmutableList<T> Add(T value) => throw null;
                 void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
@@ -562,7 +562,7 @@ namespace System
                 public int BinarySearch(int index, int count, T item, System.Collections.Generic.IComparer<T> comparer) => throw null;
                 public int BinarySearch(T item) => throw null;
                 public int BinarySearch(T item, System.Collections.Generic.IComparer<T> comparer) => throw null;
-                public sealed class Builder : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.ICollection, System.Collections.IList
+                public sealed class Builder : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>
                 {
                     public void Add(T item) => throw null;
                     int System.Collections.IList.Add(object value) => throw null;
@@ -647,7 +647,7 @@ namespace System
                 void System.Collections.ICollection.CopyTo(System.Array array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
                 public static System.Collections.Immutable.ImmutableList<T> Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -769,7 +769,7 @@ namespace System
                 public static System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue> ToImmutableSortedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> elementSelector, System.Collections.Generic.IComparer<TKey> keyComparer) => throw null;
                 public static System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue> ToImmutableSortedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> elementSelector, System.Collections.Generic.IComparer<TKey> keyComparer, System.Collections.Generic.IEqualityComparer<TValue> valueComparer) => throw null;
             }
-            public sealed class ImmutableSortedDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary, System.Collections.Immutable.IImmutableDictionary<TKey, TValue>
+            public sealed class ImmutableSortedDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Immutable.IImmutableDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
             {
                 public System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue> Add(TKey key, TValue value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
@@ -778,7 +778,7 @@ namespace System
                 System.Collections.Immutable.IImmutableDictionary<TKey, TValue> System.Collections.Immutable.IImmutableDictionary<TKey, TValue>.Add(TKey key, TValue value) => throw null;
                 public System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue> AddRange(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> items) => throw null;
                 System.Collections.Immutable.IImmutableDictionary<TKey, TValue> System.Collections.Immutable.IImmutableDictionary<TKey, TValue>.AddRange(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> pairs) => throw null;
-                public sealed class Builder : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary
+                public sealed class Builder : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
                 {
                     public void Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
                     public void Add(TKey key, TValue value) => throw null;
@@ -834,7 +834,7 @@ namespace System
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                 public int Count { get => throw null; }
                 public static System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue> Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<TKey, TValue> Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -897,14 +897,14 @@ namespace System
                 public static System.Collections.Immutable.ImmutableSortedSet<TSource> ToImmutableSortedSet<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IComparer<TSource> comparer) => throw null;
                 public static System.Collections.Immutable.ImmutableSortedSet<TSource> ToImmutableSortedSet<TSource>(this System.Collections.Immutable.ImmutableSortedSet<TSource>.Builder builder) => throw null;
             }
-            public sealed class ImmutableSortedSet<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.Generic.ISet<T>, System.Collections.Generic.IReadOnlySet<T>, System.Collections.ICollection, System.Collections.IList, System.Collections.Immutable.IImmutableSet<T>
+            public sealed class ImmutableSortedSet<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Immutable.IImmutableSet<T>, System.Collections.Generic.IList<T>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.Generic.IReadOnlySet<T>, System.Collections.Generic.ISet<T>
             {
                 public System.Collections.Immutable.ImmutableSortedSet<T> Add(T value) => throw null;
                 void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
                 bool System.Collections.Generic.ISet<T>.Add(T item) => throw null;
                 int System.Collections.IList.Add(object value) => throw null;
                 System.Collections.Immutable.IImmutableSet<T> System.Collections.Immutable.IImmutableSet<T>.Add(T value) => throw null;
-                public sealed class Builder : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.ISet<T>, System.Collections.ICollection
+                public sealed class Builder : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.ISet<T>
                 {
                     public bool Add(T item) => throw null;
                     void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
@@ -950,7 +950,7 @@ namespace System
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                 public int Count { get => throw null; }
                 public static System.Collections.Immutable.ImmutableSortedSet<T> Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }

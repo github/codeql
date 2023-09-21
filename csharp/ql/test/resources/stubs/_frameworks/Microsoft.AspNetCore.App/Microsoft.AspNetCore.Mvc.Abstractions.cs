@@ -262,7 +262,7 @@ namespace Microsoft
                     void OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext context);
                     void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context);
                 }
-                public interface IAlwaysRunResultFilter : Microsoft.AspNetCore.Mvc.Filters.IResultFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+                public interface IAlwaysRunResultFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IResultFilter
                 {
                 }
                 public interface IAsyncActionFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
@@ -742,7 +742,7 @@ namespace Microsoft
                     public ModelPropertyCollection(System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata> properties) : base(default(System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata>)) => throw null;
                     public Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata this[string propertyName] { get => throw null; }
                 }
-                public class ModelStateDictionary : System.Collections.Generic.IReadOnlyDictionary<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>
+                public class ModelStateDictionary : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.Generic.IReadOnlyDictionary<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>
                 {
                     public void AddModelError(string key, System.Exception exception, Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata metadata) => throw null;
                     public void AddModelError(string key, string errorMessage) => throw null;
@@ -754,7 +754,7 @@ namespace Microsoft
                     public ModelStateDictionary(int maxAllowedErrors) => throw null;
                     public ModelStateDictionary(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dictionary) => throw null;
                     public static int DefaultMaxAllowedErrors;
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.IEnumerator
                     {
                         public Enumerator(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dictionary, string prefix) => throw null;
                         public System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry> Current { get => throw null; }
@@ -779,7 +779,7 @@ namespace Microsoft
                         System.Collections.Generic.IEnumerator<string> System.Collections.Generic.IEnumerable<string>.GetEnumerator() => throw null;
                         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                     }
-                    public struct KeyEnumerator : System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator, System.IDisposable
+                    public struct KeyEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator
                     {
                         public KeyEnumerator(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dictionary, string prefix) => throw null;
                         public string Current { get => throw null; }
@@ -819,7 +819,7 @@ namespace Microsoft
                         System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry> System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>.GetEnumerator() => throw null;
                         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                     }
-                    public struct ValueEnumerator : System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>, System.Collections.IEnumerator, System.IDisposable
+                    public struct ValueEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>, System.Collections.IEnumerator
                     {
                         public ValueEnumerator(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dictionary, string prefix) => throw null;
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry Current { get => throw null; }
@@ -933,7 +933,7 @@ namespace Microsoft
                         public Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata Metadata { get => throw null; }
                         public object Model { get => throw null; }
                     }
-                    public class ValidationStateDictionary : System.Collections.Generic.IDictionary<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyDictionary<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>
+                    public class ValidationStateDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>, System.Collections.Generic.IDictionary<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>>, System.Collections.Generic.IReadOnlyDictionary<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry>
                     {
                         public void Add(System.Collections.Generic.KeyValuePair<object, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry> item) => throw null;
                         public void Add(object key, Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationStateEntry value) => throw null;
@@ -985,7 +985,7 @@ namespace Microsoft
                     public ValueProviderFactoryContext(Microsoft.AspNetCore.Mvc.ActionContext context) => throw null;
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider> ValueProviders { get => throw null; }
                 }
-                public struct ValueProviderResult : System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult>, System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable
+                public struct ValueProviderResult : System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable, System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderResult>
                 {
                     public ValueProviderResult(Microsoft.Extensions.Primitives.StringValues values) => throw null;
                     public ValueProviderResult(Microsoft.Extensions.Primitives.StringValues values, System.Globalization.CultureInfo culture) => throw null;

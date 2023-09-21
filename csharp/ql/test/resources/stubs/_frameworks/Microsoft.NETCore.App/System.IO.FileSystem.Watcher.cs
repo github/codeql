@@ -21,16 +21,16 @@ namespace System
         public class FileSystemWatcher : System.ComponentModel.Component, System.ComponentModel.ISupportInitialize
         {
             public void BeginInit() => throw null;
-            public event System.IO.FileSystemEventHandler Changed { add { } remove { } }
-            public event System.IO.FileSystemEventHandler Created { add { } remove { } }
+            public event System.IO.FileSystemEventHandler Changed;
+            public event System.IO.FileSystemEventHandler Created;
             public FileSystemWatcher() => throw null;
             public FileSystemWatcher(string path) => throw null;
             public FileSystemWatcher(string path, string filter) => throw null;
-            public event System.IO.FileSystemEventHandler Deleted { add { } remove { } }
+            public event System.IO.FileSystemEventHandler Deleted;
             protected override void Dispose(bool disposing) => throw null;
             public bool EnableRaisingEvents { get => throw null; set { } }
             public void EndInit() => throw null;
-            public event System.IO.ErrorEventHandler Error { add { } remove { } }
+            public event System.IO.ErrorEventHandler Error;
             public string Filter { get => throw null; set { } }
             public System.Collections.ObjectModel.Collection<string> Filters { get => throw null; }
             public bool IncludeSubdirectories { get => throw null; set { } }
@@ -42,7 +42,7 @@ namespace System
             protected void OnError(System.IO.ErrorEventArgs e) => throw null;
             protected void OnRenamed(System.IO.RenamedEventArgs e) => throw null;
             public string Path { get => throw null; set { } }
-            public event System.IO.RenamedEventHandler Renamed { add { } remove { } }
+            public event System.IO.RenamedEventHandler Renamed;
             public override System.ComponentModel.ISite Site { get => throw null; set { } }
             public System.ComponentModel.ISynchronizeInvoke SynchronizingObject { get => throw null; set { } }
             public System.IO.WaitForChangedResult WaitForChanged(System.IO.WatcherChangeTypes changeType) => throw null;

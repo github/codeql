@@ -77,7 +77,7 @@ namespace System
                 public void Disconnect() => throw null;
                 public void EndWaitForConnection(System.IAsyncResult asyncResult) => throw null;
                 public string GetImpersonationUserName() => throw null;
-                public static int MaxAllowedServerInstances;
+                public const int MaxAllowedServerInstances = default;
                 public void RunAsClient(System.IO.Pipes.PipeStreamImpersonationWorker impersonationWorker) => throw null;
                 public void WaitForConnection() => throw null;
                 public System.Threading.Tasks.Task WaitForConnectionAsync() => throw null;

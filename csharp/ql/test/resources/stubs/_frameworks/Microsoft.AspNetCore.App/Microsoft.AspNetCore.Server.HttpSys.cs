@@ -52,7 +52,7 @@ namespace Microsoft
                 }
                 public static class HttpSysDefaults
                 {
-                    public static string AuthenticationScheme;
+                    public const string AuthenticationScheme = default;
                 }
                 public class HttpSysException : System.ComponentModel.Win32Exception
                 {

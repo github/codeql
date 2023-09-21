@@ -66,7 +66,7 @@ namespace Microsoft
                 public DeveloperExceptionPageMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.DeveloperExceptionPageOptions> options, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment, System.Diagnostics.DiagnosticSource diagnosticSource, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Diagnostics.IDeveloperPageExceptionFilter> filters) => throw null;
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
             }
-            public class ExceptionHandlerFeature : Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature, Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature
+            public class ExceptionHandlerFeature : Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature, Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature
             {
                 public ExceptionHandlerFeature() => throw null;
                 public Microsoft.AspNetCore.Http.Endpoint Endpoint { get => throw null; set { } }

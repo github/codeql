@@ -73,7 +73,7 @@ namespace Microsoft
                 }
                 public class IISServerDefaults
                 {
-                    public static string AuthenticationScheme;
+                    public const string AuthenticationScheme = default;
                     public IISServerDefaults() => throw null;
                 }
             }

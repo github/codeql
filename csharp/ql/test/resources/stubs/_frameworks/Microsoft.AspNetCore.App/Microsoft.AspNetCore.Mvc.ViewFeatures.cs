@@ -13,7 +13,7 @@ namespace Microsoft
                 public bool IsReusable { get => throw null; }
                 public int Order { get => throw null; set { } }
             }
-            public abstract class Controller : Microsoft.AspNetCore.Mvc.ControllerBase, Microsoft.AspNetCore.Mvc.Filters.IActionFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter, System.IDisposable
+            public abstract class Controller : Microsoft.AspNetCore.Mvc.ControllerBase, Microsoft.AspNetCore.Mvc.Filters.IActionFilter, Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter, System.IDisposable, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
             {
                 protected Controller() => throw null;
                 public void Dispose() => throw null;
@@ -51,7 +51,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterViewComponentEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.ViewComponents.ViewComponentContext viewComponentContext, Microsoft.AspNetCore.Mvc.IViewComponentResult viewComponentResult, object viewComponent) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                     public object ViewComponent { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ViewComponents.ViewComponentContext ViewComponentContext { get => throw null; }
@@ -61,7 +61,7 @@ namespace Microsoft
                 {
                     protected override int Count { get => throw null; }
                     public AfterViewEventData(Microsoft.AspNetCore.Mvc.ViewEngines.IView view, Microsoft.AspNetCore.Mvc.Rendering.ViewContext viewContext) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ViewEngines.IView View { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; }
@@ -71,7 +71,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeViewComponentEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.ViewComponents.ViewComponentContext viewComponentContext, object viewComponent) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                     public object ViewComponent { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ViewComponents.ViewComponentContext ViewComponentContext { get => throw null; }
@@ -80,7 +80,7 @@ namespace Microsoft
                 {
                     protected override int Count { get => throw null; }
                     public BeforeViewEventData(Microsoft.AspNetCore.Mvc.ViewEngines.IView view, Microsoft.AspNetCore.Mvc.Rendering.ViewContext viewContext) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ViewEngines.IView View { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; }
@@ -90,7 +90,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public ViewComponentAfterViewExecuteEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.ViewComponents.ViewComponentContext viewComponentContext, Microsoft.AspNetCore.Mvc.ViewEngines.IView view) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ViewEngines.IView View { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ViewComponents.ViewComponentContext ViewComponentContext { get => throw null; }
@@ -100,7 +100,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public ViewComponentBeforeViewExecuteEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.ViewComponents.ViewComponentContext viewComponentContext, Microsoft.AspNetCore.Mvc.ViewEngines.IView view) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ViewEngines.IView View { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ViewComponents.ViewComponentContext ViewComponentContext { get => throw null; }
@@ -110,7 +110,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public ViewFoundEventData(Microsoft.AspNetCore.Mvc.ActionContext actionContext, bool isMainPage, Microsoft.AspNetCore.Mvc.ActionResult result, string viewName, Microsoft.AspNetCore.Mvc.ViewEngines.IView view) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public bool IsMainPage { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ActionResult Result { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -122,7 +122,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public ViewNotFoundEventData(Microsoft.AspNetCore.Mvc.ActionContext actionContext, bool isMainPage, Microsoft.AspNetCore.Mvc.ActionResult result, string viewName, System.Collections.Generic.IEnumerable<string> searchedLocations) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public bool IsMainPage { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ActionResult Result { get => throw null; }
                     public System.Collections.Generic.IEnumerable<string> SearchedLocations { get => throw null; }
@@ -172,7 +172,7 @@ namespace Microsoft
                 public string PageHandler { get => throw null; set { } }
                 public string PageName { get => throw null; set { } }
             }
-            public class PartialViewResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class PartialViewResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult
             {
                 public string ContentType { get => throw null; set { } }
                 public PartialViewResult() => throw null;
@@ -608,7 +608,7 @@ namespace Microsoft
                     public System.IO.TextWriter Writer { get => throw null; set { } }
                 }
             }
-            public class SkipStatusCodePagesAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IResourceFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Http.Metadata.ISkipStatusCodePagesMetadata
+            public class SkipStatusCodePagesAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IResourceFilter, Microsoft.AspNetCore.Http.Metadata.ISkipStatusCodePagesMetadata
             {
                 public SkipStatusCodePagesAttribute() => throw null;
                 public void OnResourceExecuted(Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext context) => throw null;
@@ -653,7 +653,7 @@ namespace Microsoft
                 public ViewComponentAttribute() => throw null;
                 public string Name { get => throw null; set { } }
             }
-            public class ViewComponentResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class ViewComponentResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult
             {
                 public object Arguments { get => throw null; set { } }
                 public string ContentType { get => throw null; set { } }
@@ -856,7 +856,7 @@ namespace Microsoft
                 {
                     public static Microsoft.AspNetCore.Html.IHtmlContent GetHtml(this Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery, Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                 }
-                public class AttributeDictionary : System.Collections.Generic.IDictionary<string, string>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, string>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyDictionary<string, string>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, string>>
+                public class AttributeDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, string>>, System.Collections.Generic.IDictionary<string, string>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, string>>, System.Collections.Generic.IReadOnlyDictionary<string, string>
                 {
                     public void Add(System.Collections.Generic.KeyValuePair<string, string> item) => throw null;
                     public void Add(string key, string value) => throw null;
@@ -866,7 +866,7 @@ namespace Microsoft
                     public void CopyTo(System.Collections.Generic.KeyValuePair<string, string>[] array, int arrayIndex) => throw null;
                     public int Count { get => throw null; }
                     public AttributeDictionary() => throw null;
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, string>>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, string>>, System.Collections.IEnumerator
                     {
                         public Enumerator(Microsoft.AspNetCore.Mvc.ViewFeatures.AttributeDictionary attributes) => throw null;
                         public System.Collections.Generic.KeyValuePair<string, string> Current { get => throw null; }
@@ -1141,7 +1141,7 @@ namespace Microsoft
                     Radio = 3,
                     Text = 4,
                 }
-                public interface ITempDataDictionary : System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
+                public interface ITempDataDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
                 {
                     void Keep();
                     void Keep(string key);
@@ -1230,7 +1230,7 @@ namespace Microsoft
                     public StringHtmlContent(string input) => throw null;
                     public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
-                public class TempDataDictionary : Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionary, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
+                public class TempDataDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionary
                 {
                     public void Add(string key, object value) => throw null;
                     void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Add(System.Collections.Generic.KeyValuePair<string, object> keyValuePair) => throw null;
@@ -1292,7 +1292,7 @@ namespace Microsoft
                 {
                     public ViewContextAttribute() => throw null;
                 }
-                public class ViewDataDictionary : System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
+                public class ViewDataDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
                 {
                     public void Add(string key, object value) => throw null;
                     public void Add(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
@@ -1380,7 +1380,7 @@ namespace Microsoft
                     protected Microsoft.Extensions.Logging.ILogger Logger { get => throw null; }
                 }
             }
-            public class ViewResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class ViewResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult
             {
                 public string ContentType { get => throw null; set { } }
                 public ViewResult() => throw null;

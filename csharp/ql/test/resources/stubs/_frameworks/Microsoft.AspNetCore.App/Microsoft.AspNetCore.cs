@@ -18,7 +18,7 @@ namespace Microsoft
                 public Microsoft.Extensions.Hosting.IHostBuilder UseServiceProviderFactory<TContainerBuilder>(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder> factory) => throw null;
                 public Microsoft.Extensions.Hosting.IHostBuilder UseServiceProviderFactory<TContainerBuilder>(System.Func<Microsoft.Extensions.Hosting.HostBuilderContext, Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder>> factory) => throw null;
             }
-            public sealed class ConfigureWebHostBuilder : Microsoft.AspNetCore.Hosting.IWebHostBuilder, Microsoft.AspNetCore.Hosting.Infrastructure.ISupportsStartup
+            public sealed class ConfigureWebHostBuilder : Microsoft.AspNetCore.Hosting.Infrastructure.ISupportsStartup, Microsoft.AspNetCore.Hosting.IWebHostBuilder
             {
                 Microsoft.AspNetCore.Hosting.IWebHost Microsoft.AspNetCore.Hosting.IWebHostBuilder.Build() => throw null;
                 Microsoft.AspNetCore.Hosting.IWebHostBuilder Microsoft.AspNetCore.Hosting.Infrastructure.ISupportsStartup.Configure(System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configure) => throw null;
@@ -31,7 +31,7 @@ namespace Microsoft
                 Microsoft.AspNetCore.Hosting.IWebHostBuilder Microsoft.AspNetCore.Hosting.Infrastructure.ISupportsStartup.UseStartup(System.Type startupType) => throw null;
                 Microsoft.AspNetCore.Hosting.IWebHostBuilder Microsoft.AspNetCore.Hosting.Infrastructure.ISupportsStartup.UseStartup<TStartup>(System.Func<Microsoft.AspNetCore.Hosting.WebHostBuilderContext, TStartup> startupFactory) => throw null;
             }
-            public sealed class WebApplication : Microsoft.Extensions.Hosting.IHost, System.IDisposable, Microsoft.AspNetCore.Builder.IApplicationBuilder, Microsoft.AspNetCore.Routing.IEndpointRouteBuilder, System.IAsyncDisposable
+            public sealed class WebApplication : Microsoft.AspNetCore.Builder.IApplicationBuilder, System.IAsyncDisposable, System.IDisposable, Microsoft.AspNetCore.Routing.IEndpointRouteBuilder, Microsoft.Extensions.Hosting.IHost
             {
                 System.IServiceProvider Microsoft.AspNetCore.Builder.IApplicationBuilder.ApplicationServices { get => throw null; set { } }
                 Microsoft.AspNetCore.Http.RequestDelegate Microsoft.AspNetCore.Builder.IApplicationBuilder.Build() => throw null;

@@ -47,7 +47,7 @@ namespace System
             protected bool DesignMode { get => throw null; }
             public void Dispose() => throw null;
             protected virtual void Dispose(bool disposing) => throw null;
-            public event System.EventHandler Disposed { add { } remove { } }
+            public event System.EventHandler Disposed;
             protected System.ComponentModel.EventHandlerList Events { get => throw null; }
             protected virtual object GetService(System.Type service) => throw null;
             public virtual System.ComponentModel.ISite Site { get => throw null; set { } }
@@ -176,7 +176,7 @@ namespace System
         }
         public interface IComponent : System.IDisposable
         {
-            event System.EventHandler Disposed { add { } remove { } }
+            event System.EventHandler Disposed;
             System.ComponentModel.ISite Site { get; set; }
         }
         public interface IContainer : System.IDisposable

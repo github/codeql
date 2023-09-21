@@ -121,7 +121,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Mvc.ActionResult Result { get => throw null; }
                 public TValue Value { get => throw null; }
             }
-            public class AntiforgeryValidationFailedResult : Microsoft.AspNetCore.Mvc.BadRequestResult, Microsoft.AspNetCore.Mvc.Core.Infrastructure.IAntiforgeryValidationFailedResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class AntiforgeryValidationFailedResult : Microsoft.AspNetCore.Mvc.BadRequestResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Core.Infrastructure.IAntiforgeryValidationFailedResult
             {
                 public AntiforgeryValidationFailedResult() => throw null;
             }
@@ -224,7 +224,7 @@ namespace Microsoft
             }
             namespace ApplicationModels
             {
-                public class ActionModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IFilterModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IApiExplorerModel
+                public class ActionModel : Microsoft.AspNetCore.Mvc.ApplicationModels.IApiExplorerModel, Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IFilterModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel
                 {
                     public System.Reflection.MethodInfo ActionMethod { get => throw null; }
                     public string ActionName { get => throw null; set { } }
@@ -263,7 +263,7 @@ namespace Microsoft
                     public ApiVisibilityConvention() => throw null;
                     protected virtual bool ShouldApply(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel action) => throw null;
                 }
-                public class ApplicationModel : Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IFilterModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IApiExplorerModel
+                public class ApplicationModel : Microsoft.AspNetCore.Mvc.ApplicationModels.IApiExplorerModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IFilterModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel
                 {
                     public Microsoft.AspNetCore.Mvc.ApplicationModels.ApiExplorerModel ApiExplorer { get => throw null; set { } }
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel> Controllers { get => throw null; }
@@ -307,7 +307,7 @@ namespace Microsoft
                     public ConsumesConstraintForFormFileParameterConvention() => throw null;
                     protected virtual bool ShouldApply(Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel action) => throw null;
                 }
-                public class ControllerModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IFilterModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IApiExplorerModel
+                public class ControllerModel : Microsoft.AspNetCore.Mvc.ApplicationModels.IApiExplorerModel, Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IFilterModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel
                 {
                     public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel> Actions { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ApplicationModels.ApiExplorerModel ApiExplorer { get => throw null; set { } }
@@ -409,7 +409,7 @@ namespace Microsoft
                     public System.Type ParameterType { get => throw null; }
                     public System.Collections.Generic.IDictionary<object, object> Properties { get => throw null; }
                 }
-                public class PropertyModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ParameterModelBase, Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IBindingModel
+                public class PropertyModel : Microsoft.AspNetCore.Mvc.ApplicationModels.ParameterModelBase, Microsoft.AspNetCore.Mvc.ApplicationModels.IBindingModel, Microsoft.AspNetCore.Mvc.ApplicationModels.ICommonModel, Microsoft.AspNetCore.Mvc.ApplicationModels.IPropertyModel
                 {
                     public System.Collections.Generic.IReadOnlyList<object> Attributes { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.ApplicationModels.ControllerModel Controller { get => throw null; set { } }
@@ -517,7 +517,7 @@ namespace Microsoft
                 {
                     public AllowAnonymousFilter() => throw null;
                 }
-                public class AuthorizeFilter : Microsoft.AspNetCore.Mvc.Filters.IAsyncAuthorizationFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IFilterFactory
+                public class AuthorizeFilter : Microsoft.AspNetCore.Mvc.Filters.IAsyncAuthorizationFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterFactory, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                     public System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Authorization.IAuthorizeData> AuthorizeData { get => throw null; }
                     Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Microsoft.AspNetCore.Mvc.Filters.IFilterFactory.CreateInstance(System.IServiceProvider serviceProvider) => throw null;
@@ -554,7 +554,7 @@ namespace Microsoft
                 public BindPropertiesAttribute() => throw null;
                 public bool SupportsGet { get => throw null; set { } }
             }
-            public class BindPropertyAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IBinderTypeProviderMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IRequestPredicateProvider
+            public class BindPropertyAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBinderTypeProviderMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IRequestPredicateProvider
             {
                 public System.Type BinderType { get => throw null; set { } }
                 public virtual Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource BindingSource { get => throw null; set { } }
@@ -607,7 +607,7 @@ namespace Microsoft
             {
                 public ConflictResult() : base(default(int)) => throw null;
             }
-            public class ConsumesAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IResourceFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraint, Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiRequestMetadataProvider, Microsoft.AspNetCore.Http.Metadata.IAcceptsMetadata
+            public class ConsumesAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IAcceptsMetadata, Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraint, Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiRequestMetadataProvider, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IResourceFilter
             {
                 public bool Accept(Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintContext context) => throw null;
                 public static int ConsumesActionConstraintOrder;
@@ -622,7 +622,7 @@ namespace Microsoft
                 System.Type Microsoft.AspNetCore.Http.Metadata.IAcceptsMetadata.RequestType { get => throw null; }
                 public void SetContentTypes(Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection contentTypes) => throw null;
             }
-            public class ContentResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class ContentResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult
             {
                 public string Content { get => throw null; set { } }
                 public string ContentType { get => throw null; set { } }
@@ -943,7 +943,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterActionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.RouteData routeData) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; }
                     public Microsoft.AspNetCore.Routing.RouteData RouteData { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -954,7 +954,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext ActionExecutedContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterActionFilterOnActionExecutedEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext actionExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -964,7 +964,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext ActionExecutingContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterActionFilterOnActionExecutingEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext actionExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -974,7 +974,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext ActionExecutedContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterActionFilterOnActionExecutionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext actionExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -983,7 +983,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterActionResultEventData(Microsoft.AspNetCore.Mvc.ActionContext actionContext, Microsoft.AspNetCore.Mvc.IActionResult result) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -993,7 +993,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext AuthorizationContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterAuthorizationFilterOnAuthorizationEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext authorizationContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -1004,7 +1004,7 @@ namespace Microsoft
                     public object Controller { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterControllerActionMethodEventData(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IReadOnlyDictionary<string, object> arguments, object controller, Microsoft.AspNetCore.Mvc.IActionResult result) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -1013,7 +1013,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterExceptionFilterOnExceptionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ExceptionContext exceptionContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.ExceptionContext ExceptionContext { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1023,7 +1023,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterResourceFilterOnResourceExecutedEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext resourceExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext ResourceExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1033,7 +1033,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterResourceFilterOnResourceExecutingEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext resourceExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext ResourceExecutingContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1043,7 +1043,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterResourceFilterOnResourceExecutionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext resourceExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext ResourceExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1053,7 +1053,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterResultFilterOnResultExecutedEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext resultExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext ResultExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1063,7 +1063,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterResultFilterOnResultExecutingEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext resultExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext ResultExecutingContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1073,7 +1073,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterResultFilterOnResultExecutionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext resultExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext ResultExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1083,7 +1083,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeActionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.RouteData routeData) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; }
                     public Microsoft.AspNetCore.Routing.RouteData RouteData { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1094,7 +1094,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext ActionExecutedContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeActionFilterOnActionExecutedEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext actionExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -1104,7 +1104,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext ActionExecutingContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeActionFilterOnActionExecutingEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext actionExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -1114,7 +1114,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext ActionExecutingContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeActionFilterOnActionExecutionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext actionExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -1123,7 +1123,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeActionResultEventData(Microsoft.AspNetCore.Mvc.ActionContext actionContext, Microsoft.AspNetCore.Mvc.IActionResult result) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.IActionResult Result { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -1133,7 +1133,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext AuthorizationContext { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeAuthorizationFilterOnAuthorizationEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext authorizationContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
@@ -1144,7 +1144,7 @@ namespace Microsoft
                     public object Controller { get => throw null; }
                     protected override sealed int Count { get => throw null; }
                     public BeforeControllerActionMethodEventData(Microsoft.AspNetCore.Mvc.ActionContext actionContext, System.Collections.Generic.IReadOnlyDictionary<string, object> actionArguments, object controller) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     protected override sealed System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
                 public sealed class BeforeExceptionFilterOnException : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
@@ -1152,7 +1152,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeExceptionFilterOnException(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ExceptionContext exceptionContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.ExceptionContext ExceptionContext { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1162,7 +1162,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeResourceFilterOnResourceExecutedEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext resourceExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResourceExecutedContext ResourceExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1172,7 +1172,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeResourceFilterOnResourceExecutingEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext resourceExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext ResourceExecutingContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1182,7 +1182,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeResourceFilterOnResourceExecutionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext resourceExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResourceExecutingContext ResourceExecutingContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1192,7 +1192,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeResultFilterOnResultExecutedEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext resultExecutedContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext ResultExecutedContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1202,7 +1202,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeResultFilterOnResultExecutingEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext resultExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext ResultExecutingContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -1212,17 +1212,17 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeResultFilterOnResultExecutionEventData(Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext resultExecutingContext, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata filter) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata Filter { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext ResultExecutingContext { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
                 }
-                public abstract class EventData : System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>
+                public abstract class EventData : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>>
                 {
                     protected abstract int Count { get; }
                     int System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>.Count { get => throw null; }
                     protected EventData() => throw null;
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator
                     {
                         public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }
                         object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1230,7 +1230,7 @@ namespace Microsoft
                         public bool MoveNext() => throw null;
                         void System.Collections.IEnumerator.Reset() => throw null;
                     }
-                    protected static string EventNamespace;
+                    protected const string EventNamespace = default;
                     System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>.GetEnumerator() => throw null;
                     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                     System.Collections.Generic.KeyValuePair<string, object> System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>>.this[int index] { get => throw null; }
@@ -1275,7 +1275,7 @@ namespace Microsoft
             }
             namespace Filters
             {
-                public abstract class ActionFilterAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IActionFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter, Microsoft.AspNetCore.Mvc.Filters.IResultFilter, Microsoft.AspNetCore.Mvc.Filters.IAsyncResultFilter, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
+                public abstract class ActionFilterAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IActionFilter, Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter, Microsoft.AspNetCore.Mvc.Filters.IAsyncResultFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter, Microsoft.AspNetCore.Mvc.Filters.IResultFilter
                 {
                     protected ActionFilterAttribute() => throw null;
                     public virtual void OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext context) => throw null;
@@ -1286,7 +1286,7 @@ namespace Microsoft
                     public virtual System.Threading.Tasks.Task OnResultExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext context, Microsoft.AspNetCore.Mvc.Filters.ResultExecutionDelegate next) => throw null;
                     public int Order { get => throw null; set { } }
                 }
-                public abstract class ExceptionFilterAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IAsyncExceptionFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IExceptionFilter, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
+                public abstract class ExceptionFilterAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IAsyncExceptionFilter, Microsoft.AspNetCore.Mvc.Filters.IExceptionFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
                 {
                     protected ExceptionFilterAttribute() => throw null;
                     public virtual void OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext context) => throw null;
@@ -1313,7 +1313,7 @@ namespace Microsoft
                     public static int Global;
                     public static int Last;
                 }
-                public abstract class ResultFilterAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IResultFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IAsyncResultFilter, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
+                public abstract class ResultFilterAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IAsyncResultFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter, Microsoft.AspNetCore.Mvc.Filters.IResultFilter
                 {
                     protected ResultFilterAttribute() => throw null;
                     public virtual void OnResultExecuted(Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext context) => throw null;
@@ -1366,7 +1366,7 @@ namespace Microsoft
                     public bool TreatNullValueAsNoContent { get => throw null; set { } }
                     public System.Threading.Tasks.Task WriteAsync(Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterWriteContext context) => throw null;
                 }
-                public abstract class InputFormatter : Microsoft.AspNetCore.Mvc.Formatters.IInputFormatter, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiRequestFormatMetadataProvider
+                public abstract class InputFormatter : Microsoft.AspNetCore.Mvc.ApiExplorer.IApiRequestFormatMetadataProvider, Microsoft.AspNetCore.Mvc.Formatters.IInputFormatter
                 {
                     public virtual bool CanRead(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext context) => throw null;
                     protected virtual bool CanReadType(System.Type type) => throw null;
@@ -1415,7 +1415,7 @@ namespace Microsoft
                     public double Quality { get => throw null; }
                     public override string ToString() => throw null;
                 }
-                public abstract class OutputFormatter : Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiResponseTypeMetadataProvider
+                public abstract class OutputFormatter : Microsoft.AspNetCore.Mvc.ApiExplorer.IApiResponseTypeMetadataProvider, Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter
                 {
                     public virtual bool CanWriteResult(Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterCanWriteContext context) => throw null;
                     protected virtual bool CanWriteType(System.Type type) => throw null;
@@ -1478,25 +1478,25 @@ namespace Microsoft
                 public FromBodyAttribute() => throw null;
                 public Microsoft.AspNetCore.Mvc.ModelBinding.EmptyBodyBehavior EmptyBodyBehavior { get => throw null; set { } }
             }
-            public class FromFormAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider, Microsoft.AspNetCore.Http.Metadata.IFromFormMetadata
+            public class FromFormAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Http.Metadata.IFromFormMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider
             {
                 public Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource BindingSource { get => throw null; }
                 public FromFormAttribute() => throw null;
                 public string Name { get => throw null; set { } }
             }
-            public class FromHeaderAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider, Microsoft.AspNetCore.Http.Metadata.IFromHeaderMetadata
+            public class FromHeaderAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Http.Metadata.IFromHeaderMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider
             {
                 public Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource BindingSource { get => throw null; }
                 public FromHeaderAttribute() => throw null;
                 public string Name { get => throw null; set { } }
             }
-            public class FromQueryAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider, Microsoft.AspNetCore.Http.Metadata.IFromQueryMetadata
+            public class FromQueryAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Http.Metadata.IFromQueryMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider
             {
                 public Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource BindingSource { get => throw null; }
                 public FromQueryAttribute() => throw null;
                 public string Name { get => throw null; set { } }
             }
-            public class FromRouteAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider, Microsoft.AspNetCore.Http.Metadata.IFromRouteMetadata
+            public class FromRouteAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Http.Metadata.IFromRouteMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider
             {
                 public Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource BindingSource { get => throw null; }
                 public FromRouteAttribute() => throw null;
@@ -1617,7 +1617,7 @@ namespace Microsoft
                 }
                 public class FileResultExecutorBase
                 {
-                    protected static int BufferSize;
+                    protected const int BufferSize = default;
                     protected static Microsoft.Extensions.Logging.ILogger CreateLogger<T>(Microsoft.Extensions.Logging.ILoggerFactory factory) => throw null;
                     public FileResultExecutorBase(Microsoft.Extensions.Logging.ILogger logger) => throw null;
                     protected Microsoft.Extensions.Logging.ILogger Logger { get => throw null; }
@@ -1663,7 +1663,7 @@ namespace Microsoft
                 public interface IApiBehaviorMetadata : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
                 }
-                public interface IClientErrorActionResult : Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult, Microsoft.AspNetCore.Mvc.IActionResult
+                public interface IClientErrorActionResult : Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult
                 {
                 }
                 public interface IClientErrorFactory
@@ -1792,7 +1792,7 @@ namespace Microsoft
                 public JsonOptions() => throw null;
                 public System.Text.Json.JsonSerializerOptions JsonSerializerOptions { get => throw null; }
             }
-            public class JsonResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class JsonResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult
             {
                 public string ContentType { get => throw null; set { } }
                 public JsonResult(object value) => throw null;
@@ -1821,7 +1821,7 @@ namespace Microsoft
                 public bool IsReusable { get => throw null; }
                 public int Order { get => throw null; set { } }
             }
-            public class ModelBinderAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IBinderTypeProviderMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata
+            public class ModelBinderAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBinderTypeProviderMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider
             {
                 public System.Type BinderType { get => throw null; set { } }
                 public virtual Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource BindingSource { get => throw null; set { } }
@@ -2086,7 +2086,7 @@ namespace Microsoft
                 {
                     public BindRequiredAttribute() : base(default(Microsoft.AspNetCore.Mvc.ModelBinding.BindingBehavior)) => throw null;
                 }
-                public class CompositeValueProvider : System.Collections.ObjectModel.Collection<Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider>, Microsoft.AspNetCore.Mvc.ModelBinding.IEnumerableValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IKeyRewriterValueProvider
+                public class CompositeValueProvider : System.Collections.ObjectModel.Collection<Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider>, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IEnumerableValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IKeyRewriterValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider
                 {
                     public virtual bool ContainsPrefix(string prefix) => throw null;
                     public static System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider> CreateAsync(Microsoft.AspNetCore.Mvc.ControllerContext controllerContext) => throw null;
@@ -2197,7 +2197,7 @@ namespace Microsoft
                     public System.Threading.Tasks.Task CreateValueProviderAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderFactoryContext context) => throw null;
                     public JQueryQueryStringValueProviderFactory() => throw null;
                 }
-                public abstract class JQueryValueProvider : Microsoft.AspNetCore.Mvc.ModelBinding.BindingSourceValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IEnumerableValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IKeyRewriterValueProvider
+                public abstract class JQueryValueProvider : Microsoft.AspNetCore.Mvc.ModelBinding.BindingSourceValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IEnumerableValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IKeyRewriterValueProvider, Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider
                 {
                     public override bool ContainsPrefix(string prefix) => throw null;
                     protected JQueryValueProvider(Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource bindingSource, System.Collections.Generic.IDictionary<string, Microsoft.Extensions.Primitives.StringValues> values, System.Globalization.CultureInfo culture) : base(default(Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource)) => throw null;
@@ -2397,7 +2397,7 @@ namespace Microsoft
                     {
                         void CreateBindingMetadata(Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.BindingMetadataProviderContext context);
                     }
-                    public interface ICompositeMetadataDetailsProvider : Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IBindingMetadataProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IMetadataDetailsProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IDisplayMetadataProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IValidationMetadataProvider
+                    public interface ICompositeMetadataDetailsProvider : Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IBindingMetadataProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IDisplayMetadataProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IMetadataDetailsProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IValidationMetadataProvider
                     {
                     }
                     public interface IDisplayMetadataProvider : Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IMetadataDetailsProvider
@@ -2532,7 +2532,7 @@ namespace Microsoft
                     public System.Threading.Tasks.Task CreateValueProviderAsync(Microsoft.AspNetCore.Mvc.ModelBinding.ValueProviderFactoryContext context) => throw null;
                     public RouteValueProviderFactory() => throw null;
                 }
-                public class SuppressChildValidationMetadataProvider : Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IValidationMetadataProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IMetadataDetailsProvider
+                public class SuppressChildValidationMetadataProvider : Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IMetadataDetailsProvider, Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.IValidationMetadataProvider
                 {
                     public void CreateValidationMetadata(Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ValidationMetadataProviderContext context) => throw null;
                     public SuppressChildValidationMetadataProvider(System.Type type) => throw null;
@@ -2696,7 +2696,7 @@ namespace Microsoft
             {
                 public NotFoundResult() : base(default(int)) => throw null;
             }
-            public class ObjectResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class ObjectResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult
             {
                 public Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection ContentTypes { get => throw null; set { } }
                 public ObjectResult(object value) => throw null;
@@ -2722,7 +2722,7 @@ namespace Microsoft
                 public override System.Threading.Tasks.Task ExecuteResultAsync(Microsoft.AspNetCore.Mvc.ActionContext context) => throw null;
                 public string FileName { get => throw null; set { } }
             }
-            public class ProducesAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IResultFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiResponseMetadataProvider
+            public class ProducesAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiResponseMetadataProvider, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter, Microsoft.AspNetCore.Mvc.Filters.IResultFilter
             {
                 public Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection ContentTypes { get => throw null; set { } }
                 public ProducesAttribute(System.Type type) => throw null;
@@ -2756,7 +2756,7 @@ namespace Microsoft
                 public int StatusCode { get => throw null; set { } }
                 public System.Type Type { get => throw null; set { } }
             }
-            public class RedirectResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class RedirectResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult
             {
                 public RedirectResult(string url) => throw null;
                 public RedirectResult(string url, bool permanent) => throw null;
@@ -2767,7 +2767,7 @@ namespace Microsoft
                 public string Url { get => throw null; set { } }
                 public Microsoft.AspNetCore.Mvc.IUrlHelper UrlHelper { get => throw null; set { } }
             }
-            public class RedirectToActionResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class RedirectToActionResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult
             {
                 public string ActionName { get => throw null; set { } }
                 public string ControllerName { get => throw null; set { } }
@@ -2784,7 +2784,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; set { } }
                 public Microsoft.AspNetCore.Mvc.IUrlHelper UrlHelper { get => throw null; set { } }
             }
-            public class RedirectToPageResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class RedirectToPageResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult
             {
                 public RedirectToPageResult(string pageName) => throw null;
                 public RedirectToPageResult(string pageName, string pageHandler) => throw null;
@@ -2806,7 +2806,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; set { } }
                 public Microsoft.AspNetCore.Mvc.IUrlHelper UrlHelper { get => throw null; set { } }
             }
-            public class RedirectToRouteResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class RedirectToRouteResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult
             {
                 public RedirectToRouteResult(object routeValues) => throw null;
                 public RedirectToRouteResult(string routeName, object routeValues) => throw null;
@@ -2922,7 +2922,7 @@ namespace Microsoft
                 {
                     Microsoft.AspNetCore.Mvc.IUrlHelper GetUrlHelper(Microsoft.AspNetCore.Mvc.ActionContext context);
                 }
-                public class KnownRouteValueConstraint : Microsoft.AspNetCore.Routing.IRouteConstraint, Microsoft.AspNetCore.Routing.IParameterPolicy
+                public class KnownRouteValueConstraint : Microsoft.AspNetCore.Routing.IParameterPolicy, Microsoft.AspNetCore.Routing.IRouteConstraint
                 {
                     public KnownRouteValueConstraint(Microsoft.AspNetCore.Mvc.Infrastructure.IActionDescriptorCollectionProvider actionDescriptorCollectionProvider) => throw null;
                     public bool Match(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Routing.IRouter route, string routeKey, Microsoft.AspNetCore.Routing.RouteValueDictionary values, Microsoft.AspNetCore.Routing.RouteDirection routeDirection) => throw null;
@@ -3000,7 +3000,7 @@ namespace Microsoft
                 public override System.Threading.Tasks.Task ExecuteResultAsync(Microsoft.AspNetCore.Mvc.ActionContext context) => throw null;
                 public Microsoft.AspNetCore.Authentication.AuthenticationProperties Properties { get => throw null; set { } }
             }
-            public class StatusCodeResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IClientErrorActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult, Microsoft.AspNetCore.Mvc.IActionResult
+            public class StatusCodeResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IClientErrorActionResult, Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult
             {
                 public StatusCodeResult(int statusCode) => throw null;
                 public override void ExecuteResult(Microsoft.AspNetCore.Mvc.ActionContext context) => throw null;

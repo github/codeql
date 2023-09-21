@@ -127,9 +127,9 @@ namespace Microsoft
                 public FormReader(System.IO.Stream stream) => throw null;
                 public FormReader(System.IO.Stream stream, System.Text.Encoding encoding) => throw null;
                 public FormReader(System.IO.Stream stream, System.Text.Encoding encoding, System.Buffers.ArrayPool<char> charPool) => throw null;
-                public static int DefaultKeyLengthLimit;
-                public static int DefaultValueCountLimit;
-                public static int DefaultValueLengthLimit;
+                public const int DefaultKeyLengthLimit = default;
+                public const int DefaultValueCountLimit = default;
+                public const int DefaultValueLengthLimit = default;
                 public void Dispose() => throw null;
                 public int KeyLengthLimit { get => throw null; set { } }
                 public System.Collections.Generic.Dictionary<string, Microsoft.Extensions.Primitives.StringValues> ReadForm() => throw null;
@@ -192,8 +192,8 @@ namespace Microsoft
                 public long? BodyLengthLimit { get => throw null; set { } }
                 public MultipartReader(string boundary, System.IO.Stream stream) => throw null;
                 public MultipartReader(string boundary, System.IO.Stream stream, int bufferSize) => throw null;
-                public static int DefaultHeadersCountLimit;
-                public static int DefaultHeadersLengthLimit;
+                public const int DefaultHeadersCountLimit = default;
+                public const int DefaultHeadersLengthLimit = default;
                 public int HeadersCountLimit { get => throw null; set { } }
                 public int HeadersLengthLimit { get => throw null; set { } }
                 public System.Threading.Tasks.Task<Microsoft.AspNetCore.WebUtilities.MultipartSection> ReadNextSectionAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;

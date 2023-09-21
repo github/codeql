@@ -13,7 +13,7 @@ namespace Microsoft
                     public void AppendResponseCookie(Microsoft.AspNetCore.Http.HttpContext context, string key, string value, Microsoft.AspNetCore.Http.CookieOptions options) => throw null;
                     public int? ChunkSize { get => throw null; set { } }
                     public ChunkingCookieManager() => throw null;
-                    public static int DefaultChunkSize;
+                    public const int DefaultChunkSize = default;
                     public void DeleteCookie(Microsoft.AspNetCore.Http.HttpContext context, string key, Microsoft.AspNetCore.Http.CookieOptions options) => throw null;
                     public string GetRequestCookie(Microsoft.AspNetCore.Http.HttpContext context, string key) => throw null;
                     public bool ThrowForPartialCookies { get => throw null; set { } }
@@ -21,7 +21,7 @@ namespace Microsoft
                 public static class CookieAuthenticationDefaults
                 {
                     public static Microsoft.AspNetCore.Http.PathString AccessDeniedPath;
-                    public static string AuthenticationScheme;
+                    public const string AuthenticationScheme = default;
                     public static string CookiePrefix;
                     public static Microsoft.AspNetCore.Http.PathString LoginPath;
                     public static Microsoft.AspNetCore.Http.PathString LogoutPath;

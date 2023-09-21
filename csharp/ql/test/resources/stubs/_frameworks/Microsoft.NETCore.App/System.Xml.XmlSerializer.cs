@@ -333,7 +333,7 @@ namespace System
                 public System.Xml.Serialization.SoapAttributes SoapAttributes { get => throw null; set { } }
                 public System.Xml.Serialization.XmlAttributes XmlAttributes { get => throw null; set { } }
             }
-            public class XmlSchemaEnumerator : System.Collections.Generic.IEnumerator<System.Xml.Schema.XmlSchema>, System.Collections.IEnumerator, System.IDisposable
+            public class XmlSchemaEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Xml.Schema.XmlSchema>, System.Collections.IEnumerator
             {
                 public XmlSchemaEnumerator(System.Xml.Serialization.XmlSchemas list) => throw null;
                 public System.Xml.Schema.XmlSchema Current { get => throw null; }
@@ -630,10 +630,10 @@ namespace System
                 public void Serialize(System.Xml.XmlWriter xmlWriter, object o, System.Xml.Serialization.XmlSerializerNamespaces namespaces) => throw null;
                 public void Serialize(System.Xml.XmlWriter xmlWriter, object o, System.Xml.Serialization.XmlSerializerNamespaces namespaces, string encodingStyle) => throw null;
                 public void Serialize(System.Xml.XmlWriter xmlWriter, object o, System.Xml.Serialization.XmlSerializerNamespaces namespaces, string encodingStyle, string id) => throw null;
-                public event System.Xml.Serialization.XmlAttributeEventHandler UnknownAttribute { add { } remove { } }
-                public event System.Xml.Serialization.XmlElementEventHandler UnknownElement { add { } remove { } }
-                public event System.Xml.Serialization.XmlNodeEventHandler UnknownNode { add { } remove { } }
-                public event System.Xml.Serialization.UnreferencedObjectEventHandler UnreferencedObject { add { } remove { } }
+                public event System.Xml.Serialization.XmlAttributeEventHandler UnknownAttribute;
+                public event System.Xml.Serialization.XmlElementEventHandler UnknownElement;
+                public event System.Xml.Serialization.XmlNodeEventHandler UnknownNode;
+                public event System.Xml.Serialization.UnreferencedObjectEventHandler UnreferencedObject;
             }
             public sealed class XmlSerializerAssemblyAttribute : System.Attribute
             {

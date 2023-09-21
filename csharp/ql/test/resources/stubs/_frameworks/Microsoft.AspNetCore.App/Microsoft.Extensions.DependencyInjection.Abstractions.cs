@@ -18,7 +18,7 @@ namespace Microsoft
             {
                 public ActivatorUtilitiesConstructorAttribute() => throw null;
             }
-            public struct AsyncServiceScope : Microsoft.Extensions.DependencyInjection.IServiceScope, System.IDisposable, System.IAsyncDisposable
+            public struct AsyncServiceScope : System.IAsyncDisposable, System.IDisposable, Microsoft.Extensions.DependencyInjection.IServiceScope
             {
                 public AsyncServiceScope(Microsoft.Extensions.DependencyInjection.IServiceScope serviceScope) => throw null;
                 public void Dispose() => throw null;
@@ -84,7 +84,7 @@ namespace Microsoft
                 object GetRequiredService(System.Type serviceType);
             }
             public delegate object ObjectFactory(System.IServiceProvider serviceProvider, object[] arguments);
-            public class ServiceCollection : Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Collections.Generic.ICollection<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.Generic.IEnumerable<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.IEnumerable, System.Collections.Generic.IList<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>
+            public class ServiceCollection : System.Collections.Generic.ICollection<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.Generic.IEnumerable<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, System.Collections.IEnumerable, System.Collections.Generic.IList<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>, Microsoft.Extensions.DependencyInjection.IServiceCollection
             {
                 void System.Collections.Generic.ICollection<Microsoft.Extensions.DependencyInjection.ServiceDescriptor>.Add(Microsoft.Extensions.DependencyInjection.ServiceDescriptor item) => throw null;
                 public void Clear() => throw null;

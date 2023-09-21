@@ -6,7 +6,7 @@ namespace System
     {
         namespace Concurrent
         {
-            public class BlockingCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.ICollection, System.IDisposable
+            public class BlockingCollection<T> : System.Collections.ICollection, System.IDisposable, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>
             {
                 public void Add(T item) => throw null;
                 public void Add(T item, System.Threading.CancellationToken cancellationToken) => throw null;
@@ -53,7 +53,7 @@ namespace System
                 public static int TryTakeFromAny(System.Collections.Concurrent.BlockingCollection<T>[] collections, out T item, int millisecondsTimeout, System.Threading.CancellationToken cancellationToken) => throw null;
                 public static int TryTakeFromAny(System.Collections.Concurrent.BlockingCollection<T>[] collections, out T item, System.TimeSpan timeout) => throw null;
             }
-            public class ConcurrentBag<T> : System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyCollection<T>
+            public class ConcurrentBag<T> : System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IReadOnlyCollection<T>
             {
                 public void Add(T item) => throw null;
                 public void Clear() => throw null;
@@ -72,7 +72,7 @@ namespace System
                 public bool TryPeek(out T result) => throw null;
                 public bool TryTake(out T result) => throw null;
             }
-            public class ConcurrentDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary
+            public class ConcurrentDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
             {
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> keyValuePair) => throw null;
                 void System.Collections.Generic.IDictionary<TKey, TValue>.Add(TKey key, TValue value) => throw null;
@@ -125,7 +125,7 @@ namespace System
                 System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
                 public System.Collections.Generic.ICollection<TValue> Values { get => throw null; }
             }
-            public class ConcurrentQueue<T> : System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyCollection<T>
+            public class ConcurrentQueue<T> : System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IReadOnlyCollection<T>
             {
                 public void Clear() => throw null;
                 public void CopyTo(T[] array, int index) => throw null;
@@ -145,7 +145,7 @@ namespace System
                 public bool TryPeek(out T result) => throw null;
                 bool System.Collections.Concurrent.IProducerConsumerCollection<T>.TryTake(out T item) => throw null;
             }
-            public class ConcurrentStack<T> : System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection, System.Collections.Generic.IReadOnlyCollection<T>
+            public class ConcurrentStack<T> : System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Concurrent.IProducerConsumerCollection<T>, System.Collections.Generic.IReadOnlyCollection<T>
             {
                 public void Clear() => throw null;
                 public void CopyTo(T[] array, int index) => throw null;
@@ -175,7 +175,7 @@ namespace System
                 None = 0,
                 NoBuffering = 1,
             }
-            public interface IProducerConsumerCollection<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.ICollection
+            public interface IProducerConsumerCollection<T> : System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
             {
                 void CopyTo(T[] array, int index);
                 T[] ToArray();

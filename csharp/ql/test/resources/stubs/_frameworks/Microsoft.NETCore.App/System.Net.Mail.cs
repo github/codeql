@@ -177,7 +177,7 @@ namespace System
                 public void SendAsync(System.Net.Mail.MailMessage message, object userToken) => throw null;
                 public void SendAsync(string from, string recipients, string subject, string body, object userToken) => throw null;
                 public void SendAsyncCancel() => throw null;
-                public event System.Net.Mail.SendCompletedEventHandler SendCompleted { add { } remove { } }
+                public event System.Net.Mail.SendCompletedEventHandler SendCompleted;
                 public System.Threading.Tasks.Task SendMailAsync(System.Net.Mail.MailMessage message) => throw null;
                 public System.Threading.Tasks.Task SendMailAsync(string from, string recipients, string subject, string body) => throw null;
                 public System.Threading.Tasks.Task SendMailAsync(System.Net.Mail.MailMessage message, System.Threading.CancellationToken cancellationToken) => throw null;
@@ -296,33 +296,33 @@ namespace System
             }
             public static class DispositionTypeNames
             {
-                public static string Attachment;
-                public static string Inline;
+                public const string Attachment = default;
+                public const string Inline = default;
             }
             public static class MediaTypeNames
             {
                 public static class Application
                 {
-                    public static string Json;
-                    public static string Octet;
-                    public static string Pdf;
-                    public static string Rtf;
-                    public static string Soap;
-                    public static string Xml;
-                    public static string Zip;
+                    public const string Json = default;
+                    public const string Octet = default;
+                    public const string Pdf = default;
+                    public const string Rtf = default;
+                    public const string Soap = default;
+                    public const string Xml = default;
+                    public const string Zip = default;
                 }
                 public static class Image
                 {
-                    public static string Gif;
-                    public static string Jpeg;
-                    public static string Tiff;
+                    public const string Gif = default;
+                    public const string Jpeg = default;
+                    public const string Tiff = default;
                 }
                 public static class Text
                 {
-                    public static string Html;
-                    public static string Plain;
-                    public static string RichText;
-                    public static string Xml;
+                    public const string Html = default;
+                    public const string Plain = default;
+                    public const string RichText = default;
+                    public const string Xml = default;
                 }
             }
             public enum TransferEncoding

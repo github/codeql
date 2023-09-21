@@ -32,17 +32,17 @@ namespace System
             public bool CancellationPending { get => throw null; }
             public BackgroundWorker() => throw null;
             protected override void Dispose(bool disposing) => throw null;
-            public event System.ComponentModel.DoWorkEventHandler DoWork { add { } remove { } }
+            public event System.ComponentModel.DoWorkEventHandler DoWork;
             public bool IsBusy { get => throw null; }
             protected virtual void OnDoWork(System.ComponentModel.DoWorkEventArgs e) => throw null;
             protected virtual void OnProgressChanged(System.ComponentModel.ProgressChangedEventArgs e) => throw null;
             protected virtual void OnRunWorkerCompleted(System.ComponentModel.RunWorkerCompletedEventArgs e) => throw null;
-            public event System.ComponentModel.ProgressChangedEventHandler ProgressChanged { add { } remove { } }
+            public event System.ComponentModel.ProgressChangedEventHandler ProgressChanged;
             public void ReportProgress(int percentProgress) => throw null;
             public void ReportProgress(int percentProgress, object userState) => throw null;
             public void RunWorkerAsync() => throw null;
             public void RunWorkerAsync(object argument) => throw null;
-            public event System.ComponentModel.RunWorkerCompletedEventHandler RunWorkerCompleted { add { } remove { } }
+            public event System.ComponentModel.RunWorkerCompletedEventHandler RunWorkerCompleted;
             public bool WorkerReportsProgress { get => throw null; set { } }
             public bool WorkerSupportsCancellation { get => throw null; set { } }
         }

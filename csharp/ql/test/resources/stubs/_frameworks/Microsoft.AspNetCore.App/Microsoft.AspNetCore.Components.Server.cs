@@ -6,7 +6,7 @@ namespace Microsoft
     {
         namespace Builder
         {
-            public sealed class ComponentEndpointConventionBuilder : Microsoft.AspNetCore.Builder.IHubEndpointConventionBuilder, Microsoft.AspNetCore.Builder.IEndpointConventionBuilder
+            public sealed class ComponentEndpointConventionBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder, Microsoft.AspNetCore.Builder.IHubEndpointConventionBuilder
             {
                 public void Add(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> convention) => throw null;
                 public void Finally(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> finalConvention) => throw null;

@@ -38,7 +38,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public AfterViewPageEventData(Microsoft.AspNetCore.Mvc.Razor.IRazorPage page, Microsoft.AspNetCore.Mvc.Rendering.ViewContext viewContext, Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Razor.IRazorPage Page { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }
@@ -49,7 +49,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
                     protected override int Count { get => throw null; }
                     public BeforeViewPageEventData(Microsoft.AspNetCore.Mvc.Razor.IRazorPage page, Microsoft.AspNetCore.Mvc.Rendering.ViewContext viewContext, Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor actionDescriptor, Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
-                    public static string EventName;
+                    public const string EventName = default;
                     public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Razor.IRazorPage Page { get => throw null; }
                     protected override System.Collections.Generic.KeyValuePair<string, object> this[int index] { get => throw null; }

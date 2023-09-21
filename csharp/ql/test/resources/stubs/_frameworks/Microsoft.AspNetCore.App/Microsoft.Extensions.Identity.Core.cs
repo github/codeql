@@ -143,18 +143,18 @@ namespace Microsoft
                 string Protect(string data);
                 string Unprotect(string data);
             }
-            public interface IProtectedUserStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IProtectedUserStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
             }
-            public interface IQueryableRoleStore<TRole> : Microsoft.AspNetCore.Identity.IRoleStore<TRole>, System.IDisposable where TRole : class
+            public interface IQueryableRoleStore<TRole> : System.IDisposable, Microsoft.AspNetCore.Identity.IRoleStore<TRole> where TRole : class
             {
                 System.Linq.IQueryable<TRole> Roles { get; }
             }
-            public interface IQueryableUserStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IQueryableUserStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Linq.IQueryable<TUser> Users { get; }
             }
-            public interface IRoleClaimStore<TRole> : Microsoft.AspNetCore.Identity.IRoleStore<TRole>, System.IDisposable where TRole : class
+            public interface IRoleClaimStore<TRole> : System.IDisposable, Microsoft.AspNetCore.Identity.IRoleStore<TRole> where TRole : class
             {
                 System.Threading.Tasks.Task AddClaimAsync(TRole role, System.Security.Claims.Claim claim, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
                 System.Threading.Tasks.Task<System.Collections.Generic.IList<System.Security.Claims.Claim>> GetClaimsAsync(TRole role, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
@@ -177,13 +177,13 @@ namespace Microsoft
             {
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ValidateAsync(Microsoft.AspNetCore.Identity.RoleManager<TRole> manager, TRole role);
             }
-            public interface IUserAuthenticationTokenStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserAuthenticationTokenStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetTokenAsync(TUser user, string loginProvider, string name, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task RemoveTokenAsync(TUser user, string loginProvider, string name, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetTokenAsync(TUser user, string loginProvider, string name, string value, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserAuthenticatorKeyStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserAuthenticatorKeyStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetAuthenticatorKeyAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetAuthenticatorKeyAsync(TUser user, string key, System.Threading.CancellationToken cancellationToken);
@@ -192,7 +192,7 @@ namespace Microsoft
             {
                 System.Threading.Tasks.Task<System.Security.Claims.ClaimsPrincipal> CreateAsync(TUser user);
             }
-            public interface IUserClaimStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserClaimStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task AddClaimsAsync(TUser user, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<System.Collections.Generic.IList<System.Security.Claims.Claim>> GetClaimsAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -204,7 +204,7 @@ namespace Microsoft
             {
                 System.Threading.Tasks.Task<bool> IsConfirmedAsync(Microsoft.AspNetCore.Identity.UserManager<TUser> manager, TUser user);
             }
-            public interface IUserEmailStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserEmailStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<TUser> FindByEmailAsync(string normalizedEmail, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<string> GetEmailAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -214,7 +214,7 @@ namespace Microsoft
                 System.Threading.Tasks.Task SetEmailConfirmedAsync(TUser user, bool confirmed, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserLockoutStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserLockoutStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<int> GetAccessFailedCountAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<bool> GetLockoutEnabledAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -224,27 +224,27 @@ namespace Microsoft
                 System.Threading.Tasks.Task SetLockoutEnabledAsync(TUser user, bool enabled, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetLockoutEndDateAsync(TUser user, System.DateTimeOffset? lockoutEnd, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserLoginStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserLoginStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task AddLoginAsync(TUser user, Microsoft.AspNetCore.Identity.UserLoginInfo login, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<System.Collections.Generic.IList<Microsoft.AspNetCore.Identity.UserLoginInfo>> GetLoginsAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserPasswordStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserPasswordStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetPasswordHashAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<bool> HasPasswordAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetPasswordHashAsync(TUser user, string passwordHash, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserPhoneNumberStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserPhoneNumberStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetPhoneNumberAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<bool> GetPhoneNumberConfirmedAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetPhoneNumberAsync(TUser user, string phoneNumber, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserRoleStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserRoleStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task AddToRoleAsync(TUser user, string roleName, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<System.Collections.Generic.IList<string>> GetRolesAsync(TUser user, System.Threading.CancellationToken cancellationToken);
@@ -252,7 +252,7 @@ namespace Microsoft
                 System.Threading.Tasks.Task<bool> IsInRoleAsync(TUser user, string roleName, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task RemoveFromRoleAsync(TUser user, string roleName, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserSecurityStampStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserSecurityStampStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<string> GetSecurityStampAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetSecurityStampAsync(TUser user, string stamp, System.Threading.CancellationToken cancellationToken);
@@ -270,13 +270,13 @@ namespace Microsoft
                 System.Threading.Tasks.Task SetUserNameAsync(TUser user, string userName, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> UpdateAsync(TUser user, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserTwoFactorRecoveryCodeStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserTwoFactorRecoveryCodeStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<int> CountCodesAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<bool> RedeemCodeAsync(TUser user, string code, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task ReplaceCodesAsync(TUser user, System.Collections.Generic.IEnumerable<string> recoveryCodes, System.Threading.CancellationToken cancellationToken);
             }
-            public interface IUserTwoFactorStore<TUser> : Microsoft.AspNetCore.Identity.IUserStore<TUser>, System.IDisposable where TUser : class
+            public interface IUserTwoFactorStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task<bool> GetTwoFactorEnabledAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task SetTwoFactorEnabledAsync(TUser user, bool enabled, System.Threading.CancellationToken cancellationToken);
@@ -488,10 +488,10 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ChangeEmailAsync(TUser user, string newEmail, string token) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ChangePasswordAsync(TUser user, string currentPassword, string newPassword) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ChangePhoneNumberAsync(TUser user, string phoneNumber, string token) => throw null;
-                public static string ChangePhoneNumberTokenPurpose;
+                public const string ChangePhoneNumberTokenPurpose = default;
                 public virtual System.Threading.Tasks.Task<bool> CheckPasswordAsync(TUser user, string password) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ConfirmEmailAsync(TUser user, string token) => throw null;
-                public static string ConfirmEmailTokenPurpose;
+                public const string ConfirmEmailTokenPurpose = default;
                 public virtual System.Threading.Tasks.Task<int> CountRecoveryCodesAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> CreateAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> CreateAsync(TUser user, string password) => throw null;
@@ -561,7 +561,7 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ResetAccessFailedCountAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ResetAuthenticatorKeyAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ResetPasswordAsync(TUser user, string token, string newPassword) => throw null;
-                public static string ResetPasswordTokenPurpose;
+                public const string ResetPasswordTokenPurpose = default;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> SetAuthenticationTokenAsync(TUser user, string loginProvider, string tokenName, string tokenValue) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> SetEmailAsync(TUser user, string email) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> SetLockoutEnabledAsync(TUser user, bool enabled) => throw null;

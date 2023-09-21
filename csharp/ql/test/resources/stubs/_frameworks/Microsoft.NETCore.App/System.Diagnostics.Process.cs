@@ -42,9 +42,9 @@ namespace System
             protected override void Dispose(bool disposing) => throw null;
             public bool EnableRaisingEvents { get => throw null; set { } }
             public static void EnterDebugMode() => throw null;
-            public event System.Diagnostics.DataReceivedEventHandler ErrorDataReceived { add { } remove { } }
+            public event System.Diagnostics.DataReceivedEventHandler ErrorDataReceived;
             public int ExitCode { get => throw null; }
-            public event System.EventHandler Exited { add { } remove { } }
+            public event System.EventHandler Exited;
             public System.DateTime ExitTime { get => throw null; }
             public static System.Diagnostics.Process GetCurrentProcess() => throw null;
             public static System.Diagnostics.Process GetProcessById(int processId) => throw null;
@@ -70,7 +70,7 @@ namespace System
             public int NonpagedSystemMemorySize { get => throw null; }
             public long NonpagedSystemMemorySize64 { get => throw null; }
             protected void OnExited() => throw null;
-            public event System.Diagnostics.DataReceivedEventHandler OutputDataReceived { add { } remove { } }
+            public event System.Diagnostics.DataReceivedEventHandler OutputDataReceived;
             public int PagedMemorySize { get => throw null; }
             public long PagedMemorySize64 { get => throw null; }
             public int PagedSystemMemorySize { get => throw null; }

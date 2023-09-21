@@ -127,7 +127,7 @@ namespace System
             public void Rollback() => throw null;
             public void Rollback(System.Exception e) => throw null;
             public void SetDistributedTransactionIdentifier(System.Transactions.IPromotableSinglePhaseNotification promotableNotification, System.Guid distributedTransactionIdentifier) => throw null;
-            public event System.Transactions.TransactionCompletedEventHandler TransactionCompleted { add { } remove { } }
+            public event System.Transactions.TransactionCompletedEventHandler TransactionCompleted;
             public System.Transactions.TransactionInformation TransactionInformation { get => throw null; }
         }
         public class TransactionAbortedException : System.Transactions.TransactionException
@@ -178,7 +178,7 @@ namespace System
         public static class TransactionManager
         {
             public static System.TimeSpan DefaultTimeout { get => throw null; set { } }
-            public static event System.Transactions.TransactionStartedEventHandler DistributedTransactionStarted { add { } remove { } }
+            public static event System.Transactions.TransactionStartedEventHandler DistributedTransactionStarted;
             public static System.Transactions.HostCurrentTransactionCallback HostCurrentCallback { get => throw null; set { } }
             public static bool ImplicitDistributedTransactions { get => throw null; set { } }
             public static System.TimeSpan MaximumTimeout { get => throw null; set { } }

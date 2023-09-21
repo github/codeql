@@ -8,7 +8,7 @@ namespace Microsoft
         {
             namespace Debug
             {
-                public class DebugLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, System.IDisposable
+                public class DebugLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string name) => throw null;
                     public DebugLoggerProvider() => throw null;

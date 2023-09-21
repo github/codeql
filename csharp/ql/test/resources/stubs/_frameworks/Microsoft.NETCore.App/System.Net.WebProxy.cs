@@ -10,7 +10,7 @@ namespace System
             bool Load(System.Uri scriptLocation, string script, System.Type helperType);
             string Run(string url, string host);
         }
-        public class WebProxy : System.Net.IWebProxy, System.Runtime.Serialization.ISerializable
+        public class WebProxy : System.Runtime.Serialization.ISerializable, System.Net.IWebProxy
         {
             public System.Uri Address { get => throw null; set { } }
             public System.Collections.ArrayList BypassArrayList { get => throw null; }

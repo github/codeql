@@ -127,9 +127,9 @@ namespace System
                 public void EnableEvents(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventLevel level) => throw null;
                 public void EnableEvents(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords matchAnyKeyword) => throw null;
                 public void EnableEvents(System.Diagnostics.Tracing.EventSource eventSource, System.Diagnostics.Tracing.EventLevel level, System.Diagnostics.Tracing.EventKeywords matchAnyKeyword, System.Collections.Generic.IDictionary<string, string> arguments) => throw null;
-                public event System.EventHandler<System.Diagnostics.Tracing.EventSourceCreatedEventArgs> EventSourceCreated { add { } remove { } }
+                public event System.EventHandler<System.Diagnostics.Tracing.EventSourceCreatedEventArgs> EventSourceCreated;
                 protected static int EventSourceIndex(System.Diagnostics.Tracing.EventSource eventSource) => throw null;
-                public event System.EventHandler<System.Diagnostics.Tracing.EventWrittenEventArgs> EventWritten { add { } remove { } }
+                public event System.EventHandler<System.Diagnostics.Tracing.EventWrittenEventArgs> EventWritten;
                 protected virtual void OnEventSourceCreated(System.Diagnostics.Tracing.EventSource eventSource) => throw null;
                 protected virtual void OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs eventData) => throw null;
             }
@@ -169,7 +169,7 @@ namespace System
                 public static System.Guid CurrentThreadActivityId { get => throw null; }
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
-                public event System.EventHandler<System.Diagnostics.Tracing.EventCommandEventArgs> EventCommandExecuted { add { } remove { } }
+                public event System.EventHandler<System.Diagnostics.Tracing.EventCommandEventArgs> EventCommandExecuted;
                 protected struct EventData
                 {
                     public nint DataPointer { get => throw null; set { } }

@@ -124,7 +124,7 @@ namespace System
             public virtual bool TrySetMember(System.Dynamic.SetMemberBinder binder, object value) => throw null;
             public virtual bool TryUnaryOperation(System.Dynamic.UnaryOperationBinder binder, out object result) => throw null;
         }
-        public sealed class ExpandoObject : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<string, object>, System.ComponentModel.INotifyPropertyChanged, System.Dynamic.IDynamicMetaObjectProvider
+        public sealed class ExpandoObject : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Dynamic.IDynamicMetaObjectProvider, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.ComponentModel.INotifyPropertyChanged
         {
             void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Add(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
             void System.Collections.Generic.IDictionary<string, object>.Add(string key, object value) => throw null;
@@ -1119,7 +1119,7 @@ namespace System
                 int Count { get; }
                 object this[int index] { get; set; }
             }
-            public sealed class ReadOnlyCollectionBuilder<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.ICollection, System.Collections.IList
+            public sealed class ReadOnlyCollectionBuilder<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.IList
             {
                 public void Add(T item) => throw null;
                 int System.Collections.IList.Add(object value) => throw null;

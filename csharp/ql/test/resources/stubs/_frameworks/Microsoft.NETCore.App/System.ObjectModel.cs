@@ -29,7 +29,7 @@ namespace System
                 protected System.IDisposable BlockReentrancy() => throw null;
                 protected void CheckReentrancy() => throw null;
                 protected override void ClearItems() => throw null;
-                public virtual event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged { add { } remove { } }
+                public virtual event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
                 public ObservableCollection() => throw null;
                 public ObservableCollection(System.Collections.Generic.IEnumerable<T> collection) => throw null;
                 public ObservableCollection(System.Collections.Generic.List<T> list) => throw null;
@@ -38,19 +38,19 @@ namespace System
                 protected virtual void MoveItem(int oldIndex, int newIndex) => throw null;
                 protected virtual void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => throw null;
                 protected virtual void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) => throw null;
-                protected virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged { add { } remove { } }
+                protected virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
                 event System.ComponentModel.PropertyChangedEventHandler System.ComponentModel.INotifyPropertyChanged.PropertyChanged { add { } remove { } }
                 protected override void RemoveItem(int index) => throw null;
                 protected override void SetItem(int index, T item) => throw null;
             }
             public class ReadOnlyObservableCollection<T> : System.Collections.ObjectModel.ReadOnlyCollection<T>, System.Collections.Specialized.INotifyCollectionChanged, System.ComponentModel.INotifyPropertyChanged
             {
-                protected virtual event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged { add { } remove { } }
+                protected virtual event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
                 event System.Collections.Specialized.NotifyCollectionChangedEventHandler System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged { add { } remove { } }
                 public ReadOnlyObservableCollection(System.Collections.ObjectModel.ObservableCollection<T> list) : base(default(System.Collections.Generic.IList<T>)) => throw null;
                 protected virtual void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) => throw null;
                 protected virtual void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs args) => throw null;
-                protected virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged { add { } remove { } }
+                protected virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
                 event System.ComponentModel.PropertyChangedEventHandler System.ComponentModel.INotifyPropertyChanged.PropertyChanged { add { } remove { } }
             }
         }
@@ -58,7 +58,7 @@ namespace System
         {
             public interface INotifyCollectionChanged
             {
-                event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged { add { } remove { } }
+                event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
             }
             public enum NotifyCollectionChangedAction
             {
@@ -99,17 +99,17 @@ namespace System
         }
         public interface INotifyDataErrorInfo
         {
-            event System.EventHandler<System.ComponentModel.DataErrorsChangedEventArgs> ErrorsChanged { add { } remove { } }
+            event System.EventHandler<System.ComponentModel.DataErrorsChangedEventArgs> ErrorsChanged;
             System.Collections.IEnumerable GetErrors(string propertyName);
             bool HasErrors { get; }
         }
         public interface INotifyPropertyChanged
         {
-            event System.ComponentModel.PropertyChangedEventHandler PropertyChanged { add { } remove { } }
+            event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         }
         public interface INotifyPropertyChanging
         {
-            event System.ComponentModel.PropertyChangingEventHandler PropertyChanging { add { } remove { } }
+            event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
         }
         public class PropertyChangedEventArgs : System.EventArgs
         {
@@ -154,7 +154,7 @@ namespace System
             public interface ICommand
             {
                 bool CanExecute(object parameter);
-                event System.EventHandler CanExecuteChanged { add { } remove { } }
+                event System.EventHandler CanExecuteChanged;
                 void Execute(object parameter);
             }
         }

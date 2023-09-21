@@ -185,7 +185,7 @@ namespace Microsoft
                 public void Add(Microsoft.AspNetCore.SignalR.HubConnectionContext connection) => throw null;
                 public int Count { get => throw null; }
                 public HubConnectionStore() => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.SignalR.HubConnectionContext>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.SignalR.HubConnectionContext>, System.Collections.IEnumerator
                 {
                     public Enumerator(Microsoft.AspNetCore.SignalR.HubConnectionStore hubConnectionList) => throw null;
                     public Microsoft.AspNetCore.SignalR.HubConnectionContext Current { get => throw null; }

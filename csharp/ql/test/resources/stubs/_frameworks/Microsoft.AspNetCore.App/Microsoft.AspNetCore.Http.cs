@@ -87,10 +87,10 @@ namespace Microsoft
                     public bool BufferBody { get => throw null; set { } }
                     public long BufferBodyLengthLimit { get => throw null; set { } }
                     public FormOptions() => throw null;
-                    public static int DefaultBufferBodyLengthLimit;
-                    public static int DefaultMemoryBufferThreshold;
-                    public static long DefaultMultipartBodyLengthLimit;
-                    public static int DefaultMultipartBoundaryLengthLimit;
+                    public const int DefaultBufferBodyLengthLimit = default;
+                    public const int DefaultMemoryBufferThreshold = default;
+                    public const long DefaultMultipartBodyLengthLimit = default;
+                    public const int DefaultMultipartBoundaryLengthLimit = default;
                     public int KeyLengthLimit { get => throw null; set { } }
                     public int MemoryBufferThreshold { get => throw null; set { } }
                     public long MultipartBodyLengthLimit { get => throw null; set { } }
@@ -170,7 +170,7 @@ namespace Microsoft
                     public RequestCookiesFeature(Microsoft.AspNetCore.Http.IRequestCookieCollection cookies) => throw null;
                     public RequestCookiesFeature(Microsoft.AspNetCore.Http.Features.IFeatureCollection features) => throw null;
                 }
-                public class RequestServicesFeature : Microsoft.AspNetCore.Http.Features.IServiceProvidersFeature, System.IDisposable, System.IAsyncDisposable
+                public class RequestServicesFeature : System.IAsyncDisposable, System.IDisposable, Microsoft.AspNetCore.Http.Features.IServiceProvidersFeature
                 {
                     public RequestServicesFeature(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.Extensions.DependencyInjection.IServiceScopeFactory scopeFactory) => throw null;
                     public void Dispose() => throw null;
@@ -200,13 +200,13 @@ namespace Microsoft
                     public System.Threading.Tasks.Task<System.Security.Cryptography.X509Certificates.X509Certificate2> GetClientCertificateAsync(System.Threading.CancellationToken cancellationToken) => throw null;
                 }
             }
-            public class FormCollection : Microsoft.AspNetCore.Http.IFormCollection, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable
+            public class FormCollection : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable, Microsoft.AspNetCore.Http.IFormCollection
             {
                 public bool ContainsKey(string key) => throw null;
                 public int Count { get => throw null; }
                 public FormCollection(System.Collections.Generic.Dictionary<string, Microsoft.Extensions.Primitives.StringValues> fields, Microsoft.AspNetCore.Http.IFormFileCollection files = default(Microsoft.AspNetCore.Http.IFormFileCollection)) => throw null;
                 public static Microsoft.AspNetCore.Http.FormCollection Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -235,14 +235,14 @@ namespace Microsoft
                 public string Name { get => throw null; }
                 public System.IO.Stream OpenReadStream() => throw null;
             }
-            public class FormFileCollection : System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile>, Microsoft.AspNetCore.Http.IFormFileCollection, System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.Http.IFormFile>
+            public class FormFileCollection : System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.IEnumerable, Microsoft.AspNetCore.Http.IFormFileCollection, System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.IFormFile>
             {
                 public FormFileCollection() => throw null;
                 public Microsoft.AspNetCore.Http.IFormFile GetFile(string name) => throw null;
                 public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.IFormFile> GetFiles(string name) => throw null;
                 public Microsoft.AspNetCore.Http.IFormFile this[string name] { get => throw null; }
             }
-            public class HeaderDictionary : Microsoft.AspNetCore.Http.IHeaderDictionary, System.Collections.Generic.IDictionary<string, Microsoft.Extensions.Primitives.StringValues>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable
+            public class HeaderDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.Generic.IDictionary<string, Microsoft.Extensions.Primitives.StringValues>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable, Microsoft.AspNetCore.Http.IHeaderDictionary
             {
                 public void Add(System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> item) => throw null;
                 public void Add(string key, Microsoft.Extensions.Primitives.StringValues value) => throw null;
@@ -255,7 +255,7 @@ namespace Microsoft
                 public HeaderDictionary() => throw null;
                 public HeaderDictionary(System.Collections.Generic.Dictionary<string, Microsoft.Extensions.Primitives.StringValues> store) => throw null;
                 public HeaderDictionary(int capacity) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -293,7 +293,7 @@ namespace Microsoft
                 public MiddlewareFactory(System.IServiceProvider serviceProvider) => throw null;
                 public void Release(Microsoft.AspNetCore.Http.IMiddleware middleware) => throw null;
             }
-            public class QueryCollection : Microsoft.AspNetCore.Http.IQueryCollection, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable
+            public class QueryCollection : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable, Microsoft.AspNetCore.Http.IQueryCollection
             {
                 public bool ContainsKey(string key) => throw null;
                 public int Count { get => throw null; }
@@ -302,7 +302,7 @@ namespace Microsoft
                 public QueryCollection(Microsoft.AspNetCore.Http.QueryCollection store) => throw null;
                 public QueryCollection(int capacity) => throw null;
                 public static Microsoft.AspNetCore.Http.QueryCollection Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }

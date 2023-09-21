@@ -23,7 +23,7 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.DataProtection.IDataProtectionProvider Create(System.IO.DirectoryInfo keyDirectory, System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
                 public static Microsoft.AspNetCore.DataProtection.IDataProtectionProvider Create(System.IO.DirectoryInfo keyDirectory, System.Action<Microsoft.AspNetCore.DataProtection.IDataProtectionBuilder> setupAction, System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
             }
-            public interface ITimeLimitedDataProtector : Microsoft.AspNetCore.DataProtection.IDataProtector, Microsoft.AspNetCore.DataProtection.IDataProtectionProvider
+            public interface ITimeLimitedDataProtector : Microsoft.AspNetCore.DataProtection.IDataProtectionProvider, Microsoft.AspNetCore.DataProtection.IDataProtector
             {
                 Microsoft.AspNetCore.DataProtection.ITimeLimitedDataProtector CreateProtector(string purpose);
                 byte[] Protect(byte[] plaintext, System.DateTimeOffset expiration);

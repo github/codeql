@@ -563,7 +563,7 @@ namespace Newtonsoft
             public T Deserialize<T>(Newtonsoft.Json.JsonReader reader) => throw null;
             public object Deserialize(Newtonsoft.Json.JsonReader reader, System.Type objectType) => throw null;
             public virtual System.Collections.IEqualityComparer EqualityComparer { get => throw null; set { } }
-            public virtual event System.EventHandler<Newtonsoft.Json.Serialization.ErrorEventArgs> Error { add { } remove { } }
+            public virtual event System.EventHandler<Newtonsoft.Json.Serialization.ErrorEventArgs> Error;
             public virtual Newtonsoft.Json.FloatFormatHandling FloatFormatHandling { get => throw null; set { } }
             public virtual Newtonsoft.Json.FloatParseHandling FloatParseHandling { get => throw null; set { } }
             public virtual Newtonsoft.Json.Formatting Formatting { get => throw null; set { } }
@@ -803,7 +803,7 @@ namespace Newtonsoft
             public Newtonsoft.Json.JsonReader Reader { get => throw null; }
             public Newtonsoft.Json.Schema.JsonSchema Schema { get => throw null; set { } }
             public override Newtonsoft.Json.JsonToken TokenType { get => throw null; }
-            public event Newtonsoft.Json.Schema.ValidationEventHandler ValidationEventHandler { add { } remove { } }
+            public event Newtonsoft.Json.Schema.ValidationEventHandler ValidationEventHandler;
             public override object Value { get => throw null; }
             public override System.Type ValueType { get => throw null; }
         }
@@ -998,7 +998,7 @@ namespace Newtonsoft
             {
                 Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> this[object key] { get; }
             }
-            public class JArray : Newtonsoft.Json.Linq.JContainer, System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.IEnumerable
+            public class JArray : Newtonsoft.Json.Linq.JContainer, System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.IEnumerable, System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>
             {
                 public void Add(Newtonsoft.Json.Linq.JToken item) => throw null;
                 protected override System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken> ChildrenTokens { get => throw null; }
@@ -1047,14 +1047,14 @@ namespace Newtonsoft
                 public override void WriteTo(Newtonsoft.Json.JsonWriter writer, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
                 public override System.Threading.Tasks.Task WriteToAsync(Newtonsoft.Json.JsonWriter writer, System.Threading.CancellationToken cancellationToken, params Newtonsoft.Json.JsonConverter[] converters) => throw null;
             }
-            public abstract class JContainer : Newtonsoft.Json.Linq.JToken, System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.IEnumerable, System.ComponentModel.ITypedList, System.ComponentModel.IBindingList, System.Collections.ICollection, System.Collections.IList, System.Collections.Specialized.INotifyCollectionChanged
+            public abstract class JContainer : Newtonsoft.Json.Linq.JToken, System.ComponentModel.IBindingList, System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.IEnumerable, System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>, System.Collections.IList, System.Collections.Specialized.INotifyCollectionChanged, System.ComponentModel.ITypedList
             {
                 public virtual void Add(object content) => throw null;
                 void System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.Add(Newtonsoft.Json.Linq.JToken item) => throw null;
                 int System.Collections.IList.Add(object value) => throw null;
                 public void AddFirst(object content) => throw null;
                 void System.ComponentModel.IBindingList.AddIndex(System.ComponentModel.PropertyDescriptor property) => throw null;
-                public event System.ComponentModel.AddingNewEventHandler AddingNew { add { } remove { } }
+                public event System.ComponentModel.AddingNewEventHandler AddingNew;
                 object System.ComponentModel.IBindingList.AddNew() => throw null;
                 bool System.ComponentModel.IBindingList.AllowEdit { get => throw null; }
                 bool System.ComponentModel.IBindingList.AllowNew { get => throw null; }
@@ -1064,7 +1064,7 @@ namespace Newtonsoft
                 protected abstract System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken> ChildrenTokens { get; }
                 void System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.Clear() => throw null;
                 void System.Collections.IList.Clear() => throw null;
-                public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged { add { } remove { } }
+                public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
                 bool System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.Contains(Newtonsoft.Json.Linq.JToken item) => throw null;
                 bool System.Collections.IList.Contains(object value) => throw null;
                 void System.Collections.Generic.ICollection<Newtonsoft.Json.Linq.JToken>.CopyTo(Newtonsoft.Json.Linq.JToken[] array, int arrayIndex) => throw null;
@@ -1090,7 +1090,7 @@ namespace Newtonsoft
                 Newtonsoft.Json.Linq.JToken System.Collections.Generic.IList<Newtonsoft.Json.Linq.JToken>.this[int index] { get => throw null; set { } }
                 object System.Collections.IList.this[int index] { get => throw null; set { } }
                 public override Newtonsoft.Json.Linq.JToken Last { get => throw null; }
-                public event System.ComponentModel.ListChangedEventHandler ListChanged { add { } remove { } }
+                public event System.ComponentModel.ListChangedEventHandler ListChanged;
                 public void Merge(object content) => throw null;
                 public void Merge(object content, Newtonsoft.Json.Linq.JsonMergeSettings settings) => throw null;
                 protected virtual void OnAddingNew(System.ComponentModel.AddingNewEventArgs e) => throw null;
@@ -1112,7 +1112,7 @@ namespace Newtonsoft
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
                 public override System.Collections.Generic.IEnumerable<T> Values<T>() => throw null;
             }
-            public struct JEnumerable<T> : Newtonsoft.Json.Linq.IJEnumerable<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.IEquatable<Newtonsoft.Json.Linq.JEnumerable<T>> where T : Newtonsoft.Json.Linq.JToken
+            public struct JEnumerable<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.IEquatable<Newtonsoft.Json.Linq.JEnumerable<T>>, Newtonsoft.Json.Linq.IJEnumerable<T> where T : Newtonsoft.Json.Linq.JToken
             {
                 public JEnumerable(System.Collections.Generic.IEnumerable<T> enumerable) => throw null;
                 public static Newtonsoft.Json.Linq.JEnumerable<T> Empty;
@@ -1123,7 +1123,7 @@ namespace Newtonsoft
                 public override int GetHashCode() => throw null;
                 public Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken> this[object key] { get => throw null; }
             }
-            public class JObject : Newtonsoft.Json.Linq.JContainer, System.Collections.Generic.IDictionary<string, Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>, System.Collections.IEnumerable, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.ICustomTypeDescriptor, System.ComponentModel.INotifyPropertyChanging
+            public class JObject : Newtonsoft.Json.Linq.JContainer, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>, System.ComponentModel.ICustomTypeDescriptor, System.Collections.Generic.IDictionary<string, Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>, System.Collections.IEnumerable, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.INotifyPropertyChanging
             {
                 public void Add(string propertyName, Newtonsoft.Json.Linq.JToken value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>.Add(System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> item) => throw null;
@@ -1167,8 +1167,8 @@ namespace Newtonsoft
                 public System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JProperty> Properties() => throw null;
                 public Newtonsoft.Json.Linq.JProperty Property(string name) => throw null;
                 public Newtonsoft.Json.Linq.JProperty Property(string name, System.StringComparison comparison) => throw null;
-                public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged { add { } remove { } }
-                public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging { add { } remove { } }
+                public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+                public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
                 public Newtonsoft.Json.Linq.JEnumerable<Newtonsoft.Json.Linq.JToken> PropertyValues() => throw null;
                 public bool Remove(string propertyName) => throw null;
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken>>.Remove(System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> item) => throw null;
@@ -1242,7 +1242,7 @@ namespace Newtonsoft
                 public bool ErrorWhenNoMatch { get => throw null; set { } }
                 public System.TimeSpan? RegexMatchTimeout { get => throw null; set { } }
             }
-            public abstract class JToken : Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.IEnumerable, Newtonsoft.Json.IJsonLineInfo, System.ICloneable, System.Dynamic.IDynamicMetaObjectProvider
+            public abstract class JToken : System.ICloneable, System.Dynamic.IDynamicMetaObjectProvider, System.Collections.Generic.IEnumerable<Newtonsoft.Json.Linq.JToken>, System.Collections.IEnumerable, Newtonsoft.Json.Linq.IJEnumerable<Newtonsoft.Json.Linq.JToken>, Newtonsoft.Json.IJsonLineInfo
             {
                 public void AddAfterSelf(object content) => throw null;
                 public void AddAnnotation(object annotation) => throw null;
@@ -1464,7 +1464,7 @@ namespace Newtonsoft
                 public override void WriteValue(System.Guid value) => throw null;
                 public override void WriteValue(System.Uri value) => throw null;
             }
-            public class JValue : Newtonsoft.Json.Linq.JToken, System.IEquatable<Newtonsoft.Json.Linq.JValue>, System.IFormattable, System.IComparable, System.IComparable<Newtonsoft.Json.Linq.JValue>, System.IConvertible
+            public class JValue : Newtonsoft.Json.Linq.JToken, System.IComparable, System.IComparable<Newtonsoft.Json.Linq.JValue>, System.IConvertible, System.IEquatable<Newtonsoft.Json.Linq.JValue>, System.IFormattable
             {
                 int System.IComparable.CompareTo(object obj) => throw null;
                 public int CompareTo(Newtonsoft.Json.Linq.JValue obj) => throw null;

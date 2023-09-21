@@ -12,7 +12,7 @@ namespace System
                 public static void Assert(bool condition, string userMessage) => throw null;
                 public static void Assume(bool condition) => throw null;
                 public static void Assume(bool condition, string userMessage) => throw null;
-                public static event System.EventHandler<System.Diagnostics.Contracts.ContractFailedEventArgs> ContractFailed { add { } remove { } }
+                public static event System.EventHandler<System.Diagnostics.Contracts.ContractFailedEventArgs> ContractFailed;
                 public static void EndContractBlock() => throw null;
                 public static void Ensures(bool condition) => throw null;
                 public static void Ensures(bool condition, string userMessage) => throw null;

@@ -35,7 +35,7 @@ namespace System
                 public override string ToString() => throw null;
                 public static string ToString(System.Collections.Specialized.BitVector32 value) => throw null;
             }
-            public class HybridDictionary : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IDictionary
+            public class HybridDictionary : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
             {
                 public void Add(object key, object value) => throw null;
                 public void Clear() => throw null;
@@ -57,14 +57,14 @@ namespace System
                 public object this[object key] { get => throw null; set { } }
                 public System.Collections.ICollection Values { get => throw null; }
             }
-            public interface IOrderedDictionary : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IDictionary
+            public interface IOrderedDictionary : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
             {
                 System.Collections.IDictionaryEnumerator GetEnumerator();
                 void Insert(int index, object key, object value);
                 void RemoveAt(int index);
                 object this[int index] { get; set; }
             }
-            public class ListDictionary : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IDictionary
+            public class ListDictionary : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
             {
                 public void Add(object key, object value) => throw null;
                 public void Clear() => throw null;
@@ -84,7 +84,7 @@ namespace System
                 public object this[object key] { get => throw null; set { } }
                 public System.Collections.ICollection Values { get => throw null; }
             }
-            public abstract class NameObjectCollectionBase : System.Collections.ICollection, System.Collections.IEnumerable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+            public abstract class NameObjectCollectionBase : System.Collections.ICollection, System.Runtime.Serialization.IDeserializationCallback, System.Collections.IEnumerable, System.Runtime.Serialization.ISerializable
             {
                 protected void BaseAdd(string name, object value) => throw null;
                 protected void BaseClear() => throw null;
@@ -154,7 +154,7 @@ namespace System
                 public string this[int index] { get => throw null; }
                 public string this[string name] { get => throw null; set { } }
             }
-            public class OrderedDictionary : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.Specialized.IOrderedDictionary, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+            public class OrderedDictionary : System.Collections.ICollection, System.Runtime.Serialization.IDeserializationCallback, System.Collections.IDictionary, System.Collections.IEnumerable, System.Collections.Specialized.IOrderedDictionary, System.Runtime.Serialization.ISerializable
             {
                 public void Add(object key, object value) => throw null;
                 public System.Collections.Specialized.OrderedDictionary AsReadOnly() => throw null;

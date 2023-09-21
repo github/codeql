@@ -100,7 +100,7 @@ namespace System
             public struct AssemblyFileHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.AssemblyFileHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.AssemblyFileHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.AssemblyFileHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.AssemblyFileHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.AssemblyFileHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -139,7 +139,7 @@ namespace System
             public struct AssemblyReferenceHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.AssemblyReferenceHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.AssemblyReferenceHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.AssemblyReferenceHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.AssemblyReferenceHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.AssemblyReferenceHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -161,7 +161,7 @@ namespace System
             {
                 public void Align(int alignment) => throw null;
                 protected virtual System.Reflection.Metadata.BlobBuilder AllocateChunk(int minimalSize) => throw null;
-                public struct Blobs : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.Blob>, System.Collections.IEnumerator, System.IDisposable
+                public struct Blobs : System.IDisposable, System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Collections.IEnumerable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.Blob>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.Blob Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -411,7 +411,7 @@ namespace System
             public struct CustomAttributeHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.CustomAttributeHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.CustomAttributeHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.CustomAttributeHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.CustomAttributeHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.CustomAttributeHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -470,7 +470,7 @@ namespace System
             public struct CustomDebugInformationHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.CustomDebugInformationHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.CustomDebugInformationHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.CustomDebugInformationHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.CustomDebugInformationHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.CustomDebugInformationHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -510,7 +510,7 @@ namespace System
             public struct DeclarativeSecurityAttributeHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.DeclarativeSecurityAttributeHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.DeclarativeSecurityAttributeHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.DeclarativeSecurityAttributeHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.DeclarativeSecurityAttributeHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.DeclarativeSecurityAttributeHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -545,7 +545,7 @@ namespace System
             public struct DocumentHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.DocumentHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.DocumentHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.DocumentHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.DocumentHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.DocumentHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1203,7 +1203,7 @@ namespace System
             public struct EventDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.EventDefinitionHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.EventDefinitionHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.EventDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.EventDefinitionHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.EventDefinitionHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1258,7 +1258,7 @@ namespace System
             public struct ExportedTypeHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ExportedTypeHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.ExportedTypeHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ExportedTypeHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ExportedTypeHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.ExportedTypeHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1299,7 +1299,7 @@ namespace System
             public struct FieldDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.FieldDefinitionHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.FieldDefinitionHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.FieldDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.FieldDefinitionHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.FieldDefinitionHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1342,7 +1342,7 @@ namespace System
             public struct GenericParameterConstraintHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.GenericParameterConstraintHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.GenericParameterConstraintHandle>, System.Collections.Generic.IReadOnlyList<System.Reflection.Metadata.GenericParameterConstraintHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.GenericParameterConstraintHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.GenericParameterConstraintHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.GenericParameterConstraintHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1371,7 +1371,7 @@ namespace System
             public struct GenericParameterHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.GenericParameterHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.GenericParameterHandle>, System.Collections.Generic.IReadOnlyList<System.Reflection.Metadata.GenericParameterHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.GenericParameterHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.GenericParameterHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.GenericParameterHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1716,7 +1716,7 @@ namespace System
             }
             public struct ImportDefinitionCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ImportDefinition>, System.Collections.IEnumerable
             {
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ImportDefinition>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ImportDefinition>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.ImportDefinition Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1749,7 +1749,7 @@ namespace System
             public struct ImportScopeCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ImportScopeHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.ImportScopeHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ImportScopeHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ImportScopeHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.ImportScopeHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1795,7 +1795,7 @@ namespace System
             public struct InterfaceImplementationHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.InterfaceImplementationHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.InterfaceImplementationHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.InterfaceImplementationHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.InterfaceImplementationHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.InterfaceImplementationHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1807,7 +1807,7 @@ namespace System
                 System.Collections.Generic.IEnumerator<System.Reflection.Metadata.InterfaceImplementationHandle> System.Collections.Generic.IEnumerable<System.Reflection.Metadata.InterfaceImplementationHandle>.GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
-            public interface ISignatureTypeProvider<TType, TGenericContext> : System.Reflection.Metadata.IConstructedTypeProvider<TType>, System.Reflection.Metadata.ISZArrayTypeProvider<TType>, System.Reflection.Metadata.ISimpleTypeProvider<TType>
+            public interface ISignatureTypeProvider<TType, TGenericContext> : System.Reflection.Metadata.IConstructedTypeProvider<TType>, System.Reflection.Metadata.ISimpleTypeProvider<TType>, System.Reflection.Metadata.ISZArrayTypeProvider<TType>
             {
                 TType GetFunctionPointerType(System.Reflection.Metadata.MethodSignature<TType> signature);
                 TType GetGenericMethodParameter(TGenericContext genericContext, int index);
@@ -1847,7 +1847,7 @@ namespace System
             public struct LocalConstantHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.LocalConstantHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.LocalConstantHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalConstantHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalConstantHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.LocalConstantHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1885,7 +1885,7 @@ namespace System
             }
             public struct LocalScopeHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.LocalScopeHandle>
             {
-                public struct ChildrenEnumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct ChildrenEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.LocalScopeHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1894,7 +1894,7 @@ namespace System
                     void System.Collections.IEnumerator.Reset() => throw null;
                 }
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.LocalScopeHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1934,7 +1934,7 @@ namespace System
             public struct LocalVariableHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.LocalVariableHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.LocalVariableHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalVariableHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalVariableHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.LocalVariableHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -1970,7 +1970,7 @@ namespace System
             public struct ManifestResourceHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ManifestResourceHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.ManifestResourceHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ManifestResourceHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ManifestResourceHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.ManifestResourceHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2008,7 +2008,7 @@ namespace System
             public struct MemberReferenceHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.MemberReferenceHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.MemberReferenceHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MemberReferenceHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MemberReferenceHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.MemberReferenceHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2195,7 +2195,7 @@ namespace System
             public struct MethodDebugInformationHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.MethodDebugInformationHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.MethodDebugInformationHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodDebugInformationHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodDebugInformationHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.MethodDebugInformationHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2239,7 +2239,7 @@ namespace System
             public struct MethodDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.MethodDefinitionHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.MethodDefinitionHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodDefinitionHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.MethodDefinitionHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2274,7 +2274,7 @@ namespace System
             public struct MethodImplementationHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.MethodImplementationHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.MethodImplementationHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodImplementationHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodImplementationHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.MethodImplementationHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2405,7 +2405,7 @@ namespace System
             public struct ParameterHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ParameterHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.ParameterHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ParameterHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ParameterHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.ParameterHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2493,7 +2493,7 @@ namespace System
             public struct PropertyDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.PropertyDefinitionHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.PropertyDefinitionHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.PropertyDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.PropertyDefinitionHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.PropertyDefinitionHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2519,7 +2519,7 @@ namespace System
                 public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Reflection.Metadata.SequencePoint other) => throw null;
                 public override int GetHashCode() => throw null;
-                public static int HiddenLine;
+                public const int HiddenLine = default;
                 public bool IsHidden { get => throw null; }
                 public int Offset { get => throw null; }
                 public int StartColumn { get => throw null; }
@@ -2527,7 +2527,7 @@ namespace System
             }
             public struct SequencePointCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.SequencePoint>, System.Collections.IEnumerable
             {
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.SequencePoint>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.SequencePoint>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.SequencePoint Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2582,7 +2582,7 @@ namespace System
             {
                 public System.Reflection.Metadata.SignatureAttributes Attributes { get => throw null; }
                 public System.Reflection.Metadata.SignatureCallingConvention CallingConvention { get => throw null; }
-                public static byte CallingConventionOrKindMask;
+                public const byte CallingConventionOrKindMask = default;
                 public SignatureHeader(byte rawValue) => throw null;
                 public SignatureHeader(System.Reflection.Metadata.SignatureKind kind, System.Reflection.Metadata.SignatureCallingConvention convention, System.Reflection.Metadata.SignatureAttributes attributes) => throw null;
                 public override bool Equals(object obj) => throw null;
@@ -2720,7 +2720,7 @@ namespace System
             public struct TypeDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.TypeDefinitionHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.TypeDefinitionHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.TypeDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.TypeDefinitionHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.TypeDefinitionHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2761,7 +2761,7 @@ namespace System
             public struct TypeReferenceHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.TypeReferenceHandle>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.TypeReferenceHandle>
             {
                 public int Count { get => throw null; }
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.TypeReferenceHandle>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.TypeReferenceHandle>, System.Collections.IEnumerator
                 {
                     public System.Reflection.Metadata.TypeReferenceHandle Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -2989,8 +2989,8 @@ namespace System
                 protected override System.Collections.Immutable.ImmutableArray<System.Reflection.PortableExecutable.PEBuilder.Section> CreateSections() => throw null;
                 public ManagedPEBuilder(System.Reflection.PortableExecutable.PEHeaderBuilder header, System.Reflection.Metadata.Ecma335.MetadataRootBuilder metadataRootBuilder, System.Reflection.Metadata.BlobBuilder ilStream, System.Reflection.Metadata.BlobBuilder mappedFieldData = default(System.Reflection.Metadata.BlobBuilder), System.Reflection.Metadata.BlobBuilder managedResources = default(System.Reflection.Metadata.BlobBuilder), System.Reflection.PortableExecutable.ResourceSectionBuilder nativeResources = default(System.Reflection.PortableExecutable.ResourceSectionBuilder), System.Reflection.PortableExecutable.DebugDirectoryBuilder debugDirectoryBuilder = default(System.Reflection.PortableExecutable.DebugDirectoryBuilder), int strongNameSignatureSize = default(int), System.Reflection.Metadata.MethodDefinitionHandle entryPoint = default(System.Reflection.Metadata.MethodDefinitionHandle), System.Reflection.PortableExecutable.CorFlags flags = default(System.Reflection.PortableExecutable.CorFlags), System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Reflection.Metadata.BlobContentId> deterministicIdProvider = default(System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Reflection.Metadata.BlobContentId>)) : base(default(System.Reflection.PortableExecutable.PEHeaderBuilder), default(System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Reflection.Metadata.BlobContentId>)) => throw null;
                 protected override System.Reflection.PortableExecutable.PEDirectoriesBuilder GetDirectories() => throw null;
-                public static int ManagedResourcesDataAlignment;
-                public static int MappedFieldDataAlignment;
+                public const int ManagedResourcesDataAlignment = default;
+                public const int MappedFieldDataAlignment = default;
                 protected override System.Reflection.Metadata.BlobBuilder SerializeSection(string name, System.Reflection.PortableExecutable.SectionLocation location) => throw null;
                 public void Sign(System.Reflection.Metadata.BlobBuilder peImage, System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, byte[]> signatureProvider) => throw null;
             }

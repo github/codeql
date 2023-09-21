@@ -168,7 +168,7 @@ namespace Microsoft
                             }
                         }
                     }
-                    public class KestrelServer : Microsoft.AspNetCore.Hosting.Server.IServer, System.IDisposable
+                    public class KestrelServer : System.IDisposable, Microsoft.AspNetCore.Hosting.Server.IServer
                     {
                         public KestrelServer(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions> options, Microsoft.AspNetCore.Connections.IConnectionListenerFactory transportFactory, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
                         public void Dispose() => throw null;

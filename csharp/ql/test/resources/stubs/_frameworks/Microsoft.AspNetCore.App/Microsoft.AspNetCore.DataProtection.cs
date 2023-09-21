@@ -201,7 +201,7 @@ namespace Microsoft
                     object CreateInstance(System.Type expectedBaseType, string implementationTypeName);
                 }
             }
-            public interface IPersistedDataProtector : Microsoft.AspNetCore.DataProtection.IDataProtector, Microsoft.AspNetCore.DataProtection.IDataProtectionProvider
+            public interface IPersistedDataProtector : Microsoft.AspNetCore.DataProtection.IDataProtectionProvider, Microsoft.AspNetCore.DataProtection.IDataProtector
             {
                 byte[] DangerousUnprotect(byte[] protectedData, bool ignoreRevocationErrors, out bool requiresMigration, out bool wasRevoked);
             }
@@ -281,7 +281,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.DataProtection.XmlEncryption.IXmlEncryptor XmlEncryptor { get => throw null; set { } }
                     public Microsoft.AspNetCore.DataProtection.Repositories.IXmlRepository XmlRepository { get => throw null; set { } }
                 }
-                public sealed class XmlKeyManager : Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager, Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IInternalXmlKeyManager
+                public sealed class XmlKeyManager : Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IInternalXmlKeyManager, Microsoft.AspNetCore.DataProtection.KeyManagement.IKeyManager
                 {
                     public Microsoft.AspNetCore.DataProtection.KeyManagement.IKey CreateNewKey(System.DateTimeOffset activationDate, System.DateTimeOffset expirationDate) => throw null;
                     Microsoft.AspNetCore.DataProtection.KeyManagement.IKey Microsoft.AspNetCore.DataProtection.KeyManagement.Internal.IInternalXmlKeyManager.CreateNewKey(System.Guid keyId, System.DateTimeOffset creationDate, System.DateTimeOffset activationDate, System.DateTimeOffset expirationDate) => throw null;

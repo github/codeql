@@ -33,7 +33,7 @@ namespace Microsoft
                     public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => throw null;
                     public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter) => throw null;
                 }
-                public class NullLoggerFactory : Microsoft.Extensions.Logging.ILoggerFactory, System.IDisposable
+                public class NullLoggerFactory : System.IDisposable, Microsoft.Extensions.Logging.ILoggerFactory
                 {
                     public void AddProvider(Microsoft.Extensions.Logging.ILoggerProvider provider) => throw null;
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string name) => throw null;
@@ -41,7 +41,7 @@ namespace Microsoft
                     public void Dispose() => throw null;
                     public static Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory Instance;
                 }
-                public class NullLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, System.IDisposable
+                public class NullLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => throw null;
                     public void Dispose() => throw null;

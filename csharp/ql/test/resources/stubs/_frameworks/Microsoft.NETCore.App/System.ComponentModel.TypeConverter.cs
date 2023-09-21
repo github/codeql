@@ -98,10 +98,10 @@ namespace System
             OneWay = 0,
             TwoWay = 1,
         }
-        public class BindingList<T> : System.Collections.ObjectModel.Collection<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList, System.ComponentModel.ICancelAddNew, System.ComponentModel.IRaiseItemChangedEvents
+        public class BindingList<T> : System.Collections.ObjectModel.Collection<T>, System.ComponentModel.IBindingList, System.ComponentModel.ICancelAddNew, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IRaiseItemChangedEvents
         {
             void System.ComponentModel.IBindingList.AddIndex(System.ComponentModel.PropertyDescriptor prop) => throw null;
-            public event System.ComponentModel.AddingNewEventHandler AddingNew { add { } remove { } }
+            public event System.ComponentModel.AddingNewEventHandler AddingNew;
             public T AddNew() => throw null;
             object System.ComponentModel.IBindingList.AddNew() => throw null;
             protected virtual object AddNewCore() => throw null;
@@ -123,7 +123,7 @@ namespace System
             protected override void InsertItem(int index, T item) => throw null;
             bool System.ComponentModel.IBindingList.IsSorted { get => throw null; }
             protected virtual bool IsSortedCore { get => throw null; }
-            public event System.ComponentModel.ListChangedEventHandler ListChanged { add { } remove { } }
+            public event System.ComponentModel.ListChangedEventHandler ListChanged;
             protected virtual void OnAddingNew(System.ComponentModel.AddingNewEventArgs e) => throw null;
             protected virtual void OnListChanged(System.ComponentModel.ListChangedEventArgs e) => throw null;
             public bool RaiseListChangedEvents { get => throw null; set { } }
@@ -555,13 +555,13 @@ namespace System
             }
             public interface IComponentChangeService
             {
-                event System.ComponentModel.Design.ComponentEventHandler ComponentAdded { add { } remove { } }
-                event System.ComponentModel.Design.ComponentEventHandler ComponentAdding { add { } remove { } }
-                event System.ComponentModel.Design.ComponentChangedEventHandler ComponentChanged { add { } remove { } }
-                event System.ComponentModel.Design.ComponentChangingEventHandler ComponentChanging { add { } remove { } }
-                event System.ComponentModel.Design.ComponentEventHandler ComponentRemoved { add { } remove { } }
-                event System.ComponentModel.Design.ComponentEventHandler ComponentRemoving { add { } remove { } }
-                event System.ComponentModel.Design.ComponentRenameEventHandler ComponentRename { add { } remove { } }
+                event System.ComponentModel.Design.ComponentEventHandler ComponentAdded;
+                event System.ComponentModel.Design.ComponentEventHandler ComponentAdding;
+                event System.ComponentModel.Design.ComponentChangedEventHandler ComponentChanged;
+                event System.ComponentModel.Design.ComponentChangingEventHandler ComponentChanging;
+                event System.ComponentModel.Design.ComponentEventHandler ComponentRemoved;
+                event System.ComponentModel.Design.ComponentEventHandler ComponentRemoving;
+                event System.ComponentModel.Design.ComponentRenameEventHandler ComponentRename;
                 void OnComponentChanged(object component, System.ComponentModel.MemberDescriptor member, object oldValue, object newValue);
                 void OnComponentChanging(object component, System.ComponentModel.MemberDescriptor member);
             }
@@ -584,11 +584,11 @@ namespace System
             public interface IDesignerEventService
             {
                 System.ComponentModel.Design.IDesignerHost ActiveDesigner { get; }
-                event System.ComponentModel.Design.ActiveDesignerEventHandler ActiveDesignerChanged { add { } remove { } }
-                event System.ComponentModel.Design.DesignerEventHandler DesignerCreated { add { } remove { } }
-                event System.ComponentModel.Design.DesignerEventHandler DesignerDisposed { add { } remove { } }
+                event System.ComponentModel.Design.ActiveDesignerEventHandler ActiveDesignerChanged;
+                event System.ComponentModel.Design.DesignerEventHandler DesignerCreated;
+                event System.ComponentModel.Design.DesignerEventHandler DesignerDisposed;
                 System.ComponentModel.Design.DesignerCollection Designers { get; }
-                event System.EventHandler SelectionChanged { add { } remove { } }
+                event System.EventHandler SelectionChanged;
             }
             public interface IDesignerFilter
             {
@@ -602,26 +602,26 @@ namespace System
             public interface IDesignerHost : System.ComponentModel.Design.IServiceContainer, System.IServiceProvider
             {
                 void Activate();
-                event System.EventHandler Activated { add { } remove { } }
+                event System.EventHandler Activated;
                 System.ComponentModel.IContainer Container { get; }
                 System.ComponentModel.IComponent CreateComponent(System.Type componentClass);
                 System.ComponentModel.IComponent CreateComponent(System.Type componentClass, string name);
                 System.ComponentModel.Design.DesignerTransaction CreateTransaction();
                 System.ComponentModel.Design.DesignerTransaction CreateTransaction(string description);
-                event System.EventHandler Deactivated { add { } remove { } }
+                event System.EventHandler Deactivated;
                 void DestroyComponent(System.ComponentModel.IComponent component);
                 System.ComponentModel.Design.IDesigner GetDesigner(System.ComponentModel.IComponent component);
                 System.Type GetType(string typeName);
                 bool InTransaction { get; }
-                event System.EventHandler LoadComplete { add { } remove { } }
+                event System.EventHandler LoadComplete;
                 bool Loading { get; }
                 System.ComponentModel.IComponent RootComponent { get; }
                 string RootComponentClassName { get; }
-                event System.ComponentModel.Design.DesignerTransactionCloseEventHandler TransactionClosed { add { } remove { } }
-                event System.ComponentModel.Design.DesignerTransactionCloseEventHandler TransactionClosing { add { } remove { } }
+                event System.ComponentModel.Design.DesignerTransactionCloseEventHandler TransactionClosed;
+                event System.ComponentModel.Design.DesignerTransactionCloseEventHandler TransactionClosing;
                 string TransactionDescription { get; }
-                event System.EventHandler TransactionOpened { add { } remove { } }
-                event System.EventHandler TransactionOpening { add { } remove { } }
+                event System.EventHandler TransactionOpened;
+                event System.EventHandler TransactionOpening;
             }
             public interface IDesignerHostTransactionState
             {
@@ -707,8 +707,8 @@ namespace System
                 bool GetComponentSelected(object component);
                 System.Collections.ICollection GetSelectedComponents();
                 object PrimarySelection { get; }
-                event System.EventHandler SelectionChanged { add { } remove { } }
-                event System.EventHandler SelectionChanging { add { } remove { } }
+                event System.EventHandler SelectionChanged;
+                event System.EventHandler SelectionChanging;
                 int SelectionCount { get; }
                 void SetSelectedComponents(System.Collections.ICollection components);
                 void SetSelectedComponents(System.Collections.ICollection components, System.ComponentModel.Design.SelectionTypes selectionType);
@@ -750,7 +750,7 @@ namespace System
             public class MenuCommand
             {
                 public virtual bool Checked { get => throw null; set { } }
-                public event System.EventHandler CommandChanged { add { } remove { } }
+                public event System.EventHandler CommandChanged;
                 public virtual System.ComponentModel.Design.CommandID CommandID { get => throw null; }
                 public MenuCommand(System.EventHandler handler, System.ComponentModel.Design.CommandID command) => throw null;
                 public virtual bool Enabled { get => throw null; set { } }
@@ -824,7 +824,7 @@ namespace System
                     void EndLoad(string baseClassName, bool successful, System.Collections.ICollection errorCollection);
                     void Reload();
                 }
-                public interface IDesignerLoaderHost2 : System.ComponentModel.Design.IDesignerHost, System.ComponentModel.Design.IServiceContainer, System.IServiceProvider, System.ComponentModel.Design.Serialization.IDesignerLoaderHost
+                public interface IDesignerLoaderHost2 : System.ComponentModel.Design.IDesignerHost, System.ComponentModel.Design.Serialization.IDesignerLoaderHost, System.ComponentModel.Design.IServiceContainer, System.IServiceProvider
                 {
                     bool CanReloadWithErrors { get; set; }
                     bool IgnoreErrorsDuringReload { get; set; }
@@ -847,8 +847,8 @@ namespace System
                     System.ComponentModel.PropertyDescriptorCollection Properties { get; }
                     void RemoveSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider provider);
                     void ReportError(object errorInformation);
-                    event System.ComponentModel.Design.Serialization.ResolveNameEventHandler ResolveName { add { } remove { } }
-                    event System.EventHandler SerializationComplete { add { } remove { } }
+                    event System.ComponentModel.Design.Serialization.ResolveNameEventHandler ResolveName;
+                    event System.EventHandler SerializationComplete;
                     void SetName(object instance, string name);
                 }
                 public interface IDesignerSerializationProvider
@@ -924,7 +924,7 @@ namespace System
                     public abstract void Save(System.IO.Stream stream);
                 }
             }
-            public class ServiceContainer : System.ComponentModel.Design.IServiceContainer, System.IServiceProvider, System.IDisposable
+            public class ServiceContainer : System.IDisposable, System.ComponentModel.Design.IServiceContainer, System.IServiceProvider
             {
                 public void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback) => throw null;
                 public virtual void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback, bool promote) => throw null;
@@ -1150,7 +1150,7 @@ namespace System
             void ApplySort(System.ComponentModel.PropertyDescriptor property, System.ComponentModel.ListSortDirection direction);
             int Find(System.ComponentModel.PropertyDescriptor property, object key);
             bool IsSorted { get; }
-            event System.ComponentModel.ListChangedEventHandler ListChanged { add { } remove { } }
+            event System.ComponentModel.ListChangedEventHandler ListChanged;
             void RemoveIndex(System.ComponentModel.PropertyDescriptor property);
             void RemoveSort();
             System.ComponentModel.ListSortDirection SortDirection { get; }
@@ -1159,7 +1159,7 @@ namespace System
             bool SupportsSearching { get; }
             bool SupportsSorting { get; }
         }
-        public interface IBindingListView : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList
+        public interface IBindingListView : System.ComponentModel.IBindingList, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             void ApplySort(System.ComponentModel.ListSortDescriptionCollection sorts);
             string Filter { get; set; }
@@ -1226,7 +1226,7 @@ namespace System
         {
             System.ComponentModel.IComponent Owner { get; }
         }
-        public interface INestedSite : System.ComponentModel.ISite, System.IServiceProvider
+        public interface INestedSite : System.IServiceProvider, System.ComponentModel.ISite
         {
             string FullName { get; }
         }
@@ -1286,7 +1286,7 @@ namespace System
         }
         public interface ISupportInitializeNotification : System.ComponentModel.ISupportInitialize
         {
-            event System.EventHandler Initialized { add { } remove { } }
+            event System.EventHandler Initialized;
             bool IsInitialized { get; }
         }
         public interface ITypeDescriptorContext : System.IServiceProvider
@@ -1454,7 +1454,7 @@ namespace System
             public virtual bool DesignMode { get => throw null; }
             public void Dispose() => throw null;
             protected virtual void Dispose(bool disposing) => throw null;
-            public event System.EventHandler Disposed { add { } remove { } }
+            public event System.EventHandler Disposed;
             protected System.ComponentModel.EventHandlerList Events { get => throw null; }
             public virtual object GetService(System.Type service) => throw null;
             public virtual System.ComponentModel.ISite Site { get => throw null; set { } }
@@ -1666,7 +1666,7 @@ namespace System
             public abstract bool ShouldSerializeValue(object component);
             public virtual bool SupportsChangeEvents { get => throw null; }
         }
-        public class PropertyDescriptorCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.IList
+        public class PropertyDescriptorCollection : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.Collections.IList
         {
             public int Add(System.ComponentModel.PropertyDescriptor value) => throw null;
             void System.Collections.IDictionary.Add(object key, object value) => throw null;
@@ -2008,7 +2008,7 @@ namespace System
             public static void Refresh(System.Reflection.Assembly assembly) => throw null;
             public static void Refresh(System.Reflection.Module module) => throw null;
             public static void Refresh(System.Type type) => throw null;
-            public static event System.ComponentModel.RefreshEventHandler Refreshed { add { } remove { } }
+            public static event System.ComponentModel.RefreshEventHandler Refreshed;
             public static void RemoveAssociation(object primary, object secondary) => throw null;
             public static void RemoveAssociations(object primary) => throw null;
             public static void RemoveProvider(System.ComponentModel.TypeDescriptionProvider provider, object instance) => throw null;
@@ -2158,7 +2158,7 @@ namespace System
             public Timer(double interval) => throw null;
             public Timer(System.TimeSpan interval) => throw null;
             protected override void Dispose(bool disposing) => throw null;
-            public event System.Timers.ElapsedEventHandler Elapsed { add { } remove { } }
+            public event System.Timers.ElapsedEventHandler Elapsed;
             public bool Enabled { get => throw null; set { } }
             public void EndInit() => throw null;
             public double Interval { get => throw null; set { } }

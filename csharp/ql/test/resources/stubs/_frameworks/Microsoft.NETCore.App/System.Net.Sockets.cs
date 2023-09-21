@@ -419,7 +419,7 @@ namespace System
                 public byte[] Buffer { get => throw null; }
                 public System.Collections.Generic.IList<System.ArraySegment<byte>> BufferList { get => throw null; set { } }
                 public int BytesTransferred { get => throw null; }
-                public event System.EventHandler<System.Net.Sockets.SocketAsyncEventArgs> Completed { add { } remove { } }
+                public event System.EventHandler<System.Net.Sockets.SocketAsyncEventArgs> Completed;
                 public System.Exception ConnectByNameError { get => throw null; }
                 public System.Net.Sockets.Socket ConnectSocket { get => throw null; }
                 public int Count { get => throw null; }

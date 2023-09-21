@@ -74,7 +74,7 @@ namespace Microsoft
                     System.IDisposable Microsoft.Extensions.Primitives.IChangeToken.RegisterChangeCallback(System.Action<object> callback, object state) => throw null;
                 }
             }
-            public class PhysicalFileProvider : Microsoft.Extensions.FileProviders.IFileProvider, System.IDisposable
+            public class PhysicalFileProvider : System.IDisposable, Microsoft.Extensions.FileProviders.IFileProvider
             {
                 public PhysicalFileProvider(string root) => throw null;
                 public PhysicalFileProvider(string root, Microsoft.Extensions.FileProviders.Physical.ExclusionFilters filters) => throw null;

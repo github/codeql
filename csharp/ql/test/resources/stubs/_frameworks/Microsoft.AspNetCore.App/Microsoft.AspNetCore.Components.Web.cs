@@ -228,7 +228,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.RouteData RouteData { get => throw null; set { } }
                     public string Selector { get => throw null; set { } }
                 }
-                public sealed class NavigationLock : Microsoft.AspNetCore.Components.IComponent, Microsoft.AspNetCore.Components.IHandleAfterRender, System.IAsyncDisposable
+                public sealed class NavigationLock : System.IAsyncDisposable, Microsoft.AspNetCore.Components.IComponent, Microsoft.AspNetCore.Components.IHandleAfterRender
                 {
                     void Microsoft.AspNetCore.Components.IComponent.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) => throw null;
                     public bool ConfirmExternalNavigation { get => throw null; set { } }

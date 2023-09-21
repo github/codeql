@@ -185,13 +185,13 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.Endpoint GetEndpoint(this Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                 public static void SetEndpoint(this Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Http.Endpoint endpoint) => throw null;
             }
-            public sealed class EndpointMetadataCollection : System.Collections.Generic.IReadOnlyList<object>, System.Collections.Generic.IEnumerable<object>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<object>
+            public sealed class EndpointMetadataCollection : System.Collections.Generic.IEnumerable<object>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<object>, System.Collections.Generic.IReadOnlyList<object>
             {
                 public int Count { get => throw null; }
                 public EndpointMetadataCollection(System.Collections.Generic.IEnumerable<object> items) => throw null;
                 public EndpointMetadataCollection(params object[] items) => throw null;
                 public static Microsoft.AspNetCore.Http.EndpointMetadataCollection Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<object>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<object>, System.Collections.IEnumerator
                 {
                     public object Current { get => throw null; }
                     public void Dispose() => throw null;
@@ -581,71 +581,71 @@ namespace Microsoft
             }
             public static class StatusCodes
             {
-                public static int Status100Continue;
-                public static int Status101SwitchingProtocols;
-                public static int Status102Processing;
-                public static int Status200OK;
-                public static int Status201Created;
-                public static int Status202Accepted;
-                public static int Status203NonAuthoritative;
-                public static int Status204NoContent;
-                public static int Status205ResetContent;
-                public static int Status206PartialContent;
-                public static int Status207MultiStatus;
-                public static int Status208AlreadyReported;
-                public static int Status226IMUsed;
-                public static int Status300MultipleChoices;
-                public static int Status301MovedPermanently;
-                public static int Status302Found;
-                public static int Status303SeeOther;
-                public static int Status304NotModified;
-                public static int Status305UseProxy;
-                public static int Status306SwitchProxy;
-                public static int Status307TemporaryRedirect;
-                public static int Status308PermanentRedirect;
-                public static int Status400BadRequest;
-                public static int Status401Unauthorized;
-                public static int Status402PaymentRequired;
-                public static int Status403Forbidden;
-                public static int Status404NotFound;
-                public static int Status405MethodNotAllowed;
-                public static int Status406NotAcceptable;
-                public static int Status407ProxyAuthenticationRequired;
-                public static int Status408RequestTimeout;
-                public static int Status409Conflict;
-                public static int Status410Gone;
-                public static int Status411LengthRequired;
-                public static int Status412PreconditionFailed;
-                public static int Status413PayloadTooLarge;
-                public static int Status413RequestEntityTooLarge;
-                public static int Status414RequestUriTooLong;
-                public static int Status414UriTooLong;
-                public static int Status415UnsupportedMediaType;
-                public static int Status416RangeNotSatisfiable;
-                public static int Status416RequestedRangeNotSatisfiable;
-                public static int Status417ExpectationFailed;
-                public static int Status418ImATeapot;
-                public static int Status419AuthenticationTimeout;
-                public static int Status421MisdirectedRequest;
-                public static int Status422UnprocessableEntity;
-                public static int Status423Locked;
-                public static int Status424FailedDependency;
-                public static int Status426UpgradeRequired;
-                public static int Status428PreconditionRequired;
-                public static int Status429TooManyRequests;
-                public static int Status431RequestHeaderFieldsTooLarge;
-                public static int Status451UnavailableForLegalReasons;
-                public static int Status500InternalServerError;
-                public static int Status501NotImplemented;
-                public static int Status502BadGateway;
-                public static int Status503ServiceUnavailable;
-                public static int Status504GatewayTimeout;
-                public static int Status505HttpVersionNotsupported;
-                public static int Status506VariantAlsoNegotiates;
-                public static int Status507InsufficientStorage;
-                public static int Status508LoopDetected;
-                public static int Status510NotExtended;
-                public static int Status511NetworkAuthenticationRequired;
+                public const int Status100Continue = default;
+                public const int Status101SwitchingProtocols = default;
+                public const int Status102Processing = default;
+                public const int Status200OK = default;
+                public const int Status201Created = default;
+                public const int Status202Accepted = default;
+                public const int Status203NonAuthoritative = default;
+                public const int Status204NoContent = default;
+                public const int Status205ResetContent = default;
+                public const int Status206PartialContent = default;
+                public const int Status207MultiStatus = default;
+                public const int Status208AlreadyReported = default;
+                public const int Status226IMUsed = default;
+                public const int Status300MultipleChoices = default;
+                public const int Status301MovedPermanently = default;
+                public const int Status302Found = default;
+                public const int Status303SeeOther = default;
+                public const int Status304NotModified = default;
+                public const int Status305UseProxy = default;
+                public const int Status306SwitchProxy = default;
+                public const int Status307TemporaryRedirect = default;
+                public const int Status308PermanentRedirect = default;
+                public const int Status400BadRequest = default;
+                public const int Status401Unauthorized = default;
+                public const int Status402PaymentRequired = default;
+                public const int Status403Forbidden = default;
+                public const int Status404NotFound = default;
+                public const int Status405MethodNotAllowed = default;
+                public const int Status406NotAcceptable = default;
+                public const int Status407ProxyAuthenticationRequired = default;
+                public const int Status408RequestTimeout = default;
+                public const int Status409Conflict = default;
+                public const int Status410Gone = default;
+                public const int Status411LengthRequired = default;
+                public const int Status412PreconditionFailed = default;
+                public const int Status413PayloadTooLarge = default;
+                public const int Status413RequestEntityTooLarge = default;
+                public const int Status414RequestUriTooLong = default;
+                public const int Status414UriTooLong = default;
+                public const int Status415UnsupportedMediaType = default;
+                public const int Status416RangeNotSatisfiable = default;
+                public const int Status416RequestedRangeNotSatisfiable = default;
+                public const int Status417ExpectationFailed = default;
+                public const int Status418ImATeapot = default;
+                public const int Status419AuthenticationTimeout = default;
+                public const int Status421MisdirectedRequest = default;
+                public const int Status422UnprocessableEntity = default;
+                public const int Status423Locked = default;
+                public const int Status424FailedDependency = default;
+                public const int Status426UpgradeRequired = default;
+                public const int Status428PreconditionRequired = default;
+                public const int Status429TooManyRequests = default;
+                public const int Status431RequestHeaderFieldsTooLarge = default;
+                public const int Status451UnavailableForLegalReasons = default;
+                public const int Status500InternalServerError = default;
+                public const int Status501NotImplemented = default;
+                public const int Status502BadGateway = default;
+                public const int Status503ServiceUnavailable = default;
+                public const int Status504GatewayTimeout = default;
+                public const int Status505HttpVersionNotsupported = default;
+                public const int Status506VariantAlsoNegotiates = default;
+                public const int Status507InsufficientStorage = default;
+                public const int Status508LoopDetected = default;
+                public const int Status510NotExtended = default;
+                public const int Status511NetworkAuthenticationRequired = default;
             }
             public abstract class WebSocketManager
             {
@@ -672,7 +672,7 @@ namespace Microsoft
         }
         namespace Routing
         {
-            public class RouteValueDictionary : System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyDictionary<string, object>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>
+            public class RouteValueDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyDictionary<string, object>
             {
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>.Add(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
                 public void Add(string key, object value) => throw null;
@@ -687,7 +687,7 @@ namespace Microsoft
                 public RouteValueDictionary(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> values) => throw null;
                 public RouteValueDictionary(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> values) => throw null;
                 public RouteValueDictionary(Microsoft.AspNetCore.Routing.RouteValueDictionary dictionary) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator
                 {
                     public Enumerator(Microsoft.AspNetCore.Routing.RouteValueDictionary dictionary) => throw null;
                     public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }

@@ -47,7 +47,7 @@ namespace System
                 protected virtual int Fill(System.Data.DataSet dataSet, string srcTable, System.Data.IDataReader dataReader, int startRecord, int maxRecords) => throw null;
                 protected virtual int Fill(System.Data.DataTable dataTable, System.Data.IDataReader dataReader) => throw null;
                 protected virtual int Fill(System.Data.DataTable[] dataTables, System.Data.IDataReader dataReader, int startRecord, int maxRecords) => throw null;
-                public event System.Data.FillErrorEventHandler FillError { add { } remove { } }
+                public event System.Data.FillErrorEventHandler FillError;
                 public System.Data.LoadOption FillLoadOption { get => throw null; set { } }
                 public virtual System.Data.DataTable[] FillSchema(System.Data.DataSet dataSet, System.Data.SchemaType schemaType) => throw null;
                 protected virtual System.Data.DataTable[] FillSchema(System.Data.DataSet dataSet, System.Data.SchemaType schemaType, string srcTable, System.Data.IDataReader dataReader) => throw null;
@@ -66,7 +66,7 @@ namespace System
                 public System.Data.Common.DataTableMappingCollection TableMappings { get => throw null; }
                 public virtual int Update(System.Data.DataSet dataSet) => throw null;
             }
-            public sealed class DataColumnMapping : System.MarshalByRefObject, System.Data.IColumnMapping, System.ICloneable
+            public sealed class DataColumnMapping : System.MarshalByRefObject, System.ICloneable, System.Data.IColumnMapping
             {
                 object System.ICloneable.Clone() => throw null;
                 public DataColumnMapping() => throw null;
@@ -77,7 +77,7 @@ namespace System
                 public string SourceColumn { get => throw null; set { } }
                 public override string ToString() => throw null;
             }
-            public sealed class DataColumnMappingCollection : System.MarshalByRefObject, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Data.IColumnMappingCollection
+            public sealed class DataColumnMappingCollection : System.MarshalByRefObject, System.Collections.ICollection, System.Data.IColumnMappingCollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 public int Add(object value) => throw null;
                 public System.Data.Common.DataColumnMapping Add(string sourceColumn, string dataSetColumn) => throw null;
@@ -114,7 +114,7 @@ namespace System
                 public System.Data.Common.DataColumnMapping this[int index] { get => throw null; set { } }
                 public System.Data.Common.DataColumnMapping this[string sourceColumn] { get => throw null; set { } }
             }
-            public sealed class DataTableMapping : System.MarshalByRefObject, System.Data.ITableMapping, System.ICloneable
+            public sealed class DataTableMapping : System.MarshalByRefObject, System.ICloneable, System.Data.ITableMapping
             {
                 object System.ICloneable.Clone() => throw null;
                 public System.Data.Common.DataColumnMappingCollection ColumnMappings { get => throw null; }
@@ -165,7 +165,7 @@ namespace System
                 public System.Data.Common.DataTableMapping this[int index] { get => throw null; set { } }
                 public System.Data.Common.DataTableMapping this[string sourceTable] { get => throw null; set { } }
             }
-            public abstract class DbBatch : System.IDisposable, System.IAsyncDisposable
+            public abstract class DbBatch : System.IAsyncDisposable, System.IDisposable
             {
                 public System.Data.Common.DbBatchCommandCollection BatchCommands { get => throw null; }
                 public abstract void Cancel();
@@ -201,7 +201,7 @@ namespace System
                 public System.Data.Common.DbParameterCollection Parameters { get => throw null; }
                 public abstract int RecordsAffected { get; }
             }
-            public abstract class DbBatchCommandCollection : System.Collections.Generic.IList<System.Data.Common.DbBatchCommand>, System.Collections.Generic.ICollection<System.Data.Common.DbBatchCommand>, System.Collections.Generic.IEnumerable<System.Data.Common.DbBatchCommand>, System.Collections.IEnumerable
+            public abstract class DbBatchCommandCollection : System.Collections.Generic.ICollection<System.Data.Common.DbBatchCommand>, System.Collections.Generic.IEnumerable<System.Data.Common.DbBatchCommand>, System.Collections.IEnumerable, System.Collections.Generic.IList<System.Data.Common.DbBatchCommand>
             {
                 public abstract void Add(System.Data.Common.DbBatchCommand item);
                 public abstract void Clear();
@@ -248,7 +248,7 @@ namespace System
                 public virtual object this[string property] { get => throw null; }
                 public string UdtAssemblyQualifiedName { get => throw null; set { } }
             }
-            public abstract class DbCommand : System.ComponentModel.Component, System.Data.IDbCommand, System.IDisposable, System.IAsyncDisposable
+            public abstract class DbCommand : System.ComponentModel.Component, System.IAsyncDisposable, System.Data.IDbCommand, System.IDisposable
             {
                 public abstract void Cancel();
                 public abstract string CommandText { get; set; }
@@ -319,7 +319,7 @@ namespace System
                 protected abstract void SetRowUpdatingHandler(System.Data.Common.DbDataAdapter adapter);
                 public virtual string UnquoteIdentifier(string quotedIdentifier) => throw null;
             }
-            public abstract class DbConnection : System.ComponentModel.Component, System.Data.IDbConnection, System.IDisposable, System.IAsyncDisposable
+            public abstract class DbConnection : System.ComponentModel.Component, System.IAsyncDisposable, System.Data.IDbConnection, System.IDisposable
             {
                 protected abstract System.Data.Common.DbTransaction BeginDbTransaction(System.Data.IsolationLevel isolationLevel);
                 protected virtual System.Threading.Tasks.ValueTask<System.Data.Common.DbTransaction> BeginDbTransactionAsync(System.Data.IsolationLevel isolationLevel, System.Threading.CancellationToken cancellationToken) => throw null;
@@ -359,9 +359,9 @@ namespace System
                 public virtual System.Threading.Tasks.Task OpenAsync(System.Threading.CancellationToken cancellationToken) => throw null;
                 public abstract string ServerVersion { get; }
                 public abstract System.Data.ConnectionState State { get; }
-                public virtual event System.Data.StateChangeEventHandler StateChange { add { } remove { } }
+                public virtual event System.Data.StateChangeEventHandler StateChange;
             }
-            public class DbConnectionStringBuilder : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IDictionary, System.ComponentModel.ICustomTypeDescriptor
+            public class DbConnectionStringBuilder : System.Collections.ICollection, System.ComponentModel.ICustomTypeDescriptor, System.Collections.IDictionary, System.Collections.IEnumerable
             {
                 public void Add(string keyword, object value) => throw null;
                 void System.Collections.IDictionary.Add(object keyword, object value) => throw null;
@@ -407,7 +407,7 @@ namespace System
                 public virtual bool TryGetValue(string keyword, out object value) => throw null;
                 public virtual System.Collections.ICollection Values { get => throw null; }
             }
-            public abstract class DbDataAdapter : System.Data.Common.DataAdapter, System.Data.IDataAdapter, System.Data.IDbDataAdapter, System.ICloneable
+            public abstract class DbDataAdapter : System.Data.Common.DataAdapter, System.ICloneable, System.Data.IDataAdapter, System.Data.IDbDataAdapter
             {
                 protected virtual int AddToBatch(System.Data.IDbCommand command) => throw null;
                 protected virtual void ClearBatch() => throw null;
@@ -416,7 +416,7 @@ namespace System
                 protected virtual System.Data.Common.RowUpdatingEventArgs CreateRowUpdatingEvent(System.Data.DataRow dataRow, System.Data.IDbCommand command, System.Data.StatementType statementType, System.Data.Common.DataTableMapping tableMapping) => throw null;
                 protected DbDataAdapter() => throw null;
                 protected DbDataAdapter(System.Data.Common.DbDataAdapter adapter) => throw null;
-                public static string DefaultSourceTableName;
+                public const string DefaultSourceTableName = default;
                 public System.Data.Common.DbCommand DeleteCommand { get => throw null; set { } }
                 System.Data.IDbCommand System.Data.IDbDataAdapter.DeleteCommand { get => throw null; set { } }
                 protected override void Dispose(bool disposing) => throw null;
@@ -455,7 +455,7 @@ namespace System
                 System.Data.IDbCommand System.Data.IDbDataAdapter.UpdateCommand { get => throw null; set { } }
                 public System.Data.Common.DbCommand UpdateCommand { get => throw null; set { } }
             }
-            public abstract class DbDataReader : System.MarshalByRefObject, System.Collections.IEnumerable, System.Data.IDataReader, System.Data.IDataRecord, System.IDisposable, System.IAsyncDisposable
+            public abstract class DbDataReader : System.MarshalByRefObject, System.IAsyncDisposable, System.Data.IDataReader, System.Data.IDataRecord, System.IDisposable, System.Collections.IEnumerable
             {
                 public virtual void Close() => throw null;
                 public virtual System.Threading.Tasks.Task CloseAsync() => throw null;
@@ -563,7 +563,7 @@ namespace System
                 public abstract object this[int i] { get; }
                 public abstract object this[string name] { get; }
             }
-            public abstract class DbDataSource : System.IDisposable, System.IAsyncDisposable
+            public abstract class DbDataSource : System.IAsyncDisposable, System.IDisposable
             {
                 public abstract string ConnectionString { get; }
                 public System.Data.Common.DbBatch CreateBatch() => throw null;
@@ -681,7 +681,7 @@ namespace System
                 public virtual System.Data.DataRowVersion SourceVersion { get => throw null; set { } }
                 public abstract object Value { get; set; }
             }
-            public abstract class DbParameterCollection : System.MarshalByRefObject, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Data.IDataParameterCollection
+            public abstract class DbParameterCollection : System.MarshalByRefObject, System.Collections.ICollection, System.Data.IDataParameterCollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 int System.Collections.IList.Add(object value) => throw null;
                 public abstract int Add(object value);
@@ -752,7 +752,7 @@ namespace System
                 public DbProviderSpecificTypePropertyAttribute(bool isProviderSpecificTypeProperty) => throw null;
                 public bool IsProviderSpecificTypeProperty { get => throw null; }
             }
-            public abstract class DbTransaction : System.MarshalByRefObject, System.Data.IDbTransaction, System.IDisposable, System.IAsyncDisposable
+            public abstract class DbTransaction : System.MarshalByRefObject, System.IAsyncDisposable, System.Data.IDbTransaction, System.IDisposable
             {
                 public abstract void Commit();
                 public virtual System.Threading.Tasks.Task CommitAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -900,7 +900,7 @@ namespace System
             public void AddRange(System.Data.Constraint[] constraints) => throw null;
             public bool CanRemove(System.Data.Constraint constraint) => throw null;
             public void Clear() => throw null;
-            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanged { add { } remove { } }
+            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanged;
             public bool Contains(string name) => throw null;
             public void CopyTo(System.Data.Constraint[] array, int index) => throw null;
             public int IndexOf(System.Data.Constraint constraint) => throw null;
@@ -970,7 +970,7 @@ namespace System
             public void AddRange(System.Data.DataColumn[] columns) => throw null;
             public bool CanRemove(System.Data.DataColumn column) => throw null;
             public void Clear() => throw null;
-            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanged { add { } remove { } }
+            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanged;
             public bool Contains(string name) => throw null;
             public void CopyTo(System.Data.DataColumn[] array, int index) => throw null;
             public int IndexOf(System.Data.DataColumn column) => throw null;
@@ -1054,7 +1054,7 @@ namespace System
             public virtual void AddRange(System.Data.DataRelation[] relations) => throw null;
             public virtual bool CanRemove(System.Data.DataRelation relation) => throw null;
             public virtual void Clear() => throw null;
-            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanged { add { } remove { } }
+            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanged;
             public virtual bool Contains(string name) => throw null;
             public void CopyTo(System.Data.DataRelation[] array, int index) => throw null;
             protected DataRelationCollection() => throw null;
@@ -1229,13 +1229,13 @@ namespace System
             public bool IsEdit { get => throw null; }
             public bool IsNew { get => throw null; }
             string System.ComponentModel.IDataErrorInfo.this[string colName] { get => throw null; }
-            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged { add { } remove { } }
+            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
             public System.Data.DataRow Row { get => throw null; }
             public System.Data.DataRowVersion RowVersion { get => throw null; }
             public object this[int ndx] { get => throw null; set { } }
             public object this[string property] { get => throw null; set { } }
         }
-        public class DataSet : System.ComponentModel.MarshalByValueComponent, System.ComponentModel.IListSource, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.Runtime.Serialization.ISerializable, System.Xml.Serialization.IXmlSerializable
+        public class DataSet : System.ComponentModel.MarshalByValueComponent, System.ComponentModel.IListSource, System.Runtime.Serialization.ISerializable, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.Xml.Serialization.IXmlSerializable
         {
             public void AcceptChanges() => throw null;
             public void BeginInit() => throw null;
@@ -1274,7 +1274,7 @@ namespace System
             public void InferXmlSchema(System.IO.TextReader reader, string[] nsArray) => throw null;
             public void InferXmlSchema(string fileName, string[] nsArray) => throw null;
             public void InferXmlSchema(System.Xml.XmlReader reader, string[] nsArray) => throw null;
-            public event System.EventHandler Initialized { add { } remove { } }
+            public event System.EventHandler Initialized;
             protected virtual void InitializeDerivedDataSet() => throw null;
             protected bool IsBinarySerialized(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
             public bool IsInitialized { get => throw null; }
@@ -1289,7 +1289,7 @@ namespace System
             public void Merge(System.Data.DataSet dataSet, bool preserveChanges, System.Data.MissingSchemaAction missingSchemaAction) => throw null;
             public void Merge(System.Data.DataTable table) => throw null;
             public void Merge(System.Data.DataTable table, bool preserveChanges, System.Data.MissingSchemaAction missingSchemaAction) => throw null;
-            public event System.Data.MergeFailedEventHandler MergeFailed { add { } remove { } }
+            public event System.Data.MergeFailedEventHandler MergeFailed;
             public string Namespace { get => throw null; set { } }
             protected virtual void OnPropertyChanging(System.ComponentModel.PropertyChangedEventArgs pcevent) => throw null;
             protected virtual void OnRemoveRelation(System.Data.DataRelation relation) => throw null;
@@ -1349,7 +1349,7 @@ namespace System
             public DataSysDescriptionAttribute(string description) => throw null;
             public override string Description { get => throw null; }
         }
-        public class DataTable : System.ComponentModel.MarshalByValueComponent, System.ComponentModel.IListSource, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.Runtime.Serialization.ISerializable, System.Xml.Serialization.IXmlSerializable
+        public class DataTable : System.ComponentModel.MarshalByValueComponent, System.ComponentModel.IListSource, System.Runtime.Serialization.ISerializable, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.Xml.Serialization.IXmlSerializable
         {
             public void AcceptChanges() => throw null;
             public virtual void BeginInit() => throw null;
@@ -1358,8 +1358,8 @@ namespace System
             public System.Data.DataRelationCollection ChildRelations { get => throw null; }
             public void Clear() => throw null;
             public virtual System.Data.DataTable Clone() => throw null;
-            public event System.Data.DataColumnChangeEventHandler ColumnChanged { add { } remove { } }
-            public event System.Data.DataColumnChangeEventHandler ColumnChanging { add { } remove { } }
+            public event System.Data.DataColumnChangeEventHandler ColumnChanged;
+            public event System.Data.DataColumnChangeEventHandler ColumnChanging;
             public System.Data.DataColumnCollection Columns { get => throw null; }
             public object Compute(string expression, string filter) => throw null;
             public System.Data.ConstraintCollection Constraints { get => throw null; }
@@ -1389,7 +1389,7 @@ namespace System
             System.Xml.Schema.XmlSchema System.Xml.Serialization.IXmlSerializable.GetSchema() => throw null;
             public bool HasErrors { get => throw null; }
             public void ImportRow(System.Data.DataRow row) => throw null;
-            public event System.EventHandler Initialized { add { } remove { } }
+            public event System.EventHandler Initialized;
             public bool IsInitialized { get => throw null; }
             public void Load(System.Data.IDataReader reader) => throw null;
             public void Load(System.Data.IDataReader reader, System.Data.LoadOption loadOption) => throw null;
@@ -1432,20 +1432,20 @@ namespace System
             public void RejectChanges() => throw null;
             public System.Data.SerializationFormat RemotingFormat { get => throw null; set { } }
             public virtual void Reset() => throw null;
-            public event System.Data.DataRowChangeEventHandler RowChanged { add { } remove { } }
-            public event System.Data.DataRowChangeEventHandler RowChanging { add { } remove { } }
-            public event System.Data.DataRowChangeEventHandler RowDeleted { add { } remove { } }
-            public event System.Data.DataRowChangeEventHandler RowDeleting { add { } remove { } }
+            public event System.Data.DataRowChangeEventHandler RowChanged;
+            public event System.Data.DataRowChangeEventHandler RowChanging;
+            public event System.Data.DataRowChangeEventHandler RowDeleted;
+            public event System.Data.DataRowChangeEventHandler RowDeleting;
             public System.Data.DataRowCollection Rows { get => throw null; }
             public System.Data.DataRow[] Select() => throw null;
             public System.Data.DataRow[] Select(string filterExpression) => throw null;
             public System.Data.DataRow[] Select(string filterExpression, string sort) => throw null;
             public System.Data.DataRow[] Select(string filterExpression, string sort, System.Data.DataViewRowState recordStates) => throw null;
             public override System.ComponentModel.ISite Site { get => throw null; set { } }
-            public event System.Data.DataTableClearEventHandler TableCleared { add { } remove { } }
-            public event System.Data.DataTableClearEventHandler TableClearing { add { } remove { } }
+            public event System.Data.DataTableClearEventHandler TableCleared;
+            public event System.Data.DataTableClearEventHandler TableClearing;
             public string TableName { get => throw null; set { } }
-            public event System.Data.DataTableNewRowEventHandler TableNewRow { add { } remove { } }
+            public event System.Data.DataTableNewRowEventHandler TableNewRow;
             public override string ToString() => throw null;
             void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
             public void WriteXml(System.IO.Stream stream) => throw null;
@@ -1490,8 +1490,8 @@ namespace System
             public void AddRange(System.Data.DataTable[] tables) => throw null;
             public bool CanRemove(System.Data.DataTable table) => throw null;
             public void Clear() => throw null;
-            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanged { add { } remove { } }
-            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanging { add { } remove { } }
+            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanged;
+            public event System.ComponentModel.CollectionChangeEventHandler CollectionChanging;
             public bool Contains(string name) => throw null;
             public bool Contains(string name, string tableNamespace) => throw null;
             public void CopyTo(System.Data.DataTable[] array, int index) => throw null;
@@ -1563,7 +1563,7 @@ namespace System
             public override object this[int ordinal] { get => throw null; }
             public override object this[string name] { get => throw null; }
         }
-        public class DataView : System.ComponentModel.MarshalByValueComponent, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList, System.ComponentModel.IBindingListView, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.ComponentModel.ITypedList
+        public class DataView : System.ComponentModel.MarshalByValueComponent, System.ComponentModel.IBindingList, System.ComponentModel.IBindingListView, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.ComponentModel.ITypedList
         {
             int System.Collections.IList.Add(object value) => throw null;
             void System.ComponentModel.IBindingList.AddIndex(System.ComponentModel.PropertyDescriptor property) => throw null;
@@ -1604,7 +1604,7 @@ namespace System
             string System.ComponentModel.ITypedList.GetListName(System.ComponentModel.PropertyDescriptor[] listAccessors) => throw null;
             protected virtual void IndexListChanged(object sender, System.ComponentModel.ListChangedEventArgs e) => throw null;
             int System.Collections.IList.IndexOf(object value) => throw null;
-            public event System.EventHandler Initialized { add { } remove { } }
+            public event System.EventHandler Initialized;
             void System.Collections.IList.Insert(int index, object value) => throw null;
             bool System.Collections.IList.IsFixedSize { get => throw null; }
             public bool IsInitialized { get => throw null; }
@@ -1613,7 +1613,7 @@ namespace System
             bool System.ComponentModel.IBindingList.IsSorted { get => throw null; }
             bool System.Collections.ICollection.IsSynchronized { get => throw null; }
             object System.Collections.IList.this[int recordIndex] { get => throw null; set { } }
-            public event System.ComponentModel.ListChangedEventHandler ListChanged { add { } remove { } }
+            public event System.ComponentModel.ListChangedEventHandler ListChanged;
             protected virtual void OnListChanged(System.ComponentModel.ListChangedEventArgs e) => throw null;
             protected void Open() => throw null;
             void System.Collections.IList.Remove(object value) => throw null;
@@ -1643,7 +1643,7 @@ namespace System
             protected void UpdateIndex() => throw null;
             protected virtual void UpdateIndex(bool force) => throw null;
         }
-        public class DataViewManager : System.ComponentModel.MarshalByValueComponent, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList, System.ComponentModel.ITypedList
+        public class DataViewManager : System.ComponentModel.MarshalByValueComponent, System.ComponentModel.IBindingList, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.ITypedList
         {
             int System.Collections.IList.Add(object value) => throw null;
             void System.ComponentModel.IBindingList.AddIndex(System.ComponentModel.PropertyDescriptor property) => throw null;
@@ -1673,7 +1673,7 @@ namespace System
             bool System.ComponentModel.IBindingList.IsSorted { get => throw null; }
             bool System.Collections.ICollection.IsSynchronized { get => throw null; }
             object System.Collections.IList.this[int index] { get => throw null; set { } }
-            public event System.ComponentModel.ListChangedEventHandler ListChanged { add { } remove { } }
+            public event System.ComponentModel.ListChangedEventHandler ListChanged;
             protected virtual void OnListChanged(System.ComponentModel.ListChangedEventArgs e) => throw null;
             protected virtual void RelationCollectionChanged(object sender, System.ComponentModel.CollectionChangeEventArgs e) => throw null;
             void System.Collections.IList.Remove(object value) => throw null;
@@ -2171,7 +2171,7 @@ namespace System
                 public SqlAlreadyFilledException(string message) => throw null;
                 public SqlAlreadyFilledException(string message, System.Exception e) => throw null;
             }
-            public struct SqlBinary : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlBinary>
+            public struct SqlBinary : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlBinary>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBinary Add(System.Data.SqlTypes.SqlBinary x, System.Data.SqlTypes.SqlBinary y) => throw null;
                 public int CompareTo(System.Data.SqlTypes.SqlBinary value) => throw null;
@@ -2210,7 +2210,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlBinary WrapBytes(byte[] bytes) => throw null;
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
             }
-            public struct SqlBoolean : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlBoolean>
+            public struct SqlBoolean : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlBoolean>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean And(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
                 public byte ByteValue { get => throw null; }
@@ -2279,7 +2279,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlBoolean Xor(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean Zero;
             }
-            public struct SqlByte : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlByte>
+            public struct SqlByte : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlByte>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlByte Add(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
                 public static System.Data.SqlTypes.SqlByte BitwiseAnd(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
@@ -2416,7 +2416,7 @@ namespace System
                 BinarySort2 = 16384,
                 BinarySort = 32768,
             }
-            public struct SqlDateTime : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlDateTime>
+            public struct SqlDateTime : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlDateTime>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlDateTime Add(System.Data.SqlTypes.SqlDateTime x, System.TimeSpan t) => throw null;
                 public int CompareTo(System.Data.SqlTypes.SqlDateTime value) => throw null;
@@ -2466,7 +2466,7 @@ namespace System
                 public System.DateTime Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
             }
-            public struct SqlDecimal : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlDecimal>
+            public struct SqlDecimal : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlDecimal>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlDecimal Abs(System.Data.SqlTypes.SqlDecimal n) => throw null;
                 public static System.Data.SqlTypes.SqlDecimal Add(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
@@ -2552,7 +2552,7 @@ namespace System
                 public int WriteTdsValue(System.Span<uint> destination) => throw null;
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
             }
-            public struct SqlDouble : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlDouble>
+            public struct SqlDouble : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlDouble>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlDouble Add(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
                 public int CompareTo(System.Data.SqlTypes.SqlDouble value) => throw null;
@@ -2614,7 +2614,7 @@ namespace System
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlDouble Zero;
             }
-            public struct SqlGuid : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlGuid>
+            public struct SqlGuid : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlGuid>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public int CompareTo(System.Data.SqlTypes.SqlGuid value) => throw null;
                 public int CompareTo(object value) => throw null;
@@ -2654,7 +2654,7 @@ namespace System
                 public System.Guid Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
             }
-            public struct SqlInt16 : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlInt16>
+            public struct SqlInt16 : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlInt16>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlInt16 Add(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 BitwiseAnd(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
@@ -2727,7 +2727,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt16 Xor(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 Zero;
             }
-            public struct SqlInt32 : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlInt32>
+            public struct SqlInt32 : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlInt32>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlInt32 Add(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 BitwiseAnd(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
@@ -2800,7 +2800,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt32 Xor(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 Zero;
             }
-            public struct SqlInt64 : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlInt64>
+            public struct SqlInt64 : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlInt64>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlInt64 Add(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 BitwiseAnd(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
@@ -2873,7 +2873,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt64 Xor(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 Zero;
             }
-            public struct SqlMoney : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlMoney>
+            public struct SqlMoney : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlMoney>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlMoney Add(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
                 public int CompareTo(System.Data.SqlTypes.SqlMoney value) => throw null;
@@ -2958,7 +2958,7 @@ namespace System
                 public SqlNullValueException(string message) => throw null;
                 public SqlNullValueException(string message, System.Exception e) => throw null;
             }
-            public struct SqlSingle : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlSingle>
+            public struct SqlSingle : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlSingle>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlSingle Add(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
                 public int CompareTo(System.Data.SqlTypes.SqlSingle value) => throw null;
@@ -3021,7 +3021,7 @@ namespace System
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlSingle Zero;
             }
-            public struct SqlString : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable, System.IEquatable<System.Data.SqlTypes.SqlString>
+            public struct SqlString : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlString>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlString Add(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
                 public static int BinarySort;

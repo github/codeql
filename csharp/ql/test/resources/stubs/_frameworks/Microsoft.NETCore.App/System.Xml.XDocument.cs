@@ -360,8 +360,8 @@ namespace System
                 public System.Collections.Generic.IEnumerable<object> Annotations(System.Type type) => throw null;
                 public System.Collections.Generic.IEnumerable<T> Annotations<T>() where T : class => throw null;
                 public string BaseUri { get => throw null; }
-                public event System.EventHandler<System.Xml.Linq.XObjectChangeEventArgs> Changed { add { } remove { } }
-                public event System.EventHandler<System.Xml.Linq.XObjectChangeEventArgs> Changing { add { } remove { } }
+                public event System.EventHandler<System.Xml.Linq.XObjectChangeEventArgs> Changed;
+                public event System.EventHandler<System.Xml.Linq.XObjectChangeEventArgs> Changing;
                 public System.Xml.Linq.XDocument Document { get => throw null; }
                 bool System.Xml.IXmlLineInfo.HasLineInfo() => throw null;
                 int System.Xml.IXmlLineInfo.LineNumber { get => throw null; }

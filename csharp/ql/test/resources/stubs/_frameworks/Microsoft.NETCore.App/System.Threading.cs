@@ -16,7 +16,7 @@ namespace System
             public System.Threading.Mutex Mutex { get => throw null; }
             public int MutexIndex { get => throw null; }
         }
-        public struct AsyncFlowControl : System.IEquatable<System.Threading.AsyncFlowControl>, System.IDisposable
+        public struct AsyncFlowControl : System.IDisposable, System.IEquatable<System.Threading.AsyncFlowControl>
         {
             public void Dispose() => throw null;
             public override bool Equals(object obj) => throw null;

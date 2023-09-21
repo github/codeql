@@ -16,9 +16,9 @@ namespace Microsoft
                 }
                 public static class ConsoleFormatterNames
                 {
-                    public static string Json;
-                    public static string Simple;
-                    public static string Systemd;
+                    public const string Json = default;
+                    public const string Simple = default;
+                    public const string Systemd = default;
                 }
                 public class ConsoleFormatterOptions
                 {
@@ -45,7 +45,7 @@ namespace Microsoft
                     public string TimestampFormat { get => throw null; set { } }
                     public bool UseUtcTimestamp { get => throw null; set { } }
                 }
-                public class ConsoleLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, System.IDisposable, Microsoft.Extensions.Logging.ISupportExternalScope
+                public class ConsoleLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider, Microsoft.Extensions.Logging.ISupportExternalScope
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string name) => throw null;
                     public ConsoleLoggerProvider(Microsoft.Extensions.Options.IOptionsMonitor<Microsoft.Extensions.Logging.Console.ConsoleLoggerOptions> options) => throw null;

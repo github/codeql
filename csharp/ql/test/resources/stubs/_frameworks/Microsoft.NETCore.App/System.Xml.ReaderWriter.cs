@@ -155,10 +155,10 @@ namespace System
                 public System.Xml.Schema.XmlSchemaObjectTable Groups { get => throw null; }
                 public string Id { get => throw null; set { } }
                 public System.Xml.Schema.XmlSchemaObjectCollection Includes { get => throw null; }
-                public static string InstanceNamespace;
+                public const string InstanceNamespace = default;
                 public bool IsCompiled { get => throw null; }
                 public System.Xml.Schema.XmlSchemaObjectCollection Items { get => throw null; }
-                public static string Namespace;
+                public const string Namespace = default;
                 public System.Xml.Schema.XmlSchemaObjectTable Notations { get => throw null; }
                 public static System.Xml.Schema.XmlSchema Read(System.IO.Stream stream, System.Xml.Schema.ValidationEventHandler validationEventHandler) => throw null;
                 public static System.Xml.Schema.XmlSchema Read(System.IO.TextReader reader, System.Xml.Schema.ValidationEventHandler validationEventHandler) => throw null;
@@ -267,7 +267,7 @@ namespace System
                 public System.Xml.XmlNameTable NameTable { get => throw null; }
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
                 public System.Xml.Schema.XmlSchema this[string ns] { get => throw null; }
-                public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler { add { } remove { } }
+                public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler;
             }
             public sealed class XmlSchemaCollectionEnumerator : System.Collections.IEnumerator
             {
@@ -654,7 +654,7 @@ namespace System
                 public System.Xml.Schema.XmlSchema Reprocess(System.Xml.Schema.XmlSchema schema) => throw null;
                 public System.Collections.ICollection Schemas() => throw null;
                 public System.Collections.ICollection Schemas(string targetNamespace) => throw null;
-                public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler { add { } remove { } }
+                public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler;
                 public System.Xml.XmlResolver XmlResolver { set { } }
             }
             public class XmlSchemaSimpleContent : System.Xml.Schema.XmlSchemaContentModel
@@ -787,7 +787,7 @@ namespace System
                 public void ValidateText(System.Xml.Schema.XmlValueGetter elementValue) => throw null;
                 public void ValidateWhitespace(string elementValue) => throw null;
                 public void ValidateWhitespace(System.Xml.Schema.XmlValueGetter elementValue) => throw null;
-                public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler { add { } remove { } }
+                public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler;
                 public object ValidationEventSender { get => throw null; set { } }
                 public System.Xml.XmlResolver XmlResolver { set { } }
             }
@@ -1204,12 +1204,12 @@ namespace System
             public override string LocalName { get => throw null; }
             public override string Name { get => throw null; }
             public System.Xml.XmlNameTable NameTable { get => throw null; }
-            public event System.Xml.XmlNodeChangedEventHandler NodeChanged { add { } remove { } }
-            public event System.Xml.XmlNodeChangedEventHandler NodeChanging { add { } remove { } }
-            public event System.Xml.XmlNodeChangedEventHandler NodeInserted { add { } remove { } }
-            public event System.Xml.XmlNodeChangedEventHandler NodeInserting { add { } remove { } }
-            public event System.Xml.XmlNodeChangedEventHandler NodeRemoved { add { } remove { } }
-            public event System.Xml.XmlNodeChangedEventHandler NodeRemoving { add { } remove { } }
+            public event System.Xml.XmlNodeChangedEventHandler NodeChanged;
+            public event System.Xml.XmlNodeChangedEventHandler NodeChanging;
+            public event System.Xml.XmlNodeChangedEventHandler NodeInserted;
+            public event System.Xml.XmlNodeChangedEventHandler NodeInserting;
+            public event System.Xml.XmlNodeChangedEventHandler NodeRemoved;
+            public event System.Xml.XmlNodeChangedEventHandler NodeRemoving;
             public override System.Xml.XmlNodeType NodeType { get => throw null; }
             public override System.Xml.XmlDocument OwnerDocument { get => throw null; }
             public override System.Xml.XmlNode ParentNode { get => throw null; }
@@ -1391,7 +1391,7 @@ namespace System
             public abstract string Get(char[] array, int offset, int length);
             public abstract string Get(string array);
         }
-        public abstract class XmlNode : System.Collections.IEnumerable, System.ICloneable, System.Xml.XPath.IXPathNavigable
+        public abstract class XmlNode : System.ICloneable, System.Collections.IEnumerable, System.Xml.XPath.IXPathNavigable
         {
             public virtual System.Xml.XmlNode AppendChild(System.Xml.XmlNode newChild) => throw null;
             public virtual System.Xml.XmlAttributeCollection Attributes { get => throw null; }
@@ -1458,7 +1458,7 @@ namespace System
             public string OldValue { get => throw null; }
         }
         public delegate void XmlNodeChangedEventHandler(object sender, System.Xml.XmlNodeChangedEventArgs e);
-        public abstract class XmlNodeList : System.Collections.IEnumerable, System.IDisposable
+        public abstract class XmlNodeList : System.IDisposable, System.Collections.IEnumerable
         {
             public abstract int Count { get; }
             protected XmlNodeList() => throw null;
@@ -1770,7 +1770,7 @@ namespace System
             public bool ProhibitDtd { get => throw null; set { } }
             public void Reset() => throw null;
             public System.Xml.Schema.XmlSchemaSet Schemas { get => throw null; set { } }
-            public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler { add { } remove { } }
+            public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler;
             public System.Xml.Schema.XmlSchemaValidationFlags ValidationFlags { get => throw null; set { } }
             public System.Xml.ValidationType ValidationType { get => throw null; set { } }
             public System.Xml.XmlResolver XmlResolver { set { } }
@@ -2027,7 +2027,7 @@ namespace System
             public override void ResolveEntity() => throw null;
             public System.Xml.Schema.XmlSchemaCollection Schemas { get => throw null; }
             public object SchemaType { get => throw null; }
-            public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler { add { } remove { } }
+            public event System.Xml.Schema.ValidationEventHandler ValidationEventHandler;
             public System.Xml.ValidationType ValidationType { get => throw null; set { } }
             public override string Value { get => throw null; }
             public override string XmlLang { get => throw null; }
@@ -2347,7 +2347,7 @@ namespace System
                 public virtual string XmlLang { get => throw null; }
                 public override System.Xml.Schema.XmlSchemaType XmlType { get => throw null; }
             }
-            public abstract class XPathNodeIterator : System.Collections.IEnumerable, System.ICloneable
+            public abstract class XPathNodeIterator : System.ICloneable, System.Collections.IEnumerable
             {
                 public abstract System.Xml.XPath.XPathNodeIterator Clone();
                 object System.ICloneable.Clone() => throw null;
@@ -2438,7 +2438,7 @@ namespace System
                 public object GetParam(string name, string namespaceUri) => throw null;
                 public object RemoveExtensionObject(string namespaceUri) => throw null;
                 public object RemoveParam(string name, string namespaceUri) => throw null;
-                public event System.Xml.Xsl.XsltMessageEncounteredEventHandler XsltMessageEncountered { add { } remove { } }
+                public event System.Xml.Xsl.XsltMessageEncounteredEventHandler XsltMessageEncountered;
             }
             public class XsltCompileException : System.Xml.Xsl.XsltException
             {

@@ -20,16 +20,16 @@ namespace Microsoft
         }
         namespace Cors
         {
-            public class CorsPolicyMetadata : Microsoft.AspNetCore.Cors.Infrastructure.ICorsPolicyMetadata, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata
+            public class CorsPolicyMetadata : Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata, Microsoft.AspNetCore.Cors.Infrastructure.ICorsPolicyMetadata
             {
                 public CorsPolicyMetadata(Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicy policy) => throw null;
                 public Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicy Policy { get => throw null; }
             }
-            public class DisableCorsAttribute : System.Attribute, Microsoft.AspNetCore.Cors.Infrastructure.IDisableCorsAttribute, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata
+            public class DisableCorsAttribute : System.Attribute, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata, Microsoft.AspNetCore.Cors.Infrastructure.IDisableCorsAttribute
             {
                 public DisableCorsAttribute() => throw null;
             }
-            public class EnableCorsAttribute : System.Attribute, Microsoft.AspNetCore.Cors.Infrastructure.IEnableCorsAttribute, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata
+            public class EnableCorsAttribute : System.Attribute, Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata, Microsoft.AspNetCore.Cors.Infrastructure.IEnableCorsAttribute
             {
                 public EnableCorsAttribute() => throw null;
                 public EnableCorsAttribute(string policyName) => throw null;

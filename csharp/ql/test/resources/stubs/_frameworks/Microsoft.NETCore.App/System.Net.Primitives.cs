@@ -59,7 +59,7 @@ namespace System
             public string Value { get => throw null; set { } }
             public int Version { get => throw null; set { } }
         }
-        public class CookieCollection : System.Collections.Generic.ICollection<System.Net.Cookie>, System.Collections.Generic.IEnumerable<System.Net.Cookie>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Net.Cookie>, System.Collections.ICollection
+        public class CookieCollection : System.Collections.Generic.ICollection<System.Net.Cookie>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<System.Net.Cookie>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Net.Cookie>
         {
             public void Add(System.Net.Cookie cookie) => throw null;
             public void Add(System.Net.CookieCollection cookies) => throw null;
@@ -89,9 +89,9 @@ namespace System
             public CookieContainer() => throw null;
             public CookieContainer(int capacity) => throw null;
             public CookieContainer(int capacity, int perDomainCapacity, int maxCookieSize) => throw null;
-            public static int DefaultCookieLengthLimit;
-            public static int DefaultCookieLimit;
-            public static int DefaultPerDomainCookieLimit;
+            public const int DefaultCookieLengthLimit = default;
+            public const int DefaultCookieLimit = default;
+            public const int DefaultPerDomainCookieLimit = default;
             public System.Net.CookieCollection GetAllCookies() => throw null;
             public string GetCookieHeader(System.Uri uri) => throw null;
             public System.Net.CookieCollection GetCookies(System.Uri uri) => throw null;
@@ -106,7 +106,7 @@ namespace System
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         }
-        public class CredentialCache : System.Collections.IEnumerable, System.Net.ICredentials, System.Net.ICredentialsByHost
+        public class CredentialCache : System.Net.ICredentials, System.Net.ICredentialsByHost, System.Collections.IEnumerable
         {
             public void Add(string host, int port, string authenticationType, System.Net.NetworkCredential credential) => throw null;
             public void Add(System.Uri uriPrefix, string authType, System.Net.NetworkCredential cred) => throw null;
@@ -283,8 +283,8 @@ namespace System
             public IPEndPoint(System.Net.IPAddress address, int port) => throw null;
             public override bool Equals(object comparand) => throw null;
             public override int GetHashCode() => throw null;
-            public static int MaxPort;
-            public static int MinPort;
+            public const int MaxPort = default;
+            public const int MinPort = default;
             public static System.Net.IPEndPoint Parse(System.ReadOnlySpan<char> s) => throw null;
             public static System.Net.IPEndPoint Parse(string s) => throw null;
             public int Port { get => throw null; set { } }

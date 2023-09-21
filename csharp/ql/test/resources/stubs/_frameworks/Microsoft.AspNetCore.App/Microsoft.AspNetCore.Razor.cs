@@ -48,7 +48,7 @@ namespace Microsoft
                     public string Attributes { get => throw null; set { } }
                     public HtmlTargetElementAttribute() => throw null;
                     public HtmlTargetElementAttribute(string tag) => throw null;
-                    public static string ElementCatchAllTarget;
+                    public const string ElementCatchAllTarget = default;
                     public string ParentTag { get => throw null; set { } }
                     public string Tag { get => throw null; }
                     public Microsoft.AspNetCore.Razor.TagHelpers.TagStructure TagStructure { get => throw null; set { } }
@@ -102,7 +102,7 @@ namespace Microsoft
                     public virtual void Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
                     public virtual System.Threading.Tasks.Task ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
                 }
-                public class TagHelperAttribute : Microsoft.AspNetCore.Html.IHtmlContentContainer, Microsoft.AspNetCore.Html.IHtmlContent
+                public class TagHelperAttribute : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentContainer
                 {
                     public void CopyTo(Microsoft.AspNetCore.Html.IHtmlContentBuilder destination) => throw null;
                     public TagHelperAttribute(string name) => throw null;
@@ -117,7 +117,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle ValueStyle { get => throw null; }
                     public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
-                public class TagHelperAttributeList : Microsoft.AspNetCore.Razor.TagHelpers.ReadOnlyTagHelperAttributeList, System.Collections.Generic.IList<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>, System.Collections.Generic.ICollection<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>, System.Collections.IEnumerable
+                public class TagHelperAttributeList : Microsoft.AspNetCore.Razor.TagHelpers.ReadOnlyTagHelperAttributeList, System.Collections.Generic.ICollection<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>, System.Collections.IEnumerable, System.Collections.Generic.IList<Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute>
                 {
                     public void Add(string name, object value) => throw null;
                     public void Add(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute attribute) => throw null;
@@ -142,7 +142,7 @@ namespace Microsoft
                     public virtual void Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
                     public virtual System.Threading.Tasks.Task ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
                 }
-                public abstract class TagHelperContent : Microsoft.AspNetCore.Html.IHtmlContentBuilder, Microsoft.AspNetCore.Html.IHtmlContentContainer, Microsoft.AspNetCore.Html.IHtmlContent
+                public abstract class TagHelperContent : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentBuilder, Microsoft.AspNetCore.Html.IHtmlContentContainer
                 {
                     public abstract Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContent Append(string unencoded);
                     Microsoft.AspNetCore.Html.IHtmlContentBuilder Microsoft.AspNetCore.Html.IHtmlContentBuilder.Append(string unencoded) => throw null;
@@ -178,7 +178,7 @@ namespace Microsoft
                     public string TagName { get => throw null; }
                     public string UniqueId { get => throw null; }
                 }
-                public class TagHelperOutput : Microsoft.AspNetCore.Html.IHtmlContentContainer, Microsoft.AspNetCore.Html.IHtmlContent
+                public class TagHelperOutput : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentContainer
                 {
                     public Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttributeList Attributes { get => throw null; }
                     public Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContent Content { get => throw null; set { } }

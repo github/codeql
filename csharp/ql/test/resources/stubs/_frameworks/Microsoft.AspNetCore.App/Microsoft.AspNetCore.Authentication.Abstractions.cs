@@ -172,7 +172,7 @@ namespace Microsoft
                 System.Threading.Tasks.Task SignInAsync(Microsoft.AspNetCore.Http.HttpContext context, string scheme, System.Security.Claims.ClaimsPrincipal principal, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties);
                 System.Threading.Tasks.Task SignOutAsync(Microsoft.AspNetCore.Http.HttpContext context, string scheme, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties);
             }
-            public interface IAuthenticationSignInHandler : Microsoft.AspNetCore.Authentication.IAuthenticationSignOutHandler, Microsoft.AspNetCore.Authentication.IAuthenticationHandler
+            public interface IAuthenticationSignInHandler : Microsoft.AspNetCore.Authentication.IAuthenticationHandler, Microsoft.AspNetCore.Authentication.IAuthenticationSignOutHandler
             {
                 System.Threading.Tasks.Task SignInAsync(System.Security.Claims.ClaimsPrincipal user, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties);
             }

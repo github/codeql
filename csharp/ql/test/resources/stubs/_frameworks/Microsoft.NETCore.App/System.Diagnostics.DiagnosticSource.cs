@@ -15,7 +15,7 @@ namespace System
             public System.Diagnostics.ActivityContext Context { get => throw null; }
             public Activity(string operationName) => throw null;
             public static System.Diagnostics.Activity Current { get => throw null; set { } }
-            public static event System.EventHandler<System.Diagnostics.ActivityChangedEventArgs> CurrentChanged { add { } remove { } }
+            public static event System.EventHandler<System.Diagnostics.ActivityChangedEventArgs> CurrentChanged;
             public static System.Diagnostics.ActivityIdFormat DefaultIdFormat { get => throw null; set { } }
             public string DisplayName { get => throw null; set { } }
             public void Dispose() => throw null;
@@ -193,7 +193,7 @@ namespace System
             Ok = 1,
             Error = 2,
         }
-        public class ActivityTagsCollection : System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
+        public class ActivityTagsCollection : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable
         {
             public void Add(string key, object value) => throw null;
             public void Add(System.Collections.Generic.KeyValuePair<string, object> item) => throw null;
@@ -204,7 +204,7 @@ namespace System
             public int Count { get => throw null; }
             public ActivityTagsCollection() => throw null;
             public ActivityTagsCollection(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> list) => throw null;
-            public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator, System.IDisposable
+            public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator
             {
                 public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }
                 object System.Collections.IEnumerator.Current { get => throw null; }
@@ -408,7 +408,7 @@ namespace System
             }
         }
         public delegate System.Diagnostics.ActivitySamplingResult SampleActivity<T>(ref System.Diagnostics.ActivityCreationOptions<T> options);
-        public struct TagList : System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>
+        public struct TagList : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerable, System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>>
         {
             public void Add(string key, object value) => throw null;
             public void Add(System.Collections.Generic.KeyValuePair<string, object> tag) => throw null;
@@ -418,7 +418,7 @@ namespace System
             public void CopyTo(System.Collections.Generic.KeyValuePair<string, object>[] array, int arrayIndex) => throw null;
             public int Count { get => throw null; }
             public TagList(System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<string, object>> tagList) => throw null;
-            public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator, System.IDisposable
+            public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator
             {
                 public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }
                 object System.Collections.IEnumerator.Current { get => throw null; }

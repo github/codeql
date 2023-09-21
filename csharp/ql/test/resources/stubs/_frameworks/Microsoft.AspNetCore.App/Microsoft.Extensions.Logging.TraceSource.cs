@@ -8,7 +8,7 @@ namespace Microsoft
         {
             namespace TraceSource
             {
-                public class TraceSourceLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider, System.IDisposable
+                public class TraceSourceLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string name) => throw null;
                     public TraceSourceLoggerProvider(System.Diagnostics.SourceSwitch rootSourceSwitch) => throw null;

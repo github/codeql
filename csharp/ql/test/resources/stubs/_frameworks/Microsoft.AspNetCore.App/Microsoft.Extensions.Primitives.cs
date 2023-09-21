@@ -96,7 +96,7 @@ namespace Microsoft
             {
                 public StringTokenizer(Microsoft.Extensions.Primitives.StringSegment value, char[] separators) => throw null;
                 public StringTokenizer(string value, char[] separators) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<Microsoft.Extensions.Primitives.StringSegment>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<Microsoft.Extensions.Primitives.StringSegment>, System.Collections.IEnumerator
                 {
                     public Enumerator(ref Microsoft.Extensions.Primitives.StringTokenizer tokenizer) => throw null;
                     public Microsoft.Extensions.Primitives.StringSegment Current { get => throw null; }
@@ -109,7 +109,7 @@ namespace Microsoft
                 System.Collections.Generic.IEnumerator<Microsoft.Extensions.Primitives.StringSegment> System.Collections.Generic.IEnumerable<Microsoft.Extensions.Primitives.StringSegment>.GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
-            public struct StringValues : System.Collections.Generic.ICollection<string>, System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable, System.Collections.Generic.IList<string>, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyList<string>, System.IEquatable<Microsoft.Extensions.Primitives.StringValues>, System.IEquatable<string>, System.IEquatable<string[]>
+            public struct StringValues : System.Collections.Generic.ICollection<string>, System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable, System.IEquatable<Microsoft.Extensions.Primitives.StringValues>, System.IEquatable<string>, System.IEquatable<string[]>, System.Collections.Generic.IList<string>, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyList<string>
             {
                 void System.Collections.Generic.ICollection<string>.Add(string item) => throw null;
                 void System.Collections.Generic.ICollection<string>.Clear() => throw null;
@@ -122,7 +122,7 @@ namespace Microsoft
                 public StringValues(string value) => throw null;
                 public StringValues(string[] values) => throw null;
                 public static Microsoft.Extensions.Primitives.StringValues Empty;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator
                 {
                     public Enumerator(ref Microsoft.Extensions.Primitives.StringValues values) => throw null;
                     public string Current { get => throw null; }

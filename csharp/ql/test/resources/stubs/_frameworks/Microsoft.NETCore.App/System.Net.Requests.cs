@@ -394,33 +394,33 @@ namespace System
         {
             public static class File
             {
-                public static string DownloadFile;
-                public static string UploadFile;
+                public const string DownloadFile = default;
+                public const string UploadFile = default;
             }
             public static class Ftp
             {
-                public static string AppendFile;
-                public static string DeleteFile;
-                public static string DownloadFile;
-                public static string GetDateTimestamp;
-                public static string GetFileSize;
-                public static string ListDirectory;
-                public static string ListDirectoryDetails;
-                public static string MakeDirectory;
-                public static string PrintWorkingDirectory;
-                public static string RemoveDirectory;
-                public static string Rename;
-                public static string UploadFile;
-                public static string UploadFileWithUniqueName;
+                public const string AppendFile = default;
+                public const string DeleteFile = default;
+                public const string DownloadFile = default;
+                public const string GetDateTimestamp = default;
+                public const string GetFileSize = default;
+                public const string ListDirectory = default;
+                public const string ListDirectoryDetails = default;
+                public const string MakeDirectory = default;
+                public const string PrintWorkingDirectory = default;
+                public const string RemoveDirectory = default;
+                public const string Rename = default;
+                public const string UploadFile = default;
+                public const string UploadFileWithUniqueName = default;
             }
             public static class Http
             {
-                public static string Connect;
-                public static string Get;
-                public static string Head;
-                public static string MkCol;
-                public static string Post;
-                public static string Put;
+                public const string Connect = default;
+                public const string Get = default;
+                public const string Head = default;
+                public const string MkCol = default;
+                public const string Post = default;
+                public const string Put = default;
             }
         }
         public abstract class WebResponse : System.MarshalByRefObject, System.IDisposable, System.Runtime.Serialization.ISerializable

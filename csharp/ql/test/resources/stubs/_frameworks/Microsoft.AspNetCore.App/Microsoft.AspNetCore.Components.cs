@@ -121,7 +121,7 @@ namespace Microsoft
                     public static T TypeCheck<T>(T value) => throw null;
                 }
             }
-            public abstract class ComponentBase : Microsoft.AspNetCore.Components.IComponent, Microsoft.AspNetCore.Components.IHandleEvent, Microsoft.AspNetCore.Components.IHandleAfterRender
+            public abstract class ComponentBase : Microsoft.AspNetCore.Components.IComponent, Microsoft.AspNetCore.Components.IHandleAfterRender, Microsoft.AspNetCore.Components.IHandleEvent
             {
                 void Microsoft.AspNetCore.Components.IComponent.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) => throw null;
                 protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
@@ -388,7 +388,7 @@ namespace Microsoft
                 protected virtual void HandleLocationChangingHandlerException(System.Exception ex, Microsoft.AspNetCore.Components.Routing.LocationChangingContext context) => throw null;
                 public string HistoryEntryState { get => throw null; set { } }
                 protected void Initialize(string baseUri, string uri) => throw null;
-                public event System.EventHandler<Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs> LocationChanged { add { } remove { } }
+                public event System.EventHandler<Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs> LocationChanged;
                 public void NavigateTo(string uri, bool forceLoad) => throw null;
                 public void NavigateTo(string uri, bool forceLoad = default(bool), bool replace = default(bool)) => throw null;
                 public void NavigateTo(string uri, Microsoft.AspNetCore.Components.NavigationOptions options) => throw null;
@@ -561,7 +561,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame> ReferenceFrames { get => throw null; }
                     public Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeDiff> UpdatedComponents { get => throw null; }
                 }
-                public abstract class Renderer : System.IDisposable, System.IAsyncDisposable
+                public abstract class Renderer : System.IAsyncDisposable, System.IDisposable
                 {
                     protected int AssignRootComponentId(Microsoft.AspNetCore.Components.IComponent component) => throw null;
                     public Renderer(System.IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
@@ -580,7 +580,7 @@ namespace Microsoft
                     protected void RemoveRootComponent(int componentId) => throw null;
                     protected System.Threading.Tasks.Task RenderRootComponentAsync(int componentId) => throw null;
                     protected System.Threading.Tasks.Task RenderRootComponentAsync(int componentId, Microsoft.AspNetCore.Components.ParameterView initialParameters) => throw null;
-                    public event System.UnhandledExceptionEventHandler UnhandledSynchronizationException { add { } remove { } }
+                    public event System.UnhandledExceptionEventHandler UnhandledSynchronizationException;
                     protected abstract System.Threading.Tasks.Task UpdateDisplayAsync(in Microsoft.AspNetCore.Components.RenderTree.RenderBatch renderBatch);
                 }
                 public struct RenderTreeDiff
@@ -698,7 +698,7 @@ namespace Microsoft
                     public System.Threading.CancellationToken CancellationToken { get => throw null; }
                     public string Path { get => throw null; }
                 }
-                public class Router : Microsoft.AspNetCore.Components.IComponent, Microsoft.AspNetCore.Components.IHandleAfterRender, System.IDisposable
+                public class Router : Microsoft.AspNetCore.Components.IComponent, System.IDisposable, Microsoft.AspNetCore.Components.IHandleAfterRender
                 {
                     public System.Collections.Generic.IEnumerable<System.Reflection.Assembly> AdditionalAssemblies { get => throw null; set { } }
                     public System.Reflection.Assembly AppAssembly { get => throw null; set { } }

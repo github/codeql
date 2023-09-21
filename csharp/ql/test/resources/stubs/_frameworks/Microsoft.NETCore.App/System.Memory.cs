@@ -225,8 +225,8 @@ namespace System
             public override int GetHashCode() => throw null;
             public bool HasPrecision { get => throw null; }
             public bool IsDefault { get => throw null; }
-            public static byte MaxPrecision;
-            public static byte NoPrecision;
+            public const byte MaxPrecision = default;
+            public const byte NoPrecision = default;
             public static bool operator ==(System.Buffers.StandardFormat left, System.Buffers.StandardFormat right) => throw null;
             public static implicit operator System.Buffers.StandardFormat(char symbol) => throw null;
             public static bool operator !=(System.Buffers.StandardFormat left, System.Buffers.StandardFormat right) => throw null;

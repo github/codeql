@@ -277,8 +277,8 @@ namespace System
             public class NetworkChange
             {
                 public NetworkChange() => throw null;
-                public static event System.Net.NetworkInformation.NetworkAddressChangedEventHandler NetworkAddressChanged { add { } remove { } }
-                public static event System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler NetworkAvailabilityChanged { add { } remove { } }
+                public static event System.Net.NetworkInformation.NetworkAddressChangedEventHandler NetworkAddressChanged;
+                public static event System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler NetworkAvailabilityChanged;
                 public static void RegisterNetworkChange(System.Net.NetworkInformation.NetworkChange nc) => throw null;
             }
             public class NetworkInformationException : System.ComponentModel.Win32Exception

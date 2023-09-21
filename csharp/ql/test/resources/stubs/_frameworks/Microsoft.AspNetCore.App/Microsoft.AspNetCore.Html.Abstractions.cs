@@ -6,7 +6,7 @@ namespace Microsoft
     {
         namespace Html
         {
-            public class HtmlContentBuilder : Microsoft.AspNetCore.Html.IHtmlContentBuilder, Microsoft.AspNetCore.Html.IHtmlContentContainer, Microsoft.AspNetCore.Html.IHtmlContent
+            public class HtmlContentBuilder : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentBuilder, Microsoft.AspNetCore.Html.IHtmlContentContainer
             {
                 public Microsoft.AspNetCore.Html.IHtmlContentBuilder Append(string unencoded) => throw null;
                 public Microsoft.AspNetCore.Html.IHtmlContentBuilder AppendHtml(Microsoft.AspNetCore.Html.IHtmlContent htmlContent) => throw null;
@@ -51,7 +51,7 @@ namespace Microsoft
             {
                 void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder);
             }
-            public interface IHtmlContentBuilder : Microsoft.AspNetCore.Html.IHtmlContentContainer, Microsoft.AspNetCore.Html.IHtmlContent
+            public interface IHtmlContentBuilder : Microsoft.AspNetCore.Html.IHtmlContent, Microsoft.AspNetCore.Html.IHtmlContentContainer
             {
                 Microsoft.AspNetCore.Html.IHtmlContentBuilder Append(string unencoded);
                 Microsoft.AspNetCore.Html.IHtmlContentBuilder AppendHtml(Microsoft.AspNetCore.Html.IHtmlContent content);

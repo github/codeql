@@ -230,7 +230,7 @@ namespace System
                     public void Dispose() => throw null;
                     protected virtual void Dispose(bool disposing) => throw null;
                     public bool Enabled { get => throw null; set { } }
-                    public event System.EventHandler<System.Diagnostics.Eventing.Reader.EventRecordWrittenEventArgs> EventRecordWritten { add { } remove { } }
+                    public event System.EventHandler<System.Diagnostics.Eventing.Reader.EventRecordWrittenEventArgs> EventRecordWritten;
                 }
                 public sealed class EventMetadata
                 {
@@ -402,7 +402,7 @@ namespace System
             public bool EnableRaisingEvents { get => throw null; set { } }
             public void EndInit() => throw null;
             public System.Diagnostics.EventLogEntryCollection Entries { get => throw null; }
-            public event System.Diagnostics.EntryWrittenEventHandler EntryWritten { add { } remove { } }
+            public event System.Diagnostics.EntryWrittenEventHandler EntryWritten;
             public static bool Exists(string logName) => throw null;
             public static bool Exists(string logName, string machineName) => throw null;
             public static System.Diagnostics.EventLog[] GetEventLogs() => throw null;

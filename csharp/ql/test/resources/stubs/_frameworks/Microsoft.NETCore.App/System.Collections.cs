@@ -4,7 +4,7 @@ namespace System
 {
     namespace Collections
     {
-        public sealed class BitArray : System.Collections.ICollection, System.Collections.IEnumerable, System.ICloneable
+        public sealed class BitArray : System.ICloneable, System.Collections.ICollection, System.Collections.IEnumerable
         {
             public System.Collections.BitArray And(System.Collections.BitArray value) => throw null;
             public object Clone() => throw null;
@@ -50,7 +50,7 @@ namespace System
                 protected Comparer() => throw null;
                 public static System.Collections.Generic.Comparer<T> Default { get => throw null; }
             }
-            public class Dictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+            public class Dictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Runtime.Serialization.IDeserializationCallback, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Runtime.Serialization.ISerializable
             {
                 public void Add(TKey key, TValue value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> keyValuePair) => throw null;
@@ -74,7 +74,7 @@ namespace System
                 public Dictionary(int capacity, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
                 protected Dictionary(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public int EnsureCapacity(int capacity) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator, System.IDisposable, System.Collections.IDictionaryEnumerator
+                public struct Enumerator : System.Collections.IDictionaryEnumerator, System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<TKey, TValue> Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -95,7 +95,7 @@ namespace System
                 bool System.Collections.IDictionary.IsReadOnly { get => throw null; }
                 bool System.Collections.ICollection.IsSynchronized { get => throw null; }
                 object System.Collections.IDictionary.this[object key] { get => throw null; set { } }
-                public sealed class KeyCollection : System.Collections.Generic.ICollection<TKey>, System.Collections.Generic.IEnumerable<TKey>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TKey>, System.Collections.ICollection
+                public sealed class KeyCollection : System.Collections.Generic.ICollection<TKey>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<TKey>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TKey>
                 {
                     void System.Collections.Generic.ICollection<TKey>.Add(TKey item) => throw null;
                     void System.Collections.Generic.ICollection<TKey>.Clear() => throw null;
@@ -104,7 +104,7 @@ namespace System
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                     public int Count { get => throw null; }
                     public KeyCollection(System.Collections.Generic.Dictionary<TKey, TValue> dictionary) => throw null;
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<TKey>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<TKey>, System.Collections.IEnumerator
                     {
                         public TKey Current { get => throw null; }
                         object System.Collections.IEnumerator.Current { get => throw null; }
@@ -135,7 +135,7 @@ namespace System
                 public void TrimExcess(int capacity) => throw null;
                 public bool TryAdd(TKey key, TValue value) => throw null;
                 public bool TryGetValue(TKey key, out TValue value) => throw null;
-                public sealed class ValueCollection : System.Collections.Generic.ICollection<TValue>, System.Collections.Generic.IEnumerable<TValue>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TValue>, System.Collections.ICollection
+                public sealed class ValueCollection : System.Collections.Generic.ICollection<TValue>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<TValue>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TValue>
                 {
                     void System.Collections.Generic.ICollection<TValue>.Add(TValue item) => throw null;
                     void System.Collections.Generic.ICollection<TValue>.Clear() => throw null;
@@ -144,7 +144,7 @@ namespace System
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                     public int Count { get => throw null; }
                     public ValueCollection(System.Collections.Generic.Dictionary<TKey, TValue> dictionary) => throw null;
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<TValue>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<TValue>, System.Collections.IEnumerator
                     {
                         public TValue Current { get => throw null; }
                         object System.Collections.IEnumerator.Current { get => throw null; }
@@ -174,7 +174,7 @@ namespace System
                 public abstract int GetHashCode(T obj);
                 int System.Collections.IEqualityComparer.GetHashCode(object obj) => throw null;
             }
-            public class HashSet<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.ISet<T>, System.Collections.Generic.IReadOnlySet<T>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+            public class HashSet<T> : System.Collections.Generic.ICollection<T>, System.Runtime.Serialization.IDeserializationCallback, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlySet<T>, System.Runtime.Serialization.ISerializable, System.Collections.Generic.ISet<T>
             {
                 public bool Add(T item) => throw null;
                 void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
@@ -194,7 +194,7 @@ namespace System
                 public HashSet(int capacity, System.Collections.Generic.IEqualityComparer<T> comparer) => throw null;
                 protected HashSet(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public int EnsureCapacity(int capacity) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -223,7 +223,7 @@ namespace System
                 public bool TryGetValue(T equalValue, out T actualValue) => throw null;
                 public void UnionWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
             }
-            public class LinkedList<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.ICollection, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+            public class LinkedList<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Runtime.Serialization.IDeserializationCallback, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Runtime.Serialization.ISerializable
             {
                 void System.Collections.Generic.ICollection<T>.Add(T value) => throw null;
                 public void AddAfter(System.Collections.Generic.LinkedListNode<T> node, System.Collections.Generic.LinkedListNode<T> newNode) => throw null;
@@ -242,7 +242,7 @@ namespace System
                 public LinkedList() => throw null;
                 public LinkedList(System.Collections.Generic.IEnumerable<T> collection) => throw null;
                 protected LinkedList(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+                public struct Enumerator : System.Runtime.Serialization.IDeserializationCallback, System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.Runtime.Serialization.ISerializable
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -278,7 +278,7 @@ namespace System
                 public T Value { get => throw null; set { } }
                 public T ValueRef { get => throw null; }
             }
-            public class List<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>, System.Collections.ICollection, System.Collections.IList
+            public class List<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IList<T>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlyList<T>
             {
                 public void Add(T item) => throw null;
                 int System.Collections.IList.Add(object item) => throw null;
@@ -301,7 +301,7 @@ namespace System
                 public List(System.Collections.Generic.IEnumerable<T> collection) => throw null;
                 public List(int capacity) => throw null;
                 public int EnsureCapacity(int capacity) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -378,11 +378,11 @@ namespace System
                 public bool TryDequeue(out TElement element, out TPriority priority) => throw null;
                 public bool TryPeek(out TElement element, out TPriority priority) => throw null;
                 public System.Collections.Generic.PriorityQueue<TElement, TPriority>.UnorderedItemsCollection UnorderedItems { get => throw null; }
-                public sealed class UnorderedItemsCollection : System.Collections.Generic.IEnumerable<(TElement Element, TPriority Priority)>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<(TElement Element, TPriority Priority)>, System.Collections.ICollection
+                public sealed class UnorderedItemsCollection : System.Collections.ICollection, System.Collections.Generic.IEnumerable<(TElement Element, TPriority Priority)>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<(TElement Element, TPriority Priority)>
                 {
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                     public int Count { get => throw null; }
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<(TElement Element, TPriority Priority)>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<(TElement Element, TPriority Priority)>, System.Collections.IEnumerator
                     {
                         (TElement Element, TPriority Priority) System.Collections.Generic.IEnumerator<(TElement Element, TPriority Priority)>.Current { get => throw null; }
                         public (TElement Element, TPriority Priority) Current { get => throw null; }
@@ -398,7 +398,7 @@ namespace System
                     object System.Collections.ICollection.SyncRoot { get => throw null; }
                 }
             }
-            public class Queue<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.ICollection
+            public class Queue<T> : System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>
             {
                 public void Clear() => throw null;
                 public bool Contains(T item) => throw null;
@@ -411,7 +411,7 @@ namespace System
                 public T Dequeue() => throw null;
                 public void Enqueue(T item) => throw null;
                 public int EnsureCapacity(int capacity) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -436,7 +436,7 @@ namespace System
                 public int GetHashCode(object obj) => throw null;
                 public static System.Collections.Generic.ReferenceEqualityComparer Instance { get => throw null; }
             }
-            public class SortedDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary
+            public class SortedDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
             {
                 public void Add(TKey key, TValue value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> keyValuePair) => throw null;
@@ -454,7 +454,7 @@ namespace System
                 public SortedDictionary(System.Collections.Generic.IComparer<TKey> comparer) => throw null;
                 public SortedDictionary(System.Collections.Generic.IDictionary<TKey, TValue> dictionary) => throw null;
                 public SortedDictionary(System.Collections.Generic.IDictionary<TKey, TValue> dictionary, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator, System.IDisposable, System.Collections.IDictionaryEnumerator
+                public struct Enumerator : System.Collections.IDictionaryEnumerator, System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<TKey, TValue> Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -474,7 +474,7 @@ namespace System
                 bool System.Collections.IDictionary.IsReadOnly { get => throw null; }
                 bool System.Collections.ICollection.IsSynchronized { get => throw null; }
                 object System.Collections.IDictionary.this[object key] { get => throw null; set { } }
-                public sealed class KeyCollection : System.Collections.Generic.ICollection<TKey>, System.Collections.Generic.IEnumerable<TKey>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TKey>, System.Collections.ICollection
+                public sealed class KeyCollection : System.Collections.Generic.ICollection<TKey>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<TKey>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TKey>
                 {
                     void System.Collections.Generic.ICollection<TKey>.Add(TKey item) => throw null;
                     void System.Collections.Generic.ICollection<TKey>.Clear() => throw null;
@@ -483,7 +483,7 @@ namespace System
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                     public int Count { get => throw null; }
                     public KeyCollection(System.Collections.Generic.SortedDictionary<TKey, TValue> dictionary) => throw null;
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<TKey>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<TKey>, System.Collections.IEnumerator
                     {
                         public TKey Current { get => throw null; }
                         object System.Collections.IEnumerator.Current { get => throw null; }
@@ -509,7 +509,7 @@ namespace System
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
                 public TValue this[TKey key] { get => throw null; set { } }
                 public bool TryGetValue(TKey key, out TValue value) => throw null;
-                public sealed class ValueCollection : System.Collections.Generic.ICollection<TValue>, System.Collections.Generic.IEnumerable<TValue>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TValue>, System.Collections.ICollection
+                public sealed class ValueCollection : System.Collections.Generic.ICollection<TValue>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<TValue>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TValue>
                 {
                     void System.Collections.Generic.ICollection<TValue>.Add(TValue item) => throw null;
                     void System.Collections.Generic.ICollection<TValue>.Clear() => throw null;
@@ -518,7 +518,7 @@ namespace System
                     void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                     public int Count { get => throw null; }
                     public ValueCollection(System.Collections.Generic.SortedDictionary<TKey, TValue> dictionary) => throw null;
-                    public struct Enumerator : System.Collections.Generic.IEnumerator<TValue>, System.Collections.IEnumerator, System.IDisposable
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<TValue>, System.Collections.IEnumerator
                     {
                         public TValue Current { get => throw null; }
                         object System.Collections.IEnumerator.Current { get => throw null; }
@@ -539,7 +539,7 @@ namespace System
                 System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
                 public System.Collections.Generic.SortedDictionary<TKey, TValue>.ValueCollection Values { get => throw null; }
             }
-            public class SortedList<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.ICollection, System.Collections.IDictionary
+            public class SortedList<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
             {
                 public void Add(TKey key, TValue value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> keyValuePair) => throw null;
@@ -591,7 +591,7 @@ namespace System
                 System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
                 public System.Collections.Generic.IList<TValue> Values { get => throw null; }
             }
-            public class SortedSet<T> : System.Collections.Generic.ICollection<T>, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.ISet<T>, System.Collections.Generic.IReadOnlySet<T>, System.Collections.ICollection, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+            public class SortedSet<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Runtime.Serialization.IDeserializationCallback, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlySet<T>, System.Runtime.Serialization.ISerializable, System.Collections.Generic.ISet<T>
             {
                 public bool Add(T item) => throw null;
                 void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
@@ -610,7 +610,7 @@ namespace System
                 public SortedSet(System.Collections.Generic.IEnumerable<T> collection) => throw null;
                 public SortedSet(System.Collections.Generic.IEnumerable<T> collection, System.Collections.Generic.IComparer<T> comparer) => throw null;
                 protected SortedSet(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+                public struct Enumerator : System.Runtime.Serialization.IDeserializationCallback, System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.Runtime.Serialization.ISerializable
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }
@@ -648,7 +648,7 @@ namespace System
                 public bool TryGetValue(T equalValue, out T actualValue) => throw null;
                 public void UnionWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
             }
-            public class Stack<T> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.ICollection
+            public class Stack<T> : System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>
             {
                 public void Clear() => throw null;
                 public bool Contains(T item) => throw null;
@@ -659,7 +659,7 @@ namespace System
                 public Stack(System.Collections.Generic.IEnumerable<T> collection) => throw null;
                 public Stack(int capacity) => throw null;
                 public int EnsureCapacity(int capacity) => throw null;
-                public struct Enumerator : System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator, System.IDisposable
+                public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
                     object System.Collections.IEnumerator.Current { get => throw null; }

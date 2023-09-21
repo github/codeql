@@ -232,7 +232,7 @@ namespace System
                 BackupOperator = 551,
                 Replicator = 552,
             }
-            public class WindowsIdentity : System.Security.Claims.ClaimsIdentity, System.IDisposable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+            public class WindowsIdentity : System.Security.Claims.ClaimsIdentity, System.Runtime.Serialization.IDeserializationCallback, System.IDisposable, System.Runtime.Serialization.ISerializable
             {
                 public Microsoft.Win32.SafeHandles.SafeAccessTokenHandle AccessToken { get => throw null; }
                 public override sealed string AuthenticationType { get => throw null; }
@@ -245,7 +245,7 @@ namespace System
                 public WindowsIdentity(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 protected WindowsIdentity(System.Security.Principal.WindowsIdentity identity) => throw null;
                 public WindowsIdentity(string sUserPrincipalName) => throw null;
-                public static string DefaultIssuer;
+                public const string DefaultIssuer = default;
                 public virtual System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> DeviceClaims { get => throw null; }
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;

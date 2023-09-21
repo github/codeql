@@ -27,10 +27,10 @@ namespace Microsoft
             {
                 public class IISDefaults
                 {
-                    public static string AuthenticationScheme;
+                    public const string AuthenticationScheme = default;
                     public IISDefaults() => throw null;
-                    public static string Negotiate;
-                    public static string Ntlm;
+                    public const string Negotiate = default;
+                    public const string Ntlm = default;
                 }
                 public class IISHostingStartup : Microsoft.AspNetCore.Hosting.IHostingStartup
                 {

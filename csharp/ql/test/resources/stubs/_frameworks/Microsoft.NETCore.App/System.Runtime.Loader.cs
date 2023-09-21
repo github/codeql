@@ -71,13 +71,13 @@ namespace System
                 protected virtual nint LoadUnmanagedDll(string unmanagedDllName) => throw null;
                 protected nint LoadUnmanagedDllFromPath(string unmanagedDllPath) => throw null;
                 public string Name { get => throw null; }
-                public event System.Func<System.Runtime.Loader.AssemblyLoadContext, System.Reflection.AssemblyName, System.Reflection.Assembly> Resolving { add { } remove { } }
-                public event System.Func<System.Reflection.Assembly, string, nint> ResolvingUnmanagedDll { add { } remove { } }
+                public event System.Func<System.Runtime.Loader.AssemblyLoadContext, System.Reflection.AssemblyName, System.Reflection.Assembly> Resolving;
+                public event System.Func<System.Reflection.Assembly, string, nint> ResolvingUnmanagedDll;
                 public void SetProfileOptimizationRoot(string directoryPath) => throw null;
                 public void StartProfileOptimization(string profile) => throw null;
                 public override string ToString() => throw null;
                 public void Unload() => throw null;
-                public event System.Action<System.Runtime.Loader.AssemblyLoadContext> Unloading { add { } remove { } }
+                public event System.Action<System.Runtime.Loader.AssemblyLoadContext> Unloading;
             }
         }
     }

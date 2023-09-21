@@ -81,22 +81,22 @@ namespace System
             public byte[] DownloadData(System.Uri address) => throw null;
             public void DownloadDataAsync(System.Uri address) => throw null;
             public void DownloadDataAsync(System.Uri address, object userToken) => throw null;
-            public event System.Net.DownloadDataCompletedEventHandler DownloadDataCompleted { add { } remove { } }
+            public event System.Net.DownloadDataCompletedEventHandler DownloadDataCompleted;
             public System.Threading.Tasks.Task<byte[]> DownloadDataTaskAsync(string address) => throw null;
             public System.Threading.Tasks.Task<byte[]> DownloadDataTaskAsync(System.Uri address) => throw null;
             public void DownloadFile(string address, string fileName) => throw null;
             public void DownloadFile(System.Uri address, string fileName) => throw null;
             public void DownloadFileAsync(System.Uri address, string fileName) => throw null;
             public void DownloadFileAsync(System.Uri address, string fileName, object userToken) => throw null;
-            public event System.ComponentModel.AsyncCompletedEventHandler DownloadFileCompleted { add { } remove { } }
+            public event System.ComponentModel.AsyncCompletedEventHandler DownloadFileCompleted;
             public System.Threading.Tasks.Task DownloadFileTaskAsync(string address, string fileName) => throw null;
             public System.Threading.Tasks.Task DownloadFileTaskAsync(System.Uri address, string fileName) => throw null;
-            public event System.Net.DownloadProgressChangedEventHandler DownloadProgressChanged { add { } remove { } }
+            public event System.Net.DownloadProgressChangedEventHandler DownloadProgressChanged;
             public string DownloadString(string address) => throw null;
             public string DownloadString(System.Uri address) => throw null;
             public void DownloadStringAsync(System.Uri address) => throw null;
             public void DownloadStringAsync(System.Uri address, object userToken) => throw null;
-            public event System.Net.DownloadStringCompletedEventHandler DownloadStringCompleted { add { } remove { } }
+            public event System.Net.DownloadStringCompletedEventHandler DownloadStringCompleted;
             public System.Threading.Tasks.Task<string> DownloadStringTaskAsync(string address) => throw null;
             public System.Threading.Tasks.Task<string> DownloadStringTaskAsync(System.Uri address) => throw null;
             public System.Text.Encoding Encoding { get => throw null; set { } }
@@ -121,7 +121,7 @@ namespace System
             public System.IO.Stream OpenRead(System.Uri address) => throw null;
             public void OpenReadAsync(System.Uri address) => throw null;
             public void OpenReadAsync(System.Uri address, object userToken) => throw null;
-            public event System.Net.OpenReadCompletedEventHandler OpenReadCompleted { add { } remove { } }
+            public event System.Net.OpenReadCompletedEventHandler OpenReadCompleted;
             public System.Threading.Tasks.Task<System.IO.Stream> OpenReadTaskAsync(string address) => throw null;
             public System.Threading.Tasks.Task<System.IO.Stream> OpenReadTaskAsync(System.Uri address) => throw null;
             public System.IO.Stream OpenWrite(string address) => throw null;
@@ -131,7 +131,7 @@ namespace System
             public void OpenWriteAsync(System.Uri address) => throw null;
             public void OpenWriteAsync(System.Uri address, string method) => throw null;
             public void OpenWriteAsync(System.Uri address, string method, object userToken) => throw null;
-            public event System.Net.OpenWriteCompletedEventHandler OpenWriteCompleted { add { } remove { } }
+            public event System.Net.OpenWriteCompletedEventHandler OpenWriteCompleted;
             public System.Threading.Tasks.Task<System.IO.Stream> OpenWriteTaskAsync(string address) => throw null;
             public System.Threading.Tasks.Task<System.IO.Stream> OpenWriteTaskAsync(string address, string method) => throw null;
             public System.Threading.Tasks.Task<System.IO.Stream> OpenWriteTaskAsync(System.Uri address) => throw null;
@@ -146,7 +146,7 @@ namespace System
             public void UploadDataAsync(System.Uri address, byte[] data) => throw null;
             public void UploadDataAsync(System.Uri address, string method, byte[] data) => throw null;
             public void UploadDataAsync(System.Uri address, string method, byte[] data, object userToken) => throw null;
-            public event System.Net.UploadDataCompletedEventHandler UploadDataCompleted { add { } remove { } }
+            public event System.Net.UploadDataCompletedEventHandler UploadDataCompleted;
             public System.Threading.Tasks.Task<byte[]> UploadDataTaskAsync(string address, byte[] data) => throw null;
             public System.Threading.Tasks.Task<byte[]> UploadDataTaskAsync(string address, string method, byte[] data) => throw null;
             public System.Threading.Tasks.Task<byte[]> UploadDataTaskAsync(System.Uri address, byte[] data) => throw null;
@@ -158,12 +158,12 @@ namespace System
             public void UploadFileAsync(System.Uri address, string fileName) => throw null;
             public void UploadFileAsync(System.Uri address, string method, string fileName) => throw null;
             public void UploadFileAsync(System.Uri address, string method, string fileName, object userToken) => throw null;
-            public event System.Net.UploadFileCompletedEventHandler UploadFileCompleted { add { } remove { } }
+            public event System.Net.UploadFileCompletedEventHandler UploadFileCompleted;
             public System.Threading.Tasks.Task<byte[]> UploadFileTaskAsync(string address, string fileName) => throw null;
             public System.Threading.Tasks.Task<byte[]> UploadFileTaskAsync(string address, string method, string fileName) => throw null;
             public System.Threading.Tasks.Task<byte[]> UploadFileTaskAsync(System.Uri address, string fileName) => throw null;
             public System.Threading.Tasks.Task<byte[]> UploadFileTaskAsync(System.Uri address, string method, string fileName) => throw null;
-            public event System.Net.UploadProgressChangedEventHandler UploadProgressChanged { add { } remove { } }
+            public event System.Net.UploadProgressChangedEventHandler UploadProgressChanged;
             public string UploadString(string address, string data) => throw null;
             public string UploadString(string address, string method, string data) => throw null;
             public string UploadString(System.Uri address, string data) => throw null;
@@ -171,7 +171,7 @@ namespace System
             public void UploadStringAsync(System.Uri address, string data) => throw null;
             public void UploadStringAsync(System.Uri address, string method, string data) => throw null;
             public void UploadStringAsync(System.Uri address, string method, string data, object userToken) => throw null;
-            public event System.Net.UploadStringCompletedEventHandler UploadStringCompleted { add { } remove { } }
+            public event System.Net.UploadStringCompletedEventHandler UploadStringCompleted;
             public System.Threading.Tasks.Task<string> UploadStringTaskAsync(string address, string data) => throw null;
             public System.Threading.Tasks.Task<string> UploadStringTaskAsync(string address, string method, string data) => throw null;
             public System.Threading.Tasks.Task<string> UploadStringTaskAsync(System.Uri address, string data) => throw null;
@@ -183,13 +183,13 @@ namespace System
             public void UploadValuesAsync(System.Uri address, System.Collections.Specialized.NameValueCollection data) => throw null;
             public void UploadValuesAsync(System.Uri address, string method, System.Collections.Specialized.NameValueCollection data) => throw null;
             public void UploadValuesAsync(System.Uri address, string method, System.Collections.Specialized.NameValueCollection data, object userToken) => throw null;
-            public event System.Net.UploadValuesCompletedEventHandler UploadValuesCompleted { add { } remove { } }
+            public event System.Net.UploadValuesCompletedEventHandler UploadValuesCompleted;
             public System.Threading.Tasks.Task<byte[]> UploadValuesTaskAsync(string address, System.Collections.Specialized.NameValueCollection data) => throw null;
             public System.Threading.Tasks.Task<byte[]> UploadValuesTaskAsync(string address, string method, System.Collections.Specialized.NameValueCollection data) => throw null;
             public System.Threading.Tasks.Task<byte[]> UploadValuesTaskAsync(System.Uri address, System.Collections.Specialized.NameValueCollection data) => throw null;
             public System.Threading.Tasks.Task<byte[]> UploadValuesTaskAsync(System.Uri address, string method, System.Collections.Specialized.NameValueCollection data) => throw null;
             public bool UseDefaultCredentials { get => throw null; set { } }
-            public event System.Net.WriteStreamClosedEventHandler WriteStreamClosed { add { } remove { } }
+            public event System.Net.WriteStreamClosedEventHandler WriteStreamClosed;
         }
         public class WriteStreamClosedEventArgs : System.EventArgs
         {

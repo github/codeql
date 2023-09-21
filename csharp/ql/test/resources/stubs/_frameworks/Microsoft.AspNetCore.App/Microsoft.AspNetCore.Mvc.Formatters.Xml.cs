@@ -18,7 +18,7 @@ namespace Microsoft
                         public System.Collections.Generic.IEnumerator<TWrapped> GetEnumerator() => throw null;
                         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                     }
-                    public class DelegatingEnumerator<TWrapped, TDeclared> : System.Collections.Generic.IEnumerator<TWrapped>, System.Collections.IEnumerator, System.IDisposable
+                    public class DelegatingEnumerator<TWrapped, TDeclared> : System.IDisposable, System.Collections.Generic.IEnumerator<TWrapped>, System.Collections.IEnumerator
                     {
                         public DelegatingEnumerator(System.Collections.Generic.IEnumerator<TDeclared> inner, Microsoft.AspNetCore.Mvc.Formatters.Xml.IWrapperProvider wrapperProvider) => throw null;
                         public TWrapped Current { get => throw null; }
@@ -57,7 +57,7 @@ namespace Microsoft
                         System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Mvc.Infrastructure.ICompatibilitySwitch> System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.ICompatibilitySwitch>.GetEnumerator() => throw null;
                         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                     }
-                    public class ProblemDetailsWrapper : System.Xml.Serialization.IXmlSerializable, Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable
+                    public class ProblemDetailsWrapper : Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable, System.Xml.Serialization.IXmlSerializable
                     {
                         public ProblemDetailsWrapper() => throw null;
                         public ProblemDetailsWrapper(Microsoft.AspNetCore.Mvc.ProblemDetails problemDetails) => throw null;
@@ -68,7 +68,7 @@ namespace Microsoft
                         object Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable.Unwrap(System.Type declaredType) => throw null;
                         public virtual void WriteXml(System.Xml.XmlWriter writer) => throw null;
                     }
-                    public sealed class SerializableErrorWrapper : System.Xml.Serialization.IXmlSerializable, Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable
+                    public sealed class SerializableErrorWrapper : Microsoft.AspNetCore.Mvc.Formatters.Xml.IUnwrappable, System.Xml.Serialization.IXmlSerializable
                     {
                         public SerializableErrorWrapper() => throw null;
                         public SerializableErrorWrapper(Microsoft.AspNetCore.Mvc.SerializableError error) => throw null;
