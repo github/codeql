@@ -1,7 +1,7 @@
 .. _codeql-for-javascript:
 
-CodeQL for JavaScript
-=====================
+CodeQL for JavaScript and TypeScript
+====================================
 
 Experiment and learn how to write effective and efficient queries for CodeQL databases generated from JavaScript and TypeScript codebases.
 

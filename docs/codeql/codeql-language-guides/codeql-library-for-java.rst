@@ -6,7 +6,7 @@ CodeQL library for Java and Kotlin
 When you're analyzing a Java/Kotlin program, you can make use of the large collection of classes in the CodeQL library for Java/Kotlin.
 
 About the CodeQL library for Java and Kotlin
----------------------------------
+--------------------------------------------
 
 There is an extensive library for analyzing CodeQL databases extracted from Java/Kotlin projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
