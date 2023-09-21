@@ -27,11 +27,12 @@ public static class StubGenerator
         var threads = EnvironmentVariables.GetDefaultNumberOfThreads();
 
         using var references = new BlockingCollection<(MetadataReference Reference, string Path)>();
-        var referenceResolveTasks = GetResolvedReferenceTasks(referencesPaths, references);
 
-        Parallel.Invoke(
-            new ParallelOptions { MaxDegreeOfParallelism = threads },
-            referenceResolveTasks.ToArray());
+        Parallel.ForEach(referencesPaths, new ParallelOptions { MaxDegreeOfParallelism = threads }, path =>
+        {
+            var reference = MetadataReference.CreateFromFile(path);
+            references.Add((reference, path));
+        });
 
         logger.Log(Severity.Info, $"Generating stubs for {references.Count} assemblies.");
 
@@ -41,43 +42,33 @@ public static class StubGenerator
             references.Select(tuple => tuple.Item1),
             new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true));
 
-        var referenceStubTasks = references.Select(@ref => (Action)(() => StubReference(compilation, outputPath, @ref.Reference, @ref.Path)));
-        Parallel.Invoke(
-            new ParallelOptions { MaxDegreeOfParallelism = threads },
-            referenceStubTasks.ToArray());
+        Parallel.ForEach(references, new ParallelOptions { MaxDegreeOfParallelism = threads }, @ref =>
+        {
+            StubReference(logger, compilation, outputPath, @ref.Reference, @ref.Path);
+        });
 
         stopWatch.Stop();
         logger.Log(Severity.Info, $"Stub generation took {stopWatch.Elapsed}.");
     }
 
-    private static IEnumerable<Action> GetResolvedReferenceTasks(IEnumerable<string> referencePaths, BlockingCollection<(MetadataReference, string)> references)
+    private static void StubReference(ILogger logger, CSharpCompilation compilation, string outputPath, MetadataReference reference, string path)
     {
-        return referencePaths.Select<string, Action>(path => () =>
+        if (compilation.GetAssemblyOrModuleSymbol(reference) is not IAssemblySymbol assembly)
+            return;
+
+        using var fileStream = new FileStream(FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs")), FileMode.Create, FileAccess.Write);
+        using var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
+
+        writer.WriteLine("// This file contains auto-generated code.");
+        writer.WriteLine($"// Generated from `{assembly.Identity}`.");
+
+        var visitor = new StubVisitor(assembly, writer);
+
+        visitor.StubAttributes(assembly.GetAttributes(), "assembly: ");
+
+        foreach (var module in assembly.Modules)
         {
-            var reference = MetadataReference.CreateFromFile(path);
-            references.Add((reference, path));
-        });
-    }
-
-    private static void StubReference(CSharpCompilation compilation, string outputPath, MetadataReference reference, string path)
-    {
-        if (compilation.GetAssemblyOrModuleSymbol(reference) is IAssemblySymbol assembly)
-        {
-            var logger = new ConsoleLogger(Verbosity.Info);
-            using var fileStream = new FileStream(FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs")), FileMode.Create, FileAccess.Write);
-            using var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
-
-            writer.WriteLine("// This file contains auto-generated code.");
-            writer.WriteLine($"// Generated from `{assembly.Identity}`.");
-
-            var visitor = new StubVisitor(assembly, writer);
-
-            visitor.StubAttributes(assembly.GetAttributes(), "assembly: ");
-
-            foreach (var module in assembly.Modules)
-            {
-                module.GlobalNamespace.Accept(new StubVisitor(assembly, writer));
-            }
+            module.GlobalNamespace.Accept(visitor);
         }
     }
 }

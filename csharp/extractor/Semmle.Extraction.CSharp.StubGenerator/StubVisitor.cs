@@ -36,7 +36,7 @@ internal sealed class StubVisitor : SymbolVisitor
         IsRelevantBaseType(symbol) &&
         SymbolEqualityComparer.Default.Equals(symbol.ContainingAssembly, assembly);
 
-    private bool IsRelevantNamespace(INamespaceSymbol symbol) => isRelevantNamespace[symbol];
+    private bool IsRelevantNamespace(INamespaceSymbol symbol) => isRelevantNamespace.Invoke(symbol);
 
     private void StubExplicitInterface(ISymbol symbol, ISymbol? explicitInterfaceSymbol, bool writeName = true)
     {
@@ -109,7 +109,7 @@ internal sealed class StubVisitor : SymbolVisitor
             case Accessibility.Internal:
                 stubWriter.Write("internal ");
                 break;
-            case Accessibility.ProtectedAndInternal or Accessibility.ProtectedOrInternal:
+            case Accessibility.ProtectedAndInternal:
                 stubWriter.Write("protected internal ");
                 break;
             default:
@@ -156,7 +156,7 @@ internal sealed class StubVisitor : SymbolVisitor
             stubWriter.Write("extern ");
     }
 
-    public void StubTypedConstant(TypedConstant c)
+    private void StubTypedConstant(TypedConstant c)
     {
         switch (c.Kind)
         {
@@ -221,7 +221,9 @@ internal sealed class StubVisitor : SymbolVisitor
         if (!attributeAllowList.Contains(qualifiedName))
             return;
 
-        stubWriter.Write($"[{prefix}{qualifiedName.AsSpan(0, @class.GetQualifiedName().Length - 9)}");
+        if (qualifiedName.EndsWith("Attribute"))
+            qualifiedName = qualifiedName[..^9];
+        stubWriter.Write($"[{prefix}{qualifiedName}");
         if (a.ConstructorArguments.Any())
         {
             stubWriter.Write("(");
@@ -295,12 +297,8 @@ internal sealed class StubVisitor : SymbolVisitor
         "volatile", "while"
     };
 
-    private static string EscapeIdentifier(string identifier)
-    {
-        if (keywords.Contains(identifier))
-            return "@" + identifier;
-        return identifier;
-    }
+    private static string EscapeIdentifier(string identifier) =>
+        keywords.Contains(identifier) ? "@" + identifier : identifier;
 
     public override void VisitField(IFieldSymbol symbol)
     {
@@ -739,7 +737,7 @@ internal sealed class StubVisitor : SymbolVisitor
         else
         {
             var seenCtor = false;
-            foreach (var childSymbol in symbol.GetMembers())
+            foreach (var childSymbol in symbol.GetMembers().OrderBy(m => m.GetName()))
             {
                 seenCtor |= childSymbol is IMethodSymbol method && method.MethodKind == MethodKind.Constructor;
                 childSymbol.Accept(this);
@@ -768,7 +766,7 @@ internal sealed class StubVisitor : SymbolVisitor
         if (!isGlobal)
             stubWriter.WriteLine($"namespace {symbol.Name} {{");
 
-        foreach (var childSymbol in symbol.GetMembers())
+        foreach (var childSymbol in symbol.GetMembers().OrderBy(m => m.GetName()))
         {
             childSymbol.Accept(this);
         }

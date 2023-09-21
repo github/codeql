@@ -14,17 +14,14 @@ public class MemoizedFunc<T1, T2> where T1 : notnull
         this.f = f;
     }
 
-    public T2 this[T1 s]
+    public T2 Invoke(T1 s)
     {
-        get
+        if (!cache.TryGetValue(s, out var t))
         {
-            if (!cache.TryGetValue(s, out var t))
-            {
-                t = f(s);
-                cache[s] = t;
-            }
-            return t;
+            t = f(s);
+            cache[s] = t;
         }
+        return t;
     }
 }
 
@@ -38,11 +35,5 @@ public class ConcurrentMemoizedFunc<T1, T2> where T1 : notnull
         this.f = f;
     }
 
-    public T2 this[T1 s]
-    {
-        get
-        {
-            return cache.GetOrAdd(s, f);
-        }
-    }
+    public T2 Invoke(T1 s) => cache.GetOrAdd(s, f);
 }
