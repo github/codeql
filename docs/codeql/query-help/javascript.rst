@@ -1,4 +1,4 @@
-CodeQL query help for JavaScript
+CodeQL query help for JavaScript and TypeScript
 ================================
 
 .. include:: ../reusables/query-help-overview.rst
