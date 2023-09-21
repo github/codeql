@@ -116,6 +116,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseReference(filename);
             }
 
+            RemoveRuntimeNugetPackageReferences();
             ResolveConflicts();
 
             // Output the findings
@@ -148,6 +149,33 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 succeededProjects + failedProjects,
                 failedProjects,
                 DateTime.Now - startTime);
+        }
+
+        private void RemoveRuntimeNugetPackageReferences()
+        {
+            if (!options.UseNuGet)
+            {
+                return;
+            }
+
+            var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
+            var runtimePackageNamePrefixes = new[]
+            {
+                Path.Combine(packageFolder, "microsoft.netcore.app.runtime"),
+                Path.Combine(packageFolder, "microsoft.aspnetcore.app.runtime"),
+                Path.Combine(packageFolder, "microsoft.windowsdesktop.app.runtime"),
+            };
+
+            foreach (var filename in usedReferences.Keys)
+            {
+                var lowerFilename = filename.ToLowerInvariant();
+
+                if (runtimePackageNamePrefixes.Any(prefix => lowerFilename.StartsWith(prefix)))
+                {
+                    usedReferences.Remove(filename);
+                    progressMonitor.RemovedReference(filename);
+                }
+            }
         }
 
         private void GenerateSourceFileFromImplicitUsings()
