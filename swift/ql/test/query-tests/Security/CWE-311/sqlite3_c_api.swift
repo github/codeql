@@ -45,7 +45,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, id: Int32, medicalNotes: String) {
 
 	let _ = sqlite3_exec(db, insertQuery, nil, nil, nil) // BAD (sensitive data)
 	let _ = sqlite3_exec(db, updateQuery, nil, nil, nil) // BAD (sensitive data)
-	let _ = sqlite3_exec(db, deleteQuery, nil, nil, nil) // GOOD [FALSE POSITIVE]
+	let _ = sqlite3_exec(db, deleteQuery, nil, nil, nil) // GOOD
 
 	// --- sensitive data in bindings ---
 
@@ -54,7 +54,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, id: Int32, medicalNotes: String) {
 	var stmt1: OpaquePointer?
 
 	if (sqlite3_prepare(db, varQuery, -1, &stmt1, nil) == SQLITE_OK) { // GOOD
-		if (sqlite3_bind_int(stmt1, 1, id) == SQLITE_OK) { // GOOD [FALSE POSITIVE]
+		if (sqlite3_bind_int(stmt1, 1, id) == SQLITE_OK) { // GOOD
 			if (sqlite3_bind_text(stmt1, 2, medicalNotes, -1, SQLITE_TRANSIENT) == SQLITE_OK) { // BAD (sensitive data)
 				// ...
 			}
