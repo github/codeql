@@ -282,6 +282,7 @@ module VariableCapture {
     private import ruby as R
     private import codeql.ruby.controlflow.ControlFlowGraph
     private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
+    private import TaintTrackingPrivate as TaintTrackingPrivate
 
     class Location = R::Location;
 
@@ -296,7 +297,10 @@ module VariableCapture {
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     class CapturedVariable extends LocalVariable {
-      CapturedVariable() { this.isCaptured() }
+      CapturedVariable() {
+        this.isCaptured() and
+        TaintTrackingPrivate::forceCachingInSameStage()
+      }
 
       Callable getCallable() {
         exists(Scope scope | scope = this.getDeclaringScope() |
@@ -426,12 +430,11 @@ module VariableCapture {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
-  private import TaintTrackingPrivate as TaintTrackingPrivate
   private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
 
   cached
   newtype TNode =
-    TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
+    TExprNode(CfgNodes::ExprCfgNode n) or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
     TCapturedVariableNode(VariableCapture::CapturedVariable v) or
