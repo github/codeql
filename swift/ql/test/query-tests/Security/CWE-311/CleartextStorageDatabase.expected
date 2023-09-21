@@ -6,6 +6,10 @@ edges
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [password] |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [value] |
+| sqlite3_c_api.swift:42:69:42:69 | medicalNotes | sqlite3_c_api.swift:46:27:46:27 | insertQuery |
+| sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:47:27:47:27 | updateQuery |
+| sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:48:27:48:27 | deleteQuery |
+| sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:57:34:57:34 | id |
 | testCoreData2.swift:23:13:23:13 | value | file://:0:0:0:0 | value |
 | testCoreData2.swift:37:2:37:2 | [post] obj [myValue] | testCoreData2.swift:37:2:37:2 | [post] obj |
 | testCoreData2.swift:37:16:37:16 | bankAccountNo | testCoreData2.swift:37:2:37:2 | [post] obj [myValue] |
@@ -197,6 +201,13 @@ nodes
 | file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |
+| sqlite3_c_api.swift:42:69:42:69 | medicalNotes | semmle.label | medicalNotes |
+| sqlite3_c_api.swift:43:49:43:49 | medicalNotes | semmle.label | medicalNotes |
+| sqlite3_c_api.swift:46:27:46:27 | insertQuery | semmle.label | insertQuery |
+| sqlite3_c_api.swift:47:27:47:27 | updateQuery | semmle.label | updateQuery |
+| sqlite3_c_api.swift:48:27:48:27 | deleteQuery | semmle.label | deleteQuery |
+| sqlite3_c_api.swift:57:34:57:34 | id | semmle.label | id |
+| sqlite3_c_api.swift:58:36:58:36 | medicalNotes | semmle.label | medicalNotes |
 | testCoreData2.swift:23:13:23:13 | value | semmle.label | value |
 | testCoreData2.swift:37:2:37:2 | [post] obj | semmle.label | [post] obj |
 | testCoreData2.swift:37:2:37:2 | [post] obj [myValue] | semmle.label | [post] obj [myValue] |
@@ -465,6 +476,11 @@ subpaths
 | testRealm.swift:66:11:66:11 | myPassword | testRealm.swift:27:6:27:6 | value | file://:0:0:0:0 | [post] self [data] | testRealm.swift:66:2:66:2 | [post] g [data] |
 | testRealm.swift:73:15:73:15 | myPassword | testRealm.swift:34:6:34:6 | value | file://:0:0:0:0 | [post] self [password] | testRealm.swift:73:2:73:2 | [post] h [password] |
 #select
+| sqlite3_c_api.swift:46:27:46:27 | insertQuery | sqlite3_c_api.swift:42:69:42:69 | medicalNotes | sqlite3_c_api.swift:46:27:46:27 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:42:69:42:69 | medicalNotes | medicalNotes |
+| sqlite3_c_api.swift:47:27:47:27 | updateQuery | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:47:27:47:27 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | medicalNotes |
+| sqlite3_c_api.swift:48:27:48:27 | deleteQuery | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:48:27:48:27 | deleteQuery | This operation stores 'deleteQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | medicalNotes |
+| sqlite3_c_api.swift:57:34:57:34 | id | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:57:34:57:34 | id | This operation stores 'id' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | medicalNotes |
+| sqlite3_c_api.swift:58:36:58:36 | medicalNotes | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | This operation stores 'medicalNotes' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | medicalNotes |
 | testCoreData2.swift:37:2:37:2 | obj | testCoreData2.swift:37:16:37:16 | bankAccountNo | testCoreData2.swift:37:2:37:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:37:16:37:16 | bankAccountNo | bankAccountNo |
 | testCoreData2.swift:39:2:39:2 | obj | testCoreData2.swift:39:28:39:28 | bankAccountNo | testCoreData2.swift:39:2:39:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:39:28:39:28 | bankAccountNo | bankAccountNo |
 | testCoreData2.swift:41:2:41:2 | obj | testCoreData2.swift:41:29:41:29 | bankAccountNo | testCoreData2.swift:41:2:41:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData2.swift:41:29:41:29 | bankAccountNo | bankAccountNo |

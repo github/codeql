@@ -108,7 +108,25 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
         ";FetchableRecord;true;fetchOne(_:arguments:adapter:);;;Argument[1];database-store",
         ";Statement;true;execute(arguments:);;;Argument[0];database-store",
         ";CommonTableExpression;true;init(recursive:named:columns:sql:arguments:);;;Argument[4];database-store",
-        ";Statement;true;setArguments(_:);;;Argument[0];database-store"
+        ";Statement;true;setArguments(_:);;;Argument[0];database-store",
+        // sqlite3 sinks
+        ";;false;sqlite3_exec(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare_v2(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare_v3(_:_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare16(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare16_v2(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_prepare16_v3(_:_:_:_:_:);;;Argument[1];database-store",
+        ";;false;sqlite3_bind_blob(_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_blob64(_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_double(_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_int(_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_int64(_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_text(_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_text16(_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_text64(_:_:_:_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_value(_:_:_:);;;Argument[2];database-store",
+        ";;false;sqlite3_bind_pointer(_:_:_:_:);;;Argument[2];database-store",
       ]
   }
 }
