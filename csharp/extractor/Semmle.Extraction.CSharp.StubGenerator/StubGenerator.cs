@@ -56,13 +56,20 @@ public static class StubGenerator
         if (compilation.GetAssemblyOrModuleSymbol(reference) is not IAssemblySymbol assembly)
             return;
 
-        using var fileStream = new FileStream(FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs")), FileMode.Create, FileAccess.Write);
-        using var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
+        Func<StreamWriter> makeWriter = () =>
+        {
+            var fileStream = new FileStream(FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs")), FileMode.Create, FileAccess.Write);
+            var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
+            return writer;
+        };
 
-        writer.WriteLine("// This file contains auto-generated code.");
-        writer.WriteLine($"// Generated from `{assembly.Identity}`.");
+        using var visitor = new StubVisitor(assembly, makeWriter);
 
-        var visitor = new StubVisitor(assembly, writer);
+        if (!assembly.Modules.Any(m => visitor.IsRelevantNamespace(m.GlobalNamespace)))
+            return;
+
+        visitor.StubWriter.WriteLine("// This file contains auto-generated code.");
+        visitor.StubWriter.WriteLine($"// Generated from `{assembly.Identity}`.");
 
         visitor.StubAttributes(assembly.GetAttributes(), "assembly: ");
 
