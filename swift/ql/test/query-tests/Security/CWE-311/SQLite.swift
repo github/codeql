@@ -176,13 +176,13 @@ func test_sqlite_swift_api(db: Connection, id: Int, mobilePhoneNumber: String) t
 	let filter = table.filter(idExpr == id) // GOOD
 
 	try db.run(table.insert(idExpr <- id, numberExpr <- "123")) // GOOD
-	try db.run(table.insert(idExpr <- id, numberExpr <- mobilePhoneNumber)) // BAD (sensitive data) [NOT DETECTED]
+	try db.run(table.insert(idExpr <- id, numberExpr <- mobilePhoneNumber)) // BAD (sensitive data)
 
 	try db.run(table.update(numberExpr <- "123")) // GOOD
-	try db.run(table.update(numberExpr <- mobilePhoneNumber)) // BAD (sensitive data) [NOT DETECTED]
+	try db.run(table.update(numberExpr <- mobilePhoneNumber)) // BAD (sensitive data)
 	try db.run(filter.update(numberExpr <- "123")) // GOOD
-	try db.run(filter.update(numberExpr <- mobilePhoneNumber)) // BAD (sensitive data) [NOT DETECTED]
+	try db.run(filter.update(numberExpr <- mobilePhoneNumber)) // BAD (sensitive data)
 	try db.run(table.update(numberExpr <- numberExpr.replace("123", with: "456"))) // GOOD
-	try db.run(table.update(numberExpr <- numberExpr.replace("123", with: mobilePhoneNumber))) // BAD (sensitive data) [NOT DETECTED]
+	try db.run(table.update(numberExpr <- numberExpr.replace("123", with: mobilePhoneNumber))) // BAD (sensitive data)
 	// (much more complex query construction is possible in SQLite.swift)
 }

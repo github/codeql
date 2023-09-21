@@ -45,6 +45,19 @@ edges
 | SQLite.swift:169:23:169:61 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:169:23:169:61 | [...] |
 | SQLite.swift:169:34:169:44 | (...) [Tuple element at index 1] | SQLite.swift:169:23:169:61 | [...] [Collection element, Tuple element at index 1] |
 | SQLite.swift:169:44:169:44 | mobilePhoneNumber | SQLite.swift:169:34:169:44 | (...) [Tuple element at index 1] |
+| SQLite.swift:179:40:179:54 | ... <-(_:_:) ... | SQLite.swift:179:40:179:54 | [...] |
+| SQLite.swift:179:40:179:54 | [...] | SQLite.swift:179:40:179:54 | [...] |
+| SQLite.swift:179:54:179:54 | mobilePhoneNumber | SQLite.swift:179:40:179:54 | ... <-(_:_:) ... |
+| SQLite.swift:182:26:182:40 | ... <-(_:_:) ... | SQLite.swift:182:26:182:40 | [...] |
+| SQLite.swift:182:26:182:40 | [...] | SQLite.swift:182:26:182:40 | [...] |
+| SQLite.swift:182:40:182:40 | mobilePhoneNumber | SQLite.swift:182:26:182:40 | ... <-(_:_:) ... |
+| SQLite.swift:184:27:184:41 | ... <-(_:_:) ... | SQLite.swift:184:27:184:41 | [...] |
+| SQLite.swift:184:27:184:41 | [...] | SQLite.swift:184:27:184:41 | [...] |
+| SQLite.swift:184:41:184:41 | mobilePhoneNumber | SQLite.swift:184:27:184:41 | ... <-(_:_:) ... |
+| SQLite.swift:186:26:186:89 | ... <-(_:_:) ... | SQLite.swift:186:26:186:89 | [...] |
+| SQLite.swift:186:26:186:89 | [...] | SQLite.swift:186:26:186:89 | [...] |
+| SQLite.swift:186:40:186:89 | call to replace(_:with:) | SQLite.swift:186:26:186:89 | ... <-(_:_:) ... |
+| SQLite.swift:186:72:186:72 | mobilePhoneNumber | SQLite.swift:186:40:186:89 | call to replace(_:with:) |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .value |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .value2 |
 | file://:0:0:0:0 | self [value] | file://:0:0:0:0 | .value |
@@ -297,6 +310,23 @@ nodes
 | SQLite.swift:169:23:169:61 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
 | SQLite.swift:169:34:169:44 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
 | SQLite.swift:169:44:169:44 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:179:40:179:54 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:179:40:179:54 | [...] | semmle.label | [...] |
+| SQLite.swift:179:40:179:54 | [...] | semmle.label | [...] |
+| SQLite.swift:179:54:179:54 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:182:26:182:40 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:182:26:182:40 | [...] | semmle.label | [...] |
+| SQLite.swift:182:26:182:40 | [...] | semmle.label | [...] |
+| SQLite.swift:182:40:182:40 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:184:27:184:41 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:184:27:184:41 | [...] | semmle.label | [...] |
+| SQLite.swift:184:27:184:41 | [...] | semmle.label | [...] |
+| SQLite.swift:184:41:184:41 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:186:26:186:89 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:186:26:186:89 | [...] | semmle.label | [...] |
+| SQLite.swift:186:26:186:89 | [...] | semmle.label | [...] |
+| SQLite.swift:186:40:186:89 | call to replace(_:with:) | semmle.label | call to replace(_:with:) |
+| SQLite.swift:186:72:186:72 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
 | file://:0:0:0:0 | .value | semmle.label | .value |
 | file://:0:0:0:0 | .value | semmle.label | .value |
 | file://:0:0:0:0 | .value2 | semmle.label | .value2 |
@@ -612,6 +642,10 @@ subpaths
 | SQLite.swift:167:21:167:59 | [...] | SQLite.swift:167:42:167:42 | mobilePhoneNumber | SQLite.swift:167:21:167:59 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:167:42:167:42 | mobilePhoneNumber | mobilePhoneNumber |
 | SQLite.swift:168:20:168:58 | [...] | SQLite.swift:168:41:168:41 | mobilePhoneNumber | SQLite.swift:168:20:168:58 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:168:41:168:41 | mobilePhoneNumber | mobilePhoneNumber |
 | SQLite.swift:169:23:169:61 | [...] | SQLite.swift:169:44:169:44 | mobilePhoneNumber | SQLite.swift:169:23:169:61 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:169:44:169:44 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:179:40:179:54 | [...] | SQLite.swift:179:54:179:54 | mobilePhoneNumber | SQLite.swift:179:40:179:54 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:179:54:179:54 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:182:26:182:40 | [...] | SQLite.swift:182:40:182:40 | mobilePhoneNumber | SQLite.swift:182:26:182:40 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:182:40:182:40 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:184:27:184:41 | [...] | SQLite.swift:184:41:184:41 | mobilePhoneNumber | SQLite.swift:184:27:184:41 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:184:41:184:41 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:186:26:186:89 | [...] | SQLite.swift:186:72:186:72 | mobilePhoneNumber | SQLite.swift:186:26:186:89 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:186:72:186:72 | mobilePhoneNumber | mobilePhoneNumber |
 | sqlite3_c_api.swift:46:27:46:27 | insertQuery | sqlite3_c_api.swift:42:69:42:69 | medicalNotes | sqlite3_c_api.swift:46:27:46:27 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:42:69:42:69 | medicalNotes | medicalNotes |
 | sqlite3_c_api.swift:47:27:47:27 | updateQuery | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:47:27:47:27 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | medicalNotes |
 | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | This operation stores 'medicalNotes' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | medicalNotes |

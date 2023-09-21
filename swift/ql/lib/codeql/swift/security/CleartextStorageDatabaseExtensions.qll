@@ -139,6 +139,17 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
         ";Statement;true;bind(_:);;;Argument[0];database-store",
         ";Statement;true;run(_:);;;Argument[0];database-store",
         ";Statement;true;scalar(_:);;;Argument[0];database-store",
+        ";QueryType;true;insert(_:);;;Argument[0];database-store",
+        ";QueryType;true;insert(_:_:);;;Argument[0..1];database-store",
+        ";QueryType;true;insert(or:_:);;;Argument[1];database-store",
+        ";QueryType;true;insertMany(_:);;;Argument[0];database-store",
+        ";QueryType;true;insertMany(or:_:);;;Argument[1];database-store",
+        ";QueryType;true;upsert(_:onConflictOf:);;;Argument[0];database-store",
+        ";QueryType;true;upsert(_:onConflictOf:setValues:);;;Argument[0];database-store",
+        ";QueryType;true;upsert(_:onConflictOf:setValues:);;;Argument[2];database-store",
+        ";QueryType;true;update(_:);;;Argument[0];database-store",
+        ";QueryType;true;update(_:_:);;;Argument[0..1];database-store",
+        ";QueryType;true;update(or:_:);;;Argument[1];database-store",
       ]
   }
 }
