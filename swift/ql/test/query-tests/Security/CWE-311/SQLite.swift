@@ -113,49 +113,49 @@ func test_sqlite_swift_api(db: Connection, id: Int, mobilePhoneNumber: String) t
 	let updateQuery = "UPDATE CONTACTS SET NUMBER=\(mobilePhoneNumber) WHERE ID=\(id);"
 	let deleteQuery = "DELETE FROM CONTACTS WHERE ID=\(id);"
 
-	try db.execute(insertQuery) // BAD (sensitive data) [NOT DETECTED]
-	try db.execute(updateQuery) // BAD (sensitive data) [NOT DETECTED]
+	try db.execute(insertQuery) // BAD (sensitive data)
+	try db.execute(updateQuery) // BAD (sensitive data)
 	try db.execute(deleteQuery) // GOOD
 
-	_ = try db.prepare(insertQuery).run() // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.prepare(updateQuery).run() // BAD (sensitive data) [NOT DETECTED]
+	_ = try db.prepare(insertQuery).run() // BAD (sensitive data)
+	_ = try db.prepare(updateQuery).run() // BAD (sensitive data)
 	_ = try db.prepare(deleteQuery).run() // GOOD
 
-	_ = try db.run(insertQuery) // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.run(updateQuery) // BAD (sensitive data) [NOT DETECTED]
+	_ = try db.run(insertQuery) // BAD (sensitive data)
+	_ = try db.run(updateQuery) // BAD (sensitive data)
 	_ = try db.run(deleteQuery) // GOOD
 
-	_ = try db.scalar(insertQuery) // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.scalar(updateQuery) // BAD (sensitive data) [NOT DETECTED]
+	_ = try db.scalar(insertQuery) // BAD (sensitive data)
+	_ = try db.scalar(updateQuery) // BAD (sensitive data)
 	_ = try db.scalar(deleteQuery) // GOOD
 
-	_ = try Statement(db, insertQuery).run() // BAD (sensitive data) [NOT DETECTED]
-	_ = try Statement(db, updateQuery).run() // BAD (sensitive data) [NOT DETECTED]
+	_ = try Statement(db, insertQuery).run() // BAD (sensitive data)
+	_ = try Statement(db, updateQuery).run() // BAD (sensitive data)
 	_ = try Statement(db, deleteQuery).run() // GOOD
 
 	// --- sensitive data in bindings ---
 
 	let varQuery1 = "UPDATE CONTACTS SET NUMBER=?;"
 
-	_ = try db.prepare(varQuery1, mobilePhoneNumber).run() // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.run(varQuery1, mobilePhoneNumber) // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.scalar(varQuery1, mobilePhoneNumber) // BAD (sensitive data) [NOT DETECTED]
+	_ = try db.prepare(varQuery1, mobilePhoneNumber).run() // BAD (sensitive data)
+	_ = try db.run(varQuery1, mobilePhoneNumber) // BAD (sensitive data)
+	_ = try db.scalar(varQuery1, mobilePhoneNumber) // BAD (sensitive data)
 
 	let stmt1 = try db.prepare(varQuery1) // GOOD
-	_ = try stmt1.bind(mobilePhoneNumber).run() // BAD (sensitive data) [NOT DETECTED]
-	_ = try stmt1.run(mobilePhoneNumber) // BAD (sensitive data) [NOT DETECTED]
-	_ = try stmt1.scalar(mobilePhoneNumber) // BAD (sensitive data) [NOT DETECTED]
+	_ = try stmt1.bind(mobilePhoneNumber).run() // BAD (sensitive data)
+	_ = try stmt1.run(mobilePhoneNumber) // BAD (sensitive data)
+	_ = try stmt1.scalar(mobilePhoneNumber) // BAD (sensitive data)
 
 	let varQuery2 = "UPDATE CONTACTS SET NUMBER=? WHERE ID=?;"
 
-	_ = try db.prepare(varQuery2, [mobilePhoneNumber, id]).run() // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.run(varQuery2, [mobilePhoneNumber, id]) // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.scalar(varQuery2, [mobilePhoneNumber, id]) // BAD (sensitive data) [NOT DETECTED]
+	_ = try db.prepare(varQuery2, [mobilePhoneNumber, id]).run() // BAD (sensitive data)
+	_ = try db.run(varQuery2, [mobilePhoneNumber, id]) // BAD (sensitive data)
+	_ = try db.scalar(varQuery2, [mobilePhoneNumber, id]) // BAD (sensitive data)
 
 	let stmt2 = try db.prepare(varQuery2) // GOOD
-	_ = try stmt2.bind([mobilePhoneNumber, id]).run() // BAD (sensitive data) [NOT DETECTED]
-	_ = try stmt2.run([mobilePhoneNumber, id]) // BAD (sensitive data) [NOT DETECTED]
-	_ = try stmt2.scalar([mobilePhoneNumber, id]) // BAD (sensitive data) [NOT DETECTED]
+	_ = try stmt2.bind([mobilePhoneNumber, id]).run() // BAD (sensitive data)
+	_ = try stmt2.run([mobilePhoneNumber, id]) // BAD (sensitive data)
+	_ = try stmt2.scalar([mobilePhoneNumber, id]) // BAD (sensitive data)
 
 	let varQuery3 = "UPDATE CONTACTS SET NUMBER=$number WHERE ID=$id;"
 

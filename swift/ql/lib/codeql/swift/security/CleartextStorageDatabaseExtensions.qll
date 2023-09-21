@@ -127,6 +127,18 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
         ";;false;sqlite3_bind_text64(_:_:_:_:_:_:);;;Argument[2];database-store",
         ";;false;sqlite3_bind_value(_:_:_:);;;Argument[2];database-store",
         ";;false;sqlite3_bind_pointer(_:_:_:_:);;;Argument[2];database-store",
+        // SQLite.swift
+        ";Connection;true;execute(_:);;;Argument[0];database-store",
+        ";Connection;true;prepare(_:_:);;;Argument[0];database-store",
+        ";Connection;true;prepare(_:_:);;;Argument[1];database-store",
+        ";Connection;true;run(_:_:);;;Argument[0];database-store",
+        ";Connection;true;run(_:_:);;;Argument[1];database-store",
+        ";Connection;true;scalar(_:_:);;;Argument[0];database-store",
+        ";Connection;true;scalar(_:_:);;;Argument[1];database-store",
+        ";Statement;true;init(_:_:);;;Argument[1];database-store",
+        ";Statement;true;bind(_:);;;Argument[0];database-store",
+        ";Statement;true;run(_:);;;Argument[0];database-store",
+        ";Statement;true;scalar(_:);;;Argument[0];database-store",
       ]
   }
 }
