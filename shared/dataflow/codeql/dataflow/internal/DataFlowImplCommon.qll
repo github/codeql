@@ -1,5 +1,6 @@
 private import codeql.dataflow.DataFlow
 private import codeql.typetracking.TypeTracking as Tt
+private import codeql.util.Unit
 
 module MakeImplCommon<InputSig Lang> {
   private import Lang
@@ -54,7 +55,10 @@ module MakeImplCommon<InputSig Lang> {
       override string toString() { result = "FeatureEqualSourceSinkCallContext" }
     }
 
-    signature predicate sourceNode(Node n);
+    /**
+     * Holds if `source` is a relevant data flow source.
+     */
+    signature predicate sourceNode(Node source);
 
     /**
      * EXPERIMENTAL: This API is subject to change without notice.
@@ -86,8 +90,8 @@ module MakeImplCommon<InputSig Lang> {
       string toString() { result = "Content" }
     }
 
-    class ContentFilter extends Content {
-      Content getAMatchingContent() { result = this }
+    class ContentFilter extends Unit {
+      Content getAMatchingContent() { none() }
     }
 
     predicate compatibleContents(Content storeContents, Content loadContents) {
@@ -102,6 +106,7 @@ module MakeImplCommon<InputSig Lang> {
       argumentValueFlowsThrough(n1, TReadStepTypesNone(), n2)
     }
 
+    // TODO: support setters
     predicate storeStep(Node n1, Node n2, Content f) { storeSet(n1, f, n2, _, _) }
 
     predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
@@ -720,7 +725,7 @@ module MakeImplCommon<InputSig Lang> {
          * If a read step was taken, then `read` captures the `Content`, the
          * container type, and the content type.
          */
-        pragma[nomagic]
+        cached
         predicate argumentValueFlowsThrough(ArgNode arg, ReadStepTypesOption read, Node out) {
           exists(DataFlowCall call, ReturnKind kind |
             argumentValueFlowsThrough0(call, arg, kind, read) and
