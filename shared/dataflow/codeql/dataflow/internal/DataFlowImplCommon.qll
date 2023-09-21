@@ -1,4 +1,6 @@
 private import codeql.dataflow.DataFlow
+private import codeql.typetracking.TypeTracking as Tt
+private import codeql.util.Unit
 
 module MakeImplCommon<InputSig Lang> {
   private import Lang
@@ -52,7 +54,85 @@ module MakeImplCommon<InputSig Lang> {
     class FeatureEqualSourceSinkCallContext extends FlowFeature, TFeatureEqualSourceSinkCallContext {
       override string toString() { result = "FeatureEqualSourceSinkCallContext" }
     }
+
+    /**
+     * Holds if `source` is a relevant data flow source.
+     */
+    signature predicate sourceNode(Node source);
+
+    /**
+     * EXPERIMENTAL: This API is subject to change without notice.
+     *
+     * Given a source definition, this constructs a simple forward flow
+     * computation with an access path limit of 1.
+     */
+    module SimpleGlobal<sourceNode/1 source> {
+      import TypeTracking::TypeTrack<source/1>
+    }
   }
+
+  private module TypeTrackingInput implements Tt::TypeTrackingInput {
+    final class Node = Lang::Node;
+
+    class LocalSourceNode extends Node {
+      LocalSourceNode() {
+        storeStep(_, this, _) or
+        loadStep(_, this, _) or
+        jumpStepCached(_, this) or
+        this instanceof ParamNode or
+        this instanceof OutNodeExt
+      }
+    }
+
+    final private class LangContentSet = Lang::ContentSet;
+
+    class Content extends LangContentSet {
+      string toString() { result = "Content" }
+    }
+
+    class ContentFilter extends Unit {
+      Content getAMatchingContent() { none() }
+    }
+
+    predicate compatibleContents(Content storeContents, Content loadContents) {
+      storeContents.getAStoreContent() = loadContents.getAReadContent()
+    }
+
+    predicate simpleLocalSmallStep = simpleLocalFlowStepExt/2;
+
+    predicate levelStepNoCall(Node n1, LocalSourceNode n2) { none() }
+
+    predicate levelStepCall(Node n1, LocalSourceNode n2) {
+      argumentValueFlowsThrough(n1, TReadStepTypesNone(), n2)
+    }
+
+    // TODO: support setters
+    predicate storeStep(Node n1, Node n2, Content f) { storeSet(n1, f, n2, _, _) }
+
+    predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
+      readSet(n1, f, n2)
+      or
+      argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2)
+    }
+
+    predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2) { none() }
+
+    predicate withContentStep(Node nodeFrom, LocalSourceNode nodeTo, ContentFilter f) { none() }
+
+    predicate withoutContentStep(Node nodeFrom, LocalSourceNode nodeTo, ContentFilter f) { none() }
+
+    predicate jumpStep(Node n1, LocalSourceNode n2) { jumpStepCached(n1, n2) }
+
+    predicate callStep(Node n1, LocalSourceNode n2) { viableParamArg(_, n2, n1) }
+
+    predicate returnStep(Node n1, LocalSourceNode n2) {
+      viableReturnPosOut(_, getReturnPosition(n1), n2)
+    }
+
+    predicate hasFeatureBacktrackStoreTarget() { none() }
+  }
+
+  private module TypeTracking = Tt::TypeTracking<TypeTrackingInput>;
 
   /**
    * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
@@ -645,7 +725,7 @@ module MakeImplCommon<InputSig Lang> {
          * If a read step was taken, then `read` captures the `Content`, the
          * container type, and the content type.
          */
-        pragma[nomagic]
+        cached
         predicate argumentValueFlowsThrough(ArgNode arg, ReadStepTypesOption read, Node out) {
           exists(DataFlowCall call, ReturnKind kind |
             argumentValueFlowsThrough0(call, arg, kind, read) and
