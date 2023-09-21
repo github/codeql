@@ -1,7 +1,7 @@
 .. _analyzing-data-flow-in-java:
 
 Analyzing data flow in Java and Kotlin
-===========================
+======================================
 
 You can use CodeQL to track the flow of data through a Java/Kotlin program to its use. 
 

@@ -1,7 +1,7 @@
 .. _codeql-library-for-java:
 
 CodeQL library for Java and Kotlin
-=======================
+==================================
 
 When you're analyzing a Java/Kotlin program, you can make use of the large collection of classes in the CodeQL library for Java/Kotlin.
 

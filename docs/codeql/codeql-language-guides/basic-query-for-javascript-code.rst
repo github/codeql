@@ -1,7 +1,7 @@
 .. _basic-query-for-javascript-code:
 
 Basic query for JavaScript and TypeScript code
-===============================
+===============================================
 
 Learn to write and run a simple CodeQL query using Visual Studio Code with the CodeQL extension.
 
