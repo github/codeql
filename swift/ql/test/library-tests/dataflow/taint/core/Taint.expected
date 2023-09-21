@@ -71,7 +71,6 @@ edges
 | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:40:12:40:12 | "..." |
 | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:41:12:41:12 | "..." |
 | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:42:12:42:12 | "..." |
-| stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:43:12:43:12 | "..." |
 | subscript.swift:13:15:13:22 | call to source() | subscript.swift:13:15:13:25 | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() | subscript.swift:14:15:14:26 | ...[...] |
 | try.swift:9:17:9:24 | call to source() | try.swift:9:13:9:24 | try ... |
@@ -187,7 +186,6 @@ nodes
 | stringinterpolation.swift:40:12:40:12 | "..." | semmle.label | "..." |
 | stringinterpolation.swift:41:12:41:12 | "..." | semmle.label | "..." |
 | stringinterpolation.swift:42:12:42:12 | "..." | semmle.label | "..." |
-| stringinterpolation.swift:43:12:43:12 | "..." | semmle.label | "..." |
 | subscript.swift:13:15:13:22 | call to source() | semmle.label | call to source() |
 | subscript.swift:13:15:13:25 | ...[...] | semmle.label | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() | semmle.label | call to source2() |
@@ -253,7 +251,6 @@ subpaths
 | stringinterpolation.swift:40:12:40:12 | "..." | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:40:12:40:12 | "..." | result |
 | stringinterpolation.swift:41:12:41:12 | "..." | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:41:12:41:12 | "..." | result |
 | stringinterpolation.swift:42:12:42:12 | "..." | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:42:12:42:12 | "..." | result |
-| stringinterpolation.swift:43:12:43:12 | "..." | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:43:12:43:12 | "..." | result |
 | subscript.swift:13:15:13:25 | ...[...] | subscript.swift:13:15:13:22 | call to source() | subscript.swift:13:15:13:25 | ...[...] | result |
 | subscript.swift:14:15:14:26 | ...[...] | subscript.swift:14:15:14:23 | call to source2() | subscript.swift:14:15:14:26 | ...[...] | result |
 | try.swift:9:13:9:24 | try ... | try.swift:9:17:9:24 | call to source() | try.swift:9:13:9:24 | try ... | result |

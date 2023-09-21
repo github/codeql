@@ -40,6 +40,6 @@ func moreTestsStringInterpolation() {
 	sink(arg: "\(a) and \(a)") // $ tainted=36
 	sink(arg: "\(a) and \(b)") // $ tainted=36
 	sink(arg: "\(b) and \(a)") // $ tainted=36
-	sink(arg: "\(b) and \(b)") // $ SPURIOUS: tainted=36
+	sink(arg: "\(b) and \(b)")
 	sink(arg: "\(c) and \(c)")
 }
