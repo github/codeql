@@ -533,7 +533,39 @@ module LocalFlow {
     ) and
     not exists(getALastEvalNode(result))
   }
+
+  /**
+   * Holds if the value of `node2` is given by `node1`.
+   */
+  predicate localMustFlowStep(Node node1, Node node2) {
+    exists(Callable c, Expr e |
+      node1.(InstanceParameterNode).getCallable() = c and
+      node2.asExpr() = e and
+      (e instanceof ThisAccess or e instanceof BaseAccess) and
+      c = e.getEnclosingCallable()
+    )
+    or
+    hasNodePath(any(LocalExprStepConfiguration x), node1, node2) and
+    (
+      node2 instanceof SsaDefinitionExtNode or
+      node2.asExpr() instanceof Cast or
+      node2.asExpr() instanceof AssignExpr
+    )
+    or
+    exists(SsaImpl::Definition def |
+      def = getSsaDefinitionExt(node1) and
+      exists(SsaImpl::getAReadAtNode(def, node2.(ExprNode).getControlFlowNode()))
+    )
+    or
+    node1 =
+      unique(FlowSummaryNode n1 |
+        FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
+          node2.(FlowSummaryNode).getSummaryNode(), true)
+      )
+  }
 }
+
+predicate localMustFlowStep = LocalFlow::localMustFlowStep/2;
 
 /**
  * This is the local flow predicate that is used as a building block in global

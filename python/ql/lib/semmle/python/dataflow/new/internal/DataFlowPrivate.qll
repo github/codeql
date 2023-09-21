@@ -539,6 +539,8 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
+predicate localMustFlowStep(Node node1, Node node2) { none() }
+
 /**
  * Gets the type of `node`.
  */
