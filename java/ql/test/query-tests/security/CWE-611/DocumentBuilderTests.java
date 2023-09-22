@@ -129,7 +129,7 @@ class DocumentBuilderTests {
 
   public void disableExternalEntities2(Socket sock) throws Exception {
     DocumentBuilder builder = XML_DOCUMENT_BUILDER.get();
-    builder.parse(sock.getInputStream()); // $ SPURIOUS: hasTaintFlow
+    builder.parse(sock.getInputStream()); // safe
   }
 
 }
