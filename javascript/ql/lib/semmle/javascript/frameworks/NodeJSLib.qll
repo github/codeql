@@ -6,6 +6,7 @@ import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
 module NodeJSLib {
   private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
@@ -763,16 +764,8 @@ module NodeJSLib {
   /**
    * The dynamic import expression input can be a `data:` URL which loads any module from that data
    */
-  class DynamicImport extends SystemCommandExecution, DataFlow::ExprNode {
+  class DynamicImport extends CodeInjection::Sink, DataFlow::ExprNode {
     DynamicImport() { this = any(DynamicImportExpr e).getAChildExpr().flow() }
-
-    override DataFlow::Node getACommandArgument() { result = this }
-
-    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this }
-
-    override predicate isSync() { none() }
-
-    override DataFlow::Node getOptionsArg() { none() }
   }
 
   /**
