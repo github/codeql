@@ -1337,7 +1337,13 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponse` class or any subclass. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*()
+            or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponse~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponse`, extend this class to model new instances.
@@ -1398,7 +1404,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to a subclass of the `django.http.response.HttpResponseRedirect` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseRedirect~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseRedirect`, extend this class to model new instances.
@@ -1461,7 +1472,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponsePermanentRedirect` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("Django.http.response.HttpResponsePermanentRedirect~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponsePermanentRedirect`, extend this class to model new instances.
@@ -1525,7 +1541,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotModified` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseNotModified~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotModified`, extend this class to model new instances.
@@ -1577,7 +1598,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseBadRequest` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseBadRequest~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseBadRequest`, extend this class to model new instances.
@@ -1631,7 +1657,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotFound` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseNotFound~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotFound`, extend this class to model new instances.
@@ -1685,7 +1716,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseForbidden` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseForbidden~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseForbidden`, extend this class to model new instances.
@@ -1739,7 +1775,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotAllowed` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseNotAllowed~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotAllowed`, extend this class to model new instances.
@@ -1794,7 +1835,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseGone` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseGone~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseGone`, extend this class to model new instances.
@@ -1848,7 +1894,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseServerError` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseServerError~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseServerError`, extend this class to model new instances.
@@ -1902,7 +1953,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.JsonResponse` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.JsonResponse~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.JsonResponse`, extend this class to model new instances.
@@ -1959,7 +2015,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.StreamingHttpResponse` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.StreamingHttpResponse~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.StreamingHttpResponse`, extend this class to model new instances.
@@ -2013,7 +2074,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.FileResponse` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.FileResponse~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.FileResponse`, extend this class to model new instances.

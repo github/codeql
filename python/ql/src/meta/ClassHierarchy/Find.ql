@@ -99,6 +99,115 @@ class StdlibCgiFieldStorage extends FindSubclassesSpec {
   }
 }
 
+class DjangoHttpResponse extends FindSubclassesSpec {
+  DjangoHttpResponse() { this = "django.http.response.HttpResponse~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponse::classRef()
+  }
+}
+
+class DjangoHttpResponseRedirect extends FindSubclassesSpec {
+  DjangoHttpResponseRedirect() { this = "django.http.response.HttpResponseRedirect~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseRedirect::classRef()
+  }
+}
+
+class DjangoHttpResponsePermanentRedirect extends FindSubclassesSpec {
+  DjangoHttpResponsePermanentRedirect() {
+    this = "django.http.response.HttpResponsePermanentRedirect~Subclass"
+  }
+
+  override API::Node getAlreadyModeledClass() {
+    result =
+      PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponsePermanentRedirect::classRef()
+  }
+}
+
+class DjangoHttpResponseNotModified extends FindSubclassesSpec {
+  DjangoHttpResponseNotModified() { this = "django.http.response.HttpResponseNotModified~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotModified::classRef()
+  }
+}
+
+class DjangoHttpResponseBadRequest extends FindSubclassesSpec {
+  DjangoHttpResponseBadRequest() { this = "django.http.response.HttpResponseBadRequest~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseBadRequest::classRef()
+  }
+}
+
+class DjangoHttpResponseNotFound extends FindSubclassesSpec {
+  DjangoHttpResponseNotFound() { this = "django.http.response.HttpResponseNotFound~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotFound::classRef()
+  }
+}
+
+class DjangoHttpResponseForbidden extends FindSubclassesSpec {
+  DjangoHttpResponseForbidden() { this = "django.http.response.HttpResponseForbidden~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseForbidden::classRef()
+  }
+}
+
+class DjangoHttpResponseNotAllowed extends FindSubclassesSpec {
+  DjangoHttpResponseNotAllowed() { this = "django.http.response.HttpResponseNotAllowed~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotAllowed::classRef()
+  }
+}
+
+class DjangoHttpResponseGone extends FindSubclassesSpec {
+  DjangoHttpResponseGone() { this = "django.http.response.HttpResponseGone~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseGone::classRef()
+  }
+}
+
+class DjangoHttpResponseServerError extends FindSubclassesSpec {
+  DjangoHttpResponseServerError() { this = "django.http.response.HttpResponseServerError~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseServerError::classRef()
+  }
+}
+
+class DjangoHttpResponseJsonResponse extends FindSubclassesSpec {
+  DjangoHttpResponseJsonResponse() { this = "django.http.response.JsonResponse~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::JsonResponse::classRef()
+  }
+}
+
+class DjangoHttpResponseStreamingResponse extends FindSubclassesSpec {
+  DjangoHttpResponseStreamingResponse() {
+    this = "django.http.response.StreamingHttpResponse~Subclass"
+  }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::StreamingHttpResponse::classRef()
+  }
+}
+
+class DjangoHttpResponseFileResponse extends FindSubclassesSpec {
+  DjangoHttpResponseFileResponse() { this = "django.http.response.FileResponse~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Response::FileResponse::classRef()
+  }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
