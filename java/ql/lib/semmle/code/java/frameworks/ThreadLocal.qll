@@ -1,3 +1,5 @@
+/** Definitions related to `java.lang.ThreadLocal`. */
+
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSteps
