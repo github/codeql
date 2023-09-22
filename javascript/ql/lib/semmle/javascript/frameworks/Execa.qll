@@ -7,21 +7,6 @@ import semmle.javascript.security.dataflow.RequestForgeryCustomizations
 import semmle.javascript.security.dataflow.UrlConcatenation
 
 /**
- * The dynamic import expression input can be a `data:` URL which loads any module from that data
- */
-class DynamicImport extends SystemCommandExecution, DataFlow::ExprNode {
-  DynamicImport() { this = any(DynamicImportExpr e).getAChildExpr().flow() }
-
-  override DataFlow::Node getACommandArgument() { result = this }
-
-  override predicate isShellInterpreted(DataFlow::Node arg) { none() }
-
-  override predicate isSync() { none() }
-
-  override DataFlow::Node getOptionsArg() { none() }
-}
-
-/**
  * Provide model for [Execa](https://github.com/sindresorhus/execa) package
  */
 module Execa {
@@ -225,7 +210,7 @@ module Execa {
     }
   }
 
-  // Holds if left parameter is the the left child of a template literal and returns the template literal
+  // Holds if left parameter is the left child of a template literal and returns the template literal
   private TemplateLiteral templateLiteralChildAsSink(Expr left) {
     exists(TaggedTemplateExpr parent |
       parent.getTemplate() = result and
@@ -235,8 +220,7 @@ module Execa {
 
   // Holds whether Execa has shell enabled options or not, get Parameter responsible for options
   private predicate isExecaShellEnable(API::Node n) {
-    n.getMember("shell").asSink().asExpr().(BooleanLiteral).getValue() = "true" and
-    exists(n.getMember("shell"))
+    n.getMember("shell").asSink().asExpr().(BooleanLiteral).getValue() = "true"
   }
 
   // Holds whether Execa has shell enabled options or not, get Parameter responsible for options

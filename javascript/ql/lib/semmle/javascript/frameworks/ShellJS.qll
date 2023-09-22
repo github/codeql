@@ -19,8 +19,6 @@ module ShellJS {
           .getReturn()
   }
 
-  API::Node test() { result = API::moduleImport("shelljs").getASuccessor*() }
-
   /**
    * Gets an import of the `shelljs` or `async-shelljs` module.
    */
