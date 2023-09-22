@@ -1,8 +1,12 @@
 import { execa, execaSync, execaCommand, execaCommandSync, execaNode, $ } from 'execa';
 
+const arg = process.argv[0];
+
 // Node.js scripts
+// GOOD
 await $`echo example1`.pipeStderr(`tmp`);
-await $`echo ${"example2"}`.pipeStderr(`tmp`);
+// BAD argument injection
+await $`ssh ${"example2"}`.pipeStderr(`tmp`);
 $.sync`echo example2 sync`
 // Multiple arguments
 const args = ["arg:" + arg, 'example3', '&', 'rainbows!'];
@@ -12,8 +16,8 @@ await $`${arg} sth`;
 await $`${arg}`;
 $.sync`${arg}`
 // BAD argument injection
-$.sync`echo ${args} ${args}`
-await $`echo ${["-a", "-lps"]}`
+$.sync`git ${args} ${args}`
+await $`git ${["-o", "-lps"]}`
 // if shell: true then all inputs except first are dangerous
 await $({ shell: true })`echo example6 ${";echo example6 > tmpdir/example6"}`
 // GOOD
@@ -23,7 +27,7 @@ await $({ shell: false })`echo example6 ${";echo example6 > tmpdir/example6"}`
 // GOOD
 await execa('aCommand', ['example1']);
 // BAD argument injection
-await execa('echo', ['example1']);
+await execa('git', ['example1']);
 // BAD shell is enable
 await execa('echo example 10 ; echo example 11', { shell: true });
 await execa('echo example 10', ['; echo example 11'], { shell: true });
@@ -31,8 +35,8 @@ await execa('echo example 10', ['; echo example 11'], { shell: true });
 // BAD argument injection
 execaSync('echo', ['example5 sync']);
 // BAD argument injection
-await execaCommand("echo " + "badArgument");
-await execaCommand(`echo ${"arg1"} execaCommandSync`);
+await execaCommand("git " + "badArgument");
+await execaCommand(`git ${"arg1"} execaCommandSync`);
 // bad totally controllable argument
 execaCommandSync(arg);
 // BAD shell is enable
