@@ -5,3 +5,6 @@ cp.execFileSync("sh", ["-c", "node --version"]);
 cp.fork("foo", ["arg"]);
 cp.spawn("echo", ["Hi"], cb);
 cp.spawnSync("echo", ["Hi", "there"]);
+
+// dynamic import 
+await import('data:text/javascript,console.log("hello!");')
