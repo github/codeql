@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.util.getChildren
 class CommentExtractorLighterAST(fileExtractor: KotlinFileExtractor, file: IrFile, fileLabel: Label<out DbFile>): CommentExtractor(fileExtractor, file, fileLabel) {
     // Returns true if it extracted the comments; false otherwise.
     fun extract(): Boolean {
-        val sourceElement = (file.metadata as? FirMetadataSource.File)?.files?.get(0)?.source
+        val sourceElement = (file.metadata as? FirMetadataSource.File)?.files?.elementAtOrNull(0)?.source
         val treeStructure = sourceElement?.treeStructure
         if (treeStructure == null) {
             return false
