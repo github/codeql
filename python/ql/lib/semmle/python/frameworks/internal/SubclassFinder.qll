@@ -112,12 +112,8 @@ module NotExposed {
   }
 
   predicate isAllowedModule(Module mod) {
-    // for now, we only want to model things in site-packages (since we know these are
-    // libraries used by real code)
-    mod.getFile().getAbsolutePath().matches("%/site-packages/%")
-    or
-    // for CI testing
-    mod.getFile().getRelativePath().matches("%/find_subclass_test.py")
+    // don't include anything found in site-packages
+    exists(mod.getFile().getRelativePath())
   }
 
   predicate isTestCode(AstNode ast) {
