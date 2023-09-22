@@ -266,6 +266,62 @@ func testBoundsChecking(input string) {
 		}
 		if parsed <= math.MaxUint16 {
 			_ = uint16(parsed)
+			_ = uint(parsed)
+			_ = int32(parsed)
+		}
+	}
+	{
+		parsed, err := strconv.ParseUint(input, 10, 0)
+		if err != nil {
+			panic(err)
+		}
+		if parsed <= math.MaxUint64 {
+			_ = int8(parsed)   // $ hasValueFlow="type conversion"
+			_ = uint8(parsed)  // $ hasValueFlow="type conversion"
+			_ = int16(parsed)  // $ hasValueFlow="type conversion"
+			_ = uint16(parsed) // $ hasValueFlow="type conversion"
+			_ = int32(parsed)  // $ hasValueFlow="type conversion"
+			_ = uint32(parsed) // $ hasValueFlow="type conversion"
+			_ = int64(parsed)  // $ hasValueFlow="type conversion"
+			_ = uint64(parsed)
+			_ = int(parsed) // $ hasValueFlow="type conversion"
+			_ = uint(parsed)
+		}
+		if parsed <= math.MaxInt64 {
+			_ = int8(parsed)   // $ hasValueFlow="type conversion"
+			_ = uint8(parsed)  // $ hasValueFlow="type conversion"
+			_ = int16(parsed)  // $ hasValueFlow="type conversion"
+			_ = uint16(parsed) // $ hasValueFlow="type conversion"
+			_ = int32(parsed)  // $ hasValueFlow="type conversion"
+			_ = uint32(parsed) // $ hasValueFlow="type conversion"
+			_ = int64(parsed)
+			_ = uint64(parsed)
+			_ = int(parsed) // $ hasValueFlow="type conversion"
+			_ = uint(parsed)
+		}
+		if parsed <= math.MaxUint32 {
+			_ = int8(parsed)   // $ hasValueFlow="type conversion"
+			_ = uint8(parsed)  // $ hasValueFlow="type conversion"
+			_ = int16(parsed)  // $ hasValueFlow="type conversion"
+			_ = uint16(parsed) // $ hasValueFlow="type conversion"
+			_ = int32(parsed)  // $ hasValueFlow="type conversion"
+			_ = uint32(parsed)
+			_ = int64(parsed)
+			_ = uint64(parsed)
+			_ = int(parsed) // $ hasValueFlow="type conversion"
+			_ = uint(parsed)
+		}
+		if parsed <= math.MaxInt32 {
+			_ = int8(parsed)   // $ hasValueFlow="type conversion"
+			_ = uint8(parsed)  // $ hasValueFlow="type conversion"
+			_ = int16(parsed)  // $ hasValueFlow="type conversion"
+			_ = uint16(parsed) // $ hasValueFlow="type conversion"
+			_ = int32(parsed)
+			_ = uint32(parsed)
+			_ = int64(parsed)
+			_ = uint64(parsed)
+			_ = int(parsed)
+			_ = uint(parsed)
 		}
 	}
 	{
@@ -273,8 +329,9 @@ func testBoundsChecking(input string) {
 		if err != nil {
 			panic(err)
 		}
-		if parsed <= math.MaxUint8 {
-			_ = uint8(parsed)
+		if parsed <= math.MaxUint16 {
+			_ = uint16(parsed)
+			_ = int16(parsed) // $ hasValueFlow="type conversion"
 		}
 		if parsed < 5 {
 			_ = uint16(parsed)
