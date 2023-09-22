@@ -1,9 +1,0 @@
-# process-mrva-results 0.0.1
-extensions:
-- addsTo:
-    extensible: typeModel
-    pack: codeql/python-all
-  data:
-  - - flask.MethodView~Subclass
-    - shakenfist_utilities
-    - Member[api].Member[Resource]
