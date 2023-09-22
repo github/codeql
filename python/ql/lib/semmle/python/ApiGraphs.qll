@@ -838,6 +838,7 @@ module API {
         // Subclassing a node
         lbl = Label::subclass() and
         exists(PY::ClassExpr clsExpr, DataFlow::Node superclass | pred.flowsTo(superclass) |
+          exists(clsExpr.getLocation().getFile().getRelativePath()) and
           clsExpr.getABase() = superclass.asExpr() and
           // Potentially a class decorator could do anything, but we assume they are
           // "benign" and let subclasses edges flow through anyway.

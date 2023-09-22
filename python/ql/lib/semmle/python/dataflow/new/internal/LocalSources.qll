@@ -36,42 +36,45 @@ private import semmle.python.dataflow.new.internal.ImportStar
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    Stages::DataFlow::ref() and
-    this instanceof ExprNode and
-    not simpleLocalFlowStepForTypetracking(_, this)
-    or
-    // For `from foo import *; foo_function()`, we want to let the variables we think
-    // could originate in `foo` (such as `foo_function`) to be available in the API
-    // graph. This requires them to be local sources. They would not be from the code
-    // just above, since the CFG node has flow going into it from its corresponding
-    // `GlobalSsaVariable`. (a different work-around is to change API graphs to not rely
-    // as heavily on LocalSourceNode; I initially tried this, but it relied on a lot of
-    // copy-pasted code, and it requires some non-trivial deprecation for downgrading
-    // the result type of `.asSource()` to DataFlow::Node, so we've opted for this
-    // approach instead).
-    //
-    // Note: This is only needed at the module level -- uses inside functions appear as
-    // LocalSourceNodes as we expect.
-    //
-    // TODO: When rewriting SSA, we should be able to remove this workaround
-    ImportStar::namePossiblyDefinedInImportStar(this.(ExprNode).getNode(), _, any(Module m))
-    or
-    // We include all module variable nodes, as these act as stepping stones between writes and
-    // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be
-    // unable to track across global variables.
-    //
-    // Once the `track` and `backtrack` methods have been fully deprecated, this disjunct can be
-    // removed, and the entire class can extend `ExprNode`. At that point, `TypeTrackingNode` should
-    // be used for type tracking instead of `LocalSourceNode`.
-    this instanceof ModuleVariableNode
-    or
-    // We explicitly include any read of a global variable, as some of these may have local flow going
-    // into them.
-    this = any(ModuleVariableNode mvn).getARead()
-    or
-    // We include all scope entry definitions, as these act as the local source within the scope they
-    // enter.
-    this.asVar() instanceof ScopeEntryDefinition
+    exists(this.getLocation().getFile().getRelativePath()) and
+    (
+      Stages::DataFlow::ref() and
+      this instanceof ExprNode and
+      not simpleLocalFlowStepForTypetracking(_, this)
+      or
+      // For `from foo import *; foo_function()`, we want to let the variables we think
+      // could originate in `foo` (such as `foo_function`) to be available in the API
+      // graph. This requires them to be local sources. They would not be from the code
+      // just above, since the CFG node has flow going into it from its corresponding
+      // `GlobalSsaVariable`. (a different work-around is to change API graphs to not rely
+      // as heavily on LocalSourceNode; I initially tried this, but it relied on a lot of
+      // copy-pasted code, and it requires some non-trivial deprecation for downgrading
+      // the result type of `.asSource()` to DataFlow::Node, so we've opted for this
+      // approach instead).
+      //
+      // Note: This is only needed at the module level -- uses inside functions appear as
+      // LocalSourceNodes as we expect.
+      //
+      // TODO: When rewriting SSA, we should be able to remove this workaround
+      ImportStar::namePossiblyDefinedInImportStar(this.(ExprNode).getNode(), _, any(Module m))
+      or
+      // We include all module variable nodes, as these act as stepping stones between writes and
+      // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be
+      // unable to track across global variables.
+      //
+      // Once the `track` and `backtrack` methods have been fully deprecated, this disjunct can be
+      // removed, and the entire class can extend `ExprNode`. At that point, `TypeTrackingNode` should
+      // be used for type tracking instead of `LocalSourceNode`.
+      this instanceof ModuleVariableNode
+      or
+      // We explicitly include any read of a global variable, as some of these may have local flow going
+      // into them.
+      this = any(ModuleVariableNode mvn).getARead()
+      or
+      // We include all scope entry definitions, as these act as the local source within the scope they
+      // enter.
+      this.asVar() instanceof ScopeEntryDefinition
+    )
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
