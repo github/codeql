@@ -761,6 +761,21 @@ module NodeJSLib {
   }
 
   /**
+   * The dynamic import expression input can be a `data:` URL which loads any module from that data
+   */
+  class DynamicImport extends SystemCommandExecution, DataFlow::ExprNode {
+    DynamicImport() { this = any(DynamicImportExpr e).getAChildExpr().flow() }
+
+    override DataFlow::Node getACommandArgument() { result = this }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this }
+
+    override predicate isSync() { none() }
+
+    override DataFlow::Node getOptionsArg() { none() }
+  }
+
+  /**
    * A call to a method from module `child_process`.
    */
   private class ChildProcessMethodCall extends SystemCommandExecution, API::CallNode {
