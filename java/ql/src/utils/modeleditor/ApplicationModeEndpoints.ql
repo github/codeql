@@ -1,8 +1,7 @@
 /**
  * @name Fetch endpoints for use in the model editor (application mode)
  * @description A list of 3rd party endpoints (methods) used in the codebase. Excludes test and generated code.
- * @kind problem
- * @problem.severity recommendation
+ * @kind table
  * @id java/utils/modeleditor/application-mode-endpoints
  * @tags modeleditor endpoints application-mode
  */
