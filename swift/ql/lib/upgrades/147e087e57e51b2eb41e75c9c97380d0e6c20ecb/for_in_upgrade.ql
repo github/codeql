@@ -24,6 +24,7 @@ class NamedPattern extends Pattern, @named_pattern {
 newtype TAddedElement =
   TIteratorVar(ForEachStmt stmt) or
   TIteratorVarPattern(ForEachStmt stmt) or
+  TIteratorVarConcreteDecl(ForEachStmt stmt) or
   TNextCall(ForEachStmt stmt) or
   TNextCallMethodLookup(ForEachStmt stmt) or
   TNextCallInOutConversion(ForEachStmt stmt) or
@@ -38,7 +39,7 @@ class NewElement extends TNewElement {
   string toString() { none() }
 }
 
-query predicate new_for_each_stmts(ForEachStmt id, NamedPattern pattern, Element body) {
+query predicate new_for_each_stmts(ForEachStmt id, Pattern pattern, Element body) {
   for_each_stmts(id, pattern, _, body)
 }
 
@@ -141,10 +142,13 @@ query predicate new_decl_ref_exprs(NewElement id, NewElement decl) {
   or
   exists(ForEachStmt foreach |
     Fresh::map(TNextCallVarRef(foreach)) = id and
-    Fresh::map(TIteratorVarPattern(foreach)) = decl
+    Fresh::map(TIteratorVarConcreteDecl(foreach)) = decl
   )
   or
-  exists(ForEachStmt foreach, @element sequence, @element exprType, @element parentType, @element typeDecl |
+  exists(
+    ForEachStmt foreach, @element sequence, @element exprType, @element parentType,
+    @element typeDecl
+  |
     Fresh::map(TNextCallFuncRef(foreach)) = id and
     // ForEachStmt.getSequence().getType().getMember(next)
     sequence = foreach.getSequence() and
@@ -168,4 +172,49 @@ query predicate new_lookup_exprs(NewElement id, NewElement base) {
 query predicate new_call_exprs(NewElement id) {
   call_exprs(id) or
   Fresh::map(TNextCall(_)) = id
+}
+
+query predicate new_locatable_locations(NewElement locatable, NewElement location) {
+  locatable_locations(locatable, location)
+  or
+  exists(ForEachStmt stmt |
+    locatable = Fresh::map(TIteratorVarPattern(stmt)) or
+    locatable = Fresh::map(TIteratorVarConcreteDecl(stmt)) or
+    locatable = Fresh::map(TNextCall(stmt)) or
+    locatable = Fresh::map(TNextCallMethodLookup(stmt)) or
+    locatable = Fresh::map(TNextCallInOutConversion(stmt)) or
+    locatable = Fresh::map(TNextCallVarRef(stmt))
+  |
+    locatable_locations(stmt, location)
+  )
+}
+
+query predicate new_concrete_var_decls(NewElement decl, int introducer_int) {
+  concrete_var_decls(decl, introducer_int)
+  or
+  exists(ForEachStmt stmt |
+    decl = Fresh::map(TIteratorVarConcreteDecl(stmt)) and
+    introducer_int = 1
+  )
+}
+
+query predicate new_var_decls(NewElement decl, string name, Element type) {
+  var_decls(decl, name, type)
+  or
+  exists(ForEachStmt stmt |
+    decl = Fresh::map(TIteratorVarConcreteDecl(stmt)) and
+    expr_types(stmt.getSequence(), type) and
+    name = stmt.getPattern().getGeneratorString()
+  )
+}
+
+query predicate new_expr_types(NewElement expr, NewElement type) {
+  expr_types(expr, type)
+  or
+  exists(ForEachStmt stmt, Element pattern, Element var_decl |
+    expr = Fresh::map(TNextCall(stmt)) and
+    for_each_stmts(stmt, pattern, _, _) and
+    var_decl_parent_patterns(var_decl, pattern) and
+    var_decls(var_decl, _, type)
+  )
 }
