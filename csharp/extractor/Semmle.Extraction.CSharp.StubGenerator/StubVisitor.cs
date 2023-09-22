@@ -2,26 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using Microsoft.CodeAnalysis;
+
 using Semmle.Extraction.CSharp.Util;
-using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.StubGenerator;
 
-internal sealed class StubVisitor : SymbolVisitor, IDisposable
+internal sealed class StubVisitor : SymbolVisitor
 {
-    private readonly IAssemblySymbol assembly;
-    private readonly Lazy<TextWriter> stubWriterLazy;
-    public TextWriter StubWriter => stubWriterLazy.Value;
-    private readonly MemoizedFunc<INamespaceSymbol, bool> isRelevantNamespace;
+    private readonly TextWriter stubWriter;
+    private readonly RelevantSymbol relevantSymbol;
 
-    public StubVisitor(IAssemblySymbol assembly, Func<TextWriter> makeStubWriter)
+    public StubVisitor(TextWriter stubWriter, RelevantSymbol relevantSymbol)
     {
-        this.assembly = assembly;
-        this.stubWriterLazy = new(makeStubWriter);
-        this.isRelevantNamespace = new(symbol =>
-            symbol.GetTypeMembers().Any(IsRelevantNamedType) ||
-            symbol.GetNamespaceMembers().Any(IsRelevantNamespace));
+        this.stubWriter = stubWriter;
+        this.relevantSymbol = relevantSymbol;
     }
 
     private static bool IsNotPublic(Accessibility accessibility) =>
@@ -29,15 +25,9 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         accessibility == Accessibility.Internal ||
         accessibility == Accessibility.ProtectedAndInternal;
 
-    private static bool IsRelevantBaseType(INamedTypeSymbol symbol) =>
+    public static bool IsRelevantBaseType(INamedTypeSymbol symbol) =>
         !IsNotPublic(symbol.DeclaredAccessibility) &&
         symbol.CanBeReferencedByName;
-
-    private bool IsRelevantNamedType(INamedTypeSymbol symbol) =>
-        IsRelevantBaseType(symbol) &&
-        SymbolEqualityComparer.Default.Equals(symbol.ContainingAssembly, assembly);
-
-    public bool IsRelevantNamespace(INamespaceSymbol symbol) => isRelevantNamespace.Invoke(symbol);
 
     private void StubExplicitInterface(ISymbol symbol, ISymbol? explicitInterfaceSymbol, bool writeName = true)
     {
@@ -86,14 +76,14 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
                 explicitInterfaceType = symbol.ContainingType.Interfaces.First(i => ContainsTupleType(i) && EqualsModuloTupleElementNames(i, explicitInterfaceSymbol.ContainingType));
             }
 
-            StubWriter.Write(explicitInterfaceType.GetQualifiedName());
-            StubWriter.Write('.');
+            stubWriter.Write(explicitInterfaceType.GetQualifiedName());
+            stubWriter.Write('.');
             if (writeName)
-                StubWriter.Write(explicitInterfaceSymbol.GetName());
+                stubWriter.Write(explicitInterfaceSymbol.GetName());
         }
         else if (writeName)
         {
-            StubWriter.Write(symbol.GetName());
+            stubWriter.Write(symbol.GetName());
         }
     }
 
@@ -102,19 +92,19 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         switch (accessibility)
         {
             case Accessibility.Public:
-                StubWriter.Write("public ");
+                stubWriter.Write("public ");
                 break;
             case Accessibility.Protected or Accessibility.ProtectedOrInternal:
-                StubWriter.Write("protected ");
+                stubWriter.Write("protected ");
                 break;
             case Accessibility.Internal:
-                StubWriter.Write("internal ");
+                stubWriter.Write("internal ");
                 break;
             case Accessibility.ProtectedAndInternal:
-                StubWriter.Write("protected internal ");
+                stubWriter.Write("protected internal ");
                 break;
             default:
-                StubWriter.Write($"/* TODO: {accessibility} */");
+                stubWriter.Write($"/* TODO: {accessibility} */");
                 break;
         }
     }
@@ -138,23 +128,23 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
                 // exclude non-static interface members
                 (symbol.ContainingType is not INamedTypeSymbol containingType || containingType.TypeKind != TypeKind.Interface || symbol.IsStatic))
             {
-                StubWriter.Write("abstract ");
+                stubWriter.Write("abstract ");
             }
         }
 
         if (symbol.IsStatic && !(symbol is IFieldSymbol field && field.IsConst))
-            StubWriter.Write("static ");
+            stubWriter.Write("static ");
         if (symbol.IsVirtual)
-            StubWriter.Write("virtual ");
+            stubWriter.Write("virtual ");
         if (symbol.IsOverride)
-            StubWriter.Write("override ");
+            stubWriter.Write("override ");
         if (symbol.IsSealed)
         {
             if (!(symbol is INamedTypeSymbol type && (type.TypeKind == TypeKind.Enum || type.TypeKind == TypeKind.Delegate || type.TypeKind == TypeKind.Struct)))
-                StubWriter.Write("sealed ");
+                stubWriter.Write("sealed ");
         }
         if (symbol.IsExtern)
-            StubWriter.Write("extern ");
+            stubWriter.Write("extern ");
     }
 
     private void StubTypedConstant(TypedConstant c)
@@ -164,47 +154,47 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
             case TypedConstantKind.Primitive:
                 if (c.Value is string s)
                 {
-                    StubWriter.Write($"\"{s}\"");
+                    stubWriter.Write($"\"{s}\"");
                 }
                 else if (c.Value is char ch)
                 {
-                    StubWriter.Write($"'{ch}'");
+                    stubWriter.Write($"'{ch}'");
                 }
                 else if (c.Value is bool b)
                 {
-                    StubWriter.Write(b ? "true" : "false");
+                    stubWriter.Write(b ? "true" : "false");
                 }
                 else if (c.Value is int i)
                 {
-                    StubWriter.Write(i);
+                    stubWriter.Write(i);
                 }
                 else if (c.Value is long l)
                 {
-                    StubWriter.Write(l);
+                    stubWriter.Write(l);
                 }
                 else if (c.Value is float f)
                 {
-                    StubWriter.Write(f);
+                    stubWriter.Write(f);
                 }
                 else if (c.Value is double d)
                 {
-                    StubWriter.Write(d);
+                    stubWriter.Write(d);
                 }
                 else
                 {
-                    StubWriter.Write("throw null");
+                    stubWriter.Write("throw null");
                 }
                 break;
             case TypedConstantKind.Enum:
-                StubWriter.Write("throw null");
+                stubWriter.Write("throw null");
                 break;
             case TypedConstantKind.Array:
-                StubWriter.Write("new []{");
+                stubWriter.Write("new []{");
                 WriteCommaSep(c.Values, StubTypedConstant);
-                StubWriter.Write("}");
+                stubWriter.Write("}");
                 break;
             default:
-                StubWriter.Write($"/* TODO: {c.Kind} */ throw null");
+                stubWriter.Write($"/* TODO: {c.Kind} */ throw null");
                 break;
         }
     }
@@ -224,14 +214,14 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
         if (qualifiedName.EndsWith("Attribute"))
             qualifiedName = qualifiedName[..^9];
-        StubWriter.Write($"[{prefix}{qualifiedName}");
+        stubWriter.Write($"[{prefix}{qualifiedName}");
         if (a.ConstructorArguments.Any())
         {
-            StubWriter.Write("(");
+            stubWriter.Write("(");
             WriteCommaSep(a.ConstructorArguments, StubTypedConstant);
-            StubWriter.Write(")");
+            stubWriter.Write(")");
         }
-        StubWriter.WriteLine("]");
+        stubWriter.WriteLine("]");
     }
 
     public void StubAttributes(IEnumerable<AttributeData> a, string prefix = "")
@@ -247,22 +237,22 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         StubAttributes(symbol.GetAttributes());
 
         StubModifiers(symbol, explicitInterfaceSymbol is not null);
-        StubWriter.Write("event ");
-        StubWriter.Write(symbol.Type.GetQualifiedName());
-        StubWriter.Write(" ");
+        stubWriter.Write("event ");
+        stubWriter.Write(symbol.Type.GetQualifiedName());
+        stubWriter.Write(" ");
 
         StubExplicitInterface(symbol, explicitInterfaceSymbol);
 
         if (explicitInterfaceSymbol is null)
         {
-            StubWriter.WriteLine(";");
+            stubWriter.WriteLine(";");
         }
         else
         {
-            StubWriter.Write(" { ");
-            StubWriter.Write("add {} ");
-            StubWriter.Write("remove {} ");
-            StubWriter.WriteLine("}");
+            stubWriter.Write(" { ");
+            stubWriter.Write("add {} ");
+            stubWriter.Write("remove {} ");
+            stubWriter.WriteLine("}");
         }
     }
 
@@ -316,19 +306,19 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         StubModifiers(symbol);
 
         if (symbol.IsConst)
-            StubWriter.Write("const ");
+            stubWriter.Write("const ");
 
         if (IsUnsafe(symbol.Type))
         {
-            StubWriter.Write("unsafe ");
+            stubWriter.Write("unsafe ");
         }
 
-        StubWriter.Write(symbol.Type.GetQualifiedName());
-        StubWriter.Write(" ");
-        StubWriter.Write(EscapeIdentifier(symbol.Name));
+        stubWriter.Write(symbol.Type.GetQualifiedName());
+        stubWriter.Write(" ");
+        stubWriter.Write(EscapeIdentifier(symbol.Name));
         if (symbol.IsConst)
-            StubWriter.Write(" = default");
-        StubWriter.WriteLine(";");
+            stubWriter.Write(" = default");
+        stubWriter.WriteLine(";");
     }
 
     private void WriteCommaSep<T>(IEnumerable<T> items, Action<T> writeItem)
@@ -338,7 +328,7 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         {
             if (!first)
             {
-                StubWriter.Write(", ");
+                stubWriter.Write(", ");
             }
             writeItem(item);
             first = false;
@@ -347,7 +337,7 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
     private void WriteStringCommaSep<T>(IEnumerable<T> items, Func<T, string> writeItem)
     {
-        WriteCommaSep(items, item => StubWriter.Write(writeItem(item)));
+        WriteCommaSep(items, item => stubWriter.Write(writeItem(item)));
     }
 
     private void StubTypeParameters(IEnumerable<ITypeParameterSymbol> typeParameters)
@@ -355,9 +345,9 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         if (!typeParameters.Any())
             return;
 
-        StubWriter.Write('<');
+        stubWriter.Write('<');
         WriteStringCommaSep(typeParameters, typeParameter => typeParameter.Name);
-        StubWriter.Write('>');
+        stubWriter.Write('>');
     }
 
     private void StubTypeParameterConstraints(IEnumerable<ITypeParameterSymbol> typeParameters)
@@ -377,11 +367,11 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
             {
                 if (firstTypeParameterConstraint)
                 {
-                    StubWriter.Write($" where {typeParameter.Name} : ");
+                    stubWriter.Write($" where {typeParameter.Name} : ");
                 }
                 else
                 {
-                    StubWriter.Write(", ");
+                    stubWriter.Write(", ");
                 }
                 a();
                 firstTypeParameterConstraint = false;
@@ -389,14 +379,14 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
             if (typeParameter.HasReferenceTypeConstraint)
             {
-                WriteTypeParameterConstraint(() => StubWriter.Write("class"));
+                WriteTypeParameterConstraint(() => stubWriter.Write("class"));
             }
 
             if (typeParameter.HasValueTypeConstraint &&
                 !typeParameter.HasUnmanagedTypeConstraint &&
                 !typeParameter.ConstraintTypes.Any(t => t.GetQualifiedName() is "System.Enum"))
             {
-                WriteTypeParameterConstraint(() => StubWriter.Write("struct"));
+                WriteTypeParameterConstraint(() => stubWriter.Write("struct"));
             }
 
             if (inheritsConstraints)
@@ -404,7 +394,7 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
             if (typeParameter.HasUnmanagedTypeConstraint)
             {
-                WriteTypeParameterConstraint(() => StubWriter.Write("unmanaged"));
+                WriteTypeParameterConstraint(() => stubWriter.Write("unmanaged"));
             }
 
             var constraintTypes = typeParameter.ConstraintTypes.Select(t => t.GetQualifiedName()).Where(s => s is not "").ToArray();
@@ -418,7 +408,7 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
             if (typeParameter.HasConstructorConstraint)
             {
-                WriteTypeParameterConstraint(() => StubWriter.Write("new()"));
+                WriteTypeParameterConstraint(() => stubWriter.Write("new()"));
             }
         }
     }
@@ -478,30 +468,30 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
                 case RefKind.None:
                     break;
                 case RefKind.Ref:
-                    StubWriter.Write("ref ");
+                    stubWriter.Write("ref ");
                     break;
                 case RefKind.Out:
-                    StubWriter.Write("out ");
+                    stubWriter.Write("out ");
                     break;
                 case RefKind.In:
-                    StubWriter.Write("in ");
+                    stubWriter.Write("in ");
                     break;
                 default:
-                    StubWriter.Write($"/* TODO: {parameter.RefKind} */");
+                    stubWriter.Write($"/* TODO: {parameter.RefKind} */");
                     break;
             }
 
             if (parameter.IsParams)
-                StubWriter.Write("params ");
+                stubWriter.Write("params ");
 
-            StubWriter.Write(parameter.Type.GetQualifiedName());
-            StubWriter.Write(" ");
-            StubWriter.Write(EscapeIdentifier(parameter.Name));
+            stubWriter.Write(parameter.Type.GetQualifiedName());
+            stubWriter.Write(" ");
+            stubWriter.Write(EscapeIdentifier(parameter.Name));
 
             if (parameter.HasExplicitDefaultValue)
             {
-                StubWriter.Write(" = ");
-                StubWriter.Write($"default({parameter.Type.GetQualifiedName()})");
+                stubWriter.Write(" = ");
+                stubWriter.Write($"default({parameter.Type.GetQualifiedName()})");
             }
         });
     }
@@ -526,88 +516,88 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
         if (IsUnsafe(symbol.ReturnType) || symbol.Parameters.Any(p => IsUnsafe(p.Type)))
         {
-            StubWriter.Write("unsafe ");
+            stubWriter.Write("unsafe ");
         }
 
         if (methodKind == MethodKind.Constructor)
         {
-            StubWriter.Write(symbol.ContainingType.Name);
+            stubWriter.Write(symbol.ContainingType.Name);
         }
         else if (methodKind == MethodKind.Conversion)
         {
             if (!symbol.TryGetOperatorSymbol(out var operatorName))
             {
-                StubWriter.WriteLine($"/* TODO: {symbol.Name} */");
+                stubWriter.WriteLine($"/* TODO: {symbol.Name} */");
                 return;
             }
 
             switch (operatorName)
             {
                 case "explicit conversion":
-                    StubWriter.Write("explicit operator ");
+                    stubWriter.Write("explicit operator ");
                     break;
                 case "checked explicit conversion":
-                    StubWriter.Write("explicit operator checked ");
+                    stubWriter.Write("explicit operator checked ");
                     break;
                 case "implicit conversion":
-                    StubWriter.Write("implicit operator ");
+                    stubWriter.Write("implicit operator ");
                     break;
                 case "checked implicit conversion":
-                    StubWriter.Write("implicit operator checked ");
+                    stubWriter.Write("implicit operator checked ");
                     break;
                 default:
-                    StubWriter.Write($"/* TODO: {symbol.Name} */");
+                    stubWriter.Write($"/* TODO: {symbol.Name} */");
                     break;
             }
 
-            StubWriter.Write(symbol.ReturnType.GetQualifiedName());
+            stubWriter.Write(symbol.ReturnType.GetQualifiedName());
         }
         else if (methodKind == MethodKind.UserDefinedOperator)
         {
             if (!symbol.TryGetOperatorSymbol(out var operatorName))
             {
-                StubWriter.WriteLine($"/* TODO: {symbol.Name} */");
+                stubWriter.WriteLine($"/* TODO: {symbol.Name} */");
                 return;
             }
 
-            StubWriter.Write(symbol.ReturnType.GetQualifiedName());
-            StubWriter.Write(" ");
+            stubWriter.Write(symbol.ReturnType.GetQualifiedName());
+            stubWriter.Write(" ");
             StubExplicitInterface(symbol, explicitInterfaceSymbol, writeName: false);
-            StubWriter.Write("operator ");
-            StubWriter.Write(operatorName);
+            stubWriter.Write("operator ");
+            stubWriter.Write(operatorName);
         }
         else
         {
-            StubWriter.Write(symbol.ReturnType.GetQualifiedName());
-            StubWriter.Write(" ");
+            stubWriter.Write(symbol.ReturnType.GetQualifiedName());
+            stubWriter.Write(" ");
             StubExplicitInterface(symbol, explicitInterfaceSymbol);
             StubTypeParameters(symbol.TypeParameters);
         }
 
-        StubWriter.Write("(");
+        stubWriter.Write("(");
 
         if (symbol.IsExtensionMethod)
         {
-            StubWriter.Write("this ");
+            stubWriter.Write("this ");
         }
 
         StubParameters(symbol.Parameters);
 
-        StubWriter.Write(")");
+        stubWriter.Write(")");
 
         if (baseCtor is not null)
         {
-            StubWriter.Write(" : base(");
+            stubWriter.Write(" : base(");
             WriteStringCommaSep(baseCtor.Parameters, parameter => $"default({parameter.Type.GetQualifiedName()})");
-            StubWriter.Write(")");
+            stubWriter.Write(")");
         }
 
         StubTypeParameterConstraints(symbol.TypeParameters);
 
         if (symbol.IsAbstract)
-            StubWriter.WriteLine(";");
+            stubWriter.WriteLine(";");
         else
-            StubWriter.WriteLine(" => throw null;");
+            stubWriter.WriteLine(" => throw null;");
     }
 
     public override void VisitMethod(IMethodSymbol symbol)
@@ -641,7 +631,7 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
     public override void VisitNamedType(INamedTypeSymbol symbol)
     {
-        if (!IsRelevantNamedType(symbol))
+        if (!relevantSymbol.IsRelevantNamedType(symbol))
         {
             return;
         }
@@ -654,18 +644,18 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
             if (IsUnsafe(invokeMethod.ReturnType) || invokeMethod.Parameters.Any(p => IsUnsafe(p.Type)))
             {
-                StubWriter.Write("unsafe ");
+                stubWriter.Write("unsafe ");
             }
 
-            StubWriter.Write("delegate ");
-            StubWriter.Write(invokeMethod.ReturnType.GetQualifiedName());
-            StubWriter.Write($" {symbol.Name}");
+            stubWriter.Write("delegate ");
+            stubWriter.Write(invokeMethod.ReturnType.GetQualifiedName());
+            stubWriter.Write($" {symbol.Name}");
             StubTypeParameters(symbol.TypeParameters);
-            StubWriter.Write("(");
+            stubWriter.Write("(");
             StubParameters(invokeMethod.Parameters);
-            StubWriter.Write(")");
+            stubWriter.Write(")");
             StubTypeParameterConstraints(symbol.TypeParameters);
-            StubWriter.WriteLine(";");
+            stubWriter.WriteLine(";");
             return;
         }
 
@@ -677,29 +667,29 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
                 // certain classes, such as `Microsoft.Extensions.Logging.LoggingBuilderExtensions`
                 // exist in multiple assemblies, so make them partial
                 if (symbol.IsStatic && symbol.Name.EndsWith("Extensions"))
-                    StubWriter.Write("partial ");
-                StubWriter.Write("class ");
+                    stubWriter.Write("partial ");
+                stubWriter.Write("class ");
                 break;
             case TypeKind.Enum:
                 StubAttributes(symbol.GetAttributes());
                 StubModifiers(symbol);
-                StubWriter.Write("enum ");
+                stubWriter.Write("enum ");
                 break;
             case TypeKind.Interface:
                 StubAttributes(symbol.GetAttributes());
                 StubModifiers(symbol);
-                StubWriter.Write("interface ");
+                stubWriter.Write("interface ");
                 break;
             case TypeKind.Struct:
                 StubAttributes(symbol.GetAttributes());
                 StubModifiers(symbol);
-                StubWriter.Write("struct ");
+                stubWriter.Write("struct ");
                 break;
             default:
                 return;
         }
 
-        StubWriter.Write(symbol.Name);
+        stubWriter.Write(symbol.Name);
 
         StubTypeParameters(symbol.TypeParameters);
 
@@ -707,8 +697,8 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         {
             if (symbol.EnumUnderlyingType is INamedTypeSymbol enumBase && enumBase.SpecialType != SpecialType.System_Int32)
             {
-                StubWriter.Write(" : ");
-                StubWriter.Write(enumBase.GetQualifiedName());
+                stubWriter.Write(" : ");
+                stubWriter.Write(enumBase.GetQualifiedName());
             }
         }
         else
@@ -721,23 +711,23 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
             if (bases.Any())
             {
-                StubWriter.Write(" : ");
+                stubWriter.Write(" : ");
                 WriteStringCommaSep(bases, b => b.GetQualifiedName());
             }
         }
 
         StubTypeParameterConstraints(symbol.TypeParameters);
 
-        StubWriter.WriteLine(" {");
+        stubWriter.WriteLine(" {");
 
         if (symbol.TypeKind == TypeKind.Enum)
         {
             foreach (var field in symbol.GetMembers().OfType<IFieldSymbol>().Where(field => field.ConstantValue is not null))
             {
-                StubWriter.Write(field.Name);
-                StubWriter.Write(" = ");
-                StubWriter.Write(field.ConstantValue);
-                StubWriter.WriteLine(",");
+                stubWriter.Write(field.Name);
+                stubWriter.Write(" = ");
+                stubWriter.Write(field.ConstantValue);
+                stubWriter.WriteLine(",");
             }
         }
         else
@@ -751,18 +741,18 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
             if (!seenCtor && GetBaseConstructor(symbol) is IMethodSymbol baseCtor)
             {
-                StubWriter.Write($"internal {symbol.Name}() : base(");
+                stubWriter.Write($"internal {symbol.Name}() : base(");
                 WriteStringCommaSep(baseCtor.Parameters, parameter => $"default({parameter.Type.GetQualifiedName()})");
-                StubWriter.WriteLine(") {}");
+                stubWriter.WriteLine(") {}");
             }
         }
 
-        StubWriter.WriteLine("}");
+        stubWriter.WriteLine("}");
     }
 
     public override void VisitNamespace(INamespaceSymbol symbol)
     {
-        if (!IsRelevantNamespace(symbol))
+        if (!relevantSymbol.IsRelevantNamespace(symbol))
         {
             return;
         }
@@ -770,7 +760,7 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         var isGlobal = symbol.IsGlobalNamespace;
 
         if (!isGlobal)
-            StubWriter.WriteLine($"namespace {symbol.Name} {{");
+            stubWriter.WriteLine($"namespace {symbol.Name} {{");
 
         foreach (var childSymbol in symbol.GetMembers().OrderBy(m => m.GetName()))
         {
@@ -778,7 +768,7 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         }
 
         if (!isGlobal)
-            StubWriter.WriteLine("}");
+            stubWriter.WriteLine("}");
     }
 
     private void StubProperty(IPropertySymbol symbol, IPropertySymbol? explicitInterfaceSymbol)
@@ -787,7 +777,7 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
         {
             var name = symbol.GetName(useMetadataName: true);
             if (name is not "Item" && explicitInterfaceSymbol is null)
-                StubWriter.WriteLine($"[System.Runtime.CompilerServices.IndexerName(\"{name}\")]");
+                stubWriter.WriteLine($"[System.Runtime.CompilerServices.IndexerName(\"{name}\")]");
         }
 
         StubAttributes(symbol.GetAttributes());
@@ -795,30 +785,30 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
         if (IsUnsafe(symbol.Type) || symbol.Parameters.Any(p => IsUnsafe(p.Type)))
         {
-            StubWriter.Write("unsafe ");
+            stubWriter.Write("unsafe ");
         }
 
-        StubWriter.Write(symbol.Type.GetQualifiedName());
-        StubWriter.Write(" ");
+        stubWriter.Write(symbol.Type.GetQualifiedName());
+        stubWriter.Write(" ");
 
         if (symbol.Parameters.Any())
         {
             StubExplicitInterface(symbol, explicitInterfaceSymbol, writeName: false);
-            StubWriter.Write("this[");
+            stubWriter.Write("this[");
             StubParameters(symbol.Parameters);
-            StubWriter.Write("]");
+            stubWriter.Write("]");
         }
         else
         {
             StubExplicitInterface(symbol, explicitInterfaceSymbol);
         }
 
-        StubWriter.Write(" { ");
+        stubWriter.Write(" { ");
         if (symbol.GetMethod is not null)
-            StubWriter.Write(symbol.IsAbstract ? "get; " : "get => throw null; ");
+            stubWriter.Write(symbol.IsAbstract ? "get; " : "get => throw null; ");
         if (symbol.SetMethod is not null)
-            StubWriter.Write(symbol.IsAbstract ? "set; " : "set {} ");
-        StubWriter.WriteLine("}");
+            stubWriter.Write(symbol.IsAbstract ? "set; " : "set {} ");
+        stubWriter.WriteLine("}");
     }
 
     public override void VisitProperty(IPropertySymbol symbol)
@@ -835,10 +825,5 @@ internal sealed class StubVisitor : SymbolVisitor, IDisposable
 
         if (explicitInterfaceImplementations.Length == 0)
             StubProperty(symbol, null);
-    }
-
-    public void Dispose()
-    {
-        StubWriter.Dispose();
     }
 }

@@ -1,12 +1,13 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -56,20 +57,18 @@ public static class StubGenerator
         if (compilation.GetAssemblyOrModuleSymbol(reference) is not IAssemblySymbol assembly)
             return;
 
-        Func<StreamWriter> makeWriter = () =>
-        {
-            var fileStream = new FileStream(FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs")), FileMode.Create, FileAccess.Write);
-            var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
-            return writer;
-        };
+        var relevantSymbol = new RelevantSymbol(assembly);
 
-        using var visitor = new StubVisitor(assembly, makeWriter);
-
-        if (!assembly.Modules.Any(m => visitor.IsRelevantNamespace(m.GlobalNamespace)))
+        if (!assembly.Modules.Any(m => relevantSymbol.IsRelevantNamespace(m.GlobalNamespace)))
             return;
 
-        visitor.StubWriter.WriteLine("// This file contains auto-generated code.");
-        visitor.StubWriter.WriteLine($"// Generated from `{assembly.Identity}`.");
+        using var fileStream = new FileStream(FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs")), FileMode.Create, FileAccess.Write);
+        using var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
+
+        var visitor = new StubVisitor(writer, relevantSymbol);
+
+        writer.WriteLine("// This file contains auto-generated code.");
+        writer.WriteLine($"// Generated from `{assembly.Identity}`.");
 
         visitor.StubAttributes(assembly.GetAttributes(), "assembly: ");
 
