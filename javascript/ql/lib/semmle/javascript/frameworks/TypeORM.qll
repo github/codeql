@@ -6,8 +6,19 @@ module Sqlite {
     result = API::moduleImport("typeorm").getMember("DataSource").getInstance()
   }
 
-  // Gets return value of a `createQueryBuilder`
-  API::Node queryBuilderInstance() {
+  // Gets `createQueryBuilder` return value from a Active record based Entity
+  API::Node activeRecordQueryBuilder() {
+    result =
+      API::moduleImport("typeorm")
+          .getMember("Entity")
+          .getReturn()
+          .getADecoratedClass()
+          .getMember("createQueryBuilder")
+          .getReturn()
+  }
+
+  // Gets `createQueryBuilder` return value from a Data Mapper based Entity
+  API::Node dataMapperQueryBuilder() {
     result =
       [
         // Using DataSource
@@ -19,7 +30,12 @@ module Sqlite {
       ].getMember("createQueryBuilder").getReturn()
   }
 
-  //API::moduleImport("typeorm").getMember("exports").getMember("DataSource").getInstance().getMember("createQueryBuilder").getReturn().getMember("where")
+  // Gets return value of a `createQueryBuilder`
+  API::Node queryBuilderInstance() {
+    result = dataMapperQueryBuilder() or
+    result = activeRecordQueryBuilder()
+  }
+
   // Gets The Brackets that are SQL Subqueries equivalent
   API::Node brackets() {
     result =
