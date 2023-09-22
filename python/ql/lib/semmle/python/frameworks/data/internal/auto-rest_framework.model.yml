@@ -79,3 +79,33 @@ extensions:
   - - Django.Views.View~Subclass
     - rest_framework
     - Member[viewsets].Member[ViewSet]
+  - - Django.db.models.Model~Subclass
+    - rest_framework
+    - Member[authtoken].Member[models].Member[TokenProxy]
+  - - Django.db.models.Model~Subclass
+    - rest_framework
+    - Member[authtoken].Member[models].Member[Token]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[mixins].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[pagination].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[response].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[response].Member[SimpleTemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[routers].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[schemas].Member[views].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[views].Member[Response]
+  - - django.http.response.JsonResponse~Subclass
+    - rest_framework
+    - Member[exceptions].Member[JsonResponse]

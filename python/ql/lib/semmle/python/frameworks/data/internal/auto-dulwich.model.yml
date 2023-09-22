@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - dulwich
+    - Member[web].Member[WSGIRequestHandlerLogger]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - dulwich
+    - Member[web].Member[WSGIRequestHandler]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - dulwich
+    - Member[web].Member[WSGIServerLogger]
+  - - wsgiref.simple_server.WSGIServer~Subclass
+    - dulwich
+    - Member[web].Member[WSGIServer]

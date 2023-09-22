@@ -10,3 +10,6 @@ extensions:
   - - Django.Views.View~Subclass
     - drf_yasg
     - Member[views].Member[APIView]
+  - - django.http.response.HttpResponse~Subclass
+    - drf_yasg
+    - Member[views].Member[Response]

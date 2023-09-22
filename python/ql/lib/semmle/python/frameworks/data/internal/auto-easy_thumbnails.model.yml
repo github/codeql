@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - easy_thumbnails
+    - Member[models].Member[File]
+  - - Django.db.models.Model~Subclass
+    - easy_thumbnails
+    - Member[models].Member[Source]
+  - - Django.db.models.Model~Subclass
+    - easy_thumbnails
+    - Member[models].Member[ThumbnailDimensions]
+  - - Django.db.models.Model~Subclass
+    - easy_thumbnails
+    - Member[models].Member[Thumbnail]

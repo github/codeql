@@ -6,4 +6,7 @@ extensions:
   data:
   - - Django.Views.View~Subclass
     - rest_flex_fields
+    - Member[FlexFieldsModelViewSet]
+  - - Django.Views.View~Subclass
+    - rest_flex_fields
     - Member[views].Member[FlexFieldsModelViewSet]
