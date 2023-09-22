@@ -136,6 +136,17 @@ Element getParent(Element type) {
   )
 }
 
+Element getNextMethod(ForEachStmt foreach) {
+  exists(@element sequence, @element exprType, @element parentType, @element typeDecl |
+    sequence = foreach.getSequence() and
+    expr_types(sequence, exprType) and
+    parentType = getParent*(exprType) and
+    any_generic_types(parentType, typeDecl) and
+    decl_members(typeDecl, _, result) and
+    callable_names(result, "next()")
+  )
+}
+
 // TODO: do we need a new_apply_expr_arguments
 query predicate new_decl_ref_exprs(NewElement id, NewElement decl) {
   decl_ref_exprs(id, decl)
@@ -145,18 +156,9 @@ query predicate new_decl_ref_exprs(NewElement id, NewElement decl) {
     Fresh::map(TIteratorVarConcreteDecl(foreach)) = decl
   )
   or
-  exists(
-    ForEachStmt foreach, @element sequence, @element exprType, @element parentType,
-    @element typeDecl
-  |
+  exists(ForEachStmt foreach |
     Fresh::map(TNextCallFuncRef(foreach)) = id and
-    // ForEachStmt.getSequence().getType().getMember(next)
-    sequence = foreach.getSequence() and
-    expr_types(sequence, exprType) and
-    parentType = getParent*(exprType) and
-    any_generic_types(parentType, typeDecl) and
-    decl_members(typeDecl, _, decl) and
-    callable_names(decl, "next()")
+    decl = getNextMethod(foreach)
   )
 }
 
@@ -216,5 +218,26 @@ query predicate new_expr_types(NewElement expr, NewElement type) {
     for_each_stmts(stmt, pattern, _, _) and
     var_decl_parent_patterns(var_decl, pattern) and
     var_decls(var_decl, _, type)
+  )
+  or
+  exists(ForEachStmt stmt |
+    expr = Fresh::map(TNextCallMethodLookup(stmt)) and
+    value_decls(getNextMethod(stmt), type)
+  )
+  or
+  exists(ForEachStmt stmt |
+    expr = Fresh::map(TNextCallVarRef(stmt)) and
+    expr_types(stmt.getSequence(), type)
+  )
+  or
+  exists(ForEachStmt stmt |
+    expr = Fresh::map(TNextCallFuncRef(stmt)) and
+    value_decls(getNextMethod(stmt), type)
+  )
+  or
+  exists(ForEachStmt stmt, NewElement plainType|
+    expr = Fresh::map(TNextCallInOutConversion(stmt)) and
+    expr_types(stmt.getSequence(), plainType) and
+    in_out_types(type, plainType)
   )
 }
