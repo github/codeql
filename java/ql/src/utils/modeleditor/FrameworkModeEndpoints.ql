@@ -15,6 +15,5 @@ where
   apiName = endpoint.getApiName() and
   supported = isSupported(endpoint) and
   type = supportedType(endpoint)
-select endpoint, apiName, supported.toString(), "supported",
-  endpoint.getCompilationUnit().getParentContainer().getBaseName(), "library", type, "type",
-  "unknown", "classification"
+select endpoint, apiName, supported,
+  endpoint.getCompilationUnit().getParentContainer().getBaseName(), type

@@ -23,5 +23,5 @@ where
   usage = aUsage(endpoint) and
   type = supportedType(endpoint) and
   classification = usageClassification(usage)
-select usage, apiName, supported.toString(), "supported", endpoint.jarContainer(),
-  endpoint.jarVersion(), type, "type", classification, "classification"
+select usage, apiName, supported, endpoint.jarContainer(), endpoint.jarVersion(), type,
+  classification
