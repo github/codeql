@@ -68,5 +68,19 @@ module Types
     def with_array(list:)
       system("echo #{list[0]}")
     end
+
+    field :with_named_params, String do
+      argument :arg1, String, "Arg 1"
+      argument :arg2, Types::Post, "Arg 2"
+      argument :arg3, Types::MediaCategory, "Arg 3"
+    end
+    def with_named_params(arg1:, arg2:, **args)
+      system("echo #{arg1}")
+      system("echo #{arg2}")
+      system("echo #{arg2[:title]}")
+      system("echo #{arg2[:media_category]}")
+      system("echo #{args[:arg3]}")
+      system("echo #{args[:not_an_arg]}")
+    end
   end
 end
