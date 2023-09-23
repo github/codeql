@@ -9,6 +9,7 @@
 
 import javascript
 import SqlInjectionCustomizations::SqlInjection
+import semmle.javascript.frameworks.TypeORM
 
 /**
  * A taint-tracking configuration for reasoning about string based query injection vulnerabilities.
@@ -18,7 +19,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof TypeOrm::QueryString }
 
   override predicate isSanitizer(DataFlow::Node node) {
     super.isSanitizer(node) or
