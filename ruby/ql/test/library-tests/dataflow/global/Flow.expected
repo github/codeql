@@ -1,24 +1,18 @@
 testFailures
-| callbacks.rb:18:25:18:25 | x | Unexpected result: hasValueFlow=1 |
-| callbacks.rb:29:37:29:37 | x | Unexpected result: hasValueFlow=2 |
 edges
 | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... |
 | callbacks.rb:9:15:9:15 | x | callbacks.rb:10:12:10:12 | x |
 | callbacks.rb:10:12:10:12 | x | callbacks.rb:17:15:17:15 | x |
-| callbacks.rb:10:12:10:12 | x | callbacks.rb:18:15:18:15 | x |
 | callbacks.rb:13:20:13:20 | x | callbacks.rb:14:14:14:14 | x |
 | callbacks.rb:14:14:14:14 | x | callbacks.rb:9:15:9:15 | x |
 | callbacks.rb:17:15:17:15 | x | callbacks.rb:17:25:17:25 | x |
 | callbacks.rb:17:31:17:38 | call to taint | callbacks.rb:13:20:13:20 | x |
-| callbacks.rb:18:15:18:15 | x | callbacks.rb:18:25:18:25 | x |
 | callbacks.rb:20:17:20:17 | x | callbacks.rb:21:11:21:11 | x |
 | callbacks.rb:21:11:21:11 | x | callbacks.rb:28:31:28:31 | x |
-| callbacks.rb:21:11:21:11 | x | callbacks.rb:29:29:29:29 | x |
 | callbacks.rb:24:23:24:23 | x | callbacks.rb:25:17:25:17 | x |
 | callbacks.rb:25:17:25:17 | x | callbacks.rb:20:17:20:17 | x |
 | callbacks.rb:28:18:28:25 | call to taint | callbacks.rb:24:23:24:23 | x |
 | callbacks.rb:28:31:28:31 | x | callbacks.rb:28:39:28:39 | x |
-| callbacks.rb:29:29:29:29 | x | callbacks.rb:29:37:29:37 | x |
 | captured_variables.rb:9:24:9:24 | x | captured_variables.rb:10:10:10:23 | -> { ... } [captured x] |
 | captured_variables.rb:9:24:9:24 | x | captured_variables.rb:11:5:11:6 | fn [captured x] |
 | captured_variables.rb:10:5:10:6 | fn [captured x] | captured_variables.rb:11:5:11:6 | fn [captured x] |
@@ -281,8 +275,6 @@ nodes
 | callbacks.rb:17:15:17:15 | x | semmle.label | x |
 | callbacks.rb:17:25:17:25 | x | semmle.label | x |
 | callbacks.rb:17:31:17:38 | call to taint | semmle.label | call to taint |
-| callbacks.rb:18:15:18:15 | x | semmle.label | x |
-| callbacks.rb:18:25:18:25 | x | semmle.label | x |
 | callbacks.rb:20:17:20:17 | x | semmle.label | x |
 | callbacks.rb:21:11:21:11 | x | semmle.label | x |
 | callbacks.rb:24:23:24:23 | x | semmle.label | x |
@@ -290,8 +282,6 @@ nodes
 | callbacks.rb:28:18:28:25 | call to taint | semmle.label | call to taint |
 | callbacks.rb:28:31:28:31 | x | semmle.label | x |
 | callbacks.rb:28:39:28:39 | x | semmle.label | x |
-| callbacks.rb:29:29:29:29 | x | semmle.label | x |
-| callbacks.rb:29:37:29:37 | x | semmle.label | x |
 | captured_variables.rb:9:24:9:24 | x | semmle.label | x |
 | captured_variables.rb:10:5:10:6 | fn [captured x] | semmle.label | fn [captured x] |
 | captured_variables.rb:10:10:10:23 | -> { ... } [captured x] | semmle.label | -> { ... } [captured x] |
@@ -589,9 +579,7 @@ subpaths
 #select
 | blocks.rb:8:10:8:14 | yield ... | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... | $@ | blocks.rb:14:12:14:20 | call to source | call to source |
 | callbacks.rb:17:25:17:25 | x | callbacks.rb:17:31:17:38 | call to taint | callbacks.rb:17:25:17:25 | x | $@ | callbacks.rb:17:31:17:38 | call to taint | call to taint |
-| callbacks.rb:18:25:18:25 | x | callbacks.rb:17:31:17:38 | call to taint | callbacks.rb:18:25:18:25 | x | $@ | callbacks.rb:17:31:17:38 | call to taint | call to taint |
 | callbacks.rb:28:39:28:39 | x | callbacks.rb:28:18:28:25 | call to taint | callbacks.rb:28:39:28:39 | x | $@ | callbacks.rb:28:18:28:25 | call to taint | call to taint |
-| callbacks.rb:29:37:29:37 | x | callbacks.rb:28:18:28:25 | call to taint | callbacks.rb:29:37:29:37 | x | $@ | callbacks.rb:28:18:28:25 | call to taint | call to taint |
 | captured_variables.rb:10:20:10:20 | x | captured_variables.rb:13:20:13:29 | call to taint | captured_variables.rb:10:20:10:20 | x | $@ | captured_variables.rb:13:20:13:29 | call to taint | call to taint |
 | captured_variables.rb:17:14:17:14 | x | captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:17:14:17:14 | x | $@ | captured_variables.rb:20:25:20:34 | call to taint | call to taint |
 | captured_variables.rb:24:14:24:14 | x | captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:24:14:24:14 | x | $@ | captured_variables.rb:27:48:27:57 | call to taint | call to taint |

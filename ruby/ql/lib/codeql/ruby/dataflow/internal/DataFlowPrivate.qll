@@ -1835,7 +1835,30 @@ private predicate mustHaveLambdaType(ExprNode n, Callable c) {
   )
 }
 
-predicate localMustFlowStep(Node node1, Node node2) { none() }
+predicate localMustFlowStep(Node node1, Node node2) {
+  LocalFlow::localFlowSsaParamInput(node1, node2)
+  or
+  exists(SsaImpl::Definition def |
+    def.(Ssa::WriteDefinition).assigns(node1.asExpr()) and
+    node2.(SsaDefinitionExtNode).getDefinitionExt() = def
+    or
+    def = node1.(SsaDefinitionExtNode).getDefinitionExt() and
+    node2.asExpr() = SsaImpl::getARead(def)
+  )
+  or
+  node1.asExpr() = node2.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+  or
+  node1.asExpr() = node2.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
+  or
+  node1 instanceof BlockParameterNode and
+  node2 = node1
+  or
+  node1 =
+    unique(FlowSummaryNode n1 |
+      FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
+        node2.(FlowSummaryNode).getSummaryNode(), true)
+    )
+}
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
