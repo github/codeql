@@ -1,5 +1,6 @@
 package com.github.codeql
 
+
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
