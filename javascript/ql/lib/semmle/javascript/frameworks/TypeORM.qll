@@ -1,20 +1,17 @@
 import javascript
 
-module Sqlite {
-  // Gets an expression that constructs or returns a Sqlite database instance.
+module TypeOrm {
+  // Gets an expression that constructs or returns a TypeORM database instance.
   API::Node dataSource() {
     result = API::moduleImport("typeorm").getMember("DataSource").getInstance()
   }
 
+  // Gets an `QueryRunner`
+  API::Node queryRunner() { result = dataSource().getMember("createQueryRunner").getReturn() }
+
   // Gets `createQueryBuilder` return value from a Active record based Entity
   API::Node activeRecordQueryBuilder() {
-    result =
-      API::moduleImport("typeorm")
-          .getMember("Entity")
-          .getReturn()
-          .getADecoratedClass()
-          .getMember("createQueryBuilder")
-          .getReturn()
+    result = queryRunner().getMember("manager").getMember("createQueryBuilder").getReceiver()
   }
 
   // Gets `createQueryBuilder` return value from a Data Mapper based Entity
@@ -26,7 +23,7 @@ module Sqlite {
         // Using repository
         dataSource().getMember("getRepository").getReturn(),
         // Using entity manager
-        dataSource().getMember("manager")
+        dataSource().getMember("manager"), queryRunner().getMember("manager")
       ].getMember("createQueryBuilder").getReturn()
   }
 
@@ -67,9 +64,9 @@ module Sqlite {
 
   /**
    *  Gets functions responsible for select expressions
-   *  `orderBy` is not injectable in sqlite, if we want to write a filter we should specify a DataSource parameter string value,
+   *  `orderBy` is not injectable in TypeORM, if we want to write a filter we should specify a DataSource parameter string value,
    *  which mostly is taken from config files and we will loose many sinks,
-   *  Also many application support multiple DBMSs besides sqlite,
+   *  Also many application support multiple DBMSs besides TypeORM,
    *  Also Consider it that `Order By` clause is one of the most popular injectable sinks
    */
   string selectExpression() {
@@ -78,7 +75,8 @@ module Sqlite {
         "select", "addSelect", "from", "where", "andWhere", "orWhere", "having", "orHaving",
         "andHaving", "orderBy", "addOrderBy", "distinctOn", "groupBy", "addCommonTableExpression",
         "leftJoinAndSelect", "innerJoinAndSelect", "leftJoin", "innerJoin", "leftJoinAndMapOne",
-        "innerJoinAndMapOne", "leftJoinAndMapMany", "innerJoinAndMapMany"
+        "innerJoinAndMapOne", "leftJoinAndMapMany", "innerJoinAndMapMany", "orUpdate", "orIgnore",
+        "values", "set"
       ]
   }
 
@@ -88,22 +86,19 @@ module Sqlite {
   }
 
   /**
-   *  A call to a TypeORM Query Builder method and its successor nodes.
+   *  A call to some successor functions of TypeORM `createQueryBuilder` function which are dangerous
    */
-  private class QueryCall extends DatabaseAccess, API::CallNode {
+  private class QueryBuilderCall extends DatabaseAccess, API::CallNode {
     API::Node typeOrmNode;
 
-    QueryCall() {
-      (
-        typeOrmNode = getASuccessorOfBuilderInstance() and
-        this = typeOrmNode.asSource()
-        or
-        // I'm doing following because this = typeOrmNode.asSource()s
-        // won't let me to get a member in getAQueryArgument
-        typeOrmNode = getASuccessorOfBrackets() and
-        typeOrmNode.getMember(selectExpression()).getACall() = this
-      ) and
-      this.getFile().getLocation().toString().matches("%.ts%")
+    QueryBuilderCall() {
+      typeOrmNode = getASuccessorOfBuilderInstance() and
+      this = typeOrmNode.asSource()
+      or
+      // I'm doing following because this = TypeORMNode.asSource()s
+      // won't let me to get a member in getAQueryArgument
+      typeOrmNode = getASuccessorOfBrackets() and
+      typeOrmNode.getMember(selectExpression()).getACall() = this
     }
 
     override DataFlow::Node getAResult() {
@@ -126,27 +121,33 @@ module Sqlite {
             "addCommonTableExpression"
           ] and
         result = typeOrmNode.getMember(memberName).getParameter(0).asSink()
+        or
+        memberName = ["orIgnore", "orUpdate"] and
+        result = typeOrmNode.getMember(memberName).getParameter([0, 1]).asSink()
+        or
+        // following functions if use a function as their input fields,called function parameters which are vulnerable
+        memberName = ["values", "set"] and
+        result = typeOrmNode.getMember(memberName).getParameter(0).getAMember().getReturn().asSink()
       )
     }
   }
 
-  /** An expression that is passed to the `query` method and hence interpreted as SQL. */
-  class QueryString extends SQL::SqlString {
-    QueryString() { this = any(QueryCall qc).getAQueryArgument() }
+  /**
+   *  A call to a TypeORM `query` function of QueryRunner
+   */
+  private class QueryRunner extends DatabaseAccess, API::CallNode {
+    QueryRunner() { queryRunner().getMember("query").getACall() = this }
+
+    override DataFlow::Node getAResult() { result = this }
+
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
   }
-}
 
-predicate test(API::Node n) { n = API::moduleImport("typeorm").getASuccessor*().getMember("where") }
-
-predicate test2(API::Node n) {
-  n =
-    API::moduleImport("typeorm")
-        .getMember("DataSource")
-        .getInstance()
-        .getMember("getRepository")
-        .getReturn()
-        .getMember("createQueryBuilder")
-        .getReturn()
-        .getMember("where")
-        .getParameter(0)
+  /** An expression that is passed to the `query` function and hence interpreted as SQL. */
+  class QueryString extends SQL::SqlString {
+    QueryString() {
+      this = any(QueryRunner qc).getAQueryArgument() or
+      this = any(QueryBuilderCall qc).getAQueryArgument()
+    }
+  }
 }
