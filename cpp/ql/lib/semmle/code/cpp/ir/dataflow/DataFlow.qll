@@ -22,6 +22,8 @@
 import cpp
 
 module DataFlow {
-  import semmle.code.cpp.ir.dataflow.internal.DataFlow
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
+  private import codeql.dataflow.DataFlow
+  import DataFlowMake<CppDataFlow>
   import semmle.code.cpp.ir.dataflow.internal.DataFlowImpl1
 }

@@ -1,3 +1,36 @@
+## 0.10.3
+
+### Minor Analysis Improvements
+
+* Support analyzing packages (folders with python code) that do not have `__init__.py` files, although this is technically required, we see real world projects that don't have this.
+* Added modeling of AWS Lambda handlers that can be identified with `AWS::Serverless::Function` in YAML files, where the event parameter is modeled as a remote-flow-source.
+* Improvements of the `aiohttp` models including remote-flow-sources from type annotations, new path manipulation, and SSRF sinks.
+
+### Bug Fixes
+
+* Fixed the computation of locations for imports with aliases in jump-to-definition.
+
+## 0.10.2
+
+No user-facing changes.
+
+## 0.10.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Add support for Models as Data for Reflected XSS query
+* Parameters with a default value are now considered a `DefinitionNode`. This improvement was motivated by allowing type-tracking and API graphs to follow flow from such a default value to a use by a captured variable.
+
 ## 0.10.0
 
 ### New Features

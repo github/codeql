@@ -1,3 +1,14 @@
+#select
+| Annot0j.java:1:19:1:25 | Annot0j | Interface |
+| Annot1j.java:1:19:1:25 | Annot1j | Interface |
+| def.kt:0:0:0:0 | DefKt | Class |
+| def.kt:5:1:21:60 | Annot0k | Interface |
+| def.kt:23:1:31:1 | Annot1k | Interface |
+| def.kt:33:1:33:10 | X | Class |
+| def.kt:34:1:36:1 | Y | Class |
+| def.kt:38:1:43:1 | Z | Class |
+| use.java:1:14:1:16 | use | Class |
+| use.java:14:18:14:18 | Z | Class |
 annotationDeclarations
 | Annot0j.java:1:19:1:25 | Annot0j | Annot0j.java:2:9:2:11 | abc |
 | Annot1j.java:1:19:1:25 | Annot1j | Annot1j.java:2:9:2:9 | a |
@@ -69,14 +80,3 @@ annotationValues
 | use.java:13:5:13:88 | Annot1k | use.java:13:57:13:66 | {...} |
 | use.java:13:5:13:88 | Annot1k | use.java:13:73:13:87 | Annot0k |
 | use.java:13:73:13:87 | Annot0k | use.java:13:86:13:86 | 2 |
-#select
-| Annot0j.java:1:19:1:25 | Annot0j | Interface |
-| Annot1j.java:1:19:1:25 | Annot1j | Interface |
-| def.kt:0:0:0:0 | DefKt | Class |
-| def.kt:5:1:21:60 | Annot0k | Interface |
-| def.kt:23:1:31:1 | Annot1k | Interface |
-| def.kt:33:1:33:10 | X | Class |
-| def.kt:34:1:36:1 | Y | Class |
-| def.kt:38:1:43:1 | Z | Class |
-| use.java:1:14:1:16 | use | Class |
-| use.java:14:18:14:18 | Z | Class |

@@ -103,7 +103,7 @@ class StdlibRandomSource extends RandomDataSource {
   }
 
   override Expr getOutput() {
-    if m.hasName("getBytes") then result = this.getArgument(0) else result = this
+    if m.hasName("nextBytes") then result = this.getArgument(0) else result = this
   }
 }
 

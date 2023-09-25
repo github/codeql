@@ -7,7 +7,6 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `Excon`.
@@ -64,18 +63,15 @@ class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode 
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
-      // Check for `ssl_verify_peer: false`
-      result = newCall.getKeywordArgumentIncludeHashArgument("ssl_verify_peer")
-    )
+    result =
+      connectionUse.(DataFlow::CallNode).getKeywordArgumentIncludeHashArgument("ssl_verify_peer")
   }
 
   cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    any(ExconDisablesCertificateValidationConfiguration config)
-        .hasFlow(argumentOrigin, disablingNode) and
+    ExconDisablesCertificateValidationFlow::flow(argumentOrigin, disablingNode) and
     disablingNode = this.getCertificateValidationControllingValue()
     or
     // We set `Excon.defaults[:ssl_verify_peer]` or `Excon.ssl_verify_peer` = false`
@@ -116,17 +112,13 @@ class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode 
 }
 
 /** A configuration to track values that can disable certificate validation for Excon. */
-private class ExconDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
-{
-  ExconDisablesCertificateValidationConfiguration() {
-    this = "ExconDisablesCertificateValidationConfiguration"
-  }
+private module ExconDisablesCertificateValidationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr().getExpr().(BooleanLiteral).isFalse() }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().getExpr().(BooleanLiteral).isFalse()
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = any(ExconHttpRequest req).getCertificateValidationControllingValue()
   }
 }
+
+private module ExconDisablesCertificateValidationFlow =
+  DataFlow::Global<ExconDisablesCertificateValidationConfig>;

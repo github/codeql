@@ -177,7 +177,7 @@ private RefType getElementType(RefType container) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   exists(RefType container |
     (node.asExpr() instanceof Argument or node instanceof ArgumentNode) and
     getElementType*(node.getType()) = container
@@ -239,7 +239,7 @@ private class BulkData extends RefType {
     this.(Array).getElementType().(PrimitiveType).hasName(["byte", "char"])
     or
     exists(RefType t | this.getASourceSupertype*() = t |
-      t.hasQualifiedName("java.io", "InputStream") or
+      t instanceof TypeInputStream or
       t.hasQualifiedName("java.nio", "ByteBuffer") or
       t.hasQualifiedName("java.lang", "Readable") or
       t.hasQualifiedName("java.io", "DataInput") or
@@ -259,7 +259,7 @@ private class BulkData extends RefType {
 private predicate inputStreamWrapper(Constructor c, int argi) {
   not c.fromSource() and
   c.getParameterType(argi) instanceof BulkData and
-  c.getDeclaringType().getASourceSupertype+().hasQualifiedName("java.io", "InputStream")
+  c.getDeclaringType().getASourceSupertype+() instanceof TypeInputStream
 }
 
 /** An object construction that preserves the data flow status of any of its arguments. */

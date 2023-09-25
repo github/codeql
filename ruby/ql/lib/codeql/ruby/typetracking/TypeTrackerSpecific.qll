@@ -6,7 +6,6 @@ private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplC
 private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
-private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.internal.AccessPathSyntax
@@ -180,6 +179,7 @@ private predicate argumentPositionMatch(
 ) {
   exists(DataFlowDispatch::ArgumentPosition apos |
     arg.sourceArgumentOf(call, apos) and
+    not apos.isLambdaSelf() and
     DataFlowDispatch::parameterMatch(ppos, apos)
   )
 }
@@ -230,7 +230,7 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
     // deliberately do not include `getInitializeTarget`, since calls to `new` should not
     // get the return value from `initialize`. Any fields being set in the initializer
     // will reach all reads via `callStep` and `localFieldStep`.
-    nodeTo.asExpr().getNode() = call.getNode()
+    nodeTo.asExpr().getAstNode() = call.getAstNode()
   )
 }
 
@@ -295,6 +295,8 @@ predicate storeStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentS
  * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
  */
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+  readStepIntoSourceNode(nodeFrom, nodeTo, contents)
+  or
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
     contents.isSingleton(DataFlowPublic::Content::getAttributeName(call.getExpr().getMethodName())) and
@@ -306,12 +308,39 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
 }
 
 /**
+ * Holds if a read step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
+ * should be treated as a local source node.
+ */
+predicate readStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+  DataFlowPrivate::readStepCommon(nodeFrom, contents, nodeTo)
+}
+
+/**
  * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
  */
 predicate basicLoadStoreStep(
   Node nodeFrom, Node nodeTo, DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent
 ) {
+  readStoreStepIntoSourceNode(nodeFrom, nodeTo, loadContent, storeContent)
+  or
   TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
+}
+
+/**
+ * Holds if a read+store step `nodeFrom -> nodeTo` exists, where the destination node
+ * should be treated as a local source node.
+ */
+predicate readStoreStepIntoSourceNode(
+  Node nodeFrom, Node nodeTo, DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent
+) {
+  exists(DataFlowPrivate::SynthSplatParameterElementNode mid |
+    nodeFrom
+        .(DataFlowPrivate::SynthSplatArgParameterNode)
+        .isParameterOf(mid.getEnclosingCallable(), _) and
+    loadContent = DataFlowPrivate::getPositionalContent(mid.getReadPosition()) and
+    nodeTo = mid.getSplatParameterNode(_) and
+    storeContent = DataFlowPrivate::getPositionalContent(mid.getStorePosition())
+  )
 }
 
 /**

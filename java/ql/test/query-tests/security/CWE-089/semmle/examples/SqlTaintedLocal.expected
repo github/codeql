@@ -1,6 +1,7 @@
 edges
-| Mongo.java:10:29:10:41 | args : String[] | Mongo.java:17:45:17:67 | parse(...) |
+| Mongo.java:10:29:10:41 | args : String[] | Mongo.java:17:56:17:66 | stringQuery : String |
 | Mongo.java:10:29:10:41 | args : String[] | Mongo.java:21:49:21:52 | json |
+| Mongo.java:17:56:17:66 | stringQuery : String | Mongo.java:17:45:17:67 | parse(...) |
 | Test.java:29:30:29:42 | args : String[] | Test.java:36:47:36:52 | query1 |
 | Test.java:29:30:29:42 | args : String[] | Test.java:42:57:42:62 | query2 |
 | Test.java:29:30:29:42 | args : String[] | Test.java:50:62:50:67 | query3 |
@@ -19,6 +20,7 @@ edges
 nodes
 | Mongo.java:10:29:10:41 | args : String[] | semmle.label | args : String[] |
 | Mongo.java:17:45:17:67 | parse(...) | semmle.label | parse(...) |
+| Mongo.java:17:56:17:66 | stringQuery : String | semmle.label | stringQuery : String |
 | Mongo.java:21:49:21:52 | json | semmle.label | json |
 | Test.java:29:30:29:42 | args : String[] | semmle.label | args : String[] |
 | Test.java:36:47:36:52 | query1 | semmle.label | query1 |

@@ -52,6 +52,7 @@ private import semmle.python.frameworks.Requests
 private import semmle.python.frameworks.RestFramework
 private import semmle.python.frameworks.Rsa
 private import semmle.python.frameworks.RuamelYaml
+private import semmle.python.frameworks.ServerLess
 private import semmle.python.frameworks.Setuptools
 private import semmle.python.frameworks.Simplejson
 private import semmle.python.frameworks.SqlAlchemy

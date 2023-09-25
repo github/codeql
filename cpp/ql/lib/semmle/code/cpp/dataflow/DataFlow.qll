@@ -26,6 +26,8 @@ import cpp
  * global (inter-procedural) data flow analyses.
  */
 deprecated module DataFlow {
-  import semmle.code.cpp.dataflow.internal.DataFlow
+  private import semmle.code.cpp.dataflow.internal.DataFlowImplSpecific
+  private import codeql.dataflow.DataFlow
+  import DataFlowMake<CppOldDataFlow>
   import semmle.code.cpp.dataflow.internal.DataFlowImpl1
 }

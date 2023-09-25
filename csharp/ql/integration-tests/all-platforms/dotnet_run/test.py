@@ -53,3 +53,13 @@ check_diagnostics(test_db="test7-db")
 s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test7-db', 'dotnet build', 'dotnet run --no-build hello world'], "test8-db")
 check_build_out("hello, world", s)
 check_diagnostics(test_db="test8-db")
+
+# two arguments, no '--' (first argument quoted)
+s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test8-db', 'dotnet run "hello world part1" part2'], "test9-db")
+check_build_out("hello world part1, part2", s)
+check_diagnostics(test_db="test9-db")
+
+# two arguments, no '--' (second argument quoted) and using dotnet to execute dotnet
+s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test9-db', 'dotnet dotnet run part1 "hello world part2"'], "test10-db")
+check_build_out("part1, hello world part2", s)
+check_diagnostics(test_db="test10-db")

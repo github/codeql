@@ -1,3 +1,17 @@
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* The `cpp/uninitialized-local` query now excludes uninitialized uses that are explicitly cast to void and are expression statements. As a result, the query will report less false positives.
+
 ## 0.7.0
 
 ### Minor Analysis Improvements

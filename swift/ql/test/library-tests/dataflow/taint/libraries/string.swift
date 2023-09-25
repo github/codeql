@@ -226,8 +226,9 @@ func taintThroughSimpleStringOperations() {
   sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ tainted=217
   sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ tainted=217
   sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ tainted=217
-  sink(arg: String(format: "%s", tainted)) // $ MISSING: tainted=217
-  sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ MISSING: tainted=218
+  sink(arg: String.localizedStringWithFormat("%i %s %i", 1, tainted, 3)) // $ tainted=217
+  sink(arg: String(format: "%s", tainted)) // $ tainted=217
+  sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ tainted=218
 
   sink(arg: String(repeating: clean, count: 2))
   sink(arg: String(repeating: tainted, count: 2)) // $ tainted=217
@@ -235,7 +236,6 @@ func taintThroughSimpleStringOperations() {
   sink(arg: tainted.dropFirst(10)) // $ tainted=217
   sink(arg: tainted.dropLast(10)) // $ tainted=217
   sink(arg: tainted.substring(from: tainted.startIndex)) // $ tainted=217
-
   sink(arg: tainted.lowercased()) // $ tainted=217
   sink(arg: tainted.uppercased()) // $ tainted=217
   sink(arg: tainted.lowercased(with: nil)) // $ tainted=217
@@ -367,101 +367,101 @@ func taintThroughEncodings() {
 
   clean.withUTF8({
     buffer in
-    sink(arg: buffer)
+    sink(arg: buffer[0])
     sink(arg: buffer.baseAddress!)
   })
   tainted.withUTF8({
     buffer in
-    sink(arg: buffer) // $ MISSING: tainted=366
+    sink(arg: buffer[0]) // $ MISSING: tainted=366
     sink(arg: buffer.baseAddress!) // $ MISSING: tainted=366
   })
 
   clean.withCString({
     ptr in
-    sink(arg: ptr)
+    sink(arg: ptr[0])
   })
   tainted.withCString({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=366
+    sink(arg: ptr[0]) // $ MISSING: tainted=366
   })
   clean.withCString(encodedAs: UTF8.self, {
     ptr in
-    sink(arg: ptr)
+    sink(arg: ptr[0])
   })
   tainted.withCString(encodedAs: UTF8.self, {
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=366
+    sink(arg: ptr[0]) // $ MISSING: tainted=366
   })
 
   let arrayString1 = clean.cString(using: String.Encoding.utf8)!
   sink(arg: arrayString1)
   arrayString1.withUnsafeBufferPointer({
     buffer in
-    sink(arg: buffer)
+    sink(arg: buffer[0])
     sink(arg: String(cString: buffer.baseAddress!))
   })
   let arrayString2 = tainted.cString(using: String.Encoding.utf8)!
   sink(arg: arrayString2) // $ tainted=366
-  arrayString1.withUnsafeBufferPointer({
+  arrayString2.withUnsafeBufferPointer({
     buffer in
-    sink(arg: buffer) // $ MISSING: tainted=366
+    sink(arg: buffer[0]) // $ tainted=366
     sink(arg: String(cString: buffer.baseAddress!)) // $ MISSING: tainted=366
   })
 
   clean.withPlatformString({
     ptr in
-    sink(arg: ptr)
+    sink(arg: ptr[0])
     sink(arg: String(platformString: ptr))
 
     let buffer = UnsafeBufferPointer(start: ptr, count: 10)
     let arrayString = Array(buffer)
-    sink(arg: buffer)
-    sink(arg: arrayString)
+    sink(arg: buffer[0])
+    sink(arg: arrayString[0])
     sink(arg: String(platformString: arrayString))
   })
   tainted.withPlatformString({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=366
+    sink(arg: ptr[0]) // $ MISSING: tainted=366
     sink(arg: String(platformString: ptr)) // $ MISSING: tainted=366
 
     let buffer = UnsafeBufferPointer(start: ptr, count: 10)
     let arrayString = Array(buffer)
-    sink(arg: buffer) // $ MISSING: tainted=366
-    sink(arg: arrayString) // $ MISSING: tainted=366
+    sink(arg: buffer[0]) // $ MISSING: tainted=366
+    sink(arg: arrayString[0]) // $ MISSING: tainted=366
     sink(arg: String(platformString: arrayString)) // $ MISSING: tainted=366
   })
 
   clean.withContiguousStorageIfAvailable({
     ptr in
-    sink(arg: ptr)
+    sink(arg: ptr[0])
     sink(arg: ptr.baseAddress!)
   })
   tainted.withContiguousStorageIfAvailable({
     ptr in
-    sink(arg: ptr)
+    sink(arg: ptr[0]) // $ tainted=366
     sink(arg: ptr.baseAddress!) // $ MISSING: tainted=366
   })
 }
 
-func source4() -> [UInt8] { return [] }
+func source4() -> UInt8 { return 0 }
 
 func taintFromUInt8Array() {
   var cleanUInt8Values: [UInt8] = [0x41, 0x42, 0x43, 0] // "ABC"
-  var taintedUInt8Values = source4()
+  var taintedUInt8Values: [UInt8] = [source4()]
 
   sink(arg: String(unsafeUninitializedCapacity: 256, initializingUTF8With: {
     (buffer: UnsafeMutableBufferPointer<UInt8>) -> Int in
-      sink(arg: buffer)
+      sink(arg: buffer[0])
       let _ = buffer.initialize(from: cleanUInt8Values)
-      sink(arg: buffer)
+      sink(arg: buffer[0])
       return 3
     }
   ))
   sink(arg: String(unsafeUninitializedCapacity: 256, initializingUTF8With: { // $ MISSING: tainted=450
     (buffer: UnsafeMutableBufferPointer<UInt8>) -> Int in
-      sink(arg: buffer)
+      sink(arg: buffer[0])
       let _ = buffer.initialize(from: taintedUInt8Values)
-      sink(arg: buffer) // $ MISSING: tainted=450
+      sink(arg: buffer[0]) // $ MISSING: tainted=450
       return 256
     }
   ))
@@ -474,40 +474,40 @@ func taintFromUInt8Array() {
 
   try! cleanUInt8Values.withUnsafeBufferPointer({
     (buffer: UnsafeBufferPointer<UInt8>) throws in
-    sink(arg: buffer)
+    sink(arg: buffer[0])
     sink(arg: buffer.baseAddress!)
     sink(arg: String(cString: buffer.baseAddress!))
   })
   try! taintedUInt8Values.withUnsafeBufferPointer({
     (buffer: UnsafeBufferPointer<UInt8>) throws in
-    sink(arg: buffer) // $ MISSING: tainted=450
+    sink(arg: buffer[0]) // $ tainted=450
     sink(arg: buffer.baseAddress!) // $ MISSING: tainted=450
     sink(arg: String(cString: buffer.baseAddress!)) // $ MISSING: tainted=450
   })
 
   try! cleanUInt8Values.withUnsafeMutableBytes({
     (buffer: UnsafeMutableRawBufferPointer) throws in
-    sink(arg: buffer)
+    sink(arg: buffer[0])
     sink(arg: buffer.baseAddress!)
     sink(arg: String(bytesNoCopy: buffer.baseAddress!, length: buffer.count, encoding: String.Encoding.utf8, freeWhenDone: false)!)
   })
   try! taintedUInt8Values.withUnsafeMutableBytes({
     (buffer: UnsafeMutableRawBufferPointer) throws in
-    sink(arg: buffer) // $ MISSING: tainted=450
+    sink(arg: buffer[0]) // $ tainted=450
     sink(arg: buffer.baseAddress!) // $ MISSING: tainted=450
     sink(arg: String(bytesNoCopy: buffer.baseAddress!, length: buffer.count, encoding: String.Encoding.utf8, freeWhenDone: false)!) // $ MISSING: tainted=450
   })
 }
 
-func source5() -> [CChar] { return [] }
+func source5() -> CChar { return 0 }
 
 func taintThroughCCharArray() {
   let cleanCCharValues: [CChar] = [0x41, 0x42, 0x43, 0]
-  let taintedCCharValues: [CChar] = source5()
+  let taintedCCharValues: [CChar] = [source5()]
 
   cleanCCharValues.withUnsafeBufferPointer({
     ptr in
-    sink(arg: ptr)
+    sink(arg: ptr[0])
     sink(arg: ptr.baseAddress!)
     sink(arg: String(utf8String: ptr.baseAddress!)!)
     sink(arg: String(validatingUTF8: ptr.baseAddress!)!)
@@ -515,7 +515,7 @@ func taintThroughCCharArray() {
   })
   taintedCCharValues.withUnsafeBufferPointer({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=506
+    sink(arg: ptr[0]) // $ tainted=506
     sink(arg: ptr.baseAddress!) // $ MISSING: tainted=506
     sink(arg: String(utf8String: ptr.baseAddress!)!) // $ MISSING: tainted=506
     sink(arg: String(validatingUTF8: ptr.baseAddress!)!) // $ MISSING: tainted=506
@@ -526,22 +526,22 @@ func taintThroughCCharArray() {
   sink(arg: String(cString: taintedCCharValues)) // $ tainted=506
 }
 
-func source6() -> [unichar] { return [] }
+func source6() -> unichar { return 0 }
 
 func taintThroughUnicharArray() {
   let cleanUnicharValues: [unichar] = [0x41, 0x42, 0x43, 0]
-  let taintedUnicharValues: [unichar] = source6()
+  let taintedUnicharValues: [unichar] = [source6()]
 
   cleanUnicharValues.withUnsafeBufferPointer({
     ptr in
-    sink(arg: ptr)
+    sink(arg: ptr[0])
     sink(arg: ptr.baseAddress!)
     sink(arg: String(utf16CodeUnits: ptr.baseAddress!, count: ptr.count))
     sink(arg: String(utf16CodeUnitsNoCopy: ptr.baseAddress!, count: ptr.count, freeWhenDone: false))
   })
   taintedUnicharValues.withUnsafeBufferPointer({
     ptr in
-    sink(arg: ptr) // $ MISSING: tainted=533
+    sink(arg: ptr[0]) // $ tainted=533
     sink(arg: ptr.baseAddress!) // $ MISSING: tainted=533
     sink(arg: String(utf16CodeUnits: ptr.baseAddress!, count: ptr.count)) // $ MISSING: tainted=533
     sink(arg: String(utf16CodeUnitsNoCopy: ptr.baseAddress!, count: ptr.count, freeWhenDone: false)) // $ MISSING: tainted=533
@@ -589,7 +589,7 @@ func taintedThroughConversion() {
   sink(arg: String(describing: source())) // $ tainted=589
 
   sink(arg: Int("123")!)
-  sink(arg: Int(source2())!) // $ MISSING: tainted=592
+  sink(arg: Int(source2())!) // $ tainted=592
 }
 
 func untaintedFields() {
@@ -598,4 +598,53 @@ func untaintedFields() {
   sink(arg: String.availableStringEncodings)
   sink(arg: String.defaultCStringEncoding)
   sink(arg: tainted.isContiguousUTF8)
+}
+
+func callbackWithCleanPointer(ptr: UnsafeBufferPointer<String.Element>) throws -> Int {
+  sink(arg: ptr[0])
+
+  return 0
+}
+
+func callbackWithTaintedPointer(ptr: UnsafeBufferPointer<String.Element>) throws -> Int {
+  sink(arg: ptr[0]) // $ tainted=617
+
+  return source()
+}
+
+func furtherTaintThroughCallbacks() {
+  let clean = ""
+  let tainted = source2()
+
+  // return values from the closure (1)
+  let result1 = clean.withContiguousStorageIfAvailable({
+    ptr in
+    return 0
+  })
+  sink(arg: result1!)
+  let result2 = clean.withContiguousStorageIfAvailable({
+    ptr in
+    return source()
+  })
+  sink(arg: result2!) // $ tainted=627
+
+  // return values from the closure (2)
+  if let result3 = clean.withContiguousStorageIfAvailable({
+    ptr in
+    return 0
+  }) {
+    sink(arg: result3)
+  }
+  if let result4 = clean.withContiguousStorageIfAvailable({
+    ptr in
+    return source()
+  }) {
+    sink(arg: result4) // $ tainted=640
+  }
+
+  // using a non-closure function
+  let result5 = try? clean.withContiguousStorageIfAvailable(callbackWithCleanPointer)
+  sink(arg: result5!)
+  let result6 = try? tainted.withContiguousStorageIfAvailable(callbackWithTaintedPointer)
+  sink(arg: result6!) // $ tainted=612
 }

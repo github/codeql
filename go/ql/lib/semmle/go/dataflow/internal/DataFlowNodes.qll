@@ -489,13 +489,9 @@ module Public {
      * interface type.
      */
     Callable getACalleeIncludingExternals() {
-      result.asFunction() = this.getTarget()
+      result = this.getACalleeWithoutVirtualDispatch()
       or
       exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
-        result.asFuncLit() = calleeSource.asExpr()
-        or
-        calleeSource = result.asFunction().getARead()
-        or
         exists(Method declared, Method actual |
           calleeSource = declared.getARead() and
           actual.implements(declared) and
@@ -509,6 +505,19 @@ module Public {
      * we lack a definition, such as standard library functions).
      */
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
+
+    /**
+     * Gets the definition of a possible target of this call, excluding targets reachable via virtual dispatch.
+     */
+    Callable getACalleeWithoutVirtualDispatch() {
+      result.asFunction() = this.getTarget()
+      or
+      exists(DataFlow::Node calleeSource | calleeSource = this.getACalleeSource() |
+        result.asFuncLit() = calleeSource.asExpr()
+        or
+        calleeSource = result.asFunction().getARead()
+      )
+    }
 
     /**
      * Gets the name of the function, method or variable that is being called.

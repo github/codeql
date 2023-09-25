@@ -1,12 +1,11 @@
 using System;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-using Semmle.Util.Logging;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Util;
-
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp
 {

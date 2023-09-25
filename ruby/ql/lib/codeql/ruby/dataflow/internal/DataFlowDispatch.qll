@@ -21,8 +21,7 @@ private class SelfLocalSourceNode extends DataFlow::LocalSourceNode {
   SelfLocalSourceNode() {
     self = this.(SelfParameterNodeImpl).getSelfVariable()
     or
-    self = this.(SsaSelfDefinitionNode).getVariable() and
-    not LocalFlow::localFlowSsaParamInput(_, this)
+    self = this.(SsaSelfDefinitionNode).getVariable()
   }
 
   /** Gets the `self` variable. */
@@ -264,7 +263,7 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getNode() =
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getAstNode() =
       ap.getVariableAccess()
   )
 }
@@ -310,8 +309,14 @@ predicate isUserDefinedNew(SingletonMethod new) {
 }
 
 private Callable viableSourceCallableNonInit(RelevantCall call) {
-  result = getTarget(call) and
-  not result = blockCall(call) // handled by `lambdaCreation`/`lambdaCall`
+  result = getTargetInstance(call, _)
+  or
+  result = getTargetSingleton(call, _)
+  or
+  exists(Module cls, string method |
+    superCall(call, cls, method) and
+    result = lookupMethod(cls.getAnImmediateAncestor(), method)
+  )
 }
 
 private Callable viableSourceCallableInit(RelevantCall call) { result = getInitializeTarget(call) }
@@ -401,14 +406,7 @@ private module Cached {
 
   cached
   CfgScope getTarget(RelevantCall call) {
-    result = getTargetInstance(call, _)
-    or
-    result = getTargetSingleton(call, _)
-    or
-    exists(Module cls, string method |
-      superCall(call, cls, method) and
-      result = lookupMethod(cls.getAnImmediateAncestor(), method)
-    )
+    result = viableSourceCallableNonInit(call)
     or
     result = blockCall(call)
   }
@@ -424,6 +422,7 @@ private module Cached {
   cached
   newtype TArgumentPosition =
     TSelfArgumentPosition() or
+    TLambdaSelfArgumentPosition() or
     TBlockArgumentPosition() or
     TPositionalArgumentPosition(int pos) {
       exists(Call c | exists(c.getArgument(pos)))
@@ -438,13 +437,15 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
     THashSplatArgumentPosition() or
-    TSplatAllArgumentPosition() or
+    TSplatArgumentPosition(int pos) { exists(Call c | c.getArgument(pos) instanceof SplatExpr) } or
+    TSynthSplatArgumentPosition() or
     TAnyArgumentPosition() or
     TAnyKeywordArgumentPosition()
 
   cached
   newtype TParameterPosition =
     TSelfParameterPosition() or
+    TLambdaSelfParameterPosition() or
     TBlockParameterPosition() or
     TPositionalParameterPosition(int pos) {
       pos = any(Parameter p).getPosition()
@@ -467,7 +468,11 @@ private module Cached {
     // position for multiple parameter nodes in the same callable, we introduce this
     // synthetic parameter position.
     TSynthHashSplatParameterPosition() or
-    TSplatAllParameterPosition() or
+    TSplatParameterPosition(int pos) {
+      exists(Parameter p | p.getPosition() = pos and p instanceof SplatParameter)
+    } or
+    TSynthSplatParameterPosition() or
+    TSynthArgSplatParameterPosition() or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
 }
@@ -936,20 +941,24 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
   private predicate paramReturnFlow(
     DataFlow::Node nodeFrom, DataFlow::PostUpdateNode nodeTo, StepSummary summary
   ) {
-    exists(RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p, Expr nodeFromPreExpr |
+    exists(
+      RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p,
+      CfgNodes::ExprCfgNode nodeFromPreExpr
+    |
       TypeTrackerSpecific::callStep(call, arg, p) and
       nodeTo.getPreUpdateNode() = arg and
       summary.toString() = "return" and
       (
-        nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+        nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
         or
-        nodeFromPreExpr = nodeFrom.asExpr().getExpr() and
-        singletonMethodOnInstance(_, _, nodeFromPreExpr)
+        nodeFromPreExpr = nodeFrom.asExpr() and
+        singletonMethodOnInstance(_, _, nodeFromPreExpr.getExpr())
       )
     |
-      nodeFromPreExpr = p.getParameter().(NamedParameter).getVariable().getAnAccess()
+      nodeFromPreExpr =
+        LocalFlow::getParameterDefNode(p.getParameter()).getDefinitionExt().getARead()
       or
-      nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfVariable().getAnAccess()
+      nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfDefinition().getARead()
     )
   }
 
@@ -1271,6 +1280,9 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
+  /** Holds if this position represents a reference to a lambda itself. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfParameterPosition() }
+
   /** Holds if this position represents a block parameter. */
   predicate isBlock() { this = TBlockParameterPosition() }
 
@@ -1288,7 +1300,12 @@ class ParameterPosition extends TParameterPosition {
 
   predicate isSynthHashSplat() { this = TSynthHashSplatParameterPosition() }
 
-  predicate isSplatAll() { this = TSplatAllParameterPosition() }
+  predicate isSynthSplat() { this = TSynthSplatParameterPosition() }
+
+  // A fake position to indicate that this parameter node holds content from a synth arg splat node
+  predicate isSynthArgSplat() { this = TSynthArgSplatParameterPosition() }
+
+  predicate isSplat(int n) { this = TSplatParameterPosition(n) }
 
   /**
    * Holds if this position represents any parameter, except `self` parameters. This
@@ -1303,6 +1320,8 @@ class ParameterPosition extends TParameterPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     this.isBlock() and result = "block"
     or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
@@ -1315,11 +1334,15 @@ class ParameterPosition extends TParameterPosition {
     or
     this.isSynthHashSplat() and result = "synthetic **"
     or
-    this.isSplatAll() and result = "*"
-    or
     this.isAny() and result = "any"
     or
     this.isAnyNamed() and result = "any-named"
+    or
+    this.isSynthSplat() and result = "synthetic *"
+    or
+    this.isSynthArgSplat() and result = "synthetic * (from *args)"
+    or
+    exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
   }
 }
 
@@ -1327,6 +1350,9 @@ class ParameterPosition extends TParameterPosition {
 class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a `self` argument. */
   predicate isSelf() { this = TSelfArgumentPosition() }
+
+  /** Holds if this position represents a lambda `self` argument. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfArgumentPosition() }
 
   /** Holds if this position represents a block argument. */
   predicate isBlock() { this = TBlockArgumentPosition() }
@@ -1352,11 +1378,15 @@ class ArgumentPosition extends TArgumentPosition {
    */
   predicate isHashSplat() { this = THashSplatArgumentPosition() }
 
-  predicate isSplatAll() { this = TSplatAllArgumentPosition() }
+  predicate isSplat(int n) { this = TSplatArgumentPosition(n) }
+
+  predicate isSynthSplat() { this = TSynthSplatArgumentPosition() }
 
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
+    or
+    this.isLambdaSelf() and result = "lambda self"
     or
     this.isBlock() and result = "block"
     or
@@ -1370,20 +1400,30 @@ class ArgumentPosition extends TArgumentPosition {
     or
     this.isHashSplat() and result = "**"
     or
-    this.isSplatAll() and result = "*"
+    this.isSynthSplat() and result = "synthetic *"
+    or
+    exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
   }
 }
 
 pragma[nomagic]
-private predicate parameterPositionIsNotSelf(ParameterPosition ppos) { not ppos.isSelf() }
+private predicate parameterPositionIsNotSelf(ParameterPosition ppos) {
+  not ppos.isSelf() and
+  not ppos.isLambdaSelf()
+}
 
 pragma[nomagic]
-private predicate argumentPositionIsNotSelf(ArgumentPosition apos) { not apos.isSelf() }
+private predicate argumentPositionIsNotSelf(ArgumentPosition apos) {
+  not apos.isSelf() and
+  not apos.isLambdaSelf()
+}
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[nomagic]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
+  or
+  ppos.isLambdaSelf() and apos.isLambdaSelf()
   or
   ppos.isBlock() and apos.isBlock()
   or
@@ -1399,7 +1439,14 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   ppos.isSynthHashSplat() and apos.isHashSplat()
   or
-  ppos.isSplatAll() and apos.isSplatAll()
+  ppos.isSplat(0) and apos.isSynthSplat()
+  or
+  ppos.isSynthSplat() and apos.isSplat(0)
+  or
+  apos.isSynthSplat() and ppos.isSynthArgSplat()
+  or
+  // Exact splat match
+  exists(int n | apos.isSplat(n) and ppos.isSplat(n))
   or
   ppos.isAny() and argumentPositionIsNotSelf(apos)
   or
@@ -1416,6 +1463,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
  * This is a temporary hook to support technical debt in the Go language; do not use.
  */
 pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, DataFlow::Node p, ArgumentNode arg) {
+predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNodeImpl p, ArgumentNode arg) {
   any()
 }

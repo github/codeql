@@ -176,6 +176,25 @@ API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
   )
 }
 
+pragma[inline]
+API::Node getAFuzzySuccessor(API::Node node) {
+  result = node.getAMember()
+  or
+  result = node.getMethod(_)
+  or
+  result =
+    node.getArgumentAtPosition(any(DataFlowDispatch::ArgumentPosition apos | not apos.isSelf()))
+  or
+  result =
+    node.getParameterAtPosition(any(DataFlowDispatch::ParameterPosition ppos | not ppos.isSelf()))
+  or
+  result = node.getReturn()
+  or
+  result = node.getAnElement()
+  or
+  result = node.getInstance()
+}
+
 /**
  * Holds if `invoke` matches the Ruby-specific call site filter in `token`.
  */
@@ -224,7 +243,7 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
   or
   name = ["Argument", "Parameter"] and
   (
-    argument = ["self", "block", "any", "any-named"]
+    argument = ["self", "lambda-self", "block", "any", "any-named"]
     or
     argument.regexpMatch("\\w+:") // keyword argument
   )

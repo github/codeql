@@ -1561,7 +1561,8 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(ExtractedDataFlowCall call) {
+DataFlowCallable viableCallable(DataFlowCall call) {
+  call instanceof ExtractedDataFlowCall and
   result = call.getCallable()
   or
   // A call to a library callable with a flow summary

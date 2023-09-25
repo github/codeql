@@ -2796,6 +2796,7 @@
 | UseUseExplosion.rb:21:3675:21:3680 | call to use | UseUseExplosion.rb:21:3670:21:3680 | else ... |
 | UseUseExplosion.rb:21:3686:21:3696 | else ... | UseUseExplosion.rb:21:9:21:3700 | if ... |
 | UseUseExplosion.rb:21:3691:21:3696 | call to use | UseUseExplosion.rb:21:3686:21:3696 | else ... |
+| UseUseExplosion.rb:24:5:25:7 | synthetic *args | UseUseExplosion.rb:24:13:24:13 | i |
 | UseUseExplosion.rb:24:5:25:7 | use | UseUseExplosion.rb:1:1:26:3 | C |
 | file://:0:0:0:0 | [summary param] position 0 in & | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in & |
 | file://:0:0:0:0 | [summary param] position 0 in + | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in + |
@@ -2815,12 +2816,15 @@
 | file://:0:0:0:0 | [summary param] position 0 in Hash[] | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in Hash[] |
 | file://:0:0:0:0 | [summary param] position 0 in Mysql2::Client.escape() | file://:0:0:0:0 | [summary] to write: ReturnValue in Mysql2::Client.escape() |
 | file://:0:0:0:0 | [summary param] position 0 in Mysql2::Client.new() | file://:0:0:0:0 | [summary] to write: ReturnValue in Mysql2::Client.new() |
+| file://:0:0:0:0 | [summary param] position 0 in Net::LDAP.new | file://:0:0:0:0 | [summary] to write: ReturnValue in Net::LDAP.new |
+| file://:0:0:0:0 | [summary param] position 0 in Net::LDAP::Filter | file://:0:0:0:0 | [summary] to write: ReturnValue in Net::LDAP::Filter |
 | file://:0:0:0:0 | [summary param] position 0 in PG.new() | file://:0:0:0:0 | [summary] to write: ReturnValue in PG.new() |
 | file://:0:0:0:0 | [summary param] position 0 in Rack::Utils.parse_query | file://:0:0:0:0 | [summary] to write: ReturnValue in Rack::Utils.parse_query |
 | file://:0:0:0:0 | [summary param] position 0 in SQLite3::Database.quote() | file://:0:0:0:0 | [summary] to write: ReturnValue in SQLite3::Database.quote() |
 | file://:0:0:0:0 | [summary param] position 0 in Sequel.connect | file://:0:0:0:0 | [summary] to write: ReturnValue in Sequel.connect |
 | file://:0:0:0:0 | [summary param] position 0 in String.try_convert | file://:0:0:0:0 | [summary] to write: ReturnValue in String.try_convert |
 | file://:0:0:0:0 | [summary param] position 0 in \| | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in \| |
+| file://:0:0:0:0 | [summary param] position 1 in Net::LDAP::Filter | file://:0:0:0:0 | [summary] to write: ReturnValue in Net::LDAP::Filter |
 | file://:0:0:0:0 | [summary param] position 1.. in File.join | file://:0:0:0:0 | [summary] to write: ReturnValue in File.join |
 | file://:0:0:0:0 | [summary param] self in & | file://:0:0:0:0 | [summary] read: Argument[self].Element[any] in & |
 | file://:0:0:0:0 | [summary param] self in * | file://:0:0:0:0 | [summary] read: Argument[self].Element[any] in * |
@@ -2837,6 +2841,8 @@
 | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in Hash[] | file://:0:0:0:0 | [summary] read: Argument[0].Element[any].Element[1] in Hash[] |
 | local_dataflow.rb:1:1:7:3 | self (foo) | local_dataflow.rb:3:8:3:10 | self |
 | local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:1:1:7:3 | self (foo) |
+| local_dataflow.rb:1:1:7:3 | synthetic *args | local_dataflow.rb:1:9:1:9 | a |
+| local_dataflow.rb:1:1:150:3 | <uninitialized> | local_dataflow.rb:10:9:10:9 | x |
 | local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
@@ -2865,21 +2871,41 @@
 | local_dataflow.rb:9:9:9:15 | Array | local_dataflow.rb:9:9:9:15 | call to [] |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:5 | array |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
+| local_dataflow.rb:10:5:13:3 | ... | local_dataflow.rb:10:1:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | <captured entry> self | local_dataflow.rb:11:1:11:2 | self |
+| local_dataflow.rb:10:5:13:3 | <captured exit> x | local_dataflow.rb:15:5:15:5 | x |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:9:10:9 | x |
-| local_dataflow.rb:10:5:13:3 | call to each | local_dataflow.rb:10:1:13:3 | ... = ... |
+| local_dataflow.rb:10:5:13:3 | call to each | local_dataflow.rb:10:5:13:3 | ... |
+| local_dataflow.rb:10:5:13:3 | synthetic *args | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
+| local_dataflow.rb:10:9:10:9 | ... = ... | local_dataflow.rb:10:9:10:9 | if ... |
+| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [false] ! ... |
+| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [true] ! ... |
+| local_dataflow.rb:10:9:10:9 | nil | local_dataflow.rb:10:9:10:9 | ... = ... |
+| local_dataflow.rb:10:9:10:9 | nil | local_dataflow.rb:10:9:10:9 | x |
+| local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:10:9:10:9 | defined? ... |
+| local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:10:9:10:9 | phi |
 | local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:12:5:12:5 | x |
 | local_dataflow.rb:10:14:10:18 | [post] array | local_dataflow.rb:15:10:15:14 | array |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:15:10:15:14 | array |
 | local_dataflow.rb:11:1:11:2 | [post] self | local_dataflow.rb:12:3:12:5 | self |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:12:3:12:5 | self |
+| local_dataflow.rb:15:1:17:3 | <captured exit> x | local_dataflow.rb:19:5:19:5 | x |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | ... = ... |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | __synth__0__1 |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | __synth__0__1 |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:5:15:5 | x |
+| local_dataflow.rb:15:1:17:3 | call to each | local_dataflow.rb:15:1:17:3 | ... |
+| local_dataflow.rb:15:1:17:3 | synthetic *args | local_dataflow.rb:15:1:17:3 | __synth__0__1 |
+| local_dataflow.rb:15:5:15:5 | ... = ... | local_dataflow.rb:15:5:15:5 | if ... |
+| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [false] ! ... |
+| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [true] ! ... |
+| local_dataflow.rb:15:5:15:5 | nil | local_dataflow.rb:15:5:15:5 | ... = ... |
+| local_dataflow.rb:15:5:15:5 | nil | local_dataflow.rb:15:5:15:5 | x |
+| local_dataflow.rb:15:5:15:5 | x | local_dataflow.rb:15:5:15:5 | defined? ... |
+| local_dataflow.rb:15:5:15:5 | x | local_dataflow.rb:15:5:15:5 | phi |
 | local_dataflow.rb:15:10:15:14 | [post] array | local_dataflow.rb:19:10:19:14 | array |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:19:10:19:14 | array |
 | local_dataflow.rb:16:9:16:10 | 10 | local_dataflow.rb:16:3:16:10 | break |
@@ -2887,6 +2913,15 @@
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:5:19:5 | x |
+| local_dataflow.rb:19:1:21:3 | call to each | local_dataflow.rb:19:1:21:3 | ... |
+| local_dataflow.rb:19:1:21:3 | synthetic *args | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
+| local_dataflow.rb:19:5:19:5 | ... = ... | local_dataflow.rb:19:5:19:5 | if ... |
+| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [false] ! ... |
+| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [true] ! ... |
+| local_dataflow.rb:19:5:19:5 | nil | local_dataflow.rb:19:5:19:5 | ... = ... |
+| local_dataflow.rb:19:5:19:5 | nil | local_dataflow.rb:19:5:19:5 | x |
+| local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:19:5:19:5 | defined? ... |
+| local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:19:5:19:5 | phi |
 | local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:20:6:20:6 | x |
 | local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... |
 | local_dataflow.rb:20:10:20:10 | 1 | local_dataflow.rb:20:6:20:10 | ... > ... |
@@ -2898,11 +2933,13 @@
 | local_dataflow.rb:30:14:30:20 | "class" | local_dataflow.rb:30:5:30:24 | C |
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:1 | x |
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
+| local_dataflow.rb:34:1:39:3 | synthetic *args | local_dataflow.rb:34:7:34:7 | x |
 | local_dataflow.rb:34:7:34:7 | x | local_dataflow.rb:34:7:34:7 | x |
 | local_dataflow.rb:34:7:34:7 | x | local_dataflow.rb:35:6:35:6 | x |
 | local_dataflow.rb:35:6:35:6 | x | local_dataflow.rb:35:6:35:11 | ... == ... |
 | local_dataflow.rb:35:11:35:11 | 4 | local_dataflow.rb:35:6:35:11 | ... == ... |
 | local_dataflow.rb:36:13:36:13 | 7 | local_dataflow.rb:36:6:36:13 | return |
+| local_dataflow.rb:41:1:47:3 | synthetic *args | local_dataflow.rb:41:7:41:7 | x |
 | local_dataflow.rb:41:7:41:7 | x | local_dataflow.rb:41:7:41:7 | x |
 | local_dataflow.rb:41:7:41:7 | x | local_dataflow.rb:42:6:42:6 | x |
 | local_dataflow.rb:42:6:42:6 | x | local_dataflow.rb:42:6:42:11 | ... == ... |
@@ -2921,8 +2958,10 @@
 | local_dataflow.rb:51:20:51:20 | x | local_dataflow.rb:51:20:51:24 | ... < ... |
 | local_dataflow.rb:51:24:51:24 | 9 | local_dataflow.rb:51:20:51:24 | ... < ... |
 | local_dataflow.rb:55:5:55:13 | Array | local_dataflow.rb:55:5:55:13 | call to [] |
+| local_dataflow.rb:57:1:58:3 | synthetic *args | local_dataflow.rb:57:9:57:9 | x |
 | local_dataflow.rb:60:1:90:3 | self (test_case) | local_dataflow.rb:78:12:78:20 | self |
 | local_dataflow.rb:60:1:90:3 | self in test_case | local_dataflow.rb:60:1:90:3 | self (test_case) |
+| local_dataflow.rb:60:1:90:3 | synthetic *args | local_dataflow.rb:60:15:60:15 | x |
 | local_dataflow.rb:60:15:60:15 | x | local_dataflow.rb:60:15:60:15 | x |
 | local_dataflow.rb:60:15:60:15 | x | local_dataflow.rb:61:12:61:12 | x |
 | local_dataflow.rb:61:7:68:5 | SSA phi read(x) | local_dataflow.rb:69:12:69:12 | x |
@@ -3095,6 +3134,7 @@
 | local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:3:118:31 | call to tap |
 | local_dataflow.rb:118:3:118:11 | self | local_dataflow.rb:119:3:119:31 | self |
 | local_dataflow.rb:118:17:118:31 | <captured entry> self | local_dataflow.rb:118:23:118:29 | self |
+| local_dataflow.rb:118:17:118:31 | synthetic *args | local_dataflow.rb:118:20:118:20 | x |
 | local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:20:118:20 | x |
 | local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:28:118:28 | x |
 | local_dataflow.rb:119:3:119:31 | [post] self | local_dataflow.rb:119:8:119:16 | self |
@@ -3109,8 +3149,10 @@
 | local_dataflow.rb:123:8:123:20 | call to dup | local_dataflow.rb:123:8:123:45 | call to tap |
 | local_dataflow.rb:123:8:123:45 | call to tap | local_dataflow.rb:123:8:123:49 | call to dup |
 | local_dataflow.rb:123:26:123:45 | <captured entry> self | local_dataflow.rb:123:32:123:43 | self |
+| local_dataflow.rb:123:26:123:45 | synthetic *args | local_dataflow.rb:123:29:123:29 | x |
 | local_dataflow.rb:126:1:128:3 | self (use) | local_dataflow.rb:127:3:127:8 | self |
 | local_dataflow.rb:126:1:128:3 | self in use | local_dataflow.rb:126:1:128:3 | self (use) |
+| local_dataflow.rb:126:1:128:3 | synthetic *args | local_dataflow.rb:126:9:126:9 | x |
 | local_dataflow.rb:130:1:150:3 | self (use_use_madness) | local_dataflow.rb:132:6:132:11 | self |
 | local_dataflow.rb:130:1:150:3 | self in use_use_madness | local_dataflow.rb:130:1:150:3 | self (use_use_madness) |
 | local_dataflow.rb:131:3:131:3 | x | local_dataflow.rb:132:10:132:10 | x |

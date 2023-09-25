@@ -1993,4 +1993,115 @@ void SetStaticFuncPtr() {
     pfn = c.StaticMemberFunction;
 }
 
+void TernaryTestInt(bool a, int x, int y, int z) {
+    z = a ? x : y;
+    z = a ? x : 5;
+    z = a ? 3 : 5;
+    (a ? x : y) = 7;
+}
+
+struct TernaryPodObj {
+};
+
+void TernaryTestPodObj(bool a, TernaryPodObj x, TernaryPodObj y, TernaryPodObj z) {
+    z = a ? x : y;
+    z = a ? x : TernaryPodObj();
+    z = a ? TernaryPodObj() : TernaryPodObj();
+    (z = a ? x : y) = TernaryPodObj();
+}
+
+struct TernaryNonPodObj {
+    virtual ~TernaryNonPodObj() {}
+};
+
+void TernaryTestNonPodObj(bool a, TernaryNonPodObj x, TernaryNonPodObj y, TernaryNonPodObj z) {
+    z = a ? x : y;
+    z = a ? x : TernaryNonPodObj();
+    z = a ? TernaryNonPodObj() : TernaryNonPodObj();
+    (z = a ? x : y) = TernaryNonPodObj();
+}
+
+void CommaTestHelper(unsigned int);
+
+unsigned int CommaTest(unsigned int x) {
+  unsigned int y;
+  y = x < 100 ?
+    (CommaTestHelper(x), x) :
+    (CommaTestHelper(x), 10);
+}
+
+void NewDeleteMem() {
+  int* x = new int;  // No constructor
+  *x = 6;
+  delete x;
+}
+
+class Base2 {
+public:
+    void operator delete(void* p) {
+    }
+    virtual ~Base2() {};
+};
+
+class Derived2 : public Base2 {
+    int i;
+public:
+    ~Derived2() {};
+
+    void operator delete(void* p) {
+    }
+};
+
+// Delete is kind-of virtual in these cases
+int virtual_delete()
+{
+    Base2* b1 = new Base2{};
+    delete b1;
+
+    Base2* b2 = new Derived2{};
+    delete b2;
+
+    Derived2* d = new Derived2{};
+    delete d;
+}
+
+void test_constant_folding_use(int);
+
+void test_constant_folding() {
+  const int x = 116;
+  test_constant_folding_use(x);
+}
+
+void exit(int code);
+
+int NonExit() {
+    int x = Add(3,4);
+    if (x == 7)
+        exit(3);
+    VoidFunc();
+    return x;
+}
+
+void CallsNonExit() {
+    VoidFunc();
+    exit(3);
+}
+
+int TransNonExit() {
+    int x = Add(3,4);
+    if (x == 7)
+        CallsNonExit();
+    VoidFunc();
+    return x;
+}
+
+void newArrayCorrectType(size_t n) {
+  new int[n];  // No constructor
+  new(1.0f) int[n];  // Placement new, no constructor
+  new String[n];  // Constructor
+  new Overaligned[n];  // Aligned new
+  new DefaultCtorWithDefaultParam[n];
+  new int[n] { 0, 1, 2 };
+}
+
 // semmle-extractor-options: -std=c++17 --clang

@@ -2,7 +2,6 @@ private import cpp as Cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
-private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
@@ -220,9 +219,10 @@ private module IndirectOperands {
     int indirectionIndex;
 
     IndirectOperandFromIRRepr() {
-      exists(Operand repr |
-        repr = Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex) and
-        nodeHasOperand(this, repr, indirectionIndex - 1)
+      exists(Operand repr, int indirectionIndexRepr |
+        Ssa::hasIRRepresentationOfIndirectOperand(operand, indirectionIndex, repr,
+          indirectionIndexRepr) and
+        nodeHasOperand(this, repr, indirectionIndexRepr)
       )
     }
 
@@ -262,9 +262,10 @@ private module IndirectInstructions {
     int indirectionIndex;
 
     IndirectInstructionFromIRRepr() {
-      exists(Instruction repr |
-        repr = Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex) and
-        nodeHasInstruction(this, repr, indirectionIndex - 1)
+      exists(Instruction repr, int indirectionIndexRepr |
+        Ssa::hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, repr,
+          indirectionIndexRepr) and
+        nodeHasInstruction(this, repr, indirectionIndexRepr)
       )
     }
 
@@ -681,9 +682,7 @@ predicate storeStepImpl(Node node1, Content c, PostFieldUpdateNode node2, boolea
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
-  storeStepImpl(node1, c, node2, _)
-}
+predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1, c, node2, _) }
 
 /**
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
@@ -692,7 +691,7 @@ predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
 private predicate numberOfLoadsFromOperandRec(
   Operand operandFrom, Operand operandTo, int ind, boolean certain
 ) {
-  exists(Instruction load | Ssa::isDereference(load, operandFrom) |
+  exists(Instruction load | Ssa::isDereference(load, operandFrom, _) |
     operandTo = operandFrom and ind = 0 and certain = true
     or
     numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1, certain)
@@ -716,7 +715,7 @@ private predicate numberOfLoadsFromOperand(
 ) {
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n, certain)
   or
-  not Ssa::isDereference(_, operandFrom) and
+  not Ssa::isDereference(_, operandFrom, _) and
   not conversionFlow(operandFrom, _, _, _) and
   operandFrom = operandTo and
   n = 0 and
@@ -744,7 +743,7 @@ predicate nodeHasInstruction(Node node, Instruction instr, int indirectionIndex)
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content c, Node node2) {
+predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2 |
     nodeHasOperand(node2, operand, indirectionIndex2) and
     // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
@@ -767,7 +766,7 @@ predicate readStep(Node node1, Content c, Node node2) {
 /**
  * Holds if values stored inside content `c` are cleared at node `n`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   n =
     any(PostUpdateNode pun, Content d | d.impliesClearOf(c) and storeStepImpl(_, d, pun, true) | pun)
         .getPreUpdateNode() and
@@ -792,7 +791,7 @@ predicate clearsContent(Node n, Content c) {
       storeStepImpl(_, d, pun, true) and
       pun.getPreUpdateNode() = n
     |
-      c.getIndirectionIndex() = d.getIndirectionIndex()
+      c.(Content).getIndirectionIndex() = d.getIndirectionIndex()
     )
   )
 }
@@ -804,6 +803,8 @@ predicate clearsContent(Node n, Content c) {
 predicate expectsContent(Node n, ContentSet c) { none() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
@@ -834,12 +835,6 @@ class CastNode extends Node {
 }
 
 /**
- * Holds if `n` should never be skipped over in the `PathGraph` and in path
- * explanations.
- */
-predicate neverSkipInPathGraph(Node n) { none() }
-
-/**
  * A function that may contain code or a variable that may contain itself. When
  * flow crosses from one _enclosing callable_ to another, the interprocedural
  * data-flow library discards call contexts and inserts a node in the big-step
@@ -853,7 +848,7 @@ class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
-  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
+  DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
 module IsUnreachableInCall {
@@ -923,8 +918,6 @@ module IsUnreachableInCall {
 }
 
 import IsUnreachableInCall
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
@@ -1021,14 +1014,6 @@ ContentApprox getContentApprox(Content c) {
   )
 }
 
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    // The rules for whether an IR argument gets a post-update node are too
-    // complex to model here.
-    any()
-  }
-}
-
 /**
  * A local flow relation that includes both local steps, read steps and
  * argument-to-return flow through summarized functions.
@@ -1088,7 +1073,7 @@ private IRVariable getIRVariableForParameterNode(ParameterNode p) {
 
 /** Holds if `v` is the source variable corresponding to the parameter represented by `p`. */
 pragma[nomagic]
-private predicate parameterNodeHasSourceVariable(ParameterNode p, Ssa::SourceIRVariable v) {
+private predicate parameterNodeHasSourceVariable(ParameterNode p, Ssa::SourceVariable v) {
   v.getIRVariable() = getIRVariableForParameterNode(p) and
   exists(Position pos | p.isParameterOf(_, pos) |
     pos instanceof DirectPosition and

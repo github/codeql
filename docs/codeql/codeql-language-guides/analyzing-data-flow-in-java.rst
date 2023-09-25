@@ -17,6 +17,8 @@ The following sections describe how to use the libraries for local data flow, gl
 
 For a more general introduction to modeling data flow, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
 
+.. include:: ../reusables/new-data-flow-api.rst
+
 Local data flow
 ---------------
 
@@ -160,23 +162,23 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You use the global data flow library by extending the class ``DataFlow::Configuration``:
+You use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
    import semmle.code.java.dataflow.DataFlow
 
-   class MyDataFlowConfiguration extends DataFlow::Configuration {
-     MyDataFlowConfiguration() { this = "MyDataFlowConfiguration" }
-
-     override predicate isSource(DataFlow::Node source) {
+   module MyFlowConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        ...
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        ...
      }
    }
+
+   module MyFlow = DataFlow::Global<MyFlowConfiguration>;
 
 These predicates are defined in the configuration:
 
@@ -185,47 +187,36 @@ These predicates are defined in the configuration:
 -  ``isBarrier``—optional, restricts the data flow
 -  ``isAdditionalFlowStep``—optional, adds additional flow steps
 
-The characteristic predicate ``MyDataFlowConfiguration()`` defines the name of the configuration, so ``"MyDataFlowConfiguration"`` should be a unique name, for example, the name of your class.
-
-The data flow analysis is performed using the predicate ``hasFlow(DataFlow::Node source, DataFlow::Node sink)``:
+The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
 .. code-block:: ql
 
-   from MyDataFlowConfiguration dataflow, DataFlow::Node source, DataFlow::Node sink
-   where dataflow.hasFlow(source, sink)
+   from DataFlow::Node source, DataFlow::Node sink
+   where MyFlow::flow(source, sink)
    select source, "Data flow to $@.", sink, sink.toString()
 
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Global taint tracking is to global data flow as local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. You use the global taint tracking library by extending the class ``TaintTracking::Configuration``:
+Global taint tracking is to global data flow as local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. You use the global taint tracking library by applying the module ``TaintTracking::Global<ConfigSig>`` to your configuration instead of ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
    import semmle.code.java.dataflow.TaintTracking
 
-   class MyTaintTrackingConfiguration extends TaintTracking::Configuration {
-     MyTaintTrackingConfiguration() { this = "MyTaintTrackingConfiguration" }
-
-     override predicate isSource(DataFlow::Node source) {
+   module MyFlowConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        ...
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        ...
      }
    }
 
-These predicates are defined in the configuration:
+   module MyFlow = TaintTracking::Global<MyFlowConfiguration>;
 
--  ``isSource``—defines where taint may flow from
--  ``isSink``—defines where taint may flow to
--  ``isSanitizer``—optional, restricts the taint flow
--  ``isAdditionalTaintStep``—optional, adds additional taint steps
-
-Similar to global data flow, the characteristic predicate ``MyTaintTrackingConfiguration()`` defines the unique name of the configuration.
-
-The taint tracking analysis is performed using the predicate ``hasFlow(DataFlow::Node source, DataFlow::Node sink)``.
+The resulting module has an identical signature to the one obtained from ``DataFlow::Global<ConfigSig>``.
 
 Flow sources
 ~~~~~~~~~~~~
@@ -242,17 +233,15 @@ This query shows a taint-tracking configuration that uses remote user input as d
    import java
    import semmle.code.java.dataflow.FlowSources
 
-   class MyTaintTrackingConfiguration extends TaintTracking::Configuration {
-     MyTaintTrackingConfiguration() {
-       this = "..."
-     }
-
-     override predicate isSource(DataFlow::Node source) {
+   module MyFlowConfiguration implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        source instanceof RemoteFlowSource
      }
 
      ...
    }
+
+   module MyTaintFlow = TaintTracking::Global<MyFlowConfiguration>;
 
 Exercises
 ~~~~~~~~~
@@ -287,16 +276,12 @@ Exercise 2
 
    import semmle.code.java.dataflow.DataFlow
 
-   class Configuration extends DataFlow::Configuration {
-     Configuration() {
-       this = "LiteralToURL Configuration"
-     }
-
-     override predicate isSource(DataFlow::Node source) {
+   module LiteralToURLConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        source.asExpr() instanceof StringLiteral
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        exists(Call call |
          sink.asExpr() = call.getArgument(0) and
          call.getCallee().(Constructor).getDeclaringType().hasQualifiedName("java.net", "URL")
@@ -304,8 +289,10 @@ Exercise 2
      }
    }
 
-   from DataFlow::Node src, DataFlow::Node sink, Configuration config
-   where config.hasFlow(src, sink)
+   module LiteralToURLFlow = DataFlow::Global<LiteralToURLConfig>;
+
+   from DataFlow::Node src, DataFlow::Node sink
+   where LiteralToURLFlow::flow(src, sink)
    select src, "This string constructs a URL $@.", sink, "here"
 
 Exercise 3
@@ -340,16 +327,12 @@ Exercise 4
      }
    }
 
-   class GetenvToURLConfiguration extends DataFlow::Configuration {
-     GetenvToURLConfiguration() {
-       this = "GetenvToURLConfiguration"
-     }
-
-     override predicate isSource(DataFlow::Node source) {
+   module GetenvToURLConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
        source instanceof GetenvSource
      }
 
-     override predicate isSink(DataFlow::Node sink) {
+     predicate isSink(DataFlow::Node sink) {
        exists(Call call |
          sink.asExpr() = call.getArgument(0) and
          call.getCallee().(Constructor).getDeclaringType().hasQualifiedName("java.net", "URL")
@@ -357,8 +340,10 @@ Exercise 4
      }
    }
 
-   from DataFlow::Node src, DataFlow::Node sink, GetenvToURLConfiguration config
-   where config.hasFlow(src, sink)
+   module GetenvToURLFlow = DataFlow::Global<GetenvToURLConfig>;
+
+   from DataFlow::Node src, DataFlow::Node sink
+   where GetenvToURLFlow::flow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
 
 Further reading

@@ -1,33 +1,14 @@
 import go
 import TestUtilities.InlineExpectationsTest
+import TestUtilities.InlineFlowTest
 
-class SourceFunction extends Function {
-  SourceFunction() { this.getName() = "source" }
-}
-
-class SinkFunction extends Function {
-  SinkFunction() { this.getName() = "sink" }
-}
-
-class TestConfig extends DataFlow::Configuration {
-  TestConfig() { this = "testconfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source = any(SourceFunction f).getACall().getAResult()
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(SinkFunction f).getACall().getAnArgument()
-  }
-}
+module ValueFlow = DataFlow::Global<DefaultFlowConfig>;
 
 module PromotedMethodsTest implements TestSig {
   string getARelevantTag() { result = "promotedmethods" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(TestConfig config, DataFlow::Node source, DataFlow::Node sink |
-      config.hasFlow(source, sink)
-    |
+    exists(DataFlow::Node source, DataFlow::Node sink | ValueFlow::flow(source, sink) |
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString() and

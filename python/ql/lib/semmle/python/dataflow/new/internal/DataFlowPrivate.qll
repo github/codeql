@@ -22,8 +22,8 @@ import DataFlowDispatch
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c, pos)
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.(ParameterNodeImpl).isParameterOf(c, pos)
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -513,15 +513,21 @@ class CastNode extends Node {
  * explanations.
  */
 predicate neverSkipInPathGraph(Node n) {
-  // We include read- and store steps here to force them to be
-  // shown in path explanations.
-  // This hack is necessary, because we have included some of these
-  // steps as default taint steps, making them be suppressed in path
-  // explanations.
-  // We should revert this once, we can remove this steps from the
-  // default taint steps; this should be possible once we have
-  // implemented flow summaries and recursive content.
-  readStep(_, _, n) or storeStep(_, _, n)
+  // NOTE: We could use RHS of a definition, but since we have use-use flow, in an
+  // example like
+  // ```py
+  // x = SOURCE()
+  // if <cond>:
+  //     y = x
+  // SINK(x)
+  // ```
+  // we would end up saying that the path MUST not skip the x in `y = x`, which is just
+  // annoying and doesn't help the path explanation become clearer.
+  n.asVar() instanceof EssaDefinition and
+  // For a parameter we have flow from ControlFlowNode to SSA node, and then onwards
+  // with use-use flow, and since the CFN is already part of the path graph, we don't
+  // want to force showing the SSA node as well.
+  not n.asVar() instanceof ParameterDefinition
 }
 
 /**
@@ -532,6 +538,8 @@ pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /**
  * Gets the type of `node`.
@@ -608,7 +616,7 @@ predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
  * content `c`.
  */
-predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
+predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   listStoreStep(nodeFrom, c, nodeTo)
   or
   setStoreStep(nodeFrom, c, nodeTo)
@@ -806,7 +814,7 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode n
 /**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
-predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
+predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
@@ -881,7 +889,7 @@ predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) 
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, Content c) {
+predicate clearsContent(Node n, ContentSet c) {
   matchClearStep(n, c)
   or
   attributeClearStep(n, c)
@@ -932,8 +940,6 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { 
  * the enclosing callable `c` (including the implicit `this` parameter).
  */
 predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
-
-int accessPathLimit() { result = 5 }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
