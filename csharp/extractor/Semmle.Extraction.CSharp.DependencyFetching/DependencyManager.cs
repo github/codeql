@@ -164,6 +164,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 Path.Combine(packageFolder, "microsoft.netcore.app.runtime"),
                 Path.Combine(packageFolder, "microsoft.aspnetcore.app.runtime"),
                 Path.Combine(packageFolder, "microsoft.windowsdesktop.app.runtime"),
+
+                // legacy runtime packages:
+                Path.Combine(packageFolder, "runtime.linux-x64.microsoft.netcore.app"),
+                Path.Combine(packageFolder, "runtime.osx-x64.microsoft.netcore.app"),
+                Path.Combine(packageFolder, "runtime.win-x64.microsoft.netcore.app"),
             };
 
             foreach (var filename in usedReferences.Keys)
