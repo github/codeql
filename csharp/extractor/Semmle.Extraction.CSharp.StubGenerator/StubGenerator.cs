@@ -20,13 +20,14 @@ public static class StubGenerator
     /// </summary>
     /// <param name="referencesPaths">The paths of the assemblies to generate stubs for.</param>
     /// <param name="outputPath">The path in which to store the stubs.</param>
-    public static void GenerateStubs(ILogger logger, IEnumerable<string> referencesPaths, string outputPath)
+    public static string[] GenerateStubs(ILogger logger, IEnumerable<string> referencesPaths, string outputPath)
     {
         var stopWatch = new System.Diagnostics.Stopwatch();
         stopWatch.Start();
 
         var threads = EnvironmentVariables.GetDefaultNumberOfThreads();
 
+        using var stubPaths = new BlockingCollection<string>();
         using var references = new BlockingCollection<(MetadataReference Reference, string Path)>();
 
         Parallel.ForEach(referencesPaths, new ParallelOptions { MaxDegreeOfParallelism = threads }, path =>
@@ -45,14 +46,16 @@ public static class StubGenerator
 
         Parallel.ForEach(references, new ParallelOptions { MaxDegreeOfParallelism = threads }, @ref =>
         {
-            StubReference(logger, compilation, outputPath, @ref.Reference, @ref.Path);
+            StubReference(logger, compilation, outputPath, @ref.Reference, @ref.Path, stubPaths);
         });
 
         stopWatch.Stop();
         logger.Log(Severity.Info, $"Stub generation took {stopWatch.Elapsed}.");
+
+        return stubPaths.ToArray();
     }
 
-    private static void StubReference(ILogger logger, CSharpCompilation compilation, string outputPath, MetadataReference reference, string path)
+    private static void StubReference(ILogger logger, CSharpCompilation compilation, string outputPath, MetadataReference reference, string path, BlockingCollection<string> stubPaths)
     {
         if (compilation.GetAssemblyOrModuleSymbol(reference) is not IAssemblySymbol assembly)
             return;
@@ -62,7 +65,9 @@ public static class StubGenerator
         if (!assembly.Modules.Any(m => relevantSymbol.IsRelevantNamespace(m.GlobalNamespace)))
             return;
 
-        using var fileStream = new FileStream(FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs")), FileMode.Create, FileAccess.Write);
+        var stubPath = FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs"));
+        stubPaths.Add(stubPath);
+        using var fileStream = new FileStream(stubPath, FileMode.Create, FileAccess.Write);
         using var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
 
         var visitor = new StubVisitor(writer, relevantSymbol);
