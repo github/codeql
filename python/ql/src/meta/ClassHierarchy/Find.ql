@@ -208,6 +208,12 @@ class DjangoHttpResponseFileResponse extends FindSubclassesSpec {
   }
 }
 
+class FlaskResponse extends FindSubclassesSpec {
+  FlaskResponse() { this = "flask.Response~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Flask::Response::classRef() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
