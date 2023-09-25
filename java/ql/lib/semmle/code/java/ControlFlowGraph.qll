@@ -477,6 +477,8 @@ private module ControlFlowGraphImpl {
       or
       this instanceof Call // includes both expressions and statements
       or
+      this instanceof ErrorExpr
+      or
       this instanceof ReturnStmt
       or
       this instanceof ThrowStmt

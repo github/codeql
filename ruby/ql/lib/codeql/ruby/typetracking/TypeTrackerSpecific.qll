@@ -6,7 +6,6 @@ private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplC
 private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
-private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.internal.AccessPathSyntax
@@ -74,7 +73,7 @@ predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 /**
  * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
  */
-predicate jumpStep = DataFlowPrivate::jumpStepTypeTracker/2;
+predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
@@ -180,6 +179,7 @@ private predicate argumentPositionMatch(
 ) {
   exists(DataFlowDispatch::ArgumentPosition apos |
     arg.sourceArgumentOf(call, apos) and
+    not apos.isLambdaSelf() and
     DataFlowDispatch::parameterMatch(ppos, apos)
   )
 }

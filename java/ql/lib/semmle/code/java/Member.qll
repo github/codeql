@@ -33,6 +33,7 @@ class Member extends Element, Annotatable, Modifiable, @member {
    * Holds if this member has the specified name and is declared in the
    * specified package and type.
    */
+  pragma[nomagic]
   predicate hasQualifiedName(string package, string type, string name) {
     this.getDeclaringType().hasQualifiedName(package, type) and this.hasName(name)
   }

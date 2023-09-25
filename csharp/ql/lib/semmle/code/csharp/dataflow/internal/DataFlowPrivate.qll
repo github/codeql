@@ -533,7 +533,39 @@ module LocalFlow {
     ) and
     not exists(getALastEvalNode(result))
   }
+
+  /**
+   * Holds if the value of `node2` is given by `node1`.
+   */
+  predicate localMustFlowStep(Node node1, Node node2) {
+    exists(Callable c, Expr e |
+      node1.(InstanceParameterNode).getCallable() = c and
+      node2.asExpr() = e and
+      (e instanceof ThisAccess or e instanceof BaseAccess) and
+      c = e.getEnclosingCallable()
+    )
+    or
+    hasNodePath(any(LocalExprStepConfiguration x), node1, node2) and
+    (
+      node2 instanceof SsaDefinitionExtNode or
+      node2.asExpr() instanceof Cast or
+      node2.asExpr() instanceof AssignExpr
+    )
+    or
+    exists(SsaImpl::Definition def |
+      def = getSsaDefinitionExt(node1) and
+      exists(SsaImpl::getAReadAtNode(def, node2.(ExprNode).getControlFlowNode()))
+    )
+    or
+    node1 =
+      unique(FlowSummaryNode n1 |
+        FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
+          node2.(FlowSummaryNode).getSummaryNode(), true)
+      )
+  }
 }
+
+predicate localMustFlowStep = LocalFlow::localMustFlowStep/2;
 
 /**
  * This is the local flow predicate that is used as a building block in global
@@ -1165,8 +1197,14 @@ private module ArgumentNodes {
     ) {
       e1.(Argument).isArgumentOf(e2, _) and
       exactScope = false and
-      scope = e2 and
-      isSuccessor = true
+      isSuccessor = true and
+      if e2 instanceof PropertyWrite
+      then
+        exists(AssignableDefinition def |
+          def.getTargetAccess() = e2 and
+          scope = def.getExpr()
+        )
+      else scope = e2
     }
   }
 
@@ -1175,7 +1213,7 @@ private module ArgumentNodes {
     ExplicitArgumentNode() {
       this.asExpr() instanceof Argument
       or
-      this.asExpr() = any(CIL::Call call).getAnArgument()
+      this.asExpr() = any(CilDataFlowCall cc).getCilCall().getAnArgument()
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1564,7 +1602,7 @@ private module OutNodes {
         additionalCalls = false and call = csharpCall(_, cfn)
         or
         additionalCalls = true and
-        call = TTransitiveCapturedCall(cfn, n.getEnclosingCallable())
+        call = TTransitiveCapturedCall(cfn)
       )
     }
 
@@ -2026,7 +2064,7 @@ abstract class PostUpdateNode extends Node {
   abstract Node getPreUpdateNode();
 }
 
-private module PostUpdateNodes {
+module PostUpdateNodes {
   class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
     private ObjectCreation oc;
 
@@ -2382,12 +2420,3 @@ module Csv {
     )
   }
 }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

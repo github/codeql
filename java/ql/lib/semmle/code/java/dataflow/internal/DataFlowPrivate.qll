@@ -8,7 +8,6 @@ private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
-private import DataFlowImplConsistency
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
 import DataFlowNodes::Private
@@ -113,11 +112,6 @@ private module CaptureInput implements VariableCapture::InputSig {
     VariableWrite() { super.getDestVar() = v }
 
     CapturedVariable getVariable() { result = v }
-
-    Expr getSource() {
-      result = this.(VariableAssign).getSource() or
-      result = this.(AssignOp)
-    }
   }
 
   class VariableRead extends Expr instanceof RValue {
@@ -155,14 +149,27 @@ class CapturedParameter = CaptureInput::CapturedParameter;
 module CaptureFlow = VariableCapture::Flow<CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
-  result = n.(CaptureNode).getSynthesizedCaptureNode() or
-  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr() or
+  result = n.(CaptureNode).getSynthesizedCaptureNode()
+  or
+  result.(CaptureFlow::ExprNode).getExpr() = n.asExpr()
+  or
   result.(CaptureFlow::ExprPostUpdateNode).getExpr() =
-    n.(PostUpdateNode).getPreUpdateNode().asExpr() or
-  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter() or
-  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable() or
+    n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  or
+  result.(CaptureFlow::ParameterNode).getParameter() = n.asParameter()
+  or
+  result.(CaptureFlow::ThisParameterNode).getCallable() = n.(InstanceParameterNode).getCallable()
+  or
   exprNode(result.(CaptureFlow::MallocNode).getClosureExpr()).(PostUpdateNode).getPreUpdateNode() =
     n
+  or
+  exists(CaptureInput::VariableWrite write |
+    result.(CaptureFlow::VariableWriteSourceNode).getVariableWrite() = write
+  |
+    n.asExpr() = write.(VariableAssign).getSource()
+    or
+    n.asExpr() = write.(AssignOp)
+  )
 }
 
 private predicate captureStoreStep(Node node1, CapturedVariableContent c, Node node2) {
@@ -319,13 +326,18 @@ string ppReprType(DataFlowType t) {
   else result = t.toString()
 }
 
+pragma[nomagic]
+private predicate compatibleTypes0(DataFlowType t1, DataFlowType t2) {
+  erasedHaveIntersection(t1, t2)
+}
+
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 bindingset[t1, t2]
 pragma[inline_late]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { erasedHaveIntersection(t1, t2) }
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { compatibleTypes0(t1, t2) }
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
@@ -572,12 +584,6 @@ ContentApprox getContentApprox(Content c) {
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
 }
 
-private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    n.getType() instanceof ImmutableType or n instanceof ImplicitVarargsArray
-  }
-}
-
 /**
  * Holds if the the content `c` is a container.
  */
@@ -587,12 +593,3 @@ predicate containerContent(Content c) {
   c instanceof MapKeyContent or
   c instanceof MapValueContent
 }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

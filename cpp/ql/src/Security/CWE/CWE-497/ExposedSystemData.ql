@@ -33,14 +33,6 @@ module ExposedSystemDataConfig implements DataFlow::ConfigSig {
 module ExposedSystemData = TaintTracking::Global<ExposedSystemDataConfig>;
 
 from ExposedSystemData::PathNode source, ExposedSystemData::PathNode sink
-where
-  ExposedSystemData::flowPath(source, sink) and
-  not exists(
-    DataFlow::Node alt // remove duplicate results on conversions
-  |
-    ExposedSystemData::flow(source.getNode(), alt) and
-    alt.asConvertedExpr() = sink.getNode().asIndirectExpr() and
-    alt != sink.getNode()
-  )
+where ExposedSystemData::flowPath(source, sink)
 select sink, source, sink, "This operation exposes system data from $@.", source,
   source.getNode().toString()

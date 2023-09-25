@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void LogInfo(string message) =>
             logger.Log(Severity.Info, message);
 
-        private void LogDebug(string message) =>
+        public void LogDebug(string message) =>
             logger.Log(Severity.Debug, message);
 
         private void LogError(string message) =>
@@ -57,6 +57,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void ResolvedReference(string filename) =>
             LogInfo($"Resolved {filename}");
 
+        public void RemovedReference(string filename) =>
+            LogInfo($"Reference {filename} has been removed");
+
         public void Summary(int existingSources, int usedSources, int missingSources,
             int references, int unresolvedReferences,
             int resolvedConflicts, int totalProjects, int failedProjects,
@@ -87,6 +90,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public void MissingNuGet() =>
             LogError("Missing nuget.exe");
+
+        public void FoundNuGet(string path) =>
+            LogInfo($"Found nuget.exe at {path}");
 
         public void MissingDotNet() =>
             LogError("Missing dotnet CLI");

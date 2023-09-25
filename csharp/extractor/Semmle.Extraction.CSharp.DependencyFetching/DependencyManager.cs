@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -27,11 +27,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private int conflictedReferences = 0;
         private readonly IDependencyOptions options;
         private readonly DirectoryInfo sourceDir;
-        private readonly DotNet dotnet;
+        private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
-        private TemporaryDirectory? razorWorkingDirectory;
-
+        private readonly TemporaryDirectory tempWorkingDirectory;
 
         /// <summary>
         /// Performs C# dependency fetching.
@@ -48,7 +47,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                this.dotnet = new DotNet(progressMonitor);
+                this.dotnet = DotNet.Make(options, progressMonitor);
             }
             catch
             {
@@ -59,15 +58,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+            tempWorkingDirectory = new TemporaryDirectory(GetTemporaryWorkingDirectory());
 
-            this.fileContent = new FileContent(progressMonitor, () => GetFiles("*.*"));
-            this.allSources = GetFiles("*.cs").ToList();
-            var allProjects = GetFiles("*.csproj");
+            var allFiles = GetAllFiles();
+            var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
+            var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
+            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
+            this.fileContent = new FileContent(progressMonitor, smallNonBinaryFiles);
+            this.allSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
+            var allProjects = allNonBinaryFiles.SelectFileNamesByExtension(".csproj");
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
-                : GetFiles("*.sln");
-
-            var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
+                : allNonBinaryFiles.SelectFileNamesByExtension(".sln");
+            var dllDirNames = options.DllDirs.Count == 0
+                ? allFiles.SelectFileNamesByExtension(".dll").ToList()
+                : options.DllDirs.Select(Path.GetFullPath).ToList();
 
             // Find DLLs in the .Net / Asp.Net Framework
             if (options.ScanNetFrameworkDlls)
@@ -84,11 +89,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            if (options.UseMscorlib)
-            {
-                UseReference(typeof(object).Assembly.Location);
-            }
-
             if (options.UseNuGet)
             {
                 dllDirNames.Add(packageDirectory.DirInfo.FullName);
@@ -102,13 +102,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     progressMonitor.MissingNuGet();
                 }
 
-                // TODO: remove the below when the required SDK is installed
-                using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
-                {
-                    Restore(solutions);
-                    Restore(allProjects);
-                    DownloadMissingPackages();
-                }
+                var restoredProjects = RestoreSolutions(solutions);
+                var projects = allProjects.Except(restoredProjects);
+                RestoreProjects(projects);
+                DownloadMissingPackages(allNonBinaryFiles);
             }
 
             assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
@@ -119,15 +116,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseReference(filename);
             }
 
+            RemoveRuntimeNugetPackageReferences();
             ResolveConflicts();
 
             // Output the findings
-            foreach (var r in usedReferences.Keys)
+            foreach (var r in usedReferences.Keys.OrderBy(r => r))
             {
                 progressMonitor.ResolvedReference(r);
             }
 
-            foreach (var r in unresolvedReferences)
+            foreach (var r in unresolvedReferences.OrderBy(r => r.Key))
             {
                 progressMonitor.UnresolvedReference(r.Key, r.Value);
             }
@@ -136,8 +134,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
             {
-                GenerateSourceFilesFromWebViews();
+                GenerateSourceFilesFromWebViews(allNonBinaryFiles);
             }
+
+            GenerateSourceFileFromImplicitUsings();
 
             progressMonitor.Summary(
                 AllSourceFiles.Count(),
@@ -151,27 +151,96 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DateTime.Now - startTime);
         }
 
-        private void GenerateSourceFilesFromWebViews()
+        private void RemoveRuntimeNugetPackageReferences()
+        {
+            if (!options.UseNuGet)
+            {
+                return;
+            }
+
+            var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
+            var runtimePackageNamePrefixes = new[]
+            {
+                Path.Combine(packageFolder, "microsoft.netcore.app.runtime"),
+                Path.Combine(packageFolder, "microsoft.aspnetcore.app.runtime"),
+                Path.Combine(packageFolder, "microsoft.windowsdesktop.app.runtime"),
+
+                // legacy runtime packages:
+                Path.Combine(packageFolder, "runtime.linux-x64.microsoft.netcore.app"),
+                Path.Combine(packageFolder, "runtime.osx-x64.microsoft.netcore.app"),
+                Path.Combine(packageFolder, "runtime.win-x64.microsoft.netcore.app"),
+            };
+
+            foreach (var filename in usedReferences.Keys)
+            {
+                var lowerFilename = filename.ToLowerInvariant();
+
+                if (runtimePackageNamePrefixes.Any(prefix => lowerFilename.StartsWith(prefix)))
+                {
+                    usedReferences.Remove(filename);
+                    progressMonitor.RemovedReference(filename);
+                }
+            }
+        }
+
+        private void GenerateSourceFileFromImplicitUsings()
+        {
+            var usings = new HashSet<string>();
+            if (!fileContent.UseImplicitUsings)
+            {
+                return;
+            }
+
+            // Hardcoded values from https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview#implicit-using-directives
+            usings.UnionWith(new[] { "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
+                "System.Threading.Tasks" });
+
+            if (fileContent.UseAspNetDlls)
+            {
+                usings.UnionWith(new[] { "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
+                    "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
+                    "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" });
+            }
+
+            usings.UnionWith(fileContent.CustomImplicitUsings);
+
+            if (usings.Count > 0)
+            {
+                var tempDir = GetTemporaryWorkingDirectory("implicitUsings");
+                var path = Path.Combine(tempDir, "GlobalUsings.g.cs");
+                using (var writer = new StreamWriter(path))
+                {
+                    writer.WriteLine("// <auto-generated/>");
+                    writer.WriteLine("");
+
+                    foreach (var u in usings.OrderBy(u => u))
+                    {
+                        writer.WriteLine($"global using global::{u};");
+                    }
+                }
+
+                this.allSources.Add(path);
+            }
+        }
+
+        private void GenerateSourceFilesFromWebViews(List<FileInfo> allFiles)
         {
             progressMonitor.LogInfo($"Generating source files from cshtml and razor files.");
 
-            var views = GetFiles("*.cshtml")
-                .Concat(GetFiles("*.razor"))
-                .ToArray();
+            var views = allFiles.SelectFileNamesByExtension(".cshtml", ".razor").ToArray();
 
             if (views.Length > 0)
             {
                 progressMonitor.LogInfo($"Found {views.Length} cshtml and razor files.");
 
-                // TODO: use SDK specified in global.json
                 var sdk = new Sdk(dotnet).GetNewestSdk();
                 if (sdk != null)
                 {
                     try
                     {
                         var razor = new Razor(sdk, dotnet, progressMonitor);
-                        razorWorkingDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "razor"));
-                        var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, razorWorkingDirectory.ToString());
+                        var targetDir = GetTemporaryWorkingDirectory("razor");
+                        var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, targetDir);
                         this.allSources.AddRange(generatedFiles);
                     }
                     catch (Exception ex)
@@ -183,24 +252,27 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info)) { }
+        public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info, logThreadId: true)) { }
 
-        private IEnumerable<string> GetFiles(string pattern, bool recurseSubdirectories = true) =>
-             sourceDir.GetFiles(pattern, new EnumerationOptions
-             {
-                 RecurseSubdirectories = recurseSubdirectories,
-                 MatchCasing = MatchCasing.CaseInsensitive
-             })
-                .Where(d => d.Extension != ".dll")
-                .Select(d => d.FullName)
-                .Where(d => !options.ExcludesFile(d));
+        private IEnumerable<FileInfo> GetAllFiles()
+        {
+            var files = sourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true })
+                .Where(d => !options.ExcludesFile(d.FullName));
+
+            if (options.DotNetPath != null)
+            {
+                files = files.Where(f => !f.FullName.StartsWith(options.DotNetPath, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return files;
+        }
 
         /// <summary>
         /// Computes a unique temp directory for the packages associated
         /// with this source tree. Use a SHA1 of the directory name.
         /// </summary>
         /// <returns>The full path of the temp directory.</returns>
-        private static string ComputeTempDirectory(string srcDir, string subfolderName = "packages")
+        private static string ComputeTempDirectory(string srcDir)
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
             var sha = SHA1.HashData(bytes);
@@ -208,7 +280,35 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(Path.GetTempPath(), "GitHub", subfolderName, sb.ToString());
+            return Path.Combine(Path.GetTempPath(), "GitHub", "packages", sb.ToString());
+        }
+
+        private static string GetTemporaryWorkingDirectory()
+        {
+            var tempFolder = EnvironmentVariables.GetScratchDirectory();
+
+            if (string.IsNullOrEmpty(tempFolder))
+            {
+                var tempPath = Path.GetTempPath();
+                var name = Guid.NewGuid().ToString("N").ToUpper();
+                tempFolder = Path.Combine(tempPath, "GitHub", name);
+            }
+
+            return tempFolder;
+        }
+
+        /// <summary>
+        /// Creates a temporary directory with the given subfolder name.
+        /// The created directory might be inside the repo folder, and it is deleted when the object is disposed.
+        /// </summary>
+        /// <param name="subfolder"></param>
+        /// <returns></returns>
+        private string GetTemporaryWorkingDirectory(string subfolder)
+        {
+            var temp = Path.Combine(tempWorkingDirectory.ToString(), subfolder);
+            Directory.CreateDirectory(temp);
+
+            return temp;
         }
 
         /// <summary>
@@ -232,7 +332,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            sortedReferences = sortedReferences.OrderBy(r => r.Version).ToList();
+            var emptyVersion = new Version(0, 0);
+            sortedReferences = sortedReferences.OrderBy(r => r.NetCoreVersion ?? emptyVersion).ThenBy(r => r.Version ?? emptyVersion).ToList();
 
             var finalAssemblyList = new Dictionary<string, AssemblyInfo>();
 
@@ -253,9 +354,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var r in sortedReferences)
             {
                 var resolvedInfo = finalAssemblyList[r.Name];
-                if (resolvedInfo.Version != r.Version)
+                if (resolvedInfo.Version != r.Version || resolvedInfo.NetCoreVersion != r.NetCoreVersion)
                 {
-                    progressMonitor.ResolvedConflict(r.Id, resolvedInfo.Id);
+                    progressMonitor.ResolvedConflict(r.Id, resolvedInfo.Id + resolvedInfo.NetCoreVersion is null ? "" : $" (.NET Core {resolvedInfo.NetCoreVersion})");
                     ++conflictedReferences;
                 }
             }
@@ -362,25 +463,51 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         }
 
-        private bool Restore(string target, string? pathToNugetConfig = null) =>
-            dotnet.RestoreToDirectory(target, packageDirectory.DirInfo.FullName, pathToNugetConfig);
+        private bool RestoreProject(string project, string? pathToNugetConfig = null) =>
+            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, pathToNugetConfig);
 
-        private void Restore(IEnumerable<string> targets, string? pathToNugetConfig = null)
+        private bool RestoreSolution(string solution, out IEnumerable<string> projects) =>
+            dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, out projects);
+
+        /// <summary>
+        /// Executes `dotnet restore` on all solution files in solutions.
+        /// As opposed to RestoreProjects this is not run in parallel using PLINQ
+        /// as `dotnet restore` on a solution already uses multiple threads for restoring
+        /// the projects (this can be disabled with the `--disable-parallel` flag).
+        /// Returns a list of projects that are up to date with respect to restore.
+        /// </summary>
+        /// <param name="solutions">A list of paths to solution files.</param>
+        private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions) =>
+            solutions.SelectMany(solution =>
+                {
+                    RestoreSolution(solution, out var restoredProjects);
+                    return restoredProjects;
+                });
+
+        /// <summary>
+        /// Executes `dotnet restore` on all projects in projects.
+        /// This is done in parallel for performance reasons.
+        /// </summary>
+        /// <param name="projects">A list of paths to project files.</param>
+        private void RestoreProjects(IEnumerable<string> projects)
         {
-            foreach (var target in targets)
+            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
-                Restore(target, pathToNugetConfig);
-            }
+                RestoreProject(project);
+            });
         }
 
-        private void DownloadMissingPackages()
+        private void DownloadMissingPackages(List<FileInfo> allFiles)
         {
-            var nugetConfigs = GetFiles("nuget.config", recurseSubdirectories: true).ToArray();
+            var nugetConfigs = allFiles.SelectFileNamesByName("nuget.config").ToArray();
             string? nugetConfig = null;
             if (nugetConfigs.Length > 1)
             {
                 progressMonitor.MultipleNugetConfig(nugetConfigs);
-                nugetConfig = GetFiles("nuget.config", recurseSubdirectories: false).FirstOrDefault();
+                nugetConfig = allFiles
+                    .SelectRootFiles(sourceDir)
+                    .SelectFileNamesByName("nuget.config")
+                    .FirstOrDefault();
                 if (nugetConfig == null)
                 {
                     progressMonitor.NoTopLevelNugetConfig();
@@ -392,33 +519,32 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName)
-                .Select(d => Path.GetFileName(d)
-                .ToLowerInvariant());
+                .Select(d => Path.GetFileName(d).ToLowerInvariant());
             var notYetDownloadedPackages = fileContent.AllPackages.Except(alreadyDownloadedPackages);
-            foreach (var package in notYetDownloadedPackages)
+
+            Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
                 progressMonitor.NugetInstall(package);
                 using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
                 var success = dotnet.New(tempDir.DirInfo.FullName);
                 if (!success)
                 {
-                    continue;
+                    return;
                 }
+
                 success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
                 if (!success)
                 {
-                    continue;
+                    return;
                 }
 
-                success = Restore(tempDir.DirInfo.FullName, nugetConfig);
-
+                success = RestoreProject(tempDir.DirInfo.FullName, nugetConfig);
                 // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
-
                 if (!success)
                 {
                     progressMonitor.FailedToRestoreNugetPackage(package);
                 }
-            }
+            });
         }
 
         private void AnalyseSolutions(IEnumerable<string> solutions)
@@ -441,7 +567,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void Dispose()
         {
             packageDirectory?.Dispose();
-            razorWorkingDirectory?.Dispose();
+            tempWorkingDirectory?.Dispose();
         }
     }
 }

@@ -39,7 +39,6 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-missingToString
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
@@ -125,3 +124,5 @@ identityLocalStep
 | testapp/tests.py:16:9:16:18 | ControlFlowNode for test_names | Node steps to itself |
 | testapp/tests.py:25:13:25:14 | ControlFlowNode for re | Node steps to itself |
 | testapp/tests.py:31:9:31:18 | ControlFlowNode for test_names | Node steps to itself |
+missingArgumentCall
+multipleArgumentCall

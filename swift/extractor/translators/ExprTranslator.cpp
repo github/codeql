@@ -460,7 +460,17 @@ codeql::UnresolvedMemberExpr ExprTranslator::translateUnresolvedMemberExpr(
 
 codeql::SequenceExpr ExprTranslator::translateSequenceExpr(const swift::SequenceExpr& expr) {
   auto entry = createExprEntry(expr);
-  entry.elements = dispatcher.fetchRepeatedLabels(expr.getElements());
+  // SequenceExpr represents a flat tree of expressions with elements at odd indices being the
+  // parents of the elements with even indices, so we only extract the "parent" elements here. In
+  // case there is a single child, we extract it as a parent. See
+  // https://github.com/github/codeql/pull/14119 and commit message for more details.
+  if (expr.getNumElements() == 1) {
+    entry.elements = dispatcher.fetchRepeatedLabels(expr.getElements());
+  } else {
+    for (int i = 1; i < expr.getNumElements(); i += 2) {
+      entry.elements.emplace_back(dispatcher.fetchLabel(expr.getElement(i)));
+    }
+  }
   return entry;
 }
 

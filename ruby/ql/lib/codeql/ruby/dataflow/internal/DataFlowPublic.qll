@@ -568,6 +568,18 @@ module Content {
 
   /** Gets `AttributeNameContent` of the given name. */
   AttributeNameContent getAttributeName(string name) { result.getName() = name }
+
+  /** A captured variable. */
+  class CapturedVariableContent extends Content, TCapturedVariableContent {
+    private LocalVariable v;
+
+    CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+    /** Gets the captured variable. */
+    LocalVariable getVariable() { result = v }
+
+    override string toString() { result = "captured " + v }
+  }
 }
 
 /**
@@ -728,6 +740,12 @@ class ContentSet extends TContentSet {
  */
 signature predicate guardChecksSig(CfgNodes::AstCfgNode g, CfgNode e, boolean branch);
 
+bindingset[def1, def2]
+pragma[inline_late]
+private predicate sameSourceVariable(Ssa::Definition def1, Ssa::Definition def2) {
+  def1.getSourceVariable() = def2.getSourceVariable()
+}
+
 /**
  * Provides a set of barrier nodes for a guard that validates an expression.
  *
@@ -765,16 +783,16 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * This is restricted to calls where the variable is captured inside a
    * block.
    */
-  private Ssa::Definition getAMaybeGuardedCapturedDef() {
+  private Ssa::CapturedEntryDefinition getAMaybeGuardedCapturedDef() {
     exists(
       CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode,
       Ssa::Definition def, CfgNodes::ExprNodes::CallCfgNode call
     |
       def.getARead() = testedNode and
       guardChecks(g, testedNode, branch) and
-      SsaImpl::captureFlowIn(call, def, result) and
       guardControlsBlock(g, call.getBasicBlock(), branch) and
-      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock() and
+      sameSourceVariable(def, result)
     )
   }
 }
@@ -830,16 +848,16 @@ abstract deprecated class BarrierGuard extends CfgNodes::ExprCfgNode {
    * This is restricted to calls where the variable is captured inside a
    * block.
    */
-  private Ssa::Definition getAMaybeGuardedCapturedDef() {
+  private Ssa::CapturedEntryDefinition getAMaybeGuardedCapturedDef() {
     exists(
       boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def,
       CfgNodes::ExprNodes::CallCfgNode call
     |
       def.getARead() = testedNode and
       this.checks(testedNode, branch) and
-      SsaImpl::captureFlowIn(call, def, result) and
       this.controlsBlock(call.getBasicBlock(), branch) and
-      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock() and
+      sameSourceVariable(def, result)
     )
   }
 
@@ -1207,8 +1225,15 @@ class LhsExprNode extends ExprNode {
   /** Gets the underlying AST node as a `LhsExpr`. */
   LhsExpr asLhsExprAstNode() { result = lhsExprCfgNode.getExpr() }
 
-  /** Gets a variable used in (or introduced by) this LHS. */
-  Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
+  /**
+   * DEPRECATED: use `getVariable` instead.
+   *
+   * Gets a variable used in (or introduced by) this LHS.
+   */
+  deprecated Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
+
+  /** Gets the variable used in (or introduced by) this LHS. */
+  Variable getVariable() { result = lhsExprCfgNode.getVariable() }
 }
 
 /**

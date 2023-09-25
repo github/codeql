@@ -1,0 +1,10 @@
+name: codeql/java-automodel-queries
+version: 0.0.3-dev
+groups:
+    - java
+    - automodel
+dependencies:
+  codeql/java-all: ${workspace}
+dataExtensions:
+  - AutomodelCandidateFilter.yml
+warnOnImplicitThis: true

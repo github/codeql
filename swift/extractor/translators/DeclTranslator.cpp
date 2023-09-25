@@ -271,7 +271,7 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
   entry.name = decl.getNameStr().str();
   for (auto& typeLoc : decl.getInherited()) {
     if (auto type = typeLoc.getType()) {
-      entry.base_types.push_back(dispatcher.fetchLabel(type));
+      entry.inherited_types.push_back(dispatcher.fetchLabel(type));
     }
   }
   fillValueDecl(decl, entry);
