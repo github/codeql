@@ -12,13 +12,12 @@ import ModelEditor
 
 private Call aUsage(ExternalEndpoint api) { result.getTarget().getUnboundDeclaration() = api }
 
-from
-  ExternalEndpoint endpoint, string apiName, boolean supported, Call usage, string type,
-  string classification
+from ExternalEndpoint endpoint, boolean supported, Call usage, string type, string classification
 where
-  apiName = endpoint.getApiName() and
   supported = isSupported(endpoint) and
   usage = aUsage(endpoint) and
   type = supportedType(endpoint) and
   classification = methodClassification(usage)
-select usage, apiName, supported, endpoint.dllName(), endpoint.dllVersion(), type, classification
+select usage, endpoint.getNamespace(), endpoint.getTypeName(), endpoint.getName(),
+  endpoint.getParameterTypes(), supported, endpoint.dllName(), endpoint.dllVersion(), type,
+  classification

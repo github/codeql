@@ -25,26 +25,22 @@ class Endpoint extends Callable {
   }
 
   /**
-   * Gets the unbound type, name and parameter types of this API.
-   */
-  bindingset[this]
-  private string getSignature() {
-    result =
-      nestedName(this.getDeclaringType().getUnboundDeclaration()) + "#" + this.getName() + "(" +
-        parameterQualifiedTypeNamesToString(this) + ")"
-  }
-
-  /**
-   * Gets the namespace of this API.
+   * Gets the namespace of this endpoint.
    */
   bindingset[this]
   string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
 
   /**
-   * Gets the namespace and signature of this API.
+   * Gets the unbound type name of this endpoint.
    */
   bindingset[this]
-  string getApiName() { result = this.getNamespace() + "." + this.getSignature() }
+  string getTypeName() { result = nestedName(this.getDeclaringType().getUnboundDeclaration()) }
+
+  /**
+   * Gets the parameter types of this endpoint.
+   */
+  bindingset[this]
+  string getParameterTypes() { result = parameterQualifiedTypeNamesToString(this) }
 
   private string getDllName() { result = this.getLocation().(Assembly).getName() }
 

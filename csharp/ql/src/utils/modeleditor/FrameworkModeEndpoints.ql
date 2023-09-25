@@ -10,9 +10,9 @@ import csharp
 import FrameworkModeEndpointsQuery
 import ModelEditor
 
-from PublicEndpointFromSource endpoint, string apiName, boolean supported, string type
+from PublicEndpointFromSource endpoint, boolean supported, string type
 where
-  apiName = endpoint.getApiName() and
   supported = isSupported(endpoint) and
   type = supportedType(endpoint)
-select endpoint, apiName, supported, endpoint.getFile().getBaseName(), type
+select endpoint, endpoint.getNamespace(), endpoint.getTypeName(), endpoint.getName(),
+  endpoint.getParameterTypes(), supported, endpoint.getFile().getBaseName(), type
