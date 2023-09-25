@@ -221,6 +221,12 @@ class RequestsResponse extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = Requests::Response::classRef() }
 }
 
+class HttpClientHttpResponse extends FindSubclassesSpec {
+  HttpClientHttpResponse() { this = "http.client.HTTPResponse~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = StdlibPrivate::HttpResponse::classRef() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |

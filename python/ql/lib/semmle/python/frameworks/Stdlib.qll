@@ -2408,8 +2408,10 @@ module StdlibPrivate {
    */
   module HttpResponse {
     /** Gets a reference to the `http.client.HttpResponse` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("http").getMember("client").getMember("HTTPResponse")
+      or
+      result = ModelOutput::getATypeNode("http.client.HTTPResponse~Subclass").getASubclass*()
     }
 
     /**
