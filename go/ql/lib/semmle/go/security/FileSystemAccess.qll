@@ -1,36 +1,5 @@
 import go
 
-/**
- * The File system access sinks of [fasthttp](https://github.com/valyala/fasthttp) web framework
- */
-class FastHttpFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
-  int pathArg;
-
-  FastHttpFileSystemAccess() {
-    exists(Method m |
-      (
-        m.hasQualifiedName(package("github.com/valyala/fasthttp", ""), "RequestCtx",
-          ["SendFileBytes", "SendFile"])
-        or
-        m.hasQualifiedName(package("github.com/valyala/fasthttp", ""), "Response", "SendFile")
-      ) and
-      this = m.getACall() and
-      pathArg = 0
-    )
-    or
-    exists(Function f |
-      f.hasQualifiedName(package("github.com/valyala/fasthttp", ""),
-        [
-          "ServeFile", "ServeFileUncompressed", "ServeFileBytes", "ServeFileBytesUncompressed",
-          "SaveMultipartFile"
-        ]) and
-      this = f.getACall() and
-      pathArg = 1
-    )
-  }
-
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
-}
 
 /**
  * The File system access sinks of `net/http` package
@@ -158,12 +127,7 @@ class FiberSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
 }
 
-predicate test(Function f) {
-      f.hasQualifiedName("github.com/valyala/fasthttp",
-        ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) 
-  
-}
-string aferoPackage() { result = "github.com/valyala/fasthttp" }
+string aferoPackage() { result = "github.com/spf13/afero" }
 
 /**
  * Provide File system access sinks of [afero](https://github.com/spf13/afero) filesystem framework
@@ -175,7 +139,7 @@ class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   AferoSystemAccess() {
     // utility functions
     exists(Function f |
-      f.hasQualifiedName("github.com/valyala/fasthttp",
+      f.hasQualifiedName(package(aferoPackage(), ""),
         ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
       this = f.getACall() and
       pathArg = 1
