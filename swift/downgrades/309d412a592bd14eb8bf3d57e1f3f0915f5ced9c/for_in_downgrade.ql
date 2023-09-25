@@ -113,12 +113,22 @@ query predicate new_concrete_var_decls(Element decl, int introducer_int) {
   not exists(ForEachStmt stmt | stmt.getIteratorVarConcreteDecl() = decl)
 }
 
-query predicate new_var_decls(NewElement decl, string name, Element type) {
+query predicate new_var_decls(Element decl, string name, Element type) {
   var_decls(decl, name, type) and
   not exists(ForEachStmt stmt | stmt.getIteratorVarConcreteDecl() = decl)
 }
 
-query predicate new_expr_types(NewElement expr, NewElement type) {
+query predicate new_var_decl_parent_patterns(Element decl, Element pattern) {
+  var_decl_parent_patterns(decl, pattern) and
+  not exists(ForEachStmt stmt | stmt.getIteratorVarConcreteDecl() = decl)
+}
+
+query predicate new_var_decl_parent_initializers(Element decl, Element init) {
+  var_decl_parent_initializers(decl, init) and
+  not exists(ForEachStmt stmt | stmt.getIteratorVarConcreteDecl() = decl)
+}
+
+query predicate new_expr_types(Element expr, Element type) {
   expr_types(expr, type) and
   not exists(ForEachStmt stmt |
     expr = stmt.getNextCall() or
