@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.client.HTTPResponse~Subclass
+    - azure
+    - Member[core].Member[pipeline].Member[transport].Member[_base].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - azure
+    - Member[core].Member[rest].Member[_http_response_impl].Member[HTTPResponse]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - azure
     - Member[identity].Member[_internal].Member[auth_code_redirect_handler].Member[AuthCodeRedirectHandler]

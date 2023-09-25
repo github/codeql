@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[web].Member[base_client].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[web].Member[internal_utils].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - slack_sdk
+    - Member[webhook].Member[client].Member[HTTPResponse]

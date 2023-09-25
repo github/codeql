@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPResponse~Subclass
+    - botocore
+    - Member[awsrequest].Member[AWSHTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - botocore
+    - Member[awsrequest].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - botocore
+    - Member[compat].Member[HTTPResponse]
