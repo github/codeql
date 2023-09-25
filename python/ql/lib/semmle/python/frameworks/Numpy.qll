@@ -16,7 +16,7 @@ private import semmle.python.ApiGraphs
 private module Numpy {
   /**
    * A call to `numpy.load`
-   * See https://pypi.org/project/numpy/
+   * See https://numpy.org/doc/stable/reference/generated/numpy.load.html
    */
   private class NumpyLoadCall extends Decoding::Range, API::CallNode {
     NumpyLoadCall() { this = API::moduleImport("numpy").getMember("load").getACall() }
