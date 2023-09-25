@@ -8,11 +8,6 @@ public class A
 
     public static void Sink<T>(T t) { }
 
-    interface MyConsumer
-    {
-        void run(Object o);
-    }
-
     static void Apply1<T>(Action<T> f, T x)
     {
         f(x);

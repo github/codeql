@@ -2102,24 +2102,6 @@ private predicate uselessTypebound(DataFlowType dt) {
     )
 }
 
-pragma[nomagic]
-private predicate typeStrongerThanNonDelegate(DataFlowType t1, DataFlowType t2) {
-  t1 != t2 and
-  t1.asGvnType() = getANonTypeParameterSubTypeRestricted(t2.asGvnType())
-  or
-  t1.asGvnType() instanceof RelevantGvnType and
-  not uselessTypebound(t1) and
-  uselessTypebound(t2)
-}
-
-bindingset[t1, t2]
-predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
-  typeStrongerThanNonDelegate(t1, t2)
-  or
-  exists(t1.asDelegate()) and
-  t1 != t2
-}
-
 pragma[inline]
 private predicate compatibleTypesDelegateLeft(DataFlowType dt1, DataFlowType dt2) {
   exists(Gvn::GvnType t1, Gvn::GvnType t2 |
@@ -2174,6 +2156,18 @@ predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
   compatibleTypesDelegateLeft(dt2, dt1)
   or
   dt1.asDelegate() = dt2.asDelegate()
+}
+
+pragma[nomagic]
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  t1 != t2 and
+  t1.asGvnType() = getANonTypeParameterSubTypeRestricted(t2.asGvnType())
+  or
+  t1.asGvnType() instanceof RelevantGvnType and
+  not uselessTypebound(t1) and
+  uselessTypebound(t2)
+  or
+  compatibleTypesDelegateLeft(t1, t2)
 }
 
 /**

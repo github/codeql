@@ -101,7 +101,6 @@ signature module InputSig {
   bindingset[t1, t2]
   predicate compatibleTypes(DataFlowType t1, DataFlowType t2);
 
-  bindingset[t1, t2]
   predicate typeStrongerThan(DataFlowType t1, DataFlowType t2);
 
   class Content {
