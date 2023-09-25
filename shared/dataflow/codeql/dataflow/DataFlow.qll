@@ -228,6 +228,7 @@ signature module InputSig {
    */
   default int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
 
+  bindingset[call, p, arg]
   default predicate golangSpecificParamArgFilter(
     DataFlowCall call, ParameterNode p, ArgumentNode arg
   ) {
