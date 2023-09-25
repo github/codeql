@@ -2,8 +2,6 @@
 
 import csharp
 import semmle.code.csharp.dataflow.flowsources.Remote
-import DataFlow as DF
-import TaintTracking as TT
 import ActionMethods
 
 /**
@@ -25,8 +23,8 @@ private predicate hasIdParameter(ActionMethod m) {
     // handle cases like `Request.QueryString["Id"]`
     exists(StringLiteral idStr, IndexerCall idx |
       idStr.getValue().toLowerCase().matches(["%id", "%idx"]) and
-      TT::localTaint(src, DataFlow::exprNode(idx.getQualifier())) and
-      DF::localExprFlow(idStr, idx.getArgument(0))
+      TaintTracking::localTaint(src, DataFlow::exprNode(idx.getQualifier())) and
+      DataFlow::localExprFlow(idStr, idx.getArgument(0))
     )
   )
 }
