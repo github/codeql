@@ -384,7 +384,7 @@ module Fasthttp {
      */
     module Response {
       /**
-       * The Method does not check input path against path traversal attacks, so it is a dangerous method
+       * A Method That send files from its input and it does not check input path against path traversal attacks, so it is a dangerous method
        */
       class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
         FileSystemAccess() {
