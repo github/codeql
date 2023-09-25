@@ -765,7 +765,7 @@ module NodeJSLib {
    * The dynamic import expression input can be a `data:` URL which loads any module from that data
    */
   class DynamicImport extends CodeInjection::Sink, DataFlow::ExprNode {
-    DynamicImport() { this = any(DynamicImportExpr e).getAChildExpr().flow() }
+    DynamicImport() { this = any(DynamicImportExpr e).getSource().flow() }
   }
 
   /**
