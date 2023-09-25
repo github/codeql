@@ -13,6 +13,7 @@ private import semmle.python.frameworks.FastApi
 private import semmle.python.frameworks.Django
 private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.Requests
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -212,6 +213,12 @@ class FlaskResponse extends FindSubclassesSpec {
   FlaskResponse() { this = "flask.Response~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = Flask::Response::classRef() }
+}
+
+class RequestsResponse extends FindSubclassesSpec {
+  RequestsResponse() { this = "requests.models.Response~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Requests::Response::classRef() }
 }
 
 bindingset[fullyQualified]
