@@ -19,3 +19,6 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - aplus_auth
     - Member[auth].Member[django].Member[HttpResponse]
+  - - requests.models.Response~Subclass
+    - aplus_auth
+    - Member[requests].Member[Response]
