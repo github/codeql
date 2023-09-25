@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - social_django
+    - Member[models].Member[AbstractUserSocialAuth]
+  - - Django.db.models.Model~Subclass
+    - social_django
+    - Member[models].Member[Association]
+  - - Django.db.models.Model~Subclass
+    - social_django
+    - Member[models].Member[Code]
+  - - Django.db.models.Model~Subclass
+    - social_django
+    - Member[models].Member[Nonce]
+  - - Django.db.models.Model~Subclass
+    - social_django
+    - Member[models].Member[Partial]
+  - - Django.db.models.Model~Subclass
+    - social_django
+    - Member[models].Member[UserSocialAuth]

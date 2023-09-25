@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - rest_framework_api_key
+    - Member[models].Member[APIKey]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_api_key
+    - Member[models].Member[AbstractAPIKey]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_api_key
+    - Member[permissions].Member[APIKey]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_api_key
+    - Member[permissions].Member[AbstractAPIKey]

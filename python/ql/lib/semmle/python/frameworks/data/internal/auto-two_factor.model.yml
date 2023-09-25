@@ -109,6 +109,30 @@ extensions:
   - - Django.Views.View~Subclass
     - two_factor
     - Member[views].Member[utils].Member[SessionWizardView]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[forms].Member[TOTPDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[forms].Member[PhoneDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[models].Member[PhoneDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[plugins].Member[phonenumber].Member[views].Member[PhoneDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[StaticDevice]
+  - - Django.db.models.Model~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[StaticToken]
   - - django.forms.BaseForm~Subclass
     - two_factor
     - Member[forms].Member[AuthenticationTokenForm]
@@ -166,3 +190,12 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - two_factor
     - Member[views].Member[utils].Member[ManagementForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - two_factor
+    - Member[views].Member[core].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - two_factor
+    - Member[views].Member[mixins].Member[TemplateResponse]

@@ -13,3 +13,6 @@ extensions:
   - - Django.Views.View~Subclass
     - django_tables2
     - Member[views].Member[SingleTableView]
+  - - django.http.response.HttpResponse~Subclass
+    - django_tables2
+    - Member[export].Member[export].Member[HttpResponse]

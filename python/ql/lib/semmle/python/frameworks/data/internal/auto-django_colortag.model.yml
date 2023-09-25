@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.db.models.Model~Subclass
+    - django_colortag
+    - Member[forms].Member[ColorTag]
+  - - Django.db.models.Model~Subclass
+    - django_colortag
+    - Member[models].Member[ColorTag]
   - - django.forms.BaseForm~Subclass
     - django_colortag
     - Member[forms].Member[ColorTagForm]

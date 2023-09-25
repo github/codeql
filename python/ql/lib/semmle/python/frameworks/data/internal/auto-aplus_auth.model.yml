@@ -10,3 +10,12 @@ extensions:
   - - Django.Views.View~Subclass
     - aplus_auth
     - Member[auth].Member[django].Member[View]
+  - - Django.db.models.Model~Subclass
+    - aplus_auth
+    - Member[auth].Member[django].Member[AbstractBaseUser]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - aplus_auth
+    - Member[auth].Member[django].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - aplus_auth
+    - Member[auth].Member[django].Member[HttpResponse]

@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[BaseCodeTokenModel]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[Client]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[Code]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[RSAKey]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[ResponseType]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - oidc_provider
+    - Member[models].Member[UserConsent]

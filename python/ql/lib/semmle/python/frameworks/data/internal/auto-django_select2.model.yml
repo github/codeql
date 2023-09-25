@@ -10,3 +10,6 @@ extensions:
   - - Django.Views.View~Subclass
     - django_select2
     - Member[views].Member[BaseListView]
+  - - django.http.response.JsonResponse~Subclass
+    - django_select2
+    - Member[views].Member[JsonResponse]

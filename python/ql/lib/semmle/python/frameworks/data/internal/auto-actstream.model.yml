@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[managers].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[models].Member[Action]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - actstream
+    - Member[models].Member[Follow]

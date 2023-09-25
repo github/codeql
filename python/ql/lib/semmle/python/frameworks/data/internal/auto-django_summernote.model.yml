@@ -22,6 +22,12 @@ extensions:
   - - Django.Views.View~Subclass
     - django_summernote
     - Member[views].Member[View]
+  - - Django.db.models.Model~Subclass
+    - django_summernote
+    - Member[models].Member[AbstractAttachment]
+  - - Django.db.models.Model~Subclass
+    - django_summernote
+    - Member[models].Member[Attachment]
   - - django.forms.BaseForm~Subclass
     - django_summernote
     - Member[forms].Member[AttachmentAdminForm]
@@ -31,3 +37,9 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - django_summernote
     - Member[views].Member[UploadForm]
+  - - django.http.response.HttpResponse~Subclass
+    - django_summernote
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - django_summernote
+    - Member[views].Member[JsonResponse]

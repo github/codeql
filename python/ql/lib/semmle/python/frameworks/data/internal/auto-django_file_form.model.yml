@@ -22,6 +22,12 @@ extensions:
   - - Django.Forms.Field~Subclass
     - django_file_form
     - Member[forms].Member[UploadedFileField]
+  - - Django.db.models.Model~Subclass
+    - django_file_form
+    - Member[fields].Member[TemporaryUploadedFile]
+  - - Django.db.models.Model~Subclass
+    - django_file_form
+    - Member[models].Member[TemporaryUploadedFile]
   - - django.forms.BaseForm~Subclass
     - django_file_form
     - Member[forms].Member[Form]

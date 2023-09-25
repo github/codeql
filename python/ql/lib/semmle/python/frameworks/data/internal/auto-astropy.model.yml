@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - astropy
+    - Member[samp].Member[standard_profile].Member[SAMPSimpleXMLRPCRequestHandler]
+  - - http.server.BaseHTTPRequestHandler~Subclass
+    - astropy
+    - Member[samp].Member[web_profile].Member[WebProfileRequestHandler]

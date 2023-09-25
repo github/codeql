@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - helusers
+    - Member[models].Member[ADGroupMapping]
+  - - Django.db.models.Model~Subclass
+    - helusers
+    - Member[models].Member[ADGroup]
+  - - Django.db.models.Model~Subclass
+    - helusers
+    - Member[models].Member[AbstractUser]
+  - - Django.db.models.Model~Subclass
+    - helusers
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - helusers
+    - Member[models].Member[OIDCBackChannelLogoutEvent]
+  - - Django.db.models.Model~Subclass
+    - helusers
+    - Member[oidc].Member[OIDCBackChannelLogoutEvent]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - helusers
+    - Member[admin_site].Member[HttpResponseRedirect]

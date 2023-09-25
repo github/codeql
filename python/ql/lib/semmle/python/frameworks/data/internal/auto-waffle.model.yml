@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[AbstractBaseFlag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[AbstractBaseSample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[AbstractBaseSwitch]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[managers].Member[AbstractBaseFlag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[managers].Member[AbstractBaseSample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[managers].Member[AbstractBaseSwitch]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[AbstractBaseFlag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[AbstractBaseSample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[AbstractBaseSwitch]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[AbstractUserFlag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[BaseModel]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[Flag]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[Sample]
+  - - Django.db.models.Model~Subclass
+    - waffle
+    - Member[models].Member[Switch]

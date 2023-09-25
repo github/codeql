@@ -13,6 +13,9 @@ extensions:
   - - Django.Forms.Field~Subclass
     - mptt
     - Member[forms].Member[TreeNodePositionField]
+  - - Django.db.models.Model~Subclass
+    - mptt
+    - Member[models].Member[MPTTModel]
   - - django.forms.BaseForm~Subclass
     - mptt
     - Member[forms].Member[MPTTAdminForm]

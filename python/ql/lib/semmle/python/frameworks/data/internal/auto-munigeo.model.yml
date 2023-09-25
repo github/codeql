@@ -1,0 +1,75 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - munigeo
+    - Member[api].Member[AddressViewSet]
+  - - Django.Views.View~Subclass
+    - munigeo
+    - Member[api].Member[AdministrativeDivisionTypeViewSet]
+  - - Django.Views.View~Subclass
+    - munigeo
+    - Member[api].Member[AdministrativeDivisionViewSet]
+  - - Django.Views.View~Subclass
+    - munigeo
+    - Member[api].Member[GeoModelAPIView]
+  - - Django.Views.View~Subclass
+    - munigeo
+    - Member[api].Member[StreetViewSet]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[api].Member[Address]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[api].Member[AdministrativeDivisionGeometry]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[api].Member[AdministrativeDivisionType]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[api].Member[AdministrativeDivision]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[api].Member[Municipality]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[api].Member[Street]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[Address]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[AdministrativeDivisionGeometry]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[AdministrativeDivisionType]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[AdministrativeDivision]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[Building]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[MPTTModel]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[Municipality]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[POICategory]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[POI]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[Plan]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[Street]
+  - - Django.db.models.Model~Subclass
+    - munigeo
+    - Member[models].Member[TranslatableModel]

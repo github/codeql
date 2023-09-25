@@ -10,6 +10,12 @@ extensions:
   - - Django.Views.View~Subclass
     - import_export
     - Member[mixins].Member[FormView]
+  - - Django.db.models.Model~Subclass
+    - import_export
+    - Member[admin].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - import_export
+    - Member[admin].Member[LogEntry]
   - - django.forms.BaseForm~Subclass
     - import_export
     - Member[admin].Member[ConfirmImportForm]
@@ -40,3 +46,12 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - import_export
     - Member[mixins].Member[ExportForm]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - import_export
+    - Member[admin].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - import_export
+    - Member[admin].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - import_export
+    - Member[admin].Member[TemplateResponse]

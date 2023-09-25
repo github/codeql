@@ -7,3 +7,81 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - tastypie
     - Member[validation].Member[ModelForm]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - tastypie
+    - Member[api].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - tastypie
+    - Member[resources].Member[HttpResponseNotFound]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[api].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[authentication].Member[HttpUnauthorized]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[exceptions].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpAccepted]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpApplicationError]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpBadRequest]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpConflict]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpCreated]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpForbidden]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpGone]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpMethodNotAllowed]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpMultipleChoices]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpNoContent]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpNotAcceptable]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpNotFound]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpNotImplemented]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpNotModified]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpSeeOther]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpTooManyRequests]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpUnauthorized]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpUnprocessableEntity]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[http].Member[HttpUnsupportedMediaType]
+  - - django.http.response.HttpResponse~Subclass
+    - tastypie
+    - Member[resources].Member[HttpResponse]

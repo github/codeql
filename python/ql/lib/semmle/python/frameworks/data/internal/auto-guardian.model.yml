@@ -4,6 +4,102 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[admin].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[compat].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[compat].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[core].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[ctypes].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[managers].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[BaseGenericObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[BaseObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[GroupObjectPermissionAbstract]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[GroupObjectPermissionBase]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[GroupObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[UserObjectPermissionAbstract]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[UserObjectPermissionBase]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[UserObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[BaseGenericObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[BaseObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[GroupObjectPermissionAbstract]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[GroupObjectPermissionBase]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[GroupObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[UserObjectPermissionAbstract]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[UserObjectPermissionBase]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[models].Member[models].Member[UserObjectPermission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[shortcuts].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[shortcuts].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[shortcuts].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[utils].Member[Group]
+  - - Django.db.models.Model~Subclass
+    - guardian
+    - Member[utils].Member[Model]
   - - django.forms.BaseForm~Subclass
     - guardian
     - Member[admin].Member[AdminGroupObjectPermissionsForm]
@@ -31,3 +127,9 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - guardian
     - Member[forms].Member[UserObjectPermissionsForm]
+  - - django.http.response.HttpResponseForbidden~Subclass
+    - guardian
+    - Member[utils].Member[HttpResponseForbidden]
+  - - django.http.response.HttpResponseNotFound~Subclass
+    - guardian
+    - Member[utils].Member[HttpResponseNotFound]

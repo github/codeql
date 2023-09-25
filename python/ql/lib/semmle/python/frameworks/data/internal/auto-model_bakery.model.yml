@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - model_bakery
+    - Member[_types].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - model_bakery
+    - Member[baker].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - model_bakery
+    - Member[random_gen].Member[Model]
+  - - Django.db.models.Model~Subclass
+    - model_bakery
+    - Member[recipe].Member[Model]

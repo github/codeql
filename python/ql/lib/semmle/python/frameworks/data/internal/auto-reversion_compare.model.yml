@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - reversion_compare
+    - Member[views].Member[DetailView]
+  - - Django.Views.View~Subclass
+    - reversion_compare
+    - Member[views].Member[HistoryCompareDetailView]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare
+    - Member[admin].Member[Revision]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare
+    - Member[admin].Member[Version]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare
+    - Member[compare].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare
+    - Member[compare].Member[Version]
+  - - Django.db.models.Model~Subclass
+    - reversion_compare
+    - Member[views].Member[Version]
+  - - django.forms.BaseForm~Subclass
+    - reversion_compare
+    - Member[admin].Member[SelectDiffForm]
+  - - django.forms.BaseForm~Subclass
+    - reversion_compare
+    - Member[forms].Member[SelectDiffForm]
+  - - django.forms.BaseForm~Subclass
+    - reversion_compare
+    - Member[views].Member[SelectDiffForm]

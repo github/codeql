@@ -1,0 +1,78 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[facebook].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[facebook].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[flickr].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[flickr].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[github].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[github].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[instagram].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[instagram].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[mastodon].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[mastodon].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[meetup].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[meetup].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[pixelfed].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[pixelfed].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[reddit].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[reddit].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[twitter].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[twitter].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[views].Member[BaseView]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[views].Member[Callback]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[views].Member[Start]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[views].Member[View]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[webutil].Member[flask_util].Member[View]
+  - - flask.View~Subclass
+    - oauth_dropins
+    - Member[webutil].Member[flask_util].Member[XrdOrJrd]

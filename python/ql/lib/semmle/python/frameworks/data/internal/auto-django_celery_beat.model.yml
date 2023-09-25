@@ -1,0 +1,66 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - django_celery_beat
+    - Member[admin].Member[TaskChoiceField]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[admin].Member[ClockedSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[admin].Member[CrontabSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[admin].Member[IntervalSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[admin].Member[PeriodicTask]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[admin].Member[PeriodicTasks]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[admin].Member[SolarSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[models].Member[ClockedSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[models].Member[CrontabSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[models].Member[IntervalSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[models].Member[PeriodicTask]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[models].Member[PeriodicTasks]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[models].Member[SolarSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[schedulers].Member[ClockedSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[schedulers].Member[CrontabSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[schedulers].Member[IntervalSchedule]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[schedulers].Member[PeriodicTask]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[schedulers].Member[PeriodicTasks]
+  - - Django.db.models.Model~Subclass
+    - django_celery_beat
+    - Member[schedulers].Member[SolarSchedule]
+  - - django.forms.BaseForm~Subclass
+    - django_celery_beat
+    - Member[admin].Member[PeriodicTaskForm]

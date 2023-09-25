@@ -10,3 +10,6 @@ extensions:
   - - Django.Forms.Field~Subclass
     - sortedm2m
     - Member[forms].Member[SortedMultipleChoiceField]
+  - - Django.db.models.Model~Subclass
+    - sortedm2m
+    - Member[fields].Member[Model]

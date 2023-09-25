@@ -10,3 +10,15 @@ extensions:
   - - Django.Views.View~Subclass
     - health_check
     - Member[views].Member[TemplateView]
+  - - Django.db.models.Model~Subclass
+    - health_check
+    - Member[db].Member[backends].Member[TestModel]
+  - - Django.db.models.Model~Subclass
+    - health_check
+    - Member[db].Member[models].Member[TestModel]
+  - - django.http.response.HttpResponse~Subclass
+    - health_check
+    - Member[views].Member[HttpResponse]
+  - - django.http.response.JsonResponse~Subclass
+    - health_check
+    - Member[views].Member[JsonResponse]

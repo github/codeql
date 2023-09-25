@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponse~Subclass
+    - django_htmx
+    - Member[http].Member[HttpResponseClientRefresh]
+  - - django.http.response.HttpResponse~Subclass
+    - django_htmx
+    - Member[http].Member[HttpResponseStopPolling]
+  - - django.http.response.HttpResponse~Subclass
+    - django_htmx
+    - Member[http].Member[HttpResponse]

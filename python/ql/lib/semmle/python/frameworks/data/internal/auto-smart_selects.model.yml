@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - smart_selects
+    - Member[form_fields].Member[ChainedManyToManyField]
+  - - Django.Forms.Field~Subclass
+    - smart_selects
+    - Member[form_fields].Member[ChainedModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - smart_selects
+    - Member[form_fields].Member[ChoiceField]
+  - - Django.Forms.Field~Subclass
+    - smart_selects
+    - Member[form_fields].Member[GroupedModelSelect]
+  - - Django.Forms.Field~Subclass
+    - smart_selects
+    - Member[form_fields].Member[ModelChoiceField]
+  - - Django.Forms.Field~Subclass
+    - smart_selects
+    - Member[form_fields].Member[ModelMultipleChoiceField]

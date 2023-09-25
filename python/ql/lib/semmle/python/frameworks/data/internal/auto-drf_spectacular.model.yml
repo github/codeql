@@ -46,3 +46,6 @@ extensions:
   - - Django.Views.View~Subclass
     - drf_spectacular
     - Member[views].Member[SpectacularYAMLAPIView]
+  - - django.http.response.HttpResponse~Subclass
+    - drf_spectacular
+    - Member[views].Member[Response]

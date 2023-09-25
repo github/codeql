@@ -90,6 +90,9 @@ extensions:
     - Member[contrib].Member[postgres].Member[forms].Member[DecimalRangeField]
   - - Django.Forms.Field~Subclass
     - django
+    - Member[contrib].Member[postgres].Member[forms].Member[FloatRangeField]
+  - - Django.Forms.Field~Subclass
+    - django
     - Member[contrib].Member[postgres].Member[forms].Member[HStoreField]
   - - Django.Forms.Field~Subclass
     - django
@@ -127,6 +130,9 @@ extensions:
   - - Django.Forms.Field~Subclass
     - django
     - Member[contrib].Member[postgres].Member[forms].Member[ranges].Member[DecimalRangeField]
+  - - Django.Forms.Field~Subclass
+    - django
+    - Member[contrib].Member[postgres].Member[forms].Member[ranges].Member[FloatRangeField]
   - - Django.Forms.Field~Subclass
     - django
     - Member[contrib].Member[postgres].Member[forms].Member[ranges].Member[IntegerRangeField]
@@ -387,10 +393,25 @@ extensions:
     - Member[contrib].Member[contenttypes].Member[models].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - django
+    - Member[contrib].Member[flatpages].Member[admin].Member[FlatPage]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[contrib].Member[flatpages].Member[forms].Member[FlatPage]
+  - - Django.db.models.Model~Subclass
+    - django
     - Member[contrib].Member[flatpages].Member[models].Member[FlatPage]
   - - Django.db.models.Model~Subclass
     - django
     - Member[contrib].Member[flatpages].Member[models].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[contrib].Member[sessions].Member[base_session].Member[AbstractBaseSession]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[contrib].Member[sessions].Member[models].Member[AbstractBaseSession]
+  - - Django.db.models.Model~Subclass
+    - django
+    - Member[contrib].Member[sessions].Member[models].Member[Session]
   - - Django.db.models.Model~Subclass
     - django
     - Member[contrib].Member[sites].Member[models].Member[Site]
@@ -480,6 +501,9 @@ extensions:
     - Member[core].Member[handlers].Member[asgi].Member[HttpResponseBadRequest]
   - - django.http.response.HttpResponseBadRequest~Subclass
     - django
+    - Member[http].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - django
     - Member[views].Member[defaults].Member[HttpResponseBadRequest]
   - - django.http.response.HttpResponseForbidden~Subclass
     - django
@@ -534,6 +558,9 @@ extensions:
     - Member[contrib].Member[auth].Member[views].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponseRedirect~Subclass
     - django
+    - Member[middleware].Member[locale].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - django
     - Member[shortcuts].Member[HttpResponseRedirect]
   - - django.http.response.HttpResponseRedirect~Subclass
     - django
@@ -547,6 +574,9 @@ extensions:
   - - django.http.response.HttpResponseServerError~Subclass
     - django
     - Member[core].Member[handlers].Member[asgi].Member[HttpResponseServerError]
+  - - django.http.response.HttpResponseServerError~Subclass
+    - django
+    - Member[http].Member[HttpResponseServerError]
   - - django.http.response.HttpResponseServerError~Subclass
     - django
     - Member[views].Member[defaults].Member[HttpResponseServerError]
@@ -567,10 +597,16 @@ extensions:
     - Member[contrib].Member[auth].Member[admin].Member[TemplateResponse]
   - - django.http.response.HttpResponse~Subclass
     - django
+    - Member[contrib].Member[auth].Member[views].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django
     - Member[contrib].Member[gis].Member[shortcuts].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - django
     - Member[contrib].Member[sitemaps].Member[views].Member[TemplateResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - django
+    - Member[contrib].Member[syndication].Member[views].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - django
     - Member[core].Member[handlers].Member[asgi].Member[HttpResponse]

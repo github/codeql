@@ -13,3 +13,9 @@ extensions:
   - - Django.Views.View~Subclass
     - hijack
     - Member[views].Member[View]
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - hijack
+    - Member[views].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - hijack
+    - Member[views].Member[HttpResponseRedirect]

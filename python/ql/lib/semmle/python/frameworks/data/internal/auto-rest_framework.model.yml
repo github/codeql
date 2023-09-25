@@ -21,6 +21,9 @@ extensions:
     - Member[authtoken].Member[views].Member[APIView]
   - - Django.Views.View~Subclass
     - rest_framework
+    - Member[authtoken].Member[views].Member[ObtainAuthToken]
+  - - Django.Views.View~Subclass
+    - rest_framework
     - Member[compat].Member[View]
   - - Django.Views.View~Subclass
     - rest_framework
@@ -31,6 +34,9 @@ extensions:
   - - Django.Views.View~Subclass
     - rest_framework
     - Member[generics].Member[DestroyAPIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
+    - Member[generics].Member[GenericAPIView]
   - - Django.Views.View~Subclass
     - rest_framework
     - Member[generics].Member[ListAPIView]
@@ -60,6 +66,9 @@ extensions:
     - Member[routers].Member[SchemaView]
   - - Django.Views.View~Subclass
     - rest_framework
+    - Member[schemas].Member[APIView]
+  - - Django.Views.View~Subclass
+    - rest_framework
     - Member[schemas].Member[views].Member[APIView]
   - - Django.Views.View~Subclass
     - rest_framework
@@ -81,10 +90,22 @@ extensions:
     - Member[viewsets].Member[ViewSet]
   - - Django.db.models.Model~Subclass
     - rest_framework
+    - Member[authtoken].Member[admin].Member[TokenProxy]
+  - - Django.db.models.Model~Subclass
+    - rest_framework
+    - Member[authtoken].Member[admin].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - rest_framework
     - Member[authtoken].Member[models].Member[TokenProxy]
   - - Django.db.models.Model~Subclass
     - rest_framework
     - Member[authtoken].Member[models].Member[Token]
+  - - Django.db.models.Model~Subclass
+    - rest_framework
+    - Member[authtoken].Member[views].Member[Token]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[authtoken].Member[views].Member[Response]
   - - django.http.response.HttpResponse~Subclass
     - rest_framework
     - Member[mixins].Member[Response]
@@ -100,6 +121,9 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - rest_framework
     - Member[routers].Member[Response]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework
+    - Member[schemas].Member[Response]
   - - django.http.response.HttpResponse~Subclass
     - rest_framework
     - Member[schemas].Member[views].Member[Response]

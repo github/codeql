@@ -12,6 +12,12 @@ extensions:
     - Member[managers].Member[TagField]
   - - Django.db.models.Model~Subclass
     - taggit
+    - Member[admin].Member[Tag]
+  - - Django.db.models.Model~Subclass
+    - taggit
+    - Member[admin].Member[TaggedItem]
+  - - Django.db.models.Model~Subclass
+    - taggit
     - Member[managers].Member[CommonGenericTaggedItemBase]
   - - Django.db.models.Model~Subclass
     - taggit

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.http.response.HttpResponseBadRequest~Subclass
+    - braces
+    - Member[views].Member[_ajax].Member[HttpResponseBadRequest]
+  - - django.http.response.HttpResponsePermanentRedirect~Subclass
+    - braces
+    - Member[views].Member[_access].Member[HttpResponsePermanentRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - braces
+    - Member[views].Member[_access].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - braces
+    - Member[views].Member[_access].Member[HttpResponse]
+  - - django.http.response.HttpResponse~Subclass
+    - braces
+    - Member[views].Member[_ajax].Member[HttpResponse]
+  - - django.http.response.StreamingHttpResponse~Subclass
+    - braces
+    - Member[views].Member[_access].Member[StreamingHttpResponse]

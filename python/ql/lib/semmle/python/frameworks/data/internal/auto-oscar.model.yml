@@ -1,0 +1,276 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Forms.Field~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[forms].Member[BankcardCCVField]
+  - - Django.Forms.Field~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[forms].Member[BankcardExpiryMonthField]
+  - - Django.Forms.Field~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[forms].Member[BankcardMonthField]
+  - - Django.Forms.Field~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[forms].Member[BankcardNumberField]
+  - - Django.Forms.Field~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[forms].Member[BankcardStartingMonthField]
+  - - Django.Forms.Field~Subclass
+    - oscar
+    - Member[forms].Member[fields].Member[ExtendedURLField]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[abstract_models].Member[AbstractAddress]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[abstract_models].Member[AbstractBillingAddress]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[abstract_models].Member[AbstractCountry]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[abstract_models].Member[AbstractPartnerAddress]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[abstract_models].Member[AbstractShippingAddress]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[abstract_models].Member[AbstractUserAddress]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[models].Member[Country]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[models].Member[UserAddress]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[abstract_models].Member[AbstractBasket]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[abstract_models].Member[AbstractLineAttribute]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[abstract_models].Member[AbstractLine]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[models].Member[Basket]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[models].Member[LineAttribute]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[basket].Member[models].Member[Line]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractAttributeOptionGroup]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractAttributeOption]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractCategory]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractOption]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractProductAttributeValue]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractProductAttribute]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractProductCategory]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractProductClass]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractProductImage]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractProductRecommendation]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[AbstractProduct]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[abstract_models].Member[MP_Node]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[AttributeOptionGroup]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[AttributeOption]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[Category]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[Option]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[ProductAttributeValue]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[ProductAttribute]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[ProductCategory]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[ProductClass]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[ProductImage]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[ProductRecommendation]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[catalogue].Member[models].Member[Product]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractCommunicationEvent]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractLineAttribute]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractLinePrice]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractLine]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractOrderDiscount]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractOrderNote]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractOrder]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractPaymentEventType]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractPaymentEvent]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractShippingEventType]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[AbstractShippingEvent]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[PaymentEventQuantity]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[abstract_models].Member[ShippingEventQuantity]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[BillingAddress]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[CommunicationEvent]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[LineAttribute]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[LinePrice]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[Line]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[OrderDiscount]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[OrderNote]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[Order]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[PaymentEventQuantity]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[PaymentEventType]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[PaymentEvent]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[ShippingAddress]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[ShippingEventType]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[models].Member[ShippingEvent]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[order].Member[utils].Member[Site]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[abstract_models].Member[AbstractBankcard]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[abstract_models].Member[AbstractSourceType]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[abstract_models].Member[AbstractSource]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[abstract_models].Member[AbstractTransaction]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[models].Member[Bankcard]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[models].Member[SourceType]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[models].Member[Source]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[models].Member[Transaction]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[voucher].Member[abstract_models].Member[AbstractVoucherApplication]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[voucher].Member[abstract_models].Member[AbstractVoucher]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[voucher].Member[models].Member[VoucherApplication]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[apps].Member[voucher].Member[models].Member[Voucher]
+  - - Django.db.models.Model~Subclass
+    - oscar
+    - Member[core].Member[compat].Member[User]
+  - - django.forms.BaseForm~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[forms].Member[AbstractAddressForm]
+  - - django.forms.BaseForm~Subclass
+    - oscar
+    - Member[apps].Member[address].Member[forms].Member[UserAddressForm]
+  - - django.forms.BaseForm~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[forms].Member[AbstractAddressForm]
+  - - django.forms.BaseForm~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[forms].Member[BankcardForm]
+  - - django.forms.BaseForm~Subclass
+    - oscar
+    - Member[apps].Member[payment].Member[forms].Member[BillingAddressForm]

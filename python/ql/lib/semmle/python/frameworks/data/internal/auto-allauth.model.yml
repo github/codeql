@@ -79,6 +79,39 @@ extensions:
   - - Django.db.models.Model~Subclass
     - allauth
     - Member[socialaccount].Member[adapter].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[admin].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[admin].Member[SocialApp]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[admin].Member[SocialToken]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[forms].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[models].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[models].Member[SocialAccount]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[models].Member[SocialApp]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[models].Member[SocialToken]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[base].Member[provider].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[google].Member[provider].Member[EmailAddress]
+  - - Django.db.models.Model~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[oauth2].Member[views].Member[SocialToken]
   - - django.forms.BaseForm~Subclass
     - allauth
     - Member[account].Member[forms].Member[AddEmailForm]
@@ -148,3 +181,21 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - allauth
     - Member[socialaccount].Member[forms].Member[SignupForm]
+  - - django.http.response.HttpResponsePermanentRedirect~Subclass
+    - allauth
+    - Member[account].Member[views].Member[HttpResponsePermanentRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[account].Member[adapter].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[account].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[socialaccount].Member[helpers].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - allauth
+    - Member[socialaccount].Member[providers].Member[oauth2].Member[views].Member[HttpResponseRedirect]
+  - - django.http.response.HttpResponse~Subclass
+    - allauth
+    - Member[account].Member[adapter].Member[HttpResponse]

@@ -16,3 +16,9 @@ extensions:
   - - Django.Views.View~Subclass
     - mozilla_django_oidc
     - Member[views].Member[View]
+  - - django.http.response.HttpResponseNotAllowed~Subclass
+    - mozilla_django_oidc
+    - Member[views].Member[HttpResponseNotAllowed]
+  - - django.http.response.HttpResponseRedirect~Subclass
+    - mozilla_django_oidc
+    - Member[views].Member[HttpResponseRedirect]

@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - django_tenants
+    - Member[models].Member[DomainMixin]
+  - - Django.db.models.Model~Subclass
+    - django_tenants
+    - Member[models].Member[TenantMixin]
+  - - Django.db.models.Model~Subclass
+    - django_tenants
+    - Member[postgresql_backend].Member[base].Member[ContentType]

@@ -4,6 +4,39 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[forms].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[models].Member[SideChannelDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[models].Member[StaticDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[models].Member[StaticToken]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_static].Member[models].Member[ThrottlingMixin]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[models].Member[Device]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[models].Member[TOTPDevice]
+  - - Django.db.models.Model~Subclass
+    - django_otp
+    - Member[plugins].Member[otp_totp].Member[models].Member[ThrottlingMixin]
   - - django.forms.BaseForm~Subclass
     - django_otp
     - Member[forms].Member[AuthenticationForm]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[BaseProfile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[Profile]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[Request]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[Response]
+  - - Django.db.models.Model~Subclass
+    - silk
+    - Member[models].Member[SQLQuery]

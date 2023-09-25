@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[admin].Member[Version]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[models].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[models].Member[LogEntry]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[models].Member[Revision]
+  - - Django.db.models.Model~Subclass
+    - reversion
+    - Member[models].Member[Version]

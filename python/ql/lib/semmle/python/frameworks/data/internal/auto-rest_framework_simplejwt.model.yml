@@ -25,3 +25,21 @@ extensions:
   - - Django.Views.View~Subclass
     - rest_framework_simplejwt
     - Member[views].Member[TokenViewBase]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_simplejwt
+    - Member[serializers].Member[BlacklistedToken]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_simplejwt
+    - Member[token_blacklist].Member[models].Member[BlacklistedToken]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_simplejwt
+    - Member[token_blacklist].Member[models].Member[OutstandingToken]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_simplejwt
+    - Member[tokens].Member[BlacklistedToken]
+  - - Django.db.models.Model~Subclass
+    - rest_framework_simplejwt
+    - Member[tokens].Member[OutstandingToken]
+  - - django.http.response.HttpResponse~Subclass
+    - rest_framework_simplejwt
+    - Member[views].Member[Response]
