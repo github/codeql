@@ -32,6 +32,6 @@ private module Pandas {
 
     override DataFlow::Node getOutput() { result = this }
 
-    override string getFormat() { result = "pandas" }
+    override string getFormat() { result = "pickle" }
   }
 }
