@@ -39,6 +39,15 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
       cx.asNominalTypeDecl() = d and
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
+    or
+    // flow out from dictionary values at the sink (this is essential for some of the
+    // SQLite.swift models)
+    isSink(node) and
+    node.asExpr().getType().getUnderlyingType() instanceof DictionaryType and
+    (
+      c.getAReadContent() instanceof DataFlow::Content::CollectionContent or
+      c.getAReadContent().(DataFlow::Content::TupleContent).getIndex() = 1
+    )
   }
 }
 

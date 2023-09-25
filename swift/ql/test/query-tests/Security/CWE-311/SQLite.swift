@@ -159,14 +159,14 @@ func test_sqlite_swift_api(db: Connection, id: Int, mobilePhoneNumber: String) t
 
 	let varQuery3 = "UPDATE CONTACTS SET NUMBER=$number WHERE ID=$id;"
 
-	_ = try db.prepare(varQuery3, ["id": id, "number": mobilePhoneNumber]).run() // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.run(varQuery3, ["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data) [NOT DETECTED]
-	_ = try db.scalar(varQuery3, ["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data) [NOT DETECTED]
+	_ = try db.prepare(varQuery3, ["id": id, "number": mobilePhoneNumber]).run() // BAD (sensitive data)
+	_ = try db.run(varQuery3, ["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data)
+	_ = try db.scalar(varQuery3, ["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data)
 
 	let stmt3 = try db.prepare(varQuery3) // GOOD
-	_ = try stmt3.bind(["id": id, "number": mobilePhoneNumber]).run() // BAD (sensitive data) [NOT DETECTED]
-	_ = try stmt3.run(["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data) [NOT DETECTED]
-	_ = try stmt3.scalar(["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data) [NOT DETECTED]
+	_ = try stmt3.bind(["id": id, "number": mobilePhoneNumber]).run() // BAD (sensitive data)
+	_ = try stmt3.run(["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data)
+	_ = try stmt3.scalar(["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data)
 
 	// --- higher level insert / update ---
 
