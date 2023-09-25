@@ -15,9 +15,17 @@ import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.frameworks.ActionController
 
-from ActionController::RootController c
-where
-  not exists(ActionController::ProtectFromForgeryCall call |
-    c.getSelf().flowsTo(call.getReceiver())
-  )
-select c, "Potential CSRF vulnerability due to forgery protection not being enabled"
+/**
+ * Holds if a call to `protect_from_forgery` is made in the controller class `definedIn`,
+ * which is inherited by the controller class `child`.
+ */
+private predicate protectFromForgeryCall(
+  ActionControllerClass definedIn, ActionControllerClass child,
+  ActionController::ProtectFromForgeryCall call
+) {
+  definedIn.getSelf().flowsTo(call.getReceiver()) and child = definedIn.getADescendent()
+}
+
+from ActionControllerClass c
+where not protectFromForgeryCall(_, c, _)
+select c, "Potential CSRF vulnerability due to forgery protection not being enabled."
