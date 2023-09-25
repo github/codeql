@@ -1256,6 +1256,17 @@ private module PostUpdateNodes {
         result.(FlowSummaryNode).getSummaryNode())
     }
   }
+
+  class CapturePostUpdateNode extends PostUpdateNodeImpl, CaptureNode {
+    private CaptureNode pre;
+
+    CapturePostUpdateNode() {
+      CaptureFlow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+        pre.getSynthesizedCaptureNode())
+    }
+
+    override Node getPreUpdateNode() { result = pre }
+  }
 }
 
 private import PostUpdateNodes
