@@ -210,6 +210,24 @@ query predicate new_var_decls(NewElement decl, string name, Element type) {
   )
 }
 
+query predicate new_var_decl_parent_patterns(NewElement decl, NewElement pattern) {
+  var_decl_parent_patterns(decl, pattern)
+  or
+  exists(ForEachStmt stmt |
+    decl = Fresh::map(TIteratorVarConcreteDecl(stmt)) and
+    pattern = Fresh::map(TIteratorVarPattern(stmt))
+  )
+}
+
+query predicate new_var_decl_parent_initializers(NewElement decl, NewElement init) {
+  var_decl_parent_initializers(decl, init)
+  or
+  exists(ForEachStmt stmt |
+    decl = Fresh::map(TIteratorVarConcreteDecl(stmt)) and
+    init = stmt.getSequence()
+  )
+}
+
 query predicate new_expr_types(NewElement expr, NewElement type) {
   expr_types(expr, type)
   or
@@ -235,7 +253,7 @@ query predicate new_expr_types(NewElement expr, NewElement type) {
     value_decls(getNextMethod(stmt), type)
   )
   or
-  exists(ForEachStmt stmt, NewElement plainType|
+  exists(ForEachStmt stmt, NewElement plainType |
     expr = Fresh::map(TNextCallInOutConversion(stmt)) and
     expr_types(stmt.getSequence(), plainType) and
     in_out_types(type, plainType)
