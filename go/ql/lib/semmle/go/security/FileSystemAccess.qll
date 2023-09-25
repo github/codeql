@@ -1,6 +1,5 @@
 import go
 
-
 /**
  * The File system access sinks of `net/http` package
  */
@@ -127,55 +126,100 @@ class FiberSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
 }
 
-string aferoPackage() { result = "github.com/spf13/afero" }
-
 /**
- * Provide File system access sinks of [afero](https://github.com/spf13/afero) filesystem framework
+ * Provide File system access sinks of [afero](https://github.com/spf13/afero) framework
  * The Types that are not vulnerable: `afero.BasePathFs` and `afero.IOFS`
  */
-class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
-  int pathArg;
+module Afero {
+  string aferoPackage() { result = "github.com/spf13/afero" }
 
-  AferoSystemAccess() {
-    // utility functions
+  /**
+   * Provide File system access sinks of [afero](https://github.com/spf13/afero) framework methods
+   */
+  class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    int pathArg;
+
+    AferoSystemAccess() {
+      exists(Method f |
+        f.hasQualifiedName(package(aferoPackage(), ""), "HttpFs",
+          ["Create", "Open", "OpenFile", "Remove", "RemoveAll"]) and
+        this = f.getACall() and
+        pathArg = 0
+        or
+        f.hasQualifiedName(package(aferoPackage(), ""), "RegexpFs",
+          ["Create", "Open", "OpenFile", "Remove", "RemoveAll", "Mkdir", "MkdirAll"]) and
+        this = f.getACall() and
+        pathArg = 0
+        or
+        f.hasQualifiedName(package(aferoPackage(), ""), "ReadOnlyFs",
+          ["Create", "Open", "OpenFile", "ReadDir", "ReadlinkIfPossible", "Mkdir", "MkdirAll"]) and
+        this = f.getACall() and
+        pathArg = 0
+        or
+        f.hasQualifiedName(package(aferoPackage(), ""), "OsFs",
+          [
+            "Create", "Open", "OpenFile", "ReadlinkIfPossible", "Remove", "RemoveAll", "Mkdir",
+            "MkdirAll"
+          ]) and
+        this = f.getACall() and
+        pathArg = 0
+        or
+        f.hasQualifiedName(package(aferoPackage(), ""), "MemMapFs",
+          ["Create", "Open", "OpenFile", "Remove", "RemoveAll", "Mkdir", "MkdirAll"]) and
+        this = f.getACall() and
+        pathArg = 0
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
+  }
+
+  /**
+   * Provide File system access sinks of [afero](https://github.com/spf13/afero) framework utility functions
+   * The Types that are not vulnerable: `afero.BasePathFs` and `afero.IOFS`
+   */
+  class AferoUtilityFunctionSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    int pathArg;
+
+    AferoUtilityFunctionSystemAccess() {
+      // utility functions
+      exists(Function f |
+        f.hasQualifiedName(package(aferoPackage(), ""),
+          ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
+        this = f.getACall() and
+        pathArg = 1 and
+        not aferoSanitizer(this.getArgument(0))
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
+  }
+
+  /**
+   * A sanitizer for when the Afero utility functions has a first argument of a safe type like NewBasePathFs
+   *
+   * e.g.
+   * ```
+   * basePathFs := afero.NewBasePathFs(osFS, "tmp")
+   * afero.ReadFile(basePathFs, filepath)
+   * ```
+   */
+  predicate aferoSanitizer(DataFlow::Node n) {
     exists(Function f |
-      f.hasQualifiedName(package(aferoPackage(), ""),
-        ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
-      this = f.getACall() and
-      pathArg = 1
-    )
-    or
-    // afero FS Types
-    exists(Method f |
-      f.hasQualifiedName(package(aferoPackage(), ""), "HttpFs",
-        ["Create", "Open", "OpenFile", "Remove", "RemoveAll"]) and
-      this = f.getACall() and
-      pathArg = 0
-      or
-      f.hasQualifiedName(package(aferoPackage(), ""), "RegexpFs",
-        ["Create", "Open", "OpenFile", "Remove", "RemoveAll", "Mkdir", "MkdirAll"]) and
-      this = f.getACall() and
-      pathArg = 0
-      or
-      f.hasQualifiedName(package(aferoPackage(), ""), "ReadOnlyFs",
-        ["Create", "Open", "OpenFile", "ReadDir", "ReadlinkIfPossible", "Mkdir", "MkdirAll"]) and
-      this = f.getACall() and
-      pathArg = 0
-      or
-      f.hasQualifiedName(package(aferoPackage(), ""), "OsFs",
-        [
-          "Create", "Open", "OpenFile", "ReadlinkIfPossible", "Remove", "RemoveAll", "Mkdir",
-          "MkdirAll"
-        ]) and
-      this = f.getACall() and
-      pathArg = 0
-      or
-      f.hasQualifiedName(package(aferoPackage(), ""), "MemMapFs",
-        ["Create", "Open", "OpenFile", "Remove", "RemoveAll", "Mkdir", "MkdirAll"]) and
-      this = f.getACall() and
-      pathArg = 0
+      f.hasQualifiedName(package(aferoPackage(), ""), "NewBasePathFs") and
+      TaintTracking::localTaint(f.getACall(), n)
     )
   }
 
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
+  /**
+   * A helper for `aferoSanitizer` for when the Afero instance is initialized with one of the safe FS types like IOFS
+   *
+   * e.g.`n2 := &afero.Afero{Fs: afero.NewBasePathFs(osFS, "./")}` n1 is `afero.NewBasePathFs(osFS, "./")`
+   */
+  predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(StructLit st | st.getType().hasQualifiedName(package(aferoPackage(), ""), "Afero") |
+      n1.asExpr() = st.getAChildExpr*() and
+      n2.asExpr() = st
+    )
+  }
 }

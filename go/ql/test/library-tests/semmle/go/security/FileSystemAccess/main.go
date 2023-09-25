@@ -3,60 +3,61 @@ package main
 import (
 	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
+	BeegoContext "github.com/beego/beego/v2/server/web/context"
 	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
-	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/context"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/afero"
-	"github.com/valyala/fasthttp"
-	"mime/multipart"
-	"net"
 	"net/http"
+	"os"
 	"regexp"
 )
 
-type MainController struct {
-	beego.Controller
+func main() {
+	return
 }
 
-func (c *MainController) Get() {
-	filepath := c.Ctx.Request.URL.Query()["filepath"][0]
-	c.Ctx.Output.Download(filepath, "license.txt")
+func BeegoController(beegoController beego.Controller) {
+	beegoOutput := BeegoContext.BeegoOutput{}
+	beegoOutput.Download("filepath", "license.txt")
 	buffer := make([]byte, 10)
-	_ = c.SaveToFileWithBuffer("filenameExistsInForm", filepath, buffer)
-
+	_ = beegoController.SaveToFileWithBuffer("filenameExistsInForm", "filepath", buffer)
 }
 
 func Afero(writer http.ResponseWriter, request *http.Request) {
 	filepath := request.URL.Query()["filepath"][0]
+	//osFS := afero.NewMemMapFs()
+	// OR
 	osFS := afero.NewOsFs()
-	fmt.Println(afero.WriteFile(osFS, filepath, []byte("this is me d !"), 0755))
+	fmt.Println(osFS.MkdirAll("tmp/b", 0755))
+	fmt.Println(afero.WriteFile(osFS, "tmp/a", []byte("this is me a !"), 0755))
+	fmt.Println(afero.WriteFile(osFS, "tmp/b/c", []byte("this is me c !"), 0755))
+	fmt.Println(afero.WriteFile(osFS, "tmp/d", []byte("this is me d !"), 0755))
 	content, _ := afero.ReadFile(osFS, filepath)
 	fmt.Println(string(content))
 	fmt.Println(osFS.Open(filepath))
+	// BAD
+	fmt.Println(afero.SafeWriteReader(osFS, filepath, os.Stdout))
+	fmt.Println(afero.WriteReader(osFS, filepath, os.Stdout))
 
-	// BasePathFs
-	fmt.Println("BasePathFs:")
-	basePathFs := afero.NewBasePathFs(osFS, "tmp")
-	fmt.Println(afero.ReadFile(basePathFs, filepath))
-
-	// RegexpFs
+	// RegexpFs ==> BAD
 	fmt.Println("RegexpFs:")
 	regex, _ := regexp.Compile(".*")
 	regexpFs := afero.NewRegexpFs(osFS, regex)
 	fmt.Println(afero.ReadFile(regexpFs, filepath))
 
-	// ReadOnlyFS
+	// ReadOnlyFS ==> BAD
 	fmt.Println("ReadOnlyFS:")
 	readOnlyFS := afero.NewReadOnlyFs(osFS)
 	fmt.Println(afero.ReadFile(readOnlyFS, filepath))
 
-	// CacheOnReadFs
+	// CacheOnReadFs ==> BAD
 	fmt.Println("CacheOnReadFs:")
 	cacheOnReadFs := afero.NewCacheOnReadFs(osFS, osFS, 10)
 	fmt.Println(afero.ReadFile(cacheOnReadFs, filepath))
 
-	// HttpFS
+	// HttpFS ==> BAD
 	fmt.Println("HttpFS:")
 	httpFs := afero.NewHttpFs(osFS)
 	httpFile, _ := httpFs.Open(filepath)
@@ -64,21 +65,27 @@ func Afero(writer http.ResponseWriter, request *http.Request) {
 	fmt.Println(httpFile.Read(tmpbytes))
 	fmt.Println(string(tmpbytes))
 
-	// Afero
+	// osFS ==> BAD
 	fmt.Println("Afero:")
 	afs := &afero.Afero{Fs: osFS}
 	fmt.Println(afs.ReadFile(filepath))
 
-	// IOFS ==> OK
+	// BasePathFs ==> BAD
+	fmt.Println("Afero:")
+	basePathFs0 := &afero.Afero{Fs: afero.NewBasePathFs(osFS, "tmp")}
+	fmt.Println(basePathFs0.ReadFile(filepath))
+
+	// IOFS ==> GOOD
 	fmt.Println("IOFS:")
 	ioFS := afero.NewIOFS(osFS)
 	fmt.Println(ioFS.ReadFile(filepath))
 	fmt.Println(ioFS.Open(filepath))
-}
 
-func Beego() {
-	beego.Router("/", &MainController{})
-	beego.Run()
+	// BasePathFs ==> GOOD
+	fmt.Println("BasePathFs:")
+	basePathFs := afero.NewBasePathFs(osFS, "tmp")
+	fmt.Println(afero.ReadFile(basePathFs, filepath))
+	afero.ReadFile(basePathFs, filepath)
 }
 
 func Echo() {
@@ -104,41 +111,16 @@ func Fiber() {
 	_ = app.Listen(":3000")
 }
 
-func Fasthttp() {
-	ln, _ := net.Listen("tcp4", "127.0.0.1:8080")
-	requestHandler := func(ctx *fasthttp.RequestCtx) {
-		filePath := ctx.QueryArgs().Peek("filePath")
-		_ = ctx.Response.SendFile(string(filePath))
-		ctx.SendFile(string(filePath))
-		ctx.SendFileBytes(filePath)
-		fileHeader, _ := ctx.FormFile("file")
-		_ = fasthttp.SaveMultipartFile(fileHeader, string(filePath))
-		fasthttp.ServeFile(ctx, string(filePath))
-		fasthttp.ServeFileUncompressed(ctx, string(filePath))
-		fasthttp.ServeFileBytes(ctx, filePath)
-		fasthttp.ServeFileBytesUncompressed(ctx, filePath)
-	}
-	_ = fasthttp.Serve(ln, requestHandler)
-}
-func IrisTest() {
-	app := iris.New()
-	app.UseRouter(iris.Compression)
-	app.Get("/", func(ctx iris.Context) {
-		filepath := ctx.URLParam("filepath")
-		_ = ctx.SendFile(filepath, "file")
-		_ = ctx.SendFileWithRate(filepath, "file", 0, 0)
-		_ = ctx.ServeFile(filepath)
-		_ = ctx.ServeFileWithRate(filepath, 0, 0)
-		_, _, _ = ctx.UploadFormFiles(filepath, beforeSave)
-		_, fileHeader, _ := ctx.FormFile("file")
-		_, _ = ctx.SaveFormFile(fileHeader, filepath)
+func IrisTest(ctx context.Context) {
+	filepath := ctx.URLParam("filepath")
+	_ = ctx.SendFile(filepath, "file")
+	_ = ctx.SendFileWithRate(filepath, "file", 0, 0)
+	_ = ctx.ServeFile(filepath)
+	_ = ctx.ServeFileWithRate(filepath, 0, 0)
+	_, _, _ = ctx.UploadFormFiles(filepath, nil)
+	_, fileHeader, _ := ctx.FormFile("file")
+	_, _ = ctx.SaveFormFile(fileHeader, filepath)
 
-	})
-	app.Listen(":8080")
-
-}
-func beforeSave(ctx iris.Context, file *multipart.FileHeader) bool {
-	return true
 }
 func Gin() {
 	router := gin.Default()
