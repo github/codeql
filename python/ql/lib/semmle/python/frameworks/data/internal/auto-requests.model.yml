@@ -1,0 +1,9 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPResponse~Subclass
+    - requests
+    - Member[adapters].Member[HTTPResponse]
