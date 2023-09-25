@@ -111,6 +111,8 @@ module Flask {
       result = API::moduleImport("flask").getMember("Response")
       or
       result = [FlaskApp::classRef(), FlaskApp::instance()].getMember("response_class")
+      or
+      result = ModelOutput::getATypeNode("flask.Response~Subclass").getASubclass*()
     }
 
     /**
