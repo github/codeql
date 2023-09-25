@@ -14,14 +14,12 @@ private Call aUsage(ExternalEndpoint endpoint) {
   result.getCallee().getSourceDeclaration() = endpoint
 }
 
-from
-  ExternalEndpoint endpoint, string apiName, boolean supported, Call usage, string type,
-  string classification
+from ExternalEndpoint endpoint, boolean supported, Call usage, string type, string classification
 where
-  apiName = endpoint.getApiName() and
   supported = isSupported(endpoint) and
   usage = aUsage(endpoint) and
   type = supportedType(endpoint) and
   classification = usageClassification(usage)
-select usage, apiName, supported, endpoint.jarContainer(), endpoint.jarVersion(), type,
+select usage, endpoint.getPackageName(), endpoint.getTypeName(), endpoint.getName(),
+  endpoint.getParameterTypes(), supported, endpoint.jarContainer(), endpoint.jarVersion(), type,
   classification

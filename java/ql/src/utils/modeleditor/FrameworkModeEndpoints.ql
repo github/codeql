@@ -10,10 +10,10 @@ private import java
 private import FrameworkModeEndpointsQuery
 private import ModelEditor
 
-from PublicEndpointFromSource endpoint, string apiName, boolean supported, string type
+from PublicEndpointFromSource endpoint, boolean supported, string type
 where
-  apiName = endpoint.getApiName() and
   supported = isSupported(endpoint) and
   type = supportedType(endpoint)
-select endpoint, apiName, supported,
+select endpoint, endpoint.getPackageName(), endpoint.getTypeName(), endpoint.getName(),
+  endpoint.getParameterTypes(), supported,
   endpoint.getCompilationUnit().getParentContainer().getBaseName(), type

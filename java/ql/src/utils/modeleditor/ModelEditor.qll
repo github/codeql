@@ -20,13 +20,19 @@ class Endpoint extends Callable {
   Endpoint() { not isUninteresting(this) }
 
   /**
-   * Gets information about the external API in the form expected by the MaD modeling framework.
+   * Gets the package name of this endpoint.
    */
-  string getApiName() {
-    result =
-      this.getDeclaringType().getPackage() + "." + this.getDeclaringType().nestedName() + "#" +
-        this.getName() + paramsString(this)
-  }
+  string getPackageName() { result = this.getDeclaringType().getPackage().getName() }
+
+  /**
+   * Gets the type name of this endpoint.
+   */
+  string getTypeName() { result = this.getDeclaringType().nestedName() }
+
+  /**
+   * Gets the parameter types of this endpoint.
+   */
+  string getParameterTypes() { result = paramsString(this) }
 
   private string getJarName() {
     result = this.getCompilationUnit().getParentContainer*().(JarFile).getBaseName()
