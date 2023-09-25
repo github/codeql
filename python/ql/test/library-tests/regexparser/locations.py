@@ -7,86 +7,86 @@ import re
 #
 # To make the location information easier to understand, we generally put each
 # regexp on its own line, even though this is not idiomatic Python.
-# Comments indicate cases we currently do not handle correctly.
+# Comments indicate the found locations relative to the call to `compile`.
 
 # plain string
-re.compile(
+re.compile( # $location=1:2
 '[this] is a test'
 )
 
 # raw string
-re.compile(
+re.compile( # $ location=1:3
 r'[this] is a test'
 )
 
 # byte string
-re.compile(
+re.compile( # $ location=1:3
 b'[this] is a test'
 )
 
 # byte raw string
-re.compile(
+re.compile( # $ location=1:4
 br'[this] is a test'
 )
 
 # multiline string
-re.compile(
+re.compile( # $ location=1:4
 '''[this] is a test'''
 )
 
 # multiline raw string
-re.compile(
+re.compile( # $ location=1:5
 r'''[this] is a test'''
 )
 
 # multiline byte string
-re.compile(
+re.compile( # $ location=1:5
 b'''[this] is a test'''
 )
 
 # multiline byte raw string
-re.compile(
+re.compile( # $ location=1:6
 br'''[this] is a test'''
 )
 
-# plain string with multiple parts (second [this] gets wrong column: 23 instead of 26)
-re.compile(
+# plain string with multiple parts
+re.compile( # $ location=1:2 SPURIOUS:location=1:23 MISSING:location=1:26
 '[this] is a test' ' and [this] is another test'
 )
 
-# plain string with multiple parts across lines (second [this] gets wrong location: 59:23 instead of 60:7)
-re.compile(
+# plain string with multiple parts across lines
+re.compile( # $ location=1:2 SPURIOUS:location=1:23 MISSING:location=2:7
 '[this] is a test'
 ' and [this] is another test'
 )
 
-# plain string with multiple parts across lines and comments (second [this] gets wrong location: 65:23 instead of 67:7)
-re.compile(
+# plain string with multiple parts across lines and comments
+re.compile( # $ location=1:2 SPURIOUS:location=1:23 MISSING:location=3:7
 '[this] is a test'
 # comment
 ' and [this] is another test'
 )
 
-# actual multiline string (both [this]s get wrong location: 72:6 and 72:27 instead of 73:1 and 74:5)
-re.compile(
+# actual multiline string
+re.compile( # $ SPURIOUS:location=1:6 location=1:27 MISSING:location=2:1 location=3:5
 r'''
 [this] is a test
 and [this] is another test
 '''
 )
 
-# plain string with escape sequences ([this] gets wrong location: 80:3 instead of 80:4)
-re.compile(
+# plain string with escape sequences
+re.compile( # $ SPURIOUS:location=1:3 MISSING:location=1:4
 '\t[this] is a test'
 )
 
 # raw string with escape sequences
-re.compile(
+re.compile( # $ location=1:5
 r'\A[this] is a test'
 )
 
-# plain string with escaped newline (second [this] gets wrong location: 90:23 instead of 91:6)
-re.compile(
+# plain string with escaped newline
+re.compile( # $ location=1:2 SPURIOUS:location=1:23 MISSING:location=2:6
 '[this] is a test\
  and [this] is another test'
 )
