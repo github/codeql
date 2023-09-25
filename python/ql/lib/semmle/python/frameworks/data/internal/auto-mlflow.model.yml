@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Response~Subclass
+    - mlflow
+    - Member[server].Member[Response]
+  - - flask.Response~Subclass
+    - mlflow
+    - Member[server].Member[handlers].Member[Response]
