@@ -16,7 +16,6 @@ private module Joblib {
   /**
    * A call to `joblib.load`
    * See https://pypi.org/project/joblib/
-   *
    */
   private class JoblibLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
     JoblibLoadCall() { this = API::moduleImport("joblib").getMember("load").getACall() }
