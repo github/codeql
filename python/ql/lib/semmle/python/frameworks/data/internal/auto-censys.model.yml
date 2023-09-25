@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - censys
+    - Member[common].Member[base].Member[Response]
+  - - requests.models.Response~Subclass
+    - censys
+    - Member[search].Member[v1].Member[api].Member[Response]
+  - - requests.models.Response~Subclass
+    - censys
+    - Member[search].Member[v2].Member[api].Member[Response]

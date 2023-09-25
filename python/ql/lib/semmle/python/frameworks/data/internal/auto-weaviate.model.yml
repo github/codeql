@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - weaviate
+    - Member[batch].Member[crud_batch].Member[Response]
+  - - requests.models.Response~Subclass
+    - weaviate
+    - Member[exceptions].Member[Response]

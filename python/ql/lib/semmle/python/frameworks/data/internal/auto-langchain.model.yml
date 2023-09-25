@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - requests.models.Response~Subclass
+    - langchain
+    - Member[chains].Member[api].Member[openapi].Member[chain].Member[Response]
+  - - requests.models.Response~Subclass
+    - langchain
+    - Member[utils].Member[utils].Member[Response]
