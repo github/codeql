@@ -248,4 +248,15 @@ public class B {
     sink(l.get(0)); // $ hasValueFlow=src
     sink(l2.get(0)); // $ hasValueFlow=src
   }
+
+  void testCapturedCatch() {
+    try {
+      throw new RuntimeException(source("rte"));
+    } catch (RuntimeException e) {
+      Runnable r = () -> {
+        sink(e.getMessage()); // $ hasValueFlow=rte
+      };
+      r.run();
+    }
+  }
 }

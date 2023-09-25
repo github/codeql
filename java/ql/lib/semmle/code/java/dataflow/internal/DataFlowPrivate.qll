@@ -12,15 +12,28 @@ private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
 import DataFlowNodes::Private
 
-private newtype TReturnKind = TNormalReturnKind()
+private newtype TReturnKind =
+  TNormalReturnKind() or
+  TExceptionReturnKind()
 
 /**
- * A return kind. A return kind describes how a value can be returned
- * from a callable. For Java, this is simply a method return.
+ * A return kind. A return kind describes how a value can be returned from a
+ * callable. For Java, this is either a normal method return or an exception
+ * being returned.
  */
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this return kind. */
-  string toString() { result = "return" }
+  string toString() { none() }
+}
+
+/** A return kind indicating normal method return. */
+class NormalReturnKind extends ReturnKind, TNormalReturnKind {
+  override string toString() { result = "return" }
+}
+
+/** A return kind indicating exceptional method return. */
+class ExceptionReturnKind extends ReturnKind, TExceptionReturnKind {
+  override string toString() { result = "exception return" }
 }
 
 /**
@@ -29,7 +42,7 @@ class ReturnKind extends TReturnKind {
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result.getCall() = call and
-  kind = TNormalReturnKind()
+  result.getKind() = kind
 }
 
 /**
@@ -169,6 +182,8 @@ private CaptureFlow::ClosureNode asClosureNode(Node n) {
     n.asExpr() = write.(VariableAssign).getSource()
     or
     n.asExpr() = write.(AssignOp)
+    or
+    n.(CatchParameterNode).getVariable() = write
   )
 }
 
@@ -196,6 +211,54 @@ predicate jumpStep(Node node1, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode())
+}
+
+module ExceptionFlow {
+  /**
+   * Holds if `try` has at least one catch clause and `body` is either the main
+   * body of the `try` or one of its resource declarations.
+   */
+  predicate tryCatch(TryStmt try, Stmt body) {
+    exists(try.getACatchClause()) and
+    (
+      body = try.getBlock() or
+      body = try.getAResourceDecl()
+    )
+  }
+
+  /**
+   * Holds if `s2` is the enclosing statement of `s1` and `s1` is not directly
+   * wrapped in a try-catch.
+   */
+  private predicate excStep(Stmt s1, Stmt s2) {
+    s1.getEnclosingStmt() = s2 and
+    not tryCatch(_, s1)
+  }
+
+  pragma[nomagic]
+  private Callable excReturnGetCallable(ExceptionReturnNode n) { result = n.getEnclosingCallable() }
+
+  /** Holds if a thrown exception can flow locally from `node1` to `node2`. */
+  predicate localStep(Node node1, Node node2) {
+    exists(Stmt exc |
+      node1.asExpr() = exc.(ThrowStmt).getExpr() or
+      node1.(ExceptionOutNode).getCall().getEnclosingStmt() = exc or
+      node1.(UncaughtNode).getTry() = exc
+    |
+      exists(TryStmt try, Stmt body |
+        excStep+(exc, body) and
+        tryCatch(try, body) and
+        node2.(CatchTypeTestNode).getCatch() = try.getCatchClause(0)
+      )
+      or
+      exists(Callable callable |
+        excStep+(exc, callable.getBody()) and
+        excReturnGetCallable(node2) = callable
+      )
+    )
+    or
+    node1.(CatchTypeTestNode).getSuccessor(_) = node2
+  }
 }
 
 /**
@@ -292,7 +355,7 @@ predicate expectsContent(Node n, ContentSet c) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-RefType getErasedRepr(Type t) {
+RefType getErasedRepr0(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
     then result.(BoxedType).getPrimitiveType().getName() = "double"
@@ -305,30 +368,43 @@ RefType getErasedRepr(Type t) {
   t instanceof NullType and result instanceof TypeObject
 }
 
-class DataFlowType extends SrcRefType {
-  DataFlowType() { this = getErasedRepr(_) }
+DataFlowType getErasedRepr(Type t) { result = TType(getErasedRepr0(t)) }
+
+CatchClause getNegativeType(Node n) {
+  exists(CatchTypeTestNode ct |
+    n = ct.getSuccessor(false) and
+    result = ct.getCatch()
+  )
 }
 
 pragma[nomagic]
-predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { t1.getASourceSupertype+() = t2 }
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  t1.asType().getASourceSupertype+() = t2.asType()
+}
 
 pragma[noinline]
 DataFlowType getNodeType(Node n) {
+  result.asNegType() = getNegativeType(n)
+  or
+  not exists(getNegativeType(n)) and
   result = getErasedRepr(n.getTypeBound())
   or
   result = FlowSummaryImpl::Private::summaryNodeType(n.(FlowSummaryNode).getSummaryNode())
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) {
+private string ppErasedReprType(Type t) {
   if t.(BoxedType).getPrimitiveType().getName() = "double"
   then result = "Number"
   else result = t.toString()
 }
 
+/** Gets a string representation of a type returned by `getErasedRepr`. */
+string ppReprType(DataFlowType t) { result = t.toString() }
+
 pragma[nomagic]
 private predicate compatibleTypes0(DataFlowType t1, DataFlowType t2) {
-  erasedHaveIntersection(t1, t2)
+  erasedHaveIntersection(t1.asType(), t2.asType())
 }
 
 /**
@@ -337,11 +413,25 @@ private predicate compatibleTypes0(DataFlowType t1, DataFlowType t2) {
  */
 bindingset[t1, t2]
 pragma[inline_late]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { compatibleTypes0(t1, t2) }
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
+  compatibleTypes0(t1, t2)
+  or
+  exists(RefType pos, CatchClause neg |
+    pos = t1.asType() and neg = t2.asNegType()
+    or
+    pos = t2.asType() and neg = t1.asNegType()
+  |
+    not pos.getASourceSupertype*() = neg.getACaughtType()
+  )
+}
 
 /** A node that performs a type cast. */
-class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastingExpr }
+class CastNode extends Node {
+  CastNode() {
+    this.asExpr() instanceof CastingExpr or
+    this instanceof CatchParameterNode or
+    exists(getNegativeType(this))
+  }
 }
 
 private newtype TDataFlowCallable =
@@ -380,6 +470,21 @@ class DataFlowCallable extends TDataFlowCallable {
 }
 
 class DataFlowExpr = Expr;
+
+private newtype TDataFlowType =
+  TType(RefType t) { t = getErasedRepr0(_) } or
+  TNegType(CatchClause cc)
+
+class DataFlowType extends TDataFlowType {
+  RefType asType() { this = TType(result) }
+
+  CatchClause asNegType() { this = TNegType(result) }
+
+  string toString() {
+    result = ppErasedReprType(this.asType()) or
+    result = "Not type: " + this.asNegType().getVariable().getTypeAccess()
+  }
+}
 
 private newtype TDataFlowCall =
   TCall(Call c) or
@@ -516,6 +621,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver() and
   getNodeDataFlowType(receiver)
+      .asType()
       .getSourceDeclaration()
       .(FunctionalInterface)
       .getRunMethod()

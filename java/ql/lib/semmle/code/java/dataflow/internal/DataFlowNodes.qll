@@ -56,7 +56,12 @@ private module Cached {
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TFieldValueNode(Field f) or
-    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn)
+    TCaptureNode(CaptureFlow::SynthesizedCaptureNode cn) or
+    TExceptionOutNode(Call call) or
+    TExceptionReturnNode(Callable callable) or
+    TCatchTypeTestNode(CatchClause catch) or
+    TCatchParameterNode(CatchClause catch) or
+    TUncaughtNode(TryStmt try) { ExceptionFlow::tryCatch(try, _) }
 
   cached
   newtype TContent =
@@ -133,6 +138,16 @@ module Public {
       result = this.(CaptureNode).getTypeImpl()
       or
       result = this.(FieldValueNode).getField().getType()
+      or
+      result instanceof TypeThrowable and this instanceof ExceptionOutNode
+      or
+      result instanceof TypeThrowable and this instanceof ExceptionReturnNode
+      or
+      result instanceof TypeThrowable and this instanceof CatchTypeTestNode
+      or
+      result = this.(CatchParameterNode).getVariable().getType()
+      or
+      result instanceof TypeThrowable and this instanceof UncaughtNode
     }
 
     /** Gets the callable in which this node occurs. */
@@ -335,6 +350,27 @@ module Public {
     /** Holds if this is an access to an object's own instance. */
     predicate isOwnInstanceAccess() { this.getInstanceAccess().isOwnInstanceAccess() }
   }
+
+  /**
+   * A node representing a thrown exception as the result of a call.
+   */
+  class ExceptionOutNode extends Node, TExceptionOutNode {
+    override string toString() { result = "Exception out: " + this.getCall().toString() }
+
+    override Location getLocation() { result = this.getCall().getLocation() }
+
+    /** Gets the associated call. */
+    Call getCall() { this = TExceptionOutNode(result) }
+  }
+
+  /**
+   * A node representing a thrown exception being returned from a callable.
+   */
+  class ExceptionReturnNode extends Node, TExceptionReturnNode {
+    override string toString() { result = "Exception return" }
+
+    override Location getLocation() { result = this.getEnclosingCallable().getLocation() }
+  }
 }
 
 private import Public
@@ -378,7 +414,12 @@ module Private {
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
     result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable() or
     result.asCallable() = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() or
-    result.asFieldScope() = n.(FieldValueNode).getField()
+    result.asFieldScope() = n.(FieldValueNode).getField() or
+    result.asCallable() = n.(ExceptionOutNode).getCall().getEnclosingCallable() or
+    n = TExceptionReturnNode(result.asCallable()) or
+    result.asCallable() = n.(CatchTypeTestNode).getCatch().getEnclosingCallable() or
+    result.asCallable() = n.(CatchParameterNode).getCatch().getEnclosingCallable() or
+    result.asCallable() = n.(UncaughtNode).getTry().getEnclosingCallable()
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
@@ -429,15 +470,23 @@ module Private {
     DataFlowCall getCall() { this.argumentOf(result, _) }
   }
 
-  /** A data flow node that occurs as the result of a `ReturnStmt`. */
+  /**
+   * A data flow node that occurs as the result of a `ReturnStmt` or an
+   * exception being returned.
+   */
   class ReturnNode extends Node {
     ReturnNode() {
       exists(ReturnStmt ret | this.asExpr() = ret.getResult()) or
-      this.(FlowSummaryNode).isReturn()
+      this.(FlowSummaryNode).isReturn() or
+      this instanceof ExceptionReturnNode
     }
 
     /** Gets the kind of this returned value. */
-    ReturnKind getKind() { any() }
+    ReturnKind getKind() {
+      if this instanceof ExceptionReturnNode
+      then result instanceof ExceptionReturnKind
+      else result instanceof NormalReturnKind
+    }
   }
 
   /** A data flow node that represents the output of a call. */
@@ -446,6 +495,8 @@ module Private {
       this.asExpr() instanceof MethodAccess
       or
       this.(FlowSummaryNode).isOut(_)
+      or
+      this instanceof ExceptionOutNode
     }
 
     /** Gets the underlying call. */
@@ -453,6 +504,15 @@ module Private {
       result.asCall() = this.asExpr()
       or
       this.(FlowSummaryNode).isOut(result)
+      or
+      result.asCall() = this.(ExceptionOutNode).getCall()
+    }
+
+    /** Gets the kind of this returned value. */
+    ReturnKind getKind() {
+      if this instanceof ExceptionOutNode
+      then result instanceof ExceptionReturnKind
+      else result instanceof NormalReturnKind
     }
   }
 
@@ -518,6 +578,66 @@ module Private {
       or
       cn.isInstanceAccess() and result = cn.getEnclosingCallable().getDeclaringType()
     }
+  }
+
+  /**
+   * A data flow node that carries an exception and tests if it is caught in a
+   * given catch clause.
+   */
+  class CatchTypeTestNode extends Node, TCatchTypeTestNode {
+    override string toString() { result = this.getCatch().toString() }
+
+    override Location getLocation() { result = this.getCatch().getLocation() }
+
+    /** Gets the catch clause associated with this node. */
+    CatchClause getCatch() { this = TCatchTypeTestNode(result) }
+
+    Node getSuccessor(boolean match) {
+      match = true and
+      this.getCatch() = result.(CatchParameterNode).getCatch()
+      or
+      match = false and
+      exists(TryStmt try, int i, CatchClause cc |
+        cc = this.getCatch() and
+        cc = try.getCatchClause(i) and
+        // A catch-all does not allow for uncaught exceptions.
+        not cc.getACaughtType() instanceof TypeThrowable
+      |
+        result.(CatchTypeTestNode).getCatch() = try.getCatchClause(i + 1)
+        or
+        not exists(try.getCatchClause(i + 1)) and
+        result.(UncaughtNode).getTry() = try
+      )
+    }
+  }
+
+  /**
+   * A data flow node that holds the value of a variable defined in a catch
+   * clause.
+   */
+  class CatchParameterNode extends Node, TCatchParameterNode {
+    override string toString() { result = this.getVariable().toString() }
+
+    override Location getLocation() { result = this.getVariable().getLocation() }
+
+    /** Gets the catch clause associated with this node. */
+    CatchClause getCatch() { this = TCatchParameterNode(result) }
+
+    /** Gets the variable declaration associated with this node. */
+    LocalVariableDeclExpr getVariable() { result = this.getCatch().getVariable() }
+  }
+
+  /**
+   * A data flow node that carries an exception that is uncaught by a try-catch
+   * statement.
+   */
+  class UncaughtNode extends Node, TUncaughtNode {
+    override string toString() { result = "Uncaught exception" }
+
+    override Location getLocation() { result = this.getTry().getLocation() }
+
+    /** Gets the try statement associated with this node. */
+    TryStmt getTry() { this = TUncaughtNode(result) }
   }
 }
 

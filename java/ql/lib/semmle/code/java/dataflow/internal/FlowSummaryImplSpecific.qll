@@ -40,7 +40,7 @@ ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 SummaryCall summaryDataFlowCall(SummaryNode receiver) { result.getReceiver() = receiver }
 
 /** Gets the type of content `c`. */
-DataFlowType getContentType(Content c) { result = c.getType() }
+DataFlowType getContentType(Content c) { result.asType() = c.getType() }
 
 /** Gets the type of the parameter at the given position. */
 DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
@@ -49,8 +49,12 @@ DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getErasedRepr(c.getReturnType()) and
-  exists(rk)
+  rk instanceof NormalReturnKind and
+  result = getErasedRepr(c.getReturnType())
+  or
+  rk instanceof ExceptionReturnKind and
+  exists(c) and
+  result.asType() instanceof TypeThrowable
 }
 
 /**
@@ -58,9 +62,9 @@ DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
  * callback of type `t`.
  */
 DataFlowType getCallbackParameterType(DataFlowType t, int i) {
-  result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getParameterType(i))
+  result = getErasedRepr(t.asType().(FunctionalInterface).getRunMethod().getParameterType(i))
   or
-  result = getErasedRepr(t.(FunctionalInterface)) and i = -1
+  result = getErasedRepr(t.asType().(FunctionalInterface)) and i = -1
 }
 
 /**
@@ -68,14 +72,18 @@ DataFlowType getCallbackParameterType(DataFlowType t, int i) {
  * callback of type `t`.
  */
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
-  result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getReturnType()) and
-  exists(rk)
+  rk instanceof NormalReturnKind and
+  result = getErasedRepr(t.asType().(FunctionalInterface).getRunMethod().getReturnType())
+  or
+  rk instanceof ExceptionReturnKind and
+  exists(t) and
+  result.asType() instanceof TypeThrowable
 }
 
 /** Gets the type of synthetic global `sg`. */
 DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) {
   exists(sg) and
-  result instanceof TypeObject
+  result.asType() instanceof TypeObject
 }
 
 private predicate relatedArgSpec(Callable c, string spec) {
@@ -274,7 +282,7 @@ predicate sinkElement(SourceOrSinkElement e, string input, string kind, string p
 }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
-ReturnKind getReturnValueKind() { any() }
+ReturnKind getReturnValueKind() { result instanceof NormalReturnKind }
 
 private newtype TInterpretNode =
   TElement(SourceOrSinkElement n) or
