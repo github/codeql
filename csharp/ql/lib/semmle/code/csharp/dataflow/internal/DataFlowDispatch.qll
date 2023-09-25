@@ -136,13 +136,15 @@ private module Cached {
   newtype TParameterPosition =
     TPositionalParameterPosition(int i) { i = any(Parameter p).getPosition() } or
     TThisParameterPosition() or
-    TImplicitCapturedParameterPosition(LocalScopeVariable v) { capturedWithFlowIn(v) }
+    TImplicitCapturedParameterPosition(LocalScopeVariable v) { capturedWithFlowIn(v) } or
+    TDelegateSelfParameterPosition()
 
   cached
   newtype TArgumentPosition =
     TPositionalArgumentPosition(int i) { i = any(Parameter p).getPosition() } or
     TQualifierArgumentPosition() or
-    TImplicitCapturedArgumentPosition(LocalScopeVariable v) { capturedWithFlowIn(v) }
+    TImplicitCapturedArgumentPosition(LocalScopeVariable v) { capturedWithFlowIn(v) } or
+    TDelegateSelfArgumentPosition()
 }
 
 import Cached
@@ -480,6 +482,14 @@ class ParameterPosition extends TParameterPosition {
     this = TImplicitCapturedParameterPosition(v)
   }
 
+  /**
+   * Holds if this position represents a reference to a delegate itself.
+   *
+   * Used for tracking flow through captured variables and for improving
+   * delegate dispatch.
+   */
+  predicate isDelegateSelf() { this = TDelegateSelfParameterPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     result = "position " + this.getPosition()
@@ -489,6 +499,9 @@ class ParameterPosition extends TParameterPosition {
     exists(LocalScopeVariable v |
       this.isImplicitCapturedParameterPosition(v) and result = "captured " + v
     )
+    or
+    this.isDelegateSelf() and
+    result = "delegate self"
   }
 }
 
@@ -505,6 +518,14 @@ class ArgumentPosition extends TArgumentPosition {
     this = TImplicitCapturedArgumentPosition(v)
   }
 
+  /**
+   * Holds if this position represents a reference to a delegate itself.
+   *
+   * Used for tracking flow through captured variables and for improving
+   * delegate dispatch.
+   */
+  predicate isDelegateSelf() { this = TDelegateSelfArgumentPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     result = "position " + this.getPosition()
@@ -514,6 +535,9 @@ class ArgumentPosition extends TArgumentPosition {
     exists(LocalScopeVariable v |
       this.isImplicitCapturedArgumentPosition(v) and result = "captured " + v
     )
+    or
+    this.isDelegateSelf() and
+    result = "delegate self"
   }
 }
 
@@ -527,4 +551,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
     ppos.isImplicitCapturedParameterPosition(v) and
     apos.isImplicitCapturedArgumentPosition(v)
   )
+  or
+  ppos.isDelegateSelf() and apos.isDelegateSelf()
 }
