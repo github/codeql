@@ -1,0 +1,56 @@
+{
+  "markdownMessage": "Java buildless mode used build tool Maven to pick a JDK version and/or to recommend external dependencies.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/using-build-tool-advice",
+    "name": "Java buildless mode used build tool Maven to pick a JDK version and/or to recommend external dependencies"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java buildless mode used the system default JDK.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/jdk-system-default",
+    "name": "Java buildless mode used the system default JDK"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java was extracted in buildless mode. This means that all Java source in the working directory will be scanned, with build tools such as Maven and Gradle only contributing information about external dependencies.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/mode-active",
+    "name": "Java was extracted in buildless mode"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Reading the dependency graph from Maven build files provided 2 classpath entries",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/depgraph-provided-by-maven",
+    "name": "Java buildless mode extracted precise dependency graph information from Maven"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
