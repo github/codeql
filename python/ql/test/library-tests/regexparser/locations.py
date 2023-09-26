@@ -67,6 +67,13 @@ re.compile( # $ location=1:2 SPURIOUS:location=1:23 MISSING:location=3:7
 ' and [this] is another test'
 )
 
+# multiple parts of different kinds
+re.compile( # $ location=1:2 SPURIOUS:location=1:23 location=1:50 location=1:81 MISSING:location=1:28 location=2:11 location=3:8
+'[this] is a test' ''' and [this] is another test'''
+br""" and [this] is yet another test"""
+r' and [this] is one more'
+)
+
 # actual multiline string
 re.compile( # $ SPURIOUS:location=1:6 location=1:27 MISSING:location=2:1 location=3:5
 r'''
