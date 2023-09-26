@@ -228,6 +228,10 @@ predicate storeStep(Node node1, ContentSet f, Node node2) {
     node2.(FlowSummaryNode).getSummaryNode())
   or
   captureStoreStep(node1, f, node2)
+  or
+  any(AdditionalStoreStep a).step(node1, f, node2) and
+  pragma[only_bind_out](node1.getEnclosingCallable()) =
+    pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
 /**
@@ -262,6 +266,10 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
     node2.(FlowSummaryNode).getSummaryNode())
   or
   captureReadStep(node1, f, node2)
+  or
+  any(AdditionalReadStep a).step(node1, f, node2) and
+  pragma[only_bind_out](node1.getEnclosingCallable()) =
+    pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
 /**
