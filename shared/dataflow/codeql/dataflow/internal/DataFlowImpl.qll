@@ -304,7 +304,6 @@ module MakeImpl<InputSig Lang> {
 
     /** Provides the relevant barriers for a step from `node1` to `node2`. */
     bindingset[node1, node2]
-    pragma[inline]
     private predicate stepFilter(NodeEx node1, NodeEx node2) {
       not outBarrier(node1) and
       not inBarrier(node2) and
@@ -314,7 +313,6 @@ module MakeImpl<InputSig Lang> {
 
     /** Provides the relevant barriers for a step from `node1,state1` to `node2,state2`, including stateless barriers for `node1` to `node2`. */
     bindingset[node1, state1, node2, state2]
-    pragma[inline]
     private predicate stateStepFilter(NodeEx node1, FlowState state1, NodeEx node2, FlowState state2) {
       stepFilter(node1, node2) and
       not outBarrier(node1, state1) and
