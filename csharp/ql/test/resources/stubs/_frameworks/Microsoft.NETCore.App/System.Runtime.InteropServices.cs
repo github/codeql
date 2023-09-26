@@ -750,7 +750,7 @@ namespace System
                     public System.Runtime.InteropServices.ComTypes.IDLDESC idldescType;
                     public int lcid;
                     public nint lpstrSchema;
-                    public const int MEMBER_ID_NIL = default;
+                    public const int MEMBER_ID_NIL = -1;
                     public int memidConstructor;
                     public int memidDestructor;
                     public System.Runtime.InteropServices.ComTypes.TYPEDESC tdescAlias;

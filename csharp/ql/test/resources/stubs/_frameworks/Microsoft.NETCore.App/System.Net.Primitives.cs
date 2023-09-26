@@ -89,9 +89,9 @@ namespace System
             public CookieContainer() => throw null;
             public CookieContainer(int capacity) => throw null;
             public CookieContainer(int capacity, int perDomainCapacity, int maxCookieSize) => throw null;
-            public const int DefaultCookieLengthLimit = default;
-            public const int DefaultCookieLimit = default;
-            public const int DefaultPerDomainCookieLimit = default;
+            public const int DefaultCookieLengthLimit = 4096;
+            public const int DefaultCookieLimit = 300;
+            public const int DefaultPerDomainCookieLimit = 20;
             public System.Net.CookieCollection GetAllCookies() => throw null;
             public string GetCookieHeader(System.Uri uri) => throw null;
             public System.Net.CookieCollection GetCookies(System.Uri uri) => throw null;
@@ -283,8 +283,8 @@ namespace System
             public IPEndPoint(System.Net.IPAddress address, int port) => throw null;
             public override bool Equals(object comparand) => throw null;
             public override int GetHashCode() => throw null;
-            public const int MaxPort = default;
-            public const int MinPort = default;
+            public const int MaxPort = 65535;
+            public const int MinPort = 0;
             public static System.Net.IPEndPoint Parse(System.ReadOnlySpan<char> s) => throw null;
             public static System.Net.IPEndPoint Parse(string s) => throw null;
             public int Port { get => throw null; set { } }

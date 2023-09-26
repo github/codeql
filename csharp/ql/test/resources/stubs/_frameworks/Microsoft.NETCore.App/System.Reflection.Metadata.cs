@@ -2519,7 +2519,7 @@ namespace System
                 public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Reflection.Metadata.SequencePoint other) => throw null;
                 public override int GetHashCode() => throw null;
-                public const int HiddenLine = default;
+                public const int HiddenLine = 16707566;
                 public bool IsHidden { get => throw null; }
                 public int Offset { get => throw null; }
                 public int StartColumn { get => throw null; }
@@ -2582,7 +2582,7 @@ namespace System
             {
                 public System.Reflection.Metadata.SignatureAttributes Attributes { get => throw null; }
                 public System.Reflection.Metadata.SignatureCallingConvention CallingConvention { get => throw null; }
-                public const byte CallingConventionOrKindMask = default;
+                public const byte CallingConventionOrKindMask = 15;
                 public SignatureHeader(byte rawValue) => throw null;
                 public SignatureHeader(System.Reflection.Metadata.SignatureKind kind, System.Reflection.Metadata.SignatureCallingConvention convention, System.Reflection.Metadata.SignatureAttributes attributes) => throw null;
                 public override bool Equals(object obj) => throw null;
@@ -2989,8 +2989,8 @@ namespace System
                 protected override System.Collections.Immutable.ImmutableArray<System.Reflection.PortableExecutable.PEBuilder.Section> CreateSections() => throw null;
                 public ManagedPEBuilder(System.Reflection.PortableExecutable.PEHeaderBuilder header, System.Reflection.Metadata.Ecma335.MetadataRootBuilder metadataRootBuilder, System.Reflection.Metadata.BlobBuilder ilStream, System.Reflection.Metadata.BlobBuilder mappedFieldData = default(System.Reflection.Metadata.BlobBuilder), System.Reflection.Metadata.BlobBuilder managedResources = default(System.Reflection.Metadata.BlobBuilder), System.Reflection.PortableExecutable.ResourceSectionBuilder nativeResources = default(System.Reflection.PortableExecutable.ResourceSectionBuilder), System.Reflection.PortableExecutable.DebugDirectoryBuilder debugDirectoryBuilder = default(System.Reflection.PortableExecutable.DebugDirectoryBuilder), int strongNameSignatureSize = default(int), System.Reflection.Metadata.MethodDefinitionHandle entryPoint = default(System.Reflection.Metadata.MethodDefinitionHandle), System.Reflection.PortableExecutable.CorFlags flags = default(System.Reflection.PortableExecutable.CorFlags), System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Reflection.Metadata.BlobContentId> deterministicIdProvider = default(System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Reflection.Metadata.BlobContentId>)) : base(default(System.Reflection.PortableExecutable.PEHeaderBuilder), default(System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Reflection.Metadata.BlobContentId>)) => throw null;
                 protected override System.Reflection.PortableExecutable.PEDirectoriesBuilder GetDirectories() => throw null;
-                public const int ManagedResourcesDataAlignment = default;
-                public const int MappedFieldDataAlignment = default;
+                public const int ManagedResourcesDataAlignment = 8;
+                public const int MappedFieldDataAlignment = 8;
                 protected override System.Reflection.Metadata.BlobBuilder SerializeSection(string name, System.Reflection.PortableExecutable.SectionLocation location) => throw null;
                 public void Sign(System.Reflection.Metadata.BlobBuilder peImage, System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, byte[]> signatureProvider) => throw null;
             }

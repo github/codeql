@@ -1617,7 +1617,7 @@ namespace Microsoft
                 }
                 public class FileResultExecutorBase
                 {
-                    protected const int BufferSize = default;
+                    protected const int BufferSize = 65536;
                     protected static Microsoft.Extensions.Logging.ILogger CreateLogger<T>(Microsoft.Extensions.Logging.ILoggerFactory factory) => throw null;
                     public FileResultExecutorBase(Microsoft.Extensions.Logging.ILogger logger) => throw null;
                     protected Microsoft.Extensions.Logging.ILogger Logger { get => throw null; }

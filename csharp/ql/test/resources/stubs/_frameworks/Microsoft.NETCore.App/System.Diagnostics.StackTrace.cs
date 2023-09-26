@@ -18,7 +18,7 @@ namespace System
             public virtual int GetILOffset() => throw null;
             public virtual System.Reflection.MethodBase GetMethod() => throw null;
             public virtual int GetNativeOffset() => throw null;
-            public const int OFFSET_UNKNOWN = default;
+            public const int OFFSET_UNKNOWN = -1;
             public override string ToString() => throw null;
         }
         public static partial class StackFrameExtensions
@@ -44,7 +44,7 @@ namespace System
             public virtual int FrameCount { get => throw null; }
             public virtual System.Diagnostics.StackFrame GetFrame(int index) => throw null;
             public virtual System.Diagnostics.StackFrame[] GetFrames() => throw null;
-            public const int METHODS_TO_SKIP = default;
+            public const int METHODS_TO_SKIP = 0;
             public override string ToString() => throw null;
         }
         namespace SymbolStore

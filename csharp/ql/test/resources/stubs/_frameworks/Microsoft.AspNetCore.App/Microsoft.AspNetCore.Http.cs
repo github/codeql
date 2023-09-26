@@ -87,10 +87,10 @@ namespace Microsoft
                     public bool BufferBody { get => throw null; set { } }
                     public long BufferBodyLengthLimit { get => throw null; set { } }
                     public FormOptions() => throw null;
-                    public const int DefaultBufferBodyLengthLimit = default;
-                    public const int DefaultMemoryBufferThreshold = default;
-                    public const long DefaultMultipartBodyLengthLimit = default;
-                    public const int DefaultMultipartBoundaryLengthLimit = default;
+                    public const int DefaultBufferBodyLengthLimit = 134217728;
+                    public const int DefaultMemoryBufferThreshold = 65536;
+                    public const long DefaultMultipartBodyLengthLimit = 134217728;
+                    public const int DefaultMultipartBoundaryLengthLimit = 128;
                     public int KeyLengthLimit { get => throw null; set { } }
                     public int MemoryBufferThreshold { get => throw null; set { } }
                     public long MultipartBodyLengthLimit { get => throw null; set { } }

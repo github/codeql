@@ -743,13 +743,13 @@ namespace System
         static byte System.Numerics.INumberBase<byte>.MaxMagnitude(byte x, byte y) => throw null;
         static byte System.Numerics.INumberBase<byte>.MaxMagnitudeNumber(byte x, byte y) => throw null;
         static byte System.Numerics.INumber<byte>.MaxNumber(byte x, byte y) => throw null;
-        public const byte MaxValue = default;
+        public const byte MaxValue = 255;
         static byte System.Numerics.IMinMaxValue<byte>.MaxValue { get => throw null; }
         static byte System.Numerics.INumber<byte>.Min(byte x, byte y) => throw null;
         static byte System.Numerics.INumberBase<byte>.MinMagnitude(byte x, byte y) => throw null;
         static byte System.Numerics.INumberBase<byte>.MinMagnitudeNumber(byte x, byte y) => throw null;
         static byte System.Numerics.INumber<byte>.MinNumber(byte x, byte y) => throw null;
-        public const byte MinValue = default;
+        public const byte MinValue = 0;
         static byte System.Numerics.IMinMaxValue<byte>.MinValue { get => throw null; }
         static byte System.Numerics.IMultiplicativeIdentity<byte, byte>.MultiplicativeIdentity { get => throw null; }
         static byte System.Numerics.INumberBase<byte>.One { get => throw null; }
@@ -3437,7 +3437,7 @@ namespace System
             public virtual System.Globalization.CalendarAlgorithmType AlgorithmType { get => throw null; }
             public virtual object Clone() => throw null;
             protected Calendar() => throw null;
-            public const int CurrentEra = default;
+            public const int CurrentEra = 0;
             protected virtual int DaysInYearBeforeMinSupportedYear { get => throw null; }
             public abstract int[] Eras { get; }
             public abstract int GetDayOfMonth(System.DateTime time);
@@ -3501,7 +3501,7 @@ namespace System
         }
         public class ChineseLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
         {
-            public const int ChineseEra = default;
+            public const int ChineseEra = 1;
             public ChineseLunisolarCalendar() => throw null;
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
             public override int[] Eras { get => throw null; }
@@ -3774,7 +3774,7 @@ namespace System
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
             public override System.DateTime AddYears(System.DateTime time, int years) => throw null;
-            public const int ADEra = default;
+            public const int ADEra = 1;
             public override System.Globalization.CalendarAlgorithmType AlgorithmType { get => throw null; }
             public virtual System.Globalization.GregorianCalendarTypes CalendarType { get => throw null; set { } }
             public GregorianCalendar() => throw null;
@@ -3920,7 +3920,7 @@ namespace System
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
             public override int[] Eras { get => throw null; }
             public override int GetEra(System.DateTime time) => throw null;
-            public const int JapaneseEra = default;
+            public const int JapaneseEra = 1;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
         }
@@ -3972,7 +3972,7 @@ namespace System
             public override bool IsLeapDay(int year, int month, int day, int era) => throw null;
             public override bool IsLeapMonth(int year, int month, int era) => throw null;
             public override bool IsLeapYear(int year, int era) => throw null;
-            public const int KoreanEra = default;
+            public const int KoreanEra = 1;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
             public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) => throw null;
@@ -3985,7 +3985,7 @@ namespace System
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
             public override int[] Eras { get => throw null; }
             public override int GetEra(System.DateTime time) => throw null;
-            public const int GregorianEra = default;
+            public const int GregorianEra = 1;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
         }
@@ -4226,7 +4226,7 @@ namespace System
             public override bool IsLeapYear(int year, int era) => throw null;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
-            public const int ThaiBuddhistEra = default;
+            public const int ThaiBuddhistEra = 1;
             public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) => throw null;
             public override int ToFourDigitYear(int year) => throw null;
             public override int TwoDigitYearMax { get => throw null; set { } }
@@ -4263,7 +4263,7 @@ namespace System
             public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) => throw null;
             public override int ToFourDigitYear(int year) => throw null;
             public override int TwoDigitYearMax { get => throw null; set { } }
-            public const int UmAlQuraEra = default;
+            public const int UmAlQuraEra = 1;
         }
         public enum UnicodeCategory
         {
@@ -4872,13 +4872,13 @@ namespace System
         static short System.Numerics.INumberBase<short>.MaxMagnitude(short x, short y) => throw null;
         static short System.Numerics.INumberBase<short>.MaxMagnitudeNumber(short x, short y) => throw null;
         static short System.Numerics.INumber<short>.MaxNumber(short x, short y) => throw null;
-        public const short MaxValue = default;
+        public const short MaxValue = 32767;
         static short System.Numerics.IMinMaxValue<short>.MaxValue { get => throw null; }
         static short System.Numerics.INumber<short>.Min(short x, short y) => throw null;
         static short System.Numerics.INumberBase<short>.MinMagnitude(short x, short y) => throw null;
         static short System.Numerics.INumberBase<short>.MinMagnitudeNumber(short x, short y) => throw null;
         static short System.Numerics.INumber<short>.MinNumber(short x, short y) => throw null;
-        public const short MinValue = default;
+        public const short MinValue = -32768;
         static short System.Numerics.IMinMaxValue<short>.MinValue { get => throw null; }
         static short System.Numerics.IMultiplicativeIdentity<short, short>.MultiplicativeIdentity { get => throw null; }
         static short System.Numerics.ISignedNumber<short>.NegativeOne { get => throw null; }
@@ -5013,14 +5013,14 @@ namespace System
         public static int MaxMagnitude(int x, int y) => throw null;
         static int System.Numerics.INumberBase<int>.MaxMagnitudeNumber(int x, int y) => throw null;
         static int System.Numerics.INumber<int>.MaxNumber(int x, int y) => throw null;
-        public const int MaxValue = default;
+        public const int MaxValue = 2147483647;
         static int System.Numerics.IMinMaxValue<int>.MaxValue { get => throw null; }
         static int System.Numerics.INumber<int>.Min(int x, int y) => throw null;
         static int System.Numerics.INumberBase<int>.MinMagnitude(int x, int y) => throw null;
         public static int MinMagnitude(int x, int y) => throw null;
         static int System.Numerics.INumberBase<int>.MinMagnitudeNumber(int x, int y) => throw null;
         static int System.Numerics.INumber<int>.MinNumber(int x, int y) => throw null;
-        public const int MinValue = default;
+        public const int MinValue = -2147483648;
         static int System.Numerics.IMinMaxValue<int>.MinValue { get => throw null; }
         static int System.Numerics.IMultiplicativeIdentity<int, int>.MultiplicativeIdentity { get => throw null; }
         static int System.Numerics.ISignedNumber<int>.NegativeOne { get => throw null; }
@@ -5150,13 +5150,13 @@ namespace System
         static long System.Numerics.INumberBase<long>.MaxMagnitude(long x, long y) => throw null;
         static long System.Numerics.INumberBase<long>.MaxMagnitudeNumber(long x, long y) => throw null;
         static long System.Numerics.INumber<long>.MaxNumber(long x, long y) => throw null;
-        public const long MaxValue = default;
+        public const long MaxValue = 9223372036854775807;
         static long System.Numerics.IMinMaxValue<long>.MaxValue { get => throw null; }
         static long System.Numerics.INumber<long>.Min(long x, long y) => throw null;
         static long System.Numerics.INumberBase<long>.MinMagnitude(long x, long y) => throw null;
         static long System.Numerics.INumberBase<long>.MinMagnitudeNumber(long x, long y) => throw null;
         static long System.Numerics.INumber<long>.MinNumber(long x, long y) => throw null;
-        public const long MinValue = default;
+        public const long MinValue = -9223372036854775808;
         static long System.Numerics.IMinMaxValue<long>.MinValue { get => throw null; }
         static long System.Numerics.IMultiplicativeIdentity<long, long>.MultiplicativeIdentity { get => throw null; }
         static long System.Numerics.ISignedNumber<long>.NegativeOne { get => throw null; }
@@ -10076,13 +10076,13 @@ namespace System
         static sbyte System.Numerics.INumberBase<sbyte>.MaxMagnitude(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumberBase<sbyte>.MaxMagnitudeNumber(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumber<sbyte>.MaxNumber(sbyte x, sbyte y) => throw null;
-        public const sbyte MaxValue = default;
+        public const sbyte MaxValue = 127;
         static sbyte System.Numerics.IMinMaxValue<sbyte>.MaxValue { get => throw null; }
         static sbyte System.Numerics.INumber<sbyte>.Min(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumberBase<sbyte>.MinMagnitude(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumberBase<sbyte>.MinMagnitudeNumber(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumber<sbyte>.MinNumber(sbyte x, sbyte y) => throw null;
-        public const sbyte MinValue = default;
+        public const sbyte MinValue = -128;
         static sbyte System.Numerics.IMinMaxValue<sbyte>.MinValue { get => throw null; }
         static sbyte System.Numerics.IMultiplicativeIdentity<sbyte, sbyte>.MultiplicativeIdentity { get => throw null; }
         static sbyte System.Numerics.ISignedNumber<sbyte>.NegativeOne { get => throw null; }
@@ -11943,7 +11943,7 @@ namespace System
         }
         public static class Timeout
         {
-            public const int Infinite = default;
+            public const int Infinite = -1;
             public static readonly System.TimeSpan InfiniteTimeSpan;
         }
         public sealed class Timer : System.MarshalByRefObject, System.IAsyncDisposable, System.IDisposable
@@ -11990,7 +11990,7 @@ namespace System
             public virtual bool WaitOne(int millisecondsTimeout, bool exitContext) => throw null;
             public virtual bool WaitOne(System.TimeSpan timeout) => throw null;
             public virtual bool WaitOne(System.TimeSpan timeout, bool exitContext) => throw null;
-            public const int WaitTimeout = default;
+            public const int WaitTimeout = 258;
         }
         public static partial class WaitHandleExtensions
         {
@@ -12115,7 +12115,7 @@ namespace System
         public static readonly System.TimeSpan MinValue;
         public System.TimeSpan Multiply(double factor) => throw null;
         public int Nanoseconds { get => throw null; }
-        public const long NanosecondsPerTick = default;
+        public const long NanosecondsPerTick = 100;
         public System.TimeSpan Negate() => throw null;
         public static System.TimeSpan operator +(System.TimeSpan t1, System.TimeSpan t2) => throw null;
         public static System.TimeSpan operator /(System.TimeSpan timeSpan, double divisor) => throw null;
@@ -12143,12 +12143,12 @@ namespace System
         public int Seconds { get => throw null; }
         public System.TimeSpan Subtract(System.TimeSpan ts) => throw null;
         public long Ticks { get => throw null; }
-        public const long TicksPerDay = default;
-        public const long TicksPerHour = default;
-        public const long TicksPerMicrosecond = default;
-        public const long TicksPerMillisecond = default;
-        public const long TicksPerMinute = default;
-        public const long TicksPerSecond = default;
+        public const long TicksPerDay = 864000000000;
+        public const long TicksPerHour = 36000000000;
+        public const long TicksPerMicrosecond = 10;
+        public const long TicksPerMillisecond = 10000;
+        public const long TicksPerMinute = 600000000;
+        public const long TicksPerSecond = 10000000;
         public override string ToString() => throw null;
         public string ToString(string format) => throw null;
         public string ToString(string format, System.IFormatProvider formatProvider) => throw null;
@@ -12960,13 +12960,13 @@ namespace System
         static ushort System.Numerics.INumberBase<ushort>.MaxMagnitude(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumberBase<ushort>.MaxMagnitudeNumber(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumber<ushort>.MaxNumber(ushort x, ushort y) => throw null;
-        public const ushort MaxValue = default;
+        public const ushort MaxValue = 65535;
         static ushort System.Numerics.IMinMaxValue<ushort>.MaxValue { get => throw null; }
         static ushort System.Numerics.INumber<ushort>.Min(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumberBase<ushort>.MinMagnitude(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumberBase<ushort>.MinMagnitudeNumber(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumber<ushort>.MinNumber(ushort x, ushort y) => throw null;
-        public const ushort MinValue = default;
+        public const ushort MinValue = 0;
         static ushort System.Numerics.IMinMaxValue<ushort>.MinValue { get => throw null; }
         static ushort System.Numerics.IMultiplicativeIdentity<ushort, ushort>.MultiplicativeIdentity { get => throw null; }
         static ushort System.Numerics.INumberBase<ushort>.One { get => throw null; }
@@ -13091,13 +13091,13 @@ namespace System
         static uint System.Numerics.INumberBase<uint>.MaxMagnitude(uint x, uint y) => throw null;
         static uint System.Numerics.INumberBase<uint>.MaxMagnitudeNumber(uint x, uint y) => throw null;
         static uint System.Numerics.INumber<uint>.MaxNumber(uint x, uint y) => throw null;
-        public const uint MaxValue = default;
+        public const uint MaxValue = 4294967295;
         static uint System.Numerics.IMinMaxValue<uint>.MaxValue { get => throw null; }
         static uint System.Numerics.INumber<uint>.Min(uint x, uint y) => throw null;
         static uint System.Numerics.INumberBase<uint>.MinMagnitude(uint x, uint y) => throw null;
         static uint System.Numerics.INumberBase<uint>.MinMagnitudeNumber(uint x, uint y) => throw null;
         static uint System.Numerics.INumber<uint>.MinNumber(uint x, uint y) => throw null;
-        public const uint MinValue = default;
+        public const uint MinValue = 0;
         static uint System.Numerics.IMinMaxValue<uint>.MinValue { get => throw null; }
         static uint System.Numerics.IMultiplicativeIdentity<uint, uint>.MultiplicativeIdentity { get => throw null; }
         static uint System.Numerics.INumberBase<uint>.One { get => throw null; }
@@ -13222,13 +13222,13 @@ namespace System
         static ulong System.Numerics.INumberBase<ulong>.MaxMagnitude(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumberBase<ulong>.MaxMagnitudeNumber(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumber<ulong>.MaxNumber(ulong x, ulong y) => throw null;
-        public const ulong MaxValue = default;
+        public const ulong MaxValue = 18446744073709551615;
         static ulong System.Numerics.IMinMaxValue<ulong>.MaxValue { get => throw null; }
         static ulong System.Numerics.INumber<ulong>.Min(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumberBase<ulong>.MinMagnitude(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumberBase<ulong>.MinMagnitudeNumber(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumber<ulong>.MinNumber(ulong x, ulong y) => throw null;
-        public const ulong MinValue = default;
+        public const ulong MinValue = 0;
         static ulong System.Numerics.IMinMaxValue<ulong>.MinValue { get => throw null; }
         static ulong System.Numerics.IMultiplicativeIdentity<ulong, ulong>.MultiplicativeIdentity { get => throw null; }
         static ulong System.Numerics.INumberBase<ulong>.One { get => throw null; }

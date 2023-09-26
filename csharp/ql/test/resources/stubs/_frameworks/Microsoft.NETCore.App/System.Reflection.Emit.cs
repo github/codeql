@@ -478,7 +478,7 @@ namespace System
                 public override string ToString() => throw null;
                 public override System.RuntimeTypeHandle TypeHandle { get => throw null; }
                 public override System.Type UnderlyingSystemType { get => throw null; }
-                public const int UnspecifiedTypeSize = default;
+                public const int UnspecifiedTypeSize = 0;
             }
         }
     }
