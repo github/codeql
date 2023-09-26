@@ -439,6 +439,9 @@ module Fasthttp {
     }
   }
 
+  /**
+   * Provide modeling for fasthttp.RequestCtx Type
+   */
   module RequestCtx {
     /**
      * The Methods that don't sanitize user provided file paths
