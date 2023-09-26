@@ -27,8 +27,8 @@ class ForEachStmt extends Element, @for_each_stmt {
 }
 
 query predicate new_for_each_stmts(
-  ForEachStmt stmt, @pattern_or_none pattern, @brace_stmt_or_none body, @expr_or_none sequence,
-  @pattern_binding_decl_or_none iteratorVar
+  ForEachStmt stmt, Element pattern, Element body, Element sequence,
+  Element iteratorVar
 ) {
   for_each_stmt(stmt, pattern, body) and
   for_each_stmt_iterator_vars(stmt, iteratorVar) and
