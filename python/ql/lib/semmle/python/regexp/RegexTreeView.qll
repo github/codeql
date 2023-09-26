@@ -230,7 +230,7 @@ module Impl implements RegexTreeViewSig {
       index > 0 and
       exists(int previousOffset | previousOffset = this.getPartOffset(index - 1) |
         result =
-          previousOffset + re.(StrConst).getImplicitlyConcatenatedPart(index - 1).getContentLenght()
+          previousOffset + re.(StrConst).getImplicitlyConcatenatedPart(index - 1).getContentlength()
       )
     }
 
@@ -245,7 +245,7 @@ module Impl implements RegexTreeViewSig {
         // Example:
         // re.compile('...' r"""...this..""")
         // - `start` is the offset from `(` to `this` as counted after concatenating all parts.
-        // - we subtract the lenght of the previous `StringPart`s, `'...'`, to know how far into this `StringPart` we go.
+        // - we subtract the length of the previous `StringPart`s, `'...'`, to know how far into this `StringPart` we go.
         // - as the prefix 'r"""' is part of the `StringPart`, `this` is found that much further in.
         localOffset = start - this.getPartOffset(index) + prefixLength
       )

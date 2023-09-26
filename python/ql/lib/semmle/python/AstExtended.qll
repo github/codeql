@@ -167,7 +167,7 @@ class StringPart extends StringPart_, AstNode {
    * Gets the length of the content, that is the text between the prefix and the quote.
    * See `context` for obtaining the prefix and the quote.
    */
-  int getContentLenght() {
+  int getContentLength() {
     exists(string prefix, string quote | this.context(prefix, quote) |
       result = this.getText().length() - prefix.length() - quote.length()
     )
