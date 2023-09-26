@@ -275,8 +275,9 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
   }
 
   /**
-   * Gets the constant value which this upper bound check ensures the
-   * other value is less than or equal to.
+   * Holds if the upper bound check ensures the non-constant operand is less
+   * than or equal to the maximum value for `bitSize` and `isSigned`. In this
+   * case, the upper bound check is a barrier guard.
    */
   predicate isBoundFor(int bitSize, boolean isSigned) {
     bitSize = [8, 16, 32] and
@@ -288,18 +289,15 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
       then strictnessOffset = 1
       else strictnessOffset = 0
     |
-      (
-        bound = expr.getAnOperand().getExactValue().toFloat()
-        or
-        exists(DeclaredConstant maxint | maxint.hasQualifiedName("math", "MaxInt") |
-          expr.getAnOperand() = maxint.getAReference() and
-          bound = getMaxIntValue(32, true)
-        )
-        or
-        exists(DeclaredConstant maxuint | maxuint.hasQualifiedName("math", "MaxUint") |
-          expr.getAnOperand() = maxuint.getAReference() and
-          bound = getMaxIntValue(32, false)
-        )
+      exists(DeclaredConstant maxint, DeclaredConstant maxuint |
+        maxint.hasQualifiedName("math", "MaxInt") and maxuint.hasQualifiedName("math", "MaxUint")
+      |
+        if expr.getAnOperand() = maxint.getAReference()
+        then bound = getMaxIntValue(32, true)
+        else
+          if expr.getAnOperand() = maxuint.getAReference()
+          then bound = getMaxIntValue(32, false)
+          else bound = expr.getAnOperand().getExactValue().toFloat()
       ) and
       bound - strictnessOffset <= getMaxIntValue(bitSize, isSigned)
     )
