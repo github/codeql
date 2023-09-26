@@ -50,25 +50,25 @@ br'''[this] is a test'''
 )
 
 # plain string with multiple parts
-re.compile( # $ location=1:2 SPURIOUS:location=1:23 MISSING:location=1:26
+re.compile( # $ location=1:2 location=1:26
 '[this] is a test' ' and [this] is another test'
 )
 
 # plain string with multiple parts across lines
-re.compile( # $ location=1:2 SPURIOUS:location=1:23 MISSING:location=2:7
+re.compile( # $ location=1:2 location=2:7
 '[this] is a test'
 ' and [this] is another test'
 )
 
 # plain string with multiple parts across lines and comments
-re.compile( # $ location=1:2 SPURIOUS:location=1:23 MISSING:location=3:7
+re.compile( # $ location=1:2 location=3:7
 '[this] is a test'
 # comment
 ' and [this] is another test'
 )
 
 # multiple parts of different kinds
-re.compile( # $ location=1:2 SPURIOUS:location=1:23 location=1:50 location=1:81 MISSING:location=1:28 location=2:11 location=3:8
+re.compile( # $ location=1:2 location=1:28 location=2:11 location=3:8
 '[this] is a test' ''' and [this] is another test'''
 br""" and [this] is yet another test"""
 r' and [this] is one more'

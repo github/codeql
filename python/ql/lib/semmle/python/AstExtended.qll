@@ -154,6 +154,24 @@ class StringPart extends StringPart_, AstNode {
   override string toString() { result = StringPart_.super.toString() }
 
   override Location getLocation() { result = StringPart_.super.getLocation() }
+
+  /** Holds if the content of string `StringPart` is surrounded by `prefix` and `quote`. */
+  predicate context(string prefix, string quote) {
+    exists(int occurrenceOffset |
+      quote = this.getText().regexpFind("\"{3}|\"{1}|'{3}|'{1}", 0, occurrenceOffset) and
+      prefix = this.getText().prefix(occurrenceOffset + quote.length())
+    )
+  }
+
+  /**
+   * Gets the length of the content, that is the text between the prefix and the quote.
+   * See `context` for obtaining the prefix and the quote.
+   */
+  int getContentLenght() {
+    exists(string prefix, string quote | this.context(prefix, quote) |
+      result = this.getText().length() - prefix.length() - quote.length()
+    )
+  }
 }
 
 class StringPartList extends StringPartList_ { }
