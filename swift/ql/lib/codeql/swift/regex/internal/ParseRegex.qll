@@ -1,6 +1,9 @@
 /**
  * Library for parsing Swift regular expressions.
  *
+ * See https://developer.apple.com/documentation/foundation/nsregularexpression
+ * for the regular expression syntax we aim to support.
+ *
  * N.B. does not yet handle stripping whitespace and comments in regexes with
  * the `x` (free-spacing) flag.
  */
@@ -8,6 +11,17 @@
 import swift
 private import RegexTracking
 private import codeql.swift.regex.Regex
+
+/**
+ * A mode character that can be used in a regular expression.
+ * ```
+ * NSRegularExpression accepts: dim suwxDPSUW
+ * Regex accepts:                imns  x
+ * ```
+ */
+private predicate availableRegexModeCharacter(string char) {
+  char = ["d", "i", "m", "n", "s", "u", "w", "x", "D", "P", "S", "U", "W"]
+}
 
 /**
  * A `Expr` containing a regular expression term, that is, either
@@ -283,7 +297,7 @@ abstract class RegExp extends Expr {
   private predicate flagGroupStartNoModes(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) in ["i", "x", "s", "m", "w"] and
+    availableRegexModeCharacter(this.getChar(start + 2)) and
     end = start + 2
   }
 
@@ -295,7 +309,7 @@ abstract class RegExp extends Expr {
     this.flagGroupStartNoModes(start, pos)
     or
     this.modeCharacter(start, pos - 1) and
-    this.getChar(pos) in ["i", "x", "s", "m", "w"]
+    availableRegexModeCharacter(this.getChar(pos))
   }
 
   /**
@@ -333,7 +347,10 @@ abstract class RegExp extends Expr {
       or
       c = "m" and result = "MULTILINE" // `^` and `$` also match beginning and end of lines
       or
-      c = "w" and result = "UNICODE" // Unicode UAX 29 word boundary mode
+      c = "w" and result = "UNICODEBOUNDARY" // Unicode UAX 29 word boundary mode
+      or
+      c = "u" and result = "UNICODE" // Unicode matching
+      // (other flags exist that are not translated here)
     )
   }
 
@@ -344,6 +361,7 @@ abstract class RegExp extends Expr {
    * VERBOSE
    * DOTALL
    * MULTILINE
+   * UNICODEBOUNDARY
    * UNICODE
    */
   string getAMode() {
