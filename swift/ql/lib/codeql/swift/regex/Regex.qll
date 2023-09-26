@@ -120,7 +120,8 @@ private newtype TRegexParseMode =
   MkVerbose() or // ignores whitespace and `#` comments within patterns
   MkDotAll() or // dot matches all characters, including line terminators
   MkMultiLine() or // `^` and `$` also match beginning and end of lines
-  MkUnicode() // Unicode UAX 29 word boundary mode
+  MkUnicodeBoundary() or // Unicode UAX 29 word boundary mode
+  MkUnicode() // Unicode matching
 
 /**
  * A regular expression parse mode flag.
@@ -137,6 +138,8 @@ class RegexParseMode extends TRegexParseMode {
     this = MkDotAll() and result = "DOTALL"
     or
     this = MkMultiLine() and result = "MULTILINE"
+    or
+    this = MkUnicodeBoundary() and result = "UNICODEBOUNDARY"
     or
     this = MkUnicode() and result = "UNICODE"
   }
@@ -249,7 +252,7 @@ class NSRegularExpressionRegexAdditionalFlowStep extends RegexAdditionalFlowStep
         .getMember()
         .(FieldDecl)
         .hasQualifiedName("NSRegularExpression.Options", "useUnicodeWordBoundaries") and
-    mode = MkUnicode() and
+    mode = MkUnicodeBoundary() and
     isSet = true
   }
 }
