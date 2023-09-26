@@ -1,5 +1,14 @@
 package main
 
+//go:generate depstubber -vendor  github.com/beego/beego/v2/server/web Controller Run,Router
+//go:generate depstubber -vendor  github.com/beego/beego/v2/server/web/context BeegoOutput,Context
+//go:generate depstubber -vendor  github.com/gin-gonic/gin Context Default
+//go:generate depstubber -vendor  github.com/gofiber/fiber/v2 Ctx New
+//go:generate depstubber -vendor  github.com/kataras/iris/v12 Context
+//go:generate depstubber -vendor  github.com/labstack/echo/v4 Context New
+//go:generate depstubber -vendor  github.com/spf13/afero Afero,RegexpFs,HttpFs,ReadOnlyFs,MemMapFs,OsFs,BasePathFs WriteReader,SafeWriteReader,WriteFile,ReadFile,ReadDir,NewOsFs,NewRegexpFs,NewReadOnlyFs,NewCacheOnReadFs,,NewHttpFs,NewBasePathFs,NewIOFS
+
+
 import (
 	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
