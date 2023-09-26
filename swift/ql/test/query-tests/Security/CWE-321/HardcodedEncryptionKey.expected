@@ -52,6 +52,10 @@ edges
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:83:92:83:92 | myConstKey |
 | rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) |
 nodes
+| SQLite.swift:43:13:43:13 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:45:23:45:23 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:47:15:47:15 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:49:79:49:79 | hardcoded_key | semmle.label | hardcoded_key |
 | cryptoswift.swift:76:3:76:3 | this string is constant | semmle.label | this string is constant |
 | cryptoswift.swift:90:26:90:121 | [...] | semmle.label | [...] |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | semmle.label | call to getConstantString() |
@@ -111,6 +115,10 @@ subpaths
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self | misc.swift:57:2:57:18 | [post] getter for .config |
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:57:2:57:18 | [post] getter for .config [encryptionKey] |
 #select
+| SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | SQLite.swift:43:13:43:13 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:43:13:43:13 | hardcoded_key | hardcoded_key |
+| SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:45:23:45:23 | hardcoded_key | hardcoded_key |
+| SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:47:15:47:15 | hardcoded_key | hardcoded_key |
+| SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:49:79:49:79 | hardcoded_key | hardcoded_key |
 | cryptoswift.swift:108:21:108:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:108:21:108:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
 | cryptoswift.swift:109:21:109:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:109:21:109:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
 | cryptoswift.swift:117:22:117:22 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:117:22:117:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |

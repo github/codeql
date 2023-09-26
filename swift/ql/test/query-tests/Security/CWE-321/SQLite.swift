@@ -40,13 +40,13 @@ func test_sqlite_swift_api(dbPath: String, goodKey: String, goodArray: [UInt8]) 
 	// methods taking a string key
 
 	try db.key(goodKey)
-	try db.key("hardcoded_key") // BAD [NOT DETECTED]
+	try db.key("hardcoded_key") // BAD
 	try db.keyAndMigrate(goodKey)
-	try db.keyAndMigrate("hardcoded_key") // BAD [NOT DETECTED]
+	try db.keyAndMigrate("hardcoded_key") // BAD
 	try db.rekey(goodKey)
-	try db.rekey("hardcoded_key") // BAD [NOT DETECTED]
+	try db.rekey("hardcoded_key") // BAD
 	try db.sqlcipher_export(Connection.Location.uri("encryptedDb.sqlite3"), key: goodKey)
-	try db.sqlcipher_export(Connection.Location.uri("encryptedDb.sqlite3"), key: "hardcoded_key") // BAD [NOT DETECTED]
+	try db.sqlcipher_export(Connection.Location.uri("encryptedDb.sqlite3"), key: "hardcoded_key") // BAD
 
 	// Blob variant
 
