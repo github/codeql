@@ -4,10 +4,9 @@ package main
 //go:generate depstubber -vendor  github.com/beego/beego/v2/server/web/context BeegoOutput,Context
 //go:generate depstubber -vendor  github.com/gin-gonic/gin Context Default
 //go:generate depstubber -vendor  github.com/gofiber/fiber/v2 Ctx New
-//go:generate depstubber -vendor  github.com/kataras/iris/v12 Context
+//go:generate depstubber -vendor  github.com/kataras/iris/v12/context Context
 //go:generate depstubber -vendor  github.com/labstack/echo/v4 Context New
 //go:generate depstubber -vendor  github.com/spf13/afero Afero,RegexpFs,HttpFs,ReadOnlyFs,MemMapFs,OsFs,BasePathFs WriteReader,SafeWriteReader,WriteFile,ReadFile,ReadDir,NewOsFs,NewRegexpFs,NewReadOnlyFs,NewCacheOnReadFs,,NewHttpFs,NewBasePathFs,NewIOFS
-
 
 import (
 	"fmt"
@@ -29,9 +28,9 @@ func main() {
 
 func BeegoController(beegoController beego.Controller) {
 	beegoOutput := BeegoContext.BeegoOutput{}
-	beegoOutput.Download("filepath", "license.txt")
+	beegoOutput.Download("filepath", "license.txt") // $ FileSystemAccess="filepath"
 	buffer := make([]byte, 10)
-	_ = beegoController.SaveToFileWithBuffer("filenameExistsInForm", "filepath", buffer)
+	_ = beegoController.SaveToFileWithBuffer("filenameExistsInForm", "filepath", buffer) // $ FileSystemAccess="filepath"
 }
 
 func Afero(writer http.ResponseWriter, request *http.Request) {
@@ -39,58 +38,57 @@ func Afero(writer http.ResponseWriter, request *http.Request) {
 	//osFS := afero.NewMemMapFs()
 	// OR
 	osFS := afero.NewOsFs()
-	fmt.Println(osFS.MkdirAll("tmp/b", 0755))
-	fmt.Println(afero.WriteFile(osFS, "tmp/a", []byte("this is me a !"), 0755))
-	fmt.Println(afero.WriteFile(osFS, "tmp/b/c", []byte("this is me c !"), 0755))
-	fmt.Println(afero.WriteFile(osFS, "tmp/d", []byte("this is me d !"), 0755))
-	content, _ := afero.ReadFile(osFS, filepath)
+	fmt.Println(osFS.MkdirAll(filepath, 0755))                                   // $ FileSystemAccess=filepath
+	fmt.Println(afero.WriteFile(osFS, filepath, []byte("this is me a !"), 0755)) // $ FileSystemAccess=filepath
+	content, _ := afero.ReadFile(osFS, filepath)                                 // $ FileSystemAccess=filepath
 	fmt.Println(string(content))
-	fmt.Println(osFS.Open(filepath))
-	// BAD
-	fmt.Println(afero.SafeWriteReader(osFS, filepath, os.Stdout))
-	fmt.Println(afero.WriteReader(osFS, filepath, os.Stdout))
+	fmt.Println(osFS.Open(filepath)) // $ FileSystemAccess=filepath
+	// NOT OK
+	fmt.Println(afero.SafeWriteReader(osFS, filepath, os.Stdout)) // $ FileSystemAccess=filepath
+	fmt.Println(afero.WriteReader(osFS, filepath, os.Stdout))     // $ FileSystemAccess=filepath
 
-	// RegexpFs ==> BAD
+	// RegexpFs ==> NOT OK
 	fmt.Println("RegexpFs:")
 	regex, _ := regexp.Compile(".*")
 	regexpFs := afero.NewRegexpFs(osFS, regex)
-	fmt.Println(afero.ReadFile(regexpFs, filepath))
+	fmt.Println(afero.ReadFile(regexpFs, filepath)) // $ FileSystemAccess=filepath
 
-	// ReadOnlyFS ==> BAD
+	// ReadOnlyFS ==> NOT OK
 	fmt.Println("ReadOnlyFS:")
 	readOnlyFS := afero.NewReadOnlyFs(osFS)
-	fmt.Println(afero.ReadFile(readOnlyFS, filepath))
+	fmt.Println(afero.ReadFile(readOnlyFS, filepath)) // $ FileSystemAccess=filepath
 
-	// CacheOnReadFs ==> BAD
+	// CacheOnReadFs ==> NOT OK
 	fmt.Println("CacheOnReadFs:")
 	cacheOnReadFs := afero.NewCacheOnReadFs(osFS, osFS, 10)
-	fmt.Println(afero.ReadFile(cacheOnReadFs, filepath))
+	fmt.Println(afero.ReadFile(cacheOnReadFs, filepath)) // $ FileSystemAccess=filepath
 
-	// HttpFS ==> BAD
+	// HttpFS ==> NOT OK
 	fmt.Println("HttpFS:")
 	httpFs := afero.NewHttpFs(osFS)
-	httpFile, _ := httpFs.Open(filepath)
+	httpFile, _ := httpFs.Open(filepath) // $ FileSystemAccess=filepath
 	tmpbytes := make([]byte, 30)
 	fmt.Println(httpFile.Read(tmpbytes))
 	fmt.Println(string(tmpbytes))
 
-	// osFS ==> BAD
+	// osFS ==> NOT OK
 	fmt.Println("Afero:")
-	afs := &afero.Afero{Fs: osFS}
-	fmt.Println(afs.ReadFile(filepath))
+	afs := &afero.Afero{Fs: osFS}       // $ succ=&... pred=osFS
+	fmt.Println(afs.ReadFile(filepath)) // $ FileSystemAccess=filepath
 
-	// BasePathFs ==> BAD
+	// BasePathFs ==> OK
 	fmt.Println("Afero:")
-	basePathFs0 := &afero.Afero{Fs: afero.NewBasePathFs(osFS, "tmp")}
-	fmt.Println(basePathFs0.ReadFile(filepath))
+	newBasePathFs := afero.NewBasePathFs(osFS, "tmp")
+	basePathFs0 := &afero.Afero{Fs: newBasePathFs} // $ succ=&... pred=newBasePathFs
+	fmt.Println(basePathFs0.ReadFile(filepath))    // $ SPURIOUS: FileSystemAccess=filepath
 
-	// IOFS ==> GOOD
+	// IOFS ==> OK
 	fmt.Println("IOFS:")
 	ioFS := afero.NewIOFS(osFS)
 	fmt.Println(ioFS.ReadFile(filepath))
 	fmt.Println(ioFS.Open(filepath))
 
-	// BasePathFs ==> GOOD
+	// BasePathFs ==> OK
 	fmt.Println("BasePathFs:")
 	basePathFs := afero.NewBasePathFs(osFS, "tmp")
 	fmt.Println(afero.ReadFile(basePathFs, filepath))
@@ -100,11 +98,13 @@ func Afero(writer http.ResponseWriter, request *http.Request) {
 func Echo() {
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
-		return c.File(c.QueryParam("filePath"))
+		filepath := c.QueryParam("filePath")
+		return c.File(filepath) // $ FileSystemAccess=filepath
 	})
 
 	e.GET("/attachment", func(c echo.Context) error {
-		return c.Attachment(c.QueryParam("filePath"), "file name in response")
+		filepath := c.QueryParam("filePath")
+		return c.Attachment(filepath, "file name in response") // $ FileSystemAccess=filepath
 	})
 	_ = e.Start(":1323")
 }
@@ -114,32 +114,32 @@ func Fiber() {
 	app.Get("/b", func(c *fiber.Ctx) error {
 		filepath := c.Params("filepath")
 		header, _ := c.FormFile("f")
-		_ = c.SaveFile(header, filepath)
-		return c.SendFile(filepath)
+		_ = c.SaveFile(header, filepath) // $ FileSystemAccess=filepath
+		return c.SendFile(filepath)      // $ FileSystemAccess=filepath
 	})
 	_ = app.Listen(":3000")
 }
 
 func IrisTest(ctx context.Context) {
 	filepath := ctx.URLParam("filepath")
-	_ = ctx.SendFile(filepath, "file")
-	_ = ctx.SendFileWithRate(filepath, "file", 0, 0)
-	_ = ctx.ServeFile(filepath)
-	_ = ctx.ServeFileWithRate(filepath, 0, 0)
-	_, _, _ = ctx.UploadFormFiles(filepath, nil)
+	_ = ctx.SendFile(filepath, "file")               // $ FileSystemAccess=filepath
+	_ = ctx.SendFileWithRate(filepath, "file", 0, 0) // $ FileSystemAccess=filepath
+	_ = ctx.ServeFile(filepath)                      // $ FileSystemAccess=filepath
+	_ = ctx.ServeFileWithRate(filepath, 0, 0)        // $ FileSystemAccess=filepath
+	_, _, _ = ctx.UploadFormFiles(filepath, nil)     // $ FileSystemAccess=filepath
 	_, fileHeader, _ := ctx.FormFile("file")
-	_, _ = ctx.SaveFormFile(fileHeader, filepath)
+	_, _ = ctx.SaveFormFile(fileHeader, filepath) // $ FileSystemAccess=filepath
 
 }
 func Gin() {
 	router := gin.Default()
 	router.POST("/FormUploads", func(c *gin.Context) {
 		filepath := c.Query("filepath")
-		c.File(filepath)
-		http.ServeFile(c.Writer, c.Request, filepath)
-		c.FileAttachment(filepath, "file name in response")
+		c.File(filepath)                                    // $ FileSystemAccess=filepath
+		http.ServeFile(c.Writer, c.Request, filepath)       // $ FileSystemAccess=filepath
+		c.FileAttachment(filepath, "file name in response") // $ FileSystemAccess=filepath
 		file, _ := c.FormFile("afile")
-		_ = c.SaveUploadedFile(file, filepath)
+		_ = c.SaveUploadedFile(file, filepath) // $ FileSystemAccess=filepath
 	})
 	_ = router.Run()
 }

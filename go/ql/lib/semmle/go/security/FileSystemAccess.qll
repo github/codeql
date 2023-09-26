@@ -134,29 +134,29 @@ module Afero {
    */
   class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
     AferoSystemAccess() {
-      exists(Method f |
-        f.hasQualifiedName(aferoPackage(), "HttpFs",
+      exists(Method m |
+        m.hasQualifiedName(aferoPackage(), "HttpFs",
           ["Create", "Open", "OpenFile", "Remove", "RemoveAll"]) and
-        this = f.getACall()
+        this = m.getACall()
         or
-        f.hasQualifiedName(aferoPackage(), "RegexpFs",
+        m.hasQualifiedName(aferoPackage(), "RegexpFs",
           ["Create", "Open", "OpenFile", "Remove", "RemoveAll", "Mkdir", "MkdirAll"]) and
-        this = f.getACall()
+        this = m.getACall()
         or
-        f.hasQualifiedName(aferoPackage(), "ReadOnlyFs",
+        m.hasQualifiedName(aferoPackage(), "ReadOnlyFs",
           ["Create", "Open", "OpenFile", "ReadDir", "ReadlinkIfPossible", "Mkdir", "MkdirAll"]) and
-        this = f.getACall()
+        this = m.getACall()
         or
-        f.hasQualifiedName(aferoPackage(), "OsFs",
+        m.hasQualifiedName(aferoPackage(), "OsFs",
           [
             "Create", "Open", "OpenFile", "ReadlinkIfPossible", "Remove", "RemoveAll", "Mkdir",
             "MkdirAll"
           ]) and
-        this = f.getACall()
+        this = m.getACall()
         or
-        f.hasQualifiedName(aferoPackage(), "MemMapFs",
+        m.hasQualifiedName(aferoPackage(), "MemMapFs",
           ["Create", "Open", "OpenFile", "Remove", "RemoveAll", "Mkdir", "MkdirAll"]) and
-        this = f.getACall()
+        this = m.getACall()
       )
     }
 
@@ -166,20 +166,33 @@ module Afero {
   /**
    * The File system access sinks of [afero](https://github.com/spf13/afero) framework utility functions
    *
+   * Afero Type is basically is an wrapper around utility functions which make them like a method, look at [here](https://github.com/spf13/afero/blob/cf95922e71986c0116204b6eeb3b345a01ffd842/ioutil.go#L61)
+   *
    * The Types that are not vulnerable: `afero.BasePathFs` and `afero.IOFS`
    */
   class AferoUtilityFunctionSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    int pathArg;
+
     AferoUtilityFunctionSystemAccess() {
       // utility functions
       exists(Function f |
         f.hasQualifiedName(aferoPackage(),
           ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
         this = f.getACall() and
+        pathArg = 1 and
         not aferoSanitizer(this.getArgument(0))
+      )
+      or
+      exists(Method m |
+        m.hasQualifiedName(aferoPackage(), "Afero",
+          ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
+        this = m.getACall() and
+        pathArg = 0 and
+        not aferoSanitizer(this.getReceiver())
       )
     }
 
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(1) }
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
   }
 
   /**
@@ -193,8 +206,8 @@ module Afero {
    */
   predicate aferoSanitizer(DataFlow::Node n) {
     exists(Function f |
-      f.hasQualifiedName(aferoPackage(), "NewBasePathFs") and
-      DataFlow::localFlow(f.getACall(), n)
+      f.hasQualifiedName(aferoPackage(), ["NewBasePathFs", "NewIOFS"]) and
+      TaintTracking::localTaint(f.getACall(), n)
     )
   }
 
@@ -208,7 +221,7 @@ module Afero {
   predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(StructLit st | st.getType().hasQualifiedName(aferoPackage(), "Afero") |
       n1.asExpr() = st.getAChildExpr().(KeyValueExpr).getAChildExpr() and
-      n2.asExpr() = st
+      n2.asExpr() = st.getParent()
     )
   }
 }
