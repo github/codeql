@@ -213,6 +213,11 @@ private module Cached {
     //   retaining this case increases robustness of flow).
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
+    // read of an optional .some member via `let x: T = y: T?` pattern matching
+    // note: similar to `ForceValueExpr` this is ideally a content `readStep` but
+    //   in practice we sometimes have taint on the optional itself.
+    nodeTo.asPattern() = nodeFrom.asPattern().(OptionalSomePattern).getSubPattern()
+    or
     // flow through `?` and `?.`
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
     or
@@ -220,6 +225,9 @@ private module Cached {
     or
     // flow through unary `+` (which does nothing)
     nodeFrom.asExpr() = nodeTo.asExpr().(UnaryPlusExpr).getOperand()
+    or
+    // flow through varargs expansions (that wrap an `ArrayExpr` where varargs enter a call)
+    nodeFrom.asExpr() = nodeTo.asExpr().(VarargExpansionExpr).getSubExpr()
     or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
@@ -966,7 +974,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
-  // read of an array member via subscript operator
+  // read of array or collection content via subscript operator
   exists(SubscriptExpr subscript |
     subscript.getBase() = node1.asExpr() and
     subscript = node2.asExpr() and
@@ -1038,6 +1046,8 @@ class DataFlowType extends TDataFlowType {
 }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
@@ -1150,12 +1160,3 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

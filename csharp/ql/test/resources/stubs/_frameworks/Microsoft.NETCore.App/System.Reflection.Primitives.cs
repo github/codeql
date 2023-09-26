@@ -1,13 +1,12 @@
 // This file contains auto-generated code.
 // Generated from `System.Reflection.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
-
 namespace System
 {
     namespace Reflection
     {
         namespace Emit
         {
-            public enum FlowControl : int
+            public enum FlowControl
             {
                 Branch = 0,
                 Break = 1,
@@ -19,36 +18,23 @@ namespace System
                 Return = 7,
                 Throw = 8,
             }
-
             public struct OpCode : System.IEquatable<System.Reflection.Emit.OpCode>
             {
-                public static bool operator !=(System.Reflection.Emit.OpCode a, System.Reflection.Emit.OpCode b) => throw null;
-                public static bool operator ==(System.Reflection.Emit.OpCode a, System.Reflection.Emit.OpCode b) => throw null;
-                public bool Equals(System.Reflection.Emit.OpCode obj) => throw null;
                 public override bool Equals(object obj) => throw null;
+                public bool Equals(System.Reflection.Emit.OpCode obj) => throw null;
                 public System.Reflection.Emit.FlowControl FlowControl { get => throw null; }
                 public override int GetHashCode() => throw null;
                 public string Name { get => throw null; }
-                // Stub generator skipped constructor 
+                public static bool operator ==(System.Reflection.Emit.OpCode a, System.Reflection.Emit.OpCode b) => throw null;
+                public static bool operator !=(System.Reflection.Emit.OpCode a, System.Reflection.Emit.OpCode b) => throw null;
                 public System.Reflection.Emit.OpCodeType OpCodeType { get => throw null; }
                 public System.Reflection.Emit.OperandType OperandType { get => throw null; }
                 public int Size { get => throw null; }
                 public System.Reflection.Emit.StackBehaviour StackBehaviourPop { get => throw null; }
                 public System.Reflection.Emit.StackBehaviour StackBehaviourPush { get => throw null; }
                 public override string ToString() => throw null;
-                public System.Int16 Value { get => throw null; }
+                public short Value { get => throw null; }
             }
-
-            public enum OpCodeType : int
-            {
-                Annotation = 0,
-                Macro = 1,
-                Nternal = 2,
-                Objmodel = 3,
-                Prefix = 4,
-                Primitive = 5,
-            }
-
             public class OpCodes
             {
                 public static System.Reflection.Emit.OpCode Add;
@@ -101,6 +87,7 @@ namespace System
                 public static System.Reflection.Emit.OpCode Conv_I4;
                 public static System.Reflection.Emit.OpCode Conv_I8;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_I;
+                public static System.Reflection.Emit.OpCode Conv_Ovf_I_Un;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_I1;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_I1_Un;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_I2;
@@ -109,8 +96,8 @@ namespace System
                 public static System.Reflection.Emit.OpCode Conv_Ovf_I4_Un;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_I8;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_I8_Un;
-                public static System.Reflection.Emit.OpCode Conv_Ovf_I_Un;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_U;
+                public static System.Reflection.Emit.OpCode Conv_Ovf_U_Un;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_U1;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_U1_Un;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_U2;
@@ -119,10 +106,9 @@ namespace System
                 public static System.Reflection.Emit.OpCode Conv_Ovf_U4_Un;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_U8;
                 public static System.Reflection.Emit.OpCode Conv_Ovf_U8_Un;
-                public static System.Reflection.Emit.OpCode Conv_Ovf_U_Un;
+                public static System.Reflection.Emit.OpCode Conv_R_Un;
                 public static System.Reflection.Emit.OpCode Conv_R4;
                 public static System.Reflection.Emit.OpCode Conv_R8;
-                public static System.Reflection.Emit.OpCode Conv_R_Un;
                 public static System.Reflection.Emit.OpCode Conv_U;
                 public static System.Reflection.Emit.OpCode Conv_U1;
                 public static System.Reflection.Emit.OpCode Conv_U2;
@@ -279,8 +265,16 @@ namespace System
                 public static System.Reflection.Emit.OpCode Volatile;
                 public static System.Reflection.Emit.OpCode Xor;
             }
-
-            public enum OperandType : int
+            public enum OpCodeType
+            {
+                Annotation = 0,
+                Macro = 1,
+                Nternal = 2,
+                Objmodel = 3,
+                Prefix = 4,
+                Primitive = 5,
+            }
+            public enum OperandType
             {
                 InlineBrTarget = 0,
                 InlineField = 1,
@@ -301,21 +295,19 @@ namespace System
                 ShortInlineR = 17,
                 ShortInlineVar = 18,
             }
-
-            public enum PackingSize : int
+            public enum PackingSize
             {
-                Size1 = 1,
-                Size128 = 128,
-                Size16 = 16,
-                Size2 = 2,
-                Size32 = 32,
-                Size4 = 4,
-                Size64 = 64,
-                Size8 = 8,
                 Unspecified = 0,
+                Size1 = 1,
+                Size2 = 2,
+                Size4 = 4,
+                Size8 = 8,
+                Size16 = 16,
+                Size32 = 32,
+                Size64 = 64,
+                Size128 = 128,
             }
-
-            public enum StackBehaviour : int
+            public enum StackBehaviour
             {
                 Pop0 = 0,
                 Pop1 = 1,
@@ -330,7 +322,6 @@ namespace System
                 Popref = 10,
                 Popref_pop1 = 11,
                 Popref_popi = 12,
-                Popref_popi_pop1 = 28,
                 Popref_popi_popi = 13,
                 Popref_popi_popi8 = 14,
                 Popref_popi_popr4 = 15,
@@ -346,8 +337,8 @@ namespace System
                 Pushref = 25,
                 Varpop = 26,
                 Varpush = 27,
+                Popref_popi_pop1 = 28,
             }
-
         }
     }
 }

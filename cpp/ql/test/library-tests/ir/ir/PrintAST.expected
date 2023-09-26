@@ -15846,6 +15846,95 @@ ir.cpp:
 # 2095|       getExpr(): [VariableAccess] x
 # 2095|           Type = [IntType] int
 # 2095|           ValueCategory = prvalue(load)
+# 2098| [TopLevelFunction] void newArrayCorrectType(size_t)
+# 2098|   <params>: 
+# 2098|     getParameter(0): [Parameter] n
+# 2098|         Type = [CTypedefType,Size_t] size_t
+# 2098|   getEntryPoint(): [BlockStmt] { ... }
+# 2099|     getStmt(0): [ExprStmt] ExprStmt
+# 2099|       getExpr(): [NewArrayExpr] new[]
+# 2099|           Type = [IntPointerType] int *
+# 2099|           ValueCategory = prvalue
+# 2099|         getExtent(): [VariableAccess] n
+# 2099|             Type = [CTypedefType,Size_t] size_t
+# 2099|             ValueCategory = prvalue(load)
+# 2100|     getStmt(1): [ExprStmt] ExprStmt
+# 2100|       getExpr(): [NewArrayExpr] new[]
+# 2100|           Type = [IntPointerType] int *
+# 2100|           ValueCategory = prvalue
+# 2100|         getAllocatorCall(): [FunctionCall] call to operator new[]
+# 2100|             Type = [VoidPointerType] void *
+# 2100|             ValueCategory = prvalue
+# 2100|           getArgument(0): [ErrorExpr] <error expr>
+# 2100|               Type = [LongType] unsigned long
+# 2100|               ValueCategory = prvalue
+# 2100|           getArgument(1): [Literal] 1.0
+# 2100|               Type = [FloatType] float
+# 2100|               Value = [Literal] 1.0
+# 2100|               ValueCategory = prvalue
+# 2100|         getExtent(): [VariableAccess] n
+# 2100|             Type = [CTypedefType,Size_t] size_t
+# 2100|             ValueCategory = prvalue(load)
+# 2101|     getStmt(2): [ExprStmt] ExprStmt
+# 2101|       getExpr(): [NewArrayExpr] new[]
+# 2101|           Type = [PointerType] String *
+# 2101|           ValueCategory = prvalue
+# 2101|         getInitializer(): [ArrayAggregateLiteral] {...}
+# 2101|             Type = [ArrayType] String[]
+# 2101|             ValueCategory = prvalue
+# 2101|           getAnElementExpr(0): [ConstructorCall] call to String
+# 2101|               Type = [VoidType] void
+# 2101|               ValueCategory = prvalue
+# 2101|         getExtent(): [VariableAccess] n
+# 2101|             Type = [CTypedefType,Size_t] size_t
+# 2101|             ValueCategory = prvalue(load)
+# 2102|     getStmt(3): [ExprStmt] ExprStmt
+# 2102|       getExpr(): [NewArrayExpr] new[]
+# 2102|           Type = [PointerType] Overaligned *
+# 2102|           ValueCategory = prvalue
+# 2102|         getExtent(): [VariableAccess] n
+# 2102|             Type = [CTypedefType,Size_t] size_t
+# 2102|             ValueCategory = prvalue(load)
+# 2102|         getAlignmentArgument(): [Literal] 128
+# 2102|             Type = [ScopedEnum] align_val_t
+# 2102|             Value = [Literal] 128
+# 2102|             ValueCategory = prvalue
+# 2103|     getStmt(4): [ExprStmt] ExprStmt
+# 2103|       getExpr(): [NewArrayExpr] new[]
+# 2103|           Type = [PointerType] DefaultCtorWithDefaultParam *
+# 2103|           ValueCategory = prvalue
+# 2103|         getInitializer(): [ArrayAggregateLiteral] {...}
+# 2103|             Type = [ArrayType] DefaultCtorWithDefaultParam[]
+# 2103|             ValueCategory = prvalue
+# 2103|           getAnElementExpr(0): [ConstructorCall] call to DefaultCtorWithDefaultParam
+# 2103|               Type = [VoidType] void
+# 2103|               ValueCategory = prvalue
+# 2103|         getExtent(): [VariableAccess] n
+# 2103|             Type = [CTypedefType,Size_t] size_t
+# 2103|             ValueCategory = prvalue(load)
+# 2104|     getStmt(5): [ExprStmt] ExprStmt
+# 2104|       getExpr(): [NewArrayExpr] new[]
+# 2104|           Type = [IntPointerType] int *
+# 2104|           ValueCategory = prvalue
+# 2104|         getInitializer(): [ArrayAggregateLiteral] {...}
+# 2104|             Type = [ArrayType] int[3]
+# 2104|             ValueCategory = prvalue
+# 2104|           getAnElementExpr(0): [Literal] 0
+# 2104|               Type = [IntType] int
+# 2104|               Value = [Literal] 0
+# 2104|               ValueCategory = prvalue
+# 2104|           getAnElementExpr(1): [Literal] 1
+# 2104|               Type = [IntType] int
+# 2104|               Value = [Literal] 1
+# 2104|               ValueCategory = prvalue
+# 2104|           getAnElementExpr(2): [Literal] 2
+# 2104|               Type = [IntType] int
+# 2104|               Value = [Literal] 2
+# 2104|               ValueCategory = prvalue
+# 2104|         getExtent(): [VariableAccess] n
+# 2104|             Type = [CTypedefType,Size_t] size_t
+# 2104|             ValueCategory = prvalue(load)
+# 2105|     getStmt(6): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

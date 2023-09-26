@@ -27,7 +27,7 @@ private class StringSource extends SourceModelCsv {
 }
 
 /**
- * A model for `String` and `StringProtocol` members that permit taint flow.
+ * A model for members of `String`, `StringProtocol` and similar classes that permit taint flow.
  */
 private class StringSummaries extends SummaryModelCsv {
   override predicate row(string row) {
@@ -124,7 +124,8 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;randomElement();;;Argument[-1];ReturnValue;taint",
         ";String;true;randomElement(using:);;;Argument[-1];ReturnValue;taint",
         ";String;true;enumerated();;;Argument[-1];ReturnValue;taint",
-        ";String;true;encode(to:);;;Argument[-1];Argument[0];taint"
+        ";String;true;encode(to:);;;Argument[-1];Argument[0];taint",
+        ";LosslessStringConvertible;true;init(_:);;;Argument[0];ReturnValue;taint",
       ]
   }
 }

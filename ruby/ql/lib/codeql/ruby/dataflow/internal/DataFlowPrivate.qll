@@ -282,6 +282,7 @@ module VariableCapture {
     private import ruby as R
     private import codeql.ruby.controlflow.ControlFlowGraph
     private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
+    private import TaintTrackingPrivate as TaintTrackingPrivate
 
     class Location = R::Location;
 
@@ -296,7 +297,10 @@ module VariableCapture {
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     class CapturedVariable extends LocalVariable {
-      CapturedVariable() { this.isCaptured() }
+      CapturedVariable() {
+        this.isCaptured() and
+        TaintTrackingPrivate::forceCachingInSameStage()
+      }
 
       Callable getCallable() {
         exists(Scope scope | scope = this.getDeclaringScope() |
@@ -426,12 +430,11 @@ module VariableCapture {
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
-  private import TaintTrackingPrivate as TaintTrackingPrivate
   private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
 
   cached
   newtype TNode =
-    TExprNode(CfgNodes::ExprCfgNode n) { TaintTrackingPrivate::forceCachingInSameStage() } or
+    TExprNode(CfgNodes::ExprCfgNode n) or
     TReturningNode(CfgNodes::ReturningCfgNode n) or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
     TCapturedVariableNode(VariableCapture::CapturedVariable v) or
@@ -1697,6 +1700,8 @@ private predicate mustHaveLambdaType(CfgNodes::ExprCfgNode e, Callable c) {
   )
 }
 
+predicate localMustFlowStep(Node node1, Node node2) { none() }
+
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
   result = TLambdaDataFlowType(n.(LambdaSelfReferenceNode).getCallable())
@@ -1970,12 +1975,3 @@ class AdditionalJumpStep extends Unit {
    */
   abstract predicate step(Node pred, Node succ);
 }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNodeImpl p) { none() }

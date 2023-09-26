@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var hasExpandingCycle = GenericsRecursionGraph.HasExpandingCycle(Symbol);
             if (hasExpandingCycle)
             {
-                Context.ExtractionError("Found recursive generic inheritance hierarchy. Base class of type is not extracted", Symbol.ToDisplayString(), Context.CreateLocation(ReportingLocation), severity: Util.Logging.Severity.Warning);
+                Context.ExtractionError("Found recursive generic inheritance hierarchy. Base class of type is not extracted", Symbol.ToDisplayString(), Context.CreateLocation(ReportingLocation), severity: Semmle.Util.Logging.Severity.Warning);
             }
 
             // Visit base types

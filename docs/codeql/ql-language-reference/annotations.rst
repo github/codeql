@@ -302,7 +302,7 @@ after join ordering. This can be useful to prevent the optimiser from choosing
 a sub-optimal join order.
 
 For instance, in the example below, the ``pragma[inline_late]`` and
-``bindingset[x]`` annotations specifiy that calls to ``p`` should be join ordered
+``bindingset[x]`` annotations specify that calls to ``p`` should be join ordered
 in a context where ``x`` is already bound. This forces the join orderer to
 order ``q(x)`` before ``p(x)``, which is more computationally efficient
 than ordering ``p(x)`` before ``q(x)``.

@@ -5,20 +5,40 @@ function RegisterExtractorPack(id)
 
     local extractor = Exify(GetPlatformToolsDirectory() .. 'Semmle.Extraction.CSharp.Driver')
 
+    local function isDotnet(name)
+        return name == 'dotnet' or name == 'dotnet.exe'
+    end
+
+    local function isDotnetPath(path)
+        return path:match('dotnet[.]exe$') or path:match('dotnet$')
+    end
+
+    local function isPossibleDotnetSubcommand(arg)
+        -- dotnet options start with either - or / (both are legal)
+        -- It is possible to run dotnet with dotnet, e.g., `dotnet dotnet build`
+        -- but we shouldn't consider `dotnet` to be a subcommand.
+        local firstCharacter = string.sub(arg, 1, 1)
+        return not (firstCharacter == '-') and
+               not (firstCharacter == '/') and
+               not isDotnetPath(arg)
+    end
+
     function DotnetMatcherBuild(compilerName, compilerPath, compilerArguments,
                                 _languageId)
-        if compilerName ~= 'dotnet' and compilerName ~= 'dotnet.exe' then
+        if not isDotnet(compilerName) then
             return nil
         end
 
         -- The dotnet CLI has the following usage instructions:
-        -- dotnet [sdk-options] [command] [command-options] [arguments]
+        -- dotnet [sdk-options] [command] [command-options] [arguments] OR
+        -- dotnet [runtime-options] [path-to-application] [arguments]
         -- we are interested in dotnet build, which has the following usage instructions:
         -- dotnet [options] build [<PROJECT | SOLUTION>...]
         -- For now, parse the command line as follows:
         -- Everything that starts with `-` (or `/`) will be ignored.
-        -- The first non-option argument is treated as the command.
-        -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
+        -- The first non-option argument is treated as the command (except if it is dotnet itself).
+        -- if that's `build` or similar, we append `-p:UseSharedCompilation=false`
+        -- and `-p:EmitCompilerGeneratedFiles=true` to the command line,
         -- otherwise we do nothing.
         local match = false
         local testMatch = false
@@ -36,9 +56,7 @@ function RegisterExtractorPack(id)
             NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
         end
         for i, arg in ipairs(argv) do
-            -- dotnet options start with either - or / (both are legal)
-            local firstCharacter = string.sub(arg, 1, 1)
-            if not (firstCharacter == '-') and not (firstCharacter == '/') then
+            if isPossibleDotnetSubcommand(arg) then
                 if (not match) and inSubCommandPosition then
                     Log(1, 'Dotnet subcommand detected: %s', arg)
                 end
@@ -80,7 +98,7 @@ function RegisterExtractorPack(id)
             end
             -- if we see an option to `dotnet run` (e.g., `--project`), inject just prior
             -- to the last option
-            if firstCharacter == '-' then
+            if string.sub(arg, 1, 1) == '-' then
                 dotnetRunNeedsSeparator = false
                 dotnetRunInjectionIndex = i
             end

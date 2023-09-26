@@ -706,7 +706,7 @@ func testArray() {
     sink(arg: arr4[0]) // $ MISSING: flow=692
 
     var arr5 = Array(repeating: source(), count: 2)
-    sink(arg: arr5[0]) // $ MISSING: flow=708
+    sink(arg: arr5[0]) // $ flow=708
 
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
@@ -841,15 +841,47 @@ func testNestedKeyPathWrite() {
   sink(arg: s2.s.x) // $ flow=840
 }
 
+func testVarargs1(args: Int...) {
+    sink(arg: args)
+    sink(arg: args[0]) // $ flow=871
+}
+
+func testVarargs2(_ v: Int, _ args: Int...) {
+    sink(arg: v) // $ flow=872
+    sink(arg: args)
+    sink(arg: args[0])
+    sink(arg: args[1])
+}
+
+func testVarargs3(_ v: Int, _ args: Int...) {
+    sink(arg: v)
+    sink(arg: args)
+    sink(arg: args[0]) // $ SPURIOUS: flow=873
+    sink(arg: args[1]) // $ flow=873
+
+    for arg in args {
+        sink(arg: arg) // $ flow=873
+    }
+
+    let myKeyPath = \[Int][1]
+    sink(arg: args[keyPath: myKeyPath]) // $ flow=873
+}
+
+func testVarargsCaller() {
+    testVarargs1(args: source())
+    testVarargs2(source(), 2, 3)
+    testVarargs3(1, 2, source())
+}
+
 func testSetForEach() {
     var set1 = Set([source()])
     
     for elem in set1 {
-        sink(arg: elem) // $ flow=845
+        sink(arg: elem) // $ flow=877
     }
 
     var generator = set1.makeIterator()
-    sink(arg: generator.next()!) // $ flow=845
+    sink(arg: generator.next()!) // $ flow=877
 }
 
 func testAsyncFor () async {
@@ -864,6 +896,6 @@ func testAsyncFor () async {
     })
 
     for try await i in stream {
-        sink(arg: i) // $ MISSING: flow=860
+        sink(arg: i) // $ MISSING: flow=892
     }
 }

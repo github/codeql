@@ -1,6 +1,7 @@
 package com.github.codeql
 
-import com.github.codeql.comments.CommentExtractor
+import com.github.codeql.comments.CommentExtractorPSI
+import com.github.codeql.comments.CommentExtractorLighterAST
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
@@ -127,7 +128,15 @@ open class KotlinFileExtractor(
                 }
             }
             extractStaticInitializer(file, { extractFileClass(file) })
-            CommentExtractor(this, file, tw.fileId).extract()
+            val psiCommentsExtracted = CommentExtractorPSI(this, file, tw.fileId).extract()
+            val lighterAstCommentsExtracted = CommentExtractorLighterAST(this, file, tw.fileId).extract()
+            if (psiCommentsExtracted == lighterAstCommentsExtracted) {
+                if (psiCommentsExtracted) {
+                    logger.warnElement("Found both PSI and LightAST comments in ${file.path}.", file)
+                } else {
+                    logger.warnElement("Comments could not be processed in ${file.path}.", file)
+                }
+            }
 
             if (!declarationStack.isEmpty()) {
                 logger.errorElement("Declaration stack is not empty after processing the file", file)

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.cxf.tools.corba.utils", "FileOutputStreamFactory", true, "FileOutputStreamFactory", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.corba.utils", "FileOutputStreamFactory", true, "FileOutputStreamFactory", "(String,FileOutputStreamFactory)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.corba.utils", "OutputStreamFactory", true, "createOutputStream", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.tools.corba.utils", "OutputStreamFactory", true, "createOutputStream", "(String,String)", "", "Argument[0..1]", "path-injection", "manual"]

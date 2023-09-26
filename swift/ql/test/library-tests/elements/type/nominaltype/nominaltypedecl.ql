@@ -7,7 +7,9 @@ string describe(TypeDecl td) {
   or
   result = "getAliasedType:" + td.(TypeAliasDecl).getAliasedType().toString()
   or
-  result = "getABaseType:" + td.(NominalTypeDecl).getABaseType().toString()
+  result = "getABaseType:" + td.getABaseType().toString()
+  or
+  result = "getABaseTypeDecl:" + td.getABaseTypeDecl().toString()
 }
 
 from VarDecl v, TypeDecl td

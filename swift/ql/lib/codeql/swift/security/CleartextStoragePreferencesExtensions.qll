@@ -78,7 +78,7 @@ private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesS
 }
 
 /**
- * An barrier for cleartext preferences storage vulnerabilities.
+ * A barrier for cleartext preferences storage vulnerabilities.
  *  - encryption; encrypted values are not cleartext.
  *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
