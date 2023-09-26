@@ -35,7 +35,7 @@ namespace Microsoft
                     public bool AllowReconnect { get => throw null; }
                     public CloseMessage(string error) => throw null;
                     public CloseMessage(string error, bool allowReconnect) => throw null;
-                    public static Microsoft.AspNetCore.SignalR.Protocol.CloseMessage Empty;
+                    public static readonly Microsoft.AspNetCore.SignalR.Protocol.CloseMessage Empty;
                     public string Error { get => throw null; }
                 }
                 public class CompletionMessage : Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage
@@ -66,7 +66,7 @@ namespace Microsoft
                 public class HandshakeResponseMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
                     public HandshakeResponseMessage(string error) => throw null;
-                    public static Microsoft.AspNetCore.SignalR.Protocol.HandshakeResponseMessage Empty;
+                    public static readonly Microsoft.AspNetCore.SignalR.Protocol.HandshakeResponseMessage Empty;
                     public string Error { get => throw null; }
                 }
                 public abstract class HubInvocationMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
@@ -126,7 +126,7 @@ namespace Microsoft
                 }
                 public class PingMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
-                    public static Microsoft.AspNetCore.SignalR.Protocol.PingMessage Instance;
+                    public static readonly Microsoft.AspNetCore.SignalR.Protocol.PingMessage Instance;
                 }
                 public sealed class RawResult
                 {

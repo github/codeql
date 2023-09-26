@@ -132,7 +132,7 @@ namespace System
             public ReadOnlySequence(System.ReadOnlyMemory<T> memory) => throw null;
             public ReadOnlySequence(T[] array) => throw null;
             public ReadOnlySequence(T[] array, int start, int length) => throw null;
-            public static System.Buffers.ReadOnlySequence<T> Empty;
+            public static readonly System.Buffers.ReadOnlySequence<T> Empty;
             public System.SequencePosition End { get => throw null; }
             public struct Enumerator
             {

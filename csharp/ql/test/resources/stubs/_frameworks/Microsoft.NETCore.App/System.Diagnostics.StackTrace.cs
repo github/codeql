@@ -178,27 +178,27 @@ namespace System
             public class SymDocumentType
             {
                 public SymDocumentType() => throw null;
-                public static System.Guid Text;
+                public static readonly System.Guid Text;
             }
             public class SymLanguageType
             {
-                public static System.Guid Basic;
-                public static System.Guid C;
-                public static System.Guid Cobol;
-                public static System.Guid CPlusPlus;
-                public static System.Guid CSharp;
+                public static readonly System.Guid Basic;
+                public static readonly System.Guid C;
+                public static readonly System.Guid Cobol;
+                public static readonly System.Guid CPlusPlus;
+                public static readonly System.Guid CSharp;
                 public SymLanguageType() => throw null;
-                public static System.Guid ILAssembly;
-                public static System.Guid Java;
-                public static System.Guid JScript;
-                public static System.Guid MCPlusPlus;
-                public static System.Guid Pascal;
-                public static System.Guid SMC;
+                public static readonly System.Guid ILAssembly;
+                public static readonly System.Guid Java;
+                public static readonly System.Guid JScript;
+                public static readonly System.Guid MCPlusPlus;
+                public static readonly System.Guid Pascal;
+                public static readonly System.Guid SMC;
             }
             public class SymLanguageVendor
             {
                 public SymLanguageVendor() => throw null;
-                public static System.Guid Microsoft;
+                public static readonly System.Guid Microsoft;
             }
         }
     }

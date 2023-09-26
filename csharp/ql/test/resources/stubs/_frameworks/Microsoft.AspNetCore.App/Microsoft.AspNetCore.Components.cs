@@ -189,8 +189,8 @@ namespace Microsoft
             public struct EventCallback
             {
                 public EventCallback(Microsoft.AspNetCore.Components.IHandleEvent receiver, System.MulticastDelegate @delegate) => throw null;
-                public static Microsoft.AspNetCore.Components.EventCallback Empty;
-                public static Microsoft.AspNetCore.Components.EventCallbackFactory Factory;
+                public static readonly Microsoft.AspNetCore.Components.EventCallback Empty;
+                public static readonly Microsoft.AspNetCore.Components.EventCallbackFactory Factory;
                 public bool HasDelegate { get => throw null; }
                 public System.Threading.Tasks.Task InvokeAsync(object arg) => throw null;
                 public System.Threading.Tasks.Task InvokeAsync() => throw null;
@@ -198,7 +198,7 @@ namespace Microsoft
             public struct EventCallback<TValue>
             {
                 public EventCallback(Microsoft.AspNetCore.Components.IHandleEvent receiver, System.MulticastDelegate @delegate) => throw null;
-                public static Microsoft.AspNetCore.Components.EventCallback<TValue> Empty;
+                public static readonly Microsoft.AspNetCore.Components.EventCallback<TValue> Empty;
                 public bool HasDelegate { get => throw null; }
                 public System.Threading.Tasks.Task InvokeAsync(TValue arg) => throw null;
                 public System.Threading.Tasks.Task InvokeAsync() => throw null;
@@ -297,7 +297,7 @@ namespace Microsoft
             public struct EventCallbackWorkItem
             {
                 public EventCallbackWorkItem(System.MulticastDelegate @delegate) => throw null;
-                public static Microsoft.AspNetCore.Components.EventCallbackWorkItem Empty;
+                public static readonly Microsoft.AspNetCore.Components.EventCallbackWorkItem Empty;
                 public System.Threading.Tasks.Task InvokeAsync(object arg) => throw null;
             }
             public sealed class EventHandlerAttribute : System.Attribute
@@ -543,9 +543,9 @@ namespace Microsoft
                 }
                 public struct ArrayRange<T>
                 {
-                    public T[] Array;
+                    public readonly T[] Array;
                     public Microsoft.AspNetCore.Components.RenderTree.ArrayRange<T> Clone() => throw null;
-                    public int Count;
+                    public readonly int Count;
                     public ArrayRange(T[] array, int count) => throw null;
                 }
                 public class EventFieldInfo
@@ -585,16 +585,16 @@ namespace Microsoft
                 }
                 public struct RenderTreeDiff
                 {
-                    public int ComponentId;
-                    public Microsoft.AspNetCore.Components.RenderTree.ArrayBuilderSegment<Microsoft.AspNetCore.Components.RenderTree.RenderTreeEdit> Edits;
+                    public readonly int ComponentId;
+                    public readonly Microsoft.AspNetCore.Components.RenderTree.ArrayBuilderSegment<Microsoft.AspNetCore.Components.RenderTree.RenderTreeEdit> Edits;
                 }
                 public struct RenderTreeEdit
                 {
-                    public int MoveToSiblingIndex;
-                    public int ReferenceFrameIndex;
-                    public string RemovedAttributeName;
-                    public int SiblingIndex;
-                    public Microsoft.AspNetCore.Components.RenderTree.RenderTreeEditType Type;
+                    public readonly int MoveToSiblingIndex;
+                    public readonly int ReferenceFrameIndex;
+                    public readonly string RemovedAttributeName;
+                    public readonly int SiblingIndex;
+                    public readonly Microsoft.AspNetCore.Components.RenderTree.RenderTreeEditType Type;
                 }
                 public enum RenderTreeEditType
                 {

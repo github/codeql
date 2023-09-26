@@ -20,12 +20,12 @@ namespace Microsoft
                 }
                 public static class CookieAuthenticationDefaults
                 {
-                    public static Microsoft.AspNetCore.Http.PathString AccessDeniedPath;
+                    public static readonly Microsoft.AspNetCore.Http.PathString AccessDeniedPath;
                     public const string AuthenticationScheme = default;
-                    public static string CookiePrefix;
-                    public static Microsoft.AspNetCore.Http.PathString LoginPath;
-                    public static Microsoft.AspNetCore.Http.PathString LogoutPath;
-                    public static string ReturnUrlParameter;
+                    public static readonly string CookiePrefix;
+                    public static readonly Microsoft.AspNetCore.Http.PathString LoginPath;
+                    public static readonly Microsoft.AspNetCore.Http.PathString LogoutPath;
+                    public static readonly string ReturnUrlParameter;
                 }
                 public class CookieAuthenticationEvents
                 {

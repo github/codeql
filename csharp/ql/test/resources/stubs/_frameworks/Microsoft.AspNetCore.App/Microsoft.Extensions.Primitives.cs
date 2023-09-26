@@ -46,7 +46,7 @@ namespace Microsoft
                 public static int Compare(Microsoft.Extensions.Primitives.StringSegment a, Microsoft.Extensions.Primitives.StringSegment b, System.StringComparison comparisonType) => throw null;
                 public StringSegment(string buffer) => throw null;
                 public StringSegment(string buffer, int offset, int length) => throw null;
-                public static Microsoft.Extensions.Primitives.StringSegment Empty;
+                public static readonly Microsoft.Extensions.Primitives.StringSegment Empty;
                 public bool EndsWith(string text, System.StringComparison comparisonType) => throw null;
                 public bool Equals(Microsoft.Extensions.Primitives.StringSegment other) => throw null;
                 public static bool Equals(Microsoft.Extensions.Primitives.StringSegment a, Microsoft.Extensions.Primitives.StringSegment b, System.StringComparison comparisonType) => throw null;
@@ -121,7 +121,7 @@ namespace Microsoft
                 public int Count { get => throw null; }
                 public StringValues(string value) => throw null;
                 public StringValues(string[] values) => throw null;
-                public static Microsoft.Extensions.Primitives.StringValues Empty;
+                public static readonly Microsoft.Extensions.Primitives.StringValues Empty;
                 public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator
                 {
                     public Enumerator(ref Microsoft.Extensions.Primitives.StringValues values) => throw null;

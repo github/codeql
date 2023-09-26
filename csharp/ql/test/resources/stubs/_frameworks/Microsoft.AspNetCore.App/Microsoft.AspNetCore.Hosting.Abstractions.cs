@@ -8,9 +8,9 @@ namespace Microsoft
         {
             public static class EnvironmentName
             {
-                public static string Development;
-                public static string Production;
-                public static string Staging;
+                public static readonly string Development;
+                public static readonly string Production;
+                public static readonly string Staging;
             }
             public static partial class HostingAbstractionsWebHostBuilderExtensions
             {
@@ -106,21 +106,21 @@ namespace Microsoft
             }
             public static class WebHostDefaults
             {
-                public static string ApplicationKey;
-                public static string CaptureStartupErrorsKey;
-                public static string ContentRootKey;
-                public static string DetailedErrorsKey;
-                public static string EnvironmentKey;
-                public static string HostingStartupAssembliesKey;
-                public static string HostingStartupExcludeAssembliesKey;
-                public static string PreferHostingUrlsKey;
-                public static string PreventHostingStartupKey;
-                public static string ServerUrlsKey;
-                public static string ShutdownTimeoutKey;
-                public static string StartupAssemblyKey;
-                public static string StaticWebAssetsKey;
-                public static string SuppressStatusMessagesKey;
-                public static string WebRootKey;
+                public static readonly string ApplicationKey;
+                public static readonly string CaptureStartupErrorsKey;
+                public static readonly string ContentRootKey;
+                public static readonly string DetailedErrorsKey;
+                public static readonly string EnvironmentKey;
+                public static readonly string HostingStartupAssembliesKey;
+                public static readonly string HostingStartupExcludeAssembliesKey;
+                public static readonly string PreferHostingUrlsKey;
+                public static readonly string PreventHostingStartupKey;
+                public static readonly string ServerUrlsKey;
+                public static readonly string ShutdownTimeoutKey;
+                public static readonly string StartupAssemblyKey;
+                public static readonly string StaticWebAssetsKey;
+                public static readonly string SuppressStatusMessagesKey;
+                public static readonly string WebRootKey;
             }
         }
     }

@@ -36,7 +36,7 @@ namespace Microsoft
             }
             public static partial class FallbackEndpointRouteBuilderExtensions
             {
-                public static string DefaultPattern;
+                public static readonly string DefaultPattern;
                 public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder MapFallback(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, Microsoft.AspNetCore.Http.RequestDelegate requestDelegate) => throw null;
                 public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder MapFallback(this Microsoft.AspNetCore.Routing.IEndpointRouteBuilder endpoints, string pattern, Microsoft.AspNetCore.Http.RequestDelegate requestDelegate) => throw null;
             }
@@ -471,7 +471,7 @@ namespace Microsoft
                     public int Compare(Microsoft.AspNetCore.Http.Endpoint x, Microsoft.AspNetCore.Http.Endpoint y) => throw null;
                     protected virtual int CompareMetadata(TMetadata x, TMetadata y) => throw null;
                     protected EndpointMetadataComparer() => throw null;
-                    public static Microsoft.AspNetCore.Routing.Matching.EndpointMetadataComparer<TMetadata> Default;
+                    public static readonly Microsoft.AspNetCore.Routing.Matching.EndpointMetadataComparer<TMetadata> Default;
                     protected virtual TMetadata GetMetadata(Microsoft.AspNetCore.Http.Endpoint endpoint) => throw null;
                 }
                 public abstract class EndpointSelector
@@ -557,7 +557,7 @@ namespace Microsoft
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterPart> Parameters { get => throw null; }
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Routing.Patterns.RoutePatternPathSegment> PathSegments { get => throw null; }
                     public string RawText { get => throw null; }
-                    public static object RequiredValueAny;
+                    public static readonly object RequiredValueAny;
                     public System.Collections.Generic.IReadOnlyDictionary<string, object> RequiredValues { get => throw null; }
                 }
                 public sealed class RoutePatternException : System.Exception
@@ -797,7 +797,7 @@ namespace Microsoft
             public class RouteValueEqualityComparer : System.Collections.Generic.IEqualityComparer<object>
             {
                 public RouteValueEqualityComparer() => throw null;
-                public static Microsoft.AspNetCore.Routing.RouteValueEqualityComparer Default;
+                public static readonly Microsoft.AspNetCore.Routing.RouteValueEqualityComparer Default;
                 public bool Equals(object x, object y) => throw null;
                 public int GetHashCode(object obj) => throw null;
             }
@@ -956,7 +956,7 @@ namespace Microsoft
                 {
                     public Microsoft.AspNetCore.Routing.VirtualPathData GetVirtualPath(Microsoft.AspNetCore.Routing.VirtualPathContext context) => throw null;
                     public System.Threading.Tasks.Task RouteAsync(Microsoft.AspNetCore.Routing.RouteContext context) => throw null;
-                    public static string RouteGroupKey;
+                    public static readonly string RouteGroupKey;
                     public int Version { get => throw null; }
                 }
                 public class UrlMatchingNode

@@ -611,57 +611,57 @@ namespace System
             }
             public static class DbMetaDataCollectionNames
             {
-                public static string DataSourceInformation;
-                public static string DataTypes;
-                public static string MetaDataCollections;
-                public static string ReservedWords;
-                public static string Restrictions;
+                public static readonly string DataSourceInformation;
+                public static readonly string DataTypes;
+                public static readonly string MetaDataCollections;
+                public static readonly string ReservedWords;
+                public static readonly string Restrictions;
             }
             public static class DbMetaDataColumnNames
             {
-                public static string CollectionName;
-                public static string ColumnSize;
-                public static string CompositeIdentifierSeparatorPattern;
-                public static string CreateFormat;
-                public static string CreateParameters;
-                public static string DataSourceProductName;
-                public static string DataSourceProductVersion;
-                public static string DataSourceProductVersionNormalized;
-                public static string DataType;
-                public static string GroupByBehavior;
-                public static string IdentifierCase;
-                public static string IdentifierPattern;
-                public static string IsAutoIncrementable;
-                public static string IsBestMatch;
-                public static string IsCaseSensitive;
-                public static string IsConcurrencyType;
-                public static string IsFixedLength;
-                public static string IsFixedPrecisionScale;
-                public static string IsLiteralSupported;
-                public static string IsLong;
-                public static string IsNullable;
-                public static string IsSearchable;
-                public static string IsSearchableWithLike;
-                public static string IsUnsigned;
-                public static string LiteralPrefix;
-                public static string LiteralSuffix;
-                public static string MaximumScale;
-                public static string MinimumScale;
-                public static string NumberOfIdentifierParts;
-                public static string NumberOfRestrictions;
-                public static string OrderByColumnsInSelect;
-                public static string ParameterMarkerFormat;
-                public static string ParameterMarkerPattern;
-                public static string ParameterNameMaxLength;
-                public static string ParameterNamePattern;
-                public static string ProviderDbType;
-                public static string QuotedIdentifierCase;
-                public static string QuotedIdentifierPattern;
-                public static string ReservedWord;
-                public static string StatementSeparatorPattern;
-                public static string StringLiteralPattern;
-                public static string SupportedJoinOperators;
-                public static string TypeName;
+                public static readonly string CollectionName;
+                public static readonly string ColumnSize;
+                public static readonly string CompositeIdentifierSeparatorPattern;
+                public static readonly string CreateFormat;
+                public static readonly string CreateParameters;
+                public static readonly string DataSourceProductName;
+                public static readonly string DataSourceProductVersion;
+                public static readonly string DataSourceProductVersionNormalized;
+                public static readonly string DataType;
+                public static readonly string GroupByBehavior;
+                public static readonly string IdentifierCase;
+                public static readonly string IdentifierPattern;
+                public static readonly string IsAutoIncrementable;
+                public static readonly string IsBestMatch;
+                public static readonly string IsCaseSensitive;
+                public static readonly string IsConcurrencyType;
+                public static readonly string IsFixedLength;
+                public static readonly string IsFixedPrecisionScale;
+                public static readonly string IsLiteralSupported;
+                public static readonly string IsLong;
+                public static readonly string IsNullable;
+                public static readonly string IsSearchable;
+                public static readonly string IsSearchableWithLike;
+                public static readonly string IsUnsigned;
+                public static readonly string LiteralPrefix;
+                public static readonly string LiteralSuffix;
+                public static readonly string MaximumScale;
+                public static readonly string MinimumScale;
+                public static readonly string NumberOfIdentifierParts;
+                public static readonly string NumberOfRestrictions;
+                public static readonly string OrderByColumnsInSelect;
+                public static readonly string ParameterMarkerFormat;
+                public static readonly string ParameterMarkerPattern;
+                public static readonly string ParameterNameMaxLength;
+                public static readonly string ParameterNamePattern;
+                public static readonly string ProviderDbType;
+                public static readonly string QuotedIdentifierCase;
+                public static readonly string QuotedIdentifierPattern;
+                public static readonly string ReservedWord;
+                public static readonly string StatementSeparatorPattern;
+                public static readonly string StringLiteralPattern;
+                public static readonly string SupportedJoinOperators;
+                public static readonly string TypeName;
             }
             public abstract class DbParameter : System.MarshalByRefObject, System.Data.IDataParameter, System.Data.IDbDataParameter
             {
@@ -819,40 +819,40 @@ namespace System
             }
             public static class SchemaTableColumn
             {
-                public static string AllowDBNull;
-                public static string BaseColumnName;
-                public static string BaseSchemaName;
-                public static string BaseTableName;
-                public static string ColumnName;
-                public static string ColumnOrdinal;
-                public static string ColumnSize;
-                public static string DataType;
-                public static string IsAliased;
-                public static string IsExpression;
-                public static string IsKey;
-                public static string IsLong;
-                public static string IsUnique;
-                public static string NonVersionedProviderType;
-                public static string NumericPrecision;
-                public static string NumericScale;
-                public static string ProviderType;
+                public static readonly string AllowDBNull;
+                public static readonly string BaseColumnName;
+                public static readonly string BaseSchemaName;
+                public static readonly string BaseTableName;
+                public static readonly string ColumnName;
+                public static readonly string ColumnOrdinal;
+                public static readonly string ColumnSize;
+                public static readonly string DataType;
+                public static readonly string IsAliased;
+                public static readonly string IsExpression;
+                public static readonly string IsKey;
+                public static readonly string IsLong;
+                public static readonly string IsUnique;
+                public static readonly string NonVersionedProviderType;
+                public static readonly string NumericPrecision;
+                public static readonly string NumericScale;
+                public static readonly string ProviderType;
             }
             public static class SchemaTableOptionalColumn
             {
-                public static string AutoIncrementSeed;
-                public static string AutoIncrementStep;
-                public static string BaseCatalogName;
-                public static string BaseColumnNamespace;
-                public static string BaseServerName;
-                public static string BaseTableNamespace;
-                public static string ColumnMapping;
-                public static string DefaultValue;
-                public static string Expression;
-                public static string IsAutoIncrement;
-                public static string IsHidden;
-                public static string IsReadOnly;
-                public static string IsRowVersion;
-                public static string ProviderSpecificDataType;
+                public static readonly string AutoIncrementSeed;
+                public static readonly string AutoIncrementStep;
+                public static readonly string BaseCatalogName;
+                public static readonly string BaseColumnNamespace;
+                public static readonly string BaseServerName;
+                public static readonly string BaseTableNamespace;
+                public static readonly string ColumnMapping;
+                public static readonly string DefaultValue;
+                public static readonly string Expression;
+                public static readonly string IsAutoIncrement;
+                public static readonly string IsHidden;
+                public static readonly string IsReadOnly;
+                public static readonly string IsRowVersion;
+                public static readonly string ProviderSpecificDataType;
             }
             [System.Flags]
             public enum SupportedJoinOperators
@@ -2191,7 +2191,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlBinary x, System.Data.SqlTypes.SqlBinary y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlBinary x, System.Data.SqlTypes.SqlBinary y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlBinary x, System.Data.SqlTypes.SqlBinary y) => throw null;
-                public static System.Data.SqlTypes.SqlBinary Null;
+                public static readonly System.Data.SqlTypes.SqlBinary Null;
                 public static System.Data.SqlTypes.SqlBinary operator +(System.Data.SqlTypes.SqlBinary x, System.Data.SqlTypes.SqlBinary y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator ==(System.Data.SqlTypes.SqlBinary x, System.Data.SqlTypes.SqlBinary y) => throw null;
                 public static explicit operator byte[](System.Data.SqlTypes.SqlBinary x) => throw null;
@@ -2221,7 +2221,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlBoolean Equals(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
                 public bool Equals(System.Data.SqlTypes.SqlBoolean other) => throw null;
                 public override bool Equals(object value) => throw null;
-                public static System.Data.SqlTypes.SqlBoolean False;
+                public static readonly System.Data.SqlTypes.SqlBoolean False;
                 public override int GetHashCode() => throw null;
                 System.Xml.Schema.XmlSchema System.Xml.Serialization.IXmlSerializable.GetSchema() => throw null;
                 public static System.Xml.XmlQualifiedName GetXsdType(System.Xml.Schema.XmlSchemaSet schemaSet) => throw null;
@@ -2233,8 +2233,8 @@ namespace System
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEquals(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
-                public static System.Data.SqlTypes.SqlBoolean Null;
-                public static System.Data.SqlTypes.SqlBoolean One;
+                public static readonly System.Data.SqlTypes.SqlBoolean Null;
+                public static readonly System.Data.SqlTypes.SqlBoolean One;
                 public static System.Data.SqlTypes.SqlBoolean OnesComplement(System.Data.SqlTypes.SqlBoolean x) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator &(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator |(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
@@ -2273,11 +2273,11 @@ namespace System
                 public System.Data.SqlTypes.SqlSingle ToSqlSingle() => throw null;
                 public System.Data.SqlTypes.SqlString ToSqlString() => throw null;
                 public override string ToString() => throw null;
-                public static System.Data.SqlTypes.SqlBoolean True;
+                public static readonly System.Data.SqlTypes.SqlBoolean True;
                 public bool Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean Xor(System.Data.SqlTypes.SqlBoolean x, System.Data.SqlTypes.SqlBoolean y) => throw null;
-                public static System.Data.SqlTypes.SqlBoolean Zero;
+                public static readonly System.Data.SqlTypes.SqlBoolean Zero;
             }
             public struct SqlByte : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlByte>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
@@ -2299,13 +2299,13 @@ namespace System
                 public bool IsNull { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
-                public static System.Data.SqlTypes.SqlByte MaxValue;
-                public static System.Data.SqlTypes.SqlByte MinValue;
+                public static readonly System.Data.SqlTypes.SqlByte MaxValue;
+                public static readonly System.Data.SqlTypes.SqlByte MinValue;
                 public static System.Data.SqlTypes.SqlByte Mod(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
                 public static System.Data.SqlTypes.SqlByte Modulus(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
                 public static System.Data.SqlTypes.SqlByte Multiply(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
-                public static System.Data.SqlTypes.SqlByte Null;
+                public static readonly System.Data.SqlTypes.SqlByte Null;
                 public static System.Data.SqlTypes.SqlByte OnesComplement(System.Data.SqlTypes.SqlByte x) => throw null;
                 public static System.Data.SqlTypes.SqlByte operator +(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
                 public static System.Data.SqlTypes.SqlByte operator &(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
@@ -2349,7 +2349,7 @@ namespace System
                 public byte Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlByte Xor(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
-                public static System.Data.SqlTypes.SqlByte Zero;
+                public static readonly System.Data.SqlTypes.SqlByte Zero;
             }
             public sealed class SqlBytes : System.Data.SqlTypes.INullable, System.Runtime.Serialization.ISerializable, System.Xml.Serialization.IXmlSerializable
             {
@@ -2439,10 +2439,10 @@ namespace System
                 public bool IsNull { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlDateTime x, System.Data.SqlTypes.SqlDateTime y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlDateTime x, System.Data.SqlTypes.SqlDateTime y) => throw null;
-                public static System.Data.SqlTypes.SqlDateTime MaxValue;
-                public static System.Data.SqlTypes.SqlDateTime MinValue;
+                public static readonly System.Data.SqlTypes.SqlDateTime MaxValue;
+                public static readonly System.Data.SqlTypes.SqlDateTime MinValue;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlDateTime x, System.Data.SqlTypes.SqlDateTime y) => throw null;
-                public static System.Data.SqlTypes.SqlDateTime Null;
+                public static readonly System.Data.SqlTypes.SqlDateTime Null;
                 public static System.Data.SqlTypes.SqlDateTime operator +(System.Data.SqlTypes.SqlDateTime x, System.TimeSpan t) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator ==(System.Data.SqlTypes.SqlDateTime x, System.Data.SqlTypes.SqlDateTime y) => throw null;
                 public static explicit operator System.DateTime(System.Data.SqlTypes.SqlDateTime x) => throw null;
@@ -2456,9 +2456,9 @@ namespace System
                 public static System.Data.SqlTypes.SqlDateTime operator -(System.Data.SqlTypes.SqlDateTime x, System.TimeSpan t) => throw null;
                 public static System.Data.SqlTypes.SqlDateTime Parse(string s) => throw null;
                 void System.Xml.Serialization.IXmlSerializable.ReadXml(System.Xml.XmlReader reader) => throw null;
-                public static int SQLTicksPerHour;
-                public static int SQLTicksPerMinute;
-                public static int SQLTicksPerSecond;
+                public static readonly int SQLTicksPerHour;
+                public static readonly int SQLTicksPerMinute;
+                public static readonly int SQLTicksPerSecond;
                 public static System.Data.SqlTypes.SqlDateTime Subtract(System.Data.SqlTypes.SqlDateTime x, System.TimeSpan t) => throw null;
                 public int TimeTicks { get => throw null; }
                 public System.Data.SqlTypes.SqlString ToSqlString() => throw null;
@@ -2497,13 +2497,13 @@ namespace System
                 public bool IsPositive { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
-                public static byte MaxPrecision;
-                public static byte MaxScale;
-                public static System.Data.SqlTypes.SqlDecimal MaxValue;
-                public static System.Data.SqlTypes.SqlDecimal MinValue;
+                public static readonly byte MaxPrecision;
+                public static readonly byte MaxScale;
+                public static readonly System.Data.SqlTypes.SqlDecimal MaxValue;
+                public static readonly System.Data.SqlTypes.SqlDecimal MinValue;
                 public static System.Data.SqlTypes.SqlDecimal Multiply(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
-                public static System.Data.SqlTypes.SqlDecimal Null;
+                public static readonly System.Data.SqlTypes.SqlDecimal Null;
                 public static System.Data.SqlTypes.SqlDecimal operator +(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
                 public static System.Data.SqlTypes.SqlDecimal operator /(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator ==(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
@@ -2570,11 +2570,11 @@ namespace System
                 public bool IsNull { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
-                public static System.Data.SqlTypes.SqlDouble MaxValue;
-                public static System.Data.SqlTypes.SqlDouble MinValue;
+                public static readonly System.Data.SqlTypes.SqlDouble MaxValue;
+                public static readonly System.Data.SqlTypes.SqlDouble MinValue;
                 public static System.Data.SqlTypes.SqlDouble Multiply(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
-                public static System.Data.SqlTypes.SqlDouble Null;
+                public static readonly System.Data.SqlTypes.SqlDouble Null;
                 public static System.Data.SqlTypes.SqlDouble operator +(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
                 public static System.Data.SqlTypes.SqlDouble operator /(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator ==(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
@@ -2612,7 +2612,7 @@ namespace System
                 public override string ToString() => throw null;
                 public double Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                public static System.Data.SqlTypes.SqlDouble Zero;
+                public static readonly System.Data.SqlTypes.SqlDouble Zero;
             }
             public struct SqlGuid : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlGuid>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
@@ -2634,7 +2634,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlGuid x, System.Data.SqlTypes.SqlGuid y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlGuid x, System.Data.SqlTypes.SqlGuid y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlGuid x, System.Data.SqlTypes.SqlGuid y) => throw null;
-                public static System.Data.SqlTypes.SqlGuid Null;
+                public static readonly System.Data.SqlTypes.SqlGuid Null;
                 public static System.Data.SqlTypes.SqlBoolean operator ==(System.Data.SqlTypes.SqlGuid x, System.Data.SqlTypes.SqlGuid y) => throw null;
                 public static explicit operator System.Data.SqlTypes.SqlGuid(System.Data.SqlTypes.SqlBinary x) => throw null;
                 public static explicit operator System.Guid(System.Data.SqlTypes.SqlGuid x) => throw null;
@@ -2674,13 +2674,13 @@ namespace System
                 public bool IsNull { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt16 MaxValue;
-                public static System.Data.SqlTypes.SqlInt16 MinValue;
+                public static readonly System.Data.SqlTypes.SqlInt16 MaxValue;
+                public static readonly System.Data.SqlTypes.SqlInt16 MinValue;
                 public static System.Data.SqlTypes.SqlInt16 Mod(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 Modulus(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 Multiply(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt16 Null;
+                public static readonly System.Data.SqlTypes.SqlInt16 Null;
                 public static System.Data.SqlTypes.SqlInt16 OnesComplement(System.Data.SqlTypes.SqlInt16 x) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 operator +(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 operator &(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
@@ -2725,7 +2725,7 @@ namespace System
                 public short Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlInt16 Xor(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt16 Zero;
+                public static readonly System.Data.SqlTypes.SqlInt16 Zero;
             }
             public struct SqlInt32 : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlInt32>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
@@ -2747,13 +2747,13 @@ namespace System
                 public bool IsNull { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt32 MaxValue;
-                public static System.Data.SqlTypes.SqlInt32 MinValue;
+                public static readonly System.Data.SqlTypes.SqlInt32 MaxValue;
+                public static readonly System.Data.SqlTypes.SqlInt32 MinValue;
                 public static System.Data.SqlTypes.SqlInt32 Mod(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 Modulus(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 Multiply(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt32 Null;
+                public static readonly System.Data.SqlTypes.SqlInt32 Null;
                 public static System.Data.SqlTypes.SqlInt32 OnesComplement(System.Data.SqlTypes.SqlInt32 x) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 operator +(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 operator &(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
@@ -2798,7 +2798,7 @@ namespace System
                 public int Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlInt32 Xor(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt32 Zero;
+                public static readonly System.Data.SqlTypes.SqlInt32 Zero;
             }
             public struct SqlInt64 : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlInt64>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
@@ -2820,13 +2820,13 @@ namespace System
                 public bool IsNull { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt64 MaxValue;
-                public static System.Data.SqlTypes.SqlInt64 MinValue;
+                public static readonly System.Data.SqlTypes.SqlInt64 MaxValue;
+                public static readonly System.Data.SqlTypes.SqlInt64 MinValue;
                 public static System.Data.SqlTypes.SqlInt64 Mod(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 Modulus(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 Multiply(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt64 Null;
+                public static readonly System.Data.SqlTypes.SqlInt64 Null;
                 public static System.Data.SqlTypes.SqlInt64 OnesComplement(System.Data.SqlTypes.SqlInt64 x) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 operator +(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 operator &(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
@@ -2871,7 +2871,7 @@ namespace System
                 public long Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
                 public static System.Data.SqlTypes.SqlInt64 Xor(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
-                public static System.Data.SqlTypes.SqlInt64 Zero;
+                public static readonly System.Data.SqlTypes.SqlInt64 Zero;
             }
             public struct SqlMoney : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlMoney>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
@@ -2896,11 +2896,11 @@ namespace System
                 public bool IsNull { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
-                public static System.Data.SqlTypes.SqlMoney MaxValue;
-                public static System.Data.SqlTypes.SqlMoney MinValue;
+                public static readonly System.Data.SqlTypes.SqlMoney MaxValue;
+                public static readonly System.Data.SqlTypes.SqlMoney MinValue;
                 public static System.Data.SqlTypes.SqlMoney Multiply(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
-                public static System.Data.SqlTypes.SqlMoney Null;
+                public static readonly System.Data.SqlTypes.SqlMoney Null;
                 public static System.Data.SqlTypes.SqlMoney operator +(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
                 public static System.Data.SqlTypes.SqlMoney operator /(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator ==(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
@@ -2944,7 +2944,7 @@ namespace System
                 public override string ToString() => throw null;
                 public decimal Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                public static System.Data.SqlTypes.SqlMoney Zero;
+                public static readonly System.Data.SqlTypes.SqlMoney Zero;
             }
             public sealed class SqlNotFilledException : System.Data.SqlTypes.SqlTypeException
             {
@@ -2977,11 +2977,11 @@ namespace System
                 public bool IsNull { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
-                public static System.Data.SqlTypes.SqlSingle MaxValue;
-                public static System.Data.SqlTypes.SqlSingle MinValue;
+                public static readonly System.Data.SqlTypes.SqlSingle MaxValue;
+                public static readonly System.Data.SqlTypes.SqlSingle MinValue;
                 public static System.Data.SqlTypes.SqlSingle Multiply(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
-                public static System.Data.SqlTypes.SqlSingle Null;
+                public static readonly System.Data.SqlTypes.SqlSingle Null;
                 public static System.Data.SqlTypes.SqlSingle operator +(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
                 public static System.Data.SqlTypes.SqlSingle operator /(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator ==(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
@@ -3019,13 +3019,13 @@ namespace System
                 public override string ToString() => throw null;
                 public float Value { get => throw null; }
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
-                public static System.Data.SqlTypes.SqlSingle Zero;
+                public static readonly System.Data.SqlTypes.SqlSingle Zero;
             }
             public struct SqlString : System.IComparable, System.IEquatable<System.Data.SqlTypes.SqlString>, System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlString Add(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
-                public static int BinarySort;
-                public static int BinarySort2;
+                public static readonly int BinarySort;
+                public static readonly int BinarySort2;
                 public System.Data.SqlTypes.SqlString Clone() => throw null;
                 public System.Globalization.CompareInfo CompareInfo { get => throw null; }
                 public static System.Globalization.CompareOptions CompareOptionsFromSqlCompareOptions(System.Data.SqlTypes.SqlCompareOptions compareOptions) => throw null;
@@ -3050,16 +3050,16 @@ namespace System
                 public static System.Xml.XmlQualifiedName GetXsdType(System.Xml.Schema.XmlSchemaSet schemaSet) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean GreaterThan(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean GreaterThanOrEqual(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
-                public static int IgnoreCase;
-                public static int IgnoreKanaType;
-                public static int IgnoreNonSpace;
-                public static int IgnoreWidth;
+                public static readonly int IgnoreCase;
+                public static readonly int IgnoreKanaType;
+                public static readonly int IgnoreNonSpace;
+                public static readonly int IgnoreWidth;
                 public bool IsNull { get => throw null; }
                 public int LCID { get => throw null; }
                 public static System.Data.SqlTypes.SqlBoolean LessThan(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean LessThanOrEqual(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean NotEquals(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
-                public static System.Data.SqlTypes.SqlString Null;
+                public static readonly System.Data.SqlTypes.SqlString Null;
                 public static System.Data.SqlTypes.SqlString operator +(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
                 public static System.Data.SqlTypes.SqlBoolean operator ==(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
                 public static explicit operator System.Data.SqlTypes.SqlString(System.Data.SqlTypes.SqlBoolean x) => throw null;

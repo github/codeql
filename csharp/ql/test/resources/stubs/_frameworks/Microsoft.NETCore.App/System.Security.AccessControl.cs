@@ -234,7 +234,7 @@ namespace System
                 public CustomAce(System.Security.AccessControl.AceType type, System.Security.AccessControl.AceFlags flags, byte[] opaque) => throw null;
                 public override void GetBinaryForm(byte[] binaryForm, int offset) => throw null;
                 public byte[] GetOpaque() => throw null;
-                public static int MaxOpaqueLength;
+                public static readonly int MaxOpaqueLength;
                 public int OpaqueLength { get => throw null; }
                 public void SetOpaque(byte[] opaque) => throw null;
             }
@@ -275,8 +275,8 @@ namespace System
             }
             public abstract class GenericAcl : System.Collections.ICollection, System.Collections.IEnumerable
             {
-                public static byte AclRevision;
-                public static byte AclRevisionDS;
+                public static readonly byte AclRevision;
+                public static readonly byte AclRevisionDS;
                 public abstract int BinaryLength { get; }
                 public void CopyTo(System.Security.AccessControl.GenericAce[] array, int index) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -286,7 +286,7 @@ namespace System
                 public System.Security.AccessControl.AceEnumerator GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 public bool IsSynchronized { get => throw null; }
-                public static int MaxBinaryLength;
+                public static readonly int MaxBinaryLength;
                 public abstract byte Revision { get; }
                 public virtual object SyncRoot { get => throw null; }
                 public abstract System.Security.AccessControl.GenericAce this[int index] { get; set; }

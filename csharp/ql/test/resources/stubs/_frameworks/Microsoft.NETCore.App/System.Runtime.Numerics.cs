@@ -234,8 +234,8 @@ namespace System
             public static System.Numerics.Complex FromPolarCoordinates(double magnitude, double phase) => throw null;
             public override int GetHashCode() => throw null;
             public double Imaginary { get => throw null; }
-            public static System.Numerics.Complex ImaginaryOne;
-            public static System.Numerics.Complex Infinity;
+            public static readonly System.Numerics.Complex ImaginaryOne;
+            public static readonly System.Numerics.Complex Infinity;
             static bool System.Numerics.INumberBase<System.Numerics.Complex>.IsCanonical(System.Numerics.Complex value) => throw null;
             static bool System.Numerics.INumberBase<System.Numerics.Complex>.IsComplexNumber(System.Numerics.Complex value) => throw null;
             static bool System.Numerics.INumberBase<System.Numerics.Complex>.IsEvenInteger(System.Numerics.Complex value) => throw null;
@@ -265,10 +265,10 @@ namespace System
             public static System.Numerics.Complex Multiply(double left, System.Numerics.Complex right) => throw null;
             public static System.Numerics.Complex Multiply(System.Numerics.Complex left, double right) => throw null;
             public static System.Numerics.Complex Multiply(System.Numerics.Complex left, System.Numerics.Complex right) => throw null;
-            public static System.Numerics.Complex NaN;
+            public static readonly System.Numerics.Complex NaN;
             public static System.Numerics.Complex Negate(System.Numerics.Complex value) => throw null;
             static System.Numerics.Complex System.Numerics.ISignedNumber<System.Numerics.Complex>.NegativeOne { get => throw null; }
-            public static System.Numerics.Complex One;
+            public static readonly System.Numerics.Complex One;
             static System.Numerics.Complex System.Numerics.INumberBase<System.Numerics.Complex>.One { get => throw null; }
             public static System.Numerics.Complex operator +(double left, System.Numerics.Complex right) => throw null;
             public static System.Numerics.Complex operator +(System.Numerics.Complex left, double right) => throw null;
@@ -339,7 +339,7 @@ namespace System
             static bool System.ISpanParsable<System.Numerics.Complex>.TryParse(System.ReadOnlySpan<char> s, System.IFormatProvider provider, out System.Numerics.Complex result) => throw null;
             static bool System.Numerics.INumberBase<System.Numerics.Complex>.TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Numerics.Complex result) => throw null;
             static bool System.IParsable<System.Numerics.Complex>.TryParse(string s, System.IFormatProvider provider, out System.Numerics.Complex result) => throw null;
-            public static System.Numerics.Complex Zero;
+            public static readonly System.Numerics.Complex Zero;
             static System.Numerics.Complex System.Numerics.INumberBase<System.Numerics.Complex>.Zero { get => throw null; }
         }
     }

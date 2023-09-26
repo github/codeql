@@ -74,7 +74,7 @@ namespace Microsoft
                     public OAuthChallengeProperties(System.Collections.Generic.IDictionary<string, string> items) => throw null;
                     public OAuthChallengeProperties(System.Collections.Generic.IDictionary<string, string> items, System.Collections.Generic.IDictionary<string, object> parameters) => throw null;
                     public System.Collections.Generic.ICollection<string> Scope { get => throw null; set { } }
-                    public static string ScopeKey;
+                    public static readonly string ScopeKey;
                     public virtual void SetScope(params string[] scopes) => throw null;
                 }
                 public class OAuthCodeExchangeContext
@@ -86,10 +86,10 @@ namespace Microsoft
                 }
                 public static class OAuthConstants
                 {
-                    public static string CodeChallengeKey;
-                    public static string CodeChallengeMethodKey;
-                    public static string CodeChallengeMethodS256;
-                    public static string CodeVerifierKey;
+                    public static readonly string CodeChallengeKey;
+                    public static readonly string CodeChallengeMethodKey;
+                    public static readonly string CodeChallengeMethodS256;
+                    public static readonly string CodeVerifierKey;
                 }
                 public class OAuthCreatingTicketContext : Microsoft.AspNetCore.Authentication.ResultContext<Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions>
                 {
@@ -107,7 +107,7 @@ namespace Microsoft
                 }
                 public static class OAuthDefaults
                 {
-                    public static string DisplayName;
+                    public static readonly string DisplayName;
                 }
                 public class OAuthEvents : Microsoft.AspNetCore.Authentication.RemoteAuthenticationEvents
                 {

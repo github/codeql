@@ -45,8 +45,8 @@ namespace Microsoft
             }
             public static class SessionDefaults
             {
-                public static string CookieName;
-                public static string CookiePath;
+                public static readonly string CookieName;
+                public static readonly string CookiePath;
             }
             public class SessionFeature : Microsoft.AspNetCore.Http.Features.ISessionFeature
             {

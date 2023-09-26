@@ -50,7 +50,7 @@ namespace System
             public static System.Drawing.Color DeepSkyBlue { get => throw null; }
             public static System.Drawing.Color DimGray { get => throw null; }
             public static System.Drawing.Color DodgerBlue { get => throw null; }
-            public static System.Drawing.Color Empty;
+            public static readonly System.Drawing.Color Empty;
             public bool Equals(System.Drawing.Color other) => throw null;
             public override bool Equals(object obj) => throw null;
             public static System.Drawing.Color Firebrick { get => throw null; }
@@ -370,7 +370,7 @@ namespace System
             public Point(System.Drawing.Size sz) => throw null;
             public Point(int dw) => throw null;
             public Point(int x, int y) => throw null;
-            public static System.Drawing.Point Empty;
+            public static readonly System.Drawing.Point Empty;
             public bool Equals(System.Drawing.Point other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
@@ -396,7 +396,7 @@ namespace System
             public static System.Drawing.PointF Add(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public PointF(float x, float y) => throw null;
             public PointF(System.Numerics.Vector2 vector) => throw null;
-            public static System.Drawing.PointF Empty;
+            public static readonly System.Drawing.PointF Empty;
             public bool Equals(System.Drawing.PointF other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
@@ -425,7 +425,7 @@ namespace System
             public bool Contains(int x, int y) => throw null;
             public Rectangle(System.Drawing.Point location, System.Drawing.Size size) => throw null;
             public Rectangle(int x, int y, int width, int height) => throw null;
-            public static System.Drawing.Rectangle Empty;
+            public static readonly System.Drawing.Rectangle Empty;
             public bool Equals(System.Drawing.Rectangle other) => throw null;
             public override bool Equals(object obj) => throw null;
             public static System.Drawing.Rectangle FromLTRB(int left, int top, int right, int bottom) => throw null;
@@ -464,7 +464,7 @@ namespace System
             public RectangleF(System.Drawing.PointF location, System.Drawing.SizeF size) => throw null;
             public RectangleF(float x, float y, float width, float height) => throw null;
             public RectangleF(System.Numerics.Vector4 vector) => throw null;
-            public static System.Drawing.RectangleF Empty;
+            public static readonly System.Drawing.RectangleF Empty;
             public bool Equals(System.Drawing.RectangleF other) => throw null;
             public override bool Equals(object obj) => throw null;
             public static System.Drawing.RectangleF FromLTRB(float left, float top, float right, float bottom) => throw null;
@@ -502,7 +502,7 @@ namespace System
             public static System.Drawing.Size Ceiling(System.Drawing.SizeF value) => throw null;
             public Size(System.Drawing.Point pt) => throw null;
             public Size(int width, int height) => throw null;
-            public static System.Drawing.Size Empty;
+            public static readonly System.Drawing.Size Empty;
             public bool Equals(System.Drawing.Size other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
@@ -533,7 +533,7 @@ namespace System
             public SizeF(System.Drawing.SizeF size) => throw null;
             public SizeF(float width, float height) => throw null;
             public SizeF(System.Numerics.Vector2 vector) => throw null;
-            public static System.Drawing.SizeF Empty;
+            public static readonly System.Drawing.SizeF Empty;
             public bool Equals(System.Drawing.SizeF other) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;

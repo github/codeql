@@ -930,7 +930,7 @@ namespace System
                     public static System.Reflection.Metadata.GuidHandle GuidHandle(int offset) => throw null;
                     public static System.Reflection.Metadata.Handle Handle(int token) => throw null;
                     public static System.Reflection.Metadata.EntityHandle Handle(System.Reflection.Metadata.Ecma335.TableIndex tableIndex, int rowNumber) => throw null;
-                    public static int HeapCount;
+                    public static readonly int HeapCount;
                     public static System.Reflection.Metadata.ImportScopeHandle ImportScopeHandle(int rowNumber) => throw null;
                     public static System.Reflection.Metadata.InterfaceImplementationHandle InterfaceImplementationHandle(int rowNumber) => throw null;
                     public static System.Reflection.Metadata.LocalConstantHandle LocalConstantHandle(int rowNumber) => throw null;
@@ -947,7 +947,7 @@ namespace System
                     public static System.Reflection.Metadata.PropertyDefinitionHandle PropertyDefinitionHandle(int rowNumber) => throw null;
                     public static System.Reflection.Metadata.StandaloneSignatureHandle StandaloneSignatureHandle(int rowNumber) => throw null;
                     public static System.Reflection.Metadata.StringHandle StringHandle(int offset) => throw null;
-                    public static int TableCount;
+                    public static readonly int TableCount;
                     public static bool TryGetHeapIndex(System.Reflection.Metadata.HandleKind type, out System.Reflection.Metadata.Ecma335.HeapIndex index) => throw null;
                     public static bool TryGetTableIndex(System.Reflection.Metadata.HandleKind type, out System.Reflection.Metadata.Ecma335.TableIndex index) => throw null;
                     public static System.Reflection.Metadata.TypeDefinitionHandle TypeDefinitionHandle(int rowNumber) => throw null;
@@ -1160,13 +1160,13 @@ namespace System
             }
             public struct EntityHandle : System.IEquatable<System.Reflection.Metadata.EntityHandle>
             {
-                public static System.Reflection.Metadata.AssemblyDefinitionHandle AssemblyDefinition;
+                public static readonly System.Reflection.Metadata.AssemblyDefinitionHandle AssemblyDefinition;
                 public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Reflection.Metadata.EntityHandle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 public System.Reflection.Metadata.HandleKind Kind { get => throw null; }
-                public static System.Reflection.Metadata.ModuleDefinitionHandle ModuleDefinition;
+                public static readonly System.Reflection.Metadata.ModuleDefinitionHandle ModuleDefinition;
                 public static bool operator ==(System.Reflection.Metadata.EntityHandle left, System.Reflection.Metadata.EntityHandle right) => throw null;
                 public static explicit operator System.Reflection.Metadata.EntityHandle(System.Reflection.Metadata.Handle handle) => throw null;
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.EntityHandle handle) => throw null;
@@ -1397,13 +1397,13 @@ namespace System
             }
             public struct Handle : System.IEquatable<System.Reflection.Metadata.Handle>
             {
-                public static System.Reflection.Metadata.AssemblyDefinitionHandle AssemblyDefinition;
+                public static readonly System.Reflection.Metadata.AssemblyDefinitionHandle AssemblyDefinition;
                 public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Reflection.Metadata.Handle other) => throw null;
                 public override int GetHashCode() => throw null;
                 public bool IsNil { get => throw null; }
                 public System.Reflection.Metadata.HandleKind Kind { get => throw null; }
-                public static System.Reflection.Metadata.ModuleDefinitionHandle ModuleDefinition;
+                public static readonly System.Reflection.Metadata.ModuleDefinitionHandle ModuleDefinition;
                 public static bool operator ==(System.Reflection.Metadata.Handle left, System.Reflection.Metadata.Handle right) => throw null;
                 public static bool operator !=(System.Reflection.Metadata.Handle left, System.Reflection.Metadata.Handle right) => throw null;
             }
@@ -2934,8 +2934,8 @@ namespace System
             public struct DirectoryEntry
             {
                 public DirectoryEntry(int relativeVirtualAddress, int size) => throw null;
-                public int RelativeVirtualAddress;
-                public int Size;
+                public readonly int RelativeVirtualAddress;
+                public readonly int Size;
             }
             [System.Flags]
             public enum DllCharacteristics : ushort
@@ -3010,9 +3010,9 @@ namespace System
                 public bool IsDeterministic { get => throw null; }
                 protected struct Section
                 {
-                    public System.Reflection.PortableExecutable.SectionCharacteristics Characteristics;
+                    public readonly System.Reflection.PortableExecutable.SectionCharacteristics Characteristics;
                     public Section(string name, System.Reflection.PortableExecutable.SectionCharacteristics characteristics) => throw null;
-                    public string Name;
+                    public readonly string Name;
                 }
                 public System.Reflection.Metadata.BlobContentId Serialize(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 protected abstract System.Reflection.Metadata.BlobBuilder SerializeSection(string name, System.Reflection.PortableExecutable.SectionLocation location);

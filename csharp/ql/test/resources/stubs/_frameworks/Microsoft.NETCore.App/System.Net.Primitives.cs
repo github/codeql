@@ -217,11 +217,11 @@ namespace System
         }
         public static class HttpVersion
         {
-            public static System.Version Unknown;
-            public static System.Version Version10;
-            public static System.Version Version11;
-            public static System.Version Version20;
-            public static System.Version Version30;
+            public static readonly System.Version Unknown;
+            public static readonly System.Version Version10;
+            public static readonly System.Version Version11;
+            public static readonly System.Version Version20;
+            public static readonly System.Version Version30;
         }
         public interface ICredentials
         {
@@ -235,8 +235,8 @@ namespace System
         {
             public long Address { get => throw null; set { } }
             public System.Net.Sockets.AddressFamily AddressFamily { get => throw null; }
-            public static System.Net.IPAddress Any;
-            public static System.Net.IPAddress Broadcast;
+            public static readonly System.Net.IPAddress Any;
+            public static readonly System.Net.IPAddress Broadcast;
             public IPAddress(byte[] address) => throw null;
             public IPAddress(byte[] address, long scopeid) => throw null;
             public IPAddress(long newAddress) => throw null;
@@ -248,9 +248,9 @@ namespace System
             public static short HostToNetworkOrder(short host) => throw null;
             public static int HostToNetworkOrder(int host) => throw null;
             public static long HostToNetworkOrder(long host) => throw null;
-            public static System.Net.IPAddress IPv6Any;
-            public static System.Net.IPAddress IPv6Loopback;
-            public static System.Net.IPAddress IPv6None;
+            public static readonly System.Net.IPAddress IPv6Any;
+            public static readonly System.Net.IPAddress IPv6Loopback;
+            public static readonly System.Net.IPAddress IPv6None;
             public bool IsIPv4MappedToIPv6 { get => throw null; }
             public bool IsIPv6LinkLocal { get => throw null; }
             public bool IsIPv6Multicast { get => throw null; }
@@ -258,13 +258,13 @@ namespace System
             public bool IsIPv6Teredo { get => throw null; }
             public bool IsIPv6UniqueLocal { get => throw null; }
             public static bool IsLoopback(System.Net.IPAddress address) => throw null;
-            public static System.Net.IPAddress Loopback;
+            public static readonly System.Net.IPAddress Loopback;
             public System.Net.IPAddress MapToIPv4() => throw null;
             public System.Net.IPAddress MapToIPv6() => throw null;
             public static short NetworkToHostOrder(short network) => throw null;
             public static int NetworkToHostOrder(int network) => throw null;
             public static long NetworkToHostOrder(long network) => throw null;
-            public static System.Net.IPAddress None;
+            public static readonly System.Net.IPAddress None;
             public static System.Net.IPAddress Parse(System.ReadOnlySpan<char> ipSpan) => throw null;
             public static System.Net.IPAddress Parse(string ipString) => throw null;
             public long ScopeId { get => throw null; set { } }

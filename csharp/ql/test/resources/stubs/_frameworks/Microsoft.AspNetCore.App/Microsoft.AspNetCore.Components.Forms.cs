@@ -81,12 +81,12 @@ namespace Microsoft
                 public sealed class ValidationRequestedEventArgs : System.EventArgs
                 {
                     public ValidationRequestedEventArgs() => throw null;
-                    public static Microsoft.AspNetCore.Components.Forms.ValidationRequestedEventArgs Empty;
+                    public static readonly Microsoft.AspNetCore.Components.Forms.ValidationRequestedEventArgs Empty;
                 }
                 public sealed class ValidationStateChangedEventArgs : System.EventArgs
                 {
                     public ValidationStateChangedEventArgs() => throw null;
-                    public static Microsoft.AspNetCore.Components.Forms.ValidationStateChangedEventArgs Empty;
+                    public static readonly Microsoft.AspNetCore.Components.Forms.ValidationStateChangedEventArgs Empty;
                 }
             }
         }

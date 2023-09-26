@@ -192,7 +192,7 @@ namespace System
                 int System.Collections.Generic.ICollection<T>.Count { get => throw null; }
                 int System.Collections.Generic.IReadOnlyCollection<T>.Count { get => throw null; }
                 int System.Collections.ICollection.Count { get => throw null; }
-                public static System.Collections.Immutable.ImmutableArray<T> Empty;
+                public static readonly System.Collections.Immutable.ImmutableArray<T> Empty;
                 public struct Enumerator
                 {
                     public T Current { get => throw null; }
@@ -363,7 +363,7 @@ namespace System
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.CopyTo(System.Collections.Generic.KeyValuePair<TKey, TValue>[] array, int arrayIndex) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
-                public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> Empty;
+                public static readonly System.Collections.Immutable.ImmutableDictionary<TKey, TValue> Empty;
                 public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<TKey, TValue> Current { get => throw null; }
@@ -466,7 +466,7 @@ namespace System
                 void System.Collections.Generic.ICollection<T>.CopyTo(T[] array, int arrayIndex) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
-                public static System.Collections.Immutable.ImmutableHashSet<T> Empty;
+                public static readonly System.Collections.Immutable.ImmutableHashSet<T> Empty;
                 public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
@@ -646,7 +646,7 @@ namespace System
                 public void CopyTo(T[] array, int arrayIndex) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int arrayIndex) => throw null;
                 public int Count { get => throw null; }
-                public static System.Collections.Immutable.ImmutableList<T> Empty;
+                public static readonly System.Collections.Immutable.ImmutableList<T> Empty;
                 public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }
@@ -833,7 +833,7 @@ namespace System
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.CopyTo(System.Collections.Generic.KeyValuePair<TKey, TValue>[] array, int arrayIndex) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                 public int Count { get => throw null; }
-                public static System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue> Empty;
+                public static readonly System.Collections.Immutable.ImmutableSortedDictionary<TKey, TValue> Empty;
                 public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator
                 {
                     public System.Collections.Generic.KeyValuePair<TKey, TValue> Current { get => throw null; }
@@ -949,7 +949,7 @@ namespace System
                 void System.Collections.Generic.ICollection<T>.CopyTo(T[] array, int arrayIndex) => throw null;
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
                 public int Count { get => throw null; }
-                public static System.Collections.Immutable.ImmutableSortedSet<T> Empty;
+                public static readonly System.Collections.Immutable.ImmutableSortedSet<T> Empty;
                 public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<T>, System.Collections.IEnumerator
                 {
                     public T Current { get => throw null; }

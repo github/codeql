@@ -190,7 +190,7 @@ namespace Microsoft
                 public int Count { get => throw null; }
                 public EndpointMetadataCollection(System.Collections.Generic.IEnumerable<object> items) => throw null;
                 public EndpointMetadataCollection(params object[] items) => throw null;
-                public static Microsoft.AspNetCore.Http.EndpointMetadataCollection Empty;
+                public static readonly Microsoft.AspNetCore.Http.EndpointMetadataCollection Empty;
                 public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<object>, System.Collections.IEnumerator
                 {
                     public object Current { get => throw null; }
@@ -220,7 +220,7 @@ namespace Microsoft
             public struct FragmentString : System.IEquatable<Microsoft.AspNetCore.Http.FragmentString>
             {
                 public FragmentString(string value) => throw null;
-                public static Microsoft.AspNetCore.Http.FragmentString Empty;
+                public static readonly Microsoft.AspNetCore.Http.FragmentString Empty;
                 public bool Equals(Microsoft.AspNetCore.Http.FragmentString other) => throw null;
                 public override bool Equals(object obj) => throw null;
                 public static Microsoft.AspNetCore.Http.FragmentString FromUriComponent(string uriComponent) => throw null;
@@ -277,12 +277,12 @@ namespace Microsoft
             }
             public static class HttpMethods
             {
-                public static string Connect;
-                public static string Delete;
+                public static readonly string Connect;
+                public static readonly string Delete;
                 public static bool Equals(string methodA, string methodB) => throw null;
-                public static string Get;
+                public static readonly string Get;
                 public static string GetCanonicalizedValue(string method) => throw null;
-                public static string Head;
+                public static readonly string Head;
                 public static bool IsConnect(string method) => throw null;
                 public static bool IsDelete(string method) => throw null;
                 public static bool IsGet(string method) => throw null;
@@ -292,20 +292,20 @@ namespace Microsoft
                 public static bool IsPost(string method) => throw null;
                 public static bool IsPut(string method) => throw null;
                 public static bool IsTrace(string method) => throw null;
-                public static string Options;
-                public static string Patch;
-                public static string Post;
-                public static string Put;
-                public static string Trace;
+                public static readonly string Options;
+                public static readonly string Patch;
+                public static readonly string Post;
+                public static readonly string Put;
+                public static readonly string Trace;
             }
             public static class HttpProtocol
             {
                 public static string GetHttpProtocol(System.Version version) => throw null;
-                public static string Http09;
-                public static string Http10;
-                public static string Http11;
-                public static string Http2;
-                public static string Http3;
+                public static readonly string Http09;
+                public static readonly string Http10;
+                public static readonly string Http11;
+                public static readonly string Http2;
+                public static readonly string Http3;
                 public static bool IsHttp09(string protocol) => throw null;
                 public static bool IsHttp10(string protocol) => throw null;
                 public static bool IsHttp11(string protocol) => throw null;
@@ -504,7 +504,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Http.PathString Add(Microsoft.AspNetCore.Http.PathString other) => throw null;
                 public string Add(Microsoft.AspNetCore.Http.QueryString other) => throw null;
                 public PathString(string value) => throw null;
-                public static Microsoft.AspNetCore.Http.PathString Empty;
+                public static readonly Microsoft.AspNetCore.Http.PathString Empty;
                 public bool Equals(Microsoft.AspNetCore.Http.PathString other) => throw null;
                 public bool Equals(Microsoft.AspNetCore.Http.PathString other, System.StringComparison comparisonType) => throw null;
                 public override bool Equals(object obj) => throw null;
@@ -545,7 +545,7 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.QueryString Create(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> parameters) => throw null;
                 public static Microsoft.AspNetCore.Http.QueryString Create(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>> parameters) => throw null;
                 public QueryString(string value) => throw null;
-                public static Microsoft.AspNetCore.Http.QueryString Empty;
+                public static readonly Microsoft.AspNetCore.Http.QueryString Empty;
                 public bool Equals(Microsoft.AspNetCore.Http.QueryString other) => throw null;
                 public override bool Equals(object obj) => throw null;
                 public static Microsoft.AspNetCore.Http.QueryString FromUriComponent(string uriComponent) => throw null;
