@@ -306,7 +306,14 @@ internal sealed class StubVisitor : SymbolVisitor
         StubModifiers(symbol);
 
         if (symbol.IsConst)
+        {
             stubWriter.Write("const ");
+        }
+
+        if (!symbol.IsConst && symbol.IsReadOnly)
+        {
+            stubWriter.Write("readonly ");
+        }
 
         if (IsUnsafe(symbol.Type))
         {
@@ -317,7 +324,9 @@ internal sealed class StubVisitor : SymbolVisitor
         stubWriter.Write(" ");
         stubWriter.Write(EscapeIdentifier(symbol.Name));
         if (symbol.IsConst)
+        {
             stubWriter.Write(" = default");
+        }
         stubWriter.WriteLine(";");
     }
 
