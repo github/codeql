@@ -1,4 +1,5 @@
 edges
+| SQLite.swift:54:25:54:33 | [...] | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) |
 | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:92:18:92:36 | call to getConstantString() |
 | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:117:22:117:22 | key |
 | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:118:22:118:22 | key |
@@ -56,6 +57,8 @@ nodes
 | SQLite.swift:45:23:45:23 | hardcoded_key | semmle.label | hardcoded_key |
 | SQLite.swift:47:15:47:15 | hardcoded_key | semmle.label | hardcoded_key |
 | SQLite.swift:49:79:49:79 | hardcoded_key | semmle.label | hardcoded_key |
+| SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | semmle.label | call to Blob.init(bytes:) |
+| SQLite.swift:54:25:54:33 | [...] | semmle.label | [...] |
 | cryptoswift.swift:76:3:76:3 | this string is constant | semmle.label | this string is constant |
 | cryptoswift.swift:90:26:90:121 | [...] | semmle.label | [...] |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() | semmle.label | call to getConstantString() |
@@ -119,6 +122,7 @@ subpaths
 | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | SQLite.swift:45:23:45:23 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:45:23:45:23 | hardcoded_key | hardcoded_key |
 | SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | SQLite.swift:47:15:47:15 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:47:15:47:15 | hardcoded_key | hardcoded_key |
 | SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | SQLite.swift:49:79:49:79 | hardcoded_key | The key 'hardcoded_key' has been initialized with hard-coded values from $@. | SQLite.swift:49:79:49:79 | hardcoded_key | hardcoded_key |
+| SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | SQLite.swift:54:25:54:33 | [...] | SQLite.swift:54:13:54:34 | call to Blob.init(bytes:) | The key 'call to Blob.init(bytes:)' has been initialized with hard-coded values from $@. | SQLite.swift:54:25:54:33 | [...] | [...] |
 | cryptoswift.swift:108:21:108:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:108:21:108:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
 | cryptoswift.swift:109:21:109:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:109:21:109:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
 | cryptoswift.swift:117:22:117:22 | key | cryptoswift.swift:90:26:90:121 | [...] | cryptoswift.swift:117:22:117:22 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] | [...] |
