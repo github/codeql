@@ -370,7 +370,7 @@ func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
 func tryReadGoDirective(buildInfo BuildInfo) (string, bool) {
 	if buildInfo.DepMode == GoGetWithModules {
-		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
+		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
 		goMod, err := os.ReadFile(filepath.Join(buildInfo.BaseDir, "go.mod"))
 		if err != nil {
 			log.Println("Failed to read go.mod to check for missing Go version")
