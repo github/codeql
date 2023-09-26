@@ -71,6 +71,11 @@ private class EncryptionKeySinks extends SinkModelCsv {
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[3];encryption-key",
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[3];encryption-key",
         ";Realm.Configuration;true;encryptionKey;;;PostUpdate;encryption-key",
+        // sqlite3 C API (Encryption Extension)
+        ";;false;sqlite3_key(_:_:_:);;;Argument[1];encryption-key",
+        ";;false;sqlite3_rekey(_:_:_:);;;Argument[1];encryption-key",
+        ";;false;sqlite3_key_v2(_:_:_:_:);;;Argument[2];encryption-key",
+        ";;false;sqlite3_rekey_v2(_:_:_:_:);;;Argument[2];encryption-key",
       ]
   }
 }
