@@ -263,10 +263,11 @@ module Impl implements RegexTreeViewSig {
         /* inclusive vs exclusive */
       )
       or
-      exists(StringPart part, int localOffset | part = this.getPart(localOffset) |
-        filepath = part.getLocation().getFile().getAbsolutePath() and
-        startline = part.getLocation().getStartLine() and
-        startcolumn = part.getLocation().getStartColumn() + localOffset and
+      exists(StringPart part, int localOffset, int partStartColumn |
+        part = this.getPart(localOffset)
+      |
+        part.getLocation().hasLocationInfo(filepath, startline, partStartColumn, _, _) and
+        startcolumn = partStartColumn + localOffset and
         endline = startline and
         endcolumn = (end - start) + startcolumn
       )
