@@ -46,11 +46,6 @@ newtype TFrameworkModeEndpoint =
  */
 abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
   /**
-   * Returns the parameter index of the endpoint.
-   */
-  abstract int getIndex();
-
-  /**
    * Gets the input (if any) for this endpoint, eg.: `Argument[0]`.
    *
    * For endpoints that are source candidates, this will be `none()`.
@@ -88,8 +83,6 @@ class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParamete
 
   ExplicitParameterEndpoint() { this = TExplicitParameter(param) and param.fromSource() }
 
-  override int getIndex() { result = param.getPosition() }
-
   override string getMaDInput() { result = "Argument[" + param.getPosition() + "]" }
 
   override string getMaDOutput() { none() }
@@ -110,8 +103,6 @@ class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
     this = TQualifier(callable) and not callable.isStatic() and callable.fromSource()
   }
 
-  override int getIndex() { result = -1 }
-
   override string getMaDInput() { result = "Argument[this]" }
 
   override string getMaDOutput() { none() }
@@ -129,11 +120,6 @@ class ReturnValue extends FrameworkModeEndpoint, TReturnValue {
   Callable callable;
 
   ReturnValue() { this = TReturnValue(callable) and callable.fromSource() }
-
-  override int getIndex() {
-    // FIXME bogus value
-    result = -1
-  }
 
   override string getMaDInput() { none() }
 
@@ -154,8 +140,6 @@ class OverridableParameter extends FrameworkModeEndpoint, TOverridableParameter 
 
   OverridableParameter() { this = TOverridableParameter(method, param) }
 
-  override int getIndex() { result = param.getPosition() }
-
   override string getMaDInput() { none() }
 
   override string getMaDOutput() { result = "Parameter[" + param.getPosition() + "]" }
@@ -173,8 +157,6 @@ class OverridableQualifier extends FrameworkModeEndpoint, TOverridableQualifier 
   Method m;
 
   OverridableQualifier() { this = TOverridableQualifier(m) }
-
-  override int getIndex() { result = -1 }
 
   override string getMaDInput() { none() }
 
