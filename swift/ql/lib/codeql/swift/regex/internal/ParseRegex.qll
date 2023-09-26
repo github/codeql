@@ -322,7 +322,7 @@ abstract class RegExp extends Expr {
 
   /**
    * Holds if a parse mode group of this regex includes the mode flag `c`.
-   * For example the following parse mode group, with mode flag `i`:
+   * For example the following parse mode group, with mode flag `"i"`:
    * ```
    * (?i)
    * ```
