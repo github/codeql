@@ -11,11 +11,15 @@ signature module InputSig {
     /**
      * Gets the absolute path of this container.
      *
-     * Typically `containerparent(result, this)`.
+     * Typically `folders(this, result) or files(this, result)`.
      */
     string getAbsolutePath();
 
-    /** Gets the parent container of this container, if any. */
+    /**
+     * Gets the parent container of this container, if any.
+     *
+     * Typically `containerparent(result, this)`.
+     */
     ContainerBase getParentContainer();
   }
 
