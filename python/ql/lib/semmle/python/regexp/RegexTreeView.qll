@@ -239,7 +239,7 @@ module Impl implements RegexTreeViewSig {
      * `localOffset` will be the offset of this `RegExpTerm` inside `result`.
      */
     StringPart getPart(int localOffset) {
-      exists(int index, int prefixLength | index = max(int i | this.getPartOffset(i) < start) |
+      exists(int index, int prefixLength | index = max(int i | this.getPartOffset(i) <= start) |
         result = re.(StrConst).getImplicitlyConcatenatedPart(index) and
         result.contextSize(prefixLength, _) and
         // Example:

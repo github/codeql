@@ -55,7 +55,7 @@ re.compile( # $ location=1:2 location=1:26
 )
 
 # plain string with multiple parts across lines
-re.compile( # $ location=1:2 location=2:7 SPURIOUS:location=2:29 MISSING:location=3:2
+re.compile( # $ location=1:2 location=2:7 location=3:2
 '[this] is a test'
 ' and [this] is another test'
 '[this] comes right at the start of a part'
