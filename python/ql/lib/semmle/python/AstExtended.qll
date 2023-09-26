@@ -155,11 +155,15 @@ class StringPart extends StringPart_, AstNode {
 
   override Location getLocation() { result = StringPart_.super.getLocation() }
 
-  /** Holds if the content of string `StringPart` is surrounded by `prefix` and `quote`. */
-  predicate context(string prefix, string quote) {
+  /**
+   * Holds if the content of string `StringPart` is surrounded by
+   * a prefix (including a quote) of length `prefixLength` and
+   * a quote of length `quoteLength`.
+   */
+  predicate contextSize(int prefixLength, int quoteLength) {
     exists(int occurrenceOffset |
-      quote = this.getText().regexpFind("\"{3}|\"{1}|'{3}|'{1}", 0, occurrenceOffset) and
-      prefix = this.getText().prefix(occurrenceOffset + quote.length())
+      quoteLength = this.getText().regexpFind("\"{3}|\"{1}|'{3}|'{1}", 0, occurrenceOffset).length() and
+      prefixLength = occurrenceOffset + quoteLength
     )
   }
 
@@ -168,8 +172,8 @@ class StringPart extends StringPart_, AstNode {
    * See `context` for obtaining the prefix and the quote.
    */
   int getContentLength() {
-    exists(string prefix, string quote | this.context(prefix, quote) |
-      result = this.getText().length() - prefix.length() - quote.length()
+    exists(int prefixLength, int quoteLength | this.contextSize(prefixLength, quoteLength) |
+      result = this.getText().length() - prefixLength - quoteLength
     )
   }
 }
