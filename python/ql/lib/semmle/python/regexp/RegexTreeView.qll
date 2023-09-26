@@ -257,8 +257,9 @@ module Impl implements RegexTreeViewSig {
     ) {
       not exists(this.getPart(_)) and
       exists(int re_start, int prefix_len | prefix_len = re.getPrefix().length() |
-        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, _, _) and
         startcolumn = re_start + start + prefix_len and
+        endline = startline and
         endcolumn = re_start + end + prefix_len - 1
         /* inclusive vs exclusive */
       )
