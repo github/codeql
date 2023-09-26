@@ -30,14 +30,12 @@ newtype TFrameworkModeEndpoint =
   TOverridableParameter(Method m, Parameter p) {
     p.getCallable() = m and
     m instanceof ModelExclusions::ModelApi and
-    m.fromSource() and
     not m.getDeclaringType().isFinal() and
     not m.isFinal() and
     not m.isStatic()
   } or
   TOverridableQualifier(Method m) {
     m instanceof ModelExclusions::ModelApi and
-    m.fromSource() and
     not m.getDeclaringType().isFinal() and
     not m.isFinal() and
     not m.isStatic()
