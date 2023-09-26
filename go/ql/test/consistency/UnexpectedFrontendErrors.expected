@@ -1,2 +1,1 @@
-| -:0:0:0:0 | This application uses version go1.20 of the source-processing packages but runs version go1.21 of 'go list'. It may fail to process source files that rely on newer language features. If so, rebuild the application using a newer version of Go. |
 | test.go:7:1:7:1 | expected declaration, found This |
