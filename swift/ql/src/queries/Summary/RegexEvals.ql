@@ -12,4 +12,4 @@ import codeql.swift.regex.Regex
 
 from RegexEval e
 select e,
-  "Regular expression evaluation with " + count(e.getARegex()).toString() + " associated regex(s)"
+  "Regular expression evaluation with " + count(e.getARegex()).toString() + " associated regex(s)."
