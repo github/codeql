@@ -173,9 +173,9 @@ namespace System
                 public bool Equals(System.Net.Security.SslApplicationProtocol other) => throw null;
                 public override bool Equals(object obj) => throw null;
                 public override int GetHashCode() => throw null;
-                public static System.Net.Security.SslApplicationProtocol Http11;
-                public static System.Net.Security.SslApplicationProtocol Http2;
-                public static System.Net.Security.SslApplicationProtocol Http3;
+                public static readonly System.Net.Security.SslApplicationProtocol Http11;
+                public static readonly System.Net.Security.SslApplicationProtocol Http2;
+                public static readonly System.Net.Security.SslApplicationProtocol Http3;
                 public static bool operator ==(System.Net.Security.SslApplicationProtocol left, System.Net.Security.SslApplicationProtocol right) => throw null;
                 public static bool operator !=(System.Net.Security.SslApplicationProtocol left, System.Net.Security.SslApplicationProtocol right) => throw null;
                 public System.ReadOnlyMemory<byte> Protocol { get => throw null; }

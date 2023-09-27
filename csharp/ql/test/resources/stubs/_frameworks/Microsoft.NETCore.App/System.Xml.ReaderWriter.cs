@@ -1602,7 +1602,7 @@ namespace System
             public XmlQualifiedName() => throw null;
             public XmlQualifiedName(string name) => throw null;
             public XmlQualifiedName(string name, string ns) => throw null;
-            public static System.Xml.XmlQualifiedName Empty;
+            public static readonly System.Xml.XmlQualifiedName Empty;
             public override bool Equals(object other) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsEmpty { get => throw null; }

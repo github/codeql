@@ -39,8 +39,8 @@ namespace System
         {
             public static bool CheckCertificateRevocationList { get => throw null; set { } }
             public static int DefaultConnectionLimit { get => throw null; set { } }
-            public const int DefaultNonPersistentConnectionLimit = default;
-            public const int DefaultPersistentConnectionLimit = default;
+            public const int DefaultNonPersistentConnectionLimit = 4;
+            public const int DefaultPersistentConnectionLimit = 2;
             public static int DnsRefreshTimeout { get => throw null; set { } }
             public static bool EnableDnsRoundRobin { get => throw null; set { } }
             public static System.Net.Security.EncryptionPolicy EncryptionPolicy { get => throw null; }

@@ -771,7 +771,7 @@ namespace Microsoft
                     public static string GetComponentFullName(System.Reflection.TypeInfo componentType) => throw null;
                     public static string GetComponentName(System.Reflection.TypeInfo componentType) => throw null;
                     public static bool IsComponent(System.Reflection.TypeInfo typeInfo) => throw null;
-                    public static string ViewComponentSuffix;
+                    public static readonly string ViewComponentSuffix;
                 }
                 public class ViewComponentDescriptor
                 {
@@ -905,7 +905,7 @@ namespace Microsoft
                 }
                 public class CookieTempDataProvider : Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider
                 {
-                    public static string CookieName;
+                    public static readonly string CookieName;
                     public CookieTempDataProvider(Microsoft.AspNetCore.DataProtection.IDataProtectionProvider dataProtectionProvider, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions> options, Microsoft.AspNetCore.Mvc.ViewFeatures.Infrastructure.TempDataSerializer tempDataSerializer) => throw null;
                     public System.Collections.Generic.IDictionary<string, object> LoadTempData(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                     public void SaveTempData(Microsoft.AspNetCore.Http.HttpContext context, System.Collections.Generic.IDictionary<string, object> values) => throw null;
@@ -1034,14 +1034,14 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Html.IHtmlContent TextArea(string expression, string value, int rows, int columns, object htmlAttributes) => throw null;
                     public Microsoft.AspNetCore.Html.IHtmlContent TextBox(string expression, object value, string format, object htmlAttributes) => throw null;
                     public System.Text.Encodings.Web.UrlEncoder UrlEncoder { get => throw null; }
-                    public static string ValidationInputCssClassName;
-                    public static string ValidationInputValidCssClassName;
+                    public static readonly string ValidationInputCssClassName;
+                    public static readonly string ValidationInputValidCssClassName;
                     public Microsoft.AspNetCore.Html.IHtmlContent ValidationMessage(string expression, string message, object htmlAttributes, string tag) => throw null;
-                    public static string ValidationMessageCssClassName;
-                    public static string ValidationMessageValidCssClassName;
+                    public static readonly string ValidationMessageCssClassName;
+                    public static readonly string ValidationMessageValidCssClassName;
                     public Microsoft.AspNetCore.Html.IHtmlContent ValidationSummary(bool excludePropertyErrors, string message, object htmlAttributes, string tag) => throw null;
-                    public static string ValidationSummaryCssClassName;
-                    public static string ValidationSummaryValidCssClassName;
+                    public static readonly string ValidationSummaryCssClassName;
+                    public static readonly string ValidationSummaryValidCssClassName;
                     public string Value(string expression, string format) => throw null;
                     public dynamic ViewBag { get => throw null; }
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; }
@@ -1362,7 +1362,7 @@ namespace Microsoft
                 {
                     public ViewExecutor(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions> viewOptions, Microsoft.AspNetCore.Mvc.Infrastructure.IHttpResponseStreamWriterFactory writerFactory, Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine viewEngine, Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionaryFactory tempDataFactory, System.Diagnostics.DiagnosticListener diagnosticListener, Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider modelMetadataProvider) => throw null;
                     protected ViewExecutor(Microsoft.AspNetCore.Mvc.Infrastructure.IHttpResponseStreamWriterFactory writerFactory, Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine viewEngine, System.Diagnostics.DiagnosticListener diagnosticListener) => throw null;
-                    public static string DefaultContentType;
+                    public static readonly string DefaultContentType;
                     protected System.Diagnostics.DiagnosticListener DiagnosticListener { get => throw null; }
                     public virtual System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Mvc.ActionContext actionContext, Microsoft.AspNetCore.Mvc.ViewEngines.IView view, Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary viewData, Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionary tempData, string contentType, int? statusCode) => throw null;
                     protected System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Mvc.Rendering.ViewContext viewContext, string contentType, int? statusCode) => throw null;

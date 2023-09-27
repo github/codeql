@@ -296,6 +296,35 @@ internal sealed class StubVisitor : SymbolVisitor
     private static string EscapeIdentifier(string identifier) =>
         keywords.Contains(identifier) ? "@" + identifier : identifier;
 
+    private static bool TryGetConstantValue(IFieldSymbol symbol, out string value)
+    {
+        value = "";
+        if (!symbol.HasConstantValue)
+        {
+            return false;
+        }
+
+        var v = symbol.ConstantValue;
+        switch (symbol.Type.SpecialType)
+        {
+            case SpecialType.System_Boolean:
+                value = (bool)v ? "true" : "false";
+                return true;
+            case SpecialType.System_Byte:
+            case SpecialType.System_SByte:
+            case SpecialType.System_UInt16:
+            case SpecialType.System_UInt32:
+            case SpecialType.System_UInt64:
+            case SpecialType.System_Int16:
+            case SpecialType.System_Int32:
+            case SpecialType.System_Int64:
+                value = v.ToString()!;
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public override void VisitField(IFieldSymbol symbol)
     {
         if (IsNotPublic(symbol.DeclaredAccessibility))
@@ -306,7 +335,14 @@ internal sealed class StubVisitor : SymbolVisitor
         StubModifiers(symbol);
 
         if (symbol.IsConst)
+        {
             stubWriter.Write("const ");
+        }
+
+        if (!symbol.IsConst && symbol.IsReadOnly)
+        {
+            stubWriter.Write("readonly ");
+        }
 
         if (IsUnsafe(symbol.Type))
         {
@@ -317,7 +353,10 @@ internal sealed class StubVisitor : SymbolVisitor
         stubWriter.Write(" ");
         stubWriter.Write(EscapeIdentifier(symbol.Name));
         if (symbol.IsConst)
-            stubWriter.Write(" = default");
+        {
+            var v = TryGetConstantValue(symbol, out var value) ? value : "default";
+            stubWriter.Write($" = {v}");
+        }
         stubWriter.WriteLine(";");
     }
 

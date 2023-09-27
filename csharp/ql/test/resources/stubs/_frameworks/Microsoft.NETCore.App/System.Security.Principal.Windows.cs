@@ -89,8 +89,8 @@ namespace System
                 public bool IsEqualDomainSid(System.Security.Principal.SecurityIdentifier sid) => throw null;
                 public override bool IsValidTargetType(System.Type targetType) => throw null;
                 public bool IsWellKnown(System.Security.Principal.WellKnownSidType type) => throw null;
-                public static int MaxBinaryLength;
-                public static int MinBinaryLength;
+                public static readonly int MaxBinaryLength;
+                public static readonly int MinBinaryLength;
                 public static bool operator ==(System.Security.Principal.SecurityIdentifier left, System.Security.Principal.SecurityIdentifier right) => throw null;
                 public static bool operator !=(System.Security.Principal.SecurityIdentifier left, System.Security.Principal.SecurityIdentifier right) => throw null;
                 public override string ToString() => throw null;

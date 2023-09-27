@@ -29,7 +29,7 @@ namespace Microsoft
                 {
                     public System.IDisposable BeginScope<TState>(TState state) => throw null;
                     public NullLogger() => throw null;
-                    public static Microsoft.Extensions.Logging.Abstractions.NullLogger<T> Instance;
+                    public static readonly Microsoft.Extensions.Logging.Abstractions.NullLogger<T> Instance;
                     public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => throw null;
                     public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter) => throw null;
                 }
@@ -39,7 +39,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string name) => throw null;
                     public NullLoggerFactory() => throw null;
                     public void Dispose() => throw null;
-                    public static Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory Instance;
+                    public static readonly Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory Instance;
                 }
                 public class NullLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
                 {

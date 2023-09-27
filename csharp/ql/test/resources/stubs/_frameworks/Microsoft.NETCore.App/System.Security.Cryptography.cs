@@ -1164,8 +1164,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 128;
+                public const int HashSizeInBytes = 16;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public static bool TryHashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
@@ -1189,8 +1189,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 160;
+                public const int HashSizeInBytes = 20;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public static bool TryHashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
@@ -1213,8 +1213,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 256;
+                public const int HashSizeInBytes = 32;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public static bool TryHashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
@@ -1237,8 +1237,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 384;
+                public const int HashSizeInBytes = 48;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public bool ProduceLegacyHmacValues { get => throw null; set { } }
@@ -1262,8 +1262,8 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 protected override byte[] HashFinal() => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 512;
+                public const int HashSizeInBytes = 64;
                 public override void Initialize() => throw null;
                 public override byte[] Key { get => throw null; set { } }
                 public bool ProduceLegacyHmacValues { get => throw null; set { } }
@@ -1341,8 +1341,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 128;
+                public const int HashSizeInBytes = 16;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class MD5CryptoServiceProvider : System.Security.Cryptography.MD5
@@ -1825,8 +1825,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 160;
+                public const int HashSizeInBytes = 20;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class SHA1CryptoServiceProvider : System.Security.Cryptography.SHA1
@@ -1861,8 +1861,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 256;
+                public const int HashSizeInBytes = 32;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class SHA256CryptoServiceProvider : System.Security.Cryptography.SHA256
@@ -1897,8 +1897,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 384;
+                public const int HashSizeInBytes = 48;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class SHA384CryptoServiceProvider : System.Security.Cryptography.SHA384
@@ -1933,8 +1933,8 @@ namespace System
                 public static int HashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
                 public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
-                public const int HashSizeInBits = default;
-                public const int HashSizeInBytes = default;
+                public const int HashSizeInBits = 512;
+                public const int HashSizeInBytes = 64;
                 public static bool TryHashData(System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class SHA512CryptoServiceProvider : System.Security.Cryptography.SHA512

@@ -16,7 +16,7 @@ namespace System
         public abstract class BindingRestrictions
         {
             public static System.Dynamic.BindingRestrictions Combine(System.Collections.Generic.IList<System.Dynamic.DynamicMetaObject> contributingObjects) => throw null;
-            public static System.Dynamic.BindingRestrictions Empty;
+            public static readonly System.Dynamic.BindingRestrictions Empty;
             public static System.Dynamic.BindingRestrictions GetExpressionRestriction(System.Linq.Expressions.Expression expression) => throw null;
             public static System.Dynamic.BindingRestrictions GetInstanceRestriction(System.Linq.Expressions.Expression expression, object instance) => throw null;
             public static System.Dynamic.BindingRestrictions GetTypeRestriction(System.Linq.Expressions.Expression expression, System.Type type) => throw null;
@@ -87,7 +87,7 @@ namespace System
             public static System.Dynamic.DynamicMetaObject Create(object value, System.Linq.Expressions.Expression expression) => throw null;
             public DynamicMetaObject(System.Linq.Expressions.Expression expression, System.Dynamic.BindingRestrictions restrictions) => throw null;
             public DynamicMetaObject(System.Linq.Expressions.Expression expression, System.Dynamic.BindingRestrictions restrictions, object value) => throw null;
-            public static System.Dynamic.DynamicMetaObject[] EmptyMetaObjects;
+            public static readonly System.Dynamic.DynamicMetaObject[] EmptyMetaObjects;
             public System.Linq.Expressions.Expression Expression { get => throw null; }
             public virtual System.Collections.Generic.IEnumerable<string> GetDynamicMemberNames() => throw null;
             public bool HasValue { get => throw null; }

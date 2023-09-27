@@ -48,11 +48,11 @@ namespace Microsoft
             }
             public class IdentityConstants
             {
-                public static string ApplicationScheme;
+                public static readonly string ApplicationScheme;
                 public IdentityConstants() => throw null;
-                public static string ExternalScheme;
-                public static string TwoFactorRememberMeScheme;
-                public static string TwoFactorUserIdScheme;
+                public static readonly string ExternalScheme;
+                public static readonly string TwoFactorRememberMeScheme;
+                public static readonly string TwoFactorUserIdScheme;
             }
             public static partial class IdentityCookieAuthenticationBuilderExtensions
             {

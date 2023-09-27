@@ -173,7 +173,7 @@ namespace System
                 void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo si, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public string GroupNameFromNumber(int i) => throw null;
                 public int GroupNumberFromName(string name) => throw null;
-                public static System.TimeSpan InfiniteMatchTimeout;
+                public static readonly System.TimeSpan InfiniteMatchTimeout;
                 protected void InitializeReferences() => throw null;
                 protected System.TimeSpan internalMatchTimeout;
                 public bool IsMatch(System.ReadOnlySpan<char> input) => throw null;

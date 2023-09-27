@@ -429,7 +429,7 @@ namespace Microsoft
             public const string vbNullChar = default;
             public const string vbNullString = default;
             public const Microsoft.VisualBasic.VariantType vbObject = default;
-            public const int vbObjectError = default;
+            public const int vbObjectError = -2147221504;
             public const Microsoft.VisualBasic.MsgBoxResult vbOK = default;
             public const Microsoft.VisualBasic.MsgBoxStyle vbOKCancel = default;
             public const Microsoft.VisualBasic.MsgBoxStyle vbOKOnly = default;

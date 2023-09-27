@@ -750,7 +750,7 @@ namespace System
                     public System.Runtime.InteropServices.ComTypes.IDLDESC idldescType;
                     public int lcid;
                     public nint lpstrSchema;
-                    public const int MEMBER_ID_NIL = default;
+                    public const int MEMBER_ID_NIL = -1;
                     public int memidConstructor;
                     public int memidDestructor;
                     public System.Runtime.InteropServices.ComTypes.TYPEDESC tdescAlias;
@@ -1204,8 +1204,8 @@ namespace System
                 public static nint StringToHGlobalUni(string s) => throw null;
                 public static void StructureToPtr(object structure, nint ptr, bool fDeleteOld) => throw null;
                 public static void StructureToPtr<T>(T structure, nint ptr, bool fDeleteOld) => throw null;
-                public static int SystemDefaultCharSize;
-                public static int SystemMaxDBCSCharSize;
+                public static readonly int SystemDefaultCharSize;
+                public static readonly int SystemMaxDBCSCharSize;
                 public static void ThrowExceptionForHR(int errorCode) => throw null;
                 public static void ThrowExceptionForHR(int errorCode, nint errorInfo) => throw null;
                 public static nint UnsafeAddrOfPinnedArrayElement(System.Array arr, int index) => throw null;
