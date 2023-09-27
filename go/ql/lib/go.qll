@@ -64,3 +64,6 @@ import semmle.go.frameworks.XPath
 import semmle.go.frameworks.Yaml
 import semmle.go.frameworks.Zap
 import semmle.go.security.FlowSources
+import semmle.go.frameworks.Afero
+import semmle.go.frameworks.Iris
+import semmle.go.frameworks.Fiber

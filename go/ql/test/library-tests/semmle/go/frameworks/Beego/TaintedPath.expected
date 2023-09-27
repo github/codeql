@@ -1,20 +1,24 @@
 edges
-| test.go:209:15:209:26 | call to Data | test.go:210:18:210:26 | untrusted |
-| test.go:209:15:209:26 | call to Data | test.go:211:10:211:18 | untrusted |
-| test.go:209:15:209:26 | call to Data | test.go:212:35:212:43 | untrusted |
-| test.go:318:17:318:37 | selection of RequestBody | test.go:318:40:318:43 | &... |
-| test.go:318:40:318:43 | &... | test.go:320:35:320:43 | untrusted |
+| test.go:32:15:32:26 | call to Data | test.go:33:53:33:61 | untrusted |
+| test.go:39:15:39:26 | call to Data | test.go:40:18:40:26 | untrusted |
+| test.go:39:15:39:26 | call to Data | test.go:41:10:41:18 | untrusted |
+| test.go:39:15:39:26 | call to Data | test.go:42:35:42:43 | untrusted |
+| test.go:332:17:332:37 | selection of RequestBody | test.go:332:40:332:43 | &... |
+| test.go:332:40:332:43 | &... | test.go:334:35:334:43 | untrusted |
 nodes
-| test.go:209:15:209:26 | call to Data | semmle.label | call to Data |
-| test.go:210:18:210:26 | untrusted | semmle.label | untrusted |
-| test.go:211:10:211:18 | untrusted | semmle.label | untrusted |
-| test.go:212:35:212:43 | untrusted | semmle.label | untrusted |
-| test.go:318:17:318:37 | selection of RequestBody | semmle.label | selection of RequestBody |
-| test.go:318:40:318:43 | &... | semmle.label | &... |
-| test.go:320:35:320:43 | untrusted | semmle.label | untrusted |
+| test.go:32:15:32:26 | call to Data | semmle.label | call to Data |
+| test.go:33:53:33:61 | untrusted | semmle.label | untrusted |
+| test.go:39:15:39:26 | call to Data | semmle.label | call to Data |
+| test.go:40:18:40:26 | untrusted | semmle.label | untrusted |
+| test.go:41:10:41:18 | untrusted | semmle.label | untrusted |
+| test.go:42:35:42:43 | untrusted | semmle.label | untrusted |
+| test.go:332:17:332:37 | selection of RequestBody | semmle.label | selection of RequestBody |
+| test.go:332:40:332:43 | &... | semmle.label | &... |
+| test.go:334:35:334:43 | untrusted | semmle.label | untrusted |
 subpaths
 #select
-| test.go:210:18:210:26 | untrusted | test.go:209:15:209:26 | call to Data | test.go:210:18:210:26 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:211:10:211:18 | untrusted | test.go:209:15:209:26 | call to Data | test.go:211:10:211:18 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:212:35:212:43 | untrusted | test.go:209:15:209:26 | call to Data | test.go:212:35:212:43 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:320:35:320:43 | untrusted | test.go:318:17:318:37 | selection of RequestBody | test.go:320:35:320:43 | untrusted | This path depends on a $@. | test.go:318:17:318:37 | selection of RequestBody | user-provided value |
+| test.go:33:53:33:61 | untrusted | test.go:32:15:32:26 | call to Data | test.go:33:53:33:61 | untrusted | This path depends on a $@. | test.go:32:15:32:26 | call to Data | user-provided value |
+| test.go:40:18:40:26 | untrusted | test.go:39:15:39:26 | call to Data | test.go:40:18:40:26 | untrusted | This path depends on a $@. | test.go:39:15:39:26 | call to Data | user-provided value |
+| test.go:41:10:41:18 | untrusted | test.go:39:15:39:26 | call to Data | test.go:41:10:41:18 | untrusted | This path depends on a $@. | test.go:39:15:39:26 | call to Data | user-provided value |
+| test.go:42:35:42:43 | untrusted | test.go:39:15:39:26 | call to Data | test.go:42:35:42:43 | untrusted | This path depends on a $@. | test.go:39:15:39:26 | call to Data | user-provided value |
+| test.go:334:35:334:43 | untrusted | test.go:332:17:332:37 | selection of RequestBody | test.go:334:35:334:43 | untrusted | This path depends on a $@. | test.go:332:17:332:37 | selection of RequestBody | user-provided value |
