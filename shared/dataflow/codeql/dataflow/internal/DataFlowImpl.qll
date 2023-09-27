@@ -4436,6 +4436,7 @@ module MakeImpl<InputSig Lang> {
           ) and
           not fullBarrier(node) and
           not stateBarrier(node, state) and
+          not outBarrier(node, state) and
           distSink(node.getEnclosingCallable()) <= explorationLimit()
         }
 
@@ -4456,6 +4457,7 @@ module MakeImpl<InputSig Lang> {
         partialPathStep0(mid, node, state, cc, sc1, sc2, sc3, sc4, t0, ap) and
         not fullBarrier(node) and
         not stateBarrier(node, state) and
+        not inBarrier(node, state) and
         not clearsContentEx(node, ap.getHead()) and
         (
           notExpectsContent(node) or
@@ -4595,6 +4597,7 @@ module MakeImpl<InputSig Lang> {
         PartialAccessPath getAp() { result = ap }
 
         override PartialPathNodeFwd getASuccessor() {
+          not outBarrier(node, state) and
           partialPathStep(this, result.getNodeEx(), result.getState(), result.getCallContext(),
             result.getSummaryCtx1(), result.getSummaryCtx2(), result.getSummaryCtx3(),
             result.getSummaryCtx4(), result.getType(), result.getAp())
@@ -4634,6 +4637,7 @@ module MakeImpl<InputSig Lang> {
         PartialAccessPath getAp() { result = ap }
 
         override PartialPathNodeRev getASuccessor() {
+          not inBarrier(node, state) and
           revPartialPathStep(result, this.getNodeEx(), this.getState(), this.getSummaryCtx1(),
             this.getSummaryCtx2(), this.getSummaryCtx3(), this.getAp())
         }
