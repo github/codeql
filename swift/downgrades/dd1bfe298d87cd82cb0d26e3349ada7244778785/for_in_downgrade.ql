@@ -11,9 +11,7 @@ class ForEachStmt extends Element, @for_each_stmt {
     pattern_binding_decl_patterns(this.getIteratorVar(), _, result)
   }
 
-  Element getIteratorVarConcreteDecl() {
-    decl_ref_exprs(this.getNextCallVarRef(), result)
-  }
+  Element getIteratorVarConcreteDecl() { decl_ref_exprs(this.getNextCallVarRef(), result) }
 
   Element getNextCall() { for_each_stmt_next_calls(this, result) }
 
@@ -26,13 +24,12 @@ class ForEachStmt extends Element, @for_each_stmt {
   Element getNextCallVarRef() { in_out_exprs(this.getNextCallInOutConversion(), result) }
 }
 
-query predicate new_for_each_stmts(
-  ForEachStmt stmt, Element pattern, Element body, Element sequence,
-  Element iteratorVar
-) {
-  for_each_stmts(stmt, pattern, body) and
-  for_each_stmt_iterator_vars(stmt, iteratorVar) and
-  pattern_binding_decl_inits(iteratorVar, _, sequence)
+query predicate new_for_each_stmts(ForEachStmt stmt, Element pattern, Element body, Element sequence) {
+  exists(Element iteratorVar |
+    for_each_stmts(stmt, pattern, body) and
+    for_each_stmt_iterator_vars(stmt, iteratorVar) and
+    pattern_binding_decl_inits(iteratorVar, _, sequence)
+  )
 }
 
 query predicate new_pattern_binding_decls(Element id) {
