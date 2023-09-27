@@ -29,9 +29,8 @@ private predicate externalCallNeverDereferences(FormattingFunctionCall call, int
   )
 }
 
-predicate isUse0(DataFlow::Node n, Expr e) {
-  e = n.asExpr() and
-  not isFree(n, _, _) and
+predicate isUse0(Expr e) {
+  not isFree(_, e, _) and
   (
     e = any(PointerDereferenceExpr pde).getOperand()
     or
@@ -57,7 +56,7 @@ module ParameterSinks {
   import semmle.code.cpp.ir.ValueNumbering
 
   predicate flowsToUse(DataFlow::Node n) {
-    isUse0(n, _)
+    isUse0(n.asExpr())
     or
     exists(DataFlow::Node succ |
       flowsToUse(succ) and
@@ -90,7 +89,7 @@ module ParameterSinks {
   ) {
     pragma[only_bind_out](source.asParameter()) = pragma[only_bind_out](init.getParameter()) and
     paramToUse(source, sink) and
-    isUse0(sink, _)
+    isUse0(sink.asExpr())
   }
 
   private InitializeParameterInstruction getAnAlwaysDereferencedParameter0() {
@@ -139,7 +138,7 @@ module IsUse {
   private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
 
   predicate isUse(DataFlow::Node n, Expr e) {
-    isUse0(n, e)
+    isUse0(e) and n.asExpr() = e
     or
     exists(CallInstruction call, InitializeParameterInstruction init |
       n.asOperand().getDef().getUnconvertedResultExpression() = e and
