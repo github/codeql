@@ -4,9 +4,7 @@
  * @kind problem
  * @id py/quantum-readiness/cbom/all-asymmetric-algorithms
  * @problem.severity error
- * @precision high
- * @tags security
- *       cbom
+ * @preci cbom
  *       cryptography
  */
 

@@ -4,8 +4,7 @@
  * @kind problem
  * @id py/quantum-readiness/cbom/asymmetric-padding-schemes
  * @problem.severity error
- * @tags security
- *       cbom
+ * @tags cbom
  *       cryptography
  */
 

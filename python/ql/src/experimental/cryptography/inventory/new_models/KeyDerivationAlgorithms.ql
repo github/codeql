@@ -5,8 +5,7 @@
  * @id py/quantum-readiness/cbom/key-derivation
  * @problem.severity error
  * @precision high
- * @tags security
- *       cbom
+ * @tags cbom
  *       cryptography
  */
 

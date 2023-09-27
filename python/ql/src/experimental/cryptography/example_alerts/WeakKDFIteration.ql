@@ -10,7 +10,6 @@
  * @id py/kdf-low-iteration-count
  * @problem.severity error
  * @precision high
- * @tags security
  */
 import python
 import experimental.cryptography.Concepts

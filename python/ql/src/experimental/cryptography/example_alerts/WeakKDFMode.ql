@@ -5,7 +5,6 @@
  * @id py/kdf-weak-mode
  * @problem.severity error
  * @precision high
- * @tags security
  */
 import python
 import experimental.cryptography.Concepts

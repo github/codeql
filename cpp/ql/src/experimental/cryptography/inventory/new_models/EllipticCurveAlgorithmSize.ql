@@ -5,8 +5,7 @@
  * @id cpp/quantum-readiness/cbom/elliptic-curve-key-length
  * @problem.severity error
  * @precision high
- * @tags security
- *       cbom
+ * @tags cbom
  *       cryptography
  */
 

@@ -5,8 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @precision high
- * @tags security
- *       external/cwe/cwe-327
+ * @tags external/cwe/cwe-327
  */
 
  import python

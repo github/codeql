@@ -10,7 +10,6 @@
  * @id py/kdf-small-key-size
  * @problem.severity error
  * @precision high
- * @tags security
  */
 import python
 import experimental.cryptography.Concepts

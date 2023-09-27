@@ -5,8 +5,7 @@
  * @id py/quantum-readiness/cbom/classic-model/block-cipher-mode
  * @problem.severity error
  * @precision high
- * @tags security
- *       cbom
+ * @tags cbom
  *       cryptography
  */
 

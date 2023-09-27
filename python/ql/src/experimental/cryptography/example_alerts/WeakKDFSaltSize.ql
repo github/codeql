@@ -8,7 +8,6 @@
  * @id py/kdf-small-salt-size
  * @problem.severity error
  * @precision high
- * @tags security
  */
 
 import python

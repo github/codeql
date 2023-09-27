@@ -17,7 +17,6 @@
  * @kind problem
  * @problem.severity error
  * @precision high
- * @tags security
  */
 
 
