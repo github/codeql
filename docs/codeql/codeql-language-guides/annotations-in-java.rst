@@ -1,7 +1,7 @@
 .. _annotations-in-java:
 
 Annotations in Java and Kotlin
-===================
+==============================
 
 CodeQL databases of Java/Kotlin projects contain information about all annotations attached to program elements.
 
