@@ -32,10 +32,7 @@ query predicate new_for_each_stmts(
 ) {
   for_each_stmts(stmt, pattern, body) and
   for_each_stmt_iterator_vars(stmt, iteratorVar) and
-  (
-    iteratorVar instanceof @pattern_binding_decl and
-    pattern_binding_decl_inits(iteratorVar, 0, sequence)
-  )
+  pattern_binding_decl_inits(iteratorVar, _, sequence)
 }
 
 query predicate new_pattern_binding_decls(Element id) {
