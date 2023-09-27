@@ -379,8 +379,10 @@
 /lib/codeql/swift/generated/Locatable.qll linguist-generated
 /lib/codeql/swift/generated/Location.qll linguist-generated
 /lib/codeql/swift/generated/OtherAvailabilitySpec.qll linguist-generated
+/lib/codeql/swift/generated/ParentChild.qll linguist-generated
 /lib/codeql/swift/generated/PlatformVersionAvailabilitySpec.qll linguist-generated
 /lib/codeql/swift/generated/PureSynthConstructors.qll linguist-generated
+/lib/codeql/swift/generated/Raw.qll linguist-generated
 /lib/codeql/swift/generated/Synth.qll linguist-generated
 /lib/codeql/swift/generated/SynthConstructors.qll linguist-generated
 /lib/codeql/swift/generated/UnknownFile.qll linguist-generated
@@ -574,6 +576,7 @@
 /lib/codeql/swift/generated/stmt/DoStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/FailStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/FallthroughStmt.qll linguist-generated
+/lib/codeql/swift/generated/stmt/ForEachStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/GuardStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/IfStmt.qll linguist-generated
 /lib/codeql/swift/generated/stmt/LabeledConditionalStmt.qll linguist-generated
