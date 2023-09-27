@@ -1,12 +1,12 @@
-package main
+package jwt
+
+//go:generate depstubber -vendor  github.com/golang-jwt/jwt/v5 RegisteredClaims,Parser,Token Parse,ParseWithClaims
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"net/http"
-	"os"
 )
 
 type CustomerInfo struct {
@@ -16,27 +16,18 @@ type CustomerInfo struct {
 }
 
 // BAD constant key
-var JwtKey = []byte("AllYourBase")
+var JwtKey1 = []byte("AllYourBase")
 
-func main() {
-	router := gin.Default()
-	router.GET("/ping", func(c *gin.Context) {
-		// https://pkg.go.dev/github.com/go-jose/go-jose/v3/jwt
-		var unsignedToken = c.Param("customerName")
-		signedToken := c.Param("signedToken")
-		VerifyJWT(signedToken)
-
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-	_ = router.Run()
+func main1(r *http.Request) {
+	signedToken := r.URL.Query().Get("signedToken")
+	verifyJWT_golangjwt(signedToken)
 }
 
 func LoadJwtKey(token *jwt.Token) (interface{}, error) {
-	return JwtKey, nil
+	return JwtKey1, nil
 }
-func verifyJWT(signedToken string) {
+
+func verifyJWT_golangjwt(signedToken string) {
 	fmt.Println("verifying JWT")
 	DecodedToken, err := jwt.ParseWithClaims(signedToken, &CustomerInfo{}, LoadJwtKey)
 	if claims, ok := DecodedToken.Claims.(*CustomerInfo); ok && DecodedToken.Valid {
@@ -45,4 +36,3 @@ func verifyJWT(signedToken string) {
 		log.Fatal(err)
 	}
 }
-

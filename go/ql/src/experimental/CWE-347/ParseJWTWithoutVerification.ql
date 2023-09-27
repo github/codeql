@@ -3,7 +3,7 @@
  * @description Using JWT methods without verification can cause to authorization or authentication bypass
  * @kind path-problem
  * @problem.severity error
- * @id go/hardcoded-key
+ * @id go/parse-jwt-without-verification
  * @tags security
  *       experimental
  *       external/cwe/cwe-321
@@ -16,8 +16,8 @@ module WithValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    sink = any(GolangJwtValidField parse) or
-    sink = any(GoJoseClaims parse).getACall().getReceiver()
+    sink = any(JwtParse parseUnverified).getTokenArg() or
+    sink = any(JwtParseWithKeyFunction parseUnverified).getTokenArg()
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -34,9 +34,7 @@ module NoValidationConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink = any(GolangJwtParseUnverified parseunverified).getACall().getArgument(0)
-    or
-    sink = any(GoJoseUnsafeClaims parse).getACall().getReceiver()
+    sink = any(JwtUnverifiedParse parseUnverified).getTokenNode()
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

@@ -1,9 +1,9 @@
 /**
  * @name Decoding JWT with hardcoded key
- * @description Decoding JWT Secrect with a Constant value lead to authentication or authorization bypass
+ * @description Decoding JWT Secret with a Constant value lead to authentication or authorization bypass
  * @kind path-problem
  * @problem.severity error
- * @id go/hardcoded-key
+ * @id go/parse-jwt-with-hardcoded-key
  * @tags security
  *       experimental
  *       external/cwe/cwe-321
@@ -12,10 +12,13 @@
 import go
 import semmle.go.security.JWT
 
-module JwtConfig implements DataFlow::ConfigSig {
+module JwtPaseWithConstantKeyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof StringLit }
 
   predicate isSink(DataFlow::Node sink) {
+    // first part is the JWT Parsing Functions that get a func type as an argument
+    // Find a node that has flow to a key Function argument
+    // then find the first result node of this Function which is the secret key
     exists(FuncDef fd, DataFlow::Node n, DataFlow::ResultNode rn |
       GolangJwtKeyFunc::flow(n, _) and fd = n.asExpr()
     |
@@ -31,6 +34,9 @@ module JwtConfig implements DataFlow::ConfigSig {
       rn.getRoot() = fd.getFuncDecl() and
       rn.getIndex() = 0
     )
+    or
+    // second part is the JWT Parsing Functions that get a string or byte as an argument
+    sink = any(JwtParse jp).getKeyArg()
   }
 }
 
@@ -42,24 +48,17 @@ module GolangJwtKeyFuncConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink =
-      [
-        any(GolangJwtParse parseWithClaims).getKeyFuncArg(),
-        any(GolangJwtParseWithClaims parseWithClaims).getKeyFuncArg(),
-        any(GolangJwtParseFromRequest parseWithClaims).getKeyFuncArg(),
-        any(GolangJwtParseFromRequestWithClaims parseWithClaims).getKeyFuncArg(),
-        any(GoJoseClaims parseWithClaims).getKeyFuncArg(),
-      ]
+    sink = any(JwtParseWithKeyFunction parseJWT).getKeyFuncArg()
   }
 }
 
-module Jwt = TaintTracking::Global<JwtConfig>;
+module JwtPaseWithConstantKey = TaintTracking::Global<JwtPaseWithConstantKeyConfig>;
 
 module GolangJwtKeyFunc = TaintTracking::Global<GolangJwtKeyFuncConfig>;
 
-import Jwt::PathGraph
+import JwtPaseWithConstantKey::PathGraph
 
-from Jwt::PathNode source, Jwt::PathNode sink
-where Jwt::flowPath(source, sink)
+from JwtPaseWithConstantKey::PathNode source, JwtPaseWithConstantKey::PathNode sink
+where JwtPaseWithConstantKey::flowPath(source, sink)
 select sink.getNode(), source, sink, "This  $@.", source.getNode(),
   "Constant Key is used as JWT Secret key"

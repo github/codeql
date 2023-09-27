@@ -38,7 +38,7 @@ deprecated class Configuration extends TaintTracking::Configuration {
     sink instanceof Sink and
     (
       state instanceof NotNormalized or
-      state instanceof NormalizedUnchecked
+      state instanceof NormalizedUnchecked  
     )
   }
 
