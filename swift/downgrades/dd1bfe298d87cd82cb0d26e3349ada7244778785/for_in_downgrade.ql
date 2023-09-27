@@ -37,7 +37,7 @@ query predicate new_for_each_stmts(
 
 query predicate new_pattern_binding_decls(Element id) {
   pattern_binding_decls(id) and
-  not for_each_stmt_iterator_vars(id, _)
+  not for_each_stmt_iterator_vars(_, id)
 }
 
 query predicate new_pattern_binding_decl_patterns(Element id, int index, Element pattern) {
