@@ -1,5 +1,6 @@
 /**
- * Provides classes for working with the [fasthttp](github.com/valyala/fasthttp) package.
+ * Provides classes for working with untrusted flow sources, sinks and taint propagators
+ * from the `github.com/valyala/fasthttp` package.
  */
 
 import go
@@ -9,6 +10,12 @@ private import semmle.go.security.RequestForgeryCustomizations
  * Provides classes for working with the [fasthttp](github.com/valyala/fasthttp) package.
  */
 module Fasthttp {
+  /** Gets the v1 module path `github.com/valyala/fasthttp`. */
+  string v1modulePath() { result = "github.com/valyala/fasthttp" }
+
+  /** Gets the path for the root package of fasthttp. */
+  string packagePath() { result = package(v1modulePath(), "") }
+
   /**
    * A class when you are using Fasthttp related queries to fully supports additional steps
    */
@@ -29,8 +36,8 @@ module Fasthttp {
      */
     class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
-        exists(DataFlow::Function f |
-          f.hasQualifiedName("github.com/valyala/fasthttp",
+        exists(Function f |
+          f.hasQualifiedName(packagePath(),
             [
               "ServeFile", "ServeFileUncompressed", "ServeFileBytes", "ServeFileBytesUncompressed",
               "SaveMultipartFile"
@@ -49,7 +56,7 @@ module Fasthttp {
       HtmlQuoteSanitizer() {
         exists(DataFlow::CallNode c |
           c.getTarget()
-              .hasQualifiedName("github.com/valyala/fasthttp",
+              .hasQualifiedName(packagePath(),
                 ["AppendHTMLEscape", "AppendHTMLEscapeBytes", "AppendQuotedArg"])
         |
           this = c.getArgument(1)
@@ -65,9 +72,8 @@ module Fasthttp {
      */
     class RequestForgerySink extends RequestForgery::Sink {
       RequestForgerySink() {
-        exists(DataFlow::Function f |
-          f.hasQualifiedName("github.com/valyala/fasthttp",
-            ["Get", "GetDeadline", "GetTimeout", "Post"]) and
+        exists(Function f |
+          f.hasQualifiedName(packagePath(), ["Get", "GetDeadline", "GetTimeout", "Post"]) and
           this = f.getACall().getArgument(1)
         )
       }
@@ -84,9 +90,8 @@ module Fasthttp {
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
-        exists(DataFlow::Function f |
-          f.hasQualifiedName("github.com/valyala/fasthttp",
-            ["Do", "DoDeadline", "DoTimeout", "DoRedirects"]) and
+        exists(Function f |
+          f.hasQualifiedName(packagePath(), ["Do", "DoDeadline", "DoTimeout", "DoRedirects"]) and
           this = f.getACall().getArgument(0)
         )
       }
@@ -102,8 +107,8 @@ module Fasthttp {
      */
     class RequestForgerySinkDial extends RequestForgery::Sink {
       RequestForgerySinkDial() {
-        exists(DataFlow::Function f |
-          f.hasQualifiedName("github.com/valyala/fasthttp",
+        exists(Function f |
+          f.hasQualifiedName(packagePath(),
             ["DialDualStack", "Dial", "DialTimeout", "DialDualStackTimeout"]) and
           this = f.getACall().getArgument(0)
         )
@@ -132,11 +137,11 @@ module Fasthttp {
         exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
           (
             m.getTarget()
-                .hasQualifiedName("github.com/valyala/fasthttp.URI",
+                .hasQualifiedName(packagePath(), "URI",
                   ["SetHost", "SetHostBytes", "Update", "UpdateBytes"]) and
             pred = m.getArgument(0)
             or
-            m.getTarget().hasQualifiedName("github.com/valyala/fasthttp.URI", "Parse") and
+            m.getTarget().hasQualifiedName(packagePath(), "URI", "Parse") and
             pred = m.getArgument([0, 1])
           ) and
           frn.getARead() = m.getReceiver() and
@@ -145,7 +150,7 @@ module Fasthttp {
         or
         // CopyTo method copy receiver to first argument
         exists(DataFlow::MethodCallNode m |
-          m.getTarget().hasQualifiedName("github.com/valyala/fasthttp.URI", "CopyTo") and
+          m.getTarget().hasQualifiedName(packagePath(), "URI", "CopyTo") and
           pred = m.getReceiver() and
           succ = m.getArgument(1)
         )
@@ -157,12 +162,12 @@ module Fasthttp {
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.URI",
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "URI",
             ["Path", "PathOriginal", "LastPathSegment", "FullURI", "QueryString", "String"]) and
           this = m.getACall()
           or
-          m.hasQualifiedName("github.com/valyala/fasthttp.URI", "WriteTo") and
+          m.hasQualifiedName(packagePath(), "URI", "WriteTo") and
           this = m.getACall().getArgument(0)
         )
       }
@@ -178,12 +183,12 @@ module Fasthttp {
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.Args",
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "Args",
             ["Peek", "PeekBytes", "PeekMulti", "PeekMultiBytes", "QueryString", "String"]) and
           this = m.getACall()
           or
-          m.hasQualifiedName("github.com/valyala/fasthttp.Args", "WriteTo") and
+          m.hasQualifiedName(packagePath(), "Args", "WriteTo") and
           this = m.getACall().getArgument(0)
         )
       }
@@ -201,8 +206,8 @@ module Fasthttp {
      */
     class RequestForgerySinkDial extends RequestForgery::Sink {
       RequestForgerySinkDial() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.TCPDialer",
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "TCPDialer",
             ["Dial", "DialTimeout", "DialDualStack", "DialDualStackTimeout"]) and
           this = m.getACall().getArgument(0)
         )
@@ -226,9 +231,8 @@ module Fasthttp {
      */
     class RequestForgerySink extends RequestForgery::Sink {
       RequestForgerySink() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.Client",
-            ["Get", "GetDeadline", "GetTimeout", "Post"]) and
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "Client", ["Get", "GetDeadline", "GetTimeout", "Post"]) and
           this = m.getACall().getArgument(0)
         )
       }
@@ -245,8 +249,8 @@ module Fasthttp {
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.Client",
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "Client",
             ["Do", "DoDeadline", "DoTimeout", "DoRedirects"]) and
           this = m.getACall().getArgument(0)
         )
@@ -270,9 +274,8 @@ module Fasthttp {
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.PipelineClient",
-            ["Do", "DoDeadline", "DoTimeout"]) and
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "PipelineClient", ["Do", "DoDeadline", "DoTimeout"]) and
           this = m.getACall().getArgument(0)
         )
       }
@@ -296,8 +299,8 @@ module Fasthttp {
      */
     class RequestForgerySink extends RequestForgery::Sink {
       RequestForgerySink() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.HostClient",
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "HostClient",
             ["Get", "GetDeadline", "GetTimeout", "Post"]) and
           this = m.getACall().getArgument(1)
         )
@@ -315,8 +318,8 @@ module Fasthttp {
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.HostClient",
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "HostClient",
             ["Do", "DoDeadline", "DoTimeout", "DoRedirects"]) and
           this = m.getACall().getArgument(0)
         )
@@ -340,9 +343,8 @@ module Fasthttp {
      */
     class RequestForgerySinkDo extends RequestForgery::Sink {
       RequestForgerySinkDo() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.LBClient",
-            ["Do", "DoDeadline", "DoTimeout"]) and
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "LBClient", ["Do", "DoDeadline", "DoTimeout"]) and
           this = m.getACall().getArgument(0)
         )
       }
@@ -370,7 +372,7 @@ module Fasthttp {
       override predicate hasTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
         exists(DataFlow::MethodCallNode m, DataFlow::Variable frn |
           m.getTarget()
-              .hasQualifiedName("github.com/valyala/fasthttp.Request",
+              .hasQualifiedName(packagePath(), "Request",
                 ["SetRequestURI", "SetRequestURIBytes", "SetURI", "SetHost", "SetHostBytes"]) and
           pred = m.getArgument(0) and
           frn.getARead() = m.getReceiver() and
@@ -388,8 +390,8 @@ module Fasthttp {
        */
       class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
         FileSystemAccess() {
-          exists(DataFlow::Method mcn |
-            mcn.hasQualifiedName("github.com/valyala/fasthttp.Response", "SendFile") and
+          exists(Method mcn |
+            mcn.hasQualifiedName(packagePath(), "Response", "SendFile") and
             this = mcn.getACall()
           )
         }
@@ -403,8 +405,8 @@ module Fasthttp {
        */
       class HttpResponseBodySink extends SharedXss::Sink {
         HttpResponseBodySink() {
-          exists(DataFlow::Method m |
-            m.hasQualifiedName("github.com/valyala/fasthttp", "Response",
+          exists(Method m |
+            m.hasQualifiedName(packagePath(), "Response",
               [
                 "AppendBody", "AppendBodyString", "SetBody", "SetBodyString", "SetBodyRaw",
                 "SetBodyStream"
@@ -420,15 +422,15 @@ module Fasthttp {
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.Request",
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "Request",
             [
               "Host", "RequestURI", "Body", "BodyGunzip", "BodyInflate", "BodyUnbrotli",
               "BodyStream", "BodyUncompressed"
             ]) and
           this = m.getACall()
           or
-          m.hasQualifiedName("github.com/valyala/fasthttp.Request",
+          m.hasQualifiedName(packagePath(), "Request",
             [
               "BodyWriteTo", "WriteTo", "ReadBody", "ReadLimitBody", "ContinueReadBodyStream",
               "ContinueReadBody"
@@ -448,9 +450,8 @@ module Fasthttp {
      */
     class FileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
       FileSystemAccess() {
-        exists(DataFlow::Method mcn |
-          mcn.hasQualifiedName("github.com/valyala/fasthttp.RequestCtx",
-            ["SendFileBytes", "SendFile"]) and
+        exists(Method mcn |
+          mcn.hasQualifiedName(packagePath(), "RequestCtx", ["SendFileBytes", "SendFile"]) and
           this = mcn.getACall()
         )
       }
@@ -466,9 +467,9 @@ module Fasthttp {
      */
     class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
       Redirect() {
-        exists(DataFlow::Function f |
-          f.hasQualifiedName("github.com/valyala/fasthttp.RequestCtx", ["Redirect", "RedirectBytes"]) and
-          this = f.getACall()
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "RequestCtx", ["Redirect", "RedirectBytes"]) and
+          this = m.getACall()
         )
       }
 
@@ -482,8 +483,8 @@ module Fasthttp {
      */
     class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
       UntrustedFlowSource() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.RequestCtx",
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "RequestCtx",
             ["Path", "Referer", "PostBody", "RequestBodyStream", "RequestURI", "UserAgent", "Host"]) and
           this = m.getACall()
         )
@@ -496,36 +497,36 @@ module Fasthttp {
      */
     class HttpResponseBodySink extends SharedXss::Sink {
       HttpResponseBodySink() {
-        exists(DataFlow::Method m |
-          m.hasQualifiedName("github.com/valyala/fasthttp.RequestCtx", ["Success", "SuccessString"]) and
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "RequestCtx", ["Success", "SuccessString"]) and
           this = m.getACall().getArgument(1)
         )
       }
     }
   }
-}
 
-/**
- * Provide Methods of fasthttp.RequestHeader which mostly used as remote user controlled sources
- */
-module RequestHeader {
   /**
-   * The methods as Remote user controllable source which are mostly related to HTTP Request Headers
+   * Provide Methods of fasthttp.RequestHeader which mostly used as remote user controlled sources
    */
-  class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
-    UntrustedFlowSource() {
-      exists(DataFlow::Method m |
-        m.hasQualifiedName("github.com/valyala/fasthttp.RequestHeader",
-          [
-            "Header", "TrailerHeader", "RequestURI", "Host", "UserAgent", "ContentEncoding",
-            "ContentType", "Cookie", "CookieBytes", "MultipartFormBoundary", "Peek", "PeekAll",
-            "PeekBytes", "PeekKeys", "PeekTrailerKeys", "Referer", "RawHeaders"
-          ]) and
-        this = m.getACall()
-        or
-        m.hasQualifiedName("github.com/valyala/fasthttp.RequestHeader", "Write") and
-        this = m.getACall().getArgument(0)
-      )
+  module RequestHeader {
+    /**
+     * The methods as Remote user controllable source which are mostly related to HTTP Request Headers
+     */
+    class UntrustedFlowSource extends UntrustedFlowSource::Range instanceof DataFlow::Node {
+      UntrustedFlowSource() {
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "RequestHeader",
+            [
+              "Header", "TrailerHeader", "RequestURI", "Host", "UserAgent", "ContentEncoding",
+              "ContentType", "Cookie", "CookieBytes", "MultipartFormBoundary", "Peek", "PeekAll",
+              "PeekBytes", "PeekKeys", "PeekTrailerKeys", "Referer", "RawHeaders"
+            ]) and
+          this = m.getACall()
+          or
+          m.hasQualifiedName(packagePath(), "RequestHeader", "Write") and
+          this = m.getACall().getArgument(0)
+        )
+      }
     }
   }
 }
