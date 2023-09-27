@@ -1,5 +1,5 @@
 /**
- * @name Summary statistics
+ * @name Summary Statistics
  * @description A table of summary statistics about a database.
  * @kind table
  * @id swift/summary/summary-statistics
@@ -59,6 +59,9 @@ predicate statistic(string what, string value) {
   what = "Taint reach (per million nodes)" and value = taintReach().toString()
   or
   what = "Regular expression evals" and value = count(RegexEval e).toString()
+  or
+  what = "Regular expression evals with associated regex" and
+  value = count(RegexEval e | exists(e.getARegex())).toString()
 }
 
 from string what, string value
