@@ -230,6 +230,7 @@ module MakeImpl<InputSig Lang> {
       )
     }
 
+    pragma[nomagic]
     private predicate inBarrier(NodeEx node, FlowState state) {
       exists(Node n |
         node.asNode() = n and
@@ -249,6 +250,7 @@ module MakeImpl<InputSig Lang> {
       )
     }
 
+    pragma[nomagic]
     private predicate outBarrier(NodeEx node, FlowState state) {
       exists(Node n |
         node.asNode() = n and
@@ -2518,6 +2520,7 @@ module MakeImpl<InputSig Lang> {
         LocalCallContext cc
       ) {
         not isUnreachableInCall1(node2, cc) and
+        not inBarrier(node2, state) and
         (
           localFlowEntry(node1, pragma[only_bind_into](state)) and
           (
@@ -2532,11 +2535,13 @@ module MakeImpl<InputSig Lang> {
           ) and
           node1 != node2 and
           cc.relevantFor(node1.getEnclosingCallable()) and
-          not isUnreachableInCall1(node1, cc)
+          not isUnreachableInCall1(node1, cc) and
+          not outBarrier(node1, state)
           or
           exists(NodeEx mid |
             localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue, t, cc) and
             localFlowStepNodeCand1(mid, node2) and
+            not outBarrier(mid, state) and
             not mid instanceof FlowCheckNode and
             Stage2::revFlow(node2, pragma[only_bind_into](state))
           )
@@ -2544,6 +2549,7 @@ module MakeImpl<InputSig Lang> {
           exists(NodeEx mid |
             localFlowStepPlus(node1, state, mid, _, _, cc) and
             additionalLocalFlowStepNodeCand2(mid, state, node2, state) and
+            not outBarrier(mid, state) and
             not mid instanceof FlowCheckNode and
             preservesValue = false and
             t = node2.getDataFlowType()
@@ -3610,11 +3616,14 @@ module MakeImpl<InputSig Lang> {
       }
 
       override PathNodeImpl getASuccessorImpl() {
-        // an intermediate step to another intermediate node
-        result = this.getSuccMid()
-        or
-        // a final step to a sink
-        result = this.getSuccMid().projectToSink()
+        not outBarrier(node, state) and
+        (
+          // an intermediate step to another intermediate node
+          result = this.getSuccMid()
+          or
+          // a final step to a sink
+          result = this.getSuccMid().projectToSink()
+        )
       }
 
       override predicate isSource() {
@@ -3740,7 +3749,8 @@ module MakeImpl<InputSig Lang> {
       exists(DataFlowType t0 |
         pathStep0(mid, node, state, cc, sc, t0, ap) and
         Stage5::revFlow(node, state, ap.getApprox()) and
-        strengthenType(node, t0, t)
+        strengthenType(node, t0, t) and
+        not inBarrier(node, state)
       )
     }
 
@@ -3838,11 +3848,15 @@ module MakeImpl<InputSig Lang> {
       PathNodeMid mid, ReturnPosition pos, FlowState state, CallContext innercc,
       AccessPathApprox apa
     ) {
-      pos = mid.getNodeEx().(RetNodeEx).getReturnPosition() and
-      state = mid.getState() and
-      innercc = mid.getCallContext() and
-      innercc instanceof CallContextNoCall and
-      apa = mid.getAp().getApprox()
+      exists(RetNodeEx retNode |
+        retNode = mid.getNodeEx() and
+        pos = retNode.getReturnPosition() and
+        state = mid.getState() and
+        not outBarrier(retNode, state) and
+        innercc = mid.getCallContext() and
+        innercc instanceof CallContextNoCall and
+        apa = mid.getAp().getApprox()
+      )
     }
 
     pragma[nomagic]
@@ -3874,7 +3888,8 @@ module MakeImpl<InputSig Lang> {
     private predicate pathOutOfCallable(PathNodeMid mid, NodeEx out, FlowState state, CallContext cc) {
       exists(ReturnKindExt kind, DataFlowCall call, AccessPathApprox apa |
         pathOutOfCallable1(mid, call, kind, state, cc, apa) and
-        out = getAnOutNodeFlow(kind, call, apa)
+        out = getAnOutNodeFlow(kind, call, apa) and
+        not inBarrier(out, state)
       )
     }
 
@@ -3888,6 +3903,7 @@ module MakeImpl<InputSig Lang> {
     ) {
       exists(ArgNodeEx arg, ArgumentPosition apos |
         pathNode(mid, arg, state, cc, _, t, ap, _) and
+        not outBarrier(arg, state) and
         arg.asNode().(ArgNode).argumentOf(call, apos) and
         apa = ap.getApprox() and
         parameterMatch(ppos, apos)
@@ -3930,6 +3946,7 @@ module MakeImpl<InputSig Lang> {
       exists(ParameterPosition pos, DataFlowCallable callable, DataFlowType t, AccessPath ap |
         pathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap) and
         p.isParameterOf(callable, pos) and
+        not inBarrier(p, state) and
         (
           sc = TSummaryCtxSome(p, state, t, ap)
           or
