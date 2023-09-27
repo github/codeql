@@ -114,10 +114,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
 
     // First, find all the token kinds
     for node in nodes {
-        if node.subtypes.is_none()
-            && node.fields.as_ref().map_or(0, |x| x.len()) == 0
-            && node.children.is_none()
-        {
+        if node.subtypes.is_empty() && node.fields.is_empty() && node.children.is_none() {
             let type_name = TypeName {
                 kind: node.kind.clone(),
                 named: node.named,
@@ -131,7 +128,8 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
         let dbscheme_name = escape_name(flattened_name);
         let ql_class_name = dbscheme_name_to_class_name(&dbscheme_name);
         let dbscheme_name = format!("{}_{}", prefix, &dbscheme_name);
-        if let Some(subtypes) = &node.subtypes {
+        let subtypes = &node.subtypes;
+        if !subtypes.is_empty() {
             // It's a tree-sitter supertype node, for which we create a union
             // type.
             entries.insert(
@@ -147,7 +145,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     },
                 },
             );
-        } else if node.fields.as_ref().map_or(0, |x| x.len()) == 0 && node.children.is_none() {
+        } else if node.fields.is_empty() && node.children.is_none() {
             // Token kind, handled above.
         } else {
             // It's a product type, defined by a table.
@@ -162,17 +160,15 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
 
             // If the type also has fields or children, then we create either
             // auxiliary tables or columns in the defining table for them.
-            if let Some(node_fields) = &node.fields {
-                for (field_name, field_info) in node_fields {
-                    add_field(
-                        prefix,
-                        &type_name,
-                        Some(field_name.to_string()),
-                        field_info,
-                        &mut fields,
-                        &token_kinds,
-                    );
-                }
+            for (field_name, field_info) in &node.fields {
+                add_field(
+                    prefix,
+                    &type_name,
+                    Some(field_name.to_string()),
+                    field_info,
+                    &mut fields,
+                    &token_kinds,
+                );
             }
             if let Some(children) = &node.children {
                 // Treat children as if they were a field called 'child'.
@@ -301,12 +297,12 @@ pub struct NodeInfo {
     #[serde(rename = "type")]
     pub kind: String,
     pub named: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub fields: Option<BTreeMap<String, FieldInfo>>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty", default)]
+    pub fields: BTreeMap<String, FieldInfo>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub children: Option<FieldInfo>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub subtypes: Option<Vec<NodeType>>,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub subtypes: Vec<NodeType>,
 }
 
 #[derive(Deserialize)]

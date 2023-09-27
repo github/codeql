@@ -82,6 +82,7 @@ namespace System.Web.UI
     public class Page
     {
         public System.Security.Principal.IPrincipal User { get; } 
+        public System.Web.HttpRequest Request { get; }
     }
 
     interface IPostBackDataHandler

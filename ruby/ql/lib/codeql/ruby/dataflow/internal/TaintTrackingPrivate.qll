@@ -67,9 +67,10 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 cached
 private module Cached {
   private import codeql.ruby.dataflow.FlowSteps as FlowSteps
+  private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 
   cached
-  predicate forceCachingInSameStage() { any() }
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
 
   /**
    * Holds if the additional step from `nodeFrom` to `nodeTo` should be included

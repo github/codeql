@@ -57,3 +57,13 @@ private class RegexInjectionSinks extends SinkModelCsv {
       ]
   }
 }
+
+/**
+ * A barrier for regular expression injection vulnerabilities.
+ */
+private class RegexInjectionDefaultBarrier extends RegexInjectionBarrier {
+  RegexInjectionDefaultBarrier() {
+    // any numeric type
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+  }
+}
