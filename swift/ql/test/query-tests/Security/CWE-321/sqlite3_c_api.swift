@@ -38,7 +38,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, myVarKey: Data) {
 		_ = sqlite3_rekey_v2(db, "dbname", buffer, Int32(myVarKey.count))
 	}
 	myConstKey.withUnsafeBytes { buffer in
-		_ = sqlite3_key_v2(db, "dbname", buffer, Int32(myVarKey.count)) // BAD [NOT DETECTED]
-		_ = sqlite3_rekey_v2(db, "dbname", buffer, Int32(myVarKey.count)) // BAD [NOT DETECTED]
+		_ = sqlite3_key_v2(db, "dbname", buffer, Int32(myVarKey.count)) // BAD
+		_ = sqlite3_rekey_v2(db, "dbname", buffer, Int32(myVarKey.count)) // BAD
 	}
 }
