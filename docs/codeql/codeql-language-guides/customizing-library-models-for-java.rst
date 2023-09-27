@@ -3,12 +3,14 @@
 :orphan:
 :nosearch:
 
-Customizing Library Models for Java
+Customizing Library Models for Java and Kotlin 
 ===================================
 
 .. include:: ../reusables/beta-note-customizing-library-models.rst
 
-The Java analysis can be customized by adding library models (summaries, sinks and sources) in data extension files.
+.. include:: ../reusables/kotlin-beta-note.rst
+
+The Java/Kotlin analysis can be customized by adding library models (summaries, sinks and sources) in data extension files.
 A model is a definition of a behavior of a library element, such as a method, that is used to improve the data flow analysis precision by identifying more results.
 Most of the security related queries are taint tracking queries that try to find paths from a source of untrusted input to a sink that represents a vulnerability. Sources are the starting points of a taint tracking data flow analysis, and sinks are the end points of a taint tracking data flow analysis.
 
@@ -30,7 +32,7 @@ A data extension file for Java is a YAML file in the form:
 
 Data extensions contribute to the extensible predicates defined in the CodeQL library. For more information on how to define data extensions and extensible predicates as well as how to wire them up, see the :ref:`data-extensions` documentation.
 
-The CodeQL library for Java exposes the following extensible predicates:
+The CodeQL library for Java/Kotlin exposes the following extensible predicates:
 
 - **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance). This is used for **source** models.
 - **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance). This is used for **sink** models.
@@ -48,7 +50,7 @@ Example: Taint sink in the **java.sql** package
 
 In this example we will show how to model the argument of the **execute** method as a SQL injection sink.
 This is the **execute** method in the **Statement** class, which is located in the **java.sql** package.
-Note that this sink is already added to the CodeQL Java analysis.
+Note that this sink is already added to the CodeQL Java/Kotlin analysis.
 
 .. code-block:: java
 
@@ -89,7 +91,7 @@ Example: Taint source from the **java.net** package
 ----------------------------------------------------
 In this example we show how to model the return value from the **getInputStream** method as a **remote** source.
 This is the **getInputStream** method in the **Socket** class, which is located in the **java.net** package.
-Note that this source is already added to the CodeQL Java analysis.
+Note that this source is already added to the CodeQL Java/Kotlin analysis.
 
 .. code-block:: java
 
@@ -130,7 +132,7 @@ Example: Add flow through the **concat** method
 ------------------------------------------------
 In this example we show how to model flow through a method for a simple case.
 This pattern covers many of the cases where we need to define flow through a method.
-Note that the flow through the **concat** method is already added to the CodeQL Java analysis.
+Note that the flow through the **concat** method is already added to the CodeQL Java/Kotlin analysis.
 
 .. code-block:: java
 
@@ -178,7 +180,7 @@ Example: Add flow through the **map** method
 ---------------------------------------------
 In this example, we will see a more complex example of modeling flow through a method.
 This pattern shows how to model flow through higher order methods and collection types.
-Note that the flow through the **map** method is already added to the CodeQL Java analysis.
+Note that the flow through the **map** method is already added to the CodeQL Java/Kotlin analysis.
 
 .. code-block:: java
 
@@ -238,7 +240,7 @@ Example: Add a **neutral** method
 ----------------------------------
 In this example we will show how to model the **now** method as being neutral with respect to flow.
 A neutral model is used to define that there is no flow through a method.
-Note that the neutral model for the **now** method is already added to the CodeQL Java analysis.
+Note that the neutral model for the **now** method is already added to the CodeQL Java/Kotlin analysis.
 
 .. code-block:: java
 

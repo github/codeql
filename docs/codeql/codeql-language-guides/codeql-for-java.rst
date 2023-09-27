@@ -32,16 +32,16 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Analyzing data flow in Java and Kotlin <analyzing-data-flow-in-java>`: You can use CodeQL to track the flow of data through a Java/Kotlin program to its use. 
 
--  :doc:`Java types <types-in-java>`: You can use CodeQL to find out information about data types used in Java code. This allows you to write queries to identify specific type-related issues.
+-  :doc:`Java and Kotlin types <types-in-java>`: You can use CodeQL to find out information about data types used in Java/Kotlin code. This allows you to write queries to identify specific type-related issues.
 
--  :doc:`Overflow-prone comparisons in Java <overflow-prone-comparisons-in-java>`: You can use CodeQL to check for comparisons in Java code where one side of the comparison is prone to overflow.
+-  :doc:`Overflow-prone comparisons in Java and Kotlin <overflow-prone-comparisons-in-java>`: You can use CodeQL to check for comparisons in Java/Kotlin code where one side of the comparison is prone to overflow.
 
 -  :doc:`Navigating the call graph <navigating-the-call-graph>`: CodeQL has classes for identifying code that calls other code, and code that can be called from elsewhere. This allows you to find, for example, methods that are never used.
 
--  :doc:`Annotations in Java <annotations-in-java>`: CodeQL databases of Java projects contain information about all annotations attached to program elements.
+-  :doc:`Annotations in Java and Kotlin <annotations-in-java>`: CodeQL databases of Java/Kotlin projects contain information about all annotations attached to program elements.
 
--  :doc:`Javadoc <javadoc>`: You can use CodeQL to find errors in Javadoc comments in Java code.
+-  :doc:`Javadoc <javadoc>`: You can use CodeQL to find errors in Javadoc comments in Java/Kotlin code.
 
--  :doc:`Working with source locations <working-with-source-locations>`: You can use the location of entities within Java code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
+-  :doc:`Working with source locations <working-with-source-locations>`: You can use the location of entities within Java/Kotlin code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
 
 -  :doc:`Abstract syntax tree classes for working with Java and Kotlin programs <abstract-syntax-tree-classes-for-working-with-java-programs>`: CodeQL has a large selection of classes for representing the abstract syntax tree of Java/Kotlin programs.

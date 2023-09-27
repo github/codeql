@@ -3,7 +3,9 @@
 Javadoc
 =======
 
-You can use CodeQL to find errors in Javadoc comments in Java code.
+You can use CodeQL to find errors in Javadoc comments in Java/Kotlin code.
+
+.. include:: ../reusables/kotlin-beta-note.rst
 
 About analyzing Javadoc
 -----------------------
