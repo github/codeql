@@ -23,11 +23,15 @@ class BeegoFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode 
   BeegoFileSystemAccess() {
     exists(Method m |
       (
-        m.hasQualifiedName(package("github.com/beego/beego", "server/web/context"), "BeegoOutput",
-          "Download") and
+        (
+          m.hasQualifiedName(["github.com/beego/beego/context", "github.com/astaxie/beego/context"],
+            "BeegoOutput", "Download") or
+          m.hasQualifiedName("github.com/beego/beego/v2/server/web/context", "BeegoOutput",
+            "Download")
+        ) and
         pathArg = 0
         or
-        m.hasQualifiedName(package("github.com/beego/beego", "server/web"), "Controller",
+        m.hasQualifiedName("github.com/beego/beego/v2/server/web", "Controller",
           "SaveToFileWithBuffer") and
         pathArg = 1
       ) and
@@ -91,7 +95,7 @@ class IrisFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
           ["SendFile", "ServeFile", "SendFileWithRate", "ServeFileWithRate", "UploadFormFiles"]) and
         pathArg = 0
         or
-        m.hasQualifiedName(package("github.com/kataras/iris", "context"), "Context", "SaveFormFile") and
+        m.hasQualifiedName("github.com/kataras/iris/v12/context", "Context", "SaveFormFile") and
         pathArg = 1
       ) and
       this = m.getACall()
@@ -110,10 +114,13 @@ class FiberSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   FiberSystemAccess() {
     exists(Method m |
       (
-        m.hasQualifiedName(package("github.com/gofiber/fiber", ""), "Ctx", "SendFile") and
+        m.hasQualifiedName(package("github.com/gofiber/fiber", ""), "Ctx", ["SendFile", "Download"]) and
         pathArg = 0
         or
         m.hasQualifiedName(package("github.com/gofiber/fiber", ""), "Ctx", "SaveFile") and
+        pathArg = 1
+        or
+        m.hasQualifiedName("github.com/gofiber/fiber/v2", "Ctx", "SaveFileToStorage") and
         pathArg = 1
       ) and
       this = m.getACall()
@@ -127,6 +134,9 @@ class FiberSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
  * Provide File system access sinks of [afero](https://github.com/spf13/afero) framework
  */
 module Afero {
+  /**
+   * Gets all versions of `github.com/spf13/afero`
+   */
   string aferoPackage() { result = package("github.com/spf13/afero", "") }
 
   /**
@@ -207,7 +217,7 @@ module Afero {
   predicate aferoSanitizer(DataFlow::Node n) {
     exists(Function f |
       f.hasQualifiedName(aferoPackage(), ["NewBasePathFs", "NewIOFS"]) and
-      TaintTracking::localTaint(f.getACall(), n)
+      DataFlow::localFlow(f.getACall(), n)
     )
   }
 
@@ -221,7 +231,8 @@ module Afero {
   predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(StructLit st | st.getType().hasQualifiedName(aferoPackage(), "Afero") |
       n1.asExpr() = st.getAChildExpr().(KeyValueExpr).getAChildExpr() and
-      n2.asExpr() = st.getParent()
+      not aferoSanitizer(n1) and
+      n2.asExpr() = st
     )
   }
 }
