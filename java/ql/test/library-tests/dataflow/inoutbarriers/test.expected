@@ -1,3 +1,8 @@
+inconsistentFlow
+| A.java:9:16:9:19 | fsrc | A.java:15:10:15:10 | s | spurious state-flow in configuration sinkbarrier |
+| A.java:12:9:12:14 | src(...) | A.java:15:10:15:10 | s | spurious state-flow in configuration both |
+| A.java:12:9:12:14 | src(...) | A.java:15:10:15:10 | s | spurious state-flow in configuration sinkbarrier |
+#select
 | A.java:9:16:9:19 | fsrc | A.java:13:10:13:10 | s | nobarrier, sinkbarrier |
 | A.java:9:16:9:19 | fsrc | A.java:15:10:15:10 | s | nobarrier |
 | A.java:10:10:10:13 | fsrc | A.java:10:10:10:13 | fsrc | both, nobarrier, sinkbarrier, srcbarrier |
