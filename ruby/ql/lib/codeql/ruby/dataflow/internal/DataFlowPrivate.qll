@@ -455,13 +455,9 @@ private module Cached {
       exists(c.asCallable()) and // exclude library callables
       isParameterNode(_, c, any(ParameterPosition p | p.isPositional(_)))
     } or
-    TSynthSplatArgParameterNode(DataFlowCallable c) {
-      exists(c.asCallable()) and // exclude library callables
-      isParameterNode(_, c, any(ParameterPosition p | p.isSplat(_)))
-    } or
     TSynthSplatParameterElementNode(DataFlowCallable c, int n) {
       exists(c.asCallable()) and // exclude library callables
-      isParameterNode(_, c, any(ParameterPosition p | p.isSplat(_))) and
+      isParameterNode(_, c, any(ParameterPosition p | p.isSplat(any(int i | i > 0)))) and
       n in [0 .. 10]
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
@@ -479,15 +475,19 @@ private module Cached {
       or
       c.getAnArgument() instanceof CfgNodes::ExprNodes::PairCfgNode
     } or
-    TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
-      exists(Argument arg, ArgumentPosition pos | pos.isPositional(_) | arg.isArgumentOf(c, pos)) and
-      not exists(Argument arg, ArgumentPosition pos | pos.isSplat(_) | arg.isArgumentOf(c, pos))
+    TSynthSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) or
+    TSynthSplatArgumentElementNode(CfgNodes::ExprNodes::CallCfgNode c, int n) {
+      // we use -1 to represent data at an unknown index
+      n in [-1 .. 10] and
+      exists(Argument arg, ArgumentPosition pos |
+        pos.isSplat(any(int p | p > 0)) and arg.isArgumentOf(c, pos)
+      )
     } or
     TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
 
   class TSourceParameterNode =
     TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or
-        TSynthHashSplatParameterNode or TSynthSplatParameterNode or TSynthSplatArgParameterNode;
+        TSynthHashSplatParameterNode or TSynthSplatParameterNode;
 
   cached
   Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
@@ -694,8 +694,6 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthSplatParameterNode
   or
   n instanceof SynthSplatArgumentNode
-  or
-  n instanceof SynthSplatArgParameterNode
   or
   n instanceof SynthSplatParameterElementNode
   or
@@ -1026,19 +1024,23 @@ private module ParameterNodes {
    * For example, in the following code:
    *
    * ```rb
-   * def foo(x, y); end
+   * def foo(x, y, z); end
    *
-   * foo(*[a, b])
+   * foo(a, *[b, c])
    * ```
    *
-   * We want `a` to flow to `x` and `b` to flow to `y`. We do this by constructing
+   * We want `b` to flow to `y` and `c` to flow to `z`. We do this by constructing
    * a `SynthSplatParameterNode` for the method `foo`, and matching the splat argument to this
    * parameter node via `parameterMatch/2`. We then add read steps from this node to parameters
-   * `x` and `y`, for content at indices 0 and 1 respectively (see `readStep`).
+   * `y` and `z`, for content at indices 0 and 1 respectively (see `readStep`).
    *
-   * We don't yet correctly handle cases where the splat argument is not the first argument, e.g. in
+   * This node stores the index of the splat argument it is matched to, which allows us to shift
+   * indices correctly when adding read steps. Without this, in the example above we would erroneously
+   * get a read step to `x` at index 0 and `y` at index 1 etc.
+   *
+   * We don't yet correctly handle cases where a positional argument follows the splat argument, e.g. in
    * ```rb
-   * foo(a, *[b])
+   * foo(a, *[b], c)
    * ```
    */
   class SynthSplatParameterNode extends ParameterNodeImpl, TSynthSplatParameterNode {
@@ -1047,16 +1049,16 @@ private module ParameterNodes {
     SynthSplatParameterNode() { this = TSynthSplatParameterNode(callable) }
 
     /**
-     * Gets a parameter which will contain the value given by `c`, assuming
-     * that the method was called with a single splat argument.
-     * For example, if the synth splat parameter is for the following method
+     * Gets a parameter which will contain the value given by `c`.
+     * For example, if the synth splat parameter is for the following method and method call:
      *
      * ```rb
-     * def foo(x, y, a:, *rest)
-     * end
+     * def foo(x, y, a:, *rest); end
+     *
+     * foo(arg1, *args)
      * ```
      *
-     * Then `getAParameter(element 0) = x` and `getAParameter(element 1) = y`.
+     * then `getAParameter(element 0) = y`.
      */
     ParameterNode getAParameter(ContentSet c) {
       exists(int n |
@@ -1073,31 +1075,6 @@ private module ParameterNodes {
 
     final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       c = callable and pos.isSynthSplat()
-    }
-
-    final override CfgScope getCfgScope() { result = callable.asCallable() }
-
-    final override DataFlowCallable getEnclosingCallable() { result = callable }
-
-    final override Location getLocationImpl() { result = callable.getLocation() }
-
-    final override string toStringImpl() { result = "synthetic *args" }
-  }
-
-  /**
-   * A node that holds all positional arguments passed in a call to `c`.
-   * This is a mirror of the `SynthSplatArgumentNode` on the callable side.
-   * See `SynthSplatArgumentNode` for more information.
-   */
-  class SynthSplatArgParameterNode extends ParameterNodeImpl, TSynthSplatArgParameterNode {
-    private DataFlowCallable callable;
-
-    SynthSplatArgParameterNode() { this = TSynthSplatArgParameterNode(callable) }
-
-    final override Parameter getParameter() { none() }
-
-    final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c = callable and pos.isSynthArgSplat()
     }
 
     final override CfgScope getCfgScope() { result = callable.asCallable() }
@@ -1127,12 +1104,7 @@ private module ParameterNodes {
 
     int getStorePosition() { result = pos }
 
-    int getReadPosition() {
-      exists(int splatPos |
-        exists(this.getSplatParameterNode(splatPos)) and
-        result = pos + splatPos
-      )
-    }
+    int getReadPosition() { result = pos }
 
     final override CfgScope getCfgScope() { result = callable.asCallable() }
 
@@ -1246,7 +1218,7 @@ module ArgumentNodes {
    * part of the method signature, such that those cannot end up in the hash-splat
    * parameter.
    */
-  class SynthHashSplatArgumentNode extends ArgumentNode, TSynthHashSplatArgumentNode {
+  class SynthHashSplatArgumentNode extends ArgumentNode, NodeImpl, TSynthHashSplatArgumentNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
     SynthHashSplatArgumentNode() { this = TSynthHashSplatArgumentNode(c) }
@@ -1259,12 +1231,6 @@ module ArgumentNodes {
       call = c and
       pos.isHashSplat()
     }
-  }
-
-  private class SynthHashSplatArgumentNodeImpl extends NodeImpl, TSynthHashSplatArgumentNode {
-    CfgNodes::ExprNodes::CallCfgNode c;
-
-    SynthHashSplatArgumentNodeImpl() { this = TSynthHashSplatArgumentNode(c) }
 
     override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
 
@@ -1287,9 +1253,9 @@ module ArgumentNodes {
    *
    * 1. We want `3` to flow to `z[0]` and `4` to flow to `z[1]`. We model this by first storing all arguments
    *   in a synthetic argument node `SynthSplatArgumentNode` (see `storeStepCommon`).
-   * 2. We match this to an analogous parameter node `SynthSplatArgParameterNode` on the callee side
+   * 2. We match this to an analogous parameter node `SynthSplatParameterNode` on the callee side
    *   (see `parameterMatch`).
-   * 3. For each content element stored in the `SynthSplatArgParameterNode`, we add a read step to a separate
+   * 3. For each content element stored in the `SynthSplatParameterNode`, we add a read step to a separate
    *   `SynthSplatParameterElementNode`, which is parameterized by the element index (see `readStep`).
    * 4. Finally, we add store steps from these `SynthSplatParameterElementNode`s to the real splat parameter node
    *   (see `storeStep`).
@@ -1316,6 +1282,33 @@ module ArgumentNodes {
     override Location getLocationImpl() { result = c.getLocation() }
 
     override string toStringImpl() { result = "*" }
+  }
+
+  /**
+   * A data-flow node that holds data from values inside splat arguments.
+   * For example, in the following call
+   *
+   * ```rb
+   * foo(1, 2, *[3, 4])
+   * ```
+   *
+   * We add read steps such that `3` flows into `SynthSplatArgumentElementNode(2)` and `4` flows into `SynthSplatArgumentElementNode(3)`.
+   */
+  class SynthSplatArgumentElementNode extends NodeImpl, TSynthSplatArgumentElementNode {
+    CfgNodes::ExprNodes::CallCfgNode c;
+    int n;
+
+    SynthSplatArgumentElementNode() { this = TSynthSplatArgumentElementNode(c, n) }
+
+    CfgNodes::ExprNodes::CallCfgNode getCall() { result = c }
+
+    int getPosition() { result = n }
+
+    override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
+
+    override Location getLocationImpl() { result = c.getLocation() }
+
+    override string toStringImpl() { result = "*[" + n + "]" }
   }
 }
 
@@ -1557,6 +1550,33 @@ predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
 }
 
 /**
+ * Holds if data can flow from a `SynthSplatArgumentElementNode` into a `SynthSplatArgumentNode` via a store step.
+ * For example in
+ *
+ * ```rb
+ * foo(1, 2, *[3, 4])
+ * ```
+ *
+ * We have flow from `3` into `SynthSplatArgumentElementNode(2)`. This step stores the value from this node into element `2` of the `SynthSplatArgumentNode`.
+ *
+ * This allows us to match values inside splat arguments to the correct parameter in the callable.
+ */
+predicate synthSplatArgumentElementStoreStep(
+  SynthSplatArgumentElementNode node1, ContentSet c, SynthSplatArgumentNode node2
+) {
+  exists(CfgNodes::ExprNodes::CallCfgNode call, int n |
+    node2 = TSynthSplatArgumentNode(call) and
+    node1 = TSynthSplatArgumentElementNode(call, n) and
+    (
+      c = getPositionalContent(n)
+      or
+      n = -1 and
+      c.isSingleton(TUnknownElementContent())
+    )
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
  */
@@ -1587,11 +1607,13 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
   or
-  node1 =
-    any(SynthSplatParameterElementNode elemNode |
-      node2 = elemNode.getSplatParameterNode(_) and
-      c = getPositionalContent(elemNode.getStorePosition())
-    )
+  exists(SynthSplatParameterElementNode elemNode, int splatPos |
+    node1 = elemNode and
+    node2 = elemNode.getSplatParameterNode(splatPos) and
+    c = getPositionalContent(elemNode.getStorePosition() - splatPos)
+  )
+  or
+  synthSplatArgumentElementStoreStep(node1, c, node2)
   or
   storeStepCommon(node1, c, node2)
   or
@@ -1606,6 +1628,34 @@ predicate readStepCommon(Node node1, ContentSet c, Node node2) {
   node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
   or
   node2 = node1.(SynthSplatParameterNode).getAParameter(c)
+}
+
+/**
+ * Holds if data can flow from a splat argument to a `SynthSplatArgumentElementNode` via a read step.
+ * For example in
+ * ```rb
+ * foo(x, y, *[1, 2])
+ * ```
+ *
+ * we read `1` into `SynthSplatArgumentElementNode(2)` and `2` into `SynthSplatArgumentElementNode(3)`.
+ */
+predicate synthSplatArgumentElementReadStep(
+  Node node1, ContentSet c, SynthSplatArgumentElementNode node2
+) {
+  exists(int splatPos, CfgNodes::ExprNodes::CallCfgNode call |
+    node1.asExpr().(Argument).isArgumentOf(call, any(ArgumentPosition p | p.isSplat(splatPos))) and
+    splatPos > 0 and
+    node2.getCall() = call and
+    (
+      exists(int n |
+        node2.getPosition() = n + splatPos and
+        c = getPositionalContent(n)
+      )
+      or
+      node2.getPosition() = -1 and
+      c.isSingleton(TUnknownElementContent())
+    )
+  )
 }
 
 /**
@@ -1638,14 +1688,16 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
   or
-  // Read from SynthSplatArgParameterNode into SynthSplatParameterElementNode
+  VariableCapture::readStep(node1, any(Content::CapturedVariableContent v | c.isSingleton(v)), node2)
+  or
+  // Read from SynthSplatParameterNode into SynthSplatParameterElementNode
   node2 =
     any(SynthSplatParameterElementNode e |
-      node1.(SynthSplatArgParameterNode).isParameterOf(e.getEnclosingCallable(), _) and
+      node1.(SynthSplatParameterNode).isParameterOf(e.getEnclosingCallable(), _) and
       c = getPositionalContent(e.getReadPosition())
     )
   or
-  VariableCapture::readStep(node1, any(Content::CapturedVariableContent v | c.isSingleton(v)), node2)
+  synthSplatArgumentElementReadStep(node1, c, node2)
   or
   readStepCommon(node1, c, node2)
 }
