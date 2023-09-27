@@ -1,0 +1,14 @@
+WARNING: Unused class Sink (/home/am/CodeQL-home/codeql-repo-amammad/javascript/ql/src/experimental/Security/CWE-094-dataURL/CodeInjection.ql:23,16-20)
+nodes
+| test.js:18:11:18:44 | payload |
+| test.js:18:21:18:44 | req.que ... rameter |
+| test.js:18:21:18:44 | req.que ... rameter |
+| test.js:20:18:20:24 | payload |
+| test.js:20:18:20:24 | payload |
+edges
+| test.js:18:11:18:44 | payload | test.js:20:18:20:24 | payload |
+| test.js:18:11:18:44 | payload | test.js:20:18:20:24 | payload |
+| test.js:18:21:18:44 | req.que ... rameter | test.js:18:11:18:44 | payload |
+| test.js:18:21:18:44 | req.que ... rameter | test.js:18:11:18:44 | payload |
+#select
+| test.js:20:18:20:24 | payload | test.js:18:21:18:44 | req.que ... rameter | test.js:20:18:20:24 | payload | payload depends on a $@. | test.js:18:21:18:44 | req.que ... rameter | user-provided value |
