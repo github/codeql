@@ -182,7 +182,7 @@ private class MaxValueState extends TMaxValueState {
   }
 
   /**
-   * Gets whether what bitsize we should use for a sink.
+   * Gets the bitsize we should use for a sink.
    *
    * If the architecture bit size is known, then we should use that. Otherwise,
    * we should use 32 bits, because that will lead to more results.
@@ -191,6 +191,7 @@ private class MaxValueState extends TMaxValueState {
     if this = TMkMaxValueState(_, TMk64Bit()) then result = 64 else result = 32
   }
 
+  /** Gets a textual representation of this element. */
   string toString() {
     exists(string suffix |
       if exists(this.getArchitectureBitSize())
@@ -226,6 +227,13 @@ abstract class BarrierFlowStateTransformer extends DataFlow::Node {
   abstract MaxValueState transform(MaxValueState flowstate);
 }
 
+/**
+ * A node that is safely guarded by an `UpperBoundCheckGuard`.
+ *
+ * When this guarantees that a variable in the non-constant operand is less
+ * than some value this may be a barrier guard which should block some flow
+ * states and transform some others as they flow through.
+ */
 class UpperBoundCheck extends BarrierFlowStateTransformer {
   UpperBoundCheckGuard g;
 
@@ -253,6 +261,13 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
   }
 }
 
+/**
+ * Holds if `source` is the result of a call to `strconv.Atoi`,
+ * `strconv.ParseInt`, or `strconv.ParseUint`, `bitSize` is the bit size of
+ * the smallest integer type which the result could be converted to without
+ * data loss, and `isSigned` is true if the result is parsed as a signed
+ * integer.
+ */
 predicate isSourceWithBitSize(DataFlow::Node source, int bitSize, boolean isSigned) {
   exists(DataFlow::CallNode c, IntegerParser::Range ip, int apparentBitSize |
     c = ip.getACall() and
@@ -342,19 +357,20 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
-    // when the flowstate is transformed at a call node, block the original
-    // flowstate value.
+    // Safely guarded by a barrier guard.
     exists(BarrierFlowStateTransformer bfst | node = bfst and bfst.barrierFor(state) |
       not exists(bfst.transform(state)) or bfst.transform(state) != state
     )
     or
+    // When there is a flow from a source to a sink, do not allow the flow to
+    // continue to a further sink.
     isSink2(node, state)
   }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    // create additional flow steps for `BarrierFlowStateTransformer`s
+    // Create additional flow steps for `BarrierFlowStateTransformer`s
     state2 = node2.(BarrierFlowStateTransformer).transform(state1) and
     DataFlow::simpleLocalFlowStep(node1, node2)
   }
