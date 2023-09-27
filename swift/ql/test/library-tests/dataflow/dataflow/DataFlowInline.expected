@@ -1,4 +1,2 @@
 testFailures
-| test.swift:881:12:881:21 | OpenExistentialExpr | Unexpected result: flow=881 |
-| test.swift:881:24:882:1 | // $ flow=775\n | Missing result:flow=775 |
 failures

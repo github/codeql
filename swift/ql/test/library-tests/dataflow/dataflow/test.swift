@@ -878,5 +878,5 @@ protocol MyProtocol {
 }
 
 func testOpenExistentialExpr(x: MyProtocol) {
-	sink(arg: x.source()) // $ flow=775
+	sink(arg: x.source()) // $ flow=881
 }
