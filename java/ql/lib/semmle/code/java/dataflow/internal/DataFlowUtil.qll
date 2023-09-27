@@ -133,6 +133,39 @@ private module Cached {
   }
 }
 
+/**
+ * Holds if the value of `node2` is given by `node1`.
+ */
+predicate localMustFlowStep(Node node1, Node node2) {
+  exists(Callable c | node1.(InstanceParameterNode).getCallable() = c |
+    exists(InstanceAccess ia |
+      ia = node2.asExpr() and ia.getEnclosingCallable() = c and ia.isOwnInstanceAccess()
+    )
+    or
+    c =
+      node2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable()
+  )
+  or
+  exists(SsaImplicitInit init |
+    init.isParameterDefinition(node1.asParameter()) and init.getAUse() = node2.asExpr()
+  )
+  or
+  exists(SsaExplicitUpdate upd |
+    upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() and
+    upd.getAUse() = node2.asExpr()
+  )
+  or
+  node2.asExpr().(CastingExpr).getExpr() = node1.asExpr()
+  or
+  node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
+  or
+  node1 =
+    unique(FlowSummaryNode n1 |
+      FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
+        node2.(FlowSummaryNode).getSummaryNode(), true)
+    )
+}
+
 import Cached
 
 private predicate capturedVariableRead(Node n) {

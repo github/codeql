@@ -119,7 +119,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            using var logger = new ConsoleLogger(options.Verbosity);
+            using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
             logger.Log(Severity.Info, "Running C# standalone extractor");
             using var a = new Analysis(logger, options);
             var sourceFileCount = a.Extraction.Sources.Count;

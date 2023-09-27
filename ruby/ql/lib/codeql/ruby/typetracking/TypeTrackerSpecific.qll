@@ -333,13 +333,14 @@ predicate basicLoadStoreStep(
 predicate readStoreStepIntoSourceNode(
   Node nodeFrom, Node nodeTo, DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent
 ) {
-  exists(DataFlowPrivate::SynthSplatParameterElementNode mid |
-    nodeFrom
-        .(DataFlowPrivate::SynthSplatArgParameterNode)
-        .isParameterOf(mid.getEnclosingCallable(), _) and
-    loadContent = DataFlowPrivate::getPositionalContent(mid.getReadPosition()) and
-    nodeTo = mid.getSplatParameterNode(_) and
-    storeContent = DataFlowPrivate::getPositionalContent(mid.getStorePosition())
+  exists(DataFlowPrivate::SynthSplatParameterShiftNode shift |
+    shift.readFrom(nodeFrom, loadContent) and
+    shift.storeInto(nodeTo, storeContent)
+  )
+  or
+  exists(DataFlowPrivate::SynthSplatArgumentShiftNode shift |
+    shift.readFrom(nodeFrom, loadContent) and
+    shift.storeInto(nodeTo, storeContent)
   )
 }
 

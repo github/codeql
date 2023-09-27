@@ -20,4 +20,6 @@ module GoDataFlow implements InputSig {
   predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 
   Node exprNode(DataFlowExpr e) { result = Public::exprNode(e) }
+
+  predicate golangSpecificParamArgFilter = Private::golangSpecificParamArgFilter/3;
 }

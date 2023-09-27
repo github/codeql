@@ -40,16 +40,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private static string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory) =>
             $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
 
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, out string stdout, string? pathToNugetConfig = null)
+        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, string? pathToNugetConfig = null)
         {
             var args = GetRestoreArgs(projectFile, packageDirectory);
             if (pathToNugetConfig != null)
             {
                 args += $" --configfile \"{pathToNugetConfig}\"";
             }
-            var success = dotnetCliInvoker.RunCommand(args, out var output);
-            stdout = string.Join("\n", output);
-            return success;
+
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, out IEnumerable<string> projects)
@@ -90,7 +89,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             if (dotnetCliInvoker.RunCommand(args, out var artifacts))
             {
-                progressMonitor.LogInfo($"Found {artifact}s: {string.Join("\n", artifacts)}");
                 return artifacts;
             }
             return new List<string>();
