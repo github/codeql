@@ -83,4 +83,3 @@ public static class StubGenerator
         }
     }
 }
-
