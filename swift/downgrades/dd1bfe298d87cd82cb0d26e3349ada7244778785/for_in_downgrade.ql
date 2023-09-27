@@ -30,7 +30,7 @@ query predicate new_for_each_stmts(
   ForEachStmt stmt, Element pattern, Element body, Element sequence,
   Element iteratorVar
 ) {
-  for_each_stmt(stmt, pattern, body) and
+  for_each_stmts(stmt, pattern, body) and
   for_each_stmt_iterator_vars(stmt, iteratorVar) and
   (
     iteratorVar instanceof @pattern_binding_decl and
@@ -40,7 +40,7 @@ query predicate new_for_each_stmts(
 
 query predicate new_pattern_binding_decls(Element id) {
   pattern_binding_decls(id) and
-  not for_each_stmt_iterator_vars(id)
+  not for_each_stmt_iterator_vars(id, _)
 }
 
 query predicate new_pattern_binding_decl_patterns(Element id, int index, Element pattern) {
