@@ -30,7 +30,7 @@ private class DefaultCleartextLoggingSink extends CleartextLoggingSink {
 }
 
 /**
- * An barrier for cleartext logging vulnerabilities.
+ * A barrier for cleartext logging vulnerabilities.
  *  - encryption; encrypted values are not cleartext.
  *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */

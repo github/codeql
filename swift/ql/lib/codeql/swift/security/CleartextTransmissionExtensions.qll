@@ -49,7 +49,7 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
 }
 
 /**
- * An barrier for cleartext transmission vulnerabilities.
+ * A barrier for cleartext transmission vulnerabilities.
  *  - encryption; encrypted values are not cleartext.
  *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */

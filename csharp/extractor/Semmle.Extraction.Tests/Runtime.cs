@@ -19,11 +19,7 @@ namespace Semmle.Extraction.Tests
 
         public bool New(string folder) => true;
 
-        public bool RestoreProjectToDirectory(string project, string directory, out string stdout, string? pathToNugetConfig = null)
-        {
-            stdout = "";
-            return true;
-        }
+        public bool RestoreProjectToDirectory(string project, string directory, string? pathToNugetConfig = null) => true;
 
         public bool RestoreSolutionToDirectory(string solution, string directory, out IEnumerable<string> projects)
         {

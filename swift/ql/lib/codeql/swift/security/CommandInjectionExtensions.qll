@@ -69,3 +69,13 @@ private class CommandInjectionSinks extends SinkModelCsv {
       ]
   }
 }
+
+/**
+ * A barrier for command injection vulnerabilities.
+ */
+private class CommandInjectionDefaultBarrier extends CommandInjectionBarrier {
+  CommandInjectionDefaultBarrier() {
+    // any numeric type
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+  }
+}

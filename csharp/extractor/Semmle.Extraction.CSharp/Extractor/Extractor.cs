@@ -71,9 +71,9 @@ namespace Semmle.Extraction.CSharp
 
         public static ILogger MakeLogger(Verbosity verbosity, bool includeConsole)
         {
-            var fileLogger = new FileLogger(verbosity, GetCSharpLogPath());
+            var fileLogger = new FileLogger(verbosity, GetCSharpLogPath(), logThreadId: true);
             return includeConsole
-                ? new CombinedLogger(new ConsoleLogger(verbosity), fileLogger)
+                ? new CombinedLogger(new ConsoleLogger(verbosity, logThreadId: true), fileLogger)
                 : (ILogger)fileLogger;
         }
 

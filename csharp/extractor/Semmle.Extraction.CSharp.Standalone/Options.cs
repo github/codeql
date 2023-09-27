@@ -2,6 +2,7 @@ using System.IO;
 using Semmle.Util;
 using Semmle.Util.Logging;
 using Semmle.Extraction.CSharp.DependencyFetching;
+using System;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {
@@ -64,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             var fi = new FileInfo(dependencies.SolutionFile);
             if (!fi.Exists)
             {
-                System.Console.WriteLine("Error: The solution {0} does not exist", fi.FullName);
+                System.Console.WriteLine($"[{Environment.CurrentManagedThreadId:D3}] Error: The solution {fi.FullName} does not exist");
                 Errors = true;
             }
             return true;
@@ -72,7 +73,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public override void InvalidArgument(string argument)
         {
-            System.Console.WriteLine($"Error: Invalid argument {argument}");
+            System.Console.WriteLine($"[{Environment.CurrentManagedThreadId:D3}] Error: Invalid argument {argument}");
             Errors = true;
         }
 

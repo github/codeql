@@ -7,9 +7,11 @@ edges
 | CommandInjection.swift:69:12:69:12 | userControlledString | CommandInjection.swift:75:27:75:27 | userControlledString |
 | CommandInjection.swift:69:12:69:12 | userControlledString [some:0] | CommandInjection.swift:75:27:75:27 | userControlledString [some:0] |
 | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | CommandInjection.swift:75:27:75:27 | userControlledString |
 | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0, some:0] | CommandInjection.swift:69:8:69:12 | let ...? [some:0, some:0] |
 | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:69:8:69:12 | let ...? [some:0] |
 | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0, some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:75:27:75:27 | userControlledString [some:0] |
 | CommandInjection.swift:75:2:75:2 | [post] task1 [arguments] | CommandInjection.swift:75:2:75:2 | [post] task1 |
 | CommandInjection.swift:75:20:75:47 | [...] | CommandInjection.swift:75:2:75:2 | [post] task1 [arguments] |
 | CommandInjection.swift:75:27:75:27 | userControlledString | CommandInjection.swift:75:20:75:47 | [...] |
@@ -17,8 +19,10 @@ edges
 | CommandInjection.swift:75:27:75:27 | userControlledString [some:0] | CommandInjection.swift:78:43:78:43 | userControlledString [some:0] |
 | CommandInjection.swift:78:5:78:9 | let ...? [some:0] | CommandInjection.swift:78:9:78:9 | validatedString |
 | CommandInjection.swift:78:9:78:9 | validatedString | CommandInjection.swift:81:31:81:31 | validatedString |
+| CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) | CommandInjection.swift:81:31:81:31 | validatedString |
 | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] | CommandInjection.swift:78:5:78:9 | let ...? [some:0] |
 | CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:58:22:58:33 | command |
+| CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) |
 | CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
 | CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | CommandInjection.swift:58:22:58:33 | command [some:0] |
 | CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
@@ -29,6 +33,8 @@ edges
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:114:36:114:36 | userControlledString |
 | CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:115:28:115:28 | userControlledString |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:114:36:114:36 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:115:28:115:28 | userControlledString |
 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:99:8:99:12 | let ...? [some:0] |
 | CommandInjection.swift:114:2:114:2 | [post] task3 [executableURL] | CommandInjection.swift:114:2:114:2 | [post] task3 |
 | CommandInjection.swift:114:24:114:56 | call to URL.init(string:) [some:0] | CommandInjection.swift:114:24:114:57 | ...! |
@@ -90,6 +96,7 @@ edges
 | CommandInjection.swift:180:9:180:13 | let ...? [some:0] | CommandInjection.swift:180:13:180:13 | userControlledString |
 | CommandInjection.swift:180:13:180:13 | userControlledString | CommandInjection.swift:184:19:184:19 | userControlledString |
 | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:184:19:184:19 | userControlledString |
 | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:180:9:180:13 | let ...? [some:0] |
 | CommandInjection.swift:184:18:184:39 | [...] | CommandInjection.swift:186:18:186:18 | tainted1 |
 | CommandInjection.swift:184:18:184:39 | [...] | CommandInjection.swift:187:19:187:19 | tainted1 |
@@ -139,6 +146,7 @@ nodes
 | CommandInjection.swift:75:27:75:27 | userControlledString [some:0] | semmle.label | userControlledString [some:0] |
 | CommandInjection.swift:78:5:78:9 | let ...? [some:0] | semmle.label | let ...? [some:0] |
 | CommandInjection.swift:78:9:78:9 | validatedString | semmle.label | validatedString |
+| CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) | semmle.label | call to validateCommand(_:) |
 | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] | semmle.label | call to validateCommand(_:) [some:0] |
 | CommandInjection.swift:78:43:78:43 | userControlledString | semmle.label | userControlledString |
 | CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | semmle.label | userControlledString [some:0] |
@@ -240,6 +248,7 @@ nodes
 | file://:0:0:0:0 | url | semmle.label | url |
 | file://:0:0:0:0 | url | semmle.label | url |
 subpaths
+| CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:58:22:58:33 | command | CommandInjection.swift:62:16:62:16 | command | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) |
 | CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:58:22:58:33 | command | CommandInjection.swift:62:16:62:16 | command [some:0] | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
 | CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | CommandInjection.swift:58:22:58:33 | command [some:0] | CommandInjection.swift:62:16:62:16 | command [some:0] | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
 #select

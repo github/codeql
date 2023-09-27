@@ -197,6 +197,11 @@ signature module InputSig {
    */
   predicate allowParameterReturnInSelf(ParameterNode p);
 
+  /**
+   * Holds if the value of `node2` is given by `node1`.
+   */
+  predicate localMustFlowStep(Node node1, Node node2);
+
   class LambdaCallKind;
 
   /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
@@ -221,9 +226,14 @@ signature module InputSig {
    *
    * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
    */
-  int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p);
+  default int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
 
-  predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg);
+  bindingset[call, p, arg]
+  default predicate golangSpecificParamArgFilter(
+    DataFlowCall call, ParameterNode p, ArgumentNode arg
+  ) {
+    any()
+  }
 }
 
 module Configs<InputSig Lang> {

@@ -153,3 +153,13 @@ private class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
 private class DefaultSqlInjectionSink extends SqlInjectionSink {
   DefaultSqlInjectionSink() { sinkNode(this, "sql-injection") }
 }
+
+/**
+ * A barrier for SQL injection.
+ */
+private class SqlInjectionDefaultBarrier extends SqlInjectionBarrier {
+  SqlInjectionDefaultBarrier() {
+    // any numeric type
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+  }
+}

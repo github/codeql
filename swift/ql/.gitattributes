@@ -59,7 +59,6 @@
 /lib/codeql/swift/elements/decl/StructDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/SubscriptDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/TopLevelCodeDeclConstructor.qll linguist-generated
-/lib/codeql/swift/elements/decl/TypeAliasDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/TypeAliasDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExprConstructor.qll linguist-generated

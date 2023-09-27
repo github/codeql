@@ -1066,15 +1066,28 @@ private module GetConvertedResultExpression {
   private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedExpr
   private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
 
+  private Operand getAnInitializeDynamicAllocationInstructionAddress() {
+    result = any(InitializeDynamicAllocationInstruction init).getAllocationAddressOperand()
+  }
+
   /**
    * Gets the expression that should be returned as the result expression from `instr`.
    *
-   * Note that this predicate may return multiple results in cases where a conversion belond to a
+   * Note that this predicate may return multiple results in cases where a conversion belongs to a
    * different AST element than its operand.
    */
   Expr getConvertedResultExpression(Instruction instr, int n) {
-    // Only fully converted instructions has a result for `asConvertedExpr`
-    not conversionFlow(unique( | | getAUse(instr)), _, false, false) and
+    // Only fully converted instructions have a result for `asConvertedExpr`
+    not conversionFlow(unique(Operand op |
+        // The address operand of a `InitializeDynamicAllocationInstruction` is
+        // special: we need to handle it during dataflow (since it's
+        // effectively a store to an indirection), but it doesn't appear in
+        // source syntax, so dataflow node <-> expression conversion shouldn't
+        // care about it.
+        op = getAUse(instr) and not op = getAnInitializeDynamicAllocationInstructionAddress()
+      |
+        op
+      ), _, false, false) and
     result = getConvertedResultExpressionImpl(instr) and
     n = 0
     or
@@ -1341,6 +1354,9 @@ class ParameterNode extends Node {
    * pointer-indirection parameters are at further negative positions.
    */
   predicate isParameterOf(Function f, ParameterPosition pos) { none() } // overridden by subclasses
+
+  /** Gets the `Parameter` associated with this node, if it exists. */
+  Parameter getParameter() { none() } // overridden by subclasses
 }
 
 /** An explicit positional parameter, including `this`, but not `...`. */
@@ -1363,10 +1379,9 @@ private class ExplicitParameterNode extends ParameterNode, DirectParameterNode {
     f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
   }
 
-  /** Gets the `Parameter` associated with this node. */
-  Parameter getParameter() { result = instr.getParameter() }
-
   override string toStringImpl() { result = instr.getParameter().toString() }
+
+  override Parameter getParameter() { result = instr.getParameter() }
 }
 
 /** An implicit `this` parameter. */
