@@ -12,9 +12,9 @@ namespace Semmle.Extraction.CSharp.StubGenerator;
 internal sealed class StubVisitor : SymbolVisitor
 {
     private readonly TextWriter stubWriter;
-    private readonly RelevantSymbol relevantSymbol;
+    private readonly IRelevantSymbol relevantSymbol;
 
-    public StubVisitor(TextWriter stubWriter, RelevantSymbol relevantSymbol)
+    public StubVisitor(TextWriter stubWriter, IRelevantSymbol relevantSymbol)
     {
         this.stubWriter = stubWriter;
         this.relevantSymbol = relevantSymbol;
