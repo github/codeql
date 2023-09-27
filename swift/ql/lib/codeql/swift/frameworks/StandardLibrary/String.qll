@@ -150,13 +150,11 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
     or
     exists(FieldDecl fieldDecl, Decl declaringDecl, TypeDecl namedTypeDecl |
       (
-        (
-          namedTypeDecl.getFullName() = "CustomStringConvertible" and
-          fieldDecl.getName() = "description"
-        ) or (
-          namedTypeDecl.getFullName() = "CustomDebugStringConvertible" and
-          fieldDecl.getName() = "debugDescription"
-        )
+        namedTypeDecl.getFullName() = "CustomStringConvertible" and
+        fieldDecl.getName() = "description"
+        or
+        namedTypeDecl.getFullName() = "CustomDebugStringConvertible" and
+        fieldDecl.getName() = "debugDescription"
       ) and
       declaringDecl.getAMember() = fieldDecl and
       declaringDecl.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*() and
