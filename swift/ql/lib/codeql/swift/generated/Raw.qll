@@ -574,9 +574,12 @@ module Raw {
     string getName() { type_decls(this, result) }
 
     /**
-     * Gets the `index`th base type of this type declaration (0-based).
+     * Gets the `index`th inherited type of this type declaration (0-based).
+     *
+     * This only returns the types effectively appearing in the declaration. In particular it
+     * will not resolve `TypeAliasDecl`s or consider base types added by extensions.
      */
-    Type getBaseType(int index) { type_decl_base_types(this, index, result) }
+    Type getInheritedType(int index) { type_decl_inherited_types(this, index, result) }
   }
 
   /**

@@ -74,7 +74,7 @@ predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectOperand(op, indirectionIndex))
+    not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
   )
 }
 
@@ -88,7 +88,7 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
     type = getResultLanguageType(instr) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
-    not exists(getIRRepresentationOfIndirectInstruction(instr, indirectionIndex))
+    not hasIRRepresentationOfIndirectInstruction(instr, indirectionIndex, _, _)
   )
 }
 
@@ -108,7 +108,7 @@ private newtype TDefOrUseImpl =
   } or
   TUseImpl(BaseSourceVariableInstruction base, Operand operand, int indirectionIndex) {
     isUse(_, operand, base, _, indirectionIndex) and
-    not isDef(_, _, operand, _, _, _)
+    not isDef(true, _, operand, _, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
@@ -447,9 +447,16 @@ class GlobalUse extends UseImpl, TGlobalUse {
   IRFunction getIRFunction() { result = f }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    exists(ExitFunctionInstruction exit |
-      exit = f.getExitFunctionInstruction() and
-      block.getInstruction(index) = exit
+    // Similar to the `FinalParameterUse` case, we want to generate flow out of
+    // globals at any exit so that we can flow out of non-returning functions.
+    // Obviously this isn't correct as we can't actually flow but the global flow
+    // requires this if we want to flow into children.
+    exists(Instruction return |
+      return instanceof ReturnInstruction or
+      return instanceof UnreachedInstruction
+    |
+      block.getInstruction(index) = return and
+      return.getEnclosingIRFunction() = f
     )
   }
 
@@ -610,7 +617,7 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
       hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
       hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
       instr = op2.getDef() and
-      isDereference(instr, op1)
+      isDereference(instr, op1, _)
     )
   )
 }
@@ -684,8 +691,41 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
-private predicate isArgumentOfCallable(DataFlowCall call, ArgumentNode arg) {
-  arg.argumentOf(call, _)
+private predicate isArgumentOfCallableInstruction(DataFlowCall call, Instruction instr) {
+  isArgumentOfCallableOperand(call, unique( | | getAUse(instr)))
+}
+
+private predicate isArgumentOfCallableOperand(DataFlowCall call, Operand operand) {
+  operand.(ArgumentOperand).getCall() = call
+  or
+  exists(FieldAddressInstruction fai |
+    fai.getObjectAddressOperand() = operand and
+    isArgumentOfCallableInstruction(call, fai)
+  )
+  or
+  exists(Instruction deref |
+    isArgumentOfCallableInstruction(call, deref) and
+    isDereference(deref, operand, _)
+  )
+  or
+  exists(Instruction instr |
+    isArgumentOfCallableInstruction(call, instr) and
+    conversionFlow(operand, instr, _, _)
+  )
+}
+
+private predicate isArgumentOfCallable(DataFlowCall call, Node n) {
+  isArgumentOfCallableOperand(call, n.asOperand())
+  or
+  exists(Operand op |
+    n.(IndirectOperand).hasOperandAndIndirectionIndex(op, _) and
+    isArgumentOfCallableOperand(call, op)
+  )
+  or
+  exists(Instruction instr |
+    n.(IndirectInstruction).hasInstructionAndIndirectionIndex(instr, _) and
+    isArgumentOfCallableInstruction(call, instr)
+  )
 }
 
 /** Holds if there is def-use or use-use flow from `pun` to `nodeTo`. */
@@ -726,7 +766,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     or
     exists(PhiNode phiTo |
       phi != phiTo and
-      lastRefRedefExt(phi, _, _, phiTo) and
+      lastRefRedefExt(phi, bb1, i1, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
   )

@@ -6,7 +6,6 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-missingToString
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
@@ -39,3 +38,5 @@ identityLocalStep
 | test.py:678:9:678:12 | ControlFlowNode for SINK | Node steps to itself |
 | test.py:686:9:686:12 | ControlFlowNode for SINK | Node steps to itself |
 | test.py:692:5:692:8 | ControlFlowNode for SINK | Node steps to itself |
+missingArgumentCall
+multipleArgumentCall

@@ -87,7 +87,7 @@ predicate extractorTotalDiagnostics(string key, int value) {
 
 from string key, int value
 where
-  not extractorInformationSkipKey(key) and
+  not exists(string pattern | extractorInformationSkipKey(pattern) and key.matches(pattern)) and
   (
     compilationInfo(key, value) or
     fileCount(key, value) or

@@ -109,7 +109,6 @@ activeRecordSqlExecutionRanges
 | ActiveRecord.rb:28:30:28:44 | ...[...] |
 | ActiveRecord.rb:29:20:29:42 | "id = '#{...}'" |
 | ActiveRecord.rb:30:21:30:45 | call to [] |
-| ActiveRecord.rb:30:22:30:44 | "id = '#{...}'" |
 | ActiveRecord.rb:31:16:31:21 | <<-SQL |
 | ActiveRecord.rb:34:20:34:47 | "user.id = '#{...}'" |
 | ActiveRecord.rb:46:20:46:32 | ... + ... |

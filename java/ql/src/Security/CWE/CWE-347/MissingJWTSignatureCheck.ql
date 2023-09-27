@@ -16,5 +16,5 @@ import MissingJwtSignatureCheckFlow::PathGraph
 
 from MissingJwtSignatureCheckFlow::PathNode source, MissingJwtSignatureCheckFlow::PathNode sink
 where MissingJwtSignatureCheckFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This parses a $@, but the signature is not verified.",
+select sink.getNode(), source, sink, "This parser sets a $@, but the signature is not verified.",
   source.getNode(), "JWT signing key"

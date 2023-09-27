@@ -17,7 +17,9 @@ edges
 | CodeInjection.rb:38:24:38:27 | code | CodeInjection.rb:38:10:38:28 | call to escape |
 | CodeInjection.rb:38:24:38:27 | code | CodeInjection.rb:38:10:38:28 | call to escape |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:80:16:80:19 | code |
+| CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:86:10:86:25 | ... + ... |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:86:10:86:37 | ... + ... |
+| CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:86:22:86:25 | code |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:90:10:90:13 | code |
 | CodeInjection.rb:78:5:78:8 | code | CodeInjection.rb:90:10:90:13 | code |
@@ -25,6 +27,10 @@ edges
 | CodeInjection.rb:78:12:78:17 | call to params | CodeInjection.rb:78:12:78:24 | ...[...] |
 | CodeInjection.rb:78:12:78:24 | ...[...] | CodeInjection.rb:78:5:78:8 | code |
 | CodeInjection.rb:78:12:78:24 | ...[...] | CodeInjection.rb:78:5:78:8 | code |
+| CodeInjection.rb:86:10:86:25 | ... + ... | CodeInjection.rb:86:10:86:37 | ... + ... |
+| CodeInjection.rb:86:10:86:25 | ... + ... [element] | CodeInjection.rb:86:10:86:37 | ... + ... [element] |
+| CodeInjection.rb:86:10:86:37 | ... + ... [element] | CodeInjection.rb:86:10:86:37 | ... + ... |
+| CodeInjection.rb:86:22:86:25 | code | CodeInjection.rb:86:10:86:25 | ... + ... [element] |
 | CodeInjection.rb:101:3:102:5 | self in index [@foo] | CodeInjection.rb:111:3:113:5 | self in baz [@foo] |
 | CodeInjection.rb:101:3:102:5 | self in index [@foo] | CodeInjection.rb:111:3:113:5 | self in baz [@foo] |
 | CodeInjection.rb:105:5:105:8 | [post] self [@foo] | CodeInjection.rb:108:3:109:5 | self in bar [@foo] |
@@ -68,7 +74,11 @@ nodes
 | CodeInjection.rb:78:12:78:24 | ...[...] | semmle.label | ...[...] |
 | CodeInjection.rb:78:12:78:24 | ...[...] | semmle.label | ...[...] |
 | CodeInjection.rb:80:16:80:19 | code | semmle.label | code |
+| CodeInjection.rb:86:10:86:25 | ... + ... | semmle.label | ... + ... |
+| CodeInjection.rb:86:10:86:25 | ... + ... [element] | semmle.label | ... + ... [element] |
 | CodeInjection.rb:86:10:86:37 | ... + ... | semmle.label | ... + ... |
+| CodeInjection.rb:86:10:86:37 | ... + ... [element] | semmle.label | ... + ... [element] |
+| CodeInjection.rb:86:22:86:25 | code | semmle.label | code |
 | CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" | semmle.label | "prefix_#{...}_suffix" |
 | CodeInjection.rb:90:10:90:13 | code | semmle.label | code |
 | CodeInjection.rb:90:10:90:13 | code | semmle.label | code |

@@ -1,6 +1,7 @@
 /**
  * @name System command built from user-controlled sources
- * @description Building a system command from user-controlled sources is vulnerable to insertion of malicious code by the user.
+ * @description Building a system command from user-controlled sources may allow a malicious
+ *              user to change the meaning of the command.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8

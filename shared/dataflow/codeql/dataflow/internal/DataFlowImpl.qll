@@ -917,22 +917,46 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
+      predicate callEdgeArgParam(
+        DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
+        boolean allowsFieldFlow, Ap ap
+      ) {
+        flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow) and
+        c = p.getEnclosingCallable() and
+        exists(ap)
+      }
+
+      predicate callEdgeReturn(
+        DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+        boolean allowsFieldFlow, Ap ap
+      ) {
+        flowOutOfCallNodeCand1(call, ret, kind, out, allowsFieldFlow) and
+        c = ret.getEnclosingCallable() and
+        exists(ap)
+      }
+
       additional predicate stats(
-        boolean fwd, int nodes, int fields, int conscand, int states, int tuples
+        boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges
       ) {
         fwd = true and
         nodes = count(NodeEx node | fwdFlow(node)) and
         fields = count(Content f0 | fwdFlowConsCand(f0)) and
         conscand = -1 and
         states = count(FlowState state | fwdFlowState(state)) and
-        tuples = count(NodeEx n, boolean b | fwdFlow(n, b))
+        tuples = count(NodeEx n, boolean b | fwdFlow(n, b)) and
+        calledges = -1
         or
         fwd = false and
         nodes = count(NodeEx node | revFlow(node, _)) and
         fields = count(Content f0 | revFlowConsCand(f0)) and
         conscand = -1 and
         states = count(FlowState state | revFlowState(state)) and
-        tuples = count(NodeEx n, boolean b | revFlow(n, b))
+        tuples = count(NodeEx n, boolean b | revFlow(n, b)) and
+        calledges =
+          count(DataFlowCall call, DataFlowCallable c |
+            callEdgeArgParam(call, c, _, _, _, _) or
+            callEdgeReturn(call, c, _, _, _, _, _)
+          )
       }
       /* End: Stage 1 logic. */
     }
@@ -1093,6 +1117,16 @@ module MakeImpl<InputSig Lang> {
       );
 
       predicate readStepCand(NodeEx n1, Content c, NodeEx n2);
+
+      predicate callEdgeArgParam(
+        DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
+        boolean allowsFieldFlow, Ap ap
+      );
+
+      predicate callEdgeReturn(
+        DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+        boolean allowsFieldFlow, Ap ap
+      );
     }
 
     private module MkStage<StageSig PrevStage> {
@@ -1172,19 +1206,13 @@ module MakeImpl<InputSig Lang> {
           Typ t, LocalCc lcc
         );
 
-        predicate flowOutOfCall(
-          DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow
-        );
-
-        predicate flowIntoCall(
-          DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow
-        );
-
         bindingset[node, state, t0, ap]
         predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t);
 
         bindingset[typ, contentType]
         predicate typecheckStore(Typ typ, DataFlowType contentType);
+
+        default predicate enableTypeFlow() { any() }
       }
 
       module Stage<StageParam Param> implements StageSig {
@@ -1201,34 +1229,12 @@ module MakeImpl<InputSig Lang> {
         }
 
         pragma[nomagic]
-        private predicate flowIntoCallApa(
-          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
-          boolean allowsFieldFlow, ApApprox apa
-        ) {
-          flowIntoCall(call, arg, p, allowsFieldFlow) and
-          PrevStage::revFlowAp(p, pragma[only_bind_into](apa)) and
-          PrevStage::revFlowAp(arg, pragma[only_bind_into](apa)) and
-          c = p.getEnclosingCallable()
-        }
-
-        pragma[nomagic]
-        private predicate flowOutOfCallApa(
-          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
-          boolean allowsFieldFlow, ApApprox apa
-        ) {
-          flowOutOfCall(call, ret, kind, out, allowsFieldFlow) and
-          PrevStage::revFlowAp(out, pragma[only_bind_into](apa)) and
-          PrevStage::revFlowAp(ret, pragma[only_bind_into](apa)) and
-          c = ret.getEnclosingCallable()
-        }
-
-        pragma[nomagic]
         private predicate flowThroughOutOfCall(
           DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
           ApApprox argApa, ApApprox apa
         ) {
           exists(ReturnKindExt kind |
-            flowOutOfCallApa(call, _, ret, kind, out, allowsFieldFlow, apa) and
+            PrevStage::callEdgeReturn(call, _, ret, kind, out, allowsFieldFlow, apa) and
             PrevStage::callMayFlowThroughRev(call) and
             PrevStage::returnMayFlowThrough(ret, argApa, apa, kind) and
             matchesCall(ccc, call)
@@ -1289,36 +1295,11 @@ module MakeImpl<InputSig Lang> {
             ap instanceof ApNil
           )
           or
-          exists(NodeEx mid |
-            fwdFlow(mid, state, _, _, _, _, t, ap, apa) and
-            jumpStepEx(mid, node) and
-            cc = ccNone() and
-            summaryCtx = TParamNodeNone() and
-            argT instanceof TypOption::None and
-            argAp = apNone()
-          )
-          or
-          exists(NodeEx mid |
-            fwdFlow(mid, state, _, _, _, _, _, ap, apa) and
-            additionalJumpStep(mid, node) and
-            cc = ccNone() and
-            summaryCtx = TParamNodeNone() and
-            argT instanceof TypOption::None and
-            argAp = apNone() and
-            t = getNodeTyp(node) and
-            ap instanceof ApNil
-          )
-          or
-          exists(NodeEx mid, FlowState state0 |
-            fwdFlow(mid, state0, _, _, _, _, _, ap, apa) and
-            additionalJumpStateStep(mid, state0, node, state) and
-            cc = ccNone() and
-            summaryCtx = TParamNodeNone() and
-            argT instanceof TypOption::None and
-            argAp = apNone() and
-            t = getNodeTyp(node) and
-            ap instanceof ApNil
-          )
+          fwdFlowJump(node, state, t, ap, apa) and
+          cc = ccNone() and
+          summaryCtx = TParamNodeNone() and
+          argT instanceof TypOption::None and
+          argAp = apNone()
           or
           // store
           exists(Content c, Typ t0, Ap ap0 |
@@ -1335,7 +1316,7 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow into a callable
-          fwdFlowIn(_, node, state, _, cc, _, _, _, t, ap, apa) and
+          fwdFlowIn(_, _, node, state, _, cc, _, _, _, t, ap, apa, _) and
           if PrevStage::parameterMayFlowThrough(node, apa)
           then (
             summaryCtx = TParamNodeSome(node.asNode()) and
@@ -1346,7 +1327,7 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow out of a callable
-          fwdFlowOut(node, state, cc, summaryCtx, argT, argAp, t, ap, apa)
+          fwdFlowOut(_, _, node, state, cc, summaryCtx, argT, argAp, t, ap, apa)
           or
           // flow through a callable
           exists(
@@ -1357,6 +1338,27 @@ module MakeImpl<InputSig Lang> {
               innerArgApa) and
             flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
+          )
+        }
+
+        private predicate fwdFlowJump(NodeEx node, FlowState state, Typ t, Ap ap, ApApprox apa) {
+          exists(NodeEx mid |
+            fwdFlow(mid, state, _, _, _, _, t, ap, apa) and
+            jumpStepEx(mid, node)
+          )
+          or
+          exists(NodeEx mid |
+            fwdFlow(mid, state, _, _, _, _, _, ap, apa) and
+            additionalJumpStep(mid, node) and
+            t = getNodeTyp(node) and
+            ap instanceof ApNil
+          )
+          or
+          exists(NodeEx mid, FlowState state0 |
+            fwdFlow(mid, state0, _, _, _, _, _, ap, apa) and
+            additionalJumpStateStep(mid, state0, node, state) and
+            t = getNodeTyp(node) and
+            ap instanceof ApNil
           )
         }
 
@@ -1436,7 +1438,7 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
           boolean allowsFieldFlow, ApApprox apa
         ) {
-          flowIntoCallApa(call, c, arg, p, allowsFieldFlow, apa)
+          PrevStage::callEdgeArgParam(call, c, arg, p, allowsFieldFlow, apa)
         }
 
         bindingset[call, ctx]
@@ -1455,11 +1457,11 @@ module MakeImpl<InputSig Lang> {
         }
 
         pragma[nomagic]
-        private predicate fwdFlowIn(
-          DataFlowCall call, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
+        private predicate fwdFlowInCand(
+          DataFlowCall call, DataFlowCallable inner, ParamNodeEx p, FlowState state, Cc outercc,
           ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
-          exists(ArgNodeEx arg, boolean allowsFieldFlow, DataFlowCallable inner |
+          exists(ArgNodeEx arg, boolean allowsFieldFlow |
             fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
             (
               inner = viableImplCallContextReducedInlineLate(call, arg, outercc)
@@ -1468,9 +1470,20 @@ module MakeImpl<InputSig Lang> {
             ) and
             flowIntoCallApaInlineLate(call, inner, arg, p, allowsFieldFlow, apa)
           |
-            innercc = getCallContextCall(call, inner) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
+        }
+
+        pragma[nomagic]
+        private predicate fwdFlowIn(
+          DataFlowCall call, DataFlowCallable inner, ParamNodeEx p, FlowState state, Cc outercc,
+          CcCall innercc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
+          ApApprox apa, boolean cc
+        ) {
+          fwdFlowInCand(call, inner, p, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
+          FwdTypeFlow::typeFlowValidEdgeIn(call, inner, cc) and
+          innercc = getCallContextCall(call, inner) and
+          if outercc instanceof CcCall then cc = true else cc = false
         }
 
         bindingset[ctx, result]
@@ -1487,7 +1500,7 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, DataFlowCallable c, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
           ApApprox apa
         ) {
-          flowOutOfCallApa(call, c, ret, _, out, allowsFieldFlow, apa)
+          PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow, apa)
         }
 
         bindingset[c, ret, apa, innercc]
@@ -1498,19 +1511,15 @@ module MakeImpl<InputSig Lang> {
           ApApprox apa, CcNoCall innercc
         ) {
           viableImplNotCallContextReducedReverse(innercc) and
-          flowOutOfCallApa(call, c, ret, _, out, allowsFieldFlow, apa)
+          PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow, apa)
         }
 
-        // inline to reduce number of iterations
-        pragma[inline]
-        private predicate fwdFlowOut(
-          NodeEx out, FlowState state, CcNoCall outercc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, Typ t, Ap ap, ApApprox apa
+        pragma[nomagic]
+        private predicate fwdFlowOutCand(
+          DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state,
+          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
         ) {
-          exists(
-            DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc,
-            DataFlowCallable inner
-          |
+          exists(RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc |
             fwdFlow(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
             inner = ret.getEnclosingCallable() and
             (
@@ -1521,9 +1530,71 @@ module MakeImpl<InputSig Lang> {
                 innercc)
             )
           |
-            outercc = getCallContextReturn(inner, call) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
+        }
+
+        pragma[nomagic]
+        private predicate fwdFlowOut(
+          DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state, CcNoCall outercc,
+          ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
+        ) {
+          fwdFlowOutCand(call, inner, out, state, summaryCtx, argT, argAp, t, ap, apa) and
+          FwdTypeFlow::typeFlowValidEdgeOut(call, inner) and
+          outercc = getCallContextReturn(inner, call)
+        }
+
+        private module FwdTypeFlowInput implements TypeFlowInput {
+          predicate enableTypeFlow = Param::enableTypeFlow/0;
+
+          predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
+            PrevStage::callEdgeArgParam(call, c, _, _, _, _)
+          }
+
+          predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
+            PrevStage::callEdgeReturn(call, c, _, _, _, _, _)
+          }
+
+          pragma[nomagic]
+          predicate dataFlowTakenCallEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
+            exists(ParamNodeEx p, FlowState state, Cc innercc, Typ t, Ap ap |
+              fwdFlowIn(call, c, p, state, _, innercc, _, _, _, t, ap, _, cc) and
+              fwdFlow1(p, state, innercc, _, _, _, t, _, ap, _)
+            )
+          }
+
+          pragma[nomagic]
+          predicate dataFlowTakenCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
+            exists(NodeEx node, FlowState state, Cc cc, Typ t, Ap ap |
+              fwdFlowOut(call, c, node, state, cc, _, _, _, t, ap, _) and
+              fwdFlow1(node, state, cc, _, _, _, t, _, ap, _)
+            )
+          }
+
+          predicate dataFlowNonCallEntry(DataFlowCallable c, boolean cc) {
+            exists(NodeEx node, FlowState state |
+              sourceNode(node, state) and
+              (if hasSourceCallCtx() then cc = true else cc = false) and
+              PrevStage::revFlow(node, state, getApprox(any(ApNil nil))) and
+              c = node.getEnclosingCallable()
+            )
+            or
+            exists(NodeEx node |
+              cc = false and
+              fwdFlowJump(node, _, _, _, _) and
+              c = node.getEnclosingCallable()
+            )
+          }
+        }
+
+        private module FwdTypeFlow = TypeFlow<FwdTypeFlowInput>;
+
+        private predicate flowIntoCallApaTaken(
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
+          boolean allowsFieldFlow, ApApprox apa
+        ) {
+          PrevStage::callEdgeArgParam(call, c, arg, p, allowsFieldFlow, apa) and
+          FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _)
         }
 
         pragma[nomagic]
@@ -1574,8 +1645,8 @@ module MakeImpl<InputSig Lang> {
           ApOption argAp, ParamNodeEx p, Typ t, Ap ap
         ) {
           exists(ApApprox apa |
-            fwdFlowIn(call, pragma[only_bind_into](p), _, cc, innerCc, summaryCtx, argT, argAp, t,
-              ap, pragma[only_bind_into](apa)) and
+            fwdFlowIn(call, _, pragma[only_bind_into](p), _, cc, innerCc, summaryCtx, argT, argAp,
+              t, ap, pragma[only_bind_into](apa), _) and
             PrevStage::parameterMayFlowThrough(p, apa) and
             PrevStage::callMayFlowThroughRev(call)
           )
@@ -1625,7 +1696,7 @@ module MakeImpl<InputSig Lang> {
           exists(ApApprox argApa, Typ argT |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
               pragma[only_bind_into](argAp), ap) and
-            flowIntoCallApa(call, _, pragma[only_bind_into](arg), p, allowsFieldFlow, argApa) and
+            flowIntoCallApaTaken(call, _, pragma[only_bind_into](arg), p, allowsFieldFlow, argApa) and
             fwdFlow(arg, _, _, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
               argApa) and
             if allowsFieldFlow = false then argAp instanceof ApNil else any()
@@ -1633,9 +1704,11 @@ module MakeImpl<InputSig Lang> {
         }
 
         pragma[nomagic]
-        private predicate flowIntoCallAp(DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Ap ap) {
+        private predicate flowIntoCallAp(
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
+        ) {
           exists(ApApprox apa, boolean allowsFieldFlow |
-            flowIntoCallApa(call, _, arg, p, allowsFieldFlow, apa) and
+            flowIntoCallApaTaken(call, c, arg, p, allowsFieldFlow, apa) and
             fwdFlow(arg, _, _, _, _, _, _, ap, apa) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
@@ -1643,13 +1716,18 @@ module MakeImpl<InputSig Lang> {
 
         pragma[nomagic]
         private predicate flowOutOfCallAp(
-          DataFlowCall call, RetNodeEx ret, ReturnPosition pos, NodeEx out, Ap ap
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnPosition pos, NodeEx out,
+          Ap ap
         ) {
           exists(ApApprox apa, boolean allowsFieldFlow |
-            flowOutOfCallApa(call, _, ret, _, out, allowsFieldFlow, apa) and
+            PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow, apa) and
             fwdFlow(ret, _, _, _, _, _, _, ap, apa) and
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
+          |
+            // both directions are needed for flow-through
+            FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+            FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
           )
         }
 
@@ -1694,28 +1772,9 @@ module MakeImpl<InputSig Lang> {
             ap instanceof ApNil
           )
           or
-          exists(NodeEx mid |
-            jumpStepEx(node, mid) and
-            revFlow(mid, state, _, _, ap) and
-            returnCtx = TReturnCtxNone() and
-            returnAp = apNone()
-          )
-          or
-          exists(NodeEx mid |
-            additionalJumpStep(node, mid) and
-            revFlow(pragma[only_bind_into](mid), state, _, _, ap) and
-            returnCtx = TReturnCtxNone() and
-            returnAp = apNone() and
-            ap instanceof ApNil
-          )
-          or
-          exists(NodeEx mid, FlowState state0 |
-            additionalJumpStateStep(node, state, mid, state0) and
-            revFlow(pragma[only_bind_into](mid), pragma[only_bind_into](state0), _, _, ap) and
-            returnCtx = TReturnCtxNone() and
-            returnAp = apNone() and
-            ap instanceof ApNil
-          )
+          revFlowJump(node, state, ap) and
+          returnCtx = TReturnCtxNone() and
+          returnAp = apNone()
           or
           // store
           exists(Ap ap0, Content c |
@@ -1730,11 +1789,9 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow into a callable
-          exists(ParamNodeEx p |
-            revFlow(p, state, TReturnCtxNone(), returnAp, ap) and
-            flowIntoCallAp(_, node, p, ap) and
-            returnCtx = TReturnCtxNone()
-          )
+          revFlowIn(_, _, node, state, ap) and
+          returnCtx = TReturnCtxNone() and
+          returnAp = apNone()
           or
           // flow through a callable
           exists(DataFlowCall call, ParamNodeEx p, Ap innerReturnAp |
@@ -1744,7 +1801,7 @@ module MakeImpl<InputSig Lang> {
           or
           // flow out of a callable
           exists(ReturnPosition pos |
-            revFlowOut(_, node, pos, state, _, _, ap) and
+            revFlowOut(_, node, pos, state, _, _, _, ap) and
             if returnFlowsThrough(node, pos, state, _, _, _, _, ap)
             then (
               returnCtx = TReturnCtxMaybeFlowThrough(pos) and
@@ -1752,6 +1809,25 @@ module MakeImpl<InputSig Lang> {
             ) else (
               returnCtx = TReturnCtxNoFlowThrough() and returnAp = apNone()
             )
+          )
+        }
+
+        private predicate revFlowJump(NodeEx node, FlowState state, Ap ap) {
+          exists(NodeEx mid |
+            jumpStepEx(node, mid) and
+            revFlow(mid, state, _, _, ap)
+          )
+          or
+          exists(NodeEx mid |
+            additionalJumpStep(node, mid) and
+            revFlow(pragma[only_bind_into](mid), state, _, _, ap) and
+            ap instanceof ApNil
+          )
+          or
+          exists(NodeEx mid, FlowState state0 |
+            additionalJumpStateStep(node, state, mid, state0) and
+            revFlow(pragma[only_bind_into](mid), pragma[only_bind_into](state0), _, _, ap) and
+            ap instanceof ApNil
           )
         }
 
@@ -1777,14 +1853,84 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
+        private module RevTypeFlowInput implements TypeFlowInput {
+          predicate enableTypeFlow = Param::enableTypeFlow/0;
+
+          predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
+            flowOutOfCallAp(call, c, _, _, _, _)
+          }
+
+          predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
+            flowIntoCallAp(call, c, _, _, _)
+          }
+
+          pragma[nomagic]
+          predicate dataFlowTakenCallEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
+            exists(RetNodeEx ret |
+              revFlowOut(call, ret, _, _, _, cc, _, _) and
+              c = ret.getEnclosingCallable()
+            )
+          }
+
+          pragma[nomagic]
+          predicate dataFlowTakenCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
+            revFlowIn(call, c, _, _, _)
+          }
+
+          predicate dataFlowNonCallEntry(DataFlowCallable c, boolean cc) {
+            exists(NodeEx node, FlowState state, ApNil nil |
+              fwdFlow(node, state, _, _, _, _, _, nil, _) and
+              sinkNode(node, state) and
+              (if hasSinkCallCtx() then cc = true else cc = false) and
+              c = node.getEnclosingCallable()
+            )
+            or
+            exists(NodeEx node |
+              cc = false and
+              revFlowJump(node, _, _) and
+              c = node.getEnclosingCallable()
+            )
+          }
+        }
+
+        private module RevTypeFlow = TypeFlow<RevTypeFlowInput>;
+
+        pragma[nomagic]
+        private predicate flowIntoCallApValid(
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
+        ) {
+          flowIntoCallAp(call, c, arg, p, ap) and
+          RevTypeFlow::typeFlowValidEdgeOut(call, c)
+        }
+
+        pragma[nomagic]
+        private predicate flowOutOfCallApValid(
+          DataFlowCall call, RetNodeEx ret, ReturnPosition pos, NodeEx out, Ap ap, boolean cc
+        ) {
+          exists(DataFlowCallable c |
+            flowOutOfCallAp(call, c, ret, pos, out, ap) and
+            RevTypeFlow::typeFlowValidEdgeIn(call, c, cc)
+          )
+        }
+
+        private predicate revFlowIn(
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, FlowState state, Ap ap
+        ) {
+          exists(ParamNodeEx p |
+            revFlow(p, state, TReturnCtxNone(), _, ap) and
+            flowIntoCallApValid(call, c, arg, p, ap)
+          )
+        }
+
         pragma[nomagic]
         private predicate revFlowOut(
           DataFlowCall call, RetNodeEx ret, ReturnPosition pos, FlowState state,
-          ReturnCtx returnCtx, ApOption returnAp, Ap ap
+          ReturnCtx returnCtx, boolean cc, ApOption returnAp, Ap ap
         ) {
           exists(NodeEx out |
             revFlow(out, state, returnCtx, returnAp, ap) and
-            flowOutOfCallAp(call, ret, pos, out, ap)
+            flowOutOfCallApValid(call, ret, pos, out, ap, cc) and
+            if returnCtx instanceof TReturnCtxNone then cc = false else cc = true
           )
         }
 
@@ -1817,7 +1963,7 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, ReturnCtx returnCtx, ApOption returnAp, ReturnPosition pos, Ap ap
         ) {
           exists(RetNodeEx ret, FlowState state, CcCall ccc |
-            revFlowOut(call, ret, pos, state, returnCtx, returnAp, ap) and
+            revFlowOut(call, ret, pos, state, returnCtx, _, returnAp, ap) and
             returnFlowsThrough(ret, pos, state, ccc, _, _, _, ap) and
             matchesCall(ccc, call)
           )
@@ -1920,8 +2066,42 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
+        predicate callEdgeArgParam(
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p,
+          boolean allowsFieldFlow, Ap ap
+        ) {
+          exists(FlowState state |
+            flowIntoCallAp(call, c, arg, p, ap) and
+            revFlow(arg, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
+            revFlow(p, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
+            // allowsFieldFlow has already been checked in flowIntoCallAp, since
+            // `Ap` is at least as precise as a boolean from Stage 2 and
+            // forward, so no need to check it again later.
+            allowsFieldFlow = true
+          |
+            // both directions are needed for flow-through
+            RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+            RevTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
+          )
+        }
+
+        predicate callEdgeReturn(
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+          boolean allowsFieldFlow, Ap ap
+        ) {
+          exists(FlowState state, ReturnPosition pos |
+            flowOutOfCallAp(call, c, ret, pos, out, ap) and
+            revFlow(ret, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
+            revFlow(out, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
+            kind = pos.getKind() and
+            allowsFieldFlow = true and
+            RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _)
+          )
+        }
+
         additional predicate stats(
-          boolean fwd, int nodes, int fields, int conscand, int states, int tuples
+          boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges,
+          int tfnodes, int tftuples
         ) {
           fwd = true and
           nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _, _, _, _)) and
@@ -1932,7 +2112,13 @@ module MakeImpl<InputSig Lang> {
             count(NodeEx n, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
               ApOption argAp, Typ t, Ap ap |
               fwdFlow(n, state, cc, summaryCtx, argT, argAp, t, ap, _)
-            )
+            ) and
+          calledges =
+            count(DataFlowCall call, DataFlowCallable c |
+              FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+              FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
+            ) and
+          FwdTypeFlow::typeFlowStats(tfnodes, tftuples)
           or
           fwd = false and
           nodes = count(NodeEx node | revFlow(node, _, _, _, _)) and
@@ -1942,7 +2128,13 @@ module MakeImpl<InputSig Lang> {
           tuples =
             count(NodeEx n, FlowState state, ReturnCtx returnCtx, ApOption retAp, Ap ap |
               revFlow(n, state, returnCtx, retAp, ap)
-            )
+            ) and
+          calledges =
+            count(DataFlowCall call, DataFlowCallable c |
+              RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+              RevTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
+            ) and
+          RevTypeFlow::typeFlowStats(tfnodes, tftuples)
         }
         /* End: Stage logic. */
       }
@@ -2130,10 +2322,6 @@ module MakeImpl<InputSig Lang> {
         exists(lcc)
       }
 
-      predicate flowOutOfCall = flowOutOfCallNodeCand1/5;
-
-      predicate flowIntoCall = flowIntoCallNodeCand1/4;
-
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node) {
         exists(Content c |
@@ -2159,6 +2347,8 @@ module MakeImpl<InputSig Lang> {
 
       bindingset[typ, contentType]
       predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
+
+      predicate enableTypeFlow() { none() }
     }
 
     private module Stage2 implements StageSig {
@@ -2385,10 +2575,6 @@ module MakeImpl<InputSig Lang> {
         exists(lcc)
       }
 
-      predicate flowOutOfCall = flowOutOfCallNodeCand2/5;
-
-      predicate flowIntoCall = flowIntoCallNodeCand2/4;
-
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
         exists(Content c |
@@ -2478,29 +2664,6 @@ module MakeImpl<InputSig Lang> {
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
         exists(lcc)
-      }
-
-      pragma[nomagic]
-      predicate flowOutOfCall(
-        DataFlowCall call, RetNodeEx node1, ReturnKindExt kind, NodeEx node2,
-        boolean allowsFieldFlow
-      ) {
-        exists(FlowState state |
-          flowOutOfCallNodeCand2(call, node1, kind, node2, allowsFieldFlow) and
-          PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
-          PrevStage::revFlow(node1, pragma[only_bind_into](state), _)
-        )
-      }
-
-      pragma[nomagic]
-      predicate flowIntoCall(
-        DataFlowCall call, ArgNodeEx node1, ParamNodeEx node2, boolean allowsFieldFlow
-      ) {
-        exists(FlowState state |
-          flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow) and
-          PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
-          PrevStage::revFlow(node1, pragma[only_bind_into](state), _)
-        )
       }
 
       pragma[nomagic]
@@ -2783,29 +2946,6 @@ module MakeImpl<InputSig Lang> {
         localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc) and
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
-      }
-
-      pragma[nomagic]
-      predicate flowOutOfCall(
-        DataFlowCall call, RetNodeEx node1, ReturnKindExt kind, NodeEx node2,
-        boolean allowsFieldFlow
-      ) {
-        exists(FlowState state |
-          flowOutOfCallNodeCand2(call, node1, kind, node2, allowsFieldFlow) and
-          PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
-          PrevStage::revFlow(node1, pragma[only_bind_into](state), _)
-        )
-      }
-
-      pragma[nomagic]
-      predicate flowIntoCall(
-        DataFlowCall call, ArgNodeEx node1, ParamNodeEx node2, boolean allowsFieldFlow
-      ) {
-        exists(FlowState state |
-          flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow) and
-          PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
-          PrevStage::revFlow(node1, pragma[only_bind_into](state), _)
-        )
       }
 
       bindingset[node, state, t0, ap]
@@ -3972,51 +4112,66 @@ module MakeImpl<InputSig Lang> {
      * Calculates per-stage metrics for data flow.
      */
     predicate stageStats(
-      int n, string stage, int nodes, int fields, int conscand, int states, int tuples
+      int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+      int calledges, int tfnodes, int tftuples
     ) {
       stage = "1 Fwd" and
       n = 10 and
-      Stage1::stats(true, nodes, fields, conscand, states, tuples)
+      Stage1::stats(true, nodes, fields, conscand, states, tuples, calledges) and
+      tfnodes = -1 and
+      tftuples = -1
       or
       stage = "1 Rev" and
       n = 15 and
-      Stage1::stats(false, nodes, fields, conscand, states, tuples)
+      Stage1::stats(false, nodes, fields, conscand, states, tuples, calledges) and
+      tfnodes = -1 and
+      tftuples = -1
       or
       stage = "2 Fwd" and
       n = 20 and
-      Stage2::stats(true, nodes, fields, conscand, states, tuples)
+      Stage2::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       or
       stage = "2 Rev" and
       n = 25 and
-      Stage2::stats(false, nodes, fields, conscand, states, tuples)
+      Stage2::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       or
       stage = "3 Fwd" and
       n = 30 and
-      Stage3::stats(true, nodes, fields, conscand, states, tuples)
+      Stage3::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       or
       stage = "3 Rev" and
       n = 35 and
-      Stage3::stats(false, nodes, fields, conscand, states, tuples)
+      Stage3::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       or
       stage = "4 Fwd" and
       n = 40 and
-      Stage4::stats(true, nodes, fields, conscand, states, tuples)
+      Stage4::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       or
       stage = "4 Rev" and
       n = 45 and
-      Stage4::stats(false, nodes, fields, conscand, states, tuples)
+      Stage4::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       or
       stage = "5 Fwd" and
       n = 50 and
-      Stage5::stats(true, nodes, fields, conscand, states, tuples)
+      Stage5::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       or
       stage = "5 Rev" and
       n = 55 and
-      Stage5::stats(false, nodes, fields, conscand, states, tuples)
+      Stage5::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       or
-      stage = "6 Fwd" and n = 60 and finalStats(true, nodes, fields, conscand, states, tuples)
+      stage = "6 Fwd" and
+      n = 60 and
+      finalStats(true, nodes, fields, conscand, states, tuples) and
+      calledges = -1 and
+      tfnodes = -1 and
+      tftuples = -1
       or
-      stage = "6 Rev" and n = 65 and finalStats(false, nodes, fields, conscand, states, tuples)
+      stage = "6 Rev" and
+      n = 65 and
+      finalStats(false, nodes, fields, conscand, states, tuples) and
+      calledges = -1 and
+      tfnodes = -1 and
+      tftuples = -1
     }
 
     module FlowExploration<explorationLimitSig/0 explorationLimit> {
