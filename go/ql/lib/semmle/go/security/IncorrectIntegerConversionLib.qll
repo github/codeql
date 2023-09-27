@@ -227,28 +227,28 @@ abstract class BarrierFlowStateTransformer extends DataFlow::Node {
 }
 
 class UpperBoundCheck extends BarrierFlowStateTransformer {
-  MaxValueState state1;
   UpperBoundCheckGuard g;
 
   UpperBoundCheck() {
-    this = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g) and
-    g.isBoundFor2(state1.getBitSize(), state1.getSinkBitSize())
+    this = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g)
   }
 
-  override predicate barrierFor(MaxValueState flowstate) { flowstate = state1 }
+  override predicate barrierFor(MaxValueState flowstate) {
+    g.isBoundFor2(flowstate.getBitSize(), flowstate.getSinkBitSize())
+  }
 
   override MaxValueState transform(MaxValueState state) {
-    state = state1 and
+    this.barrierFor(state) and
     result.getBitSize() =
       max(int bitsize |
         bitsize = validBitSize() and
-        bitsize < state1.getBitSize() and
+        bitsize < state.getBitSize() and
         not g.isBoundFor2(bitsize, state.getSinkBitSize())
       |
         bitsize
       ) and
-    if exists(state1.getArchitectureBitSize())
-    then result.getArchitectureBitSize() = state1.getArchitectureBitSize()
+    if exists(state.getArchitectureBitSize())
+    then result.getArchitectureBitSize() = state.getArchitectureBitSize()
     else not exists(result.getArchitectureBitSize())
   }
 }
