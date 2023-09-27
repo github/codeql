@@ -64,4 +64,3 @@ import semmle.go.frameworks.XPath
 import semmle.go.frameworks.Yaml
 import semmle.go.frameworks.Zap
 import semmle.go.security.FlowSources
-import semmle.go.security.FileSystemAccess

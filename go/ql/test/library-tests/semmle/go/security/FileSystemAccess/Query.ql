@@ -17,7 +17,7 @@ module FileSystemAccessTest implements TestSig {
       succ.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = succ.toString() and
-      value = succ.toString() and
+      value = succ.asExpr().(StructLit).getType().getName() and
       tag = "succ"
       or
       pred.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),

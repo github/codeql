@@ -73,14 +73,17 @@ func Afero(writer http.ResponseWriter, request *http.Request) {
 
 	// osFS ==> NOT OK
 	fmt.Println("Afero:")
-	afs := &afero.Afero{Fs: osFS}       // $ succ=&... pred=osFS
+	afs := &afero.Afero{Fs: osFS}       // $ succ=Afero pred=osFS
+	afs0 := afero.Afero{Fs: osFS} // $ succ=Afero pred=osFS
+    afs = &afs0
 	fmt.Println(afs.ReadFile(filepath)) // $ FileSystemAccess=filepath
 
 	// BasePathFs ==> OK
 	fmt.Println("Afero:")
 	newBasePathFs := afero.NewBasePathFs(osFS, "tmp")
-	basePathFs0 := &afero.Afero{Fs: newBasePathFs} // $ succ=&... pred=newBasePathFs
-	fmt.Println(basePathFs0.ReadFile(filepath))    // $ SPURIOUS: FileSystemAccess=filepath
+	basePathFs0 := &afero.Afero{Fs: newBasePathFs}// $ succ=Afero pred=newBasePathFs
+	// following is a FP, and in a dataflow configuration if we use Afero::additionalTaintStep then we won't have following in results
+	fmt.Println(basePathFs0.ReadFile(filepath)) // $ SPURIOUS: FileSystemAccess=filepath
 
 	// IOFS ==> OK
 	fmt.Println("IOFS:")
