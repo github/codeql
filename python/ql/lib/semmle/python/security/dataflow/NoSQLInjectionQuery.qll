@@ -18,8 +18,8 @@ module NoSqlInjectionConfig implements DataFlow::StateConfigSig {
     source instanceof C::StringSource and
     state instanceof C::StringInput
     or
-    source instanceof C::DictSource and
-    state instanceof C::DictInput
+    source instanceof C::InterpretedStringSource and
+    state instanceof C::InterpretedStringInput
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
@@ -27,29 +27,30 @@ module NoSqlInjectionConfig implements DataFlow::StateConfigSig {
     (
       state instanceof C::StringInput
       or
-      // since dictionaries can encode strings
-      state instanceof C::DictInput
+      // since InterpretedStrings can include strings,
+      // e.g. JSON objects can encode strings.
+      state instanceof C::InterpretedStringInput
     )
     or
-    sink instanceof C::DictSink and
-    state instanceof C::DictInput
+    sink instanceof C::InterpretedStringSink and
+    state instanceof C::InterpretedStringInput
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
-    // Block `StringInput` paths here, since they change state to `DictInput`
-    exists(C::StringToDictConversion c | node = c.getOutput()) and
+    // Block `StringInput` paths here, since they change state to `InterpretedStringInput`
+    exists(C::StringInterpretation c | node = c.getOutput()) and
     state instanceof C::StringInput
   }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
-    exists(C::StringToDictConversion c |
+    exists(C::StringInterpretation c |
       nodeFrom = c.getAnInput() and
       nodeTo = c.getOutput()
     ) and
     stateFrom instanceof C::StringInput and
-    stateTo instanceof C::DictInput
+    stateTo instanceof C::InterpretedStringInput
   }
 
   predicate isBarrier(DataFlow::Node node) {
