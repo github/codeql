@@ -1,6 +1,6 @@
 /**
  * This is a dataflow test using the "default" threat model with the
- * addition of "environment" and "cli".
+ * addition of "environment" and "commandargs".
  */
 
 import Test

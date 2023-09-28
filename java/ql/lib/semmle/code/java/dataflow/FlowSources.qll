@@ -259,7 +259,7 @@ private class CliInput extends LocalUserInput {
     exists(Field f | this.asExpr() = f.getAnAccess() | f instanceof SystemIn)
   }
 
-  override string getThreatModel() { result = "cli" }
+  override string getThreatModel() { result = "commandargs" }
 }
 
 /**

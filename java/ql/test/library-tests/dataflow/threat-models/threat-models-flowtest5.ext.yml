@@ -5,7 +5,7 @@ extensions:
       extensible: supportedThreatModels
     data:
       - ["environment"]
-      - ["cli"]
+      - ["commandargs"]
 
   - addsTo:
       pack: codeql/java-all
