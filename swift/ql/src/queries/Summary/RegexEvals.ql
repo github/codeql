@@ -10,6 +10,11 @@
 import swift
 import codeql.swift.regex.Regex
 
-from RegexEval e
-select e,
-  "Regular expression evaluation with " + count(e.getARegex()).toString() + " associated regex(s)."
+from RegexEval e, string message, Expr regex
+where
+  message = "Regular expression evaluation with source $@." and regex = e.getARegex()
+  or
+  message = "Regular expression evaluation with no identified source." and
+  not exists(e.getARegex()) and
+  regex = e
+select e, message, regex, regex.toString()

@@ -30,8 +30,8 @@ predicate statistic(string what, string value) {
   or
   what = "Regular expression evals" and value = count(RegexEval e).toString()
   or
-  what = "Regular expression evals with associated regex" and
-  value = count(RegexEval e | exists(e.getARegex())).toString()
+  what = "Regular expressions evaluated" and
+  value = count(RegexEval e | | e.getARegex()).toString()
 }
 
 from string what, string value
