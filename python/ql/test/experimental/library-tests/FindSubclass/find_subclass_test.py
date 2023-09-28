@@ -5,3 +5,6 @@ class A(View):
 
 class B(A):
     pass
+
+
+ViewAlias = View

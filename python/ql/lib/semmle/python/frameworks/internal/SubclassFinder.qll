@@ -193,11 +193,12 @@ module NotExposed {
     string relevantName, Location loc
   ) {
     loc = mod.getLocation() and
-    exists(API::Node relevantClass, ClassExpr classExpr |
+    exists(API::Node relevantClass, Expr value |
       relevantClass = newOrExistingModeling(spec).getASubclass*() and
       ImportResolution::module_export(mod, relevantName, def) and
-      classExpr = relevantClass.asSource().asExpr() and
-      classExpr = def.asVar().getDefinition().(AssignmentDefinition).getValue().getNode()
+      value = relevantClass.getAValueReachableFromSource().asExpr() and
+      value = def.asVar().getDefinition().(AssignmentDefinition).getValue().getNode()
+      // value could be a ClassExpr if a new class is defined, or a Name if defining an alias
     ) and
     (
       mod.isPackageInit() and
