@@ -43,5 +43,24 @@ def bad3():
     cursor = collection.find_one({"$where": f"this._id == '${event_id}'"})  #$ result=BAD
 
 
+@app.route("/bad4")
+def bad4():
+    client = MongoClient("localhost", 27017, maxPoolSize=50)
+    db = client.get_database(name="localhost")
+    collection = db.get_collection("collection")
+
+    decoded = json.loads(request.args['event_id'])
+
+    search = {
+        "body": decoded,
+        "args": [ "$event_id" ],
+        "lang": "js"
+    }
+    collection.find_one({'$expr': {'$function': search}}) # $ result=BAD
+
+    collection.find_one({'$expr': {'$function': decoded}}) # $ result=BAD
+    collection.find_one({'$expr': decoded}) # $ result=BAD
+    collection.find_one(decoded) # $ result=BAD
+
 if __name__ == "__main__":
     app.run(debug=True)
