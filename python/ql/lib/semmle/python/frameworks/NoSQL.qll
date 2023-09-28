@@ -170,7 +170,7 @@ private module NoSql {
 
     override string getFormat() { result = "NoSQL" }
 
-    override predicate mayExecuteInput() { any() }
+    override predicate mayExecuteInput() { none() }
   }
 
   /**
@@ -200,7 +200,7 @@ private module NoSql {
 
     override string getFormat() { result = "NoSQL" }
 
-    override predicate mayExecuteInput() { any() }
+    override predicate mayExecuteInput() { none() }
   }
 
   /**
