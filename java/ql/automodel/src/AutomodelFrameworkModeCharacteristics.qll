@@ -354,14 +354,3 @@ private class NotAModelApi extends CharacteristicsImpl::UninterestingToModelChar
     not e.getEnclosingCallable() instanceof ModelExclusions::ModelApi
   }
 }
-
-/**
- * A negative characteristic that filters out non-public methods. Non-public methods are not interesting to include in
- * the standard Java modeling, because they cannot be called from outside the package.
- */
-private class NonPublicMethodCharacteristic extends CharacteristicsImpl::UninterestingToModelCharacteristic
-{
-  NonPublicMethodCharacteristic() { this = "non-public method" }
-
-  override predicate appliesToEndpoint(Endpoint e) { not e.getEnclosingCallable().isPublic() }
-}

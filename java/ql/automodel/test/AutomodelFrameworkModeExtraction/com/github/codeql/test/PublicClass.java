@@ -9,7 +9,7 @@ public class PublicClass {
     System.out.println(arg);
   } // method staticStuff is a candidate source
 
-  // `arg` and `this` are not a candidate because the method is not public:
+  // `arg` and `this` are candidates because the method is protected (may be called from downstream repositories). The return value is a candidate source for the same reason.
   protected void nonPublicStuff(String arg) {
     System.out.println(arg);
   }
