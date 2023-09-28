@@ -22,8 +22,8 @@ module NoSqlInjectionConfig implements DataFlow::StateConfigSig {
     state instanceof C::DictInput
   }
 
-  predicate isSink(DataFlow::Node source, FlowState state) {
-    source instanceof C::StringSink and
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof C::StringSink and
     (
       state instanceof C::StringInput
       or
@@ -31,7 +31,7 @@ module NoSqlInjectionConfig implements DataFlow::StateConfigSig {
       state instanceof C::DictInput
     )
     or
-    source instanceof C::DictSink and
+    sink instanceof C::DictSink and
     state instanceof C::DictInput
   }
 
