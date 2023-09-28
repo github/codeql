@@ -6,7 +6,6 @@ import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
-private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
 module NodeJSLib {
   private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
