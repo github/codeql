@@ -61,12 +61,12 @@ func testConversions() {
 	sink(arg: v6) // $ tainted=60
 
 	let v7 = abs(sourceInt())
-	sink(arg: v7) // $ MISSING: tainted=63
+	sink(arg: v7) // $ tainted=63
 
 	let v8 = UInt64(0)
 	sink(arg: v8)
 	sink(arg: v8.advanced(by: 1))
-	sink(arg: v8.advanced(by: sourceInt())) // $ MISSING: tainted=69
+	sink(arg: v8.advanced(by: sourceInt())) // $ tainted=69
 
 	sink(arg: Int(exactly: sourceInt())!) // $ tainted=71
 	sink(arg: UInt32(exactly: sourceInt())!) // $ tainted=72
@@ -127,8 +127,8 @@ func testConversions() {
 	sink(arg: sourceFloat80().significand) // $ tainted=127
 	sink(arg: sourceDouble().exponent) // $ tainted=128
 	sink(arg: sourceDouble().significand) // $ tainted=129
-	sink(arg: sourceUInt().byteSwapped) // $ MISSING: tainted=130
-	sink(arg: sourceUInt64().byteSwapped) // $ MISSING: tainted=131
+	sink(arg: sourceUInt().byteSwapped) // $ tainted=130
+	sink(arg: sourceUInt64().byteSwapped) // $ tainted=131
 
 	// ---
 

@@ -23,14 +23,17 @@ edges
 | conversions.swift:57:36:57:46 | call to sourceInt() | conversions.swift:57:11:57:47 | call to Self.init(truncatingIfNeeded:) |
 | conversions.swift:60:11:60:39 | call to UInt.init(bitPattern:) | conversions.swift:61:12:61:12 | v6 |
 | conversions.swift:60:28:60:38 | call to sourceInt() | conversions.swift:60:11:60:39 | call to UInt.init(bitPattern:) |
+| conversions.swift:63:11:63:26 | call to abs(_:) | conversions.swift:64:12:64:12 | v7 |
+| conversions.swift:63:15:63:25 | call to sourceInt() | conversions.swift:63:11:63:26 | call to abs(_:) |
+| conversions.swift:69:28:69:38 | call to sourceInt() | conversions.swift:69:12:69:39 | call to advanced(by:) |
 | conversions.swift:71:12:71:36 | call to Self.init(exactly:) [some:0] | conversions.swift:71:12:71:37 | ...! |
 | conversions.swift:71:25:71:35 | call to sourceInt() | conversions.swift:71:12:71:36 | call to Self.init(exactly:) [some:0] |
 | conversions.swift:72:12:72:39 | call to Self.init(exactly:) [some:0] | conversions.swift:72:12:72:40 | ...! |
 | conversions.swift:72:28:72:38 | call to sourceInt() | conversions.swift:72:12:72:39 | call to Self.init(exactly:) [some:0] |
 | conversions.swift:73:26:73:36 | call to sourceInt() | conversions.swift:73:12:73:37 | call to Self.init(clamping:) |
 | conversions.swift:74:36:74:46 | call to sourceInt() | conversions.swift:74:12:74:47 | call to Self.init(truncatingIfNeeded:) |
-| conversions.swift:75:12:75:41 | call to Self.init(_:radix:) | conversions.swift:75:12:75:42 | ...! |
-| conversions.swift:75:16:75:29 | call to sourceString() | conversions.swift:75:12:75:41 | call to Self.init(_:radix:) |
+| conversions.swift:75:12:75:41 | call to Self.init(_:radix:) [some:0] | conversions.swift:75:12:75:42 | ...! |
+| conversions.swift:75:16:75:29 | call to sourceString() | conversions.swift:75:12:75:41 | call to Self.init(_:radix:) [some:0] |
 | conversions.swift:77:30:77:40 | call to sourceInt() | conversions.swift:77:12:77:41 | call to Self.init(littleEndian:) |
 | conversions.swift:78:27:78:37 | call to sourceInt() | conversions.swift:78:12:78:38 | call to Self.init(bigEndian:) |
 | conversions.swift:79:12:79:22 | call to sourceInt() | conversions.swift:79:12:79:24 | .littleEndian |
@@ -56,6 +59,8 @@ edges
 | conversions.swift:127:12:127:26 | call to sourceFloat80() | conversions.swift:127:12:127:28 | .significand |
 | conversions.swift:128:12:128:25 | call to sourceDouble() | conversions.swift:128:12:128:27 | .exponent |
 | conversions.swift:129:12:129:25 | call to sourceDouble() | conversions.swift:129:12:129:27 | .significand |
+| conversions.swift:130:12:130:23 | call to sourceUInt() | conversions.swift:130:12:130:25 | .byteSwapped |
+| conversions.swift:131:12:131:25 | call to sourceUInt64() | conversions.swift:131:12:131:27 | .byteSwapped |
 | conversions.swift:136:19:136:32 | call to sourceString() | conversions.swift:136:12:136:33 | call to String.init(_:) |
 | conversions.swift:144:12:144:35 | call to MyString.init(_:) | conversions.swift:144:12:144:35 | call to MyString.init(_:) [some:0] |
 | conversions.swift:144:12:144:35 | call to MyString.init(_:) | conversions.swift:145:12:145:12 | ms2 |
@@ -200,6 +205,11 @@ nodes
 | conversions.swift:60:11:60:39 | call to UInt.init(bitPattern:) | semmle.label | call to UInt.init(bitPattern:) |
 | conversions.swift:60:28:60:38 | call to sourceInt() | semmle.label | call to sourceInt() |
 | conversions.swift:61:12:61:12 | v6 | semmle.label | v6 |
+| conversions.swift:63:11:63:26 | call to abs(_:) | semmle.label | call to abs(_:) |
+| conversions.swift:63:15:63:25 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:64:12:64:12 | v7 | semmle.label | v7 |
+| conversions.swift:69:12:69:39 | call to advanced(by:) | semmle.label | call to advanced(by:) |
+| conversions.swift:69:28:69:38 | call to sourceInt() | semmle.label | call to sourceInt() |
 | conversions.swift:71:12:71:36 | call to Self.init(exactly:) [some:0] | semmle.label | call to Self.init(exactly:) [some:0] |
 | conversions.swift:71:12:71:37 | ...! | semmle.label | ...! |
 | conversions.swift:71:25:71:35 | call to sourceInt() | semmle.label | call to sourceInt() |
@@ -210,7 +220,7 @@ nodes
 | conversions.swift:73:26:73:36 | call to sourceInt() | semmle.label | call to sourceInt() |
 | conversions.swift:74:12:74:47 | call to Self.init(truncatingIfNeeded:) | semmle.label | call to Self.init(truncatingIfNeeded:) |
 | conversions.swift:74:36:74:46 | call to sourceInt() | semmle.label | call to sourceInt() |
-| conversions.swift:75:12:75:41 | call to Self.init(_:radix:) | semmle.label | call to Self.init(_:radix:) |
+| conversions.swift:75:12:75:41 | call to Self.init(_:radix:) [some:0] | semmle.label | call to Self.init(_:radix:) [some:0] |
 | conversions.swift:75:12:75:42 | ...! | semmle.label | ...! |
 | conversions.swift:75:16:75:29 | call to sourceString() | semmle.label | call to sourceString() |
 | conversions.swift:77:12:77:41 | call to Self.init(littleEndian:) | semmle.label | call to Self.init(littleEndian:) |
@@ -261,6 +271,10 @@ nodes
 | conversions.swift:128:12:128:27 | .exponent | semmle.label | .exponent |
 | conversions.swift:129:12:129:25 | call to sourceDouble() | semmle.label | call to sourceDouble() |
 | conversions.swift:129:12:129:27 | .significand | semmle.label | .significand |
+| conversions.swift:130:12:130:23 | call to sourceUInt() | semmle.label | call to sourceUInt() |
+| conversions.swift:130:12:130:25 | .byteSwapped | semmle.label | .byteSwapped |
+| conversions.swift:131:12:131:25 | call to sourceUInt64() | semmle.label | call to sourceUInt64() |
+| conversions.swift:131:12:131:27 | .byteSwapped | semmle.label | .byteSwapped |
 | conversions.swift:135:12:135:25 | call to sourceString() | semmle.label | call to sourceString() |
 | conversions.swift:136:12:136:33 | call to String.init(_:) | semmle.label | call to String.init(_:) |
 | conversions.swift:136:19:136:32 | call to sourceString() | semmle.label | call to sourceString() |
@@ -434,6 +448,8 @@ subpaths
 | conversions.swift:55:12:55:12 | v4 | conversions.swift:54:31:54:41 | call to sourceInt() | conversions.swift:55:12:55:12 | v4 | result |
 | conversions.swift:58:12:58:12 | v5 | conversions.swift:57:36:57:46 | call to sourceInt() | conversions.swift:58:12:58:12 | v5 | result |
 | conversions.swift:61:12:61:12 | v6 | conversions.swift:60:28:60:38 | call to sourceInt() | conversions.swift:61:12:61:12 | v6 | result |
+| conversions.swift:64:12:64:12 | v7 | conversions.swift:63:15:63:25 | call to sourceInt() | conversions.swift:64:12:64:12 | v7 | result |
+| conversions.swift:69:12:69:39 | call to advanced(by:) | conversions.swift:69:28:69:38 | call to sourceInt() | conversions.swift:69:12:69:39 | call to advanced(by:) | result |
 | conversions.swift:71:12:71:37 | ...! | conversions.swift:71:25:71:35 | call to sourceInt() | conversions.swift:71:12:71:37 | ...! | result |
 | conversions.swift:72:12:72:40 | ...! | conversions.swift:72:28:72:38 | call to sourceInt() | conversions.swift:72:12:72:40 | ...! | result |
 | conversions.swift:73:12:73:37 | call to Self.init(clamping:) | conversions.swift:73:26:73:36 | call to sourceInt() | conversions.swift:73:12:73:37 | call to Self.init(clamping:) | result |
@@ -462,6 +478,8 @@ subpaths
 | conversions.swift:127:12:127:28 | .significand | conversions.swift:127:12:127:26 | call to sourceFloat80() | conversions.swift:127:12:127:28 | .significand | result |
 | conversions.swift:128:12:128:27 | .exponent | conversions.swift:128:12:128:25 | call to sourceDouble() | conversions.swift:128:12:128:27 | .exponent | result |
 | conversions.swift:129:12:129:27 | .significand | conversions.swift:129:12:129:25 | call to sourceDouble() | conversions.swift:129:12:129:27 | .significand | result |
+| conversions.swift:130:12:130:25 | .byteSwapped | conversions.swift:130:12:130:23 | call to sourceUInt() | conversions.swift:130:12:130:25 | .byteSwapped | result |
+| conversions.swift:131:12:131:27 | .byteSwapped | conversions.swift:131:12:131:25 | call to sourceUInt64() | conversions.swift:131:12:131:27 | .byteSwapped | result |
 | conversions.swift:135:12:135:25 | call to sourceString() | conversions.swift:135:12:135:25 | call to sourceString() | conversions.swift:135:12:135:25 | call to sourceString() | result |
 | conversions.swift:136:12:136:33 | call to String.init(_:) | conversions.swift:136:19:136:32 | call to sourceString() | conversions.swift:136:12:136:33 | call to String.init(_:) | result |
 | conversions.swift:145:12:145:12 | ms2 | conversions.swift:144:21:144:34 | call to sourceString() | conversions.swift:145:12:145:12 | ms2 | result |
