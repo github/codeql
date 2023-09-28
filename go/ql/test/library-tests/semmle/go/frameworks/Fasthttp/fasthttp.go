@@ -1,4 +1,5 @@
 package main
+
 //go:generate depstubber -vendor  "github.com/valyala/fasthttp" Args,Client,Cookie,FS,HostClient,LBClient,PathRewriteFunc,Request,RequestCtx,RequestHandler,RequestHeader,Response,ResponseHeader,Server,TCPDialer,URI,LBClient,PipelineClient AcquireURI,Serve,DialDualStack,Dial,DialTimeout,DialDualStackTimeout,Get,GetDeadline,GetTimeout,Post,Do,DoRedirects,AppendHTMLEscapeBytes,AppendHTMLEscape,AppendQuotedArg,ServeFileBytesUncompressed,ServeFileBytes,ServeFileUncompressed,ServeFile,SaveMultipartFile,DoTimeout,DoDeadline
 import (
 	"bufio"
@@ -29,24 +30,24 @@ func fasthttpClient() {
 	fasthttp.GetTimeout(resByte, "http://127.0.0.1:8909", 5)
 	fasthttp.Post(resByte, "http://127.0.0.1:8909", nil)
 	log.Println(string(resByte))
-	fasthttp.Do(req, res)// $ req=req
-	fasthttp.DoRedirects(req, res, 2)// $ req=req
-	fasthttp.DoDeadline(req, res, time.Time{})// $ req=req
-	fasthttp.DoTimeout(req, res, 5)// $ req=req
+	fasthttp.Do(req, res)                      // $ req=req
+	fasthttp.DoRedirects(req, res, 2)          // $ req=req
+	fasthttp.DoDeadline(req, res, time.Time{}) // $ req=req
+	fasthttp.DoTimeout(req, res, 5)            // $ req=req
 
 	// additional steps
-	uri.SetHost("UserControlled.com:80") // $ URI=uri
+	uri.SetHost("UserControlled.com:80")              // $ URI=uri
 	uri.SetHostBytes([]byte("UserControlled.com:80")) // $ URI=uri
-	uri.Update("http://httpbin.org/ip") // $ URI=uri
-	uri.UpdateBytes([]byte("http://httpbin.org/ip")) // $ URI=uri
-	uri.Parse(nil, []byte("http://httpbin.org/ip")) // $ URI=uri
-	uri.CopyTo(uri2)// $ URI=uri
+	uri.Update("http://httpbin.org/ip")               // $ URI=uri
+	uri.UpdateBytes([]byte("http://httpbin.org/ip"))  // $ URI=uri
+	uri.Parse(nil, []byte("http://httpbin.org/ip"))   // $ URI=uri
+	uri.CopyTo(uri2)                                  // $ URI=uri
 
-	req.SetHost("UserControlled.com:80")// $ req=req
-	req.SetHostBytes([]byte("UserControlled.com:80"))// $ req=req
-	req.SetRequestURI("https://UserControlled.com")// $ req=req// $ req=req
-	req.SetRequestURIBytes([]byte("https://UserControlled.com"))// $ req=req
-	req.SetURI(uri) // $ req=req  URI=uri
+	req.SetHost("UserControlled.com:80")                         // $ req=req
+	req.SetHostBytes([]byte("UserControlled.com:80"))            // $ req=req
+	req.SetRequestURI("https://UserControlled.com")              // $ req=req// $ req=req
+	req.SetRequestURIBytes([]byte("https://UserControlled.com")) // $ req=req
+	req.SetURI(uri)                                              // $ req=req  URI=uri
 
 	hostClient := &fasthttp.HostClient{
 		Addr: "localhost:8080",
@@ -55,31 +56,31 @@ func fasthttpClient() {
 	hostClient.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{})
 	hostClient.GetTimeout(resByte, "http://127.0.0.1:8909", 5)
 	hostClient.Post(resByte, "http://127.0.0.1:8909", nil)
-	hostClient.Do(req, res)// $ req=req
-	hostClient.DoDeadline(req, res, time.Time{})// $ req=req
-	hostClient.DoRedirects(req, res, 2)// $ req=req
-	hostClient.DoTimeout(req, res, 5)// $ req=req
+	hostClient.Do(req, res)                      // $ req=req
+	hostClient.DoDeadline(req, res, time.Time{}) // $ req=req
+	hostClient.DoRedirects(req, res, 2)          // $ req=req
+	hostClient.DoTimeout(req, res, 5)            // $ req=req
 
 	var lbclient fasthttp.LBClient
 	lbclient.Clients = append(lbclient.Clients, hostClient)
-	lbclient.Do(req, res)// $ req=req
-	lbclient.DoDeadline(req, res, time.Time{})// $ req=req
-	lbclient.DoTimeout(req, res, 5)// $ req=req
+	lbclient.Do(req, res)                      // $ req=req
+	lbclient.DoDeadline(req, res, time.Time{}) // $ req=req
+	lbclient.DoTimeout(req, res, 5)            // $ req=req
 
 	client := fasthttp.Client{}
 	client.Get(resByte, "http://127.0.0.1:8909")
 	client.GetDeadline(resByte, "http://127.0.0.1:8909", time.Time{})
 	client.GetTimeout(resByte, "http://127.0.0.1:8909", 5)
 	client.Post(resByte, "http://127.0.0.1:8909", nil)
-	client.Do(req, res)// $ req=req
-	client.DoDeadline(req, res, time.Time{})// $ req=req
-	client.DoRedirects(req, res, 2)// $ req=req
-	client.DoTimeout(req, res, 5)// $ req=req
+	client.Do(req, res)                      // $ req=req
+	client.DoDeadline(req, res, time.Time{}) // $ req=req
+	client.DoRedirects(req, res, 2)          // $ req=req
+	client.DoTimeout(req, res, 5)            // $ req=req
 
 	pipelineClient := fasthttp.PipelineClient{}
-	pipelineClient.Do(req, res)// $ req=req
-	pipelineClient.DoDeadline(req, res, time.Time{})// $ req=req
-	pipelineClient.DoTimeout(req, res, 5)// $ req=req
+	pipelineClient.Do(req, res)                      // $ req=req
+	pipelineClient.DoDeadline(req, res, time.Time{}) // $ req=req
+	pipelineClient.DoTimeout(req, res, 5)            // $ req=req
 
 	tcpDialer := fasthttp.TCPDialer{}
 	tcpDialer.Dial("127.0.0.1:8909")
