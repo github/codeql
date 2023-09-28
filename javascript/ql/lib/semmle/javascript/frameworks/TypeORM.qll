@@ -1,20 +1,31 @@
 import javascript
 
+/**
+ * Provides SQL injection Sinks for [TypeORM](https://www.npmjs.com/package/typeorm) package
+ */
 module TypeOrm {
-  // Gets an expression that constructs or returns a TypeORM database instance.
+  /**
+   * Gets an expression that constructs or returns a TypeORM database instance.
+   */
   API::Node dataSource() {
     result = API::moduleImport("typeorm").getMember("DataSource").getInstance()
   }
 
-  // Gets an `QueryRunner`
+  /**
+   * Gets an `QueryRunner`
+   */
   API::Node queryRunner() { result = dataSource().getMember("createQueryRunner").getReturn() }
 
-  // Gets `createQueryBuilder` return value from a Active record based Entity
+  /**
+   *  Gets `createQueryBuilder` return value from a Active record based Entity
+   */
   API::Node activeRecordQueryBuilder() {
     result = queryRunner().getMember("manager").getMember("createQueryBuilder").getReceiver()
   }
 
-  // Gets `createQueryBuilder` return value from a Data Mapper based Entity
+  /**
+   *   Gets `createQueryBuilder` return value from a Data Mapper based Entity
+   */
   API::Node dataMapperQueryBuilder() {
     result =
       [
@@ -27,13 +38,17 @@ module TypeOrm {
       ].getMember("createQueryBuilder").getReturn()
   }
 
-  // Gets return value of a `createQueryBuilder`
+  /**
+   * Gets return value of a `createQueryBuilder`
+   */
   API::Node queryBuilderInstance() {
     result = dataMapperQueryBuilder() or
     result = activeRecordQueryBuilder()
   }
 
-  // Gets The Brackets that are SQL Subqueries equivalent
+  /**
+   * Gets The Brackets that are SQL Subqueries equivalent
+   */
   API::Node brackets() {
     result =
       API::moduleImport("typeorm")
@@ -42,7 +57,9 @@ module TypeOrm {
           .getParameter(0)
   }
 
-  // Gets any Successor node of Brackets, NotBrackets
+  /**
+   * Gets any Successor node of Brackets, NotBrackets
+   */
   API::Node getASuccessorOfBrackets() {
     result = brackets() or
     result = getASuccessorOfBrackets().getAMember() or
@@ -52,7 +69,9 @@ module TypeOrm {
     result = getASuccessorOfBrackets().getInstance()
   }
 
-  // Gets any Successor node of createQueryBuilder
+  /**
+   * Gets any Successor node of createQueryBuilder
+   */
   API::Node getASuccessorOfBuilderInstance() {
     result = queryBuilderInstance() or
     result = getASuccessorOfBuilderInstance().getAMember() or
@@ -80,7 +99,9 @@ module TypeOrm {
       ]
   }
 
-  // Gets functions that return results
+  /**
+   * Gets functions that return results
+   */
   string queryBuilderResult() {
     result = ["getOne", "getOneOrFail", "getMany", "getRawOne", "getRawMany", "stream"]
   }

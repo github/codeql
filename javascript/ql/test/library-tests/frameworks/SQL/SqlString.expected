@@ -70,8 +70,12 @@
 | spanner.js:26:12:26:38 | 'UPDATE ... = @baz' |
 | spanner.js:31:18:31:24 | queries |
 | spannerImport.js:4:8:4:17 | "SQL code" |
+| sqlite3.js:7:8:7:45 | "UPDATE ... id = ?" |
+| sqlite3.js:8:8:8:45 | "UPDATE ... id = ?" |
 | sqlite-types.ts:4:12:4:49 | "UPDATE ... id = ?" |
-| sqlite.js:7:8:7:45 | "UPDATE ... id = ?" |
-| sqlite.js:8:8:8:45 | "UPDATE ... id = ?" |
+| sqlite.js:9:10:9:65 | 'SELECT ... id = 1" |
+| sqlite.js:12:10:12:65 | 'SELECT ... id = 1" |
+| sqlite.js:15:10:15:74 | 'INSERT ... ',100)' |
+| sqlite.js:18:14:19:18 | 'SELECT ... id = 1" |
+| sqlite.js:25:19:25:74 | 'SELECT ... id = 1" |
 | sqliteArray.js:6:12:6:49 | "UPDATE ... id = ?" |
-| sqliteImport.js:2:8:2:44 | "UPDATE ... id = ?" |
