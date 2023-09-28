@@ -298,9 +298,23 @@ open class KotlinUsesExtractor(
             }
         }
 
+    private fun extractParentExternalClassLater(d: IrDeclaration) {
+        val p = d.parent
+        when (p) {
+            is IrClass -> extractExternalClassLater(p)
+            is IrExternalPackageFragment -> {
+                // The parent is a (multi)file class. We don't need to
+                // extract it separately.
+            }
+            else -> {
+                logger.warn("Unexpected parent type ${p.javaClass} for external file class member")
+            }
+        }
+    }
+
     private fun extractPropertyLaterIfExternalFileMember(p: IrProperty) {
         if (isExternalFileClassMember(p)) {
-            extractExternalClassLater(p.parentAsClass)
+            extractParentExternalClassLater(p)
             val signature = getTrapFileSignature(p)
             dependencyCollector?.addDependency(p, signature)
             externalClassExtractor.extractLater(p, signature)
@@ -309,7 +323,7 @@ open class KotlinUsesExtractor(
 
     private fun extractFieldLaterIfExternalFileMember(f: IrField) {
         if (isExternalFileClassMember(f)) {
-            extractExternalClassLater(f.parentAsClass)
+            extractParentExternalClassLater(f)
             val signature = getTrapFileSignature(f)
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
@@ -318,17 +332,7 @@ open class KotlinUsesExtractor(
 
     private fun extractFunctionLaterIfExternalFileMember(f: IrFunction) {
         if (isExternalFileClassMember(f)) {
-            val p = f.parent
-            when (p) {
-                is IrClass -> extractExternalClassLater(p)
-                is IrExternalPackageFragment -> {
-                    // The parent is a (multi)file class. We don't need
-                    // extract it separately.
-                }
-                else -> {
-                    logger.warn("Unexpected parent type ${p.javaClass} for external file class member")
-                }
-            }
+            extractParentExternalClassLater(f)
             (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
                 extractPropertyLaterIfExternalFileMember(it.owner)
                 // No need to extract the function specifically, as the property's
