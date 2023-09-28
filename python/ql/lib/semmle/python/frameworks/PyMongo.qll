@@ -144,7 +144,7 @@ private module PyMongo {
   private class MongoMapReduceQuery extends API::CallNode, NoSqlExecution::Range {
     MongoMapReduceQuery() { this = mongoCollection().getMember("map_reduce").getACall() }
 
-    override DataFlow::Node getQuery() { result in [this.getArgByName("query")] }
+    override DataFlow::Node getQuery() { result = this.getArgByName("query") }
 
     override predicate interpretsDict() { any() }
 
@@ -178,19 +178,20 @@ private module PyMongo {
    * See https://www.mongodb.com/docs/manual/reference/operator/aggregation/function/#mongodb-expression-exp.-function
    */
   private class FunctionQueryOperator extends DataFlow::Node, Decoding::Range {
-    API::Node dictionary;
     DataFlow::Node query;
 
     FunctionQueryOperator() {
-      dictionary =
-        mongoCollection()
-            .getMember(mongoCollectionMethodName())
-            .getACall()
-            .getParameter(0)
-            .getASubscript*()
-            .getSubscript("$function") and
-      query = dictionary.getSubscript("body").asSink() and
-      this = dictionary.asSink()
+      exists(API::Node dictionary |
+        dictionary =
+          mongoCollection()
+              .getMember(mongoCollectionMethodName())
+              .getACall()
+              .getParameter(0)
+              .getASubscript*()
+              .getSubscript("$function") and
+        query = dictionary.getSubscript("body").asSink() and
+        this = dictionary.asSink()
+      )
     }
 
     override DataFlow::Node getAnInput() { result = query }
@@ -208,19 +209,20 @@ private module PyMongo {
    * See https://www.mongodb.com/docs/manual/reference/operator/aggregation/accumulator/#mongodb-group-grp.-accumulator
    */
   private class AccumulatorQueryOperator extends DataFlow::Node, Decoding::Range {
-    API::Node dictionary;
     DataFlow::Node query;
 
     AccumulatorQueryOperator() {
-      dictionary =
-        mongoCollection()
-            .getMember("aggregate")
-            .getACall()
-            .getParameter(0)
-            .getASubscript*()
-            .getSubscript("$accumulator") and
-      query = dictionary.getSubscript(["init", "accumulate", "merge", "finalize"]).asSink() and
-      this = dictionary.asSink()
+      exists(API::Node dictionary |
+        dictionary =
+          mongoCollection()
+              .getMember("aggregate")
+              .getACall()
+              .getParameter(0)
+              .getASubscript*()
+              .getSubscript("$accumulator") and
+        query = dictionary.getSubscript(["init", "accumulate", "merge", "finalize"]).asSink() and
+        this = dictionary.asSink()
+      )
     }
 
     override DataFlow::Node getAnInput() { result = query }

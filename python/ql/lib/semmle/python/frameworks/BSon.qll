@@ -7,7 +7,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-module BSon {
+private module BSon {
   /**
    * ObjectId returns a string representing an id.
    * If at any time ObjectId can't parse it's input (like when a tainted dict in passed in),
