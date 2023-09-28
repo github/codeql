@@ -32,7 +32,7 @@ private module Input implements InputSig {
 private module Impl = Make<Input>;
 
 /** A file or folder. */
-class Container extends Locatable, Impl::Container {
+class Container extends ElementBase, Impl::Container {
   override string toString() { result = Impl::Container.super.toString() }
 }
 
@@ -47,11 +47,6 @@ class Container extends Locatable, Impl::Container {
  * To get the full path, use `getAbsolutePath`.
  */
 class Folder extends Container, Impl::Folder {
-  override Location getLocation() {
-    result.getContainer() = this and
-    result.hasLocationInfo(_, 0, 0, 0, 0)
-  }
-
   override string getAPrimaryQlClass() { result = "Folder" }
 }
 
@@ -69,11 +64,6 @@ class Folder extends Container, Impl::Folder {
  */
 class File extends Container, Impl::File {
   override string getAPrimaryQlClass() { result = "File" }
-
-  override Location getLocation() {
-    result.getContainer() = this and
-    result.hasLocationInfo(_, 0, 0, 0, 0)
-  }
 
   /** Holds if this file was compiled as C (at any point). */
   predicate compiledAsC() { fileannotations(underlyingElement(this), 1, "compiled as c", "1") }
@@ -128,7 +118,7 @@ class File extends Container, Impl::File {
    * except the dummy file, whose name is the empty string, which contains
    * declarations that are built into the compiler.
    */
-  override predicate fromSource() { numlines(underlyingElement(this), _, _, _) }
+  predicate fromSource() { numlines(underlyingElement(this), _, _, _) }
 
   /** Gets the metric file. */
   MetricFile getMetrics() { result = this }
