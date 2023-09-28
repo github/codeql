@@ -40,7 +40,7 @@ class Endpoint extends Callable {
    * Gets the parameter types of this endpoint.
    */
   bindingset[this]
-  string getParameterTypes() { result = parameterQualifiedTypeNamesToString(this) }
+  string getParameterTypes() { result = "(" + parameterQualifiedTypeNamesToString(this) + ")" }
 
   private string getDllName() { result = this.getLocation().(Assembly).getName() }
 
