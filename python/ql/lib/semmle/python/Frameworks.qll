@@ -10,6 +10,7 @@ private import semmle.python.frameworks.Aiomysql
 private import semmle.python.frameworks.Aiosqlite
 private import semmle.python.frameworks.Aiopg
 private import semmle.python.frameworks.Asyncpg
+private import semmle.python.frameworks.BSon
 private import semmle.python.frameworks.CassandraDriver
 private import semmle.python.frameworks.ClickhouseDriver
 private import semmle.python.frameworks.Cryptodome
