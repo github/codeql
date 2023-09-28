@@ -13,7 +13,7 @@ namespace Semmle.Extraction.Tests;
 /// </summary>
 public class StubGeneratorTests
 {
-    // [Fact]
+    [Fact]
     public void StubGeneratorFieldTest()
     {
         // Setup
@@ -36,7 +36,7 @@ public const string MyField2 = default;
         Assert.Equal(expected, stub);
     }
 
-    // [Fact]
+    [Fact]
     public void StubGeneratorMethodTest()
     {
         // Setup
