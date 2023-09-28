@@ -1,0 +1,3 @@
+| flask.View~Subclass | find_subclass_test | Member[A] |
+| flask.View~Subclass | find_subclass_test | Member[B] |
+| flask.View~Subclass | find_subclass_test | Member[View] |
