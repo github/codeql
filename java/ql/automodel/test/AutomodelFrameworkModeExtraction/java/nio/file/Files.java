@@ -19,12 +19,12 @@ public class Files {
          */
     ) throws IOException {
         // ...
-    }
+    } // method copy is a candidate source
 
     public static InputStream newInputStream(
         Path openPath ,// positive example (known sink), candidate (ai-modeled, and useful as a candidate in regression testing)
         OpenOption... options 
     ) throws IOException {
         return  new FileInputStream(openPath.toFile());
-    } 
+    } // method newInputStream is a candidate source
 }
