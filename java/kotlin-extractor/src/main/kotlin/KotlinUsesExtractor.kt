@@ -820,7 +820,7 @@ open class KotlinUsesExtractor(
             // This is in a file class.
             val fqName = getFileClassFqName(d)
             if (fqName == null) {
-                logger.error("Can't get FqName for element in external package fragment ${d.javaClass}")
+                logger.error("Can't get FqName for declaration in external package fragment ${d.javaClass}")
                 return null
             }
             return extractFileClass(fqName)
