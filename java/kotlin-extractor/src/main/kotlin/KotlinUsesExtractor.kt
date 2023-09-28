@@ -303,7 +303,7 @@ open class KotlinUsesExtractor(
         when (p) {
             is IrClass -> extractExternalClassLater(p)
             is IrExternalPackageFragment -> {
-                // The parent is a (multi)file class. We don't need
+                // The parent is a (multi)file class. We don't need to
                 // extract it separately.
             }
             else -> {
