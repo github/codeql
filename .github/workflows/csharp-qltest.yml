@@ -81,6 +81,7 @@ jobs:
           dotnet test -p:RuntimeFrameworkVersion=7.0.2 extractor/Semmle.Extraction.Tests
           dotnet test -p:RuntimeFrameworkVersion=7.0.2 autobuilder/Semmle.Autobuild.CSharp.Tests
           dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
+        shell: bash
   stubgentest:
     runs-on: ubuntu-latest
     steps:
