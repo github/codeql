@@ -36,13 +36,13 @@ private import semmle.python.frameworks.MarkupSafe
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Mysql
 private import semmle.python.frameworks.MySQLdb
-private import semmle.python.frameworks.NoSQL
 private import semmle.python.frameworks.Oracledb
 private import semmle.python.frameworks.Peewee
 private import semmle.python.frameworks.Phoenixdb
 private import semmle.python.frameworks.Psycopg2
 private import semmle.python.frameworks.Pycurl
 private import semmle.python.frameworks.Pydantic
+private import semmle.python.frameworks.PyMongo
 private import semmle.python.frameworks.Pymssql
 private import semmle.python.frameworks.PyMySQL
 private import semmle.python.frameworks.Pyodbc

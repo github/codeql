@@ -1,6 +1,5 @@
 /**
- * Provides classes modeling security-relevant aspects of the standard libraries.
- * Note: some modeling is done internally in the dataflow/taint tracking implementation.
+ * Provides classes modeling security-relevant aspects of the PyMongo bindings.
  */
 
 private import python
