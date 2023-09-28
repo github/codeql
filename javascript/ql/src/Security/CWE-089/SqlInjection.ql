@@ -22,8 +22,8 @@ from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode 
 where
   (
     cfg instanceof SqlInjection::Configuration and type = "string"
-    // or
-    // cfg instanceof NosqlInjection::Configuration and type = "object"
+    or
+    cfg instanceof NosqlInjection::Configuration and type = "object"
   ) and
   cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This query " + type + " depends on a $@.", source.getNode(),
