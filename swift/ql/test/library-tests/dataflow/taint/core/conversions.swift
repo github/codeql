@@ -177,16 +177,16 @@ class TestArrayConversion {
 
 		let arr1b = try Array(arr1)
 		let arr2b = try Array(arr2)
-		sink(arg: arr1b) // $ MISSING: tainted=171
+		sink(arg: arr1b)
 		sink(arg: arr2b)
 		sink(arg: arr1b[0]) // $ tainted=171
 		sink(arg: arr2b[0]) // $ tainted=172
 
 		let arr1c = ContiguousArray(arr1)
 		let arr2c = ContiguousArray(arr2)
-		sink(arg: arr1c) // $ MISSING: tainted=171
+		sink(arg: arr1c)
 		sink(arg: arr2c)
-		sink(arg: arr1c[0]) // $ MISSING: tainted=171
-		sink(arg: arr2c[0]) // $ MISSING: tainted=172
+		sink(arg: arr1c[0]) // $ tainted=171
+		sink(arg: arr2c[0]) // $ tainted=172
 	}
 }

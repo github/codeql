@@ -19,9 +19,6 @@ private class ArraySummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";Array;true;init(_:);;;Argument[0];ReturnValue.CollectionElement;value",
-        ";Array;true;init(_:);;;Argument[0].CollectionElement;ReturnValue.CollectionElement;value",
-        ";Array;true;init(repeating:count:);;;Argument[0];ReturnValue.CollectionElement;value",
         ";Array;true;init(arrayLiteral:);;;Argument[0].CollectionElement;ReturnValue.CollectionElement;value",
         ";Array;true;insert(_:at:);;;Argument[0];Argument[-1].CollectionElement;value",
         ";Array;true;insert(_:at:);;;Argument[1];Argument[-1];taint",
