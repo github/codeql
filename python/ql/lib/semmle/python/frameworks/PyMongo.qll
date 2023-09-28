@@ -9,7 +9,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
-private module NoSql {
+private module PyMongo {
   // API Nodes returning `Mongo` instances.
   /** Gets a reference to `pymongo.MongoClient` */
   private API::Node pyMongo() {
