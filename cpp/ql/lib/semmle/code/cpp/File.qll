@@ -65,6 +65,12 @@ class Folder extends Container, Impl::Folder {
 class File extends Container, Impl::File {
   override string getAPrimaryQlClass() { result = "File" }
 
+  /** Gets the primary location of this file. */
+  Location getLocation() {
+    result.getContainer() = this and
+    result.hasLocationInfo(_, 0, 0, 0, 0)
+  }
+
   /** Holds if this file was compiled as C (at any point). */
   predicate compiledAsC() { fileannotations(underlyingElement(this), 1, "compiled as c", "1") }
 
