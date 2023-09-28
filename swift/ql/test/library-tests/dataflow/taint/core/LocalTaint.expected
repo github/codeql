@@ -171,6 +171,50 @@
 | conversions.swift:157:12:157:12 | v3 | conversions.swift:158:12:158:12 | v3 |
 | conversions.swift:165:24:165:24 | myCEnumConst | conversions.swift:165:12:165:36 | call to Self.init(_:) |
 | conversions.swift:166:24:166:34 | call to sourceInt() | conversions.swift:166:12:166:35 | call to Self.init(_:) |
+| conversions.swift:169:7:169:7 | SSA def(self) | conversions.swift:169:7:169:7 | self[return] |
+| conversions.swift:169:7:169:7 | self | conversions.swift:169:7:169:7 | SSA def(self) |
+| conversions.swift:170:2:170:2 | SSA def(self) | conversions.swift:170:2:191:2 | self[return] |
+| conversions.swift:170:2:170:2 | self | conversions.swift:170:2:170:2 | SSA def(self) |
+| conversions.swift:171:7:171:7 | SSA def(arr1) | conversions.swift:173:13:173:13 | arr1 |
+| conversions.swift:171:7:171:7 | arr1 | conversions.swift:171:7:171:7 | SSA def(arr1) |
+| conversions.swift:171:14:171:26 | call to sourceArray() | conversions.swift:171:7:171:7 | arr1 |
+| conversions.swift:172:7:172:7 | SSA def(arr2) | conversions.swift:174:13:174:13 | arr2 |
+| conversions.swift:172:7:172:7 | arr2 | conversions.swift:172:7:172:7 | SSA def(arr2) |
+| conversions.swift:172:14:172:26 | [...] | conversions.swift:172:7:172:7 | arr2 |
+| conversions.swift:173:13:173:13 | arr1 | conversions.swift:175:13:175:13 | arr1 |
+| conversions.swift:174:13:174:13 | arr2 | conversions.swift:176:13:176:13 | arr2 |
+| conversions.swift:175:13:175:13 | [post] arr1 | conversions.swift:178:25:178:25 | arr1 |
+| conversions.swift:175:13:175:13 | arr1 | conversions.swift:175:13:175:19 | ...[...] |
+| conversions.swift:175:13:175:13 | arr1 | conversions.swift:178:25:178:25 | arr1 |
+| conversions.swift:176:13:176:13 | [post] arr2 | conversions.swift:179:25:179:25 | arr2 |
+| conversions.swift:176:13:176:13 | arr2 | conversions.swift:176:13:176:19 | ...[...] |
+| conversions.swift:176:13:176:13 | arr2 | conversions.swift:179:25:179:25 | arr2 |
+| conversions.swift:178:7:178:7 | SSA def(arr1b) | conversions.swift:180:13:180:13 | arr1b |
+| conversions.swift:178:7:178:7 | arr1b | conversions.swift:178:7:178:7 | SSA def(arr1b) |
+| conversions.swift:178:15:178:29 | try ... | conversions.swift:178:7:178:7 | arr1b |
+| conversions.swift:178:19:178:29 | call to Array<Element>.init(_:) | conversions.swift:178:15:178:29 | try ... |
+| conversions.swift:178:25:178:25 | arr1 | conversions.swift:185:31:185:31 | arr1 |
+| conversions.swift:179:7:179:7 | SSA def(arr2b) | conversions.swift:181:13:181:13 | arr2b |
+| conversions.swift:179:7:179:7 | arr2b | conversions.swift:179:7:179:7 | SSA def(arr2b) |
+| conversions.swift:179:15:179:29 | try ... | conversions.swift:179:7:179:7 | arr2b |
+| conversions.swift:179:19:179:29 | call to Array<Element>.init(_:) | conversions.swift:179:15:179:29 | try ... |
+| conversions.swift:179:25:179:25 | arr2 | conversions.swift:186:31:186:31 | arr2 |
+| conversions.swift:180:13:180:13 | arr1b | conversions.swift:182:13:182:13 | arr1b |
+| conversions.swift:181:13:181:13 | arr2b | conversions.swift:183:13:183:13 | arr2b |
+| conversions.swift:182:13:182:13 | arr1b | conversions.swift:182:13:182:20 | ...[...] |
+| conversions.swift:183:13:183:13 | arr2b | conversions.swift:183:13:183:20 | ...[...] |
+| conversions.swift:185:7:185:7 | SSA def(arr1c) | conversions.swift:187:13:187:13 | arr1c |
+| conversions.swift:185:7:185:7 | arr1c | conversions.swift:185:7:185:7 | SSA def(arr1c) |
+| conversions.swift:185:15:185:35 | call to ContiguousArray<Element>.init(_:) | conversions.swift:185:7:185:7 | arr1c |
+| conversions.swift:186:7:186:7 | SSA def(arr2c) | conversions.swift:188:13:188:13 | arr2c |
+| conversions.swift:186:7:186:7 | arr2c | conversions.swift:186:7:186:7 | SSA def(arr2c) |
+| conversions.swift:186:15:186:35 | call to ContiguousArray<Element>.init(_:) | conversions.swift:186:7:186:7 | arr2c |
+| conversions.swift:187:13:187:13 | [post] arr1c | conversions.swift:189:13:189:13 | arr1c |
+| conversions.swift:187:13:187:13 | arr1c | conversions.swift:189:13:189:13 | arr1c |
+| conversions.swift:188:13:188:13 | [post] arr2c | conversions.swift:190:13:190:13 | arr2c |
+| conversions.swift:188:13:188:13 | arr2c | conversions.swift:190:13:190:13 | arr2c |
+| conversions.swift:189:13:189:13 | arr1c | conversions.swift:189:13:189:20 | ...[...] |
+| conversions.swift:190:13:190:13 | arr2c | conversions.swift:190:13:190:20 | ...[...] |
 | simple.swift:12:13:12:13 | 1 | simple.swift:12:13:12:24 | ... .+(_:_:) ... |
 | simple.swift:12:17:12:24 | call to source() | simple.swift:12:13:12:24 | ... .+(_:_:) ... |
 | simple.swift:13:13:13:20 | call to source() | simple.swift:13:13:13:24 | ... .+(_:_:) ... |

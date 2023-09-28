@@ -6,7 +6,7 @@ func sourceFloat() -> Float { 0.0 }
 func sourceFloat80() -> Float80 { 0.0 }
 func sourceDouble() -> Double { 0.0 }
 func sourceString() -> String { "" }
-
+func sourceArray() -> [Int] { [] }
 
 func sink(arg: Any) { }
 
@@ -164,4 +164,29 @@ typealias MyCEnumType = UInt32
 func testCEnum() {
 	sink(arg: MyCEnumType(myCEnumConst))
 	sink(arg: MyCEnumType(sourceInt())) // $ tainted=166
+}
+
+class TestArrayConversion {
+	init() {
+		let arr1 = sourceArray()
+		let arr2 = [sourceInt()]
+		sink(arg: arr1) // $ tainted=171
+		sink(arg: arr2)
+		sink(arg: arr1[0]) // $ tainted=171
+		sink(arg: arr2[0]) // $ tainted=172
+
+		let arr1b = try Array(arr1)
+		let arr2b = try Array(arr2)
+		sink(arg: arr1b) // $ MISSING: tainted=171
+		sink(arg: arr2b)
+		sink(arg: arr1b[0]) // $ tainted=171
+		sink(arg: arr2b[0]) // $ tainted=172
+
+		let arr1c = ContiguousArray(arr1)
+		let arr2c = ContiguousArray(arr2)
+		sink(arg: arr1c) // $ MISSING: tainted=171
+		sink(arg: arr2c)
+		sink(arg: arr1c[0]) // $ MISSING: tainted=171
+		sink(arg: arr2c[0]) // $ MISSING: tainted=172
+	}
 }
