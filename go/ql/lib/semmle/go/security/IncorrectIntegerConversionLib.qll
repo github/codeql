@@ -187,8 +187,9 @@ private class MaxValueState extends TMaxValueState {
    * If the architecture bit size is known, then we should use that. Otherwise,
    * we should use 32 bits, because that will lead to more results.
    */
-  int getSinkBitSize() {
-    if this = TMkMaxValueState(_, TMk64Bit()) then result = 64 else result = 32
+  bindingset[default]
+  int getSinkBitSize(int default) {
+    if this = TMkMaxValueState(_, TMk64Bit()) then result = 64 else result = default
   }
 
   /** Gets a textual representation of this element. */
@@ -242,7 +243,7 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
   }
 
   override predicate barrierFor(MaxValueState flowstate) {
-    g.isBoundFor2(flowstate.getBitSize(), flowstate.getSinkBitSize())
+    g.isBoundFor2(flowstate.getBitSize(), flowstate.getSinkBitSize(32))
   }
 
   override MaxValueState transform(MaxValueState state) {
@@ -251,7 +252,7 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
       max(int bitsize |
         bitsize = validBitSize() and
         bitsize < state.getBitSize() and
-        not g.isBoundFor2(bitsize, state.getSinkBitSize())
+        not g.isBoundFor2(bitsize, state.getSinkBitSize(32))
       |
         bitsize
       ) and
@@ -325,20 +326,22 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
    */
   additional predicate isSink2(DataFlow::TypeCastNode sink, FlowState state) {
     sink.asExpr() instanceof ConversionExpr and
-    exists(IntegerType integerType, int sinkBitsize, boolean sinkIsSigned |
+    exists(int architectureBitSize, IntegerType integerType, int sinkBitsize, boolean sinkIsSigned |
+      architectureBitSize = getIntTypeBitSize(sink.getFile(), state.getSinkBitSize(32)) and
+      not (state.getArchitectureBitSize() = 32 and architectureBitSize = 64) and
       sink.getResultType().getUnderlyingType() = integerType and
       (
         sinkBitsize = integerType.getSize()
         or
         not exists(integerType.getSize()) and
-        sinkBitsize = getIntTypeBitSize(sink.getFile(), 0)
+        sinkBitsize = 0
       ) and
       (
         if integerType instanceof SignedIntegerType
         then sinkIsSigned = true
         else sinkIsSigned = false
       ) and
-      adjustBitSize(sinkBitsize, sinkIsSigned, state.getSinkBitSize()) < state.getBitSize()
+      adjustBitSize(sinkBitsize, sinkIsSigned, architectureBitSize) < state.getBitSize()
     ) and
     not exists(ShrExpr shrExpr |
       shrExpr.getLeftOperand().getGlobalValueNumber() =
