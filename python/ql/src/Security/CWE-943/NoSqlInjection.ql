@@ -4,17 +4,17 @@
  *              malicious NoSQL code by the user.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 8.8
  * @id py/nosql-injection
  * @tags security
- *       experimental
  *       external/cwe/cwe-943
  */
 
 import python
-import experimental.semmle.python.security.injection.NoSQLInjection
-import DataFlow::PathGraph
+import semmle.python.security.dataflow.NoSqlInjectionQuery
+import NoSqlInjectionFlow::PathGraph
 
-from NoSqlInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select sink, source, sink, "This NoSQL query contains an unsanitized $@.", source,
+from NoSqlInjectionFlow::PathNode source, NoSqlInjectionFlow::PathNode sink
+where NoSqlInjectionFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, "This NoSQL query contains an unsanitized $@.", source,
   "user-provided value"

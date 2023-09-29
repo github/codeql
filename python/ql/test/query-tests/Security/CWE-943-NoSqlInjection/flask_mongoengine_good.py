@@ -21,7 +21,7 @@ def subclass_objects():
     json_search = json.loads(unsafe_search)
     safe_search = sanitize(json_search)
 
-    return Movie.objects(__raw__=safe_search)
+    return Movie.objects(__raw__=safe_search)  #$ result=OK
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

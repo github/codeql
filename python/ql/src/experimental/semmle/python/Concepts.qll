@@ -216,56 +216,6 @@ class SqlEscape extends DataFlow::Node instanceof SqlEscape::Range {
   DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
-/** Provides a class for modeling NoSql execution APIs. */
-module NoSqlQuery {
-  /**
-   * A data-flow node that executes NoSQL queries.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `NoSQLQuery` instead.
-   */
-  abstract class Range extends DataFlow::Node {
-    /** Gets the argument that specifies the NoSql query to be executed. */
-    abstract DataFlow::Node getQuery();
-  }
-}
-
-/**
- * A data-flow node that executes NoSQL queries.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `NoSQLQuery::Range` instead.
- */
-class NoSqlQuery extends DataFlow::Node instanceof NoSqlQuery::Range {
-  /** Gets the argument that specifies the NoSql query to be executed. */
-  DataFlow::Node getQuery() { result = super.getQuery() }
-}
-
-/** Provides classes for modeling NoSql sanitization-related APIs. */
-module NoSqlSanitizer {
-  /**
-   * A data-flow node that collects functions sanitizing NoSQL queries.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `NoSQLSanitizer` instead.
-   */
-  abstract class Range extends DataFlow::Node {
-    /** Gets the argument that specifies the NoSql query to be sanitized. */
-    abstract DataFlow::Node getAnInput();
-  }
-}
-
-/**
- * A data-flow node that collects functions sanitizing NoSQL queries.
- *
- * Extend this class to model new APIs. If you want to refine existing API models,
- * extend `NoSQLSanitizer::Range` instead.
- */
-class NoSqlSanitizer extends DataFlow::Node instanceof NoSqlSanitizer::Range {
-  /** Gets the argument that specifies the NoSql query to be sanitized. */
-  DataFlow::Node getAnInput() { result = super.getAnInput() }
-}
-
 /** Provides classes for modeling HTTP Header APIs. */
 module HeaderDeclaration {
   /**
