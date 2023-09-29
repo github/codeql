@@ -15,4 +15,5 @@ urlpatterns = [
     path("function-based-view/", views.function_based_view),  # $routeSetup="function-based-view/"
     path("cookie-test/", views.cookie_test),  # $routeSetup="function-based-view/"
     path("exception-test/", views.exception_test),  # $routeSetup="exception-test/"
+    path("viewset-entrypoints-test/", views.EntrypointViewSet.as_view()) # $routeSetup="viewset-entrypoints-test/"
 ]

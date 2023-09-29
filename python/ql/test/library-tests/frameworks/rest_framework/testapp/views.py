@@ -19,6 +19,28 @@ class BarViewSet(viewsets.ModelViewSet):
     queryset = Bar.objects.all()
     serializer_class = BarSerializer
 
+class EntrypointViewSet(viewsets.ModelViewSet):
+    queryset = Bar.objects.all()
+    serializer_class = BarSerializer
+
+    def create(self, request, *args, **kwargs):
+        return Response("create")
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response("retrieve")
+
+    def update(self, request, *args, **kwargs):
+        return Response("update")
+    
+    def partial_update(self, request, *args, **kwargs):
+        return Response("partial_update")
+    
+    def destroy(self, request, *args, **kwargs):
+        return Response("destroy")
+    
+    def list(self, request, *args, **kwargs):
+        return Response("list")
+
 # class based view
 # see https://www.django-rest-framework.org/api-guide/views/#class-based-views
 
