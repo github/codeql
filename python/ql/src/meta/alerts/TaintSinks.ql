@@ -17,6 +17,7 @@ import semmle.python.security.dataflow.CodeInjectionCustomizations
 import semmle.python.security.dataflow.CommandInjectionCustomizations
 import semmle.python.security.dataflow.LdapInjectionCustomizations
 import semmle.python.security.dataflow.LogInjectionCustomizations
+import semmle.python.security.dataflow.NoSQLInjectionCustomizations
 import semmle.python.security.dataflow.PathInjectionCustomizations
 import semmle.python.security.dataflow.PolynomialReDoSCustomizations
 import semmle.python.security.dataflow.ReflectedXSSCustomizations
