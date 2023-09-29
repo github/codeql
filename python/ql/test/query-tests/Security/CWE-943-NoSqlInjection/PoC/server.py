@@ -28,6 +28,7 @@ def as_dict():
     # Use {"$ne": 1} as author
     # Found by http://127.0.0.1:5000/dict?author={%22$ne%22:1}
     post = posts.find_one({'author': author}) # $ result=BAD
+    post = posts.find_one(filter={'author': author}) # $ result=BAD
     return show_post(post, author)
 
 @app.route('/dictHardened', methods=['GET'])
@@ -88,6 +89,7 @@ def by_group():
     # making the query `this.author === "" | "a" === "a"`
     # Found by http://127.0.0.1:5000/byGroup?author=%22%20|%20%22a%22%20===%20%22a
     post = posts.aggregate([{ "$group": group }]).next() # $ result=BAD
+    post = posts.aggregate(pipeline=[{ "$group": group }]).next() # $ result=BAD
     return show_post(post, author)
 
 # works with pymongo 3.9, `map_reduce` is removed in pymongo 4.0

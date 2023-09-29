@@ -109,22 +109,34 @@ private module PyMongo {
    *
    * `mongo.db.user.find({'name': safe_search})` would be a collection method call.
    */
-  private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSqlExecution::Range {
+  private class MongoCollectionCall extends API::CallNode, NoSqlExecution::Range {
     MongoCollectionCall() {
       this = mongoCollection().getMember(mongoCollectionMethodName()).getACall()
     }
 
-    override DataFlow::Node getQuery() { result = this.getArg(0) }
+    /** Gets the argument that specifies the NoSQL query to be executed, as an API::node */
+    pragma[inline]
+    API::Node getQueryAsApiNode() {
+      // 'filter' is allowed keyword in pymongo, see https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.find
+      result = this.getParameter(0, "filter")
+    }
+
+    override DataFlow::Node getQuery() { result = this.getQueryAsApiNode().asSink() }
 
     override predicate interpretsDict() { any() }
 
     override predicate vulnerableToStrings() { none() }
   }
 
+  /**
+   * See https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.aggregate
+   */
   private class MongoCollectionAggregation extends API::CallNode, NoSqlExecution::Range {
     MongoCollectionAggregation() { this = mongoCollection().getMember("aggregate").getACall() }
 
-    override DataFlow::Node getQuery() { result = this.getParameter(0).getASubscript().asSink() }
+    override DataFlow::Node getQuery() {
+      result = this.getParameter(0, "pipeline").getASubscript().asSink()
+    }
 
     override predicate interpretsDict() { any() }
 
@@ -157,8 +169,7 @@ private module PyMongo {
 
     WhereQueryOperator() {
       exists(API::Node dictionary |
-        dictionary =
-          mongoCollection().getMember(mongoCollectionMethodName()).getACall().getParameter(0) and
+        dictionary = any(MongoCollectionCall c).getQueryAsApiNode() and
         query = dictionary.getSubscript("$where").asSink() and
         this = dictionary.getAValueReachingSink()
       )
@@ -184,12 +195,7 @@ private module PyMongo {
     FunctionQueryOperator() {
       exists(API::Node dictionary |
         dictionary =
-          mongoCollection()
-              .getMember(mongoCollectionMethodName())
-              .getACall()
-              .getParameter(0)
-              .getASubscript*()
-              .getSubscript("$function") and
+          any(MongoCollectionCall c).getQueryAsApiNode().getASubscript*().getSubscript("$function") and
         query = dictionary.getSubscript("body").asSink() and
         this = dictionary.getAValueReachingSink()
       )
@@ -285,12 +291,7 @@ private module PyMongo {
   private class EqualityOperator extends DataFlow::Node, NoSqlSanitizer::Range {
     EqualityOperator() {
       this =
-        mongoCollection()
-            .getMember(mongoCollectionMethodName())
-            .getParameter(0)
-            .getASubscript*()
-            .getSubscript("$eq")
-            .asSink()
+        any(MongoCollectionCall c).getQueryAsApiNode().getASubscript*().getSubscript("$eq").asSink()
     }
 
     override DataFlow::Node getAnInput() { result = this }

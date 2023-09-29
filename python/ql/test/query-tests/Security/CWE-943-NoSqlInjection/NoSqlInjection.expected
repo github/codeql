@@ -1,32 +1,34 @@
 edges
 | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:1:26:1:32 | GSSA Variable request |
 | PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:26:21:26:27 | ControlFlowNode for request |
-| PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:42:14:42:20 | ControlFlowNode for request |
-| PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:51:14:51:20 | ControlFlowNode for request |
-| PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:76:14:76:20 | ControlFlowNode for request |
-| PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:96:14:96:20 | ControlFlowNode for request |
+| PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:43:14:43:20 | ControlFlowNode for request |
+| PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:52:14:52:20 | ControlFlowNode for request |
+| PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:77:14:77:20 | ControlFlowNode for request |
+| PoC/server.py:1:26:1:32 | GSSA Variable request | PoC/server.py:98:14:98:20 | ControlFlowNode for request |
 | PoC/server.py:26:5:26:17 | SSA variable author_string | PoC/server.py:27:25:27:37 | ControlFlowNode for author_string |
 | PoC/server.py:26:21:26:27 | ControlFlowNode for request | PoC/server.py:26:5:26:17 | SSA variable author_string |
 | PoC/server.py:27:5:27:10 | SSA variable author | PoC/server.py:30:27:30:44 | ControlFlowNode for Dict |
+| PoC/server.py:27:5:27:10 | SSA variable author | PoC/server.py:31:34:31:51 | ControlFlowNode for Dict |
 | PoC/server.py:27:14:27:38 | ControlFlowNode for Attribute() | PoC/server.py:27:5:27:10 | SSA variable author |
 | PoC/server.py:27:25:27:37 | ControlFlowNode for author_string | PoC/server.py:27:14:27:38 | ControlFlowNode for Attribute() |
-| PoC/server.py:42:5:42:10 | SSA variable author | PoC/server.py:46:38:46:67 | ControlFlowNode for BinaryExpr |
-| PoC/server.py:42:14:42:20 | ControlFlowNode for request | PoC/server.py:42:5:42:10 | SSA variable author |
-| PoC/server.py:46:38:46:67 | ControlFlowNode for BinaryExpr | PoC/server.py:46:27:46:68 | ControlFlowNode for Dict |
-| PoC/server.py:51:5:51:10 | SSA variable author | PoC/server.py:53:17:53:70 | ControlFlowNode for BinaryExpr |
-| PoC/server.py:51:14:51:20 | ControlFlowNode for request | PoC/server.py:51:5:51:10 | SSA variable author |
-| PoC/server.py:52:5:52:10 | SSA variable search | PoC/server.py:60:27:60:58 | ControlFlowNode for Dict |
-| PoC/server.py:52:14:56:5 | ControlFlowNode for Dict | PoC/server.py:52:5:52:10 | SSA variable search |
-| PoC/server.py:53:17:53:70 | ControlFlowNode for BinaryExpr | PoC/server.py:52:14:56:5 | ControlFlowNode for Dict |
-| PoC/server.py:76:5:76:10 | SSA variable author | PoC/server.py:79:23:79:101 | ControlFlowNode for BinaryExpr |
-| PoC/server.py:76:14:76:20 | ControlFlowNode for request | PoC/server.py:76:5:76:10 | SSA variable author |
-| PoC/server.py:77:5:77:15 | SSA variable accumulator | PoC/server.py:83:5:83:9 | SSA variable group |
-| PoC/server.py:77:19:82:5 | ControlFlowNode for Dict | PoC/server.py:77:5:77:15 | SSA variable accumulator |
-| PoC/server.py:79:23:79:101 | ControlFlowNode for BinaryExpr | PoC/server.py:77:19:82:5 | ControlFlowNode for Dict |
-| PoC/server.py:83:5:83:9 | SSA variable group | PoC/server.py:90:29:90:47 | ControlFlowNode for Dict |
-| PoC/server.py:96:5:96:10 | SSA variable author | PoC/server.py:97:5:97:10 | SSA variable mapper |
-| PoC/server.py:96:14:96:20 | ControlFlowNode for request | PoC/server.py:96:5:96:10 | SSA variable author |
-| PoC/server.py:97:5:97:10 | SSA variable mapper | PoC/server.py:100:9:100:14 | ControlFlowNode for mapper |
+| PoC/server.py:43:5:43:10 | SSA variable author | PoC/server.py:47:38:47:67 | ControlFlowNode for BinaryExpr |
+| PoC/server.py:43:14:43:20 | ControlFlowNode for request | PoC/server.py:43:5:43:10 | SSA variable author |
+| PoC/server.py:47:38:47:67 | ControlFlowNode for BinaryExpr | PoC/server.py:47:27:47:68 | ControlFlowNode for Dict |
+| PoC/server.py:52:5:52:10 | SSA variable author | PoC/server.py:54:17:54:70 | ControlFlowNode for BinaryExpr |
+| PoC/server.py:52:14:52:20 | ControlFlowNode for request | PoC/server.py:52:5:52:10 | SSA variable author |
+| PoC/server.py:53:5:53:10 | SSA variable search | PoC/server.py:61:27:61:58 | ControlFlowNode for Dict |
+| PoC/server.py:53:14:57:5 | ControlFlowNode for Dict | PoC/server.py:53:5:53:10 | SSA variable search |
+| PoC/server.py:54:17:54:70 | ControlFlowNode for BinaryExpr | PoC/server.py:53:14:57:5 | ControlFlowNode for Dict |
+| PoC/server.py:77:5:77:10 | SSA variable author | PoC/server.py:80:23:80:101 | ControlFlowNode for BinaryExpr |
+| PoC/server.py:77:14:77:20 | ControlFlowNode for request | PoC/server.py:77:5:77:10 | SSA variable author |
+| PoC/server.py:78:5:78:15 | SSA variable accumulator | PoC/server.py:84:5:84:9 | SSA variable group |
+| PoC/server.py:78:19:83:5 | ControlFlowNode for Dict | PoC/server.py:78:5:78:15 | SSA variable accumulator |
+| PoC/server.py:80:23:80:101 | ControlFlowNode for BinaryExpr | PoC/server.py:78:19:83:5 | ControlFlowNode for Dict |
+| PoC/server.py:84:5:84:9 | SSA variable group | PoC/server.py:91:29:91:47 | ControlFlowNode for Dict |
+| PoC/server.py:84:5:84:9 | SSA variable group | PoC/server.py:92:38:92:56 | ControlFlowNode for Dict |
+| PoC/server.py:98:5:98:10 | SSA variable author | PoC/server.py:99:5:99:10 | SSA variable mapper |
+| PoC/server.py:98:14:98:20 | ControlFlowNode for request | PoC/server.py:98:5:98:10 | SSA variable author |
+| PoC/server.py:99:5:99:10 | SSA variable mapper | PoC/server.py:102:9:102:14 | ControlFlowNode for mapper |
 | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request |
 | flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request |
 | flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request | flask_mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request |
@@ -123,27 +125,29 @@ nodes
 | PoC/server.py:27:14:27:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | PoC/server.py:27:25:27:37 | ControlFlowNode for author_string | semmle.label | ControlFlowNode for author_string |
 | PoC/server.py:30:27:30:44 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| PoC/server.py:42:5:42:10 | SSA variable author | semmle.label | SSA variable author |
-| PoC/server.py:42:14:42:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| PoC/server.py:46:27:46:68 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| PoC/server.py:46:38:46:67 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| PoC/server.py:51:5:51:10 | SSA variable author | semmle.label | SSA variable author |
-| PoC/server.py:51:14:51:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| PoC/server.py:52:5:52:10 | SSA variable search | semmle.label | SSA variable search |
-| PoC/server.py:52:14:56:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| PoC/server.py:53:17:53:70 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| PoC/server.py:60:27:60:58 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| PoC/server.py:76:5:76:10 | SSA variable author | semmle.label | SSA variable author |
-| PoC/server.py:76:14:76:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| PoC/server.py:77:5:77:15 | SSA variable accumulator | semmle.label | SSA variable accumulator |
-| PoC/server.py:77:19:82:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| PoC/server.py:79:23:79:101 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| PoC/server.py:83:5:83:9 | SSA variable group | semmle.label | SSA variable group |
-| PoC/server.py:90:29:90:47 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| PoC/server.py:96:5:96:10 | SSA variable author | semmle.label | SSA variable author |
-| PoC/server.py:96:14:96:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| PoC/server.py:97:5:97:10 | SSA variable mapper | semmle.label | SSA variable mapper |
-| PoC/server.py:100:9:100:14 | ControlFlowNode for mapper | semmle.label | ControlFlowNode for mapper |
+| PoC/server.py:31:34:31:51 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:43:5:43:10 | SSA variable author | semmle.label | SSA variable author |
+| PoC/server.py:43:14:43:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:47:27:47:68 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:47:38:47:67 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| PoC/server.py:52:5:52:10 | SSA variable author | semmle.label | SSA variable author |
+| PoC/server.py:52:14:52:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:53:5:53:10 | SSA variable search | semmle.label | SSA variable search |
+| PoC/server.py:53:14:57:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:54:17:54:70 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| PoC/server.py:61:27:61:58 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:77:5:77:10 | SSA variable author | semmle.label | SSA variable author |
+| PoC/server.py:77:14:77:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:78:5:78:15 | SSA variable accumulator | semmle.label | SSA variable accumulator |
+| PoC/server.py:78:19:83:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:80:23:80:101 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| PoC/server.py:84:5:84:9 | SSA variable group | semmle.label | SSA variable group |
+| PoC/server.py:91:29:91:47 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:92:38:92:56 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+| PoC/server.py:98:5:98:10 | SSA variable author | semmle.label | SSA variable author |
+| PoC/server.py:98:14:98:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| PoC/server.py:99:5:99:10 | SSA variable mapper | semmle.label | SSA variable mapper |
+| PoC/server.py:102:9:102:14 | ControlFlowNode for mapper | semmle.label | ControlFlowNode for mapper |
 | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | flask_mongoengine_bad.py:19:5:19:17 | SSA variable unsafe_search | semmle.label | SSA variable unsafe_search |
@@ -238,10 +242,12 @@ nodes
 subpaths
 #select
 | PoC/server.py:30:27:30:44 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:30:27:30:44 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
-| PoC/server.py:46:27:46:68 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:46:27:46:68 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
-| PoC/server.py:60:27:60:58 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:60:27:60:58 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
-| PoC/server.py:90:29:90:47 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:90:29:90:47 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
-| PoC/server.py:100:9:100:14 | ControlFlowNode for mapper | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:100:9:100:14 | ControlFlowNode for mapper | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:31:34:31:51 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:31:34:31:51 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:47:27:47:68 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:47:27:47:68 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:61:27:61:58 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:61:27:61:58 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:91:29:91:47 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:91:29:91:47 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:92:38:92:56 | ControlFlowNode for Dict | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:92:38:92:56 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
+| PoC/server.py:102:9:102:14 | ControlFlowNode for mapper | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | PoC/server.py:102:9:102:14 | ControlFlowNode for mapper | This NoSQL query contains an unsanitized $@. | PoC/server.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | This NoSQL query contains an unsanitized $@. | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | flask_mongoengine_bad.py:30:39:30:59 | ControlFlowNode for Dict | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_mongoengine_bad.py:30:39:30:59 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | This NoSQL query contains an unsanitized $@. | flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
