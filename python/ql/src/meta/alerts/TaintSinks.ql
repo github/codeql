@@ -58,6 +58,10 @@ DataFlow::Node relevantTaintSink(string kind) {
     or
     kind = "RegexInjection" and result instanceof RegexInjection::Sink
     or
+    kind = "NoSqlInjection (string sink)" and result instanceof NoSqlInjection::StringSink
+    or
+    kind = "NoSqlInjection (dict sink)" and result instanceof NoSqlInjection::DictSink
+    or
     kind = "ServerSideRequestForgery" and result instanceof ServerSideRequestForgery::Sink
     or
     kind = "SqlInjection" and result instanceof SqlInjection::Sink
