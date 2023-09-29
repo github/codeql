@@ -17,7 +17,6 @@ private class NumericSummaries extends SummaryModelCsv {
         ";;false;numericCast(_:);;;Argument[0];ReturnValue;taint",
         ";;false;unsafeDowncast(_:to:);;;Argument[0];ReturnValue;taint",
         ";;false;unsafeBitCast(_:to:);;;Argument[0];ReturnValue;taint",
-        ";;false;numericCast(_:);;;Argument[0];ReturnValue;taint",
         ";;false;min(_:_:);;;Argument[0..1];ReturnValue;taint",
         ";;false;min(_:_:_:_:);;;Argument[0..2];ReturnValue;taint",
         ";;false;min(_:_:_:_:);;;Argument[3].CollectionElement;ReturnValue;taint",
