@@ -160,7 +160,7 @@ private module PyMongo {
       dictionary =
         mongoCollection().getMember(mongoCollectionMethodName()).getACall().getParameter(0) and
       query = dictionary.getSubscript("$where").asSink() and
-      this = dictionary.asSink()
+      this = dictionary.getAValueReachingSink()
     }
 
     override DataFlow::Node getAnInput() { result = query }
@@ -190,7 +190,7 @@ private module PyMongo {
               .getASubscript*()
               .getSubscript("$function") and
         query = dictionary.getSubscript("body").asSink() and
-        this = dictionary.asSink()
+        this = dictionary.getAValueReachingSink()
       )
     }
 
@@ -221,7 +221,7 @@ private module PyMongo {
               .getASubscript*()
               .getSubscript("$accumulator") and
         query = dictionary.getSubscript(["init", "accumulate", "merge", "finalize"]).asSink() and
-        this = dictionary.asSink()
+        this = dictionary.getAValueReachingSink()
       )
     }
 
