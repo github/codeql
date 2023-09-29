@@ -15,6 +15,7 @@ import go
 import semmle.go.dataflow.Properties
 import semmle.go.security.FlowSources
 import CmdLineFlowSource
+import MultipartAndFormRemoteSource
 
 module DecompressionBombs implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
