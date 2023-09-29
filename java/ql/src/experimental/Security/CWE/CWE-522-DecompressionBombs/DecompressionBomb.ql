@@ -49,13 +49,8 @@ module XserialSnappy {
       // Method calls
       call.(MethodAccess).getReceiverType() = any(TypeInputStream t) and
       call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-      (
-        call.getArgument(0) = n2.asExpr() and
-        call.getQualifier() = n1.asExpr()
-        or
-        call.getArgument(0) = n1.asExpr() and
-        call = n2.asExpr()
-      )
+      call.getQualifier() = n1.asExpr() and
+      call = n2.asExpr()
     )
   }
 
@@ -69,9 +64,9 @@ module XserialSnappy {
     }
 
     /**
-     * An Argument which responsible for the destination of decompressed bytes and is used as a sink
+     * A method Access as a sink which responsible for reading bytes
      */
-    Expr getAWriteArgument() { result = this.getArgument(0) }
+    MethodAccess getAByteRead() { result = this }
 
     // look at Zip4j comments for this method
     predicate isControlledRead() { none() }
@@ -165,13 +160,8 @@ module ApacheCommons {
         // Method calls
         call.(MethodAccess).getReceiverType() = any(TypeCompressors t) and
         call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-        (
-          call.getArgument(0) = n2.asExpr() and
-          call.getQualifier() = n1.asExpr()
-          or
-          call.getArgument(0) = n1.asExpr() and
-          call = n2.asExpr()
-        )
+        call.getQualifier() = n1.asExpr() and
+        call = n2.asExpr()
       )
     }
 
@@ -185,9 +175,9 @@ module ApacheCommons {
       }
 
       /**
-       * An Argument which responsible for the destination of decompressed bytes and is used as a sink
+       * A method Access as a sink which responsible for reading bytes
        */
-      Expr getAWriteArgument() { result = this.getArgument(0) }
+      MethodAccess getAByteRead() { result = this }
 
       // look at Zip4j comments for this method
       predicate isControlledRead() { none() }
@@ -234,13 +224,8 @@ module ApacheCommons {
         // Method calls
         call.(MethodAccess).getReceiverType() = any(TypeArchivers t) and
         call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-        (
-          call.getArgument(0) = n2.asExpr() and
-          call.getQualifier() = n1.asExpr()
-          or
-          call.getArgument(0) = n1.asExpr() and
-          call = n2.asExpr()
-        )
+        call.getQualifier() = n1.asExpr() and
+        call = n2.asExpr()
       )
     }
 
@@ -254,9 +239,9 @@ module ApacheCommons {
       }
 
       /**
-       * An Argument which responsible for the destination of decompressed bytes and is used as a sink
+       * A method Access as a sink which responsible for reading bytes
        */
-      Expr getAWriteArgument() { result = this.getArgument(0) }
+      MethodAccess getAByteRead() { result = this }
 
       // look at Zip4j comments for this method
       predicate isControlledRead() { none() }
@@ -312,13 +297,8 @@ module ApacheCommons {
           call.(MethodAccess).getReceiverType() = any(TypeCompressorInputStream t)
         ) and
         call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-        (
-          call.getArgument(0) = n2.asExpr() and
-          call.getQualifier() = n1.asExpr()
-          or
-          call.getArgument(0) = n1.asExpr() and
-          call = n2.asExpr()
-        )
+        call.getQualifier() = n1.asExpr() and
+        call = n2.asExpr()
       )
     }
 
@@ -336,9 +316,9 @@ module ApacheCommons {
       }
 
       /**
-       * An Argument which responsible for the destination of decompressed bytes and is used as a sink
+       * A method Access as a sink which responsible for reading bytes
        */
-      Expr getAWriteArgument() { result = this.getArgument(0) }
+      MethodAccess getAByteRead() { result = this }
 
       // look at Zip4j comments for this method
       predicate isControlledRead() { none() }
@@ -369,9 +349,9 @@ module Zip4j {
     }
 
     /**
-     * An Argument which responsible for the destination of decompressed bytes and is used as a sink
+     * A method Access as a sink which responsible for reading bytes
      */
-    Expr getAWriteArgument() { result = this.getArgument(0) }
+    MethodAccess getAByteRead() { result = this }
 
     // while ((readLen = zipInputStream.read(readBuffer)) != -1) {
     //   totallRead += readLen;
@@ -405,13 +385,8 @@ module Zip4j {
       // Method calls
       call.(MethodAccess).getReceiverType() = any(TypeZipInputStream t) and
       call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-      (
-        call.getArgument(0) = n2.asExpr() and
-        call.getQualifier() = n1.asExpr()
-        or
-        call.getArgument(0) = n1.asExpr() and
-        call = n2.asExpr()
-      )
+      call.getQualifier() = n1.asExpr() and
+      call = n2.asExpr()
     )
   }
 }
@@ -460,9 +435,9 @@ module Zip {
     }
 
     /**
-     * An Argument which responsible for the destination of decompressed bytes and is used as a sink
+     * A method Access as a sink which responsible for reading bytes
      */
-    Expr getAWriteArgument() { result = this.getArgument(0) }
+    MethodAccess getAByteRead() { result = this }
 
     // look at Zip4j comments for this method
     predicate isControlledRead() { none() }
@@ -484,13 +459,8 @@ module Zip {
       // Method calls
       call.(MethodAccess).getReceiverType() = any(TypeInputStream t) and
       call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-      (
-        call.getArgument(0) = n2.asExpr() and
-        call.getQualifier() = n1.asExpr()
-        or
-        call.getArgument(0) = n1.asExpr() and
-        call = n2.asExpr()
-      )
+      call.getQualifier() = n1.asExpr() and
+      call = n2.asExpr()
     )
   }
 
@@ -544,9 +514,9 @@ module Zip {
     }
 
     /**
-     * An Argument which responsible for the destination of decompressed bytes and is used as a sink
+     * A method Access as a sink which responsible for reading bytes
      */
-    Expr getAWriteArgument() { result = this.getArgument(0) }
+    MethodAccess getAByteRead() { result = this }
 
     // look at Zip4j comments for this method
     predicate isControlledRead() { none() }
@@ -609,17 +579,8 @@ module InputStream {
       // Method calls
       call.(MethodAccess).getReceiverType() = any(InputStream::TypeInputStream t) and
       call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-      (
-        // call.getArgument(0) = n2.asExpr() and
-        // call.getQualifier() = n1.asExpr()
-        // or
-        // call.getArgument(0) = n1.asExpr() and
-        // call = n2.asExpr()
-        // or
-        // TODO: only implement following
-        call.getQualifier() = n1.asExpr() and
-        call = n2.asExpr()
-      )
+      call.getQualifier() = n1.asExpr() and
+      call = n2.asExpr()
     )
   }
 }
@@ -647,28 +608,28 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
         state = ["Zip4j", "inflator", "Zip", "ApacheCommons", "XserialSnappy", "ZipFile"]
       )
       or
-      sink.asExpr() = any(Zip4j::ReadInputStreamCall r).getAWriteArgument() and
+      sink.asExpr() = any(Zip4j::ReadInputStreamCall r).getAByteRead() and
       state = "Zip4j"
       or
-      sink.asExpr() = any(Zip::InflateCall r).getAWriteArgument() and
+      sink.asExpr() = any(Zip::InflateCall r).getAByteRead() and
       state = "inflator"
       or
       sink.asExpr() instanceof InputStream::Read and
       state = "ZipFile"
       or
-      sink.asExpr() = any(Zip::ReadInputStreamCall r).getAWriteArgument() and
+      sink.asExpr() = any(Zip::ReadInputStreamCall r).getAByteRead() and
       state = "Zip"
       or
-      sink.asExpr() = any(ApacheCommons::Factory::ReadInputStreamCall r).getAWriteArgument() and
+      sink.asExpr() = any(ApacheCommons::Factory::ReadInputStreamCall r).getAByteRead() and
       state = "ApacheCommons"
       or
-      sink.asExpr() = any(ApacheCommons::Compressors::ReadInputStreamCall r).getAWriteArgument() and
+      sink.asExpr() = any(ApacheCommons::Compressors::ReadInputStreamCall r).getAByteRead() and
       state = "ApacheCommons"
       or
-      sink.asExpr() = any(ApacheCommons::Archivers::ReadInputStreamCall r).getAWriteArgument() and
+      sink.asExpr() = any(ApacheCommons::Archivers::ReadInputStreamCall r).getAByteRead() and
       state = "ApacheCommons"
       or
-      sink.asExpr() = any(XserialSnappy::ReadInputStreamCall r).getAWriteArgument() and
+      sink.asExpr() = any(XserialSnappy::ReadInputStreamCall r).getAByteRead() and
       state = "XserialSnappy"
     )
   }
