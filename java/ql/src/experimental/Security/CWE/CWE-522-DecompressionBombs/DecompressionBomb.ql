@@ -433,44 +433,6 @@ module Zip {
   }
 }
 
-/**
- * Providing InputStream and it subClasses as Local Decompression sources
- */
-module InputStream {
-  class TypeInputStream extends RefType {
-    TypeInputStream() { this.getASupertype*().hasQualifiedName("java.io", "InputStream") }
-  }
-
-  class Source extends Call {
-    Source() {
-      exists(Call c | c.getCallee().getDeclaringType() instanceof TypeInputStream | this = c)
-    }
-
-    DataFlow::Node getInputArgument() { result.asExpr() = this.(ConstructorCall).getArgument(0) }
-  }
-
-  class Read extends MethodAccess {
-    Read() {
-      this.getReceiverType() instanceof TypeInputStream and
-      this.getCallee().hasName(["read", "readNBytes", "readAllBytes"])
-    }
-  }
-
-  predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(Call call |
-      (
-        call.getCallee().getDeclaringType() instanceof TypeInputStream or
-        call.(MethodAccess).getReceiverType() instanceof TypeInputStream
-      ) and
-      call.getCallee().hasName(["read", "readNBytes", "readAllBytes"]) and
-      call.getQualifier() = n1.asExpr() and
-      (
-        call.getArgument(0) = n2.asExpr() or
-        call = n2.asExpr()
-      )
-    )
-  }
-}
 
 module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
