@@ -63,10 +63,6 @@ private class SensitiveActionSink extends WeakRandomnessSink {
   SensitiveActionSink() { this.asExpr() instanceof SensitiveExpr }
 }
 
-private class CryptographicSink extends WeakRandomnessSink {
-  CryptographicSink() { sinkNode(this, "crypto-parameter") }
-}
-
 private class CredentialsSink extends WeakRandomnessSink instanceof CredentialsSinkNode { }
 
 /**
