@@ -40,7 +40,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Annotations in Java and Kotlin <annotations-in-java>`: CodeQL databases of Java/Kotlin projects contain information about all annotations attached to program elements.
 
--  :doc:`Javadoc <javadoc>`: You can use CodeQL to find errors in Javadoc comments in Java/Kotlin code.
+-  :doc:`Javadoc <javadoc>`: You can use CodeQL to find errors in Javadoc comments in Java code.
 
 -  :doc:`Working with source locations <working-with-source-locations>`: You can use the location of entities within Java/Kotlin code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
 
