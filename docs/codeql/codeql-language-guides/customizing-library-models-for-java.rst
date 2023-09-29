@@ -3,7 +3,7 @@
 :orphan:
 :nosearch:
 
-Customizing Library Models for Java and Kotlin 
+Customizing Library Models for Java and Kotlin
 ==============================================
 
 .. include:: ../reusables/beta-note-customizing-library-models.rst
