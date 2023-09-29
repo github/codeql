@@ -153,14 +153,15 @@ private module PyMongo {
 
   /** The `$where` query operator executes a string as JavaScript. */
   private class WhereQueryOperator extends DataFlow::Node, Decoding::Range {
-    API::Node dictionary;
     DataFlow::Node query;
 
     WhereQueryOperator() {
-      dictionary =
-        mongoCollection().getMember(mongoCollectionMethodName()).getACall().getParameter(0) and
-      query = dictionary.getSubscript("$where").asSink() and
-      this = dictionary.getAValueReachingSink()
+      exists(API::Node dictionary |
+        dictionary =
+          mongoCollection().getMember(mongoCollectionMethodName()).getACall().getParameter(0) and
+        query = dictionary.getSubscript("$where").asSink() and
+        this = dictionary.getAValueReachingSink()
+      )
     }
 
     override DataFlow::Node getAnInput() { result = query }
