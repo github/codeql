@@ -77,7 +77,11 @@ module NoSqlInjection {
 
   /** A NoSQL query that is vulnerable to user controlled dictionaries. */
   class NoSqlExecutionAsDictSink extends DictSink {
-    NoSqlExecutionAsDictSink() { this = any(NoSqlExecution noSqlExecution).getQuery() }
+    NoSqlExecutionAsDictSink() {
+      exists(NoSqlExecution noSqlExecution | this = noSqlExecution.getQuery() |
+        noSqlExecution.interpretsDict()
+      )
+    }
   }
 
   /** A JSON decoding converts a string to a dictionary. */
