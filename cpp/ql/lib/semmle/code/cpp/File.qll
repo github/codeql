@@ -62,11 +62,10 @@ class Folder extends Container, Impl::Folder {
  * The base name further decomposes into the _stem_ and _extension_ -- see
  * `getStem` and `getExtension`. To get the full path, use `getAbsolutePath`.
  */
-class File extends Container, Impl::File {
+class File extends Container, Locatable, Impl::File {
   override string getAPrimaryQlClass() { result = "File" }
 
-  /** Gets the primary location of this file. */
-  Location getLocation() {
+  override Location getLocation() {
     result.getContainer() = this and
     result.hasLocationInfo(_, 0, 0, 0, 0)
   }
@@ -124,7 +123,7 @@ class File extends Container, Impl::File {
    * except the dummy file, whose name is the empty string, which contains
    * declarations that are built into the compiler.
    */
-  predicate fromSource() { numlines(underlyingElement(this), _, _, _) }
+  override predicate fromSource() { numlines(underlyingElement(this), _, _, _) }
 
   /** Gets the metric file. */
   MetricFile getMetrics() { result = this }
