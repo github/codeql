@@ -18,7 +18,7 @@ def connect_find():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
 
-    db = me.connect('mydb')  
+    db = me.connect('mydb')
     return db.movie.find({'name': json_search})  #$ result=BAD
 
 @app.route("/connection_connect_find")
@@ -57,7 +57,7 @@ def subscript_find():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
 
-    db = me.connect('mydb')  
+    db = me.connect('mydb')
     return db['movie'].find({'name': json_search})  #$ result=BAD
 
 # if __name__ == "__main__":
