@@ -133,7 +133,7 @@ Further reading
 
 .. Article-specific substitutions for the reusables used in docs/codeql/reusables/vs-code-basic-instructions
 
-.. |language-text| replace:: Java
+.. |language-text| replace:: Java/Kotlin
 
 .. |language-code| replace:: ``java``
 

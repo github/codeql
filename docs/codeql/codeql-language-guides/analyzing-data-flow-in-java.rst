@@ -1,9 +1,9 @@
 .. _analyzing-data-flow-in-java:
 
-Analyzing data flow in Java
-===========================
+Analyzing data flow in Java and Kotlin
+======================================
 
-You can use CodeQL to track the flow of data through a Java program to its use. 
+You can use CodeQL to track the flow of data through a Java/Kotlin program to its use. 
 
 .. include:: ../reusables/kotlin-beta-note.rst
 
@@ -12,7 +12,7 @@ You can use CodeQL to track the flow of data through a Java program to its use.
 About this article
 ------------------
 
-This article describes how data flow analysis is implemented in the CodeQL libraries for Java and includes examples to help you write your own data flow queries.
+This article describes how data flow analysis is implemented in the CodeQL libraries for Java/Kotlin and includes examples to help you write your own data flow queries.
 The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
 
 For a more general introduction to modeling data flow, see ":ref:`About data flow analysis <about-data-flow-analysis>`."
