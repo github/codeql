@@ -16,47 +16,50 @@ import semmle.python.Concepts
  */
 module NoSqlInjection {
   private newtype TFlowState =
-    TStringInput() or
-    TInterpretedStringInput()
+    TString() or
+    TDict()
 
-  /** A flow state, tracking the structure of the input. */
+  /** A flow state, tracking the structure of the data. */
   abstract class FlowState extends TFlowState {
     /** Gets a textual representation of this element. */
     abstract string toString();
   }
 
-  /** A state where input is only a string. */
-  class StringInput extends FlowState, TStringInput {
-    override string toString() { result = "StringInput" }
+  /** A state where the tracked data is only a string. */
+  class String extends FlowState, TString {
+    override string toString() { result = "String" }
   }
 
   /**
-   * A state where input is a string that has been interpreted.
-   * For instance, it could have been turned into a dictionary,
-   * or evaluated as javascript code.
+   * A state where the tracked data has been converted to
+   * a dictionary.
+   *
+   * We include cases where data represent JSON objects, so
+   * it could actually still be just a string. It could
+   * also contain query operators, or even JavaScript code.
    */
-  class InterpretedStringInput extends FlowState, TInterpretedStringInput {
-    override string toString() { result = "InterpretedStringInput" }
+  class Dict extends FlowState, TDict {
+    override string toString() { result = "Dict" }
   }
 
   /** A source allowing string inputs. */
   abstract class StringSource extends DataFlow::Node { }
 
-  /** A source of interpreted strings. */
-  abstract class InterpretedStringSource extends DataFlow::Node { }
+  /** A source of allowing dictionaries. */
+  abstract class DictSource extends DataFlow::Node { }
 
   /** A sink vulnerable to user controlled strings. */
   abstract class StringSink extends DataFlow::Node { }
 
-  /** A sink vulnerable to user controlled interpreted strings. */
-  abstract class InterpretedStringSink extends DataFlow::Node { }
+  /** A sink vulnerable to user controlled dictionaries. */
+  abstract class DictSink extends DataFlow::Node { }
 
-  /** A data flow node where a string is being interpreted. */
-  abstract class StringInterpretation extends DataFlow::Node {
-    /** Gets the argument that specifies the string to be interpreted. */
+  /** A data flow node where a string is converted into a dictionary. */
+  abstract class StringToDictConversion extends DataFlow::Node {
+    /** Gets the argument that specifies the string to be converted. */
     abstract DataFlow::Node getAnInput();
 
-    /** Gets the result of interpreting the string. */
+    /** Gets the resulting dictionary. */
     abstract DataFlow::Node getOutput();
   }
 
@@ -72,13 +75,13 @@ module NoSqlInjection {
     }
   }
 
-  /** A NoSQL query that is vulnerable to user controlled InterpretedStringionaries. */
-  class NoSqlExecutionAsInterpretedStringSink extends InterpretedStringSink {
-    NoSqlExecutionAsInterpretedStringSink() { this = any(NoSqlExecution noSqlExecution).getQuery() }
+  /** A NoSQL query that is vulnerable to user controlled dictionaries. */
+  class NoSqlExecutionAsDictSink extends DictSink {
+    NoSqlExecutionAsDictSink() { this = any(NoSqlExecution noSqlExecution).getQuery() }
   }
 
-  /** A JSON decoding converts a string to a Dictionary. */
-  class JsonDecoding extends Decoding, StringInterpretation {
+  /** A JSON decoding converts a string to a dictionary. */
+  class JsonDecoding extends Decoding, StringToDictConversion {
     JsonDecoding() { this.getFormat() = "JSON" }
 
     override DataFlow::Node getAnInput() { result = Decoding.super.getAnInput() }
@@ -86,8 +89,8 @@ module NoSqlInjection {
     override DataFlow::Node getOutput() { result = Decoding.super.getOutput() }
   }
 
-  /** A NoSQL decoding interprets a string. */
-  class NoSqlDecoding extends Decoding, StringInterpretation {
+  /** A NoSQL decoding interprets a string as a dictionary. */
+  class NoSqlDecoding extends Decoding, StringToDictConversion {
     NoSqlDecoding() { this.getFormat() = "NoSQL" }
 
     override DataFlow::Node getAnInput() { result = Decoding.super.getAnInput() }
