@@ -12,12 +12,9 @@
  */
 
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
 import RemoteSource
-import CommandLineSource
 import java
 
 /**
@@ -591,8 +588,6 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   predicate isSource(DataFlow::Node source, FlowState state) {
     (
       source instanceof RemoteFlowSource
-      or
-      source instanceof CLIFlowSource
       or
       source instanceof FormRemoteFlowSource
       or
