@@ -387,7 +387,7 @@ module NoSqlExecution {
    * extend `NoSqlExecution` instead.
    */
   abstract class Range extends DataFlow::Node {
-    /** Gets the argument that specifies the NoSql query to be executed. */
+    /** Gets the argument that specifies the NoSQL query to be executed. */
     abstract DataFlow::Node getQuery();
 
     /** Holds if this query will unpack/interpret a dictionary */
@@ -405,7 +405,7 @@ module NoSqlExecution {
  * extend `NoSqlExecution::Range` instead.
  */
 class NoSqlExecution extends DataFlow::Node instanceof NoSqlExecution::Range {
-  /** Gets the argument that specifies the NoSql query to be executed. */
+  /** Gets the argument that specifies the NoSQL query to be executed. */
   DataFlow::Node getQuery() { result = super.getQuery() }
 
   /** Holds if this query will unpack/interpret a dictionary */
