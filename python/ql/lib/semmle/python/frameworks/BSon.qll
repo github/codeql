@@ -1,5 +1,8 @@
 /**
- * Provides classes modeling security-relevant aspects of the PyMongo bindings.
+ * Provides classes modeling security-relevant aspects of the `bson` PyPI package.
+ * See
+ * - https://pypi.org/project/bson/
+ * - https://github.com/py-bson/bson
  */
 
 private import python
@@ -7,6 +10,12 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 
+/**
+ * Provides models for the `bson` PyPI package.
+ * See
+ * - https://pypi.org/project/bson/
+ * - https://github.com/py-bson/bson
+ */
 private module BSon {
   /**
    * ObjectId returns a string representing an id.
