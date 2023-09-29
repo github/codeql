@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
- * @precision medium
+ * @precision high
  * @id go/uncontrolled-file-decompression
  * @tags security
  *       experimental
@@ -24,50 +24,8 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
       source instanceof UntrustedFlowSource
       or
       source instanceof CmdLineFlowSource
-      //   or
-      // exists(Parameter p | p.getARead() = source | p.hasQualifiedName("io", "Reader"))
     ) and
     state = ""
-    or
-    exists(DataFlow::Function f |
-      (
-        f.hasQualifiedName("archive/zip", ["OpenReader", "NewReader"])
-        or
-        f.hasQualifiedName("github.com/klauspost/compress/zip", ["NewReader", "OpenReader"])
-        or
-        f.hasQualifiedName("github.com/ulikunitz/xz", "NewReader")
-        or
-        f.hasQualifiedName([
-            "compress/gzip", "github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"
-          ], "NewReader")
-        or
-        f.hasQualifiedName([
-            "compress/bzip2", "github.com/dsnet/compress/bzip2", "github.com/cosnicolaou/pbzip2"
-          ], "NewReader")
-        or
-        f.hasQualifiedName(["github.com/dsnet/compress/flate"], "NewReader")
-        or
-        f.hasQualifiedName(["compress/flate", "github.com/klauspost/compress/flate"],
-          ["NewReaderDict", "NewReader"])
-        or
-        f.hasQualifiedName(["compress/zlib", "github.com/klauspost/compress/zlib"], "NewReader")
-        or
-        f.hasQualifiedName(["github.com/klauspost/compress/zstd", "github.com/DataDog/zstd"],
-          "NewReader")
-        or
-        f.hasQualifiedName(["github.com/golang/snappy", "github.com/klauspost/compress/snappy"],
-          "NewReader")
-        or
-        f.hasQualifiedName("github.com/klauspost/compress/s2", "NewReader")
-      ) and
-      source = f.getACall().getResult(0) and
-      not TaintTracking::localExprTaint(any(StringLit c), source.asExpr()) and
-      state =
-        [
-          "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnapyNewReader",
-          "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost"
-        ]
-    )
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
