@@ -20,6 +20,9 @@ import RemoteSource
 import CommandLineSource
 import java
 
+/**
+ * Providing Decompression sinks and additional taint steps for `org.xerial.snappy` package
+ */
 module XserialSnappy {
   class TypeInputStream extends RefType {
     TypeInputStream() {
@@ -51,6 +54,9 @@ module XserialSnappy {
   }
 }
 
+/**
+ * Providing Decompression sinks and additional taint steps for `org.apache.commons.compress` package
+ */
 module ApacheCommons {
   class TypeArchiveInputStream extends RefType {
     TypeArchiveInputStream() {
@@ -240,6 +246,9 @@ module ApacheCommons {
   }
 }
 
+/**
+ * Providing Decompression sinks and additional taint steps for `net.lingala.zip4j.io` package
+ */
 module Zip4j {
   class TypeZipInputStream extends RefType {
     TypeZipInputStream() {
@@ -299,6 +308,9 @@ module Zip4j {
   }
 }
 
+/**
+ * Providing sinks that can be related to reading uncontrolled buffer and bytes for `org.apache.commons.io` package
+ */
 module CommonsIO {
   class IOUtils extends MethodAccess {
     IOUtils() {
@@ -312,6 +324,9 @@ module CommonsIO {
   }
 }
 
+/**
+ * Providing Decompression sinks and additional taint steps for `java.util.zip` package
+ */
 module Zip {
   class TypeInputStream extends RefType {
     TypeInputStream() {
@@ -418,6 +433,9 @@ module Zip {
   }
 }
 
+/**
+ * Providing InputStream and it subClasses as Local Decompression sources
+ */
 module InputStream {
   class TypeInputStream extends RefType {
     TypeInputStream() { this.getASupertype*().hasQualifiedName("java.io", "InputStream") }
@@ -458,8 +476,6 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    // any()
-    // or
     (
       source instanceof RemoteFlowSource
       or
@@ -468,26 +484,15 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       source instanceof FormRemoteFlowSource
       or
       source instanceof FileUploadRemoteFlowSource
-      or
-      // TODO: we have to add Zip*InputStreams instead of general inputStream because of Flow State
-      source = any(InputStream::Source i).getInputArgument()
-      or
-      source.asExpr() instanceof Zip::Inflatorsource
     ) and
-    state = ["Zip4j", "inflator", "Zip", "ApacheCommons", "XserialSnappy"]
-    or
-    source.asExpr() instanceof Zip::ZipFilesource and
-    state = "ZipFile"
+    state = ["ZipFile", "Zip4j", "inflator", "Zip", "ApacheCommons", "XserialSnappy"]
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
     (
-      // any() and
-      // state = "Zip"
-      // or
       exists(CommonsIO::IOUtils ma |
         sink.asExpr() = ma.getArgument(0) and
-        state = ["Zip4j", "inflator", "Zip", "ApacheCommons", "XserialSnappy"]
+        state = ["Zip4j", "inflator", "Zip", "ApacheCommons", "XserialSnappy", "ZipFile"]
       )
       or
       sink.asExpr() = any(Zip4j::ReadInputStreamCall r).getAWriteArgument() and
