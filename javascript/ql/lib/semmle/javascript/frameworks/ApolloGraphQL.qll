@@ -42,10 +42,7 @@ private module Apollo {
 
   /** A string that is interpreted as a GraphQL query by a `graphql` package. */
   private class ApolloServer extends ApolloGraphQL::ApolloGraphQLServer {
-    ApolloServer() {
-      this = apollo().getAnInstantiation()
-      // or this = apollo().getAnInstantiation().getOptionArgument(0, "cors")
-    }
+    ApolloServer() { this = apollo().getAnInstantiation() }
 
     predicate isPermissive() {
       this.(DataFlow::NewNode)
