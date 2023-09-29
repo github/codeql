@@ -1,0 +1,39 @@
+nodes
+| tst.js:8:9:8:59 | user_origin |
+| tst.js:8:23:8:46 | url.par ... , true) |
+| tst.js:8:23:8:52 | url.par ... ).query |
+| tst.js:8:23:8:59 | url.par ... .origin |
+| tst.js:8:33:8:39 | req.url |
+| tst.js:8:33:8:39 | req.url |
+| tst.js:8:42:8:45 | true |
+| tst.js:8:42:8:45 | true |
+| tst.js:11:25:11:28 | true |
+| tst.js:11:25:11:28 | true |
+| tst.js:11:25:11:28 | true |
+| tst.js:16:25:16:28 | true |
+| tst.js:16:25:16:28 | true |
+| tst.js:16:25:16:28 | true |
+| tst.js:26:25:26:28 | null |
+| tst.js:26:25:26:28 | null |
+| tst.js:26:25:26:28 | null |
+| tst.js:31:25:31:35 | user_origin |
+| tst.js:31:25:31:35 | user_origin |
+edges
+| tst.js:8:9:8:59 | user_origin | tst.js:31:25:31:35 | user_origin |
+| tst.js:8:9:8:59 | user_origin | tst.js:31:25:31:35 | user_origin |
+| tst.js:8:23:8:46 | url.par ... , true) | tst.js:8:23:8:52 | url.par ... ).query |
+| tst.js:8:23:8:52 | url.par ... ).query | tst.js:8:23:8:59 | url.par ... .origin |
+| tst.js:8:23:8:59 | url.par ... .origin | tst.js:8:9:8:59 | user_origin |
+| tst.js:8:33:8:39 | req.url | tst.js:8:23:8:46 | url.par ... , true) |
+| tst.js:8:33:8:39 | req.url | tst.js:8:23:8:46 | url.par ... , true) |
+| tst.js:8:42:8:45 | true | tst.js:8:23:8:46 | url.par ... , true) |
+| tst.js:8:42:8:45 | true | tst.js:8:23:8:46 | url.par ... , true) |
+| tst.js:11:25:11:28 | true | tst.js:11:25:11:28 | true |
+| tst.js:16:25:16:28 | true | tst.js:16:25:16:28 | true |
+| tst.js:26:25:26:28 | null | tst.js:26:25:26:28 | null |
+#select
+| tst.js:11:25:11:28 | true | tst.js:11:25:11:28 | true | tst.js:11:25:11:28 | true | $@ misconfiguration due to a $@. | tst.js:11:25:11:28 | true | CORS Origin | tst.js:11:25:11:28 | true | too permissive or user controlled value |
+| tst.js:16:25:16:28 | true | tst.js:16:25:16:28 | true | tst.js:16:25:16:28 | true | $@ misconfiguration due to a $@. | tst.js:16:25:16:28 | true | CORS Origin | tst.js:16:25:16:28 | true | too permissive or user controlled value |
+| tst.js:26:25:26:28 | null | tst.js:26:25:26:28 | null | tst.js:26:25:26:28 | null | $@ misconfiguration due to a $@. | tst.js:26:25:26:28 | null | CORS Origin | tst.js:26:25:26:28 | null | too permissive or user controlled value |
+| tst.js:31:25:31:35 | user_origin | tst.js:8:33:8:39 | req.url | tst.js:31:25:31:35 | user_origin | $@ misconfiguration due to a $@. | tst.js:31:25:31:35 | user_origin | CORS Origin | tst.js:8:33:8:39 | req.url | too permissive or user controlled value |
+| tst.js:31:25:31:35 | user_origin | tst.js:8:42:8:45 | true | tst.js:31:25:31:35 | user_origin | $@ misconfiguration due to a $@. | tst.js:31:25:31:35 | user_origin | CORS Origin | tst.js:8:42:8:45 | true | too permissive or user controlled value |
