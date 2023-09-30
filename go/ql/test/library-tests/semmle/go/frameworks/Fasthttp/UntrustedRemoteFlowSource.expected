@@ -1,54 +1,54 @@
-| fasthttp.go:102:15:102:53 | call to Peek |
-| fasthttp.go:119:23:119:31 | dstWriter |
-| fasthttp.go:120:3:120:24 | call to Header |
-| fasthttp.go:121:3:121:31 | call to TrailerHeader |
-| fasthttp.go:123:3:123:28 | call to RequestURI |
-| fasthttp.go:124:3:124:22 | call to Host |
-| fasthttp.go:125:3:125:27 | call to UserAgent |
-| fasthttp.go:126:3:126:33 | call to ContentEncoding |
-| fasthttp.go:127:3:127:29 | call to ContentType |
-| fasthttp.go:128:3:128:33 | call to Cookie |
-| fasthttp.go:129:3:129:46 | call to CookieBytes |
-| fasthttp.go:130:3:130:39 | call to MultipartFormBoundary |
-| fasthttp.go:131:3:131:35 | call to Peek |
-| fasthttp.go:132:3:132:38 | call to PeekAll |
-| fasthttp.go:133:3:133:48 | call to PeekBytes |
-| fasthttp.go:134:3:134:26 | call to PeekKeys |
-| fasthttp.go:135:3:135:33 | call to PeekTrailerKeys |
-| fasthttp.go:136:3:136:25 | call to Referer |
-| fasthttp.go:137:3:137:28 | call to RawHeaders |
-| fasthttp.go:140:3:140:25 | call to Path |
-| fasthttp.go:141:3:141:33 | call to PathOriginal |
-| fasthttp.go:144:3:144:28 | call to FullURI |
-| fasthttp.go:145:3:145:36 | call to LastPathSegment |
-| fasthttp.go:146:3:146:32 | call to QueryString |
-| fasthttp.go:147:3:147:27 | call to String |
-| fasthttp.go:148:28:148:36 | dstWriter |
-| fasthttp.go:153:3:153:43 | call to Peek |
-| fasthttp.go:154:3:154:56 | call to PeekBytes |
-| fasthttp.go:155:3:155:48 | call to PeekMulti |
-| fasthttp.go:156:3:156:61 | call to PeekMultiBytes |
-| fasthttp.go:157:3:157:44 | call to QueryString |
-| fasthttp.go:158:3:158:39 | call to String |
-| fasthttp.go:159:40:159:48 | dstWriter |
-| fasthttp.go:163:3:163:19 | call to Path |
-| fasthttp.go:167:3:167:22 | call to Referer |
-| fasthttp.go:168:3:168:23 | call to PostBody |
-| fasthttp.go:169:3:169:32 | call to RequestBodyStream |
-| fasthttp.go:170:3:170:25 | call to RequestURI |
-| fasthttp.go:171:3:171:24 | call to UserAgent |
-| fasthttp.go:172:3:172:19 | call to Host |
-| fasthttp.go:174:3:174:27 | call to Host |
-| fasthttp.go:175:3:175:27 | call to Body |
-| fasthttp.go:176:3:176:33 | call to RequestURI |
-| fasthttp.go:177:3:177:33 | call to BodyGunzip |
-| fasthttp.go:178:3:178:34 | call to BodyInflate |
-| fasthttp.go:179:3:179:35 | call to BodyUnbrotli |
-| fasthttp.go:180:3:180:33 | call to BodyStream |
-| fasthttp.go:181:34:181:42 | dstWriter |
-| fasthttp.go:182:30:182:38 | dstWriter |
-| fasthttp.go:183:3:183:39 | call to BodyUncompressed |
-| fasthttp.go:184:31:184:39 | dstReader |
-| fasthttp.go:185:36:185:44 | dstReader |
-| fasthttp.go:186:45:186:53 | dstReader |
-| fasthttp.go:187:39:187:47 | dstReader |
+| fasthttp.go:103:15:103:53 | call to Peek |
+| fasthttp.go:120:23:120:31 | dstWriter |
+| fasthttp.go:121:3:121:24 | call to Header |
+| fasthttp.go:122:3:122:31 | call to TrailerHeader |
+| fasthttp.go:124:3:124:28 | call to RequestURI |
+| fasthttp.go:125:3:125:22 | call to Host |
+| fasthttp.go:126:3:126:27 | call to UserAgent |
+| fasthttp.go:127:3:127:33 | call to ContentEncoding |
+| fasthttp.go:128:3:128:29 | call to ContentType |
+| fasthttp.go:129:3:129:33 | call to Cookie |
+| fasthttp.go:130:3:130:46 | call to CookieBytes |
+| fasthttp.go:131:3:131:39 | call to MultipartFormBoundary |
+| fasthttp.go:132:3:132:35 | call to Peek |
+| fasthttp.go:133:3:133:38 | call to PeekAll |
+| fasthttp.go:134:3:134:48 | call to PeekBytes |
+| fasthttp.go:135:3:135:26 | call to PeekKeys |
+| fasthttp.go:136:3:136:33 | call to PeekTrailerKeys |
+| fasthttp.go:137:3:137:25 | call to Referer |
+| fasthttp.go:138:3:138:28 | call to RawHeaders |
+| fasthttp.go:141:3:141:25 | call to Path |
+| fasthttp.go:142:3:142:33 | call to PathOriginal |
+| fasthttp.go:145:3:145:28 | call to FullURI |
+| fasthttp.go:146:3:146:36 | call to LastPathSegment |
+| fasthttp.go:147:3:147:32 | call to QueryString |
+| fasthttp.go:148:3:148:27 | call to String |
+| fasthttp.go:149:28:149:36 | dstWriter |
+| fasthttp.go:154:3:154:43 | call to Peek |
+| fasthttp.go:155:3:155:56 | call to PeekBytes |
+| fasthttp.go:156:3:156:48 | call to PeekMulti |
+| fasthttp.go:157:3:157:61 | call to PeekMultiBytes |
+| fasthttp.go:158:3:158:44 | call to QueryString |
+| fasthttp.go:159:3:159:39 | call to String |
+| fasthttp.go:160:40:160:48 | dstWriter |
+| fasthttp.go:164:3:164:19 | call to Path |
+| fasthttp.go:168:3:168:22 | call to Referer |
+| fasthttp.go:169:3:169:23 | call to PostBody |
+| fasthttp.go:170:3:170:32 | call to RequestBodyStream |
+| fasthttp.go:171:3:171:25 | call to RequestURI |
+| fasthttp.go:172:3:172:24 | call to UserAgent |
+| fasthttp.go:173:3:173:19 | call to Host |
+| fasthttp.go:175:3:175:27 | call to Host |
+| fasthttp.go:176:3:176:27 | call to Body |
+| fasthttp.go:177:3:177:33 | call to RequestURI |
+| fasthttp.go:178:3:178:33 | call to BodyGunzip |
+| fasthttp.go:179:3:179:34 | call to BodyInflate |
+| fasthttp.go:180:3:180:35 | call to BodyUnbrotli |
+| fasthttp.go:181:3:181:33 | call to BodyStream |
+| fasthttp.go:182:34:182:42 | dstWriter |
+| fasthttp.go:183:30:183:38 | dstWriter |
+| fasthttp.go:184:3:184:39 | call to BodyUncompressed |
+| fasthttp.go:185:31:185:39 | dstReader |
+| fasthttp.go:186:36:186:44 | dstReader |
+| fasthttp.go:187:45:187:53 | dstReader |
+| fasthttp.go:188:39:188:47 | dstReader |
