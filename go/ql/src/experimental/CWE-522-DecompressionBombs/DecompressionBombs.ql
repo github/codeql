@@ -19,40 +19,36 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    
-      source instanceof UntrustedFlowSource
-    and
+    source instanceof UntrustedFlowSource and
     state = ""
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
     (
-      exists(DataFlow::Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer", "CopyN"]) |
+      exists(Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer", "CopyN"]) |
         sink = f.getACall().getArgument(1)
       )
       or
-      exists(DataFlow::Function f |
-        f.hasQualifiedName("io", ["Pipe", "ReadAll", "ReadAtLeast", "ReadFull"])
-      |
+      exists(Function f | f.hasQualifiedName("io", ["Pipe", "ReadAll", "ReadAtLeast", "ReadFull"]) |
         sink = f.getACall().getArgument(0)
       )
       or
-      exists(DataFlow::Function f |
+      exists(Function f |
         f.hasQualifiedName("bufio.Reader",
           ["Read", "ReadBytes", "ReadByte", "ReadLine", "ReadRune", "ReadSlice", "ReadString"])
       |
         sink = f.getACall().getReceiver()
       )
       or
-      exists(DataFlow::Function f | f.hasQualifiedName("bufio.Scanner", ["Text", "Bytes"]) |
+      exists(Function f | f.hasQualifiedName("bufio.Scanner", ["Text", "Bytes"]) |
         sink = f.getACall().getReceiver()
       )
       or
-      exists(DataFlow::Function f | f.hasQualifiedName("io/ioutil", "ReadAll") |
+      exists(Function f | f.hasQualifiedName("io/ioutil", "ReadAll") |
         sink = f.getACall().getArgument(0)
       )
       or
-      exists(DataFlow::Function f |
+      exists(Function f |
         f.hasQualifiedName([
             "github.com/klauspost/compress/flate.decompressor",
             "github.com/dsnet/compress/bzip2.Reader", "compress/flate.decompressor",
@@ -67,7 +63,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
         sink = f.getACall().getReceiver()
       )
       or
-      exists(DataFlow::Function f |
+      exists(Function f |
         f.hasQualifiedName("github.com/klauspost/compress/s2.Reader",
           ["DecodeConcurrent", "ReadByte"])
         or
@@ -97,8 +93,8 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toNode = fi
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
-      f.hasQualifiedName("github.com/klauspost/compress/zip.File", ["Open", "OpenRaw"]) and
+    exists(Method f, DataFlow::CallNode call |
+      f.hasQualifiedName("github.com/klauspost/compress/zip", "File", ["Open", "OpenRaw"]) and
       call = f.getACall()
     |
       fromNode = call.getReceiver() and
@@ -109,7 +105,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node fromNode, FlowState fromState, DataFlow::Node toNode, FlowState toState
   ) {
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName("archive/zip", ["OpenReader", "NewReader"]) and call = f.getACall()
     |
       fromNode = call.getArgument(0) and
@@ -118,7 +114,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "ZipOpenReader"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName("github.com/klauspost/compress/zip", ["NewReader", "OpenReader"]) and
       call = f.getACall()
     |
@@ -128,7 +124,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "ZipKlauspost"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName("github.com/ulikunitz/xz", "NewReader") and call = f.getACall()
     |
       fromNode = call.getArgument(0) and
@@ -137,7 +133,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "XzNewReader"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName([
           "compress/gzip", "github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"
         ], "NewReader") and
@@ -149,7 +145,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "GzipNewReader"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName([
           "compress/bzip2", "github.com/dsnet/compress/bzip2", "github.com/cosnicolaou/pbzip2"
         ], "NewReader") and
@@ -161,7 +157,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "Bzip2NewReader"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       (
         f.hasQualifiedName("github.com/dsnet/compress/flate", "NewReader") or
         f.hasQualifiedName(["compress/flate", "github.com/klauspost/compress/flate"],
@@ -175,7 +171,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "FlateNewReader"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName(["compress/zlib", "github.com/klauspost/compress/zlib"], "NewReader") and
       call = f.getACall()
     |
@@ -185,7 +181,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "ZlibNewReader"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName(["github.com/klauspost/compress/zstd", "github.com/DataDog/zstd"],
         "NewReader") and
       call = f.getACall()
@@ -196,7 +192,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "ZstdNewReader"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName(["github.com/golang/snappy", "github.com/klauspost/compress/snappy"],
         "NewReader") and
       call = f.getACall()
@@ -207,7 +203,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
       toState = "SnapyNewReader"
     )
     or
-    exists(DataFlow::Function f, DataFlow::CallNode call |
+    exists(Function f, DataFlow::CallNode call |
       f.hasQualifiedName("github.com/klauspost/compress/s2", "NewReader") and
       call = f.getACall()
     |
@@ -220,13 +216,13 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     // //here I want to the CopyN return value be compared with < or > but I can't reach the tainted result
-    // // exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
+    // // exists(Function f | f.hasQualifiedName("io", "CopyN") |
     // //   node = f.getACall().getArgument([0, 1]) and
     // //   TaintTracking::localExprTaint(f.getACall().getResult(_).asExpr(),
     // //     any(RelationalComparisonExpr e).getAChildExpr*())
     // // )
     // // or
-    // exists(DataFlow::Function f | f.hasQualifiedName("io", "LimitReader") |
+    // exists(Function f | f.hasQualifiedName("io", "LimitReader") |
     //   node = f.getACall().getArgument(0) and f.getACall().getArgument(1).isConst()
     // ) and
     // state =
@@ -243,7 +239,7 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
 // class Test extends DataFlow::Configuration {
 //   Test() { this = "test" }
 //   override predicate isSource(DataFlow::Node source) {
-//     exists(DataFlow::Function f | f.hasQualifiedName("io", "CopyN") |
+//     exists(Function f | f.hasQualifiedName("io", "CopyN") |
 //       f.getACall().getResult(0) = source
 //     )
 //   }

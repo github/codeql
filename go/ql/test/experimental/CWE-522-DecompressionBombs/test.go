@@ -7,13 +7,11 @@ package main
 //go:generate depstubber -vendor  github.com/golang/snappy Reader NewReader
 //go:generate depstubber -vendor  github.com/klauspost/compress/snappy "" NewReader
 //go:generate depstubber -vendor  github.com/klauspost/compress/s2 Reader NewReader
-//go:generate depstubber -vendor  github.com/klauspost/compress/gzip Reader NewReader 
-//go:generate depstubber -vendor  github.com/klauspost/pgzip Reader NewReader 
-//go:generate depstubber -vendor  github.com/klauspost/compress/zstd Decoder NewReader 
+//go:generate depstubber -vendor  github.com/klauspost/compress/gzip Reader NewReader
+//go:generate depstubber -vendor  github.com/klauspost/pgzip Reader NewReader
+//go:generate depstubber -vendor  github.com/klauspost/compress/zstd Decoder NewReader
 //go:generate depstubber -vendor  github.com/DataDog/zstd "" NewReader
-//go:generate depstubber -vendor  github.com/ulikunitz/xz Reader NewReader 
-//go:generate depstubber -vendor  github.com/klauspost/compress/zip FileHeader,File,Reader,ReadCloser NewReader,OpenReader
-
+//go:generate depstubber -vendor  github.com/ulikunitz/xz Reader NewReader
 import (
 	"archive/tar"
 	"archive/zip"
@@ -30,11 +28,11 @@ import (
 	flateKlauspost "github.com/klauspost/compress/flate"
 	gzipKlauspost "github.com/klauspost/compress/gzip"
 	"github.com/klauspost/compress/s2"
-	snappyKlauspost "github.com/klauspost/compress/snappy"
+	// snappyKlauspost "github.com/klauspost/compress/snappy"
 	zipKlauspost "github.com/klauspost/compress/zip"
 	zlibKlauspost "github.com/klauspost/compress/zlib"
 	zstdKlauspost "github.com/klauspost/compress/zstd"
-	pzipKlauspost "github.com/klauspost/pgzip"
+	gzipPgzip "github.com/klauspost/pgzip"
 	"github.com/ulikunitz/xz"
 	"io"
 	"io/ioutil"
@@ -118,7 +116,7 @@ func ZipOpenReader(filename string) {
 		}
 	}
 	rKlauspost, _ := zipKlauspost.OpenReader(filename)
-	for _, f := range rKlauspost.File {
+	for _, f := range rKlauspost.Reader.File {
 		rc, _ := f.Open()
 		for {
 			result, _ := io.CopyN(os.Stdout, rc, 68)
@@ -217,19 +215,17 @@ func TarDecompressor(file io.Reader, compressionType string) {
 		Snappy.ReadByte()
 		tarRead = tar.NewReader(Snappy)
 	}
-	if compressionType == "snappyKlauspost" {
-		snappyklauspost := snappyKlauspost.NewReader(file)
-		//snappyklauspost.Reader == s2.Reader
-		// depstubber didn't work, I'm doing following because of it:
-		s2Reader := s2.NewReader(file)
-		s2Reader = snappyklauspost
-		var out []byte = make([]byte, 70)
-		s2Reader.Read(out)
-		var buf bytes.Buffer
-		s2Reader.DecodeConcurrent(&buf, 2)
-		s2Reader.ReadByte()
-		tarRead = tar.NewReader(s2Reader)
-	}
+	// if compressionType == "snappyKlauspost" {
+	// 	snappyklauspost := snappyKlauspost.NewReader(file)
+	// 	//snappyKlauspost.Reader = s2.Reader but it seems that
+	// 	// depstubber don't work here:
+	// 	var out []byte = make([]byte, 70)
+	// 	snappyklauspost.Read(out)
+	// 	var buf bytes.Buffer
+	// 	snappyklauspost.DecodeConcurrent(&buf, 2)
+	// 	snappyklauspost.ReadByte()
+	// 	tarRead = tar.NewReader(snappyklauspost)
+	// }
 	if compressionType == "s2" {
 		S2 := s2.NewReader(file)
 		var out []byte = make([]byte, 70)
@@ -254,9 +250,9 @@ func TarDecompressor(file io.Reader, compressionType string) {
 		gzipklauspost.WriteTo(&buf)
 		tarRead = tar.NewReader(gzipklauspost)
 	}
-	if compressionType == "pzipKlauspost" {
+	if compressionType == "gzipPgzip" {
 		//gzipPgzip.NewReaderN()
-		gzippgzip, _ := pzipKlauspost.NewReader(file)
+		gzippgzip, _ := gzipPgzip.NewReader(file)
 		var out []byte = make([]byte, 70)
 		gzippgzip.Read(out)
 		var buf bytes.Buffer
