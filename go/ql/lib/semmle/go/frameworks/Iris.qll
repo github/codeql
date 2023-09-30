@@ -4,11 +4,11 @@
 
 import go
 
-private module Gin {
-  /** Gets the v1 module path `github.com/gofiber/fiber`. */
+private module Iris {
+  /** Gets the v1 module path `github.com/kataras/iris`. */
   string v1modulePath() { result = "github.com/kataras/iris" }
 
-  /** Gets the v12 module path `github.com/gofiber/fiber/v12` */
+  /** Gets the v12 module path `github.com/kataras/iris/v12` */
   string v12modulePath() { result = "github.com/kataras/iris/v12" }
 
   /** Gets the path for the context package of all versions of beego. */

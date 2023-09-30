@@ -105,7 +105,7 @@ module Afero {
    */
   predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(StructLit st | st.getType().hasQualifiedName(aferoPackage(), "Afero") |
-      n1.asExpr() = st.getAChildExpr().(KeyValueExpr).getAChildExpr() and
+      n1.asExpr() = st.getAnElement().(KeyValueExpr).getAChildExpr() and
       n2.asExpr() = st
     )
   }
