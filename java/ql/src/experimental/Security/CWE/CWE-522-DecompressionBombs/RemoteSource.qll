@@ -10,49 +10,6 @@ class CommonsFileUploadAdditionalTaintStep extends Unit {
 }
 
 module ApacheCommonsFileUpload {
-  module DangerousSink {
-    class TypeDiskFileItemFactory extends RefType {
-      TypeDiskFileItemFactory() {
-        this.getAStrictAncestor*()
-            .hasQualifiedName("org.apache.commons.fileupload.disk", "DiskFileItemFactory")
-        or
-        this.getAStrictAncestor*()
-            .hasQualifiedName("org.apache.commons.fileupload", "FileItemFactory")
-      }
-    }
-
-    abstract class FileWriteSink extends MethodAccess {
-      abstract Expr getAPathArgument();
-    }
-
-    class FileItemWrite extends FileWriteSink {
-      FileItemWrite() {
-        this.getReceiverType() instanceof RemoteFlowSource::TypeFileUpload and
-        this.getCallee().hasName(["write"])
-      }
-
-      override Expr getAPathArgument() { result = this.getArgument(0) }
-    }
-
-    class DiskFileItemFactoryCreateItem extends FileWriteSink {
-      DiskFileItemFactoryCreateItem() {
-        this.getReceiverType() instanceof TypeDiskFileItemFactory and
-        this.getCallee().hasName(["createItem"])
-      }
-
-      override Expr getAPathArgument() { result = this.getArgument(3) }
-    }
-
-    class DiskFileItemFactorySetRepository extends FileWriteSink {
-      DiskFileItemFactorySetRepository() {
-        this.getReceiverType() instanceof TypeDiskFileItemFactory and
-        this.getCallee().hasName(["setRepository"])
-      }
-
-      override Expr getAPathArgument() { result = this.getArgument(0) }
-    }
-  }
-
   module RemoteFlowSource {
     class TypeServletFileUpload extends RefType {
       TypeServletFileUpload() {
