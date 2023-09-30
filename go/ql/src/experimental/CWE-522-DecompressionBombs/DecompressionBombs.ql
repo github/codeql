@@ -13,19 +13,15 @@
 
 import go
 import semmle.go.dataflow.Properties
-import semmle.go.security.FlowSources
-import CmdLineFlowSource
 import MultipartAndFormRemoteSource
 
-module DecompressionBombs implements DataFlow::StateConfigSig {
+module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    (
+    
       source instanceof UntrustedFlowSource
-      or
-      source instanceof CmdLineFlowSource
-    ) and
+    and
     state = ""
   }
 
@@ -167,7 +163,7 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
     or
     exists(DataFlow::Function f, DataFlow::CallNode call |
       (
-        f.hasQualifiedName(["github.com/dsnet/compress/flate"], "NewReader") or
+        f.hasQualifiedName("github.com/dsnet/compress/flate", "NewReader") or
         f.hasQualifiedName(["compress/flate", "github.com/klauspost/compress/flate"],
           ["NewReaderDict", "NewReader"])
       ) and
@@ -253,7 +249,7 @@ module DecompressionBombs implements DataFlow::StateConfigSig {
 //   }
 //   override predicate isSink(DataFlow::Node sink) { sink instanceof DataFlow::Node }
 // }
-module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombs>;
+module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombsConfig>;
 
 import DecompressionBombsFlow::PathGraph
 
