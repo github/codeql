@@ -10,7 +10,7 @@
  */
 
 import go
-import semmle.go.security.JWT
+import experimental.frameworks.JWT
 
 module JwtPaseWithConstantKeyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof StringLit }

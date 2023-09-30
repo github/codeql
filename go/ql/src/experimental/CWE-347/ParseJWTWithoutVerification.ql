@@ -10,7 +10,7 @@
  */
 
 import go
-import semmle.go.security.JWT
+import experimental.frameworks.JWT
 
 module WithValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
