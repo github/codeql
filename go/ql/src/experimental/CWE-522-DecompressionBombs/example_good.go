@@ -15,6 +15,9 @@ func ZipOpenReader(filename string) {
 		for {
 			rc, _ := f.Open()
 			result, _ := io.CopyN(os.Stdout, rc, 68)
+			if result == 0 {
+				break
+			}
 			totalBytes = totalBytes + result
 			if totalBytes > 1024*1024 {
 				fmt.Print(totalBytes)
