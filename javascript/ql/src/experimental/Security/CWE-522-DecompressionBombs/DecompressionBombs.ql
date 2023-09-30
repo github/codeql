@@ -12,39 +12,13 @@
  */
 
 import javascript
-import CommandLineSource
 import ReadableAdditionalStep
+import DataFlow::PathGraph
 
 class BombConfiguration extends TaintTracking::Configuration {
   BombConfiguration() { this = "DecompressionBombs" }
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(Function f | source.asExpr() = f.getAParameter() |
-      not exists(source.getALocalSource().getStringValue())
-    )
-    or
-    source instanceof RemoteFlowSource
-    or
-    source.asExpr() = any(Parameter cls)
-    or
-    exists(FileSystemReadAccess fsra | source = fsra.getADataNode() |
-      not exists(fsra.getALocalSource().getStringValue())
-    )
-    or
-    exists(API::Node node |
-      source = node.getParameter(0).asSink() and
-      node = API::moduleImport("adm-zip") and
-      not exists(source.getALocalSource().getStringValue())
-    )
-    or
-    source =
-      API::moduleImport("tar")
-          .getMember(["x", "extract"])
-          .getParameter(0)
-          .getMember("file")
-          .asSink() and
-    not source.getALocalSource().mayHaveStringValue(_)
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     // jszip
