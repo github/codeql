@@ -1,8 +1,12 @@
 package urn
 
 import (
+	"encoding/json"
+	"fmt"
 	"strings"
 )
+
+const errInvalidURN = "invalid URN: %s"
 
 // URN represents an Uniform Resource Name.
 //
@@ -60,4 +64,23 @@ func Parse(u []byte) (*URN, bool) {
 	}
 
 	return urn, true
+}
+
+// MarshalJSON marshals the URN to JSON string form (e.g. `"urn:oid:1.2.3.4"`).
+func (u URN) MarshalJSON() ([]byte, error) {
+	return json.Marshal(u.String())
+}
+
+// MarshalJSON unmarshals a URN from JSON string form (e.g. `"urn:oid:1.2.3.4"`).
+func (u *URN) UnmarshalJSON(bytes []byte) error {
+	var str string
+	if err := json.Unmarshal(bytes, &str); err != nil {
+		return err
+	}
+	if value, ok := Parse([]byte(str)); !ok {
+		return fmt.Errorf(errInvalidURN, str)
+	} else {
+		*u = *value
+	}
+	return nil
 }

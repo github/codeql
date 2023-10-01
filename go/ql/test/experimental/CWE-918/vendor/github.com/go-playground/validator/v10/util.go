@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // extractTypeInternal gets the actual underlying type of field value.
@@ -81,7 +82,7 @@ BEGIN:
 		fld := namespace
 		var ns string
 
-		if typ != timeType {
+		if !typ.ConvertibleTo(timeType) {
 
 			idx := strings.Index(namespace, namespaceSeparator)
 
@@ -222,11 +223,32 @@ BEGIN:
 // asInt returns the parameter as a int64
 // or panics if it can't convert
 func asInt(param string) int64 {
-
 	i, err := strconv.ParseInt(param, 0, 64)
 	panicIf(err)
 
 	return i
+}
+
+// asIntFromTimeDuration parses param as time.Duration and returns it as int64
+// or panics on error.
+func asIntFromTimeDuration(param string) int64 {
+	d, err := time.ParseDuration(param)
+	if err != nil {
+		// attempt parsing as an integer assuming nanosecond precision
+		return asInt(param)
+	}
+	return int64(d)
+}
+
+// asIntFromType calls the proper function to parse param as int64,
+// given a field's Type t.
+func asIntFromType(t reflect.Type, param string) int64 {
+	switch t {
+	case timeDurationType:
+		return asIntFromTimeDuration(param)
+	default:
+		return asInt(param)
+	}
 }
 
 // asUint returns the parameter as a uint64

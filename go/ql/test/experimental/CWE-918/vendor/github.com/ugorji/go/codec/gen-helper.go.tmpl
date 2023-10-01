@@ -1,13 +1,16 @@
 // comment this out // + build ignore
 
-// Copyright (c) 2012-2018 Ugorji Nwoke. All rights reserved.
+// Copyright (c) 2012-2020 Ugorji Nwoke. All rights reserved.
 // Use of this source code is governed by a MIT license found in the LICENSE file.
 
 // Code generated from gen-helper.go.tmpl - DO NOT EDIT.
 
 package codec
 
-import "encoding"
+import (
+	"encoding"
+	"reflect"
+)
 
 // GenVersion is the current version of codecgen.
 const GenVersion = {{ .Version }} 
@@ -26,17 +29,18 @@ const GenVersion = {{ .Version }}
 
 // GenHelperEncoder is exported so that it can be used externally by codecgen.
 //
-// Library users: DO NOT USE IT DIRECTLY. IT WILL CHANGE CONTINOUSLY WITHOUT NOTICE.
-func GenHelperEncoder(e *Encoder) (ge genHelperEncoder, ee genHelperEncDriver) {
+// Library users: DO NOT USE IT DIRECTLY or INDIRECTLY. IT WILL CHANGE CONTINOUSLY WITHOUT NOTICE.
+func GenHelper() (g genHelper) { return }
+
+type genHelper struct {}
+
+func (genHelper) Encoder(e *Encoder) (ge genHelperEncoder, ee genHelperEncDriver) {
 	ge = genHelperEncoder{e: e}
 	ee = genHelperEncDriver{encDriver: e.e}
 	return 
 }
 
-// GenHelperDecoder is exported so that it can be used externally by codecgen.
-//
-// Library users: DO NOT USE IT DIRECTLY. IT WILL CHANGE CONTINOUSLY WITHOUT NOTICE.
-func GenHelperDecoder(d *Decoder) (gd genHelperDecoder, dd genHelperDecDriver) {
+func (genHelper) Decoder(d *Decoder) (gd genHelperDecoder, dd genHelperDecDriver) {
 	gd = genHelperDecoder{d: d}
 	dd = genHelperDecDriver{decDriver: d.d}
 	return
@@ -52,7 +56,7 @@ type genHelperDecDriver struct {
 
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 type genHelperEncoder struct {
-	M must
+	M mustHdl
 	F fastpathT 
 	e *Encoder
 }
@@ -69,6 +73,10 @@ func (f genHelperEncoder) EncBasicHandle() *BasicHandle {
 	return f.e.h
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperEncoder) EncWr() *encWr {
+	return f.e.w()
+}
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperEncoder) EncBinary() bool {
 	return f.e.be // f.e.hh.isBinaryEncoding()
 }
@@ -79,7 +87,7 @@ func (f genHelperEncoder) IsJSONHandle() bool {
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperEncoder) EncFallback(iv interface{}) {
 	// f.e.encodeI(iv, false, false)
-	f.e.encodeValue(rv4i(iv), nil)
+	f.e.encodeValue(reflect.ValueOf(iv), nil)
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperEncoder) EncTextMarshal(iv encoding.TextMarshaler) {
@@ -100,23 +108,13 @@ func (f genHelperEncoder) EncBinaryMarshal(iv encoding.BinaryMarshaler) {
 func (f genHelperEncoder) EncRaw(iv Raw) { f.e.rawBytes(iv) }
 
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperEncoder) I2Rtid(v interface{}) uintptr {
-	return i2rtid(v)
-}
-// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperEncoder) Extension(rtid uintptr) (xfn *extTypeTagFn) {
-	return f.e.h.getExt(rtid, true)
+func (f genHelperEncoder) Extension(v interface{}) (xfn *extTypeTagFn) {
+	return f.e.h.getExtForI(v)
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperEncoder) EncExtension(v interface{}, xfFn *extTypeTagFn) {
-	f.e.e.EncodeExt(v, xfFn.tag, xfFn.ext)
+	f.e.e.EncodeExt(v, xfFn.rt, xfFn.tag, xfFn.ext)
 }
-// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperEncoder) WriteStr(s string) {
-	f.e.w().writestr(s)
-}
-// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperEncoder) BytesView(v string) []byte { return bytesView(v) }
 
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperEncoder) EncWriteMapStart(length int) { f.e.mapStart(length) }
@@ -132,6 +130,24 @@ func (f genHelperEncoder) EncWriteArrayElem() { f.e.arrayElem() }
 func (f genHelperEncoder) EncWriteMapElemKey() { f.e.mapElemKey() }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperEncoder) EncWriteMapElemValue() { f.e.mapElemValue() }
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperEncoder) EncEncodeComplex64(v complex64) { f.e.encodeComplex64(v) }
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperEncoder) EncEncodeComplex128(v complex128) { f.e.encodeComplex128(v) }
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperEncoder) EncEncode(v interface{}) { f.e.encode(v) }
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperEncoder) EncFnGivenAddr(v interface{}) *codecFn { return f.e.h.fn(reflect.TypeOf(v).Elem()) }
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperEncoder) EncEncodeNumBoolStrKindGivenAddr(v interface{}, encFn *codecFn) {
+     f.e.encodeValueNonNil(reflect.ValueOf(v).Elem(), encFn)
+}
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperEncoder) EncEncodeMapNonNil(v interface{}) {
+	if skipFastpathTypeSwitchInDirectCall || !fastpathEncodeTypeSwitch(v, f.e) {
+		f.e.encodeValueNonNil(reflect.ValueOf(v), nil)
+	}
+}
 
 // ---------------- DECODER FOLLOWS -----------------
 
@@ -145,19 +161,23 @@ func (f genHelperDecoder) DecBinary() bool {
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecSwallow() { f.d.swallow() }
-// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperDecoder) DecScratchBuffer() []byte {
-	return f.d.b[:]
-}
+
+// // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+// func (f genHelperDecoder) DecScratchBuffer() []byte {
+// 	return f.d.b[:]
+// }
+
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecScratchArrayBuffer() *[decScratchByteArrayLen]byte {
 	return &f.d.b
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecFallback(iv interface{}, chkPtr bool) {
-	rv := rv4i(iv)
+	rv := reflect.ValueOf(iv)
 	if chkPtr {
-		f.d.ensureDecodeable(rv)
+    	if x, _ := isDecodeable(rv); !x {
+			f.d.haltAsNotDecodeable(rv)
+		}
 	}
 	f.d.decodeValue(rv, nil)
 }
@@ -175,23 +195,15 @@ func (f genHelperDecoder) DecArrayCannotExpand(sliceLen, streamLen int) {
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecTextUnmarshal(tm encoding.TextUnmarshaler) {
-	if fnerr := tm.UnmarshalText(f.d.d.DecodeStringAsBytes()); fnerr != nil {
-		panic(fnerr)
-	}
+	halt.onerror(tm.UnmarshalText(f.d.d.DecodeStringAsBytes()))
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecJSONUnmarshal(tm jsonUnmarshaler) {
-	// bs := f.dd.DecodeStringAsBytes()
-	// grab the bytes to be read, as UnmarshalJSON needs the full JSON so as to unmarshal it itself.
-	if fnerr := tm.UnmarshalJSON(f.d.nextValueBytes()); fnerr != nil {
-		panic(fnerr)
-	}
+	f.d.jsonUnmarshalV(tm)
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecBinaryUnmarshal(bm encoding.BinaryUnmarshaler) {
-	if fnerr := bm.UnmarshalBinary(f.d.d.DecodeBytes(nil, true)); fnerr != nil {
-		panic(fnerr)
-	}
+	halt.onerror(bm.UnmarshalBinary(f.d.d.DecodeBytes(nil)))
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecRaw() []byte {	return f.d.rawBytes() }
@@ -201,30 +213,24 @@ func (f genHelperDecoder) IsJSONHandle() bool {
 	return f.d.js 
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperDecoder) I2Rtid(v interface{}) uintptr {
-	return i2rtid(v)
-}
-// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperDecoder) Extension(rtid uintptr) (xfn *extTypeTagFn) {
-	return f.d.h.getExt(rtid, true)
+func (f genHelperDecoder) Extension(v interface{}) (xfn *extTypeTagFn) {
+	return f.d.h.getExtForI(v)
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecExtension(v interface{}, xfFn *extTypeTagFn) {
-	f.d.d.DecodeExt(v, xfFn.tag, xfFn.ext)
+	f.d.d.DecodeExt(v, xfFn.rt, xfFn.tag, xfFn.ext)
 }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecInferLen(clen, maxlen, unit int) (rvlen int) {
 	return decInferLen(clen, maxlen, unit)
 }
-// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperDecoder) StringView(v []byte) string { return stringView(v) }
 
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperDecoder) DecReadMapStart() int { return f.d.mapStart() }
+func (f genHelperDecoder) DecReadMapStart() int { return f.d.mapStart(f.d.d.ReadMapStart()) }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecReadMapEnd() { f.d.mapEnd() }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperDecoder) DecReadArrayStart() int { return f.d.arrayStart() }
+func (f genHelperDecoder) DecReadArrayStart() int { return f.d.arrayStart(f.d.d.ReadArrayStart()) }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecReadArrayEnd() { f.d.arrayEnd() }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
@@ -237,5 +243,31 @@ func (f genHelperDecoder) DecReadMapElemValue() { f.d.mapElemValue() }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
 func (f genHelperDecoder) DecDecodeFloat32() float32 { return f.d.decodeFloat32() }
 // FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
-func (f genHelperDecoder) DecCheckBreak() bool { return f.d.checkBreak() }
+func (f genHelperDecoder) DecStringZC(v []byte) string { return f.d.stringZC(v) }
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperDecoder) DecodeBytesInto(v []byte) []byte { return f.d.decodeBytesInto(v) }
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperDecoder) DecContainerNext(j, containerLen int, hasLen bool) bool {
+	// return f.d.containerNext(j, containerLen, hasLen)
+	// rewriting so it can be inlined
+	if hasLen {
+		return j < containerLen
+	}
+	return !f.d.checkBreak()
+}
 
+{{/*
+// MARKER: remove WriteStr, as it cannot be inlined as of 20230201.
+// Instead, generated code calls (*encWr).WriteStr directly.
+
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+// func (f genHelperEncoder) WriteStr(s string) {
+//     f.e.encWr.writestr(s)
+// }
+
+// FOR USE BY CODECGEN ONLY. IT *WILL* CHANGE WITHOUT NOTICE. *DO NOT USE*
+func (f genHelperDecoder) I2Rtid(v interface{}) uintptr {
+	return i2rtid(v)
+}
+
+*/ -}}
