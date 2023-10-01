@@ -1,24 +1,62 @@
 # github.com/ChrisTrenkamp/goxpath v0.0.0-20190607011252-c5096ec8773d
 ## explicit
 github.com/ChrisTrenkamp/goxpath
+github.com/ChrisTrenkamp/goxpath/internal/execxp
+github.com/ChrisTrenkamp/goxpath/internal/execxp/findutil
+github.com/ChrisTrenkamp/goxpath/internal/execxp/intfns
+github.com/ChrisTrenkamp/goxpath/internal/xsort
+github.com/ChrisTrenkamp/goxpath/lexer
+github.com/ChrisTrenkamp/goxpath/parser
+github.com/ChrisTrenkamp/goxpath/parser/pathexpr
+github.com/ChrisTrenkamp/goxpath/tree
+github.com/ChrisTrenkamp/goxpath/xconst
 # github.com/antchfx/htmlquery v1.2.2
 ## explicit
 github.com/antchfx/htmlquery
 # github.com/antchfx/jsonquery v1.1.2
 ## explicit
 github.com/antchfx/jsonquery
-# github.com/antchfx/xmlquery v1.2.3
+# github.com/antchfx/xmlquery v1.3.1
 ## explicit
 github.com/antchfx/xmlquery
-# github.com/antchfx/xpath v1.1.5
+# github.com/antchfx/xpath v1.1.10
 ## explicit
 github.com/antchfx/xpath
 # github.com/go-xmlpath/xmlpath v0.0.0-20150820204837-860cbeca3ebc
 ## explicit
 github.com/go-xmlpath/xmlpath
+# github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e
+github.com/golang/groupcache/lru
 # github.com/jbowtie/gokogiri v0.0.0-20190301021639-37f655d3078f
 ## explicit
-github.com/jbowtie/gokogiri
+github.com/jbowtie/gokogiri/help
+github.com/jbowtie/gokogiri/util
+github.com/jbowtie/gokogiri/xml
+github.com/jbowtie/gokogiri/xpath
 # github.com/santhosh-tekuri/xpathparser v1.0.0
 ## explicit
 github.com/santhosh-tekuri/xpathparser
+# golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc
+golang.org/x/net/html
+golang.org/x/net/html/atom
+golang.org/x/net/html/charset
+# golang.org/x/text v0.3.0
+golang.org/x/text/encoding
+golang.org/x/text/encoding/charmap
+golang.org/x/text/encoding/htmlindex
+golang.org/x/text/encoding/internal
+golang.org/x/text/encoding/internal/identifier
+golang.org/x/text/encoding/japanese
+golang.org/x/text/encoding/korean
+golang.org/x/text/encoding/simplifiedchinese
+golang.org/x/text/encoding/traditionalchinese
+golang.org/x/text/encoding/unicode
+golang.org/x/text/internal/tag
+golang.org/x/text/internal/utf8internal
+golang.org/x/text/language
+golang.org/x/text/runes
+golang.org/x/text/transform
+# gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
+## explicit
+# gopkg.in/xmlpath.v2 v2.0.0-20150820204837-860cbeca3ebc
+## explicit
