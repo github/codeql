@@ -1,5 +1,5 @@
 int source();
-void sink(int); void sink(const int *); void sink(int **);
+void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
 
 void intraprocedural_with_local_flow() {
   int t2;
@@ -626,7 +626,7 @@ void test_def_via_phi_read(bool b)
     use(buffer);
   }
   intPointerSource(buffer);
-  sink(buffer); // $ ast,ir
+  indirect_sink(buffer); // $ ast,ir
 }
 
 void test_static_local_1() {
@@ -692,7 +692,7 @@ void test_static_local_9() {
 
 void increment_buf(int** buf) { // $ ast-def=buf ir-def=*buf ir-def=**buf
   *buf += 10;
-  sink(buf); // $ SPURIOUS: ast,ir // should only be flow to the indirect argument, but there's also flow to the non-indirect argument
+  sink(buf); // $ SPURIOUS: ast
 }
 
 void call_increment_buf(int** buf) { // $ ast-def=buf
@@ -702,4 +702,90 @@ void call_increment_buf(int** buf) { // $ ast-def=buf
 void test_conflation_regression(int* source) { // $ ast-def=source
   int* buf = source;
   call_increment_buf(&buf);
+}
+
+void write_to_star_star_p(unsigned char **p) // $ ast-def=p ir-def=**p ir-def=*p
+{
+  **p = 0;
+}
+
+void write_to_star_buf(unsigned char *buf) // $ ast-def=buf
+{
+  unsigned char *c = buf;
+  write_to_star_star_p(&c);
+}
+
+void test_write_to_star_buf(unsigned char *source) // $ ast-def=source
+{
+  write_to_star_buf(source);
+  sink(*source); // clean
+}
+
+void does_not_write_source_to_dereference(int *p) // $ ast-def=p ir-def=*p
+{
+  int x = source();
+  p = &x;
+  *p = 42;
+}
+
+void test_does_not_write_source_to_dereference()
+{
+  int x;
+  does_not_write_source_to_dereference(&x);
+  sink(x); // $ ast=733:7 ir SPURIOUS: ast=726:11
+}
+
+void sometimes_calls_sink_eq(int x, int n) {
+  if(n == 0) {
+    sink(x); // $ ast,ir=751:27 ast,ir=755:32 SPURIOUS: ast=749:27 ast,ir=753:32 // IR spurious results because we only have call contexts of depth 1
+  }
+}
+
+void call_sometimes_calls_sink_eq(int x, int n) {
+  sometimes_calls_sink_eq(x, n);
+}
+
+void test_sometimes_calls_sink_eq_1() {
+  sometimes_calls_sink_eq(source(), 1);
+  sometimes_calls_sink_eq(0, 0);
+  sometimes_calls_sink_eq(source(), 0);
+
+  call_sometimes_calls_sink_eq(source(), 1);
+  call_sometimes_calls_sink_eq(0, 0);
+  call_sometimes_calls_sink_eq(source(), 0);
+}
+
+void sometimes_calls_sink_lt(int x, int n) {
+  if(n < 10) {
+    sink(x); // $ ast,ir=771:27 ast,ir=775:32 SPURIOUS: ast=769:27 ast,ir=773:32 // IR spurious results because we only have call contexts of depth 1
+  }
+}
+
+void call_sometimes_calls_sink_lt(int x, int n) {
+  sometimes_calls_sink_lt(x, n);
+}
+
+void test_sometimes_calls_sink_lt() {
+  sometimes_calls_sink_lt(source(), 10);
+  sometimes_calls_sink_lt(0, 0);
+  sometimes_calls_sink_lt(source(), 2);
+
+  call_sometimes_calls_sink_lt(source(), 10);
+  call_sometimes_calls_sink_lt(0, 0);
+  call_sometimes_calls_sink_lt(source(), 2);
+
+}
+
+void sometimes_calls_sink_switch(int x, int n) {
+  switch(n) {
+    case 0:
+      sink(x); // $ ast,ir=790:31 SPURIOUS: ast,ir=788:31 // IR spurious results because IRGuard doesn't understand switch statements.
+      break;
+  }
+}
+
+void test_sometimes_calls_sink_switch() {
+  sometimes_calls_sink_switch(source(), 1);
+  sometimes_calls_sink_switch(0, 0);
+  sometimes_calls_sink_switch(source(), 0);
 }

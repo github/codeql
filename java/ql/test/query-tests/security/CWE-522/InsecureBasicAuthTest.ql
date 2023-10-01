@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.InsecureBasicAuthQuery
 import TestUtilities.InlineExpectationsTest
 
-class HasInsecureBasicAuthTest extends InlineExpectationsTest {
-  HasInsecureBasicAuthTest() { this = "HasInsecureBasicAuthTest" }
+module HasInsecureBasicAuthTest implements TestSig {
+  string getARelevantTag() { result = "hasInsecureBasicAuth" }
 
-  override string getARelevantTag() { result = "hasInsecureBasicAuth" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasInsecureBasicAuth" and
     exists(DataFlow::Node sink | InsecureBasicAuthFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -16,3 +14,5 @@ class HasInsecureBasicAuthTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasInsecureBasicAuthTest>

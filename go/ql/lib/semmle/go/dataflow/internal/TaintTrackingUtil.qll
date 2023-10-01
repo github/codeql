@@ -5,6 +5,7 @@
 private import go
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.util.Unit
+private import DataFlowPrivate as DataFlowPrivate
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -46,7 +47,7 @@ private Type getElementType(Type containerType) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   exists(Type containerType |
     node instanceof DataFlow::ArgumentNode and
     getElementType*(node.getType()) = containerType
@@ -95,7 +96,8 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   sliceStep(pred, succ) or
   any(FunctionModel fm).taintStep(pred, succ) or
   any(AdditionalTaintStep a).step(pred, succ) or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred, succ, false)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(DataFlowPrivate::FlowSummaryNode)
+        .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
 }
 
 /**
@@ -404,5 +406,21 @@ private predicate listOfConstantsComparisonSanitizerGuard(DataFlow::Node g, Expr
 class ListOfConstantsComparisonSanitizerGuard extends TaintTracking::DefaultTaintSanitizer {
   ListOfConstantsComparisonSanitizerGuard() {
     this = DataFlow::BarrierGuard<listOfConstantsComparisonSanitizerGuard/3>::getABarrierNode()
+  }
+}
+
+/**
+ * The `clear` built-in function deletes or zeroes out all elements of a map or slice
+ * and therefore acts as a general sanitizer for taint flow to any uses dominated by it.
+ */
+private class ClearSanitizer extends DefaultTaintSanitizer {
+  ClearSanitizer() {
+    exists(SsaWithFields var, DataFlow::CallNode call, DataFlow::Node arg | this = var.getAUse() |
+      call = Builtin::clear().getACall() and
+      arg = call.getAnArgument() and
+      arg = var.getAUse() and
+      arg != this and
+      this.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+    )
   }
 }

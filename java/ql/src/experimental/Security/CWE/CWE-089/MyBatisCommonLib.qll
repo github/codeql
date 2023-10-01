@@ -56,9 +56,6 @@ predicate myBatisMapperXmlElementFromMethod(Method method, MyBatisMapperXmlEleme
   )
 }
 
-/** DEPRECATED: Alias for myBatisMapperXmlElementFromMethod */
-deprecated predicate myBatisMapperXMLElementFromMethod = myBatisMapperXmlElementFromMethod/2;
-
 /** Holds if the specified `method` has Ibatis Sql operation annotation `isoa`. */
 predicate myBatisSqlOperationAnnotationFromMethod(Method method, IbatisSqlOperationAnnotation isoa) {
   exists(MyBatisSqlOperationAnnotationMethod msoam |

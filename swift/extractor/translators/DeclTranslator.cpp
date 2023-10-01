@@ -253,7 +253,7 @@ void DeclTranslator::fillFunction(const swift::AbstractFunctionDecl& decl,
   entry.name = !decl.hasName() ? "(unnamed function decl)" : constructName(decl.getName());
   entry.body = dispatcher.fetchOptionalLabel(decl.getBody());
   CODEQL_EXPECT_OR(return, decl.hasParameterList(), "Function {} has no parameter list",
-                         entry.name);
+                         *entry.name);
   entry.params = dispatcher.fetchRepeatedLabels(*decl.getParameters());
   auto self = const_cast<swift::ParamDecl* const>(decl.getImplicitSelfDecl());
   entry.self_param = dispatcher.fetchOptionalLabel(self);
@@ -271,7 +271,7 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
   entry.name = decl.getNameStr().str();
   for (auto& typeLoc : decl.getInherited()) {
     if (auto type = typeLoc.getType()) {
-      entry.base_types.push_back(dispatcher.fetchLabel(type));
+      entry.inherited_types.push_back(dispatcher.fetchLabel(type));
     }
   }
   fillValueDecl(decl, entry);

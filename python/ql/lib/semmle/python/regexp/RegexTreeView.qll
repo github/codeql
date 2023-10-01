@@ -223,14 +223,54 @@ module Impl implements RegexTreeViewSig {
      */
     Location getLocation() { result = re.getLocation() }
 
+    /** Gets the accumulated length of string parts with lower index than `index`, if any. */
+    private int getPartOffset(int index) {
+      index = 0 and result = 0
+      or
+      index > 0 and
+      exists(int previousOffset | previousOffset = this.getPartOffset(index - 1) |
+        result =
+          previousOffset + re.(StrConst).getImplicitlyConcatenatedPart(index - 1).getContentLength()
+      )
+    }
+
+    /**
+     * Gets the `StringPart` in which this `RegExpTerm` resides, if any.
+     * `localOffset` will be the offset of this `RegExpTerm` inside `result`.
+     */
+    StringPart getPart(int localOffset) {
+      exists(int index, int prefixLength | index = max(int i | this.getPartOffset(i) <= start) |
+        result = re.(StrConst).getImplicitlyConcatenatedPart(index) and
+        result.contextSize(prefixLength, _) and
+        // Example:
+        // re.compile('...' r"""...this..""")
+        // - `start` is the offset from `(` to `this` as counted after concatenating all parts.
+        // - we subtract the length of the previous `StringPart`s, `'...'`, to know how far into this `StringPart` we go.
+        // - as the prefix 'r"""' is part of the `StringPart`, `this` is found that much further in.
+        localOffset = start - this.getPartOffset(index) + prefixLength
+      )
+    }
+
     /** Holds if this term is found at the specified location offsets. */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(int re_start |
-        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
-        startcolumn = re_start + start + 4 and
-        endcolumn = re_start + end + 3
+      not exists(this.getPart(_)) and
+      exists(int re_start, int prefix_len | prefix_len = re.getPrefix().length() |
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, _, _) and
+        startcolumn = re_start + start + prefix_len and
+        endline = startline and
+        endcolumn = re_start + end + prefix_len - 1
+        /* inclusive vs exclusive */
+      )
+      or
+      exists(StringPart part, int localOffset, int partStartColumn |
+        part = this.getPart(localOffset)
+      |
+        part.getLocation().hasLocationInfo(filepath, startline, partStartColumn, _, _) and
+        startcolumn = partStartColumn + localOffset and
+        endline = startline and
+        endcolumn = (end - start) + startcolumn
       )
     }
 

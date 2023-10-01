@@ -5,3 +5,15 @@ var linkTypes = { rel: "noopener noreferrer" };
 <Foo/>;     // interpreted as a custom component because of capitalisation
 <Foo-Bar/>; // interpreted as an HTML element because of the dash
 var fragment = <> fragment text <Foo/> more text </>
+
+// Both of these are equivalent:
+const x = <Bar a:b="hello" />;
+const y = <Bar a : b="hello" />;
+
+interface BarProps {
+    "a:b": string;
+}
+
+function Bar(props: BarProps) {
+    return <div>{props["a:b"]}</div>;
+}

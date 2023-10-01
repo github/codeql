@@ -128,4 +128,4 @@ where
   not exists(Property p | p.getBackingField() = f)
 select c,
   c.getName() + " exposes the internal representation stored in field " + f.getName() +
-    ". The value may be modified $@.", why.getLocation(), whyText
+    ". The value may be modified $@.", why, whyText

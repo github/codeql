@@ -45,7 +45,12 @@ module Generated {
     /**
      * Gets the type of this variable declaration.
      */
-    final Type getType() { result = this.getImmediateType().resolve() }
+    final Type getType() {
+      exists(Type immediate |
+        immediate = this.getImmediateType() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the attached property wrapper type of this variable declaration, if it exists.
@@ -64,7 +69,10 @@ module Generated {
      * Gets the attached property wrapper type of this variable declaration, if it exists.
      */
     final Type getAttachedPropertyWrapperType() {
-      result = this.getImmediateAttachedPropertyWrapperType().resolve()
+      exists(Type immediate |
+        immediate = this.getImmediateAttachedPropertyWrapperType() and
+        result = immediate.resolve()
+      )
     }
 
     /**
@@ -90,7 +98,12 @@ module Generated {
     /**
      * Gets the parent pattern of this variable declaration, if it exists.
      */
-    final Pattern getParentPattern() { result = this.getImmediateParentPattern().resolve() }
+    final Pattern getParentPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediateParentPattern() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getParentPattern()` exists.
@@ -113,7 +126,12 @@ module Generated {
     /**
      * Gets the parent initializer of this variable declaration, if it exists.
      */
-    final Expr getParentInitializer() { result = this.getImmediateParentInitializer().resolve() }
+    final Expr getParentInitializer() {
+      exists(Expr immediate |
+        immediate = this.getImmediateParentInitializer() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getParentInitializer()` exists.
@@ -123,10 +141,10 @@ module Generated {
     /**
      * Gets the property wrapper backing variable binding of this variable declaration, if it exists.
      *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
+     * This is the synthesized binding introducing the property wrapper backing variable for this
+     * variable, if any. See `getPropertyWrapperBackingVar`.
      */
-    PatternBindingDecl getImmediatePropertyWrapperBackingVarBinding() {
+    PatternBindingDecl getPropertyWrapperBackingVarBinding() {
       result =
         Synth::convertPatternBindingDeclFromRaw(Synth::convertVarDeclToRaw(this)
               .(Raw::VarDecl)
@@ -134,33 +152,10 @@ module Generated {
     }
 
     /**
-     * Gets the property wrapper backing variable binding of this variable declaration, if it exists.
-     *
-     * This is the synthesized binding introducing the property wrapper backing variable for this
-     * variable, if any. See `getPropertyWrapperBackingVar`.
-     */
-    final PatternBindingDecl getPropertyWrapperBackingVarBinding() {
-      result = this.getImmediatePropertyWrapperBackingVarBinding().resolve()
-    }
-
-    /**
      * Holds if `getPropertyWrapperBackingVarBinding()` exists.
      */
     final predicate hasPropertyWrapperBackingVarBinding() {
       exists(this.getPropertyWrapperBackingVarBinding())
-    }
-
-    /**
-     * Gets the property wrapper backing variable of this variable declaration, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    VarDecl getImmediatePropertyWrapperBackingVar() {
-      result =
-        Synth::convertVarDeclFromRaw(Synth::convertVarDeclToRaw(this)
-              .(Raw::VarDecl)
-              .getPropertyWrapperBackingVar())
     }
 
     /**
@@ -182,8 +177,11 @@ module Generated {
      * ```
      * This predicate returns such variable declaration.
      */
-    final VarDecl getPropertyWrapperBackingVar() {
-      result = this.getImmediatePropertyWrapperBackingVar().resolve()
+    VarDecl getPropertyWrapperBackingVar() {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getPropertyWrapperBackingVar())
     }
 
     /**
@@ -194,10 +192,10 @@ module Generated {
     /**
      * Gets the property wrapper projection variable binding of this variable declaration, if it exists.
      *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
+     * This is the synthesized binding introducing the property wrapper projection variable for this
+     * variable, if any. See `getPropertyWrapperProjectionVar`.
      */
-    PatternBindingDecl getImmediatePropertyWrapperProjectionVarBinding() {
+    PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
       result =
         Synth::convertPatternBindingDeclFromRaw(Synth::convertVarDeclToRaw(this)
               .(Raw::VarDecl)
@@ -205,33 +203,10 @@ module Generated {
     }
 
     /**
-     * Gets the property wrapper projection variable binding of this variable declaration, if it exists.
-     *
-     * This is the synthesized binding introducing the property wrapper projection variable for this
-     * variable, if any. See `getPropertyWrapperProjectionVar`.
-     */
-    final PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
-      result = this.getImmediatePropertyWrapperProjectionVarBinding().resolve()
-    }
-
-    /**
      * Holds if `getPropertyWrapperProjectionVarBinding()` exists.
      */
     final predicate hasPropertyWrapperProjectionVarBinding() {
       exists(this.getPropertyWrapperProjectionVarBinding())
-    }
-
-    /**
-     * Gets the property wrapper projection variable of this variable declaration, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    VarDecl getImmediatePropertyWrapperProjectionVar() {
-      result =
-        Synth::convertVarDeclFromRaw(Synth::convertVarDeclToRaw(this)
-              .(Raw::VarDecl)
-              .getPropertyWrapperProjectionVar())
     }
 
     /**
@@ -259,8 +234,11 @@ module Generated {
      * ```
      * This predicate returns such variable declaration.
      */
-    final VarDecl getPropertyWrapperProjectionVar() {
-      result = this.getImmediatePropertyWrapperProjectionVar().resolve()
+    VarDecl getPropertyWrapperProjectionVar() {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertVarDeclToRaw(this)
+              .(Raw::VarDecl)
+              .getPropertyWrapperProjectionVar())
     }
 
     /**

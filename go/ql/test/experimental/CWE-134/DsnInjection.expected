@@ -1,8 +1,0 @@
-edges
-| Dsn.go:47:10:47:30 | call to FormValue | Dsn.go:50:29:50:33 | dbDSN |
-nodes
-| Dsn.go:47:10:47:30 | call to FormValue | semmle.label | call to FormValue |
-| Dsn.go:50:29:50:33 | dbDSN | semmle.label | dbDSN |
-subpaths
-#select
-| Dsn.go:50:29:50:33 | dbDSN | Dsn.go:47:10:47:30 | call to FormValue | Dsn.go:50:29:50:33 | dbDSN | This query depends on a $@. | Dsn.go:47:10:47:30 | call to FormValue | user-provided value |

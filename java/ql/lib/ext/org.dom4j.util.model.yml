@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.dom4j.util", "ProxyDocumentFactory", True, "createPattern", "", "", "Argument[0]", "xpath", "manual"]
-      - ["org.dom4j.util", "ProxyDocumentFactory", True, "createXPath", "", "", "Argument[0]", "xpath", "manual"]
-      - ["org.dom4j.util", "ProxyDocumentFactory", True, "createXPathFilter", "", "", "Argument[0]", "xpath", "manual"]
+      - ["org.dom4j.util", "ProxyDocumentFactory", True, "createPattern", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["org.dom4j.util", "ProxyDocumentFactory", True, "createXPath", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["org.dom4j.util", "ProxyDocumentFactory", True, "createXPathFilter", "", "", "Argument[0]", "xpath-injection", "manual"]

@@ -47,7 +47,7 @@ edges
 | test.go:240:15:240:36 | call to GetString | test.go:243:21:243:29 | untrusted |
 | test.go:253:23:253:44 | call to GetCookie | test.go:253:16:253:45 | type conversion |
 | test.go:264:62:264:83 | call to GetCookie | test.go:264:55:264:84 | type conversion |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:277:21:277:61 | call to GetDisplayString |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:277:44:277:60 | selection of Filename |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:278:38:278:49 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:279:37:279:48 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:285:4:285:15 | genericFiles |
@@ -61,6 +61,7 @@ edges
 | test.go:269:2:269:40 | ... := ...[0] | test.go:295:39:295:50 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:296:40:296:51 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:297:39:297:50 | genericFiles |
+| test.go:277:44:277:60 | selection of Filename | test.go:277:21:277:61 | call to GetDisplayString |
 | test.go:278:21:278:53 | call to SliceChunk | test.go:278:21:278:92 | selection of Filename |
 | test.go:278:38:278:49 | genericFiles | test.go:278:21:278:53 | call to SliceChunk |
 | test.go:279:21:279:60 | call to SliceDiff | test.go:279:21:279:96 | selection of Filename |
@@ -177,6 +178,7 @@ nodes
 | test.go:264:62:264:83 | call to GetCookie | semmle.label | call to GetCookie |
 | test.go:269:2:269:40 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:277:21:277:61 | call to GetDisplayString | semmle.label | call to GetDisplayString |
+| test.go:277:44:277:60 | selection of Filename | semmle.label | selection of Filename |
 | test.go:278:21:278:53 | call to SliceChunk | semmle.label | call to SliceChunk |
 | test.go:278:21:278:92 | selection of Filename | semmle.label | selection of Filename |
 | test.go:278:38:278:49 | genericFiles | semmle.label | genericFiles |

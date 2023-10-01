@@ -38,14 +38,15 @@ Class getASubclassOfAbstract(Class ab) {
 
 /** Gets a non-abstract subclass of `ab` that contributes to the extent of `ab`. */
 Class concreteExternalSubclass(Class ab) {
-  ab.isAbstract() and
   not result.isAbstract() and
   result = getASubclassOfAbstract+(ab) and
   // Heuristic: An abstract class with subclasses in the same file and no other
   // imported subclasses is likely intentional.
   result.getLocation().getFile() != ab.getLocation().getFile() and
   // Exclude subclasses in tests and libraries that are only used in tests.
-  liveNonTestFile(result.getLocation().getFile())
+  liveNonTestFile(result.getLocation().getFile()) and
+  // exclude `final` aliases
+  not result.getType().isFinalAlias(_)
 }
 
 /** Holds if there is a bidirectional import between the abstract class `ab` and its subclass `sub` */

@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["hudson.lifecycle", "Lifecycle", True, "rewriteHudsonWar", "(File)", "", "Argument[0]", "create-file", "ai-manual"]
+      - ["hudson.lifecycle", "Lifecycle", True, "rewriteHudsonWar", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]

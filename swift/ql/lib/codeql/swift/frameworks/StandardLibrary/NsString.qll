@@ -50,8 +50,10 @@ private class NsStringSummaries extends SummaryModelCsv {
         ";NSString;true;init(format:arguments:);;;Argument[0..1];ReturnValue;taint",
         ";NSString;true;init(format:locale:arguments:);;;Argument[0];ReturnValue;taint",
         ";NSString;true;init(format:locale:arguments:);;;Argument[2];ReturnValue;taint",
-        ";NSString;true;init(format:_:);;;Argument[0];ReturnValue;taint", //0..
-        ";NSString;true;init(format:locale:_:);;;Argument[0];ReturnValue;taint", //0,2..
+        ";NSString;true;init(format:_:);;;Argument[0];ReturnValue;taint",
+        ";NSString;true;init(format:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
+        ";NSString;true;init(format:locale:_:);;;Argument[0];ReturnValue;taint",
+        ";NSString;true;init(format:locale:_:);;;Argument[2].CollectionElement;ReturnValue;taint",
         ";NSString;true;init(data:encoding:);;;Argument[0];ReturnValue;taint",
         ";NSString;true;init(contentsOfFile:);;;Argument[0];ReturnValue;taint",
         ";NSString;true;init(contentsOfFile:encoding:);;;Argument[0];ReturnValue;taint",
@@ -60,7 +62,8 @@ private class NsStringSummaries extends SummaryModelCsv {
         ";NSString;true;init(contentsOf:encoding:);;;Argument[0];ReturnValue;taint",
         ";NSString;true;init(contentsOf:usedEncoding:);;;Argument[0];ReturnValue;taint",
         ";NSString;true;init(coder:);;;Argument[0];ReturnValue;taint",
-        ";NSString;true;localizedStringWithFormat(_:_:);;;Argument[0];ReturnValue;taint", //0..
+        ";NSString;true;localizedStringWithFormat(_:_:);;;Argument[0];ReturnValue;taint",
+        ";NSString;true;localizedStringWithFormat(_:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
         ";NSString;true;character(at:);;;Argument[-1];ReturnValue;taint",
         ";NSString;true;getCharacters(_:);;;Argument[-1];Argument[0];taint",
         ";NSString;true;getCharacters(_:range:);;;Argument[-1];Argument[0];taint",
@@ -72,7 +75,8 @@ private class NsStringSummaries extends SummaryModelCsv {
         ";NSString;true;getCString(_:maxLength:);;;Argument[-1];Argument[0];taint",
         ";NSString;true;getCString(_:maxLength:encoding:);;;Argument[-1];Argument[0];taint",
         ";NSString;true;getCString(_:maxLength:range:remaining:);;;Argument[-1];Argument[0];taint",
-        ";NSString;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint", // -1..
+        ";NSString;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint",
+        ";NSString;true;appendingFormat(_:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
         ";NSString;true;appending(_:);;;Argument[-1..0];ReturnValue;taint",
         ";NSString;true;padding(toLength:withPad:startingAt:);;;Argument[-1];ReturnValue;taint",
         ";NSString;true;padding(toLength:withPad:startingAt:);;;Argument[1];ReturnValue;taint",
@@ -119,7 +123,8 @@ private class NsStringSummaries extends SummaryModelCsv {
         ";NSMutableString;true;replaceCharacters(in:with:);;;Argument[1];Argument[-1];taint",
         ";NSMutableString;true;replaceOccurrences(of:with:options:range:);;;Argument[1];Argument[-1];taint",
         ";NSMutableString;true;setString(_:);;;Argument[0];Argument[-1];taint",
-        ";NSMutableString;true;appendFormat(_:_:);;;Argument[0];Argument[-1];taint", //0..
+        ";NSMutableString;true;appendFormat(_:_:);;;Argument[0];Argument[-1];taint",
+        ";NSMutableString;true;appendFormat(_:_:);;;Argument[1].CollectionElement;Argument[-1];taint",
       ]
   }
 }
@@ -132,23 +137,18 @@ private class NsStringFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   NsStringFieldsInheritTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = "NSString" or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() = "NSString"
-      ) and
-      f.getName() =
-        [
-          "utf8String", "lowercased", "localizedLowedCase", "uppercased", "localizedUppercase",
-          "capitalized", "localizedCapitalized", "decomposedStringWithCanonicalMapping",
-          "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
-          "precomposedStringWithCompatibilityMapping", "doubleValue", "floatValue", "intValue",
-          "integerValue", "longLongValue", "boolValue", "description", "pathComponents",
-          "fileSystemRepresentation", "lastPathComponent", "pathExtension",
-          "abbreviatingWithTildeInPath", "deletingLastPathComponent", "deletingPathExtension",
-          "expandingTildeInPath", "resolvingSymlinksInPath", "standardizingPath",
-          "removingPercentEncoding"
-        ]
-    )
+    this.getField()
+        .hasQualifiedName("NSString",
+          [
+            "utf8String", "lowercased", "localizedLowedCase", "uppercased", "localizedUppercase",
+            "capitalized", "localizedCapitalized", "decomposedStringWithCanonicalMapping",
+            "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
+            "precomposedStringWithCompatibilityMapping", "doubleValue", "floatValue", "intValue",
+            "integerValue", "longLongValue", "boolValue", "description", "pathComponents",
+            "fileSystemRepresentation", "lastPathComponent", "pathExtension",
+            "abbreviatingWithTildeInPath", "deletingLastPathComponent", "deletingPathExtension",
+            "expandingTildeInPath", "resolvingSymlinksInPath", "standardizingPath",
+            "removingPercentEncoding"
+          ])
   }
 }

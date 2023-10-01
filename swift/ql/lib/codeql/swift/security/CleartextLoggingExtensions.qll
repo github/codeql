@@ -30,7 +30,7 @@ private class DefaultCleartextLoggingSink extends CleartextLoggingSink {
 }
 
 /**
- * An barrier for cleartext logging vulnerabilities.
+ * A barrier for cleartext logging vulnerabilities.
  *  - encryption; encrypted values are not cleartext.
  *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
@@ -74,12 +74,7 @@ private class OsLogNonRedactedType extends Type {
 private class OsLogPrivacyRef extends MemberRefExpr {
   string optionName;
 
-  OsLogPrivacyRef() {
-    exists(FieldDecl f | this.getMember() = f |
-      f.getEnclosingDecl().(NominalTypeDecl).getName() = "OSLogPrivacy" and
-      optionName = f.getName()
-    )
-  }
+  OsLogPrivacyRef() { this.getMember().(FieldDecl).hasQualifiedName("OSLogPrivacy", optionName) }
 
   /** Holds if this is a safe privacy option (private or sensitive). */
   predicate isSafe() { optionName = ["private", "sensitive"] }
@@ -88,18 +83,31 @@ private class OsLogPrivacyRef extends MemberRefExpr {
   predicate isPublic() { optionName = "public" }
 }
 
+/**
+ * An additional taint step for cleartext logging vulnerabilities.
+ */
+private class CleartextLoggingFieldAdditionalFlowStep extends CleartextLoggingAdditionalFlowStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // if an object is sensitive, its fields are always sensitive.
+    nodeTo.asExpr().(MemberRefExpr).getBase() = nodeFrom.asExpr()
+  }
+}
+
 private class LoggingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";;false;print(_:separator:terminator:);;;Argument[0].ArrayElement;log-injection",
-        ";;false;print(_:separator:terminator:);;;Argument[1..2];log-injection",
-        ";;false;print(_:separator:terminator:toStream:);;;Argument[0].ArrayElement;log-injection",
-        ";;false;print(_:separator:terminator:toStream:);;;Argument[1..2];log-injection",
-        ";;false;NSLog(_:_:);;;Argument[0];log-injection",
-        ";;false;NSLog(_:_:);;;Argument[1].ArrayElement;log-injection",
-        ";;false;NSLogv(_:_:);;;Argument[0];log-injection",
-        ";;false;NSLogv(_:_:);;;Argument[1].ArrayElement;log-injection",
+        ";;false;print(_:separator:terminator:);;;Argument[0..2];log-injection",
+        ";;false;print(_:separator:terminator:toStream:);;;Argument[0..2];log-injection",
+        ";;false;print(_:separator:terminator:to:);;;Argument[0..2];log-injection",
+        ";;false;debugPrint(_:separator:terminator:);;;Argument[0..2];log-injection",
+        ";;false;debugPrint(_:separator:terminator:to:);;;Argument[0..2];log-injection",
+        ";;false;dump(_:name:indent:maxDepth:maxItems:);;;Argument[0..1];log-injection",
+        ";;false;dump(_:to:name:indent:maxDepth:maxItems:);;;Argument[0];log-injection",
+        ";;false;dump(_:to:name:indent:maxDepth:maxItems:);;;Argument[2];log-injection",
+        ";;false;fatalError(_:file:line:);;;Argument[0];log-injection",
+        ";;false;NSLog(_:_:);;;Argument[0..1];log-injection",
+        ";;false;NSLogv(_:_:);;;Argument[0..1];log-injection",
         ";;false;vfprintf(_:_:_:);;;Agument[1..2];log-injection",
         ";Logger;true;log(_:);;;Argument[0];log-injection",
         ";Logger;true;log(level:_:);;;Argument[1];log-injection",

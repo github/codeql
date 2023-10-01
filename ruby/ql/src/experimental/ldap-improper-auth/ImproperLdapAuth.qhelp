@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If an LDAP connection uses user-supplied data as password, anonymous bind could be caused using an empty password 
+to result in a successful authentication.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Don't use user-supplied data as password while establishing an LDAP connection.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following Rails example, an <code>ActionController</code> class
+has a <code>ldap_handler</code> method to handle requests.
+</p>
+
+<p>
+In the first example, the code builds a LDAP query whose authentication depends on user supplied data.
+</p>
+
+<sample src="examples/LdapAuthenticationBad.rb" />
+
+<p>In the second example, the authentication is established using a default password.</p>
+
+<sample src="examples/LdapAuthenticationGood.rb" />
+</example>
+
+<references>
+<li>MITRE: <a href="https://cwe.mitre.org/data/definitions/287.html">CWE-287: Improper Authentication</a>.</li>
+</references>
+</qhelp>

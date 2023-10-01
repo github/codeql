@@ -23,7 +23,12 @@ module Generated {
     /**
      * Gets the sub expression of this tuple element expression.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the index of this tuple element expression.

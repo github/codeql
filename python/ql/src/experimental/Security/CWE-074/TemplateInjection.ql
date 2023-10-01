@@ -11,25 +11,10 @@
  */
 
 import python
-import semmle.python.security.Paths
-/* Sources */
-import semmle.python.web.HttpRequest
-/* Sinks */
-import experimental.semmle.python.templates.Ssti
-/* Flow */
-import semmle.python.security.strings.Untrusted
+import TemplateInjectionQuery
+import TemplateInjectionFlow::PathGraph
 
-class TemplateInjectionConfiguration extends TaintTracking::Configuration {
-  TemplateInjectionConfiguration() { this = "Template injection configuration" }
-
-  deprecated override predicate isSource(TaintTracking::Source source) {
-    source instanceof HttpRequestTaintSource
-  }
-
-  deprecated override predicate isSink(TaintTracking::Sink sink) { sink instanceof SSTISink }
-}
-
-from TemplateInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
-where config.hasFlowPath(src, sink)
-select sink.getSink(), src, sink, "This Template depends on $@.", src.getSource(),
-  "a user-provided value"
+from TemplateInjectionFlow::PathNode source, TemplateInjectionFlow::PathNode sink
+where TemplateInjectionFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, "This Template depends on $@.", source.getNode(),
+  "user-provided value"

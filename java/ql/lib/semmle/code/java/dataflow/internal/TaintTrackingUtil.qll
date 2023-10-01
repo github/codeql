@@ -86,6 +86,7 @@ module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
 cached
 private module Cached {
   private import DataFlowImplCommon as DataFlowImplCommon
+  private import DataFlowPrivate as DataFlowPrivate
 
   cached
   predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
@@ -136,7 +137,8 @@ private module Cached {
       )
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(src.(DataFlowPrivate::FlowSummaryNode)
+          .getSummaryNode(), sink.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
   }
 
   /**
@@ -175,7 +177,7 @@ private RefType getElementType(RefType container) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   exists(RefType container |
     (node.asExpr() instanceof Argument or node instanceof ArgumentNode) and
     getElementType*(node.getType()) = container
@@ -237,7 +239,7 @@ private class BulkData extends RefType {
     this.(Array).getElementType().(PrimitiveType).hasName(["byte", "char"])
     or
     exists(RefType t | this.getASourceSupertype*() = t |
-      t.hasQualifiedName("java.io", "InputStream") or
+      t instanceof TypeInputStream or
       t.hasQualifiedName("java.nio", "ByteBuffer") or
       t.hasQualifiedName("java.lang", "Readable") or
       t.hasQualifiedName("java.io", "DataInput") or
@@ -255,8 +257,9 @@ private class BulkData extends RefType {
  * status of its argument.
  */
 private predicate inputStreamWrapper(Constructor c, int argi) {
+  not c.fromSource() and
   c.getParameterType(argi) instanceof BulkData and
-  c.getDeclaringType().getASourceSupertype().hasQualifiedName("java.io", "InputStream")
+  c.getDeclaringType().getASourceSupertype+() instanceof TypeInputStream
 }
 
 /** An object construction that preserves the data flow status of any of its arguments. */
@@ -614,7 +617,6 @@ private MethodAccess callReturningSameType(Expr ref) {
   result.getMethod().getReturnType() = ref.getType()
 }
 
-pragma[assume_small_delta]
 private SrcRefType entrypointType() {
   exists(RemoteFlowSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and

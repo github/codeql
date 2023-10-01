@@ -4,6 +4,7 @@ import csharp
 private import dotnet
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch as DataFlowDispatch
+private import Impl::Public::SummaryComponent as SummaryComponentInternal
 
 class ParameterPosition = DataFlowDispatch::ParameterPosition;
 
@@ -18,8 +19,6 @@ class SummaryComponent = Impl::Public::SummaryComponent;
 
 /** Provides predicates for constructing summary components. */
 module SummaryComponent {
-  private import Impl::Public::SummaryComponent as SummaryComponentInternal
-
   predicate content = SummaryComponentInternal::content/1;
 
   /** Gets a summary component for parameter `i`. */
@@ -64,14 +63,9 @@ module SummaryComponent {
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = return(any(DataFlowDispatch::NormalReturnKind rk)) }
 
-  /** Gets a summary component that represents a jump to `c`. */
-  SummaryComponent jump(Callable c) {
-    result =
-      return(any(DataFlowDispatch::JumpReturnKind jrk |
-          jrk.getTarget() = c.getUnboundDeclaration() and
-          jrk.getTargetReturnKind() instanceof DataFlowDispatch::NormalReturnKind
-        ))
-  }
+  predicate syntheticGlobal = SummaryComponentInternal::syntheticGlobal/1;
+
+  class SyntheticGlobal = SummaryComponentInternal::SyntheticGlobal;
 }
 
 class SummaryComponentStack = Impl::Public::SummaryComponentStack;
@@ -110,8 +104,17 @@ module SummaryComponentStack {
   /** Gets a singleton stack representing the return value of a call. */
   SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
 
-  /** Gets a singleton stack representing a jump to `c`. */
-  SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }
+  /** Gets a singleton stack representing a synthetic global with name `name`. */
+  SummaryComponentStack syntheticGlobal(string synthetic) {
+    result = singleton(SummaryComponent::syntheticGlobal(synthetic))
+  }
+
+  /**
+   * DEPRECATED: Use the member predicate `getMadRepresentation` instead.
+   *
+   * Gets a textual representation of this stack used for flow summaries.
+   */
+  deprecated string getComponentStack(SummaryComponentStack s) { result = s.getMadRepresentation() }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
@@ -148,6 +151,48 @@ private class RecordConstructorFlowRequiredSummaryComponentStack extends Require
       recordConstructorFlow(_, _, p) and
       head = SummaryComponent::property(p) and
       tail = SummaryComponentStack::return()
+    )
+  }
+}
+
+class Provenance = Impl::Public::Provenance;
+
+private import semmle.code.csharp.frameworks.system.linq.Expressions
+
+private SummaryComponent delegateSelf() {
+  exists(ArgumentPosition pos |
+    result = SummaryComponentInternal::parameter(pos) and
+    pos.isDelegateSelf()
+  )
+}
+
+private predicate mayInvokeCallback(Callable c, int n) {
+  c.getParameter(n).getType() instanceof SystemLinqExpressions::DelegateExtType and
+  not c.fromSource()
+}
+
+private class SummarizedCallableWithCallback extends SummarizedCallable {
+  private int pos;
+
+  SummarizedCallableWithCallback() { mayInvokeCallback(this, pos) }
+
+  override predicate propagatesFlow(
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+  ) {
+    input = SummaryComponentStack::argument(pos) and
+    output = SummaryComponentStack::push(delegateSelf(), input) and
+    preservesValue = true
+  }
+
+  override predicate hasProvenance(Provenance provenance) { provenance = "hq-generated" }
+}
+
+private class RequiredComponentStackForCallback extends RequiredSummaryComponentStack {
+  override predicate required(SummaryComponent head, SummaryComponentStack tail) {
+    exists(int pos |
+      mayInvokeCallback(_, pos) and
+      head = delegateSelf() and
+      tail = SummaryComponentStack::argument(pos)
     )
   }
 }

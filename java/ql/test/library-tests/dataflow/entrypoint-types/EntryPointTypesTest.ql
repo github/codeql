@@ -18,12 +18,10 @@ module TaintFlowConfig implements DataFlow::ConfigSig {
 
 module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = "hasTaintFlow" }
 
-  override string getARelevantTag() { result = ["hasTaintFlow"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasTaintFlow" and
     exists(DataFlow::Node sink | TaintFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -32,3 +30,5 @@ class HasFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasFlowTest>

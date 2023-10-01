@@ -1,0 +1,7 @@
+name: codeql/controlflow
+version: 0.0.3-dev
+groups: shared
+library: true
+dependencies:
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

@@ -2,15 +2,14 @@ import csharp
 import semmle.code.csharp.controlflow.internal.Completion
 import semmle.code.csharp.controlflow.internal.PreBasicBlocks
 import ControlFlow
-import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
+import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl::Consistency
 import semmle.code.csharp.controlflow.internal.Splitting
-import Consistency
 
 private predicate splitBB(ControlFlow::BasicBlock bb) {
   exists(ControlFlow::Node first |
     first = bb.getFirstNode() and
     first.isJoin() and
-    strictcount(first.getAPredecessor().getElement()) = 1
+    strictcount(first.getAPredecessor().getAstNode()) = 1
   )
 }
 
@@ -61,4 +60,9 @@ query predicate preBasicBlockConsistency(ControlFlowElement cfe1, ControlFlowEle
   or
   bbIntraSuccInconsistency(cfe1, cfe2) and
   s = "intra succ inconsistency"
+}
+
+query predicate multipleToString(Node n, string s) {
+  s = strictconcat(n.toString(), ",") and
+  strictcount(n.toString()) > 1
 }

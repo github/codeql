@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["com.thoughtworks.xstream", "XStream", True, "fromXML", "(File)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["com.thoughtworks.xstream", "XStream", True, "fromXML", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]

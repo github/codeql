@@ -27,6 +27,11 @@ module Generated {
     /**
      * Gets the base of this self apply expression.
      */
-    final Expr getBase() { result = this.getImmediateBase().resolve() }
+    final Expr getBase() {
+      exists(Expr immediate |
+        immediate = this.getImmediateBase() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

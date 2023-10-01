@@ -3,10 +3,10 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Web", "HttpResponse", False, "BinaryWrite", "", "", "Argument[0]", "html", "manual"]
-      - ["System.Web", "HttpResponse", False, "TransmitFile", "", "", "Argument[0]", "html", "manual"]
-      - ["System.Web", "HttpResponse", False, "Write", "", "", "Argument[0]", "html", "manual"]
-      - ["System.Web", "HttpResponse", False, "WriteFile", "", "", "Argument[0]", "html", "manual"]
+      - ["System.Web", "HttpResponse", False, "BinaryWrite", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "TransmitFile", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "Write", "", "", "Argument[0]", "html-injection", "manual"]
+      - ["System.Web", "HttpResponse", False, "WriteFile", "", "", "Argument[0]", "html-injection", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel

@@ -5,7 +5,9 @@ edges
 | ArchiveApiPathTraversal.rb:10:11:10:23 | ...[...] | ArchiveApiPathTraversal.rb:67:13:67:16 | file |
 | ArchiveApiPathTraversal.rb:15:9:15:14 | call to params | ArchiveApiPathTraversal.rb:15:9:15:25 | ...[...] |
 | ArchiveApiPathTraversal.rb:15:9:15:25 | ...[...] | ArchiveApiPathTraversal.rb:75:11:75:18 | filename |
-| ArchiveApiPathTraversal.rb:49:17:49:27 | destination | ArchiveApiPathTraversal.rb:52:38:52:48 | destination |
+| ArchiveApiPathTraversal.rb:49:17:49:27 | destination | ArchiveApiPathTraversal.rb:50:36:64:7 | do ... end [captured destination] |
+| ArchiveApiPathTraversal.rb:50:36:64:7 | do ... end [captured destination] | ArchiveApiPathTraversal.rb:51:16:63:9 | do ... end [captured destination] |
+| ArchiveApiPathTraversal.rb:51:16:63:9 | do ... end [captured destination] | ArchiveApiPathTraversal.rb:52:38:52:48 | destination |
 | ArchiveApiPathTraversal.rb:52:9:52:24 | destination_file | ArchiveApiPathTraversal.rb:59:21:59:36 | destination_file |
 | ArchiveApiPathTraversal.rb:52:28:52:67 | call to join | ArchiveApiPathTraversal.rb:52:9:52:24 | destination_file |
 | ArchiveApiPathTraversal.rb:52:38:52:48 | destination | ArchiveApiPathTraversal.rb:52:28:52:67 | call to join |
@@ -72,6 +74,8 @@ nodes
 | ArchiveApiPathTraversal.rb:15:9:15:14 | call to params | semmle.label | call to params |
 | ArchiveApiPathTraversal.rb:15:9:15:25 | ...[...] | semmle.label | ...[...] |
 | ArchiveApiPathTraversal.rb:49:17:49:27 | destination | semmle.label | destination |
+| ArchiveApiPathTraversal.rb:50:36:64:7 | do ... end [captured destination] | semmle.label | do ... end [captured destination] |
+| ArchiveApiPathTraversal.rb:51:16:63:9 | do ... end [captured destination] | semmle.label | do ... end [captured destination] |
 | ArchiveApiPathTraversal.rb:52:9:52:24 | destination_file | semmle.label | destination_file |
 | ArchiveApiPathTraversal.rb:52:28:52:67 | call to join | semmle.label | call to join |
 | ArchiveApiPathTraversal.rb:52:38:52:48 | destination | semmle.label | destination |

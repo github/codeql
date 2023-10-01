@@ -33,7 +33,7 @@ private module Cached {
     exists(ApplyExpr apply, ExprCfgNode e |
       nodeFrom.asExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
       apply.getStaticTarget().getName() = ["appendLiteral(_:)", "appendInterpolation(_:)"] and
-      e.getExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
+      e.getExpr() = apply.getQualifier() and
       nodeTo.(PostUpdateNodeImpl).getPreUpdateNode().getCfgNode() = e
     )
     or
@@ -68,7 +68,8 @@ private module Cached {
     )
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false)
     or
     any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
   }

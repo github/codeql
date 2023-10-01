@@ -77,4 +77,16 @@ class IRPropertyProvider extends TIRPropertyProvider {
    * Gets the value of the property named `key` for the specified operand.
    */
   string getOperandProperty(Operand operand, string key) { none() }
+
+  /**
+   * Holds if the instruction `instr` should be included when printing
+   * the IR instructions.
+   */
+  predicate shouldPrintInstruction(Instruction instr) { any() }
+
+  /**
+   * Holds if the operand `operand` should be included when printing the an
+   * instruction's operand list.
+   */
+  predicate shouldPrintOperand(Operand operand) { any() }
 }

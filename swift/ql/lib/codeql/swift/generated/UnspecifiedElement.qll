@@ -24,7 +24,12 @@ module Generated {
     /**
      * Gets the parent of this unspecified element, if it exists.
      */
-    final Element getParent() { result = this.getImmediateParent().resolve() }
+    final Element getParent() {
+      exists(Element immediate |
+        immediate = this.getImmediateParent() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getParent()` exists.

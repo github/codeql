@@ -48,7 +48,7 @@ class UnaryLogicalOperation extends UnaryOperation, TUnaryLogicalOperation { }
  * not params.empty?
  * ```
  */
-class NotExpr extends UnaryLogicalOperation, TNotExpr {
+class NotExpr extends UnaryLogicalOperation instanceof NotExprImpl {
   final override string getAPrimaryQlClass() { result = "NotExpr" }
 }
 
@@ -118,7 +118,7 @@ class ComplementExpr extends UnaryBitwiseOperation, TComplementExpr {
  * defined? some_method
  * ```
  */
-class DefinedExpr extends UnaryOperation, TDefinedExpr {
+class DefinedExpr extends UnaryOperation instanceof DefinedExprImpl {
   final override string getAPrimaryQlClass() { result = "DefinedExpr" }
 }
 

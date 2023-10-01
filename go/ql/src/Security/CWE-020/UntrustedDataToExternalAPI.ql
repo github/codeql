@@ -11,10 +11,10 @@
 
 import go
 import semmle.go.security.ExternalAPIs
-import DataFlow::PathGraph
+import UntrustedDataToExternalApiFlow::PathGraph
 
-from UntrustedDataToExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from UntrustedDataToExternalApiFlow::PathNode source, UntrustedDataToExternalApiFlow::PathNode sink
+where UntrustedDataToExternalApiFlow::flowPath(source, sink)
 select sink, source, sink,
   "Call to " + sink.getNode().(ExternalApiDataNode).getFunctionDescription() +
     " with untrusted data from $@.", source, source.toString()

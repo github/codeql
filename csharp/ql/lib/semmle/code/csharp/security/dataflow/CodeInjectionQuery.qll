@@ -97,5 +97,5 @@ class RoslynCSharpScriptSink extends Sink {
 
 /** Code injection sinks defined through CSV models. */
 private class ExternalCodeInjectionExprSink extends Sink {
-  ExternalCodeInjectionExprSink() { sinkNode(this, "code") }
+  ExternalCodeInjectionExprSink() { sinkNode(this, "code-injection") }
 }

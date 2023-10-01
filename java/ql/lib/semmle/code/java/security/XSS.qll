@@ -6,6 +6,7 @@ import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+private import semmle.code.java.frameworks.hudson.Hudson
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
@@ -39,7 +40,7 @@ class XssAdditionalTaintStep extends Unit {
 /** A default sink representing methods susceptible to XSS attacks. */
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
-    sinkNode(this, "xss")
+    sinkNode(this, ["html-injection", "js-injection"])
     or
     exists(MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and

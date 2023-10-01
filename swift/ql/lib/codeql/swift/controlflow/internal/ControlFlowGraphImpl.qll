@@ -111,31 +111,23 @@ module Stmts {
 
     override predicate propagatesAbnormal(ControlFlowElement node) { none() }
 
-    private predicate isBodyOfTapExpr() { any(TapExpr tap).getBody() = ast }
-
-    // Note: If the brace statement is the body of a `TapExpr`, the first element is the variable
-    // declaration (see https://github.com/apple/swift/blob/main/include/swift/AST/Expr.h#L848)
-    // that's initialized by the `TapExpr`. In `TapExprTree` we've already visited this declaration,
-    // along with its initializer. So we skip the first element here.
-    private AstNode getFirstElement() {
-      if this.isBodyOfTapExpr() then result = ast.getElement(1) else result = ast.getFirstElement()
-    }
-
     override predicate first(ControlFlowElement first) {
       this.firstInner(first)
       or
-      not exists(this.getFirstElement()) and first.asAstNode() = ast
+      not exists(ast.getFirstElement()) and first.asAstNode() = ast
     }
 
     override predicate last(ControlFlowElement last, Completion c) {
       this.lastInner(last, c)
       or
-      not exists(this.getFirstElement()) and
+      not exists(ast.getFirstElement()) and
       last.asAstNode() = ast and
       c instanceof SimpleCompletion
     }
 
-    predicate firstInner(ControlFlowElement first) { astFirst(this.getFirstElement(), first) }
+    predicate firstInner(ControlFlowElement first) {
+      astFirst(ast.getFirstElement().getFullyUnresolved(), first)
+    }
 
     /** Gets the body of the i'th `defer` statement. */
     private BraceStmt getDeferStmtBody(int i) {
@@ -191,32 +183,32 @@ module Stmts {
 
     predicate lastInner(ControlFlowElement last, Completion c) {
       // Normal exit and no defer statements
-      astLast(ast.getLastElement(), last, c) and
+      astLast(ast.getLastElement().getFullyUnresolved(), last, c) and
       not exists(this.getFirstDeferStmtBody()) and
       c instanceof NormalCompletion
       or
       // Normal exit from the last defer statement to be executed
-      astLast(this.getLastDeferStmtBody(), last, c) and
+      astLast(this.getLastDeferStmtBody().getFullyUnresolved(), last, c) and
       c instanceof NormalCompletion
       or
       // Abnormal exit without any defer statements
       not c instanceof NormalCompletion and
-      astLast(ast.getAnElement(), last, c) and
+      astLast(ast.getAnElement().getFullyUnresolved(), last, c) and
       not exists(this.getFirstDeferStmtBody())
     }
 
     override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // left-to-right evaluation of statements
       exists(int i |
-        astLast(ast.getElement(i), pred, c) and
-        astFirst(ast.getElement(i + 1), succ) and
+        astLast(ast.getElement(i).getFullyUnresolved(), pred, c) and
+        astFirst(ast.getElement(i + 1).getFullyUnresolved(), succ) and
         c instanceof NormalCompletion
       )
       or
       // Flow from last elements to the first defer statement to be executed
       c instanceof NormalCompletion and
-      astLast(ast.getLastElement(), pred, c) and
-      astFirst(this.getFirstDeferStmtBody(), succ)
+      astLast(ast.getLastElement().getFullyUnresolved(), pred, c) and
+      astFirst(this.getFirstDeferStmtBody().getFullyUnresolved(), succ)
       or
       // Flow from a defer statement to the next defer to be executed
       c instanceof NormalCompletion and
@@ -228,7 +220,7 @@ module Stmts {
       // Abnormal exit from an element to the first defer statement to be executed.
       not c instanceof NormalCompletion and
       exists(int i |
-        astLast(ast.getElement(i), pred, c) and
+        astLast(ast.getElement(i).getFullyUnresolved(), pred, c) and
         astFirst(this.getDeferStmtBodyAfterStmt(i), succ)
       )
     }
@@ -969,6 +961,15 @@ module Decls {
         result.asAstNode() = ast.getPattern(j).getFullyUnresolved()
       )
       or
+      // synthesized pattern bindings for property wrappers may be sharing the init with the backed
+      // variable declaration, so we need to skip those
+      not exists(VarDecl decl |
+        ast =
+          [
+            decl.getPropertyWrapperBackingVarBinding(),
+            decl.getPropertyWrapperProjectionVarBinding()
+          ]
+      ) and
       exists(int j |
         i = 2 * j + 1 and
         result.asAstNode() = ast.getInit(j).getFullyConverted()
@@ -1236,14 +1237,6 @@ module Exprs {
     }
   }
 
-  private class InOutTree extends AstStandardPostOrderTree {
-    override InOutExpr ast;
-
-    final override ControlFlowElement getChildElement(int i) {
-      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyConverted()
-    }
-  }
-
   private class SubscriptTree extends AstControlFlowTree {
     override SubscriptExpr ast;
 
@@ -1397,20 +1390,12 @@ module Exprs {
     override TapExpr ast;
 
     final override ControlFlowElement getChildElement(int i) {
-      // We first visit the local variable declaration.
+      // We first visit the expression that gives the local variable its initial value.
       i = 0 and
-      result.asAstNode() = ast.getVar()
-      or
-      // Then we visit the expression that gives the local variable its initial value.
-      i = 1 and
       result.asAstNode() = ast.getSubExpr().getFullyConverted()
       or
-      // And finally, we visit the body that potentially mutates the local variable.
-      // Note that the CFG for the body will skip the first element in the
-      // body because it's guaranteed to be the variable declaration
-      // that we've already visited at i = 0. See the explanation
-      // in `BraceStmtTree` for why this is necessary.
-      i = 2 and
+      // And then we visit the body that potentially mutates the local variable.
+      i = 1 and
       result.asAstNode() = ast.getBody()
     }
   }
@@ -1758,7 +1743,8 @@ module Exprs {
 
   module Conversions {
     class ConversionOrIdentity =
-      Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr;
+      Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr or
+          Synth::TInOutExpr;
 
     abstract class ConversionOrIdentityTree extends AstStandardPostOrderTree {
       ConversionOrIdentityTree() { ast instanceof ConversionOrIdentity }
@@ -1786,6 +1772,12 @@ module Exprs {
 
     private class ImplicitConversionTree extends ConversionOrIdentityTree {
       override ImplicitConversionExpr ast;
+
+      override predicate convertsFrom(Expr e) { ast.convertsFrom(e) }
+    }
+
+    private class InOutTree extends ConversionOrIdentityTree {
+      override InOutExpr ast;
 
       override predicate convertsFrom(Expr e) { ast.convertsFrom(e) }
     }

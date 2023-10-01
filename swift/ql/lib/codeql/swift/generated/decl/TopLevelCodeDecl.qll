@@ -10,20 +10,12 @@ module Generated {
 
     /**
      * Gets the body of this top level code declaration.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    BraceStmt getImmediateBody() {
+    BraceStmt getBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertTopLevelCodeDeclToRaw(this)
               .(Raw::TopLevelCodeDecl)
               .getBody())
     }
-
-    /**
-     * Gets the body of this top level code declaration.
-     */
-    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
   }
 }

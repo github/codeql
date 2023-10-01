@@ -40,9 +40,7 @@ nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point
            {"telemetry", has(Visibility::telemetry)},
        }},
       {"severity", severityToString(severity)},
-      {"helpLinks", std::vector<std::string_view>(absl::StrSplit(helpLinks, ' '))},
-      {format == Format::markdown ? "markdownMessage" : "plaintextMessage",
-       absl::StrCat(message, ".\n\n", action)},
+      {"markdownMessage", absl::StrCat(message, "\n\n", action)},
       {"timestamp", fmt::format("{:%FT%T%z}", timestamp)},
   };
   if (location) {

@@ -63,9 +63,6 @@ abstract class TranslatedExpr extends TranslatedExprBase {
 
   final override Language::AST getAst() { result = expr }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
-
   final override Callable getFunction() { result = expr.getEnclosingCallable() }
 
   /**

@@ -1552,8 +1552,13 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertJsxAttribute(JsonObject node, SourceLocation loc) throws ParseError {
+    JsonObject nameNode = node.get("name").getAsJsonObject();
+    if (nameNode.get("name") != null) {
+      // it's a namespaced attribute
+      nameNode = nameNode.get("name").getAsJsonObject();
+    }
     return new JSXAttribute(
-        loc, convertJSXName(convertChild(node, "name")), convertChild(node, "initializer"));
+        loc, convertJSXName(((Expression)convertNode(nameNode, null))), convertChild(node, "initializer")); // 2
   }
 
   private Node convertJsxClosingElement(JsonObject node, SourceLocation loc) throws ParseError {
@@ -2678,10 +2683,13 @@ public class TypeScriptASTConverter {
   }
 
   /**
-   * Gets the declaration kind of the given node, which is one of {@code "var"}, {@code "let"} or
-   * {@code "const"}.
+   * Gets the declaration kind of the given node, which is one of {@code "var"}, {@code "let"}, 
+   * {@code "const"}, or {@code "using"}.
    */
   private String getDeclarationKind(JsonObject declarationList) {
+    if (hasFlag(declarationList, "Using")) {
+      return "using";
+    }
     return declarationList.get("$declarationKind").getAsString();
   }
 }

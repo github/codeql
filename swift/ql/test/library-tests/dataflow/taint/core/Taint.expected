@@ -1,4 +1,62 @@
 edges
+| conversions.swift:27:16:27:26 | call to sourceInt() | conversions.swift:27:12:27:27 | call to Self.init(_:) |
+| conversions.swift:28:18:28:28 | call to sourceInt() | conversions.swift:28:12:28:29 | call to Self.init(_:) |
+| conversions.swift:29:18:29:28 | call to sourceInt() | conversions.swift:29:12:29:29 | call to Float.init(_:) |
+| conversions.swift:30:19:30:29 | call to sourceInt() | conversions.swift:30:12:30:30 | call to String.init(_:) |
+| conversions.swift:31:12:31:30 | call to String.init(_:) | conversions.swift:31:12:31:32 | .utf8 |
+| conversions.swift:31:19:31:29 | call to sourceInt() | conversions.swift:31:12:31:30 | call to String.init(_:) |
+| conversions.swift:33:12:33:30 | [...] [Collection element] | conversions.swift:35:12:35:12 | arr [Collection element] |
+| conversions.swift:33:12:33:30 | [...] [Collection element] | conversions.swift:37:20:37:20 | arr [Collection element] |
+| conversions.swift:33:19:33:29 | call to sourceInt() | conversions.swift:33:12:33:30 | [...] [Collection element] |
+| conversions.swift:35:12:35:12 | arr [Collection element] | conversions.swift:35:12:35:17 | ...[...] |
+| conversions.swift:37:12:37:23 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:37:12:37:26 | ...[...] |
+| conversions.swift:37:20:37:20 | arr [Collection element] | conversions.swift:37:12:37:23 | call to Array<Element>.init(_:) [Collection element] |
+| conversions.swift:39:12:39:39 | call to Array<Element>.init(_:) [Collection element] | conversions.swift:39:12:39:42 | ...[...] |
+| conversions.swift:39:20:39:33 | call to sourceString() | conversions.swift:39:20:39:35 | .utf8 |
+| conversions.swift:39:20:39:35 | .utf8 | conversions.swift:39:12:39:39 | call to Array<Element>.init(_:) [Collection element] |
+| conversions.swift:41:13:41:23 | call to sourceInt() | conversions.swift:42:13:42:13 | v |
+| conversions.swift:45:18:45:41 | call to numericCast(_:) | conversions.swift:46:12:46:12 | v2 |
+| conversions.swift:45:30:45:40 | call to sourceInt() | conversions.swift:45:18:45:41 | call to numericCast(_:) |
+| conversions.swift:48:17:48:57 | call to unsafeBitCast(_:to:) | conversions.swift:49:12:49:12 | v4 |
+| conversions.swift:48:31:48:41 | call to sourceInt() | conversions.swift:48:17:48:57 | call to unsafeBitCast(_:to:) |
+| conversions.swift:51:11:51:47 | call to Self.init(truncatingIfNeeded:) | conversions.swift:52:12:52:12 | v5 |
+| conversions.swift:51:36:51:46 | call to sourceInt() | conversions.swift:51:11:51:47 | call to Self.init(truncatingIfNeeded:) |
+| conversions.swift:54:11:54:39 | call to UInt.init(bitPattern:) | conversions.swift:55:12:55:12 | v6 |
+| conversions.swift:54:28:54:38 | call to sourceInt() | conversions.swift:54:11:54:39 | call to UInt.init(bitPattern:) |
+| conversions.swift:57:12:57:36 | call to Self.init(exactly:) [some:0] | conversions.swift:57:12:57:37 | ...! |
+| conversions.swift:57:25:57:35 | call to sourceInt() | conversions.swift:57:12:57:36 | call to Self.init(exactly:) [some:0] |
+| conversions.swift:58:26:58:36 | call to sourceInt() | conversions.swift:58:12:58:37 | call to Self.init(clamping:) |
+| conversions.swift:59:36:59:46 | call to sourceInt() | conversions.swift:59:12:59:47 | call to Self.init(truncatingIfNeeded:) |
+| conversions.swift:60:12:60:41 | call to Self.init(_:radix:) | conversions.swift:60:12:60:42 | ...! |
+| conversions.swift:60:16:60:29 | call to sourceString() | conversions.swift:60:12:60:41 | call to Self.init(_:radix:) |
+| conversions.swift:62:30:62:40 | call to sourceInt() | conversions.swift:62:12:62:41 | call to Self.init(littleEndian:) |
+| conversions.swift:63:27:63:37 | call to sourceInt() | conversions.swift:63:12:63:38 | call to Self.init(bigEndian:) |
+| conversions.swift:64:12:64:22 | call to sourceInt() | conversions.swift:64:12:64:24 | .littleEndian |
+| conversions.swift:65:12:65:22 | call to sourceInt() | conversions.swift:65:12:65:24 | .bigEndian |
+| conversions.swift:70:18:70:30 | call to sourceFloat() | conversions.swift:70:12:70:31 | call to Float.init(_:) |
+| conversions.swift:71:18:71:30 | call to sourceFloat() | conversions.swift:71:12:71:31 | call to UInt8.init(_:) |
+| conversions.swift:72:19:72:31 | call to sourceFloat() | conversions.swift:72:12:72:32 | call to String.init(_:) |
+| conversions.swift:73:12:73:32 | call to String.init(_:) | conversions.swift:73:12:73:34 | .utf8 |
+| conversions.swift:73:19:73:31 | call to sourceFloat() | conversions.swift:73:12:73:32 | call to String.init(_:) |
+| conversions.swift:75:18:75:30 | call to sourceFloat() | conversions.swift:75:12:75:31 | call to Float.init(_:) |
+| conversions.swift:76:41:76:51 | call to sourceInt() | conversions.swift:76:12:76:70 | call to Float.init(sign:exponent:significand:) |
+| conversions.swift:77:57:77:69 | call to sourceFloat() | conversions.swift:77:12:77:70 | call to Float.init(sign:exponent:significand:) |
+| conversions.swift:79:44:79:56 | call to sourceFloat() | conversions.swift:79:12:79:57 | call to Float.init(signOf:magnitudeOf:) |
+| conversions.swift:81:12:81:24 | call to sourceFloat() | conversions.swift:81:12:81:26 | .exponent |
+| conversions.swift:82:12:82:24 | call to sourceFloat() | conversions.swift:82:12:82:26 | .significand |
+| conversions.swift:87:19:87:32 | call to sourceString() | conversions.swift:87:12:87:33 | call to String.init(_:) |
+| conversions.swift:95:12:95:35 | call to MyString.init(_:) | conversions.swift:95:12:95:35 | call to MyString.init(_:) [some:0] |
+| conversions.swift:95:12:95:35 | call to MyString.init(_:) | conversions.swift:96:12:96:12 | ms2 |
+| conversions.swift:95:12:95:35 | call to MyString.init(_:) [some:0] | conversions.swift:95:12:95:36 | ...! |
+| conversions.swift:95:12:95:36 | ...! | conversions.swift:96:12:96:12 | ms2 |
+| conversions.swift:95:21:95:34 | call to sourceString() | conversions.swift:95:12:95:35 | call to MyString.init(_:) |
+| conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:104:12:104:12 | parent |
+| conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:105:12:105:12 | parent |
+| conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:107:40:107:40 | parent |
+| conversions.swift:107:25:107:69 | call to unsafeDowncast(_:to:) | conversions.swift:108:12:108:12 | v3 |
+| conversions.swift:107:25:107:69 | call to unsafeDowncast(_:to:) | conversions.swift:109:12:109:12 | v3 |
+| conversions.swift:107:40:107:40 | parent | conversions.swift:107:25:107:69 | call to unsafeDowncast(_:to:) |
+| conversions.swift:117:24:117:34 | call to sourceInt() | conversions.swift:117:12:117:35 | call to Self.init(_:) |
 | file://:0:0:0:0 | self [first] | file://:0:0:0:0 | .first |
 | file://:0:0:0:0 | self [second] | file://:0:0:0:0 | .second |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [first] |
@@ -46,11 +104,11 @@ edges
 | stringinterpolation.swift:7:6:7:6 | self [second] | file://:0:0:0:0 | self [second] |
 | stringinterpolation.swift:7:6:7:6 | value | file://:0:0:0:0 | value |
 | stringinterpolation.swift:11:36:11:44 | pair [first] | stringinterpolation.swift:13:36:13:36 | pair [first] |
-| stringinterpolation.swift:13:3:13:3 | [post] &... | stringinterpolation.swift:11:11:14:2 | self[return] |
+| stringinterpolation.swift:13:3:13:3 | [post] self | stringinterpolation.swift:11:11:14:2 | self[return] |
 | stringinterpolation.swift:13:36:13:36 | pair [first] | stringinterpolation.swift:6:6:6:6 | self [first] |
 | stringinterpolation.swift:13:36:13:36 | pair [first] | stringinterpolation.swift:13:36:13:41 | .first |
 | stringinterpolation.swift:13:36:13:41 | .first | stringinterpolation.swift:11:11:14:2 | self[return] |
-| stringinterpolation.swift:13:36:13:41 | .first | stringinterpolation.swift:13:3:13:3 | [post] &... |
+| stringinterpolation.swift:13:36:13:41 | .first | stringinterpolation.swift:13:3:13:3 | [post] self |
 | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] | stringinterpolation.swift:20:2:20:2 | p1 [first] |
 | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:6:6:6:6 | value |
 | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] |
@@ -59,21 +117,121 @@ edges
 | stringinterpolation.swift:22:21:22:21 | p1 [first] | stringinterpolation.swift:6:6:6:6 | self [first] |
 | stringinterpolation.swift:22:21:22:21 | p1 [first] | stringinterpolation.swift:22:21:22:24 | .first |
 | stringinterpolation.swift:22:21:22:24 | .first | stringinterpolation.swift:22:12:22:12 | "..." |
-| stringinterpolation.swift:24:20:24:20 | [post] &... | stringinterpolation.swift:24:12:24:12 | "..." |
+| stringinterpolation.swift:24:20:24:20 | [post] $interpolation | stringinterpolation.swift:24:12:24:12 | "..." |
 | stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:11:36:11:44 | pair [first] |
-| stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:24:20:24:20 | [post] &... |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:24:20:24:20 | [post] $interpolation |
 | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] | stringinterpolation.swift:31:21:31:21 | p2 [second] |
 | stringinterpolation.swift:28:14:28:21 | call to source() | stringinterpolation.swift:7:6:7:6 | value |
 | stringinterpolation.swift:28:14:28:21 | call to source() | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] |
 | stringinterpolation.swift:31:21:31:21 | p2 [second] | stringinterpolation.swift:7:6:7:6 | self [second] |
 | stringinterpolation.swift:31:21:31:21 | p2 [second] | stringinterpolation.swift:31:21:31:24 | .second |
 | stringinterpolation.swift:31:21:31:24 | .second | stringinterpolation.swift:31:12:31:12 | "..." |
+| stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:40:12:40:12 | "..." |
+| stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:41:12:41:12 | "..." |
+| stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:42:12:42:12 | "..." |
 | subscript.swift:13:15:13:22 | call to source() | subscript.swift:13:15:13:25 | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() | subscript.swift:14:15:14:26 | ...[...] |
 | try.swift:9:17:9:24 | call to source() | try.swift:9:13:9:24 | try ... |
 | try.swift:15:17:15:24 | call to source() | try.swift:15:12:15:24 | try! ... |
+| try.swift:18:13:18:25 | try? ... [some:0] | try.swift:18:12:18:27 | ...! |
 | try.swift:18:18:18:25 | call to source() | try.swift:18:12:18:27 | ...! |
+| try.swift:18:18:18:25 | call to source() | try.swift:18:18:18:25 | call to source() [some:0] |
+| try.swift:18:18:18:25 | call to source() [some:0] | try.swift:18:13:18:25 | try? ... [some:0] |
 nodes
+| conversions.swift:26:12:26:22 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:27:12:27:27 | call to Self.init(_:) | semmle.label | call to Self.init(_:) |
+| conversions.swift:27:16:27:26 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:28:12:28:29 | call to Self.init(_:) | semmle.label | call to Self.init(_:) |
+| conversions.swift:28:18:28:28 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:29:12:29:29 | call to Float.init(_:) | semmle.label | call to Float.init(_:) |
+| conversions.swift:29:18:29:28 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:30:12:30:30 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:30:19:30:29 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:31:12:31:30 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:31:12:31:32 | .utf8 | semmle.label | .utf8 |
+| conversions.swift:31:19:31:29 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:33:12:33:30 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| conversions.swift:33:19:33:29 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:35:12:35:12 | arr [Collection element] | semmle.label | arr [Collection element] |
+| conversions.swift:35:12:35:17 | ...[...] | semmle.label | ...[...] |
+| conversions.swift:37:12:37:23 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| conversions.swift:37:12:37:26 | ...[...] | semmle.label | ...[...] |
+| conversions.swift:37:20:37:20 | arr [Collection element] | semmle.label | arr [Collection element] |
+| conversions.swift:39:12:39:39 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
+| conversions.swift:39:12:39:42 | ...[...] | semmle.label | ...[...] |
+| conversions.swift:39:20:39:33 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:39:20:39:35 | .utf8 | semmle.label | .utf8 |
+| conversions.swift:41:13:41:23 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:42:13:42:13 | v | semmle.label | v |
+| conversions.swift:45:18:45:41 | call to numericCast(_:) | semmle.label | call to numericCast(_:) |
+| conversions.swift:45:30:45:40 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:46:12:46:12 | v2 | semmle.label | v2 |
+| conversions.swift:48:17:48:57 | call to unsafeBitCast(_:to:) | semmle.label | call to unsafeBitCast(_:to:) |
+| conversions.swift:48:31:48:41 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:49:12:49:12 | v4 | semmle.label | v4 |
+| conversions.swift:51:11:51:47 | call to Self.init(truncatingIfNeeded:) | semmle.label | call to Self.init(truncatingIfNeeded:) |
+| conversions.swift:51:36:51:46 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:52:12:52:12 | v5 | semmle.label | v5 |
+| conversions.swift:54:11:54:39 | call to UInt.init(bitPattern:) | semmle.label | call to UInt.init(bitPattern:) |
+| conversions.swift:54:28:54:38 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:55:12:55:12 | v6 | semmle.label | v6 |
+| conversions.swift:57:12:57:36 | call to Self.init(exactly:) [some:0] | semmle.label | call to Self.init(exactly:) [some:0] |
+| conversions.swift:57:12:57:37 | ...! | semmle.label | ...! |
+| conversions.swift:57:25:57:35 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:58:12:58:37 | call to Self.init(clamping:) | semmle.label | call to Self.init(clamping:) |
+| conversions.swift:58:26:58:36 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:59:12:59:47 | call to Self.init(truncatingIfNeeded:) | semmle.label | call to Self.init(truncatingIfNeeded:) |
+| conversions.swift:59:36:59:46 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:60:12:60:41 | call to Self.init(_:radix:) | semmle.label | call to Self.init(_:radix:) |
+| conversions.swift:60:12:60:42 | ...! | semmle.label | ...! |
+| conversions.swift:60:16:60:29 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:62:12:62:41 | call to Self.init(littleEndian:) | semmle.label | call to Self.init(littleEndian:) |
+| conversions.swift:62:30:62:40 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:63:12:63:38 | call to Self.init(bigEndian:) | semmle.label | call to Self.init(bigEndian:) |
+| conversions.swift:63:27:63:37 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:64:12:64:22 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:64:12:64:24 | .littleEndian | semmle.label | .littleEndian |
+| conversions.swift:65:12:65:22 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:65:12:65:24 | .bigEndian | semmle.label | .bigEndian |
+| conversions.swift:69:12:69:24 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:70:12:70:31 | call to Float.init(_:) | semmle.label | call to Float.init(_:) |
+| conversions.swift:70:18:70:30 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:71:12:71:31 | call to UInt8.init(_:) | semmle.label | call to UInt8.init(_:) |
+| conversions.swift:71:18:71:30 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:72:12:72:32 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:72:19:72:31 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:73:12:73:32 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:73:12:73:34 | .utf8 | semmle.label | .utf8 |
+| conversions.swift:73:19:73:31 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:75:12:75:31 | call to Float.init(_:) | semmle.label | call to Float.init(_:) |
+| conversions.swift:75:18:75:30 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:76:12:76:70 | call to Float.init(sign:exponent:significand:) | semmle.label | call to Float.init(sign:exponent:significand:) |
+| conversions.swift:76:41:76:51 | call to sourceInt() | semmle.label | call to sourceInt() |
+| conversions.swift:77:12:77:70 | call to Float.init(sign:exponent:significand:) | semmle.label | call to Float.init(sign:exponent:significand:) |
+| conversions.swift:77:57:77:69 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:79:12:79:57 | call to Float.init(signOf:magnitudeOf:) | semmle.label | call to Float.init(signOf:magnitudeOf:) |
+| conversions.swift:79:44:79:56 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:81:12:81:24 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:81:12:81:26 | .exponent | semmle.label | .exponent |
+| conversions.swift:82:12:82:24 | call to sourceFloat() | semmle.label | call to sourceFloat() |
+| conversions.swift:82:12:82:26 | .significand | semmle.label | .significand |
+| conversions.swift:86:12:86:25 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:87:12:87:33 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| conversions.swift:87:19:87:32 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:95:12:95:35 | call to MyString.init(_:) | semmle.label | call to MyString.init(_:) |
+| conversions.swift:95:12:95:35 | call to MyString.init(_:) [some:0] | semmle.label | call to MyString.init(_:) [some:0] |
+| conversions.swift:95:12:95:36 | ...! | semmle.label | ...! |
+| conversions.swift:95:21:95:34 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:96:12:96:12 | ms2 | semmle.label | ms2 |
+| conversions.swift:103:31:103:44 | call to sourceString() | semmle.label | call to sourceString() |
+| conversions.swift:104:12:104:12 | parent | semmle.label | parent |
+| conversions.swift:105:12:105:12 | parent | semmle.label | parent |
+| conversions.swift:107:25:107:69 | call to unsafeDowncast(_:to:) | semmle.label | call to unsafeDowncast(_:to:) |
+| conversions.swift:107:40:107:40 | parent | semmle.label | parent |
+| conversions.swift:108:12:108:12 | v3 | semmle.label | v3 |
+| conversions.swift:109:12:109:12 | v3 | semmle.label | v3 |
+| conversions.swift:117:12:117:35 | call to Self.init(_:) | semmle.label | call to Self.init(_:) |
+| conversions.swift:117:24:117:34 | call to sourceInt() | semmle.label | call to sourceInt() |
 | file://:0:0:0:0 | .first | semmle.label | .first |
 | file://:0:0:0:0 | .second | semmle.label | .second |
 | file://:0:0:0:0 | [post] self [first] | semmle.label | [post] self [first] |
@@ -159,7 +317,7 @@ nodes
 | stringinterpolation.swift:7:6:7:6 | value | semmle.label | value |
 | stringinterpolation.swift:11:11:14:2 | self[return] | semmle.label | self[return] |
 | stringinterpolation.swift:11:36:11:44 | pair [first] | semmle.label | pair [first] |
-| stringinterpolation.swift:13:3:13:3 | [post] &... | semmle.label | [post] &... |
+| stringinterpolation.swift:13:3:13:3 | [post] self | semmle.label | [post] self |
 | stringinterpolation.swift:13:36:13:36 | pair [first] | semmle.label | pair [first] |
 | stringinterpolation.swift:13:36:13:41 | .first | semmle.label | .first |
 | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] | semmle.label | [post] p1 [first] |
@@ -169,13 +327,17 @@ nodes
 | stringinterpolation.swift:22:21:22:21 | p1 [first] | semmle.label | p1 [first] |
 | stringinterpolation.swift:22:21:22:24 | .first | semmle.label | .first |
 | stringinterpolation.swift:24:12:24:12 | "..." | semmle.label | "..." |
-| stringinterpolation.swift:24:20:24:20 | [post] &... | semmle.label | [post] &... |
+| stringinterpolation.swift:24:20:24:20 | [post] $interpolation | semmle.label | [post] $interpolation |
 | stringinterpolation.swift:24:21:24:21 | p1 [first] | semmle.label | p1 [first] |
 | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] | semmle.label | [post] p2 [second] |
 | stringinterpolation.swift:28:14:28:21 | call to source() | semmle.label | call to source() |
 | stringinterpolation.swift:31:12:31:12 | "..." | semmle.label | "..." |
 | stringinterpolation.swift:31:21:31:21 | p2 [second] | semmle.label | p2 [second] |
 | stringinterpolation.swift:31:21:31:24 | .second | semmle.label | .second |
+| stringinterpolation.swift:36:10:36:17 | call to source() | semmle.label | call to source() |
+| stringinterpolation.swift:40:12:40:12 | "..." | semmle.label | "..." |
+| stringinterpolation.swift:41:12:41:12 | "..." | semmle.label | "..." |
+| stringinterpolation.swift:42:12:42:12 | "..." | semmle.label | "..." |
 | subscript.swift:13:15:13:22 | call to source() | semmle.label | call to source() |
 | subscript.swift:13:15:13:25 | ...[...] | semmle.label | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() | semmle.label | call to source2() |
@@ -185,16 +347,59 @@ nodes
 | try.swift:15:12:15:24 | try! ... | semmle.label | try! ... |
 | try.swift:15:17:15:24 | call to source() | semmle.label | call to source() |
 | try.swift:18:12:18:27 | ...! | semmle.label | ...! |
+| try.swift:18:13:18:25 | try? ... [some:0] | semmle.label | try? ... [some:0] |
 | try.swift:18:18:18:25 | call to source() | semmle.label | call to source() |
+| try.swift:18:18:18:25 | call to source() [some:0] | semmle.label | call to source() [some:0] |
 subpaths
 | stringinterpolation.swift:13:36:13:36 | pair [first] | stringinterpolation.swift:6:6:6:6 | self [first] | file://:0:0:0:0 | .first | stringinterpolation.swift:13:36:13:41 | .first |
 | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:6:6:6:6 | value | file://:0:0:0:0 | [post] self [first] | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] |
 | stringinterpolation.swift:22:21:22:21 | p1 [first] | stringinterpolation.swift:6:6:6:6 | self [first] | file://:0:0:0:0 | .first | stringinterpolation.swift:22:21:22:24 | .first |
-| stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:11:36:11:44 | pair [first] | stringinterpolation.swift:11:11:14:2 | self[return] | stringinterpolation.swift:24:20:24:20 | [post] &... |
-| stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:11:36:11:44 | pair [first] | stringinterpolation.swift:13:3:13:3 | [post] &... | stringinterpolation.swift:24:20:24:20 | [post] &... |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:11:36:11:44 | pair [first] | stringinterpolation.swift:11:11:14:2 | self[return] | stringinterpolation.swift:24:20:24:20 | [post] $interpolation |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:11:36:11:44 | pair [first] | stringinterpolation.swift:13:3:13:3 | [post] self | stringinterpolation.swift:24:20:24:20 | [post] $interpolation |
 | stringinterpolation.swift:28:14:28:21 | call to source() | stringinterpolation.swift:7:6:7:6 | value | file://:0:0:0:0 | [post] self [second] | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] |
 | stringinterpolation.swift:31:21:31:21 | p2 [second] | stringinterpolation.swift:7:6:7:6 | self [second] | file://:0:0:0:0 | .second | stringinterpolation.swift:31:21:31:24 | .second |
 #select
+| conversions.swift:26:12:26:22 | call to sourceInt() | conversions.swift:26:12:26:22 | call to sourceInt() | conversions.swift:26:12:26:22 | call to sourceInt() | result |
+| conversions.swift:27:12:27:27 | call to Self.init(_:) | conversions.swift:27:16:27:26 | call to sourceInt() | conversions.swift:27:12:27:27 | call to Self.init(_:) | result |
+| conversions.swift:28:12:28:29 | call to Self.init(_:) | conversions.swift:28:18:28:28 | call to sourceInt() | conversions.swift:28:12:28:29 | call to Self.init(_:) | result |
+| conversions.swift:29:12:29:29 | call to Float.init(_:) | conversions.swift:29:18:29:28 | call to sourceInt() | conversions.swift:29:12:29:29 | call to Float.init(_:) | result |
+| conversions.swift:30:12:30:30 | call to String.init(_:) | conversions.swift:30:19:30:29 | call to sourceInt() | conversions.swift:30:12:30:30 | call to String.init(_:) | result |
+| conversions.swift:31:12:31:32 | .utf8 | conversions.swift:31:19:31:29 | call to sourceInt() | conversions.swift:31:12:31:32 | .utf8 | result |
+| conversions.swift:35:12:35:17 | ...[...] | conversions.swift:33:19:33:29 | call to sourceInt() | conversions.swift:35:12:35:17 | ...[...] | result |
+| conversions.swift:37:12:37:26 | ...[...] | conversions.swift:33:19:33:29 | call to sourceInt() | conversions.swift:37:12:37:26 | ...[...] | result |
+| conversions.swift:39:12:39:42 | ...[...] | conversions.swift:39:20:39:33 | call to sourceString() | conversions.swift:39:12:39:42 | ...[...] | result |
+| conversions.swift:42:13:42:13 | v | conversions.swift:41:13:41:23 | call to sourceInt() | conversions.swift:42:13:42:13 | v | result |
+| conversions.swift:46:12:46:12 | v2 | conversions.swift:45:30:45:40 | call to sourceInt() | conversions.swift:46:12:46:12 | v2 | result |
+| conversions.swift:49:12:49:12 | v4 | conversions.swift:48:31:48:41 | call to sourceInt() | conversions.swift:49:12:49:12 | v4 | result |
+| conversions.swift:52:12:52:12 | v5 | conversions.swift:51:36:51:46 | call to sourceInt() | conversions.swift:52:12:52:12 | v5 | result |
+| conversions.swift:55:12:55:12 | v6 | conversions.swift:54:28:54:38 | call to sourceInt() | conversions.swift:55:12:55:12 | v6 | result |
+| conversions.swift:57:12:57:37 | ...! | conversions.swift:57:25:57:35 | call to sourceInt() | conversions.swift:57:12:57:37 | ...! | result |
+| conversions.swift:58:12:58:37 | call to Self.init(clamping:) | conversions.swift:58:26:58:36 | call to sourceInt() | conversions.swift:58:12:58:37 | call to Self.init(clamping:) | result |
+| conversions.swift:59:12:59:47 | call to Self.init(truncatingIfNeeded:) | conversions.swift:59:36:59:46 | call to sourceInt() | conversions.swift:59:12:59:47 | call to Self.init(truncatingIfNeeded:) | result |
+| conversions.swift:60:12:60:42 | ...! | conversions.swift:60:16:60:29 | call to sourceString() | conversions.swift:60:12:60:42 | ...! | result |
+| conversions.swift:62:12:62:41 | call to Self.init(littleEndian:) | conversions.swift:62:30:62:40 | call to sourceInt() | conversions.swift:62:12:62:41 | call to Self.init(littleEndian:) | result |
+| conversions.swift:63:12:63:38 | call to Self.init(bigEndian:) | conversions.swift:63:27:63:37 | call to sourceInt() | conversions.swift:63:12:63:38 | call to Self.init(bigEndian:) | result |
+| conversions.swift:64:12:64:24 | .littleEndian | conversions.swift:64:12:64:22 | call to sourceInt() | conversions.swift:64:12:64:24 | .littleEndian | result |
+| conversions.swift:65:12:65:24 | .bigEndian | conversions.swift:65:12:65:22 | call to sourceInt() | conversions.swift:65:12:65:24 | .bigEndian | result |
+| conversions.swift:69:12:69:24 | call to sourceFloat() | conversions.swift:69:12:69:24 | call to sourceFloat() | conversions.swift:69:12:69:24 | call to sourceFloat() | result |
+| conversions.swift:70:12:70:31 | call to Float.init(_:) | conversions.swift:70:18:70:30 | call to sourceFloat() | conversions.swift:70:12:70:31 | call to Float.init(_:) | result |
+| conversions.swift:71:12:71:31 | call to UInt8.init(_:) | conversions.swift:71:18:71:30 | call to sourceFloat() | conversions.swift:71:12:71:31 | call to UInt8.init(_:) | result |
+| conversions.swift:72:12:72:32 | call to String.init(_:) | conversions.swift:72:19:72:31 | call to sourceFloat() | conversions.swift:72:12:72:32 | call to String.init(_:) | result |
+| conversions.swift:73:12:73:34 | .utf8 | conversions.swift:73:19:73:31 | call to sourceFloat() | conversions.swift:73:12:73:34 | .utf8 | result |
+| conversions.swift:75:12:75:31 | call to Float.init(_:) | conversions.swift:75:18:75:30 | call to sourceFloat() | conversions.swift:75:12:75:31 | call to Float.init(_:) | result |
+| conversions.swift:76:12:76:70 | call to Float.init(sign:exponent:significand:) | conversions.swift:76:41:76:51 | call to sourceInt() | conversions.swift:76:12:76:70 | call to Float.init(sign:exponent:significand:) | result |
+| conversions.swift:77:12:77:70 | call to Float.init(sign:exponent:significand:) | conversions.swift:77:57:77:69 | call to sourceFloat() | conversions.swift:77:12:77:70 | call to Float.init(sign:exponent:significand:) | result |
+| conversions.swift:79:12:79:57 | call to Float.init(signOf:magnitudeOf:) | conversions.swift:79:44:79:56 | call to sourceFloat() | conversions.swift:79:12:79:57 | call to Float.init(signOf:magnitudeOf:) | result |
+| conversions.swift:81:12:81:26 | .exponent | conversions.swift:81:12:81:24 | call to sourceFloat() | conversions.swift:81:12:81:26 | .exponent | result |
+| conversions.swift:82:12:82:26 | .significand | conversions.swift:82:12:82:24 | call to sourceFloat() | conversions.swift:82:12:82:26 | .significand | result |
+| conversions.swift:86:12:86:25 | call to sourceString() | conversions.swift:86:12:86:25 | call to sourceString() | conversions.swift:86:12:86:25 | call to sourceString() | result |
+| conversions.swift:87:12:87:33 | call to String.init(_:) | conversions.swift:87:19:87:32 | call to sourceString() | conversions.swift:87:12:87:33 | call to String.init(_:) | result |
+| conversions.swift:96:12:96:12 | ms2 | conversions.swift:95:21:95:34 | call to sourceString() | conversions.swift:96:12:96:12 | ms2 | result |
+| conversions.swift:104:12:104:12 | parent | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:104:12:104:12 | parent | result |
+| conversions.swift:105:12:105:12 | parent | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:105:12:105:12 | parent | result |
+| conversions.swift:108:12:108:12 | v3 | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:108:12:108:12 | v3 | result |
+| conversions.swift:109:12:109:12 | v3 | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:109:12:109:12 | v3 | result |
+| conversions.swift:117:12:117:35 | call to Self.init(_:) | conversions.swift:117:24:117:34 | call to sourceInt() | conversions.swift:117:12:117:35 | call to Self.init(_:) | result |
 | simple.swift:12:13:12:24 | ... .+(_:_:) ... | simple.swift:12:17:12:24 | call to source() | simple.swift:12:13:12:24 | ... .+(_:_:) ... | result |
 | simple.swift:13:13:13:24 | ... .+(_:_:) ... | simple.swift:13:13:13:20 | call to source() | simple.swift:13:13:13:24 | ... .+(_:_:) ... | result |
 | simple.swift:14:13:14:24 | ... .-(_:_:) ... | simple.swift:14:17:14:24 | call to source() | simple.swift:14:13:14:24 | ... .-(_:_:) ... | result |
@@ -236,6 +441,9 @@ subpaths
 | stringinterpolation.swift:22:12:22:12 | "..." | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:22:12:22:12 | "..." | result |
 | stringinterpolation.swift:24:12:24:12 | "..." | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:24:12:24:12 | "..." | result |
 | stringinterpolation.swift:31:12:31:12 | "..." | stringinterpolation.swift:28:14:28:21 | call to source() | stringinterpolation.swift:31:12:31:12 | "..." | result |
+| stringinterpolation.swift:40:12:40:12 | "..." | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:40:12:40:12 | "..." | result |
+| stringinterpolation.swift:41:12:41:12 | "..." | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:41:12:41:12 | "..." | result |
+| stringinterpolation.swift:42:12:42:12 | "..." | stringinterpolation.swift:36:10:36:17 | call to source() | stringinterpolation.swift:42:12:42:12 | "..." | result |
 | subscript.swift:13:15:13:25 | ...[...] | subscript.swift:13:15:13:22 | call to source() | subscript.swift:13:15:13:25 | ...[...] | result |
 | subscript.swift:14:15:14:26 | ...[...] | subscript.swift:14:15:14:23 | call to source2() | subscript.swift:14:15:14:26 | ...[...] | result |
 | try.swift:9:13:9:24 | try ... | try.swift:9:17:9:24 | call to source() | try.swift:9:13:9:24 | try ... | result |

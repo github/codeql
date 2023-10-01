@@ -15,22 +15,12 @@ module Generated {
 
     /**
      * Gets the `index`th possible declaration of this overloaded declaration reference expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ValueDecl getImmediatePossibleDeclaration(int index) {
+    ValueDecl getPossibleDeclaration(int index) {
       result =
         Synth::convertValueDeclFromRaw(Synth::convertOverloadedDeclRefExprToRaw(this)
               .(Raw::OverloadedDeclRefExpr)
               .getPossibleDeclaration(index))
-    }
-
-    /**
-     * Gets the `index`th possible declaration of this overloaded declaration reference expression (0-based).
-     */
-    final ValueDecl getPossibleDeclaration(int index) {
-      result = this.getImmediatePossibleDeclaration(index).resolve()
     }
 
     /**

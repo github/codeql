@@ -24,7 +24,12 @@ module Generated {
     /**
      * Gets the key type of this dictionary type.
      */
-    final Type getKeyType() { result = this.getImmediateKeyType().resolve() }
+    final Type getKeyType() {
+      exists(Type immediate |
+        immediate = this.getImmediateKeyType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the value type of this dictionary type.
@@ -42,6 +47,11 @@ module Generated {
     /**
      * Gets the value type of this dictionary type.
      */
-    final Type getValueType() { result = this.getImmediateValueType().resolve() }
+    final Type getValueType() {
+      exists(Type immediate |
+        immediate = this.getImmediateValueType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

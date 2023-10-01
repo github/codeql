@@ -22,6 +22,11 @@ module Generated {
     /**
      * Gets the type of this paren type.
      */
-    final Type getType() { result = this.getImmediateType().resolve() }
+    final Type getType() {
+      exists(Type immediate |
+        immediate = this.getImmediateType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

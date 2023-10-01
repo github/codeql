@@ -10,22 +10,12 @@ module Generated {
 
     /**
      * Gets the `index`th element of this statement condition (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ConditionElement getImmediateElement(int index) {
+    ConditionElement getElement(int index) {
       result =
         Synth::convertConditionElementFromRaw(Synth::convertStmtConditionToRaw(this)
               .(Raw::StmtCondition)
               .getElement(index))
-    }
-
-    /**
-     * Gets the `index`th element of this statement condition (0-based).
-     */
-    final ConditionElement getElement(int index) {
-      result = this.getImmediateElement(index).resolve()
     }
 
     /**

@@ -276,6 +276,8 @@ private module Config implements FullStateConfigSig {
     getConfig(state).isSource(source) and getState(state) instanceof FlowStateEmpty
   }
 
+  predicate isSink(Node sink) { none() }
+
   predicate isSink(Node sink, FlowState state) {
     getConfig(state).isSink(sink, getState(state))
     or
@@ -295,6 +297,10 @@ private module Config implements FullStateConfigSig {
 
   predicate isBarrierOut(Node node) { any(Configuration config).isBarrierOut(node) }
 
+  predicate isBarrierIn(Node node, FlowState state) { none() }
+
+  predicate isBarrierOut(Node node, FlowState state) { none() }
+
   predicate isAdditionalFlowStep(Node node1, Node node2) {
     singleConfiguration() and
     any(Configuration config).isAdditionalFlowStep(node1, node2)
@@ -312,6 +318,8 @@ private module Config implements FullStateConfigSig {
   predicate allowImplicitRead(Node node, ContentSet c) {
     any(Configuration config).allowImplicitRead(node, c)
   }
+
+  predicate neverSkip(Node node) { none() }
 
   int fieldFlowBranchLimit() { result = min(any(Configuration config).fieldFlowBranchLimit()) }
 

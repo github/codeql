@@ -12,9 +12,9 @@ import semmle.python.dataflow.new.DataFlow
 import experimental.dataflow.testConfig
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { any(TestConfiguration c).isSource(source) }
+  predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
 
-  predicate isSink(DataFlow::Node source) { any(TestConfiguration c).isSink(source) }
+  predicate isSink(DataFlow::Node source) { TestConfig::isSink(source) }
 }
 
 module Flows = DataFlow::Global<Config>;

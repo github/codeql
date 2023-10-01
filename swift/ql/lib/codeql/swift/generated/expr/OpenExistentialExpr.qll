@@ -5,6 +5,19 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
 module Generated {
+  /**
+   * An implicit expression created by the compiler when a method is called on a protocol. For example in
+   * ```
+   * protocol P {
+   *   func foo() -> Int
+   * }
+   * func bar(x: P) -> Int {
+   *   return x.foo()
+   * }
+   * `x.foo()` is actually wrapped in an `OpenExistentialExpr` that "opens" `x` replacing it in its subexpression with
+   * an `OpaqueValueExpr`.
+   * ```
+   */
   class OpenExistentialExpr extends Synth::TOpenExistentialExpr, Expr {
     override string getAPrimaryQlClass() { result = "OpenExistentialExpr" }
 
@@ -23,11 +36,18 @@ module Generated {
 
     /**
      * Gets the sub expression of this open existential expression.
+     *
+     * This wrapped subexpression is where the opaque value and the dynamic type under the protocol type may be used.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
-     * Gets the existential of this open existential expression.
+     * Gets the protocol-typed expression opened by this expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -40,12 +60,17 @@ module Generated {
     }
 
     /**
-     * Gets the existential of this open existential expression.
+     * Gets the protocol-typed expression opened by this expression.
      */
-    final Expr getExistential() { result = this.getImmediateExistential().resolve() }
+    final Expr getExistential() {
+      exists(Expr immediate |
+        immediate = this.getImmediateExistential() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
-     * Gets the opaque expression of this open existential expression.
+     * Gets the opaque value expression embedded within `getSubExpr()`.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -58,8 +83,13 @@ module Generated {
     }
 
     /**
-     * Gets the opaque expression of this open existential expression.
+     * Gets the opaque value expression embedded within `getSubExpr()`.
      */
-    final OpaqueValueExpr getOpaqueExpr() { result = this.getImmediateOpaqueExpr().resolve() }
+    final OpaqueValueExpr getOpaqueExpr() {
+      exists(OpaqueValueExpr immediate |
+        immediate = this.getImmediateOpaqueExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

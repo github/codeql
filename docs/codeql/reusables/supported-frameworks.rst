@@ -121,6 +121,7 @@ and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/
    JDBC, Database
    Protobuf, Serialization
    Kryo deserialization, Serialization
+   Project Lombok, Utility library
    SnakeYaml, Serialization
    Spring JDBC, Database
    Spring MVC, Web application framework
@@ -309,3 +310,4 @@ and the CodeQL library pack ``codeql/swift-all`` (`changelog <https://github.com
    `SQLite3 <https://sqlite.org/index.html>`__, Database
    `SQLite.swift <https://github.com/stephencelis/SQLite.swift>`__, Database
    `WebKit <https://developer.apple.com/documentation/webkit>`__, User interface library
+   `UIKit <https://developer.apple.com/documentation/uikit>`__, User interface library

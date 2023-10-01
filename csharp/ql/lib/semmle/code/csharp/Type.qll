@@ -781,16 +781,6 @@ class Class extends RefType, @class_type {
 }
 
 /**
- * DEPRECATED: Use `RecordClass` instead.
- */
-deprecated class Record extends Class {
-  Record() { this.isRecord() }
-
-  /** Gets the clone method of this record. */
-  RecordCloneMethod getCloneMethod() { result = this.getAMember() }
-}
-
-/**
  * A `record`, for example
  *
  * ```csharp
@@ -984,28 +974,26 @@ class NullType extends RefType, @null_type {
 /**
  * A nullable type, for example `int?`.
  */
-class NullableType extends ValueType, DotNet::ConstructedGeneric, @nullable_type {
+class NullableType extends ValueType, ConstructedType, @nullable_type {
   /**
    * Gets the underlying value type of this nullable type.
    * For example `int` in `int?`.
    */
   Type getUnderlyingType() { nullable_underlying_type(this, getTypeRef(result)) }
 
+  override UnboundGenericStruct getUnboundGeneric() {
+    result.hasQualifiedName("System", "Nullable<>")
+  }
+
   override string toStringWithTypes() {
     result = this.getUnderlyingType().toStringWithTypes() + "?"
   }
-
-  override Type getChild(int n) { result = this.getUnderlyingType() and n = 0 }
 
   override Location getALocation() { result = this.getUnderlyingType().getALocation() }
 
   override Type getTypeArgument(int p) { p = 0 and result = this.getUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "NullableType" }
-
-  final override string getName() {
-    result = "Nullable<" + this.getUnderlyingType().getName() + ">"
-  }
 
   final override predicate hasQualifiedName(string qualifier, string name) {
     qualifier = "System" and
@@ -1136,7 +1124,10 @@ class ArglistType extends Type, @arglist_type {
  * A type that could not be resolved. This could happen if an indirect reference
  * is not available at compilation time.
  */
-class UnknownType extends Type, @unknown_type { }
+class UnknownType extends Type, @unknown_type {
+  /** Holds if this is the canonical unknown type, and not a type that failed to extract properly. */
+  predicate isCanonical() { types(this, _, "<unknown type>") }
+}
 
 /**
  * A type representing a tuple. For example, `(int, bool, string)`.

@@ -8,13 +8,15 @@ private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.swift.frameworks.StandardLibrary.PointerTypes
+private import codeql.swift.frameworks.StandardLibrary.Array
+private import codeql.swift.frameworks.StandardLibrary.Dictionary
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c, pos)
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.(ParameterNodeImpl).isParameterOf(c, pos)
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -56,6 +58,28 @@ private class KeyPathComponentNodeImpl extends TKeyPathComponentNode, NodeImpl {
   KeyPathComponent getComponent() { result = component }
 }
 
+private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdateNode, NodeImpl,
+  PostUpdateNodeImpl
+{
+  KeyPathComponent component;
+
+  KeyPathComponentPostUpdateNode() { this = TKeyPathComponentPostUpdateNode(component) }
+
+  override Location getLocationImpl() { result = component.getLocation() }
+
+  override string toStringImpl() { result = "[post] " + component.toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = component.getKeyPathExpr()
+  }
+
+  override KeyPathComponentNodeImpl getPreUpdateNode() {
+    result.getComponent() = this.getComponent()
+  }
+
+  KeyPathComponent getComponent() { result = component }
+}
+
 private class PatternNodeImpl extends PatternNode, NodeImpl {
   override Location getLocationImpl() { result = pattern.getLocation() }
 
@@ -90,16 +114,14 @@ private module Cached {
     TPatternNode(CfgNode n, Pattern p) { hasPatternNode(n, p) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { modifiableParam(param) } or
-    TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-      FlowSummaryImpl::Private::summaryNodeRange(c, state)
-    } or
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TSourceParameterNode(ParamDecl param) or
     TKeyPathParameterNode(EntryNode entry) { entry.getScope() instanceof KeyPathExpr } or
     TKeyPathReturnNode(ExitNode exit) { exit.getScope() instanceof KeyPathExpr } or
     TKeyPathComponentNode(KeyPathComponent component) or
-    TSummaryParameterNode(FlowSummary::SummarizedCallable c, ParameterPosition pos) {
-      FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-    } or
+    TKeyPathParameterPostUpdateNode(EntryNode entry) { entry.getScope() instanceof KeyPathExpr } or
+    TKeyPathReturnPostUpdateNode(ExitNode exit) { exit.getScope() instanceof KeyPathExpr } or
+    TKeyPathComponentPostUpdateNode(KeyPathComponent component) or
     TExprPostUpdateNode(CfgNode n) {
       // Obviously, the base of setters needs a post-update node
       n = any(PropertySetterCfgNode setter).getBase()
@@ -109,14 +131,20 @@ private module Cached {
       or
       n = any(PropertyObserverCfgNode getter).getBase()
       or
+      n = any(KeyPathApplicationExprCfgNode expr).getBase()
+      or
       // Arguments that are `inout` expressions needs a post-update node,
       // as well as any class-like argument (since a field can be modified).
       // Finally, qualifiers and bases of member reference need post-update nodes to support reverse reads.
       hasExprNode(n,
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
-          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr()
+          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr(),
+          any(SubscriptExpr se).getBase()
         ])
+    } or
+    TDictionarySubscriptNode(SubscriptExpr e) {
+      e.getBase().getType().getCanonicalType() instanceof CanonicalDictionaryType
     }
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
@@ -171,11 +199,24 @@ private module Cached {
     // flow through `&` (inout argument)
     nodeFrom.asExpr() = nodeTo.asExpr().(InOutExpr).getSubExpr()
     or
+    // reverse flow through `&` (inout argument)
+    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr().(InOutExpr).getSubExpr() =
+      nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
+    or
     // flow through `try!` and similar constructs
     nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
     or
     // flow through `!`
+    // note: there's a case in `readStep` that handles when the source is the
+    //   `OptionalSomeContentSet` within the RHS. This case is for when the
+    //   `Optional` itself is tainted (which it usually shouldn't be, but
+    //   retaining this case increases robustness of flow).
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
+    or
+    // read of an optional .some member via `let x: T = y: T?` pattern matching
+    // note: similar to `ForceValueExpr` this is ideally a content `readStep` but
+    //   in practice we sometimes have taint on the optional itself.
+    nodeTo.asPattern() = nodeFrom.asPattern().(OptionalSomePattern).getSubPattern()
     or
     // flow through `?` and `?.`
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
@@ -184,6 +225,9 @@ private module Cached {
     or
     // flow through unary `+` (which does nothing)
     nodeFrom.asExpr() = nodeTo.asExpr().(UnaryPlusExpr).getOperand()
+    or
+    // flow through varargs expansions (that wrap an `ArrayExpr` where varargs enter a call)
+    nodeFrom.asExpr() = nodeTo.asExpr().(VarargExpansionExpr).getSubExpr()
     or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
@@ -222,8 +266,19 @@ private module Cached {
     nodeTo.(KeyPathComponentNodeImpl).getComponent() =
       nodeFrom.(KeyPathParameterNode).getComponent(0)
     or
+    nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() =
+      nodeTo.(KeyPathParameterPostUpdateNode).getComponent(0)
+    or
+    // Flow to the result of a keypath assignment
+    exists(KeyPathApplicationExpr apply, AssignExpr assign |
+      apply = assign.getDest() and
+      nodeTo.asExpr() = apply and
+      nodeFrom.asExpr() = assign.getSource()
+    )
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), true)
   }
 
   /**
@@ -249,7 +304,8 @@ private module Cached {
   newtype TContent =
     TFieldContent(FieldDecl f) or
     TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
-    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) }
+    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) } or
+    TCollectionContent()
 }
 
 /**
@@ -286,7 +342,29 @@ private predicate hasPatternNode(PatternCfgNode n, Pattern p) {
 import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+
+/**
+ * The intermediate node for a dictionary subscript operation `dict[key]`. In a write, this is used
+ * as the destination of the `storeStep`s that add `TupleContent`s and the source of the storeStep
+ * that adds `CollectionContent`. In a read, this is the destination of the `readStep` that pops
+ * `CollectionContent` and the source of the `readStep` that pops `TupleContent[0]`
+ */
+private class DictionarySubscriptNode extends NodeImpl, TDictionarySubscriptNode {
+  SubscriptExpr expr;
+
+  DictionarySubscriptNode() { this = TDictionarySubscriptNode(expr) }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = expr.getEnclosingCallable()
+  }
+
+  override string toStringImpl() { result = "DictionarySubscriptNode" }
+
+  override Location getLocationImpl() { result = expr.getLocation() }
+
+  SubscriptExpr getExpr() { result = expr }
+}
 
 private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
@@ -318,22 +396,19 @@ private module ParameterNodes {
     override ParamDecl getParameter() { result = param }
   }
 
-  class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
-    FlowSummary::SummarizedCallable sc;
-    ParameterPosition pos;
-
-    SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
-
-    override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
-      c.getUnderlyingCallable() = sc and
-      p = pos
+  class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
+    SummaryParameterNode() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
     }
 
-    override Location getLocationImpl() { result = sc.getLocation() }
+    private ParameterPosition getPosition() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+    }
 
-    override string toStringImpl() { result = "[summary param] " + pos + " in " + sc }
-
-    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
+      c.getUnderlyingCallable() = this.getSummarizedCallable() and
+      p = this.getPosition()
+    }
   }
 
   class KeyPathParameterNode extends ParameterNodeImpl, TKeyPathParameterNode {
@@ -362,17 +437,70 @@ private module ParameterNodes {
 import ParameterNodes
 
 /** A data-flow node used to model flow summaries. */
-class SummaryNode extends NodeImpl, TSummaryNode {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
-  private FlowSummaryImpl::Private::SummaryNodeState state;
+class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-  SummaryNode() { this = TSummaryNode(c, state) }
+  FlowSummary::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
 
-  override DataFlowCallable getEnclosingCallable() { result.asSummarizedCallable() = c }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSummarizedCallable() = this.getSummarizedCallable()
+  }
 
-  override UnknownLocation getLocationImpl() { any() }
+  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
 
-  override string toStringImpl() { result = "[summary] " + state + " in " + c }
+  override string toStringImpl() { result = this.getSummaryNode().toString() }
+}
+
+class KeyPathParameterPostUpdateNode extends NodeImpl, ReturnNode, PostUpdateNodeImpl,
+  TKeyPathParameterPostUpdateNode
+{
+  private EntryNode entry;
+
+  KeyPathParameterPostUpdateNode() { this = TKeyPathParameterPostUpdateNode(entry) }
+
+  override KeyPathParameterNode getPreUpdateNode() {
+    result.getKeyPathExpr() = this.getKeyPathExpr()
+  }
+
+  override Location getLocationImpl() { result = entry.getLocation() }
+
+  override string toStringImpl() { result = "[post] " + entry.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result.asSourceCallable() = entry.getScope() }
+
+  KeyPathComponent getComponent(int i) { result = entry.getScope().(KeyPathExpr).getComponent(i) }
+
+  KeyPathComponent getAComponent() { result = this.getComponent(_) }
+
+  KeyPathExpr getKeyPathExpr() { result = entry.getScope() }
+
+  override ReturnKind getKind() { result.(ParamReturnKind).getIndex() = -1 }
+}
+
+class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdateNodeImpl,
+  TKeyPathReturnPostUpdateNode
+{
+  private ExitNode exit;
+
+  KeyPathReturnPostUpdateNode() { this = TKeyPathReturnPostUpdateNode(exit) }
+
+  override KeyPathReturnNodeImpl getPreUpdateNode() {
+    result.getKeyPathExpr() = this.getKeyPathExpr()
+  }
+
+  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    c.asSourceCallable() = this.getKeyPathExpr() and pos = TPositionalParameter(0)
+  }
+
+  override Location getLocationImpl() { result = exit.getLocation() }
+
+  override string toStringImpl() { result = "[post] " + exit.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result.asSourceCallable() = exit.getScope() }
+
+  KeyPathExpr getKeyPathExpr() { result = exit.getScope() }
 }
 
 /** A data-flow node that represents a call argument. */
@@ -448,11 +576,13 @@ private module ArgumentNodes {
     }
   }
 
-  class SummaryArgumentNode extends SummaryNode, ArgumentNode {
-    SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+  class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+    SummaryArgumentNode() {
+      FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+    }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
     }
   }
 
@@ -464,6 +594,20 @@ private module ArgumentNodes {
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       call.asKeyPath() = keyPath and
       pos = TThisArgument()
+    }
+  }
+
+  class KeyPathAssignmentArgumentNode extends ArgumentNode {
+    private KeyPathApplicationExprCfgNode keyPath;
+
+    KeyPathAssignmentArgumentNode() {
+      keyPath = this.getCfgNode() and
+      exists(AssignExpr assign | assign.getDest() = keyPath.getNode().asAstNode())
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.asKeyPath() = keyPath and
+      pos = TPositionalArgument(0)
     }
   }
 }
@@ -521,10 +665,10 @@ private module ReturnNodes {
     override string toStringImpl() { result = param.toString() + "[return]" }
   }
 
-  private class SummaryReturnNode extends SummaryNode, ReturnNode {
+  private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
     private ReturnKind rk;
 
-    SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+    SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
 
     override ReturnKind getKind() { result = rk }
   }
@@ -577,11 +721,11 @@ private module OutNodes {
     }
   }
 
-  class SummaryOutNode extends OutNode, SummaryNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+  class SummaryOutNode extends OutNode, FlowSummaryNode {
+    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
+      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
     }
   }
 
@@ -642,7 +786,8 @@ private module OutNodes {
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
+    succ.(FlowSummaryNode).getSummaryNode())
 }
 
 predicate storeStep(Node node1, ContentSet c, Node node2) {
@@ -692,7 +837,66 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     init.isFailable()
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
+  // assignment to an optional via `!`, e.g. `optional! = ...`
+  exists(ForceValueExpr fve, AssignExpr assign |
+    fve = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2.asExpr() = fve.getSubExpr() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
+  // creation of an array `[v1,v2]`
+  exists(ArrayExpr arr |
+    node1.asExpr() = arr.getAnElement() and
+    node2.asExpr() = arr and
+    c.isSingleton(any(Content::CollectionContent ac))
+  )
+  or
+  // array assignment `a[n] = x`
+  exists(AssignExpr assign, SubscriptExpr subscript |
+    node1.asExpr() = assign.getSource() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
+    subscript = assign.getDest() and
+    subscript.getBase().getType() instanceof ArrayType and
+    c.isSingleton(any(Content::CollectionContent ac))
+  )
+  or
+  // creation of an optional via implicit wrapping keypath component
+  exists(KeyPathComponent component |
+    component.isOptionalWrapping() and
+    node1.(KeyPathComponentNodeImpl).getComponent() = component and
+    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
+  // assignment to a dictionary value via subscript operator, with intermediate step
+  // `dict[key] = value`
+  exists(AssignExpr assign, SubscriptExpr subscript |
+    subscript = assign.getDest() and
+    (
+      subscript.getArgument(0).getExpr() = node1.asExpr() and
+      node2.(DictionarySubscriptNode).getExpr() = subscript and
+      c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 0))
+      or
+      assign.getSource() = node1.asExpr() and
+      node2.(DictionarySubscriptNode).getExpr() = subscript and
+      c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
+      or
+      node1.(DictionarySubscriptNode).getExpr() = subscript and
+      node2.(PostUpdateNode).getPreUpdateNode().asExpr() = subscript.getBase() and
+      c.isSingleton(any(Content::CollectionContent cc))
+    )
+  )
+  or
+  // creation of a dictionary `[key: value, ...]`
+  exists(DictionaryExpr dict |
+    node1.asExpr() = dict.getAnElement() and
+    node2.asExpr() = dict and
+    c.isSingleton(any(Content::CollectionContent cc))
+  )
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
@@ -725,6 +929,10 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     )
   )
   or
+  // read of an enum (`Optional.Some`) member via `!`
+  node1.asExpr() = node2.asExpr().(ForceValueExpr).getSubExpr() and
+  c instanceof OptionalSomeContentSet
+  or
   // read of a tuple member via `case let (v1, v2)` pattern matching
   exists(TuplePattern tupPat, int idx, Pattern subPat |
     node1.asPattern() = tupPat and
@@ -742,10 +950,21 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of a component in a key-path expression chain
-  exists(KeyPathComponent component, FieldDecl f |
+  exists(KeyPathComponent component |
     component = node1.(KeyPathComponentNodeImpl).getComponent() and
-    f = component.getDeclRef() and
-    c.isSingleton(any(Content::FieldContent ct | ct.getField() = f))
+    (
+      c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
+      or
+      c.isSingleton(any(Content::CollectionContent ac)) and
+      component.isSubscript()
+      or
+      c instanceof OptionalSomeContentSet and
+      (
+        component.isOptionalForcing()
+        or
+        component.isOptionalChaining()
+      )
+    )
   |
     // the next node is either the next element in the chain
     node2.(KeyPathComponentNodeImpl).getComponent() = component.getNextComponent()
@@ -754,6 +973,27 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     not exists(component.getNextComponent()) and
     node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
   )
+  or
+  // read of array or collection content via subscript operator
+  exists(SubscriptExpr subscript |
+    subscript.getBase() = node1.asExpr() and
+    subscript = node2.asExpr() and
+    c.isSingleton(any(Content::CollectionContent ac))
+  )
+  or
+  // read of a dictionary value via subscript operator
+  exists(SubscriptExpr subscript |
+    subscript.getBase() = node1.asExpr() and
+    node2.(DictionarySubscriptNode).getExpr() = subscript and
+    c.isSingleton(any(Content::CollectionContent cc))
+    or
+    subscript = node2.asExpr() and
+    node1.(DictionarySubscriptNode).getExpr() = subscript and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = 1))
+  )
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -762,7 +1002,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
-  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode() and
+  (
+    c.isSingleton(any(Content::FieldContent fc)) or
+    c.isSingleton(any(Content::TupleContent tc)) or
+    c.isSingleton(any(Content::EnumContent ec))
+  )
 }
 
 /**
@@ -793,8 +1038,12 @@ class DataFlowType extends TDataFlowType {
   string toString() { result = "" }
 }
 
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
+predicate localMustFlowStep(Node node1, Node node2) { none() }
+
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(NodeImpl n) {
+DataFlowType getNodeType(Node n) {
   any() // return the singleton DataFlowType until we support type pruning for Swift
 }
 
@@ -828,11 +1077,14 @@ private module PostUpdateNodes {
     override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
   }
 
-  class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
-    SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, _) }
+  class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl {
+    SummaryPostUpdateNode() {
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), _)
+    }
 
     override Node getPreUpdateNode() {
-      FlowSummaryImpl::Private::summaryPostUpdateNode(this, result)
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(),
+        result.(FlowSummaryNode).getSummaryNode())
     }
   }
 }
@@ -846,15 +1098,11 @@ class CastNode extends Node {
 
 class DataFlowExpr = Expr;
 
-class DataFlowParameter = ParamDecl;
-
-int accessPathLimit() { result = 5 }
-
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof Content::CollectionContent }
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
@@ -881,7 +1129,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   receiver.asExpr() = call.asCall().getExpr().(ApplyExpr).getFunction()
   or
   kind = TLambdaCallKind() and
-  receiver = call.(SummaryCall).getReceiver()
+  receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver()
   or
   kind = TLambdaCallKind() and
   receiver.asExpr() = call.asKeyPath().getExpr().(KeyPathApplicationExpr).getKeyPath()
@@ -905,12 +1153,3 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
-
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

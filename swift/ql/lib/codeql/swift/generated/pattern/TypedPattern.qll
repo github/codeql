@@ -24,25 +24,22 @@ module Generated {
     /**
      * Gets the sub pattern of this typed pattern.
      */
-    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
-
-    /**
-     * Gets the type representation of this typed pattern, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    TypeRepr getImmediateTypeRepr() {
-      result =
-        Synth::convertTypeReprFromRaw(Synth::convertTypedPatternToRaw(this)
-              .(Raw::TypedPattern)
-              .getTypeRepr())
+    final Pattern getSubPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediateSubPattern() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets the type representation of this typed pattern, if it exists.
      */
-    final TypeRepr getTypeRepr() { result = this.getImmediateTypeRepr().resolve() }
+    TypeRepr getTypeRepr() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertTypedPatternToRaw(this)
+              .(Raw::TypedPattern)
+              .getTypeRepr())
+    }
 
     /**
      * Holds if `getTypeRepr()` exists.

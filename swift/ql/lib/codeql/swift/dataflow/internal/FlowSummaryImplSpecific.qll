@@ -13,21 +13,29 @@ private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.controlflow.CfgNodes
 
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
 class SummarizedCallableBase = Function;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = Function;
 
 DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
 
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(ContentSet c) { any() }
+
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
@@ -62,10 +70,11 @@ predicate summaryElement(Function c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenance`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
+ * Note. Neutral models have not been implemented for Swift.
  */
-predicate neutralSummaryElement(Function c, string provenance) { none() }
+predicate neutralElement(NeutralCallableBase c, string kind, string provenance) { none() }
 
 /**
  * Holds if an external source specification exists for `e` with output specification
@@ -103,22 +112,47 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of the content in the format used for flow summaries. */
+/** Gets the textual representation of the content in the format used for MaD models. */
 private string getContentSpecific(ContentSet cs) {
   exists(Content::FieldContent c |
     cs.isSingleton(c) and
     result = "Field[" + c.getField().getName() + "]"
   )
+  or
+  exists(Content::TupleContent c |
+    cs.isSingleton(c) and
+    result = "TupleElement[" + c.getIndex().toString() + "]"
+  )
+  or
+  exists(Content::EnumContent c |
+    cs.isSingleton(c) and
+    result = "EnumElement[" + c.getSignature() + "]"
+  )
+  or
+  exists(Content::CollectionContent c |
+    cs.isSingleton(c) and
+    result = "CollectionElement"
+  )
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
   exists(ContentSet c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + rk + "]" and
-    not rk instanceof NormalReturnKind
+    not rk = getReturnValueKind() and
+    result = "ReturnValue" + "[" + rk + "]"
+  )
+  or
+  exists(ContentSet c |
+    sc = TWithoutContentSummaryComponent(c) and
+    result = "WithoutContent" + c.toString()
+  )
+  or
+  exists(ContentSet c |
+    sc = TWithContentSummaryComponent(c) and
+    result = "WithContent" + c.toString()
   )
 }
 
