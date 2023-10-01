@@ -1,0 +1,11 @@
+language: go
+arch:
+  - AMD64
+  - ppc64le
+os:
+  - linux
+  - osx
+go:
+  - 1.12
+script:
+  - go test -v
