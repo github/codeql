@@ -6,6 +6,7 @@
 # Folders
 _obj
 _test
+bin
 
 # Architecture specific extensions/prefixes
 *.[568vq]
@@ -25,5 +26,7 @@ _testmain.go
 *.test
 *.out
 *.txt
+/**/*.DS_Store
 cover.html
 README.html
+.idea

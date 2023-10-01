@@ -1,6 +1,7 @@
 // +build !notfastpath
+// +build !codec.notfastpath
 
-// Copyright (c) 2012-2018 Ugorji Nwoke. All rights reserved.
+// Copyright (c) 2012-2020 Ugorji Nwoke. All rights reserved.
 // Use of this source code is governed by a MIT license found in the LICENSE file.
 
 // Code generated from fast-path.go.tmpl - DO NOT EDIT.
@@ -56,50 +57,60 @@ import (
 
 const fastpathEnabled = true
 
+{{/*
 const fastpathMapBySliceErrMsg = "mapBySlice requires even slice length, but got %v"
+*/ -}}
 
 type fastpathT struct {}
 
 var fastpathTV fastpathT
 
 type fastpathE struct {
-	rtid uintptr
+	{{/* rtid uintptr */ -}}
 	rt reflect.Type 
 	encfn func(*Encoder, *codecFnInfo, reflect.Value)
 	decfn func(*Decoder, *codecFnInfo, reflect.Value)
 }
 
 type fastpathA [{{ .FastpathLen }}]fastpathE
+type fastpathARtid [{{ .FastpathLen }}]uintptr
 
-func (x *fastpathA) index(rtid uintptr) int {
+var fastpathAv fastpathA
+var fastpathAvRtid fastpathARtid
+
+type fastpathAslice struct{}
+
+func (fastpathAslice) Len() int { return {{ .FastpathLen }} }
+func (fastpathAslice) Less(i, j int) bool {
+	return fastpathAvRtid[uint(i)] < fastpathAvRtid[uint(j)]
+}
+func (fastpathAslice) Swap(i, j int) {
+	fastpathAvRtid[uint(i)], fastpathAvRtid[uint(j)] = fastpathAvRtid[uint(j)], fastpathAvRtid[uint(i)]
+	fastpathAv[uint(i)], fastpathAv[uint(j)] = fastpathAv[uint(j)], fastpathAv[uint(i)]
+}
+
+func fastpathAvIndex(rtid uintptr) int {
 	// use binary search to grab the index (adapted from sort/search.go)
 	// Note: we use goto (instead of for loop) so this can be inlined.
- 	// h, i, j := 0, 0, len(x)
+ 	// h, i, j := 0, 0, {{ .FastpathLen }}
 	var h, i uint
-	var j = uint(len(x))
+	var j uint = {{ .FastpathLen }}
 LOOP:
 	if i < j {
-		h = i + (j-i)/2
-		if x[h].rtid < rtid {
+		h = (i + j) >> 1 // avoid overflow when computing h // h = i + (j-i)/2
+		if fastpathAvRtid[h] < rtid {
 			i = h + 1
 		} else {
 			j = h
 		}
 		goto LOOP
 	}
-	if i < uint(len(x)) && x[i].rtid == rtid {
+	if i < {{ .FastpathLen }} && fastpathAvRtid[i] == rtid {
 		return int(i)
 	}
 	return -1
 }
 
-type fastpathAslice []fastpathE
-
-func (x fastpathAslice) Len() int { return len(x) }
-func (x fastpathAslice) Less(i, j int) bool { return x[uint(i)].rtid < x[uint(j)].rtid }
-func (x fastpathAslice) Swap(i, j int) { x[uint(i)], x[uint(j)] = x[uint(j)], x[uint(i)] }
-
-var fastpathAV fastpathA
 
 // due to possible initialization loop error, make fastpath in an init()
 func init() {
@@ -109,19 +120,20 @@ func init() {
 		fd func(*Decoder, *codecFnInfo, reflect.Value)) {
 		xrt := reflect.TypeOf(v)
 		xptr := rt2id(xrt)
-		fastpathAV[i] = fastpathE{xptr, xrt, fe, fd}
+        fastpathAvRtid[i] = xptr
+		fastpathAv[i] = fastpathE{xrt, fe, fd}
 		i++
 	}
-	{{/* do not register []uint8 in fast-path */}}
-	{{range .Values}}{{if not .Primitive}}{{if not .MapKey }}{{if ne .Elem "uint8" -}}
+	{{/* do not register []byte in fast-path */}}
+	{{range .Values}}{{if not .Primitive}}{{if not .MapKey -}}
 	fn([]{{ .Elem }}(nil), (*Encoder).{{ .MethodNamePfx "fastpathEnc" false }}R, (*Decoder).{{ .MethodNamePfx "fastpathDec" false }}R)
-	{{end}}{{end}}{{end}}{{end}}
+	{{end}}{{end}}{{end}}
 	
 	{{range .Values}}{{if not .Primitive}}{{if .MapKey -}}
 	fn(map[{{ .MapKey }}]{{ .Elem }}(nil), (*Encoder).{{ .MethodNamePfx "fastpathEnc" false }}R, (*Decoder).{{ .MethodNamePfx "fastpathDec" false }}R)
 	{{end}}{{end}}{{end}}
 	
-	sort.Sort(fastpathAslice(fastpathAV[:]))
+	sort.Sort(fastpathAslice{})
 }
 
 // -- encode
@@ -129,7 +141,7 @@ func init() {
 // -- -- fast path type switch
 func fastpathEncodeTypeSwitch(iv interface{}, e *Encoder) bool {
 	switch v := iv.(type) {
-{{range .Values}}{{if not .Primitive}}{{if not .MapKey }}{{if ne .Elem "uint8" -}}
+{{range .Values}}{{if not .Primitive}}{{if not .MapKey -}}
 	case []{{ .Elem }}:
 		fastpathTV.{{ .MethodNamePfx "Enc" false }}V(v, e)
 	case *[]{{ .Elem }}:
@@ -138,7 +150,7 @@ func fastpathEncodeTypeSwitch(iv interface{}, e *Encoder) bool {
 		} else {
 			fastpathTV.{{ .MethodNamePfx "Enc" false }}V(*v, e)
 		}
-{{end}}{{end}}{{end}}{{end -}}
+{{end}}{{end}}{{end -}}
 
 {{range .Values}}{{if not .Primitive}}{{if .MapKey -}}
 	case map[{{ .MapKey }}]{{ .Elem }}:
@@ -161,37 +173,49 @@ func fastpathEncodeTypeSwitch(iv interface{}, e *Encoder) bool {
 // -- -- fast path functions
 {{range .Values}}{{if not .Primitive}}{{if not .MapKey -}} 
 func (e *Encoder) {{ .MethodNamePfx "fastpathEnc" false }}R(f *codecFnInfo, rv reflect.Value) {
-	if f.ti.mbs {
-		fastpathTV.{{ .MethodNamePfx "EncAsMap" false }}V(rv2i(rv).([]{{ .Elem }}), e)
+	var v  []{{ .Elem }}
+	if rv.Kind() == reflect.Array {
+		rvGetSlice4Array(rv, &v)
 	} else {
-		fastpathTV.{{ .MethodNamePfx "Enc" false }}V(rv2i(rv).([]{{ .Elem }}), e)
+		v = rv2i(rv).([]{{ .Elem }})
+	}
+	if f.ti.mbs {
+		fastpathTV.{{ .MethodNamePfx "EncAsMap" false }}V(v, e)
+	} else {
+		fastpathTV.{{ .MethodNamePfx "Enc" false }}V(v, e)
 	}
 }
 func (fastpathT) {{ .MethodNamePfx "Enc" false }}V(v []{{ .Elem }}, e *Encoder) {
 	{{/* if v == nil { e.e.EncodeNil(); return } */ -}}
+	{{ if eq .Elem "uint8" "byte" -}}
+	e.e.EncodeStringBytesRaw(v)
+	{{ else -}}
 	e.arrayStart(len(v))
 	for j := range v {
 		e.arrayElem()
 		{{ encmd .Elem "v[j]"}}
 	} 
 	e.arrayEnd()
+	{{ end -}}
 }
 func (fastpathT) {{ .MethodNamePfx "EncAsMap" false }}V(v []{{ .Elem }}, e *Encoder) {
 	{{/* if v == nil { e.e.EncodeNil() } else */ -}}
-	if len(v)%2 == 1 {
+	e.haltOnMbsOddLen(len(v))
+	{{/*
+	if len(v)&1 != 0 { // similar to &1==1 or %2 == 1
 		e.errorf(fastpathMapBySliceErrMsg, len(v))
-	} else {
-		e.mapStart(len(v) / 2)
-		for j := range v {
-			if j%2 == 0 {
-				e.mapElemKey()
-			} else {
-				e.mapElemValue()
-			}
-			{{ encmd .Elem "v[j]"}}
- 		}
-		e.mapEnd()
 	}
+	*/ -}}
+	e.mapStart(len(v) >> 1) // e.mapStart(len(v) / 2)
+	for j := range v {
+		if j&1 == 0 { // if j%2 == 0 {
+			e.mapElemKey()
+		} else {
+			e.mapElemValue()
+		}
+		{{ encmd .Elem "v[j]"}}
+	}
+	e.mapEnd()
 }
 {{end}}{{end}}{{end -}}
 
@@ -255,7 +279,7 @@ func fastpathDecodeTypeSwitch(iv interface{}, d *Decoder) bool {
 	var changed bool
 	var containerLen int
 	switch v := iv.(type) {
-{{range .Values}}{{if not .Primitive}}{{if not .MapKey }}{{if ne .Elem "uint8" -}}
+{{range .Values}}{{if not .Primitive}}{{if not .MapKey -}}
 	case []{{ .Elem }}:
 		fastpathTV.{{ .MethodNamePfx "Dec" false }}N(v, d)
 	case *[]{{ .Elem }}:
@@ -263,13 +287,13 @@ func fastpathDecodeTypeSwitch(iv interface{}, d *Decoder) bool {
 		if v2, changed = fastpathTV.{{ .MethodNamePfx "Dec" false }}Y(*v, d); changed {
 			*v = v2
 		}
-{{end}}{{end}}{{end}}{{end -}}
+{{end}}{{end}}{{end -}}
 {{range .Values}}{{if not .Primitive}}{{if .MapKey }}{{/*
 // maps only change if nil, and in that case, there's no point copying
 */ -}}
 	case map[{{ .MapKey }}]{{ .Elem }}:
-		containerLen = d.mapStart()
-		if containerLen != decContainerLenNil {
+		containerLen = d.mapStart(d.d.ReadMapStart())
+		if containerLen != containerLenNil {
 			if containerLen != 0 {
 				fastpathTV.{{ .MethodNamePfx "Dec" false }}L(v, containerLen, d)
 			}
@@ -277,10 +301,10 @@ func fastpathDecodeTypeSwitch(iv interface{}, d *Decoder) bool {
 		}
 	case *map[{{ .MapKey }}]{{ .Elem }}:
 		{{/*
-		containerLen = d.mapStart()
+		containerLen = d.mapStart(d.d.ReadMapStart())
 		if containerLen == 0 {
 			d.mapEnd()
-		} else if containerLen == decContainerLenNil {
+		} else if containerLen == containerLenNil {
 			*v = nil
 		} else {
 			if *v == nil {
@@ -325,17 +349,39 @@ Slices can change if they
 - are settable (e.g. contained in an interface{})
 */}}
 func (d *Decoder) {{ .MethodNamePfx "fastpathDec" false }}R(f *codecFnInfo, rv reflect.Value) {
-	if f.seq != seqTypeArray && rv.Kind() == reflect.Ptr {
+	{{/*
+    // seqTypeArray=true means that we are not getting a pointer, so no need to check that.
+    if f.seq != seqTypeArray && rv.Kind() == reflect.Ptr {
+    */ -}}
+	var v  []{{ .Elem }}
+	switch rv.Kind() {
+	case reflect.Ptr:
 		vp := rv2i(rv).(*[]{{ .Elem }})
-		if v, changed := fastpathTV.{{ .MethodNamePfx "Dec" false }}Y(*vp, d); changed { *vp = v }
-	} else {
+		var changed bool
+		if v, changed = fastpathTV.{{ .MethodNamePfx "Dec" false }}Y(*vp, d); changed {
+			*vp = v
+		}
+	case reflect.Array:
+		rvGetSlice4Array(rv, &v)
+		fastpathTV.{{ .MethodNamePfx "Dec" false }}N(v, d)
+	default:
 		fastpathTV.{{ .MethodNamePfx "Dec" false }}N(rv2i(rv).([]{{ .Elem }}), d)
 	}
 }
 func (f fastpathT) {{ .MethodNamePfx "Dec" false }}X(vp *[]{{ .Elem }}, d *Decoder) {
 	if v, changed := f.{{ .MethodNamePfx "Dec" false }}Y(*vp, d); changed { *vp = v }
 }
-func (fastpathT) {{ .MethodNamePfx "Dec" false }}Y(v []{{ .Elem }}, d *Decoder) (_ []{{ .Elem }}, changed bool) {
+func (fastpathT) {{ .MethodNamePfx "Dec" false }}Y(v []{{ .Elem }}, d *Decoder) (v2 []{{ .Elem }}, changed bool) {
+	{{ if eq .Elem "uint8" "byte" -}}
+	switch d.d.ContainerType() {
+	case valueTypeNil, valueTypeMap:
+		break
+	default:
+		v2 = d.decodeBytesInto(v[:len(v):len(v)])
+		changed = !(len(v2) > 0 && len(v2) == len(v) && &v2[0] == &v[0]) // not same slice
+		return
+	}
+	{{ end -}}
 	slh, containerLenS := d.decSliceHelperStart()
 	if slh.IsNil {
 		if v == nil { return }
@@ -363,15 +409,11 @@ func (fastpathT) {{ .MethodNamePfx "Dec" false }}Y(v []{{ .Elem }}, d *Decoder) 
 		}
 	}
 	var j int
-	for j = 0; (hasLen && j < containerLenS) || !(hasLen || d.checkBreak()); j++ {
-		if j == 0 && len(v) == 0 {
-			if hasLen {
-				xlen = decInferLen(containerLenS, d.h.MaxInitLen, {{ .Size }})
-			} else {
-				xlen = 8
-			}
+    for j = 0; d.containerNext(j, containerLenS, hasLen); j++ {
+		if j == 0 && len(v) == 0 { // means hasLen == false
+			xlen = decInferLen(containerLenS, d.h.MaxInitLen, {{ .Size }}) {{/* xlen = decDefSliceCap */}}
 			v = make([]{{ .Elem }}, uint(xlen))
-			changed = true 
+			changed = true
 		}
 		{{/* // if indefinite, etc, then expand the slice if necessary */ -}}
 		if j >= len(v) {
@@ -379,7 +421,7 @@ func (fastpathT) {{ .MethodNamePfx "Dec" false }}Y(v []{{ .Elem }}, d *Decoder) 
 			changed = true
 		} 
 		slh.ElemContainerState(j)
-		{{ if eq .Elem "interface{}" }}d.decode(&v[uint(j)]){{ else }}v[uint(j)] = {{ decmd .Elem }}{{ end }}
+		{{ if eq .Elem "interface{}" }}d.decode(&v[uint(j)]){{ else }}v[uint(j)] = {{ decmd .Elem false }}{{ end }}
 	}
 	if j < len(v) {
 		v = v[:uint(j)]
@@ -389,9 +431,21 @@ func (fastpathT) {{ .MethodNamePfx "Dec" false }}Y(v []{{ .Elem }}, d *Decoder) 
 		changed = true
 	}
 	slh.End()
-	return v, changed 
+	return v, changed
 }
 func (fastpathT) {{ .MethodNamePfx "Dec" false }}N(v []{{ .Elem }}, d *Decoder) {
+	{{ if eq .Elem "uint8" "byte" -}}
+	switch d.d.ContainerType() {
+	case valueTypeNil, valueTypeMap:
+		break
+	default:
+		v2 := d.decodeBytesInto(v[:len(v):len(v)])
+		if !(len(v2) > 0 && len(v2) == len(v) && &v2[0] == &v[0]) { // not same slice
+			copy(v, v2)
+		}
+		return
+	}
+	{{ end -}}
 	slh, containerLenS := d.decSliceHelperStart()
 	if slh.IsNil {
 		return
@@ -401,65 +455,58 @@ func (fastpathT) {{ .MethodNamePfx "Dec" false }}N(v []{{ .Elem }}, d *Decoder) 
 		return
 	}
 	hasLen := containerLenS > 0
-	for j := 0; (hasLen && j < containerLenS) || !(hasLen || d.checkBreak()); j++ {
+    for j := 0; d.containerNext(j, containerLenS, hasLen); j++ {
 		{{/* // if indefinite, etc, then expand the slice if necessary */ -}}
 		if j >= len(v) {
-			fastpathDecArrayCannotExpand(slh, hasLen, len(v), j, containerLenS)
+			slh.arrayCannotExpand(hasLen, len(v), j, containerLenS)
 			return
 		} 
 		slh.ElemContainerState(j)
 		{{ if eq .Elem "interface{}" -}}
 		d.decode(&v[uint(j)])
 		{{- else -}}
-		v[uint(j)] = {{ decmd .Elem }}
+		v[uint(j)] = {{ decmd .Elem false }}
 		{{- end }}
 	}
 	slh.End()
 }
 {{end}}{{end}}{{end -}}
 
-func fastpathDecArrayCannotExpand(slh decSliceHelper, hasLen bool, lenv, j, containerLenS int) {
-	slh.d.arrayCannotExpand(lenv, j+1)
-	slh.ElemContainerState(j)
-	slh.d.swallow()
-	j++
-	for ; (hasLen && j < containerLenS) || !(hasLen || slh.d.checkBreak()); j++ {
-		slh.ElemContainerState(j)
-		slh.d.swallow()
-	}
-	slh.End()
-}
-
 {{range .Values}}{{if not .Primitive}}{{if .MapKey -}}
 {{/*
 Maps can change if they are
 - addressable (from a ptr)
 - settable (e.g. contained in an interface{})
+
+Also, these methods are called by decodeValue directly, after handling a TryNil.
+Consequently, there's no need to check for containerLenNil here.
 */ -}}
 func (d *Decoder) {{ .MethodNamePfx "fastpathDec" false }}R(f *codecFnInfo, rv reflect.Value) {
-	containerLen := d.mapStart()
-	if containerLen == decContainerLenNil {
+	containerLen := d.mapStart(d.d.ReadMapStart())
+    {{/*
+	if containerLen == containerLenNil {
 		if rv.Kind() == reflect.Ptr {
 			*(rv2i(rv).(*map[{{ .MapKey }}]{{ .Elem }})) = nil
 		}
-	} else {
-		if rv.Kind() == reflect.Ptr {
-			vp, _ := rv2i(rv).(*map[{{ .MapKey }}]{{ .Elem }})
-			if *vp == nil {
-				*vp = make(map[{{ .MapKey }}]{{ .Elem }}, decInferLen(containerLen, d.h.MaxInitLen, {{ .Size }}))
-			}
-			if containerLen != 0 {
-				fastpathTV.{{ .MethodNamePfx "Dec" false }}L(*vp, containerLen, d)
-			}
-		} else if containerLen != 0 {
-			fastpathTV.{{ .MethodNamePfx "Dec" false }}L(rv2i(rv).(map[{{ .MapKey }}]{{ .Elem }}), containerLen, d)
-		}
-		d.mapEnd()
+        return
 	}
+    */ -}}
+	if rv.Kind() == reflect.Ptr {
+		vp, _ := rv2i(rv).(*map[{{ .MapKey }}]{{ .Elem }})
+		if *vp == nil {
+			*vp = make(map[{{ .MapKey }}]{{ .Elem }}, decInferLen(containerLen, d.h.MaxInitLen, {{ .Size }}))
+		}
+		if containerLen != 0 {
+			fastpathTV.{{ .MethodNamePfx "Dec" false }}L(*vp, containerLen, d)
+		}
+	} else if containerLen != 0 {
+		fastpathTV.{{ .MethodNamePfx "Dec" false }}L(rv2i(rv).(map[{{ .MapKey }}]{{ .Elem }}), containerLen, d)
+	}
+	d.mapEnd()
 }
 func (f fastpathT) {{ .MethodNamePfx "Dec" false }}X(vp *map[{{ .MapKey }}]{{ .Elem }}, d *Decoder) {
-	containerLen := d.mapStart()
-	if containerLen == decContainerLenNil {
+	containerLen := d.mapStart(d.d.ReadMapStart())
+	if containerLen == containerLenNil {
 		*vp = nil
 	} else {
 		if *vp == nil {
@@ -472,20 +519,25 @@ func (f fastpathT) {{ .MethodNamePfx "Dec" false }}X(vp *map[{{ .MapKey }}]{{ .E
 	}
 }
 func (fastpathT) {{ .MethodNamePfx "Dec" false }}L(v map[{{ .MapKey }}]{{ .Elem }}, containerLen int, d *Decoder) {
-	{{/* No need to check if containerLen == decContainerLenNil, as that is checked by R and L above  */ -}}
+	{{/* No need to check if containerLen == containerLenNil, as that is checked by R and L above  */ -}}
+	if v == nil {
+		d.errorf("cannot decode into nil map[{{ .MapKey }}]{{ .Elem }} given stream length: %v", containerLen)
+        {{/* d.swallowMapContents(containerLen) */ -}}
+		return
+	}
 	{{if eq .Elem "interface{}" }}mapGet := v != nil && !d.h.MapValueReset && !d.h.InterfaceReset
     {{else if eq .Elem "bytes" "[]byte" }}mapGet := v != nil && !d.h.MapValueReset
     {{end -}}
     var mk {{ .MapKey }}
 	var mv {{ .Elem }}
 	hasLen := containerLen > 0
-	for j := 0; (hasLen && j < containerLen) || !(hasLen || d.checkBreak()); j++ {
+    for j := 0; d.containerNext(j, containerLen, hasLen); j++ {
 		d.mapElemKey()
 		{{ if eq .MapKey "interface{}" }}mk = nil 
 		d.decode(&mk)
 		if bv, bok := mk.([]byte); bok {
-			mk = d.string(bv) {{/* // maps cannot have []byte as key. switch to string. */}}
-		}{{ else }}mk = {{ decmd .MapKey }}{{ end }}
+			mk = d.stringZC(bv) {{/* // maps cannot have []byte as key. switch to string. */}}
+		}{{ else }}mk = {{ decmd .MapKey true }}{{ end }}
 		d.mapElemValue()
 		{{ if eq .Elem "interface{}" "[]byte" "bytes" -}}
 		if mapGet { mv = v[mk] } else { mv = nil }
@@ -493,11 +545,11 @@ func (fastpathT) {{ .MethodNamePfx "Dec" false }}L(v map[{{ .MapKey }}]{{ .Elem 
 		{{ if eq .Elem "interface{}" -}}
 		d.decode(&mv)
 		{{ else if eq .Elem "[]byte" "bytes" -}}
-		mv = d.d.DecodeBytes(mv, false)
+		mv = d.decodeBytesInto(mv)
 		{{ else -}}
-		mv = {{ decmd .Elem }}
+		mv = {{ decmd .Elem false }}
 		{{ end -}}
-		if v != nil { v[mk] = mv }
+		v[mk] = mv
 	}
 }
 {{end}}{{end}}{{end}}

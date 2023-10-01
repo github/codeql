@@ -176,6 +176,7 @@ const (
 	MNT
 	MOP
 	MRO
+	MRU
 	MTL
 	MTP
 	MUR
@@ -262,9 +263,11 @@ const (
 	UYI
 	UYP
 	UYU
+	UYW
 	UZS
 	VEB
 	VEF
+	VES
 	VND
 	VNN
 	VUV
