@@ -1,12 +1,17 @@
 # github.com/gobwas/ws v1.0.3
 ## explicit
-github.com/gobwas/ws
 # github.com/gorilla/websocket v1.4.2
 ## explicit
 github.com/gorilla/websocket
-# golang.org/x/net v0.0.0-20200505041828-1ed23360d12c
+# github.com/klauspost/compress v1.10.3
+github.com/klauspost/compress/flate
+# golang.org/x/net v0.7.0
 ## explicit
-golang.org/x/net
+golang.org/x/net/websocket
 # nhooyr.io/websocket v1.8.5
 ## explicit
 nhooyr.io/websocket
+nhooyr.io/websocket/internal/bpool
+nhooyr.io/websocket/internal/errd
+nhooyr.io/websocket/internal/wsjs
+nhooyr.io/websocket/internal/xsync
