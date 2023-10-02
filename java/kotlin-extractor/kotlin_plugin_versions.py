@@ -24,7 +24,7 @@ def version_string_to_tuple(version):
 # Version number used by CI.
 ci_version = '1.9.0'
 
-many_versions = [ '1.4.32', '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0', '1.9.0-Beta', '1.9.20-Beta' ]
+many_versions = [ '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0', '1.9.0-Beta', '1.9.20-Beta' ]
 
 many_versions_tuples = [version_string_to_tuple(v) for v in many_versions]
 
