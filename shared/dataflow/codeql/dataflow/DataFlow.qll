@@ -851,4 +851,176 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
     }
   }
+
+  /**
+   * Generates a `PathGraph` in which equivalent path nodes are merged, in order to avoid duplicate paths.
+   */
+  module DeduplicatePathGraph<PathNodeSig InputPathNode, PathGraphSig<InputPathNode> Graph> {
+    // NOTE: there is a known limitation in that this module cannot see which nodes are sources or sinks.
+    // This only matters in the rare case where a sink PathNode has a non-empty set of succesors, and there is a
+    // non-sink PathNode with the same `(node, toString)` value and the same successors, but is transitively
+    // reachable from a different set of PathNodes. (And conversely for sources).
+    //
+    /**
+     * Gets a successor of `node`, taking `subpaths` into account.
+     */
+    private InputPathNode getASuccessorLike(InputPathNode node) {
+      Graph::edges(node, result)
+      or
+      Graph::subpaths(node, _, _, result) // arg -> out
+      //
+      // Note that there is no case for `arg -> param` or `ret -> out` for subpaths.
+      // It is OK to collapse nodes inside a subpath while calls to that subpaths aren't collapsed and vice versa.
+    }
+
+    private InputPathNode getAPredecessorLike(InputPathNode node) {
+      node = getASuccessorLike(result)
+    }
+
+    pragma[nomagic]
+    private InputPathNode getAPathNode(Node node, string toString) {
+      result.getNode() = node and
+      Graph::nodes(result, _, toString)
+    }
+
+    private signature predicate collapseCandidateSig(Node node, string toString);
+
+    private signature InputPathNode stepSig(InputPathNode node);
+
+    /**
+     * Performs a forward or backward pass computing which `(node, toString)` pairs can subsume their corresponding
+     * path nodes.
+     *
+     * This is similar to automaton minimization, but for an NFA. Since minimizing an NFA is NP-hard (and does not have
+     * a unique minimal NFA), we operate with the simpler model: for a given `(node, toString)` pair, either all
+     * corresponding path nodes are merged, or none are merged.
+     *
+     * Comments are written as if this checks for outgoing edges and propagates backward, though the module is also
+     * used to perform the opposite direction.
+     */
+    private module MakeDiscriminatorPass<collapseCandidateSig/2 collapseCandidate, stepSig/1 step> {
+      /**
+       * Gets the number of `(node, toString)` pairs reachable in one step from `pathNode`.
+       */
+      private int getOutDegreeFromPathNode(InputPathNode pathNode) {
+        result = count(Node node, string toString | step(pathNode) = getAPathNode(node, toString))
+      }
+
+      /**
+       * Gets the number of `(node2, toString2)` pairs reachable in one step from path nodes corresponding to `(node, toString)`.
+       */
+      private int getOutDegreeFromNode(Node node, string toString) {
+        result =
+          strictcount(Node node2, string toString2 |
+            step(getAPathNode(node, toString)) = getAPathNode(node2, toString2)
+          )
+      }
+
+      /** Holds if `(node, toString)` cannot be collapsed (but was a candidate for being collapsed). */
+      predicate discriminatedPair(Node node, string toString) {
+        collapseCandidate(node, toString) and
+        (
+          // Check if all corresponding PathNodes have the same successor sets when projected to `(node, toString)`.
+          // To do this, we check that each successor set has the same size as the union of the succesor sets.
+          // - If the successor sets are equal, then they are also equal to their union, and so have the correct size.
+          // - Conversely, if two successor sets are not equal, one of them must be missing an element that is present
+          //   in the union, but must still be a subset of the union, and thus be strictly smaller than the union.
+          getOutDegreeFromPathNode(getAPathNode(node, toString)) <
+            getOutDegreeFromNode(node, toString)
+          or
+          // Retain flow state if one of the successors requires it to be retained
+          discriminatedPathNode(step(getAPathNode(node, toString)))
+        )
+      }
+
+      /** Holds if `pathNode` cannot be collapsed. */
+      predicate discriminatedPathNode(InputPathNode pathNode) {
+        exists(Node node, string toString |
+          discriminatedPair(node, toString) and
+          getAPathNode(node, toString) = pathNode
+        )
+      }
+    }
+
+    private predicate initialCandidate(Node node, string toString) {
+      exists(getAPathNode(node, toString))
+    }
+
+    private module Pass1 = MakeDiscriminatorPass<initialCandidate/2, getASuccessorLike/1>;
+
+    private module Pass2 = MakeDiscriminatorPass<Pass1::discriminatedPair/2, getAPredecessorLike/1>;
+
+    private newtype TPathNode =
+      TPreservedPathNode(InputPathNode node) { Pass2::discriminatedPathNode(node) } or
+      TCollapsedPathNode(Node node, string toString) {
+        initialCandidate(node, toString) and
+        not Pass2::discriminatedPair(node, toString)
+      }
+
+    /** A node in the path graph after equivalent nodes have been collapsed. */
+    class PathNode extends TPathNode {
+      private Node asCollapsedNode() { this = TCollapsedPathNode(result, _) }
+
+      private InputPathNode asPreservedNode() { this = TPreservedPathNode(result) }
+
+      /** Gets a correspondng node in the original graph. */
+      InputPathNode getAnOriginalPathNode() {
+        exists(Node node, string toString |
+          this = TCollapsedPathNode(node, toString) and
+          result = getAPathNode(node, toString)
+        )
+        or
+        result = this.asPreservedNode()
+      }
+
+      /** Gets a string representation of this node. */
+      string toString() {
+        result = this.asPreservedNode().toString() or this = TCollapsedPathNode(_, result)
+      }
+
+      /**
+       * Holds if this element is at the specified location.
+       * The location spans column `startcolumn` of line `startline` to
+       * column `endcolumn` of line `endline` in file `filepath`.
+       * For more information, see
+       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+       */
+      predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+      ) {
+        this.getAnOriginalPathNode()
+            .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      }
+
+      /** Gets the corresponding data-flow node. */
+      Node getNode() {
+        result = this.asCollapsedNode()
+        or
+        result = this.asPreservedNode().getNode()
+      }
+    }
+
+    /**
+     * Provides the query predicates needed to include a graph in a path-problem query.
+     */
+    module PathGraph implements PathGraphSig<PathNode> {
+      query predicate nodes(PathNode node, string key, string val) {
+        Graph::nodes(node.getAnOriginalPathNode(), key, val)
+      }
+
+      query predicate edges(PathNode node1, PathNode node2) {
+        Graph::edges(node1.getAnOriginalPathNode(), node2.getAnOriginalPathNode())
+      }
+
+      query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
+        // Note: this may look suspiciously simple, but it's not an oversight. Even if the caller needs to retain state,
+        // it is entirely possible to step through a subpath in which state has been projected away.
+        Graph::subpaths(arg.getAnOriginalPathNode(), par.getAnOriginalPathNode(),
+          ret.getAnOriginalPathNode(), out.getAnOriginalPathNode())
+      }
+    }
+
+    // Re-export the PathGraph so the user can import a single module and get both PathNode and the query predicates
+    import PathGraph
+  }
 }
