@@ -15,9 +15,9 @@
 | Test.kt:1:1:8:1 | TestKt | Test.kt:3:3:3:22 | field |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:3:3:3:22 | getField |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:3:3:3:22 | setField |
+| Test.kt:1:1:8:1 | TestKt | Test.kt:4:3:5:25 | getRawField |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:4:3:5:25 | rawField |
-| Test.kt:1:1:8:1 | TestKt | Test.kt:5:3:5:25 | getRawField |
-| Test.kt:1:1:8:1 | TestKt | Test.kt:5:3:5:25 | setRawField |
+| Test.kt:1:1:8:1 | TestKt | Test.kt:4:3:5:25 | setRawField |
 | Test.kt:1:1:8:1 | TestKt | Test.kt:6:3:6:22 | method |
 | Test.kt:10:1:10:20 | FieldUsedKt | Test.kt:10:1:10:20 | FieldUsedKt |
 | Test.kt:11:1:11:23 | RawFieldUsedKt | Test.kt:11:1:11:23 | RawFieldUsedKt |
