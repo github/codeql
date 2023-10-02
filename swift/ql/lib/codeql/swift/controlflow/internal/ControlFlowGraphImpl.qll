@@ -1586,7 +1586,9 @@ module Exprs {
     }
   }
 
-  private class NilCoalescingTree extends AstControlFlowTree {
+  private class NilCoalescingTestTree extends LeafTree, NilCoalescingElement { }
+
+  private class NilCoalescingTree extends AstPostOrderTree {
     override NilCoalescingExpr ast;
 
     final override predicate propagatesAbnormal(ControlFlowElement child) {
@@ -1597,22 +1599,22 @@ module Exprs {
       astFirst(ast.getLeftOperand().getFullyConverted(), first)
     }
 
-    final override predicate last(ControlFlowElement last, Completion c) {
-      last.asAstNode() = ast and
-      exists(EmptinessCompletion ec | ec = c | not ec.isEmpty())
-      or
-      astLast(ast.getRightOperand().getFullyConverted(), last, c) and
-      c instanceof NormalCompletion
-    }
-
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       astLast(ast.getLeftOperand().getFullyConverted(), pred, c) and
       c instanceof NormalCompletion and
+      succ.(NilCoalescingTestTree).getAst() = ast
+      or
+      pred.(NilCoalescingTestTree).getAst() = ast and
+      exists(EmptinessCompletion ec | c = ec | ec.isEmpty()) and
+      astFirst(ast.getRightOperand().getFullyConverted(), succ)
+      or
+      pred.(NilCoalescingTestTree).getAst() = ast and
+      exists(EmptinessCompletion ec | c = ec | not ec.isEmpty()) and
       succ.asAstNode() = ast
       or
-      pred.asAstNode() = ast and
-      c.(EmptinessCompletion).isEmpty() and
-      astFirst(ast.getRightOperand().getFullyConverted(), succ)
+      astLast(ast.getRightOperand().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      succ.asAstNode() = ast
     }
   }
 
