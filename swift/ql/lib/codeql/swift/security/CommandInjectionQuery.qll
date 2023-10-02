@@ -27,7 +27,7 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // flow out from array elements of at the sink, for example in `task.arguments = [tainted]`.
     isSink(node) and
-    c.getAReadContent() instanceof DataFlow::Content::ArrayContent
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
   }
 }
 
