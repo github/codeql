@@ -89,7 +89,7 @@ private class NumericFieldsInheritTaint extends TaintInheritingContent,
         )
         or
         (
-          className = ["Double", "Float", "Float80", "FloatingPoint"] and
+          className = "FloatingPoint" and
           fieldName = ["exponent", "significand"]
         )
         or
