@@ -107,12 +107,30 @@ class MyClass(APIView):
 
         return Response("ok") # $ HttpResponse
 
+# Viewsets
+# see https://www.django-rest-framework.org/api-guide/viewsets/
+
+class MyModelViewSet(viewsets.ModelViewSet):
+    def retrieve(self, request, *args, **kwargs): # $ requestHandler
+        ensure_tainted(
+            request, # $ tainted
+            request.GET, # $ tainted
+            request.GET.get("pk"), # $ tainted
+        )
+
+        ensure_tainted(
+            kwargs, # $ tainted
+            kwargs["pk"], # $ tainted
+            kwargs.get("pk"), # $ tainted
+        )
+        return Response("retrieve") # $ HttpResponse
 
 
 # fake setup, you can't actually run this
 urlpatterns = [
     path("test-taint/<routed_param>", test_taint),  # $ routeSetup="test-taint/<routed_param>"
-    path("ClassView/<routed_param>", MyClass.as_view()), # $ routeSetup="ClassView/<routed_param>"
+    path("ClassView/<routed_param>", MyClass.as_view()), # $ routeSetup="ClassView/<routed_param>",
+    path("MyModelViewSet/<routed_param>", MyModelViewSet.as_view()) # $ routeSetup="MyModelViewSet/<routed_param>",
 ]
 
 # tests with no route-setup, but we can still tell that these are using Django REST
