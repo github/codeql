@@ -6,28 +6,23 @@ var server = https.createServer(function () { });
 
 server.on('request', function (req, res) {
     let user_origin = url.parse(req.url, true).query.origin;
-    // BAD: attacker can choose the value of origin
+    // BAD: CORS too permissive
     const server_1 = new ApolloServer({
         cors: { origin: true }
     });
 
-    // BAD: CORS too permissive 
-    const server_2 = new ApolloServer({
-        cors: { origin: true }
-    });
-
     // GOOD: restrictive CORS 
-    const server_3 = new ApolloServer({
+    const server_2 = new ApolloServer({
         cors: false
     });
 
     // BAD: CORS too permissive 
-    const server_4 = new ApolloServer({
+    const server_3 = new ApolloServer({
         cors: { origin: null }
     });
 
     // BAD: CORS is controlled by user
-    const server_5 = new ApolloServer({
+    const server_4 = new ApolloServer({
         cors: { origin: user_origin }
     });
 });

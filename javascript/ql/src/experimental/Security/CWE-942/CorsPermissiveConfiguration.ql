@@ -16,5 +16,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ misconfiguration due to a $@.", sink.getNode(),
-  "CORS Origin", source.getNode(), "too permissive or user controlled value"
+select sink.getNode(), source, sink, "CORS Origin misconfiguration due to a $@.", source.getNode(),
+  "too permissive or user controlled value"
