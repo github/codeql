@@ -83,30 +83,20 @@ private class NumericFieldsInheritTaint extends TaintInheritingContent,
   NumericFieldsInheritTaint() {
     exists(string className, string fieldName |
       (
-        (
-          className = "FixedWidthInteger" and
-          fieldName = ["littleEndian", "bigEndian"]
-        )
+        className = "FixedWidthInteger" and
+        fieldName = ["littleEndian", "bigEndian"]
         or
-        (
-          className = "FloatingPoint" and
-          fieldName = ["exponent", "significand"]
-        )
+        className = "FloatingPoint" and
+        fieldName = ["exponent", "significand"]
         or
-        (
-          className = "BinaryInteger" and
-          fieldName = "words"
-        )
+        className = "BinaryInteger" and
+        fieldName = "words"
         or
-        (
-          className = "Numeric" and
-          fieldName = ["magnitude", "byteSwapped"]
-        )
+        className = "Numeric" and
+        fieldName = ["magnitude", "byteSwapped"]
         or
-        (
-          className = "BinaryFloatingPoint" and
-          fieldName = ["binade", "exponentBitPattern", "significandBitPattern"]
-        )
+        className = "BinaryFloatingPoint" and
+        fieldName = ["binade", "exponentBitPattern", "significandBitPattern"]
       ) and
       exists(FieldDecl fieldDecl, Decl declaringDecl, TypeDecl namedTypeDecl |
         namedTypeDecl.getFullName() = className and
