@@ -95,10 +95,17 @@ infix operator <-
 func <-<V>(column: Expression<V>, value: Expression<V>) -> Setter { return Setter() }
 func <-<V>(column: Expression<V>, value: V) -> Setter { return Setter() }
 
+enum OnConflict: String {
+	case replace = "REPLACE"
+}
+
 extension QueryType {
 	func filter(_ predicate: Expression<Bool>) -> Self { return self }
 
 	func insert(_ value: Setter, _ more: Setter...) -> Insert { return Insert("") }
+	func insertMany(_ values: [[Setter]]) -> Insert { return Insert("") }
+	func insertMany(or onConflict: OnConflict, _ values: [[Setter]]) -> Insert { return Insert("") }
+
 	func update(_ values: Setter...) -> Update { return Update("") }
 }
 
@@ -185,4 +192,11 @@ func test_sqlite_swift_api(db: Connection, id: Int, mobilePhoneNumber: String) t
 	try db.run(table.update(numberExpr <- numberExpr.replace("123", with: "456"))) // GOOD
 	try db.run(table.update(numberExpr <- numberExpr.replace("123", with: mobilePhoneNumber))) // BAD (sensitive data)
 	// (much more complex query construction is possible in SQLite.swift)
+
+	let goodMany = [[numberExpr <- "456"]]
+	let badMany = [[numberExpr <- mobilePhoneNumber]]
+	try db.run(table.insertMany(goodMany)) // GOOD
+	try db.run(table.insertMany(badMany)) // BAD (sensitive data)
+	try db.run(table.insertMany(or: OnConflict.replace, goodMany)) // GOOD
+	try db.run(table.insertMany(or: OnConflict.replace, badMany)) // BAD (sensitive data)
 }

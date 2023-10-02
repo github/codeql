@@ -1,63 +1,68 @@
 edges
-| SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:116:17:116:17 | insertQuery |
-| SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:120:21:120:21 | insertQuery |
-| SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:124:17:124:17 | insertQuery |
-| SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:128:20:128:20 | insertQuery |
-| SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:132:24:132:24 | insertQuery |
-| SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:117:17:117:17 | updateQuery |
-| SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:121:21:121:21 | updateQuery |
-| SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:125:17:125:17 | updateQuery |
-| SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:129:20:129:20 | updateQuery |
-| SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:133:24:133:24 | updateQuery |
-| SQLite.swift:140:32:140:32 | [...] | SQLite.swift:140:32:140:32 | [...] |
-| SQLite.swift:140:32:140:32 | mobilePhoneNumber | SQLite.swift:140:32:140:32 | [...] |
-| SQLite.swift:141:28:141:28 | [...] | SQLite.swift:141:28:141:28 | [...] |
-| SQLite.swift:141:28:141:28 | mobilePhoneNumber | SQLite.swift:141:28:141:28 | [...] |
-| SQLite.swift:142:31:142:31 | [...] | SQLite.swift:142:31:142:31 | [...] |
-| SQLite.swift:142:31:142:31 | mobilePhoneNumber | SQLite.swift:142:31:142:31 | [...] |
-| SQLite.swift:145:21:145:21 | [...] | SQLite.swift:145:21:145:21 | [...] |
-| SQLite.swift:145:21:145:21 | mobilePhoneNumber | SQLite.swift:145:21:145:21 | [...] |
-| SQLite.swift:146:20:146:20 | [...] | SQLite.swift:146:20:146:20 | [...] |
-| SQLite.swift:146:20:146:20 | mobilePhoneNumber | SQLite.swift:146:20:146:20 | [...] |
-| SQLite.swift:147:23:147:23 | [...] | SQLite.swift:147:23:147:23 | [...] |
-| SQLite.swift:147:23:147:23 | mobilePhoneNumber | SQLite.swift:147:23:147:23 | [...] |
-| SQLite.swift:151:33:151:33 | mobilePhoneNumber | SQLite.swift:151:32:151:54 | [...] |
-| SQLite.swift:152:29:152:29 | mobilePhoneNumber | SQLite.swift:152:28:152:50 | [...] |
-| SQLite.swift:153:32:153:32 | mobilePhoneNumber | SQLite.swift:153:31:153:53 | [...] |
-| SQLite.swift:156:22:156:22 | mobilePhoneNumber | SQLite.swift:156:21:156:43 | [...] |
-| SQLite.swift:157:21:157:21 | mobilePhoneNumber | SQLite.swift:157:20:157:42 | [...] |
-| SQLite.swift:158:24:158:24 | mobilePhoneNumber | SQLite.swift:158:23:158:45 | [...] |
-| SQLite.swift:162:32:162:70 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:162:32:162:70 | [...] |
-| SQLite.swift:162:43:162:53 | (...) [Tuple element at index 1] | SQLite.swift:162:32:162:70 | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:162:53:162:53 | mobilePhoneNumber | SQLite.swift:162:43:162:53 | (...) [Tuple element at index 1] |
-| SQLite.swift:163:28:163:66 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:163:28:163:66 | [...] |
-| SQLite.swift:163:39:163:49 | (...) [Tuple element at index 1] | SQLite.swift:163:28:163:66 | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:163:49:163:49 | mobilePhoneNumber | SQLite.swift:163:39:163:49 | (...) [Tuple element at index 1] |
-| SQLite.swift:164:31:164:69 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:164:31:164:69 | [...] |
-| SQLite.swift:164:42:164:52 | (...) [Tuple element at index 1] | SQLite.swift:164:31:164:69 | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:164:52:164:52 | mobilePhoneNumber | SQLite.swift:164:42:164:52 | (...) [Tuple element at index 1] |
-| SQLite.swift:167:21:167:59 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:167:21:167:59 | [...] |
-| SQLite.swift:167:32:167:42 | (...) [Tuple element at index 1] | SQLite.swift:167:21:167:59 | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:167:42:167:42 | mobilePhoneNumber | SQLite.swift:167:32:167:42 | (...) [Tuple element at index 1] |
-| SQLite.swift:168:20:168:58 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:168:20:168:58 | [...] |
-| SQLite.swift:168:31:168:41 | (...) [Tuple element at index 1] | SQLite.swift:168:20:168:58 | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:168:41:168:41 | mobilePhoneNumber | SQLite.swift:168:31:168:41 | (...) [Tuple element at index 1] |
-| SQLite.swift:169:23:169:61 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:169:23:169:61 | [...] |
-| SQLite.swift:169:34:169:44 | (...) [Tuple element at index 1] | SQLite.swift:169:23:169:61 | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:169:44:169:44 | mobilePhoneNumber | SQLite.swift:169:34:169:44 | (...) [Tuple element at index 1] |
-| SQLite.swift:179:40:179:54 | ... <-(_:_:) ... | SQLite.swift:179:40:179:54 | [...] |
-| SQLite.swift:179:40:179:54 | [...] | SQLite.swift:179:40:179:54 | [...] |
-| SQLite.swift:179:54:179:54 | mobilePhoneNumber | SQLite.swift:179:40:179:54 | ... <-(_:_:) ... |
-| SQLite.swift:182:26:182:40 | ... <-(_:_:) ... | SQLite.swift:182:26:182:40 | [...] |
-| SQLite.swift:182:26:182:40 | [...] | SQLite.swift:182:26:182:40 | [...] |
-| SQLite.swift:182:40:182:40 | mobilePhoneNumber | SQLite.swift:182:26:182:40 | ... <-(_:_:) ... |
-| SQLite.swift:184:27:184:41 | ... <-(_:_:) ... | SQLite.swift:184:27:184:41 | [...] |
-| SQLite.swift:184:27:184:41 | [...] | SQLite.swift:184:27:184:41 | [...] |
-| SQLite.swift:184:41:184:41 | mobilePhoneNumber | SQLite.swift:184:27:184:41 | ... <-(_:_:) ... |
-| SQLite.swift:186:26:186:89 | ... <-(_:_:) ... | SQLite.swift:186:26:186:89 | [...] |
-| SQLite.swift:186:26:186:89 | [...] | SQLite.swift:186:26:186:89 | [...] |
-| SQLite.swift:186:40:186:89 | call to replace(_:with:) | SQLite.swift:186:26:186:89 | ... <-(_:_:) ... |
-| SQLite.swift:186:72:186:72 | mobilePhoneNumber | SQLite.swift:186:40:186:89 | call to replace(_:with:) |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:123:17:123:17 | insertQuery |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:127:21:127:21 | insertQuery |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:131:17:131:17 | insertQuery |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:135:20:135:20 | insertQuery |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:139:24:139:24 | insertQuery |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:124:17:124:17 | updateQuery |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:128:21:128:21 | updateQuery |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:132:17:132:17 | updateQuery |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:136:20:136:20 | updateQuery |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:140:24:140:24 | updateQuery |
+| SQLite.swift:147:32:147:32 | [...] | SQLite.swift:147:32:147:32 | [...] |
+| SQLite.swift:147:32:147:32 | mobilePhoneNumber | SQLite.swift:147:32:147:32 | [...] |
+| SQLite.swift:148:28:148:28 | [...] | SQLite.swift:148:28:148:28 | [...] |
+| SQLite.swift:148:28:148:28 | mobilePhoneNumber | SQLite.swift:148:28:148:28 | [...] |
+| SQLite.swift:149:31:149:31 | [...] | SQLite.swift:149:31:149:31 | [...] |
+| SQLite.swift:149:31:149:31 | mobilePhoneNumber | SQLite.swift:149:31:149:31 | [...] |
+| SQLite.swift:152:21:152:21 | [...] | SQLite.swift:152:21:152:21 | [...] |
+| SQLite.swift:152:21:152:21 | mobilePhoneNumber | SQLite.swift:152:21:152:21 | [...] |
+| SQLite.swift:153:20:153:20 | [...] | SQLite.swift:153:20:153:20 | [...] |
+| SQLite.swift:153:20:153:20 | mobilePhoneNumber | SQLite.swift:153:20:153:20 | [...] |
+| SQLite.swift:154:23:154:23 | [...] | SQLite.swift:154:23:154:23 | [...] |
+| SQLite.swift:154:23:154:23 | mobilePhoneNumber | SQLite.swift:154:23:154:23 | [...] |
+| SQLite.swift:158:33:158:33 | mobilePhoneNumber | SQLite.swift:158:32:158:54 | [...] |
+| SQLite.swift:159:29:159:29 | mobilePhoneNumber | SQLite.swift:159:28:159:50 | [...] |
+| SQLite.swift:160:32:160:32 | mobilePhoneNumber | SQLite.swift:160:31:160:53 | [...] |
+| SQLite.swift:163:22:163:22 | mobilePhoneNumber | SQLite.swift:163:21:163:43 | [...] |
+| SQLite.swift:164:21:164:21 | mobilePhoneNumber | SQLite.swift:164:20:164:42 | [...] |
+| SQLite.swift:165:24:165:24 | mobilePhoneNumber | SQLite.swift:165:23:165:45 | [...] |
+| SQLite.swift:169:32:169:70 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:169:32:169:70 | [...] |
+| SQLite.swift:169:43:169:53 | (...) [Tuple element at index 1] | SQLite.swift:169:32:169:70 | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:169:53:169:53 | mobilePhoneNumber | SQLite.swift:169:43:169:53 | (...) [Tuple element at index 1] |
+| SQLite.swift:170:28:170:66 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:170:28:170:66 | [...] |
+| SQLite.swift:170:39:170:49 | (...) [Tuple element at index 1] | SQLite.swift:170:28:170:66 | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:170:49:170:49 | mobilePhoneNumber | SQLite.swift:170:39:170:49 | (...) [Tuple element at index 1] |
+| SQLite.swift:171:31:171:69 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:171:31:171:69 | [...] |
+| SQLite.swift:171:42:171:52 | (...) [Tuple element at index 1] | SQLite.swift:171:31:171:69 | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:171:52:171:52 | mobilePhoneNumber | SQLite.swift:171:42:171:52 | (...) [Tuple element at index 1] |
+| SQLite.swift:174:21:174:59 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:174:21:174:59 | [...] |
+| SQLite.swift:174:32:174:42 | (...) [Tuple element at index 1] | SQLite.swift:174:21:174:59 | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:174:42:174:42 | mobilePhoneNumber | SQLite.swift:174:32:174:42 | (...) [Tuple element at index 1] |
+| SQLite.swift:175:20:175:58 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:175:20:175:58 | [...] |
+| SQLite.swift:175:31:175:41 | (...) [Tuple element at index 1] | SQLite.swift:175:20:175:58 | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:175:41:175:41 | mobilePhoneNumber | SQLite.swift:175:31:175:41 | (...) [Tuple element at index 1] |
+| SQLite.swift:176:23:176:61 | [...] [Collection element, Tuple element at index 1] | SQLite.swift:176:23:176:61 | [...] |
+| SQLite.swift:176:34:176:44 | (...) [Tuple element at index 1] | SQLite.swift:176:23:176:61 | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:176:44:176:44 | mobilePhoneNumber | SQLite.swift:176:34:176:44 | (...) [Tuple element at index 1] |
+| SQLite.swift:186:40:186:54 | ... <-(_:_:) ... | SQLite.swift:186:40:186:54 | [...] |
+| SQLite.swift:186:40:186:54 | [...] | SQLite.swift:186:40:186:54 | [...] |
+| SQLite.swift:186:54:186:54 | mobilePhoneNumber | SQLite.swift:186:40:186:54 | ... <-(_:_:) ... |
+| SQLite.swift:189:26:189:40 | ... <-(_:_:) ... | SQLite.swift:189:26:189:40 | [...] |
+| SQLite.swift:189:26:189:40 | [...] | SQLite.swift:189:26:189:40 | [...] |
+| SQLite.swift:189:40:189:40 | mobilePhoneNumber | SQLite.swift:189:26:189:40 | ... <-(_:_:) ... |
+| SQLite.swift:191:27:191:41 | ... <-(_:_:) ... | SQLite.swift:191:27:191:41 | [...] |
+| SQLite.swift:191:27:191:41 | [...] | SQLite.swift:191:27:191:41 | [...] |
+| SQLite.swift:191:41:191:41 | mobilePhoneNumber | SQLite.swift:191:27:191:41 | ... <-(_:_:) ... |
+| SQLite.swift:193:26:193:89 | ... <-(_:_:) ... | SQLite.swift:193:26:193:89 | [...] |
+| SQLite.swift:193:26:193:89 | [...] | SQLite.swift:193:26:193:89 | [...] |
+| SQLite.swift:193:40:193:89 | call to replace(_:with:) | SQLite.swift:193:26:193:89 | ... <-(_:_:) ... |
+| SQLite.swift:193:72:193:72 | mobilePhoneNumber | SQLite.swift:193:40:193:89 | call to replace(_:with:) |
+| SQLite.swift:197:16:197:50 | [...] | SQLite.swift:199:30:199:30 | badMany |
+| SQLite.swift:197:16:197:50 | [...] | SQLite.swift:201:54:201:54 | badMany |
+| SQLite.swift:197:17:197:49 | [...] | SQLite.swift:197:16:197:50 | [...] |
+| SQLite.swift:197:18:197:32 | ... <-(_:_:) ... | SQLite.swift:197:17:197:49 | [...] |
+| SQLite.swift:197:32:197:32 | mobilePhoneNumber | SQLite.swift:197:18:197:32 | ... <-(_:_:) ... |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .value |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .value2 |
 | file://:0:0:0:0 | self [value] | file://:0:0:0:0 | .value |
@@ -244,89 +249,95 @@ edges
 | testRealm.swift:73:15:73:15 | myPassword | testRealm.swift:34:6:34:6 | value |
 | testRealm.swift:73:15:73:15 | myPassword | testRealm.swift:73:2:73:2 | [post] h [password] |
 nodes
-| SQLite.swift:112:70:112:70 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:113:50:113:50 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:116:17:116:17 | insertQuery | semmle.label | insertQuery |
-| SQLite.swift:117:17:117:17 | updateQuery | semmle.label | updateQuery |
-| SQLite.swift:120:21:120:21 | insertQuery | semmle.label | insertQuery |
-| SQLite.swift:121:21:121:21 | updateQuery | semmle.label | updateQuery |
-| SQLite.swift:124:17:124:17 | insertQuery | semmle.label | insertQuery |
-| SQLite.swift:125:17:125:17 | updateQuery | semmle.label | updateQuery |
-| SQLite.swift:128:20:128:20 | insertQuery | semmle.label | insertQuery |
-| SQLite.swift:129:20:129:20 | updateQuery | semmle.label | updateQuery |
-| SQLite.swift:132:24:132:24 | insertQuery | semmle.label | insertQuery |
-| SQLite.swift:133:24:133:24 | updateQuery | semmle.label | updateQuery |
-| SQLite.swift:140:32:140:32 | [...] | semmle.label | [...] |
-| SQLite.swift:140:32:140:32 | [...] | semmle.label | [...] |
-| SQLite.swift:140:32:140:32 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:141:28:141:28 | [...] | semmle.label | [...] |
-| SQLite.swift:141:28:141:28 | [...] | semmle.label | [...] |
-| SQLite.swift:141:28:141:28 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:142:31:142:31 | [...] | semmle.label | [...] |
-| SQLite.swift:142:31:142:31 | [...] | semmle.label | [...] |
-| SQLite.swift:142:31:142:31 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:145:21:145:21 | [...] | semmle.label | [...] |
-| SQLite.swift:145:21:145:21 | [...] | semmle.label | [...] |
-| SQLite.swift:145:21:145:21 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:146:20:146:20 | [...] | semmle.label | [...] |
-| SQLite.swift:146:20:146:20 | [...] | semmle.label | [...] |
-| SQLite.swift:146:20:146:20 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:147:23:147:23 | [...] | semmle.label | [...] |
-| SQLite.swift:147:23:147:23 | [...] | semmle.label | [...] |
-| SQLite.swift:147:23:147:23 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:151:32:151:54 | [...] | semmle.label | [...] |
-| SQLite.swift:151:33:151:33 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:152:28:152:50 | [...] | semmle.label | [...] |
-| SQLite.swift:152:29:152:29 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:153:31:153:53 | [...] | semmle.label | [...] |
-| SQLite.swift:153:32:153:32 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:156:21:156:43 | [...] | semmle.label | [...] |
-| SQLite.swift:156:22:156:22 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:157:20:157:42 | [...] | semmle.label | [...] |
-| SQLite.swift:157:21:157:21 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:158:23:158:45 | [...] | semmle.label | [...] |
-| SQLite.swift:158:24:158:24 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:162:32:162:70 | [...] | semmle.label | [...] |
-| SQLite.swift:162:32:162:70 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:162:43:162:53 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
-| SQLite.swift:162:53:162:53 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:163:28:163:66 | [...] | semmle.label | [...] |
-| SQLite.swift:163:28:163:66 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:163:39:163:49 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
-| SQLite.swift:163:49:163:49 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:164:31:164:69 | [...] | semmle.label | [...] |
-| SQLite.swift:164:31:164:69 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:164:42:164:52 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
-| SQLite.swift:164:52:164:52 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:167:21:167:59 | [...] | semmle.label | [...] |
-| SQLite.swift:167:21:167:59 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:167:32:167:42 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
-| SQLite.swift:167:42:167:42 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:168:20:168:58 | [...] | semmle.label | [...] |
-| SQLite.swift:168:20:168:58 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:168:31:168:41 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
-| SQLite.swift:168:41:168:41 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:169:23:169:61 | [...] | semmle.label | [...] |
-| SQLite.swift:169:23:169:61 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
-| SQLite.swift:169:34:169:44 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
-| SQLite.swift:169:44:169:44 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:179:40:179:54 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
-| SQLite.swift:179:40:179:54 | [...] | semmle.label | [...] |
-| SQLite.swift:179:40:179:54 | [...] | semmle.label | [...] |
-| SQLite.swift:179:54:179:54 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:182:26:182:40 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
-| SQLite.swift:182:26:182:40 | [...] | semmle.label | [...] |
-| SQLite.swift:182:26:182:40 | [...] | semmle.label | [...] |
-| SQLite.swift:182:40:182:40 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:184:27:184:41 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
-| SQLite.swift:184:27:184:41 | [...] | semmle.label | [...] |
-| SQLite.swift:184:27:184:41 | [...] | semmle.label | [...] |
-| SQLite.swift:184:41:184:41 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
-| SQLite.swift:186:26:186:89 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
-| SQLite.swift:186:26:186:89 | [...] | semmle.label | [...] |
-| SQLite.swift:186:26:186:89 | [...] | semmle.label | [...] |
-| SQLite.swift:186:40:186:89 | call to replace(_:with:) | semmle.label | call to replace(_:with:) |
-| SQLite.swift:186:72:186:72 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:119:70:119:70 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:120:50:120:50 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:123:17:123:17 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:124:17:124:17 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:127:21:127:21 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:128:21:128:21 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:131:17:131:17 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:132:17:132:17 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:135:20:135:20 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:136:20:136:20 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:139:24:139:24 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:140:24:140:24 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:147:32:147:32 | [...] | semmle.label | [...] |
+| SQLite.swift:147:32:147:32 | [...] | semmle.label | [...] |
+| SQLite.swift:147:32:147:32 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:148:28:148:28 | [...] | semmle.label | [...] |
+| SQLite.swift:148:28:148:28 | [...] | semmle.label | [...] |
+| SQLite.swift:148:28:148:28 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:149:31:149:31 | [...] | semmle.label | [...] |
+| SQLite.swift:149:31:149:31 | [...] | semmle.label | [...] |
+| SQLite.swift:149:31:149:31 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:152:21:152:21 | [...] | semmle.label | [...] |
+| SQLite.swift:152:21:152:21 | [...] | semmle.label | [...] |
+| SQLite.swift:152:21:152:21 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:153:20:153:20 | [...] | semmle.label | [...] |
+| SQLite.swift:153:20:153:20 | [...] | semmle.label | [...] |
+| SQLite.swift:153:20:153:20 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:154:23:154:23 | [...] | semmle.label | [...] |
+| SQLite.swift:154:23:154:23 | [...] | semmle.label | [...] |
+| SQLite.swift:154:23:154:23 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:158:32:158:54 | [...] | semmle.label | [...] |
+| SQLite.swift:158:33:158:33 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:159:28:159:50 | [...] | semmle.label | [...] |
+| SQLite.swift:159:29:159:29 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:160:31:160:53 | [...] | semmle.label | [...] |
+| SQLite.swift:160:32:160:32 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:163:21:163:43 | [...] | semmle.label | [...] |
+| SQLite.swift:163:22:163:22 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:164:20:164:42 | [...] | semmle.label | [...] |
+| SQLite.swift:164:21:164:21 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:165:23:165:45 | [...] | semmle.label | [...] |
+| SQLite.swift:165:24:165:24 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:169:32:169:70 | [...] | semmle.label | [...] |
+| SQLite.swift:169:32:169:70 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:169:43:169:53 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:169:53:169:53 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:170:28:170:66 | [...] | semmle.label | [...] |
+| SQLite.swift:170:28:170:66 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:170:39:170:49 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:170:49:170:49 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:171:31:171:69 | [...] | semmle.label | [...] |
+| SQLite.swift:171:31:171:69 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:171:42:171:52 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:171:52:171:52 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:174:21:174:59 | [...] | semmle.label | [...] |
+| SQLite.swift:174:21:174:59 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:174:32:174:42 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:174:42:174:42 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:175:20:175:58 | [...] | semmle.label | [...] |
+| SQLite.swift:175:20:175:58 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:175:31:175:41 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:175:41:175:41 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:176:23:176:61 | [...] | semmle.label | [...] |
+| SQLite.swift:176:23:176:61 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| SQLite.swift:176:34:176:44 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| SQLite.swift:176:44:176:44 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:186:40:186:54 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:186:40:186:54 | [...] | semmle.label | [...] |
+| SQLite.swift:186:40:186:54 | [...] | semmle.label | [...] |
+| SQLite.swift:186:54:186:54 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:189:26:189:40 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:189:26:189:40 | [...] | semmle.label | [...] |
+| SQLite.swift:189:26:189:40 | [...] | semmle.label | [...] |
+| SQLite.swift:189:40:189:40 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:191:27:191:41 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:191:27:191:41 | [...] | semmle.label | [...] |
+| SQLite.swift:191:27:191:41 | [...] | semmle.label | [...] |
+| SQLite.swift:191:41:191:41 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:193:26:193:89 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:193:26:193:89 | [...] | semmle.label | [...] |
+| SQLite.swift:193:26:193:89 | [...] | semmle.label | [...] |
+| SQLite.swift:193:40:193:89 | call to replace(_:with:) | semmle.label | call to replace(_:with:) |
+| SQLite.swift:193:72:193:72 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:197:16:197:50 | [...] | semmle.label | [...] |
+| SQLite.swift:197:17:197:49 | [...] | semmle.label | [...] |
+| SQLite.swift:197:18:197:32 | ... <-(_:_:) ... | semmle.label | ... <-(_:_:) ... |
+| SQLite.swift:197:32:197:32 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:199:30:199:30 | badMany | semmle.label | badMany |
+| SQLite.swift:201:54:201:54 | badMany | semmle.label | badMany |
 | file://:0:0:0:0 | .value | semmle.label | .value |
 | file://:0:0:0:0 | .value | semmle.label | .value |
 | file://:0:0:0:0 | .value2 | semmle.label | .value2 |
@@ -614,38 +625,40 @@ subpaths
 | testRealm.swift:66:11:66:11 | myPassword | testRealm.swift:27:6:27:6 | value | file://:0:0:0:0 | [post] self [data] | testRealm.swift:66:2:66:2 | [post] g [data] |
 | testRealm.swift:73:15:73:15 | myPassword | testRealm.swift:34:6:34:6 | value | file://:0:0:0:0 | [post] self [password] | testRealm.swift:73:2:73:2 | [post] h [password] |
 #select
-| SQLite.swift:116:17:116:17 | insertQuery | SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:116:17:116:17 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:112:70:112:70 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:117:17:117:17 | updateQuery | SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:117:17:117:17 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:113:50:113:50 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:120:21:120:21 | insertQuery | SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:120:21:120:21 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:112:70:112:70 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:121:21:121:21 | updateQuery | SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:121:21:121:21 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:113:50:113:50 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:124:17:124:17 | insertQuery | SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:124:17:124:17 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:112:70:112:70 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:125:17:125:17 | updateQuery | SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:125:17:125:17 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:113:50:113:50 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:128:20:128:20 | insertQuery | SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:128:20:128:20 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:112:70:112:70 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:129:20:129:20 | updateQuery | SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:129:20:129:20 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:113:50:113:50 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:132:24:132:24 | insertQuery | SQLite.swift:112:70:112:70 | mobilePhoneNumber | SQLite.swift:132:24:132:24 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:112:70:112:70 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:133:24:133:24 | updateQuery | SQLite.swift:113:50:113:50 | mobilePhoneNumber | SQLite.swift:133:24:133:24 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:113:50:113:50 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:140:32:140:32 | [...] | SQLite.swift:140:32:140:32 | mobilePhoneNumber | SQLite.swift:140:32:140:32 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:140:32:140:32 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:141:28:141:28 | [...] | SQLite.swift:141:28:141:28 | mobilePhoneNumber | SQLite.swift:141:28:141:28 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:141:28:141:28 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:142:31:142:31 | [...] | SQLite.swift:142:31:142:31 | mobilePhoneNumber | SQLite.swift:142:31:142:31 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:142:31:142:31 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:145:21:145:21 | [...] | SQLite.swift:145:21:145:21 | mobilePhoneNumber | SQLite.swift:145:21:145:21 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:145:21:145:21 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:146:20:146:20 | [...] | SQLite.swift:146:20:146:20 | mobilePhoneNumber | SQLite.swift:146:20:146:20 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:146:20:146:20 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:147:23:147:23 | [...] | SQLite.swift:147:23:147:23 | mobilePhoneNumber | SQLite.swift:147:23:147:23 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:147:23:147:23 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:151:32:151:54 | [...] | SQLite.swift:151:33:151:33 | mobilePhoneNumber | SQLite.swift:151:32:151:54 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:151:33:151:33 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:152:28:152:50 | [...] | SQLite.swift:152:29:152:29 | mobilePhoneNumber | SQLite.swift:152:28:152:50 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:152:29:152:29 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:153:31:153:53 | [...] | SQLite.swift:153:32:153:32 | mobilePhoneNumber | SQLite.swift:153:31:153:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:153:32:153:32 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:156:21:156:43 | [...] | SQLite.swift:156:22:156:22 | mobilePhoneNumber | SQLite.swift:156:21:156:43 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:156:22:156:22 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:157:20:157:42 | [...] | SQLite.swift:157:21:157:21 | mobilePhoneNumber | SQLite.swift:157:20:157:42 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:157:21:157:21 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:158:23:158:45 | [...] | SQLite.swift:158:24:158:24 | mobilePhoneNumber | SQLite.swift:158:23:158:45 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:158:24:158:24 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:162:32:162:70 | [...] | SQLite.swift:162:53:162:53 | mobilePhoneNumber | SQLite.swift:162:32:162:70 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:162:53:162:53 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:163:28:163:66 | [...] | SQLite.swift:163:49:163:49 | mobilePhoneNumber | SQLite.swift:163:28:163:66 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:163:49:163:49 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:164:31:164:69 | [...] | SQLite.swift:164:52:164:52 | mobilePhoneNumber | SQLite.swift:164:31:164:69 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:164:52:164:52 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:167:21:167:59 | [...] | SQLite.swift:167:42:167:42 | mobilePhoneNumber | SQLite.swift:167:21:167:59 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:167:42:167:42 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:168:20:168:58 | [...] | SQLite.swift:168:41:168:41 | mobilePhoneNumber | SQLite.swift:168:20:168:58 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:168:41:168:41 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:169:23:169:61 | [...] | SQLite.swift:169:44:169:44 | mobilePhoneNumber | SQLite.swift:169:23:169:61 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:169:44:169:44 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:179:40:179:54 | [...] | SQLite.swift:179:54:179:54 | mobilePhoneNumber | SQLite.swift:179:40:179:54 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:179:54:179:54 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:182:26:182:40 | [...] | SQLite.swift:182:40:182:40 | mobilePhoneNumber | SQLite.swift:182:26:182:40 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:182:40:182:40 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:184:27:184:41 | [...] | SQLite.swift:184:41:184:41 | mobilePhoneNumber | SQLite.swift:184:27:184:41 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:184:41:184:41 | mobilePhoneNumber | mobilePhoneNumber |
-| SQLite.swift:186:26:186:89 | [...] | SQLite.swift:186:72:186:72 | mobilePhoneNumber | SQLite.swift:186:26:186:89 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:186:72:186:72 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:123:17:123:17 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:123:17:123:17 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:124:17:124:17 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:124:17:124:17 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:127:21:127:21 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:127:21:127:21 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:128:21:128:21 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:128:21:128:21 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:131:17:131:17 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:131:17:131:17 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:132:17:132:17 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:132:17:132:17 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:135:20:135:20 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:135:20:135:20 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:136:20:136:20 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:136:20:136:20 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:139:24:139:24 | insertQuery | SQLite.swift:119:70:119:70 | mobilePhoneNumber | SQLite.swift:139:24:139:24 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:119:70:119:70 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:140:24:140:24 | updateQuery | SQLite.swift:120:50:120:50 | mobilePhoneNumber | SQLite.swift:140:24:140:24 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:120:50:120:50 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:147:32:147:32 | [...] | SQLite.swift:147:32:147:32 | mobilePhoneNumber | SQLite.swift:147:32:147:32 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:147:32:147:32 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:148:28:148:28 | [...] | SQLite.swift:148:28:148:28 | mobilePhoneNumber | SQLite.swift:148:28:148:28 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:148:28:148:28 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:149:31:149:31 | [...] | SQLite.swift:149:31:149:31 | mobilePhoneNumber | SQLite.swift:149:31:149:31 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:149:31:149:31 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:152:21:152:21 | [...] | SQLite.swift:152:21:152:21 | mobilePhoneNumber | SQLite.swift:152:21:152:21 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:152:21:152:21 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:153:20:153:20 | [...] | SQLite.swift:153:20:153:20 | mobilePhoneNumber | SQLite.swift:153:20:153:20 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:153:20:153:20 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:154:23:154:23 | [...] | SQLite.swift:154:23:154:23 | mobilePhoneNumber | SQLite.swift:154:23:154:23 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:154:23:154:23 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:158:32:158:54 | [...] | SQLite.swift:158:33:158:33 | mobilePhoneNumber | SQLite.swift:158:32:158:54 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:158:33:158:33 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:159:28:159:50 | [...] | SQLite.swift:159:29:159:29 | mobilePhoneNumber | SQLite.swift:159:28:159:50 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:159:29:159:29 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:160:31:160:53 | [...] | SQLite.swift:160:32:160:32 | mobilePhoneNumber | SQLite.swift:160:31:160:53 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:160:32:160:32 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:163:21:163:43 | [...] | SQLite.swift:163:22:163:22 | mobilePhoneNumber | SQLite.swift:163:21:163:43 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:163:22:163:22 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:164:20:164:42 | [...] | SQLite.swift:164:21:164:21 | mobilePhoneNumber | SQLite.swift:164:20:164:42 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:164:21:164:21 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:165:23:165:45 | [...] | SQLite.swift:165:24:165:24 | mobilePhoneNumber | SQLite.swift:165:23:165:45 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:165:24:165:24 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:169:32:169:70 | [...] | SQLite.swift:169:53:169:53 | mobilePhoneNumber | SQLite.swift:169:32:169:70 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:169:53:169:53 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:170:28:170:66 | [...] | SQLite.swift:170:49:170:49 | mobilePhoneNumber | SQLite.swift:170:28:170:66 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:170:49:170:49 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:171:31:171:69 | [...] | SQLite.swift:171:52:171:52 | mobilePhoneNumber | SQLite.swift:171:31:171:69 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:171:52:171:52 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:174:21:174:59 | [...] | SQLite.swift:174:42:174:42 | mobilePhoneNumber | SQLite.swift:174:21:174:59 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:174:42:174:42 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:175:20:175:58 | [...] | SQLite.swift:175:41:175:41 | mobilePhoneNumber | SQLite.swift:175:20:175:58 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:175:41:175:41 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:176:23:176:61 | [...] | SQLite.swift:176:44:176:44 | mobilePhoneNumber | SQLite.swift:176:23:176:61 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:176:44:176:44 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:186:40:186:54 | [...] | SQLite.swift:186:54:186:54 | mobilePhoneNumber | SQLite.swift:186:40:186:54 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:186:54:186:54 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:189:26:189:40 | [...] | SQLite.swift:189:40:189:40 | mobilePhoneNumber | SQLite.swift:189:26:189:40 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:189:40:189:40 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:191:27:191:41 | [...] | SQLite.swift:191:41:191:41 | mobilePhoneNumber | SQLite.swift:191:27:191:41 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:191:41:191:41 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:193:26:193:89 | [...] | SQLite.swift:193:72:193:72 | mobilePhoneNumber | SQLite.swift:193:26:193:89 | [...] | This operation stores '[...]' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:193:72:193:72 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:199:30:199:30 | badMany | SQLite.swift:197:32:197:32 | mobilePhoneNumber | SQLite.swift:199:30:199:30 | badMany | This operation stores 'badMany' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:197:32:197:32 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:201:54:201:54 | badMany | SQLite.swift:197:32:197:32 | mobilePhoneNumber | SQLite.swift:201:54:201:54 | badMany | This operation stores 'badMany' in a database. It may contain unencrypted sensitive data from $@. | SQLite.swift:197:32:197:32 | mobilePhoneNumber | mobilePhoneNumber |
 | sqlite3_c_api.swift:46:27:46:27 | insertQuery | sqlite3_c_api.swift:42:69:42:69 | medicalNotes | sqlite3_c_api.swift:46:27:46:27 | insertQuery | This operation stores 'insertQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:42:69:42:69 | medicalNotes | medicalNotes |
 | sqlite3_c_api.swift:47:27:47:27 | updateQuery | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | sqlite3_c_api.swift:47:27:47:27 | updateQuery | This operation stores 'updateQuery' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:43:49:43:49 | medicalNotes | medicalNotes |
 | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | This operation stores 'medicalNotes' in a database. It may contain unencrypted sensitive data from $@. | sqlite3_c_api.swift:58:36:58:36 | medicalNotes | medicalNotes |
