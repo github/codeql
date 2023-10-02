@@ -253,7 +253,11 @@ private module RestFramework {
       override DataFlow::Node getInstance() { result = instance() }
 
       override string getAttributeName() {
-        result in ["data", "query_params", "user", "auth", "content_type", "stream"]
+        result in [
+            "data", "query_params", "user", "auth", "content_type", "stream",
+            // Django HttpRequest attributes
+            "COOKIES", "FILES", "GET", "PATCH", "POST", "PUT", "DELETE"
+          ]
       }
 
       override string getMethodName() { none() }
