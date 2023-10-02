@@ -1327,7 +1327,7 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow out of a callable
-          fwdFlowOut(node, state, cc, summaryCtx, argT, argAp, t, ap, apa)
+          fwdFlowOut(_, _, node, state, cc, summaryCtx, argT, argAp, t, ap, apa)
           or
           // flow through a callable
           exists(
@@ -1633,14 +1633,6 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
-        pragma[nomagic]
-        private predicate fwdFlowOut(
-          NodeEx out, FlowState state, CcNoCall outercc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, Typ t, Ap ap, ApApprox apa
-        ) {
-          fwdFlowOut(_, _, out, state, outercc, summaryCtx, argT, argAp, t, ap, apa)
-        }
-
         private module FwdTypeFlowInput implements TypeFlowInput {
           predicate enableTypeFlow = Param::enableTypeFlow/0;
 
@@ -1654,7 +1646,7 @@ module MakeImpl<InputSig Lang> {
 
           pragma[nomagic]
           private predicate dataFlowTakenCallEdgeIn0(
-            DataFlowCall call, DataFlowCallable c, ParamNodeEx p, FlowState state, Cc innercc,
+            DataFlowCall call, DataFlowCallable c, ParamNodeEx p, FlowState state, CcCall innercc,
             Typ t, Ap ap, boolean cc
           ) {
             FwdFlowIn<FwdFlowInNoRestriction>::fwdFlowIn(call, c, p, state, _, innercc, _, _, _, t,
