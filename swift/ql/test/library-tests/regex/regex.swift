@@ -54,6 +54,7 @@ class NSString : NSObject {
 
 		static var regularExpression: NSString.CompareOptions { get { return CompareOptions(rawValue: 1) } }
 		static var caseInsensitive: NSString.CompareOptions { get { return CompareOptions(rawValue: 2) } }
+		static var literal: NSString.CompareOptions { get { return CompareOptions(rawValue: 4) } }
 	}
 
 	convenience init(string aString: String) { self.init() }
@@ -126,7 +127,9 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	// --- StringProtocol ---
 
 	_ = input.range(of: ".*", options: .regularExpression, range: nil, locale: nil) // $ MISSING: regex=.* input=input
+	_ = input.range(of: ".*", options: .literal, range: nil, locale: nil) // (not a regular expression)
 	_ = input.replacingOccurrences(of: ".*", with: "", options: .regularExpression) // $ MISSING: regex=.* input=input
+	_ = input.replacingOccurrences(of: ".*", with: "", options: .literal) // (not a regular expression)
 
 	// --- NSRegularExpression ---
 
@@ -142,8 +145,15 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	// --- NSString ---
 
 	let inputNS = NSString(string: "abcdef")
-	_ = inputNS.range(of: "*", options: .regularExpression) // $ MISSING: regex=.* input=inputNS
+	let regexOptions = NSString.CompareOptions.regularExpression
+	let regexOptions2 : NSString.CompareOptions = [.regularExpression, .caseInsensitive]
+	_ = inputNS.range(of: ".*", options: .regularExpression) // $ MISSING: regex=.* input=inputNS
+	_ = inputNS.range(of: ".*", options: [.regularExpression]) // $ MISSING: regex=.* input=inputNS
+	_ = inputNS.range(of: ".*", options: regexOptions) // $ MISSING: regex=.* input=inputNS
+	_ = inputNS.range(of: ".*", options: regexOptions2) // $ MISSING: regex=.* input=inputNS
+	_ = inputNS.range(of: ".*", options: .literal) // (not a regular expression)
 	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .regularExpression, range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS
+	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .literal, range: NSMakeRange(0, inputNS.length)) // (not a regular expression)
 
 	// --- flow ---
 
