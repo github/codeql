@@ -47,8 +47,12 @@ edges
 | conversions.swift:87:19:87:32 | call to sourceString() | conversions.swift:87:12:87:33 | call to String.init(_:) |
 | conversions.swift:95:12:95:35 | call to MyString.init(_:) | conversions.swift:95:12:95:35 | call to MyString.init(_:) [some:0] |
 | conversions.swift:95:12:95:35 | call to MyString.init(_:) | conversions.swift:96:12:96:12 | ms2 |
+| conversions.swift:95:12:95:35 | call to MyString.init(_:) | conversions.swift:97:12:97:16 | .description |
+| conversions.swift:95:12:95:35 | call to MyString.init(_:) | conversions.swift:98:12:98:16 | .debugDescription |
 | conversions.swift:95:12:95:35 | call to MyString.init(_:) [some:0] | conversions.swift:95:12:95:36 | ...! |
 | conversions.swift:95:12:95:36 | ...! | conversions.swift:96:12:96:12 | ms2 |
+| conversions.swift:95:12:95:36 | ...! | conversions.swift:97:12:97:16 | .description |
+| conversions.swift:95:12:95:36 | ...! | conversions.swift:98:12:98:16 | .debugDescription |
 | conversions.swift:95:21:95:34 | call to sourceString() | conversions.swift:95:12:95:35 | call to MyString.init(_:) |
 | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:104:12:104:12 | parent |
 | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:105:12:105:12 | parent |
@@ -223,6 +227,8 @@ nodes
 | conversions.swift:95:12:95:36 | ...! | semmle.label | ...! |
 | conversions.swift:95:21:95:34 | call to sourceString() | semmle.label | call to sourceString() |
 | conversions.swift:96:12:96:12 | ms2 | semmle.label | ms2 |
+| conversions.swift:97:12:97:16 | .description | semmle.label | .description |
+| conversions.swift:98:12:98:16 | .debugDescription | semmle.label | .debugDescription |
 | conversions.swift:103:31:103:44 | call to sourceString() | semmle.label | call to sourceString() |
 | conversions.swift:104:12:104:12 | parent | semmle.label | parent |
 | conversions.swift:105:12:105:12 | parent | semmle.label | parent |
@@ -395,6 +401,8 @@ subpaths
 | conversions.swift:86:12:86:25 | call to sourceString() | conversions.swift:86:12:86:25 | call to sourceString() | conversions.swift:86:12:86:25 | call to sourceString() | result |
 | conversions.swift:87:12:87:33 | call to String.init(_:) | conversions.swift:87:19:87:32 | call to sourceString() | conversions.swift:87:12:87:33 | call to String.init(_:) | result |
 | conversions.swift:96:12:96:12 | ms2 | conversions.swift:95:21:95:34 | call to sourceString() | conversions.swift:96:12:96:12 | ms2 | result |
+| conversions.swift:97:12:97:16 | .description | conversions.swift:95:21:95:34 | call to sourceString() | conversions.swift:97:12:97:16 | .description | result |
+| conversions.swift:98:12:98:16 | .debugDescription | conversions.swift:95:21:95:34 | call to sourceString() | conversions.swift:98:12:98:16 | .debugDescription | result |
 | conversions.swift:104:12:104:12 | parent | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:104:12:104:12 | parent | result |
 | conversions.swift:105:12:105:12 | parent | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:105:12:105:12 | parent | result |
 | conversions.swift:108:12:108:12 | v3 | conversions.swift:103:31:103:44 | call to sourceString() | conversions.swift:108:12:108:12 | v3 | result |
