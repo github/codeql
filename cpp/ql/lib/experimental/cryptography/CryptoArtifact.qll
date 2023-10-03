@@ -78,7 +78,7 @@ abstract class KeyGeneration extends CryptographicOperation {
   abstract CryptographicAlgorithm getAlgorithm();
 
   int getKeySizeInBits(CryptographicAlgorithm alg) {
-    result = getKeyConfigurationSource(alg).(Literal).getValue().toInt()
+    result = this.getKeyConfigurationSource(alg).(Literal).getValue().toInt()
   }
 
   predicate hasConstantKeySize(CryptographicAlgorithm alg) { exists(this.getKeySizeInBits(alg)) }
@@ -87,7 +87,7 @@ abstract class KeyGeneration extends CryptographicOperation {
     exists(this.getKeyConfigurationSource(alg))
   }
 
-  Expr getAKeyConfigurationSource() { result = getKeyConfigurationSource(_) }
+  Expr getAKeyConfigurationSource() { result = this.getKeyConfigurationSource(_) }
 }
 
 abstract class AsymmetricKeyGeneration extends KeyGeneration { }

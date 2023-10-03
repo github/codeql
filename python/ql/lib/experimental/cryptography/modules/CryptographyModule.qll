@@ -246,8 +246,8 @@ module Encryption {
 
         override string getName() {
           exists(string rawName | genericAEADArtifact(_, rawName) = this |
-            result = normalizedBlockNames(rawName) or
-            result = normalizedEncryptionName(rawName)
+            result = this.normalizedBlockNames(rawName) or
+            result = this.normalizedEncryptionName(rawName)
           )
         }
 
@@ -313,9 +313,9 @@ module Encryption {
         }
 
         override DataFlow::Node getKeyConfigSrc() {
-          result = keyBitLengthSrc()
+          result = this.keyBitLengthSrc()
           or
-          not exists(keyBitLengthSrc()) and result = this
+          not exists(this.keyBitLengthSrc()) and result = this
         }
       }
     }

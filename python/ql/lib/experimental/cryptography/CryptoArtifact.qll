@@ -62,7 +62,7 @@ abstract class CryptographicOperation extends CryptographicArtifact, API::CallNo
 
 /** A key generation operation for asymmetric keys */
 abstract class KeyGen extends CryptographicOperation {
-  int getAKeySizeInBits() { result = getKeySizeInBits(_) }
+  int getAKeySizeInBits() { result = this.getKeySizeInBits(_) }
 
   final predicate hasKeySize(DataFlow::Node configSrc) { exists(this.getKeySizeInBits(configSrc)) }
 
