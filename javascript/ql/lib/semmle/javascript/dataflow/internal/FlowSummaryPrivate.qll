@@ -205,6 +205,14 @@ SummaryComponent interpretComponentSpecific(Private::AccessPathToken c) {
   c.getName() = "Awaited" and
   c.getNumArgument() = 0 and
   result = SummaryComponent::content(MkAwaited())
+  or
+  c.getName() = "AnyMemberDeep" and
+  c.getNumArgument() = 0 and
+  result = SummaryComponent::content(MkAnyPropertyDeep())
+  or
+  c.getName() = "ArrayElementDeep" and
+  c.getNumArgument() = 0 and
+  result = SummaryComponent::content(MkArrayElementDeep())
 }
 
 private string getMadStringFromContentSetAux(ContentSet cs) {

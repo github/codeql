@@ -661,6 +661,19 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::promiseValue()
   )
   or
+  // For deep reads, generate read edges with a self-loop
+  exists(Node origin, ContentSet contentSet |
+    FlowSummaryImpl::Private::Steps::summaryReadStep(origin.(FlowSummaryNode).getSummaryNode(),
+      contentSet, node2.(FlowSummaryNode).getSummaryNode()) and
+    node1 = [origin, node2]
+  |
+    contentSet = MkAnyPropertyDeep() and
+    c = ContentSet::anyProperty()
+    or
+    contentSet = MkArrayElementDeep() and
+    c = ContentSet::arrayElement()
+  )
+  or
   DataFlow::AdditionalFlowStep::readStep(node1, c, node2)
 }
 
