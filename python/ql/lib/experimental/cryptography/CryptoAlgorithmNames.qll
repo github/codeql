@@ -11,31 +11,40 @@
 string unknownAlgorithm() { result = "UNKNOWN" }
 
 string getHashType() { result = "HASH" }
+
 string getSymmetricEncryptionType() { result = "SYMMETRIC_ENCRYPTION" }
+
 string getAsymmetricEncryptionType() { result = "ASYMMETRIC_ENCRYPTION" }
+
 string getKeyDerivationType() { result = "KEY_DERIVATION" }
+
 string getCipherBlockModeType() { result = "BLOCK_MODE" }
+
 string getSymmetricPaddingType() { result = "SYMMETRIC_PADDING" }
+
 string getAsymmetricPaddingType() { result = "ASYMMETRIC_PADDING" }
+
 string getEllipticCurveType() { result = "ELLIPTIC_CURVE" }
+
 string getSignatureType() { result = "SIGNATURE" }
+
 string getKeyExchangeType() { result = "KEY_EXCHANGE" }
 
-predicate isKnownType(string algType){
+predicate isKnownType(string algType) {
   algType in [
-    getHashType(), getSymmetricEncryptionType(), getAsymmetricEncryptionType(), getKeyDerivationType(),
-    getCipherBlockModeType(), getSymmetricPaddingType(), getAsymmetricPaddingType(), getEllipticCurveType(),
-    getSignatureType(), getKeyExchangeType()
-  ]
+      getHashType(), getSymmetricEncryptionType(), getAsymmetricEncryptionType(),
+      getKeyDerivationType(), getCipherBlockModeType(), getSymmetricPaddingType(),
+      getAsymmetricPaddingType(), getEllipticCurveType(), getSignatureType(), getKeyExchangeType()
+    ]
 }
-
 
 predicate isKnownAlgorithm(string name) { isKnownAlgorithm(name, _) }
 
 predicate isKnownAlgorithm(string name, string algType) {
   isHashingAlgorithm(name) and algType = "HASH"
   or
-  isEncryptionAlgorithm(name, algType) and algType in ["SYMMETRIC_ENCRYPTION", "ASYMMETRIC_ENCRYPTION"]
+  isEncryptionAlgorithm(name, algType) and
+  algType in ["SYMMETRIC_ENCRYPTION", "ASYMMETRIC_ENCRYPTION"]
   or
   isKeyDerivationAlgorithm(name) and algType = "KEY_DERIVATION"
   or
@@ -56,11 +65,11 @@ predicate isKnownAlgorithm(string name, string algType) {
 predicate isHashingAlgorithm(string name) {
   name =
     [
-      "BLAKE2", "BLAKE2B", "BLAKE2S", 
-      "SHA2", "SHA224", "SHA256", "SHA384", "SHA512", "SHA512224", "SHA512256",
-      "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512", "SHAKE128", "SHAKE256", "SM3",
-      "WHIRLPOOL", "POLY1305", "HAVEL128", "MD2", "MD4", "MD5", "PANAMA", "RIPEMD", "RIPEMD128",
-      "RIPEMD256", "RIPEMD160", "RIPEMD320", "SHA0", "SHA1", "SHA", "MGF1","MGF1SHA1", "MDC2", "SIPHASH"
+      "BLAKE2", "BLAKE2B", "BLAKE2S", "SHA2", "SHA224", "SHA256", "SHA384", "SHA512", "SHA512224",
+      "SHA512256", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512", "SHAKE128", "SHAKE256",
+      "SM3", "WHIRLPOOL", "POLY1305", "HAVEL128", "MD2", "MD4", "MD5", "PANAMA", "RIPEMD",
+      "RIPEMD128", "RIPEMD256", "RIPEMD160", "RIPEMD320", "SHA0", "SHA1", "SHA", "MGF1", "MGF1SHA1",
+      "MDC2", "SIPHASH"
     ]
 }
 
@@ -82,10 +91,10 @@ predicate isSymmetricEncryptionAlgorithm(string name) {
       "AES", "AES128", "AES192", "AES256", "ARIA", "BLOWFISH", "BF", "ECIES", "CAST", "CAST5",
       "CAMELLIA", "CAMELLIA128", "CAMELLIA192", "CAMELLIA256", "CHACHA", "CHACHA20",
       "CHACHA20POLY1305", "GOST", "GOSTR34102001", "GOSTR341094", "GOSTR341194", "GOST2814789",
-      "GOSTR341194", "GOST2814789", "GOST28147", "GOSTR341094", "GOST89", "GOST94", "GOST34102012", 
-      "GOST34112012", "IDEA", "RABBIT",
-      "SEED", "SM4", "DES", "DESX", "3DES", "TDES", "2DES", "DES3", "TRIPLEDES", "TDEA", "TRIPLEDEA",
-      "ARC2", "RC2", "ARC4", "RC4", "ARCFOUR", "ARC5", "RC5", "MAGMA", "KUZNYECHIK"
+      "GOSTR341194", "GOST2814789", "GOST28147", "GOSTR341094", "GOST89", "GOST94", "GOST34102012",
+      "GOST34112012", "IDEA", "RABBIT", "SEED", "SM4", "DES", "DESX", "3DES", "TDES", "2DES",
+      "DES3", "TRIPLEDES", "TDEA", "TRIPLEDEA", "ARC2", "RC2", "ARC4", "RC4", "ARCFOUR", "ARC5",
+      "RC5", "MAGMA", "KUZNYECHIK"
     ]
 }
 
@@ -200,8 +209,12 @@ predicate isEllipticCurveAlgorithm(string curveName, int keySize) {
 /**
  * Holds if `name` corresponds to a known signature algorithm.
  */
-predicate isSignatureAlgorithm(string name) { 
-  name = ["DSA", "ECDSA", "EDDSA", "ES256", "ES256K", "ES384", "ES512", "ED25519", "ED448", "ECDSA256", "ECDSA384", "ECDSA512"] 
+predicate isSignatureAlgorithm(string name) {
+  name =
+    [
+      "DSA", "ECDSA", "EDDSA", "ES256", "ES256K", "ES384", "ES512", "ED25519", "ED448", "ECDSA256",
+      "ECDSA384", "ECDSA512"
+    ]
 }
 
 /**

@@ -12,10 +12,10 @@ import python
 import experimental.cryptography.Concepts
 
 from HashAlgorithm op, string name, string msg
-where 
-name = op.getHashName() and 
-not name = ["SHA256", "SHA384", "SHA512"] and
-if name = unknownAlgorithm()
-then msg = "Use of unrecognized hash algorithm." 
-else msg = "Use of unapproved hash algorithm or API " + name + "."
+where
+  name = op.getHashName() and
+  not name = ["SHA256", "SHA384", "SHA512"] and
+  if name = unknownAlgorithm()
+  then msg = "Use of unrecognized hash algorithm."
+  else msg = "Use of unapproved hash algorithm or API " + name + "."
 select op, msg
