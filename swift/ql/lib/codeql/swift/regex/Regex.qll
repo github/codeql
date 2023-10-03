@@ -391,8 +391,15 @@ private class SometimesRegexEval extends RegexEval {
     ) and
     regexInput.asExpr() = this.getArgument(0).getExpr() and
     stringInput.asExpr() = this.getQualifier() and
-    optionsInput.asExpr() = this.getArgumentWithLabel("options").getExpr()
-    // TODO: check options may have value `.regularExpression`
+    optionsInput.asExpr() = this.getArgumentWithLabel("options").getExpr() and
+    // flow from `.regularExpression` to `options` argument
+    exists(MemberRefExpr sourceValue |
+      sourceValue
+          .getMember()
+          .(FieldDecl)
+          .hasQualifiedName("NSString.CompareOptions", "regularExpression") and
+      DataFlow::localFlow(DataFlow::exprNode(sourceValue), optionsInput)
+    )
   }
 
   override DataFlow::Node getRegexInput() { result = regexInput }
