@@ -767,6 +767,12 @@ module PseudoProperties {
   string mapValueKey(string key) { result = pseudoProperty("mapValue", key) }
 
   /**
+   * Holds if `prop` equals `mapValueKey(key)` for some value of `key`.
+   */
+  bindingset[prop]
+  predicate isMapValueKey(string prop) { prop.matches("$mapValue|%$") }
+
+  /**
    * Gets a pseudo-property for the location of a map value where the key is `key`.
    */
   pragma[inline]
