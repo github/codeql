@@ -278,10 +278,21 @@ private class FileInput extends LocalUserInput {
 }
 
 /**
+ * DEPRECATED: Use the threat models feature.
+ * That is, use `ThreatModelFlowSource` as the class of nodes for sources
+ * and set up the threat model configuration to filter source nodes.
+ * Alternatively, use `getThreatModel` to filter nodes to create the
+ * class of nodes you need.
+ *
  * A node with input from a database.
  */
-private class DatabaseInput extends LocalUserInput {
-  DatabaseInput() { this.asExpr().(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
+deprecated class DatabaseInput = DbInput;
+
+/**
+ * A node with input from a database.
+ */
+private class DbInput extends LocalUserInput {
+  DbInput() { this.asExpr().(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
 
   override string getThreatModel() { result = "database" }
 }
