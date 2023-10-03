@@ -409,18 +409,27 @@ module TaintTracking {
               ]).getACall() and
           pred = c.getArgument(0)
         )
+      )
+    }
+  }
+
+  /**
+   * A taint propagating edge for the string `replace` function.
+   *
+   * This is a legacy step as it crosses a function boundary, and would thus be converted to a jump step.
+   */
+  private class ReplaceCallbackSteps extends LegacyTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      // In and out of .replace callbacks
+      exists(StringReplaceCall call |
+        // Into the callback if the regexp does not sanitize matches
+        hasWildcardReplaceRegExp(call) and
+        pred = call.getReceiver() and
+        succ = call.getReplacementCallback().getParameter(0)
         or
-        // In and out of .replace callbacks
-        exists(StringReplaceCall call |
-          // Into the callback if the regexp does not sanitize matches
-          hasWildcardReplaceRegExp(call) and
-          pred = call.getReceiver() and
-          succ = call.getReplacementCallback().getParameter(0)
-          or
-          // Out of the callback
-          pred = call.getReplacementCallback().getReturnNode() and
-          succ = call
-        )
+        // Out of the callback
+        pred = call.getReplacementCallback().getReturnNode() and
+        succ = call
       )
     }
   }
