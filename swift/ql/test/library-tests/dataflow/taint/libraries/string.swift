@@ -584,12 +584,12 @@ func taintedThroughConversion() {
   sink(arg: String(0))
   sink(arg: String(source())) // $ tainted=585
   sink(arg: Int(0).description)
-  sink(arg: source().description) // $ MISSING: tainted=587
+  sink(arg: source().description) // $ tainted=587
   sink(arg: String(describing: 0))
   sink(arg: String(describing: source())) // $ tainted=589
 
   sink(arg: Int("123")!)
-  sink(arg: Int(source2())!) // $ MISSING: tainted=592
+  sink(arg: Int(source2())!) // $ tainted=592
 }
 
 func untaintedFields() {

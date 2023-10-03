@@ -27,7 +27,7 @@ private class StringSource extends SourceModelCsv {
 }
 
 /**
- * A model for `String` and `StringProtocol` members that permit taint flow.
+ * A model for members of `String`, `StringProtocol` and similar classes that permit taint flow.
  */
 private class StringSummaries extends SummaryModelCsv {
   override predicate row(string row) {
@@ -124,14 +124,15 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;randomElement();;;Argument[-1];ReturnValue;taint",
         ";String;true;randomElement(using:);;;Argument[-1];ReturnValue;taint",
         ";String;true;enumerated();;;Argument[-1];ReturnValue;taint",
-        ";String;true;encode(to:);;;Argument[-1];Argument[0];taint"
+        ";String;true;encode(to:);;;Argument[-1];Argument[0];taint",
+        ";LosslessStringConvertible;true;init(_:);;;Argument[0];ReturnValue;taint",
       ]
   }
 }
 
 /**
- * A content implying that, if a `String` is tainted, then many of its fields are
- * tainted. This also includes fields declared in `StringProtocol`.
+ * A content implying that, if a `String`, `StringProtocol` or related class is tainted, then many
+ * of its fields are tainted.
  */
 private class StringFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
@@ -140,12 +141,24 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
     this.getField()
         .hasQualifiedName(["String", "StringProtocol"],
           [
-            "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",
-            "debugDescription", "dataValue", "identifierValue", "capitalized",
-            "localizedCapitalized", "localizedLowercase", "localizedUppercase",
-            "decomposedStringWithCanonicalMapping", "decomposedStringWithCompatibilityMapping",
-            "precomposedStringWithCanonicalMapping", "precomposedStringWithCompatibilityMapping",
-            "removingPercentEncoding"
+            "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "dataValue",
+            "identifierValue", "capitalized", "localizedCapitalized", "localizedLowercase",
+            "localizedUppercase", "decomposedStringWithCanonicalMapping",
+            "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
+            "precomposedStringWithCompatibilityMapping", "removingPercentEncoding"
           ])
+    or
+    exists(FieldDecl fieldDecl, Decl declaringDecl, TypeDecl namedTypeDecl |
+      (
+        namedTypeDecl.getFullName() = "CustomStringConvertible" and
+        fieldDecl.getName() = "description"
+        or
+        namedTypeDecl.getFullName() = "CustomDebugStringConvertible" and
+        fieldDecl.getName() = "debugDescription"
+      ) and
+      declaringDecl.getAMember() = fieldDecl and
+      declaringDecl.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*() and
+      this.getField() = fieldDecl
+    )
   }
 }

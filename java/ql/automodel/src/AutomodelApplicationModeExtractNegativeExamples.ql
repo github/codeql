@@ -50,9 +50,6 @@ where
   extensibleType = endpoint.getExtensibleType() and
   confidence >= SharedCharacteristics::highConfidence() and
   characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
-  // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
-  // certain about in the prompt.
-  not erroneousEndpoints(endpoint, _, _, _, _, false) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
   // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
   // treated by the actual query as a sanitizer, since the final logic is something like

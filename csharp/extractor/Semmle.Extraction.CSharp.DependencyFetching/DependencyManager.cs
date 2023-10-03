@@ -23,7 +23,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDictionary<string, string> unresolvedReferences = new ConcurrentDictionary<string, string>();
         private int failedProjects;
         private int succeededProjects;
-        private readonly List<string> allSources;
+        private readonly List<string> nonGeneratedSources;
+        private readonly List<string> generatedSources;
         private int conflictedReferences = 0;
         private readonly IDependencyOptions options;
         private readonly DirectoryInfo sourceDir;
@@ -31,6 +32,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
         private readonly TemporaryDirectory tempWorkingDirectory;
+        private readonly bool cleanupTempWorkingDirectory;
 
         /// <summary>
         /// Performs C# dependency fetching.
@@ -58,14 +60,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
-            tempWorkingDirectory = new TemporaryDirectory(GetTemporaryWorkingDirectory());
+            tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
 
             var allFiles = GetAllFiles();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
             var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
             var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
             this.fileContent = new FileContent(progressMonitor, smallNonBinaryFiles);
-            this.allSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
+            this.nonGeneratedSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
+            this.generatedSources = new();
             var allProjects = allNonBinaryFiles.SelectFileNamesByExtension(".csproj");
             var solutions = options.SolutionFile is not null
                 ? new[] { options.SolutionFile }
@@ -164,6 +167,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 Path.Combine(packageFolder, "microsoft.netcore.app.runtime"),
                 Path.Combine(packageFolder, "microsoft.aspnetcore.app.runtime"),
                 Path.Combine(packageFolder, "microsoft.windowsdesktop.app.runtime"),
+
+                // legacy runtime packages:
+                Path.Combine(packageFolder, "runtime.linux-x64.microsoft.netcore.app"),
+                Path.Combine(packageFolder, "runtime.osx-x64.microsoft.netcore.app"),
+                Path.Combine(packageFolder, "runtime.win-x64.microsoft.netcore.app"),
             };
 
             foreach (var filename in usedReferences.Keys)
@@ -214,7 +222,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     }
                 }
 
-                this.allSources.Add(path);
+                this.generatedSources.Add(path);
             }
         }
 
@@ -236,7 +244,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         var razor = new Razor(sdk, dotnet, progressMonitor);
                         var targetDir = GetTemporaryWorkingDirectory("razor");
                         var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, targetDir);
-                        this.allSources.AddRange(generatedFiles);
+                        this.generatedSources.AddRange(generatedFiles);
                     }
                     catch (Exception ex)
                     {
@@ -276,20 +284,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 sb.AppendFormat("{0:x2}", b);
 
             return Path.Combine(Path.GetTempPath(), "GitHub", "packages", sb.ToString());
-        }
-
-        private static string GetTemporaryWorkingDirectory()
-        {
-            var tempFolder = EnvironmentVariables.GetScratchDirectory();
-
-            if (string.IsNullOrEmpty(tempFolder))
-            {
-                var tempPath = Path.GetTempPath();
-                var name = Guid.NewGuid().ToString("N").ToUpper();
-                tempFolder = Path.Combine(tempPath, "GitHub", name);
-            }
-
-            return tempFolder;
         }
 
         /// <summary>
@@ -380,9 +374,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public IEnumerable<string> ProjectSourceFiles => sources.Where(s => s.Value).Select(s => s.Key);
 
         /// <summary>
+        /// All of the generated source files in the source directory.
+        /// </summary>
+        public IEnumerable<string> GeneratedSourceFiles => generatedSources;
+
+        /// <summary>
         /// All of the source files in the source directory.
         /// </summary>
-        public IEnumerable<string> AllSourceFiles => allSources;
+        public IEnumerable<string> AllSourceFiles => generatedSources.Concat(nonGeneratedSources);
 
         /// <summary>
         /// List of assembly IDs which couldn't be resolved.
@@ -562,7 +561,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void Dispose()
         {
             packageDirectory?.Dispose();
-            tempWorkingDirectory?.Dispose();
+            if (cleanupTempWorkingDirectory)
+                tempWorkingDirectory?.Dispose();
         }
     }
 }

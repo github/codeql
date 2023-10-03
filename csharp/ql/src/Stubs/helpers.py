@@ -9,7 +9,7 @@ def run_cmd(cmd, msg="Failed to run command"):
         exit(1)
 
 
-def run_cmd_cwd(cmd, cwd, msg):
+def run_cmd_cwd(cmd, cwd, msg="Failed to run command"):
     print('Change working directory to: ' + cwd)
     print('Running ' + ' '.join(cmd))
     if subprocess.check_call(cmd, cwd=cwd):

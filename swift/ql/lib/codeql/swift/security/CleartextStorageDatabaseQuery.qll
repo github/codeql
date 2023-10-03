@@ -34,11 +34,16 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
     // for example in `realmObj.data = sensitive`.
     isSink(node) and
     exists(NominalTypeDecl d, Decl cx |
-      d.getType().getABaseType*().getUnderlyingType().getName() =
+      d.getType().getUnderlyingType().getABaseType*().getName() =
         ["NSManagedObject", "RealmSwiftObject"] and
       cx.asNominalTypeDecl() = d and
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
+    or
+    // flow out from array elements of at the sink,
+    // for example in `database.allStatements(sql: "", arguments: [sensitive])`.
+    isSink(node) and
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
   }
 }
 

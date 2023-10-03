@@ -10,6 +10,7 @@ private import semmle.python.frameworks.Aiomysql
 private import semmle.python.frameworks.Aiosqlite
 private import semmle.python.frameworks.Aiopg
 private import semmle.python.frameworks.Asyncpg
+private import semmle.python.frameworks.BSon
 private import semmle.python.frameworks.CassandraDriver
 private import semmle.python.frameworks.ClickhouseDriver
 private import semmle.python.frameworks.Cryptodome
@@ -42,6 +43,7 @@ private import semmle.python.frameworks.Phoenixdb
 private import semmle.python.frameworks.Psycopg2
 private import semmle.python.frameworks.Pycurl
 private import semmle.python.frameworks.Pydantic
+private import semmle.python.frameworks.PyMongo
 private import semmle.python.frameworks.Pymssql
 private import semmle.python.frameworks.PyMySQL
 private import semmle.python.frameworks.Pyodbc

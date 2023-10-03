@@ -226,9 +226,14 @@ signature module InputSig {
    *
    * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
    */
-  int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p);
+  default int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
 
-  predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg);
+  bindingset[call, p, arg]
+  default predicate golangSpecificParamArgFilter(
+    DataFlowCall call, ParameterNode p, ArgumentNode arg
+  ) {
+    any()
+  }
 }
 
 module Configs<InputSig Lang> {
@@ -357,8 +362,14 @@ module Configs<InputSig Lang> {
     /** Holds if data flow into `node` is prohibited. */
     default predicate isBarrierIn(Node node) { none() }
 
+    /** Holds if data flow into `node` is prohibited when the target flow state is `state`. */
+    default predicate isBarrierIn(Node node, FlowState state) { none() }
+
     /** Holds if data flow out of `node` is prohibited. */
     default predicate isBarrierOut(Node node) { none() }
+
+    /** Holds if data flow out of `node` is prohibited when the originating flow state is `state`. */
+    default predicate isBarrierOut(Node node, FlowState state) { none() }
 
     /**
      * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
