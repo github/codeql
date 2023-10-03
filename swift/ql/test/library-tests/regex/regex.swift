@@ -126,10 +126,10 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 
 	// --- StringProtocol ---
 
-	_ = input.range(of: ".*", options: .regularExpression, range: nil, locale: nil) // $ MISSING: regex=.* input=input
-	_ = input.range(of: ".*", options: .literal, range: nil, locale: nil) // (not a regular expression)
-	_ = input.replacingOccurrences(of: ".*", with: "", options: .regularExpression) // $ MISSING: regex=.* input=input
-	_ = input.replacingOccurrences(of: ".*", with: "", options: .literal) // (not a regular expression)
+	_ = input.range(of: ".*", options: .regularExpression, range: nil, locale: nil) // $ regex=.* input=input
+	_ = input.range(of: ".*", options: .literal, range: nil, locale: nil) // $ SPURIOUS: regex=.* input=input
+	_ = input.replacingOccurrences(of: ".*", with: "", options: .regularExpression) // $ regex=.* input=input
+	_ = input.replacingOccurrences(of: ".*", with: "", options: .literal) // $ SPURIOUS: regex=.* input=input
 
 	// --- NSRegularExpression ---
 
@@ -147,13 +147,13 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	let inputNS = NSString(string: "abcdef")
 	let regexOptions = NSString.CompareOptions.regularExpression
 	let regexOptions2 : NSString.CompareOptions = [.regularExpression, .caseInsensitive]
-	_ = inputNS.range(of: ".*", options: .regularExpression) // $ MISSING: regex=.* input=inputNS
-	_ = inputNS.range(of: ".*", options: [.regularExpression]) // $ MISSING: regex=.* input=inputNS
-	_ = inputNS.range(of: ".*", options: regexOptions) // $ MISSING: regex=.* input=inputNS
-	_ = inputNS.range(of: ".*", options: regexOptions2) // $ MISSING: regex=.* input=inputNS
-	_ = inputNS.range(of: ".*", options: .literal) // (not a regular expression)
-	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .regularExpression, range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS
-	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .literal, range: NSMakeRange(0, inputNS.length)) // (not a regular expression)
+	_ = inputNS.range(of: ".*", options: .regularExpression) // $ regex=.* input=inputNS
+	_ = inputNS.range(of: ".*", options: [.regularExpression]) // $ regex=.* input=inputNS
+	_ = inputNS.range(of: ".*", options: regexOptions) // $ regex=.* input=inputNS
+	_ = inputNS.range(of: ".*", options: regexOptions2) // $ regex=.* input=inputNS
+	_ = inputNS.range(of: ".*", options: .literal) // $ SPURIOUS: regex=.* input=inputNS
+	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .regularExpression, range: NSMakeRange(0, inputNS.length)) // $ regex=.* input=inputNS
+	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .literal, range: NSMakeRange(0, inputNS.length)) // $ SPURIOUS: regex=.* input=inputNS
 
 	// --- flow ---
 
@@ -248,8 +248,8 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
 	// parse modes set through other methods
 
 	let myOptions2 : NSString.CompareOptions = [.regularExpression, .caseInsensitive]
-    _ = input.replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive]) // $ MISSING: regex=.* input=input modes=IGNORECASE
-    _ = input.replacingOccurrences(of: ".*", with: "", options: myOptions2) // $ MISSING: regex=.* input=input modes=IGNORECASE
-    _ = NSString(string: "abc").replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive], range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS modes=IGNORECASE
-    _ = NSString(string: "abc").replacingOccurrences(of: ".*", with: "", options: myOptions2, range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS modes=IGNORECASE
+    _ = input.replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive]) // $ regex=.* input=input MISSING: modes=IGNORECASE
+    _ = input.replacingOccurrences(of: ".*", with: "", options: myOptions2) // $ regex=.* input=input MISSING: modes=IGNORECASE
+    _ = NSString(string: "abc").replacingOccurrences(of: ".*", with: "", options: [.regularExpression, .caseInsensitive], range: NSMakeRange(0, inputNS.length)) // $ regex=.* input="call to NSString.init(string:)" MISSING: modes=IGNORECASE
+    _ = NSString(string: "abc").replacingOccurrences(of: ".*", with: "", options: myOptions2, range: NSMakeRange(0, inputNS.length)) // $ regex=.* input="call to NSString.init(string:)" MISSING: modes=IGNORECASE
 }

@@ -359,3 +359,38 @@ private class AlwaysRegexEval extends RegexEval {
 
   override Expr getStringInput() { result = stringInput }
 }
+
+/**
+ * A call to a function that sometimes evaluates a regular expression, if
+ * `options: .regularExpression` is set as an argument.
+ */
+private class SometimesRegexEval extends RegexEval {
+  Expr regexInput;
+  Expr stringInput;
+  Expr optionsInput;
+
+  SometimesRegexEval() {
+    (
+      this.getStaticTarget()
+          .(Method)
+          .hasQualifiedName("StringProtocol",
+            ["range(of:options:range:locale:)", "replacingOccurrences(of:with:options:range:)"])
+      or
+      this.getStaticTarget()
+          .(Method)
+          .hasQualifiedName("NSString",
+            [
+              "range(of:options:)", "range(of:options:range:)", "range(of:options:range:locale:)",
+              "replacingOccurrences(of:with:options:range:)"
+            ])
+    ) and
+    regexInput = this.getArgument(0).getExpr() and
+    stringInput = this.getQualifier() and
+    optionsInput = this.getArgumentWithLabel("options").getExpr()
+    // TODO: check options may have value `.regularExpression`
+  }
+
+  override Expr getRegexInput() { result = regexInput }
+
+  override Expr getStringInput() { result = stringInput }
+}

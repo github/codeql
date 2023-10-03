@@ -7,7 +7,9 @@ edges
 | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:113:24:113:24 | taintedString |
 | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:114:45:114:45 | taintedString |
 | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:120:19:120:19 | taintedString |
+| tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:126:40:126:40 | taintedString |
 | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:131:39:131:39 | taintedString |
+| tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:137:40:137:40 | taintedString |
 | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:144:16:144:16 | remoteInput |
 | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:147:39:147:39 | regexStr |
 | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:162:17:162:17 | taintedString |
@@ -30,7 +32,9 @@ nodes
 | tests.swift:113:24:113:24 | taintedString | semmle.label | taintedString |
 | tests.swift:114:45:114:45 | taintedString | semmle.label | taintedString |
 | tests.swift:120:19:120:19 | taintedString | semmle.label | taintedString |
+| tests.swift:126:40:126:40 | taintedString | semmle.label | taintedString |
 | tests.swift:131:39:131:39 | taintedString | semmle.label | taintedString |
+| tests.swift:137:40:137:40 | taintedString | semmle.label | taintedString |
 | tests.swift:144:16:144:16 | remoteInput | semmle.label | remoteInput |
 | tests.swift:147:39:147:39 | regexStr | semmle.label | regexStr |
 | tests.swift:162:17:162:17 | taintedString | semmle.label | taintedString |
@@ -53,7 +57,9 @@ subpaths
 | tests.swift:113:24:113:24 | taintedString | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:113:24:113:24 | taintedString | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |
 | tests.swift:114:45:114:45 | taintedString | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:114:45:114:45 | taintedString | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |
 | tests.swift:120:19:120:19 | taintedString | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:120:19:120:19 | taintedString | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |
+| tests.swift:126:40:126:40 | taintedString | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:126:40:126:40 | taintedString | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |
 | tests.swift:131:39:131:39 | taintedString | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:131:39:131:39 | taintedString | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |
+| tests.swift:137:40:137:40 | taintedString | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:137:40:137:40 | taintedString | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |
 | tests.swift:144:16:144:16 | remoteInput | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:144:16:144:16 | remoteInput | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |
 | tests.swift:147:39:147:39 | regexStr | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:147:39:147:39 | regexStr | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |
 | tests.swift:162:17:162:17 | taintedString | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | tests.swift:162:17:162:17 | taintedString | This regular expression is constructed from a $@. | tests.swift:95:22:95:46 | call to String.init(contentsOf:) | user-provided value |

@@ -123,7 +123,7 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	// --- StringProtocol ---
 
 	_ = inputVar.replacingOccurrences(of: constString, with: "", options: .regularExpression)
-	_ = inputVar.replacingOccurrences(of: taintedString, with: "", options: .regularExpression) // BAD [NOT DETECTED]
+	_ = inputVar.replacingOccurrences(of: taintedString, with: "", options: .regularExpression) // BAD
 
 	// --- NSRegularExpression ---
 
@@ -134,7 +134,7 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 
 	let nsString = NSString(string: varString)
 	_ = nsString.replacingOccurrences(of: constString, with: "", options: .regularExpression, range: NSMakeRange(0, nsString.length))
-	_ = nsString.replacingOccurrences(of: taintedString, with: "", options: .regularExpression, range: NSMakeRange(0, nsString.length)) // BAD [NOT DETECTED]
+	_ = nsString.replacingOccurrences(of: taintedString, with: "", options: .regularExpression, range: NSMakeRange(0, nsString.length)) // BAD
 
 	// --- from the qhelp ---
 
