@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Util.Logging;
 
@@ -11,13 +13,15 @@ namespace Semmle.Extraction.CSharp
         {
         }
 
-        public void Initialize(CSharpCompilation compilationIn, CommonOptions options)
+        public void Initialize(string outputPath, CSharpCompilation compilationIn, CommonOptions options)
         {
             compilation = compilationIn;
-            extractor = new StandaloneExtractor(Logger, PathTransformer, options);
+            extractor = new StandaloneExtractor(outputPath, Logger, PathTransformer, options);
             this.options = options;
             LogExtractorInfo(Extraction.Extractor.Version);
             SetReferencePaths();
+
+            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), Array.Empty<string>());
         }
 
 #nullable disable warnings
