@@ -2,7 +2,7 @@
  * @name Potential use after free
  * @description An allocated memory block is used after it has been freed. Behavior in such cases is undefined and can cause memory corruption.
  * @kind path-problem
- * @precision medium
+ * @precision high
  * @id cpp/use-after-free
  * @problem.severity warning
  * @security-severity 9.3
