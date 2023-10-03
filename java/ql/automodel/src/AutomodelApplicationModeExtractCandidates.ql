@@ -25,18 +25,20 @@ private import AutomodelJavaUtil
 bindingset[limit]
 private Endpoint getSampleForSignature(
   int limit, string package, string type, string subtypes, string name, string signature,
-  string input, string isVarargs
+  string input, string output, string isVarargs, string extensibleType
 ) {
   exists(int n, int num_endpoints, ApplicationModeMetadataExtractor meta |
     num_endpoints =
       count(Endpoint e |
-        meta.hasMetadata(e, package, type, subtypes, name, signature, input, isVarargs)
+        e.getExtensibleType() = extensibleType and
+        meta.hasMetadata(e, package, type, subtypes, name, signature, input, output, isVarargs)
       )
   |
     result =
       rank[n](Endpoint e, Location loc |
         loc = e.asTop().getLocation() and
-        meta.hasMetadata(e, package, type, subtypes, name, signature, input, isVarargs)
+        e.getExtensibleType() = extensibleType and
+        meta.hasMetadata(e, package, type, subtypes, name, signature, input, output, isVarargs)
       |
         e
         order by
@@ -53,45 +55,43 @@ private Endpoint getSampleForSignature(
 }
 
 from
-  Endpoint endpoint, string message, ApplicationModeMetadataExtractor meta, DollarAtString package,
+  Endpoint endpoint, ApplicationModeMetadataExtractor meta, DollarAtString package,
   DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString isVarargsArray, DollarAtString alreadyAiModeled
+  DollarAtString input, DollarAtString output, DollarAtString isVarargsArray,
+  DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
   ) and
+  CharacteristicsImpl::isSinkCandidate(endpoint, _) and
   endpoint =
-    getSampleForSignature(9, package, type, subtypes, name, signature, input, isVarargsArray) and
-  // If a node is already a known sink for any of our existing ATM queries and is already modeled as a MaD sink, we
-  // don't include it as a candidate. Otherwise, we might include it as a candidate for query A, but the model will
-  // label it as a sink for one of the sink types of query B, for which it's already a known sink. This would result in
-  // overlap between our detected sinks and the pre-existing modeling. We assume that, if a sink has already been
-  // modeled in a MaD model, then it doesn't belong to any additional sink types, and we don't need to reexamine it.
+    getSampleForSignature(9, package, type, subtypes, name, signature, input, output,
+      isVarargsArray, extensibleType) and
+  // If a node is already modeled in MaD, we don't include it as a candidate. Otherwise, we might include it as a
+  // candidate for query A, but the model will label it as a sink for one of the sink types of query B, for which it's
+  // already a known sink. This would result in overlap between our detected sinks and the pre-existing modeling. We
+  // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
+  // types, and we don't need to reexamine it.
   (
-    not CharacteristicsImpl::isSink(endpoint, _, _) and alreadyAiModeled = ""
+    not CharacteristicsImpl::isModeled(endpoint, _, _, _) and alreadyAiModeled = ""
     or
     alreadyAiModeled.matches("%ai-%") and
-    CharacteristicsImpl::isSink(endpoint, _, alreadyAiModeled)
+    CharacteristicsImpl::isModeled(endpoint, _, _, alreadyAiModeled)
   ) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, isVarargsArray) and
-  includeAutomodelCandidate(package, type, name, signature) and
-  // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
-  // a non-sink, and we surface only endpoints that have at least one such sink type.
-  message =
-    strictconcat(AutomodelEndpointTypes::SinkType sinkType |
-      not CharacteristicsImpl::isKnownSink(endpoint, sinkType, _) and
-      CharacteristicsImpl::isSinkCandidate(endpoint, sinkType)
-    |
-      sinkType, ", "
-    )
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
+  includeAutomodelCandidate(package, type, name, signature)
 select endpoint.asNode(),
-  message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@.", //
+  "Related locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //
   type, "type", //
   subtypes, "subtypes", //
   name, "name", // method name
   signature, "signature", //
   input, "input", //
+  output, "output", //
   isVarargsArray, "isVarargsArray", //
-  alreadyAiModeled, "alreadyAiModeled"
+  alreadyAiModeled, "alreadyAiModeled", //
+  extensibleType, "extensibleType"

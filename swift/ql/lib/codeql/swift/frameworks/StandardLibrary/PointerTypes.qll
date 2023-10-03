@@ -65,6 +65,9 @@ class ManagedBufferPointerType extends BoundGenericType {
 private class PointerSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      ";UnsafeMutableBufferPointer;true;update(repeating:);;;Argument[0];Argument[-1].CollectionElement;value"
+      [
+        ";UnsafeMutablePointer;true;init(mutating:);;;Argument[0];ReturnValue;taint",
+        ";UnsafeMutableBufferPointer;true;update(repeating:);;;Argument[0];Argument[-1].CollectionElement;value",
+      ]
   }
 }

@@ -27,14 +27,13 @@ private class StringSource extends SourceModelCsv {
 }
 
 /**
- * A model for `String` and `StringProtocol` members that permit taint flow.
+ * A model for members of `String`, `StringProtocol` and similar classes that permit taint flow.
  */
 private class StringSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
         ";StringProtocol;true;init(cString:);;;Argument[0];ReturnValue;taint",
-        ";StringProtocol;true;init(cString:);;;Argument[0].ArrayElement;ReturnValue;taint",
         ";StringProtocol;true;init(cString:);;;Argument[0].CollectionElement;ReturnValue;taint",
         ";StringProtocol;true;init(decoding:as:);;;Argument[0];ReturnValue;taint",
         ";StringProtocol;true;init(decodingCString:as:);;;Argument[0].OptionalSome.CollectionElement;ReturnValue.OptionalSome.TupleElement[0];taint",
@@ -46,12 +45,12 @@ private class StringSummaries extends SummaryModelCsv {
         ";StringProtocol;true;cString(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;capitalized(with:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;completePath(into:caseSensitive:matchesInto:filterTypes:);;;Argument[-1];Argument[0].OptionalSome.CollectionElement;taint",
-        ";StringProtocol;true;completePath(into:caseSensitive:matchesInto:filterTypes:);;;Argument[-1];Argument[2].OptionalSome.CollectionElement.ArrayElement;taint",
+        ";StringProtocol;true;completePath(into:caseSensitive:matchesInto:filterTypes:);;;Argument[-1];Argument[2].OptionalSome.CollectionElement.CollectionElement;taint",
         ";StringProtocol;true;components(separatedBy:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;data(using:allowLossyConversion:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;folding(options:locale:);;;Argument[-1];ReturnValue;taint",
-        ";StringProtocol;true;getBytes(_:maxLength:usedLength:encoding:options:range:remaining:);;;Argument[-1];Argument[0].ArrayElement;taint",
-        ";StringProtocol;true;getCString(_:maxLength:encoding:);;;Argument[-1];Argument[0].ArrayElement;taint",
+        ";StringProtocol;true;getBytes(_:maxLength:usedLength:encoding:options:range:remaining:);;;Argument[-1];Argument[0].CollectionElement;taint",
+        ";StringProtocol;true;getCString(_:maxLength:encoding:);;;Argument[-1];Argument[0].CollectionElement;taint",
         ";StringProtocol;true;lowercased();;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;lowercased(with:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;padding(toLength:withPad:startingAt:);;;Argument[-1];ReturnValue;taint",
@@ -74,20 +73,18 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;init(repeating:count:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(data:encoding:);;;Argument[0];ReturnValue.OptionalSome;taint",
         ";String;true;init(validatingUTF8:);;;Argument[0];ReturnValue.OptionalSome;taint",
-        ";String;true;init(validatingUTF8:);;;Argument[0].ArrayElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(validatingUTF8:);;;Argument[0].CollectionElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(utf16CodeUnits:count:);;;Argument[0].CollectionElement;ReturnValue;taint",
         ";String;true;init(utf16CodeUnitsNoCopy:count:freeWhenDone:);;;Argument[0].CollectionElement;ReturnValue;taint",
         ";String;true;init(format:_:);;;Argument[0];ReturnValue;taint",
-        ";String;true;init(format:_:);;;Argument[1].ArrayElement;ReturnValue;taint",
+        ";String;true;init(format:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
         ";String;true;init(format:arguments:);;;Argument[0];ReturnValue;taint",
-        ";String;true;init(format:arguments:);;;Argument[1].ArrayElement;ReturnValue;taint",
+        ";String;true;init(format:arguments:);;;Argument[1].CollectionElement;ReturnValue;taint",
         ";String;true;init(format:locale:_:);;;Argument[0];ReturnValue;taint",
-        ";String;true;init(format:locale:_:);;;Argument[2].ArrayElement;ReturnValue;taint",
+        ";String;true;init(format:locale:_:);;;Argument[2].CollectionElement;ReturnValue;taint",
         ";String;true;init(format:locale:arguments:);;;Argument[0];ReturnValue;taint",
-        ";String;true;init(format:locale:arguments:);;;Argument[2].ArrayElement;ReturnValue;taint",
+        ";String;true;init(format:locale:arguments:);;;Argument[2].CollectionElement;ReturnValue;taint",
         ";String;true;init(_:radix:uppercase:);;;Argument[0];ReturnValue;taint",
-        ";String;true;init(bytes:encoding:);;;Argument[0].ArrayElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(bytes:encoding:);;;Argument[0].CollectionElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(bytesNoCopy:length:encoding:freeWhenDone:);;;Argument[0].CollectionElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(describing:);;;Argument[0];ReturnValue;taint",
@@ -104,20 +101,16 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;init(unicodeScalarLiteral:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(extendedGraphemeClusterLiteral:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(cString:encoding:);;;Argument[0];ReturnValue.OptionalSome;taint",
-        ";String;true;init(cString:encoding:);;;Argument[0].ArrayElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(cString:encoding:);;;Argument[0].CollectionElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(platformString:);;;Argument[0];ReturnValue;taint",
-        ";String;true;init(platformString:);;;Argument[0].ArrayElement;ReturnValue;taint",
         ";String;true;init(platformString:);;;Argument[0].CollectionElement;ReturnValue;taint",
         ";String;true;init(utf8String:);;;Argument[0];ReturnValue.OptionalSome;taint",
-        ";String;true;init(utf8String:);;;Argument[0].ArrayElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(utf8String:);;;Argument[0].CollectionElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(validating:);;;Argument[0];ReturnValue.OptionalSome;taint",
         ";String;true;init(validatingPlatformString:);;;Argument[0];ReturnValue.OptionalSome;taint",
-        ";String;true;init(validatingPlatformString:);;;Argument[0].ArrayElement;ReturnValue.OptionalSome;taint",
         ";String;true;init(validatingPlatformString:);;;Argument[0].CollectionElement;ReturnValue.OptionalSome;taint",
         ";String;true;localizedStringWithFormat(_:_:);;;Argument[0];ReturnValue;taint",
-        ";String;true;localizedStringWithFormat(_:_:);;;Argument[1].ArrayContent;ReturnValue;taint",
+        ";String;true;localizedStringWithFormat(_:_:);;;Argument[1].CollectionElement;ReturnValue;taint",
         ";String;true;write(_:);;;Argument[0];Argument[-1];taint",
         ";String;true;write(to:);;;Argument[-1];Argument[0];taint",
         ";String;true;insert(contentsOf:at:);;;Argument[0];Argument[-1];taint",
@@ -131,7 +124,8 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;randomElement();;;Argument[-1];ReturnValue;taint",
         ";String;true;randomElement(using:);;;Argument[-1];ReturnValue;taint",
         ";String;true;enumerated();;;Argument[-1];ReturnValue;taint",
-        ";String;true;encode(to:);;;Argument[-1];Argument[0];taint"
+        ";String;true;encode(to:);;;Argument[-1];Argument[0];taint",
+        ";LosslessStringConvertible;true;init(_:);;;Argument[0];ReturnValue;taint",
       ]
   }
 }

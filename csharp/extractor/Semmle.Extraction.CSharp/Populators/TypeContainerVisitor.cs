@@ -82,9 +82,6 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitAttributeList(AttributeListSyntax node)
         {
-            if (Cx.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
-                return;
-
             var outputAssembly = Assembly.CreateOutputAssembly(Cx);
             var kind = node.Target?.Identifier.Kind() switch
             {

@@ -17,6 +17,9 @@ module RubyDataFlow implements InputSig {
   import Private
   import Public
 
+  // includes `LambdaSelfReferenceNode`, which is not part of the public API
+  class ParameterNode = Private::ParameterNodeImpl;
+
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
     Private::isParameterNode(p, c, pos)
   }

@@ -1,6 +1,5 @@
 // This file contains auto-generated code.
 // Generated from `System.Reflection.DispatchProxy, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
-
 namespace System
 {
     namespace Reflection
@@ -11,6 +10,5 @@ namespace System
             protected DispatchProxy() => throw null;
             protected abstract object Invoke(System.Reflection.MethodInfo targetMethod, object[] args);
         }
-
     }
 }

@@ -72,7 +72,7 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
     // Compute `delta` as the constant difference between `x` and `x + 1`.
     bounded1(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
       any(LoadInstruction load | load.getUnconvertedResultExpression() = va), delta) and
-    n.asConvertedExpr() = va.getFullyConverted() and
+    n.asExpr() = va and
     state = delta
   )
 }
@@ -210,7 +210,7 @@ private module InterestingPointerAddInstruction {
     predicate isSource(DataFlow::Node source) {
       // The sources is the same as in the sources for the second
       // projection in the `AllocToInvalidPointerConfig` module.
-      hasSize(source.asConvertedExpr(), _, _)
+      hasSize(source.asExpr(), _, _)
     }
 
     int fieldFlowBranchLimit() { result = allocationToInvalidPointerFieldFlowBranchLimit() }
@@ -243,7 +243,7 @@ private module InterestingPointerAddInstruction {
    */
   predicate isInterestingSize(DataFlow::Node n) {
     exists(DataFlow::Node alloc |
-      hasSize(alloc.asConvertedExpr(), n, _) and
+      hasSize(alloc.asExpr(), n, _) and
       flow(alloc, _)
     )
   }
@@ -268,7 +268,7 @@ private module Config implements ProductFlow::StateConfigSig {
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
     exists(unit) and
-    hasSize(allocSource.asConvertedExpr(), sizeSource, sizeAddend)
+    hasSize(allocSource.asExpr(), sizeSource, sizeAddend)
   }
 
   int fieldFlowBranchLimit1() { result = allocationToInvalidPointerFieldFlowBranchLimit() }

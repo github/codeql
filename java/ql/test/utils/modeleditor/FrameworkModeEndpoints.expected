@@ -1,0 +1,14 @@
+| com/github/codeql/test/PublicClass.java:7:15:7:19 | stuff | com.github.codeql.test | PublicClass | stuff | (String) | false | test |  |
+| com/github/codeql/test/PublicClass.java:11:22:11:32 | staticStuff | com.github.codeql.test | PublicClass | staticStuff | (String) | false | test |  |
+| com/github/codeql/test/PublicClass.java:15:18:15:31 | protectedStuff | com.github.codeql.test | PublicClass | protectedStuff | (String) | false | test |  |
+| com/github/codeql/test/PublicClass.java:27:17:27:28 | summaryStuff | com.github.codeql.test | PublicClass | summaryStuff | (String) | true | test | summary |
+| com/github/codeql/test/PublicClass.java:31:17:31:27 | sourceStuff | com.github.codeql.test | PublicClass | sourceStuff | () | true | test | source |
+| com/github/codeql/test/PublicClass.java:35:15:35:23 | sinkStuff | com.github.codeql.test | PublicClass | sinkStuff | (String) | true | test | sink |
+| com/github/codeql/test/PublicClass.java:39:15:39:26 | neutralStuff | com.github.codeql.test | PublicClass | neutralStuff | (String) | true | test | neutral |
+| com/github/codeql/test/PublicGenericClass.java:6:15:6:19 | stuff | com.github.codeql.test | PublicGenericClass | stuff | (Object) | false | test |  |
+| com/github/codeql/test/PublicGenericClass.java:10:20:10:25 | stuff2 | com.github.codeql.test | PublicGenericClass | stuff2 | (Object) | false | test |  |
+| com/github/codeql/test/PublicGenericInterface.java:4:17:4:21 | stuff | com.github.codeql.test | PublicGenericInterface | stuff | (Object) | false | test |  |
+| com/github/codeql/test/PublicGenericInterface.java:5:22:5:27 | stuff2 | com.github.codeql.test | PublicGenericInterface | stuff2 | (Object) | false | test |  |
+| com/github/codeql/test/PublicGenericInterface.java:7:24:7:34 | staticStuff | com.github.codeql.test | PublicGenericInterface | staticStuff | (String) | false | test |  |
+| com/github/codeql/test/PublicInterface.java:4:17:4:21 | stuff | com.github.codeql.test | PublicInterface | stuff | (String) | false | test |  |
+| com/github/codeql/test/PublicInterface.java:6:24:6:34 | staticStuff | com.github.codeql.test | PublicInterface | staticStuff | (String) | false | test |  |

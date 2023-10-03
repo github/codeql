@@ -1,3 +1,5 @@
+inconsistentFlow
+#select
 | A.java:9:16:9:19 | fsrc | A.java:13:10:13:10 | s | nobarrier, sinkbarrier |
 | A.java:9:16:9:19 | fsrc | A.java:15:10:15:10 | s | nobarrier |
 | A.java:10:10:10:13 | fsrc | A.java:10:10:10:13 | fsrc | both, nobarrier, sinkbarrier, srcbarrier |

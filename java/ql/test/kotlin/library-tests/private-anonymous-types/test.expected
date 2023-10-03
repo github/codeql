@@ -1,9 +1,3 @@
-enclosingTypes
-| file:///!unknown-binary-location/A$<no name provided>.class:0:0:0:0 | new If<T>(...) { ... }<> | file:///!unknown-binary-location/A.class:0:0:0:0 | A<CharSequence> |
-| file:///!unknown-binary-location/A$<no name provided>.class:0:0:0:0 | new If<T>(...) { ... }<> | file:///!unknown-binary-location/A.class:0:0:0:0 | A<String> |
-| test.kt:9:18:11:3 | new If<T>(...) { ... } | test.kt:7:1:22:1 | A |
-| test.kt:13:33:15:3 | new If<T>(...) { ... } | test.kt:7:1:22:1 | A |
-| test.kt:13:33:15:3 | new If<T>(...) { ... }<> | test.kt:7:1:22:1 | A<> |
 #select
 | file:///!unknown-binary-location/A$<no name provided>.class:0:0:0:0 | new If<T>(...) { ... }<> | file:///!unknown-binary-location/A$<no name provided>.class:0:0:0:0 |  |
 | file:///!unknown-binary-location/A$<no name provided>.class:0:0:0:0 | new If<T>(...) { ... }<> | file:///!unknown-binary-location/A$<no name provided>.class:0:0:0:0 |  |
@@ -34,3 +28,9 @@ enclosingTypes
 | test.kt:13:33:15:3 | new If<T>(...) { ... } | test.kt:13:33:15:3 |  |
 | test.kt:13:33:15:3 | new If<T>(...) { ... } | test.kt:14:5:14:22 | x |
 | test.kt:13:33:15:3 | new If<T>(...) { ... } | test.kt:14:14:14:22 | getX |
+enclosingTypes
+| file:///!unknown-binary-location/A$<no name provided>.class:0:0:0:0 | new If<T>(...) { ... }<> | file:///!unknown-binary-location/A.class:0:0:0:0 | A<CharSequence> |
+| file:///!unknown-binary-location/A$<no name provided>.class:0:0:0:0 | new If<T>(...) { ... }<> | file:///!unknown-binary-location/A.class:0:0:0:0 | A<String> |
+| test.kt:9:18:11:3 | new If<T>(...) { ... } | test.kt:7:1:22:1 | A |
+| test.kt:13:33:15:3 | new If<T>(...) { ... } | test.kt:7:1:22:1 | A |
+| test.kt:13:33:15:3 | new If<T>(...) { ... }<> | test.kt:7:1:22:1 | A<> |

@@ -447,9 +447,16 @@ class GlobalUse extends UseImpl, TGlobalUse {
   IRFunction getIRFunction() { result = f }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    exists(ExitFunctionInstruction exit |
-      exit = f.getExitFunctionInstruction() and
-      block.getInstruction(index) = exit
+    // Similar to the `FinalParameterUse` case, we want to generate flow out of
+    // globals at any exit so that we can flow out of non-returning functions.
+    // Obviously this isn't correct as we can't actually flow but the global flow
+    // requires this if we want to flow into children.
+    exists(Instruction return |
+      return instanceof ReturnInstruction or
+      return instanceof UnreachedInstruction
+    |
+      block.getInstruction(index) = return and
+      return.getEnclosingIRFunction() = f
     )
   }
 
@@ -818,7 +825,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     or
     exists(PhiNode phiTo |
       phi != phiTo and
-      lastRefRedefExt(phi, _, _, phiTo) and
+      lastRefRedefExt(phi, bb1, i1, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
   )
