@@ -52,6 +52,12 @@ def main(args=None) -> int:
 
     opts = cmdline.parse(args)
 
+    # use utf-8 as the character encoding for stdout/stderr to avoid freezes when
+    # we encounter utf-8 characters that are not valid characters in the default
+    # character encoding
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+
     settings.DEBUG = opts.debug
     setup_logging(opts.debug)
 
