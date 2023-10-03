@@ -284,8 +284,18 @@ private module Config implements ProductFlow::StateConfigSig {
     pointerAddInstructionHasBounds0(_, allocSink, sizeSink, sizeAddend)
   }
 
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+
   predicate isBarrier2(DataFlow::Node node, FlowState2 state) {
     node = SizeBarrier::getABarrierNode(state)
+  }
+
+  predicate isBarrier2(DataFlow::Node node) {
+    exists(Operand operand, PointerAddInstruction add |
+      node.(IndirectOperand).hasOperandAndIndirectionIndex(operand, _) and
+      add.getLeftOperand() = operand and
+      add.getRight().(ConstantInstruction).getValue() != "0"
+    )
   }
 
   predicate isBarrierIn1(DataFlow::Node node) { isSourcePair(node, _, _, _) }
