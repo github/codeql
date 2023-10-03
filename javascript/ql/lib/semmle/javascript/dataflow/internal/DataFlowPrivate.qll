@@ -6,6 +6,7 @@ private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.internal.Contents::Private
 private import semmle.javascript.dataflow.internal.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
+private import semmle.javascript.internal.flow_summaries.AllFlowSummaries
 private import sharedlib.FlowSummaryImpl as FlowSummaryImpl
 
 private class Node = DataFlow::Node;
