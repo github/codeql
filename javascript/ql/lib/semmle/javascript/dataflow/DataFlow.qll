@@ -1056,6 +1056,24 @@ module DataFlow {
   }
 
   /**
+   * A node representing the value passed as `this` argument in a `new` call or a `super` call.
+   */
+  class ConstructorThisArgumentNode extends TConstructorThisArgumentNode, DataFlow::Node {
+    private InvokeExpr expr;
+
+    ConstructorThisArgumentNode() { this = TConstructorThisArgumentNode(expr) }
+
+    override string toString() { result = "implicit 'this' argument of " + expr }
+
+    override StmtContainer getContainer() { result = expr.getContainer() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      expr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+  /**
    * INTERNAL. DO NOT USE.
    *
    * Gets a pseudo-node representing the root of a global access path.

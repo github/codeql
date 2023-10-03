@@ -34,6 +34,7 @@ private module Cached {
     TGlobalAccessPathRoot() or
     TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag) or
     TReflectiveParametersNode(Function f) or
+    TConstructorThisArgumentNode(InvokeExpr e) { e instanceof NewExpr or e instanceof SuperCall } or
 }
 
 import Cached
