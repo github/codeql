@@ -1,8 +1,8 @@
 package iris
+
 //go:generate depstubber -vendor github.com/kataras/iris/v12/context Context
 
 import "github.com/kataras/iris/v12/context"
-
 
 func FileSystemAccess(ctx context.Context) {
 	filepath := ctx.URLParam("filepath")

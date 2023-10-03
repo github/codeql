@@ -1,4 +1,5 @@
 package test
+
 //go:generate depstubber -vendor  github.com/labstack/echo/v4 Context New
 
 import (

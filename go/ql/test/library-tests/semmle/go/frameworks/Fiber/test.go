@@ -1,7 +1,7 @@
 package fiber
+
 //go:generate depstubber -vendor  github.com/gofiber/fiber/v2 Ctx New
 import "github.com/gofiber/fiber/v2"
-
 
 func FileSystemAccess() {
 	app := fiber.New()
