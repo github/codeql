@@ -126,7 +126,8 @@ private newtype TRegexParseMode =
   MkDotAll() or // dot matches all characters, including line terminators
   MkMultiLine() or // `^` and `$` also match beginning and end of lines
   MkUnicodeBoundary() or // Unicode UAX 29 word boundary mode
-  MkUnicode() // Unicode matching
+  MkUnicode() or // Unicode matching
+  MkAnchoredStart() // match must begin at start of string
 
 /**
  * A regular expression parse mode flag.
@@ -147,6 +148,8 @@ class RegexParseMode extends TRegexParseMode {
     this = MkUnicodeBoundary() and result = "UNICODEBOUNDARY"
     or
     this = MkUnicode() and result = "UNICODE"
+    or
+    this = MkAnchoredStart() and result = "ANCHOREDSTART"
   }
 
   /**
@@ -263,6 +266,34 @@ class NSRegularExpressionRegexAdditionalFlowStep extends RegexAdditionalFlowStep
 }
 
 /**
+ * An additional flow step for `NSString.CompareOptions`.
+ */
+class NSStringRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
+
+  override predicate setsParseMode(DataFlow::Node node, RegexParseMode mode, boolean isSet) {
+    // `NSString.CompareOptions` values (these are typically combined with
+    // `NSString.CompareOptions.regularExpression`, then passed into a `StringProtocol`
+    // or `NSString` method).
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSString.CompareOptions", "caseInsensitive") and
+    mode = MkIgnoreCase() and
+    isSet = true
+    or
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSString.CompareOptions", "anchored") and
+    mode = MkAnchoredStart() and
+    isSet = true
+  }
+}
+
+/**
  * A call that evaluates a regular expression. For example, the call to `firstMatch` in:
  * ```
  * Regex("(a|b).*").firstMatch(in: myString)
@@ -309,7 +340,10 @@ abstract class RegexEval extends CallExpr {
       // parse mode flag is set
       any(RegexAdditionalFlowStep s).setsParseMode(setNode, result, true) and
       // reaches this eval
-      RegexParseModeFlow::flow(setNode, this.getRegexInput())
+      (
+        RegexParseModeFlow::flow(setNode, this.getRegexInput()) or
+        RegexParseModeFlow::flow(setNode, this.getAnOptionsInput())
+      )
     )
   }
 }
