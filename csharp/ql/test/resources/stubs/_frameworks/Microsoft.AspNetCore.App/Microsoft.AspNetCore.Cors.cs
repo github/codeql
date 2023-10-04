@@ -39,17 +39,17 @@ namespace Microsoft
             {
                 public static class CorsConstants
                 {
-                    public static string AccessControlAllowCredentials;
-                    public static string AccessControlAllowHeaders;
-                    public static string AccessControlAllowMethods;
-                    public static string AccessControlAllowOrigin;
-                    public static string AccessControlExposeHeaders;
-                    public static string AccessControlMaxAge;
-                    public static string AccessControlRequestHeaders;
-                    public static string AccessControlRequestMethod;
-                    public static string AnyOrigin;
-                    public static string Origin;
-                    public static string PreflightHttpMethod;
+                    public static readonly string AccessControlAllowCredentials;
+                    public static readonly string AccessControlAllowHeaders;
+                    public static readonly string AccessControlAllowMethods;
+                    public static readonly string AccessControlAllowOrigin;
+                    public static readonly string AccessControlExposeHeaders;
+                    public static readonly string AccessControlMaxAge;
+                    public static readonly string AccessControlRequestHeaders;
+                    public static readonly string AccessControlRequestMethod;
+                    public static readonly string AnyOrigin;
+                    public static readonly string Origin;
+                    public static readonly string PreflightHttpMethod;
                 }
                 public class CorsMiddleware
                 {

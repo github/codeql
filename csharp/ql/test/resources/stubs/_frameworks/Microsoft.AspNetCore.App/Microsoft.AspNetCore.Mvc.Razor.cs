@@ -271,7 +271,7 @@ namespace Microsoft
                     public static string GetNormalizedRouteValue(Microsoft.AspNetCore.Mvc.ActionContext context, string key) => throw null;
                     public Microsoft.AspNetCore.Mvc.Razor.RazorPageResult GetPage(string executingFilePath, string pagePath) => throw null;
                     public Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult GetView(string executingFilePath, string viewPath, bool isMainPage) => throw null;
-                    public static string ViewExtension;
+                    public static readonly string ViewExtension;
                     protected Microsoft.Extensions.Caching.Memory.IMemoryCache ViewLookupCache { get => throw null; }
                 }
                 public class RazorViewEngineOptions

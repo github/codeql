@@ -41,8 +41,8 @@ namespace Microsoft
             public class HtmlString : Microsoft.AspNetCore.Html.IHtmlContent
             {
                 public HtmlString(string value) => throw null;
-                public static Microsoft.AspNetCore.Html.HtmlString Empty;
-                public static Microsoft.AspNetCore.Html.HtmlString NewLine;
+                public static readonly Microsoft.AspNetCore.Html.HtmlString Empty;
+                public static readonly Microsoft.AspNetCore.Html.HtmlString NewLine;
                 public override string ToString() => throw null;
                 public string Value { get => throw null; }
                 public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;

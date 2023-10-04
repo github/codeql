@@ -211,7 +211,6 @@ with open(os.path.join(frameworksDir, 'Microsoft.NETCore.App', 'Microsoft.NETCor
             copiedFiles.add(pathInfo)
             shutil.copy2(pathInfos[pathInfo], frameworkDir)
 
-exitCode = 0
 for pathInfo in pathInfos:
     if pathInfo not in copiedFiles:
         print('Not copied to nuget or framework folder: ' + pathInfo)
@@ -219,8 +218,7 @@ for pathInfo in pathInfos:
         if not os.path.exists(othersDir):
             os.makedirs(othersDir)
         shutil.copy2(pathInfos[pathInfo], othersDir)
-        exitCode = 1
 
 print("\n --> Generated structured stub files: " + stubsDir)
 
-exit(exitCode)
+exit(0)

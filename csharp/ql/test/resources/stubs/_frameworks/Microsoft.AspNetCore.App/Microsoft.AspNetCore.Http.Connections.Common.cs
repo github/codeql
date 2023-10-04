@@ -16,7 +16,7 @@ namespace Microsoft
                 }
                 public static class HttpTransports
                 {
-                    public static Microsoft.AspNetCore.Http.Connections.HttpTransportType All;
+                    public static readonly Microsoft.AspNetCore.Http.Connections.HttpTransportType All;
                 }
                 [System.Flags]
                 public enum HttpTransportType

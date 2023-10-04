@@ -343,7 +343,7 @@ namespace System
                 public ValidationResult(string errorMessage, System.Collections.Generic.IEnumerable<string> memberNames) => throw null;
                 public string ErrorMessage { get => throw null; set { } }
                 public System.Collections.Generic.IEnumerable<string> MemberNames { get => throw null; }
-                public static System.ComponentModel.DataAnnotations.ValidationResult Success;
+                public static readonly System.ComponentModel.DataAnnotations.ValidationResult Success;
                 public override string ToString() => throw null;
             }
             public static class Validator

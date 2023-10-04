@@ -136,7 +136,7 @@ namespace Microsoft
                         public WildcardPathSegment(string beginsWith, System.Collections.Generic.List<string> contains, string endsWith, System.StringComparison comparisonType) => throw null;
                         public string EndsWith { get => throw null; }
                         public bool Match(string value) => throw null;
-                        public static Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment MatchAll;
+                        public static readonly Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment MatchAll;
                     }
                 }
                 namespace PatternContexts
@@ -230,7 +230,7 @@ namespace Microsoft
                 }
                 public struct PatternTestResult
                 {
-                    public static Microsoft.Extensions.FileSystemGlobbing.Internal.PatternTestResult Failed;
+                    public static readonly Microsoft.Extensions.FileSystemGlobbing.Internal.PatternTestResult Failed;
                     public bool IsSuccessful { get => throw null; }
                     public string Stem { get => throw null; }
                     public static Microsoft.Extensions.FileSystemGlobbing.Internal.PatternTestResult Success(string stem) => throw null;

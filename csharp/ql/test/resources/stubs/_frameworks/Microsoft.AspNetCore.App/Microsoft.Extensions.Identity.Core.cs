@@ -426,10 +426,10 @@ namespace Microsoft
                 public string ChangeEmailTokenProvider { get => throw null; set { } }
                 public string ChangePhoneNumberTokenProvider { get => throw null; set { } }
                 public TokenOptions() => throw null;
-                public static string DefaultAuthenticatorProvider;
-                public static string DefaultEmailProvider;
-                public static string DefaultPhoneProvider;
-                public static string DefaultProvider;
+                public static readonly string DefaultAuthenticatorProvider;
+                public static readonly string DefaultEmailProvider;
+                public static readonly string DefaultPhoneProvider;
+                public static readonly string DefaultProvider;
                 public string EmailConfirmationTokenProvider { get => throw null; set { } }
                 public string PasswordResetTokenProvider { get => throw null; set { } }
                 public System.Collections.Generic.Dictionary<string, Microsoft.AspNetCore.Identity.TokenProviderDescriptor> ProviderMap { get => throw null; set { } }

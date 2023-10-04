@@ -25,16 +25,39 @@ newtype JavaRelatedLocationType =
 
 newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) or
-  TQualifier(Callable c)
+  TQualifier(Callable c) or
+  TReturnValue(Callable c) or
+  TOverridableParameter(Method m, Parameter p) {
+    p.getCallable() = m and
+    m instanceof ModelExclusions::ModelApi and
+    not m.getDeclaringType().isFinal() and
+    not m.isFinal() and
+    not m.isStatic()
+  } or
+  TOverridableQualifier(Method m) {
+    m instanceof ModelExclusions::ModelApi and
+    not m.getDeclaringType().isFinal() and
+    not m.isFinal() and
+    not m.isStatic()
+  }
 
 /**
  * A framework mode endpoint.
  */
 abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
   /**
-   * Returns the parameter index of the endpoint.
+   * Gets the input (if any) for this endpoint, eg.: `Argument[0]`.
+   *
+   * For endpoints that are source candidates, this will be `none()`.
    */
-  abstract int getIndex();
+  abstract string getMaDInput();
+
+  /**
+   * Gets the output (if any) for this endpoint, eg.: `ReturnValue`.
+   *
+   * For endpoints that are sink candidates, this will be `none()`.
+   */
+  abstract string getMaDOutput();
 
   /**
    * Returns the name of the parameter of the endpoint.
@@ -48,6 +71,8 @@ abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
 
   abstract Top asTop();
 
+  abstract string getExtensibleType();
+
   string toString() { result = this.asTop().toString() }
 
   Location getLocation() { result = this.asTop().getLocation() }
@@ -58,13 +83,17 @@ class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParamete
 
   ExplicitParameterEndpoint() { this = TExplicitParameter(param) and param.fromSource() }
 
-  override int getIndex() { result = param.getPosition() }
+  override string getMaDInput() { result = "Argument[" + param.getPosition() + "]" }
+
+  override string getMaDOutput() { none() }
 
   override string getParamName() { result = param.getName() }
 
   override Callable getEnclosingCallable() { result = param.getCallable() }
 
   override Top asTop() { result = param }
+
+  override string getExtensibleType() { result = "sinkModel" }
 }
 
 class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
@@ -74,13 +103,72 @@ class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
     this = TQualifier(callable) and not callable.isStatic() and callable.fromSource()
   }
 
-  override int getIndex() { result = -1 }
+  override string getMaDInput() { result = "Argument[this]" }
+
+  override string getMaDOutput() { none() }
 
   override string getParamName() { result = "this" }
 
   override Callable getEnclosingCallable() { result = callable }
 
   override Top asTop() { result = callable }
+
+  override string getExtensibleType() { result = "sinkModel" }
+}
+
+class ReturnValue extends FrameworkModeEndpoint, TReturnValue {
+  Callable callable;
+
+  ReturnValue() { this = TReturnValue(callable) and callable.fromSource() }
+
+  override string getMaDInput() { none() }
+
+  override string getMaDOutput() { result = "ReturnValue" }
+
+  override string getParamName() { none() }
+
+  override Callable getEnclosingCallable() { result = callable }
+
+  override Top asTop() { result = callable }
+
+  override string getExtensibleType() { result = "sourceModel" }
+}
+
+class OverridableParameter extends FrameworkModeEndpoint, TOverridableParameter {
+  Method method;
+  Parameter param;
+
+  OverridableParameter() { this = TOverridableParameter(method, param) }
+
+  override string getMaDInput() { none() }
+
+  override string getMaDOutput() { result = "Parameter[" + param.getPosition() + "]" }
+
+  override string getParamName() { result = param.getName() }
+
+  override Callable getEnclosingCallable() { result = method }
+
+  override Top asTop() { result = param }
+
+  override string getExtensibleType() { result = "sourceModel" }
+}
+
+class OverridableQualifier extends FrameworkModeEndpoint, TOverridableQualifier {
+  Method m;
+
+  OverridableQualifier() { this = TOverridableQualifier(m) }
+
+  override string getMaDInput() { none() }
+
+  override string getMaDOutput() { result = "Parameter[this]" }
+
+  override string getParamName() { result = "this" }
+
+  override Callable getEnclosingCallable() { result = m }
+
+  override Top asTop() { result = m }
+
+  override string getExtensibleType() { result = "sourceModel" }
 }
 
 /**
@@ -118,12 +206,20 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   }
 
   predicate isSource(Endpoint e, string kind, string provenance) {
-    none() // TODO: implement
+    exists(string package, string type, string name, string signature, string ext, string output |
+      sourceSpec(e, package, type, name, signature, ext, output) and
+      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind,
+        provenance)
+    )
   }
 
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
-      sinkSpec(e, package, type, name, signature, _, _) and
+      (
+        sinkSpec(e, package, type, name, signature, _, _)
+        or
+        sourceSpec(e, package, type, name, signature, _, _)
+      ) and
       ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
     )
   }
@@ -131,10 +227,20 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    FrameworkModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
+    e.getEnclosingCallable().hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(e.getEnclosingCallable()) and
     ext = "" and
-    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex())
+    input = e.getMaDInput()
+  }
+
+  additional predicate sourceSpec(
+    Endpoint e, string package, string type, string name, string signature, string ext,
+    string output
+  ) {
+    e.getEnclosingCallable().hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(e.getEnclosingCallable()) and
+    ext = "" and
+    output = e.getMaDOutput()
   }
 
   /**
@@ -144,26 +250,11 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
    */
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
     type = MethodDoc() and
-    result = FrameworkModeGetCallable::getCallable(e).(Documentable).getJavadoc()
+    result = e.getEnclosingCallable().(Documentable).getJavadoc()
     or
     type = ClassDoc() and
-    result = FrameworkModeGetCallable::getCallable(e).getDeclaringType().(Documentable).getJavadoc()
+    result = e.getEnclosingCallable().getDeclaringType().(Documentable).getJavadoc()
   }
-}
-
-private class JavaCallable = Callable;
-
-private module FrameworkModeGetCallable implements AutomodelSharedGetCallable::GetCallableSig {
-  class Callable = JavaCallable;
-
-  class Endpoint = FrameworkCandidatesImpl::Endpoint;
-
-  /**
-   * Returns the callable that contains the given endpoint.
-   *
-   * Each Java mode should implement this predicate.
-   */
-  Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
 }
 
 module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<FrameworkCandidatesImpl>;
@@ -184,11 +275,12 @@ class FrameworkModeMetadataExtractor extends string {
 
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
-    string input, string parameterName
+    string input, string output, string parameterName
   ) {
-    parameterName = e.getParamName() and
+    (if exists(e.getParamName()) then parameterName = e.getParamName() else parameterName = "") and
     name = e.getEnclosingCallable().getName() and
-    input = AutomodelJavaUtil::getArgumentForIndex(e.getIndex()) and
+    (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
+    (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
     package = e.getEnclosingCallable().getDeclaringType().getPackage().getName() and
     type = e.getEnclosingCallable().getDeclaringType().getErasure().(RefType).nestedName() and
     subtypes = AutomodelJavaUtil::considerSubtypes(e.getEnclosingCallable()).toString() and
@@ -214,8 +306,8 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
 
   override predicate appliesToEndpoint(Endpoint e) {
     not FrameworkCandidatesImpl::isSink(e, _, _) and
-    FrameworkModeGetCallable::getCallable(e).getName().matches("is%") and
-    FrameworkModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
+    e.getEnclosingCallable().getName().matches("is%") and
+    e.getEnclosingCallable().getReturnType() instanceof BooleanType
   }
 }
 
@@ -233,7 +325,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   override predicate appliesToEndpoint(Endpoint e) {
     not FrameworkCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
-      callable = FrameworkModeGetCallable::getCallable(e) and
+      callable = e.getEnclosingCallable() and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
     )
@@ -247,8 +339,7 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    FrameworkModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
-      TypeThrowable
+    e.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable
   }
 }
 
@@ -256,92 +347,10 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
  * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
  * are considered worth modeling.
  */
-private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingToModelCharacteristic {
-  NotAModelApiParameter() { this = "not a model API parameter" }
+private class NotAModelApi extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  NotAModelApi() { this = "not a model API" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     not e.getEnclosingCallable() instanceof ModelExclusions::ModelApi
   }
-}
-
-/**
- * A negative characteristic that filters out non-public methods. Non-public methods are not interesting to include in
- * the standard Java modeling, because they cannot be called from outside the package.
- */
-private class NonPublicMethodCharacteristic extends CharacteristicsImpl::UninterestingToModelCharacteristic
-{
-  NonPublicMethodCharacteristic() { this = "non-public method" }
-
-  override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkModeGetCallable::getCallable(e).isPublic()
-  }
-}
-
-/**
- * Holds if the given endpoint has a self-contradictory combination of characteristics. Detects errors in our endpoint
- * characteristics. Lists the problematic characteristics and their implications for all such endpoints, together with
- * an error message indicating why this combination is problematic.
- *
- * Copied from
- *   javascript/ql/experimental/adaptivethreatmodeling/test/endpoint_large_scale/ContradictoryEndpointCharacteristics.ql
- */
-predicate erroneousEndpoints(
-  Endpoint endpoint, EndpointCharacteristic characteristic,
-  AutomodelEndpointTypes::EndpointType endpointType, float confidence, string errorMessage,
-  boolean ignoreKnownModelingErrors
-) {
-  // An endpoint's characteristics should not include positive indicators with medium/high confidence for more than one
-  // sink/source type (including the negative type).
-  exists(
-    EndpointCharacteristic characteristic2, AutomodelEndpointTypes::EndpointType endpointClass2,
-    float confidence2
-  |
-    endpointType != endpointClass2 and
-    (
-      endpointType instanceof AutomodelEndpointTypes::SinkType and
-      endpointClass2 instanceof AutomodelEndpointTypes::SinkType
-      or
-      endpointType instanceof AutomodelEndpointTypes::SourceType and
-      endpointClass2 instanceof AutomodelEndpointTypes::SourceType
-    ) and
-    characteristic.appliesToEndpoint(endpoint) and
-    characteristic2.appliesToEndpoint(endpoint) and
-    characteristic.hasImplications(endpointType, true, confidence) and
-    characteristic2.hasImplications(endpointClass2, true, confidence2) and
-    confidence > SharedCharacteristics::mediumConfidence() and
-    confidence2 > SharedCharacteristics::mediumConfidence() and
-    (
-      ignoreKnownModelingErrors = true and
-      not knownOverlappingCharacteristics(characteristic, characteristic2)
-      or
-      ignoreKnownModelingErrors = false
-    )
-  ) and
-  errorMessage = "Endpoint has high-confidence positive indicators for multiple classes"
-  or
-  // An endpoint's characteristics should not include positive indicators with medium/high confidence for some class and
-  // also include negative indicators with medium/high confidence for this same class.
-  exists(EndpointCharacteristic characteristic2, float confidence2 |
-    characteristic.appliesToEndpoint(endpoint) and
-    characteristic2.appliesToEndpoint(endpoint) and
-    characteristic.hasImplications(endpointType, true, confidence) and
-    characteristic2.hasImplications(endpointType, false, confidence2) and
-    confidence > SharedCharacteristics::mediumConfidence() and
-    confidence2 > SharedCharacteristics::mediumConfidence()
-  ) and
-  ignoreKnownModelingErrors = false and
-  errorMessage = "Endpoint has high-confidence positive and negative indicators for the same class"
-}
-
-/**
- * Holds if `characteristic1` and `characteristic2` are among the pairs of currently known positive characteristics that
- * have some overlap in their results. This indicates a problem with the underlying Java modeling. Specifically,
- * `PathCreation` is prone to FPs.
- */
-private predicate knownOverlappingCharacteristics(
-  EndpointCharacteristic characteristic1, EndpointCharacteristic characteristic2
-) {
-  characteristic1 != characteristic2 and
-  characteristic1 = ["mad taint step", "create path", "read file", "known non-sink"] and
-  characteristic2 = ["mad taint step", "create path", "read file", "known non-sink"]
 }

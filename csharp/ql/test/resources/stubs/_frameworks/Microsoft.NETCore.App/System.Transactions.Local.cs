@@ -173,7 +173,7 @@ namespace System
             public static System.Transactions.Transaction GetTransactionFromTransmitterPropagationToken(byte[] propagationToken) => throw null;
             public static byte[] GetTransmitterPropagationToken(System.Transactions.Transaction transaction) => throw null;
             public static byte[] GetWhereabouts() => throw null;
-            public static System.Guid PromoterTypeDtc;
+            public static readonly System.Guid PromoterTypeDtc;
         }
         public static class TransactionManager
         {

@@ -30,7 +30,7 @@ namespace System
         }
         public class UnicodeEncoding : System.Text.Encoding
         {
-            public const int CharSize = default;
+            public const int CharSize = 2;
             public UnicodeEncoding() => throw null;
             public UnicodeEncoding(bool bigEndian, bool byteOrderMark) => throw null;
             public UnicodeEncoding(bool bigEndian, bool byteOrderMark, bool throwOnInvalidBytes) => throw null;

@@ -15,33 +15,33 @@ namespace Microsoft
                     public System.Collections.Generic.IList<Microsoft.Net.Http.Headers.NameValueHeaderValue> Extensions { get => throw null; }
                     public override int GetHashCode() => throw null;
                     public System.TimeSpan? MaxAge { get => throw null; set { } }
-                    public static string MaxAgeString;
+                    public static readonly string MaxAgeString;
                     public bool MaxStale { get => throw null; set { } }
                     public System.TimeSpan? MaxStaleLimit { get => throw null; set { } }
-                    public static string MaxStaleString;
+                    public static readonly string MaxStaleString;
                     public System.TimeSpan? MinFresh { get => throw null; set { } }
-                    public static string MinFreshString;
+                    public static readonly string MinFreshString;
                     public bool MustRevalidate { get => throw null; set { } }
-                    public static string MustRevalidateString;
+                    public static readonly string MustRevalidateString;
                     public bool NoCache { get => throw null; set { } }
                     public System.Collections.Generic.ICollection<Microsoft.Extensions.Primitives.StringSegment> NoCacheHeaders { get => throw null; }
-                    public static string NoCacheString;
+                    public static readonly string NoCacheString;
                     public bool NoStore { get => throw null; set { } }
-                    public static string NoStoreString;
+                    public static readonly string NoStoreString;
                     public bool NoTransform { get => throw null; set { } }
-                    public static string NoTransformString;
+                    public static readonly string NoTransformString;
                     public bool OnlyIfCached { get => throw null; set { } }
-                    public static string OnlyIfCachedString;
+                    public static readonly string OnlyIfCachedString;
                     public static Microsoft.Net.Http.Headers.CacheControlHeaderValue Parse(Microsoft.Extensions.Primitives.StringSegment input) => throw null;
                     public bool Private { get => throw null; set { } }
                     public System.Collections.Generic.ICollection<Microsoft.Extensions.Primitives.StringSegment> PrivateHeaders { get => throw null; }
-                    public static string PrivateString;
+                    public static readonly string PrivateString;
                     public bool ProxyRevalidate { get => throw null; set { } }
-                    public static string ProxyRevalidateString;
+                    public static readonly string ProxyRevalidateString;
                     public bool Public { get => throw null; set { } }
-                    public static string PublicString;
+                    public static readonly string PublicString;
                     public System.TimeSpan? SharedMaxAge { get => throw null; set { } }
-                    public static string SharedMaxAgeString;
+                    public static readonly string SharedMaxAgeString;
                     public override string ToString() => throw null;
                     public static bool TryParse(Microsoft.Extensions.Primitives.StringSegment input, out Microsoft.Net.Http.Headers.CacheControlHeaderValue parsedValue) => throw null;
                 }
@@ -123,102 +123,102 @@ namespace Microsoft
                 }
                 public static class HeaderNames
                 {
-                    public static string Accept;
-                    public static string AcceptCharset;
-                    public static string AcceptEncoding;
-                    public static string AcceptLanguage;
-                    public static string AcceptRanges;
-                    public static string AccessControlAllowCredentials;
-                    public static string AccessControlAllowHeaders;
-                    public static string AccessControlAllowMethods;
-                    public static string AccessControlAllowOrigin;
-                    public static string AccessControlExposeHeaders;
-                    public static string AccessControlMaxAge;
-                    public static string AccessControlRequestHeaders;
-                    public static string AccessControlRequestMethod;
-                    public static string Age;
-                    public static string Allow;
-                    public static string AltSvc;
-                    public static string Authority;
-                    public static string Authorization;
-                    public static string Baggage;
-                    public static string CacheControl;
-                    public static string Connection;
-                    public static string ContentDisposition;
-                    public static string ContentEncoding;
-                    public static string ContentLanguage;
-                    public static string ContentLength;
-                    public static string ContentLocation;
-                    public static string ContentMD5;
-                    public static string ContentRange;
-                    public static string ContentSecurityPolicy;
-                    public static string ContentSecurityPolicyReportOnly;
-                    public static string ContentType;
-                    public static string Cookie;
-                    public static string CorrelationContext;
-                    public static string Date;
-                    public static string DNT;
-                    public static string ETag;
-                    public static string Expect;
-                    public static string Expires;
-                    public static string From;
-                    public static string GrpcAcceptEncoding;
-                    public static string GrpcEncoding;
-                    public static string GrpcMessage;
-                    public static string GrpcStatus;
-                    public static string GrpcTimeout;
-                    public static string Host;
-                    public static string IfMatch;
-                    public static string IfModifiedSince;
-                    public static string IfNoneMatch;
-                    public static string IfRange;
-                    public static string IfUnmodifiedSince;
-                    public static string KeepAlive;
-                    public static string LastModified;
-                    public static string Link;
-                    public static string Location;
-                    public static string MaxForwards;
-                    public static string Method;
-                    public static string Origin;
-                    public static string Path;
-                    public static string Pragma;
-                    public static string ProxyAuthenticate;
-                    public static string ProxyAuthorization;
-                    public static string ProxyConnection;
-                    public static string Range;
-                    public static string Referer;
-                    public static string RequestId;
-                    public static string RetryAfter;
-                    public static string Scheme;
-                    public static string SecWebSocketAccept;
-                    public static string SecWebSocketExtensions;
-                    public static string SecWebSocketKey;
-                    public static string SecWebSocketProtocol;
-                    public static string SecWebSocketVersion;
-                    public static string Server;
-                    public static string SetCookie;
-                    public static string Status;
-                    public static string StrictTransportSecurity;
-                    public static string TE;
-                    public static string TraceParent;
-                    public static string TraceState;
-                    public static string Trailer;
-                    public static string TransferEncoding;
-                    public static string Translate;
-                    public static string Upgrade;
-                    public static string UpgradeInsecureRequests;
-                    public static string UserAgent;
-                    public static string Vary;
-                    public static string Via;
-                    public static string Warning;
-                    public static string WebSocketSubProtocols;
-                    public static string WWWAuthenticate;
-                    public static string XContentTypeOptions;
-                    public static string XFrameOptions;
-                    public static string XPoweredBy;
-                    public static string XRequestedWith;
-                    public static string XUACompatible;
-                    public static string XXSSProtection;
+                    public static readonly string Accept;
+                    public static readonly string AcceptCharset;
+                    public static readonly string AcceptEncoding;
+                    public static readonly string AcceptLanguage;
+                    public static readonly string AcceptRanges;
+                    public static readonly string AccessControlAllowCredentials;
+                    public static readonly string AccessControlAllowHeaders;
+                    public static readonly string AccessControlAllowMethods;
+                    public static readonly string AccessControlAllowOrigin;
+                    public static readonly string AccessControlExposeHeaders;
+                    public static readonly string AccessControlMaxAge;
+                    public static readonly string AccessControlRequestHeaders;
+                    public static readonly string AccessControlRequestMethod;
+                    public static readonly string Age;
+                    public static readonly string Allow;
+                    public static readonly string AltSvc;
+                    public static readonly string Authority;
+                    public static readonly string Authorization;
+                    public static readonly string Baggage;
+                    public static readonly string CacheControl;
+                    public static readonly string Connection;
+                    public static readonly string ContentDisposition;
+                    public static readonly string ContentEncoding;
+                    public static readonly string ContentLanguage;
+                    public static readonly string ContentLength;
+                    public static readonly string ContentLocation;
+                    public static readonly string ContentMD5;
+                    public static readonly string ContentRange;
+                    public static readonly string ContentSecurityPolicy;
+                    public static readonly string ContentSecurityPolicyReportOnly;
+                    public static readonly string ContentType;
+                    public static readonly string Cookie;
+                    public static readonly string CorrelationContext;
+                    public static readonly string Date;
+                    public static readonly string DNT;
+                    public static readonly string ETag;
+                    public static readonly string Expect;
+                    public static readonly string Expires;
+                    public static readonly string From;
+                    public static readonly string GrpcAcceptEncoding;
+                    public static readonly string GrpcEncoding;
+                    public static readonly string GrpcMessage;
+                    public static readonly string GrpcStatus;
+                    public static readonly string GrpcTimeout;
+                    public static readonly string Host;
+                    public static readonly string IfMatch;
+                    public static readonly string IfModifiedSince;
+                    public static readonly string IfNoneMatch;
+                    public static readonly string IfRange;
+                    public static readonly string IfUnmodifiedSince;
+                    public static readonly string KeepAlive;
+                    public static readonly string LastModified;
+                    public static readonly string Link;
+                    public static readonly string Location;
+                    public static readonly string MaxForwards;
+                    public static readonly string Method;
+                    public static readonly string Origin;
+                    public static readonly string Path;
+                    public static readonly string Pragma;
+                    public static readonly string ProxyAuthenticate;
+                    public static readonly string ProxyAuthorization;
+                    public static readonly string ProxyConnection;
+                    public static readonly string Range;
+                    public static readonly string Referer;
+                    public static readonly string RequestId;
+                    public static readonly string RetryAfter;
+                    public static readonly string Scheme;
+                    public static readonly string SecWebSocketAccept;
+                    public static readonly string SecWebSocketExtensions;
+                    public static readonly string SecWebSocketKey;
+                    public static readonly string SecWebSocketProtocol;
+                    public static readonly string SecWebSocketVersion;
+                    public static readonly string Server;
+                    public static readonly string SetCookie;
+                    public static readonly string Status;
+                    public static readonly string StrictTransportSecurity;
+                    public static readonly string TE;
+                    public static readonly string TraceParent;
+                    public static readonly string TraceState;
+                    public static readonly string Trailer;
+                    public static readonly string TransferEncoding;
+                    public static readonly string Translate;
+                    public static readonly string Upgrade;
+                    public static readonly string UpgradeInsecureRequests;
+                    public static readonly string UserAgent;
+                    public static readonly string Vary;
+                    public static readonly string Via;
+                    public static readonly string Warning;
+                    public static readonly string WebSocketSubProtocols;
+                    public static readonly string WWWAuthenticate;
+                    public static readonly string XContentTypeOptions;
+                    public static readonly string XFrameOptions;
+                    public static readonly string XPoweredBy;
+                    public static readonly string XRequestedWith;
+                    public static readonly string XUACompatible;
+                    public static readonly string XXSSProtection;
                 }
                 public static class HeaderQuality
                 {

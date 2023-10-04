@@ -131,8 +131,8 @@ private class StringSummaries extends SummaryModelCsv {
 }
 
 /**
- * A content implying that, if a `String` is tainted, then many of its fields are
- * tainted. This also includes fields declared in `StringProtocol`.
+ * A content implying that, if a `String`, `StringProtocol` or related class is tainted, then many
+ * of its fields are tainted.
  */
 private class StringFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
@@ -141,12 +141,24 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
     this.getField()
         .hasQualifiedName(["String", "StringProtocol"],
           [
-            "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",
-            "debugDescription", "dataValue", "identifierValue", "capitalized",
-            "localizedCapitalized", "localizedLowercase", "localizedUppercase",
-            "decomposedStringWithCanonicalMapping", "decomposedStringWithCompatibilityMapping",
-            "precomposedStringWithCanonicalMapping", "precomposedStringWithCompatibilityMapping",
-            "removingPercentEncoding"
+            "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "dataValue",
+            "identifierValue", "capitalized", "localizedCapitalized", "localizedLowercase",
+            "localizedUppercase", "decomposedStringWithCanonicalMapping",
+            "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
+            "precomposedStringWithCompatibilityMapping", "removingPercentEncoding"
           ])
+    or
+    exists(FieldDecl fieldDecl, Decl declaringDecl, TypeDecl namedTypeDecl |
+      (
+        namedTypeDecl.getFullName() = "CustomStringConvertible" and
+        fieldDecl.getName() = "description"
+        or
+        namedTypeDecl.getFullName() = "CustomDebugStringConvertible" and
+        fieldDecl.getName() = "debugDescription"
+      ) and
+      declaringDecl.getAMember() = fieldDecl and
+      declaringDecl.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*() and
+      this.getField() = fieldDecl
+    )
   }
 }

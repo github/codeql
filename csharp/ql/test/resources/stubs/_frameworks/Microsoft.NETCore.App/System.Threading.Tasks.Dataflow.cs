@@ -151,7 +151,7 @@ namespace System
                     public int MaxMessagesPerTask { get => throw null; set { } }
                     public string NameFormat { get => throw null; set { } }
                     public System.Threading.Tasks.TaskScheduler TaskScheduler { get => throw null; set { } }
-                    public const int Unbounded = default;
+                    public const int Unbounded = -1;
                 }
                 public class DataflowLinkOptions
                 {

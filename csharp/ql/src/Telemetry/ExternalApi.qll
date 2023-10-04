@@ -1,7 +1,6 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import csharp
-private import dotnet
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
@@ -10,24 +9,10 @@ private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlow
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
-
-pragma[nomagic]
-private predicate isTestNamespace(Namespace ns) {
-  ns.getFullName()
-      .matches([
-          "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
-        ])
-}
-
-/**
- * A test library.
- */
-class TestLibrary extends RefType {
-  TestLibrary() { isTestNamespace(this.getNamespace()) }
-}
+private import TestLibrary
 
 /** Holds if the given callable is not worth supporting. */
-private predicate isUninteresting(DotNet::Callable c) {
+private predicate isUninteresting(Callable c) {
   c.getDeclaringType() instanceof TestLibrary or
   c.(Constructor).isParameterless()
 }
@@ -35,7 +20,7 @@ private predicate isUninteresting(DotNet::Callable c) {
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
-class ExternalApi extends DotNet::Callable {
+class ExternalApi extends Callable {
   ExternalApi() {
     this.isUnboundDeclaration() and
     this.fromLibrary() and

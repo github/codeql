@@ -47,11 +47,11 @@ module Array {
     override MethodCall getACallSimple() { result = getAStaticArrayCall("[]") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      exists(ArrayIndex i |
-        input = "Argument[" + i + "]" and
-        output = "ReturnValue.Element[" + i + "]" and
-        preservesValue = true
-      )
+      // we make use of the special `splat` argument kind, which contains all positional
+      // arguments wrapped in an implicit array, as well as explicit splat arguments
+      input = "Argument[splat]" and
+      output = "ReturnValue" and
+      preservesValue = true
     }
   }
 

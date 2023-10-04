@@ -34,7 +34,7 @@ namespace Microsoft
                 public static string Combine(params string[] pathSegments) => throw null;
                 public static string GetParentPath(string path) => throw null;
                 public static string GetSectionKey(string path) => throw null;
-                public static string KeyDelimiter;
+                public static readonly string KeyDelimiter;
             }
             public static partial class ConfigurationRootExtensions
             {

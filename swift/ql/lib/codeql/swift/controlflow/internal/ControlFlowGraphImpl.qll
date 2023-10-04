@@ -1188,7 +1188,7 @@ module Exprs {
     }
 
     /**
-     * An autoclosure expression that is generated as part of a logical operation.
+     * An autoclosure expression that is generated as part of a logical operation or nil coalescing expression.
      *
      * This is needed because the Swift AST for `b1 && b2` is really syntactic sugar a function call:
      * ```swift
@@ -1197,10 +1197,13 @@ module Exprs {
      * So the `true` edge from `b1` cannot just go to `b2` since this is an implicit autoclosure.
      * To handle this dig into the autoclosure when it's an operand of a logical operator.
      */
-    private class LogicalAutoClosureTree extends AstPreOrderTree {
+    private class ShortCircuitingAutoClosureTree extends AstPreOrderTree {
       override AutoClosureExpr ast;
 
-      LogicalAutoClosureTree() { ast = any(LogicalOperation op).getAnOperand() }
+      ShortCircuitingAutoClosureTree() {
+        ast = any(LogicalOperation op).getAnOperand() or
+        ast = any(NilCoalescingExpr expr).getAnOperand()
+      }
 
       override predicate last(ControlFlowElement last, Completion c) {
         exists(Completion completion | astLast(ast.getReturn(), last, completion) |
@@ -1226,7 +1229,7 @@ module Exprs {
     private class AutoClosureTree extends AstLeafTree {
       override AutoClosureExpr ast;
 
-      AutoClosureTree() { not this instanceof LogicalAutoClosureTree }
+      AutoClosureTree() { not this instanceof ShortCircuitingAutoClosureTree }
     }
   }
 
@@ -1566,7 +1569,9 @@ module Exprs {
       // This one is handled in `LogicalNotTree`.
       not ast instanceof UnaryLogicalOperation and
       // These are handled in `LogicalOrTree` and `LogicalAndTree`.
-      not ast instanceof BinaryLogicalOperation
+      not ast instanceof BinaryLogicalOperation and
+      // This one is handled in `NilCoalescingTree`
+      not ast instanceof NilCoalescingExpr
     }
 
     final override ControlFlowElement getChildElement(int i) {
@@ -1587,6 +1592,38 @@ module Exprs {
     override ControlFlowElement getChildElement(int i) {
       i = 0 and
       result.asAstNode() = ast.getSubExpr().getFullyConverted()
+    }
+  }
+
+  private class NilCoalescingTestTree extends LeafTree, NilCoalescingElement { }
+
+  private class NilCoalescingTree extends AstPostOrderTree {
+    override NilCoalescingExpr ast;
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child.asAstNode() = ast.getAnOperand().getFullyConverted()
+    }
+
+    final override predicate first(ControlFlowElement first) {
+      astFirst(ast.getLeftOperand().getFullyConverted(), first)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      astLast(ast.getLeftOperand().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      succ.(NilCoalescingTestTree).getAst() = ast
+      or
+      pred.(NilCoalescingTestTree).getAst() = ast and
+      exists(EmptinessCompletion ec | c = ec | ec.isEmpty()) and
+      astFirst(ast.getRightOperand().getFullyConverted(), succ)
+      or
+      pred.(NilCoalescingTestTree).getAst() = ast and
+      exists(EmptinessCompletion ec | c = ec | not ec.isEmpty()) and
+      succ.asAstNode() = ast
+      or
+      astLast(ast.getRightOperand().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      succ.asAstNode() = ast
     }
   }
 

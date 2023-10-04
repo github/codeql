@@ -10,36 +10,36 @@ namespace System
             {
                 public System.Formats.Asn1.Asn1Tag AsConstructed() => throw null;
                 public System.Formats.Asn1.Asn1Tag AsPrimitive() => throw null;
-                public static System.Formats.Asn1.Asn1Tag Boolean;
+                public static readonly System.Formats.Asn1.Asn1Tag Boolean;
                 public int CalculateEncodedSize() => throw null;
-                public static System.Formats.Asn1.Asn1Tag ConstructedBitString;
-                public static System.Formats.Asn1.Asn1Tag ConstructedOctetString;
+                public static readonly System.Formats.Asn1.Asn1Tag ConstructedBitString;
+                public static readonly System.Formats.Asn1.Asn1Tag ConstructedOctetString;
                 public Asn1Tag(System.Formats.Asn1.TagClass tagClass, int tagValue, bool isConstructed = default(bool)) => throw null;
                 public Asn1Tag(System.Formats.Asn1.UniversalTagNumber universalTagNumber, bool isConstructed = default(bool)) => throw null;
                 public static System.Formats.Asn1.Asn1Tag Decode(System.ReadOnlySpan<byte> source, out int bytesConsumed) => throw null;
                 public int Encode(System.Span<byte> destination) => throw null;
-                public static System.Formats.Asn1.Asn1Tag Enumerated;
+                public static readonly System.Formats.Asn1.Asn1Tag Enumerated;
                 public bool Equals(System.Formats.Asn1.Asn1Tag other) => throw null;
                 public override bool Equals(object obj) => throw null;
-                public static System.Formats.Asn1.Asn1Tag GeneralizedTime;
+                public static readonly System.Formats.Asn1.Asn1Tag GeneralizedTime;
                 public override int GetHashCode() => throw null;
                 public bool HasSameClassAndValue(System.Formats.Asn1.Asn1Tag other) => throw null;
-                public static System.Formats.Asn1.Asn1Tag Integer;
+                public static readonly System.Formats.Asn1.Asn1Tag Integer;
                 public bool IsConstructed { get => throw null; }
-                public static System.Formats.Asn1.Asn1Tag Null;
-                public static System.Formats.Asn1.Asn1Tag ObjectIdentifier;
+                public static readonly System.Formats.Asn1.Asn1Tag Null;
+                public static readonly System.Formats.Asn1.Asn1Tag ObjectIdentifier;
                 public static bool operator ==(System.Formats.Asn1.Asn1Tag left, System.Formats.Asn1.Asn1Tag right) => throw null;
                 public static bool operator !=(System.Formats.Asn1.Asn1Tag left, System.Formats.Asn1.Asn1Tag right) => throw null;
-                public static System.Formats.Asn1.Asn1Tag PrimitiveBitString;
-                public static System.Formats.Asn1.Asn1Tag PrimitiveOctetString;
-                public static System.Formats.Asn1.Asn1Tag Sequence;
-                public static System.Formats.Asn1.Asn1Tag SetOf;
+                public static readonly System.Formats.Asn1.Asn1Tag PrimitiveBitString;
+                public static readonly System.Formats.Asn1.Asn1Tag PrimitiveOctetString;
+                public static readonly System.Formats.Asn1.Asn1Tag Sequence;
+                public static readonly System.Formats.Asn1.Asn1Tag SetOf;
                 public System.Formats.Asn1.TagClass TagClass { get => throw null; }
                 public int TagValue { get => throw null; }
                 public override string ToString() => throw null;
                 public static bool TryDecode(System.ReadOnlySpan<byte> source, out System.Formats.Asn1.Asn1Tag tag, out int bytesConsumed) => throw null;
                 public bool TryEncode(System.Span<byte> destination, out int bytesWritten) => throw null;
-                public static System.Formats.Asn1.Asn1Tag UtcTime;
+                public static readonly System.Formats.Asn1.Asn1Tag UtcTime;
             }
             public class AsnContentException : System.Exception
             {

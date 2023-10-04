@@ -44,7 +44,7 @@ namespace Microsoft
             {
                 public string CookieName { get => throw null; set { } }
                 public CookieRequestCultureProvider() => throw null;
-                public static string DefaultCookieName;
+                public static readonly string DefaultCookieName;
                 public override System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult> DetermineProviderCultureResult(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                 public static string MakeCookieValue(Microsoft.AspNetCore.Localization.RequestCulture requestCulture) => throw null;
                 public static Microsoft.AspNetCore.Localization.ProviderCultureResult ParseCookieValue(string value) => throw null;
@@ -98,7 +98,7 @@ namespace Microsoft
             {
                 protected RequestCultureProvider() => throw null;
                 public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult> DetermineProviderCultureResult(Microsoft.AspNetCore.Http.HttpContext httpContext);
-                protected static System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult> NullProviderCultureResult;
+                protected static readonly System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult> NullProviderCultureResult;
                 public Microsoft.AspNetCore.Builder.RequestLocalizationOptions Options { get => throw null; set { } }
             }
             public class RequestLocalizationMiddleware

@@ -91,7 +91,7 @@ namespace Microsoft
                 {
                     public virtual bool Accept(Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintContext context) => throw null;
                     public HttpMethodActionConstraint(System.Collections.Generic.IEnumerable<string> httpMethods) => throw null;
-                    public static int HttpMethodConstraintOrder;
+                    public static readonly int HttpMethodConstraintOrder;
                     public System.Collections.Generic.IEnumerable<string> HttpMethods { get => throw null; }
                     public int Order { get => throw null; }
                 }
@@ -610,7 +610,7 @@ namespace Microsoft
             public class ConsumesAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IAcceptsMetadata, Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraint, Microsoft.AspNetCore.Mvc.ActionConstraints.IActionConstraintMetadata, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiRequestMetadataProvider, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IResourceFilter
             {
                 public bool Accept(Microsoft.AspNetCore.Mvc.ActionConstraints.ActionConstraintContext context) => throw null;
-                public static int ConsumesActionConstraintOrder;
+                public static readonly int ConsumesActionConstraintOrder;
                 public Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection ContentTypes { get => throw null; set { } }
                 System.Collections.Generic.IReadOnlyList<string> Microsoft.AspNetCore.Http.Metadata.IAcceptsMetadata.ContentTypes { get => throw null; }
                 public ConsumesAttribute(string contentType, params string[] otherContentTypes) => throw null;
@@ -1307,11 +1307,11 @@ namespace Microsoft
                 }
                 public static class FilterScope
                 {
-                    public static int Action;
-                    public static int Controller;
-                    public static int First;
-                    public static int Global;
-                    public static int Last;
+                    public static readonly int Action;
+                    public static readonly int Controller;
+                    public static readonly int First;
+                    public static readonly int Global;
+                    public static readonly int Last;
                 }
                 public abstract class ResultFilterAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IAsyncResultFilter, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter, Microsoft.AspNetCore.Mvc.Filters.IResultFilter
                 {
@@ -1458,8 +1458,8 @@ namespace Microsoft
                     public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.Formatters.InputFormatterResult> ReadRequestBodyAsync(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext context, System.Text.Encoding encoding);
                     protected System.Text.Encoding SelectCharacterEncoding(Microsoft.AspNetCore.Mvc.Formatters.InputFormatterContext context) => throw null;
                     public System.Collections.Generic.IList<System.Text.Encoding> SupportedEncodings { get => throw null; }
-                    protected static System.Text.Encoding UTF16EncodingLittleEndian;
-                    protected static System.Text.Encoding UTF8EncodingWithoutBOM;
+                    protected static readonly System.Text.Encoding UTF16EncodingLittleEndian;
+                    protected static readonly System.Text.Encoding UTF8EncodingWithoutBOM;
                 }
                 public abstract class TextOutputFormatter : Microsoft.AspNetCore.Mvc.Formatters.OutputFormatter
                 {
@@ -1617,7 +1617,7 @@ namespace Microsoft
                 }
                 public class FileResultExecutorBase
                 {
-                    protected const int BufferSize = default;
+                    protected const int BufferSize = 65536;
                     protected static Microsoft.Extensions.Logging.ILogger CreateLogger<T>(Microsoft.Extensions.Logging.ILoggerFactory factory) => throw null;
                     public FileResultExecutorBase(Microsoft.Extensions.Logging.ILogger logger) => throw null;
                     protected Microsoft.Extensions.Logging.ILogger Logger { get => throw null; }

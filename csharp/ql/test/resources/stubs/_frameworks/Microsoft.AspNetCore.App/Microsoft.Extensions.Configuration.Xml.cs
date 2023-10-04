@@ -23,7 +23,7 @@ namespace Microsoft
                     public System.Xml.XmlReader CreateDecryptingXmlReader(System.IO.Stream input, System.Xml.XmlReaderSettings settings) => throw null;
                     protected XmlDocumentDecryptor() => throw null;
                     protected virtual System.Xml.XmlReader DecryptDocumentAndCreateXmlReader(System.Xml.XmlDocument document) => throw null;
-                    public static Microsoft.Extensions.Configuration.Xml.XmlDocumentDecryptor Instance;
+                    public static readonly Microsoft.Extensions.Configuration.Xml.XmlDocumentDecryptor Instance;
                 }
                 public class XmlStreamConfigurationProvider : Microsoft.Extensions.Configuration.StreamConfigurationProvider
                 {

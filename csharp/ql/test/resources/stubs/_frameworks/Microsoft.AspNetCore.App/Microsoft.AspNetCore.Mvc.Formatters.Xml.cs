@@ -61,7 +61,7 @@ namespace Microsoft
                     {
                         public ProblemDetailsWrapper() => throw null;
                         public ProblemDetailsWrapper(Microsoft.AspNetCore.Mvc.ProblemDetails problemDetails) => throw null;
-                        protected static string EmptyKey;
+                        protected static readonly string EmptyKey;
                         public System.Xml.Schema.XmlSchema GetSchema() => throw null;
                         protected virtual void ReadValue(System.Xml.XmlReader reader, string name) => throw null;
                         public virtual void ReadXml(System.Xml.XmlReader reader) => throw null;

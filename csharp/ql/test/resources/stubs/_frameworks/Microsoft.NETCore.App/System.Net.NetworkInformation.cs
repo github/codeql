@@ -361,7 +361,7 @@ namespace System
                 public override bool Equals(object comparand) => throw null;
                 public byte[] GetAddressBytes() => throw null;
                 public override int GetHashCode() => throw null;
-                public static System.Net.NetworkInformation.PhysicalAddress None;
+                public static readonly System.Net.NetworkInformation.PhysicalAddress None;
                 public static System.Net.NetworkInformation.PhysicalAddress Parse(System.ReadOnlySpan<char> address) => throw null;
                 public static System.Net.NetworkInformation.PhysicalAddress Parse(string address) => throw null;
                 public override string ToString() => throw null;

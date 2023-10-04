@@ -380,12 +380,12 @@ namespace System
             }
             public class XObjectChangeEventArgs : System.EventArgs
             {
-                public static System.Xml.Linq.XObjectChangeEventArgs Add;
+                public static readonly System.Xml.Linq.XObjectChangeEventArgs Add;
                 public XObjectChangeEventArgs(System.Xml.Linq.XObjectChange objectChange) => throw null;
-                public static System.Xml.Linq.XObjectChangeEventArgs Name;
+                public static readonly System.Xml.Linq.XObjectChangeEventArgs Name;
                 public System.Xml.Linq.XObjectChange ObjectChange { get => throw null; }
-                public static System.Xml.Linq.XObjectChangeEventArgs Remove;
-                public static System.Xml.Linq.XObjectChangeEventArgs Value;
+                public static readonly System.Xml.Linq.XObjectChangeEventArgs Remove;
+                public static readonly System.Xml.Linq.XObjectChangeEventArgs Value;
             }
             public class XProcessingInstruction : System.Xml.Linq.XNode
             {

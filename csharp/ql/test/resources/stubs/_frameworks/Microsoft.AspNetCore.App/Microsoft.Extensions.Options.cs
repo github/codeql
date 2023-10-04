@@ -142,7 +142,7 @@ namespace Microsoft
             public static class Options
             {
                 public static Microsoft.Extensions.Options.IOptions<TOptions> Create<TOptions>(TOptions options) where TOptions : class => throw null;
-                public static string DefaultName;
+                public static readonly string DefaultName;
             }
             public class OptionsBuilder<TOptions> where TOptions : class
             {
@@ -353,10 +353,10 @@ namespace Microsoft
                 public bool Failed { get => throw null; set { } }
                 public string FailureMessage { get => throw null; set { } }
                 public System.Collections.Generic.IEnumerable<string> Failures { get => throw null; set { } }
-                public static Microsoft.Extensions.Options.ValidateOptionsResult Skip;
+                public static readonly Microsoft.Extensions.Options.ValidateOptionsResult Skip;
                 public bool Skipped { get => throw null; set { } }
                 public bool Succeeded { get => throw null; set { } }
-                public static Microsoft.Extensions.Options.ValidateOptionsResult Success;
+                public static readonly Microsoft.Extensions.Options.ValidateOptionsResult Success;
             }
         }
     }
