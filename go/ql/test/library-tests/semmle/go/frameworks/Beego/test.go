@@ -5,16 +5,17 @@ package test
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"mime/multipart"
+	"net/http"
+	"os"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/utils"
 	beegov2 "github.com/beego/beego/v2/server/web"
 	Beegov2Context "github.com/beego/beego/v2/server/web/context"
-	"io/ioutil"
-	"mime/multipart"
-	"net/http"
-	"os"
 )
 
 type subBindMe struct {
@@ -31,6 +32,7 @@ type bindMe struct {
 func fsOpsV2Test(ctx *Beegov2Context.Context, c *beegov2.Controller) {
 	input := ctx.Input
 	untrusted := input.Data()["someKey"].(string)
+	buffer := make([]byte, 10)
 	_ = c.SaveToFileWithBuffer("filenameExistsInForm", untrusted, buffer)
 }
 
@@ -41,9 +43,8 @@ func fsOpsTest(ctx *context.Context, c *beego.Controller, fs beego.FileSystem) {
 	beego.Walk(nil, untrusted, func(path string, info os.FileInfo, err error) error { return nil })
 	fs.Open(untrusted)
 	c.SaveToFile("someReceviedFile", untrusted)
+	beegoOutput := beego.BeegoOutput{}
 	beegoOutput.Download(untrusted, "license.txt")
-	buffer := make([]byte, 10)
-	_ = c.SaveToFileWithBuffer("filenameExistsInForm", untrusted, buffer)
 }
 
 // BAD: echoing untrusted data to an `http.ResponseWriter`

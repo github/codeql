@@ -1,24 +1,24 @@
 edges
-| test.go:32:15:32:26 | call to Data | test.go:33:53:33:61 | untrusted |
-| test.go:39:15:39:26 | call to Data | test.go:40:18:40:26 | untrusted |
-| test.go:39:15:39:26 | call to Data | test.go:41:10:41:18 | untrusted |
-| test.go:39:15:39:26 | call to Data | test.go:42:35:42:43 | untrusted |
-| test.go:332:17:332:37 | selection of RequestBody | test.go:332:40:332:43 | &... |
-| test.go:332:40:332:43 | &... | test.go:334:35:334:43 | untrusted |
+| test.go:34:15:34:26 | call to Data | test.go:36:53:36:61 | untrusted |
+| test.go:42:15:42:26 | call to Data | test.go:43:18:43:26 | untrusted |
+| test.go:42:15:42:26 | call to Data | test.go:44:10:44:18 | untrusted |
+| test.go:42:15:42:26 | call to Data | test.go:45:35:45:43 | untrusted |
+| test.go:334:17:334:37 | selection of RequestBody | test.go:334:40:334:43 | &... |
+| test.go:334:40:334:43 | &... | test.go:336:35:336:43 | untrusted |
 nodes
-| test.go:32:15:32:26 | call to Data | semmle.label | call to Data |
-| test.go:33:53:33:61 | untrusted | semmle.label | untrusted |
-| test.go:39:15:39:26 | call to Data | semmle.label | call to Data |
-| test.go:40:18:40:26 | untrusted | semmle.label | untrusted |
-| test.go:41:10:41:18 | untrusted | semmle.label | untrusted |
-| test.go:42:35:42:43 | untrusted | semmle.label | untrusted |
-| test.go:332:17:332:37 | selection of RequestBody | semmle.label | selection of RequestBody |
-| test.go:332:40:332:43 | &... | semmle.label | &... |
-| test.go:334:35:334:43 | untrusted | semmle.label | untrusted |
+| test.go:34:15:34:26 | call to Data | semmle.label | call to Data |
+| test.go:36:53:36:61 | untrusted | semmle.label | untrusted |
+| test.go:42:15:42:26 | call to Data | semmle.label | call to Data |
+| test.go:43:18:43:26 | untrusted | semmle.label | untrusted |
+| test.go:44:10:44:18 | untrusted | semmle.label | untrusted |
+| test.go:45:35:45:43 | untrusted | semmle.label | untrusted |
+| test.go:334:17:334:37 | selection of RequestBody | semmle.label | selection of RequestBody |
+| test.go:334:40:334:43 | &... | semmle.label | &... |
+| test.go:336:35:336:43 | untrusted | semmle.label | untrusted |
 subpaths
 #select
-| test.go:33:53:33:61 | untrusted | test.go:32:15:32:26 | call to Data | test.go:33:53:33:61 | untrusted | This path depends on a $@. | test.go:32:15:32:26 | call to Data | user-provided value |
-| test.go:40:18:40:26 | untrusted | test.go:39:15:39:26 | call to Data | test.go:40:18:40:26 | untrusted | This path depends on a $@. | test.go:39:15:39:26 | call to Data | user-provided value |
-| test.go:41:10:41:18 | untrusted | test.go:39:15:39:26 | call to Data | test.go:41:10:41:18 | untrusted | This path depends on a $@. | test.go:39:15:39:26 | call to Data | user-provided value |
-| test.go:42:35:42:43 | untrusted | test.go:39:15:39:26 | call to Data | test.go:42:35:42:43 | untrusted | This path depends on a $@. | test.go:39:15:39:26 | call to Data | user-provided value |
-| test.go:334:35:334:43 | untrusted | test.go:332:17:332:37 | selection of RequestBody | test.go:334:35:334:43 | untrusted | This path depends on a $@. | test.go:332:17:332:37 | selection of RequestBody | user-provided value |
+| test.go:36:53:36:61 | untrusted | test.go:34:15:34:26 | call to Data | test.go:36:53:36:61 | untrusted | This path depends on a $@. | test.go:34:15:34:26 | call to Data | user-provided value |
+| test.go:43:18:43:26 | untrusted | test.go:42:15:42:26 | call to Data | test.go:43:18:43:26 | untrusted | This path depends on a $@. | test.go:42:15:42:26 | call to Data | user-provided value |
+| test.go:44:10:44:18 | untrusted | test.go:42:15:42:26 | call to Data | test.go:44:10:44:18 | untrusted | This path depends on a $@. | test.go:42:15:42:26 | call to Data | user-provided value |
+| test.go:45:35:45:43 | untrusted | test.go:42:15:42:26 | call to Data | test.go:45:35:45:43 | untrusted | This path depends on a $@. | test.go:42:15:42:26 | call to Data | user-provided value |
+| test.go:336:35:336:43 | untrusted | test.go:334:17:334:37 | selection of RequestBody | test.go:336:35:336:43 | untrusted | This path depends on a $@. | test.go:334:17:334:37 | selection of RequestBody | user-provided value |
