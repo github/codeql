@@ -34,6 +34,8 @@ func fsOpsV2Test(ctx *Beegov2Context.Context, c *beegov2.Controller) {
 	untrusted := input.Data()["someKey"].(string)
 	buffer := make([]byte, 10)
 	_ = c.SaveToFileWithBuffer("filenameExistsInForm", untrusted, buffer)
+	beegoOutput := Beegov2Context.BeegoOutput{}
+	beegoOutput.Download(untrusted, "license.txt")
 }
 
 // BAD: using user-provided data as paths in file-system operations
@@ -43,7 +45,7 @@ func fsOpsTest(ctx *context.Context, c *beego.Controller, fs beego.FileSystem) {
 	beego.Walk(nil, untrusted, func(path string, info os.FileInfo, err error) error { return nil })
 	fs.Open(untrusted)
 	c.SaveToFile("someReceviedFile", untrusted)
-	beegoOutput := beego.BeegoOutput{}
+	beegoOutput := context.BeegoOutput{}
 	beegoOutput.Download(untrusted, "license.txt")
 }
 
