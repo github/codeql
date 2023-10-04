@@ -77,21 +77,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 ? allFiles.SelectFileNamesByExtension(".dll").ToList()
                 : options.DllDirs.Select(Path.GetFullPath).ToList();
 
-            // Find DLLs in the .Net / Asp.Net Framework
-            if (options.ScanNetFrameworkDlls)
-            {
-                var runtime = new Runtime(dotnet);
-                var runtimeLocation = runtime.GetRuntime(options.UseSelfContainedDotnet);
-                progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
-                dllDirNames.Add(runtimeLocation);
-
-                if (fileContent.UseAspNetDlls && runtime.GetAspRuntime() is string aspRuntime)
-                {
-                    progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspRuntime}");
-                    dllDirNames.Add(aspRuntime);
-                }
-            }
-
             if (options.UseNuGet)
             {
                 dllDirNames.Add(packageDirectory.DirInfo.FullName);
@@ -109,6 +94,43 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var projects = allProjects.Except(restoredProjects);
                 RestoreProjects(projects);
                 DownloadMissingPackages(allNonBinaryFiles);
+            }
+
+            // Find DLLs in the .Net / Asp.Net Framework
+            if (options.ScanNetFrameworkDlls)
+            {
+                // TODO: check if the nuget restore process has already downloaded any Core or Framework reference assemblies.
+                // If so, we don't have to do the below.
+                // `Microsoft.NETCore.App.Ref` or `Microsoft.NETFramework.ReferenceAssemblies.*`
+
+                var runtime = new Runtime(dotnet);
+                string? runtimeLocation = null;
+
+                if (options.UseSelfContainedDotnet)
+                {
+                    runtimeLocation = runtime.ExecutingRuntime;
+                }
+                else if (fileContent.IsNewProjectStructureUsed)
+                {
+                    runtimeLocation = runtime.NetCoreRuntime;
+                }
+                else if (fileContent.IsLegacyProjectStructureUsed)
+                {
+                    runtimeLocation = runtime.DesktopRuntime;
+                }
+
+                runtimeLocation ??= runtime.ExecutingRuntime;
+
+                progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
+                dllDirNames.Add(runtimeLocation);
+
+                if (fileContent.IsNewProjectStructureUsed
+                    && fileContent.UseAspNetCoreDlls
+                    && runtime.AspNetCoreRuntime is string aspRuntime)
+                {
+                    progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspRuntime}");
+                    dllDirNames.Add(aspRuntime);
+                }
             }
 
             assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
@@ -198,7 +220,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             usings.UnionWith(new[] { "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
                 "System.Threading.Tasks" });
 
-            if (fileContent.UseAspNetDlls)
+            if (fileContent.UseAspNetCoreDlls)
             {
                 usings.UnionWith(new[] { "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
                     "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
