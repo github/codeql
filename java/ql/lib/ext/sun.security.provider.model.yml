@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["sun.security.provider", "JavaKeyStore", False, "getPreKeyedHash", "(char[])", "", "Argument[0]", "credentials-password", "manual"]
-      - ["sun.security.provider", "KeyProtector", False, "KeyProtector", "(char[])", "", "Argument[0]", "credentials-password", "manual"]
+      - ["sun.security.provider", "JavaKeyStore", False, "getPreKeyedHash", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["sun.security.provider", "KeyProtector", False, "KeyProtector", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
