@@ -102,3 +102,31 @@ private module RegexParseModeConfig implements DataFlow::StateConfigSig {
 }
 
 module RegexParseModeFlow = DataFlow::GlobalWithState<RegexParseModeConfig>;
+
+/**
+ * A data flow configuration for tracking `NSString.CompareOptions.regularExpression`
+ * values from where they are created to the point of use.
+ */
+private module RegexEnableFlagConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    // creation of a `NSString.CompareOptions.regularExpression` value
+    node.asExpr()
+        .(MemberRefExpr)
+        .getMember()
+        .(FieldDecl)
+        .hasQualifiedName("NSString.CompareOptions", "regularExpression")
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    // use in a regex eval `options` argument
+    any(RegexEval eval).getAnOptionsInput() = node
+  }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out from collection content at the sink.
+    isSink(node) and
+    c.getAReadContent() instanceof DataFlow::Content::CollectionContent
+  }
+}
+
+module RegexEnableFlagFlow = DataFlow::Global<RegexEnableFlagConfig>;

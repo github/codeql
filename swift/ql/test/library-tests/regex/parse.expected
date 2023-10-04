@@ -6349,9 +6349,19 @@ regex.swift:
 #  150| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .
 
+#  151| [RegExpDot] .
+
+#  151| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
 #  152| [RegExpDot] .
 
 #  152| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  153| [RegExpDot] .
+
+#  153| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .
 
 #  155| [RegExpDot] .
@@ -6612,4 +6622,24 @@ regex.swift:
 #  246| [RegExpDot] .
 
 #  246| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  251| [RegExpDot] .
+
+#  251| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  252| [RegExpDot] .
+
+#  252| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  253| [RegExpDot] .
+
+#  253| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  254| [RegExpDot] .
+
+#  254| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .

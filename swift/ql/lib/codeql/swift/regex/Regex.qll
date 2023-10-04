@@ -281,6 +281,12 @@ abstract class RegexEval extends CallExpr {
   abstract DataFlow::Node getStringInput();
 
   /**
+   * Gets a dataflow node for the options input that might contain parse mode
+   * flags (if any).
+   */
+  DataFlow::Node getAnOptionsInput() { none() }
+
+  /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
   RegExp getARegex() {
@@ -367,14 +373,14 @@ private class AlwaysRegexEval extends RegexEval {
 
 /**
  * A call to a function that sometimes evaluates a regular expression, if
- * `options: .regularExpression` is set as an argument.
+ * `NSString.CompareOptions.regularExpression` is set as an `options` argument.
  */
-private class SometimesRegexEval extends RegexEval {
+private class NSStringCompareOptionsMaybeRegexEval extends RegexEval {
   DataFlow::Node regexInput;
   DataFlow::Node stringInput;
   DataFlow::Node optionsInput;
 
-  SometimesRegexEval() {
+  NSStringCompareOptionsMaybeRegexEval() {
     (
       this.getStaticTarget()
           .(Method)
@@ -391,18 +397,23 @@ private class SometimesRegexEval extends RegexEval {
     ) and
     regexInput.asExpr() = this.getArgument(0).getExpr() and
     stringInput.asExpr() = this.getQualifier() and
-    optionsInput.asExpr() = this.getArgumentWithLabel("options").getExpr() and
-    // flow from `.regularExpression` to `options` argument
+    optionsInput.asExpr() = this.getArgumentWithLabel("options").getExpr()
+  }
+
+  override DataFlow::Node getRegexInput() {
+    // check there is flow from a `NSString.CompareOptions.regularExpression` value to an `options` argument;
+    // if it isn't, the input won't be interpretted as a regular expression and we should discard it.
     exists(MemberRefExpr sourceValue |
       sourceValue
           .getMember()
           .(FieldDecl)
           .hasQualifiedName("NSString.CompareOptions", "regularExpression") and
-      DataFlow::localFlow(DataFlow::exprNode(sourceValue), optionsInput)
-    )
+      RegexEnableFlagFlow::flow(DataFlow::exprNode(sourceValue), optionsInput)
+    ) and
+    result = regexInput
   }
 
-  override DataFlow::Node getRegexInput() { result = regexInput }
-
   override DataFlow::Node getStringInput() { result = stringInput }
+
+  override DataFlow::Node getAnOptionsInput() { result = optionsInput }
 }
