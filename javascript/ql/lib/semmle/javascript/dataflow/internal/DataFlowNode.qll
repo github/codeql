@@ -10,6 +10,8 @@ private import semmle.javascript.dataflow.internal.Contents::Private
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.javascript.dataflow.internal.VariableCapture as VariableCapture
+
 cached
 private module Cached {
   /**
@@ -57,6 +59,7 @@ private module Cached {
     TFlowSummaryIntermediateAwaitStoreNode(FlowSummaryImpl::Private::SummaryNode sn) {
       FlowSummaryImpl::Private::Steps::summaryStoreStep(sn, MkAwaited(), _)
     } or
+    TSynthCaptureNode(VariableCapture::VariableCaptureOutput::SynthesizedCaptureNode node) or
     TGenericSynthesizedNode(AstNode node, string tag, DataFlowPrivate::DataFlowCallable container) {
       any(AdditionalFlowInternal flow).needsSynthesizedNode(node, tag, container)
     }

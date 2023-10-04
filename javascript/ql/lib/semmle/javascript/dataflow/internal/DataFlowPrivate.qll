@@ -42,6 +42,30 @@ class FlowSummaryIntermediateAwaitStoreNode extends DataFlow::Node,
   }
 }
 
+class CaptureNode extends DataFlow::Node, TSynthCaptureNode {
+  /** Gets the underlying node from the variable-capture library. */
+  VariableCaptureOutput::SynthesizedCaptureNode getNode() {
+    this = TSynthCaptureNode(result) and DataFlowImplCommon::forceCachingInSameStage()
+  }
+
+  cached
+  override StmtContainer getContainer() { result = this.getNode().getEnclosingCallable() }
+
+  cached
+  private string toStringInternal() { result = this.getNode().toString() }
+
+  override string toString() { result = this.toStringInternal() } // cached in parent class
+
+  cached
+  private Location getLocation() { result = this.getNode().getLocation() }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
 class GenericSynthesizedNode extends DataFlow::Node, TGenericSynthesizedNode {
   private AstNode node;
   private string tag;
@@ -145,6 +169,8 @@ predicate postUpdatePair(Node pre, Node post) {
   or
   FlowSummaryImpl::Private::summaryPostUpdateNode(post.(FlowSummaryNode).getSummaryNode(),
     pre.(FlowSummaryNode).getSummaryNode())
+  or
+  VariableCaptureOutput::capturePostUpdateNode(getClosureNode(post), getClosureNode(pre))
 }
 
 class CastNode extends DataFlow::Node instanceof EmptyType { }
@@ -232,6 +258,15 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   or
   pos.isFunctionSelfReference() and n = call.asOrdinaryCall().getCalleeNode()
   or
+  pos.isFunctionSelfReference() and n = call.asImpliedLambdaCall().flow()
+  or
+  exists(Function fun |
+    call.asImpliedLambdaCall() = fun and
+    CallGraph::impliedReceiverStep(n, TThisNode(fun)) and
+    sameContainerAsEnclosingContainer(n, fun) and
+    pos.isThis()
+  )
+  or
   pos.isThis() and n = TConstructorThisArgumentNode(call.asOrdinaryCall().asExpr())
   or
   // For now, treat all spread argument as flowing into the 'arguments' array, regardless of preceding arguments
@@ -280,6 +315,15 @@ predicate nodeIsHidden(Node node) {
   or
   node instanceof FlowSummaryIntermediateAwaitStoreNode
   or
+  node instanceof CaptureNode
+  or
+  // Hide function expressions, as capture-flow causes them to appear in unhelpful ways
+  // TODO: Instead hide PathNodes with a capture content as the head of its access path?
+  node.asExpr() instanceof Function
+  or
+  // Also hide post-update nodes for function expressions
+  node.(DataFlow::ExprPostUpdateNode).getExpr() instanceof Function
+  or
   node instanceof GenericSynthesizedNode
 }
 
@@ -324,6 +368,9 @@ private newtype TDataFlowCall =
     node = TValueNode(any(PropAccess p)) or
     node = TPropNode(any(PropertyPattern p))
   } or
+  MkImpliedLambdaCall(Function f) {
+    VariableCaptureConfig::captures(f, _) or CallGraph::impliedReceiverStep(_, TThisNode(f))
+  } or
   MkSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
   ) {
@@ -343,6 +390,7 @@ class DataFlowCall extends TDataFlowCall {
 
   DataFlow::InvokeNode asBoundCall(int boundArgs) { this = MkBoundCall(result, boundArgs) }
 
+  Function asImpliedLambdaCall() { this = MkImpliedLambdaCall(result) }
 
   predicate isSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable enclosingCallable,
@@ -350,6 +398,7 @@ class DataFlowCall extends TDataFlowCall {
   ) {
     this = MkSummaryCall(enclosingCallable, receiver)
   }
+
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
@@ -438,6 +487,7 @@ private class AccessorCall extends DataFlowCall, MkAccessorCall {
     ref.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
+
 class SummaryCall extends DataFlowCall, MkSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable enclosingCallable;
   private FlowSummaryImpl::Private::SummaryNode receiver;
@@ -454,6 +504,30 @@ class SummaryCall extends DataFlowCall, MkSummaryCall {
 
   /** Gets the receiver node. */
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
+}
+
+/**
+ * A call that invokes a lambda with nothing but its self-reference node.
+ *
+ * This is to help ensure captured variables can flow into the lambda in cases where
+ * we can't find its call sites.
+ */
+private class ImpliedLambdaCall extends DataFlowCall, MkImpliedLambdaCall {
+  private Function function;
+
+  ImpliedLambdaCall() { this = MkImpliedLambdaCall(function) }
+
+  override string toString() { result = "[implied lambda call] " + function }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = function.getEnclosingContainer()
+  }
 }
 
 private int getMaxArity() {
@@ -542,6 +616,8 @@ DataFlowCallable viableCallable(DataFlowCall node) {
     result = MkLibraryCallable(callable) and
     node.asOrdinaryCall() = [callable.getACall(), callable.getACallSimple()]
   )
+  or
+  result.asSourceCallableNotExterns() = node.asImpliedLambdaCall()
 }
 
 /**
@@ -569,11 +645,27 @@ private predicate sameContainerAsEnclosingContainer(Node node, Function fun) {
 }
 
 /**
+ * Holds if `node` should be removed from the local data flow graph, but the node
+ * still exists for use by the legacy data flow library.
+ */
+pragma[nomagic]
+private predicate isBlockedLegacyNode(TCapturedVariableNode node) {
+  // Ignore captured variable nodes for those variables that are handled by the captured-variable library.
+  // Note that some variables, such as top-level variables, are still modelled with these nodes (which will result in jump steps).
+  exists(LocalVariable variable |
+    node = TCapturedVariableNode(variable) and
+    variable instanceof VariableCaptureConfig::CapturedVariable
+  )
+}
+
+/**
  * Holds if there is a value-preserving steps `node1` -> `node2` that might
  * be cross function boundaries.
  */
 private predicate valuePreservingStep(Node node1, Node node2) {
   node1.getASuccessor() = node2 and
+  not isBlockedLegacyNode(node1) and
+  not isBlockedLegacyNode(node2)
   or
   FlowSteps::propertyFlowStep(node1, node2)
   or
@@ -612,6 +704,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     node1 = TFlowSummaryNode(input) and
     node2 = TFlowSummaryNode(output)
   )
+  or
+  VariableCaptureOutput::localFlowStep(getClosureNode(node1), getClosureNode(node2))
   or
   // NOTE: For consistency with readStep/storeStep, we do not translate these steps to jump steps automatically.
   DataFlow::AdditionalFlowStep::step(node1, node2)
@@ -674,6 +768,11 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::arrayElement()
   )
   or
+  exists(LocalVariable variable |
+    VariableCaptureOutput::readStep(getClosureNode(node1), variable, getClosureNode(node2)) and
+    c.asSingleton() = MkCapturedContent(variable)
+  )
+  or
   DataFlow::AdditionalFlowStep::readStep(node1, c, node2)
 }
 
@@ -712,6 +811,11 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1 = TFlowSummaryIntermediateAwaitStoreNode(input) and
     node2 = TFlowSummaryNode(output) and
     c = ContentSet::promiseValue()
+  )
+  or
+  exists(LocalVariable variable |
+    VariableCaptureOutput::storeStep(getClosureNode(node1), variable, getClosureNode(node2)) and
+    c.asSingleton() = MkCapturedContent(variable)
   )
   or
   DataFlow::AdditionalFlowStep::storeStep(node1, c, node2)
@@ -771,6 +875,11 @@ int accessPathLimit() { result = 5 }
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  or
+  exists(Function f |
+    VariableCaptureOutput::heuristicAllowInstanceParameterReturnInSelf(f) and
+    p = TFunctionSelfReferenceNode(f)
+  )
 }
 
 class LambdaCallKind = Unit;
