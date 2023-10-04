@@ -153,13 +153,13 @@ deprecated class ConversionWithoutBoundsCheckConfig extends TaintTracking::Confi
 
 private int validBitSize() { result = [7, 8, 15, 16, 31, 32, 63, 64] }
 
-private newtype TarchitectureBitSize =
+private newtype TArchitectureBitSize =
   TMk32Bit() or
   TMk64Bit() or
   TMkArchitectureIndependent()
 
 private newtype TMaxValueState =
-  TMkMaxValueState(int bitSize, TarchitectureBitSize architectureBitSize) {
+  TMkMaxValueState(int bitSize, TArchitectureBitSize architectureBitSize) {
     bitSize = validBitSize()
   }
 
@@ -168,6 +168,11 @@ private class MaxValueState extends TMaxValueState {
   /**
    * Gets the smallest bitsize where the maximum value that could get to this
    * point fits into an integer type whose maximum value is 2^(result) - 1.
+   *
+   * For example, if we know `1 << 12` can get to a particular program point,
+   * then the result would be 15, since a 16-bit signed integer can represent
+   * that value and that type has maximum value 2^15 -1. An unsigned 8-bit
+   * integer cannot represent that value as its maximum value is 2^8 - 1.
    */
   int getBitSize() { this = TMkMaxValueState(result, _) }
 
@@ -185,7 +190,8 @@ private class MaxValueState extends TMaxValueState {
    * Gets the bitsize we should use for a sink.
    *
    * If the architecture bit size is known, then we should use that. Otherwise,
-   * we should use 32 bits, because that will lead to more results.
+   * we should use 32 bits, because that will find results that only exist on
+   * 32-bit architectures.
    */
   bindingset[default]
   int getSinkBitSize(int default) {
@@ -243,6 +249,10 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
    * Holds if the upper bound check ensures the non-constant operand is less
    * than or equal to the maximum value for `bitSize` and `isSigned`. In this
    * case, the upper bound check is a barrier guard.
+   *
+   * Note that we have to use floats here because integers in CodeQL are
+   * represented by 32-bit signed integers, which cannot represent some of the
+   * integer values which we will encounter.
    */
   deprecated predicate isBoundFor(int bitSize, boolean isSigned) {
     bitSize = [8, 16, 32] and
@@ -271,7 +281,12 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
   /**
    * Holds if this upper bound check ensures the non-constant operand is less
    * than or equal to `2^(bitsize) - 1`. In this  case, the upper bound check
-   * is a barrier guard.
+   * is a barrier guard. `architectureBitSize` is used if the constant operand
+   * is `math.MaxInt` or `math.MaxUint`.
+   *
+   * Note that we have to use floats here because integers in CodeQL are
+   * represented by 32-bit signed integers, which cannot represent some of the
+   * integer values which we will encounter.
    */
   predicate isBoundFor2(int bitSize, int architectureBitSize) {
     bitSize = validBitSize() and
@@ -311,6 +326,28 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
  * When this guarantees that a variable in the non-constant operand is less
  * than some value this may be a barrier guard which should block some flow
  * states and transform some others as they flow through.
+ *
+ * For example, in the following code:
+ * ```go
+ * if parsed <= math.MaxInt16 {
+ *   _ = uint16(parsed)
+ * }
+ * ```
+ * `parsed < math.MaxInt16` is an `UpperBoundCheckGuard` and `uint16(parsed)`
+ * is an `UpperBoundCheck` that would be a barrier for flow states with bit
+ * size greater than 15 and would transform them to a flow state with bit size
+ * 15 and the same architecture bit size.
+ *
+ * However, in the following code:
+ * ```go
+ * parsed, _ := strconv.ParseUint(input, 10, 32)
+ * if parsed < 5 {
+ *   _ = uint16(parsed)
+ * }
+ * ```
+ * `parsed < 5` is an `UpperBoundCheckGuard` and `uint16(parsed)` is a barrier
+ * for all flow states and would not transform any flow states, thus
+ * effectively blocking them.
  */
 class UpperBoundCheck extends BarrierFlowStateTransformer {
   UpperBoundCheckGuard g;
@@ -320,6 +357,8 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
   }
 
   override predicate barrierFor(MaxValueState flowstate) {
+    // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
+    // this will find results that only exist on 32-bit architectures.
     g.isBoundFor2(flowstate.getBitSize(), flowstate.getSinkBitSize(32))
   }
 
@@ -329,9 +368,9 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
       max(int bitsize |
         bitsize = validBitSize() and
         bitsize < state.getBitSize() and
+        // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
+        // this will find results that only exist on 32-bit architectures.
         not g.isBoundFor2(bitsize, state.getSinkBitSize(32))
-      |
-        bitsize
       ) and
     if exists(state.getArchitectureBitSize())
     then result.getArchitectureBitSize() = state.getArchitectureBitSize()
@@ -341,10 +380,10 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
 
 /**
  * Holds if `source` is the result of a call to `strconv.Atoi`,
- * `strconv.ParseInt`, or `strconv.ParseUint`, `bitSize` is the bit size of
- * the smallest integer type which the result could be converted to without
- * data loss, and `isSigned` is true if the result is parsed as a signed
- * integer.
+ * `strconv.ParseInt`, or `strconv.ParseUint`, `bitSize` is the `bitSize`
+ * argument to that call (or 0 for `strconv.Atoi`) and hence must be between 0
+ * and 64, and `isSigned` is true for `strconv.Atoi`, true for
+ * `strconv.ParseInt` and false for `strconv.ParseUint`.
  */
 predicate isSourceWithBitSize(DataFlow::Node source, int bitSize, boolean isSigned) {
   exists(DataFlow::CallNode c, IntegerParser::Range ip, int apparentBitSize |
@@ -362,9 +401,8 @@ predicate isSourceWithBitSize(DataFlow::Node source, int bitSize, boolean isSign
         else apparentBitSize = rawBitSize.getIntValue()
       )
     ) and
-    // Note that `getIntTypeBitSize` can return 0, so `effectiveBitSize`
-    // can be 0. Also `effectiveBitSize` is not necessarily the bit-size
-    // of an integer type - it can be any integer between 0 and 64.
+    // Note that `bitSize` is not necessarily the bit-size of an integer type.
+    // It can be any integer between 0 and 64.
     bitSize = replaceZeroWith(apparentBitSize, getIntTypeBitSize(source.getFile(), 0)) and
     isSigned = ip.isSigned()
   )
@@ -387,9 +425,9 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
         state.getBitSize() =
           min(int bitsize |
             bitsize = validBitSize() and
+            // The `bitSizeForZero` argument will not be used because on this
+            // branch `effectiveBitSize != 0`.
             adjustBitSize(effectiveBitSize, sourceIsSigned, 64) <= bitsize
-          |
-            bitsize
           )
       )
     )
@@ -404,6 +442,8 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
   additional predicate isSink2(DataFlow::TypeCastNode sink, FlowState state) {
     sink.asExpr() instanceof ConversionExpr and
     exists(int architectureBitSize, IntegerType integerType, int sinkBitsize, boolean sinkIsSigned |
+      // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
+      // this will find results that only exist on 32-bit architectures.
       architectureBitSize = getIntTypeBitSize(sink.getFile(), state.getSinkBitSize(32)) and
       not (state.getArchitectureBitSize() = 32 and architectureBitSize = 64) and
       sink.getResultType().getUnderlyingType() = integerType and
@@ -438,9 +478,7 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     // Safely guarded by a barrier guard.
-    exists(BarrierFlowStateTransformer bfst | node = bfst and bfst.barrierFor(state) |
-      not exists(bfst.transform(state)) or bfst.transform(state) != state
-    )
+    exists(BarrierFlowStateTransformer bfst | node = bfst and bfst.barrierFor(state))
     or
     // When there is a flow from a source to a sink, do not allow the flow to
     // continue to a further sink.
