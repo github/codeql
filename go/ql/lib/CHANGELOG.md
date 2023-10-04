@@ -1,3 +1,9 @@
+## 0.7.0
+
+### Minor Analysis Improvements
+
+* Added Numeric and Boolean types to SQL injection sanitzers.
+
 ## 0.6.5
 
 No user-facing changes.
