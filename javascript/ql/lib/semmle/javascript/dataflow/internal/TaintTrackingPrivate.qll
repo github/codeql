@@ -2,6 +2,7 @@ private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowPrivate
 private import semmle.javascript.dataflow.internal.Contents::Public
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.javascript.dataflow.internal.BarrierGuards
 
 cached
 predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -18,6 +19,12 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2)
     ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
 }
 
+private class SanitizerGuardAdapter extends DataFlow::Node instanceof TaintTracking::AdditionalSanitizerGuardNode
+{
+  // Note: avoid depending on DataFlow::FlowLabel here as it will cause these barriers to be re-evaluated
+  predicate blocksExpr(boolean outcome, Expr e) { super.sanitizes(outcome, e) }
+}
+
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
@@ -25,7 +32,9 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2)
 cached
 predicate defaultTaintSanitizer(DataFlow::Node node) {
   node instanceof DataFlow::VarAccessBarrier or
+  node = MakeBarrierGuard<SanitizerGuardAdapter>::getABarrierNode()
 }
+
 /**
  * Holds if default taint-tracking should allow implicit reads
  * of `c` at sinks and inputs to additional taint steps.
