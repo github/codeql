@@ -10,7 +10,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.StoredXssQuery
-import DataFlow::PathGraph
+import StoredXssFlow::PathGraph
 
 /**
  * Gets an instance of `mysql.createConnection()`, tracked globally.
@@ -45,6 +45,6 @@ class MysqlSource extends Source {
   MysqlSource() { this = mysqlConnection().getAMethodCall("query").getCallback(1).getParameter(1) }
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from StoredXssFlow::PathNode source, StoredXssFlow::PathNode sink
+where StoredXssFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Stored XSS from $@.", source.getNode(), "database value."
