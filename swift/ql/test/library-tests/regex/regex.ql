@@ -39,6 +39,14 @@ module RegexTest implements TestSig {
       value = quote(regex.getFlags()) and
       value != ""
     )
+    or
+    exists(RegexEval eval, RegExp regex |
+      eval.getARegex() = regex and
+      location = eval.getLocation() and
+      element = eval.toString() and
+      tag = "regex" and
+      value = quote(regex.toString().replaceAll("\n", "NEWLINE"))
+    )
   }
 
   predicate hasOptionalResult(Location location, string element, string tag, string value) {
@@ -48,14 +56,6 @@ module RegexTest implements TestSig {
       element = input.toString() and
       tag = "input" and
       value = quote(input.toString())
-    )
-    or
-    exists(RegexEval eval, RegExp regex |
-      eval.getARegex() = regex and
-      location = eval.getLocation() and
-      element = eval.toString() and
-      tag = "regex" and
-      value = quote(regex.toString().replaceAll("\n", "NEWLINE"))
     )
   }
 }

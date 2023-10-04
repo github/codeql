@@ -212,8 +212,9 @@ func myRegexpMethodsTests(b: Bool, str_unknown: String) throws {
     _ = try Regex("[:alnum:]").firstMatch(in: input) // $ input=input regex=[:alnum:] SPURIOUS: $hasParseFailure
 
 	// invalid (Swift doesn't like these regexs)
-    _ = try Regex("[]a]").firstMatch(in: input) // this is valid in other regex implementations, and is likely harmless to accept
-    _ = try Regex("[:aaaaa:]").firstMatch(in: input) // $ hasParseFailure
+    _ = try Regex("[]a]").firstMatch(in: input) // $ regex=[]a]
+		// ^ this is valid in other regex implementations, and is likely harmless to accept
+    _ = try Regex("[:aaaaa:]").firstMatch(in: input) // $ regex=[:aaaaa:] hasParseFailure
 
 	// --- parse modes ---
 

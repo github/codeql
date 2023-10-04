@@ -6487,77 +6487,75 @@ regex.swift:
 
 #  215| [RegExpConstant, RegExpNormalChar] a
 
-#  216| [RegExpNamedCharacterProperty] [:aaaaa:]
+#  217| [RegExpNamedCharacterProperty] [:aaaaa:]
 
-#  221| [RegExpZeroWidthMatch] (?i)
+#  222| [RegExpZeroWidthMatch] (?i)
 
-#  221| [RegExpSequence] (?i)abc
+#  222| [RegExpSequence] (?i)abc
 #-----| 0 -> [RegExpZeroWidthMatch] (?i)
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
-
-#  221| [RegExpConstant, RegExpNormalChar] abc
-
-#  222| [RegExpZeroWidthMatch] (?s)
-
-#  222| [RegExpSequence] (?s)abc
-#-----| 0 -> [RegExpZeroWidthMatch] (?s)
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
 
 #  222| [RegExpConstant, RegExpNormalChar] abc
 
-#  223| [RegExpZeroWidthMatch] (?is)
+#  223| [RegExpZeroWidthMatch] (?s)
 
-#  223| [RegExpSequence] (?is)abc
-#-----| 0 -> [RegExpZeroWidthMatch] (?is)
+#  223| [RegExpSequence] (?s)abc
+#-----| 0 -> [RegExpZeroWidthMatch] (?s)
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
 
 #  223| [RegExpConstant, RegExpNormalChar] abc
 
-#  224| [RegExpGroup] (?i-s)
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] -s
+#  224| [RegExpZeroWidthMatch] (?is)
 
-#  224| [RegExpSequence] (?i-s)abc
-#-----| 0 -> [RegExpGroup] (?i-s)
+#  224| [RegExpSequence] (?is)abc
+#-----| 0 -> [RegExpZeroWidthMatch] (?is)
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
-
-#  224| [RegExpConstant, RegExpNormalChar] -s
 
 #  224| [RegExpConstant, RegExpNormalChar] abc
 
-#  227| [RegExpConstant, RegExpNormalChar] abc
+#  225| [RegExpGroup] (?i-s)
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] -s
 
-#  227| [RegExpSequence] abc(?i)def
+#  225| [RegExpSequence] (?i-s)abc
+#-----| 0 -> [RegExpGroup] (?i-s)
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
+
+#  225| [RegExpConstant, RegExpNormalChar] -s
+
+#  225| [RegExpConstant, RegExpNormalChar] abc
+
+#  228| [RegExpConstant, RegExpNormalChar] abc
+
+#  228| [RegExpSequence] abc(?i)def
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] abc
 #-----| 1 -> [RegExpZeroWidthMatch] (?i)
 #-----| 2 -> [RegExpConstant, RegExpNormalChar] def
 
-#  227| [RegExpZeroWidthMatch] (?i)
+#  228| [RegExpZeroWidthMatch] (?i)
 
-#  227| [RegExpConstant, RegExpNormalChar] def
+#  228| [RegExpConstant, RegExpNormalChar] def
 
-#  228| [RegExpConstant, RegExpNormalChar] abc
+#  229| [RegExpConstant, RegExpNormalChar] abc
 
-#  228| [RegExpSequence] abc(?i:def)ghi
+#  229| [RegExpSequence] abc(?i:def)ghi
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] abc
 #-----| 1 -> [RegExpGroup] (?i:def)
 #-----| 2 -> [RegExpConstant, RegExpNormalChar] ghi
 
-#  228| [RegExpGroup] (?i:def)
+#  229| [RegExpGroup] (?i:def)
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] :def
 
-#  228| [RegExpConstant, RegExpNormalChar] :def
+#  229| [RegExpConstant, RegExpNormalChar] :def
 
-#  228| [RegExpConstant, RegExpNormalChar] ghi
+#  229| [RegExpConstant, RegExpNormalChar] ghi
 
-#  229| [RegExpZeroWidthMatch] (?i)
+#  230| [RegExpZeroWidthMatch] (?i)
 
-#  229| [RegExpConstant, RegExpNormalChar] abc
+#  230| [RegExpConstant, RegExpNormalChar] abc
 
-#  229| [RegExpConstant, RegExpNormalChar] -i
+#  230| [RegExpConstant, RegExpNormalChar] -i
 
-#  229| [RegExpConstant, RegExpNormalChar] def
-
-#  232| [RegExpConstant, RegExpNormalChar] abc
+#  230| [RegExpConstant, RegExpNormalChar] def
 
 #  233| [RegExpConstant, RegExpNormalChar] abc
 
@@ -6569,10 +6567,7 @@ regex.swift:
 
 #  237| [RegExpConstant, RegExpNormalChar] abc
 
-#  240| [RegExpDot] .
-
-#  240| [RegExpStar] .*
-#-----| 0 -> [RegExpDot] .
+#  238| [RegExpConstant, RegExpNormalChar] abc
 
 #  241| [RegExpDot] .
 
@@ -6584,7 +6579,12 @@ regex.swift:
 #  242| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .
 
-#  245| [RegExpDot] .
+#  243| [RegExpDot] .
 
-#  245| [RegExpStar] .*
+#  243| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  246| [RegExpDot] .
+
+#  246| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .
