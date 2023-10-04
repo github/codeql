@@ -200,6 +200,11 @@ SummaryComponent interpretComponentSpecific(Private::AccessPathToken c) {
   c.getName() = "ReturnValue" and
   c.getAnArgument() = "exception" and
   result = SummaryComponent::return(MkExceptionalReturnKind())
+  or
+  // Awaited is mapped down to a combination steps that handle coercion and promise-flattening.
+  c.getName() = "Awaited" and
+  c.getNumArgument() = 0 and
+  result = SummaryComponent::content(MkAwaited())
 }
 
 private string getMadStringFromContentSetAux(ContentSet cs) {
@@ -236,6 +241,8 @@ private string getMadStringFromContentSetAux(ContentSet cs) {
     cs = getPromiseContent(awaitedArg) and
     result = "Awaited[" + awaitedArg + "]"
   )
+  or
+  cs = MkAwaited() and result = "Awaited"
 }
 
 private string getMadStringFromContentSet(ContentSet cs) {

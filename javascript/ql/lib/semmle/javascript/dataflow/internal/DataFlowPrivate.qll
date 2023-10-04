@@ -23,6 +23,23 @@ class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
   override string toString() { result = this.getSummaryNode().toString() }
 }
 
+class FlowSummaryIntermediateAwaitStoreNode extends DataFlow::Node,
+  TFlowSummaryIntermediateAwaitStoreNode
+{
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() {
+    this = TFlowSummaryIntermediateAwaitStoreNode(result)
+  }
+
+  /** Gets the summarized callable that this node belongs to. */
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
+
+  override string toString() {
+    result = this.getSummaryNode().toString() + " [intermediate node for Awaited store]"
+  }
+}
+
 cached
 newtype TReturnKind =
   MkNormalReturnKind() or
@@ -236,6 +253,8 @@ predicate nodeIsHidden(Node node) {
   DataFlow::PathNode::shouldNodeBeHidden(node)
   or
   node instanceof FlowSummaryNode
+  or
+  node instanceof FlowSummaryIntermediateAwaitStoreNode
 }
 
 predicate neverSkipInPathGraph(Node node) {
@@ -552,6 +571,21 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
   nodeGetEnclosingCallable(pragma[only_bind_out](node1)) =
     nodeGetEnclosingCallable(pragma[only_bind_out](node2))
+  or
+  exists(FlowSummaryImpl::Private::SummaryNode input, FlowSummaryImpl::Private::SummaryNode output |
+    FlowSummaryImpl::Private::Steps::summaryStoreStep(input, MkAwaited(), output) and
+    node1 = TFlowSummaryNode(input) and
+    (
+      node2 = TFlowSummaryNode(output) and
+      not node2 instanceof PostUpdateNode // When doing a store-back, do not add the local flow edge
+      or
+      node2 = TFlowSummaryIntermediateAwaitStoreNode(input)
+    )
+    or
+    FlowSummaryImpl::Private::Steps::summaryReadStep(input, MkAwaited(), output) and
+    node1 = TFlowSummaryNode(input) and
+    node2 = TFlowSummaryNode(output)
+  )
 }
 
 predicate localMustFlowStep(Node node1, Node node2) { node1 = node2.getImmediatePredecessor() }
@@ -589,7 +623,11 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
       contentSet, node2.(FlowSummaryNode).getSummaryNode())
   |
+    not isSpecialContentSet(contentSet) and
     c = contentSet
+    or
+    contentSet = MkAwaited() and
+    c = ContentSet::promiseValue()
   )
 }
 
@@ -620,6 +658,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode()) and
+  not isSpecialContentSet(c)
+  or
+  // Store into Awaited
+  exists(FlowSummaryImpl::Private::SummaryNode input, FlowSummaryImpl::Private::SummaryNode output |
+    FlowSummaryImpl::Private::Steps::summaryStoreStep(input, MkAwaited(), output) and
+    node1 = TFlowSummaryIntermediateAwaitStoreNode(input) and
+    node2 = TFlowSummaryNode(output) and
+    c = ContentSet::promiseValue()
   )
 }
 
@@ -630,6 +676,15 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  */
 predicate clearsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  // Clear promise content before storing into promise value, to avoid creating nested promises
+  n = TFlowSummaryIntermediateAwaitStoreNode(_) and
+  c = MkPromiseFilter()
+  or
+  // After reading from Awaited, the output must not be stored in a promise content
+  FlowSummaryImpl::Private::Steps::summaryReadStep(_, MkAwaited(),
+    n.(FlowSummaryNode).getSummaryNode()) and
+  c = MkPromiseFilter()
 }
 
 /**
@@ -638,6 +693,12 @@ predicate clearsContent(Node n, ContentSet c) {
  */
 predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  // After storing into Awaited, the result must be stored in a promise-content.
+  // There is a value step from the input directly to this node, hence the need for expectsContent.
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(_, MkAwaited(),
+    n.(FlowSummaryNode).getSummaryNode()) and
+  c = MkPromiseFilter()
 }
 
 /**

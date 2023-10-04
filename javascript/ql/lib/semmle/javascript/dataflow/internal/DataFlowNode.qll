@@ -50,6 +50,9 @@ private module Cached {
     TConstructorThisArgumentNode(InvokeExpr e) { e instanceof NewExpr or e instanceof SuperCall } or
     TConstructorThisPostUpdate(Constructor ctor) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+    TFlowSummaryIntermediateAwaitStoreNode(FlowSummaryImpl::Private::SummaryNode sn) {
+      FlowSummaryImpl::Private::Steps::summaryStoreStep(sn, MkAwaited(), _)
+    } or
 }
 
 import Cached
