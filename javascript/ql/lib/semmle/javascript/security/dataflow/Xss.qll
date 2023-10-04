@@ -72,18 +72,50 @@ module Shared {
   private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHtml
 
   /**
-   * A guard that checks if a string can contain quotes, which is a guard for strings that are inside an HTML attribute.
+   * A barrier guard that applies to multiple XSS queries.
    */
-  abstract class QuoteGuard extends TaintTracking::SanitizerGuardNode, StringOps::Includes {
-    QuoteGuard() {
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+  }
+
+  /**
+   * A barrier guard that applies to multiple XSS queries.
+   */
+  module BarrierGuard = DataFlow::MakeBarrierGuard<BarrierGuard>;
+
+  private class QuoteGuard2 extends BarrierGuard, StringOps::Includes {
+    QuoteGuard2() {
       this.getSubstring().mayHaveStringValue("\"") and
       this.getBaseString()
           .getALocalSource()
           .flowsTo(any(IncompleteHtml::HtmlAttributeConcatenation attributeConcat))
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       e = this.getBaseString().getEnclosingExpr() and outcome = this.getPolarity().booleanNot()
+    }
+  }
+
+  /**
+   * A guard that checks if a string can contain quotes, which is a guard for strings that are inside an HTML attribute.
+   */
+  abstract class QuoteGuard extends TaintTracking::SanitizerGuardNode instanceof QuoteGuard2 {
+    override predicate sanitizes(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
+  }
+
+  private class ContainsHtmlGuard2 extends BarrierGuard, StringOps::RegExpTest {
+    ContainsHtmlGuard2() {
+      exists(RegExpCharacterClass regExp |
+        regExp = this.getRegExp() and
+        forall(string s | s = ["\"", "&", "<", ">"] | regExp.getAMatchedString() = s)
+      )
+    }
+
+    override predicate blocksExpr(boolean outcome, Expr e) {
+      outcome = this.getPolarity().booleanNot() and e = this.getStringOperand().asExpr()
     }
   }
 
@@ -91,17 +123,9 @@ module Shared {
    * A sanitizer guard that checks for the existence of HTML chars in a string.
    * E.g. `/["'&<>]/.exec(str)`.
    */
-  abstract class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, StringOps::RegExpTest {
-    ContainsHtmlGuard() {
-      exists(RegExpCharacterClass regExp |
-        regExp = this.getRegExp() and
-        forall(string s | s = ["\"", "&", "<", ">"] | regExp.getAMatchedString() = s)
-      )
-    }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = this.getPolarity().booleanNot() and e = this.getStringOperand().asExpr()
-    }
+  abstract class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode instanceof ContainsHtmlGuard2
+  {
+    override predicate sanitizes(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
   }
 
   /**
