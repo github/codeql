@@ -291,6 +291,19 @@ private module Config implements ProductFlow::StateConfigSig {
   }
 
   predicate isBarrier2(DataFlow::Node node) {
+    // Block flow from `*p` to `*(p + n)` when `n` is not `0`. This removes
+    // false positives
+    // when tracking the size of the allocation as an element of an array such
+    // as:
+    // ```
+    // size_t* p = new size_t[n];
+    // ...
+    // p[0] = n;
+    // int i = p[1];
+    // p[i] = ...
+    // ```
+    // In the above case, this barrier blocks flow from the indirect node
+    // for `p` to `p[1]`.
     exists(Operand operand, PointerAddInstruction add |
       node.(IndirectOperand).hasOperandAndIndirectionIndex(operand, _) and
       add.getLeftOperand() = operand and
