@@ -147,7 +147,6 @@ Element getNextMethod(ForEachStmt foreach) {
   )
 }
 
-// TODO: do we need a new_apply_expr_arguments
 query predicate new_decl_ref_exprs(NewElement id, NewElement decl) {
   decl_ref_exprs(id, decl)
   or
