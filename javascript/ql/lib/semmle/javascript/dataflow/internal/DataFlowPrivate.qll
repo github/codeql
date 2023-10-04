@@ -5,10 +5,23 @@ private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.internal.Contents::Private
 private import semmle.javascript.dataflow.internal.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
+private import sharedlib.FlowSummaryImpl as FlowSummaryImpl
 
 private class Node = DataFlow::Node;
 
 class PostUpdateNode = DataFlow::PostUpdateNode;
+
+class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
+
+  /** Gets the summarized callable that this node belongs to. */
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
+
+  cached
+  override string toString() { result = this.getSummaryNode().toString() }
+}
 
 cached
 newtype TReturnKind =
@@ -33,6 +46,8 @@ private predicate returnNodeImpl(DataFlow::Node node, ReturnKind kind) {
     // See the models for AsyncAwait and Generator.
     not fun.isAsyncOrGenerator()
   )
+  or
+  FlowSummaryImpl::Private::summaryReturnNode(node.(FlowSummaryNode).getSummaryNode(), kind)
 }
 
 private DataFlow::Node getAnOutNodeImpl(DataFlowCall call, ReturnKind kind) {
@@ -45,6 +60,8 @@ private DataFlow::Node getAnOutNodeImpl(DataFlowCall call, ReturnKind kind) {
   kind = MkExceptionalReturnKind() and result = call.asBoundCall(_).getExceptionalReturn()
   or
   kind = MkNormalReturnKind() and result = call.asAccessorCall().(DataFlow::PropRead)
+  or
+  FlowSummaryImpl::Private::summaryOutNode(call, result.(FlowSummaryNode).getSummaryNode(), kind)
 }
 
 class ReturnNode extends DataFlow::Node {
@@ -86,6 +103,9 @@ predicate postUpdatePair(Node pre, Node post) {
     pre = TThisNode(constructor) and
     post = TConstructorThisPostUpdate(constructor)
   )
+  or
+  FlowSummaryImpl::Private::summaryPostUpdateNode(post.(FlowSummaryNode).getSummaryNode(),
+    pre.(FlowSummaryNode).getSummaryNode())
 }
 
 class CastNode extends DataFlow::Node instanceof EmptyType { }
@@ -93,6 +113,7 @@ class CastNode extends DataFlow::Node instanceof EmptyType { }
 cached
 newtype TDataFlowCallable =
   MkSourceCallable(StmtContainer container) or
+  MkLibraryCallable(LibraryCallable callable)
 
 /**
  * A callable entity. This is a wrapper around either a `StmtContainer` or a `LibraryCallable`.
@@ -122,6 +143,18 @@ class DataFlowCallable extends TDataFlowCallable {
   LibraryCallable asLibraryCallable() { this = MkLibraryCallable(result) }
 }
 
+/** A callable defined in library code, identified by a unique string. */
+abstract class LibraryCallable extends string {
+  bindingset[this]
+  LibraryCallable() { any() }
+
+  /** Gets a call to this library callable. */
+  DataFlow::InvokeNode getACall() { none() }
+
+  /** Same as `getACall()` except this does not depend on the call graph or API graph. */
+  DataFlow::InvokeNode getACallSimple() { none() }
+}
+
 private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {
   p = c.asSourceCallable().(Function).getParameter(pos.asPositional()).flow()
   or
@@ -130,6 +163,12 @@ private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosit
   pos.isFunctionSelfReference() and p = TFunctionSelfReferenceNode(c.asSourceCallable())
   or
   pos.isArgumentsArray() and p = TReflectiveParametersNode(c.asSourceCallable())
+  or
+  exists(FlowSummaryNode summaryNode |
+    summaryNode = p and
+    FlowSummaryImpl::Private::summaryParameterNode(summaryNode.getSummaryNode(), pos) and
+    c.asLibraryCallable() = summaryNode.getSummarizedCallable()
+  )
 }
 
 predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
@@ -165,6 +204,8 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   or
   // argument to setter (TODO: this has no post-update node)
   pos.asPositional() = 0 and n = call.asAccessorCall().(DataFlow::PropWrite).getRhs()
+  or
+  FlowSummaryImpl::Private::summaryArgumentNode(call, n.(FlowSummaryNode).getSummaryNode(), pos)
 }
 
 predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
@@ -173,6 +214,10 @@ predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos
 
 DataFlowCallable nodeGetEnclosingCallable(Node node) {
   result.asSourceCallable() = node.getContainer()
+  or
+  result.asLibraryCallable() = node.(FlowSummaryNode).getSummarizedCallable()
+  or
+  result.asLibraryCallable() = node.(FlowSummaryIntermediateAwaitStoreNode).getSummarizedCallable()
 }
 
 private newtype TDataFlowType =
@@ -189,6 +234,8 @@ DataFlowType getNodeType(Node node) { result = TTodoDataFlowType() and exists(no
 
 predicate nodeIsHidden(Node node) {
   DataFlow::PathNode::shouldNodeBeHidden(node)
+  or
+  node instanceof FlowSummaryNode
 }
 
 predicate neverSkipInPathGraph(Node node) {
@@ -232,6 +279,11 @@ private newtype TDataFlowCall =
     node = TValueNode(any(PropAccess p)) or
     node = TPropNode(any(PropertyPattern p))
   } or
+  MkSummaryCall(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+  ) {
+    FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+  }
 
 class DataFlowCall extends TDataFlowCall {
   DataFlowCallable getEnclosingCallable() { none() } // Overridden in subclass
@@ -246,6 +298,13 @@ class DataFlowCall extends TDataFlowCall {
 
   DataFlow::InvokeNode asBoundCall(int boundArgs) { this = MkBoundCall(result, boundArgs) }
 
+
+  predicate isSummaryCall(
+    FlowSummaryImpl::Public::SummarizedCallable enclosingCallable,
+    FlowSummaryImpl::Private::SummaryNode receiver
+  ) {
+    this = MkSummaryCall(enclosingCallable, receiver)
+  }
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
@@ -334,6 +393,23 @@ private class AccessorCall extends DataFlowCall, MkAccessorCall {
     ref.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
+class SummaryCall extends DataFlowCall, MkSummaryCall {
+  private FlowSummaryImpl::Public::SummarizedCallable enclosingCallable;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
+
+  SummaryCall() { this = MkSummaryCall(enclosingCallable, receiver) }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asLibraryCallable() = enclosingCallable
+  }
+
+  override string toString() {
+    result = "[summary] call to " + receiver + " in " + enclosingCallable
+  }
+
+  /** Gets the receiver node. */
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
+}
 
 private int getMaxArity() {
   // TODO: account for flow summaries
@@ -416,6 +492,11 @@ DataFlowCallable viableCallable(DataFlowCall node) {
   )
   or
   result.asSourceCallableNotExterns() = node.asAccessorCall().getAnAccessorCallee().getFunction()
+  or
+  exists(LibraryCallable callable |
+    result = MkLibraryCallable(callable) and
+    node.asOrdinaryCall() = [callable.getACall(), callable.getACallSimple()]
+  )
 }
 
 /**
@@ -455,6 +536,9 @@ private predicate valuePreservingStep(Node node1, Node node2) {
   or
   node2 = FlowSteps::getThrowTarget(node1)
   or
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode(), true)
+  or
   // Step from post-update nodes to local sources of the pre-update node. This emulates how JS usually tracks side effects.
   exists(PostUpdateNode postUpdate |
     node1 = postUpdate and
@@ -480,6 +564,9 @@ predicate localMustFlowStep(Node node1, Node node2) { node1 = node2.getImmediate
 predicate jumpStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
   node1.getContainer() != node2.getContainer()
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -496,6 +583,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     or
     not exists(read.getPropertyName()) and
     c = ContentSet::arrayElement()
+  )
+  or
+  exists(ContentSet contentSet |
+    FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
+      contentSet, node2.(FlowSummaryNode).getSummaryNode())
+  |
+    c = contentSet
   )
 }
 
@@ -523,6 +617,10 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     // Target the post-update node if one exists (for object literals we do not generate post-update nodes)
     node2 = tryGetPostUpdate(write.getBase())
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode()) and
+  )
 }
 
 /**
@@ -531,6 +629,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
 
 /**
@@ -538,6 +637,7 @@ predicate clearsContent(Node n, ContentSet c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
 
 /**
@@ -557,6 +657,7 @@ int accessPathLimit() { result = 5 }
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
+  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
 
 class LambdaCallKind = Unit;
@@ -568,6 +669,8 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode()) and exists(kind)
+  or
   receiver = call.asOrdinaryCall().getCalleeNode() and exists(kind)
 }
 

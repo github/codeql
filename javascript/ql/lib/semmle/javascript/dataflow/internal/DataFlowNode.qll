@@ -5,6 +5,7 @@
  */
 
 private import javascript
+private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
 cached
 private module Cached {
   /**
@@ -48,6 +49,7 @@ private module Cached {
     } or
     TConstructorThisArgumentNode(InvokeExpr e) { e instanceof NewExpr or e instanceof SuperCall } or
     TConstructorThisPostUpdate(Constructor ctor) or
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
 }
 
 import Cached
