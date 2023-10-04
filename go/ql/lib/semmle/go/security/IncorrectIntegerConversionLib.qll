@@ -141,7 +141,7 @@ deprecated class ConversionWithoutBoundsCheckConfig extends TaintTracking::Confi
       if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32
     |
       node = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g) and
-      g.isBoundFor(bitSize, sinkIsSigned)
+      if sinkIsSigned = true then g.isBoundFor(bitSize, 32) else g.isBoundFor(bitSize - 1, 32)
     )
     or
     exists(int bitSize |
@@ -246,39 +246,6 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
   }
 
   /**
-   * Holds if the upper bound check ensures the non-constant operand is less
-   * than or equal to the maximum value for `bitSize` and `isSigned`. In this
-   * case, the upper bound check is a barrier guard.
-   *
-   * Note that we have to use floats here because integers in CodeQL are
-   * represented by 32-bit signed integers, which cannot represent some of the
-   * integer values which we will encounter.
-   */
-  deprecated predicate isBoundFor(int bitSize, boolean isSigned) {
-    bitSize = [8, 16, 32] and
-    exists(float bound, float strictnessOffset |
-      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
-      // on the `branch` argument of `checks` is false, which is equivalent to
-      // `x < c`.
-      if expr instanceof LssExpr or expr instanceof GeqExpr
-      then strictnessOffset = 1
-      else strictnessOffset = 0
-    |
-      exists(DeclaredConstant maxint, DeclaredConstant maxuint |
-        maxint.hasQualifiedName("math", "MaxInt") and maxuint.hasQualifiedName("math", "MaxUint")
-      |
-        if expr.getAnOperand() = maxint.getAReference()
-        then bound = getMaxIntValue(32, true)
-        else
-          if expr.getAnOperand() = maxuint.getAReference()
-          then bound = getMaxIntValue(32, false)
-          else bound = expr.getAnOperand().getExactValue().toFloat()
-      ) and
-      bound - strictnessOffset <= getMaxIntValue(bitSize, isSigned)
-    )
-  }
-
-  /**
    * Holds if this upper bound check ensures the non-constant operand is less
    * than or equal to `2^(bitsize) - 1`. In this  case, the upper bound check
    * is a barrier guard. `architectureBitSize` is used if the constant operand
@@ -288,7 +255,7 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
    * represented by 32-bit signed integers, which cannot represent some of the
    * integer values which we will encounter.
    */
-  predicate isBoundFor2(int bitSize, int architectureBitSize) {
+  predicate isBoundFor(int bitSize, int architectureBitSize) {
     bitSize = validBitSize() and
     architectureBitSize = [32, 64] and
     exists(float bound, float strictnessOffset |
@@ -359,7 +326,7 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
   override predicate barrierFor(MaxValueState flowstate) {
     // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
     // this will find results that only exist on 32-bit architectures.
-    g.isBoundFor2(flowstate.getBitSize(), flowstate.getSinkBitSize(32))
+    g.isBoundFor(flowstate.getBitSize(), flowstate.getSinkBitSize(32))
   }
 
   override MaxValueState transform(MaxValueState state) {
@@ -370,7 +337,7 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
         bitsize < state.getBitSize() and
         // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
         // this will find results that only exist on 32-bit architectures.
-        not g.isBoundFor2(bitsize, state.getSinkBitSize(32))
+        not g.isBoundFor(bitsize, state.getSinkBitSize(32))
       ) and
     if exists(state.getArchitectureBitSize())
     then result.getArchitectureBitSize() = state.getArchitectureBitSize()
