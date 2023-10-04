@@ -14,10 +14,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XpathInjectionQuery
-import DataFlow::PathGraph
+import XpathInjectionFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from XpathInjectionFlow::PathNode source, XpathInjectionFlow::PathNode sink
+where XpathInjectionFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
   "user-provided value"

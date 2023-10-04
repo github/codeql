@@ -16,10 +16,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RegExpInjectionQuery
-import DataFlow::PathGraph
+import RegExpInjectionFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from RegExpInjectionFlow::PathNode source, RegExpInjectionFlow::PathNode sink
+where RegExpInjectionFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink, "This regular expression is constructed from a $@.",
   source.getNode(), "user-provided value"

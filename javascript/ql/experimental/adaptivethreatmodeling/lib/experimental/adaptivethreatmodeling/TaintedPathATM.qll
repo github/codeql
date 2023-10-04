@@ -53,11 +53,17 @@ class TaintedPathAtmConfig extends AtmConfig {
  */
 private class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitizerGuardNode instanceof TaintedPath::BarrierGuardNode
 {
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+  predicate blocksExpr(boolean outcome, Expr e) {
     this.blocks(outcome, e) or this.blocks(outcome, e, _)
   }
 
-  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    this.blocksExpr(outcome, e, lbl)
+  }
+
+  predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
     this.sanitizes(outcome, e) and exists(label)
   }
 }
