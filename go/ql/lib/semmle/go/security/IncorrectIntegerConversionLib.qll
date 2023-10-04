@@ -156,10 +156,29 @@ private int validBitSize() { result = [7, 8, 15, 16, 31, 32, 63, 64] }
 private newtype TArchitectureBitSize =
   TMk32Bit() or
   TMk64Bit() or
-  TMkArchitectureIndependent()
+  TMkUnknown()
+
+private class ArchitectureBitSize extends TArchitectureBitSize {
+  /** Gets an integer for the architecture bit size, if known. */
+  int toInt() {
+    this = TMk32Bit() and result = 32
+    or
+    this = TMk64Bit() and result = 64
+  }
+
+  /** Holds if the architecture bit size is unknown. */
+  predicate isUnknown() { this = TMkUnknown() }
+
+  /** Gets a textual representation of this element. */
+  string toString() {
+    result = this.toInt() + "-bit"
+    or
+    this.isUnknown() and result = "unknown"
+  }
+}
 
 private newtype TMaxValueState =
-  TMkMaxValueState(int bitSize, TArchitectureBitSize architectureBitSize) {
+  TMkMaxValueState(int bitSize, ArchitectureBitSize architectureBitSize) {
     bitSize = validBitSize()
   }
 
@@ -176,15 +195,8 @@ private class MaxValueState extends TMaxValueState {
    */
   int getBitSize() { this = TMkMaxValueState(result, _) }
 
-  /**
-   * Gets whether the architecture is 32 bit or 64 bit, if that has been
-   * determined already.
-   */
-  int getArchitectureBitSize() {
-    this = TMkMaxValueState(_, TMk32Bit()) and result = 32
-    or
-    this = TMkMaxValueState(_, TMk64Bit()) and result = 64
-  }
+  /** Gets whether the architecture is 32 bit or 64 bit, or if it is unknown. */
+  ArchitectureBitSize getArchitectureBitSize() { this = TMkMaxValueState(_, result) }
 
   /**
    * Gets the bitsize we should use for a sink.
@@ -201,9 +213,9 @@ private class MaxValueState extends TMaxValueState {
   /** Gets a textual representation of this element. */
   string toString() {
     exists(string suffix |
-      if exists(this.getArchitectureBitSize())
-      then suffix = " (on " + this.getArchitectureBitSize() + "-bit architecture)"
-      else suffix = ""
+      suffix = " (on " + this.getArchitectureBitSize().toInt() + "-bit architecture)"
+      or
+      this.getArchitectureBitSize().isUnknown() and suffix = ""
     |
       result = "MaxValueState(max value <= 2^(" + this.getBitSize() + ")-1" + suffix
     )
@@ -339,9 +351,7 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
         // this will find results that only exist on 32-bit architectures.
         not g.isBoundFor(bitsize, state.getSinkBitSize(32))
       ) and
-    if exists(state.getArchitectureBitSize())
-    then result.getArchitectureBitSize() = state.getArchitectureBitSize()
-    else not exists(result.getArchitectureBitSize())
+    result.getArchitectureBitSize() = state.getArchitectureBitSize()
   }
 }
 
@@ -385,10 +395,10 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
       then
         exists(int b | b = [32, 64] |
           state.getBitSize() = adjustBitSize(0, sourceIsSigned, b) and
-          state.getArchitectureBitSize() = b
+          state.getArchitectureBitSize().toInt() = b
         )
       else (
-        not exists(state.getArchitectureBitSize()) and
+        state.getArchitectureBitSize().isUnknown() and
         state.getBitSize() =
           min(int bitsize |
             bitsize = validBitSize() and
@@ -412,7 +422,7 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
       // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
       // this will find results that only exist on 32-bit architectures.
       architectureBitSize = getIntTypeBitSize(sink.getFile(), state.getSinkBitSize(32)) and
-      not (state.getArchitectureBitSize() = 32 and architectureBitSize = 64) and
+      not (state.getArchitectureBitSize().toInt() = 32 and architectureBitSize = 64) and
       sink.getResultType().getUnderlyingType() = integerType and
       (
         sinkBitsize = integerType.getSize()
