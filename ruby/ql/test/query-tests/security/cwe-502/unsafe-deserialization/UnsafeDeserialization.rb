@@ -142,18 +142,6 @@ class UsersController < ActionController::Base
     object = parse_output.to_ruby
     object = Psych.parse(yaml_data).to_ruby
     object = Psych.parse_file(yaml_data).to_ruby
-    parsed_yaml = Psych.parse_stream(yaml_data)
-    parsed_yaml.children.each do |child|
-      object = child.to_ruby
-    end
-    Psych.parse_stream(yaml_data)  do |document|
-      object = document.to_ruby
-    end
-    object = parsed_yaml.children.first.to_ruby
-    content = parsed_yaml.children[0].children[0].children
-    object = parsed_yaml.to_ruby[0]
-    object = content.to_ruby[0]
-    object = Psych.parse(yaml_data).children[0].to_ruby
   end
 
   # BAD
