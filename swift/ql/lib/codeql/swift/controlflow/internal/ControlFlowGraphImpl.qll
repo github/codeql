@@ -558,13 +558,13 @@ module Stmts {
           or
           // or to the getNextCall if the condition is false.
           c instanceof FalseCompletion and
-          astFirst(ast.getNextCall(), succ)
+          astFirst(ast.getNextCall().getFullyConverted(), succ)
         )
         or
         // Flow from last element of loop body back to getNextCall
         astLast(ast.getBody(), pred, c) and
         c.continuesLoop(ast) and
-        astFirst(ast.getNextCall(), succ)
+        astFirst(ast.getNextCall().getFullyConverted(), succ)
       }
     }
   }
