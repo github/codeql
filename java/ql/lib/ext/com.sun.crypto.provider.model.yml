@@ -15,6 +15,7 @@ extensions:
       - ["com.sun.crypto.provider", "DHPrivateKey", False, "DHPrivateKey", "(byte[])", "", "Argument[0]", "credentials-key", "manual"]
       - ["com.sun.crypto.provider", "DHPublicKey", False, "DHPublicKey", "(byte[])", "", "Argument[0]", "credentials-key", "manual"]
       - ["com.sun.crypto.provider", "FeedbackCipher", True, "init", "(boolean,String,byte[],byte[])", "", "Argument[2]", "credentials-key", "manual"]
+      - ["com.sun.crypto.provider", "GaloisCounterMode", False, "init", "(boolean,String,byte[],byte[])", "", "Argument[2]", "credentials-key", "manual"]
       - ["com.sun.crypto.provider", "GaloisCounterMode", False, "init", "(boolean,String,byte[],byte[],int)", "", "Argument[2]", "credentials-key", "manual"]
       - ["com.sun.crypto.provider", "PBECipherCore", False, "unwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "manual"]
       - ["com.sun.crypto.provider", "PBES1Core", False, "unwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "manual"]
