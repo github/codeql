@@ -7,6 +7,13 @@ cached
 predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode(), false)
+  or
+  // Convert steps into and out of array elements to plain taint steps
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),
+    ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(),
+    ContentSet::arrayElement(), node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
