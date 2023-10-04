@@ -53,8 +53,9 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
-  "DataFlow Java/C#/Go/Ruby/Python/Swift Flow Summaries": [
+  "DataFlow Java/JS/C#/Go/Ruby/Python/Swift Flow Summaries": [
     "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
+    "javascript/ql/lib/semmle/javascript/dataflow/internal/sharedlib/FlowSummaryImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
     "go/ql/lib/semmle/go/dataflow/internal/FlowSummaryImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/FlowSummaryImpl.qll",
