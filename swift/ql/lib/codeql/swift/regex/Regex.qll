@@ -69,10 +69,15 @@ abstract class RegexCreation extends DataFlow::Node {
   abstract DataFlow::Node getStringInput();
 
   /**
-   * Gets a dataflow node for the options input that might contain parse mode
+   * Gets a dataflow node for an options input that might contain parse mode
    * flags (if any).
    */
-  DataFlow::Node getOptionsInput() { none() }
+  DataFlow::Node getAnOptionsInput() { none() }
+
+  /**
+   * DEPRECATED: Use `getAnOptionsInput()` instead.
+   */
+  deprecated DataFlow::Node getOptionsInput() { result = this.getAnOptionsInput() }
 }
 
 /**
@@ -110,7 +115,7 @@ private class NSRegularExpressionRegexCreation extends RegexCreation {
 
   override DataFlow::Node getStringInput() { result = input }
 
-  override DataFlow::Node getOptionsInput() {
+  override DataFlow::Node getAnOptionsInput() {
     result.asExpr() = this.asExpr().(CallExpr).getArgument(1).getExpr()
   }
 }
@@ -265,27 +270,27 @@ class NSRegularExpressionRegexAdditionalFlowStep extends RegexAdditionalFlowStep
  */
 abstract class RegexEval extends CallExpr {
   /**
-   * Gets the input to this call that is the regular expression being evaluated. This may
-   * be a regular expression object or a string literal.
+   * Gets the input to this call that is the regular expression being evaluated.
+   * This may be a regular expression object or a string literal.
    */
-  abstract Expr getRegexInput();
+  abstract DataFlow::Node getRegexInput();
 
   /**
    * Gets the input to this call that is the string the regular expression is evaluated on.
    */
-  abstract Expr getStringInput();
+  abstract DataFlow::Node getStringInput();
 
   /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
   RegExp getARegex() {
     // string literal used directly as a regex
-    DataFlow::exprNode(result).(ParsedStringRegex).getAParse().asExpr() = this.getRegexInput()
+    DataFlow::exprNode(result).(ParsedStringRegex).getAParse() = this.getRegexInput()
     or
     // string literal -> regex object -> use
     exists(RegexCreation regexCreation |
       DataFlow::exprNode(result).(ParsedStringRegex).getAParse() = regexCreation.getStringInput() and
-      RegexUseFlow::flow(regexCreation, DataFlow::exprNode(this.getRegexInput()))
+      RegexUseFlow::flow(regexCreation, this.getRegexInput())
     )
   }
 
@@ -298,7 +303,7 @@ abstract class RegexEval extends CallExpr {
       // parse mode flag is set
       any(RegexAdditionalFlowStep s).setsParseMode(setNode, result, true) and
       // reaches this eval
-      RegexParseModeFlow::flow(setNode, DataFlow::exprNode(this.getRegexInput()))
+      RegexParseModeFlow::flow(setNode, this.getRegexInput())
     )
   }
 }
@@ -307,15 +312,15 @@ abstract class RegexEval extends CallExpr {
  * A call to a function that always evaluates a regular expression.
  */
 private class AlwaysRegexEval extends RegexEval {
-  Expr regexInput;
-  Expr stringInput;
+  DataFlow::Node regexInput;
+  DataFlow::Node stringInput;
 
   AlwaysRegexEval() {
     this.getStaticTarget()
         .(Method)
         .hasQualifiedName("Regex", ["firstMatch(in:)", "prefixMatch(in:)", "wholeMatch(in:)"]) and
-    regexInput = this.getQualifier() and
-    stringInput = this.getArgument(0).getExpr()
+    regexInput.asExpr() = this.getQualifier() and
+    stringInput.asExpr() = this.getArgument(0).getExpr()
     or
     this.getStaticTarget()
         .(Method)
@@ -327,8 +332,8 @@ private class AlwaysRegexEval extends RegexEval {
             "replaceMatches(in:options:range:withTemplate:)",
             "stringByReplacingMatches(in:options:range:withTemplate:)"
           ]) and
-    regexInput = this.getQualifier() and
-    stringInput = this.getArgument(0).getExpr()
+    regexInput.asExpr() = this.getQualifier() and
+    stringInput.asExpr() = this.getArgument(0).getExpr()
     or
     this.getStaticTarget()
         .(Method)
@@ -339,8 +344,8 @@ private class AlwaysRegexEval extends RegexEval {
             "split(separator:maxSplits:omittingEmptySubsequences:)", "starts(with:)",
             "trimmingPrefix(_:)", "wholeMatch(of:)"
           ]) and
-    regexInput = this.getArgument(0).getExpr() and
-    stringInput = this.getQualifier()
+    regexInput.asExpr() = this.getArgument(0).getExpr() and
+    stringInput.asExpr() = this.getQualifier()
     or
     this.getStaticTarget()
         .(Method)
@@ -351,13 +356,13 @@ private class AlwaysRegexEval extends RegexEval {
             "replacing(_:with:maxReplacements:)", "replacing(_:with:subrange:maxReplacements:)",
             "trimPrefix(_:)"
           ]) and
-    regexInput = this.getArgument(0).getExpr() and
-    stringInput = this.getQualifier()
+    regexInput.asExpr() = this.getArgument(0).getExpr() and
+    stringInput.asExpr() = this.getQualifier()
   }
 
-  override Expr getRegexInput() { result = regexInput }
+  override DataFlow::Node getRegexInput() { result = regexInput }
 
-  override Expr getStringInput() { result = stringInput }
+  override DataFlow::Node getStringInput() { result = stringInput }
 }
 
 /**
@@ -365,9 +370,9 @@ private class AlwaysRegexEval extends RegexEval {
  * `options: .regularExpression` is set as an argument.
  */
 private class SometimesRegexEval extends RegexEval {
-  Expr regexInput;
-  Expr stringInput;
-  Expr optionsInput;
+  DataFlow::Node regexInput;
+  DataFlow::Node stringInput;
+  DataFlow::Node optionsInput;
 
   SometimesRegexEval() {
     (
@@ -384,13 +389,13 @@ private class SometimesRegexEval extends RegexEval {
               "replacingOccurrences(of:with:options:range:)"
             ])
     ) and
-    regexInput = this.getArgument(0).getExpr() and
-    stringInput = this.getQualifier() and
-    optionsInput = this.getArgumentWithLabel("options").getExpr()
+    regexInput.asExpr() = this.getArgument(0).getExpr() and
+    stringInput.asExpr() = this.getQualifier() and
+    optionsInput.asExpr() = this.getArgumentWithLabel("options").getExpr()
     // TODO: check options may have value `.regularExpression`
   }
 
-  override Expr getRegexInput() { result = regexInput }
+  override DataFlow::Node getRegexInput() { result = regexInput }
 
-  override Expr getStringInput() { result = stringInput }
+  override DataFlow::Node getStringInput() { result = stringInput }
 }
