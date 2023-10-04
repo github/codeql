@@ -1,0 +1,3 @@
+| query-tests/Security/CWE-079/DomBasedXss/sanitiser.js:25 | did not expect an alert, but found an alert for HtmlInjection | OK | ConsistencyConfig |
+| query-tests/Security/CWE-079/DomBasedXss/sanitiser.js:28 | did not expect an alert, but found an alert for HtmlInjection | OK | ConsistencyConfig |
+| query-tests/Security/CWE-079/DomBasedXss/sanitiser.js:35 | did not expect an alert, but found an alert for HtmlInjection | OK | ConsistencyConfig |
