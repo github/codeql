@@ -1,3 +1,14 @@
+## 0.2.5
+
+No user-facing changes.
+
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* Flow through optional chaining and forced unwrapping in keypaths is now supported by the data flow library.
+* Added flow models of collection `.withContiguous[Mutable]StorageIfAvailable`, `.withUnsafe[Mutable]BufferPointer` and `.withUnsafe[Mutable]Bytes` methods.
+
 ## 0.2.3
 
 ### Major Analysis Improvements

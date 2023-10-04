@@ -1,3 +1,20 @@
+## 0.7.5
+
+### Bug Fixes
+
+* Fixed an extractor crash that could occur in projects containing TypeScript files larger than 10 MB.
+
+## 0.7.4
+
+### Minor Analysis Improvements
+
+* Files larger than 10 MB are no longer be extracted or analyzed.
+* Imports can now be resolved in more cases, where a non-constant string expression is passed to a `require()` call.
+
+### Bug Fixes
+
+* Fixed an extractor crash that would occur in rare cases when a TypeScript file contains a self-referential namespace alias.
+
 ## 0.7.3
 
 No user-facing changes.

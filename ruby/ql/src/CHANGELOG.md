@@ -1,3 +1,13 @@
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Queries
+
+* Added a new experimental query, `rb/improper-ldap-auth`, to detect cases where user input is used during LDAP authentication without proper validation or sanitization, potentially leading to authentication bypass.
+
 ## 0.7.3
 
 No user-facing changes.
