@@ -1992,4 +1992,5 @@ module DataFlow {
   import TypeTracking
   import AdditionalFlowSteps
   import internal.FunctionWrapperSteps
+  import internal.BarrierGuards
 }
