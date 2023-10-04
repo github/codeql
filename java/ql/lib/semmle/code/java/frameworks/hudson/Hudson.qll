@@ -24,6 +24,8 @@ private class FilePathRead extends LocalUserInput {
             "readToString"
           ])
   }
+
+  override string getThreatModel() { result = "file" }
 }
 
 private class HudsonUtilXssSanitizer extends XssSanitizer {
