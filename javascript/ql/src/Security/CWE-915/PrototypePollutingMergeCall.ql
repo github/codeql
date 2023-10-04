@@ -19,13 +19,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.PrototypePollutionQuery
-import DataFlow::PathGraph
+import DataFlow::DeduplicatePathGraph<PrototypePollutionFlow::PathNode, PrototypePollutionFlow::PathGraph>
 
-from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string moduleName,
-  Locatable dependencyLoc
+from PathNode source, PathNode sink, string moduleName, Locatable dependencyLoc
 where
-  cfg.hasFlowPath(source, sink) and
+  PrototypePollutionFlow::flowPath(source.getAnOriginalPathNode(), sink.getAnOriginalPathNode()) and
   sink.getNode().(Sink).dependencyInfo(moduleName, dependencyLoc)
 select sink.getNode(), source, sink,
   "Prototype pollution caused by merging a $@ using a vulnerable version of $@.", source,
