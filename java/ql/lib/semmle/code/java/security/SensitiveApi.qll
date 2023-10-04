@@ -35,7 +35,7 @@ class CryptoKeySink extends CredentialsSinkNode {
 /**
  * A node representing a cryptographic initialization vector being passed to a method.
  */
-class InitializationVectorSink extends CredentialsSinkNode {
+class InitializationVectorSink extends DataFlow::Node {
   InitializationVectorSink() { sinkNode(this, "encryption-iv") }
 }
 
