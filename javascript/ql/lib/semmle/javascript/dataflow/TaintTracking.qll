@@ -1033,4 +1033,6 @@ module TaintTracking {
 
     override predicate appliesTo(Configuration cfg) { any() }
   }
+
+  import internal.sharedlib.TaintTracking
 }
