@@ -6,6 +6,8 @@
 
 private import javascript
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
+private import semmle.javascript.dataflow.internal.Contents::Private
+private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
 cached
@@ -58,6 +60,18 @@ private module Cached {
     TGenericSynthesizedNode(AstNode node, string tag, DataFlowPrivate::DataFlowCallable container) {
       any(AdditionalFlowInternal flow).needsSynthesizedNode(node, tag, container)
     }
+
+  cached
+  private module Backref {
+    cached
+    predicate backref() {
+      DataFlowImplCommon::forceCachingInSameStage() or
+      exists(any(DataFlow::Node node).toString()) or
+      exists(any(DataFlow::Node node).getContainer()) or
+      any(DataFlow::Node node).hasLocationInfo(_, _, _, _, _) or
+      exists(any(Content c).toString())
+    }
+  }
 }
 
 import Cached
