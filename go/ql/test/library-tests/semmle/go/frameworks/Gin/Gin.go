@@ -5,6 +5,8 @@ package main
 //go:generate depstubber -vendor  github.com/gin-gonic/gin Context Default
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
