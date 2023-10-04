@@ -228,6 +228,83 @@ abstract class BarrierFlowStateTransformer extends DataFlow::Node {
   abstract MaxValueState transform(MaxValueState flowstate);
 }
 
+private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch) {
+  g.(UpperBoundCheckGuard).checks(e, branch)
+}
+
+/** An upper bound check that compares a variable to a constant value. */
+class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
+  UpperBoundCheckGuard() {
+    count(expr.getAnOperand().getExactValue()) = 1 and
+    expr.getAnOperand().getType().getUnderlyingType() instanceof IntegerType
+  }
+
+  /**
+   * Holds if the upper bound check ensures the non-constant operand is less
+   * than or equal to the maximum value for `bitSize` and `isSigned`. In this
+   * case, the upper bound check is a barrier guard.
+   */
+  deprecated predicate isBoundFor(int bitSize, boolean isSigned) {
+    bitSize = [8, 16, 32] and
+    exists(float bound, float strictnessOffset |
+      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
+      // on the `branch` argument of `checks` is false, which is equivalent to
+      // `x < c`.
+      if expr instanceof LssExpr or expr instanceof GeqExpr
+      then strictnessOffset = 1
+      else strictnessOffset = 0
+    |
+      exists(DeclaredConstant maxint, DeclaredConstant maxuint |
+        maxint.hasQualifiedName("math", "MaxInt") and maxuint.hasQualifiedName("math", "MaxUint")
+      |
+        if expr.getAnOperand() = maxint.getAReference()
+        then bound = getMaxIntValue(32, true)
+        else
+          if expr.getAnOperand() = maxuint.getAReference()
+          then bound = getMaxIntValue(32, false)
+          else bound = expr.getAnOperand().getExactValue().toFloat()
+      ) and
+      bound - strictnessOffset <= getMaxIntValue(bitSize, isSigned)
+    )
+  }
+
+  /**
+   * Holds if this upper bound check ensures the non-constant operand is less
+   * than or equal to `2^(bitsize) - 1`. In this  case, the upper bound check
+   * is a barrier guard.
+   */
+  predicate isBoundFor2(int bitSize, int architectureBitSize) {
+    bitSize = validBitSize() and
+    architectureBitSize = [32, 64] and
+    exists(float bound, float strictnessOffset |
+      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
+      // on the `branch` argument of `checks` is false, which is equivalent to
+      // `x < c`.
+      if expr instanceof LssExpr or expr instanceof GeqExpr
+      then strictnessOffset = 1
+      else strictnessOffset = 0
+    |
+      exists(DeclaredConstant maxint, DeclaredConstant maxuint |
+        maxint.hasQualifiedName("math", "MaxInt") and maxuint.hasQualifiedName("math", "MaxUint")
+      |
+        if expr.getAnOperand() = maxint.getAReference()
+        then bound = getMaxIntValue(architectureBitSize, true)
+        else
+          if expr.getAnOperand() = maxuint.getAReference()
+          then bound = getMaxIntValue(architectureBitSize, false)
+          else bound = expr.getAnOperand().getExactValue().toFloat()
+      ) and
+      bound - strictnessOffset < 2.pow(bitSize) - 1
+    )
+  }
+
+  /** Holds if this guard validates `e` upon evaluating to `branch`. */
+  predicate checks(Expr e, boolean branch) {
+    this.leq(branch, DataFlow::exprNode(e), _, _) and
+    not e.isConst()
+  }
+}
+
 /**
  * A node that is safely guarded by an `UpperBoundCheckGuard`.
  *
@@ -384,83 +461,6 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
  * to a type conversion to a smaller integer type, which could cause data loss.
  */
 module Flow = TaintTracking::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
-
-private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch) {
-  g.(UpperBoundCheckGuard).checks(e, branch)
-}
-
-/** An upper bound check that compares a variable to a constant value. */
-class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
-  UpperBoundCheckGuard() {
-    count(expr.getAnOperand().getExactValue()) = 1 and
-    expr.getAnOperand().getType().getUnderlyingType() instanceof IntegerType
-  }
-
-  /**
-   * Holds if the upper bound check ensures the non-constant operand is less
-   * than or equal to the maximum value for `bitSize` and `isSigned`. In this
-   * case, the upper bound check is a barrier guard.
-   */
-  deprecated predicate isBoundFor(int bitSize, boolean isSigned) {
-    bitSize = [8, 16, 32] and
-    exists(float bound, float strictnessOffset |
-      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
-      // on the `branch` argument of `checks` is false, which is equivalent to
-      // `x < c`.
-      if expr instanceof LssExpr or expr instanceof GeqExpr
-      then strictnessOffset = 1
-      else strictnessOffset = 0
-    |
-      exists(DeclaredConstant maxint, DeclaredConstant maxuint |
-        maxint.hasQualifiedName("math", "MaxInt") and maxuint.hasQualifiedName("math", "MaxUint")
-      |
-        if expr.getAnOperand() = maxint.getAReference()
-        then bound = getMaxIntValue(32, true)
-        else
-          if expr.getAnOperand() = maxuint.getAReference()
-          then bound = getMaxIntValue(32, false)
-          else bound = expr.getAnOperand().getExactValue().toFloat()
-      ) and
-      bound - strictnessOffset <= getMaxIntValue(bitSize, isSigned)
-    )
-  }
-
-  /**
-   * Holds if this upper bound check ensures the non-constant operand is less
-   * than or equal to `2^(bitsize) - 1`. In this  case, the upper bound check
-   * is a barrier guard.
-   */
-  predicate isBoundFor2(int bitSize, int architectureBitSize) {
-    bitSize = validBitSize() and
-    architectureBitSize = [32, 64] and
-    exists(float bound, float strictnessOffset |
-      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
-      // on the `branch` argument of `checks` is false, which is equivalent to
-      // `x < c`.
-      if expr instanceof LssExpr or expr instanceof GeqExpr
-      then strictnessOffset = 1
-      else strictnessOffset = 0
-    |
-      exists(DeclaredConstant maxint, DeclaredConstant maxuint |
-        maxint.hasQualifiedName("math", "MaxInt") and maxuint.hasQualifiedName("math", "MaxUint")
-      |
-        if expr.getAnOperand() = maxint.getAReference()
-        then bound = getMaxIntValue(architectureBitSize, true)
-        else
-          if expr.getAnOperand() = maxuint.getAReference()
-          then bound = getMaxIntValue(architectureBitSize, false)
-          else bound = expr.getAnOperand().getExactValue().toFloat()
-      ) and
-      bound - strictnessOffset < 2.pow(bitSize) - 1
-    )
-  }
-
-  /** Holds if this guard validates `e` upon evaluating to `branch`. */
-  predicate checks(Expr e, boolean branch) {
-    this.leq(branch, DataFlow::exprNode(e), _, _) and
-    not e.isConst()
-  }
-}
 
 /** Gets a string describing the size of the integer parsed. */
 deprecated string describeBitSize(int bitSize, int intTypeBitSize) {
