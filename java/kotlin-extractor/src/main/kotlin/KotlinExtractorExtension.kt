@@ -110,11 +110,11 @@ class KotlinExtractorExtension(
             } else {
                 try {
                     @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
-                    val requested_compression = Compression.valueOf(compression_option.uppercase())
-                    if (requested_compression == Compression.BROTLI) {
+                    val compression_option_upper = compression_option.uppercase()
+                    if (compression_option_upper == "BROTLI") {
                       Pair(Compression.GZIP, "Kotlin extractor doesn't support Brotli compression. Using GZip instead.")
                     } else {
-                      Pair(requested_compression, null)
+                      Pair(Compression.valueOf(compression_option_upper), null)
                     }
                 } catch (e: IllegalArgumentException) {
                     Pair(defaultCompression,
@@ -361,18 +361,12 @@ private fun doFile(
     }
 }
 
-enum class Compression { NONE, GZIP, BROTLI }
+enum class Compression { NONE, GZIP }
 
 private fun getTrapFileWriter(compression: Compression, logger: FileLogger, trapFileName: String): TrapFileWriter {
     return when (compression) {
         Compression.NONE -> NonCompressedTrapFileWriter(logger, trapFileName)
         Compression.GZIP -> GZipCompressedTrapFileWriter(logger, trapFileName)
-        Compression.BROTLI -> {
-            // Brotli should have been replaced with gzip earlier, but
-            // if we somehow manage to get here then keep going
-            logger.error("Impossible Brotli compression requested. Using Gzip instead.")
-            getTrapFileWriter(Compression.GZIP, logger, trapFileName)
-        }
     }
 }
 
