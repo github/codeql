@@ -268,7 +268,7 @@ class NSRegularExpressionRegexAdditionalFlowStep extends RegexAdditionalFlowStep
 /**
  * An additional flow step for `NSString.CompareOptions`.
  */
-class NSStringRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
+private class NSStringRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
 
   override predicate setsParseMode(DataFlow::Node node, RegexParseMode mode, boolean isSet) {
@@ -301,6 +301,20 @@ class NSStringRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
  */
 class RegexEval extends CallExpr instanceof PotentialRegexEval {
   RegexEval() { this.(PotentialRegexEval).doesEvaluate() }
+
+  /**
+   * Gets the input to this call that is the regular expression being evaluated.
+   * This may be a regular expression object or a string literal.
+   *
+   * Consider using `getARegex()` instead (which tracks the regular expression
+   * input back to its source).
+   */
+  Expr getRegexInput() { result = this.(PotentialRegexEval).getRegexInput().asExpr() }
+
+  /**
+   * Gets the input to this call that is the string the regular expression is evaluated on.
+   */
+  Expr getStringInput() { result = this.(PotentialRegexEval).getStringInput().asExpr() }
 
   /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
@@ -357,11 +371,11 @@ abstract class PotentialRegexEval extends CallExpr {
   DataFlow::Node getAnOptionsInput() { none() }
 
   /**
-   * Holds if this is an actual regular expression evalaution. If this does not
-   * hold, the potential regular expression evaluation should be discarded.
+   * Holds if this instance actually evaluated a regular expression. If this
+   * does not hold, a `RegexEval` is not created for this `PotentialRegexEval`.
    *
    * This mechanism exists so that we have something to track flow of options
-   * into to (for example an `NSString.CompareOptions.regularExpression` option)
+   * into (for example an `NSString.CompareOptions.regularExpression` option)
    * before deciding whether a regular expression is actually evaluated.
    */
   predicate doesEvaluate() { any() }
@@ -428,12 +442,12 @@ private class AlwaysRegexEval extends PotentialRegexEval {
  * A call to a function that sometimes evaluates a regular expression, if
  * `NSString.CompareOptions.regularExpression` is set as an `options` argument.
  */
-private class NSStringCompareOptionsMaybeRegexEval extends PotentialRegexEval {
+private class NSStringCompareOptionsPotentialRegexEval extends PotentialRegexEval {
   DataFlow::Node regexInput;
   DataFlow::Node stringInput;
   DataFlow::Node optionsInput;
 
-  NSStringCompareOptionsMaybeRegexEval() {
+  NSStringCompareOptionsPotentialRegexEval() {
     (
       this.getStaticTarget()
           .(Method)
