@@ -1,0 +1,17 @@
+uniqueToString
+uniqueEnclosingCallable
+uniqueDominator
+localDominator
+localSuccessor
+uniqueDefiningScope
+variableIsCaptured
+uniqueLocation
+uniqueCfgNode
+uniqueWriteTarget
+uniqueWriteCfgNode
+uniqueReadVariable
+closureMustHaveBody
+closureAliasMustBeInSameScope
+variableAccessAstNesting
+uniqueCallableLocation
+consistencyOverview
