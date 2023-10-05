@@ -11,7 +11,41 @@ import DeepObjectResourceExhaustionCustomizations::DeepObjectResourceExhaustion
  * A taint tracking configuration for reasoning about DoS attacks due to inefficient handling
  * of user-controlled objects.
  */
-class Configuration extends TaintTracking::Configuration {
+module DeepObjectResourceExhaustionConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowLabel;
+
+  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    source.(Source).getAFlowLabel() = label
+  }
+
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+    sink instanceof Sink and label = TaintedObject::label()
+  }
+
+  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
+    node = TaintedObject::SanitizerGuard::getABarrierNode(label)
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node src, DataFlow::FlowLabel inlbl, DataFlow::Node trg, DataFlow::FlowLabel outlbl
+  ) {
+    TaintedObject::step(src, trg, inlbl, outlbl)
+  }
+}
+
+/**
+ * Taint tracking for reasoning about DoS attacks due to inefficient handling
+ * of user-controlled objects.
+ */
+module DeepObjectResourceExhaustionFlow =
+  TaintTracking::GlobalWithState<DeepObjectResourceExhaustionConfig>;
+
+/**
+ * DEPRECATED. Use the `DeepObjectResourceExhaustionFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "DeepObjectResourceExhaustion" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
