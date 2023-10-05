@@ -371,7 +371,7 @@ abstract class PotentialRegexEval extends CallExpr {
   DataFlow::Node getAnOptionsInput() { none() }
 
   /**
-   * Holds if this instance actually evaluated a regular expression. If this
+   * Holds if this instance actually evaluates a regular expression. If this
    * does not hold, a `RegexEval` is not created for this `PotentialRegexEval`.
    *
    * This mechanism exists so that we have something to track flow of options
@@ -475,7 +475,7 @@ private class NSStringCompareOptionsPotentialRegexEval extends PotentialRegexEva
 
   override predicate doesEvaluate() {
     // check there is flow from a `NSString.CompareOptions.regularExpression` value to an `options` argument;
-    // if it isn't, the input won't be interpretted as a regular expression.
+    // if there isn't, the input won't be interpretted as a regular expression.
     exists(MemberRefExpr sourceValue |
       sourceValue
           .getMember()
