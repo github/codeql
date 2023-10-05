@@ -32,6 +32,21 @@ module UnsafeJQueryPlugin {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * A barrier guard for XSS in unsafe jQuery plugins.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  }
+
+  /**
    * The receiver of a function, seen as a sanitizer.
    *
    * Plugins often do `$(this)` to coerce an existing DOM element to a jQuery object.
@@ -110,7 +125,7 @@ module UnsafeJQueryPlugin {
   /**
    * An expression of form `isElement(x)`, which sanitizes `x`.
    */
-  class IsElementSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+  class IsElementSanitizer extends BarrierGuardLegacy, DataFlow::CallNode {
     IsElementSanitizer() {
       // common ad hoc sanitizing calls
       exists(string name | this.getCalleeName() = name |
@@ -118,7 +133,7 @@ module UnsafeJQueryPlugin {
       )
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = true and e = this.getArgument(0).asExpr()
     }
   }
@@ -126,7 +141,7 @@ module UnsafeJQueryPlugin {
   /**
    * An expression like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
    */
-  class PropertyPresenceSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+  class PropertyPresenceSanitizer extends BarrierGuardLegacy, DataFlow::ValueNode {
     DataFlow::Node input;
     boolean polarity;
 
@@ -155,20 +170,20 @@ module UnsafeJQueryPlugin {
      */
     DataFlow::PropRead getPropRead() { result = this }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = polarity and
       e = input.asExpr()
     }
   }
 
   /** A guard that checks whether `x` is a number. */
-  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+  class NumberGuard extends BarrierGuardLegacy instanceof DataFlow::CallNode {
     Expr x;
     boolean polarity;
 
     NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
 
-    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
+    override predicate blocksExpr(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 
   /**
