@@ -1,5 +1,6 @@
 import javascript
 
+// Note: this test has not been ported to ConfigSig, because isAdditionalLoadStep has no equivalent there
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "PromiseFlowTestingConfig" }
 
