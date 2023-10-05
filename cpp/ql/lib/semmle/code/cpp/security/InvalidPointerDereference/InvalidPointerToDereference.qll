@@ -98,7 +98,7 @@ private module InvalidPointerToDerefBarrier {
     additional predicate isSource(DataFlow::Node source, PointerArithmeticInstruction pai) {
       invalidPointerToDerefSource(_, pai, _, _) and
       // source <= pai
-      bounded2(source.asInstruction(), pai, any(int d | d <= 0))
+      boundedByValueNumber(source.asInstruction(), valueNumber(pai), any(int d | d <= 0))
     }
 
     predicate isSource(DataFlow::Node source) { isSource(source, _) }
@@ -144,7 +144,7 @@ private module InvalidPointerToDerefBarrier {
       operandGuardChecks(pai, pragma[only_bind_into](g), pragma[only_bind_into](use),
         pragma[only_bind_into](k), pragma[only_bind_into](edge)) and
       // result <= value + delta
-      bounded(result, value.getAnInstruction(), delta) and
+      boundedByValueNumber(result, value, delta) and
       g.controls(result.getBlock(), edge) and
       delta + k <= 0
       // combining the above we have: result < pai + k + delta <= pai
@@ -214,7 +214,7 @@ private predicate invalidPointerToDerefSource(
   // and the instruction computing the address for which we will search for a dereference.
   AllocToInvalidPointer::pointerAddInstructionHasBounds(allocSource, pai, _, _) and
   // derefSource <= pai + deltaDerefSourceAndPai
-  bounded2(derefSource.asInstruction(), pai, deltaDerefSourceAndPai) and
+  boundedByValueNumber(derefSource.asInstruction(), valueNumber(pai), deltaDerefSourceAndPai) and
   deltaDerefSourceAndPai >= 0
 }
 
@@ -230,7 +230,7 @@ private predicate isInvalidPointerDerefSink(
 ) {
   exists(Instruction s |
     s = sink.asInstruction() and
-    bounded(addr.getDef(), s, deltaDerefSinkAndDerefAddress) and
+    boundedByValueNumber(addr.getDef(), valueNumber(s), deltaDerefSinkAndDerefAddress) and
     deltaDerefSinkAndDerefAddress >= 0 and
     i.getAnOperand() = addr
   |
