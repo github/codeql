@@ -476,12 +476,6 @@ private class NSStringCompareOptionsPotentialRegexEval extends PotentialRegexEva
   override predicate doesEvaluate() {
     // check there is flow from a `NSString.CompareOptions.regularExpression` value to an `options` argument;
     // if there isn't, the input won't be interpretted as a regular expression.
-    exists(MemberRefExpr sourceValue |
-      sourceValue
-          .getMember()
-          .(FieldDecl)
-          .hasQualifiedName("NSString.CompareOptions", "regularExpression") and
-      RegexEnableFlagFlow::flow(DataFlow::exprNode(sourceValue), optionsInput)
-    )
+    RegexEnableFlagFlow::flow(_, optionsInput)
   }
 }
