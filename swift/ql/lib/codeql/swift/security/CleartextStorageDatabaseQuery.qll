@@ -40,7 +40,13 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
     or
-    // flow out from array elements of at the sink,
+    // flow out from dictionary tuple values at the sink (this is essential
+    // for some of the SQLite.swift models).
+    isSink(node) and
+    node.asExpr().getType().getUnderlyingType() instanceof DictionaryType and
+    c.getAReadContent().(DataFlow::Content::TupleContent).getIndex() = 1
+    or
+    // flow out from array elements (and other collection content) at the sink,
     // for example in `database.allStatements(sql: "", arguments: [sensitive])`.
     isSink(node) and
     c.getAReadContent() instanceof DataFlow::Content::CollectionContent
