@@ -15,13 +15,13 @@
 
 import javascript
 import semmle.javascript.security.regexp.PolynomialReDoSQuery
-import DataFlow::PathGraph
+import PolynomialReDoSFlow::PathGraph
 
 from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode,
+  PolynomialReDoSFlow::PathNode source, PolynomialReDoSFlow::PathNode sink, Sink sinkNode,
   PolynomialBackTrackingTerm regexp
 where
-  cfg.hasFlowPath(source, sink) and
+  PolynomialReDoSFlow::flowPath(source, sink) and
   sinkNode = sink.getNode() and
   regexp = sinkNode.getRegExp() and
   not (
