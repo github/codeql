@@ -12,9 +12,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.FileAccessToHttpQuery
-import DataFlow::PathGraph
+import FileAccessToHttpFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from FileAccessToHttpFlow::PathNode source, FileAccessToHttpFlow::PathNode sink
+where FileAccessToHttpFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Outbound network request depends on $@.", source.getNode(),
   "file data"
