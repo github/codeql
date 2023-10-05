@@ -13,10 +13,10 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.ResourceExhaustionQuery
+import ResourceExhaustionFlow::PathGraph
 
-from Configuration dataflow, DataFlow::PathNode source, DataFlow::PathNode sink
-where dataflow.hasFlowPath(source, sink)
+from ResourceExhaustionFlow::PathNode source, ResourceExhaustionFlow::PathNode sink
+where ResourceExhaustionFlow::flowPath(source, sink)
 select sink, source, sink, sink.getNode().(Sink).getProblemDescription() + " from a $@.", source,
   "user-provided value"
