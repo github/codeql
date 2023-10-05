@@ -12,10 +12,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.TypeConfusionThroughParameterTamperingQuery
-import DataFlow::PathGraph
+import TypeConfusionFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from TypeConfusionFlow::PathNode source, TypeConfusionFlow::PathNode sink
+where TypeConfusionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "Potential type confusion as $@ may be either an array or a string.", source.getNode(),
   "this HTTP request parameter"
