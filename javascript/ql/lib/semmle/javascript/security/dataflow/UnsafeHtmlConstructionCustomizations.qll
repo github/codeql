@@ -62,6 +62,30 @@ module UnsafeHtmlConstruction {
   }
 
   /**
+   * A barrier guard for unsafe HTML constructed from library input vulnerabilities.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
+  }
+
+  /**
    * A sink for `js/html-constructed-from-input` that constructs some HTML where
    * that HTML is later used in `xssSink`.
    */
@@ -176,14 +200,14 @@ module UnsafeHtmlConstruction {
   }
 
   /** A test for the value of `typeof x`, restricting the potential types of `x`. */
-  class TypeTestGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+  class TypeTestGuard extends BarrierGuardLegacy, DataFlow::ValueNode {
     override EqualityTest astNode;
     Expr operand;
     boolean polarity;
 
     TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
       polarity = outcome and
       e = operand and
       lbl.isTaint()
