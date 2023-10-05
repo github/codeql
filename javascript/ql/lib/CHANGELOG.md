@@ -1,3 +1,13 @@
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.2.
+
 ## 0.7.3
 
 No user-facing changes.

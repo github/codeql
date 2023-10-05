@@ -18,7 +18,7 @@ See the following tutorials for more information about analyzing data flow in sp
 
 - ":ref:`Analyzing data flow in C/C++ <analyzing-data-flow-in-cpp>`"
 - ":ref:`Analyzing data flow in C# <analyzing-data-flow-in-csharp>`"
-- ":ref:`Analyzing data flow in Java <analyzing-data-flow-in-java>`"
+- ":ref:`Analyzing data flow in Java/Kotlin <analyzing-data-flow-in-java>`"
 - ":ref:`Analyzing data flow in JavaScript/TypeScript <analyzing-data-flow-in-javascript-and-typescript>`"
 - ":ref:`Analyzing data flow in Python <analyzing-data-flow-in-python>`"
 - ":ref:`Analyzing data flow in Ruby <analyzing-data-flow-in-ruby>`"

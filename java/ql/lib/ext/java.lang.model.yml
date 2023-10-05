@@ -42,6 +42,13 @@ extensions:
       - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Throwable)", "", "Argument[1]", "log-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.lang", "System", False, "getenv", "", "", "ReturnValue", "environment", "manual"]
+      - ["java.lang", "System", False, "getProperties", "", "", "ReturnValue", "environment", "manual"]
+      - ["java.lang", "System", False, "getProperty", "", "", "ReturnValue", "environment", "manual"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["java.lang", "AbstractStringBuilder", True, "AbstractStringBuilder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]

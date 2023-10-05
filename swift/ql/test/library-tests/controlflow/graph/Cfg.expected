@@ -6180,3 +6180,99 @@ cfg.swift:
 
 #  534| i
 #-----|  -> (Any) ...
+
+#  538| enter testNilCoalescing(x:)
+#-----|  -> testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:) (abnormal)
+#-----|  -> exit testNilCoalescing(x:)
+
+#  538| exit testNilCoalescing(x:) (normal)
+#-----|  -> exit testNilCoalescing(x:)
+
+#  538| testNilCoalescing(x:)
+#-----|  -> x
+
+#  538| x
+#-----|  -> x
+
+#  539| return ...
+#-----| return -> exit testNilCoalescing(x:) (normal)
+
+#  539| x
+#-----|  -> emptiness test for ... ??(_:_:) ...
+
+#  539| ... ??(_:_:) ...
+#-----| exception -> exit testNilCoalescing(x:) (abnormal)
+#-----|  -> return ...
+
+#  539| emptiness test for ... ??(_:_:) ...
+#-----| non-empty -> ... ??(_:_:) ...
+#-----| empty -> { ... }
+
+#  539| 0
+#-----|  -> return ...
+
+#  539| return ...
+#-----|  -> ... ??(_:_:) ...
+
+#  539| { ... }
+#-----|  -> 0
+
+#  542| enter testNilCoalescing2(x:)
+#-----|  -> testNilCoalescing2(x:)
+
+#  542| exit testNilCoalescing2(x:)
+
+#  542| exit testNilCoalescing2(x:) (abnormal)
+#-----|  -> exit testNilCoalescing2(x:)
+
+#  542| exit testNilCoalescing2(x:) (normal)
+#-----|  -> exit testNilCoalescing2(x:)
+
+#  542| testNilCoalescing2(x:)
+#-----|  -> x
+
+#  542| x
+#-----|  -> if ... then { ... } else { ... }
+
+#  543| if ... then { ... } else { ... }
+#-----|  -> StmtCondition
+
+#  543| x
+#-----|  -> emptiness test for ... ??(_:_:) ...
+
+#  543| ... ??(_:_:) ...
+#-----| exception -> exit testNilCoalescing2(x:) (abnormal)
+#-----| true -> 1
+#-----| false -> 0
+
+#  543| StmtCondition
+#-----|  -> x
+
+#  543| emptiness test for ... ??(_:_:) ...
+#-----| non-empty -> ... ??(_:_:) ...
+#-----| empty -> { ... }
+
+#  543| false
+#-----|  -> return ...
+
+#  543| return ...
+#-----|  -> ... ??(_:_:) ...
+
+#  543| { ... }
+#-----|  -> false
+
+#  544| return ...
+#-----| return -> exit testNilCoalescing2(x:) (normal)
+
+#  544| 1
+#-----|  -> return ...
+
+#  546| return ...
+#-----| return -> exit testNilCoalescing2(x:) (normal)
+
+#  546| 0
+#-----|  -> return ...

@@ -1,3 +1,20 @@
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### New Features
+
+* Kotlin versions up to 1.9.10 are now supported.
+
+### Minor Analysis Improvements
+
+* Fixed the MaD signature specifications to use proper nested type names.
+* Added new sanitizer to Java command injection model
+* Added more dataflow models for JAX-RS.
+* The predicate `JaxWsEndpoint::getARemoteMethod` no longer requires the result to be annotated with `@WebMethod`. Instead, the requirements listed in the JAX-RPC Specification 1.1 for required parameter and return types are used. Applications using JAX-RS may see an increase in results.
+
 ## 0.7.3
 
 ### Major Analysis Improvements

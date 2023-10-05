@@ -1,7 +1,7 @@
 .. _basic-query-for-javascript-code:
 
-Basic query for JavaScript code
-===============================
+Basic query for JavaScript and TypeScript code
+===============================================
 
 Learn to write and run a simple CodeQL query using Visual Studio Code with the CodeQL extension.
 
@@ -10,7 +10,7 @@ Learn to write and run a simple CodeQL query using Visual Studio Code with the C
 About the query
 ---------------
 
-In JavaScript, any expression can be turned into an expression statement. While this is sometimes convenient, it can be dangerous. For example, imagine a programmer wants to assign a new value to a variable ``x`` by means of an assignment ``x = 42``. However, they accidentally type two equals signs, producing the comparison statement ``x == 42``. This is valid JavaScript, so no error is generated. The statement simply compares ``x`` to ``42``, and then discards the result of the comparison.
+In JavaScript and TypeScript, any expression can be turned into an expression statement. While this is sometimes convenient, it can be dangerous. For example, imagine a programmer wants to assign a new value to a variable ``x`` by means of an assignment ``x = 42``. However, they accidentally type two equals signs, producing the comparison statement ``x == 42``. This is valid JavaScript, so no error is generated. The statement simply compares ``x`` to ``42``, and then discards the result of the comparison.
 
 The query you will run finds instances of this problem. The query searches for expressions ``e`` that are pure—that is, their evaluation does not lead to any side effects—but appear as an expression statement.
 
@@ -50,7 +50,7 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | Query part                                                    | Purpose                                                                                                           | Details                                                                                                                |
 +===============================================================+===================================================================================================================+========================================================================================================================+
-| ``import javascript``                                         | Imports the standard CodeQL libraries for JavaScript.                                                             | Every query begins with one or more ``import`` statements.                                                             |
+| ``import javascript``                                         | Imports the standard CodeQL libraries for JavaScript and TypeScript.                                              | Every query begins with one or more ``import`` statements.                                                             |
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | ``from Expr e``                                               | Defines the variables for the query.                                                                              | ``e`` is declared as a variable that ranges over expressions.                                                          |
 |                                                               | Declarations are of the form:                                                                                     |                                                                                                                        |

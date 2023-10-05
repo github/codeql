@@ -1,2 +1,8 @@
 testFailures
+| conversions.swift:145:12:145:12 | ms2 | Unexpected result: tainted=144 |
+| conversions.swift:145:17:146:1 | // $ tainted=95\n | Missing result:tainted=95 |
+| conversions.swift:146:12:146:16 | .description | Unexpected result: tainted=144 |
+| conversions.swift:146:29:147:1 | // $ tainted=95\n | Missing result:tainted=95 |
+| conversions.swift:147:12:147:16 | .debugDescription | Unexpected result: tainted=144 |
+| conversions.swift:147:34:148:1 | // $ tainted=95\n | Missing result:tainted=95 |
 failures
