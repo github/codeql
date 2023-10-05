@@ -215,9 +215,9 @@ class RegexRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
 }
 
 /**
- * An additional flow step for `NSRegularExpression`.
+ * An additional flow step for `NSRegularExpression.Options`.
  */
-class NSRegularExpressionRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
+private class NSRegularExpressionRegexAdditionalFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
 
   override predicate setsParseMode(DataFlow::Node node, RegexParseMode mode, boolean isSet) {
