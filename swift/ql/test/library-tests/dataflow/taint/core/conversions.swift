@@ -142,9 +142,9 @@ func testConversions() {
 	sink(arg: ms1.clean)
 
 	let ms2 = MyString(sourceString())!
-	sink(arg: ms2) // $ tainted=95
-	sink(arg: ms2.description) // $ tainted=95
-	sink(arg: ms2.debugDescription) // $ tainted=95
+	sink(arg: ms2) // $ tainted=144
+	sink(arg: ms2.description) // $ tainted=144
+	sink(arg: ms2.debugDescription) // $ tainted=144
 	sink(arg: ms2.clean)
 
 	// ---
