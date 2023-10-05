@@ -1,0 +1,11 @@
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "dbscheme",
+    actual = "//csharp/ql/lib:dbscheme",
+)
+
+alias(
+    name = "dbscheme-stats",
+    actual = "//csharp/ql/lib:dbscheme-stats",
+)
