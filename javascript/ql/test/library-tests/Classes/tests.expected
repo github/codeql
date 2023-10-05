@@ -1,3 +1,4 @@
+legacyDataFlowDifference
 test_FieldInits
 | dataflow.js:5:3:5:17 | #priv = source; | dataflow.js:5:11:5:16 | source |
 | fields.js:3:3:3:8 | y = 42 | fields.js:3:7:3:8 | 42 |
@@ -287,9 +288,6 @@ getAccessModifier
 | tst.js:12:3:12:8 | m() {} | tst.js:12:3:12:3 | m | Public |
 | tst.js:13:3:13:10 | [m]() {} | tst.js:13:4:13:4 | m | Public |
 | tst.js:17:3:17:20 | m() { return 42; } | tst.js:17:3:17:3 | m | Public |
-dataflow
-| dataflow.js:2:15:2:22 | "source" | dataflow.js:14:7:14:25 | new Foo().getPriv() |
-| dataflow.js:2:15:2:22 | "source" | dataflow.js:16:7:16:33 | new Foo ... ivate() |
 staticInitializer
 | staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:6:10:8:3 | {\\n    M ...  3;\\n  } |
 | staticInitializer.js:1:1:18:1 | class M ... ;\\n  }\\n} | staticInitializer.js:15:10:17:3 | {\\n    t ...  6;\\n  } |
@@ -312,3 +310,6 @@ privateIdentifier
 | privateFields.js:37:12:37:17 | #brand |
 | privateFields.js:37:29:37:35 | #method |
 | privateFields.js:37:47:37:53 | #getter |
+dataflow
+| dataflow.js:2:15:2:22 | "source" | dataflow.js:14:7:14:25 | new Foo().getPriv() |
+| dataflow.js:2:15:2:22 | "source" | dataflow.js:16:7:16:33 | new Foo ... ivate() |
