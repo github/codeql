@@ -12,10 +12,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.UnsafeDynamicMethodAccessQuery
-import DataFlow::PathGraph
+import UnsafeDynamicMethodAccessFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from UnsafeDynamicMethodAccessFlow::PathNode source, UnsafeDynamicMethodAccessFlow::PathNode sink
+where UnsafeDynamicMethodAccessFlow::flowPath(source, sink)
 select sink, source, sink,
   "This method is invoked using a $@, which may allow remote code execution.", source.getNode(),
   "user-controlled value"
