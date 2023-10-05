@@ -55,6 +55,30 @@ module UnvalidatedDynamicMethodCall {
   }
 
   /**
+   * A barrier guard for unvalidated dynamic method calls.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
+  }
+
+  /**
    * A flow label describing values read from a user-controlled property that
    * may not be functions.
    */
@@ -109,13 +133,13 @@ module UnvalidatedDynamicMethodCall {
    * A check of the form `typeof x === 'function'`, which sanitizes away the `MaybeNonFunction`
    * taint kind.
    */
-  class FunctionCheck extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
+  class FunctionCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
     override EqualityTest astNode;
     Expr operand;
 
     FunctionCheck() { TaintTracking::isTypeofGuard(astNode, operand, "function") }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       outcome = astNode.getPolarity() and
       e = operand and
       label instanceof MaybeNonFunction
@@ -123,12 +147,12 @@ module UnvalidatedDynamicMethodCall {
   }
 
   /** A guard that checks whether `x` is a number. */
-  class NumberGuard extends TaintTracking::SanitizerGuardNode instanceof DataFlow::CallNode {
+  class NumberGuard extends BarrierGuardLegacy instanceof DataFlow::CallNode {
     Expr x;
     boolean polarity;
 
     NumberGuard() { TaintTracking::isNumberGuard(this, x, polarity) }
 
-    override predicate sanitizes(boolean outcome, Expr e) { e = x and outcome = polarity }
+    override predicate blocksExpr(boolean outcome, Expr e) { e = x and outcome = polarity }
   }
 }
