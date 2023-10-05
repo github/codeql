@@ -297,6 +297,10 @@ private module Config implements FullStateConfigSig {
 
   predicate isBarrierOut(Node node) { any(Configuration config).isBarrierOut(node) }
 
+  predicate isBarrierIn(Node node, FlowState state) { none() }
+
+  predicate isBarrierOut(Node node, FlowState state) { none() }
+
   predicate isAdditionalFlowStep(Node node1, Node node2) {
     singleConfiguration() and
     any(Configuration config).isAdditionalFlowStep(node1, node2)

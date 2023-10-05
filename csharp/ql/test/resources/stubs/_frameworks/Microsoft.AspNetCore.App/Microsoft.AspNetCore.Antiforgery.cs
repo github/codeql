@@ -10,7 +10,7 @@ namespace Microsoft
             {
                 public Microsoft.AspNetCore.Http.CookieBuilder Cookie { get => throw null; set { } }
                 public AntiforgeryOptions() => throw null;
-                public static string DefaultCookiePrefix;
+                public static readonly string DefaultCookiePrefix;
                 public string FormFieldName { get => throw null; set { } }
                 public string HeaderName { get => throw null; set { } }
                 public bool SuppressXFrameOptionsHeader { get => throw null; set { } }

@@ -132,7 +132,7 @@ namespace System
             public ReadOnlySequence(System.ReadOnlyMemory<T> memory) => throw null;
             public ReadOnlySequence(T[] array) => throw null;
             public ReadOnlySequence(T[] array, int start, int length) => throw null;
-            public static System.Buffers.ReadOnlySequence<T> Empty;
+            public static readonly System.Buffers.ReadOnlySequence<T> Empty;
             public System.SequencePosition End { get => throw null; }
             public struct Enumerator
             {
@@ -225,8 +225,8 @@ namespace System
             public override int GetHashCode() => throw null;
             public bool HasPrecision { get => throw null; }
             public bool IsDefault { get => throw null; }
-            public const byte MaxPrecision = default;
-            public const byte NoPrecision = default;
+            public const byte MaxPrecision = 99;
+            public const byte NoPrecision = 255;
             public static bool operator ==(System.Buffers.StandardFormat left, System.Buffers.StandardFormat right) => throw null;
             public static implicit operator System.Buffers.StandardFormat(char symbol) => throw null;
             public static bool operator !=(System.Buffers.StandardFormat left, System.Buffers.StandardFormat right) => throw null;

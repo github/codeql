@@ -1,9 +1,9 @@
 .. _codeql-for-javascript:
 
-CodeQL for JavaScript
-=====================
+CodeQL for JavaScript and TypeScript
+====================================
 
-Experiment and learn how to write effective and efficient queries for CodeQL databases generated from JavaScript codebases.
+Experiment and learn how to write effective and efficient queries for CodeQL databases generated from JavaScript and TypeScript codebases.
 
 .. toctree::
    :hidden:
@@ -18,7 +18,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs
    data-flow-cheat-sheet-for-javascript
 
--  :doc:`Basic query for JavaScript code <basic-query-for-javascript-code>`: Learn to write and run a simple CodeQL query.
+-  :doc:`Basic query for JavaScript and TypeScript code <basic-query-for-javascript-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for JavaScript <codeql-library-for-javascript>`: When you're analyzing a JavaScript program, you can make use of the large collection of classes in the CodeQL library for JavaScript.
 

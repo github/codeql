@@ -45,7 +45,7 @@ namespace System
             int System.Collections.ICollection.Count { get => throw null; }
             protected AttributeCollection() => throw null;
             public AttributeCollection(params System.Attribute[] attributes) => throw null;
-            public static System.ComponentModel.AttributeCollection Empty;
+            public static readonly System.ComponentModel.AttributeCollection Empty;
             public static System.ComponentModel.AttributeCollection FromExisting(System.ComponentModel.AttributeCollection existing, params System.Attribute[] newAttributes) => throw null;
             protected System.Attribute GetDefaultAttribute(System.Type attributeType) => throw null;
             public System.Collections.IEnumerator GetEnumerator() => throw null;
@@ -79,13 +79,13 @@ namespace System
             public BindableAttribute(bool bindable, System.ComponentModel.BindingDirection direction) => throw null;
             public BindableAttribute(System.ComponentModel.BindableSupport flags) => throw null;
             public BindableAttribute(System.ComponentModel.BindableSupport flags, System.ComponentModel.BindingDirection direction) => throw null;
-            public static System.ComponentModel.BindableAttribute Default;
+            public static readonly System.ComponentModel.BindableAttribute Default;
             public System.ComponentModel.BindingDirection Direction { get => throw null; }
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
-            public static System.ComponentModel.BindableAttribute No;
-            public static System.ComponentModel.BindableAttribute Yes;
+            public static readonly System.ComponentModel.BindableAttribute No;
+            public static readonly System.ComponentModel.BindableAttribute Yes;
         }
         public enum BindableSupport
         {
@@ -193,7 +193,7 @@ namespace System
             public ComplexBindingPropertiesAttribute(string dataSource, string dataMember) => throw null;
             public string DataMember { get => throw null; }
             public string DataSource { get => throw null; }
-            public static System.ComponentModel.ComplexBindingPropertiesAttribute Default;
+            public static readonly System.ComponentModel.ComplexBindingPropertiesAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
         }
@@ -268,13 +268,13 @@ namespace System
         {
             public DataObjectAttribute() => throw null;
             public DataObjectAttribute(bool isDataObject) => throw null;
-            public static System.ComponentModel.DataObjectAttribute DataObject;
-            public static System.ComponentModel.DataObjectAttribute Default;
+            public static readonly System.ComponentModel.DataObjectAttribute DataObject;
+            public static readonly System.ComponentModel.DataObjectAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsDataObject { get => throw null; }
             public override bool IsDefaultAttribute() => throw null;
-            public static System.ComponentModel.DataObjectAttribute NonDataObject;
+            public static readonly System.ComponentModel.DataObjectAttribute NonDataObject;
         }
         public sealed class DataObjectFieldAttribute : System.Attribute
         {
@@ -341,7 +341,7 @@ namespace System
         {
             public DefaultBindingPropertyAttribute() => throw null;
             public DefaultBindingPropertyAttribute(string name) => throw null;
-            public static System.ComponentModel.DefaultBindingPropertyAttribute Default;
+            public static readonly System.ComponentModel.DefaultBindingPropertyAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public string Name { get => throw null; }
@@ -349,7 +349,7 @@ namespace System
         public sealed class DefaultEventAttribute : System.Attribute
         {
             public DefaultEventAttribute(string name) => throw null;
-            public static System.ComponentModel.DefaultEventAttribute Default;
+            public static readonly System.ComponentModel.DefaultEventAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public string Name { get => throw null; }
@@ -357,7 +357,7 @@ namespace System
         public sealed class DefaultPropertyAttribute : System.Attribute
         {
             public DefaultPropertyAttribute(string name) => throw null;
-            public static System.ComponentModel.DefaultPropertyAttribute Default;
+            public static readonly System.ComponentModel.DefaultPropertyAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public string Name { get => throw null; }
@@ -373,7 +373,7 @@ namespace System
             public delegate void ActiveDesignerEventHandler(object sender, System.ComponentModel.Design.ActiveDesignerEventArgs e);
             public class CheckoutException : System.Runtime.InteropServices.ExternalException
             {
-                public static System.ComponentModel.Design.CheckoutException Canceled;
+                public static readonly System.ComponentModel.Design.CheckoutException Canceled;
                 public CheckoutException() => throw null;
                 protected CheckoutException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 public CheckoutException(string message) => throw null;
@@ -541,7 +541,7 @@ namespace System
                 public HelpKeywordAttribute() => throw null;
                 public HelpKeywordAttribute(string keyword) => throw null;
                 public HelpKeywordAttribute(System.Type t) => throw null;
-                public static System.ComponentModel.Design.HelpKeywordAttribute Default;
+                public static readonly System.ComponentModel.Design.HelpKeywordAttribute Default;
                 public override bool Equals(object obj) => throw null;
                 public override int GetHashCode() => throw null;
                 public string HelpKeyword { get => throw null; }
@@ -878,7 +878,7 @@ namespace System
                 public struct MemberRelationship : System.IEquatable<System.ComponentModel.Design.Serialization.MemberRelationship>
                 {
                     public MemberRelationship(object owner, System.ComponentModel.MemberDescriptor member) => throw null;
-                    public static System.ComponentModel.Design.Serialization.MemberRelationship Empty;
+                    public static readonly System.ComponentModel.Design.Serialization.MemberRelationship Empty;
                     public bool Equals(System.ComponentModel.Design.Serialization.MemberRelationship other) => throw null;
                     public override bool Equals(object obj) => throw null;
                     public override int GetHashCode() => throw null;
@@ -942,74 +942,74 @@ namespace System
             public delegate object ServiceCreatorCallback(System.ComponentModel.Design.IServiceContainer container, System.Type serviceType);
             public class StandardCommands
             {
-                public static System.ComponentModel.Design.CommandID AlignBottom;
-                public static System.ComponentModel.Design.CommandID AlignHorizontalCenters;
-                public static System.ComponentModel.Design.CommandID AlignLeft;
-                public static System.ComponentModel.Design.CommandID AlignRight;
-                public static System.ComponentModel.Design.CommandID AlignToGrid;
-                public static System.ComponentModel.Design.CommandID AlignTop;
-                public static System.ComponentModel.Design.CommandID AlignVerticalCenters;
-                public static System.ComponentModel.Design.CommandID ArrangeBottom;
-                public static System.ComponentModel.Design.CommandID ArrangeIcons;
-                public static System.ComponentModel.Design.CommandID ArrangeRight;
-                public static System.ComponentModel.Design.CommandID BringForward;
-                public static System.ComponentModel.Design.CommandID BringToFront;
-                public static System.ComponentModel.Design.CommandID CenterHorizontally;
-                public static System.ComponentModel.Design.CommandID CenterVertically;
-                public static System.ComponentModel.Design.CommandID Copy;
+                public static readonly System.ComponentModel.Design.CommandID AlignBottom;
+                public static readonly System.ComponentModel.Design.CommandID AlignHorizontalCenters;
+                public static readonly System.ComponentModel.Design.CommandID AlignLeft;
+                public static readonly System.ComponentModel.Design.CommandID AlignRight;
+                public static readonly System.ComponentModel.Design.CommandID AlignToGrid;
+                public static readonly System.ComponentModel.Design.CommandID AlignTop;
+                public static readonly System.ComponentModel.Design.CommandID AlignVerticalCenters;
+                public static readonly System.ComponentModel.Design.CommandID ArrangeBottom;
+                public static readonly System.ComponentModel.Design.CommandID ArrangeIcons;
+                public static readonly System.ComponentModel.Design.CommandID ArrangeRight;
+                public static readonly System.ComponentModel.Design.CommandID BringForward;
+                public static readonly System.ComponentModel.Design.CommandID BringToFront;
+                public static readonly System.ComponentModel.Design.CommandID CenterHorizontally;
+                public static readonly System.ComponentModel.Design.CommandID CenterVertically;
+                public static readonly System.ComponentModel.Design.CommandID Copy;
                 public StandardCommands() => throw null;
-                public static System.ComponentModel.Design.CommandID Cut;
-                public static System.ComponentModel.Design.CommandID Delete;
-                public static System.ComponentModel.Design.CommandID DocumentOutline;
-                public static System.ComponentModel.Design.CommandID F1Help;
-                public static System.ComponentModel.Design.CommandID Group;
-                public static System.ComponentModel.Design.CommandID HorizSpaceConcatenate;
-                public static System.ComponentModel.Design.CommandID HorizSpaceDecrease;
-                public static System.ComponentModel.Design.CommandID HorizSpaceIncrease;
-                public static System.ComponentModel.Design.CommandID HorizSpaceMakeEqual;
-                public static System.ComponentModel.Design.CommandID LineupIcons;
-                public static System.ComponentModel.Design.CommandID LockControls;
-                public static System.ComponentModel.Design.CommandID MultiLevelRedo;
-                public static System.ComponentModel.Design.CommandID MultiLevelUndo;
-                public static System.ComponentModel.Design.CommandID Paste;
-                public static System.ComponentModel.Design.CommandID Properties;
-                public static System.ComponentModel.Design.CommandID PropertiesWindow;
-                public static System.ComponentModel.Design.CommandID Redo;
-                public static System.ComponentModel.Design.CommandID Replace;
-                public static System.ComponentModel.Design.CommandID SelectAll;
-                public static System.ComponentModel.Design.CommandID SendBackward;
-                public static System.ComponentModel.Design.CommandID SendToBack;
-                public static System.ComponentModel.Design.CommandID ShowGrid;
-                public static System.ComponentModel.Design.CommandID ShowLargeIcons;
-                public static System.ComponentModel.Design.CommandID SizeToControl;
-                public static System.ComponentModel.Design.CommandID SizeToControlHeight;
-                public static System.ComponentModel.Design.CommandID SizeToControlWidth;
-                public static System.ComponentModel.Design.CommandID SizeToFit;
-                public static System.ComponentModel.Design.CommandID SizeToGrid;
-                public static System.ComponentModel.Design.CommandID SnapToGrid;
-                public static System.ComponentModel.Design.CommandID TabOrder;
-                public static System.ComponentModel.Design.CommandID Undo;
-                public static System.ComponentModel.Design.CommandID Ungroup;
-                public static System.ComponentModel.Design.CommandID VerbFirst;
-                public static System.ComponentModel.Design.CommandID VerbLast;
-                public static System.ComponentModel.Design.CommandID VertSpaceConcatenate;
-                public static System.ComponentModel.Design.CommandID VertSpaceDecrease;
-                public static System.ComponentModel.Design.CommandID VertSpaceIncrease;
-                public static System.ComponentModel.Design.CommandID VertSpaceMakeEqual;
-                public static System.ComponentModel.Design.CommandID ViewCode;
-                public static System.ComponentModel.Design.CommandID ViewGrid;
+                public static readonly System.ComponentModel.Design.CommandID Cut;
+                public static readonly System.ComponentModel.Design.CommandID Delete;
+                public static readonly System.ComponentModel.Design.CommandID DocumentOutline;
+                public static readonly System.ComponentModel.Design.CommandID F1Help;
+                public static readonly System.ComponentModel.Design.CommandID Group;
+                public static readonly System.ComponentModel.Design.CommandID HorizSpaceConcatenate;
+                public static readonly System.ComponentModel.Design.CommandID HorizSpaceDecrease;
+                public static readonly System.ComponentModel.Design.CommandID HorizSpaceIncrease;
+                public static readonly System.ComponentModel.Design.CommandID HorizSpaceMakeEqual;
+                public static readonly System.ComponentModel.Design.CommandID LineupIcons;
+                public static readonly System.ComponentModel.Design.CommandID LockControls;
+                public static readonly System.ComponentModel.Design.CommandID MultiLevelRedo;
+                public static readonly System.ComponentModel.Design.CommandID MultiLevelUndo;
+                public static readonly System.ComponentModel.Design.CommandID Paste;
+                public static readonly System.ComponentModel.Design.CommandID Properties;
+                public static readonly System.ComponentModel.Design.CommandID PropertiesWindow;
+                public static readonly System.ComponentModel.Design.CommandID Redo;
+                public static readonly System.ComponentModel.Design.CommandID Replace;
+                public static readonly System.ComponentModel.Design.CommandID SelectAll;
+                public static readonly System.ComponentModel.Design.CommandID SendBackward;
+                public static readonly System.ComponentModel.Design.CommandID SendToBack;
+                public static readonly System.ComponentModel.Design.CommandID ShowGrid;
+                public static readonly System.ComponentModel.Design.CommandID ShowLargeIcons;
+                public static readonly System.ComponentModel.Design.CommandID SizeToControl;
+                public static readonly System.ComponentModel.Design.CommandID SizeToControlHeight;
+                public static readonly System.ComponentModel.Design.CommandID SizeToControlWidth;
+                public static readonly System.ComponentModel.Design.CommandID SizeToFit;
+                public static readonly System.ComponentModel.Design.CommandID SizeToGrid;
+                public static readonly System.ComponentModel.Design.CommandID SnapToGrid;
+                public static readonly System.ComponentModel.Design.CommandID TabOrder;
+                public static readonly System.ComponentModel.Design.CommandID Undo;
+                public static readonly System.ComponentModel.Design.CommandID Ungroup;
+                public static readonly System.ComponentModel.Design.CommandID VerbFirst;
+                public static readonly System.ComponentModel.Design.CommandID VerbLast;
+                public static readonly System.ComponentModel.Design.CommandID VertSpaceConcatenate;
+                public static readonly System.ComponentModel.Design.CommandID VertSpaceDecrease;
+                public static readonly System.ComponentModel.Design.CommandID VertSpaceIncrease;
+                public static readonly System.ComponentModel.Design.CommandID VertSpaceMakeEqual;
+                public static readonly System.ComponentModel.Design.CommandID ViewCode;
+                public static readonly System.ComponentModel.Design.CommandID ViewGrid;
             }
             public class StandardToolWindows
             {
                 public StandardToolWindows() => throw null;
-                public static System.Guid ObjectBrowser;
-                public static System.Guid OutputWindow;
-                public static System.Guid ProjectExplorer;
-                public static System.Guid PropertyBrowser;
-                public static System.Guid RelatedLinks;
-                public static System.Guid ServerExplorer;
-                public static System.Guid TaskList;
-                public static System.Guid Toolbox;
+                public static readonly System.Guid ObjectBrowser;
+                public static readonly System.Guid OutputWindow;
+                public static readonly System.Guid ProjectExplorer;
+                public static readonly System.Guid PropertyBrowser;
+                public static readonly System.Guid RelatedLinks;
+                public static readonly System.Guid ServerExplorer;
+                public static readonly System.Guid TaskList;
+                public static readonly System.Guid Toolbox;
             }
             public abstract class TypeDescriptionProviderService
             {
@@ -1028,13 +1028,13 @@ namespace System
         {
             public DesignTimeVisibleAttribute() => throw null;
             public DesignTimeVisibleAttribute(bool visible) => throw null;
-            public static System.ComponentModel.DesignTimeVisibleAttribute Default;
+            public static readonly System.ComponentModel.DesignTimeVisibleAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
-            public static System.ComponentModel.DesignTimeVisibleAttribute No;
+            public static readonly System.ComponentModel.DesignTimeVisibleAttribute No;
             public bool Visible { get => throw null; }
-            public static System.ComponentModel.DesignTimeVisibleAttribute Yes;
+            public static readonly System.ComponentModel.DesignTimeVisibleAttribute Yes;
         }
         public class DoubleConverter : System.ComponentModel.BaseNumberConverter
         {
@@ -1079,7 +1079,7 @@ namespace System
             int System.Collections.ICollection.Count { get => throw null; }
             public EventDescriptorCollection(System.ComponentModel.EventDescriptor[] events) => throw null;
             public EventDescriptorCollection(System.ComponentModel.EventDescriptor[] events, bool readOnly) => throw null;
-            public static System.ComponentModel.EventDescriptorCollection Empty;
+            public static readonly System.ComponentModel.EventDescriptorCollection Empty;
             public virtual System.ComponentModel.EventDescriptor Find(string name, bool ignoreCase) => throw null;
             public System.Collections.IEnumerator GetEnumerator() => throw null;
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
@@ -1234,14 +1234,14 @@ namespace System
         {
             public InheritanceAttribute() => throw null;
             public InheritanceAttribute(System.ComponentModel.InheritanceLevel inheritanceLevel) => throw null;
-            public static System.ComponentModel.InheritanceAttribute Default;
+            public static readonly System.ComponentModel.InheritanceAttribute Default;
             public override bool Equals(object value) => throw null;
             public override int GetHashCode() => throw null;
             public System.ComponentModel.InheritanceLevel InheritanceLevel { get => throw null; }
-            public static System.ComponentModel.InheritanceAttribute Inherited;
-            public static System.ComponentModel.InheritanceAttribute InheritedReadOnly;
+            public static readonly System.ComponentModel.InheritanceAttribute Inherited;
+            public static readonly System.ComponentModel.InheritanceAttribute InheritedReadOnly;
             public override bool IsDefaultAttribute() => throw null;
-            public static System.ComponentModel.InheritanceAttribute NotInherited;
+            public static readonly System.ComponentModel.InheritanceAttribute NotInherited;
             public override string ToString() => throw null;
         }
         public enum InheritanceLevel
@@ -1350,7 +1350,7 @@ namespace System
             public LicenseProviderAttribute() => throw null;
             public LicenseProviderAttribute(string typeName) => throw null;
             public LicenseProviderAttribute(System.Type type) => throw null;
-            public static System.ComponentModel.LicenseProviderAttribute Default;
+            public static readonly System.ComponentModel.LicenseProviderAttribute Default;
             public override bool Equals(object value) => throw null;
             public override int GetHashCode() => throw null;
             public System.Type LicenseProvider { get => throw null; }
@@ -1372,13 +1372,13 @@ namespace System
         {
             public ListBindableAttribute(bool listBindable) => throw null;
             public ListBindableAttribute(System.ComponentModel.BindableSupport flags) => throw null;
-            public static System.ComponentModel.ListBindableAttribute Default;
+            public static readonly System.ComponentModel.ListBindableAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
             public bool ListBindable { get => throw null; }
-            public static System.ComponentModel.ListBindableAttribute No;
-            public static System.ComponentModel.ListBindableAttribute Yes;
+            public static readonly System.ComponentModel.ListBindableAttribute No;
+            public static readonly System.ComponentModel.ListBindableAttribute Yes;
         }
         public class ListChangedEventArgs : System.EventArgs
         {
@@ -1440,7 +1440,7 @@ namespace System
             public LookupBindingPropertiesAttribute() => throw null;
             public LookupBindingPropertiesAttribute(string dataSource, string displayMember, string valueMember, string lookupMember) => throw null;
             public string DataSource { get => throw null; }
-            public static System.ComponentModel.LookupBindingPropertiesAttribute Default;
+            public static readonly System.ComponentModel.LookupBindingPropertiesAttribute Default;
             public string DisplayMember { get => throw null; }
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
@@ -1625,13 +1625,13 @@ namespace System
         {
             public PasswordPropertyTextAttribute() => throw null;
             public PasswordPropertyTextAttribute(bool password) => throw null;
-            public static System.ComponentModel.PasswordPropertyTextAttribute Default;
+            public static readonly System.ComponentModel.PasswordPropertyTextAttribute Default;
             public override bool Equals(object o) => throw null;
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
-            public static System.ComponentModel.PasswordPropertyTextAttribute No;
+            public static readonly System.ComponentModel.PasswordPropertyTextAttribute No;
             public bool Password { get => throw null; }
-            public static System.ComponentModel.PasswordPropertyTextAttribute Yes;
+            public static readonly System.ComponentModel.PasswordPropertyTextAttribute Yes;
         }
         public abstract class PropertyDescriptor : System.ComponentModel.MemberDescriptor
         {
@@ -1682,7 +1682,7 @@ namespace System
             int System.Collections.ICollection.Count { get => throw null; }
             public PropertyDescriptorCollection(System.ComponentModel.PropertyDescriptor[] properties) => throw null;
             public PropertyDescriptorCollection(System.ComponentModel.PropertyDescriptor[] properties, bool readOnly) => throw null;
-            public static System.ComponentModel.PropertyDescriptorCollection Empty;
+            public static readonly System.ComponentModel.PropertyDescriptorCollection Empty;
             public virtual System.ComponentModel.PropertyDescriptor Find(string name, bool ignoreCase) => throw null;
             public virtual System.Collections.IEnumerator GetEnumerator() => throw null;
             System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw null;
@@ -1751,13 +1751,13 @@ namespace System
         public class RecommendedAsConfigurableAttribute : System.Attribute
         {
             public RecommendedAsConfigurableAttribute(bool recommendedAsConfigurable) => throw null;
-            public static System.ComponentModel.RecommendedAsConfigurableAttribute Default;
+            public static readonly System.ComponentModel.RecommendedAsConfigurableAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
-            public static System.ComponentModel.RecommendedAsConfigurableAttribute No;
+            public static readonly System.ComponentModel.RecommendedAsConfigurableAttribute No;
             public bool RecommendedAsConfigurable { get => throw null; }
-            public static System.ComponentModel.RecommendedAsConfigurableAttribute Yes;
+            public static readonly System.ComponentModel.RecommendedAsConfigurableAttribute Yes;
         }
         public class ReferenceConverter : System.ComponentModel.TypeConverter
         {
@@ -1781,13 +1781,13 @@ namespace System
         public class RunInstallerAttribute : System.Attribute
         {
             public RunInstallerAttribute(bool runInstaller) => throw null;
-            public static System.ComponentModel.RunInstallerAttribute Default;
+            public static readonly System.ComponentModel.RunInstallerAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
-            public static System.ComponentModel.RunInstallerAttribute No;
+            public static readonly System.ComponentModel.RunInstallerAttribute No;
             public bool RunInstaller { get => throw null; }
-            public static System.ComponentModel.RunInstallerAttribute Yes;
+            public static readonly System.ComponentModel.RunInstallerAttribute Yes;
         }
         public class SByteConverter : System.ComponentModel.BaseNumberConverter
         {
@@ -1799,8 +1799,8 @@ namespace System
             public SettingsBindableAttribute(bool bindable) => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
-            public static System.ComponentModel.SettingsBindableAttribute No;
-            public static System.ComponentModel.SettingsBindableAttribute Yes;
+            public static readonly System.ComponentModel.SettingsBindableAttribute No;
+            public static readonly System.ComponentModel.SettingsBindableAttribute Yes;
         }
         public class SingleConverter : System.ComponentModel.BaseNumberConverter
         {
@@ -1839,11 +1839,11 @@ namespace System
             public ToolboxItemAttribute(bool defaultType) => throw null;
             public ToolboxItemAttribute(string toolboxItemTypeName) => throw null;
             public ToolboxItemAttribute(System.Type toolboxItemType) => throw null;
-            public static System.ComponentModel.ToolboxItemAttribute Default;
+            public static readonly System.ComponentModel.ToolboxItemAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public override bool IsDefaultAttribute() => throw null;
-            public static System.ComponentModel.ToolboxItemAttribute None;
+            public static readonly System.ComponentModel.ToolboxItemAttribute None;
             public System.Type ToolboxItemType { get => throw null; }
             public string ToolboxItemTypeName { get => throw null; }
         }

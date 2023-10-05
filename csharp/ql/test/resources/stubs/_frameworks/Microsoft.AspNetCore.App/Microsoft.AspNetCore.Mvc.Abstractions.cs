@@ -467,27 +467,27 @@ namespace Microsoft
                 }
                 public class BindingSource : System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource>
                 {
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Body;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Body;
                     public virtual bool CanAcceptDataFrom(Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource bindingSource) => throw null;
                     public BindingSource(string id, string displayName, bool isGreedy, bool isFromRequest) => throw null;
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Custom;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Custom;
                     public string DisplayName { get => throw null; }
                     public bool Equals(Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource other) => throw null;
                     public override bool Equals(object obj) => throw null;
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Form;
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource FormFile;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Form;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource FormFile;
                     public override int GetHashCode() => throw null;
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Header;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Header;
                     public string Id { get => throw null; }
                     public bool IsFromRequest { get => throw null; }
                     public bool IsGreedy { get => throw null; }
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource ModelBinding;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource ModelBinding;
                     public static bool operator ==(Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource s1, Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource s2) => throw null;
                     public static bool operator !=(Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource s1, Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource s2) => throw null;
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Path;
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Query;
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Services;
-                    public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Special;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Path;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Query;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Services;
+                    public static readonly Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource Special;
                 }
                 public class CompositeBindingSource : Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource
                 {
@@ -674,7 +674,7 @@ namespace Microsoft
                     public abstract bool ConvertEmptyStringToNull { get; }
                     protected ModelMetadata(Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ModelMetadataIdentity identity) => throw null;
                     public abstract string DataTypeName { get; }
-                    public static int DefaultOrder;
+                    public static readonly int DefaultOrder;
                     public abstract string Description { get; }
                     public abstract string DisplayFormatString { get; }
                     public abstract string DisplayName { get; }
@@ -753,7 +753,7 @@ namespace Microsoft
                     public ModelStateDictionary() => throw null;
                     public ModelStateDictionary(int maxAllowedErrors) => throw null;
                     public ModelStateDictionary(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dictionary) => throw null;
-                    public static int DefaultMaxAllowedErrors;
+                    public static readonly int DefaultMaxAllowedErrors;
                     public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateEntry>>, System.Collections.IEnumerator
                     {
                         public Enumerator(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary dictionary, string prefix) => throw null;

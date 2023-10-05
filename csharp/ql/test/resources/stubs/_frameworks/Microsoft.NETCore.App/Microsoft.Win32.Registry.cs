@@ -6,15 +6,15 @@ namespace Microsoft
     {
         public static class Registry
         {
-            public static Microsoft.Win32.RegistryKey ClassesRoot;
-            public static Microsoft.Win32.RegistryKey CurrentConfig;
-            public static Microsoft.Win32.RegistryKey CurrentUser;
+            public static readonly Microsoft.Win32.RegistryKey ClassesRoot;
+            public static readonly Microsoft.Win32.RegistryKey CurrentConfig;
+            public static readonly Microsoft.Win32.RegistryKey CurrentUser;
             public static object GetValue(string keyName, string valueName, object defaultValue) => throw null;
-            public static Microsoft.Win32.RegistryKey LocalMachine;
-            public static Microsoft.Win32.RegistryKey PerformanceData;
+            public static readonly Microsoft.Win32.RegistryKey LocalMachine;
+            public static readonly Microsoft.Win32.RegistryKey PerformanceData;
             public static void SetValue(string keyName, string valueName, object value) => throw null;
             public static void SetValue(string keyName, string valueName, object value, Microsoft.Win32.RegistryValueKind valueKind) => throw null;
-            public static Microsoft.Win32.RegistryKey Users;
+            public static readonly Microsoft.Win32.RegistryKey Users;
         }
         public enum RegistryHive
         {

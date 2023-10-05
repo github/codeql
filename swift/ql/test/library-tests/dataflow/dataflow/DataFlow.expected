@@ -145,6 +145,8 @@ edges
 | test.swift:270:15:270:22 | call to source() | test.swift:270:15:270:31 | call to signum() |
 | test.swift:271:15:271:16 | ...? | test.swift:271:15:271:25 | call to signum() |
 | test.swift:271:15:271:25 | call to signum() | test.swift:271:15:271:25 | OptionalEvaluationExpr |
+| test.swift:275:20:275:27 | call to source() | test.swift:275:15:275:27 | ... ??(_:_:) ... |
+| test.swift:277:20:277:27 | call to source() | test.swift:277:15:277:27 | ... ??(_:_:) ... |
 | test.swift:279:26:279:26 | x [some:0] | test.swift:279:26:279:27 | ...! |
 | test.swift:279:26:279:27 | ...! | test.swift:279:15:279:31 | ... ? ... : ... |
 | test.swift:280:26:280:26 | x [some:0] | test.swift:280:26:280:27 | ...! |
@@ -713,6 +715,9 @@ nodes
 | test.swift:271:15:271:25 | call to signum() | semmle.label | call to signum() |
 | test.swift:274:15:274:20 | ... ??(_:_:) ... | semmle.label | ... ??(_:_:) ... |
 | test.swift:275:15:275:27 | ... ??(_:_:) ... | semmle.label | ... ??(_:_:) ... |
+| test.swift:275:20:275:27 | call to source() | semmle.label | call to source() |
+| test.swift:277:15:277:27 | ... ??(_:_:) ... | semmle.label | ... ??(_:_:) ... |
+| test.swift:277:20:277:27 | call to source() | semmle.label | call to source() |
 | test.swift:279:15:279:31 | ... ? ... : ... | semmle.label | ... ? ... : ... |
 | test.swift:279:26:279:26 | x [some:0] | semmle.label | x [some:0] |
 | test.swift:279:26:279:27 | ...! | semmle.label | ...! |
@@ -1262,6 +1267,8 @@ subpaths
 | test.swift:271:15:271:25 | OptionalEvaluationExpr | test.swift:259:12:259:19 | call to source() | test.swift:271:15:271:25 | OptionalEvaluationExpr | result |
 | test.swift:274:15:274:20 | ... ??(_:_:) ... | test.swift:259:12:259:19 | call to source() | test.swift:274:15:274:20 | ... ??(_:_:) ... | result |
 | test.swift:275:15:275:27 | ... ??(_:_:) ... | test.swift:259:12:259:19 | call to source() | test.swift:275:15:275:27 | ... ??(_:_:) ... | result |
+| test.swift:275:15:275:27 | ... ??(_:_:) ... | test.swift:275:20:275:27 | call to source() | test.swift:275:15:275:27 | ... ??(_:_:) ... | result |
+| test.swift:277:15:277:27 | ... ??(_:_:) ... | test.swift:277:20:277:27 | call to source() | test.swift:277:15:277:27 | ... ??(_:_:) ... | result |
 | test.swift:279:15:279:31 | ... ? ... : ... | test.swift:259:12:259:19 | call to source() | test.swift:279:15:279:31 | ... ? ... : ... | result |
 | test.swift:280:15:280:38 | ... ? ... : ... | test.swift:259:12:259:19 | call to source() | test.swift:280:15:280:38 | ... ? ... : ... | result |
 | test.swift:280:15:280:38 | ... ? ... : ... | test.swift:280:31:280:38 | call to source() | test.swift:280:15:280:38 | ... ? ... : ... | result |

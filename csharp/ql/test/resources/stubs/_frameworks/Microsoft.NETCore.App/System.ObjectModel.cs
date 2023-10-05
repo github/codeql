@@ -129,7 +129,7 @@ namespace System
             public TypeConverterAttribute() => throw null;
             public TypeConverterAttribute(string typeName) => throw null;
             public TypeConverterAttribute(System.Type type) => throw null;
-            public static System.ComponentModel.TypeConverterAttribute Default;
+            public static readonly System.ComponentModel.TypeConverterAttribute Default;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
         }

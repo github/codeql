@@ -25,15 +25,15 @@ namespace Microsoft
             }
             public static class EnvironmentName
             {
-                public static string Development;
-                public static string Production;
-                public static string Staging;
+                public static readonly string Development;
+                public static readonly string Production;
+                public static readonly string Staging;
             }
             public static class Environments
             {
-                public static string Development;
-                public static string Production;
-                public static string Staging;
+                public static readonly string Development;
+                public static readonly string Production;
+                public static readonly string Staging;
             }
             public sealed class HostAbortedException : System.Exception
             {
@@ -50,9 +50,9 @@ namespace Microsoft
             }
             public static class HostDefaults
             {
-                public static string ApplicationKey;
-                public static string ContentRootKey;
-                public static string EnvironmentKey;
+                public static readonly string ApplicationKey;
+                public static readonly string ContentRootKey;
+                public static readonly string EnvironmentKey;
             }
             public static partial class HostEnvironmentEnvExtensions
             {

@@ -86,7 +86,7 @@ namespace Microsoft
                 }
                 public class CacheTagHelper : Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperBase
                 {
-                    public static string CacheKeyPrefix;
+                    public static readonly string CacheKeyPrefix;
                     public CacheTagHelper(Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperMemoryCacheFactory factory, System.Text.Encodings.Web.HtmlEncoder htmlEncoder) : base(default(System.Text.Encodings.Web.HtmlEncoder)) => throw null;
                     protected Microsoft.Extensions.Caching.Memory.IMemoryCache MemoryCache { get => throw null; }
                     public Microsoft.Extensions.Caching.Memory.CacheItemPriority? Priority { get => throw null; set { } }
@@ -95,7 +95,7 @@ namespace Microsoft
                 public abstract class CacheTagHelperBase : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {
                     public CacheTagHelperBase(System.Text.Encodings.Web.HtmlEncoder htmlEncoder) => throw null;
-                    public static System.TimeSpan DefaultExpiration;
+                    public static readonly System.TimeSpan DefaultExpiration;
                     public bool Enabled { get => throw null; set { } }
                     public System.TimeSpan? ExpiresAfter { get => throw null; set { } }
                     public System.DateTimeOffset? ExpiresOn { get => throw null; set { } }
@@ -132,7 +132,7 @@ namespace Microsoft
                 }
                 public class DistributedCacheTagHelper : Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelperBase
                 {
-                    public static string CacheKeyPrefix;
+                    public static readonly string CacheKeyPrefix;
                     public DistributedCacheTagHelper(Microsoft.AspNetCore.Mvc.TagHelpers.Cache.IDistributedCacheTagHelperService distributedCacheService, System.Text.Encodings.Web.HtmlEncoder htmlEncoder) : base(default(System.Text.Encodings.Web.HtmlEncoder)) => throw null;
                     protected Microsoft.Extensions.Caching.Memory.IMemoryCache MemoryCache { get => throw null; }
                     public string Name { get => throw null; set { } }

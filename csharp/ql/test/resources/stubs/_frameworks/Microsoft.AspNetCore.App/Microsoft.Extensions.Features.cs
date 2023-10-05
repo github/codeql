@@ -28,7 +28,7 @@ namespace Microsoft
                 }
                 public struct FeatureReference<T>
                 {
-                    public static Microsoft.AspNetCore.Http.Features.FeatureReference<T> Default;
+                    public static readonly Microsoft.AspNetCore.Http.Features.FeatureReference<T> Default;
                     public T Fetch(Microsoft.AspNetCore.Http.Features.IFeatureCollection features) => throw null;
                     public T Update(Microsoft.AspNetCore.Http.Features.IFeatureCollection features, T feature) => throw null;
                 }

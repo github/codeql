@@ -169,15 +169,9 @@ private class CleartextStorageDatabaseDefaultBarrier extends CleartextStorageDat
 /**
  * An additional taint step for cleartext database storage vulnerabilities.
  */
-private class CleartextStorageDatabaseArrayAdditionalFlowStep extends CleartextStorageDatabaseAdditionalFlowStep
+private class CleartextStorageDatabaseFieldsAdditionalFlowStep extends CleartextStorageDatabaseAdditionalFlowStep
 {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // needed until we have proper content flow through arrays.
-    exists(ArrayExpr arr |
-      nodeFrom.asExpr() = arr.getAnElement() and
-      nodeTo.asExpr() = arr
-    )
-    or
     // if an object is sensitive, its fields are always sensitive
     // (this is needed because the sensitive data sources are in a sense
     //  approximate; for example we might identify `passwordBox` as a source,

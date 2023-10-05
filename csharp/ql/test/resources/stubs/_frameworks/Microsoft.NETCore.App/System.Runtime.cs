@@ -554,7 +554,7 @@ namespace System
         public static System.Half Int16BitsToHalf(short value) => throw null;
         public static float Int32BitsToSingle(int value) => throw null;
         public static double Int64BitsToDouble(long value) => throw null;
-        public static bool IsLittleEndian;
+        public static readonly bool IsLittleEndian;
         public static int SingleToInt32Bits(float value) => throw null;
         public static uint SingleToUInt32Bits(float value) => throw null;
         public static bool ToBoolean(byte[] value, int startIndex) => throw null;
@@ -603,7 +603,7 @@ namespace System
         public int CompareTo(object obj) => throw null;
         public bool Equals(bool obj) => throw null;
         public override bool Equals(object obj) => throw null;
-        public static string FalseString;
+        public static readonly string FalseString;
         public override int GetHashCode() => throw null;
         public System.TypeCode GetTypeCode() => throw null;
         public static bool Parse(System.ReadOnlySpan<char> value) => throw null;
@@ -625,7 +625,7 @@ namespace System
         ushort System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         uint System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         ulong System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
-        public static string TrueString;
+        public static readonly string TrueString;
         public bool TryFormat(System.Span<char> destination, out int charsWritten) => throw null;
         public static bool TryParse(System.ReadOnlySpan<char> value, out bool result) => throw null;
         public static bool TryParse(string value, out bool result) => throw null;
@@ -743,13 +743,13 @@ namespace System
         static byte System.Numerics.INumberBase<byte>.MaxMagnitude(byte x, byte y) => throw null;
         static byte System.Numerics.INumberBase<byte>.MaxMagnitudeNumber(byte x, byte y) => throw null;
         static byte System.Numerics.INumber<byte>.MaxNumber(byte x, byte y) => throw null;
-        public const byte MaxValue = default;
+        public const byte MaxValue = 255;
         static byte System.Numerics.IMinMaxValue<byte>.MaxValue { get => throw null; }
         static byte System.Numerics.INumber<byte>.Min(byte x, byte y) => throw null;
         static byte System.Numerics.INumberBase<byte>.MinMagnitude(byte x, byte y) => throw null;
         static byte System.Numerics.INumberBase<byte>.MinMagnitudeNumber(byte x, byte y) => throw null;
         static byte System.Numerics.INumber<byte>.MinNumber(byte x, byte y) => throw null;
-        public const byte MinValue = default;
+        public const byte MinValue = 0;
         static byte System.Numerics.IMinMaxValue<byte>.MinValue { get => throw null; }
         static byte System.Numerics.IMultiplicativeIdentity<byte, byte>.MultiplicativeIdentity { get => throw null; }
         static byte System.Numerics.INumberBase<byte>.One { get => throw null; }
@@ -1153,8 +1153,8 @@ namespace System
         {
             public int Compare(object a, object b) => throw null;
             public Comparer(System.Globalization.CultureInfo culture) => throw null;
-            public static System.Collections.Comparer Default;
-            public static System.Collections.Comparer DefaultInvariant;
+            public static readonly System.Collections.Comparer Default;
+            public static readonly System.Collections.Comparer DefaultInvariant;
             public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         }
         public struct DictionaryEntry
@@ -1616,7 +1616,7 @@ namespace System
         public static object ChangeType(object value, System.Type conversionType, System.IFormatProvider provider) => throw null;
         public static object ChangeType(object value, System.TypeCode typeCode) => throw null;
         public static object ChangeType(object value, System.TypeCode typeCode, System.IFormatProvider provider) => throw null;
-        public static object DBNull;
+        public static readonly object DBNull;
         public static byte[] FromBase64CharArray(char[] inArray, int offset, int length) => throw null;
         public static byte[] FromBase64String(string s) => throw null;
         public static byte[] FromHexString(System.ReadOnlySpan<char> chars) => throw null;
@@ -2051,11 +2051,11 @@ namespace System
         public bool IsDaylightSavingTime() => throw null;
         public static bool IsLeapYear(int year) => throw null;
         public System.DateTimeKind Kind { get => throw null; }
-        public static System.DateTime MaxValue;
+        public static readonly System.DateTime MaxValue;
         public int Microsecond { get => throw null; }
         public int Millisecond { get => throw null; }
         public int Minute { get => throw null; }
-        public static System.DateTime MinValue;
+        public static readonly System.DateTime MinValue;
         public int Month { get => throw null; }
         public int Nanosecond { get => throw null; }
         public static System.DateTime Now { get => throw null; }
@@ -2125,7 +2125,7 @@ namespace System
         public static bool TryParseExact(System.ReadOnlySpan<char> s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
         public static bool TryParseExact(string s, string format, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
         public static bool TryParseExact(string s, string[] formats, System.IFormatProvider provider, System.Globalization.DateTimeStyles style, out System.DateTime result) => throw null;
-        public static System.DateTime UnixEpoch;
+        public static readonly System.DateTime UnixEpoch;
         public static System.DateTime UtcNow { get => throw null; }
         public int Year { get => throw null; }
     }
@@ -2174,11 +2174,11 @@ namespace System
         void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         public int Hour { get => throw null; }
         public System.DateTime LocalDateTime { get => throw null; }
-        public static System.DateTimeOffset MaxValue;
+        public static readonly System.DateTimeOffset MaxValue;
         public int Microsecond { get => throw null; }
         public int Millisecond { get => throw null; }
         public int Minute { get => throw null; }
-        public static System.DateTimeOffset MinValue;
+        public static readonly System.DateTimeOffset MinValue;
         public int Month { get => throw null; }
         public int Nanosecond { get => throw null; }
         public static System.DateTimeOffset Now { get => throw null; }
@@ -2230,7 +2230,7 @@ namespace System
         public static bool TryParseExact(System.ReadOnlySpan<char> input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
         public static bool TryParseExact(string input, string format, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
         public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.DateTimeStyles styles, out System.DateTimeOffset result) => throw null;
-        public static System.DateTimeOffset UnixEpoch;
+        public static readonly System.DateTimeOffset UnixEpoch;
         public System.DateTime UtcDateTime { get => throw null; }
         public static System.DateTimeOffset UtcNow { get => throw null; }
         public long UtcTicks { get => throw null; }
@@ -2267,7 +2267,7 @@ namespace System
         ushort System.IConvertible.ToUInt16(System.IFormatProvider provider) => throw null;
         uint System.IConvertible.ToUInt32(System.IFormatProvider provider) => throw null;
         ulong System.IConvertible.ToUInt64(System.IFormatProvider provider) => throw null;
-        public static System.DBNull Value;
+        public static readonly System.DBNull Value;
     }
     public struct Decimal : System.Numerics.IAdditionOperators<decimal, decimal, decimal>, System.Numerics.IAdditiveIdentity<decimal, decimal>, System.IComparable, System.IComparable<decimal>, System.Numerics.IComparisonOperators<decimal, decimal, bool>, System.IConvertible, System.Numerics.IDecrementOperators<decimal>, System.Runtime.Serialization.IDeserializationCallback, System.Numerics.IDivisionOperators<decimal, decimal, decimal>, System.Numerics.IEqualityOperators<decimal, decimal, bool>, System.IEquatable<decimal>, System.Numerics.IFloatingPoint<decimal>, System.Numerics.IFloatingPointConstants<decimal>, System.IFormattable, System.Numerics.IIncrementOperators<decimal>, System.Numerics.IMinMaxValue<decimal>, System.Numerics.IModulusOperators<decimal, decimal, decimal>, System.Numerics.IMultiplicativeIdentity<decimal, decimal>, System.Numerics.IMultiplyOperators<decimal, decimal, decimal>, System.Numerics.INumber<decimal>, System.Numerics.INumberBase<decimal>, System.IParsable<decimal>, System.Runtime.Serialization.ISerializable, System.Numerics.ISignedNumber<decimal>, System.ISpanFormattable, System.ISpanParsable<decimal>, System.Numerics.ISubtractionOperators<decimal, decimal, decimal>, System.Numerics.IUnaryNegationOperators<decimal, decimal>, System.Numerics.IUnaryPlusOperators<decimal, decimal>
     {
@@ -2752,7 +2752,7 @@ namespace System
         public static class Debugger
         {
             public static void Break() => throw null;
-            public static string DefaultCategory;
+            public static readonly string DefaultCategory;
             public static bool IsAttached { get => throw null; }
             public static bool IsLogging() => throw null;
             public static bool Launch() => throw null;
@@ -2827,11 +2827,11 @@ namespace System
             public System.TimeSpan Elapsed { get => throw null; }
             public long ElapsedMilliseconds { get => throw null; }
             public long ElapsedTicks { get => throw null; }
-            public static long Frequency;
+            public static readonly long Frequency;
             public static System.TimeSpan GetElapsedTime(long startingTimestamp) => throw null;
             public static System.TimeSpan GetElapsedTime(long startingTimestamp, long endingTimestamp) => throw null;
             public static long GetTimestamp() => throw null;
-            public static bool IsHighResolution;
+            public static readonly bool IsHighResolution;
             public bool IsRunning { get => throw null; }
             public void Reset() => throw null;
             public void Restart() => throw null;
@@ -3228,7 +3228,7 @@ namespace System
     public class EventArgs
     {
         public EventArgs() => throw null;
-        public static System.EventArgs Empty;
+        public static readonly System.EventArgs Empty;
     }
     public delegate void EventHandler(object sender, System.EventArgs e);
     public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
@@ -3437,7 +3437,7 @@ namespace System
             public virtual System.Globalization.CalendarAlgorithmType AlgorithmType { get => throw null; }
             public virtual object Clone() => throw null;
             protected Calendar() => throw null;
-            public const int CurrentEra = default;
+            public const int CurrentEra = 0;
             protected virtual int DaysInYearBeforeMinSupportedYear { get => throw null; }
             public abstract int[] Eras { get; }
             public abstract int GetDayOfMonth(System.DateTime time);
@@ -3501,7 +3501,7 @@ namespace System
         }
         public class ChineseLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
         {
-            public const int ChineseEra = default;
+            public const int ChineseEra = 1;
             public ChineseLunisolarCalendar() => throw null;
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
             public override int[] Eras { get => throw null; }
@@ -3774,7 +3774,7 @@ namespace System
         {
             public override System.DateTime AddMonths(System.DateTime time, int months) => throw null;
             public override System.DateTime AddYears(System.DateTime time, int years) => throw null;
-            public const int ADEra = default;
+            public const int ADEra = 1;
             public override System.Globalization.CalendarAlgorithmType AlgorithmType { get => throw null; }
             public virtual System.Globalization.GregorianCalendarTypes CalendarType { get => throw null; set { } }
             public GregorianCalendar() => throw null;
@@ -3825,7 +3825,7 @@ namespace System
             public override int GetMonth(System.DateTime time) => throw null;
             public override int GetMonthsInYear(int year, int era) => throw null;
             public override int GetYear(System.DateTime time) => throw null;
-            public static int HebrewEra;
+            public static readonly int HebrewEra;
             public override bool IsLeapDay(int year, int month, int day, int era) => throw null;
             public override bool IsLeapMonth(int year, int month, int era) => throw null;
             public override bool IsLeapYear(int year, int era) => throw null;
@@ -3854,7 +3854,7 @@ namespace System
             public override int GetMonthsInYear(int year, int era) => throw null;
             public override int GetYear(System.DateTime time) => throw null;
             public int HijriAdjustment { get => throw null; set { } }
-            public static int HijriEra;
+            public static readonly int HijriEra;
             public override bool IsLeapDay(int year, int month, int day, int era) => throw null;
             public override bool IsLeapMonth(int year, int month, int era) => throw null;
             public override bool IsLeapYear(int year, int era) => throw null;
@@ -3920,7 +3920,7 @@ namespace System
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
             public override int[] Eras { get => throw null; }
             public override int GetEra(System.DateTime time) => throw null;
-            public const int JapaneseEra = default;
+            public const int JapaneseEra = 1;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
         }
@@ -3944,7 +3944,7 @@ namespace System
             public override bool IsLeapDay(int year, int month, int day, int era) => throw null;
             public override bool IsLeapMonth(int year, int month, int era) => throw null;
             public override bool IsLeapYear(int year, int era) => throw null;
-            public static int JulianEra;
+            public static readonly int JulianEra;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
             public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) => throw null;
@@ -3972,7 +3972,7 @@ namespace System
             public override bool IsLeapDay(int year, int month, int day, int era) => throw null;
             public override bool IsLeapMonth(int year, int month, int era) => throw null;
             public override bool IsLeapYear(int year, int era) => throw null;
-            public const int KoreanEra = default;
+            public const int KoreanEra = 1;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
             public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) => throw null;
@@ -3985,7 +3985,7 @@ namespace System
             protected override int DaysInYearBeforeMinSupportedYear { get => throw null; }
             public override int[] Eras { get => throw null; }
             public override int GetEra(System.DateTime time) => throw null;
-            public const int GregorianEra = default;
+            public const int GregorianEra = 1;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
         }
@@ -4070,7 +4070,7 @@ namespace System
             public override bool IsLeapYear(int year, int era) => throw null;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
-            public static int PersianEra;
+            public static readonly int PersianEra;
             public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) => throw null;
             public override int ToFourDigitYear(int year) => throw null;
             public override int TwoDigitYearMax { get => throw null; set { } }
@@ -4226,7 +4226,7 @@ namespace System
             public override bool IsLeapYear(int year, int era) => throw null;
             public override System.DateTime MaxSupportedDateTime { get => throw null; }
             public override System.DateTime MinSupportedDateTime { get => throw null; }
-            public const int ThaiBuddhistEra = default;
+            public const int ThaiBuddhistEra = 1;
             public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) => throw null;
             public override int ToFourDigitYear(int year) => throw null;
             public override int TwoDigitYearMax { get => throw null; set { } }
@@ -4263,7 +4263,7 @@ namespace System
             public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) => throw null;
             public override int ToFourDigitYear(int year) => throw null;
             public override int TwoDigitYearMax { get => throw null; set { } }
-            public const int UmAlQuraEra = default;
+            public const int UmAlQuraEra = 1;
         }
         public enum UnicodeCategory
         {
@@ -4313,7 +4313,7 @@ namespace System
         public Guid(System.ReadOnlySpan<byte> b) => throw null;
         public Guid(string g) => throw null;
         public Guid(uint a, ushort b, ushort c, byte d, byte e, byte f, byte g, byte h, byte i, byte j, byte k) => throw null;
-        public static System.Guid Empty;
+        public static readonly System.Guid Empty;
         public bool Equals(System.Guid g) => throw null;
         public override bool Equals(object o) => throw null;
         public override int GetHashCode() => throw null;
@@ -4872,13 +4872,13 @@ namespace System
         static short System.Numerics.INumberBase<short>.MaxMagnitude(short x, short y) => throw null;
         static short System.Numerics.INumberBase<short>.MaxMagnitudeNumber(short x, short y) => throw null;
         static short System.Numerics.INumber<short>.MaxNumber(short x, short y) => throw null;
-        public const short MaxValue = default;
+        public const short MaxValue = 32767;
         static short System.Numerics.IMinMaxValue<short>.MaxValue { get => throw null; }
         static short System.Numerics.INumber<short>.Min(short x, short y) => throw null;
         static short System.Numerics.INumberBase<short>.MinMagnitude(short x, short y) => throw null;
         static short System.Numerics.INumberBase<short>.MinMagnitudeNumber(short x, short y) => throw null;
         static short System.Numerics.INumber<short>.MinNumber(short x, short y) => throw null;
-        public const short MinValue = default;
+        public const short MinValue = -32768;
         static short System.Numerics.IMinMaxValue<short>.MinValue { get => throw null; }
         static short System.Numerics.IMultiplicativeIdentity<short, short>.MultiplicativeIdentity { get => throw null; }
         static short System.Numerics.ISignedNumber<short>.NegativeOne { get => throw null; }
@@ -5013,14 +5013,14 @@ namespace System
         public static int MaxMagnitude(int x, int y) => throw null;
         static int System.Numerics.INumberBase<int>.MaxMagnitudeNumber(int x, int y) => throw null;
         static int System.Numerics.INumber<int>.MaxNumber(int x, int y) => throw null;
-        public const int MaxValue = default;
+        public const int MaxValue = 2147483647;
         static int System.Numerics.IMinMaxValue<int>.MaxValue { get => throw null; }
         static int System.Numerics.INumber<int>.Min(int x, int y) => throw null;
         static int System.Numerics.INumberBase<int>.MinMagnitude(int x, int y) => throw null;
         public static int MinMagnitude(int x, int y) => throw null;
         static int System.Numerics.INumberBase<int>.MinMagnitudeNumber(int x, int y) => throw null;
         static int System.Numerics.INumber<int>.MinNumber(int x, int y) => throw null;
-        public const int MinValue = default;
+        public const int MinValue = -2147483648;
         static int System.Numerics.IMinMaxValue<int>.MinValue { get => throw null; }
         static int System.Numerics.IMultiplicativeIdentity<int, int>.MultiplicativeIdentity { get => throw null; }
         static int System.Numerics.ISignedNumber<int>.NegativeOne { get => throw null; }
@@ -5150,13 +5150,13 @@ namespace System
         static long System.Numerics.INumberBase<long>.MaxMagnitude(long x, long y) => throw null;
         static long System.Numerics.INumberBase<long>.MaxMagnitudeNumber(long x, long y) => throw null;
         static long System.Numerics.INumber<long>.MaxNumber(long x, long y) => throw null;
-        public const long MaxValue = default;
+        public const long MaxValue = 9223372036854775807;
         static long System.Numerics.IMinMaxValue<long>.MaxValue { get => throw null; }
         static long System.Numerics.INumber<long>.Min(long x, long y) => throw null;
         static long System.Numerics.INumberBase<long>.MinMagnitude(long x, long y) => throw null;
         static long System.Numerics.INumberBase<long>.MinMagnitudeNumber(long x, long y) => throw null;
         static long System.Numerics.INumber<long>.MinNumber(long x, long y) => throw null;
-        public const long MinValue = default;
+        public const long MinValue = -9223372036854775808;
         static long System.Numerics.IMinMaxValue<long>.MinValue { get => throw null; }
         static long System.Numerics.IMultiplicativeIdentity<long, long>.MultiplicativeIdentity { get => throw null; }
         static long System.Numerics.ISignedNumber<long>.NegativeOne { get => throw null; }
@@ -5371,7 +5371,7 @@ namespace System
         static bool System.Numerics.IBinaryInteger<nint>.TryReadLittleEndian(System.ReadOnlySpan<byte> source, bool isUnsigned, out nint value) => throw null;
         bool System.Numerics.IBinaryInteger<nint>.TryWriteBigEndian(System.Span<byte> destination, out int bytesWritten) => throw null;
         bool System.Numerics.IBinaryInteger<nint>.TryWriteLittleEndian(System.Span<byte> destination, out int bytesWritten) => throw null;
-        public static nint Zero;
+        public static readonly nint Zero;
         static nint System.Numerics.INumberBase<nint>.Zero { get => throw null; }
     }
     public class InvalidCastException : System.SystemException
@@ -5452,7 +5452,7 @@ namespace System
             protected virtual void Dispose(bool disposing) => throw null;
             public virtual System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
             public virtual void Flush() => throw null;
-            public static System.IO.BinaryWriter Null;
+            public static readonly System.IO.BinaryWriter Null;
             protected System.IO.Stream OutStream;
             public virtual long Seek(int offset, System.IO.SeekOrigin origin) => throw null;
             public virtual void Write(bool value) => throw null;
@@ -6049,13 +6049,13 @@ namespace System
         }
         public static class Path
         {
-            public static char AltDirectorySeparatorChar;
+            public static readonly char AltDirectorySeparatorChar;
             public static string ChangeExtension(string path, string extension) => throw null;
             public static string Combine(string path1, string path2) => throw null;
             public static string Combine(string path1, string path2, string path3) => throw null;
             public static string Combine(string path1, string path2, string path3, string path4) => throw null;
             public static string Combine(params string[] paths) => throw null;
-            public static char DirectorySeparatorChar;
+            public static readonly char DirectorySeparatorChar;
             public static bool EndsInDirectorySeparator(System.ReadOnlySpan<char> path) => throw null;
             public static bool EndsInDirectorySeparator(string path) => throw null;
             public static bool Exists(string path) => throw null;
@@ -6079,7 +6079,7 @@ namespace System
             public static string GetTempPath() => throw null;
             public static bool HasExtension(System.ReadOnlySpan<char> path) => throw null;
             public static bool HasExtension(string path) => throw null;
-            public static char[] InvalidPathChars;
+            public static readonly char[] InvalidPathChars;
             public static bool IsPathFullyQualified(System.ReadOnlySpan<char> path) => throw null;
             public static bool IsPathFullyQualified(string path) => throw null;
             public static bool IsPathRooted(System.ReadOnlySpan<char> path) => throw null;
@@ -6091,12 +6091,12 @@ namespace System
             public static string Join(string path1, string path2, string path3) => throw null;
             public static string Join(string path1, string path2, string path3, string path4) => throw null;
             public static string Join(params string[] paths) => throw null;
-            public static char PathSeparator;
+            public static readonly char PathSeparator;
             public static System.ReadOnlySpan<char> TrimEndingDirectorySeparator(System.ReadOnlySpan<char> path) => throw null;
             public static string TrimEndingDirectorySeparator(string path) => throw null;
             public static bool TryJoin(System.ReadOnlySpan<char> path1, System.ReadOnlySpan<char> path2, System.ReadOnlySpan<char> path3, System.Span<char> destination, out int charsWritten) => throw null;
             public static bool TryJoin(System.ReadOnlySpan<char> path1, System.ReadOnlySpan<char> path2, System.Span<char> destination, out int charsWritten) => throw null;
-            public static char VolumeSeparatorChar;
+            public static readonly char VolumeSeparatorChar;
         }
         public class PathTooLongException : System.IO.IOException
         {
@@ -6155,7 +6155,7 @@ namespace System
             public System.Threading.Tasks.Task FlushAsync() => throw null;
             public virtual System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
             public abstract long Length { get; }
-            public static System.IO.Stream Null;
+            public static readonly System.IO.Stream Null;
             protected virtual void ObjectInvariant() => throw null;
             public abstract long Position { get; set; }
             public abstract int Read(byte[] buffer, int offset, int count);
@@ -6205,7 +6205,7 @@ namespace System
             public void DiscardBufferedData() => throw null;
             protected override void Dispose(bool disposing) => throw null;
             public bool EndOfStream { get => throw null; }
-            public static System.IO.StreamReader Null;
+            public static readonly System.IO.StreamReader Null;
             public override int Peek() => throw null;
             public override int Read() => throw null;
             public override int Read(char[] buffer, int index, int count) => throw null;
@@ -6243,7 +6243,7 @@ namespace System
             public override System.Text.Encoding Encoding { get => throw null; }
             public override void Flush() => throw null;
             public override System.Threading.Tasks.Task FlushAsync() => throw null;
-            public static System.IO.StreamWriter Null;
+            public static readonly System.IO.StreamWriter Null;
             public override void Write(char value) => throw null;
             public override void Write(char[] buffer) => throw null;
             public override void Write(char[] buffer, int index, int count) => throw null;
@@ -6326,7 +6326,7 @@ namespace System
             protected TextReader() => throw null;
             public void Dispose() => throw null;
             protected virtual void Dispose(bool disposing) => throw null;
-            public static System.IO.TextReader Null;
+            public static readonly System.IO.TextReader Null;
             public virtual int Peek() => throw null;
             public virtual int Read() => throw null;
             public virtual int Read(char[] buffer, int index, int count) => throw null;
@@ -6359,7 +6359,7 @@ namespace System
             public virtual System.Threading.Tasks.Task FlushAsync() => throw null;
             public virtual System.IFormatProvider FormatProvider { get => throw null; }
             public virtual string NewLine { get => throw null; set { } }
-            public static System.IO.TextWriter Null;
+            public static readonly System.IO.TextWriter Null;
             public static System.IO.TextWriter Synchronized(System.IO.TextWriter writer) => throw null;
             public virtual void Write(bool value) => throw null;
             public virtual void Write(char value) => throw null;
@@ -6791,7 +6791,7 @@ namespace System
     }
     public struct ModuleHandle : System.IEquatable<System.ModuleHandle>
     {
-        public static System.ModuleHandle EmptyHandle;
+        public static readonly System.ModuleHandle EmptyHandle;
         public bool Equals(System.ModuleHandle handle) => throw null;
         public override bool Equals(object obj) => throw null;
         public override int GetHashCode() => throw null;
@@ -7725,7 +7725,7 @@ namespace System
         }
         public abstract class ConstructorInfo : System.Reflection.MethodBase
         {
-            public static string ConstructorName;
+            public static readonly string ConstructorName;
             protected ConstructorInfo() => throw null;
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
@@ -7734,7 +7734,7 @@ namespace System
             public override System.Reflection.MemberTypes MemberType { get => throw null; }
             public static bool operator ==(System.Reflection.ConstructorInfo left, System.Reflection.ConstructorInfo right) => throw null;
             public static bool operator !=(System.Reflection.ConstructorInfo left, System.Reflection.ConstructorInfo right) => throw null;
-            public static string TypeConstructorName;
+            public static readonly string TypeConstructorName;
         }
         public class CustomAttributeData
         {
@@ -8178,7 +8178,7 @@ namespace System
         public sealed class Missing : System.Runtime.Serialization.ISerializable
         {
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
-            public static System.Reflection.Missing Value;
+            public static readonly System.Reflection.Missing Value;
         }
         public abstract class Module : System.Reflection.ICustomAttributeProvider, System.Runtime.Serialization.ISerializable
         {
@@ -8186,8 +8186,8 @@ namespace System
             protected Module() => throw null;
             public virtual System.Collections.Generic.IEnumerable<System.Reflection.CustomAttributeData> CustomAttributes { get => throw null; }
             public override bool Equals(object o) => throw null;
-            public static System.Reflection.TypeFilter FilterTypeName;
-            public static System.Reflection.TypeFilter FilterTypeNameIgnoreCase;
+            public static readonly System.Reflection.TypeFilter FilterTypeName;
+            public static readonly System.Reflection.TypeFilter FilterTypeNameIgnoreCase;
             public virtual System.Type[] FindTypes(System.Reflection.TypeFilter filter, object filterCriteria) => throw null;
             public virtual string FullyQualifiedName { get => throw null; }
             public virtual object[] GetCustomAttributes(bool inherit) => throw null;
@@ -8641,10 +8641,10 @@ namespace System
             public System.IO.UnmanagedMemoryStream GetStream(string name, System.Globalization.CultureInfo culture) => throw null;
             public virtual string GetString(string name) => throw null;
             public virtual string GetString(string name, System.Globalization.CultureInfo culture) => throw null;
-            public static int HeaderVersionNumber;
+            public static readonly int HeaderVersionNumber;
             public virtual bool IgnoreCase { get => throw null; set { } }
             protected virtual System.Resources.ResourceSet InternalGetResourceSet(System.Globalization.CultureInfo culture, bool createIfNotExists, bool tryParents) => throw null;
-            public static int MagicNumber;
+            public static readonly int MagicNumber;
             protected System.Reflection.Assembly MainAssembly;
             public virtual void ReleaseAllResources() => throw null;
             public virtual System.Type ResourceSetType { get => throw null; }
@@ -10076,13 +10076,13 @@ namespace System
         static sbyte System.Numerics.INumberBase<sbyte>.MaxMagnitude(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumberBase<sbyte>.MaxMagnitudeNumber(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumber<sbyte>.MaxNumber(sbyte x, sbyte y) => throw null;
-        public const sbyte MaxValue = default;
+        public const sbyte MaxValue = 127;
         static sbyte System.Numerics.IMinMaxValue<sbyte>.MaxValue { get => throw null; }
         static sbyte System.Numerics.INumber<sbyte>.Min(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumberBase<sbyte>.MinMagnitude(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumberBase<sbyte>.MinMagnitudeNumber(sbyte x, sbyte y) => throw null;
         static sbyte System.Numerics.INumber<sbyte>.MinNumber(sbyte x, sbyte y) => throw null;
-        public const sbyte MinValue = default;
+        public const sbyte MinValue = -128;
         static sbyte System.Numerics.IMinMaxValue<sbyte>.MinValue { get => throw null; }
         static sbyte System.Numerics.IMultiplicativeIdentity<sbyte, sbyte>.MultiplicativeIdentity { get => throw null; }
         static sbyte System.Numerics.ISignedNumber<sbyte>.NegativeOne { get => throw null; }
@@ -10728,7 +10728,7 @@ namespace System
         public unsafe String(sbyte* value) => throw null;
         public unsafe String(sbyte* value, int startIndex, int length) => throw null;
         public unsafe String(sbyte* value, int startIndex, int length, System.Text.Encoding enc) => throw null;
-        public static string Empty;
+        public static readonly string Empty;
         public bool EndsWith(char value) => throw null;
         public bool EndsWith(string value) => throw null;
         public bool EndsWith(string value, bool ignoreCase, System.Globalization.CultureInfo culture) => throw null;
@@ -11943,8 +11943,8 @@ namespace System
         }
         public static class Timeout
         {
-            public const int Infinite = default;
-            public static System.TimeSpan InfiniteTimeSpan;
+            public const int Infinite = -1;
+            public static readonly System.TimeSpan InfiniteTimeSpan;
         }
         public sealed class Timer : System.MarshalByRefObject, System.IAsyncDisposable, System.IDisposable
         {
@@ -11970,7 +11970,7 @@ namespace System
             public void Dispose() => throw null;
             protected virtual void Dispose(bool explicitDisposing) => throw null;
             public virtual nint Handle { get => throw null; set { } }
-            protected static nint InvalidHandle;
+            protected static readonly nint InvalidHandle;
             public Microsoft.Win32.SafeHandles.SafeWaitHandle SafeWaitHandle { get => throw null; set { } }
             public static bool SignalAndWait(System.Threading.WaitHandle toSignal, System.Threading.WaitHandle toWaitOn) => throw null;
             public static bool SignalAndWait(System.Threading.WaitHandle toSignal, System.Threading.WaitHandle toWaitOn, int millisecondsTimeout, bool exitContext) => throw null;
@@ -11990,7 +11990,7 @@ namespace System
             public virtual bool WaitOne(int millisecondsTimeout, bool exitContext) => throw null;
             public virtual bool WaitOne(System.TimeSpan timeout) => throw null;
             public virtual bool WaitOne(System.TimeSpan timeout, bool exitContext) => throw null;
-            public const int WaitTimeout = default;
+            public const int WaitTimeout = 258;
         }
         public static partial class WaitHandleExtensions
         {
@@ -12108,14 +12108,14 @@ namespace System
         public static System.TimeSpan FromTicks(long value) => throw null;
         public override int GetHashCode() => throw null;
         public int Hours { get => throw null; }
-        public static System.TimeSpan MaxValue;
+        public static readonly System.TimeSpan MaxValue;
         public int Microseconds { get => throw null; }
         public int Milliseconds { get => throw null; }
         public int Minutes { get => throw null; }
-        public static System.TimeSpan MinValue;
+        public static readonly System.TimeSpan MinValue;
         public System.TimeSpan Multiply(double factor) => throw null;
         public int Nanoseconds { get => throw null; }
-        public const long NanosecondsPerTick = default;
+        public const long NanosecondsPerTick = 100;
         public System.TimeSpan Negate() => throw null;
         public static System.TimeSpan operator +(System.TimeSpan t1, System.TimeSpan t2) => throw null;
         public static System.TimeSpan operator /(System.TimeSpan timeSpan, double divisor) => throw null;
@@ -12143,12 +12143,12 @@ namespace System
         public int Seconds { get => throw null; }
         public System.TimeSpan Subtract(System.TimeSpan ts) => throw null;
         public long Ticks { get => throw null; }
-        public const long TicksPerDay = default;
-        public const long TicksPerHour = default;
-        public const long TicksPerMicrosecond = default;
-        public const long TicksPerMillisecond = default;
-        public const long TicksPerMinute = default;
-        public const long TicksPerSecond = default;
+        public const long TicksPerDay = 864000000000;
+        public const long TicksPerHour = 36000000000;
+        public const long TicksPerMicrosecond = 10;
+        public const long TicksPerMillisecond = 10000;
+        public const long TicksPerMinute = 600000000;
+        public const long TicksPerSecond = 10000000;
         public override string ToString() => throw null;
         public string ToString(string format) => throw null;
         public string ToString(string format, System.IFormatProvider formatProvider) => throw null;
@@ -12172,7 +12172,7 @@ namespace System
         public static bool TryParseExact(string input, string format, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
         public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) => throw null;
         public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, out System.TimeSpan result) => throw null;
-        public static System.TimeSpan Zero;
+        public static readonly System.TimeSpan Zero;
     }
     public abstract class TimeZone
     {
@@ -12505,13 +12505,13 @@ namespace System
         public virtual System.Reflection.MethodBase DeclaringMethod { get => throw null; }
         public override System.Type DeclaringType { get => throw null; }
         public static System.Reflection.Binder DefaultBinder { get => throw null; }
-        public static char Delimiter;
-        public static System.Type[] EmptyTypes;
+        public static readonly char Delimiter;
+        public static readonly System.Type[] EmptyTypes;
         public override bool Equals(object o) => throw null;
         public virtual bool Equals(System.Type o) => throw null;
-        public static System.Reflection.MemberFilter FilterAttribute;
-        public static System.Reflection.MemberFilter FilterName;
-        public static System.Reflection.MemberFilter FilterNameIgnoreCase;
+        public static readonly System.Reflection.MemberFilter FilterAttribute;
+        public static readonly System.Reflection.MemberFilter FilterName;
+        public static readonly System.Reflection.MemberFilter FilterNameIgnoreCase;
         public virtual System.Type[] FindInterfaces(System.Reflection.TypeFilter filter, object filterCriteria) => throw null;
         public virtual System.Reflection.MemberInfo[] FindMembers(System.Reflection.MemberTypes memberType, System.Reflection.BindingFlags bindingAttr, System.Reflection.MemberFilter filter, object filterCriteria) => throw null;
         public abstract string FullName { get; }
@@ -12679,7 +12679,7 @@ namespace System
         public virtual System.Type MakeGenericType(params System.Type[] typeArguments) => throw null;
         public virtual System.Type MakePointerType() => throw null;
         public override System.Reflection.MemberTypes MemberType { get => throw null; }
-        public static object Missing;
+        public static readonly object Missing;
         public abstract System.Reflection.Module Module { get; }
         public abstract string Namespace { get; }
         public static bool operator ==(System.Type left, System.Type right) => throw null;
@@ -12960,13 +12960,13 @@ namespace System
         static ushort System.Numerics.INumberBase<ushort>.MaxMagnitude(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumberBase<ushort>.MaxMagnitudeNumber(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumber<ushort>.MaxNumber(ushort x, ushort y) => throw null;
-        public const ushort MaxValue = default;
+        public const ushort MaxValue = 65535;
         static ushort System.Numerics.IMinMaxValue<ushort>.MaxValue { get => throw null; }
         static ushort System.Numerics.INumber<ushort>.Min(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumberBase<ushort>.MinMagnitude(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumberBase<ushort>.MinMagnitudeNumber(ushort x, ushort y) => throw null;
         static ushort System.Numerics.INumber<ushort>.MinNumber(ushort x, ushort y) => throw null;
-        public const ushort MinValue = default;
+        public const ushort MinValue = 0;
         static ushort System.Numerics.IMinMaxValue<ushort>.MinValue { get => throw null; }
         static ushort System.Numerics.IMultiplicativeIdentity<ushort, ushort>.MultiplicativeIdentity { get => throw null; }
         static ushort System.Numerics.INumberBase<ushort>.One { get => throw null; }
@@ -13091,13 +13091,13 @@ namespace System
         static uint System.Numerics.INumberBase<uint>.MaxMagnitude(uint x, uint y) => throw null;
         static uint System.Numerics.INumberBase<uint>.MaxMagnitudeNumber(uint x, uint y) => throw null;
         static uint System.Numerics.INumber<uint>.MaxNumber(uint x, uint y) => throw null;
-        public const uint MaxValue = default;
+        public const uint MaxValue = 4294967295;
         static uint System.Numerics.IMinMaxValue<uint>.MaxValue { get => throw null; }
         static uint System.Numerics.INumber<uint>.Min(uint x, uint y) => throw null;
         static uint System.Numerics.INumberBase<uint>.MinMagnitude(uint x, uint y) => throw null;
         static uint System.Numerics.INumberBase<uint>.MinMagnitudeNumber(uint x, uint y) => throw null;
         static uint System.Numerics.INumber<uint>.MinNumber(uint x, uint y) => throw null;
-        public const uint MinValue = default;
+        public const uint MinValue = 0;
         static uint System.Numerics.IMinMaxValue<uint>.MinValue { get => throw null; }
         static uint System.Numerics.IMultiplicativeIdentity<uint, uint>.MultiplicativeIdentity { get => throw null; }
         static uint System.Numerics.INumberBase<uint>.One { get => throw null; }
@@ -13222,13 +13222,13 @@ namespace System
         static ulong System.Numerics.INumberBase<ulong>.MaxMagnitude(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumberBase<ulong>.MaxMagnitudeNumber(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumber<ulong>.MaxNumber(ulong x, ulong y) => throw null;
-        public const ulong MaxValue = default;
+        public const ulong MaxValue = 18446744073709551615;
         static ulong System.Numerics.IMinMaxValue<ulong>.MaxValue { get => throw null; }
         static ulong System.Numerics.INumber<ulong>.Min(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumberBase<ulong>.MinMagnitude(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumberBase<ulong>.MinMagnitudeNumber(ulong x, ulong y) => throw null;
         static ulong System.Numerics.INumber<ulong>.MinNumber(ulong x, ulong y) => throw null;
-        public const ulong MinValue = default;
+        public const ulong MinValue = 0;
         static ulong System.Numerics.IMinMaxValue<ulong>.MinValue { get => throw null; }
         static ulong System.Numerics.IMultiplicativeIdentity<ulong, ulong>.MultiplicativeIdentity { get => throw null; }
         static ulong System.Numerics.INumberBase<ulong>.One { get => throw null; }
@@ -13441,7 +13441,7 @@ namespace System
         static bool System.Numerics.IBinaryInteger<nuint>.TryReadLittleEndian(System.ReadOnlySpan<byte> source, bool isUnsigned, out nuint value) => throw null;
         bool System.Numerics.IBinaryInteger<nuint>.TryWriteBigEndian(System.Span<byte> destination, out int bytesWritten) => throw null;
         bool System.Numerics.IBinaryInteger<nuint>.TryWriteLittleEndian(System.Span<byte> destination, out int bytesWritten) => throw null;
-        public static nuint Zero;
+        public static readonly nuint Zero;
         static nuint System.Numerics.INumberBase<nuint>.Zero { get => throw null; }
     }
     public class UnauthorizedAccessException : System.SystemException
@@ -13518,7 +13518,7 @@ namespace System
         public int Port { get => throw null; }
         public string Query { get => throw null; }
         public string Scheme { get => throw null; }
-        public static string SchemeDelimiter;
+        public static readonly string SchemeDelimiter;
         public string[] Segments { get => throw null; }
         public override string ToString() => throw null;
         public static bool TryCreate(string uriString, in System.UriCreationOptions creationOptions, out System.Uri result) => throw null;
@@ -13527,22 +13527,22 @@ namespace System
         public static bool TryCreate(System.Uri baseUri, System.Uri relativeUri, out System.Uri result) => throw null;
         protected virtual string Unescape(string path) => throw null;
         public static string UnescapeDataString(string stringToUnescape) => throw null;
-        public static string UriSchemeFile;
-        public static string UriSchemeFtp;
-        public static string UriSchemeFtps;
-        public static string UriSchemeGopher;
-        public static string UriSchemeHttp;
-        public static string UriSchemeHttps;
-        public static string UriSchemeMailto;
-        public static string UriSchemeNetPipe;
-        public static string UriSchemeNetTcp;
-        public static string UriSchemeNews;
-        public static string UriSchemeNntp;
-        public static string UriSchemeSftp;
-        public static string UriSchemeSsh;
-        public static string UriSchemeTelnet;
-        public static string UriSchemeWs;
-        public static string UriSchemeWss;
+        public static readonly string UriSchemeFile;
+        public static readonly string UriSchemeFtp;
+        public static readonly string UriSchemeFtps;
+        public static readonly string UriSchemeGopher;
+        public static readonly string UriSchemeHttp;
+        public static readonly string UriSchemeHttps;
+        public static readonly string UriSchemeMailto;
+        public static readonly string UriSchemeNetPipe;
+        public static readonly string UriSchemeNetTcp;
+        public static readonly string UriSchemeNews;
+        public static readonly string UriSchemeNntp;
+        public static readonly string UriSchemeSftp;
+        public static readonly string UriSchemeSsh;
+        public static readonly string UriSchemeTelnet;
+        public static readonly string UriSchemeWs;
+        public static readonly string UriSchemeWss;
         public bool UserEscaped { get => throw null; }
         public string UserInfo { get => throw null; }
     }

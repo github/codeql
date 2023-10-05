@@ -1,13 +1,10 @@
 using System.Linq;
-
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-
 using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.StubGenerator;
 
-internal class RelevantSymbol
+internal class RelevantSymbol : IRelevantSymbol
 {
     private readonly IAssemblySymbol assembly;
     private readonly MemoizedFunc<INamedTypeSymbol, bool> isRelevantNamedType;

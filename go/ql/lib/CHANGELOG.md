@@ -1,3 +1,13 @@
+## 0.6.5
+
+No user-facing changes.
+
+## 0.6.4
+
+### Minor Analysis Improvements
+
+* Added [http.Error](https://pkg.go.dev/net/http#Error) to XSS sanitzers.
+
 ## 0.6.3
 
 No user-facing changes.

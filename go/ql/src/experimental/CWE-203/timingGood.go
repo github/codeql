@@ -1,4 +1,12 @@
-func good(w http.ResponseWriter, req *http.Request, []byte secret) (interface{}, error) {
+package main
+
+import (
+	"crypto/subtle"
+	"fmt"
+	"net/http"
+)
+
+func good(w http.ResponseWriter, req *http.Request, secret []byte) (interface{}, error) {
 
 	secretHeader := "X-Secret"
 

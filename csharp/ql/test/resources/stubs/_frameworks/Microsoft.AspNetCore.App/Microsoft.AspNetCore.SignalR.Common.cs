@@ -35,7 +35,7 @@ namespace Microsoft
                     public bool AllowReconnect { get => throw null; }
                     public CloseMessage(string error) => throw null;
                     public CloseMessage(string error, bool allowReconnect) => throw null;
-                    public static Microsoft.AspNetCore.SignalR.Protocol.CloseMessage Empty;
+                    public static readonly Microsoft.AspNetCore.SignalR.Protocol.CloseMessage Empty;
                     public string Error { get => throw null; }
                 }
                 public class CompletionMessage : Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage
@@ -66,7 +66,7 @@ namespace Microsoft
                 public class HandshakeResponseMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
                     public HandshakeResponseMessage(string error) => throw null;
-                    public static Microsoft.AspNetCore.SignalR.Protocol.HandshakeResponseMessage Empty;
+                    public static readonly Microsoft.AspNetCore.SignalR.Protocol.HandshakeResponseMessage Empty;
                     public string Error { get => throw null; }
                 }
                 public abstract class HubInvocationMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
@@ -89,13 +89,13 @@ namespace Microsoft
                 }
                 public static class HubProtocolConstants
                 {
-                    public const int CancelInvocationMessageType = default;
-                    public const int CloseMessageType = default;
-                    public const int CompletionMessageType = default;
-                    public const int InvocationMessageType = default;
-                    public const int PingMessageType = default;
-                    public const int StreamInvocationMessageType = default;
-                    public const int StreamItemMessageType = default;
+                    public const int CancelInvocationMessageType = 5;
+                    public const int CloseMessageType = 7;
+                    public const int CompletionMessageType = 3;
+                    public const int InvocationMessageType = 1;
+                    public const int PingMessageType = 6;
+                    public const int StreamInvocationMessageType = 4;
+                    public const int StreamItemMessageType = 2;
                 }
                 public static partial class HubProtocolExtensions
                 {
@@ -126,7 +126,7 @@ namespace Microsoft
                 }
                 public class PingMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {
-                    public static Microsoft.AspNetCore.SignalR.Protocol.PingMessage Instance;
+                    public static readonly Microsoft.AspNetCore.SignalR.Protocol.PingMessage Instance;
                 }
                 public sealed class RawResult
                 {

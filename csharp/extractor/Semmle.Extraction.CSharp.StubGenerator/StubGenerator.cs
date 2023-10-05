@@ -68,7 +68,7 @@ public static class StubGenerator
         var stubPath = FileUtils.NestPaths(logger, outputPath, path.Replace(".dll", ".cs"));
         stubPaths.Add(stubPath);
         using var fileStream = new FileStream(stubPath, FileMode.Create, FileAccess.Write);
-        using var writer = new StreamWriter(fileStream, new UTF8Encoding(false));
+        using var writer = new StreamWriter(fileStream, new UTF8Encoding(false)) { NewLine = "\n" };
 
         var visitor = new StubVisitor(writer, relevantSymbol);
 
@@ -83,4 +83,3 @@ public static class StubGenerator
         }
     }
 }
-

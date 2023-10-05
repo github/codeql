@@ -65,7 +65,7 @@ namespace Microsoft
             public class ResponseCompressionDefaults
             {
                 public ResponseCompressionDefaults() => throw null;
-                public static System.Collections.Generic.IEnumerable<string> MimeTypes;
+                public static readonly System.Collections.Generic.IEnumerable<string> MimeTypes;
             }
             public class ResponseCompressionMiddleware
             {
