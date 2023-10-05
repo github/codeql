@@ -12,8 +12,409 @@
  */
 
 import javascript
-import ReadableAdditionalStep
+import semmle.javascript.frameworks.ReadableStream
 import DataFlow::PathGraph
+
+module DecompressionBomb {
+  /**
+   * the Sinks of uncontrolled data decompression
+   */
+  class Sink extends DataFlow::Node {
+    Sink() { this = any(Range r).sink() }
+  }
+
+  /**
+   * The additional taint steps that need for creating taint tracking or dataflow.
+   */
+  abstract class AdditionalTaintStep extends string {
+    AdditionalTaintStep() { this = "AdditionalTaintStep" }
+
+    /**
+     * Holds if there is a additional taint step between pred and succ.
+     */
+    abstract predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ);
+  }
+
+  /**
+   * A abstract class responsible for extending new decompression sinks
+   */
+  abstract private class Range extends API::Node {
+    /**
+     * Gets the sink of responsible for decompression node
+     *
+     * it can be a path, stream of compressed data,
+     * or a call to function that use pipe
+     */
+    abstract DataFlow::Node sink();
+  }
+
+  module ReadableStream {
+    class ReadableStreamAdditionalTaintStep extends AdditionalTaintStep {
+      ReadableStreamAdditionalTaintStep() { this = "AdditionalTaintStep" }
+
+      override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+        // additional taint step for fs.readFile(pred)
+        // It can be global additional step too
+        exists(DataFlow::CallNode n | n = DataFlow::moduleMember("fs", "readFile").getACall() |
+          pred = n.getArgument(0) and succ = n.getABoundCallbackParameter(1, 1)
+        )
+        or
+        readablePipeAdditionalTaintStep(pred, succ)
+        or
+        streamPipelineAdditionalTaintStep(pred, succ)
+        or
+        promisesFileHandlePipeAdditionalTaintStep(pred, succ)
+        or
+        exists(FileSystemReadAccess cn |
+          pred = cn.getAPathArgument() and
+          succ = cn.getADataNode()
+        )
+      }
+    }
+  }
+
+  module JsZip {
+    /**
+     * The decompression sinks of [jszip](https://www.npmjs.com/package/jszip) package
+     */
+    class DecompressionBomb extends Range {
+      DecompressionBomb() { this = API::moduleImport("jszip").getMember("loadAsync") }
+
+      override DataFlow::Node sink() {
+        result = this.getParameter(0).asSink() and not this.sanitizer(this)
+      }
+
+      /**
+       * Gets a jszip `loadAsync` instance
+       * and Holds if member of name `uncompressedSize` exists
+       */
+      predicate sanitizer(API::Node loadAsync) {
+        exists(loadAsync.getASuccessor*().getMember("_data").getMember("uncompressedSize"))
+      }
+    }
+  }
+
+  module NodeTar {
+    /**
+     * The decompression sinks of [node-tar](https://www.npmjs.com/package/tar) package
+     */
+    class DecompressionBomb extends Range {
+      DecompressionBomb() { this = API::moduleImport("tar").getMember(["x", "extract"]) }
+
+      override DataFlow::Node sink() {
+        (
+          // piping tar.x()
+          result = this.getACall()
+          or
+          // tar.x({file: filename})
+          result = this.getParameter(0).getMember("file").asSink()
+        ) and
+        // and there shouldn't be a  "maxReadSize: ANum" option
+        not this.sanitizer(this.getParameter(0))
+      }
+
+      /**
+       * Gets a options parameter that belong to a `tar` instance
+       * and Holds if "maxReadSize: ANumber" option exists
+       */
+      predicate sanitizer(API::Node tarExtract) { exists(tarExtract.getMember("maxReadSize")) }
+    }
+
+    class DecompressionAdditionalSteps extends AdditionalTaintStep {
+      DecompressionAdditionalSteps() { this = "AdditionalTaintStep" }
+
+      override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+        exists(API::Node n | n = API::moduleImport("tar") |
+          pred = n.asSource() and
+          (
+            succ = n.getMember("x").getACall() or
+            succ = n.getMember("x").getACall().getArgument(0)
+          )
+        )
+      }
+    }
+  }
+
+  module Zlib {
+    /**
+     * The decompression sinks of `node:zlib`
+     */
+    class DecompressionBomb extends Range {
+      boolean isSynk;
+
+      DecompressionBomb() {
+        this =
+          API::moduleImport("zlib")
+              .getMember([
+                  "gunzip", "gunzipSync", "unzip", "unzipSync", "brotliDecompress",
+                  "brotliDecompressSync", "inflateSync", "inflateRawSync", "inflate", "inflateRaw"
+                ]) and
+        isSynk = true
+        or
+        this =
+          API::moduleImport("zlib")
+              .getMember([
+                  "createGunzip", "createBrotliDecompress", "createUnzip", "createInflate",
+                  "createInflateRaw"
+                ]) and
+        isSynk = false
+      }
+
+      override DataFlow::Node sink() {
+        result = this.getACall() and
+        not this.sanitizer(this.getParameter(0)) and
+        isSynk = false
+        or
+        result = this.getACall().getArgument(0) and
+        not this.sanitizer(this.getParameter(1)) and
+        isSynk = true
+      }
+
+      /**
+       * Gets a options parameter that belong to a zlib instance
+       * and Holds if "maxOutputLength: ANumber" option exists
+       */
+      predicate sanitizer(API::Node zlib) { exists(zlib.getMember("maxOutputLength")) }
+    }
+  }
+
+  module Pako {
+    /**
+     * The decompression sinks of (pako)[https://www.npmjs.com/package/pako]
+     */
+    class DecompressionBomb extends Range {
+      DecompressionBomb() {
+        this = API::moduleImport("pako").getMember(["inflate", "inflateRaw", "ungzip"])
+      }
+
+      override DataFlow::Node sink() { result = this.getParameter(0).asSink() }
+    }
+
+    class DecompressionAdditionalSteps extends AdditionalTaintStep {
+      DecompressionAdditionalSteps() { this = "AdditionalTaintStep" }
+
+      override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+        // succ = new Uint8Array(pred)
+        exists(DataFlow::Node n, NewExpr ne | ne = n.asExpr() |
+          pred.asExpr() = ne.getArgument(0) and
+          succ.asExpr() = ne and
+          ne.getCalleeName() = "Uint8Array"
+        )
+      }
+    }
+  }
+
+  module AdmZip {
+    /**
+     * The decompression sinks of (adm-zip)[https://www.npmjs.com/package/adm-zip]
+     */
+    class DecompressionBomb extends Range {
+      DecompressionBomb() { this = API::moduleImport("adm-zip").getInstance() }
+
+      override DataFlow::Node sink() {
+        result =
+          this.getMember(["extractAllTo", "extractEntryTo", "readAsText"]).getReturn().asSource()
+        or
+        result = this.getAAdmZipSuccessor().getMember("getData").getReturn().asSource()
+      }
+
+      API::Node getAAdmZipSuccessor() {
+        result = this
+        or
+        result = this.getAAdmZipSuccessor().getAMember()
+        or
+        result = this.getAAdmZipSuccessor().getAParameter()
+        or
+        result = this.getAAdmZipSuccessor().getReturn()
+        or
+        result = this.getAAdmZipSuccessor().getPromised()
+      }
+    }
+
+    class DecompressionAdditionalSteps extends AdditionalTaintStep {
+      DecompressionAdditionalSteps() { this = "AdditionalTaintStep" }
+
+      override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+        exists(API::Node n | n = API::moduleImport("adm-zip") |
+          pred = n.getParameter(0).asSink() and
+          (
+            succ =
+              n.getInstance()
+                  .getMember(["extractAllTo", "extractEntryTo", "readAsText"])
+                  .getReturn()
+                  .asSource()
+            or
+            // I can't find an alternative for getASuccessor*() for here
+            succ =
+              n.getInstance()
+                  .getMember("getEntries")
+                  .getASuccessor*()
+                  .getMember("getData")
+                  .getReturn()
+                  .asSource()
+          )
+        )
+      }
+    }
+  }
+
+  module Decompress {
+    /**
+     * The decompression sinks of (decompress)[https://www.npmjs.com/package/decompress]
+     */
+    class DecompressionBomb extends Range {
+      DecompressionBomb() { this = API::moduleImport("decompress") }
+
+      override DataFlow::Node sink() { result = this.getACall().getArgument(0) }
+    }
+  }
+
+  module GunzipMaybe {
+    /**
+     * The decompression sinks of (gunzip-maybe)[https://www.npmjs.com/package/gunzip-maybe]
+     */
+    class DecompressionBomb extends Range {
+      DecompressionBomb() { this = API::moduleImport("gunzip-maybe") }
+
+      override DataFlow::Node sink() { result = this.getACall() }
+    }
+  }
+
+  module Unbzip2Stream {
+    /**
+     * The decompression sinks of (unbzip2-stream)[https://www.npmjs.com/package/unbzip2-stream]
+     */
+    class DecompressionBomb extends Range {
+      DecompressionBomb() { this = API::moduleImport("unbzip2-stream") }
+
+      override DataFlow::Node sink() { result = this.getACall() }
+    }
+  }
+
+  module Brotli {
+    /**
+     * The decompression sinks of (brotli)[https://www.npmjs.com/package/brotli]
+     */
+    class DecompressionBomb extends Range {
+      DecompressionBomb() {
+        this =
+          [
+            API::moduleImport("brotli").getMember("decompress"),
+            API::moduleImport("brotli/decompress")
+          ]
+      }
+
+      override DataFlow::Node sink() { result = this.getACall().getArgument(0) }
+    }
+  }
+
+  module Unzipper {
+    /**
+     * The decompression sinks of (unzipper)[https://www.npmjs.com/package/unzipper]
+     */
+    class DecompressionBomb extends Range {
+      string funcName;
+
+      DecompressionBomb() {
+        this = API::moduleImport("unzipper").getMember(["Extract", "Parse", "ParseOne"]) and
+        funcName = ["Extract", "Parse", "ParseOne"]
+        or
+        this = API::moduleImport("unzipper").getMember("Open") and
+        // open has some functions which will be specified in sink predicate
+        funcName = "Open"
+      }
+
+      override DataFlow::Node sink() {
+        result = this.getMember(["buffer", "file", "url", "file"]).getACall().getArgument(0) and
+        funcName = "Open"
+        or
+        result = this.getACall() and
+        funcName = ["Extract", "Parse", "ParseOne"]
+      }
+
+      /**
+       * Gets a
+       * and Holds if unzipper instance has a member `uncompressedSize`
+       *
+       * it is really difficult to implement this sanitizer,
+       * so i'm going to check if there is a member like `vars.uncompressedSize` in whole DB or not!
+       */
+      predicate sanitizer() {
+        exists(this.getAGzipperSuccessor().getMember("vars").getMember("uncompressedSize"))
+      }
+
+      API::Node getAGzipperSuccessor() {
+        (
+          result = API::moduleImport("stream")
+          or
+          result = this.getAGzipperSuccessor().getAMember()
+          or
+          result = this.getAGzipperSuccessor().getAParameter()
+          or
+          result = this.getAGzipperSuccessor().getReturn()
+          or
+          result = this.getAGzipperSuccessor().getPromised()
+        ) and
+        funcName = ["Extract", "Parse", "ParseOne"]
+      }
+    }
+  }
+
+  module Yauzl {
+    /**
+     * The decompression sinks of (yauzl)[https://www.npmjs.com/package/yauzl]
+     */
+    class DecompressionBomb extends Range {
+      // open function has a sanitizer which we should label it with this boolean
+      boolean isOpenFunc;
+
+      DecompressionBomb() {
+        this =
+          API::moduleImport("yauzl")
+              .getMember([
+                  "fromFd", "fromBuffer", "fromRandomAccessReader", "fromRandomAccessReader"
+                ]) and
+        isOpenFunc = false
+        or
+        this = API::moduleImport("yauzl").getMember("open") and
+        isOpenFunc = true
+      }
+
+      override DataFlow::Node sink() {
+        result = this.getAYauzlSuccessor().getMember("readEntry").getACall() and
+        not this.sanitizer() and
+        isOpenFunc = true
+        or
+        result = this.getACall().getArgument(0) and
+        isOpenFunc = false
+      }
+
+      API::Node getAYauzlSuccessor() {
+        (
+          result = this
+          or
+          result = this.getAYauzlSuccessor().getAMember()
+          or
+          result = this.getAYauzlSuccessor().getAParameter()
+          or
+          result = this.getAYauzlSuccessor().getReturn()
+          or
+          result = this.getAYauzlSuccessor().getPromised()
+        ) and
+        isOpenFunc = true
+      }
+
+      /**
+       * Gets a
+       * and Holds if yauzl `open` instance has a member `uncompressedSize`
+       */
+      predicate sanitizer() {
+        exists(this.getAYauzlSuccessor().getMember("uncompressedSize")) and
+        isOpenFunc = true
+      }
+    }
+  }
+}
 
 class BombConfiguration extends TaintTracking::Configuration {
   BombConfiguration() { this = "DecompressionBombs" }
@@ -21,143 +422,16 @@ class BombConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    // jszip
-    exists(API::Node loadAsync | loadAsync = API::moduleImport("jszip").getMember("loadAsync") |
-      sink = loadAsync.getParameter(0).asSink() and not jsZipsanitizer(loadAsync)
-    )
-    or
-    // node-tar
-    exists(API::Node tarExtract |
-      tarExtract = API::moduleImport("tar").getMember(["x", "extract"])
-    |
-      (
-        // piping tar.x()
-        sink = tarExtract.getACall()
-        or
-        // tar.x({file: filename})
-        sink = tarExtract.getParameter(0).getMember("file").asSink()
-        or
-        // tar.x({file: filename})
-        sink = tarExtract.getParameter(0).getMember("file").asSink()
-      ) and
-      // and there shouldn't be a  "maxReadSize: ANum" option
-      not nodeTarSanitizer(tarExtract)
-    )
-    or
-    // zlib
-    // there shouldn't be a "maxOutputLength: ANumber" option
-    exists(API::Node zlib |
-      zlib =
-        API::moduleImport("zlib")
-            .getMember([
-                "createGunzip", "createBrotliDecompress", "createUnzip", "createInflate",
-                "createInflateRaw"
-              ]) and
-      sink = zlib.getACall() and
-      not zlibSanitizer(zlib.getParameter(0))
-      or
-      zlib =
-        API::moduleImport("zlib")
-            .getMember([
-                "gunzip", "gunzipSync", "unzip", "unzipSync", "brotliDecompress",
-                "brotliDecompressSync", "inflateSync", "inflateRawSync", "inflate", "inflateRaw"
-              ]) and
-      sink = zlib.getACall().getArgument(0) and
-      not zlibSanitizer(zlib.getParameter(1))
-    )
-    or
-    // pako
-    sink =
-      DataFlow::moduleMember("pako", ["inflate", "inflateRaw", "ungzip"]).getACall().getArgument(0)
-    or
-    // adm-zip
-    exists(API::Node n | n = API::moduleImport("adm-zip").getInstance() |
-      (
-        sink = n.getMember(["extractAllTo", "extractEntryTo", "readAsText"]).getReturn().asSource()
-        or
-        sink =
-          n.getMember("getEntries").getASuccessor*().getMember("getData").getReturn().asSource()
-      )
-    )
+    sink instanceof DecompressionBomb::Sink
+    // any()
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // additional taint step for fs.readFile(pred)
-    // It can be global additional step too
-    exists(DataFlow::CallNode n | n = DataFlow::moduleMember("fs", "readFile").getACall() |
-      pred = n.getArgument(0) and succ = n.getABoundCallbackParameter(1, 1)
-    )
-    or
-    //node-tar
-    readablePipeAdditionalTaintStep(pred, succ)
-    or
-    streamPipelineAdditionalTaintStep(pred, succ)
-    or
-    promisesFileHandlePipeAdditionalTaintStep(pred, succ)
-    or
-    exists(FileSystemReadAccess cn | pred = cn.getADataNode() and succ = cn.getAPathArgument())
-    or
-    exists(DataFlow::Node sinkhelper, AstNode an |
-      an = sinkhelper.asExpr().(ObjectExpr).getAChild().(Property).getAChild()
-    |
-      pred.asExpr() = an and
-      succ = sinkhelper
-    )
-    or
-    exists(API::Node n | n = API::moduleImport("tar") |
-      pred = n.asSource() and
-      (
-        succ = n.getMember("x").getACall() or
-        succ = n.getMember("x").getACall().getArgument(0)
-      )
-    )
-    or
-    // pako
-    // succ = new Uint8Array(pred)
-    exists(DataFlow::Node n, NewExpr ne | ne = n.asExpr() |
-      pred.asExpr() = ne.getArgument(0) and
-      succ.asExpr() = ne and
-      ne.getCalleeName() = "Uint8Array"
-    )
-    or
-    // AdmZip
-    exists(API::Node n | n = API::moduleImport("adm-zip") |
-      pred = n.getParameter(0).asSink() and
-      (
-        succ =
-          n.getInstance()
-              .getMember(["extractAllTo", "extractEntryTo", "readAsText"])
-              .getReturn()
-              .asSource() or
-        succ =
-          n.getInstance()
-              .getMember("getEntries")
-              .getASuccessor*()
-              .getMember("getData")
-              .getReturn()
-              .asSource()
-      )
-    )
-    or
-    // pred.pipe(succ)
-    exists(DataFlow::MethodCallNode n |
-      n.getMethodName() = "pipe" and
-      succ = n.getArgument(0) and
-      pred = n.getReceiver() and
-      not pred instanceof DataFlow::MethodCallNode
+    exists(DecompressionBomb::AdditionalTaintStep addstep |
+      addstep.isAdditionalTaintStep(pred, succ)
     )
   }
 }
-
-predicate nodeTarSanitizer(API::Node tarExtract) {
-  exists(tarExtract.getParameter(0).getMember("maxReadSize"))
-}
-
-predicate jsZipsanitizer(API::Node loadAsync) {
-  exists(loadAsync.getASuccessor*().getMember("_data").getMember("uncompressedSize"))
-}
-
-predicate zlibSanitizer(API::Node zlib) { exists(zlib.getMember("maxOutputLength")) }
 
 from BombConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
