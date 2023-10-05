@@ -215,19 +215,7 @@ module DecompressionBomb {
         result =
           this.getMember(["extractAllTo", "extractEntryTo", "readAsText"]).getReturn().asSource()
         or
-        result = this.getAAdmZipSuccessor().getMember("getData").getReturn().asSource()
-      }
-
-      API::Node getAAdmZipSuccessor() {
-        result = this
-        or
-        result = this.getAAdmZipSuccessor().getAMember()
-        or
-        result = this.getAAdmZipSuccessor().getAParameter()
-        or
-        result = this.getAAdmZipSuccessor().getReturn()
-        or
-        result = this.getAAdmZipSuccessor().getPromised()
+        result = this.getASuccessor*().getMember("getData").getReturn().asSource()
       }
     }
 
@@ -244,7 +232,6 @@ module DecompressionBomb {
                   .getReturn()
                   .asSource()
             or
-            // I can't find an alternative for getASuccessor*() for here
             succ =
               n.getInstance()
                   .getMember("getEntries")
@@ -340,21 +327,7 @@ module DecompressionBomb {
        * so i'm going to check if there is a member like `vars.uncompressedSize` in whole DB or not!
        */
       predicate sanitizer() {
-        exists(this.getAGzipperSuccessor().getMember("vars").getMember("uncompressedSize"))
-      }
-
-      API::Node getAGzipperSuccessor() {
-        (
-          result = API::moduleImport("stream")
-          or
-          result = this.getAGzipperSuccessor().getAMember()
-          or
-          result = this.getAGzipperSuccessor().getAParameter()
-          or
-          result = this.getAGzipperSuccessor().getReturn()
-          or
-          result = this.getAGzipperSuccessor().getPromised()
-        ) and
+        exists(this.getASuccessor*().getMember("vars").getMember("uncompressedSize")) and
         funcName = ["Extract", "Parse", "ParseOne"]
       }
     }
@@ -381,7 +354,7 @@ module DecompressionBomb {
       }
 
       override DataFlow::Node sink() {
-        result = this.getAYauzlSuccessor().getMember("readEntry").getACall() and
+        result = this.getASuccessor*().getMember("readEntry").getACall() and
         not this.sanitizer() and
         isOpenFunc = true
         or
@@ -389,27 +362,12 @@ module DecompressionBomb {
         isOpenFunc = false
       }
 
-      API::Node getAYauzlSuccessor() {
-        (
-          result = this
-          or
-          result = this.getAYauzlSuccessor().getAMember()
-          or
-          result = this.getAYauzlSuccessor().getAParameter()
-          or
-          result = this.getAYauzlSuccessor().getReturn()
-          or
-          result = this.getAYauzlSuccessor().getPromised()
-        ) and
-        isOpenFunc = true
-      }
-
       /**
        * Gets a
        * and Holds if yauzl `open` instance has a member `uncompressedSize`
        */
       predicate sanitizer() {
-        exists(this.getAYauzlSuccessor().getMember("uncompressedSize")) and
+        exists(this.getASuccessor*().getMember("uncompressedSize")) and
         isOpenFunc = true
       }
     }

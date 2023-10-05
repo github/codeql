@@ -38,17 +38,18 @@ module BusBoy {
   }
 
   /**
-   * Holds if busboy file data as additional taint steps according to a Readable Stream type
-   *
-   * TODO: I don't know how it can be a global taint step!
+   * A busboy file data step according to a Readable Stream type
    */
-  predicate busBoyReadableAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(API::Node busboyOnEvent |
-      busboyOnEvent = API::moduleImport("busboy").getReturn().getMember("on")
-    |
-      busboyOnEvent.getParameter(0).asSink().mayHaveStringValue("file") and
-      customStreamPipeAdditionalTaintStep(busboyOnEvent.getParameter(1).getParameter(1), pred, succ)
-    )
+  private class AdditionalTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::Node busboyOnEvent |
+        busboyOnEvent = API::moduleImport("busboy").getReturn().getMember("on")
+      |
+        busboyOnEvent.getParameter(0).asSink().mayHaveStringValue("file") and
+        customStreamPipeAdditionalTaintStep(busboyOnEvent.getParameter(1).getParameter(1), pred,
+          succ)
+      )
+    }
   }
 }
 
@@ -89,11 +90,6 @@ module Formidable {
   }
 }
 
-API::Node test() {
-  result =
-    API::moduleImport("multiparty").getMember("Form").getInstance().getMember("on").getASuccessor*()
-}
-
 /**
  * A module for modeling [multiparty](https://www.npmjs.com/package/multiparty) package
  */
@@ -116,7 +112,7 @@ module Multiparty {
             this = on.getParameter(1).getParameter([0, 1]).asSource()
             or
             on.getParameter(0).asSink().mayHaveStringValue("part") and
-            this = readableStreamDataNode(on.getParameter(1).getParameter(0)).asSink()
+            this = readableStreamDataNode(on.getParameter(1).getParameter(0)).asSource()
           )
         )
       )
@@ -126,18 +122,58 @@ module Multiparty {
   }
 
   /**
-   * Holds if multiparty part data as additional taint steps according to a Readable Stream type
-   *
-   * TODO: I don't know how it can be a global taint step!
+   * A multiparty part data step according to a Readable Stream type
    */
-  predicate multipartyReadableAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(API::Node multipartyOnEvent |
-      multipartyOnEvent =
-        API::moduleImport("multiparty").getMember("Form").getInstance().getMember("on")
-    |
-      multipartyOnEvent.getParameter(0).asSink().mayHaveStringValue("part") and
-      customStreamPipeAdditionalTaintStep(multipartyOnEvent.getParameter(1).getParameter(0), pred,
-        succ)
-    )
+  private class AdditionalTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::Node multipartyOnEvent |
+        multipartyOnEvent =
+          API::moduleImport("multiparty").getMember("Form").getInstance().getMember("on")
+      |
+        multipartyOnEvent.getParameter(0).asSink().mayHaveStringValue("part") and
+        customStreamPipeAdditionalTaintStep(multipartyOnEvent.getParameter(1).getParameter(0), pred,
+          succ)
+      )
+    }
+  }
+}
+
+/**
+ * A module for modeling [dicer](https://www.npmjs.com/package/dicer) package
+ */
+module Dicer {
+  /**
+   * A source of remote flow from the `dicer` library.
+   */
+  private class DicerRemoteFlow extends RemoteFlowSource {
+    DicerRemoteFlow() {
+      exists(API::Node dicer | dicer = API::moduleImport("dicer").getInstance() |
+        exists(API::Node on | on = dicer.getMember("on") |
+          on.getParameter(0).asSink().mayHaveStringValue("part") and
+          this = readableStreamDataNode(on.getParameter(1).getParameter(0)).asSource()
+          or
+          exists(API::Node onPart | onPart = on.getParameter(1).getParameter(0).getMember("on") |
+            onPart.getParameter(0).asSink().mayHaveStringValue("header") and
+            this = onPart.getParameter(1).getParameter(0).asSource()
+          )
+        )
+      )
+    }
+
+    override string getSourceType() { result = "parsed user value from Dicer" }
+  }
+
+  /**
+   * A dicer part data step according to a Readable Stream type
+   */
+  private class AdditionalTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::Node onEvent |
+        onEvent = API::moduleImport("dicer").getInstance().getMember("on")
+      |
+        onEvent.getParameter(0).asSink().mayHaveStringValue("part") and
+        customStreamPipeAdditionalTaintStep(onEvent.getParameter(1).getParameter(0), pred, succ)
+      )
+    }
   }
 }

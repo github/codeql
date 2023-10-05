@@ -118,8 +118,6 @@ API::Node nodeJsStream() {
  * and returns all nodes responsible for a data read access
  */
 API::Node readableStreamDataNode(API::Node stream) {
-  result = stream.getMember("read").getReturn()
-  or
   // 'data' event
   exists(API::CallNode onEvent | onEvent = stream.getMember("on").getACall() |
     result = onEvent.getParameter(1).getParameter(0) and
@@ -128,7 +126,10 @@ API::Node readableStreamDataNode(API::Node stream) {
   or
   // 'Readable' event
   exists(API::CallNode onEvent | onEvent = stream.getMember("on").getACall() |
-    result = onEvent.getParameter(1).getReceiver().getMember("read").getReturn() and
+    (
+      result = onEvent.getParameter(1).getReceiver().getMember("read").getReturn() or
+      result = stream.getMember("read").getReturn()
+    ) and
     onEvent.getParameter(0).asSink().mayHaveStringValue("readable")
   )
 }
