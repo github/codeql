@@ -1,85 +1,26 @@
-nodes
-| tst.js:5:15:5:30 | req.query.format |
-| tst.js:5:15:5:30 | req.query.format |
-| tst.js:5:15:5:30 | req.query.format |
-| tst.js:6:26:6:41 | req.query.format |
-| tst.js:6:26:6:41 | req.query.format |
-| tst.js:6:26:6:41 | req.query.format |
-| tst.js:7:15:7:30 | req.query.format |
-| tst.js:7:15:7:30 | req.query.format |
-| tst.js:7:15:7:30 | req.query.format |
-| tst.js:8:17:8:32 | req.query.format |
-| tst.js:8:17:8:32 | req.query.format |
-| tst.js:8:17:8:32 | req.query.format |
-| tst.js:9:16:9:31 | req.query.format |
-| tst.js:9:16:9:31 | req.query.format |
-| tst.js:9:16:9:31 | req.query.format |
-| tst.js:10:12:10:27 | req.query.format |
-| tst.js:10:12:10:27 | req.query.format |
-| tst.js:10:12:10:27 | req.query.format |
-| tst.js:11:32:11:47 | req.query.format |
-| tst.js:11:32:11:47 | req.query.format |
-| tst.js:11:32:11:47 | req.query.format |
-| tst.js:12:21:12:36 | req.query.format |
-| tst.js:12:21:12:36 | req.query.format |
-| tst.js:12:21:12:36 | req.query.format |
-| tst.js:13:35:13:50 | req.query.format |
-| tst.js:13:35:13:50 | req.query.format |
-| tst.js:13:35:13:50 | req.query.format |
-| tst.js:14:29:14:44 | req.query.format |
-| tst.js:14:29:14:44 | req.query.format |
-| tst.js:14:29:14:44 | req.query.format |
-| tst.js:15:30:15:45 | req.query.format |
-| tst.js:15:30:15:45 | req.query.format |
-| tst.js:15:30:15:45 | req.query.format |
-| tst.js:16:26:16:41 | req.query.format |
-| tst.js:16:26:16:41 | req.query.format |
-| tst.js:16:26:16:41 | req.query.format |
-| tst.js:17:30:17:45 | req.query.format |
-| tst.js:17:30:17:45 | req.query.format |
-| tst.js:17:30:17:45 | req.query.format |
-| tst.js:18:38:18:53 | req.query.format |
-| tst.js:18:38:18:53 | req.query.format |
-| tst.js:18:38:18:53 | req.query.format |
-| tst.js:20:17:20:32 | req.query.format |
-| tst.js:20:17:20:32 | req.query.format |
-| tst.js:20:17:20:32 | req.query.format |
-| tst.js:21:16:21:31 | req.query.format |
-| tst.js:21:16:21:31 | req.query.format |
-| tst.js:21:16:21:31 | req.query.format |
-| tst.js:22:17:22:32 | req.query.format |
-| tst.js:22:17:22:32 | req.query.format |
-| tst.js:22:17:22:32 | req.query.format |
-| tst.js:24:25:24:40 | req.query.format |
-| tst.js:24:25:24:40 | req.query.format |
-| tst.js:24:25:24:40 | req.query.format |
-| tst.js:25:33:25:48 | req.query.format |
-| tst.js:25:33:25:48 | req.query.format |
-| tst.js:25:33:25:48 | req.query.format |
-| tst.js:26:34:26:49 | req.query.format |
-| tst.js:26:34:26:49 | req.query.format |
-| tst.js:26:34:26:49 | req.query.format |
 edges
-| tst.js:5:15:5:30 | req.query.format | tst.js:5:15:5:30 | req.query.format |
-| tst.js:6:26:6:41 | req.query.format | tst.js:6:26:6:41 | req.query.format |
-| tst.js:7:15:7:30 | req.query.format | tst.js:7:15:7:30 | req.query.format |
-| tst.js:8:17:8:32 | req.query.format | tst.js:8:17:8:32 | req.query.format |
-| tst.js:9:16:9:31 | req.query.format | tst.js:9:16:9:31 | req.query.format |
-| tst.js:10:12:10:27 | req.query.format | tst.js:10:12:10:27 | req.query.format |
-| tst.js:11:32:11:47 | req.query.format | tst.js:11:32:11:47 | req.query.format |
-| tst.js:12:21:12:36 | req.query.format | tst.js:12:21:12:36 | req.query.format |
-| tst.js:13:35:13:50 | req.query.format | tst.js:13:35:13:50 | req.query.format |
-| tst.js:14:29:14:44 | req.query.format | tst.js:14:29:14:44 | req.query.format |
-| tst.js:15:30:15:45 | req.query.format | tst.js:15:30:15:45 | req.query.format |
-| tst.js:16:26:16:41 | req.query.format | tst.js:16:26:16:41 | req.query.format |
-| tst.js:17:30:17:45 | req.query.format | tst.js:17:30:17:45 | req.query.format |
-| tst.js:18:38:18:53 | req.query.format | tst.js:18:38:18:53 | req.query.format |
-| tst.js:20:17:20:32 | req.query.format | tst.js:20:17:20:32 | req.query.format |
-| tst.js:21:16:21:31 | req.query.format | tst.js:21:16:21:31 | req.query.format |
-| tst.js:22:17:22:32 | req.query.format | tst.js:22:17:22:32 | req.query.format |
-| tst.js:24:25:24:40 | req.query.format | tst.js:24:25:24:40 | req.query.format |
-| tst.js:25:33:25:48 | req.query.format | tst.js:25:33:25:48 | req.query.format |
-| tst.js:26:34:26:49 | req.query.format | tst.js:26:34:26:49 | req.query.format |
+nodes
+| tst.js:5:15:5:30 | req.query.format | semmle.label | req.query.format |
+| tst.js:6:26:6:41 | req.query.format | semmle.label | req.query.format |
+| tst.js:7:15:7:30 | req.query.format | semmle.label | req.query.format |
+| tst.js:8:17:8:32 | req.query.format | semmle.label | req.query.format |
+| tst.js:9:16:9:31 | req.query.format | semmle.label | req.query.format |
+| tst.js:10:12:10:27 | req.query.format | semmle.label | req.query.format |
+| tst.js:11:32:11:47 | req.query.format | semmle.label | req.query.format |
+| tst.js:12:21:12:36 | req.query.format | semmle.label | req.query.format |
+| tst.js:13:35:13:50 | req.query.format | semmle.label | req.query.format |
+| tst.js:14:29:14:44 | req.query.format | semmle.label | req.query.format |
+| tst.js:15:30:15:45 | req.query.format | semmle.label | req.query.format |
+| tst.js:16:26:16:41 | req.query.format | semmle.label | req.query.format |
+| tst.js:17:30:17:45 | req.query.format | semmle.label | req.query.format |
+| tst.js:18:38:18:53 | req.query.format | semmle.label | req.query.format |
+| tst.js:20:17:20:32 | req.query.format | semmle.label | req.query.format |
+| tst.js:21:16:21:31 | req.query.format | semmle.label | req.query.format |
+| tst.js:22:17:22:32 | req.query.format | semmle.label | req.query.format |
+| tst.js:24:25:24:40 | req.query.format | semmle.label | req.query.format |
+| tst.js:25:33:25:48 | req.query.format | semmle.label | req.query.format |
+| tst.js:26:34:26:49 | req.query.format | semmle.label | req.query.format |
+subpaths
 #select
 | tst.js:5:15:5:30 | req.query.format | tst.js:5:15:5:30 | req.query.format | tst.js:5:15:5:30 | req.query.format | Format string depends on a $@. | tst.js:5:15:5:30 | req.query.format | user-provided value |
 | tst.js:6:26:6:41 | req.query.format | tst.js:6:26:6:41 | req.query.format | tst.js:6:26:6:41 | req.query.format | Format string depends on a $@. | tst.js:6:26:6:41 | req.query.format | user-provided value |
