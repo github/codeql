@@ -99,7 +99,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages");
+            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false);
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -114,7 +114,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", "myconfig.config");
+            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false, "myconfig.config");
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -129,7 +129,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.RestoreSolutionToDirectory("mysolution.sln", "mypackages", out var projects);
+            dotnet.RestoreSolutionToDirectory("mysolution.sln", "mypackages", false, out var projects);
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -148,7 +148,7 @@ namespace Semmle.Extraction.Tests
             dotnetCliInvoker.Success = false;
 
             // Execute
-            dotnet.RestoreSolutionToDirectory("mysolution.sln", "mypackages", out var projects);
+            dotnet.RestoreSolutionToDirectory("mysolution.sln", "mypackages", false, out var projects);
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();

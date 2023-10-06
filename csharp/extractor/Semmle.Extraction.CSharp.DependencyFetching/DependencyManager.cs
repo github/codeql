@@ -47,9 +47,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor = new ProgressMonitor(logger);
             this.sourceDir = new DirectoryInfo(srcDir);
 
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+            tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
+
             try
             {
-                this.dotnet = DotNet.Make(options, progressMonitor);
+                this.dotnet = DotNet.Make(options, progressMonitor, tempWorkingDirectory);
             }
             catch
             {
@@ -59,8 +62,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             this.progressMonitor.FindingFiles(srcDir);
 
-            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
-            tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
 
             var allFiles = GetAllFiles();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
@@ -537,11 +538,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         }
 
-        private bool RestoreProject(string project, string? pathToNugetConfig = null) =>
-            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, pathToNugetConfig);
+        private bool RestoreProject(string project, bool forceDotnetRefAssemblyFetching, string? pathToNugetConfig = null) =>
+            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching, pathToNugetConfig);
 
         private bool RestoreSolution(string solution, out IEnumerable<string> projects) =>
-            dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, out projects);
+            dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out projects);
 
         /// <summary>
         /// Executes `dotnet restore` on all solution files in solutions.
@@ -567,7 +568,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
-                RestoreProject(project);
+                RestoreProject(project, forceDotnetRefAssemblyFetching: true);
             });
         }
 
@@ -612,7 +613,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return;
                 }
 
-                success = RestoreProject(tempDir.DirInfo.FullName, nugetConfig);
+                success = RestoreProject(tempDir.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, pathToNugetConfig: nugetConfig);
                 // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
                 if (!success)
                 {
