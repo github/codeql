@@ -168,7 +168,6 @@ class KotlinExtractorExtension(
             return defaultCompression
         } else {
             try {
-                @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
                 val compression_option_upper = compression_option.uppercase()
                 if (compression_option_upper == "BROTLI") {
                     logger.warn("Kotlin extractor doesn't support Brotli compression. Using GZip instead.")
