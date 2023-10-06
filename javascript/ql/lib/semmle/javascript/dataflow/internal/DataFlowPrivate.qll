@@ -846,6 +846,14 @@ predicate clearsContent(Node n, ContentSet c) {
   // We implement this rule by clearing any captured-content before storing into another captured-content.
   VariableCaptureOutput::storeStep(getClosureNode(n), _, _) and
   c = MkAnyCapturedContent()
+  or
+  // Block flow into the "window.location" property, as any assignment/mutation to this causes a page load and stops execution.
+  // The use of clearsContent here ensures we also block assignments like `window.location.href = ...`
+  exists(DataFlow::PropRef ref |
+    ref = DataFlow::globalObjectRef().getAPropertyReference("location") and
+    n = ref.getBase().getPostUpdateNode() and
+    c = ContentSet::property("location")
+  )
 }
 
 /**
