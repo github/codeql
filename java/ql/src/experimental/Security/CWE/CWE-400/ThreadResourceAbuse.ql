@@ -22,7 +22,8 @@ module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(AdditionalValueStep r).step(pred, succ)
+    any(AdditionalValueStep r).step(pred, succ) or
+    any(ThreadResourceAbuseAdditionalTaintStep c).step(pred, succ)
   }
 
   predicate isBarrier(DataFlow::Node node) {
