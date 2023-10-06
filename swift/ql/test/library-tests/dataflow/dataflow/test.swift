@@ -877,6 +877,16 @@ protocol MyProtocol {
 	func source() -> Int
 }
 
-func testOpenExistentialExpr(x: MyProtocol) {
-	sink(arg: x.source()) // $ flow=881
+class MyProcotolImpl : MyProtocol {
+	func source() -> Int { return 0 }
+}
+
+func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
+func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
+
+func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
+	sink(arg: x.source()) // $ flow=888
+	sink(arg: y.source()) // $ flow=889
+	sink(arg: getMyProtocol().source()) // $ flow=890
+	sink(arg: getMyProtocolImpl().source()) // $ flow=891
 }
