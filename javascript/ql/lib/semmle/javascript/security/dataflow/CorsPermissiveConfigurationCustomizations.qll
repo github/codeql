@@ -6,6 +6,7 @@
 
 import javascript
 
+/** Module containing sources, sinks, and sanitizers for overly permissive CORS configurations. */
 module CorsPermissiveConfiguration {
   /**
    * A data flow source for permissive CORS configuration.
