@@ -4,35 +4,46 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RequestForgeryCustomizations
-import semmle.javascript.security.dataflow.UrlConcatenation
 
 /**
  * Provide model for [Execa](https://github.com/sindresorhus/execa) package
  */
 module Execa {
   /**
-   * The Execa input file option
+   * The Execa input file read and output file write
    */
-  class ExecaRead extends FileSystemReadAccess, DataFlow::Node {
-    API::Node execaNode;
+  class ExecaFileSystemAccess extends FileSystemReadAccess, DataFlow::Node {
+    API::Node execaArg;
+    boolean isPipedToFile;
 
-    ExecaRead() {
+    ExecaFileSystemAccess() {
       (
-        execaNode = API::moduleImport("execa").getMember("$").getParameter(0)
+        execaArg = API::moduleImport("execa").getMember("$").getParameter(0) and
+        isPipedToFile = false
         or
-        execaNode =
+        execaArg =
           API::moduleImport("execa")
               .getMember(["execa", "execaCommand", "execaCommandSync", "execaSync"])
-              .getParameter([0, 1, 2])
+              .getParameter([0, 1, 2]) and
+        isPipedToFile = false
+        or
+        execaArg =
+          API::moduleImport("execa")
+              .getMember(["execa", "execaCommand", "execaCommandSync", "execaSync"])
+              .getReturn()
+              .getMember(["pipeStdout", "pipeAll", "pipeStderr"])
+              .getParameter(0) and
+        isPipedToFile = true
       ) and
-      this = execaNode.asSink()
+      this = execaArg.asSink()
     }
 
-    // data is the output of a command so IDK how it can be implemented
     override DataFlow::Node getADataNode() { none() }
 
     override DataFlow::Node getAPathArgument() {
-      result = execaNode.getMember("inputFile").asSink()
+      result = execaArg.getMember("inputFile").asSink() and isPipedToFile = false
+      or
+      result = execaArg.asSink() and isPipedToFile = true
     }
   }
 
@@ -40,25 +51,22 @@ module Execa {
    * A call to `execa.execa` or `execa.execaSync`
    */
   class ExecaCall extends API::CallNode {
-    string name;
+    boolean isSync;
 
     ExecaCall() {
       this = API::moduleImport("execa").getMember("execa").getACall() and
-      name = "execa"
+      isSync = false
       or
       this = API::moduleImport("execa").getMember("execaSync").getACall() and
-      name = "execaSync"
+      isSync = true
     }
-
-    /** Gets the name of the exported function, such as `rm` in `shelljs.rm()`. */
-    string getName() { result = name }
   }
 
   /**
    * The system command execution nodes for `execa.execa` or `execa.execaSync` functions
    */
   class ExecaExec extends SystemCommandExecution, ExecaCall {
-    ExecaExec() { name = ["execa", "execaSync"] }
+    ExecaExec() { isSync = [false, true] }
 
     override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
 
@@ -73,7 +81,15 @@ module Execa {
       isExecaShellEnable(this.getParameter(1))
     }
 
-    override predicate isSync() { name = "execaSync" }
+    override DataFlow::Node getArgumentList() {
+      // execa(cmd, [arg]);
+      exists(DataFlow::Node arg | arg = this.getArgument(1) |
+        // if it is a object then it is a option argument not command argument
+        result = arg and not arg.asExpr() instanceof ObjectExpr
+      )
+    }
+
+    override predicate isSync() { isSync = true }
 
     override DataFlow::Node getOptionsArg() {
       result = this.getLastArgument() and result.asExpr() instanceof ObjectExpr
@@ -84,7 +100,7 @@ module Execa {
    * A call to `execa.$` or `execa.$.sync` tag functions
    */
   private class ExecaScriptExpr extends DataFlow::ExprNode {
-    string name;
+    boolean isSync;
 
     ExecaScriptExpr() {
       this.asExpr() =
@@ -92,51 +108,53 @@ module Execa {
           API::moduleImport("execa").getMember("$"),
           API::moduleImport("execa").getMember("$").getReturn()
         ].getAValueReachableFromSource().asExpr() and
-      name = "ASync"
+      isSync = false
       or
       this.asExpr() =
         [
           API::moduleImport("execa").getMember("$").getMember("sync"),
           API::moduleImport("execa").getMember("$").getMember("sync").getReturn()
         ].getAValueReachableFromSource().asExpr() and
-      name = "Sync"
+      isSync = true
     }
-
-    /** Gets the name of the exported function, such as `rm` in `shelljs.rm()`. */
-    string getName() { result = name }
   }
 
   /**
    * The system command execution nodes for `execa.$` or `execa.$.sync` tag functions
    */
   class ExecaScriptEec extends SystemCommandExecution, ExecaScriptExpr {
-    ExecaScriptEec() { name = ["Sync", "ASync"] }
+    ExecaScriptEec() { isSync = [false, true] }
 
     override DataFlow::Node getACommandArgument() {
-      result.asExpr() = templateLiteralChildAsSink(this.asExpr()).getChildExpr(0)
+      exists(TemplateLiteral tl | isFirstTaggedTemplateParameter(this.asExpr(), tl) |
+        result.asExpr() = tl.getChildExpr(0) and
+        not result.asExpr().mayHaveStringValue(" ") // exclude whitespace
+      )
     }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
-      // $({shell: true})`${sink} ${sink} .. ${sink}`
+      // $({shell: true})`${cmd} ${arg0} ... ${arg1}`
       // ISSUE: $`cmd args` I can't reach the tag function argument easily
-      exists(TemplateLiteral tmpL | templateLiteralChildAsSink(this.asExpr()) = tmpL |
-        arg.asExpr() = tmpL.getAChildExpr+() and
-        isExecaShellEnableWithExpr(this.asExpr().(CallExpr).getArgument(0))
+      exists(TemplateLiteral tmpL | isFirstTaggedTemplateParameter(this.asExpr(), tmpL) |
+        arg.asExpr() = tmpL.getAChildExpr() and
+        isExecaShellEnableWithExpr(this.asExpr().(CallExpr).getArgument(0)) and
+        not arg.asExpr().mayHaveStringValue(" ") // exclude whitespace
       )
     }
 
     override DataFlow::Node getArgumentList() {
-      // $`${Can Not Be sink} ${sink} .. ${sink}`
-      exists(TemplateLiteral tmpL | templateLiteralChildAsSink(this.asExpr()) = tmpL |
-        result.asExpr() = tmpL.getAChildExpr+() and
-        not result.asExpr() = tmpL.getChildExpr(0)
+      // $`${cmd} ${arg0} ... ${argn}`
+      exists(TemplateLiteral tmpL | isFirstTaggedTemplateParameter(this.asExpr(), tmpL) |
+        result.asExpr() = tmpL.getAChildExpr() and
+        not result.asExpr() = tmpL.getChildExpr(0) and
+        not result.asExpr().mayHaveStringValue(" ") // exclude whitespace
       )
     }
 
-    override predicate isSync() { name = "Sync" }
+    override predicate isSync() { isSync = true }
 
     override DataFlow::Node getOptionsArg() {
-      result = this.asExpr().getAChildExpr*().flow() and result.asExpr() instanceof ObjectExpr
+      result = this.asExpr().getAChildExpr().flow() and result.asExpr() instanceof ObjectExpr
     }
   }
 
@@ -144,56 +162,35 @@ module Execa {
    * A call to `execa.execaCommandSync` or `execa.execaCommand`
    */
   private class ExecaCommandCall extends API::CallNode {
-    string name;
+    boolean isSync;
 
     ExecaCommandCall() {
       this = API::moduleImport("execa").getMember("execaCommandSync").getACall() and
-      name = "execaCommandSync"
+      isSync = true
       or
       this = API::moduleImport("execa").getMember("execaCommand").getACall() and
-      name = "execaCommand"
+      isSync = false
     }
-
-    /** Gets the name of the exported function, such as `rm` in `shelljs.rm()`. */
-    string getName() { result = name }
-  }
-
-  /**
-   * The system command execution nodes for `execa.execaCommand` or `execa.execaCommandSync` functions
-   */
-  class ExecaCommandExec2 extends SystemCommandExecution, DataFlow::CallNode {
-    ExecaCommandExec2() { this = API::moduleImport("execa").getMember("execaCommand").getACall() }
-
-    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
-
-    override DataFlow::Node getArgumentList() { result = this.getArgument(0) }
-
-    override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getArgument(0) }
-
-    override predicate isSync() { none() }
-
-    override DataFlow::Node getOptionsArg() { result = this }
   }
 
   /**
    * The system command execution nodes for `execa.execaCommand` or `execa.execaCommandSync` functions
    */
   class ExecaCommandExec extends SystemCommandExecution, ExecaCommandCall {
-    ExecaCommandExec() { name = ["execaCommand", "execaCommandSync"] }
+    ExecaCommandExec() { isSync = [false, true] }
 
     override DataFlow::Node getACommandArgument() {
       result = this.(DataFlow::CallNode).getArgument(0)
     }
 
     override DataFlow::Node getArgumentList() {
-      // execaCommand("echo " + sink);
-      // execaCommand(`echo ${sink}`);
-      result.asExpr() = this.getParameter(0).asSink().asExpr().getAChildExpr+() and
+      // execaCommand(`${cmd} ${arg}`);
+      result.asExpr() = this.getParameter(0).asSink().asExpr().getAChildExpr() and
       not result.asExpr() = this.getArgument(0).asExpr().getChildExpr(0)
     }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
-      // execaCommandSync(sink1 + sink2, {shell: true})
+      // execaCommandSync(`${cmd} ${arg}`, {shell: true})
       arg.asExpr() = this.getArgument(0).asExpr().getAChildExpr+() and
       isExecaShellEnable(this.getParameter(1))
       or
@@ -203,7 +200,7 @@ module Execa {
       not exists(this.getArgument(0).asExpr().getChildExpr(1))
     }
 
-    override predicate isSync() { name = "execaCommandSync" }
+    override predicate isSync() { isSync = true }
 
     override DataFlow::Node getOptionsArg() {
       result = this.getLastArgument() and result.asExpr() instanceof ObjectExpr
@@ -211,14 +208,17 @@ module Execa {
   }
 
   // Holds if left parameter is the left child of a template literal and returns the template literal
-  private TemplateLiteral templateLiteralChildAsSink(Expr left) {
+  private predicate isFirstTaggedTemplateParameter(Expr left, TemplateLiteral templateLiteral) {
     exists(TaggedTemplateExpr parent |
-      parent.getTemplate() = result and
+      templateLiteral = parent.getTemplate() and
       left = parent.getChildExpr(0)
     )
   }
 
-  // Holds whether Execa has shell enabled options or not, get Parameter responsible for options
+  /**
+   * Holds whether Execa has shell enabled options or not, get Parameter responsible for options
+   */
+  pragma[inline]
   private predicate isExecaShellEnable(API::Node n) {
     n.getMember("shell").asSink().asExpr().(BooleanLiteral).getValue() = "true"
   }
