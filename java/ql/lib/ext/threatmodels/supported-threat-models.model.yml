@@ -5,4 +5,3 @@ extensions:
       extensible: supportedThreatModels
     data:
       - ["default"] # The "default" threat model is always included.
-      - ["local"] # REMOVE AGAIN: Add the local threat models for testing purposes.
