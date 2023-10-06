@@ -839,6 +839,13 @@ predicate clearsContent(Node n, ContentSet c) {
   c = MkPromiseFilter()
   or
   any(AdditionalFlowInternal flow).clearsContent(n, c)
+  or
+  // When a function `f` captures itself, all its access paths can be prefixed by an arbitrary number of `f.f.f...`.
+  // When multiple functions `f,g` capture each other, these prefixes can become interleaved, like `f.g.f.g...`.
+  // To avoid creating these trivial prefixes, we never allow two consecutive captured variables in the access path.
+  // We implement this rule by clearing any captured-content before storing into another captured-content.
+  VariableCaptureOutput::storeStep(getClosureNode(n), _, _) and
+  c = MkAnyCapturedContent()
 }
 
 /**

@@ -55,11 +55,7 @@ module VariableCaptureConfig implements InputSig {
     CapturedVariable() {
       DataFlowImplCommon::forceCachingInSameStage() and
       this.isCaptured() and
-      not isTopLevelLike(this.getDeclaringContainer()) and
-      // Exclude variables that just contain a function
-      // TODO: explain why
-      // TODO: also exclude if only use of variable is to call it. Handles case where variable is just alias for top-level function
-      not exists(getLambdaFromVariable(this))
+      not isTopLevelLike(this.getDeclaringContainer())
     }
 
     Callable getCallable() { result = this.getDeclaringContainer().getFunctionBoundary() }

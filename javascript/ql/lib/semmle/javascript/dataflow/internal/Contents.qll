@@ -81,6 +81,7 @@ module Private {
     MkPromiseFilter() or
     MkIteratorFilter() or
     MkAnyProperty() or
+    MkAnyCapturedContent() or
     // The following content sets are used exclusively as an intermediate value in flow summaries.
     // These are encoded as a ContentSummaryComponent, although the flow graphs we generate are different
     // than an ordinary content component. These special content sets should never appear in a step.
@@ -239,6 +240,9 @@ module Public {
         or
         result instanceof MkArrayElementUnknown
       )
+      or
+      this = ContentSet::anyCapturedContent() and
+      result instanceof Private::MkCapturedContent
     }
 
     /** Gets the singleton content to be accessed. */
@@ -278,6 +282,9 @@ module Public {
       this = MkAnyPropertyDeep() and result = "AnyMemberDeep"
       or
       this = MkArrayElementDeep() and result = "ArrayElementDeep"
+      or
+      this = MkAnyCapturedContent() and
+      result = "AnyCapturedContent"
     }
   }
 
@@ -477,5 +484,10 @@ module Public {
         else result = property(propertyName)
       )
     }
+
+    /**
+     * Gets a content set that reads from all captured variables stored on a function.
+     */
+    ContentSet anyCapturedContent() { result = Private::MkAnyCapturedContent() }
   }
 }
