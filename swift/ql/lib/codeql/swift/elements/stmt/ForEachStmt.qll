@@ -8,10 +8,8 @@ class ForEachStmt extends Generated::ForEachStmt {
   }
 
   /*
-   * Gets the sequence of this for each statement.
+   * Gets the sequence which this statement is iterating over.
    */
 
-  final Expr getSequence() {
-    result = this.getIteratorVar().getInit(0)
-  }
+  final Expr getSequence() { result = this.getIteratorVar().getInit(0) }
 }
