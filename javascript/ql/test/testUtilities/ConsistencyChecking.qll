@@ -129,7 +129,7 @@ private predicate falseNegative(File file, int line, AssertionComment comment, C
 private File getATestFile(string conf) {
   not exists(any(ConsistencyConfiguration res).getAFile()) and
   result = any(LineComment comment).getFile() and
-  conf = ""
+  (conf = "" or conf instanceof ConsistencyConfiguration)
   or
   result = conf.(ConsistencyConfiguration).getAFile()
 }
