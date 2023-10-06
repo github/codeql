@@ -65,7 +65,7 @@
 		await new Promise((resolve, reject) => reject(source));
 	}
 	try {
-		throws();
+		await throws();
 	} catch(e) {
 		sink(e); // NOT OK!
 	}
