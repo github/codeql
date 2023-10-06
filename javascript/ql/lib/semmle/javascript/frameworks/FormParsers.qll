@@ -20,7 +20,7 @@ module BusBoy {
         // Files
         busboyOnEvent.getParameter(0).asSink().mayHaveStringValue("file") and
         // second param of 'file' event is a Readable stream
-        this = readableStreamDataNode(busboyOnEvent.getParameter(1).getParameter(1)).asSource()
+        this = readableStreamDataNode(busboyOnEvent.getParameter(1).getParameter(1))
         or
         // Fields
         busboyOnEvent.getParameter(0).asSink().mayHaveStringValue(["file", "field"]) and
@@ -51,6 +51,15 @@ module BusBoy {
       )
     }
   }
+}
+
+predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(API::Node busboyOnEvent |
+    busboyOnEvent = API::moduleImport("busboy").getReturn().getMember("on")
+  |
+    busboyOnEvent.getParameter(0).asSink().mayHaveStringValue("file") and
+    customStreamPipeAdditionalTaintStep(busboyOnEvent.getParameter(1).getParameter(1), pred, succ)
+  )
 }
 
 /**
@@ -112,7 +121,7 @@ module Multiparty {
             this = on.getParameter(1).getParameter([0, 1]).asSource()
             or
             on.getParameter(0).asSink().mayHaveStringValue("part") and
-            this = readableStreamDataNode(on.getParameter(1).getParameter(0)).asSource()
+            this = readableStreamDataNode(on.getParameter(1).getParameter(0))
           )
         )
       )
@@ -150,7 +159,7 @@ module Dicer {
       exists(API::Node dicer | dicer = API::moduleImport("dicer").getInstance() |
         exists(API::Node on | on = dicer.getMember("on") |
           on.getParameter(0).asSink().mayHaveStringValue("part") and
-          this = readableStreamDataNode(on.getParameter(1).getParameter(0)).asSource()
+          this = readableStreamDataNode(on.getParameter(1).getParameter(0))
           or
           exists(API::Node onPart | onPart = on.getParameter(1).getParameter(0).getMember("on") |
             onPart.getParameter(0).asSink().mayHaveStringValue("header") and
@@ -175,5 +184,16 @@ module Dicer {
         customStreamPipeAdditionalTaintStep(onEvent.getParameter(1).getParameter(0), pred, succ)
       )
     }
+  }
+}
+
+/**
+ * An Additional taint step like `for (succ in pred)`
+ */
+private class AdditionalTaintStepForIn extends TaintTracking::SharedTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(ForInStmt fis, Variable v | v = fis.getAnIterationVariable() |
+      succ.asExpr() = v.getAnAccess() and pred.asExpr() = fis.getIterationDomain()
+    )
   }
 }

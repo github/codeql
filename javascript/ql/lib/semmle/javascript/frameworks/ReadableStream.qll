@@ -117,18 +117,20 @@ API::Node nodeJsStream() {
  * Gets a Readable Stream method(not a return value of the method)
  * and returns all nodes responsible for a data read access
  */
-API::Node readableStreamDataNode(API::Node stream) {
+DataFlow::Node readableStreamDataNode(API::Node stream) {
+  result = stream.asSource()
+  or
   // 'data' event
   exists(API::CallNode onEvent | onEvent = stream.getMember("on").getACall() |
-    result = onEvent.getParameter(1).getParameter(0) and
+    result = onEvent.getParameter(1).getParameter(0).asSource() and
     onEvent.getParameter(0).asSink().mayHaveStringValue("data")
   )
   or
   // 'Readable' event
   exists(API::CallNode onEvent | onEvent = stream.getMember("on").getACall() |
     (
-      result = onEvent.getParameter(1).getReceiver().getMember("read").getReturn() or
-      result = stream.getMember("read").getReturn()
+      result = onEvent.getParameter(1).getReceiver().getMember("read").getReturn().asSource() or
+      result = stream.getMember("read").getReturn().asSource()
     ) and
     onEvent.getParameter(0).asSink().mayHaveStringValue("readable")
   )
