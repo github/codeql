@@ -27,6 +27,8 @@ module PolynomialReDoSConfig implements DataFlow::ConfigSig {
     // TODO: localFieldStep is too expensive with dataflow2
     // DataFlow::localFieldStep(pred, succ)
   }
+
+  int fieldFlowBranchLimit() { result = 1 } // library inputs are too expensive on some projects
 }
 
 /** Taint-tracking for reasoning about polynomial regular expression denial-of-service attacks. */
