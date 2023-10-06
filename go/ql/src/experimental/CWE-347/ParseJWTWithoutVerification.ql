@@ -34,7 +34,7 @@ module NoValidationConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink = any(JwtUnverifiedParse parseUnverified).getTokenNode()
+    sink = any(JwtUnverifiedParse parseUnverified).getTokenArg()
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

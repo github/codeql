@@ -1,14 +1,9 @@
 import go
 
 /**
- * A abstract class which responsible for parsing a JWT token which the key parameter is a function type
+ * A abstract class which responsible for parsing a JWT token
  */
-abstract class JwtParseWithKeyFunction extends Function {
-  /**
-   * Gets argument number that responsible for a function returning the secret key
-   */
-  abstract int getKeyFuncArgNum();
-
+abstract class JwtParseBase extends Function {
   /**
    * Gets argument number that responsible for JWT
    *
@@ -25,6 +20,16 @@ abstract class JwtParseWithKeyFunction extends Function {
     or
     this.getTokenArgNum() = -1 and result = this.getACall().getReceiver()
   }
+}
+
+/**
+ * A abstract class which responsible for parsing a JWT token which the key parameter is a function type
+ */
+abstract class JwtParseWithKeyFunction extends JwtParseBase {
+  /**
+   * Gets argument number that responsible for a function returning the secret key
+   */
+  abstract int getKeyFuncArgNum();
 
   /**
    * Gets Argument as DataFlow node that responsible for a function returning the secret key
@@ -35,28 +40,11 @@ abstract class JwtParseWithKeyFunction extends Function {
 /**
  * A abstract class which responsible for parsing a JWT token which the key parameter can be a string or byte type
  */
-abstract class JwtParse extends Function {
+abstract class JwtParse extends JwtParseBase {
   /**
    * Gets argument number that responsible for secret key
    */
   abstract int getKeyArgNum();
-
-  /**
-   * Gets argument number that responsible for JWT
-   *
-   * `-1` means the receiver is a argument node that responsible for JWT.
-   *  In this case, we must declare some additional taint steps.
-   */
-  abstract int getTokenArgNum();
-
-  /**
-   * Gets Argument as DataFlow node that responsible for JWT
-   */
-  DataFlow::Node getTokenArg() {
-    this.getTokenArgNum() != -1 and result = this.getACall().getArgument(this.getTokenArgNum())
-    or
-    this.getTokenArgNum() = -1 and result = this.getACall().getReceiver()
-  }
 
   /**
    * Gets Argument as DataFlow node that responsible for secret key
@@ -67,24 +55,7 @@ abstract class JwtParse extends Function {
 /**
  * A abstract class which responsible for parsing a JWT without verifying it
  */
-abstract class JwtUnverifiedParse extends Function {
-  /**
-   * Gets argument number that responsible for JWT
-   *
-   * `-1` means the receiver is a argument node that responsible for JWT.
-   *  In this case, we must declare some additional taint steps.
-   */
-  abstract int getTokenArgNum();
-
-  /**
-   * Gets Argument as DataFlow node that responsible for JWT
-   */
-  DataFlow::Node getTokenNode() {
-    this.getTokenArgNum() != -1 and result = this.getACall().getArgument(this.getTokenArgNum())
-    or
-    this.getTokenArgNum() = -1 and result = this.getACall().getReceiver()
-  }
-}
+abstract class JwtUnverifiedParse extends JwtParseBase { }
 
 /**
  * Gets `github.com/golang-jwt/jwt` and `github.com/dgrijalva/jwt-go`(previous name of `golang-jwt`) JWT packages
@@ -235,31 +206,31 @@ class GoJoseUnsafeClaims extends JwtUnverifiedParse {
  */
 predicate golangJwtIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(Function f, DataFlow::CallNode call |
-    f.hasQualifiedName(package("github.com/golang-jwt/jwt", ""),
-      [
-        "ParseECPrivateKeyFromPEM", "ParseECPublicKeyFromPEM", "ParseEdPrivateKeyFromPEM",
-        "ParseEdPublicKeyFromPEM", "ParseRSAPrivateKeyFromPEM", "ParseRSAPublicKeyFromPEM",
-        "RegisterSigningMethod"
-      ]) or
-    f.hasQualifiedName(package("github.com/dgrijalva/jwt-go", ""),
-      [
-        "ParseECPrivateKeyFromPEM", "ParseECPublicKeyFromPEM", "ParseRSAPrivateKeyFromPEM",
-        "ParseRSAPrivateKeyFromPEMWithPassword", "ParseRSAPublicKeyFromPEM"
-      ])
-  |
+    (
+      f.hasQualifiedName(package("github.com/golang-jwt/jwt", ""),
+        [
+          "ParseECPrivateKeyFromPEM", "ParseECPublicKeyFromPEM", "ParseEdPrivateKeyFromPEM",
+          "ParseEdPublicKeyFromPEM", "ParseRSAPrivateKeyFromPEM", "ParseRSAPublicKeyFromPEM",
+          "RegisterSigningMethod"
+        ]) or
+      f.hasQualifiedName(package("github.com/dgrijalva/jwt-go", ""),
+        [
+          "ParseECPrivateKeyFromPEM", "ParseECPublicKeyFromPEM", "ParseRSAPrivateKeyFromPEM",
+          "ParseRSAPrivateKeyFromPEMWithPassword", "ParseRSAPublicKeyFromPEM"
+        ])
+    ) and
     call = f.getACall() and
     nodeFrom = call.getArgument(0) and
-    nodeTo = call
-  )
-  or
-  exists(Function f, DataFlow::CallNode call |
-    f instanceof GolangJwtParse
+    nodeTo = call.getResult(0)
     or
-    f instanceof GolangJwtParseWithClaims
-  |
+    (
+      f instanceof GolangJwtParse
+      or
+      f instanceof GolangJwtParseWithClaims
+    ) and
     call = f.getACall() and
     nodeFrom = call.getArgument(0) and
-    nodeTo = call
+    nodeTo = call.getResult(0)
   )
 }
 
@@ -268,26 +239,21 @@ predicate golangJwtIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node 
  */
 predicate goJoseIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(Function f, DataFlow::CallNode call |
-    f.hasQualifiedName(goJoseJwtPackage(), ["ParseEncrypted", "ParseSigned",])
-  |
+    f.hasQualifiedName(goJoseJwtPackage(), ["ParseEncrypted", "ParseSigned"]) and
     call = f.getACall() and
     nodeFrom = call.getArgument(0) and
-    nodeTo = call
+    nodeTo = call.getResult(0)
   )
   or
   exists(Method m, DataFlow::CallNode call |
-    m.hasQualifiedName(goJoseJwtPackage(), "NestedJSONWebToken", "ParseSignedAndEncrypted")
-  |
+    m.hasQualifiedName(goJoseJwtPackage(), "NestedJSONWebToken", "ParseSignedAndEncrypted") and
     call = m.getACall() and
     nodeFrom = call.getArgument(0) and
-    nodeTo = call
-  )
-  or
-  exists(Method f, DataFlow::CallNode call |
-    f.hasQualifiedName(goJoseJwtPackage(), "NestedJSONWebToken", "Decrypt")
-  |
-    call = f.getACall() and
+    nodeTo = call.getResult(0)
+    or
+    m.hasQualifiedName(goJoseJwtPackage(), "NestedJSONWebToken", "Decrypt") and
+    call = m.getACall() and
     nodeFrom = call.getReceiver() and
-    nodeTo = call
+    nodeTo = call.getResult(0)
   )
 }
