@@ -1,7 +1,15 @@
+/**
+ * Provides helper predicates to work with any Readable Stream in dataflow queries
+ *
+ * main predicate in which you can use by passing a Readable Stream is `customStreamPipeAdditionalTaintStep`
+ */
+
 import javascript
 
 /**
  * Holds if there is a step between `fs.createReadStream` and `stream.Readable.from` first parameters to all other piped parameters
+ *
+ * It can be global additional step too
  */
 predicate readablePipeAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(API::Node receiver |
@@ -20,6 +28,8 @@ predicate readablePipeAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node su
 
 /**
  * additional taint steps for piped stream from `createReadStream` method of `fs/promises.open`
+ *
+ * It can be global additional step too
  */
 predicate promisesFileHandlePipeAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(API::Node receiver | receiver = nodeJsPromisesFileSystem().getMember("open") |
@@ -45,9 +55,7 @@ API::Node nodeJsPromisesFileSystem() {
  *
  * or `receiver.pipe(succ)` and receiver is pred
  *
- * Receiver can be any method node that support stream pipe method, it can't be a parameter node
- *
- * Pass receiver method as receiver, not a return value of the receiver method
+ * Receiver is a Readable Stream object
  */
 predicate customStreamPipeAdditionalTaintStep(
   API::Node receiver, DataFlow::Node pred, DataFlow::Node succ
@@ -83,6 +91,8 @@ predicate customStreamPipeAdditionalTaintStep(
  *        succ
  *    )
  * ```
+ *
+ * It can be global additional step too
  */
 predicate streamPipelineAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   // this step connect the a pipeline parameter to the next pipeline parameter
@@ -114,8 +124,8 @@ API::Node nodeJsStream() {
 }
 
 /**
- * Gets a Readable Stream method(not a return value of the method)
- * and returns all nodes responsible for a data read access
+ * Gets a Readable stream object,
+ * and returns all nodes responsible for a data read of this Readable stream
  */
 DataFlow::Node readableStreamDataNode(API::Node stream) {
   result = stream.asSource()
