@@ -1091,3 +1091,5 @@
 | test.swift:871:24:871:31 | [...] | test.swift:871:24:871:31 | [...] |
 | test.swift:872:28:872:31 | [...] | test.swift:872:28:872:31 | [...] |
 | test.swift:873:21:873:31 | [...] | test.swift:873:21:873:31 | [...] |
+| test.swift:876:22:876:49 | SSA def(expr) | test.swift:877:13:877:13 | expr |
+| test.swift:876:22:876:49 | expr | test.swift:876:22:876:49 | SSA def(expr) |

@@ -872,3 +872,11 @@ func testVarargsCaller() {
     testVarargs2(source(), 2, 3)
     testVarargs3(1, 2, source())
 }
+
+func usesAutoclosure(_ expr: @autoclosure () -> Int) {
+  sink(arg: expr())
+}
+
+func autoclosureTest() {
+  usesAutoclosure(source())
+}

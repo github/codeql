@@ -6276,3 +6276,46 @@ cfg.swift:
 
 #  546| 0
 #-----|  -> return ...
+
+#  550| enter usesAutoclosure(_:)
+#-----|  -> usesAutoclosure(_:)
+
+#  550| exit usesAutoclosure(_:)
+
+#  550| exit usesAutoclosure(_:) (normal)
+#-----|  -> exit usesAutoclosure(_:)
+
+#  550| usesAutoclosure(_:)
+#-----|  -> expr
+
+#  550| expr
+#-----|  -> expr
+
+#  551| return ...
+#-----| return -> exit usesAutoclosure(_:) (normal)
+
+#  551| expr
+#-----|  -> call to ...
+
+#  551| call to ...
+#-----|  -> return ...
+
+#  554| autoclosureTest()
+#-----|  -> usesAutoclosure(_:)
+
+#  554| enter autoclosureTest()
+#-----|  -> autoclosureTest()
+
+#  554| exit autoclosureTest()
+
+#  554| exit autoclosureTest() (normal)
+#-----|  -> exit autoclosureTest()
+
+#  555| usesAutoclosure(_:)
+#-----|  -> { ... }
+
+#  555| call to usesAutoclosure(_:)
+#-----|  -> exit autoclosureTest() (normal)
+
+#  555| { ... }
+#-----|  -> call to usesAutoclosure(_:)
