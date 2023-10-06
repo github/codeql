@@ -6317,5 +6317,22 @@ cfg.swift:
 #  555| call to usesAutoclosure(_:)
 #-----|  -> exit autoclosureTest() (normal)
 
+#  555| 1
+#-----|  -> return ...
+
+#  555| enter { ... }
+#-----|  -> { ... }
+
+#  555| exit { ... }
+
+#  555| exit { ... } (normal)
+#-----|  -> exit { ... }
+
+#  555| return ...
+#-----|  -> exit { ... } (normal)
+
+#  555| { ... }
+#-----|  -> 1
+
 #  555| { ... }
 #-----|  -> call to usesAutoclosure(_:)

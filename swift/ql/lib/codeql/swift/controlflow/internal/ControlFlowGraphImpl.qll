@@ -67,10 +67,13 @@ module CfgScope {
     final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
 
-  private class ClosureExprScope extends Range_ instanceof ExplicitClosureExpr {
+  private class ClosureExprScope extends Range_ instanceof ClosureExpr {
     Exprs::ClosureExprTree tree;
 
-    ClosureExprScope() { tree.getAst() = this }
+    ClosureExprScope() {
+      isNormalAutoClosureOrExplicitClosure(this) and
+      tree.getAst() = this
+    }
 
     final override predicate entry(ControlFlowElement first) { first(tree, first) }
 
@@ -1139,11 +1142,11 @@ module Exprs {
   }
 
   class ClosureExprTree extends StandardPreOrderTree, TClosureElement {
-    ExplicitClosureExpr expr;
+    ClosureExpr expr;
 
     ClosureExprTree() { this = TClosureElement(expr) }
 
-    ExplicitClosureExpr getAst() { result = expr }
+    ClosureExpr getAst() { result = expr }
 
     final override ControlFlowElement getChildElement(int i) {
       result.asAstNode() = expr.getParam(i)

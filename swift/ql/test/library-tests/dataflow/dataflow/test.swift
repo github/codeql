@@ -874,7 +874,7 @@ func testVarargsCaller() {
 }
 
 func usesAutoclosure(_ expr: @autoclosure () -> Int) {
-  sink(arg: expr())
+  sink(arg: expr()) // $ flow=881
 }
 
 func autoclosureTest() {
