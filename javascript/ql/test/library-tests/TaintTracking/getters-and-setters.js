@@ -50,7 +50,7 @@ function testFlowThroughGetter() {
     function getX(c) {
         return c.x;
     }
-    sink(getX(new C(source()))); // NOT OK - but not flagged
+    sink(getX(new C(source()))); // NOT OK
     getX(null);
 }
 
@@ -67,7 +67,7 @@ function testFlowThroughObjectLiteralAccessors() {
     obj.y = source();
 
     function indirection(c) {
-        sink(c.x); // NOT OK - but not currently flagged
+        sink(c.x); // NOT OK - but not currently flagged [INCONSISTENCY]
     }
     indirection(obj);
     indirection(null);

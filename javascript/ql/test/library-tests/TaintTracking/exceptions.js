@@ -23,7 +23,7 @@ function test(unsafe, safe) {
     sink(e); // NOT OK
     sink(e.toString()); // NOT OK
     sink(e.message); // NOT OK
-    sink(e.fileName); // OK - but flagged anyway
+    sink(e.fileName); // OK - but flagged anyway [INCONSISTENCY]
   }
 
   try {
@@ -32,16 +32,16 @@ function test(unsafe, safe) {
     sink(e); // NOT OK
     sink(e.toString()); // NOT OK
     sink(e.message); // NOT OK
-    sink(e.fileName); // OK - but flagged anyway
+    sink(e.fileName); // OK - but flagged anyway [INCONSISTENCY]
   }
 
   try {
     throwError2(safe);
   } catch (e) {
-    sink(e); // NOT OK
-    sink(e.toString()); // NOT OK
-    sink(e.message); // NOT OK
-    sink(e.fileName); // OK - but flagged anyway
+    sink(e); // OK
+    sink(e.toString()); // OK
+    sink(e.message); // OK
+    sink(e.fileName); // OK
   }
 
   try {
@@ -51,14 +51,14 @@ function test(unsafe, safe) {
   }
 
   throwAsync(source()).catch(e => {
-    sink(e); // NOT OK - but not flagged
+    sink(e); // NOT OK
   });
 
   async function asyncTester() {
     try {
       await throwAsync(source());
     } catch (e) {
-      sink(e); // NOT OK - but not flagged
+      sink(e); // NOT OK
     }
   }
 }
