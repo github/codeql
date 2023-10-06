@@ -251,7 +251,7 @@ void test17(unsigned *p, unsigned x, unsigned k) {
         // The following access is okay because:
         // n = 3*p[0] + k >= p[0] + k >= p[1] + k > p[1] = i
         // (where p[0] denotes the original value for p[0])
-        p[i] = x; // $ alloc=L248 deref=L254 // GOOD [FALSE POSITIVE]
+        p[i] = x; // GOOD
     }
 }
 
