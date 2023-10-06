@@ -1,7 +1,7 @@
 import go
 
 /**
- * A abstract class which responsible for parsing a JWT token
+ * A abstract class which responsible for parsing a JWT token.
  */
 abstract class JwtParseBase extends Function {
   /**
@@ -23,7 +23,9 @@ abstract class JwtParseBase extends Function {
 }
 
 /**
- * A abstract class which responsible for parsing a JWT token which the key parameter is a function type
+ * A abstract class which responsible for parsing a JWT token which the key parameter is a function type.
+ *
+ * Extends this class for Jwt parsing methods that accepts a function type as key.
  */
 abstract class JwtParseWithKeyFunction extends JwtParseBase {
   /**
@@ -38,7 +40,9 @@ abstract class JwtParseWithKeyFunction extends JwtParseBase {
 }
 
 /**
- * A abstract class which responsible for parsing a JWT token which the key parameter can be a string or byte type
+ * A abstract class which responsible for parsing a JWT token which the key parameter can be a string or byte type.
+ *
+ * Extends this class for Jwt parsing methods that accepts a non-function type as key.
  */
 abstract class JwtParse extends JwtParseBase {
   /**
@@ -54,6 +58,8 @@ abstract class JwtParse extends JwtParseBase {
 
 /**
  * A abstract class which responsible for parsing a JWT without verifying it
+ *
+ * Extends this class for Jwt parsing methods that don't verify JWT signature
  */
 abstract class JwtUnverifiedParse extends JwtParseBase { }
 
