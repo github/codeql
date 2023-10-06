@@ -16,16 +16,16 @@ legacyDataFlowDifference
 | exceptions.js:53:14:53:21 | source() | exceptions.js:54:10:54:10 | e | only flow with NEW data flow library |
 | getters-and-setters.js:53:21:53:28 | source() | getters-and-setters.js:53:10:53:30 | getX(ne ... rce())) | only flow with NEW data flow library |
 | nested-props.js:14:15:14:22 | source() | nested-props.js:15:10:15:16 | obj.x.y | only flow with NEW data flow library |
-| nested-props.js:19:17:19:24 | source() | nested-props.js:20:10:20:18 | obj.x.y.z | only flow with NEW data flow library |
 | nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x | only flow with NEW data flow library |
 | nested-props.js:51:22:51:29 | source() | nested-props.js:52:10:52:16 | obj.x.y | only flow with NEW data flow library |
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:23:14:23:20 | obj.foo | only flow with OLD data flow library |
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:28:10:28:30 | sanitiz ... bj).foo | only flow with OLD data flow library |
 | promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise | only flow with OLD data flow library |
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
-| stringification-read-steps.js:7:22:7:29 | source() | stringification-read-steps.js:17:10:17:31 | JSON.st ... object) | only flow with NEW data flow library |
-| stringification-read-steps.js:7:22:7:29 | source() | stringification-read-steps.js:25:10:25:31 | JSON.st ... object) | only flow with NEW data flow library |
 consistencyIssue
+| library-tests/TaintTracking/nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
+| library-tests/TaintTracking/stringification-read-steps.js:17 | expected an alert, but found none | NOT OK | Consistency |
+| library-tests/TaintTracking/stringification-read-steps.js:25 | expected an alert, but found none | NOT OK | Consistency |
 flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
@@ -206,7 +206,6 @@ flow
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
 | nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |
 | nested-props.js:14:15:14:22 | source() | nested-props.js:15:10:15:16 | obj.x.y |
-| nested-props.js:19:17:19:24 | source() | nested-props.js:20:10:20:18 | obj.x.y.z |
 | nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x |
 | nested-props.js:35:13:35:20 | source() | nested-props.js:36:10:36:20 | doLoad(obj) |
 | nested-props.js:43:13:43:20 | source() | nested-props.js:44:10:44:18 | id(obj).x |
@@ -261,8 +260,6 @@ flow
 | string-replace.js:3:13:3:20 | source() | string-replace.js:21:6:21:41 | safe(). ...  taint) |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:22:6:22:48 | safe(). ...  taint) |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:24:6:24:45 | taint.r ...  + '!') |
-| stringification-read-steps.js:7:22:7:29 | source() | stringification-read-steps.js:17:10:17:31 | JSON.st ... object) |
-| stringification-read-steps.js:7:22:7:29 | source() | stringification-read-steps.js:25:10:25:31 | JSON.st ... object) |
 | summarize-store-load-in-call.js:9:15:9:22 | source() | summarize-store-load-in-call.js:9:10:9:23 | blah(source()) |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |

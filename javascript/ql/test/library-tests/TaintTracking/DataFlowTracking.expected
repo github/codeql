@@ -17,7 +17,6 @@ legacyDataFlowDifference
 | exceptions.js:53:14:53:21 | source() | exceptions.js:54:10:54:10 | e | only flow with NEW data flow library |
 | getters-and-setters.js:53:21:53:28 | source() | getters-and-setters.js:53:10:53:30 | getX(ne ... rce())) | only flow with NEW data flow library |
 | nested-props.js:14:15:14:22 | source() | nested-props.js:15:10:15:16 | obj.x.y | only flow with NEW data flow library |
-| nested-props.js:19:17:19:24 | source() | nested-props.js:20:10:20:18 | obj.x.y.z | only flow with NEW data flow library |
 | nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x | only flow with NEW data flow library |
 | nested-props.js:51:22:51:29 | source() | nested-props.js:52:10:52:16 | obj.x.y | only flow with NEW data flow library |
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
@@ -136,7 +135,6 @@ flow
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
 | nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |
 | nested-props.js:14:15:14:22 | source() | nested-props.js:15:10:15:16 | obj.x.y |
-| nested-props.js:19:17:19:24 | source() | nested-props.js:20:10:20:18 | obj.x.y.z |
 | nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x |
 | nested-props.js:35:13:35:20 | source() | nested-props.js:36:10:36:20 | doLoad(obj) |
 | nested-props.js:43:13:43:20 | source() | nested-props.js:44:10:44:18 | id(obj).x |
