@@ -42,12 +42,13 @@ module DecompressionBombs {
     abstract DataFlow::Node sink();
   }
 
+  /**
+   * Provides Decompression Sinks and additional flow steps for `github.com/DataDog/zstd` package
+   */
   module DataDogZstd {
     class TheSink extends Range {
       TheSink() {
-        exists(Method f |
-          f.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder", "Read")
-        |
+        exists(Method f | f.hasQualifiedName("github.com/DataDog/zstd", "reader", "Read") |
           this = f.getACall().getReceiver()
         )
       }
@@ -78,6 +79,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional flow steps for `github.com/klauspost/compress/zstd` package
+   */
   module KlauspostZstd {
     class TheSink extends Range {
       TheSink() {
@@ -121,6 +125,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides additional flow steps for `archive/zip` package
+   */
   module ArchiveZip {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
@@ -144,26 +151,10 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression additional taint steps for `github.com/klauspost/compress/zip` package
+   */
   module KlauspostZip {
-    class TheSink extends Range {
-      TheSink() {
-        exists(Method f |
-          f.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder",
-            ["WriteTo", "DecodeAll"])
-        |
-          this = f.getACall().getReceiver()
-        )
-        or
-        exists(Method f |
-          f.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder", "Read")
-        |
-          this = f.getACall().getReceiver()
-        )
-      }
-
-      override DataFlow::Node sink() { result = this }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -200,6 +191,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `github.com/ulikunitz/xz` package
+   */
   module UlikunitzXz {
     class TheSink extends Range {
       TheSink() {
@@ -233,6 +227,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `compress/gzip` package
+   */
   module CompressGzip {
     class TheSink extends Range {
       TheSink() {
@@ -267,6 +264,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/gzip` package
+   */
   module KlauspostGzip {
     class TheSink extends Range {
       TheSink() {
@@ -311,6 +311,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `compress/bzip2` package
+   */
   module CompressBzip2 {
     class TheSink extends Range {
       TheSink() {
@@ -345,6 +348,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `github.com/dsnet/compress/bzip2` package
+   */
   module DsnetBzip2 {
     class TheSink extends Range {
       TheSink() {
@@ -379,6 +385,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `github.com/dsnet/compress/flate` package
+   */
   module DsnetFlate {
     class TheSink extends Range {
       TheSink() {
@@ -413,6 +422,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `compress/flate` package
+   */
   module CompressFlate {
     class TheSink extends Range {
       TheSink() {
@@ -447,6 +459,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/flate` package
+   */
   module KlauspostFlate {
     class TheSink extends Range {
       TheSink() {
@@ -483,6 +498,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/zlib` package
+   */
   module KlauspostZlib {
     class TheSink extends Range {
       TheSink() {
@@ -519,6 +537,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `compress/zlib` package
+   */
   module CompressZlib {
     class TheSink extends Range {
       TheSink() {
@@ -553,6 +574,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `github.com/golang/snappy` package
+   */
   module GolangSnappy {
     class TheSink extends Range {
       TheSink() {
@@ -589,6 +613,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression additional taint steps for `github.com/klauspost/compress/snappy` package
+   */
   module KlauspostSnappy {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
@@ -613,14 +640,17 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks and additional taint steps for `github.com/klauspost/compress/s2` package
+   */
   module KlauspostS2 {
     class TheSink extends Range {
       TheSink() {
-        exists(Function f |
-          f.hasQualifiedName("github.com/klauspost/compress/s2.Reader",
+        exists(Method m |
+          m.hasQualifiedName("github.com/klauspost/compress/s2", "Reader",
             ["DecodeConcurrent", "ReadByte", "Read"])
         |
-          this = f.getACall().getReceiver()
+          this = m.getACall().getReceiver()
         )
       }
 
@@ -650,6 +680,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks for `"archive/tar` package
+   */
   module ArchiveTar {
     class TheSink extends Range {
       TheSink() {
@@ -662,6 +695,9 @@ module DecompressionBombs {
     }
   }
 
+  /**
+   * Provides Decompression Sinks for packages that use some standard IO interfaces/methods for reading decompressed data
+   */
   module GeneralReadIoSink {
     class TheSink extends Range {
       TheSink() {

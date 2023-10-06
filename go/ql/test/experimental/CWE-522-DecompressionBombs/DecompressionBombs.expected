@@ -1,4 +1,3 @@
-WARNING: Reference to DecompressionBombs references a local library, not the named module. (/home/am/CodeQL-home/codeql-repo-amammad/go/ql/src/experimental/CWE-522-DecompressionBombs/DecompressionBombs.ql:17,8-26)
 edges
 | test.go:56:18:56:29 | selection of Body | test.go:165:22:165:25 | definition of file |
 | test.go:57:15:57:26 | selection of Body | test.go:135:19:135:22 | definition of file |
