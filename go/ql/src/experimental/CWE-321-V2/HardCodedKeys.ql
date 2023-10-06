@@ -48,7 +48,7 @@ module GolangJwtKeyFuncConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink = any(JwtParseWithKeyFunction parseJWT).getKeyFuncArg()
+    sink = any(JwtParseWithKeyFunction parseJwt).getKeyFuncArg()
   }
 }
 
