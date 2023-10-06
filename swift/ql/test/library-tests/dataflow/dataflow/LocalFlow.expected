@@ -1093,9 +1093,5 @@
 | test.swift:880:7:880:7 | self | test.swift:880:7:880:7 | SSA def(self) |
 | test.swift:881:7:881:7 | SSA def(self) | test.swift:881:2:881:34 | self[return] |
 | test.swift:881:7:881:7 | self | test.swift:881:7:881:7 | SSA def(self) |
-| test.swift:887:30:887:33 | SSA def(x) | test.swift:888:12:888:12 | x |
-| test.swift:887:30:887:33 | x | test.swift:887:30:887:33 | SSA def(x) |
 | test.swift:887:45:887:48 | SSA def(y) | test.swift:889:12:889:12 | y |
 | test.swift:887:45:887:48 | y | test.swift:887:45:887:48 | SSA def(y) |
-| test.swift:888:12:888:21 | call to source() | test.swift:888:12:888:21 | OpenExistentialExpr |
-| test.swift:890:12:890:35 | call to source() | test.swift:890:12:890:35 | OpenExistentialExpr |
