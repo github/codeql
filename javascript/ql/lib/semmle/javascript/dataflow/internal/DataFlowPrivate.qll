@@ -671,6 +671,8 @@ private predicate valuePreservingStep(Node node1, Node node2) {
   or
   FlowSteps::globalFlowStep(node1, node2)
   or
+  FlowSteps::globalPostUpdateStep(node1, node2)
+  or
   node2 = FlowSteps::getThrowTarget(node1)
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
