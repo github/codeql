@@ -24,11 +24,11 @@ func test(db: Database, varString: String, varArray: Array<UInt8>, varData: Data
 
 	// GRDB
 	try db.usePassphrase(varString)
-	try db.usePassphrase(constString) // BAD: constant key [NOT DETECTED]
+	try db.usePassphrase(constString) // BAD: constant key
 	try db.usePassphrase(varData)
-	try db.usePassphrase(constData) // BAD: constant key [NOT DETECTED]
+	try db.usePassphrase(constData) // BAD: constant key
 	try db.changePassphrase(varString)
-	try db.changePassphrase(constString) // BAD: constant key [NOT DETECTED]
+	try db.changePassphrase(constString) // BAD: constant key
 	try db.changePassphrase(Data(varArray))
-	try db.changePassphrase(constData) // BAD: constant key [NOT DETECTED]
+	try db.changePassphrase(constData) // BAD: constant key
 }
