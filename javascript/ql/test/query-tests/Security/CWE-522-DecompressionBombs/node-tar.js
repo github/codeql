@@ -1,9 +1,9 @@
 const tar = require("tar");
 const express = require('express')
 const fileUpload = require("express-fileupload");
-const {Readable, writeFileSync} = require("stream");
+const { Readable, writeFileSync } = require("stream");
 const fs = require("fs");
-const {createGunzip} = require("zlib");
+const { createGunzip } = require("zlib");
 const app = express();
 const port = 3000;
 app.use(fileUpload());
@@ -12,7 +12,7 @@ app.listen(port, () => {
 });
 
 app.post('/upload', (req, res) => {
-    zipBomb(req.files.zipBombFile)
+    zipBomb(req.files.zipBombFile.data)
     res.send('Hello World!')
 });
 
@@ -55,8 +55,8 @@ function zipBomb(tarFile) {
     // or using fs.writeFile
     // file path is a tmp file name that can get from DB after saving to DB with remote file upload
     // so the input file name will come from a DB source
-    tar.x({file: tarFile.name})
-    tar.extract({file: tarFile.name})
+    tar.x({ file: tarFile.name })
+    tar.extract({ file: tarFile.name })
     // safe https://github.com/isaacs/node-tar/blob/8c5af15e43a769fd24aa7f1c84d93e54824d19d2/lib/list.js#L90
     tar.x({
         file: tarFile.name,

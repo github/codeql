@@ -278,23 +278,6 @@ module DecompressionBomb {
     }
   }
 
-  module Brotli {
-    /**
-     * The decompression sinks of (brotli)[https://www.npmjs.com/package/brotli]
-     */
-    class DecompressionBomb extends Range {
-      DecompressionBomb() {
-        this =
-          [
-            API::moduleImport("brotli").getMember("decompress"),
-            API::moduleImport("brotli/decompress")
-          ]
-      }
-
-      override DataFlow::Node sink() { result = this.getACall().getArgument(0) }
-    }
-  }
-
   module Unzipper {
     /**
      * The decompression sinks of (unzipper)[https://www.npmjs.com/package/unzipper]

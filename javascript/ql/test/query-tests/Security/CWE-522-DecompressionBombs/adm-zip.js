@@ -1,22 +1,3 @@
-// const AdmZip = require("adm-zip");
-//
-// // reading archives
-// var zip = new AdmZip("/home/am/0_WorkDir/1_CodeQL Workspace/Bombs scripts and payloads/2GB.zip");
-// var zipEntries = zip.getEntries(); // an array of ZipEntry records
-//
-// zipEntries.forEach(function (zipEntry) {
-//     console.log(zipEntry.toString()); // outputs zip entries information
-//     if (zipEntry.entryName == "my_file.txt") {
-//         console.log(zipEntry.getData().toString("utf8"));
-//     }
-// });
-// // outputs the content of some_folder/my_file.txt
-// console.log(zip.readAsText("10GB"));
-// // extracts the specified file to the specified location
-// zip.extractEntryTo("10GB", "/home/me/tempfolder", false, true);
-// // extracts everything
-// zip.extractAllTo("./tmp", true);
-
 const AdmZip = require("adm-zip");
 const express = require('express')
 const fileUpload = require("express-fileupload");

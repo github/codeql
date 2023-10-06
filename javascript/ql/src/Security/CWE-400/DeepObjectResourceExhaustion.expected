@@ -1,0 +1,8 @@
+nodes
+| examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body |
+| examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body |
+| examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body |
+edges
+| examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body | examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body |
+#select
+| examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body | examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body | examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body | Denial of service caused by processing $@ with $@. | examples/DeepObjectResourceExhaustion.js:9:29:9:36 | req.body | user input | examples/DeepObjectResourceExhaustion.js:4:21:4:35 | allErrors: true | allErrors: true |
