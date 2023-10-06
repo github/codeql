@@ -1269,19 +1269,27 @@ private class OptionalSomeContentSet extends ContentSet {
   }
 }
 
-private newtype TDataFlowType = TODO_DataFlowType()
-
-class DataFlowType extends TDataFlowType {
-  string toString() { result = "" }
+class DataFlowType extends Type {
+  DataFlowType() {
+    this.getCanonicalType() = this
+  }
 }
 
-predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  t1.getABaseType*().getCanonicalType() = stripMaybe(t2)
+}
 
 predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
-  any() // return the singleton DataFlowType until we support type pruning for Swift
+  result = n.asExpr().getType().getCanonicalType() or
+  result = n.asPattern().getMatchingExpr().getType().getCanonicalType() or
+  result = n.asPattern().(NamedPattern).getVarDecl().getType().getCanonicalType() or
+  result = n.asDefinition().getSourceVariable().asVarDecl().getType().getCanonicalType() or
+  result = n.(ParameterNode).getParameter().getType().getCanonicalType() or
+
+  result = getNodeType(n.(PostUpdateNode).getPreUpdateNode())
 }
 
 /** Gets a string representation of a `DataFlowType`. */
@@ -1292,7 +1300,22 @@ string ppReprType(DataFlowType t) { none() }
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
+  exists(DataFlowType commonSub |
+    commonSub.getABaseType*().getCanonicalType() = stripMaybe(t1) and
+    commonSub.getABaseType*().getCanonicalType() = stripMaybe(t2)
+  )
+}
+
+DataFlowType stripMaybe(DataFlowType t) {
+  exists(BoundGenericEnumType optional |
+    optional = t and
+    optional.getArgType(0) = result and
+    optional.getDeclaration().getFullName() = "Optional"
+  )
+  or
+  result = t
+}
 
 abstract class PostUpdateNodeImpl extends Node {
   /** Gets the node before the state update. */
