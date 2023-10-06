@@ -384,14 +384,6 @@ private module CachedSteps {
   }
 
   /**
-   * Gets a post-update of `gv` in `f`.
-   */
-  pragma[noinline]
-  private DataFlow::ExprPostUpdateNode getAPostUpdateIn(GlobalVariable gv, File f) {
-    result.getPreUpdateNode() = getAUseIn(gv, f)
-  }
-
-  /**
    * Holds if there is a flow step from `pred` to `succ` through a global
    * variable. Both `pred` and `succ` must be in the same file.
    */
@@ -400,20 +392,6 @@ private module CachedSteps {
     exists(GlobalVariable gv, File f |
       pred = getADefIn(gv, f) and
       succ = getAUseIn(gv, f)
-    )
-  }
-
-  /**
-   * Holds if `pred` is a post-update node for a use of a global variable, and `succ`
-   * is a use of the global variable in the same file.
-   */
-  cached
-  predicate globalPostUpdateStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(GlobalVariable gv, File f |
-      pred = getAPostUpdateIn(gv, f) and
-      succ = getAUseIn(gv, f) and
-      // Remove some unnecessary steps
-      not succ = any(DataFlow::PropWrite write).getBase()
     )
   }
 
@@ -460,7 +438,6 @@ private module CachedSteps {
   predicate basicStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     succ.(DataFlow::SourceNode).hasPropertyWrite(prop, pred)
     or
-    // Note that this case is handled by globalPostUpdateStep in dataflow2
     exists(GlobalVariable gv, File f |
       globalPropertyWrite(gv, f, prop, pred) and
       globalPropertyRead(gv, f, prop, succ)
