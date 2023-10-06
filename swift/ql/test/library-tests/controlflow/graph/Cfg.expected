@@ -6180,3 +6180,218 @@ cfg.swift:
 
 #  534| i
 #-----|  -> (Any) ...
+
+#  544| MyProcotolImpl.deinit()
+#-----|  -> self
+
+#  544| MyProcotolImpl.init()
+#-----|  -> self
+
+#  544| enter MyProcotolImpl.deinit()
+#-----|  -> MyProcotolImpl.deinit()
+
+#  544| enter MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.init()
+
+#  544| exit MyProcotolImpl.deinit()
+
+#  544| exit MyProcotolImpl.deinit() (normal)
+#-----|  -> exit MyProcotolImpl.deinit()
+
+#  544| exit MyProcotolImpl.init()
+
+#  544| exit MyProcotolImpl.init() (normal)
+#-----|  -> exit MyProcotolImpl.init()
+
+#  544| return
+#-----| return -> exit MyProcotolImpl.init() (normal)
+
+#  544| self
+#-----|  -> { ... }
+
+#  544| self
+#-----|  -> return
+
+#  544| { ... }
+#-----|  -> exit MyProcotolImpl.deinit() (normal)
+
+#  545| enter source()
+#-----|  -> source()
+
+#  545| exit source()
+
+#  545| exit source() (normal)
+#-----|  -> exit source()
+
+#  545| source()
+#-----|  -> self
+
+#  545| self
+#-----|  -> 0
+
+#  545| return ...
+#-----| return -> exit source() (normal)
+
+#  545| 0
+#-----|  -> return ...
+
+#  548| enter getMyProtocol()
+#-----|  -> getMyProtocol()
+
+#  548| exit getMyProtocol()
+
+#  548| exit getMyProtocol() (normal)
+#-----|  -> exit getMyProtocol()
+
+#  548| getMyProtocol()
+#-----|  -> MyProcotolImpl.init()
+
+#  548| return ...
+#-----| return -> exit getMyProtocol() (normal)
+
+#  548| MyProcotolImpl.Type
+#-----|  -> call to MyProcotolImpl.init()
+
+#  548| MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.Type
+
+#  548| (MyProtocol) ...
+#-----|  -> return ...
+
+#  548| call to MyProcotolImpl.init()
+#-----|  -> (MyProtocol) ...
+
+#  549| enter getMyProtocolImpl()
+#-----|  -> getMyProtocolImpl()
+
+#  549| exit getMyProtocolImpl()
+
+#  549| exit getMyProtocolImpl() (normal)
+#-----|  -> exit getMyProtocolImpl()
+
+#  549| getMyProtocolImpl()
+#-----|  -> MyProcotolImpl.init()
+
+#  549| return ...
+#-----| return -> exit getMyProtocolImpl() (normal)
+
+#  549| MyProcotolImpl.Type
+#-----|  -> call to MyProcotolImpl.init()
+
+#  549| MyProcotolImpl.init()
+#-----|  -> MyProcotolImpl.Type
+
+#  549| call to MyProcotolImpl.init()
+#-----|  -> return ...
+
+#  551| enter sink(arg:)
+#-----|  -> sink(arg:)
+
+#  551| exit sink(arg:)
+
+#  551| exit sink(arg:) (normal)
+#-----|  -> exit sink(arg:)
+
+#  551| sink(arg:)
+#-----|  -> arg
+
+#  551| arg
+#-----|  -> { ... }
+
+#  551| { ... }
+#-----|  -> exit sink(arg:) (normal)
+
+#  553| enter testOpenExistentialExpr(x:y:)
+#-----|  -> testOpenExistentialExpr(x:y:)
+
+#  553| exit testOpenExistentialExpr(x:y:)
+
+#  553| exit testOpenExistentialExpr(x:y:) (normal)
+#-----|  -> exit testOpenExistentialExpr(x:y:)
+
+#  553| testOpenExistentialExpr(x:y:)
+#-----|  -> x
+
+#  553| x
+#-----|  -> y
+
+#  553| y
+#-----|  -> sink(arg:)
+
+#  554| sink(arg:)
+#-----|  -> x
+
+#  554| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  554| OpaqueValueExpr
+#-----|  -> call to source()
+
+#  554| x
+#-----|  -> .source()
+
+#  554| .source()
+#-----|  -> OpaqueValueExpr
+
+#  554| OpenExistentialExpr
+#-----|  -> call to sink(arg:)
+
+#  554| call to source()
+#-----|  -> OpenExistentialExpr
+
+#  555| sink(arg:)
+#-----|  -> .source()
+
+#  555| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  555| y
+#-----|  -> call to source()
+
+#  555| .source()
+#-----|  -> y
+
+#  555| call to source()
+#-----|  -> call to sink(arg:)
+
+#  556| sink(arg:)
+#-----|  -> getMyProtocol()
+
+#  556| call to sink(arg:)
+#-----|  -> sink(arg:)
+
+#  556| getMyProtocol()
+#-----|  -> call to getMyProtocol()
+
+#  556| OpaqueValueExpr
+#-----|  -> call to source()
+
+#  556| call to getMyProtocol()
+#-----|  -> .source()
+
+#  556| .source()
+#-----|  -> OpaqueValueExpr
+
+#  556| OpenExistentialExpr
+#-----|  -> call to sink(arg:)
+
+#  556| call to source()
+#-----|  -> OpenExistentialExpr
+
+#  557| sink(arg:)
+#-----|  -> .source()
+
+#  557| call to sink(arg:)
+#-----|  -> exit testOpenExistentialExpr(x:y:) (normal)
+
+#  557| getMyProtocolImpl()
+#-----|  -> call to getMyProtocolImpl()
+
+#  557| call to getMyProtocolImpl()
+#-----|  -> call to source()
+
+#  557| .source()
+#-----|  -> getMyProtocolImpl()
+
+#  557| call to source()
+#-----|  -> call to sink(arg:)
