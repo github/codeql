@@ -117,33 +117,6 @@ abstract class Configuration extends DataFlow::Configuration {
   final override predicate isBarrierOut(DataFlow::Node node) { this.isSanitizerOut(node) }
 
   /**
-   * DEPRECATED: Use `isSanitizer` and `BarrierGuard` module instead.
-   *
-   * Holds if taint propagation through nodes guarded by `guard` is prohibited.
-   */
-  deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
-
-  deprecated final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-    this.isSanitizerGuard(guard)
-  }
-
-  /**
-   * DEPRECATED: Use `isSanitizer` and `BarrierGuard` module instead.
-   *
-   * Holds if taint propagation through nodes guarded by `guard` is prohibited
-   * when the flow state is `state`.
-   */
-  deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard guard, DataFlow::FlowState state) {
-    none()
-  }
-
-  deprecated final override predicate isBarrierGuard(
-    DataFlow::BarrierGuard guard, DataFlow::FlowState state
-  ) {
-    this.isSanitizerGuard(guard, state)
-  }
-
-  /**
    * Holds if taint may propagate from `node1` to `node2` in addition to the normal data-flow and taint steps.
    */
   predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { none() }

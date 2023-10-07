@@ -76,35 +76,6 @@ class StringConstCompareBarrier extends DataFlow::Node {
   }
 }
 
-/**
- * DEPRECATED: Use `StringConstCompareBarrier` instead.
- *
- * A validation of value by comparing with a constant string value, for example
- * in:
- *
- * ```rb
- * dir = params[:order]
- * dir = "DESC" unless dir == "ASC"
- * User.order("name #{dir}")
- * ```
- *
- * the equality operation guards against `dir` taking arbitrary values when used
- * in the `order` call.
- */
-deprecated class StringConstCompare extends DataFlow::BarrierGuard,
-  CfgNodes::ExprNodes::ComparisonOperationCfgNode
-{
-  private CfgNode checkedNode;
-  // The value of the condition that results in the node being validated.
-  private boolean checkedBranch;
-
-  StringConstCompare() { stringConstCompare(this, checkedNode, checkedBranch) }
-
-  override predicate checks(CfgNode expr, boolean branch) {
-    expr = checkedNode and branch = checkedBranch
-  }
-}
-
 cached
 private predicate stringConstArrayInclusionCall(
   CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch
@@ -142,32 +113,6 @@ class StringConstArrayInclusionCallBarrier extends DataFlow::Node {
   StringConstArrayInclusionCallBarrier() {
     this = DataFlow::BarrierGuard<stringConstArrayInclusionCall/3>::getABarrierNode()
   }
-}
-
-/**
- * DEPRECATED: Use `StringConstArrayInclusionCallBarrier` instead.
- *
- * A validation of a value by checking for inclusion in an array of string
- * literal values, for example in:
- *
- * ```rb
- * name = params[:user_name]
- * if %w(alice bob charlie).include? name
- *   User.find_by("username = #{name}")
- * end
- * ```
- *
- * the `include?` call guards against `name` taking arbitrary values when used
- * in the `find_by` call.
- */
-deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
-  CfgNodes::ExprNodes::MethodCallCfgNode
-{
-  private CfgNode checkedNode;
-
-  StringConstArrayInclusionCall() { stringConstArrayInclusionCall(this, checkedNode, true) }
-
-  override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
 }
 
 /**
