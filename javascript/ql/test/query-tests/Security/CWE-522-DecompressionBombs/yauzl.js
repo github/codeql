@@ -3,7 +3,6 @@ const yauzl = require("yauzl");
 const fs = require("fs");
 const express = require('express')
 const fileUpload = require("express-fileupload");
-const JSZip = require("jszip");
 const app = express();
 app.use(fileUpload());
 app.listen(3000, () => {

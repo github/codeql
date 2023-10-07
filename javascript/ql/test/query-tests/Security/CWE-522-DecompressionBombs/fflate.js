@@ -1,8 +1,6 @@
 const fflate = require('fflate');
 const express = require('express')
 const fileUpload = require("express-fileupload");
-import http from 'node:http';
-import decompressResponse from 'decompress-response';
 
 const { writeFileSync } = require("fs");
 const app = express();
