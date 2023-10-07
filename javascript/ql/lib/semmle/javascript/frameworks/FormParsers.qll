@@ -53,15 +53,6 @@ module BusBoy {
   }
 }
 
-predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(API::Node busboyOnEvent |
-    busboyOnEvent = API::moduleImport("busboy").getReturn().getMember("on")
-  |
-    busboyOnEvent.getParameter(0).asSink().mayHaveStringValue("file") and
-    customStreamPipeAdditionalTaintStep(busboyOnEvent.getParameter(1).getParameter(1), pred, succ)
-  )
-}
-
 /**
  * A module for modeling [formidable](https://www.npmjs.com/package/formidable) package
  */
