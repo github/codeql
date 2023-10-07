@@ -1199,15 +1199,15 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   }
 
   /**
-   * Gets a type argument provided to the constructor of this class instance creation expression.
+   * Gets a type argument of the type of the created instance.
    *
-   * This is used for instantiations of parameterized classes.
+   * This is used for instantiations of parameterized classes. For example for
+   * `new ArrayList<String>()` the result would be the expression representing `String`.
    */
   Expr getATypeArgument() { result = this.getTypeName().(TypeAccess).getATypeArgument() }
 
   /**
-   * Gets the type argument provided to the constructor of this class instance creation expression
-   * at the specified (zero-based) position.
+   * Gets the type argument of the type of the created instance, at the specified (zero-based) position.
    */
   Expr getTypeArgument(int index) {
     result = this.getTypeName().(TypeAccess).getTypeArgument(index)
