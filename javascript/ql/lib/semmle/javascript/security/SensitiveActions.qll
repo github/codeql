@@ -13,22 +13,6 @@ import javascript
 import semmle.javascript.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
-/**
- * DEPRECATED: Use `SensitiveNode` instead.
- * An expression that might contain sensitive data.
- */
-deprecated class SensitiveExpr extends Expr {
-  SensitiveNode node;
-
-  SensitiveExpr() { node.asExpr() = this }
-
-  /** Gets a human-readable description of this expression for use in alert messages. */
-  deprecated string describe() { result = node.describe() }
-
-  /** Gets a classification of the kind of sensitive data this expression might contain. */
-  deprecated SensitiveDataClassification getClassification() { result = node.getClassification() }
-}
-
 /** An expression that might contain sensitive data. */
 cached
 abstract class SensitiveNode extends DataFlow::Node {

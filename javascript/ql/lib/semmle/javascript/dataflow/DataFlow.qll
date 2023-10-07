@@ -139,14 +139,6 @@ module DataFlow {
     }
 
     /**
-     * DEPRECATED: Use `DataFlow::ParameterNode::flowsTo()` instead.
-     * Holds if this expression may refer to the initial value of parameter `p`.
-     */
-    deprecated predicate mayReferToParameter(Parameter p) {
-      parameterNode(p).(SourceNode).flowsTo(this)
-    }
-
-    /**
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
