@@ -63,14 +63,14 @@ class Baz
 
   def run(env)
     if env[:foo] == "foo"
-      [200, {}, "foo"]
+      [200, {}, ["foo"]]
     else
       error
     end
   end
 
   def error
-    [400, {}, "nope"]
+    [400, {}, ["nope"]]
   end
 end
 
@@ -91,5 +91,34 @@ class Qux
   def do_redirect
     redirect_to = env['redirect_to']
     Rack::Response.new(['redirecting'], 302, 'Location' => redirect_to).finish
+  end
+end
+
+class UsesRequest
+  def call(env)
+    req = Rack::Request.new(env)
+    if session = req.cookies['session']
+      reuse_session(session)
+    else
+      name = req.params['name']
+      password = req['password']
+      login(name, password)
+    end
+  end
+
+  def login(name, password)
+    [200, {}, "new session"]
+  end
+
+  def reuse_session(name, password)
+    [200, {}, "reuse session"]
+  end
+end
+
+class UsesEnvQueryParams
+  def call(env)
+    params = env['QUERY_STRING']
+    user = Rack::Utils.parse_query(params)["user"]
+    [200, {}, [lookup_user_profile(user)]]
   end
 end

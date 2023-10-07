@@ -1,6 +1,6 @@
 name: codeql/python-queries
-version: 0.8.1-dev
-groups: 
+version: 0.9.0-dev
+groups:
   - python
   - queries
 dependencies:

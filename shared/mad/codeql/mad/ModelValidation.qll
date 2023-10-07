@@ -33,7 +33,7 @@ module KindValidation<KindValidationConfigSig Config> {
           "bean-validation", "fragment-injection", "groovy-injection", "hostname-verification",
           "information-leak", "intent-redirection", "jexl-injection", "jndi-injection",
           "mvel-injection", "ognl-injection", "pending-intents", "response-splitting",
-          "template-injection", "xpath-injection", "xslt-injection",
+          "trust-boundary-violation", "template-injection", "xpath-injection", "xslt-injection",
           // JavaScript-only currently, but may be shared in the future
           "mongodb.sink", "nosql-injection", "unsafe-deserialization",
           // Swift-only currently, but may be shared in the future
@@ -115,11 +115,11 @@ module KindValidation<KindValidationConfigSig Config> {
       this =
         [
           // shared
-          "local", "remote",
+          "local", "remote", "file",
           // Java
-          "android-external-storage-dir", "contentprovider",
+          "android-external-storage-dir", "contentprovider", "database", "environment",
           // C#
-          "file", "file-write",
+          "file-write",
           // JavaScript
           "database-access-result"
         ]

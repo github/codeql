@@ -1,5 +1,5 @@
 /**
- * Provides a taint-tracking configuration for detecting regular expression injection
+ * Provides a taint-tracking configuration for detecting "regular expression injection"
  * vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
@@ -13,9 +13,11 @@ import semmle.python.dataflow.new.TaintTracking
 import RegexInjectionCustomizations::RegexInjection
 
 /**
+ * DEPRECATED: Use `RegexInjectionFlow` module instead.
+ *
  * A taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "RegexInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -28,3 +30,14 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof SanitizerGuard
   }
 }
+
+private module RegexInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/** Global taint-tracking for detecting "regular expression injection" vulnerabilities. */
+module RegexInjectionFlow = TaintTracking::Global<RegexInjectionConfig>;

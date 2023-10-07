@@ -46,6 +46,12 @@ struct MyStruct {
 	var mobileUrl: String
 	var mobilePlayer: String
 	var passwordFeatureEnabled: Bool
+	var Telephone: String
+	var birth_day: String
+	var CarePlanID: String
+	var BankCardNo: String
+	var MyCreditRating: String
+	var OneTimeCode: String
 }
 
 func test2(password : String, license_key: String, ms: MyStruct, connection : NWConnection) {
@@ -67,4 +73,24 @@ func test2(password : String, license_key: String, ms: MyStruct, connection : NW
 	connection.send(content: ms.mobileUrl, completion: .idempotent) // GOOD (not sensitive)
 	connection.send(content: ms.mobilePlayer, completion: .idempotent) // GOOD (not sensitive)
 	connection.send(content: ms.passwordFeatureEnabled, completion: .idempotent) // GOOD (not sensitive)
+	connection.send(content: ms.Telephone, completion: .idempotent) // BAD
+	connection.send(content: ms.birth_day, completion: .idempotent) // BAD
+	connection.send(content: ms.CarePlanID, completion: .idempotent) // BAD
+	connection.send(content: ms.BankCardNo, completion: .idempotent) // BAD
+	connection.send(content: ms.MyCreditRating, completion: .idempotent) // BAD
+	connection.send(content: ms.OneTimeCode, completion: .idempotent) // BAD [NOT DETECTED]
+}
+
+struct MyOuter {
+	struct MyInner {
+		var value: String
+	}
+
+	var password: MyInner
+	var harmless: MyInner
+}
+
+func test3(mo : MyOuter, connection : NWConnection) {
+	connection.send(content: mo.password.value, completion: .idempotent) // BAD
+	connection.send(content: mo.harmless.value, completion: .idempotent) // GOOD
 }

@@ -2,16 +2,16 @@ private import java
 private import DataFlowPrivate
 private import DataFlowUtil
 private import semmle.code.java.dataflow.InstanceAccess
-private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl as Impl
 private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
 private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.dispatch.internal.Unification
 
 private module DispatchImpl {
   private predicate hasHighConfidenceTarget(Call c) {
-    exists(SummarizedCallable sc | sc.getACall() = c and not sc.applyGeneratedModel())
+    exists(Impl::Public::SummarizedCallable sc | sc.getACall() = c and not sc.applyGeneratedModel())
     or
-    exists(NeutralCallable nc | nc.getACall() = c and nc.hasManualModel())
+    exists(Impl::Public::NeutralSummaryCallable nc | nc.getACall() = c and nc.hasManualModel())
     or
     exists(Callable srcTgt |
       srcTgt = VirtualDispatch::viableCallable(c) and
@@ -171,16 +171,6 @@ private module DispatchImpl {
   /** Holds if arguments at position `apos` match parameters at position `ppos`. */
   pragma[inline]
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
-
-  /**
-   * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
-   *
-   * This is a temporary hook to support technical debt in the Go language; do not use.
-   */
-  pragma[inline]
-  predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
-    any()
-  }
 }
 
 import DispatchImpl

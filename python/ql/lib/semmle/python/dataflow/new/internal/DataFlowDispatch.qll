@@ -1561,7 +1561,8 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(ExtractedDataFlowCall call) {
+DataFlowCallable viableCallable(DataFlowCall call) {
+  call instanceof ExtractedDataFlowCall and
   result = call.getCallable()
   or
   // A call to a library callable with a flow summary
@@ -1638,13 +1639,3 @@ private module OutNodes {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
-
-/**
- * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
- *
- * This is a temporary hook to support technical debt in the Go language; do not use.
- */
-pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
-  any()
-}

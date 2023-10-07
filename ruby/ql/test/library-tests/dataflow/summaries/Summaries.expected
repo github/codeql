@@ -1,52 +1,58 @@
-failures
 testFailures
 edges
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:2:6:2:12 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:2:6:2:12 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:4:24:4:30 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:4:24:4:30 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:16:36:16:42 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:16:36:16:42 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:20:25:20:31 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:26:31:26:37 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:30:24:30:30 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:31:27:31:33 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:34:16:34:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:34:16:34:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:35:16:35:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:35:16:35:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:36:21:36:27 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:36:21:36:27 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:37:36:37:42 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:37:36:37:42 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:51:24:51:30 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:56:22:56:28 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:57:17:57:23 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:59:27:59:33 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:63:32:63:38 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:65:23:65:29 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:122:16:122:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:128:14:128:20 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:131:16:131:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:131:16:131:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:132:21:132:27 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:132:21:132:27 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:135:26:135:32 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:135:26:135:32 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:137:23:137:29 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:137:23:137:29 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:140:19:140:25 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:140:19:140:25 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:141:19:141:25 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:141:19:141:25 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:145:26:145:32 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:145:26:145:32 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:147:16:147:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:147:16:147:22 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:150:39:150:45 | tainted |
-| summaries.rb:1:1:1:7 | tainted | summaries.rb:150:39:150:45 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:1:1:1:7 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:1:1:1:7 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:2:6:2:12 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:2:6:2:12 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:4:24:4:30 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:4:24:4:30 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:16:36:16:42 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:16:36:16:42 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:20:25:20:31 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:26:31:26:37 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:30:24:30:30 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:31:27:31:33 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:34:16:34:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:34:16:34:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:35:16:35:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:35:16:35:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:36:21:36:27 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:36:21:36:27 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:37:36:37:42 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:37:36:37:42 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:51:24:51:30 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:56:22:56:28 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:57:17:57:23 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:59:27:59:33 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:63:32:63:38 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:65:23:65:29 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:122:16:122:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:128:14:128:20 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:132:21:132:27 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:132:21:132:27 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:135:26:135:32 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:135:26:135:32 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:137:23:137:29 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:137:23:137:29 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:140:19:140:25 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:140:19:140:25 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:141:19:141:25 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:141:19:141:25 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:145:26:145:32 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:145:26:145:32 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:147:16:147:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:147:16:147:22 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:150:39:150:45 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:150:39:150:45 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:154:20:154:26 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:154:20:154:26 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:155:28:155:34 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:155:28:155:34 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:156:27:156:33 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:156:27:156:33 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:157:14:160:3 | do ... end [captured tainted] |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:157:14:160:3 | do ... end [captured tainted] |
 | summaries.rb:1:20:1:36 | call to source | summaries.rb:1:11:1:36 | call to identity |
 | summaries.rb:1:20:1:36 | call to source | summaries.rb:1:11:1:36 | call to identity |
 | summaries.rb:4:1:4:8 | tainted2 | summaries.rb:9:6:9:13 | tainted2 |
@@ -224,6 +230,7 @@ edges
 | summaries.rb:112:6:112:6 | x [@value] | summaries.rb:112:6:112:16 | call to get_value |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:128:14:128:20 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:131:16:131:22 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:131:16:131:22 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:132:21:132:27 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:135:26:135:32 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:137:23:137:29 | tainted |
@@ -232,6 +239,10 @@ edges
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:145:26:145:32 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:147:16:147:22 | tainted |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:150:39:150:45 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:154:20:154:26 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:155:28:155:34 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:156:27:156:33 | tainted |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:157:14:160:3 | do ... end [captured tainted] |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:16:122:22 | [post] tainted |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:25:122:25 | [post] y |
 | summaries.rb:122:16:122:22 | tainted | summaries.rb:122:33:122:33 | [post] z |
@@ -239,9 +250,10 @@ edges
 | summaries.rb:122:33:122:33 | [post] z | summaries.rb:125:6:125:6 | z |
 | summaries.rb:128:1:128:1 | [post] x | summaries.rb:129:6:129:6 | x |
 | summaries.rb:128:14:128:20 | tainted | summaries.rb:128:1:128:1 | [post] x |
+| summaries.rb:131:16:131:22 | tainted | summaries.rb:131:1:131:23 | synthetic splat argument |
+| summaries.rb:157:14:160:3 | do ... end [captured tainted] | summaries.rb:158:15:158:21 | tainted |
+| summaries.rb:157:14:160:3 | do ... end [captured tainted] | summaries.rb:158:15:158:21 | tainted |
 nodes
-| summaries.rb:1:1:1:7 | tainted | semmle.label | tainted |
-| summaries.rb:1:1:1:7 | tainted | semmle.label | tainted |
 | summaries.rb:1:11:1:36 | call to identity | semmle.label | call to identity |
 | summaries.rb:1:11:1:36 | call to identity | semmle.label | call to identity |
 | summaries.rb:1:20:1:36 | call to source | semmle.label | call to source |
@@ -457,6 +469,8 @@ nodes
 | summaries.rb:128:1:128:1 | [post] x | semmle.label | [post] x |
 | summaries.rb:128:14:128:20 | tainted | semmle.label | tainted |
 | summaries.rb:129:6:129:6 | x | semmle.label | x |
+| summaries.rb:131:1:131:23 | synthetic splat argument | semmle.label | synthetic splat argument |
+| summaries.rb:131:16:131:22 | tainted | semmle.label | tainted |
 | summaries.rb:131:16:131:22 | tainted | semmle.label | tainted |
 | summaries.rb:131:16:131:22 | tainted | semmle.label | tainted |
 | summaries.rb:132:21:132:27 | tainted | semmle.label | tainted |
@@ -475,6 +489,20 @@ nodes
 | summaries.rb:147:16:147:22 | tainted | semmle.label | tainted |
 | summaries.rb:150:39:150:45 | tainted | semmle.label | tainted |
 | summaries.rb:150:39:150:45 | tainted | semmle.label | tainted |
+| summaries.rb:154:20:154:26 | tainted | semmle.label | tainted |
+| summaries.rb:154:20:154:26 | tainted | semmle.label | tainted |
+| summaries.rb:155:28:155:34 | tainted | semmle.label | tainted |
+| summaries.rb:155:28:155:34 | tainted | semmle.label | tainted |
+| summaries.rb:156:27:156:33 | tainted | semmle.label | tainted |
+| summaries.rb:156:27:156:33 | tainted | semmle.label | tainted |
+| summaries.rb:157:14:160:3 | do ... end [captured tainted] | semmle.label | do ... end [captured tainted] |
+| summaries.rb:157:14:160:3 | do ... end [captured tainted] | semmle.label | do ... end [captured tainted] |
+| summaries.rb:158:15:158:21 | tainted | semmle.label | tainted |
+| summaries.rb:158:15:158:21 | tainted | semmle.label | tainted |
+| summaries.rb:163:20:163:36 | call to source | semmle.label | call to source |
+| summaries.rb:163:20:163:36 | call to source | semmle.label | call to source |
+| summaries.rb:166:20:166:36 | call to source | semmle.label | call to source |
+| summaries.rb:166:20:166:36 | call to source | semmle.label | call to source |
 subpaths
 invalidSpecComponent
 #select
@@ -556,6 +584,7 @@ invalidSpecComponent
 | summaries.rb:124:6:124:6 | y | summaries.rb:1:20:1:36 | call to source | summaries.rb:124:6:124:6 | y | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:125:6:125:6 | z | summaries.rb:1:20:1:36 | call to source | summaries.rb:125:6:125:6 | z | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:129:6:129:6 | x | summaries.rb:1:20:1:36 | call to source | summaries.rb:129:6:129:6 | x | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:131:1:131:23 | synthetic splat argument | summaries.rb:1:20:1:36 | call to source | summaries.rb:131:1:131:23 | synthetic splat argument | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:131:16:131:22 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:131:16:131:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:131:16:131:22 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:131:16:131:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:132:21:132:27 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:132:21:132:27 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
@@ -574,6 +603,18 @@ invalidSpecComponent
 | summaries.rb:147:16:147:22 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:147:16:147:22 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:150:39:150:45 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:150:39:150:45 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
 | summaries.rb:150:39:150:45 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:150:39:150:45 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:154:20:154:26 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:154:20:154:26 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:154:20:154:26 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:154:20:154:26 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:155:28:155:34 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:155:28:155:34 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:155:28:155:34 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:155:28:155:34 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:156:27:156:33 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:156:27:156:33 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:156:27:156:33 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:156:27:156:33 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:158:15:158:21 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:158:15:158:21 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:158:15:158:21 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:158:15:158:21 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |
+| summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | $@ | summaries.rb:163:20:163:36 | call to source | call to source |
+| summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | $@ | summaries.rb:163:20:163:36 | call to source | call to source |
+| summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | $@ | summaries.rb:166:20:166:36 | call to source | call to source |
+| summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | $@ | summaries.rb:166:20:166:36 | call to source | call to source |
 warning
 | CSV type row should have 3 columns but has 1: TooFewColumns |
 | CSV type row should have 3 columns but has 6: TooManyColumns;;Member[Foo].Instance;too;many;columns |

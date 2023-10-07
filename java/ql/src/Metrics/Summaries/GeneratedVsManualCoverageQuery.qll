@@ -45,12 +45,10 @@ private int getNumApis(string package, string apiSubset) {
 
 /** Holds if the given `callable` belongs to the specified `apiSubset`. */
 private predicate callableSubset(Callable callable, string apiSubset) {
-  apiSubset in ["topJdkApis", "allApis"] and
-  (
-    if apiSubset = "topJdkApis"
-    then exists(TopJdkApi topJdkApi | callable = topJdkApi.asCallable())
-    else apiSubset = "allApis"
-  )
+  apiSubset = "topJdkApis" and
+  callable instanceof TopJdkApi
+  or
+  apiSubset = "allApis"
 }
 
 /**

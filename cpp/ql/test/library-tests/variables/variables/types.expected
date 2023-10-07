@@ -14,7 +14,6 @@
 | _Float64 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Float64x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Float128 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| _Float128x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
 | _Imaginary double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
 | _Imaginary float | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
 | _Imaginary long double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |

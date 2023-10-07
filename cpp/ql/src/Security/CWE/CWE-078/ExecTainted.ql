@@ -134,8 +134,6 @@ module ExecTaintConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { isBarrierImpl(node) }
 
-  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
-
   predicate isBarrierOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }

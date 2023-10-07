@@ -1,8 +1,9 @@
+using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
-using System.IO;
-using System.Linq;
+using Semmle.Extraction.CSharp.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -50,7 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
-                cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, "Reduced extension method symbols should not be directly extracted.");
+                cx.Extractor.Logger.Log(Semmle.Util.Logging.Severity.Warning, "Reduced extension method symbols should not be directly extracted.");
             }
 
             return OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);

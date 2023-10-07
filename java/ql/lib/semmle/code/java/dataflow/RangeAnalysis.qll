@@ -257,11 +257,22 @@ private Guard boundFlowCond(SsaVariable v, Expr e, int delta, boolean upper, boo
   or
   // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
   // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
-  exists(SsaVariable v2, Guard guardEq, boolean eqIsTrue, int d1, int d2 |
-    guardEq = eqFlowCond(v, ssaRead(v2, d1), d2, true, eqIsTrue) and
-    result = boundFlowCond(v2, e, delta + d1 - d2, upper, testIsTrue) and
-    // guardEq needs to control guard
-    guardEq.directlyControls(result.getBasicBlock(), eqIsTrue)
+  exists(SsaVariable v2, int d |
+    // equality needs to control guard
+    result.getBasicBlock() = eqSsaCondDirectlyControls(v, v2, d) and
+    result = boundFlowCond(v2, e, delta - d, upper, testIsTrue)
+  )
+}
+
+/**
+ * Gets a basic block in which `v1` equals `v2 + delta`.
+ */
+pragma[nomagic]
+private BasicBlock eqSsaCondDirectlyControls(SsaVariable v1, SsaVariable v2, int delta) {
+  exists(Guard guardEq, int d1, int d2, boolean eqIsTrue |
+    guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
+    delta = d2 - d1 and
+    guardEq.directlyControls(result, eqIsTrue)
   )
 }
 
@@ -757,7 +768,7 @@ private predicate baseBound(Expr e, int b, boolean upper) {
   or
   exists(Method read |
     e.(MethodAccess).getMethod().overrides*(read) and
-    read.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
+    read.getDeclaringType() instanceof TypeInputStream and
     read.hasName("read") and
     read.getNumberOfParameters() = 0
   |

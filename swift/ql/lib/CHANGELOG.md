@@ -1,3 +1,57 @@
+## 0.2.5
+
+No user-facing changes.
+
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* Flow through optional chaining and forced unwrapping in keypaths is now supported by the data flow library.
+* Added flow models of collection `.withContiguous[Mutable]StorageIfAvailable`, `.withUnsafe[Mutable]BufferPointer` and `.withUnsafe[Mutable]Bytes` methods.
+
+## 0.2.3
+
+### Major Analysis Improvements
+
+* Added `DataFlow::CollectionContent`, which will enable more accurate flow through collections.
+
+### Minor Analysis Improvements
+
+* Added local flow sources for `UITextInput` and related classes.
+* Flow through forced optional unwrapping (`!`) on the left side of assignment now works in most cases.
+* `Type.getName` now gets the name of the type alone without any enclosing types. Use `Type.getFullName` for the old behaviour.
+
+## 0.2.2
+
+### Major Analysis Improvements
+
+* Added `DataFlow::ArrayContent`, which will provide more accurate flow through arrays.
+
+### Minor Analysis Improvements
+
+* Flow through forced optional unwrapping (`!`) is modelled more accurately.
+* Added flow models for `Sequence.withContiguousStorageIfAvailable`.
+* Added taint flow for `NSUserActivity.referrerURL`.
+
+## 0.2.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* The regular expression library now understands mode flags specified by `Regex` methods and the `NSRegularExpression` initializer.
+* The regular expression library now understands mode flags specified at the beginning of a regular expression (for example `(?is)`).
+* Added detail to the taint model for `URL`.
+* Added new heuristics to `SensitiveExprs.qll`, enhancing detection from the library.
+
 ## 0.2.0
 
 ### Breaking Changes

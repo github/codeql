@@ -45,3 +45,8 @@ extensions:
       - ["java.sql", "ResultSet", "getTimestamp", "(String)", "summary", "manual"]      # taint-numeric
       - ["java.sql", "Timestamp", "Timestamp", "(long)", "summary", "manual"]           # taint-numeric
       - ["java.sql", "Timestamp", "getTime", "()", "summary", "manual"]                 # taint-numeric
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.sql", "ResultSet", True, "getString", "", "", "ReturnValue", "database", "manual"]

@@ -4,7 +4,6 @@ private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.TreeSitter
 private import codeql.ruby.controlflow.ControlFlowGraph
-private import internal.ControlFlowGraphImpl
 private import CfgNodes
 private import SuccessorTypes
 
@@ -390,7 +389,7 @@ private module JoinBlockPredecessors {
   private predicate idOf(Ruby::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   int getId(JoinBlockPredecessor jbp) {
-    idOf(toGeneratedInclSynth(jbp.getFirstNode().(AstCfgNode).getNode()), result)
+    idOf(toGeneratedInclSynth(jbp.getFirstNode().(AstCfgNode).getAstNode()), result)
     or
     idOf(toGeneratedInclSynth(jbp.(EntryBasicBlock).getScope()), result)
   }

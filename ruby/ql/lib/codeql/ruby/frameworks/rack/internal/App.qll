@@ -4,6 +4,7 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
 private import Response::Private as RP
@@ -18,16 +19,7 @@ private class PotentialRequestHandler extends DataFlow::CallableNode {
     (
       this.(DataFlow::MethodNode).getMethodName() = "call"
       or
-      not this instanceof DataFlow::MethodNode and
-      exists(DataFlow::CallNode cn | cn.getMethodName() = "run" |
-        this.(DataFlow::LocalSourceNode).flowsTo(cn.getArgument(0))
-        or
-        // TODO: `Proc.new` should automatically propagate flow from its block argument
-        any(DataFlow::CallNode proc |
-          proc = API::getTopLevelMember("Proc").getAnInstantiation() and
-          proc.getBlock() = this
-        ).(DataFlow::LocalSourceNode).flowsTo(cn.getArgument(0))
-      )
+      this = API::getTopLevelCall("run").getArgument(0).asCallable()
     )
   }
 }
@@ -85,5 +77,21 @@ module App {
 
     /** Gets a response returned from this request handler. */
     RP::PotentialResponseNode getAResponse() { result = resp }
+  }
+
+  /** A read of the query string via `env['QUERY_STRING']`. */
+  private class EnvQueryStringRead extends Http::Server::RequestInputAccess::Range {
+    EnvQueryStringRead() {
+      this =
+        any(RequestHandler h)
+            .getEnv()
+            .getAnElementRead(ConstantValue::fromStringlikeValue("QUERY_STRING"))
+    }
+
+    override string getSourceType() { result = "Rack env" }
+
+    override Http::Server::RequestInputKind getKind() {
+      result = Http::Server::parameterInputKind()
+    }
   }
 }

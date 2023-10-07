@@ -21,8 +21,6 @@ edges
 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
-| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
-| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
 | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
 | funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 |
@@ -33,19 +31,12 @@ edges
 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
-| funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | * ... | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... |
 | funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... |
-| funcsLocal.c:46:7:46:9 | gets output argument | funcsLocal.c:47:9:47:11 | * ... |
-| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
-| funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | funcsLocal.c:53:9:53:11 | * ... |
@@ -66,7 +57,6 @@ nodes
 | funcsLocal.c:31:13:31:17 | call to fgets | semmle.label | call to fgets |
 | funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
 | funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
-| funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
 | funcsLocal.c:36:7:36:8 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:36:7:36:8 | i5 | semmle.label | i5 |
 | funcsLocal.c:36:7:36:8 | i5 | semmle.label | i5 |
@@ -76,16 +66,13 @@ nodes
 | funcsLocal.c:41:13:41:16 | call to gets | semmle.label | call to gets |
 | funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
 | funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
-| funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
 | funcsLocal.c:46:7:46:9 | * ... | semmle.label | * ... |
 | funcsLocal.c:46:7:46:9 | * ... | semmle.label | * ... |
 | funcsLocal.c:46:7:46:9 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
-| funcsLocal.c:47:9:47:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:52:8:52:11 | call to gets | semmle.label | call to gets |
 | funcsLocal.c:52:8:52:11 | call to gets | semmle.label | call to gets |
-| funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:53:9:53:11 | * ... | semmle.label | * ... |
 | funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |

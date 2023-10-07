@@ -125,7 +125,9 @@ module Stmts {
       c instanceof SimpleCompletion
     }
 
-    predicate firstInner(ControlFlowElement first) { astFirst(ast.getFirstElement(), first) }
+    predicate firstInner(ControlFlowElement first) {
+      astFirst(ast.getFirstElement().getFullyUnresolved(), first)
+    }
 
     /** Gets the body of the i'th `defer` statement. */
     private BraceStmt getDeferStmtBody(int i) {
@@ -181,32 +183,32 @@ module Stmts {
 
     predicate lastInner(ControlFlowElement last, Completion c) {
       // Normal exit and no defer statements
-      astLast(ast.getLastElement(), last, c) and
+      astLast(ast.getLastElement().getFullyUnresolved(), last, c) and
       not exists(this.getFirstDeferStmtBody()) and
       c instanceof NormalCompletion
       or
       // Normal exit from the last defer statement to be executed
-      astLast(this.getLastDeferStmtBody(), last, c) and
+      astLast(this.getLastDeferStmtBody().getFullyUnresolved(), last, c) and
       c instanceof NormalCompletion
       or
       // Abnormal exit without any defer statements
       not c instanceof NormalCompletion and
-      astLast(ast.getAnElement(), last, c) and
+      astLast(ast.getAnElement().getFullyUnresolved(), last, c) and
       not exists(this.getFirstDeferStmtBody())
     }
 
     override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // left-to-right evaluation of statements
       exists(int i |
-        astLast(ast.getElement(i), pred, c) and
-        astFirst(ast.getElement(i + 1), succ) and
+        astLast(ast.getElement(i).getFullyUnresolved(), pred, c) and
+        astFirst(ast.getElement(i + 1).getFullyUnresolved(), succ) and
         c instanceof NormalCompletion
       )
       or
       // Flow from last elements to the first defer statement to be executed
       c instanceof NormalCompletion and
-      astLast(ast.getLastElement(), pred, c) and
-      astFirst(this.getFirstDeferStmtBody(), succ)
+      astLast(ast.getLastElement().getFullyUnresolved(), pred, c) and
+      astFirst(this.getFirstDeferStmtBody().getFullyUnresolved(), succ)
       or
       // Flow from a defer statement to the next defer to be executed
       c instanceof NormalCompletion and
@@ -218,7 +220,7 @@ module Stmts {
       // Abnormal exit from an element to the first defer statement to be executed.
       not c instanceof NormalCompletion and
       exists(int i |
-        astLast(ast.getElement(i), pred, c) and
+        astLast(ast.getElement(i).getFullyUnresolved(), pred, c) and
         astFirst(this.getDeferStmtBodyAfterStmt(i), succ)
       )
     }
@@ -1179,7 +1181,7 @@ module Exprs {
     }
 
     /**
-     * An autoclosure expression that is generated as part of a logical operation.
+     * An autoclosure expression that is generated as part of a logical operation or nil coalescing expression.
      *
      * This is needed because the Swift AST for `b1 && b2` is really syntactic sugar a function call:
      * ```swift
@@ -1188,10 +1190,13 @@ module Exprs {
      * So the `true` edge from `b1` cannot just go to `b2` since this is an implicit autoclosure.
      * To handle this dig into the autoclosure when it's an operand of a logical operator.
      */
-    private class LogicalAutoClosureTree extends AstPreOrderTree {
+    private class ShortCircuitingAutoClosureTree extends AstPreOrderTree {
       override AutoClosureExpr ast;
 
-      LogicalAutoClosureTree() { ast = any(LogicalOperation op).getAnOperand() }
+      ShortCircuitingAutoClosureTree() {
+        ast = any(LogicalOperation op).getAnOperand() or
+        ast = any(NilCoalescingExpr expr).getAnOperand()
+      }
 
       override predicate last(ControlFlowElement last, Completion c) {
         exists(Completion completion | astLast(ast.getReturn(), last, completion) |
@@ -1217,7 +1222,7 @@ module Exprs {
     private class AutoClosureTree extends AstLeafTree {
       override AutoClosureExpr ast;
 
-      AutoClosureTree() { not this instanceof LogicalAutoClosureTree }
+      AutoClosureTree() { not this instanceof ShortCircuitingAutoClosureTree }
     }
   }
 
@@ -1232,14 +1237,6 @@ module Exprs {
       i = 0 and result.asAstNode() = ast.getBase().getFullyConverted()
       or
       i = 1 and result.asAstNode() = ast.getKeyPath().getFullyConverted()
-    }
-  }
-
-  private class InOutTree extends AstStandardPostOrderTree {
-    override InOutExpr ast;
-
-    final override ControlFlowElement getChildElement(int i) {
-      i = 0 and result.asAstNode() = ast.getSubExpr().getFullyConverted()
     }
   }
 
@@ -1565,7 +1562,9 @@ module Exprs {
       // This one is handled in `LogicalNotTree`.
       not ast instanceof UnaryLogicalOperation and
       // These are handled in `LogicalOrTree` and `LogicalAndTree`.
-      not ast instanceof BinaryLogicalOperation
+      not ast instanceof BinaryLogicalOperation and
+      // This one is handled in `NilCoalescingTree`
+      not ast instanceof NilCoalescingExpr
     }
 
     final override ControlFlowElement getChildElement(int i) {
@@ -1586,6 +1585,38 @@ module Exprs {
     override ControlFlowElement getChildElement(int i) {
       i = 0 and
       result.asAstNode() = ast.getSubExpr().getFullyConverted()
+    }
+  }
+
+  private class NilCoalescingTestTree extends LeafTree, NilCoalescingElement { }
+
+  private class NilCoalescingTree extends AstPostOrderTree {
+    override NilCoalescingExpr ast;
+
+    final override predicate propagatesAbnormal(ControlFlowElement child) {
+      child.asAstNode() = ast.getAnOperand().getFullyConverted()
+    }
+
+    final override predicate first(ControlFlowElement first) {
+      astFirst(ast.getLeftOperand().getFullyConverted(), first)
+    }
+
+    final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      astLast(ast.getLeftOperand().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      succ.(NilCoalescingTestTree).getAst() = ast
+      or
+      pred.(NilCoalescingTestTree).getAst() = ast and
+      exists(EmptinessCompletion ec | c = ec | ec.isEmpty()) and
+      astFirst(ast.getRightOperand().getFullyConverted(), succ)
+      or
+      pred.(NilCoalescingTestTree).getAst() = ast and
+      exists(EmptinessCompletion ec | c = ec | not ec.isEmpty()) and
+      succ.asAstNode() = ast
+      or
+      astLast(ast.getRightOperand().getFullyConverted(), pred, c) and
+      c instanceof NormalCompletion and
+      succ.asAstNode() = ast
     }
   }
 
@@ -1749,7 +1780,8 @@ module Exprs {
 
   module Conversions {
     class ConversionOrIdentity =
-      Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr;
+      Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr or
+          Synth::TInOutExpr;
 
     abstract class ConversionOrIdentityTree extends AstStandardPostOrderTree {
       ConversionOrIdentityTree() { ast instanceof ConversionOrIdentity }
@@ -1777,6 +1809,12 @@ module Exprs {
 
     private class ImplicitConversionTree extends ConversionOrIdentityTree {
       override ImplicitConversionExpr ast;
+
+      override predicate convertsFrom(Expr e) { ast.convertsFrom(e) }
+    }
+
+    private class InOutTree extends ConversionOrIdentityTree {
+      override InOutExpr ast;
 
       override predicate convertsFrom(Expr e) { ast.convertsFrom(e) }
     }

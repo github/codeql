@@ -1,6 +1,7 @@
 name: codeql/regex
-version: 0.1.1-dev
+version: 0.2.0-dev
 groups: shared
 library: true
 dependencies:
+  codeql/util: ${workspace}
 warnOnImplicitThis: true

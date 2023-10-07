@@ -156,3 +156,10 @@ void fmt_via_strcpy(char *data) {
     strcpy(data, "some string");
     printf(data); // BAD
 }
+
+void fmt_with_assignment() {
+  const char *x, *y;
+
+  x = y = "a";
+  printf(y); // GOOD
+}

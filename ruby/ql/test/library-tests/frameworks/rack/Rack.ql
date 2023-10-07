@@ -1,4 +1,5 @@
 private import codeql.ruby.AST
+private import codeql.ruby.Concepts
 private import codeql.ruby.frameworks.Rack
 private import codeql.ruby.DataFlow
 
@@ -17,3 +18,5 @@ query predicate rackResponseContentTypes(
 query predicate redirectResponses(Rack::Response::RedirectResponse resp, DataFlow::Node location) {
   location = resp.getRedirectLocation()
 }
+
+query predicate requestInputAccesses(Http::Server::RequestInputAccess ria) { any() }

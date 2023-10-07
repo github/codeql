@@ -1,13 +1,18 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using Semmle.Util.Logging;
 
 namespace Semmle.Util
 {
     public static class FileUtils
     {
+        public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
+
         public static string ConvertToWindows(string path)
         {
             return path.Replace('/', '\\');
@@ -90,6 +95,85 @@ namespace Semmle.Util
             foreach (var b in sha)
                 hex.AppendFormat("{0:x2}", b);
             return hex.ToString();
+        }
+
+        private static async Task DownloadFileAsync(string address, string filename)
+        {
+            using var httpClient = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, address);
+            using var contentStream = await (await httpClient.SendAsync(request)).Content.ReadAsStreamAsync();
+            using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+            await contentStream.CopyToAsync(stream);
+        }
+
+        /// <summary>
+        /// Downloads the file at <paramref name="address"/> to <paramref name="fileName"/>.
+        /// </summary>
+        public static void DownloadFile(string address, string fileName) =>
+           DownloadFileAsync(address, fileName).Wait();
+
+        public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
+        {
+            var nested = innerpath;
+            if (!string.IsNullOrEmpty(outerpath))
+            {
+                // Remove all leading path separators / or \
+                // For example, UNC paths have two leading \\
+                innerpath = innerpath.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                if (innerpath.Length > 1 && innerpath[1] == ':')
+                    innerpath = innerpath[0] + "_" + innerpath.Substring(2);
+
+                nested = Path.Combine(outerpath, innerpath);
+            }
+            try
+            {
+                var directoryName = Path.GetDirectoryName(nested);
+                if (directoryName is null)
+                {
+                    logger.Log(Severity.Warning, "Failed to get directory name from path '" + nested + "'.");
+                    throw new InvalidOperationException();
+                }
+                Directory.CreateDirectory(directoryName);
+            }
+            catch (PathTooLongException)
+            {
+                logger.Log(Severity.Warning, "Failed to create parent directory of '" + nested + "': Path too long.");
+                throw;
+            }
+            return nested;
+        }
+
+        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp)
+        {
+            shouldCleanUp = false;
+            var tempFolder = EnvironmentVariables.GetScratchDirectory();
+
+            if (string.IsNullOrEmpty(tempFolder))
+            {
+                var tempPath = Path.GetTempPath();
+                var name = Guid.NewGuid().ToString("N").ToUpper();
+                tempFolder = Path.Combine(tempPath, "GitHub", name);
+                shouldCleanUp = true;
+            }
+
+            return tempFolder;
+        }
+
+        public static FileInfo CreateTemporaryFile(string extension, out bool shouldCleanUpContainingFolder)
+        {
+            var tempFolder = GetTemporaryWorkingDirectory(out shouldCleanUpContainingFolder);
+            Directory.CreateDirectory(tempFolder);
+            string outputPath;
+            do
+            {
+                outputPath = Path.Combine(tempFolder, Path.GetRandomFileName() + extension);
+            }
+            while (File.Exists(outputPath));
+
+            File.Create(outputPath);
+
+            return new FileInfo(outputPath);
         }
     }
 }
