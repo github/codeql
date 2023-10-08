@@ -53,8 +53,8 @@ class WorkerThreads extends DataFlow::Node {
   }
 }
 
-class WorkerThreadsLabel extends FlowLabel {
-  WorkerThreadsLabel() { this = "worker_threads" }
+class URLConstructorLabel extends FlowLabel {
+  URLConstructorLabel() { this = "URLConstructorLabel" }
 }
 
 class DynamicImportLabel extends FlowLabel {
@@ -67,15 +67,12 @@ class DynamicImportLabel extends FlowLabel {
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "CodeInjection" }
 
-  override predicate isSource(DataFlow::Node source, FlowLabel label) {
-    source instanceof RemoteFlowSource and
-    (label instanceof DynamicImportLabel or label instanceof WorkerThreadsLabel)
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof DynamicImport }
 
   override predicate isSink(DataFlow::Node sink, FlowLabel label) {
-    sink instanceof DynamicImport and label instanceof DynamicImportLabel
-    or
-    sink instanceof WorkerThreads and label instanceof WorkerThreadsLabel
+    sink instanceof WorkerThreads and label instanceof URLConstructorLabel
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
@@ -87,8 +84,8 @@ class Configuration extends TaintTracking::Configuration {
       newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
       pred = newUrl.getArgument(0)
     ) and
-    predlbl instanceof WorkerThreadsLabel and
-    succlbl instanceof WorkerThreadsLabel
+    predlbl instanceof StandardFlowLabel and
+    succlbl instanceof URLConstructorLabel
   }
 }
 
