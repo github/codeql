@@ -57,10 +57,6 @@ class URLConstructorLabel extends FlowLabel {
   URLConstructorLabel() { this = "URLConstructorLabel" }
 }
 
-class DynamicImportLabel extends FlowLabel {
-  DynamicImportLabel() { this = "DynamicImport" }
-}
-
 /**
  * A taint-tracking configuration for reasoning about code injection vulnerabilities.
  */
@@ -91,5 +87,5 @@ class Configuration extends TaintTracking::Configuration {
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, sink.getNode() + " depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, sink.getNode() + "This command line depends on a $@.", source.getNode(),
   "user-provided value"
