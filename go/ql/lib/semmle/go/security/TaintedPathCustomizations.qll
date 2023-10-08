@@ -5,7 +5,7 @@
 
 import go
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
-
+import DataFlow
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
  * path-traversal vulnerabilities.
@@ -100,17 +100,12 @@ module TaintedPath {
     }
   }
 
-  /** An call to ParseMultipartForm creates multipart.Form and cleans mutlpart.Form.FileHeader.Filename using path.Base() */
+  /**An call to ParseMultipartForm creates multipart.Form and cleans mutlpart.Form.FileHeader.Filename using path.Base() */
   class MultipartClean extends Sanitizer {
     MultipartClean() {
-      exists(DataFlow::FieldReadNode frn,  ControlFlow::Node node, DataFlow::CallNode cleanCall, Method get |
-        get.hasQualifiedName("net/http","Request", "ParseMultipartForm") and
-        cleanCall = get.getACall() and
-        cleanCall.asInstruction() = node and
+      exists(DataFlow::FieldReadNode frn |
         frn.getField().hasQualifiedName("mime/multipart", "FileHeader", "Filename") and
-        node.getASuccessor*() = frn.asInstruction()
-          |
-        this = frn.getBase()
+        this = frn
       )
       }
     }
@@ -133,7 +128,7 @@ module TaintedPath {
     }
   }
 /**
-   * A replacement of the form `!strings.ReplaceAll(nd, "..")` or `!strings.ReplaceAll(nd, ".")`, considered as a sanitizer guard for
+   * A replacement of the form `!strings.ReplaceAll(nd, "..")` or `!strings.ReplaceAll(nd, ".")`, considered as a sanitizer for
    * path traversal.
    */
   class DotDotReplace extends Sanitizer {
@@ -142,7 +137,7 @@ module TaintedPath {
         cleanCall =
           any(Function f | f.hasQualifiedName("strings", "ReplaceAll")).getACall() and
         valueNode = cleanCall.getArgument(1) and
-        (valueNode.asExpr().(StringLit).getValue() = ".." or valueNode.asExpr().(StringLit).getValue() = ".") and
+        valueNode.asExpr().(StringLit).getValue() = ["..", "."] and
         this = cleanCall.getResult()
       )
     }
