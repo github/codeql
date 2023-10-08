@@ -179,7 +179,7 @@ module Starlette {
   /**
    * A call to the `baize.asgi.FileResponse` constructor as a sink for Filesystem access.
    *
-   * it is not contained to Starlette source code but it is mentioned as an alternative to Starlette FileResponse
+   * it is not contained to Starlette source code but it is mentioned in documents as an alternative to Starlette FileResponse
    */
   class BaizeFileResponseCall extends FileSystemAccess::Range, API::CallNode {
     BaizeFileResponseCall() {

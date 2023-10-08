@@ -1491,7 +1491,7 @@ private module StdlibPrivate {
 
   /**
    * A call to the `io.open_code` function.
-   * See https://docs.python.org/3/library/io.html#io.FileIO
+   * See https://docs.python.org/3.11/library/io.html#io.open_code
    */
   private class OpenCodeCall extends FileSystemAccess::Range, API::CallNode {
     OpenCodeCall() { this = API::moduleImport("io").getMember("open_code").getACall() }

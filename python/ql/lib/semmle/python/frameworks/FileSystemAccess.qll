@@ -1,5 +1,5 @@
 /**
- * Provides classes modeling security-relevant aspects of the I/O write or read operations
+ * Provides classes modeling security-relevant aspects of the I/O file write or file read operations
  */
 
 private import python
