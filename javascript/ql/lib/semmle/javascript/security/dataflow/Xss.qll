@@ -20,6 +20,13 @@ module Shared {
     string getVulnerabilityKind() { result = "Cross-site scripting" }
   }
 
+  // import the various XSS query customizations, they populate the shared classes
+  private import DomBasedXssCustomizations
+  private import ReflectedXssCustomizations
+  private import StoredXssCustomizations
+  private import XssThroughDomCustomizations
+  private import ExceptionXssCustomizations
+
   /** A sanitizer for XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
