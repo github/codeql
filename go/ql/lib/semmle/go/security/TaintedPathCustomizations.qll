@@ -6,6 +6,7 @@
 import go
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
 import DataFlow
+
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
  * path-traversal vulnerabilities.
@@ -79,15 +80,15 @@ module TaintedPath {
   class FilepathCleanSanitizer extends Sanitizer {
     FilepathCleanSanitizer() {
       exists(DataFlow::CallNode cleanCall, StringOps::Concatenation concatNode |
-        cleanCall =
-          any(Function f | f.hasQualifiedName("path/filepath", "Clean")).getACall() and
+        cleanCall = any(Function f | f.hasQualifiedName("path/filepath", "Clean")).getACall() and
         concatNode = cleanCall.getArgument(0) and
         concatNode.getOperand(0).asExpr().(StringLit).getValue() = "/" and
         this = cleanCall.getResult()
       )
     }
   }
-      /**
+
+  /**
    * A call to `filepath.Base(e)`, considered to sanitize `e` against path traversal.
    */
   class FilepathBaseSanitizer extends Sanitizer {
@@ -107,8 +108,8 @@ module TaintedPath {
         frn.getField().hasQualifiedName("mime/multipart", "FileHeader", "Filename") and
         this = frn
       )
-      }
     }
+  }
 
   /**
    * A check of the form `!strings.Contains(nd, "..")`, considered as a sanitizer guard for
@@ -127,15 +128,15 @@ module TaintedPath {
       branch = false
     }
   }
-/**
+
+  /**
    * A replacement of the form `!strings.ReplaceAll(nd, "..")` or `!strings.ReplaceAll(nd, ".")`, considered as a sanitizer for
    * path traversal.
    */
   class DotDotReplace extends Sanitizer {
     DotDotReplace() {
       exists(DataFlow::CallNode cleanCall, DataFlow::Node valueNode |
-        cleanCall =
-          any(Function f | f.hasQualifiedName("strings", "ReplaceAll")).getACall() and
+        cleanCall = any(Function f | f.hasQualifiedName("strings", "ReplaceAll")).getACall() and
         valueNode = cleanCall.getArgument(1) and
         valueNode.asExpr().(StringLit).getValue() = ["..", "."] and
         this = cleanCall.getResult()
