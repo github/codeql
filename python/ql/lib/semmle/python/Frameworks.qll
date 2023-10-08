@@ -21,6 +21,7 @@ private import semmle.python.frameworks.Dill
 private import semmle.python.frameworks.Django
 private import semmle.python.frameworks.Fabric
 private import semmle.python.frameworks.FastApi
+private import semmle.python.frameworks.FileSystemAccess
 private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.FlaskAdmin
 private import semmle.python.frameworks.FlaskSqlAlchemy
@@ -51,6 +52,7 @@ private import semmle.python.frameworks.Requests
 private import semmle.python.frameworks.RestFramework
 private import semmle.python.frameworks.Rsa
 private import semmle.python.frameworks.RuamelYaml
+private import semmle.python.frameworks.Sanic
 private import semmle.python.frameworks.ServerLess
 private import semmle.python.frameworks.Simplejson
 private import semmle.python.frameworks.SqlAlchemy

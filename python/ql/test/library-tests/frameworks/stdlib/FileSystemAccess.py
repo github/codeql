@@ -20,6 +20,8 @@ builtins.open(file="file")  # $ getAPathArgument="file"
 
 io.open("file")  # $ getAPathArgument="file"
 io.open(file="file")  # $ getAPathArgument="file"
+io.open_code("file")  # $ getAPathArgument="file"
+io.FileIO("file")  # $ getAPathArgument="file"
 
 f = open("path") # $ getAPathArgument="path"
 f.write("foo") # $ getAPathArgument="path" fileWriteData="foo"
