@@ -20,8 +20,6 @@ import DataFlow::PathGraph
 
 abstract class Sanitizer extends DataFlow::Node { }
 
-abstract class Sink extends DataFlow::Node { }
-
 /** A non-first leaf in a string-concatenation. Seen as a sanitizer for dynamic import code injection. */
 class NonFirstStringConcatLeaf extends Sanitizer {
   NonFirstStringConcatLeaf() {
@@ -87,5 +85,5 @@ class Configuration extends TaintTracking::Configuration {
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, sink.getNode() + "This command line depends on a $@.", source.getNode(),
-  "user-provided value"
+select sink.getNode(), source, sink, sink.getNode() + "This command line depends on a $@.",
+  source.getNode(), "user-provided value"
