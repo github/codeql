@@ -47,13 +47,38 @@ module RelativeBounds implements BoundSig<FloatDelta> {
   }
 }
 
+module AllBounds implements BoundSig<FloatDelta> {
+  class SemBound instanceof SemanticBound::SemBound {
+    string toString() { result = super.toString() }
+
+    SemLocation getLocation() { result = super.getLocation() }
+
+    SemExpr getExpr(float delta) { result = super.getExpr(delta) }
+  }
+
+  class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
+
+  class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
+    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
+  }
+}
+
+
+private module ModulusAnalysisInstantiated implements ModulusSig {
+  class ModBound = AllBounds::SemBound;
+
+  private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.ModulusAnalysis as MA
+
+  import MA::ModulusAnalysis<FloatDelta, AllBounds, RangeUtil<FloatDelta, CppLangImplConstant>>
+}
+
 module ConstantStage =
   RangeStage<FloatDelta, ConstantBounds, FloatOverflow, CppLangImplConstant,
-    RangeUtil<FloatDelta, CppLangImplConstant>>;
+    RangeUtil<FloatDelta, CppLangImplConstant>, ModulusAnalysisInstantiated>;
 
 module RelativeStage =
   RangeStage<FloatDelta, RelativeBounds, FloatOverflow, CppLangImplRelative,
-    RangeUtil<FloatDelta, CppLangImplRelative>>;
+    RangeUtil<FloatDelta, CppLangImplRelative>, ModulusAnalysisInstantiated>;
 
 private newtype TSemReason =
   TSemNoReason() or

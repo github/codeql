@@ -65,7 +65,7 @@
 
 private import RangeUtils as Utils
 private import SignAnalysisCommon
-private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.ModulusAnalysis
+// private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.ModulusAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExpr
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticSSA
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticGuard
@@ -245,15 +245,21 @@ signature module OverflowSig<DeltaSig D> {
   predicate semExprDoesNotOverflow(boolean positively, SemExpr expr);
 }
 
+signature module ModulusSig {
+  class ModBound;
+  predicate semExprModulus(SemExpr e, ModBound b, int val, int mod);
+}
+
 module RangeStage<
   DeltaSig D, BoundSig<D> Bounds, OverflowSig<D> OverflowParam, LangSig<D> LangParam,
-  UtilSig<D> UtilParam>
+  UtilSig<D> UtilParam, ModulusSig Mod>
 {
   private import Bounds
   private import LangParam
   private import UtilParam
   private import D
   private import OverflowParam
+  private import Mod
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -302,10 +308,8 @@ module RangeStage<
 
   private import SignAnalysisInstantiated
 
-  private module ModulusAnalysisInstantiated = ModulusAnalysis<D, Bounds, UtilParam>; // TODO: will this cause reevaluation if it's instantiated with the same DeltaSig and UtilParam multiple times?
-
-  private import ModulusAnalysisInstantiated
-
+  // private module ModulusAnalysisInstantiated = ModulusAnalysis<D, Bounds, UtilParam>; // TODO: will this cause reevaluation if it's instantiated with the same DeltaSig and UtilParam multiple times?
+  // private import ModulusAnalysisInstantiated
   cached
   private module RangeAnalysisCache {
     cached
@@ -409,7 +413,7 @@ module RangeStage<
    */
   private predicate modulusComparison(SemRelationalExpr comp, boolean testIsTrue, int strengthen) {
     exists(
-      SemBound b, int v1, int v2, int mod1, int mod2, int mod, boolean resultIsStrict, int d, int k
+      ModBound b, int v1, int v2, int mod1, int mod2, int mod, boolean resultIsStrict, int d, int k
     |
       // If `x <= y` and `x =(mod) b + v1` and `y =(mod) b + v2` then
       // `0 <= y - x =(mod) v2 - v1`. By choosing `k =(mod) v2 - v1` with
