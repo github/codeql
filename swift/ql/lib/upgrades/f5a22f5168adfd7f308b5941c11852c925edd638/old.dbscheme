@@ -1908,6 +1908,7 @@ do_stmts(  //dir=stmt
 for_each_stmts(  //dir=stmt
   unique int id: @for_each_stmt,
   int pattern: @pattern_or_none ref,
+  int sequence: @expr_or_none ref,
   int body: @brace_stmt_or_none ref
 );
 
@@ -1915,18 +1916,6 @@ for_each_stmts(  //dir=stmt
 for_each_stmt_wheres(  //dir=stmt
   int id: @for_each_stmt ref,
   int where: @expr_or_none ref
-);
-
-#keyset[id]
-for_each_stmt_iterator_vars(  //dir=stmt
-  int id: @for_each_stmt ref,
-  int iteratorVar: @pattern_binding_decl_or_none ref
-);
-
-#keyset[id]
-for_each_stmt_next_calls(  //dir=stmt
-  int id: @for_each_stmt ref,
-  int nextCall: @expr_or_none ref
 );
 
 @labeled_conditional_stmt =

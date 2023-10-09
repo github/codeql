@@ -1422,7 +1422,19 @@ cfg.swift:
 #-----|  -> x
 
 #  137| x
-#-----|  -> .makeIterator()
+#-----|  -> $generator
+
+#  138| $generator
+#-----|  -> &...
+
+#  138| &...
+#-----|  -> call to next()
+
+#  138| .next()
+#-----|  -> $generator
+
+#  138| call to next()
+#-----|  -> for ... in ... { ... }
 
 #  138| for ... in ... { ... }
 #-----| non-empty -> _
@@ -1430,6 +1442,9 @@ cfg.swift:
 
 #  138| _
 #-----| match -> { ... }
+
+#  138| $generator
+#-----| match -> .makeIterator()
 
 #  138| 0
 #-----|  -> 10
@@ -1441,7 +1456,6 @@ cfg.swift:
 #-----|  -> ....(_:_:)
 
 #  138| call to makeIterator()
-#-----|  -> for ... in ... { ... }
 
 #  138| ....(_:_:)
 #-----|  -> Int.Type
@@ -1453,7 +1467,7 @@ cfg.swift:
 #-----|  -> ... ....(_:_:) ...
 
 #  138| { ... }
-#-----|  -> for ... in ... { ... }
+#-----|  -> .next()
 
 #  140| switch x { ... }
 #-----|  -> x
@@ -6011,7 +6025,7 @@ cfg.swift:
 #-----|  -> stream
 
 #  523| var ... = ...
-#-----|  -> .makeAsyncIterator()
+#-----|  -> $i$generator
 
 #  523| stream
 #-----| match -> AsyncStream<Element>.init(_:bufferingPolicy:_:)
@@ -6084,10 +6098,22 @@ cfg.swift:
 #-----|  -> exit { ... }
 
 #  525| { ... }
-#-----|  -> .makeIterator()
+#-----|  -> $i$generator
 
 #  525| { ... }
 #-----|  -> call to detached(priority:operation:)
+
+#  526| $i$generator
+#-----|  -> &...
+
+#  526| &...
+#-----|  -> call to next()
+
+#  526| .next()
+#-----|  -> $i$generator
+
+#  526| call to next()
+#-----|  -> for ... in ... { ... }
 
 #  526| for ... in ... { ... }
 #-----| non-empty -> i
@@ -6095,6 +6121,9 @@ cfg.swift:
 
 #  526| i
 #-----| match -> .yield(_:)
+
+#  526| $i$generator
+#-----| match -> .makeIterator()
 
 #  526| 1
 #-----|  -> 100
@@ -6106,7 +6135,6 @@ cfg.swift:
 #-----|  -> ....(_:_:)
 
 #  526| call to makeIterator()
-#-----|  -> for ... in ... { ... }
 
 #  526| ....(_:_:)
 #-----|  -> Int.Type
@@ -6124,7 +6152,7 @@ cfg.swift:
 #-----|  -> continuation
 
 #  527| call to yield(_:)
-#-----|  -> for ... in ... { ... }
+#-----|  -> .next()
 
 #  527| i
 #-----|  -> call to yield(_:)
@@ -6138,12 +6166,26 @@ cfg.swift:
 #  529| call to finish()
 #-----|  -> exit { ... } (normal)
 
+#  533| $i$generator
+#-----|  -> &...
+
+#  533| &...
+#-----|  -> call to next()
+
+#  533| .next()
+#-----|  -> $i$generator
+
+#  533| call to next()
+
 #  533| for ... in ... { ... }
 #-----| empty -> exit testAsyncFor() (normal)
 #-----| non-empty -> i
 
 #  533| i
 #-----| match -> print(_:separator:terminator:)
+
+#  533| $i$generator
+#-----| match -> .makeAsyncIterator()
 
 #  533| (AsyncStream<Int>) ...
 #-----|  -> call to makeAsyncIterator()
@@ -6152,7 +6194,6 @@ cfg.swift:
 #-----|  -> stream
 
 #  533| call to makeAsyncIterator()
-#-----|  -> for ... in ... { ... }
 
 #  533| stream
 #-----|  -> (AsyncStream<Int>) ...
@@ -6161,7 +6202,7 @@ cfg.swift:
 #-----|  -> i
 
 #  534| call to print(_:separator:terminator:)
-#-----|  -> for ... in ... { ... }
+#-----|  -> .next()
 
 #  534| default separator
 #-----|  -> default terminator

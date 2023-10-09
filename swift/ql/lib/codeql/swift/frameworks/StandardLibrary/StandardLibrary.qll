@@ -10,6 +10,7 @@ private import Data
 private import FileManager
 private import FilePath
 private import InputStream
+private import IteratorProtocol
 private import ManualMemoryManagement
 private import NsData
 private import NsObject
