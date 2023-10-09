@@ -1,5 +1,9 @@
+package main
 
-
+import (
+	"fmt"
+	"log"
+)
 
 func main() {
 	// BAD: only decode jwt without verification

@@ -1,9 +1,14 @@
+package main
 
+import (
+	"fmt"
+	"log"
+)
 
 var JwtKey = []byte("AllYourBase")
 
 func main() {
-	// BAD: usage of a harcoded Key 
+	// BAD: usage of a harcoded Key
 	verifyJWT(token)
 }
 
