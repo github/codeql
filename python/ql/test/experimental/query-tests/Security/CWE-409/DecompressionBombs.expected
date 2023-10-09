@@ -1,258 +1,125 @@
 edges
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:9:27:9:36 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:11:15:11:24 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:12:19:12:28 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:14:15:14:24 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:15:19:15:28 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:17:20:17:29 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:23:14:23:23 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:24:17:24:26 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:27:40:27:49 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:29:23:29:32 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:30:21:30:30 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:32:40:32:49 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:33:22:33:31 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:34:21:34:30 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:35:42:35:51 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:36:23:36:32 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:37:36:37:45 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:53:10:53:19 | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:53:10:53:19 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input |
-| file:///usr/lib/python3.10/zipfile.py:344:24:344:31 | ControlFlowNode for filename | file:///usr/lib/python3.10/zipfile.py:351:24:351:44 | ControlFlowNode for Subscript |
-| file:///usr/lib/python3.10/zipfile.py:344:24:344:31 | ControlFlowNode for filename | file:///usr/lib/python3.10/zipfile.py:358:25:358:32 | ControlFlowNode for filename |
-| file:///usr/lib/python3.10/zipfile.py:351:24:351:44 | ControlFlowNode for Subscript | file:///usr/lib/python3.10/zipfile.py:358:25:358:32 | ControlFlowNode for filename |
-| file:///usr/lib/python3.10/zipfile.py:358:25:358:32 | ControlFlowNode for filename | file:///usr/lib/python3.10/zipfile.py:358:9:358:12 | [post] ControlFlowNode for self [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file | file:///usr/lib/python3.10/zipfile.py:1258:23:1258:26 | ControlFlowNode for file |
-| file:///usr/lib/python3.10/zipfile.py:1258:13:1258:16 | [post] ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1259:13:1259:16 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1258:23:1258:26 | ControlFlowNode for file | file:///usr/lib/python3.10/zipfile.py:1258:13:1258:16 | [post] ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1259:13:1259:16 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1260:9:1260:12 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1260:9:1260:12 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1261:9:1261:12 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1261:9:1261:12 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1262:9:1262:12 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1262:9:1262:12 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1263:9:1263:12 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1263:9:1263:12 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1263:9:1263:12 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1326:26:1326:29 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1326:26:1326:29 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1326:26:1326:29 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1328:14:1328:17 | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1328:14:1328:17 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1328:14:1328:20 | ControlFlowNode for Attribute |
-| file:///usr/lib/python3.10/zipfile.py:1328:14:1328:20 | ControlFlowNode for Attribute | file:///usr/lib/python3.10/zipfile.py:1376:25:1376:32 | ControlFlowNode for filename |
-| file:///usr/lib/python3.10/zipfile.py:1376:17:1376:33 | ControlFlowNode for ZipInfo() [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1377:13:1377:13 | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1376:25:1376:32 | ControlFlowNode for filename | file:///usr/lib/python3.10/zipfile.py:344:24:344:31 | ControlFlowNode for filename |
-| file:///usr/lib/python3.10/zipfile.py:1376:25:1376:32 | ControlFlowNode for filename | file:///usr/lib/python3.10/zipfile.py:1376:17:1376:33 | ControlFlowNode for ZipInfo() [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1377:13:1377:13 | ControlFlowNode for x [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1378:13:1378:13 | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1378:13:1378:13 | ControlFlowNode for x [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1379:13:1379:13 | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1379:13:1379:13 | ControlFlowNode for x [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1388:13:1388:13 | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1388:13:1388:13 | ControlFlowNode for x [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1389:13:1389:13 | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1389:13:1389:13 | ControlFlowNode for x [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1393:13:1393:13 | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1393:13:1393:13 | ControlFlowNode for x [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1394:34:1394:34 | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1394:13:1394:25 | [post] ControlFlowNode for Attribute [List element, Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1394:13:1394:16 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1394:34:1394:34 | ControlFlowNode for x [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1394:13:1394:25 | [post] ControlFlowNode for Attribute [List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1410:18:1410:21 | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1413:16:1413:19 | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1413:16:1413:19 | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1413:16:1413:28 | ControlFlowNode for Attribute [List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1617:23:1617:28 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1628:37:1628:42 | ControlFlowNode for member [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1628:37:1628:42 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1628:16:1628:54 | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.10/zipfile.py:1628:37:1628:42 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1662:31:1662:36 | ControlFlowNode for member [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1662:31:1662:36 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1671:19:1671:24 | ControlFlowNode for member [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1671:19:1671:24 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1671:19:1671:33 | ControlFlowNode for Attribute |
-| file:///usr/lib/python3.10/zipfile.py:1671:19:1671:33 | ControlFlowNode for Attribute | file:///usr/lib/python3.10/zipfile.py:1677:19:1677:48 | ControlFlowNode for Subscript |
-| file:///usr/lib/python3.10/zipfile.py:1677:19:1677:48 | ControlFlowNode for Subscript | file:///usr/lib/python3.10/zipfile.py:1679:42:1679:42 | SSA variable x |
-| file:///usr/lib/python3.10/zipfile.py:1679:36:1680:65 | ControlFlowNode for GeneratorExp | file:///usr/lib/python3.10/zipfile.py:1696:20:1696:29 | ControlFlowNode for targetpath |
-| file:///usr/lib/python3.10/zipfile.py:1679:36:1680:65 | ControlFlowNode for GeneratorExp | file:///usr/lib/python3.10/zipfile.py:1702:16:1702:25 | ControlFlowNode for targetpath |
-| file:///usr/lib/python3.10/zipfile.py:1679:42:1679:42 | SSA variable x | file:///usr/lib/python3.10/zipfile.py:1679:36:1680:65 | ControlFlowNode for GeneratorExp |
-| tarfile_module.py:5:17:5:24 | ControlFlowNode for tar_path | tarfile_module.py:8:5:8:54 | ControlFlowNode for Attribute() |
-| tarfile_module.py:5:17:5:24 | ControlFlowNode for tar_path | tarfile_module.py:9:5:9:54 | ControlFlowNode for Attribute() |
-| tarfile_module.py:5:17:5:24 | ControlFlowNode for tar_path | tarfile_module.py:10:5:10:56 | ControlFlowNode for Attribute() |
-| tarfile_module.py:5:17:5:24 | ControlFlowNode for tar_path | tarfile_module.py:11:5:11:49 | ControlFlowNode for Attribute() |
-| tarfile_module.py:5:17:5:24 | ControlFlowNode for tar_path | tarfile_module.py:12:5:12:59 | ControlFlowNode for Attribute() |
-| tarfile_module.py:5:17:5:24 | ControlFlowNode for tar_path | tarfile_module.py:13:5:13:51 | ControlFlowNode for Attribute() |
-| tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | tarfile_module.py:30:17:30:22 | ControlFlowNode for bar_id |
-| tarfile_module.py:30:17:30:22 | ControlFlowNode for bar_id | tarfile_module.py:5:17:5:24 | ControlFlowNode for tar_path |
-| zipfile_module.py:9:17:9:24 | ControlFlowNode for zip_path | zipfile_module.py:11:5:11:57 | ControlFlowNode for Attribute() |
-| zipfile_module.py:9:17:9:24 | ControlFlowNode for zip_path | zipfile_module.py:12:34:12:41 | ControlFlowNode for zip_path |
-| zipfile_module.py:9:17:9:24 | ControlFlowNode for zip_path | zipfile_module.py:15:5:15:38 | ControlFlowNode for Attribute() |
-| zipfile_module.py:9:17:9:24 | ControlFlowNode for zip_path | zipfile_module.py:17:5:17:58 | ControlFlowNode for Attribute() |
-| zipfile_module.py:12:18:12:47 | ControlFlowNode for Attribute() [Attribute filelist, List element, Attribute filename] | zipfile_module.py:17:24:17:33 | ControlFlowNode for zipFileObj [Attribute filelist, List element, Attribute filename] |
-| zipfile_module.py:12:34:12:41 | ControlFlowNode for zip_path | file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file |
-| zipfile_module.py:12:34:12:41 | ControlFlowNode for zip_path | zipfile_module.py:12:18:12:47 | ControlFlowNode for Attribute() [Attribute filelist, List element, Attribute filename] |
-| zipfile_module.py:17:24:17:33 | ControlFlowNode for zipFileObj [Attribute filelist, List element, Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1410:18:1410:21 | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| zipfile_module.py:17:24:17:33 | ControlFlowNode for zipFileObj [Attribute filelist, List element, Attribute filename] | zipfile_module.py:17:24:17:44 | ControlFlowNode for Attribute() [List element, Attribute filename] |
-| zipfile_module.py:17:24:17:44 | ControlFlowNode for Attribute() [List element, Attribute filename] | zipfile_module.py:17:24:17:47 | ControlFlowNode for Subscript [Attribute filename] |
-| zipfile_module.py:17:24:17:47 | ControlFlowNode for Subscript [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1617:23:1617:28 | ControlFlowNode for member [Attribute filename] |
-| zipfile_module.py:17:24:17:47 | ControlFlowNode for Subscript [Attribute filename] | zipfile_module.py:17:5:17:58 | ControlFlowNode for Attribute() |
-| zipfile_module.py:20:20:20:27 | ControlFlowNode for zip_path | zipfile_module.py:30:5:30:35 | ControlFlowNode for Attribute() |
-| zipfile_module.py:34:18:34:25 | ControlFlowNode for zip_path | zipfile_module.py:37:14:37:29 | ControlFlowNode for Attribute() |
-| zipfile_module.py:34:18:34:25 | ControlFlowNode for zip_path | zipfile_module.py:42:29:42:36 | ControlFlowNode for Attribute |
-| zipfile_module.py:34:18:34:25 | ControlFlowNode for zip_path | zipfile_module.py:45:14:45:39 | ControlFlowNode for Attribute() |
-| zipfile_module.py:34:18:34:25 | ControlFlowNode for zip_path | zipfile_module.py:53:5:53:35 | ControlFlowNode for Attribute() |
-| zipfile_module.py:34:18:34:25 | ControlFlowNode for zip_path | zipfile_module.py:62:44:62:61 | ControlFlowNode for Attribute() |
-| zipfile_module.py:42:21:42:37 | ControlFlowNode for BytesIO() | file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file |
-| zipfile_module.py:42:21:42:37 | ControlFlowNode for BytesIO() | zipfile_module.py:42:5:42:54 | ControlFlowNode for Attribute() |
-| zipfile_module.py:42:29:42:36 | ControlFlowNode for Attribute | zipfile_module.py:42:5:42:54 | ControlFlowNode for Attribute() |
-| zipfile_module.py:42:29:42:36 | ControlFlowNode for Attribute | zipfile_module.py:42:21:42:37 | ControlFlowNode for BytesIO() |
-| zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:90:20:90:25 | ControlFlowNode for bar_id |
-| zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:91:17:91:22 | ControlFlowNode for bar_id |
-| zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:92:18:92:23 | ControlFlowNode for bar_id |
-| zipfile_module.py:90:20:90:25 | ControlFlowNode for bar_id | zipfile_module.py:20:20:20:27 | ControlFlowNode for zip_path |
-| zipfile_module.py:91:17:91:22 | ControlFlowNode for bar_id | zipfile_module.py:9:17:9:24 | ControlFlowNode for zip_path |
-| zipfile_module.py:92:18:92:23 | ControlFlowNode for bar_id | zipfile_module.py:34:18:34:25 | ControlFlowNode for zip_path |
-| zipfile_module.py:99:26:99:34 | ControlFlowNode for Attribute | file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file |
-| zipfile_module.py:99:26:99:34 | ControlFlowNode for Attribute | zipfile_module.py:100:14:100:29 | ControlFlowNode for Attribute() |
-| zipfile_module.py:106:23:106:26 | ControlFlowNode for file | zipfile_module.py:108:14:108:29 | ControlFlowNode for Attribute() |
-| zipfile_module.py:116:30:116:38 | ControlFlowNode for Attribute | file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file |
-| zipfile_module.py:116:30:116:38 | ControlFlowNode for Attribute | zipfile_module.py:117:18:117:33 | ControlFlowNode for Attribute() |
-| zipfile_module.py:125:30:125:38 | ControlFlowNode for Attribute | file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file |
-| zipfile_module.py:125:30:125:38 | ControlFlowNode for Attribute | zipfile_module.py:126:18:126:33 | ControlFlowNode for Attribute() |
+| file:///usr/lib/python3.10/tarfile.py:1850:21:1850:24 | ControlFlowNode for name | file:///usr/lib/python3.10/tarfile.py:1863:32:1863:35 | ControlFlowNode for name |
+| file:///usr/lib/python3.10/tarfile.py:1911:21:1911:24 | ControlFlowNode for name | file:///usr/lib/python3.10/tarfile.py:1923:28:1923:42 | ControlFlowNode for BoolExpr |
+| file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() | file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() |
+| file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() | file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() |
+| file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() | test.py:23:5:23:52 | ControlFlowNode for Attribute() |
+| file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() | test.py:27:5:27:60 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:10:5:10:52 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:10:21:10:29 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:11:5:11:48 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:11:21:11:29 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:14:14:14:29 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:21:5:21:60 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:21:21:21:29 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:23:5:23:52 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:23:18:23:26 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:24:5:24:55 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:25:5:25:57 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:25:28:25:36 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:26:5:26:50 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:26:28:26:36 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:27:5:27:60 | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:27:26:27:34 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:30:28:30:36 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:34:27:34:35 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:38:15:38:23 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:39:19:39:27 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:43:14:43:22 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:44:17:44:25 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:48:15:48:23 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:49:19:49:27 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:53:40:53:48 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:55:23:55:31 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:56:21:56:29 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:58:40:58:48 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:59:22:59:30 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:60:21:60:29 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:61:42:61:50 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:62:23:62:31 | ControlFlowNode for file_path |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:63:36:63:44 | ControlFlowNode for file_path |
+| test.py:10:21:10:29 | ControlFlowNode for file_path | file:///usr/lib/python3.10/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() |
+| test.py:11:21:11:29 | ControlFlowNode for file_path | file:///usr/lib/python3.10/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() |
+| test.py:21:21:21:29 | ControlFlowNode for file_path | file:///usr/lib/python3.10/zipfile.py:1477:14:1477:38 | ControlFlowNode for Attribute() |
+| test.py:23:18:23:26 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() |
+| test.py:23:18:23:26 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() |
+| test.py:25:28:25:36 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:1911:21:1911:24 | ControlFlowNode for name |
+| test.py:26:28:26:36 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:1850:21:1850:24 | ControlFlowNode for name |
+| test.py:27:26:27:34 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() |
+| test.py:27:26:27:34 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() |
+| test.py:30:28:30:36 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:1850:21:1850:24 | ControlFlowNode for name |
 nodes
-| Other_compresstion_modules.py:7:10:7:19 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:9:27:9:36 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:11:15:11:24 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:12:19:12:28 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:14:15:14:24 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:15:19:15:28 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:17:20:17:29 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:23:14:23:23 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:24:17:24:26 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:27:40:27:49 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:29:23:29:32 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:30:21:30:30 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:32:40:32:49 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:33:22:33:31 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:34:21:34:30 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:35:42:35:51 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:36:23:36:32 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:37:36:37:45 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| Other_compresstion_modules.py:53:10:53:19 | ControlFlowNode for bomb_input | semmle.label | ControlFlowNode for bomb_input |
-| file:///usr/lib/python3.10/zipfile.py:344:24:344:31 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
-| file:///usr/lib/python3.10/zipfile.py:351:24:351:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| file:///usr/lib/python3.10/zipfile.py:358:9:358:12 | [post] ControlFlowNode for self [Attribute filename] | semmle.label | [post] ControlFlowNode for self [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:358:25:358:32 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
-| file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file | semmle.label | ControlFlowNode for file |
-| file:///usr/lib/python3.10/zipfile.py:1258:13:1258:16 | [post] ControlFlowNode for self [Attribute fp] | semmle.label | [post] ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1258:23:1258:26 | ControlFlowNode for file | semmle.label | ControlFlowNode for file |
-| file:///usr/lib/python3.10/zipfile.py:1259:13:1259:16 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1260:9:1260:12 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1261:9:1261:12 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1262:9:1262:12 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1263:9:1263:12 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | semmle.label | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | semmle.label | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1326:26:1326:29 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1328:14:1328:17 | ControlFlowNode for self [Attribute fp] | semmle.label | ControlFlowNode for self [Attribute fp] |
-| file:///usr/lib/python3.10/zipfile.py:1328:14:1328:20 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| file:///usr/lib/python3.10/zipfile.py:1376:17:1376:33 | ControlFlowNode for ZipInfo() [Attribute filename] | semmle.label | ControlFlowNode for ZipInfo() [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1376:25:1376:32 | ControlFlowNode for filename | semmle.label | ControlFlowNode for filename |
-| file:///usr/lib/python3.10/zipfile.py:1377:13:1377:13 | ControlFlowNode for x [Attribute filename] | semmle.label | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1378:13:1378:13 | ControlFlowNode for x [Attribute filename] | semmle.label | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1379:13:1379:13 | ControlFlowNode for x [Attribute filename] | semmle.label | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1388:13:1388:13 | ControlFlowNode for x [Attribute filename] | semmle.label | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1389:13:1389:13 | ControlFlowNode for x [Attribute filename] | semmle.label | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1393:13:1393:13 | ControlFlowNode for x [Attribute filename] | semmle.label | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1394:13:1394:16 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | semmle.label | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1394:13:1394:25 | [post] ControlFlowNode for Attribute [List element, Attribute filename] | semmle.label | [post] ControlFlowNode for Attribute [List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1394:34:1394:34 | ControlFlowNode for x [Attribute filename] | semmle.label | ControlFlowNode for x [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1410:18:1410:21 | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | semmle.label | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1413:16:1413:19 | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | semmle.label | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1413:16:1413:28 | ControlFlowNode for Attribute [List element, Attribute filename] | semmle.label | ControlFlowNode for Attribute [List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1617:23:1617:28 | ControlFlowNode for member [Attribute filename] | semmle.label | ControlFlowNode for member [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1628:16:1628:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.10/zipfile.py:1628:37:1628:42 | ControlFlowNode for member [Attribute filename] | semmle.label | ControlFlowNode for member [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1662:31:1662:36 | ControlFlowNode for member [Attribute filename] | semmle.label | ControlFlowNode for member [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1671:19:1671:24 | ControlFlowNode for member [Attribute filename] | semmle.label | ControlFlowNode for member [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1671:19:1671:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| file:///usr/lib/python3.10/zipfile.py:1677:19:1677:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| file:///usr/lib/python3.10/zipfile.py:1679:36:1680:65 | ControlFlowNode for GeneratorExp | semmle.label | ControlFlowNode for GeneratorExp |
-| file:///usr/lib/python3.10/zipfile.py:1679:42:1679:42 | SSA variable x | semmle.label | SSA variable x |
-| file:///usr/lib/python3.10/zipfile.py:1696:20:1696:29 | ControlFlowNode for targetpath | semmle.label | ControlFlowNode for targetpath |
-| file:///usr/lib/python3.10/zipfile.py:1702:16:1702:25 | ControlFlowNode for targetpath | semmle.label | ControlFlowNode for targetpath |
-| tarfile_module.py:5:17:5:24 | ControlFlowNode for tar_path | semmle.label | ControlFlowNode for tar_path |
-| tarfile_module.py:8:5:8:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| tarfile_module.py:9:5:9:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| tarfile_module.py:10:5:10:56 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| tarfile_module.py:11:5:11:49 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| tarfile_module.py:12:5:12:59 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| tarfile_module.py:13:5:13:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | semmle.label | ControlFlowNode for bar_id |
-| tarfile_module.py:30:17:30:22 | ControlFlowNode for bar_id | semmle.label | ControlFlowNode for bar_id |
-| zipfile_module.py:9:17:9:24 | ControlFlowNode for zip_path | semmle.label | ControlFlowNode for zip_path |
-| zipfile_module.py:11:5:11:57 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:12:18:12:47 | ControlFlowNode for Attribute() [Attribute filelist, List element, Attribute filename] | semmle.label | ControlFlowNode for Attribute() [Attribute filelist, List element, Attribute filename] |
-| zipfile_module.py:12:34:12:41 | ControlFlowNode for zip_path | semmle.label | ControlFlowNode for zip_path |
-| zipfile_module.py:15:5:15:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:17:5:17:58 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:17:24:17:33 | ControlFlowNode for zipFileObj [Attribute filelist, List element, Attribute filename] | semmle.label | ControlFlowNode for zipFileObj [Attribute filelist, List element, Attribute filename] |
-| zipfile_module.py:17:24:17:44 | ControlFlowNode for Attribute() [List element, Attribute filename] | semmle.label | ControlFlowNode for Attribute() [List element, Attribute filename] |
-| zipfile_module.py:17:24:17:47 | ControlFlowNode for Subscript [Attribute filename] | semmle.label | ControlFlowNode for Subscript [Attribute filename] |
-| zipfile_module.py:20:20:20:27 | ControlFlowNode for zip_path | semmle.label | ControlFlowNode for zip_path |
-| zipfile_module.py:30:5:30:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:34:18:34:25 | ControlFlowNode for zip_path | semmle.label | ControlFlowNode for zip_path |
-| zipfile_module.py:37:14:37:29 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:42:5:42:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:42:21:42:37 | ControlFlowNode for BytesIO() | semmle.label | ControlFlowNode for BytesIO() |
-| zipfile_module.py:42:29:42:36 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| zipfile_module.py:45:14:45:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:53:5:53:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:62:44:62:61 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | semmle.label | ControlFlowNode for bar_id |
-| zipfile_module.py:90:20:90:25 | ControlFlowNode for bar_id | semmle.label | ControlFlowNode for bar_id |
-| zipfile_module.py:91:17:91:22 | ControlFlowNode for bar_id | semmle.label | ControlFlowNode for bar_id |
-| zipfile_module.py:92:18:92:23 | ControlFlowNode for bar_id | semmle.label | ControlFlowNode for bar_id |
-| zipfile_module.py:99:26:99:34 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| zipfile_module.py:100:14:100:29 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:106:23:106:26 | ControlFlowNode for file | semmle.label | ControlFlowNode for file |
-| zipfile_module.py:108:14:108:29 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:116:30:116:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| zipfile_module.py:117:18:117:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipfile_module.py:125:30:125:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| zipfile_module.py:126:18:126:33 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| file:///usr/lib/python3.10/tarfile.py:1850:21:1850:24 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| file:///usr/lib/python3.10/tarfile.py:1863:32:1863:35 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| file:///usr/lib/python3.10/tarfile.py:1911:21:1911:24 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
+| file:///usr/lib/python3.10/tarfile.py:1923:28:1923:42 | ControlFlowNode for BoolExpr | semmle.label | ControlFlowNode for BoolExpr |
+| file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| file:///usr/lib/python3.10/zipfile.py:1477:14:1477:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| file:///usr/lib/python3.10/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:9:16:9:24 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:10:5:10:52 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:10:21:10:29 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:11:5:11:48 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:11:21:11:29 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:14:14:14:29 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:21:5:21:60 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:21:21:21:29 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:23:5:23:52 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:23:18:23:26 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:24:5:24:55 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:25:5:25:57 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:25:28:25:36 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:26:5:26:50 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:26:28:26:36 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:27:5:27:60 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:27:26:27:34 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:30:28:30:36 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:34:27:34:35 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:38:15:38:23 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:39:19:39:27 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:43:14:43:22 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:44:17:44:25 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:48:15:48:23 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:49:19:49:27 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:53:40:53:48 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:55:23:55:31 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:56:21:56:29 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:58:40:58:48 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:59:22:59:30 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:60:21:60:29 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:61:42:61:50 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:62:23:62:31 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:63:36:63:44 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 subpaths
-| file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1326:26:1326:29 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1394:13:1394:16 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1326:26:1326:29 | ControlFlowNode for self [Attribute fp] | file:///usr/lib/python3.10/zipfile.py:1394:13:1394:16 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1376:25:1376:32 | ControlFlowNode for filename | file:///usr/lib/python3.10/zipfile.py:344:24:344:31 | ControlFlowNode for filename | file:///usr/lib/python3.10/zipfile.py:358:9:358:12 | [post] ControlFlowNode for self [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1376:17:1376:33 | ControlFlowNode for ZipInfo() [Attribute filename] |
-| file:///usr/lib/python3.10/zipfile.py:1628:37:1628:42 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1662:31:1662:36 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1696:20:1696:29 | ControlFlowNode for targetpath | file:///usr/lib/python3.10/zipfile.py:1628:16:1628:54 | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.10/zipfile.py:1628:37:1628:42 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1662:31:1662:36 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1702:16:1702:25 | ControlFlowNode for targetpath | file:///usr/lib/python3.10/zipfile.py:1628:16:1628:54 | ControlFlowNode for Attribute() |
-| zipfile_module.py:12:34:12:41 | ControlFlowNode for zip_path | file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file | file:///usr/lib/python3.10/zipfile.py:1267:17:1267:20 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | zipfile_module.py:12:18:12:47 | ControlFlowNode for Attribute() [Attribute filelist, List element, Attribute filename] |
-| zipfile_module.py:12:34:12:41 | ControlFlowNode for zip_path | file:///usr/lib/python3.10/zipfile.py:1216:24:1216:27 | ControlFlowNode for file | file:///usr/lib/python3.10/zipfile.py:1287:21:1287:24 | [post] ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | zipfile_module.py:12:18:12:47 | ControlFlowNode for Attribute() [Attribute filelist, List element, Attribute filename] |
-| zipfile_module.py:17:24:17:33 | ControlFlowNode for zipFileObj [Attribute filelist, List element, Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1410:18:1410:21 | ControlFlowNode for self [Attribute filelist, List element, Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1413:16:1413:28 | ControlFlowNode for Attribute [List element, Attribute filename] | zipfile_module.py:17:24:17:44 | ControlFlowNode for Attribute() [List element, Attribute filename] |
-| zipfile_module.py:17:24:17:47 | ControlFlowNode for Subscript [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1617:23:1617:28 | ControlFlowNode for member [Attribute filename] | file:///usr/lib/python3.10/zipfile.py:1628:16:1628:54 | ControlFlowNode for Attribute() | zipfile_module.py:17:5:17:58 | ControlFlowNode for Attribute() |
 #select
-| Other_compresstion_modules.py:9:27:9:36 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:9:27:9:36 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:11:15:11:24 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:11:15:11:24 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:12:19:12:28 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:12:19:12:28 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:14:15:14:24 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:14:15:14:24 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:15:19:15:28 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:15:19:15:28 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:17:20:17:29 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:17:20:17:29 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:23:14:23:23 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:23:14:23:23 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:24:17:24:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:24:17:24:26 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:27:40:27:49 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:27:40:27:49 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:29:23:29:32 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:29:23:29:32 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:30:21:30:30 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:30:21:30:30 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:32:40:32:49 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:32:40:32:49 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:33:22:33:31 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:33:22:33:31 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:34:21:34:30 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:34:21:34:30 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:35:42:35:51 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:35:42:35:51 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:36:23:36:32 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:36:23:36:32 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| Other_compresstion_modules.py:37:36:37:45 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | Other_compresstion_modules.py:37:36:37:45 | ControlFlowNode for bomb_input | This file extraction depends on a $@. | Other_compresstion_modules.py:52:17:52:26 | ControlFlowNode for bomb_input | potentially untrusted source |
-| tarfile_module.py:8:5:8:54 | ControlFlowNode for Attribute() | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | tarfile_module.py:8:5:8:54 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| tarfile_module.py:9:5:9:54 | ControlFlowNode for Attribute() | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | tarfile_module.py:9:5:9:54 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| tarfile_module.py:10:5:10:56 | ControlFlowNode for Attribute() | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | tarfile_module.py:10:5:10:56 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| tarfile_module.py:11:5:11:49 | ControlFlowNode for Attribute() | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | tarfile_module.py:11:5:11:49 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| tarfile_module.py:12:5:12:59 | ControlFlowNode for Attribute() | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | tarfile_module.py:12:5:12:59 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| tarfile_module.py:13:5:13:51 | ControlFlowNode for Attribute() | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | tarfile_module.py:13:5:13:51 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarfile_module.py:29:19:29:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:11:5:11:57 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:11:5:11:57 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:15:5:15:38 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:15:5:15:38 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:17:5:17:58 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:17:5:17:58 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:30:5:30:35 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:30:5:30:35 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:37:14:37:29 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:37:14:37:29 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:42:5:42:54 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:42:5:42:54 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:45:14:45:39 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:45:14:45:39 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:53:5:53:35 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:53:5:53:35 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:62:44:62:61 | ControlFlowNode for Attribute() | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | zipfile_module.py:62:44:62:61 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:89:19:89:24 | ControlFlowNode for bar_id | potentially untrusted source |
-| zipfile_module.py:100:14:100:29 | ControlFlowNode for Attribute() | zipfile_module.py:99:26:99:34 | ControlFlowNode for Attribute | zipfile_module.py:100:14:100:29 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:99:26:99:34 | ControlFlowNode for Attribute | potentially untrusted source |
-| zipfile_module.py:108:14:108:29 | ControlFlowNode for Attribute() | zipfile_module.py:106:23:106:26 | ControlFlowNode for file | zipfile_module.py:108:14:108:29 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:106:23:106:26 | ControlFlowNode for file | potentially untrusted source |
-| zipfile_module.py:117:18:117:33 | ControlFlowNode for Attribute() | zipfile_module.py:116:30:116:38 | ControlFlowNode for Attribute | zipfile_module.py:117:18:117:33 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:116:30:116:38 | ControlFlowNode for Attribute | potentially untrusted source |
-| zipfile_module.py:126:18:126:33 | ControlFlowNode for Attribute() | zipfile_module.py:125:30:125:38 | ControlFlowNode for Attribute | zipfile_module.py:126:18:126:33 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | zipfile_module.py:125:30:125:38 | ControlFlowNode for Attribute | potentially untrusted source |
+| file:///usr/lib/python3.10/tarfile.py:1863:32:1863:35 | ControlFlowNode for name | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:1863:32:1863:35 | ControlFlowNode for name | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| file:///usr/lib/python3.10/tarfile.py:1923:28:1923:42 | ControlFlowNode for BoolExpr | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:1923:28:1923:42 | ControlFlowNode for BoolExpr | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.10/tarfile.py:2373:24:2373:72 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| file:///usr/lib/python3.10/zipfile.py:1477:14:1477:38 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.10/zipfile.py:1477:14:1477:38 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| file:///usr/lib/python3.10/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.10/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:10:5:10:52 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:10:5:10:52 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:11:5:11:48 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:11:5:11:48 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:14:14:14:29 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:14:14:14:29 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:21:5:21:60 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:21:5:21:60 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:23:5:23:52 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:23:5:23:52 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:24:5:24:55 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:24:5:24:55 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:25:5:25:57 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:25:5:25:57 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:26:5:26:50 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:26:5:26:50 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:27:5:27:60 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:27:5:27:60 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:34:27:34:35 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:34:27:34:35 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:38:15:38:23 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:38:15:38:23 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:39:19:39:27 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:39:19:39:27 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:43:14:43:22 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:43:14:43:22 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:44:17:44:25 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:44:17:44:25 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:48:15:48:23 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:48:15:48:23 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:49:19:49:27 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:49:19:49:27 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:53:40:53:48 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:53:40:53:48 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:55:23:55:31 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:55:23:55:31 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:56:21:56:29 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:56:21:56:29 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:58:40:58:48 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:58:40:58:48 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:59:22:59:30 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:59:22:59:30 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:60:21:60:29 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:60:21:60:29 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:61:42:61:50 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:61:42:61:50 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:62:23:62:31 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:62:23:62:31 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:63:36:63:44 | ControlFlowNode for file_path | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:63:36:63:44 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |

@@ -36,8 +36,7 @@ predicate isAdditionalTaintStepTextIOWrapper(DataFlow::Node nodeFrom, DataFlow::
   |
     nodeFrom = textIOWrapper.getParameter(0, "input").asSink() and
     nodeTo = textIOWrapper
-  ) and
-  exists(nodeTo.getLocation().getFile().getRelativePath())
+  )
 }
 
 module FileAndFormRemoteFlowSource {
@@ -62,7 +61,7 @@ module FileAndFormRemoteFlowSource {
         fastApiUploadFile =
           fastApiParam.asSource().asExpr().(Parameter).getAnnotation().getASubExpression*() and
         // Multiple Uploaded files as list of fastapi.UploadFile
-        exists(For f, Attribute attr, DataFlow::Node a, DataFlow::Node b |
+        exists(For f, Attribute attr |
           fastApiParam.getAValueReachableFromSource().asExpr() = f.getIter().getASubExpression*()
         |
           TaintTracking::localExprTaint(f.getIter(), attr.getObject()) and
@@ -80,11 +79,10 @@ module FileAndFormRemoteFlowSource {
                 .getReturn()
                 .asSource(), fastApiParam.getMember("read").getReturn().asSource()
           ]
-      ) and
-      exists(this.getLocation().getFile().getRelativePath())
+      )
     }
 
-    override string getSourceType() { result = "HTTP FORM" }
+    override string getSourceType() { result = "fastapi HTTP FORM files" }
   }
 }
 
