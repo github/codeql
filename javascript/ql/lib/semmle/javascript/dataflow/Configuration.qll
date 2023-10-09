@@ -1861,7 +1861,11 @@ class MidPathNode extends PathNode, MkMidNode {
    * Holds if this node is hidden from paths in path explanation queries, except
    * in cases where it is the source or sink.
    */
-  predicate isHidden() {
+  predicate isHidden() { PathNode::shouldNodeBeHidden(nd) }
+}
+
+module PathNode {
+  predicate shouldNodeBeHidden(DataFlow::Node nd) {
     // Skip phi, refinement, and capture nodes
     nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
       SsaImplicitDefinition
