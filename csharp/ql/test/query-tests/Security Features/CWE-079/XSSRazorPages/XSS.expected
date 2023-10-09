@@ -1,0 +1,12 @@
+edges
+| Controllers/TestController.cs:13:41:13:47 | tainted : UserData | Controllers/TestController.cs:14:30:14:36 | access to parameter tainted : UserData |
+| Controllers/TestController.cs:14:30:14:36 | access to parameter tainted : UserData | Views/Test/Test1.cshtml:8:16:8:20 | access to property Model : UserData |
+| Views/Test/Test1.cshtml:8:16:8:20 | access to property Model : UserData | Views/Test/Test1.cshtml:8:16:8:25 | access to property Name |
+nodes
+| Controllers/TestController.cs:13:41:13:47 | tainted : UserData | semmle.label | tainted : UserData |
+| Controllers/TestController.cs:14:30:14:36 | access to parameter tainted : UserData | semmle.label | access to parameter tainted : UserData |
+| Views/Test/Test1.cshtml:8:16:8:20 | access to property Model : UserData | semmle.label | access to property Model : UserData |
+| Views/Test/Test1.cshtml:8:16:8:25 | access to property Name | semmle.label | access to property Name |
+subpaths
+#select
+| Views/Test/Test1.cshtml:8:16:8:25 | access to property Name | Controllers/TestController.cs:13:41:13:47 | tainted : UserData | Views/Test/Test1.cshtml:8:16:8:25 | access to property Name | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Controllers/TestController.cs:13:41:13:47 | tainted : UserData | User-provided value |

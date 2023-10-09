@@ -1,9 +1,15 @@
+/** Definitions for additional flow steps for cross-site scripting (XSS) vulnerabilities. */
+
 import csharp
 private import codeql.util.Unit
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
-/** An additional flow step for cross-site scripting (XSS) vulnerabilities */
+/**
+ * A unit class for providing additional flow steps for cross-site scripting (XSS) vulnerabilities.
+ * Extend to provide additional flow steps.
+ */
 class XssAdditionalFlowStep extends Unit {
+  /** Holds if there is an additional dataflow step from `node1` to `node2`. */
   abstract predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2);
 }
 
@@ -32,6 +38,17 @@ private class ViewCall extends MethodCall {
   Method getActionMethod() {
     result = this.getEnclosingCallable() and
     result = this.getController().getAnActionMethod()
+  }
+
+  /**
+   * Gets the action name that this call refers to, if any.
+   * This is either the name argument, or the name of the action method calling this if there is no name argument.
+   */
+  string getActionName() {
+    result = this.getNameArgument()
+    or
+    not exists(this.getNameArgument()) and
+    result = this.getActionMethod().getName()
   }
 
   /** Gets the MVC controller that this call is made from, if any. */
@@ -91,31 +108,38 @@ private predicate viewCallRefersToPageRelative(ViewCall vc, RazorPage rp) {
     )
 }
 
+/** Gets the `i`th template for view discovery. */
+private string getViewSearchTemplate(int i) {
+  i = 0 and result = "/Views/{1}/{0}.cshtml"
+  or
+  i = 1 and result = "/Views/Shared/{0}.cshtml"
+}
+
+/** A filepath that should be searched for a View call. */
 private class RelativeViewCallFilepath extends NormalizableFilepath {
-  ViewCall vc;
-  int idx;
+  ViewCall vc_;
+  int idx_;
 
   RelativeViewCallFilepath() {
-    exists(string actionName |
-      actionName = vc.getNameArgument() and
-      not actionName.matches("%.cshtml")
+    exists(string template | template = getViewSearchTemplate(idx_) |
+      this =
+        template.replaceAll("{0}", vc_.getActionName()).replaceAll("{1}", vc_.getControllerName())
       or
-      not exists(vc.getNameArgument()) and
-      actionName = vc.getActionMethod().getName()
-    |
-      idx = 0 and
-      this = "/Views/" + vc.getControllerName() + "/" + actionName + ".cshtml"
-      or
-      idx = 1 and
-      this = "/Views/Shared/" + actionName + ".cshtml"
+      not exists(vc_.getControllerName()) and
+      not template.matches("%{1}%") and
+      this = template.replaceAll("{0}", vc_.getActionName())
     )
   }
 
-  predicate hasViewCallWithIndex(ViewCall vc2, int idx2) { vc = vc2 and idx = idx2 }
+  /** Holds if this string is the `idx`th path that will be searched for the `vc` call. */
+  predicate hasViewCallWithIndex(ViewCall vc, int idx) { vc = vc_ and idx = idx_ }
 }
 
 // TODO: this could be a shared library
-/** A filepath that should be normalized. */
+/**
+ * A filepath that should be normalized.
+ * Extend to provide additional strings that should be normalized as filepaths.
+ */
 abstract private class NormalizableFilepath extends string {
   bindingset[this]
   NormalizableFilepath() { any() }
