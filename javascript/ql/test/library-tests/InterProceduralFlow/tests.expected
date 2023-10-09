@@ -24,8 +24,6 @@ dataFlow
 | esLib.js:3:21:3:29 | "tainted" | esClient.js:11:13:11:17 | esFoo |
 | esLib.js:3:21:3:29 | "tainted" | nodeJsClient.js:5:13:5:21 | es.source |
 | global.js:1:15:1:24 | "tainted1" | global.js:9:13:9:22 | g(source1) |
-| global.js:1:15:1:24 | "tainted1" | global.js:17:13:17:27 | window.location |
-| global.js:1:15:1:24 | "tainted1" | global.js:18:13:18:24 | win.location |
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
@@ -63,7 +61,6 @@ dataFlow
 | properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:12:15:12:24 | x.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:14:15:14:27 | tmp1.someProp |
-| properties.js:18:26:18:42 | "tainted as well" | properties.js:20:24:20:33 | window.foo |
 | tst2.js:2:17:2:26 | "tainted1" | tst2.js:10:15:10:24 | g(source1) |
 | tst2.js:3:17:3:26 | "tainted2" | tst2.js:11:15:11:24 | g(source2) |
 | tst2.js:6:24:6:37 | "also tainted" | tst2.js:10:15:10:24 | g(source1) |
@@ -109,8 +106,6 @@ taintTracking
 | esLib.js:3:21:3:29 | "tainted" | esClient.js:11:13:11:17 | esFoo |
 | esLib.js:3:21:3:29 | "tainted" | nodeJsClient.js:5:13:5:21 | es.source |
 | global.js:1:15:1:24 | "tainted1" | global.js:9:13:9:22 | g(source1) |
-| global.js:1:15:1:24 | "tainted1" | global.js:17:13:17:27 | window.location |
-| global.js:1:15:1:24 | "tainted1" | global.js:18:13:18:24 | win.location |
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
@@ -151,7 +146,6 @@ taintTracking
 | properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:12:15:12:24 | x.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:14:15:14:27 | tmp1.someProp |
-| properties.js:18:26:18:42 | "tainted as well" | properties.js:20:24:20:33 | window.foo |
 | tst2.js:2:17:2:26 | "tainted1" | tst2.js:10:15:10:24 | g(source1) |
 | tst2.js:3:17:3:26 | "tainted2" | tst2.js:11:15:11:24 | g(source2) |
 | tst2.js:6:24:6:37 | "also tainted" | tst2.js:10:15:10:24 | g(source1) |
@@ -219,8 +213,6 @@ germanFlow
 | esLib.js:3:21:3:29 | "tainted" | esClient.js:11:13:11:17 | esFoo |
 | esLib.js:3:21:3:29 | "tainted" | nodeJsClient.js:5:13:5:21 | es.source |
 | global.js:1:15:1:24 | "tainted1" | global.js:9:13:9:22 | g(source1) |
-| global.js:1:15:1:24 | "tainted1" | global.js:17:13:17:27 | window.location |
-| global.js:1:15:1:24 | "tainted1" | global.js:18:13:18:24 | win.location |
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
 | global.js:5:22:5:35 | "also tainted" | global.js:9:13:9:22 | g(source1) |
 | global.js:5:22:5:35 | "also tainted" | global.js:10:13:10:22 | g(source2) |
@@ -258,7 +250,6 @@ germanFlow
 | properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:12:15:12:24 | x.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:14:15:14:27 | tmp1.someProp |
-| properties.js:18:26:18:42 | "tainted as well" | properties.js:20:24:20:33 | window.foo |
 | tst2.js:2:17:2:26 | "tainted1" | tst2.js:10:15:10:24 | g(source1) |
 | tst2.js:3:17:3:26 | "tainted2" | tst2.js:11:15:11:24 | g(source2) |
 | tst2.js:6:24:6:37 | "also tainted" | tst2.js:10:15:10:24 | g(source1) |
