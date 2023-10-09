@@ -86,17 +86,7 @@ module ThreatModelFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-/**
- * DEPRECATED: Use `ThreatModelFlowConfig` instead.
- */
-deprecated module RemoteFlowConfig = ThreatModelFlowConfig;
-
 module ThreatModelFlow = DataFlow::Global<ThreatModelFlowConfig>;
-
-/**
- * DEPRECATED: Use `ThreatModelFlow` instead.
- */
-deprecated module RemoteFlow = ThreatModelFlow;
 
 /** A data flow configuration tracing flow from json data into the argument `json` of JSONP-like string `someFunctionName + "(" + json + ")"`. */
 module JsonDataFlowConfig implements DataFlow::ConfigSig {
