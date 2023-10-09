@@ -1,14 +1,54 @@
-| Test.java:24:26:24:51 | ...::... | Test$Generic<Number>$Inner<>.Inner<> | Test$Generic$Inner.class:0:0:0:0 | Inner<> |
-| Test.java:38:29:38:42 | ...::... | java.lang.Object.toString | Test.java:1:7:1:10 | Test |
-| Test.java:39:29:39:42 | ...::... | java.lang.Object.hashCode | Test.java:1:7:1:10 | Test |
-| Test.java:40:29:40:39 | ...::... | java.lang.Object.clone | Test.java:1:7:1:10 | Test |
-| Test.java:41:40:41:64 | ...::... | java.lang.Object.toString | Test$Generic.class:0:0:0:0 | Generic<String> |
-| Test.java:43:23:43:36 | ...::... | java.lang.Object.toString | Test.java:1:7:1:10 | Test |
-| Test.java:44:23:44:36 | ...::... | java.lang.Object.hashCode | Test.java:1:7:1:10 | Test |
-| Test.java:45:23:45:33 | ...::... | java.lang.Object.clone | Test.java:1:7:1:10 | Test |
-| Test.java:48:22:48:35 | ...::... | java.lang.Object.toString | Test.java:1:7:1:10 | Test |
-| Test.java:51:13:51:21 | ...::... | Test.Test | Test.java:1:7:1:10 | Test |
-| Test.java:52:13:52:32 | ...::... | Test$Generic<String>.Generic<String> | Test$Generic.class:0:0:0:0 | Generic<String> |
-| Test.java:56:13:56:22 | ...::... |  | file://:0:0:0:0 | int[] |
-| Test.java:57:13:57:26 | ...::... |  | file://:0:0:0:0 | Generic<>[] |
-| Test.java:61:31:61:47 | ...::... | Test.doSomething | Test.java:1:7:1:10 | Test |
+getReferencedCallable
+| Test.java:26:31:26:52 | ...::... | java.lang.Object.toString |
+| Test.java:27:31:27:53 | ...::... | java.lang.Object.toString |
+| Test.java:32:27:32:52 | ...::... | Test$Generic<Number>$Inner<>.Inner<> |
+| Test.java:33:27:33:41 | ...::... | java.lang.Object.toString |
+| Test.java:49:29:49:42 | ...::... | java.lang.Object.toString |
+| Test.java:50:29:50:42 | ...::... | java.lang.Object.hashCode |
+| Test.java:51:29:51:39 | ...::... | java.lang.Object.clone |
+| Test.java:52:40:52:64 | ...::... | java.lang.Object.toString |
+| Test.java:54:23:54:36 | ...::... | java.lang.Object.toString |
+| Test.java:55:23:55:36 | ...::... | java.lang.Object.hashCode |
+| Test.java:56:23:56:33 | ...::... | java.lang.Object.clone |
+| Test.java:57:23:57:59 | ...::... | java.lang.Object.toString |
+| Test.java:57:35:57:48 | ...::... | java.lang.Object.toString |
+| Test.java:60:23:60:36 | ...::... | java.lang.Object.toString |
+| Test.java:62:23:62:40 | ...::... | Test.staticMethod |
+| Test.java:65:13:65:21 | ...::... | Test.Test |
+| Test.java:66:13:66:32 | ...::... | Test$Generic<String>.Generic<String> |
+| Test.java:75:31:75:47 | ...::... | Test.doSomething |
+getReceiverExpr
+| Test.java:26:31:26:52 | ...::... | Test.java:26:31:26:42 | Generic<>.this |
+| Test.java:27:31:27:53 | ...::... | Test.java:27:31:27:43 | Generic<>.super |
+| Test.java:32:27:32:52 | ...::... | Test.java:32:27:32:47 | Generic<Number>.Inner<> |
+| Test.java:33:27:33:41 | ...::... | Test.java:33:27:33:31 | super |
+| Test.java:54:23:54:36 | ...::... | Test.java:54:23:54:26 | this |
+| Test.java:55:23:55:36 | ...::... | Test.java:55:23:55:26 | this |
+| Test.java:56:23:56:33 | ...::... | Test.java:56:23:56:26 | this |
+| Test.java:57:23:57:59 | ...::... | Test.java:57:24:57:48 | (...)... |
+| Test.java:57:35:57:48 | ...::... | Test.java:57:35:57:38 | this |
+| Test.java:60:23:60:36 | ...::... | Test.java:60:23:60:26 | this |
+| Test.java:62:23:62:40 | ...::... | Test.java:62:23:62:26 | Test |
+| Test.java:65:13:65:21 | ...::... | Test.java:65:13:65:16 | Test |
+| Test.java:66:13:66:32 | ...::... | Test.java:66:13:66:27 | Generic<String> |
+getReceiverType
+| Test.java:26:31:26:52 | ...::... | Test.java:19:18:19:24 | Generic |
+| Test.java:27:31:27:53 | ...::... | Test.java:16:18:16:26 | BaseClass |
+| Test.java:32:27:32:52 | ...::... | Test$Generic$Inner.class:0:0:0:0 | Inner<> |
+| Test.java:33:27:33:41 | ...::... | Test.java:16:18:16:26 | BaseClass |
+| Test.java:49:29:49:42 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:50:29:50:42 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:51:29:51:39 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:52:40:52:64 | ...::... | Test$Generic.class:0:0:0:0 | Generic<String> |
+| Test.java:54:23:54:36 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:55:23:55:36 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:56:23:56:33 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:57:23:57:59 | ...::... | Test.java:10:15:10:22 | Supplier |
+| Test.java:57:35:57:48 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:60:23:60:36 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:62:23:62:40 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:65:13:65:21 | ...::... | Test.java:1:7:1:10 | Test |
+| Test.java:66:13:66:32 | ...::... | Test$Generic.class:0:0:0:0 | Generic<String> |
+| Test.java:70:13:70:22 | ...::... | file://:0:0:0:0 | int[] |
+| Test.java:71:13:71:26 | ...::... | file://:0:0:0:0 | Generic<>[] |
+| Test.java:75:31:75:47 | ...::... | Test.java:1:7:1:10 | Test |

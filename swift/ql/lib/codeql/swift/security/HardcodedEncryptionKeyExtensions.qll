@@ -71,6 +71,9 @@ private class EncryptionKeySinks extends SinkModelCsv {
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[3];encryption-key",
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[3];encryption-key",
         ";Realm.Configuration;true;encryptionKey;;;PostUpdate;encryption-key",
+        // GRDB
+        ";Database;true;usePassphrase(_:);;;Argument[0];encryption-key",
+        ";Database;true;changePassphrase(_:);;;Argument[0];encryption-key",
       ]
   }
 }
