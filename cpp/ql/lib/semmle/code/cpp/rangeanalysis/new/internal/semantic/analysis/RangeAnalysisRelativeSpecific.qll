@@ -3,13 +3,12 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-private import RangeAnalysisStage
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
-private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.IntDelta
 private import RangeAnalysisImpl
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+private import codeql.rangeanalysis.RangeAnalysis
 
-module CppLangImplRelative implements LangSig<FloatDelta> {
+module CppLangImplRelative implements LangSig<Sem, FloatDelta> {
   /**
    * Holds if the specified expression should be excluded from the result of `ssaRead()`.
    *

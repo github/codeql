@@ -56,7 +56,7 @@
     while (f3_get(n)) n+=2;
 
     for (int i = 0; i < n; i += 2) {
-      range(i); // $ range=>=0 SPURIOUS: range="<=Phi: call to f3_get-1" range="<=Phi: call to f3_get-2"
+      range(i); // $ range=>=0 range="<=Phi: call to f3_get-2"
     }
   }
 

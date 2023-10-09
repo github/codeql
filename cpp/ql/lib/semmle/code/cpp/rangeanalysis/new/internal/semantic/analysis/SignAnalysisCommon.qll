@@ -6,14 +6,15 @@
  * three-valued domain `{negative, zero, positive}`.
  */
 
-private import RangeAnalysisStage
+private import codeql.rangeanalysis.RangeAnalysis
+private import RangeAnalysisImpl
 private import SignAnalysisSpecific as Specific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import ConstantAnalysis
 private import RangeUtils
 private import Sign
 
-module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
+module SignAnalysis<DeltaSig D, UtilSig<Sem, D> Utils> {
   /**
    * An SSA definition for which the analysis can compute the sign.
    *
