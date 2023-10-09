@@ -507,4 +507,16 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     not semExprSign(e) = TPos() and
     not semExprSign(e) = TZero()
   }
+
+  /**
+   * Holds if `e` may have positive values. This does not rule out the
+   * possibilty for negative values.
+   */
+  predicate semMayBePositive(SemExpr e) { semExprSign(e) = TPos() }
+
+  /**
+   * Holds if `e` may have negative values. This does not rule out the
+   * possibilty for positive values.
+   */
+  predicate semMayBeNegative(SemExpr e) { semExprSign(e) = TNeg() }
 }
