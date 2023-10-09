@@ -103,7 +103,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true", lastArgs);
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --configfile \"myconfig.config\"", lastArgs);
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\"", lastArgs);
         }
 
         [Fact]

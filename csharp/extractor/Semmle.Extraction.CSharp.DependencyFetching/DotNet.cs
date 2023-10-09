@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching)
         {
-            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
+            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
 
             if (forceDotnetRefAssemblyFetching)
             {
@@ -74,7 +74,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> projects)
         {
             var args = GetRestoreArgs(solutionFile, packageDirectory, forceDotnetRefAssemblyFetching);
-            args += " --verbosity normal";
             if (dotnetCliInvoker.RunCommand(args, out var output))
             {
                 var regex = RestoreProjectRegex();
