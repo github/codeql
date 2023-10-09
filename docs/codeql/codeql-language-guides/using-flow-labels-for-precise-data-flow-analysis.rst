@@ -139,24 +139,29 @@ is a barrier guard blocking flow through the use of ``data`` on the right-hand s
 At this point we know that ``data`` has evaluated to a truthy value, so it cannot be ``null``
 anymore.
 
-Implementing this additional condition is easy. We implement a predicate with the following signature:
+Implementing this additional condition is easy. We implement a subclass of ``DataFlow::BarrierGuardNode``:
 
 .. code-block:: ql
 
-  private predicate truthinessCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
-    exists(SsaVariable v |
-      g = v.getAUse() and
-      node = g and
-      branch = true
-    )
+  class TruthinessCheck extends DataFlow::BarrierGuardNode, DataFlow::ValueNode {
+    SsaVariable v;
+
+    TruthinessCheck() {
+      astNode = v.getAUse()
+    }
+
+    override predicate blocks(boolean outcome, Expr e) {
+      outcome = true and
+      e = astNode
+    }
   }
 
-and then use it to override predicate ``isBarrier`` in our configuration class:
+and then use it to override predicate ``isBarrierGuard`` in our configuration class:
 
 .. code-block:: ql
 
-  override predicate isBarrier(DataFlow::Node node) {
-    node = DataFlow::BarrierGuard<truthinessCheck/3>::getABarrierNode()
+  override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
+    guard instanceof TruthinessCheck
   }
 
 With this change, we now flag the problematic case and don't flag the unproblematic case above.
