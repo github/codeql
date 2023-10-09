@@ -17,7 +17,7 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.internal.DataFlowPublic
-import DecompressionBomb
+import experimental.semmle.python.security.DecompressionBomb
 
 /**
  * `io.TextIOWrapper(ip, encoding='utf-8')` like following:
@@ -90,16 +90,18 @@ module FileAndFormRemoteFlowSource {
 
 module BombsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and
-    // or
-    // source instanceof FileAndFormRemoteFlowSource::FastAPI
-    exists(source.getLocation().getFile().getRelativePath()) and
+    (
+      source instanceof RemoteFlowSource
+      or
+      source instanceof FileAndFormRemoteFlowSource::FastAPI
+    ) and
+    not source.getLocation().getFile().inStdlib() and
     not source.getLocation().getFile().getRelativePath().matches("%venv%")
   }
 
   predicate isSink(DataFlow::Node sink) {
     sink instanceof DecompressionBomb::Sink and
-    exists(sink.getLocation().getFile().getRelativePath()) and
+    not sink.getLocation().getFile().inStdlib() and
     not sink.getLocation().getFile().getRelativePath().matches("%venv%")
   }
 
