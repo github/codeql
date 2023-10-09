@@ -609,9 +609,6 @@ class LongLiteral extends Literal, @longliteral {
   override string getAPrimaryQlClass() { result = "LongLiteral" }
 }
 
-/** DEPRECATED: Alias for FloatLiteral */
-deprecated class FloatingPointLiteral = FloatLiteral;
-
 /**
  * A float literal. For example, `4.2f`.
  *

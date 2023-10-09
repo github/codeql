@@ -21,13 +21,6 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `Sanitizer` instead.
- *
- * A guard for unsafe zip extraction.
- */
-abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-/**
  * DEPRECATED: Use `ZipSlip` instead.
  *
  * A taint tracking configuration for Zip Slip.
@@ -40,10 +33,6 @@ deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
 
 /**

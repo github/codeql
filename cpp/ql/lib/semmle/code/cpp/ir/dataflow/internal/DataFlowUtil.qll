@@ -2237,35 +2237,3 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
     )
   }
 }
-
-/**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some instruction.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends IRGuardCondition {
-  /** Override this predicate to hold if this guard validates `instr` upon evaluating to `b`. */
-  predicate checksInstr(Instruction instr, boolean b) { none() }
-
-  /** Override this predicate to hold if this guard validates `expr` upon evaluating to `b`. */
-  predicate checks(Expr e, boolean b) { none() }
-
-  /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
-    exists(ValueNumber value, boolean edge |
-      (
-        this.checksInstr(value.getAnInstruction(), edge)
-        or
-        this.checks(value.getAnInstruction().getConvertedResultExpression(), edge)
-      ) and
-      result.asInstruction() = value.getAnInstruction() and
-      this.controls(result.asInstruction().getBlock(), edge)
-    )
-  }
-}
