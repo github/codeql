@@ -257,3 +257,28 @@ function testObjectWithMethods(taint) {
     objectWithMethods.functionAddedLater();
 }
 testObjectWithMethods(source());
+
+function captureThis() {
+    this.foo = source();
+    window.addEventListener('click', () => {
+        sink(this.foo); // NOT OK
+    });
+}
+
+function CaptureThisWithoutJump(x) {
+    [1].forEach(() => {
+        this.foo = x;
+    });
+    sink(this.foo); // NOT OK [INCONSISTENCY]
+}
+sink(new CaptureThisWithoutJump(source()).foo); // NOT OK [INCONSISTENCY]
+sink(new CaptureThisWithoutJump('safe').foo); // OK
+
+function CaptureThisWithoutJump2(x) {
+    this.foo = x;
+    let y;
+    [1].forEach(() => y = this.foo);
+    return y;
+}
+sink(new CaptureThisWithoutJump2(source()).foo); // NOT OK
+sink(new CaptureThisWithoutJump2('safe').foo); // OK [INCONSISTENCY]
