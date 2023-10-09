@@ -9,6 +9,7 @@ private import RegexTreeView
  */
 module Make<RegexTreeViewSig TreeImpl> {
   private import TreeImpl
+  private import codeql.util.Strings as Strings
 
   /**
    * Gets a rank for `range` that is unique for ranges in the same file.
@@ -213,7 +214,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     bindingset[char]
     private string escape(string char) {
       exists(string reg | reg = "(\\[|\\]|\\\\|-|/)" |
-        if char.regexpMatch(reg) then result = "\\" + char else result = char
+        if char.regexpMatch(reg) then result = "\\" + char else result = Strings::escape(char)
       )
     }
 
@@ -257,14 +258,15 @@ module Make<RegexTreeViewSig TreeImpl> {
     or
     priority = 1 and
     exists(RegExpCharacterRange other |
-      reason = "overlaps with " + other + " in the same character class" and
+      reason = "overlaps with " + Strings::escape(other.toString()) + " in the same character class" and
       rankRange(result) < rankRange(other) and
       overlap(result, other)
     )
     or
     priority = 2 and
     exists(RegExpCharacterClassEscape escape |
-      reason = "overlaps with " + escape + " in the same character class" and
+      reason =
+        "overlaps with " + escapeRegExpCharacterClassEscape(escape) + " in the same character class" and
       overlapsWithCharEscape(result, escape)
     )
     or
@@ -274,6 +276,13 @@ module Make<RegexTreeViewSig TreeImpl> {
       isRange(result, low, high) and
       low > high
     )
+  }
+
+  pragma[inline]
+  private string escapeRegExpCharacterClassEscape(RegExpCharacterClassEscape escape) {
+    if escape.toString().matches("%-%")
+    then result = Strings::escape(escape.toString()) // might contain unicode characters
+    else result = escape.toString() // just a plain `\d` or `\w` etc. Those are already escaped.
   }
 
   /** Holds if `range` matches suspiciously many characters. */
