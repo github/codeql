@@ -25,6 +25,7 @@ private import internal.DataFlowNode
 private import internal.AnalyzedParameters
 private import internal.PreCallGraphStep
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.dataflow.internal.DataFlowPrivate as Private
 
 module DataFlow {
   /**
@@ -247,6 +248,11 @@ module DataFlow {
       or
       this.getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
     }
+
+    /**
+     * Gets the post-update node corresponding to this node, if any.
+     */
+    final PostUpdateNode getPostUpdateNode() { result.getPreUpdateNode() = this }
   }
 
   /**
@@ -1087,6 +1093,28 @@ module DataFlow {
       expr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
+
+  /**
+   * A node representing the post-update node corresponding to implicit uses of `this` in a constructor.
+   */
+  private class ConstructorThisPostUpdateNode extends TConstructorThisPostUpdate, DataFlow::Node {
+    private Function constructor;
+
+    ConstructorThisPostUpdateNode() { this = TConstructorThisPostUpdate(constructor) }
+
+    override string toString() { result = "[post-update] 'this' parameter of " + constructor }
+
+    override StmtContainer getContainer() { result = constructor }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      constructor
+          .getLocation()
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
   /**
    * INTERNAL. DO NOT USE.
    *
@@ -1402,6 +1430,43 @@ module DataFlow {
     override string toString() { result = this.getTag().toString() }
 
     override StmtContainer getContainer() { result = this.getTag().getInnerTopLevel() }
+  }
+
+  /**
+   * A post-update node whose pre-node corresponds to an expression. See `DataFlow::PostUpdateNode` for more details.
+   */
+  class ExprPostUpdateNode extends DataFlow::Node, TExprPostUpdateNode, Private::PostUpdateNode {
+    private AST::ValueNode expr;
+
+    ExprPostUpdateNode() { this = TExprPostUpdateNode(expr) }
+
+    /** Gets the expression for which this is the post-update node. */
+    AST::ValueNode getExpr() { result = expr }
+
+    override StmtContainer getContainer() { result = expr.getContainer() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      expr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override string toString() { result = "[post update] " + expr.toString() }
+  }
+
+  /**
+   * A post-update node.
+   *
+   * This is a data-flow node that represents the new state of an object after its contents have been mutated.
+   * Most notably such nodes exist for arguments to a call and for the base of a property reference.
+   */
+  class PostUpdateNode extends DataFlow::Node {
+    PostUpdateNode() { Private::postUpdatePair(_, this) }
+
+    /**
+     * Gets the corresponding pre-update node, which is usually the argument to a call or the base of a property reference.
+     */
+    final DataFlow::Node getPreUpdateNode() { Private::postUpdatePair(result, this) }
   }
 
   /**

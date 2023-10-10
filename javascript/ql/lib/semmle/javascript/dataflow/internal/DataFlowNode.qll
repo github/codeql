@@ -34,7 +34,19 @@ private module Cached {
     TGlobalAccessPathRoot() or
     TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag) or
     TReflectiveParametersNode(Function f) or
+    TExprPostUpdateNode(AST::ValueNode e) {
+      e = any(InvokeExpr invoke).getAnArgument() or
+      e = any(PropAccess access).getBase() or
+      e = any(DestructuringPattern pattern) or
+      e = any(InvokeExpr invoke).getCallee() or
+      // We have read steps out of the await operand, so it technically needs a post-update
+      e = any(AwaitExpr a).getOperand() or
+      e = any(Function f) or // functions are passed as their own self-reference argument
+      // RHS of a setter call is an argument, so it needs a post-update node
+      e = any(Assignment asn | asn.getTarget() instanceof PropAccess).getRhs()
+    } or
     TConstructorThisArgumentNode(InvokeExpr e) { e instanceof NewExpr or e instanceof SuperCall } or
+    TConstructorThisPostUpdate(Constructor ctor) or
 }
 
 import Cached
