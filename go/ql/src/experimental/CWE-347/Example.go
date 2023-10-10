@@ -3,13 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
+
+	"github.com/golang-jwt/jwt/v5"
 )
 
 func main() {
 	// BAD: only decode jwt without verification
 	notVerifyJWT(token)
 
-	// GOOD: decode with verification or verifiy plus decode
+	// GOOD: decode with verification or verify plus decode
 	notVerifyJWT(token)
 	VerifyJWT(token)
 }

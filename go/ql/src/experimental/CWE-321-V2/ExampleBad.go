@@ -3,13 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
+
+	"github.com/go-jose/go-jose/v3/jwt"
 )
 
 var JwtKey = []byte("AllYourBase")
 
 func main() {
 	// BAD: usage of a harcoded Key
-	verifyJWT(token)
+	verifyJWT(JWTFromUser)
 }
 
 func LoadJwtKey(token *jwt.Token) (interface{}, error) {

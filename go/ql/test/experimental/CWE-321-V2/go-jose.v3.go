@@ -4,14 +4,15 @@ package jwt
 
 import (
 	"fmt"
-	"github.com/go-jose/go-jose/v3/jwt"
 	"net/http"
+
+	"github.com/go-jose/go-jose/v3/jwt"
 )
 
+// NOT OK
 var JwtKey = []byte("AllYourBase")
 
 func main2(r *http.Request) {
-	// NOT OK
 	signedToken := r.URL.Query().Get("signedToken")
 	verifyJWT(signedToken)
 }

@@ -208,7 +208,7 @@ class GoJoseUnsafeClaims extends JwtUnverifiedParse {
 }
 
 /**
- * Holds for general additioanl steps related to parsing the secret keys in `golang-jwt/jwt`,`dgrijalva/jwt-go` packages
+ * Holds for general additional steps related to parsing the secret keys in `golang-jwt/jwt`,`dgrijalva/jwt-go` packages
  */
 predicate golangJwtIsAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(Function f, DataFlow::CallNode call |

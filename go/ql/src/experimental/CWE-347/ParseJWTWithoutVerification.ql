@@ -16,8 +16,8 @@ module WithValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    sink = any(JwtParse parseUnverified).getTokenArg() or
-    sink = any(JwtParseWithKeyFunction parseUnverified).getTokenArg()
+    sink = any(JwtParse jwtParse).getTokenArg() or
+    sink = any(JwtParseWithKeyFunction jwtParseWithKeyFunction).getTokenArg()
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -52,4 +52,5 @@ import NoValidation::PathGraph
 
 from NoValidation::PathNode source, NoValidation::PathNode sink
 where NoValidation::flowPath(source, sink)
-select sink.getNode(), source, sink, "This  $@.", source.getNode(), "decode"
+select sink.getNode(), source, sink, "This JWT is parsed without verification and received from $@.",
+  source.getNode(), "this user-controlled source"
