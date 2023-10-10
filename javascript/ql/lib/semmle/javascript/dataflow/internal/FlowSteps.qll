@@ -31,6 +31,20 @@ predicate returnExpr(Function f, DataFlow::Node source, DataFlow::Node sink) {
 }
 
 /**
+ * A step from a post-update node to the local sources of the corresponding pre-update node.
+ *
+ * This ensures that `getPostUpdateNode()` can be used in place of `getALocalSource()` when generating
+ * store steps, and the resulting step will work in both data flow analyses.
+ */
+pragma[nomagic]
+private predicate legacyPostUpdateStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(DataFlow::Node node |
+    pred = node.getPostUpdateNode() and
+    succ = node.getALocalSource()
+  )
+}
+
+/**
  * Holds if data can flow in one step from `pred` to `succ`,  taking
  * additional steps from the configuration into account.
  */
@@ -40,6 +54,8 @@ predicate localFlowStep(
   FlowLabel predlbl, FlowLabel succlbl
 ) {
   pred = succ.getAPredecessor() and predlbl = succlbl
+  or
+  legacyPostUpdateStep(pred, succ) and predlbl = succlbl
   or
   DataFlow::LegacyFlowStep::step(pred, succ) and predlbl = succlbl
   or
