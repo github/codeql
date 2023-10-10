@@ -28,27 +28,6 @@ type bindMe struct {
 	c subBindMe
 }
 
-// BAD: using user-provided data as paths in file-system operations
-func fsOpsV2Test(ctx *Beegov2Context.Context, c *beegov2.Controller) {
-	input := ctx.Input
-	untrusted := input.Data()["someKey"].(string)
-	buffer := make([]byte, 10)
-	_ = c.SaveToFileWithBuffer("filenameExistsInForm", untrusted, buffer)
-	beegoOutput := Beegov2Context.BeegoOutput{}
-	beegoOutput.Download(untrusted, "license.txt")
-}
-
-// BAD: using user-provided data as paths in file-system operations
-func fsOpsTest(ctx *context.Context, c *beego.Controller, fs beego.FileSystem) {
-	input := ctx.Input
-	untrusted := input.Data()["someKey"].(string)
-	beego.Walk(nil, untrusted, func(path string, info os.FileInfo, err error) error { return nil })
-	fs.Open(untrusted)
-	c.SaveToFile("someReceviedFile", untrusted)
-	beegoOutput := context.BeegoOutput{}
-	beegoOutput.Download(untrusted, "license.txt")
-}
-
 // BAD: echoing untrusted data to an `http.ResponseWriter`
 func xssFromBind(input *context.BeegoInput, sink http.ResponseWriter) {
 	var bound bindMe
@@ -230,6 +209,15 @@ func sanitizersTest(ctx *context.Context) {
 	output.Body([]byte(s.field))
 }
 
+// BAD: using user-provided data as paths in file-system operations
+func fsOpsTest(ctx *context.Context, c *beego.Controller, fs beego.FileSystem) {
+	input := ctx.Input
+	untrusted := input.Data()["someKey"].(string)
+	beego.Walk(nil, untrusted, func(path string, info os.FileInfo, err error) error { return nil })
+	fs.Open(untrusted)
+	c.SaveToFile("someReceviedFile", untrusted)
+}
+
 // BAD: echoing untrusted data, using various Controller sources
 func controllerSourceTest(c *beego.Controller, output *context.BeegoOutput) {
 	f, fh, _ := c.GetFile("somename")
@@ -336,4 +324,22 @@ func requestBodySourceTest(ctx *context.Context, c *beego.Controller) {
 	json.Unmarshal(ctx.Input.RequestBody, &dat)
 	untrusted := dat["filepath"].(string)
 	c.SaveToFile("someReceviedFile", untrusted)
+}
+
+// BAD: using user-provided data as paths in file-system operations
+func fsOpsTest2(ctx *context.Context, c *beego.Controller, fs beego.FileSystem) {
+	input := ctx.Input
+	untrusted := input.Data()["someKey"].(string)
+	beegoOutput := context.BeegoOutput{}
+	beegoOutput.Download(untrusted, "license.txt")
+}
+
+// BAD: using user-provided data as paths in file-system operations
+func fsOpsV2Test(ctx *Beegov2Context.Context, c *beegov2.Controller) {
+	input := ctx.Input
+	untrusted := input.Data()["someKey"].(string)
+	buffer := make([]byte, 10)
+	_ = c.SaveToFileWithBuffer("filenameExistsInForm", untrusted, buffer)
+	beegoOutput := Beegov2Context.BeegoOutput{}
+	beegoOutput.Download(untrusted, "license.txt")
 }
