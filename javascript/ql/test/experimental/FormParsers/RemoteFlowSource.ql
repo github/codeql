@@ -12,6 +12,7 @@
 
 import javascript
 import DataFlow::PathGraph
+import experimental.semmle.javascript.FormParsers
 
 /**
  * A taint-tracking configuration for test

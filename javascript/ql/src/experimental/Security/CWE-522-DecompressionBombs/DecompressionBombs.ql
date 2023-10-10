@@ -12,20 +12,15 @@
  */
 
 import javascript
-import semmle.javascript.frameworks.ReadableStream
 import DataFlow::PathGraph
 import DecompressionBombs
 
 class BombConfiguration extends TaintTracking::Configuration {
   BombConfiguration() { this = "DecompressionBombs" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource 
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof DecompressionBomb::Sink
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionBomb::Sink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DecompressionBomb::AdditionalTaintStep addstep |
