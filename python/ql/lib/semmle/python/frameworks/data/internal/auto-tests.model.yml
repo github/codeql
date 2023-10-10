@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - tests
+    - Member[integration].Member[crud].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - tests
+    - Member[integration].Member[multiple_protocol_gateway].Member[gateway].Member[multiprotocol_gateway].Member[DummyResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - tests
+    - Member[integration].Member[runtimes].Member[test_runtimes].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - tests
+    - Member[integration].Member[stateful].Member[stateful_no_snapshot_exec].Member[executor].Member[TextDocWithId]
+  - - pydantic.BaseModel~Subclass
+    - tests
+    - Member[integration].Member[stateful].Member[stateful_no_snapshot_exec].Member[executor].Member[TextDoc]
+  - - pydantic.BaseModel~Subclass
+    - tests
+    - Member[integration].Member[stateful].Member[stateful_snapshot_exec].Member[executor].Member[TextDocWithId]
+  - - pydantic.BaseModel~Subclass
+    - tests
+    - Member[integration].Member[stateful].Member[stateful_snapshot_exec].Member[executor].Member[TextDoc]
+  - - pydantic.BaseModel~Subclass
+    - tests
+    - Member[k8s].Member[test_k8s_flow].Member[Document]

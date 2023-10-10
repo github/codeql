@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - weasyprint
+    - Member[draw].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - weasyprint
+    - Member[images].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - weasyprint
+    - Member[text].Member[fonts].Member[BytesIO]

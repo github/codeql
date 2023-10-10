@@ -189,6 +189,9 @@ extensions:
     - Member[admin].Member[views].Member[generic].Member[UnpublishView]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[generic].Member[UsageView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[generic].Member[base].Member[BaseOperationView]
   - - Django.Views.View~Subclass
     - wagtail
@@ -283,6 +286,12 @@ extensions:
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[generic].Member[preview].Member[View]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[usage].Member[IndexView]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[usage].Member[UsageView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[generic].Member[workflow].Member[BaseWorkflowFormView]
@@ -412,6 +421,9 @@ extensions:
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[unpublish].Member[Unpublish]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[usage].Member[UsageView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[workflow].Member[BaseWorkflowFormView]
@@ -687,7 +699,13 @@ extensions:
     - Member[snippets].Member[views].Member[snippets].Member[ModelIndexView]
   - - Django.Views.View~Subclass
     - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[PreviewOnCreateView]
+  - - Django.Views.View~Subclass
+    - wagtail
     - Member[snippets].Member[views].Member[snippets].Member[PreviewOnCreate]
+  - - Django.Views.View~Subclass
+    - wagtail
+    - Member[snippets].Member[views].Member[snippets].Member[PreviewOnEditView]
   - - Django.Views.View~Subclass
     - wagtail
     - Member[snippets].Member[views].Member[snippets].Member[PreviewOnEdit]
@@ -888,6 +906,9 @@ extensions:
     - Member[admin].Member[navigation].Member[Page]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[admin].Member[panels].Member[DraftStateMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[admin].Member[panels].Member[Page]
   - - Django.db.models.Model~Subclass
     - wagtail
@@ -934,6 +955,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[admin].Member[ui].Member[side_panels].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[admin].Member[ui].Member[side_panels].Member[ReferenceIndex]
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[admin].Member[views].Member[account].Member[UserProfile]
@@ -1005,10 +1029,19 @@ extensions:
     - Member[admin].Member[views].Member[generic].Member[models].Member[ModelLogEntry]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[generic].Member[models].Member[ReferenceIndex]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[generic].Member[models].Member[RevisionMixin]
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[admin].Member[views].Member[generic].Member[preview].Member[RevisionMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[usage].Member[DraftStateMixin]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[generic].Member[usage].Member[ReferenceIndex]
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[admin].Member[views].Member[generic].Member[workflow].Member[TaskState]
@@ -1063,6 +1096,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[delete].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[pages].Member[delete].Member[ReferenceIndex]
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[admin].Member[views].Member[pages].Member[edit].Member[CommentReply]
@@ -1231,6 +1267,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[admin].Member[wagtail_hooks].Member[Workflow]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[admin].Member[widgets].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[admin].Member[widgets].Member[Tag]
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[admin].Member[widgets].Member[chooser].Member[Page]
@@ -1728,6 +1770,12 @@ extensions:
     - Member[models]Member[Workflow]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[permission_policies].Member[ContentType]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[permission_policies].Member[Permission]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[permission_policies].Member[base].Member[ContentType]
   - - Django.db.models.Model~Subclass
     - wagtail
@@ -1866,6 +1914,12 @@ extensions:
     - Member[templatetags].Member[wagtailcore_tags].Member[Site]
   - - Django.db.models.Model~Subclass
     - wagtail
+    - Member[test].Member[utils].Member[AbstractBaseUser]
+  - - Django.db.models.Model~Subclass
+    - wagtail
+    - Member[test].Member[utils].Member[Page]
+  - - Django.db.models.Model~Subclass
+    - wagtail
     - Member[test].Member[utils].Member[page_tests].Member[AbstractBaseUser]
   - - Django.db.models.Model~Subclass
     - wagtail
@@ -1903,6 +1957,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - wagtail
     - Member[workflows].Member[Task]
+  - - django.db.models.FileField~Subclass
+    - wagtail
+    - Member[images].Member[models].Member[WagtailImageField]
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[WagtailAdminModelForm]
@@ -1921,6 +1978,9 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[account].Member[NotificationPreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
+    - Member[admin].Member[forms].Member[account].Member[ThemePreferencesForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[admin].Member[forms].Member[auth].Member[AuthenticationForm]
@@ -2070,6 +2130,9 @@ extensions:
     - Member[admin].Member[views].Member[account].Member[PasswordResetForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
+    - Member[admin].Member[views].Member[account].Member[ThemePreferencesForm]
+  - - django.forms.BaseForm~Subclass
+    - wagtail
     - Member[admin].Member[views].Member[chooser].Member[AnchorLinkChooserForm]
   - - django.forms.BaseForm~Subclass
     - wagtail
@@ -2194,6 +2257,12 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - wagtail
     - Member[views].Member[PasswordViewRestrictionForm]
+  - - django.http.request.HttpRequest~Subclass
+    - wagtail
+    - Member[coreutils].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - wagtail
+    - Member[models].Member[WSGIRequest]
   - - django.http.response.FileResponse~Subclass
     - wagtail
     - Member[admin].Member[views].Member[mixins].Member[FileResponse]
@@ -2353,3 +2422,45 @@ extensions:
   - - django.http.response.StreamingHttpResponse~Subclass
     - wagtail
     - Member[utils].Member[sendfile_streaming_backend].Member[StreamingHttpResponse]
+  - - io.StringIO~Subclass
+    - wagtail
+    - Member[admin].Member[views].Member[mixins].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - wagtail
+    - Member[models].Member[StringIO]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[convert_alias].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[copy].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[copy_for_translation].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[create_alias].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[delete].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[move].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[publish].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[revert_to_page_revision].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[actions].Member[unpublish].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[admin].Member[api].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[api].Member[v2].Member[pagination].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - wagtail
+    - Member[api].Member[v2].Member[views].Member[Response]

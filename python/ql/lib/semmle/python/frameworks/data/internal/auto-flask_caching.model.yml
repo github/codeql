@@ -4,9 +4,15 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - flask_caching
+    - Member[Flask]
   - - flask.Response~Subclass
     - flask_caching
     - Member[CachedResponse]
   - - flask.Response~Subclass
     - flask_caching
     - Member[Response]
+  - - markupsafe.Markup~Subclass
+    - flask_caching
+    - Member[Markup]

@@ -4,9 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - django.http.request.HttpRequest~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[django].Member[WSGIRequest]
   - - django.http.response.HttpResponse~Subclass
     - sentry_sdk
     - Member[integrations].Member[django].Member[HttpResponse]
   - - django.http.response.HttpResponse~Subclass
     - sentry_sdk
     - Member[integrations].Member[django].Member[asgi].Member[HttpResponse]
+  - - flask.Flask~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[flask].Member[Flask]
+  - - markupsafe.Markup~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[flask].Member[Markup]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sentry_sdk
+    - Member[integrations].Member[sqlalchemy].Member[Engine]

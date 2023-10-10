@@ -19,3 +19,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - reversion
     - Member[models].Member[Version]
+  - - django.db.models.expressions.RawSQL~Subclass
+    - reversion
+    - Member[models].Member[RawSQL]
+  - - django.db.models.expressions.RawSQL~Subclass
+    - reversion
+    - Member[models].Member[SubquerySQL]

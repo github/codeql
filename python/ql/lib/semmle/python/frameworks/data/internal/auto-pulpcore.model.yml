@@ -1104,6 +1104,9 @@ extensions:
     - Member[app].Member[tasks].Member[base].Member[PulpTemporaryFile]
   - - Django.db.models.Model~Subclass
     - pulpcore
+    - Member[app].Member[tasks].Member[export].Member[Artifact]
+  - - Django.db.models.Model~Subclass
+    - pulpcore
     - Member[app].Member[tasks].Member[export].Member[ContentArtifact]
   - - Django.db.models.Model~Subclass
     - pulpcore
@@ -1225,6 +1228,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - pulpcore
     - Member[app].Member[views].Member[status].Member[ApiAppStatus]
+  - - Django.db.models.Model~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[status].Member[Artifact]
   - - Django.db.models.Model~Subclass
     - pulpcore
     - Member[app].Member[views].Member[status].Member[ContentAppStatus]
@@ -1597,6 +1603,21 @@ extensions:
   - - Django.db.models.Model~Subclass
     - pulpcore
     - Member[tasking].Member[util].Member[Task]
+  - - django.db.models.FileField~Subclass
+    - pulpcore
+    - Member[app].Member[models].Member[fields].Member[ArtifactFileField]
+  - - django.db.models.FileField~Subclass
+    - pulpcore
+    - Member[app].Member[models].Member[fields].Member[FileField]
+  - - django.db.models.expressions.RawSQL~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[base].Member[RawSQL]
+  - - django.http.request.HttpRequest~Subclass
+    - pulpcore
+    - Member[content].Member[authentication].Member[HttpRequest]
+  - - django.http.response.FileResponse~Subclass
+    - pulpcore
+    - Member[cache].Member[cache].Member[ApiFileResponse]
   - - django.http.response.FileResponse~Subclass
     - pulpcore
     - Member[cache].Member[cache].Member[FileResponse]
@@ -1682,5 +1703,92 @@ extensions:
     - pulpcore
     - Member[plugin].Member[viewsets].Member[TaskGroupOperationResponse]
   - - django.http.response.HttpResponse~Subclass
+    - pulpcore
+    - Member[plugin].Member[viewsets].Member[content].Member[OperationPostponedResponse]
+  - - io.StringIO~Subclass
+    - pulpcore
+    - Member[app].Member[tasks].Member[importer].Member[StringIO]
+  - - rest_framework.request.Request~Subclass
+    - pulpcore
+    - Member[cache].Member[cache].Member[ApiRequest]
+  - - rest_framework.request.Request~Subclass
+    - pulpcore
+    - Member[cache].Member[cache].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[response].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[response].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[response].Member[TaskGroupOperationResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[importer].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[orphans].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[repair].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[views].Member[status].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[access_policy].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[acs].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[base].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[base].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[content].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[exporter].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[importer].Member[TaskGroupOperationResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[orphans].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[reclaim].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[replica].Member[TaskGroupOperationResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[repository].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[task].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[task].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[upload].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[upload].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[app].Member[viewsets].Member[user].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[plugin].Member[viewsets].Member[OperationPostponedResponse]
+  - - rest_framework.response.Response~Subclass
+    - pulpcore
+    - Member[plugin].Member[viewsets].Member[TaskGroupOperationResponse]
+  - - rest_framework.response.Response~Subclass
     - pulpcore
     - Member[plugin].Member[viewsets].Member[content].Member[OperationPostponedResponse]

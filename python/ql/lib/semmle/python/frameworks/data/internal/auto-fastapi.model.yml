@@ -1,0 +1,264 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - fastapi
+    - Member[testclient].Member[TestClient]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[dependencies].Member[models].Member[SecurityBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[dependencies].Member[utils].Member[OAuth2]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[dependencies].Member[utils].Member[OpenIdConnect]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[dependencies].Member[utils].Member[SecurityBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[APIKey]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Components]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Contact]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Discriminator]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Encoding]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[ExternalDocumentation]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[HTTPBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[HTTPBearer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Header]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Info]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[License]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Link]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[MediaType]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OAuth2]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OAuthFlowAuthorizationCode]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OAuthFlowClientCredentials]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OAuthFlowImplicit]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OAuthFlowPassword]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OAuthFlow]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OpenAPI]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[OpenIdConnect]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Operation]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[ParameterBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Parameter]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[PathItem]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Reference]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[RequestBody]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Response]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Schema]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[SecurityBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[ServerVariable]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Server]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[Tag]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[models].Member[XML]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[openapi].Member[utils].Member[OpenAPI]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[APIKeyCookie]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[APIKeyHeader]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[APIKeyQuery]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[HTTPAuthorizationCredentials]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[HTTPBasicCredentials]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[HTTPBasic]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[HTTPBearer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[HTTPDigest]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[OAuth2AuthorizationCodeBearer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[OAuth2PasswordBearer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[OAuth2]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[OpenIdConnect]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[api_key].Member[APIKeyBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[api_key].Member[APIKeyCookie]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[api_key].Member[APIKeyHeader]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[api_key].Member[APIKeyQuery]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[api_key].Member[APIKey]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[api_key].Member[SecurityBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[base].Member[SecurityBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[base].Member[SecurityBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[HTTPAuthorizationCredentials]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[HTTPBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[HTTPBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[HTTPBasicCredentials]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[HTTPBasic]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[HTTPBearerModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[HTTPBearer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[HTTPDigest]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[http].Member[SecurityBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[oauth2].Member[OAuth2AuthorizationCodeBearer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[oauth2].Member[OAuth2Model]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[oauth2].Member[OAuth2PasswordBearer]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[oauth2].Member[OAuth2]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[oauth2].Member[OAuthFlowsModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[oauth2].Member[OAuthFlows]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[oauth2].Member[SecurityBase]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[open_id_connect_url].Member[OpenIdConnectModel]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[open_id_connect_url].Member[OpenIdConnect]
+  - - pydantic.BaseModel~Subclass
+    - fastapi
+    - Member[security].Member[open_id_connect_url].Member[SecurityBase]
+  - - starlette.websockets.WebSocket~Subclass
+    - fastapi
+    - Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - fastapi
+    - Member[dependencies].Member[utils].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - fastapi
+    - Member[exception_handlers].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - fastapi
+    - Member[routing].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - fastapi
+    - Member[websockets].Member[WebSocket]

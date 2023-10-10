@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - tika_client
+    - Member[_resource_recursive].Member[Client]
+  - - httpx.Client~Subclass
+    - tika_client
+    - Member[_resource_tika].Member[Client]
+  - - httpx.Client~Subclass
+    - tika_client
+    - Member[_utils].Member[Client]
+  - - httpx.Client~Subclass
+    - tika_client
+    - Member[client].Member[Client]

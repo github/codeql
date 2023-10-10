@@ -1,0 +1,258 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_admin_api].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_base_api].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_admin_api].Member[SyncClient]
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_base_api].Member[SyncClient]
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[SyncClient]
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[http_clients].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[http_clients].Member[Client]
+  - - httpx.Client~Subclass
+    - gotrue
+    - Member[http_clients].Member[SyncClient]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[GenerateLinkResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_admin_api].Member[AuthMFAAdminDeleteFactorResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_admin_api].Member[AuthMFAAdminListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_admin_api].Member[GenerateLinkResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_admin_api].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_admin_api].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_admin_mfa_api].Member[AuthMFAAdminDeleteFactorResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_admin_mfa_api].Member[AuthMFAAdminListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[AuthMFAChallengeResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[AuthMFAEnrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[AuthMFAGetAuthenticatorAssuranceLevelResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[AuthMFAListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[AuthMFAUnenrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[AuthMFAVerifyResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[AuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[OAuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[Session]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[Subscription]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_client].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_mfa_api].Member[AuthMFAChallengeResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_mfa_api].Member[AuthMFAEnrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_mfa_api].Member[AuthMFAGetAuthenticatorAssuranceLevelResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_mfa_api].Member[AuthMFAListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_mfa_api].Member[AuthMFAUnenrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_async].Member[gotrue_mfa_api].Member[AuthMFAVerifyResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_admin_api].Member[AuthMFAAdminDeleteFactorResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_admin_api].Member[AuthMFAAdminListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_admin_api].Member[GenerateLinkResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_admin_api].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_admin_api].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_admin_mfa_api].Member[AuthMFAAdminDeleteFactorResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_admin_mfa_api].Member[AuthMFAAdminListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[AuthMFAChallengeResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[AuthMFAEnrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[AuthMFAGetAuthenticatorAssuranceLevelResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[AuthMFAListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[AuthMFAUnenrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[AuthMFAVerifyResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[AuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[OAuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[Session]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[Subscription]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_client].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_mfa_api].Member[AuthMFAChallengeResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_mfa_api].Member[AuthMFAEnrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_mfa_api].Member[AuthMFAGetAuthenticatorAssuranceLevelResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_mfa_api].Member[AuthMFAListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_mfa_api].Member[AuthMFAUnenrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[_sync].Member[gotrue_mfa_api].Member[AuthMFAVerifyResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[helpers].Member[AuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[helpers].Member[GenerateLinkProperties]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[helpers].Member[GenerateLinkResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[helpers].Member[Session]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[helpers].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[helpers].Member[User]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AMREntry]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAAdminDeleteFactorResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAAdminListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAChallengeResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAEnrollResponseTotp]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAEnrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAGetAuthenticatorAssuranceLevelResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAListFactorsResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAUnenrollResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthMFAVerifyResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[AuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[Factor]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[GenerateLinkProperties]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[GenerateLinkResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[OAuthResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[Session]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[Subscription]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[UserIdentity]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[UserResponse]
+  - - pydantic.BaseModel~Subclass
+    - gotrue
+    - Member[types].Member[User]

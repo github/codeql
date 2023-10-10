@@ -7,3 +7,6 @@ extensions:
   - - http.client.HTTPResponse~Subclass
     - requests
     - Member[adapters].Member[HTTPResponse]
+  - - io.StringIO~Subclass
+    - requests
+    - Member[compat].Member[StringIO]

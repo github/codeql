@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - openpyxl
+    - Member[drawing].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - openpyxl
+    - Member[reader].Member[drawings].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - openpyxl
+    - Member[reader].Member[excel].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - openpyxl
+    - Member[worksheet].Member[_writer].Member[BytesIO]

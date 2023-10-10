@@ -1,0 +1,54 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - jinja2
+    - Member[_compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - jinja2
+    - Member[_compat].Member[NativeStringIO]
+  - - io.StringIO~Subclass
+    - jinja2
+    - Member[_compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - jinja2
+    - Member[bccache].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - jinja2
+    - Member[compiler].Member[NativeStringIO]
+  - - io.StringIO~Subclass
+    - jinja2
+    - Member[compiler].Member[StringIO]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[asyncsupport].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[compiler].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[environment].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[ext].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[filters].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[nodes].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[runtime].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[sandbox].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - jinja2
+    - Member[utils].Member[Markup]

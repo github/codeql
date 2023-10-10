@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - multidict.MultiDictProxy~Subclass
+    - aiohttp
+    - Member[typedefs].Member[CIMultiDictProxy]
+  - - multidict.MultiDictProxy~Subclass
+    - aiohttp
+    - Member[typedefs].Member[MultiDictProxy]
+  - - multidict.MultiDictProxy~Subclass
+    - aiohttp
+    - Member[typedefs].Member[_MultiDictProxy]

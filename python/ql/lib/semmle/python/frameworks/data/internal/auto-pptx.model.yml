@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pptx
+    - Member[chart].Member[xlsx].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pptx
+    - Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pptx
+    - Member[compat].Member[python3].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pptx
+    - Member[parts].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pptx
+    - Member[shapes].Member[shapetree].Member[BytesIO]

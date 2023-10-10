@@ -162,6 +162,33 @@ extensions:
     - Member[basket].Member[models].Member[Product]
   - - Django.db.models.Model~Subclass
     - ledger
+    - Member[catalogue].Member[models].Member[AbstractAttributeOptionGroup]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[AbstractAttributeOption]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[AbstractCategory]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[AbstractOption]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[AbstractProductAttributeValue]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[AbstractProductAttribute]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[AbstractProductCategory]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[AbstractProductClass]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[catalogue].Member[models].Member[AbstractProductImage]
+  - - Django.db.models.Model~Subclass
+    - ledger
     - Member[catalogue].Member[models].Member[AbstractProductRecommendation]
   - - Django.db.models.Model~Subclass
     - ledger
@@ -267,10 +294,37 @@ extensions:
     - Member[licence].Member[models].Member[RevisionedMixin]
   - - Django.db.models.Model~Subclass
     - ledger
+    - Member[order].Member[models].Member[AbstractCommunicationEvent]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[AbstractLineAttribute]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[AbstractLinePrice]
+  - - Django.db.models.Model~Subclass
+    - ledger
     - Member[order].Member[models].Member[AbstractLine]
   - - Django.db.models.Model~Subclass
     - ledger
+    - Member[order].Member[models].Member[AbstractOrderDiscount]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[AbstractOrderNote]
+  - - Django.db.models.Model~Subclass
+    - ledger
     - Member[order].Member[models].Member[AbstractOrder]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[AbstractPaymentEventType]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[AbstractPaymentEvent]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[AbstractShippingEventType]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[AbstractShippingEvent]
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[order].Member[models].Member[BillingAddress]
@@ -310,6 +364,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[order].Member[models].Member[ShippingAddress]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[order].Member[models].Member[ShippingEventQuantity]
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[order].Member[models].Member[ShippingEventType]
@@ -358,6 +415,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[payments].Member[bpay].Member[facade].Member[BpayTransaction]
+  - - Django.db.models.Model~Subclass
+    - ledger
+    - Member[payments].Member[bpay].Member[facade].Member[Order]
   - - Django.db.models.Model~Subclass
     - ledger
     - Member[payments].Member[bpay].Member[models].Member[BillerCodeRecipient]
@@ -619,3 +679,9 @@ extensions:
   - - django.http.response.JsonResponse~Subclass
     - ledger
     - Member[checkout].Member[views].Member[JsonResponse]
+  - - io.StringIO~Subclass
+    - ledger
+    - Member[payments].Member[bpay].Member[facade].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ledger
+    - Member[payments].Member[utils].Member[StringIO]

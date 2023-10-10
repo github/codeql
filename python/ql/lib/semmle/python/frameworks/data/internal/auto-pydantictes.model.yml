@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[api].Member[TesCancelTaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[api].Member[TesCreateTaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[api].Member[TesListTasksResponse]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[api].Member[TesServiceInfo]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[api].Member[TesTask]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[Organization]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[ServiceType]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[Service]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesCancelTaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesCreateTaskResponse]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesExecutorLog]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesExecutor]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesInput]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesListTasksResponse]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesOutputFileLog]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesOutput]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesResources]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesServiceInfo]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesServiceType]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesTaskLog]
+  - - pydantic.BaseModel~Subclass
+    - pydantictes
+    - Member[models].Member[TesTask]

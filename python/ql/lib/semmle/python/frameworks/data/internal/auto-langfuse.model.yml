@@ -1,0 +1,651 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[CreateDatasetItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[CreateDatasetRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[CreateDatasetRunItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[CreateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[CreateScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[CreateTraceRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[DatasetRunItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[DatasetRun]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[Generations]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[Score]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[Scores]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[TraceWithDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[TraceWithFullDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[Trace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[Traces]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[UpdateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[UpdateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[CreateDatasetItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[CreateDatasetRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[CreateDatasetRunItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[CreateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[CreateScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[CreateTraceRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[DatasetRunItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[DatasetRun]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[Generations]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[Score]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[Scores]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[TraceWithDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[TraceWithFullDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[Trace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[Traces]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[UpdateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[UpdateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[CreateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[DatasetRunItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[DatasetRun]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[Score]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[TraceWithDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[TraceWithFullDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[Trace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[CreateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[DatasetRunItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[DatasetRun]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[Score]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[TraceWithDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[TraceWithFullDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[Trace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[create_event_request].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[create_generation_request].Member[CreateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[create_generation_request].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[create_generation_request].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[create_span_request].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[create_span_request].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[dataset].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[dataset].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[dataset_item].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[dataset_run].Member[DatasetRunItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[dataset_run].Member[DatasetRun]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[dataset_run_item].Member[DatasetRunItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[llm_usage].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[observation].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[score].Member[Score]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[trace].Member[Trace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[trace_with_details].Member[TraceWithDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[trace_with_details].Member[Trace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[trace_with_full_details].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[trace_with_full_details].Member[Score]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[trace_with_full_details].Member[TraceWithFullDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[commons].Member[types].Member[trace_with_full_details].Member[Trace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_items].Member[CreateDatasetItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_items].Member[client].Member[CreateDatasetItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_items].Member[client].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_items].Member[types].Member[CreateDatasetItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_items].Member[types].Member[create_dataset_item_request].Member[CreateDatasetItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_run_items].Member[CreateDatasetRunItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_run_items].Member[client].Member[CreateDatasetRunItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_run_items].Member[client].Member[DatasetRunItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_run_items].Member[types].Member[CreateDatasetRunItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[dataset_run_items].Member[types].Member[create_dataset_run_item_request].Member[CreateDatasetRunItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[datasets].Member[CreateDatasetRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[datasets].Member[client].Member[CreateDatasetRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[datasets].Member[client].Member[DatasetRun]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[datasets].Member[client].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[datasets].Member[types].Member[CreateDatasetRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[datasets].Member[types].Member[create_dataset_request].Member[CreateDatasetRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[event].Member[client].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[event].Member[client].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[Generations]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[UpdateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[client].Member[CreateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[client].Member[Generations]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[client].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[client].Member[UpdateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[types].Member[Generations]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[types].Member[UpdateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[types].Member[generations].Member[Generations]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[types].Member[generations].Member[MetaResponse]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[types].Member[generations].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[types].Member[update_generation_request].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[generations].Member[types].Member[update_generation_request].Member[UpdateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[observations].Member[client].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[CreateScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[Scores]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[client].Member[CreateScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[client].Member[Score]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[client].Member[Scores]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[types].Member[CreateScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[types].Member[Scores]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[types].Member[create_score_request].Member[CreateScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[types].Member[scores].Member[MetaResponse]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[types].Member[scores].Member[Score]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[score].Member[types].Member[scores].Member[Scores]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[span].Member[UpdateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[span].Member[client].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[span].Member[client].Member[Observation]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[span].Member[client].Member[UpdateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[span].Member[types].Member[UpdateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[span].Member[types].Member[update_span_request].Member[UpdateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[CreateTraceRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[Traces]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[client].Member[CreateTraceRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[client].Member[TraceWithFullDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[client].Member[Trace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[client].Member[Traces]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[types].Member[CreateTraceRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[types].Member[Traces]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[types].Member[create_trace_request].Member[CreateTraceRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[types].Member[traces].Member[MetaResponse]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[types].Member[traces].Member[TraceWithDetails]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[trace].Member[types].Member[traces].Member[Traces]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[utils].Member[MetaResponse]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[utils].Member[resources].Member[MetaResponse]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[utils].Member[resources].Member[pagination].Member[MetaResponse]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[utils].Member[resources].Member[pagination].Member[types].Member[MetaResponse]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[api].Member[resources].Member[utils].Member[resources].Member[pagination].Member[types].Member[meta_response].Member[MetaResponse]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[callback].Member[CreateGeneration]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[callback].Member[CreateSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[callback].Member[CreateTrace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[callback].Member[InitialSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[callback].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[callback].Member[UpdateGeneration]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[callback].Member[UpdateSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateDatasetItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateDatasetRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateDatasetRunItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateEvent]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateGeneration]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateScore]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateTraceRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[CreateTrace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[DatasetRun]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[InitialGeneration]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[InitialScore]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[InitialSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[UpdateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[UpdateGeneration]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[UpdateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[client].Member[UpdateSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateDatasetItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateDatasetRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateDatasetRunItemRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateEventRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateEvent]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateGeneration]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateScoreRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateScore]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateTraceRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[CreateTrace]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[DatasetItem]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[DatasetRun]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[InitialGeneration]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[InitialScore]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[InitialSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[LlmUsage]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[UpdateGenerationRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[UpdateGeneration]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[UpdateSpanRequest]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[UpdateSpan]
+  - - pydantic.BaseModel~Subclass
+    - langfuse
+    - Member[model].Member[Usage]

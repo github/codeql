@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pikepdf
+    - Member[models].Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pikepdf
+    - Member[models].Member[metadata].Member[BytesIO]

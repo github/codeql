@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pulsar
+    - Member[client].Member[server_interface].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - pulsar
+    - Member[client].Member[client].Member[TesExecutor]
+  - - pydantic.BaseModel~Subclass
+    - pulsar
+    - Member[client].Member[client].Member[TesTask]
+  - - pydantic.BaseModel~Subclass
+    - pulsar
+    - Member[managers].Member[util].Member[tes].Member[TesExecutor]
+  - - pydantic.BaseModel~Subclass
+    - pulsar
+    - Member[managers].Member[util].Member[tes].Member[TesResources]
+  - - pydantic.BaseModel~Subclass
+    - pulsar
+    - Member[managers].Member[util].Member[tes].Member[TesTask]

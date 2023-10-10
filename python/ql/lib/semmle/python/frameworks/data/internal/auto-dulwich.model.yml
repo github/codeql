@@ -10,6 +10,36 @@ extensions:
   - - http.server.BaseHTTPRequestHandler~Subclass
     - dulwich
     - Member[web].Member[WSGIRequestHandler]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[archive].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[diff_tree].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[object_store].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[objects].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[pack].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[porcelain].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[protocol].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[repo].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - dulwich
+    - Member[web].Member[BytesIO]
   - - wsgiref.simple_server.WSGIServer~Subclass
     - dulwich
     - Member[web].Member[WSGIServerLogger]

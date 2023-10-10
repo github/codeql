@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - boto
+    - Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[gs].Member[key].Member[StringIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[handler].Member[StringIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[pyami].Member[config].Member[StringIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[s3].Member[bucket].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[s3].Member[bucket].Member[StringIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[s3].Member[key].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[sqs].Member[message].Member[StringIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[vendored].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - boto
+    - Member[vendored].Member[six].Member[StringIO]

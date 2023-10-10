@@ -10,3 +10,27 @@ extensions:
   - - http.server.BaseHTTPRequestHandler~Subclass
     - werkzeug
     - Member[serving].Member[WSGIRequestHandler]
+  - - io.StringIO~Subclass
+    - werkzeug
+    - Member[datastructures].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - werkzeug
+    - Member[datastructures].Member[file_storage].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - werkzeug
+    - Member[debug].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - werkzeug
+    - Member[formparser].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - werkzeug
+    - Member[middleware].Member[shared_data].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - werkzeug
+    - Member[test].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - werkzeug
+    - Member[wrappers].Member[request].Member[BytesIO]
+  - - markupsafe.Markup~Subclass
+    - werkzeug
+    - Member[exceptions].Member[Markup]

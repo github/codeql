@@ -4,15 +4,45 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.client.HTTPConnection~Subclass
+    - azure
+    - Member[core].Member[utils].Member[_pipeline_transport_rest_shared].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - azure
+    - Member[core].Member[utils].Member[_pipeline_transport_rest_shared].Member[_HTTPSerializer]
   - - http.client.HTTPResponse~Subclass
     - azure
     - Member[core].Member[pipeline].Member[transport].Member[_base].Member[HTTPResponse]
   - - http.client.HTTPResponse~Subclass
     - azure
+    - Member[core].Member[pipeline].Member[transport].Member[_base].Member[_HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - azure
     - Member[core].Member[rest].Member[_http_response_impl].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - azure
+    - Member[core].Member[rest].Member[_http_response_impl].Member[_HTTPResponse]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - azure
     - Member[identity].Member[_internal].Member[auth_code_redirect_handler].Member[AuthCodeRedirectHandler]
   - - http.server.BaseHTTPRequestHandler~Subclass
     - azure
     - Member[identity].Member[_internal].Member[auth_code_redirect_handler].Member[BaseHTTPRequestHandler]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[core].Member[utils].Member[_pipeline_transport_rest_shared].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[storage].Member[blob].Member[_blob_client].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[storage].Member[blob].Member[_download].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[storage].Member[blob].Member[_encryption].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[storage].Member[blob].Member[_quick_query_helper].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - azure
+    - Member[storage].Member[blob].Member[_shared].Member[uploads].Member[BytesIO]

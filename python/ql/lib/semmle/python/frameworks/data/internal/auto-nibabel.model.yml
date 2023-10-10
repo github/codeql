@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - nibabel
+    - Member[cifti2].Member[parse_cifti2].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - nibabel
+    - Member[gifti].Member[parse_gifti_fast].Member[StringIO]
+  - - io.StringIO~Subclass
+    - nibabel
+    - Member[nifti1].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - nibabel
+    - Member[parrec].Member[StringIO]
+  - - io.StringIO~Subclass
+    - nibabel
+    - Member[py3k].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - nibabel
+    - Member[py3k].Member[StringIO]
+  - - io.StringIO~Subclass
+    - nibabel
+    - Member[spm99analyze].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - nibabel
+    - Member[xmlutils].Member[BytesIO]

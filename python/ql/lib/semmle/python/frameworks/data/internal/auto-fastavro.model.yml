@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - fastavro
+    - Member[_logical_writers_py].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fastavro
+    - Member[_read_py].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fastavro
+    - Member[_schema_py].Member[StringIO]
+  - - io.StringIO~Subclass
+    - fastavro
+    - Member[_write_py].Member[BytesIO]

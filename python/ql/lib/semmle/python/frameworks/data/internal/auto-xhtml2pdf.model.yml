@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - xhtml2pdf
+    - Member[files].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - xhtml2pdf
+    - Member[xhtml2pdf_reportlab].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - xhtml2pdf
+    - Member[xhtml2pdf_reportlab].Member[StringIO]

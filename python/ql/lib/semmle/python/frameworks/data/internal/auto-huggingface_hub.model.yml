@@ -4,6 +4,48 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - aiohttp.ClientSession~Subclass
+    - huggingface_hub
+    - Member[inference].Member[_common].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - huggingface_hub
+    - Member[_commit_scheduler].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - huggingface_hub
+    - Member[_commit_scheduler].Member[PartialFileIO]
+  - - io.StringIO~Subclass
+    - huggingface_hub
+    - Member[utils].Member[_subprocess].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[ObjectId]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayloadComment]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayloadDiscussionChanges]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayloadDiscussion]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayloadEvent]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayloadMovedTo]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayloadRepo]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayloadUrl]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayloadWebhook]
+  - - pydantic.BaseModel~Subclass
+    - huggingface_hub
+    - Member[_webhooks_payload].Member[WebhookPayload]
   - - requests.models.Response~Subclass
     - huggingface_hub
     - Member[utils].Member[_errors].Member[Response]

@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[_async].Member[client].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[_async].Member[request_builder].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[_sync].Member[client].Member[SyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[_sync].Member[request_builder].Member[SyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[base_client].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[base_client].Member[SyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[base_request_builder].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[base_request_builder].Member[SyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[utils].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[utils].Member[Client]
+  - - httpx.Client~Subclass
+    - postgrest
+    - Member[utils].Member[SyncClient]
+  - - pydantic.BaseModel~Subclass
+    - postgrest
+    - Member[APIResponse]
+  - - pydantic.BaseModel~Subclass
+    - postgrest
+    - Member[_async].Member[request_builder].Member[APIResponse]
+  - - pydantic.BaseModel~Subclass
+    - postgrest
+    - Member[_sync].Member[request_builder].Member[APIResponse]
+  - - pydantic.BaseModel~Subclass
+    - postgrest
+    - Member[base_request_builder].Member[APIResponse]

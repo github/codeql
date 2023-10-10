@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - asn1crypto
+    - Member[core].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - asn1crypto
+    - Member[pem].Member[BytesIO]

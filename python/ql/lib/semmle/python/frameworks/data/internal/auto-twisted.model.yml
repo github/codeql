@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - twisted
+    - Member[persisted].Member[styles].Member[StringIO]
+  - - io.StringIO~Subclass
+    - twisted
+    - Member[persisted].Member[styles].Member[_cStringIO]
+  - - io.StringIO~Subclass
+    - twisted
+    - Member[protocols].Member[basic].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - twisted
+    - Member[python].Member[compat].Member[NativeStringIO]
+  - - io.StringIO~Subclass
+    - twisted
+    - Member[python].Member[failure].Member[StringIO]
+  - - io.StringIO~Subclass
+    - twisted
+    - Member[web].Member[_flatten].Member[BytesIO]

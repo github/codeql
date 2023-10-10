@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[core].Member[computation].Member[parsing].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[core].Member[computation].Member[scope].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[core].Member[frame].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[clipboards].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[common].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[common].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[common].Member[_BufferedWriter]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[common].Member[_BytesTarFile]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[common].Member[_BytesZipFile]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[excel].Member[_base].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[formats].Member[format].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[json].Member[_json].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[parsers].Member[python_parser].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pandas
+    - Member[io].Member[stata].Member[BytesIO]

@@ -112,6 +112,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - allauth
     - Member[socialaccount].Member[providers].Member[oauth2].Member[views].Member[SocialToken]
+  - - django.db.models.FileField~Subclass
+    - allauth
+    - Member[utils].Member[FileField]
   - - django.forms.BaseForm~Subclass
     - allauth
     - Member[account].Member[forms].Member[AddEmailForm]

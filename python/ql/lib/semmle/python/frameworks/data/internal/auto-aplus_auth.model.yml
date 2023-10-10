@@ -13,6 +13,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - aplus_auth
     - Member[auth].Member[django].Member[AbstractBaseUser]
+  - - django.http.request.HttpRequest~Subclass
+    - aplus_auth
+    - Member[auth].Member[django].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - aplus_auth
+    - Member[auth].Member[django].Member[Request]
   - - django.http.response.HttpResponseRedirect~Subclass
     - aplus_auth
     - Member[auth].Member[django].Member[HttpResponseRedirect]
@@ -22,3 +28,6 @@ extensions:
   - - requests.models.Response~Subclass
     - aplus_auth
     - Member[requests].Member[Response]
+  - - rest_framework.request.Request~Subclass
+    - aplus_auth
+    - Member[auth].Member[django].Member[Request]

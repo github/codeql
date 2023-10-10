@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.db.models.FileField~Subclass
+    - django_resized
+    - Member[ResizedImageField]
+  - - django.db.models.FileField~Subclass
+    - django_resized
+    - Member[forms].Member[ImageField]
+  - - django.db.models.FileField~Subclass
+    - django_resized
+    - Member[forms].Member[ResizedImageField]
+  - - io.StringIO~Subclass
+    - django_resized
+    - Member[forms].Member[BytesIO]

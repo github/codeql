@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - cwl_utils
+    - Member[parser].Member[cwl_v1_0].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cwl_utils
+    - Member[parser].Member[cwl_v1_1].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cwl_utils
+    - Member[parser].Member[cwl_v1_2].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cwl_utils
+    - Member[sandboxjs].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - cwl_utils
+    - Member[utils].Member[StringIO]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - django.db.models.FileField~Subclass
+    - imagekit
+    - Member[models].Member[ProcessedImageField]
+  - - django.db.models.FileField~Subclass
+    - imagekit
+    - Member[models].Member[fields].Member[ProcessedImageField]
+  - - django.db.models.FileField~Subclass
+    - imagekit
+    - Member[models].Member[fields]Member[ProcessedImageField]
+  - - io.StringIO~Subclass
+    - imagekit
+    - Member[hashers].Member[StringIO]
+  - - io.StringIO~Subclass
+    - imagekit
+    - Member[lib].Member[StringIO]
+  - - io.StringIO~Subclass
+    - imagekit
+    - Member[utils].Member[StringIO]

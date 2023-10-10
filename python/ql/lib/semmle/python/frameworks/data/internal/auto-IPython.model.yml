@@ -1,0 +1,48 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[core].Member[formatters].Member[StringIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[core].Member[inputtransformer].Member[StringIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[core].Member[magics].Member[execution].Member[StringIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[core].Member[pylabtools].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[lib].Member[latextools].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[lib].Member[pretty].Member[CUnicodeIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[terminal].Member[shortcuts].Member[auto_suggest].Member[StringIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[testing].Member[iptest].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[testing].Member[plugin].Member[ipdoctest].Member[StringIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[testing].Member[tools].Member[MyStringIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[testing].Member[tools].Member[StringIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[utils].Member[capture].Member[StringIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[utils].Member[openpy].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - IPython
+    - Member[utils].Member[tokenutil].Member[StringIO]

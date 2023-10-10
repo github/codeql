@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - hypercorn
+    - Member[app_wrappers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - hypercorn
+    - Member[protocol].Member[ws_stream].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - hypercorn
+    - Member[protocol].Member[ws_stream].Member[StringIO]

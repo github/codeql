@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - odf
+    - Member[load].Member[StringIO]
+  - - io.StringIO~Subclass
+    - odf
+    - Member[odfmanifest].Member[StringIO]
+  - - io.StringIO~Subclass
+    - odf
+    - Member[opendocument].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - odf
+    - Member[opendocument].Member[StringIO]

@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pylint
+    - Member[checkers].Member[similar].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pylint
+    - Member[config].Member[_pylint_config].Member[generate_command].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pylint
+    - Member[epylint].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pylint
+    - Member[reporters].Member[ureports].Member[base_writer].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pylint
+    - Member[utils].Member[utils].Member[BytesIO]

@@ -7,3 +7,6 @@ extensions:
   - - django.http.response.FileResponse~Subclass
     - whitenoise
     - Member[middleware].Member[WhiteNoiseFileResponse]
+  - - io.StringIO~Subclass
+    - whitenoise
+    - Member[compress].Member[BytesIO]

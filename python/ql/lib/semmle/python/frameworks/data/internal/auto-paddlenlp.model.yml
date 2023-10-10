@@ -7,3 +7,21 @@ extensions:
   - - fastapi.APIRouter~Subclass
     - paddlenlp
     - Member[server].Member[http_router].Member[router].Member[APIRouter]
+  - - io.StringIO~Subclass
+    - paddlenlp
+    - Member[transformers].Member[utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - paddlenlp
+    - Member[utils].Member[doc_parser].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - paddlenlp
+    - Member[utils].Member[ie_utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - paddlenlp
+    - Member[utils].Member[image_utils].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - paddlenlp
+    - Member[server].Member[http_router].Member[router].Member[RequestBase]
+  - - pydantic.BaseModel~Subclass
+    - paddlenlp
+    - Member[server].Member[http_router].Member[router].Member[ResponseBase]

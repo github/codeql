@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - mutagen
+    - Member[_util].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mutagen
+    - Member[_vorbis].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mutagen
+    - Member[mp3].Member[_util].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mutagen
+    - Member[mp4].Member[_as_entry].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mutagen
+    - Member[ogg].Member[BytesIO]

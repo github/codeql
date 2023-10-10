@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - flask_jwt_extended
+    - Member[internal_utils].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_jwt_extended
+    - Member[jwt_manager].Member[Flask]
   - - flask.Response~Subclass
     - flask_jwt_extended
     - Member[utils].Member[Response]

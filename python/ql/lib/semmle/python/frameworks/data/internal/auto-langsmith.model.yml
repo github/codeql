@@ -1,0 +1,96 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[EvaluationResult]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[RunTree]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[EvaluationResult]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[StringEvaluator]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[evaluator].Member[EvaluationResult]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[evaluator].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[evaluator].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[string_evaluator].Member[EvaluationResult]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[string_evaluator].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[string_evaluator].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[evaluation].Member[string_evaluator].Member[StringEvaluator]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[run_trees].Member[RunBase]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[run_trees].Member[RunTree]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[APIFeedbackSource]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[DatasetBase]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[DatasetCreate]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[Dataset]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[ExampleBase]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[ExampleCreate]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[ExampleUpdate]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[Example]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[FeedbackBase]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[FeedbackCreate]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[FeedbackSourceBase]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[Feedback]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[ModelFeedbackSource]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[RunBase]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[TracerSessionResult]
+  - - pydantic.BaseModel~Subclass
+    - langsmith
+    - Member[schemas].Member[TracerSession]

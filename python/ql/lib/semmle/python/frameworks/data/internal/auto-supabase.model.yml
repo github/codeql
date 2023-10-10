@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - supabase
+    - Member[lib].Member[auth_client].Member[Client]
+  - - httpx.Client~Subclass
+    - supabase
+    - Member[lib].Member[auth_client].Member[SyncClient]
+  - - pydantic.BaseModel~Subclass
+    - supabase
+    - Member[APIResponse]
+  - - pydantic.BaseModel~Subclass
+    - supabase
+    - Member[PostgrestAPIResponse]

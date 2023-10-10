@@ -4,6 +4,15 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - django.http.request.HttpRequest~Subclass
+    - opentelemetry
+    - Member[instrumentation].Member[django].Member[middleware].Member[otel_middleware].Member[ASGIRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - opentelemetry
+    - Member[instrumentation].Member[django].Member[middleware].Member[otel_middleware].Member[HttpRequest]
   - - django.http.response.HttpResponse~Subclass
     - opentelemetry
     - Member[instrumentation].Member[django].Member[middleware].Member[otel_middleware].Member[HttpResponse]
+  - - io.StringIO~Subclass
+    - opentelemetry
+    - Member[exporter].Member[otlp].Member[proto].Member[http].Member[metric_exporter].Member[BytesIO]

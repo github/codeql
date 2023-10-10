@@ -19,3 +19,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - silk
     - Member[models].Member[SQLQuery]
+  - - django.db.models.FileField~Subclass
+    - silk
+    - Member[models].Member[FileField]
+  - - io.StringIO~Subclass
+    - silk
+    - Member[collector].Member[StringIO]

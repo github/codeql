@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - praw
+    - Member[models].Member[reddit].Member[subreddit].Member[StringIO]
   - - requests.models.Response~Subclass
     - praw
     - Member[models].Member[reddit].Member[subreddit].Member[Response]

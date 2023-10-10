@@ -4,6 +4,18 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.client.HTTPConnection~Subclass
+    - botocore
+    - Member[awsrequest].Member[AWSHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - botocore
+    - Member[awsrequest].Member[AWSHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - botocore
+    - Member[awsrequest].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - botocore
+    - Member[awsrequest].Member[VerifiedHTTPSConnection]
   - - http.client.HTTPResponse~Subclass
     - botocore
     - Member[awsrequest].Member[AWSHTTPResponse]
@@ -13,3 +25,18 @@ extensions:
   - - http.client.HTTPResponse~Subclass
     - botocore
     - Member[compat].Member[HTTPResponse]
+  - - io.StringIO~Subclass
+    - botocore
+    - Member[crt].Member[auth].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - botocore
+    - Member[handlers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - botocore
+    - Member[vendored].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - botocore
+    - Member[vendored].Member[six].Member[StringIO]
+  - - urllib3.PoolManager~Subclass
+    - botocore
+    - Member[httpsession].Member[PoolManager]

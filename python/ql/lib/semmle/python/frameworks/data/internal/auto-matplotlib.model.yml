@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - matplotlib
+    - Member[_internal_utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - matplotlib
+    - Member[_mathtext].Member[StringIO]
+  - - io.StringIO~Subclass
+    - matplotlib
+    - Member[animation].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - matplotlib
+    - Member[backends].Member[_backend_pdf_ps].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - matplotlib
+    - Member[backends].Member[backend_pdf].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - matplotlib
+    - Member[font_manager].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - matplotlib
+    - Member[mathtext].Member[StringIO]

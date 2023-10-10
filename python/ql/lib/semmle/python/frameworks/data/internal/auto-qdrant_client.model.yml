@@ -1,0 +1,960 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - qdrant_client
+    - Member[http].Member[api_client].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - qdrant_client
+    - Member[http].Member[api_client].Member[Client]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[CollectionInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[CollectionsAliasesResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[CollectionsResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[CountResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[GroupsResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[InitFrom]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[LocksOption]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[NamedVector]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[PointVectors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[Record]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[ScoredPoint]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[SnapshotDescription]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[UpdateResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[conversions].Member[common_types].Member[VectorParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[AliasDescription]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[AppBuildTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[AppFeaturesTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[Batch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[BinaryQuantizationConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ChangeAliasesOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ClusterConfigTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ClusterStatusTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ClusterTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionClusterInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionDescription]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionParamsDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionsAliasesResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionsResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CollectionsTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ConsensusConfigTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CountRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CountResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CreateAlias]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CreateCollection]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[CreateFieldIndex]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[DeleteAlias]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[DeletePayload]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[DeleteVectors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ErrorResponseStatus]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[GeoBoundingBox]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[GeoPoint]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[GeoRadius]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[GroupsResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[GrpcTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[HnswConfigDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[HnswConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InitFrom]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20010]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20011]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20012]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20013]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20014]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20015]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20016]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20017]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse20018]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2001]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2002]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2003]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2004]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2005]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2006]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2007]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2008]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse2009]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse200]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[InlineResponse202]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[LocalShardInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[LocalShardTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[LocksOption]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[LookupLocation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[MessageSendErrors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[MoveShard]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[Nested]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[OperationDurationStatistics]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[OptimizerTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[OptimizersConfigDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[OptimizersConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[P2pConfigTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[PayloadField]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[PayloadIndexInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[PayloadIndexTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[PeerInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[PointGroup]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[PointRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[PointStruct]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[PointVectors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ProductQuantizationConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[QuantizationSearchParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RaftInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[Range]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RecommendGroupsRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RecommendRequestBatch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RecommendRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[Record]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RemoteShardInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RemoteShardTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RenameAlias]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ReplicaSetTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[Replica]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RequestsTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[RunningEnvironmentTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ScalarQuantizationConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ScoredPoint]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ScrollRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ScrollResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SearchGroupsRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SearchParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SearchRequestBatch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SearchRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SegmentConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SegmentInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SegmentTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SetPayload]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ShardSnapshotRecover]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ShardTransferInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SnapshotDescription]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[SnapshotRecover]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[TelemetryData]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[TrackerTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[UpdateCollection]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[UpdateOperations]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[UpdateResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[UpdateVectors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[ValuesCount]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[VectorDataConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[VectorDataInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[VectorIndexSearchesTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[VectorParamsDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[WalConfigDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[WalConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[WebApiTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[AbortTransferOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[AliasDescription]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[AppBuildTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[AppFeaturesTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[Batch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[BinaryQuantizationConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[BinaryQuantization]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ChangeAliasesOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ClearPayloadOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ClusterConfigTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ClusterStatusOneOf1]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ClusterStatusOneOf]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ClusterStatusTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ClusterTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionClusterInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionDescription]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionParamsDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionsAggregatedTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionsAliasesResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionsResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CollectionsTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ConsensusConfigTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ConsensusThreadStatusOneOf1]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ConsensusThreadStatusOneOf2]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ConsensusThreadStatusOneOf]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CountRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CountResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CreateAliasOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CreateAlias]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CreateCollection]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[CreateFieldIndex]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[DeleteAliasOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[DeleteAlias]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[DeleteOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[DeletePayloadOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[DeletePayload]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[DeleteVectorsOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[DeleteVectors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[DropReplicaOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ErrorResponseStatus]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ErrorResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[FieldCondition]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[FilterSelector]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[Filter]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[GeoBoundingBox]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[GeoPoint]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[GeoRadius]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[GroupsResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[GrpcTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[HasIdCondition]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[HnswConfigDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[HnswConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[IndexesOneOf1]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[IndexesOneOf]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InitFrom]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20010]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20011]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20012]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20013]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20014]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20015]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20016]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20017]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse20018]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2001]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2002]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2003]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2004]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2005]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2006]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2007]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2008]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse2009]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse200]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[InlineResponse202]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[IsEmptyCondition]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[IsNullCondition]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[LocalShardInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[LocalShardTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[LocksOption]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[LookupLocation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[MatchAny]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[MatchExcept]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[MatchText]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[MatchValue]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[MessageSendErrors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[MoveShardOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[MoveShard]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[NamedVector]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[NestedCondition]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[Nested]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[OperationDurationStatistics]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[OptimizerTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[OptimizersConfigDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[OptimizersConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[OptimizersStatusOneOf1]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[OverwritePayloadOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[P2pConfigTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PayloadField]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PayloadIndexInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PayloadIndexTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PayloadSelectorExclude]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PayloadSelectorInclude]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PayloadStorageTypeOneOf1]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PayloadStorageTypeOneOf]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PeerInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PointGroup]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PointIdsList]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PointRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PointStruct]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PointVectors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PointsBatch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[PointsList]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ProductQuantizationConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ProductQuantization]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[QuantizationSearchParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RaftInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[Range]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RecommendGroupsRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RecommendRequestBatch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RecommendRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[Record]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RemoteShardInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RemoteShardTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RenameAliasOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RenameAlias]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ReplicaSetTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[Replica]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ReplicateShardOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RequestsTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[RunningEnvironmentTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ScalarQuantizationConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ScalarQuantization]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ScoredPoint]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ScrollRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ScrollResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SearchGroupsRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SearchParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SearchRequestBatch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SearchRequest]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SegmentConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SegmentInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SegmentTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SetPayloadOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SetPayload]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ShardSnapshotRecover]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ShardTransferInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SnapshotDescription]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[SnapshotRecover]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[TelemetryData]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[TextIndexParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[TrackerStatusOneOf1]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[TrackerStatusOneOf2]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[TrackerTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[UpdateCollection]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[UpdateOperations]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[UpdateResult]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[UpdateVectorsOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[UpdateVectors]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[UpsertOperation]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[ValuesCount]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[VectorDataConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[VectorDataInfo]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[VectorIndexSearchesTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[VectorParamsDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[VectorParams]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[WalConfigDiff]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[WalConfig]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[WebApiTelemetry]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[http].Member[models].Member[models].Member[WithLookup]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[qdrant_fastembed].Member[QueryResponse]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[uploader].Member[grpc_uploader].Member[Batch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[uploader].Member[rest_uploader].Member[Batch]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[uploader].Member[rest_uploader].Member[PointStruct]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[uploader].Member[rest_uploader].Member[PointsList]
+  - - pydantic.BaseModel~Subclass
+    - qdrant_client
+    - Member[uploader].Member[uploader].Member[Record]

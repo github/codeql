@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - sqlmodel
+    - Member[SQLModel]
+  - - pydantic.BaseModel~Subclass
+    - sqlmodel
+    - Member[main].Member[SQLModel]
+  - - pydantic.BaseModel~Subclass
+    - sqlmodel
+    - Member[sql].Member[expression].Member[SQLModel]
+  - - sqlalchemy.engine.Engine~Subclass
+    - sqlmodel
+    - Member[engine].Member[create].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - sqlmodel
+    - Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - sqlmodel
+    - Member[orm].Member[session].Member[Session]

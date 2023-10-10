@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - selenium
+    - Member[webdriver].Member[firefox].Member[firefox_profile].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - selenium
+    - Member[webdriver].Member[remote].Member[webelement].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - selenium
+    - Member[webdriver].Member[remote].Member[webelement].Member[IOStream]

@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[cockroachdb].Member[PooledCockroachDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[cockroachdb].Member[_PooledPostgresqlDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[migrate].Member[CockroachDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[CSqliteExtDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[MySQLDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[PooledCSqliteExtDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[PooledMySQLDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[PooledPostgresqlDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[PooledPostgresqlExtDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[PooledSqliteDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[PooledSqliteExtDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[PostgresqlDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[PostgresqlExtDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[SqliteDatabase]
+  - - peewee.Database~Subclass
+    - playhouse
+    - Member[pool].Member[SqliteExtDatabase]

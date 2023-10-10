@@ -1,0 +1,42 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[graphics].Member[renderPDF].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[graphics].Member[renderPM].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[graphics].Member[renderPM].Member[StringIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[graphics].Member[renderSVG].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[graphics].Member[renderSVG].Member[StringIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[graphics].Member[testshapes].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[lib].Member[pdfencrypt].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[lib].Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[lib].Member[utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[lib].Member[utils].Member[_bytesIOType]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[pdfbase].Member[pdfutils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - reportlab
+    - Member[pdfbase].Member[ttfonts].Member[BytesIO]

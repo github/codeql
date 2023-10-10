@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - onnx
+    - Member[hub].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - onnx
+    - Member[reference].Member[reference_evaluator].Member[BytesIO]

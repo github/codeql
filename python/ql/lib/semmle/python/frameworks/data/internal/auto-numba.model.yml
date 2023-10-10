@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - numba
+    - Member[core].Member[annotations].Member[type_annotations].Member[StringIO]
+  - - io.StringIO~Subclass
+    - numba
+    - Member[core].Member[ir].Member[StringIO]
+  - - io.StringIO~Subclass
+    - numba
+    - Member[testing].Member[main].Member[StringIO]

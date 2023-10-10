@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - starlette
+    - Member[testclient].Member[TestClient]
+  - - starlette.websockets.WebSocket~Subclass
+    - starlette
+    - Member[_exception_handler].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - starlette
+    - Member[applications].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - starlette
+    - Member[middleware].Member[exceptions].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - starlette
+    - Member[routing].Member[WebSocket]
+  - - starlette.websockets.WebSocket~Subclass
+    - starlette
+    - Member[types].Member[WebSocket]
+  - - urllib.parse.SplitResult~Subclass
+    - starlette
+    - Member[datastructures].Member[SplitResult]

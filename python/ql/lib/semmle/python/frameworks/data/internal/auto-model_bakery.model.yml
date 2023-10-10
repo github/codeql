@@ -16,3 +16,12 @@ extensions:
   - - Django.db.models.Model~Subclass
     - model_bakery
     - Member[recipe].Member[Model]
+  - - django.db.models.FileField~Subclass
+    - model_bakery
+    - Member[baker].Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - model_bakery
+    - Member[generators].Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - model_bakery
+    - Member[generators].Member[ImageField]

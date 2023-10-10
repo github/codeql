@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[cffLib].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[misc].Member[plistlib].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[StringIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[sfnt].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[tables].Member[C_F_F_].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[tables].Member[C_F_F__2].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[tables].Member[S_V_G_].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[tables].Member[ttProgram].Member[StringIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[ttCollection].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[ttFont].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[ttFont].Member[StringIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[ttLib].Member[woff2].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[varLib].Member[cff].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - fontTools
+    - Member[varLib].Member[mutator].Member[BytesIO]

@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - Django.Forms.Field~Subclass
+    - django_summernote
+    - Member[forms].Member[FIELD]
   - - Django.Views.View~Subclass
     - django_summernote
     - Member[urls].Member[SummernoteEditor]

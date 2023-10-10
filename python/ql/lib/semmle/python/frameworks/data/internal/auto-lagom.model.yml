@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - logging.Logger~Subclass
+    - lagom
+    - Member[container].Member[NullLogger]
+  - - logging.Logger~Subclass
+    - lagom
+    - Member[util].Member[logging].Member[Logger]
+  - - logging.Logger~Subclass
+    - lagom
+    - Member[util].Member[logging].Member[NullLogger]

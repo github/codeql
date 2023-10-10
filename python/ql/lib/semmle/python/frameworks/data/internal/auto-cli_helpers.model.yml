@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - cli_helpers
+    - Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cli_helpers
+    - Member[tabular_output].Member[delimited_output_adapter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cli_helpers
+    - Member[tabular_output].Member[tabulate_adapter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - cli_helpers
+    - Member[utils].Member[StringIO]

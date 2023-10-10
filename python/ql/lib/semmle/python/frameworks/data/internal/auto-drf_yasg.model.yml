@@ -13,3 +13,6 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - drf_yasg
     - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - drf_yasg
+    - Member[views].Member[Response]

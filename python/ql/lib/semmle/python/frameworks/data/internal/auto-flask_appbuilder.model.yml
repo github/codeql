@@ -4,6 +4,21 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Blueprint~Subclass
+    - flask_appbuilder
+    - Member[api].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - flask_appbuilder
+    - Member[base].Member[Blueprint]
+  - - flask.Blueprint~Subclass
+    - flask_appbuilder
+    - Member[baseviews].Member[Blueprint]
+  - - flask.Flask~Subclass
+    - flask_appbuilder
+    - Member[base].Member[Flask]
+  - - flask.Flask~Subclass
+    - flask_appbuilder
+    - Member[security].Member[manager].Member[Flask]
   - - flask.Response~Subclass
     - flask_appbuilder
     - Member[api].Member[Response]
@@ -16,3 +31,9 @@ extensions:
   - - flask.Response~Subclass
     - flask_appbuilder
     - Member[utils].Member[limit].Member[Response]
+  - - markupsafe.Markup~Subclass
+    - flask_appbuilder
+    - Member[fieldwidgets].Member[Markup]
+  - - markupsafe.Markup~Subclass
+    - flask_appbuilder
+    - Member[upload].Member[Markup]

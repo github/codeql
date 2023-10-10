@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - sqlalchemy
+    - Member[util].Member[StringIO]
+  - - io.StringIO~Subclass
+    - sqlalchemy
+    - Member[util].Member[byte_buffer]
+  - - io.StringIO~Subclass
+    - sqlalchemy
+    - Member[util].Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - sqlalchemy
+    - Member[util].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - sqlalchemy
+    - Member[util].Member[compat].Member[byte_buffer]

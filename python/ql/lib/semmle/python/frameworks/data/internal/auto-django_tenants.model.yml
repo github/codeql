@@ -13,3 +13,6 @@ extensions:
   - - Django.db.models.Model~Subclass
     - django_tenants
     - Member[postgresql_backend].Member[base].Member[ContentType]
+  - - django.http.request.HttpRequest~Subclass
+    - django_tenants
+    - Member[test].Member[client].Member[HttpRequest]

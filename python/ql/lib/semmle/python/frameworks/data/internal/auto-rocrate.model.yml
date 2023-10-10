@@ -7,3 +7,9 @@ extensions:
   - - http.client.HTTPResponse~Subclass
     - rocrate
     - Member[model].Member[file].Member[HTTPResponse]
+  - - io.StringIO~Subclass
+    - rocrate
+    - Member[model].Member[file].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - rocrate
+    - Member[model].Member[file].Member[StringIO]

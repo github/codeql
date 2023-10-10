@@ -1,0 +1,69 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[_docarray].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[_docarray].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[clients].Member[base].Member[grpc].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[clients].Member[base].Member[helper].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[clients].Member[base].Member[http].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[clients].Member[mixin].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[clients].Member[request].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[clients].Member[request].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[clients].Member[request].Member[helper].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[clients].Member[request].Member[helper].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[executors].Member[decorators].Member[Document]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[graph].Member[topology_graph].Member[LegacyDocument]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[health_model].Member[JinaHealthModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[health_model].Member[JinaInfoModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[JinaEndpointRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[JinaRequestModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[gateway].Member[models].Member[JinaResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[head].Member[request_handling].Member[AnyDoc]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[serve].Member[runtimes].Member[helper].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - jina
+    - Member[types].Member[request].Member[data].Member[Document]

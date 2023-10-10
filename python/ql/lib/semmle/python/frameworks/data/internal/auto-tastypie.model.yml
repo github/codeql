@@ -7,6 +7,9 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - tastypie
     - Member[validation].Member[ModelForm]
+  - - django.http.request.HttpRequest~Subclass
+    - tastypie
+    - Member[bundle].Member[HttpRequest]
   - - django.http.response.HttpResponseBadRequest~Subclass
     - tastypie
     - Member[api].Member[HttpResponseBadRequest]

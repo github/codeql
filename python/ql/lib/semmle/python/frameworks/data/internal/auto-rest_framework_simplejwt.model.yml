@@ -43,3 +43,6 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - rest_framework_simplejwt
     - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework_simplejwt
+    - Member[views].Member[Response]

@@ -1,0 +1,30 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - flask.Flask~Subclass
+    - locust
+    - Member[web].Member[Flask]
+  - - flask.Response~Subclass
+    - locust
+    - Member[web].Member[Response]
+  - - io.StringIO~Subclass
+    - locust
+    - Member[web].Member[StringIO]
+  - - requests.models.Response~Subclass
+    - locust
+    - Member[clients].Member[LocustResponse]
+  - - requests.models.Response~Subclass
+    - locust
+    - Member[clients].Member[ResponseContextManager]
+  - - requests.models.Response~Subclass
+    - locust
+    - Member[clients].Member[Response]
+  - - urllib3.PoolManager~Subclass
+    - locust
+    - Member[clients].Member[PoolManager]
+  - - urllib3.PoolManager~Subclass
+    - locust
+    - Member[user].Member[users].Member[PoolManager]

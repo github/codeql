@@ -7,3 +7,6 @@ extensions:
   - - http.server.BaseHTTPRequestHandler~Subclass
     - plotly
     - Member[io].Member[_base_renderers].Member[BaseHTTPRequestHandler]
+  - - io.StringIO~Subclass
+    - plotly
+    - Member[utils].Member[BytesIO]

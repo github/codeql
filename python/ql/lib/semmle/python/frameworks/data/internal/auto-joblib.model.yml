@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - joblib
+    - Member[numpy_pickle_compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - joblib
+    - Member[pool].Member[BytesIO]

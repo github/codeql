@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - ruamel
+    - Member[yaml].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - ruamel
+    - Member[yaml].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ruamel
+    - Member[yaml].Member[compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - ruamel
+    - Member[yaml].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ruamel
+    - Member[yaml].Member[main].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - ruamel
+    - Member[yaml].Member[main].Member[StringIO]

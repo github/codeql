@@ -19,3 +19,6 @@ extensions:
   - - django.http.response.JsonResponse~Subclass
     - ckeditor_uploader
     - Member[views].Member[JsonResponse]
+  - - io.StringIO~Subclass
+    - ckeditor_uploader
+    - Member[backends].Member[pillow_backend].Member[BytesIO]

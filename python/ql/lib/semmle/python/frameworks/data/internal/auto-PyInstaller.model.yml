@@ -1,0 +1,27 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - PyInstaller
+    - Member[lib].Member[modulegraph].Member[_compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PyInstaller
+    - Member[lib].Member[modulegraph].Member[_compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - PyInstaller
+    - Member[lib].Member[modulegraph].Member[modulegraph].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PyInstaller
+    - Member[lib].Member[modulegraph].Member[zipio].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PyInstaller
+    - Member[lib].Member[modulegraph].Member[zipio].Member[StringIO]
+  - - io.StringIO~Subclass
+    - PyInstaller
+    - Member[lib].Member[modulegraph].Member[zipio].Member[_BytesIO]
+  - - io.StringIO~Subclass
+    - PyInstaller
+    - Member[lib].Member[modulegraph].Member[zipio].Member[_StringIO]

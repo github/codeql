@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - httpx.Client~Subclass
+    - storage3
+    - Member[utils].Member[AsyncClient]
+  - - httpx.Client~Subclass
+    - storage3
+    - Member[utils].Member[Client]
+  - - httpx.Client~Subclass
+    - storage3
+    - Member[utils].Member[SyncClient]

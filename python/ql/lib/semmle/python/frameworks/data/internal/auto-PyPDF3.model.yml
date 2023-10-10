@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - PyPDF3
+    - Member[filters].Member[StringIO]
+  - - io.StringIO~Subclass
+    - PyPDF3
+    - Member[merger].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PyPDF3
+    - Member[merger].Member[StreamIO]
+  - - io.StringIO~Subclass
+    - PyPDF3
+    - Member[pdf].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - PyPDF3
+    - Member[pdf].Member[StringIO]

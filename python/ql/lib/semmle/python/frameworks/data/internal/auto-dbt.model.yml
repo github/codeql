@@ -7,3 +7,21 @@ extensions:
   - - http.server.BaseHTTPRequestHandler~Subclass
     - dbt
     - Member[task].Member[serve].Member[SimpleHTTPRequestHandler]
+  - - io.StringIO~Subclass
+    - dbt
+    - Member[tests].Member[util].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[contracts].Member[graph].Member[semantic_manifest].Member[PydanticMetric]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[contracts].Member[graph].Member[semantic_manifest].Member[PydanticProjectConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[contracts].Member[graph].Member[semantic_manifest].Member[PydanticSemanticManifest]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[contracts].Member[graph].Member[semantic_manifest].Member[PydanticSemanticModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt
+    - Member[contracts].Member[graph].Member[semantic_manifest].Member[PydanticTimeSpineTableConfiguration]

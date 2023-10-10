@@ -16,3 +16,6 @@ extensions:
   - - Django.db.models.Model~Subclass
     - rest_framework_api_key
     - Member[permissions].Member[AbstractAPIKey]
+  - - django.http.request.HttpRequest~Subclass
+    - rest_framework_api_key
+    - Member[permissions].Member[HttpRequest]

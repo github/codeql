@@ -7,3 +7,9 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - rest_access_policy
     - Member[access_view_set_mixin].Member[Response]
+  - - rest_framework.request.Request~Subclass
+    - rest_access_policy
+    - Member[field_access_mixin].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - rest_access_policy
+    - Member[access_view_set_mixin].Member[Response]

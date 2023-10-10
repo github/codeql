@@ -415,6 +415,15 @@ extensions:
   - - Django.db.models.Model~Subclass
     - django
     - Member[contrib].Member[sites].Member[models].Member[Site]
+  - - django.db.models.expressions.RawSQL~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[db].Member[models].Member[query].Member[RawSQL]
+  - - django.db.models.expressions.RawSQL~Subclass
+    - django
+    - Member[db].Member[models].Member[base].Member[RawSQL]
+  - - django.db.models.expressions.RawSQL~Subclass
+    - django
+    - Member[db].Member[models].Member[sql].Member[compiler].Member[RawSQL]
   - - django.forms.BaseForm~Subclass
     - django
     - Member[contrib].Member[admin].Member[checks].Member[BaseModelForm]
@@ -490,6 +499,21 @@ extensions:
   - - django.forms.BaseForm~Subclass
     - django
     - Member[views].Member[generic].Member[edit].Member[Form]
+  - - django.http.request.HttpRequest~Subclass
+    - django
+    - Member[core].Member[handlers].Member[asgi].Member[ASGIRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django
+    - Member[core].Member[handlers].Member[asgi].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django
+    - Member[core].Member[handlers].Member[wsgi].Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django
+    - Member[core].Member[handlers].Member[wsgi].Member[WSGIRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - django
+    - Member[views].Member[decorators].Member[debug].Member[HttpRequest]
   - - django.http.response.FileResponse~Subclass
     - django
     - Member[core].Member[handlers].Member[asgi].Member[FileResponse]
@@ -655,6 +679,54 @@ extensions:
   - - http.server.BaseHTTPRequestHandler~Subclass
     - django
     - Member[test].Member[testcases].Member[QuietWSGIRequestHandler]
+  - - io.StringIO~Subclass
+    - django
+    - Member[contrib].Member[gis].Member[shortcuts].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[core].Member[files].Member[base].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[core].Member[files].Member[base].Member[StringIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[core].Member[handlers].Member[wsgi].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[core].Member[mail].Member[message].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[core].Member[mail].Member[message].Member[StringIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[core].Member[serializers].Member[base].Member[StringIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[http].Member[request].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[test].Member[runner].Member[StringIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[utils].Member[feedgenerator].Member[StringIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[utils].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[utils].Member[six].Member[StringIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[utils].Member[text].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - django
+    - Member[utils].Member[text].Member[StreamingBuffer]
+  - - io.StringIO~Subclass
+    - django
+    - Member[utils].Member[translation].Member[template].Member[StringIO]
+  - - urllib.parse.SplitResult~Subclass
+    - django
+    - Member[utils].Member[http].Member[SplitResult]
   - - wsgiref.simple_server.WSGIServer~Subclass
     - django
     - Member[core].Member[management].Member[commands].Member[runserver].Member[WSGIServer]

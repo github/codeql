@@ -7,3 +7,12 @@ extensions:
   - - Django.Forms.Field~Subclass
     - sorl
     - Member[thumbnail].Member[fields].Member[ImageFormField]
+  - - django.db.models.FileField~Subclass
+    - sorl
+    - Member[thumbnail].Member[ImageField]
+  - - django.db.models.FileField~Subclass
+    - sorl
+    - Member[thumbnail].Member[admin].Member[current].Member[ImageField]
+  - - django.db.models.FileField~Subclass
+    - sorl
+    - Member[thumbnail].Member[fields].Member[ImageField]

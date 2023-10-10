@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[agent].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[agent].Member[HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[agent].Member[UDSHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[http].Member[BasePathMixin]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[http].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[http].Member[HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[uds].Member[BasePathMixin]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[uds].Member[UDSHTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[utils].Member[http].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[utils].Member[http].Member[HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - ddtrace
+    - Member[internal].Member[utils].Member[http].Member[UDSHTTPConnection]
+  - - io.StringIO~Subclass
+    - ddtrace
+    - Member[appsec].Member[handlers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - ddtrace
+    - Member[internal].Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - ddtrace
+    - Member[span].Member[StringIO]
+  - - logging.Logger~Subclass
+    - ddtrace
+    - Member[internal].Member[logger].Member[DDLogger]

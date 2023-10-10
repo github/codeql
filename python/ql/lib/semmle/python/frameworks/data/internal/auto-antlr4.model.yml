@@ -1,0 +1,51 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[BufferedTokenStream].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[IntervalSet].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[Lexer].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[PredictionContext].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[RuleContext].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[TokenStreamRewriter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[Token].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[Utils].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[atn].Member[ATNConfigSet].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[atn].Member[ATNConfig].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[atn].Member[ATNDeserializer].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[atn].Member[SemanticContext].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[dfa].Member[DFAState].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[error].Member[DiagnosticErrorListener].Member[StringIO]
+  - - io.StringIO~Subclass
+    - antlr4
+    - Member[tree].Member[Trees].Member[StringIO]

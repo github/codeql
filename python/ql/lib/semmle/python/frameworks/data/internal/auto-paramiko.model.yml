@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - paramiko
+    - Member[config].Member[StringIO]
+  - - io.StringIO~Subclass
+    - paramiko
+    - Member[file].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - paramiko
+    - Member[message].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - paramiko
+    - Member[py3compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - paramiko
+    - Member[py3compat].Member[StringIO]

@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - multidict.MultiDictProxy~Subclass
+    - yarl
+    - Member[_url].Member[MultiDictProxy]
+  - - urllib.parse.SplitResult~Subclass
+    - yarl
+    - Member[_url].Member[SplitResult]

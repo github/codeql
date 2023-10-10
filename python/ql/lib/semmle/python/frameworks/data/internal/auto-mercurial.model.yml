@@ -4,6 +4,42 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.client.HTTPConnection~Subclass
+    - mercurial
+    - Member[keepalive].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - mercurial
+    - Member[url].Member[httpconnection]
+  - - http.client.HTTPConnection~Subclass
+    - mercurial
+    - Member[url].Member[httpsconnection]
+  - - http.client.HTTPConnection~Subclass
+    - mercurial
+    - Member[url].Member[logginghttpconnection]
   - - http.client.HTTPResponse~Subclass
     - mercurial
     - Member[keepalive].Member[HTTPResponse]
+  - - io.StringIO~Subclass
+    - mercurial
+    - Member[archival].Member[stringio]
+  - - io.StringIO~Subclass
+    - mercurial
+    - Member[cmdutil].Member[stringio]
+  - - io.StringIO~Subclass
+    - mercurial
+    - Member[crecord].Member[stringio]
+  - - io.StringIO~Subclass
+    - mercurial
+    - Member[patch].Member[stringio]
+  - - io.StringIO~Subclass
+    - mercurial
+    - Member[pure].Member[parsers].Member[stringio]
+  - - io.StringIO~Subclass
+    - mercurial
+    - Member[url].Member[stringio]
+  - - io.StringIO~Subclass
+    - mercurial
+    - Member[util].Member[stringio]
+  - - io.StringIO~Subclass
+    - mercurial
+    - Member[wireprotoserver].Member[stringio]

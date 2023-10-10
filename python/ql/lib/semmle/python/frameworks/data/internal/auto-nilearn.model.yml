@@ -1,0 +1,12 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - nilearn
+    - Member[datasets].Member[func].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - nilearn
+    - Member[plotting].Member[html_stat_map].Member[BytesIO]

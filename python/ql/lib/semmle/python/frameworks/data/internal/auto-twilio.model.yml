@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - logging.Logger~Subclass
+    - twilio
+    - Member[http].Member[Logger]
   - - requests.models.Response~Subclass
     - twilio
     - Member[http].Member[Response]

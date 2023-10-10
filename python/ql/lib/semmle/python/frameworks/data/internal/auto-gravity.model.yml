@@ -1,0 +1,21 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[CelerySettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[GunicornSettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[GxItProxySettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[ReportsSettings]
+  - - pydantic.BaseModel~Subclass
+    - gravity
+    - Member[settings].Member[TusdSettings]

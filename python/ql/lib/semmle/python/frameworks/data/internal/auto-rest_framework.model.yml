@@ -6,6 +6,12 @@ extensions:
   data:
   - - Django.Forms.Field~Subclass
     - rest_framework
+    - Member[fields].Member[DjangoFilePathField]
+  - - Django.Forms.Field~Subclass
+    - rest_framework
+    - Member[fields].Member[DjangoImageField]
+  - - Django.Forms.Field~Subclass
+    - rest_framework
     - Member[fields].Member[FilePathField]
   - - Django.Forms.Field~Subclass
     - rest_framework
@@ -103,6 +109,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - rest_framework
     - Member[authtoken].Member[views].Member[Token]
+  - - django.http.request.HttpRequest~Subclass
+    - rest_framework
+    - Member[request].Member[HttpRequest]
   - - django.http.response.HttpResponse~Subclass
     - rest_framework
     - Member[authtoken].Member[views].Member[Response]
@@ -133,3 +142,27 @@ extensions:
   - - django.http.response.JsonResponse~Subclass
     - rest_framework
     - Member[exceptions].Member[JsonResponse]
+  - - rest_framework.request.Request~Subclass
+    - rest_framework
+    - Member[views].Member[Request]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework
+    - Member[authtoken].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework
+    - Member[mixins].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework
+    - Member[pagination].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework
+    - Member[routers].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework
+    - Member[schemas].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework
+    - Member[schemas].Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - rest_framework
+    - Member[views].Member[Response]

@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - Cryptodome
+    - Member[Hash].Member[MD5].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - Cryptodome
+    - Member[Hash].Member[MD5].Member[StringIO]
+  - - io.StringIO~Subclass
+    - Cryptodome
+    - Member[Hash].Member[SHA1].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - Cryptodome
+    - Member[Hash].Member[SHA1].Member[StringIO]
+  - - io.StringIO~Subclass
+    - Cryptodome
+    - Member[Util].Member[py3compat].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - Cryptodome
+    - Member[Util].Member[py3compat].Member[StringIO]

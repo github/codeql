@@ -4,6 +4,12 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - google
+    - Member[cloud].Member[storage].Member[blob].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - google
+    - Member[protobuf].Member[internal].Member[python_message].Member[BytesIO]
   - - requests.models.Response~Subclass
     - google
     - Member[cloud].Member[storage].Member[batch].Member[_FutureResponse]

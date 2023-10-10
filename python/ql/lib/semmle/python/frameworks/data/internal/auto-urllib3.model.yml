@@ -4,6 +4,51 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[connection].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[connection].Member[HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[connection].Member[VerifiedHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[connectionpool].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[connectionpool].Member[HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[contrib].Member[socks].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[contrib].Member[socks].Member[HTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[contrib].Member[socks].Member[SOCKSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[contrib].Member[socks].Member[SOCKSHTTPSConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[exceptions].Member[HTTPConnection]
+  - - http.client.HTTPConnection~Subclass
+    - urllib3
+    - Member[response].Member[HTTPConnection]
   - - http.client.HTTPResponse~Subclass
     - urllib3
     - Member[response].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - urllib3
+    - Member[response].Member[_HttplibHTTPResponse]
+  - - io.StringIO~Subclass
+    - urllib3
+    - Member[filepost].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - urllib3
+    - Member[packages].Member[six].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - urllib3
+    - Member[packages].Member[six].Member[StringIO]

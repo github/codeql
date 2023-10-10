@@ -1,0 +1,60 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - mne
+    - Member[fixes].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[io].Member[brainvision].Member[brainvision].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[io].Member[bti].Member[bti].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[io].Member[ctf].Member[markers].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[io].Member[meas_info].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[io].Member[open].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[io].Member[tests].Member[test_raw].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[report].Member[report].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[report].Member[report].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[tests].Member[test_epochs].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[utils].Member[ClosingStringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[utils].Member[_logging].Member[ClosingStringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[utils].Member[_logging].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[utils].Member[_testing].Member[ClosingStringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[utils].Member[_testing].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[utils].Member[numerics].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[utils].Member[numerics].Member[StringIO]
+  - - io.StringIO~Subclass
+    - mne
+    - Member[viz].Member[_brain].Member[_brain].Member[BytesIO]

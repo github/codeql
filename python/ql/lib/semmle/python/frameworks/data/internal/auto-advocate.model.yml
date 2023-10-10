@@ -7,3 +7,12 @@ extensions:
   - - requests.models.Response~Subclass
     - advocate
     - Member[Response]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[adapters].Member[ValidatingPoolManager]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[poolmanager].Member[PoolManager]
+  - - urllib3.PoolManager~Subclass
+    - advocate
+    - Member[poolmanager].Member[ValidatingPoolManager]

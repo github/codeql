@@ -213,6 +213,9 @@ extensions:
     - Member[apps].Member[order].Member[models].Member[ShippingAddress]
   - - Django.db.models.Model~Subclass
     - oscar
+    - Member[apps].Member[order].Member[models].Member[ShippingEventQuantity]
+  - - Django.db.models.Model~Subclass
+    - oscar
     - Member[apps].Member[order].Member[models].Member[ShippingEventType]
   - - Django.db.models.Model~Subclass
     - oscar

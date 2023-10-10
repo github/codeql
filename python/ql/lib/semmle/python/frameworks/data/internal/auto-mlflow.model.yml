@@ -4,9 +4,93 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - flask.Flask~Subclass
+    - mlflow
+    - Member[server].Member[Flask]
   - - flask.Response~Subclass
     - mlflow
     - Member[server].Member[Response]
   - - flask.Response~Subclass
     - mlflow
     - Member[server].Member[handlers].Member[Response]
+  - - io.StringIO~Subclass
+    - mlflow
+    - Member[projects].Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - mlflow
+    - Member[pyfunc].Member[scoring_server].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[ConfigModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[LimitModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[RequestModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[ResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[base_models].Member[SetLimitsModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[client].Member[LimitsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[client].Member[Route]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[AnthropicConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[CohereConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[ConfigModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[GatewayConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[LimitModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[Limit]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[LimitsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[MlflowModelServingConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[ModelInfo]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[Model]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[MosaicMLConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[OpenAIConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[ResponseModel]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[RouteConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[RouteModelInfo]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[config].Member[Route]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[fluent].Member[LimitsConfig]
+  - - pydantic.BaseModel~Subclass
+    - mlflow
+    - Member[gateway].Member[fluent].Member[Route]

@@ -1,0 +1,36 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[compat].Member[StringIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[formats].Member[_csv].Member[StringIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[formats].Member[_dbf].Member[StringIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[formats].Member[_df].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[formats].Member[_html].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[formats].Member[_ods].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[formats].Member[_xls].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[formats].Member[_xlsx].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[utils].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tablib
+    - Member[utils].Member[StringIO]

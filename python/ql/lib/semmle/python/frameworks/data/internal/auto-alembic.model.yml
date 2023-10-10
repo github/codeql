@@ -1,0 +1,33 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - alembic
+    - Member[autogenerate].Member[render].Member[StringIO]
+  - - io.StringIO~Subclass
+    - alembic
+    - Member[ddl].Member[impl].Member[StringIO]
+  - - io.StringIO~Subclass
+    - alembic
+    - Member[util].Member[compat].Member[StringIO]
+  - - sqlalchemy.engine.Connection~Subclass
+    - alembic
+    - Member[environment].Member[Connection]
+  - - sqlalchemy.engine.Connection~Subclass
+    - alembic
+    - Member[migration].Member[Connection]
+  - - sqlalchemy.engine.Connection~Subclass
+    - alembic
+    - Member[runtime].Member[environment].Member[Connection]
+  - - sqlalchemy.engine.Connection~Subclass
+    - alembic
+    - Member[runtime].Member[migration].Member[Connection]
+  - - sqlalchemy.engine.Engine~Subclass
+    - alembic
+    - Member[migration].Member[Engine]
+  - - sqlalchemy.engine.Engine~Subclass
+    - alembic
+    - Member[runtime].Member[migration].Member[Engine]

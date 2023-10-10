@@ -4,9 +4,72 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - aiohttp.ClientSession~Subclass
+    - langchain
+    - Member[llms].Member[edenai].Member[ClientSession]
+  - - io.StringIO~Subclass
+    - langchain
+    - Member[chat_models].Member[human].Member[StringIO]
+  - - io.StringIO~Subclass
+    - langchain
+    - Member[document_loaders].Member[blob_loaders].Member[schema].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - langchain
+    - Member[document_loaders].Member[confluence].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - langchain
+    - Member[document_loaders].Member[pdf].Member[StringIO]
+  - - io.StringIO~Subclass
+    - langchain
+    - Member[text_splitter].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - langchain
+    - Member[text_splitter].Member[StringIO]
+  - - io.StringIO~Subclass
+    - langchain
+    - Member[tools].Member[python].Member[tool].Member[StringIO]
+  - - io.StringIO~Subclass
+    - langchain
+    - Member[utilities].Member[python].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[callbacks].Member[tracers].Member[base].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[callbacks].Member[tracers].Member[langchain].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[callbacks].Member[tracers].Member[langchain_v1].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[callbacks].Member[tracers].Member[log_stream].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[callbacks].Member[tracers].Member[run_collector].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[callbacks].Member[tracers].Member[schemas].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[callbacks].Member[tracers].Member[stdout].Member[Run]
+  - - pydantic.BaseModel~Subclass
+    - langchain
+    - Member[callbacks].Member[tracers].Member[wandb].Member[Run]
   - - requests.models.Response~Subclass
     - langchain
     - Member[chains].Member[api].Member[openapi].Member[chain].Member[Response]
   - - requests.models.Response~Subclass
     - langchain
     - Member[utils].Member[utils].Member[Response]
+  - - sqlalchemy.engine.Engine~Subclass
+    - langchain
+    - Member[utilities].Member[sql_database].Member[Engine]
+  - - sqlalchemy.orm.Session~Subclass
+    - langchain
+    - Member[vectorstores].Member[_pgvector_data_models].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - langchain
+    - Member[vectorstores].Member[pgembedding].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - langchain
+    - Member[vectorstores].Member[pgvector].Member[Session]

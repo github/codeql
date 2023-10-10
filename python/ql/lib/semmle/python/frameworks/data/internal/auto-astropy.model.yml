@@ -10,3 +10,12 @@ extensions:
   - - http.server.BaseHTTPRequestHandler~Subclass
     - astropy
     - Member[samp].Member[web_profile].Member[WebProfileRequestHandler]
+  - - io.StringIO~Subclass
+    - astropy
+    - Member[io].Member[ascii].Member[core].Member[StringIO]
+  - - io.StringIO~Subclass
+    - astropy
+    - Member[io].Member[ascii].Member[mrt].Member[StringIO]
+  - - io.StringIO~Subclass
+    - astropy
+    - Member[io].Member[ascii].Member[ui].Member[StringIO]

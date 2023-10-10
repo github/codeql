@@ -1,0 +1,15 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - sqlalchemy.orm.Session~Subclass
+    - alembic_utils
+    - Member[depends].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - alembic_utils
+    - Member[replaceable_entity].Member[Session]
+  - - sqlalchemy.orm.Session~Subclass
+    - alembic_utils
+    - Member[simulate].Member[Session]

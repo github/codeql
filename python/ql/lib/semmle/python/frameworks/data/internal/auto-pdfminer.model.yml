@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - pdfminer
+    - Member[high_level].Member[StringIO]
+  - - io.StringIO~Subclass
+    - pdfminer
+    - Member[image].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pdfminer
+    - Member[lzw].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pdfminer
+    - Member[pdffont].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pdfminer
+    - Member[pdfinterp].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - pdfminer
+    - Member[pdfparser].Member[BytesIO]

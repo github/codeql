@@ -52,3 +52,9 @@ extensions:
   - - Django.db.models.Model~Subclass
     - waffle
     - Member[models].Member[Switch]
+  - - django.http.request.HttpRequest~Subclass
+    - waffle
+    - Member[HttpRequest]
+  - - django.http.request.HttpRequest~Subclass
+    - waffle
+    - Member[models].Member[HttpRequest]

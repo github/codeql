@@ -1,0 +1,24 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - xlsxwriter
+    - Member[compatibility].Member[StringIO]
+  - - io.StringIO~Subclass
+    - xlsxwriter
+    - Member[packager].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - xlsxwriter
+    - Member[packager].Member[StringIO]
+  - - io.StringIO~Subclass
+    - xlsxwriter
+    - Member[theme].Member[StringIO]
+  - - io.StringIO~Subclass
+    - xlsxwriter
+    - Member[worksheet].Member[StringIO]
+  - - io.StringIO~Subclass
+    - xlsxwriter
+    - Member[xmlwriter].Member[StringIO]

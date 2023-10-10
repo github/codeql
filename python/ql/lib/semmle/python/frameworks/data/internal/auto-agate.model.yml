@@ -1,0 +1,18 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - agate
+    - Member[table].Member[StringIO]
+  - - io.StringIO~Subclass
+    - agate
+    - Member[table].Member[from_csv].Member[StringIO]
+  - - io.StringIO~Subclass
+    - agate
+    - Member[tableset].Member[StringIO]
+  - - io.StringIO~Subclass
+    - agate
+    - Member[tableset].Member[to_json].Member[StringIO]

@@ -6,7 +6,13 @@ extensions:
   data:
   - - http.client.HTTPResponse~Subclass
     - cachecontrol
+    - Member[compat].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - cachecontrol
     - Member[filewrapper].Member[HTTPResponse]
+  - - http.client.HTTPResponse~Subclass
+    - cachecontrol
+    - Member[serialize].Member[HTTPResponse]
   - - requests.models.Response~Subclass
     - cachecontrol
     - Member[adapter].Member[Response]

@@ -49,3 +49,6 @@ extensions:
   - - django.http.response.HttpResponse~Subclass
     - drf_spectacular
     - Member[views].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - drf_spectacular
+    - Member[views].Member[Response]

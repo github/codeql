@@ -16,3 +16,24 @@ extensions:
   - - Django.db.models.Model~Subclass
     - easy_thumbnails
     - Member[models].Member[Thumbnail]
+  - - django.db.models.FileField~Subclass
+    - easy_thumbnails
+    - Member[fields].Member[FileField]
+  - - django.db.models.FileField~Subclass
+    - easy_thumbnails
+    - Member[fields].Member[ImageField]
+  - - django.db.models.FileField~Subclass
+    - easy_thumbnails
+    - Member[fields].Member[ThumbnailerField]
+  - - django.db.models.FileField~Subclass
+    - easy_thumbnails
+    - Member[fields].Member[ThumbnailerImageField]
+  - - django.db.models.FileField~Subclass
+    - easy_thumbnails
+    - Member[signal_handlers].Member[FileField]
+  - - io.StringIO~Subclass
+    - easy_thumbnails
+    - Member[engine].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - easy_thumbnails
+    - Member[engine].Member[StringIO]

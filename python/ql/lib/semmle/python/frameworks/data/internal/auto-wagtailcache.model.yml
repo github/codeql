@@ -4,6 +4,9 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - django.http.request.HttpRequest~Subclass
+    - wagtailcache
+    - Member[cache].Member[WSGIRequest]
   - - django.http.response.HttpResponse~Subclass
     - wagtailcache
     - Member[cache].Member[HttpResponse]

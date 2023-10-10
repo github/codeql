@@ -4,6 +4,24 @@ extensions:
     extensible: typeModel
     pack: codeql/python-all
   data:
+  - - io.StringIO~Subclass
+    - tornado
+    - Member[curl_httpclient].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tornado
+    - Member[httpclient].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tornado
+    - Member[simple_httpclient].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - tornado
+    - Member[template].Member[StringIO]
+  - - io.StringIO~Subclass
+    - tornado
+    - Member[web].Member[BytesIO]
+  - - tornado.web.Application~Subclass
+    - tornado
+    - Member[testing].Member[Application]
   - - tornado.web.RequestHandler~Subclass
     - tornado
     - Member[websocket].Member[WebSocketHandler]

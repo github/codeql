@@ -1,0 +1,372 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - dbt_semantic_interfaces
+    - Member[parsing].Member[yaml_loader].Member[StringIO]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[base].Member[FrozenBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[base].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[base].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[dimension].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[dimension].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[dimension].Member[PydanticDimensionTypeParams]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[dimension].Member[PydanticDimensionValidityParams]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[dimension].Member[PydanticDimension]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[dimension].Member[PydanticMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[entity].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[entity].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[entity].Member[PydanticEntity]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[entity].Member[PydanticMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[measure].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[measure].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[measure].Member[PydanticMeasureAggregationParameters]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[measure].Member[PydanticMeasure]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[measure].Member[PydanticMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[elements].Member[measure].Member[PydanticNonAdditiveDimensionParameters]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[filters].Member[where_filter].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[filters].Member[where_filter].Member[PydanticWhereFilter]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metadata].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metadata].Member[PydanticFileSlice]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metadata].Member[PydanticMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[PydanticMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[PydanticMetricInputMeasure]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[PydanticMetricInput]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[PydanticMetricTimeWindow]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[PydanticMetricTypeParams]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[PydanticMetric]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[metric].Member[PydanticWhereFilter]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[project_configuration].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[project_configuration].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[project_configuration].Member[PydanticMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[project_configuration].Member[PydanticProjectConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[project_configuration].Member[PydanticSemanticVersion]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[project_configuration].Member[PydanticTimeSpineTableConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_manifest].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_manifest].Member[PydanticMetric]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_manifest].Member[PydanticProjectConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_manifest].Member[PydanticSemanticManifest]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_manifest].Member[PydanticSemanticModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[NodeRelation]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[PydanticDimension]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[PydanticEntity]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[PydanticMeasure]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[PydanticMetadata]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[PydanticSemanticModelDefaults]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_model].Member[PydanticSemanticModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_version].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[semantic_version].Member[PydanticSemanticVersion]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[time_spine_table_configuration].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[time_spine_table_configuration].Member[ModelWithMetadataParsing]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[implementations].Member[time_spine_table_configuration].Member[PydanticTimeSpineTableConfiguration]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[pretty_print].Member[HashableBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[agg_time_dimension].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[agg_time_dimension].Member[SemanticModelElementContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[agg_time_dimension].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[agg_time_dimension].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[dimension_const].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[dimension_const].Member[SemanticModelElementContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[dimension_const].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[dimension_const].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[element_const].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[element_const].Member[PydanticSemanticManifest]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[element_const].Member[SemanticModelContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[element_const].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[element_const].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[entities].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[entities].Member[SemanticModelContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[entities].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[entities].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[measures].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[measures].Member[MetricContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[measures].Member[SemanticModelElementContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[measures].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[measures].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[measures].Member[ValidationWarning]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[metrics].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[metrics].Member[MetricContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[metrics].Member[PydanticMetricTimeWindow]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[metrics].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[metrics].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[non_empty].Member[PydanticSemanticManifest]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[non_empty].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[non_empty].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[primary_entity].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[primary_entity].Member[PydanticSemanticManifest]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[primary_entity].Member[SemanticModelContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[primary_entity].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[primary_entity].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[reserved_keywords].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[reserved_keywords].Member[SemanticModelContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[reserved_keywords].Member[SemanticModelElementContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[reserved_keywords].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[reserved_keywords].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[semantic_manifest_validator].Member[SemanticManifestValidationResults]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[semantic_models].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[semantic_models].Member[SemanticModelContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[semantic_models].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[semantic_models].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[unique_valid_name].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[unique_valid_name].Member[MetricContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[unique_valid_name].Member[SemanticModelContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[unique_valid_name].Member[SemanticModelElementContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[unique_valid_name].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[unique_valid_name].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[FileContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[FrozenBaseModel]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[MetricContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[SemanticManifestValidationResults]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[SemanticModelContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[SemanticModelElementContext]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[ValidationError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[ValidationFutureError]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[ValidationIssue]
+  - - pydantic.BaseModel~Subclass
+    - dbt_semantic_interfaces
+    - Member[validations].Member[validator_helpers].Member[ValidationWarning]

@@ -1,0 +1,39 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[CreateAPIView]
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[GenericAPIView]
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[ListAPIView]
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[ListCreateAPIView]
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[RetrieveAPIView]
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[RetrieveDestroyAPIView]
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[RetrieveUpdateAPIView]
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[RetrieveUpdateDestroyAPIView]
+  - - Django.Views.View~Subclass
+    - drf_rw_serializers
+    - Member[generics].Member[UpdateAPIView]
+  - - django.http.response.HttpResponse~Subclass
+    - drf_rw_serializers
+    - Member[mixins].Member[Response]
+  - - rest_framework.response.Response~Subclass
+    - drf_rw_serializers
+    - Member[mixins].Member[Response]

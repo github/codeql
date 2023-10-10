@@ -1,0 +1,228 @@
+# process-mrva-results 0.0.1
+extensions:
+- addsTo:
+    extensible: typeModel
+    pack: codeql/python-all
+  data:
+  - - io.StringIO~Subclass
+    - docarray
+    - Member[array].Member[doc_list].Member[io].Member[StringIO]
+  - - io.StringIO~Subclass
+    - docarray
+    - Member[typing].Member[bytes].Member[image_bytes].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - docarray
+    - Member[typing].Member[bytes].Member[video_bytes].Member[BytesIO]
+  - - io.StringIO~Subclass
+    - docarray
+    - Member[typing].Member[tensor].Member[video].Member[video_tensor_mixin].Member[BytesIO]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[any_array].Member[BaseDocWithoutId]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[doc_list].Member[doc_list].Member[AnyDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[doc_list].Member[doc_list].Member[BaseDocWithoutId]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[doc_list].Member[io].Member[AnyDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[doc_list].Member[io].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[doc_list].Member[pushpull].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[doc_vec].Member[doc_vec].Member[AnyDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[doc_vec].Member[doc_vec].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[array].Member[doc_vec].Member[io].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[base_doc].Member[AnyDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[base_doc].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[base_doc].Member[any_doc].Member[AnyDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[base_doc].Member[any_doc].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[base_doc].Member[doc].Member[BaseDocWithoutId]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[base_doc].Member[doc].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[document].Member[mixins].Member[pydantic].Member[PydanticDocument]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[document].Member[pydantic_model].Member[PydanticDocument]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[document].Member[pydantic_model].Member[_MetadataModel]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[document].Member[pydantic_model].Member[_NamedScore]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[AudioDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[ImageDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[Mesh3D]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[PointCloud3D]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[PointsAndColors]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[TextDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[VerticesAndFaces]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[VideoDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[audio].Member[AudioDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[audio].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[image].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[image].Member[ImageDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[legacy].Member[LegacyDocument]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[legacy].Member[legacy_document].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[legacy].Member[legacy_document].Member[LegacyDocument]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[mesh].Member[Mesh3D]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[mesh].Member[VerticesAndFaces]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[mesh].Member[mesh_3d].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[mesh].Member[mesh_3d].Member[Mesh3D]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[mesh].Member[mesh_3d].Member[VerticesAndFaces]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[mesh].Member[vertices_and_faces].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[mesh].Member[vertices_and_faces].Member[VerticesAndFaces]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[point_cloud].Member[PointCloud3D]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[point_cloud].Member[PointsAndColors]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[point_cloud].Member[point_cloud_3d].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[point_cloud].Member[point_cloud_3d].Member[PointCloud3D]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[point_cloud].Member[point_cloud_3d].Member[PointsAndColors]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[point_cloud].Member[points_and_colors].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[point_cloud].Member[points_and_colors].Member[PointsAndColors]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[text].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[text].Member[TextDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[video].Member[AudioDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[video].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[documents].Member[video].Member[VideoDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[helper].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[abstract].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[elastic].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[elasticv7].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[helper].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[hnswlib].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[in_memory].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[milvus].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[qdrant].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[redis].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[index].Member[backends].Member[weaviate].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[store].Member[abstract_doc_store].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[store].Member[file].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[store].Member[s3].Member[BaseDoc]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[typing].Member[url].Member[url_3d].Member[mesh_url].Member[VerticesAndFaces]
+  - - pydantic.BaseModel~Subclass
+    - docarray
+    - Member[typing].Member[url].Member[url_3d].Member[point_cloud_url].Member[PointsAndColors]

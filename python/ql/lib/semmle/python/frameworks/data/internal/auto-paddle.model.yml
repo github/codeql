@@ -10,3 +10,6 @@ extensions:
   - - http.server.BaseHTTPRequestHandler~Subclass
     - paddle
     - Member[distributed].Member[launch].Member[utils].Member[kv_server].Member[KVHandler]
+  - - io.StringIO~Subclass
+    - paddle
+    - Member[framework].Member[io_utils].Member[BytesIO]
