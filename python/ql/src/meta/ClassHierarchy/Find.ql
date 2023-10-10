@@ -29,6 +29,7 @@ private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Urllib3
 private import semmle.python.frameworks.Pydantic
 private import semmle.python.frameworks.Peewee
+private import semmle.python.frameworks.Aioch
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -422,6 +423,12 @@ class PeeweeDatabase extends FindSubclassesSpec {
   PeeweeDatabase() { this = "peewee.Database~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = Peewee::Database::subclassRef() }
+}
+
+class AiochClient extends FindSubclassesSpec {
+  AiochClient() { this = "aioch.Client~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Aioch::Client::subclassRef() }
 }
 
 bindingset[fullyQualified]
