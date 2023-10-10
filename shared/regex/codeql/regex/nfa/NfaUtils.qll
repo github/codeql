@@ -4,6 +4,7 @@
 
 private import codeql.regex.RegexTreeView
 private import codeql.util.Numbers
+private import codeql.util.Strings
 
 /**
  * Classes and predicates that create an NFA and various algorithms for working with it.
@@ -15,34 +16,7 @@ module Make<RegexTreeViewSig TreeImpl> {
    * Gets the char after `c` (from a simplified ASCII table).
    */
   private string nextChar(string c) {
-    exists(int code | code = ascii(c) | code + 1 = ascii(result))
-  }
-
-  /**
-   * Gets the `i`th codepoint in `s`.
-   */
-  bindingset[s]
-  private string getCodepointAt(string s, int i) { result = s.regexpFind("(.|\\s)", i, _) }
-
-  /**
-   * Gets the length of `s` in codepoints.
-   */
-  bindingset[str]
-  private int getCodepointLength(string str) {
-    result = str.regexpReplaceAll("(.|\\s)", "x").length()
-  }
-
-  /**
-   * Gets an approximation for the ASCII code for `char`.
-   * Only the easily printable chars are included (so no newline, tab, null, etc).
-   */
-  private int ascii(string char) {
-    char =
-      rank[result](string c |
-        c =
-          "! \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-              .charAt(_)
-      )
+    exists(int code | code = asciiPrintable(c) | code + 1 = asciiPrintable(result))
   }
 
   /**
@@ -394,7 +368,7 @@ module Make<RegexTreeViewSig TreeImpl> {
      * Includes all printable ascii chars, all constants mentioned in a regexp, and all chars matches by the regexp `/\s|\d|\w/`.
      */
     string getARelevantChar() {
-      exists(ascii(result))
+      exists(asciiPrintable(result))
       or
       exists(RegexpCharacterConstant c | result = getCodepointAt(c.getValue(), _))
       or
@@ -1191,7 +1165,7 @@ module Make<RegexTreeViewSig TreeImpl> {
       private string relevant(RegExpRoot root) {
         root = relevantRoot() and
         (
-          exists(ascii(result)) and exists(root)
+          exists(asciiPrintable(result)) and exists(root)
           or
           exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
           or
@@ -1320,49 +1294,6 @@ module Make<RegexTreeViewSig TreeImpl> {
         or
         not exists(Prefix::prefix(s)) and prefixMsg = ""
       )
-    }
-
-    /**
-     * Gets the result of backslash-escaping newlines, carriage-returns and
-     * backslashes in `s`.
-     */
-    bindingset[s]
-    private string escape(string s) {
-      result =
-        escapeUnicodeString(s.replaceAll("\\", "\\\\")
-              .replaceAll("\n", "\\n")
-              .replaceAll("\r", "\\r")
-              .replaceAll("\t", "\\t"))
-    }
-
-    /**
-     * Gets a string where the unicode characters in `s` have been escaped.
-     */
-    bindingset[s]
-    private string escapeUnicodeString(string s) {
-      result =
-        concat(int i, string char | char = escapeUnicodeChar(getCodepointAt(s, i)) | char order by i)
-    }
-
-    /**
-     * Gets a unicode escaped string for `char`.
-     * If `char` is a printable char, then `char` is returned.
-     */
-    bindingset[char]
-    private string escapeUnicodeChar(string char) {
-      if isPrintable(char)
-      then result = char
-      else
-        if exists(to4digitHex(any(int i | i.toUnicode() = char)))
-        then result = "\\u" + to4digitHex(any(int i | i.toUnicode() = char))
-        else result = "\\u{" + toHex(any(int i | i.toUnicode() = char)) + "}"
-    }
-
-    /** Holds if `char` is easily printable char, or whitespace. */
-    private predicate isPrintable(string char) {
-      exists(ascii(char))
-      or
-      char = "\n\r\t".charAt(_)
     }
 
     /**

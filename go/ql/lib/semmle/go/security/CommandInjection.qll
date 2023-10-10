@@ -35,10 +35,6 @@ module CommandInjection {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
   }
 
   private module Config implements DataFlow::ConfigSig {
@@ -115,10 +111,6 @@ module CommandInjection {
       super.isSanitizer(node) or
       node instanceof Sanitizer or
       node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
-    }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
     }
   }
 

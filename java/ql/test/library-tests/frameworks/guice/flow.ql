@@ -3,7 +3,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |

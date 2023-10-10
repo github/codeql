@@ -18,7 +18,7 @@ private class ResultReceiverSendCall extends MethodAccess {
 }
 
 private module UntrustedResultReceiverConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node node) { node instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node node) {
     node.asExpr() = any(ResultReceiverSendCall c).getReceiver()
