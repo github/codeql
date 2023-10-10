@@ -28,5 +28,5 @@ nodes
 | golang-jwt-v5.go:34:58:34:68 | signedToken | semmle.label | signedToken |
 subpaths
 #select
-| go-jose.v3.go:33:12:33:23 | DecodedToken | go-jose.v3.go:25:16:25:20 | selection of URL | go-jose.v3.go:33:12:33:23 | DecodedToken | This  $@. | go-jose.v3.go:25:16:25:20 | selection of URL | decode |
-| golang-jwt-v5.go:34:58:34:68 | signedToken | golang-jwt-v5.go:28:16:28:20 | selection of URL | golang-jwt-v5.go:34:58:34:68 | signedToken | This  $@. | golang-jwt-v5.go:28:16:28:20 | selection of URL | decode |
+| go-jose.v3.go:33:12:33:23 | DecodedToken | go-jose.v3.go:25:16:25:20 | selection of URL | go-jose.v3.go:33:12:33:23 | DecodedToken | This JWT is parsed without verification and received from $@. | go-jose.v3.go:25:16:25:20 | selection of URL | this user-controlled source |
+| golang-jwt-v5.go:34:58:34:68 | signedToken | golang-jwt-v5.go:28:16:28:20 | selection of URL | golang-jwt-v5.go:34:58:34:68 | signedToken | This JWT is parsed without verification and received from $@. | golang-jwt-v5.go:28:16:28:20 | selection of URL | this user-controlled source |
