@@ -18,7 +18,7 @@ import codeql.ruby.frameworks.Gemfile
 
 /**
  * Holds if a call to `protect_from_forgery` is made in the controller class `definedIn`,
- * which is inherited by the controller class `child`.
+ * which is inherited by the controller class `child`. These classes may be the same.
  */
 private predicate protectFromForgeryCall(
   ActionControllerClass definedIn, ActionControllerClass child,
@@ -45,5 +45,7 @@ where
     railsPreVersion3()
     or
     not any(MethodCall m).getMethodName() = ["csrf_meta_tags", "csrf_meta_tag"]
-  )
+  ) and
+  // Only generate alerts for the topmost controller in the tree.
+  not exists(ActionControllerClass parent | c = parent.getAnImmediateDescendent())
 select c, "Potential CSRF vulnerability due to forgery protection not being enabled."
