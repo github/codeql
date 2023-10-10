@@ -448,21 +448,6 @@ BuiltinServiceReference getBuiltinServiceOfKind(string kind) {
 }
 
 /**
- * DEPRECATED: Use `ServiceRequestNode` instead.
- * A request for one or more AngularJS services.
- */
-deprecated class ServiceRequest extends Expr {
-  ServiceRequestNode node;
-
-  ServiceRequest() { this.flow() = node }
-
-  /** Gets the parameter of this request into which `service` is injected. */
-  deprecated Parameter getDependencyParameter(ServiceReference service) {
-    result.flow() = node.getDependencyParameter(service)
-  }
-}
-
-/**
  * A request for one or more AngularJS services.
  */
 abstract class ServiceRequestNode extends DataFlow::Node {

@@ -1151,28 +1151,10 @@ module ClassNode {
     abstract FunctionNode getStaticMember(string name, MemberKind kind);
 
     /**
-     * DEPRECATED. Override `getStaticMember` instead.
-     *
-     * Gets the static method of this class with the given name.
-     */
-    cached
-    deprecated FunctionNode getStaticMethod(string name) { none() }
-
-    /**
      * Gets a static member of this class of the given kind.
      */
     cached
     abstract FunctionNode getAStaticMember(MemberKind kind);
-
-    /**
-     * DEPRECATED. Override `getAStaticMember` instead.
-     *
-     * Gets a static method of this class.
-     *
-     * The constructor is not considered a static method.
-     */
-    cached
-    deprecated FunctionNode getAStaticMethod() { none() }
 
     /**
      * Gets a dataflow node representing a class to be used as the super-class

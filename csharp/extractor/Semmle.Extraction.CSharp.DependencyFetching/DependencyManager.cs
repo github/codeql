@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
-            tempWorkingDirectory = new TemporaryDirectory(GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
+            tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
 
             var allFiles = GetAllFiles();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
@@ -284,22 +284,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 sb.AppendFormat("{0:x2}", b);
 
             return Path.Combine(Path.GetTempPath(), "GitHub", "packages", sb.ToString());
-        }
-
-        private static string GetTemporaryWorkingDirectory(out bool cleanupTempWorkingDirectory)
-        {
-            cleanupTempWorkingDirectory = false;
-            var tempFolder = EnvironmentVariables.GetScratchDirectory();
-
-            if (string.IsNullOrEmpty(tempFolder))
-            {
-                var tempPath = Path.GetTempPath();
-                var name = Guid.NewGuid().ToString("N").ToUpper();
-                tempFolder = Path.Combine(tempPath, "GitHub", name);
-                cleanupTempWorkingDirectory = true;
-            }
-
-            return tempFolder;
         }
 
         /// <summary>

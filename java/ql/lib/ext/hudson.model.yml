@@ -36,6 +36,11 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
+      - ["hudson", "FilePath", False, "newInputStreamDenyingSymlinkAsNeeded", "", "", "ReturnValue", "file", "manual"]
+      - ["hudson", "FilePath", False, "openInputStream", "", "", "ReturnValue", "file", "manual"]
+      - ["hudson", "FilePath", False, "read", "", "", "ReturnValue", "file", "manual"]
+      - ["hudson", "FilePath", False, "readFromOffset", "", "", "ReturnValue", "file", "manual"]
+      - ["hudson", "FilePath", False, "readToString", "", "", "ReturnValue", "file", "manual"]
       - ["hudson", "Plugin", True, "configure", "", "", "Parameter", "remote", "manual"]
       - ["hudson", "Plugin", True, "newInstance", "", "", "Parameter", "remote", "manual"]
   - addsTo:
