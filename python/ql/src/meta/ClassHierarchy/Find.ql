@@ -431,6 +431,12 @@ class AiochClient extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = Aioch::Client::subclassRef() }
 }
 
+class AiohttpView extends FindSubclassesSpec {
+  AiohttpView() { this = "aiohttp.web.View~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = AiohttpWebModel::View::subclassRef() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
