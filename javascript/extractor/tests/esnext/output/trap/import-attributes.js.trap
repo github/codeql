@@ -1,5 +1,5 @@
-#10000=@"/import-assertion.js;sourcefile"
-files(#10000,"/import-assertion.js")
+#10000=@"/import-attributes.js;sourcefile"
+files(#10000,"/import-attributes.js")
 #10001=@"/;folder"
 folders(#10001,"/")
 containerparent(#10001,#10000)

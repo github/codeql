@@ -1,5 +1,5 @@
-#10000=@"/import-assertion.ts;sourcefile"
-files(#10000,"/import-assertion.ts")
+#10000=@"/import-attributes.ts;sourcefile"
+files(#10000,"/import-attributes.ts")
 #10001=@"/;folder"
 folders(#10001,"/")
 containerparent(#10001,#10000)
