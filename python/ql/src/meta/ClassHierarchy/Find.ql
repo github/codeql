@@ -244,6 +244,12 @@ class StarletteWebsocket extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = Starlette::WebSocket::classRef() }
 }
 
+class StarletteUrl extends FindSubclassesSpec {
+  StarletteUrl() { this = "starlette.requests.URL~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Starlette::Url::classRef() }
+}
+
 class ClickhouseClient extends FindSubclassesSpec {
   ClickhouseClient() { this = "clickhouse_driver.client.Client~Subclass" }
 

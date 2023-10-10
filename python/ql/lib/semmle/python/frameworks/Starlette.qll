@@ -103,8 +103,10 @@ module Starlette {
    */
   module Url {
     /** Gets a reference to the `starlette.requests.URL` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("starlette").getMember("requests").getMember("URL")
+      or
+      result = ModelOutput::getATypeNode("starlette.requests.URL~Subclass").getASubclass*()
     }
 
     /**
