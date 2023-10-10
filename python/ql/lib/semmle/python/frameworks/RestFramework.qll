@@ -16,6 +16,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.Django
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -27,7 +28,7 @@ private import semmle.python.frameworks.Stdlib
  * - https://www.django-rest-framework.org/
  * - https://pypi.org/project/djangorestframework/
  */
-private module RestFramework {
+module RestFramework {
   // ---------------------------------------------------------------------------
   // rest_framework.views.APIView handling
   // ---------------------------------------------------------------------------
@@ -215,8 +216,10 @@ private module RestFramework {
    */
   module Request {
     /** Gets a reference to the `rest_framework.request.Request` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("rest_framework").getMember("request").getMember("Request")
+      or
+      result = ModelOutput::getATypeNode("rest_framework.request.Request~Subclass").getASubclass*()
     }
 
     /**
@@ -299,8 +302,11 @@ private module RestFramework {
    */
   module Response {
     /** Gets a reference to the `rest_framework.response.Response` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("rest_framework").getMember("response").getMember("Response")
+      or
+      result =
+        ModelOutput::getATypeNode("rest_framework.response.Response~Subclass").getASubclass*()
     }
 
     /** A direct instantiation of `rest_framework.response.Response`. */

@@ -23,6 +23,7 @@ private import semmle.python.frameworks.Invoke
 private import semmle.python.frameworks.MarkupSafe
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Pycurl
+private import semmle.python.frameworks.RestFramework
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -322,6 +323,18 @@ class PyCurl extends FindSubclassesSpec {
   PyCurl() { this = "pycurl.Curl~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = Pycurl::Curl::classRef() }
+}
+
+class RestFrameworkRequest extends FindSubclassesSpec {
+  RestFrameworkRequest() { this = "rest_framework.request.Request~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = RestFramework::Request::classRef() }
+}
+
+class RestFrameworkResponse extends FindSubclassesSpec {
+  RestFrameworkResponse() { this = "rest_framework.response.Response~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = RestFramework::Response::classRef() }
 }
 
 bindingset[fullyQualified]
