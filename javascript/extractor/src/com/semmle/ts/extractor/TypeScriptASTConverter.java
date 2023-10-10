@@ -176,7 +176,8 @@ public class TypeScriptASTConverter {
   private static final Pattern EXPORT_DECL_START =
       Pattern.compile("^export" + "(" + WHITESPACE_CHAR + "+default)?" + WHITESPACE_CHAR + "+");
   private static final Pattern TYPEOF_START = Pattern.compile("^typeof" + WHITESPACE_CHAR + "+");
-  private static final Pattern ASSERT_START = Pattern.compile("^assert" + WHITESPACE_CHAR + "+");
+  private static final Pattern IMPORT_ATTRIBUTE_START =
+      Pattern.compile("^(assert|with)" + WHITESPACE_CHAR + "+");
   private static final Pattern WHITESPACE_END_PAREN =
       Pattern.compile("^" + WHITESPACE_CHAR + "*\\)");
 
@@ -342,10 +343,10 @@ public class TypeScriptASTConverter {
         return convertArrowFunction(node, loc);
       case "AsExpression":
         return convertTypeAssertionExpression(node, loc);
-      case "AssertClause":
-        return convertAssertClause(node, loc);
-      case "AssertEntry":
-        return convertAssertEntry(node, loc);
+      case "ImportAttributes":
+        return convertImportAttributes(node, loc);
+      case "ImportAttribute":
+        return convertImportAttribute(node, loc);
       case "SatisfiesExpression":
         return convertSatisfiesExpression(node, loc);
       case "AwaitExpression":
@@ -2297,20 +2298,20 @@ public class TypeScriptASTConverter {
     return new TypeAssertion(loc, convertChild(node, "expression"), type, false);
   }
 
-  private Node convertAssertClause(JsonObject node, SourceLocation loc) throws ParseError {
+  private Node convertImportAttributes(JsonObject node, SourceLocation loc) throws ParseError {
     List<Property> properties = new ArrayList<>();
     for (INode child : convertChildren(node, "elements")) {
       properties.add((Property) child);
     }
-    // Adjust location to skip over the `assert` keyword.
-    Matcher m = ASSERT_START.matcher(loc.getSource());
+    // Adjust location to skip over the `with` or `assert` keyword.
+    Matcher m = IMPORT_ATTRIBUTE_START.matcher(loc.getSource());
     if (m.find()) {
       advance(loc, m.group(0));
     }
     return new ObjectExpression(loc, properties);
   }
 
-  private Node convertAssertEntry(JsonObject node, SourceLocation loc) throws ParseError {
+  private Node convertImportAttribute(JsonObject node, SourceLocation loc) throws ParseError {
     return new Property(
         loc, convertChild(node, "key"), convertChild(node, "value"), "init", false, false);
   }
