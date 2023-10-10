@@ -3563,7 +3563,9 @@ public class Parser {
   protected Expression parseImportOrExportAssertionAndSemicolon() {
     Expression result = null;
     if (!this.eagerlyTrySemicolon()) {
-      this.expectContextual("assert");
+      if (!this.eatContextual("assert")) {
+        this.expect(TokenType._with);
+      }
       result = this.parseObj(false, null);
       this.semicolon();
     }
