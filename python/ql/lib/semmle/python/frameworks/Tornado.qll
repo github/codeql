@@ -218,7 +218,11 @@ module Tornado {
        */
       module Application {
         /** Gets a reference to the `tornado.web.Application` class. */
-        API::Node classRef() { result = web().getMember("Application") }
+        API::Node classRef() {
+          result = web().getMember("Application")
+          or
+          result = ModelOutput::getATypeNode("tornado.web.Application~Subclass").getASubclass*()
+        }
 
         /**
          * A source of instances of `tornado.web.Application`, extend this class to model new instances.
@@ -275,7 +279,12 @@ module Tornado {
        */
       module HttpServerRequest {
         /** Gets a reference to the `tornado.httputil.HttpServerRequest` class. */
-        API::Node classRef() { result = httputil().getMember("HttpServerRequest") }
+        API::Node classRef() {
+          result = httputil().getMember("HttpServerRequest")
+          or
+          result =
+            ModelOutput::getATypeNode("tornado.httputil.HttpServerRequest~Subclass").getASubclass*()
+        }
 
         /**
          * A source of instances of `tornado.httputil.HttpServerRequest`, extend this class to model new instances.

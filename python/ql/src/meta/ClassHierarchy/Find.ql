@@ -25,6 +25,7 @@ private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Pycurl
 private import semmle.python.frameworks.RestFramework
 private import semmle.python.frameworks.SqlAlchemy
+private import semmle.python.frameworks.Tornado
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -378,6 +379,22 @@ class StringIO extends FindSubclassesSpec {
   StringIO() { this = "io.StringIO~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = StdlibPrivate::StringIO::classRef() }
+}
+
+class TornadoApplication extends FindSubclassesSpec {
+  TornadoApplication() { this = "tornado.web.Application~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = Tornado::TornadoModule::Web::Application::classRef()
+  }
+}
+
+class TornadoRequest extends FindSubclassesSpec {
+  TornadoRequest() { this = "tornado.httputil.HttpServerRequest~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = Tornado::TornadoModule::HttpUtil::HttpServerRequest::classRef()
+  }
 }
 
 bindingset[fullyQualified]
