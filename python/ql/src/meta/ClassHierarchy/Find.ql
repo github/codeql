@@ -437,6 +437,14 @@ class AiohttpView extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = AiohttpWebModel::View::subclassRef() }
 }
 
+class DjangoFileField extends FindSubclassesSpec {
+  DjangoFileField() { this = "django.db.models.FileField~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DB::Models::FileField::subclassRef()
+  }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |

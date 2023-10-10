@@ -781,6 +781,9 @@ module PrivateDjango {
                     .getMember(className)
                     .getASubclass*()
             )
+            or
+            result =
+              ModelOutput::getATypeNode("django.db.models.FileField~Subclass").getASubclass*()
           }
         }
 
