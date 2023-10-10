@@ -33,10 +33,10 @@ identityLocalStep
 | test.py:167:13:167:18 | ControlFlowNode for SOURCE | Node steps to itself |
 | test.py:216:10:216:15 | ControlFlowNode for SOURCE | Node steps to itself |
 | test.py:242:9:242:12 | ControlFlowNode for SINK | Node steps to itself |
-| test.py:669:9:669:12 | ControlFlowNode for SINK | Node steps to itself |
-| test.py:670:9:670:14 | ControlFlowNode for SINK_F | Node steps to itself |
-| test.py:678:9:678:12 | ControlFlowNode for SINK | Node steps to itself |
-| test.py:686:9:686:12 | ControlFlowNode for SINK | Node steps to itself |
-| test.py:692:5:692:8 | ControlFlowNode for SINK | Node steps to itself |
+| test.py:673:9:673:12 | ControlFlowNode for SINK | Node steps to itself |
+| test.py:674:9:674:14 | ControlFlowNode for SINK_F | Node steps to itself |
+| test.py:682:9:682:12 | ControlFlowNode for SINK | Node steps to itself |
+| test.py:690:9:690:12 | ControlFlowNode for SINK | Node steps to itself |
+| test.py:696:5:696:8 | ControlFlowNode for SINK | Node steps to itself |
 missingArgumentCall
 multipleArgumentCall
