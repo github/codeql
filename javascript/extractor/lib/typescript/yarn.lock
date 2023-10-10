@@ -7,7 +7,7 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.15.3.tgz"
   integrity sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==
 
-typescript@5.2.2:
-  version "5.2.2"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
-  integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
+typescript@5.3.0-beta:
+  version "5.3.0-beta"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.0-beta.tgz#20c29bff9ba381a2120a5705bd87a0c8a2104b54"
+  integrity sha512-SiTeC1C8wAS6v2SD05iyfojeuIkUZIbb8suZz0d4BR+RErwpG+05iolat+VjM9hqXSrjb3xutEBzh4X3NJ7Jgw==
