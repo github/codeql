@@ -298,6 +298,35 @@ private module Sqlite {
 }
 
 /**
+ * Provides classes modeling the `better-sqlite3` package.
+ */
+private module BetterSqlite3 {
+  /** Gets an expression that constructs or returns a better-sqlite3 database instance. */
+  API::Node database() {
+    result =
+      [
+        API::moduleImport("better-sqlite3").getMember("Database"),
+        API::moduleImport("better-sqlite3").getReturn()
+      ]
+  }
+
+  /** A call to a better-sqlite3 query method. */
+  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+    QueryCall() {
+      this = database().getMember(["exec", "prepare"]).getACall() or
+      this = database().getMember("exec").getReturn().getMember("prepare").getACall()
+    }
+
+    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
+  }
+
+  /** An expression that is passed to the `query` method and hence interpreted as SQL. */
+  class QueryString extends SQL::SqlString {
+    QueryString() { this = any(QueryCall qc).getAQueryArgument() }
+  }
+}
+
+/**
  * Provides classes modeling the `mssql` package.
  */
 private module MsSql {
