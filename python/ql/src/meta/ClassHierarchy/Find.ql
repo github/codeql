@@ -18,6 +18,7 @@ private import semmle.python.frameworks.Starlette
 private import semmle.python.frameworks.ClickhouseDriver
 private import semmle.python.frameworks.Aiohttp
 private import semmle.python.frameworks.Fabric
+private import semmle.python.frameworks.Httpx
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -285,6 +286,12 @@ class FlaskBlueprint extends FindSubclassesSpec {
   FlaskBlueprint() { this = "flask.Blueprint~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = Flask::Blueprint::classRef() }
+}
+
+class HttpxClient extends FindSubclassesSpec {
+  HttpxClient() { this = "httpx.Client~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = HttpxModel::Client::classRef() }
 }
 
 bindingset[fullyQualified]
