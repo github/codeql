@@ -20,6 +20,7 @@ private import semmle.python.frameworks.Aiohttp
 private import semmle.python.frameworks.Fabric
 private import semmle.python.frameworks.Httpx
 private import semmle.python.frameworks.Invoke
+private import semmle.python.frameworks.MarkupSafe
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -301,6 +302,12 @@ class InvokeContext extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = Invoke::InvokeModule::Context::ContextClass::classRef()
   }
+}
+
+class MarkupSafe extends FindSubclassesSpec {
+  MarkupSafe() { this = "markupsafe.Markup~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = MarkupSafeModel::Markup::classRef() }
 }
 
 bindingset[fullyQualified]
