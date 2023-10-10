@@ -13,7 +13,9 @@ module FileSystemAccessTest implements TestSig {
       tag = "FileSystemAccess"
     )
     or
-    exists(DataFlow::Node succ, DataFlow::Node pred | Afero::additionalTaintStep(pred, succ) |
+    exists(DataFlow::Node succ, DataFlow::Node pred |
+      any(Afero::AdditionalTaintStep adts).step(pred, succ)
+    |
       succ.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = succ.toString() and

@@ -92,7 +92,7 @@ module Afero {
   predicate aferoSanitizer(DataFlow::Node n) {
     exists(Function f |
       f.hasQualifiedName(aferoPackage(), ["NewBasePathFs", "NewIOFS"]) and
-      DataFlow::localFlow(f.getACall(), n)
+      TaintTracking::localTaint(f.getACall(), n)
     )
   }
 
@@ -103,10 +103,12 @@ module Afero {
    *
    * e.g.`n2 := &afero.Afero{Fs: afero.NewBasePathFs(osFS, "./")}` n1 is `afero.NewBasePathFs(osFS, "./")`
    */
-  predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(StructLit st | st.getType().hasQualifiedName(aferoPackage(), "Afero") |
-      n1.asExpr() = st.getAnElement().(KeyValueExpr).getAChildExpr() and
-      n2.asExpr() = st
-    )
+  class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+      exists(StructLit st | st.getType().hasQualifiedName(aferoPackage(), "Afero") |
+        n1.asExpr() = st.getAnElement().(KeyValueExpr).getAChildExpr() and
+        n2.asExpr() = st
+      )
+    }
   }
 }
