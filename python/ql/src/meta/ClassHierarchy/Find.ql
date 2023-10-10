@@ -17,6 +17,7 @@ private import semmle.python.frameworks.Requests
 private import semmle.python.frameworks.Starlette
 private import semmle.python.frameworks.ClickhouseDriver
 private import semmle.python.frameworks.Aiohttp
+private import semmle.python.frameworks.Fabric
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -247,6 +248,14 @@ class AiohttpSession extends FindSubclassesSpec {
 
   override API::Node getAlreadyModeledClass() {
     result = AiohttpClientModel::ClientSession::classRef()
+  }
+}
+
+class FabricConnection extends FindSubclassesSpec {
+  FabricConnection() { this = "fabric.connection.Connection~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = FabricV2::Fabric::Connection::ConnectionClass::classRef()
   }
 }
 
