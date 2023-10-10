@@ -71,5 +71,5 @@ function forwardTaint4(x, cb) {
 
 function test2() {
   forwardTaint4(source(), x => sink(x)); // NOT OK
-  forwardTaint4("safe", x => sink(x)); // OK [INCONSISTENCY]
+  forwardTaint4("safe", x => sink(x)); // OK
 }

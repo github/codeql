@@ -297,16 +297,46 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
 }
 
 private newtype TDataFlowType =
-  TTodoDataFlowType() or
-  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+  TFunctionType(Function f) or
+  TAnyType()
 
 class DataFlowType extends TDataFlowType {
-  string toString() { result = "" }
+  string toString() {
+    this instanceof TFunctionType and
+    result =
+      "TFunctionType(" + this.asFunction().toString() + ") at line " +
+        this.asFunction().getLocation().getStartLine()
+    or
+    this instanceof TAnyType and result = "TAnyType"
+  }
+
+  Function asFunction() { this = TFunctionType(result) }
 }
 
-predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+/**
+ * Holds if `t1` is strictly stronger than `t2`.
+ */
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  t1 instanceof TFunctionType and t2 = TAnyType()
+}
 
-DataFlowType getNodeType(Node node) { result = TTodoDataFlowType() and exists(node) }
+private DataFlowType getPreciseType(Node node) {
+  exists(Function f |
+    (node = TValueNode(f) or node = TFunctionSelfReferenceNode(f)) and
+    result = TFunctionType(f)
+  )
+  or
+  result = getPreciseType(node.getImmediatePredecessor())
+  or
+  result = getPreciseType(node.(PostUpdateNode).getPreUpdateNode())
+}
+
+DataFlowType getNodeType(Node node) {
+  result = getPreciseType(node)
+  or
+  not exists(getPreciseType(node)) and
+  result = TAnyType()
+}
 
 predicate nodeIsHidden(Node node) {
   DataFlow::PathNode::shouldNodeBeHidden(node)
@@ -344,7 +374,13 @@ predicate neverSkipInPathGraph(Node node) {
 string ppReprType(DataFlowType t) { none() }
 
 pragma[inline]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
+  t1 = t2
+  or
+  t1 instanceof TAnyType and exists(t2)
+  or
+  t2 instanceof TAnyType and exists(t1)
+}
 
 predicate forceHighPrecision(Content c) { none() }
 
