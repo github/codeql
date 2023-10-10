@@ -229,14 +229,14 @@ void test15(unsigned index) {
     return;
   }
   int* newname = new int[size];
-  newname[index] = 0; // $ alloc=L231 deref=L232 // GOOD [FALSE POSITIVE]
+  newname[index] = 0; // GOOD
 }
 
 void test16(unsigned index) {
   unsigned size = index + 13;
   if(size >= index) {
     int* newname = new int[size];
-    newname[index] = 0; // $ alloc=L238 deref=L239 // GOOD [FALSE POSITIVE]
+    newname[index] = 0; // GOOD
   }
 }
 
@@ -839,13 +839,13 @@ void test15_with_malloc(size_t index) {
     return;
   }
   int* newname = (int*)malloc(size);
-  newname[index] = 0; // $ SPURIOUS: alloc=L841 deref=L842 // GOOD [FALSE POSITIVE]
+  newname[index] = 0;
 }
 
 void test16_with_malloc(size_t index) {
   size_t size = index + 13;
   if(size >= index) {
     int* newname = (int*)malloc(size);
-    newname[index] = 0; // $ SPURIOUS: alloc=L848 deref=L849 // GOOD [FALSE POSITIVE]
+    newname[index] = 0;
   }
 }
