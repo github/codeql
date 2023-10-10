@@ -618,7 +618,7 @@ private MethodAccess callReturningSameType(Expr ref) {
 }
 
 private SrcRefType entrypointType() {
-  exists(RemoteFlowSource s, RefType t |
+  exists(ThreatModelFlowSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and
     t = pragma[only_bind_out](s).getType() and
     not t instanceof TypeObject and
@@ -629,6 +629,10 @@ private SrcRefType entrypointType() {
 }
 
 private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
-  src = DataFlow::getFieldQualifier(sink.asExpr().(FieldRead)) and
+  exists(FieldRead fa |
+    fa = sink.asExpr() and
+    src = DataFlow::getFieldQualifier(fa) and
+    not fa.getField().isStatic()
+  ) and
   src.getType().(RefType).getSourceDeclaration() = entrypointType()
 }

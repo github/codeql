@@ -9,7 +9,7 @@ private import semmle.code.java.security.XPath
  * A taint-tracking configuration for reasoning about XPath injection vulnerabilities.
  */
 module XPathInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
 }
