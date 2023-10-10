@@ -275,6 +275,18 @@ class DjangoHttpRequest extends FindSubclassesSpec {
   }
 }
 
+class FlaskClass extends FindSubclassesSpec {
+  FlaskClass() { this = "flask.Flask~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Flask::FlaskApp::classRef() }
+}
+
+class FlaskBlueprint extends FindSubclassesSpec {
+  FlaskBlueprint() { this = "flask.Blueprint~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Flask::Blueprint::classRef() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
