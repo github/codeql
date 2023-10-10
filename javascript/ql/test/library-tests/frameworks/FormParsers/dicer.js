@@ -13,7 +13,7 @@ http.createServer((req, res) => {
         part.pipe(sink())
         part.on('header', (header) => {
             for (h in header) {
-                sink(h)
+                sink(header[h])
             }
         });
         part.on('data', (data) => {

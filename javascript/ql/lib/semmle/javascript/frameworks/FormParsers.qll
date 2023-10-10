@@ -177,14 +177,3 @@ module Dicer {
     }
   }
 }
-
-/**
- * An Additional taint step like `for (succ in pred)`
- */
-private class AdditionalTaintStepForIn extends TaintTracking::SharedTaintStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(ForInStmt fis, Variable v | v = fis.getAnIterationVariable() |
-      succ.asExpr() = v.getAnAccess() and pred.asExpr() = fis.getIterationDomain()
-    )
-  }
-}

@@ -47,9 +47,9 @@ nodes
 | dicer.js:13:19:13:24 | sink() |
 | dicer.js:14:28:14:33 | header |
 | dicer.js:14:28:14:33 | header |
-| dicer.js:15:23:15:28 | header |
-| dicer.js:16:22:16:22 | h |
-| dicer.js:16:22:16:22 | h |
+| dicer.js:16:22:16:27 | header |
+| dicer.js:16:22:16:30 | header[h] |
+| dicer.js:16:22:16:30 | header[h] |
 | dicer.js:19:26:19:29 | data |
 | dicer.js:19:26:19:29 | data |
 | dicer.js:20:18:20:21 | data |
@@ -148,10 +148,10 @@ edges
 | dicer.js:12:23:12:26 | part | dicer.js:13:19:13:24 | sink() |
 | dicer.js:12:23:12:26 | part | dicer.js:13:19:13:24 | sink() |
 | dicer.js:12:23:12:26 | part | dicer.js:13:19:13:24 | sink() |
-| dicer.js:14:28:14:33 | header | dicer.js:15:23:15:28 | header |
-| dicer.js:14:28:14:33 | header | dicer.js:15:23:15:28 | header |
-| dicer.js:15:23:15:28 | header | dicer.js:16:22:16:22 | h |
-| dicer.js:15:23:15:28 | header | dicer.js:16:22:16:22 | h |
+| dicer.js:14:28:14:33 | header | dicer.js:16:22:16:27 | header |
+| dicer.js:14:28:14:33 | header | dicer.js:16:22:16:27 | header |
+| dicer.js:16:22:16:27 | header | dicer.js:16:22:16:30 | header[h] |
+| dicer.js:16:22:16:27 | header | dicer.js:16:22:16:30 | header[h] |
 | dicer.js:19:26:19:29 | data | dicer.js:20:18:20:21 | data |
 | dicer.js:19:26:19:29 | data | dicer.js:20:18:20:21 | data |
 | dicer.js:19:26:19:29 | data | dicer.js:20:18:20:21 | data |
@@ -218,7 +218,7 @@ edges
 | busybus.js:28:24:28:26 | val | busybus.js:27:31:27:33 | val | busybus.js:28:24:28:26 | val | This entity depends on a $@. | busybus.js:27:31:27:33 | val | user-provided value |
 | busybus.js:28:29:28:32 | info | busybus.js:27:36:27:39 | info | busybus.js:28:29:28:32 | info | This entity depends on a $@. | busybus.js:27:36:27:39 | info | user-provided value |
 | dicer.js:13:19:13:24 | sink() | dicer.js:12:23:12:26 | part | dicer.js:13:19:13:24 | sink() | This entity depends on a $@. | dicer.js:12:23:12:26 | part | user-provided value |
-| dicer.js:16:22:16:22 | h | dicer.js:14:28:14:33 | header | dicer.js:16:22:16:22 | h | This entity depends on a $@. | dicer.js:14:28:14:33 | header | user-provided value |
+| dicer.js:16:22:16:30 | header[h] | dicer.js:14:28:14:33 | header | dicer.js:16:22:16:30 | header[h] | This entity depends on a $@. | dicer.js:14:28:14:33 | header | user-provided value |
 | dicer.js:20:18:20:21 | data | dicer.js:19:26:19:29 | data | dicer.js:20:18:20:21 | data | This entity depends on a $@. | dicer.js:19:26:19:29 | data | user-provided value |
 | formidable.js:8:10:8:15 | fields | formidable.js:7:35:7:49 | form.parse(req) | formidable.js:8:10:8:15 | fields | This entity depends on a $@. | formidable.js:7:35:7:49 | form.parse(req) | user-provided value |
 | formidable.js:8:18:8:22 | files | formidable.js:7:35:7:49 | form.parse(req) | formidable.js:8:18:8:22 | files | This entity depends on a $@. | formidable.js:7:35:7:49 | form.parse(req) | user-provided value |

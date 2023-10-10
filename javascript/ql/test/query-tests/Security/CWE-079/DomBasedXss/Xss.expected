@@ -969,18 +969,6 @@ nodes
 | tst.js:288:59:288:65 | tainted |
 | tst.js:288:59:288:65 | tainted |
 | tst.js:288:59:288:65 | tainted |
-| tst.js:293:9:293:16 | obj |
-| tst.js:293:9:293:16 | obj |
-| tst.js:293:15:293:16 | {} |
-| tst.js:293:15:293:16 | {} |
-| tst.js:294:26:294:36 | window.name |
-| tst.js:294:26:294:36 | window.name |
-| tst.js:294:26:294:36 | window.name |
-| tst.js:295:19:295:21 | obj |
-| tst.js:295:19:295:21 | obj |
-| tst.js:296:9:296:9 | p |
-| tst.js:296:9:296:9 | p |
-| tst.js:296:9:296:9 | p |
 | tst.js:301:9:301:16 | location |
 | tst.js:301:9:301:16 | location |
 | tst.js:302:10:302:10 | e |
@@ -2151,18 +2139,6 @@ edges
 | tst.js:285:19:285:29 | window.name | tst.js:285:9:285:29 | tainted |
 | tst.js:285:19:285:29 | window.name | tst.js:285:9:285:29 | tainted |
 | tst.js:285:19:285:29 | window.name | tst.js:285:9:285:29 | tainted |
-| tst.js:293:9:293:16 | obj | tst.js:295:19:295:21 | obj |
-| tst.js:293:9:293:16 | obj | tst.js:295:19:295:21 | obj |
-| tst.js:293:15:293:16 | {} | tst.js:293:9:293:16 | obj |
-| tst.js:293:15:293:16 | {} | tst.js:293:9:293:16 | obj |
-| tst.js:294:26:294:36 | window.name | tst.js:293:15:293:16 | {} |
-| tst.js:294:26:294:36 | window.name | tst.js:293:15:293:16 | {} |
-| tst.js:294:26:294:36 | window.name | tst.js:293:15:293:16 | {} |
-| tst.js:294:26:294:36 | window.name | tst.js:293:15:293:16 | {} |
-| tst.js:295:19:295:21 | obj | tst.js:296:9:296:9 | p |
-| tst.js:295:19:295:21 | obj | tst.js:296:9:296:9 | p |
-| tst.js:295:19:295:21 | obj | tst.js:296:9:296:9 | p |
-| tst.js:295:19:295:21 | obj | tst.js:296:9:296:9 | p |
 | tst.js:301:9:301:16 | location | tst.js:302:10:302:10 | e |
 | tst.js:301:9:301:16 | location | tst.js:302:10:302:10 | e |
 | tst.js:302:10:302:10 | e | tst.js:303:20:303:20 | e |
@@ -2569,7 +2545,6 @@ edges
 | tst.js:264:11:264:21 | window.name | tst.js:264:11:264:21 | window.name | tst.js:264:11:264:21 | window.name | Cross-site scripting vulnerability due to $@. | tst.js:264:11:264:21 | window.name | user-provided value |
 | tst.js:280:22:280:29 | location | tst.js:280:22:280:29 | location | tst.js:280:22:280:29 | location | Cross-site scripting vulnerability due to $@. | tst.js:280:22:280:29 | location | user-provided value |
 | tst.js:288:59:288:65 | tainted | tst.js:285:19:285:29 | window.name | tst.js:288:59:288:65 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:285:19:285:29 | window.name | user-provided value |
-| tst.js:296:9:296:9 | p | tst.js:294:26:294:36 | window.name | tst.js:296:9:296:9 | p | Cross-site scripting vulnerability due to $@. | tst.js:294:26:294:36 | window.name | user-provided value |
 | tst.js:303:20:303:20 | e | tst.js:301:9:301:16 | location | tst.js:303:20:303:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:301:9:301:16 | location | user-provided value |
 | tst.js:311:20:311:20 | e | tst.js:308:10:308:17 | location | tst.js:311:20:311:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:308:10:308:17 | location | user-provided value |
 | tst.js:316:35:316:42 | location | tst.js:316:35:316:42 | location | tst.js:316:35:316:42 | location | Cross-site scripting vulnerability due to $@. | tst.js:316:35:316:42 | location | user-provided value |

@@ -981,18 +981,6 @@ nodes
 | tst.js:288:59:288:65 | tainted |
 | tst.js:288:59:288:65 | tainted |
 | tst.js:288:59:288:65 | tainted |
-| tst.js:293:9:293:16 | obj |
-| tst.js:293:9:293:16 | obj |
-| tst.js:293:15:293:16 | {} |
-| tst.js:293:15:293:16 | {} |
-| tst.js:294:26:294:36 | window.name |
-| tst.js:294:26:294:36 | window.name |
-| tst.js:294:26:294:36 | window.name |
-| tst.js:295:19:295:21 | obj |
-| tst.js:295:19:295:21 | obj |
-| tst.js:296:9:296:9 | p |
-| tst.js:296:9:296:9 | p |
-| tst.js:296:9:296:9 | p |
 | tst.js:301:9:301:16 | location |
 | tst.js:301:9:301:16 | location |
 | tst.js:302:10:302:10 | e |
@@ -2213,18 +2201,6 @@ edges
 | tst.js:285:19:285:29 | window.name | tst.js:285:9:285:29 | tainted |
 | tst.js:285:19:285:29 | window.name | tst.js:285:9:285:29 | tainted |
 | tst.js:285:19:285:29 | window.name | tst.js:285:9:285:29 | tainted |
-| tst.js:293:9:293:16 | obj | tst.js:295:19:295:21 | obj |
-| tst.js:293:9:293:16 | obj | tst.js:295:19:295:21 | obj |
-| tst.js:293:15:293:16 | {} | tst.js:293:9:293:16 | obj |
-| tst.js:293:15:293:16 | {} | tst.js:293:9:293:16 | obj |
-| tst.js:294:26:294:36 | window.name | tst.js:293:15:293:16 | {} |
-| tst.js:294:26:294:36 | window.name | tst.js:293:15:293:16 | {} |
-| tst.js:294:26:294:36 | window.name | tst.js:293:15:293:16 | {} |
-| tst.js:294:26:294:36 | window.name | tst.js:293:15:293:16 | {} |
-| tst.js:295:19:295:21 | obj | tst.js:296:9:296:9 | p |
-| tst.js:295:19:295:21 | obj | tst.js:296:9:296:9 | p |
-| tst.js:295:19:295:21 | obj | tst.js:296:9:296:9 | p |
-| tst.js:295:19:295:21 | obj | tst.js:296:9:296:9 | p |
 | tst.js:301:9:301:16 | location | tst.js:302:10:302:10 | e |
 | tst.js:301:9:301:16 | location | tst.js:302:10:302:10 | e |
 | tst.js:302:10:302:10 | e | tst.js:303:20:303:20 | e |

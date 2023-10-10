@@ -104,10 +104,6 @@ taintTracking
 | esLib.js:3:21:3:29 | "tainted" | esClient.js:8:13:8:21 | es.source |
 | esLib.js:3:21:3:29 | "tainted" | esClient.js:11:13:11:17 | esFoo |
 | esLib.js:3:21:3:29 | "tainted" | nodeJsClient.js:5:13:5:21 | es.source |
-| global-forin1.js:2:14:2:26 | [ "tainted" ] | global-forin1.js:1:13:1:13 | p |
-| global-forin1.js:2:14:2:26 | [ "tainted" ] | global-forin1.js:4:15:4:15 | p |
-| global-forin1.js:2:14:2:26 | [ "tainted" ] | global-forin1.js:7:13:7:13 | p |
-| global-forin1.js:2:14:2:26 | [ "tainted" ] | global-forin2.js:1:13:1:13 | p |
 | global.js:1:15:1:24 | "tainted1" | global.js:9:13:9:22 | g(source1) |
 | global.js:1:15:1:24 | "tainted1" | global.js:17:13:17:27 | window.location |
 | global.js:2:15:2:24 | "tainted2" | global.js:10:13:10:22 | g(source2) |
