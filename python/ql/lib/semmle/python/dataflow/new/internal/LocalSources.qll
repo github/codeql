@@ -11,6 +11,7 @@ import DataFlowPublic
 private import DataFlowPrivate
 private import semmle.python.internal.CachedStages
 private import semmle.python.internal.Awaited
+private import semmle.python.dataflow.new.internal.ImportStar
 
 /**
  * A data flow node that is a source of local flow. This includes things like
@@ -38,6 +39,22 @@ class LocalSourceNode extends Node {
     Stages::DataFlow::ref() and
     this instanceof ExprNode and
     not simpleLocalFlowStepForTypetracking(_, this)
+    or
+    // For `from foo import *; foo_function()`, we want to let the variables we think
+    // could originate in `foo` (such as `foo_function`) to be available in the API
+    // graph. This requires them to be local sources. They would not be from the code
+    // just above, since the CFG node has flow going into it from its corresponding
+    // `GlobalSsaVariable`. (a different work-around is to change API graphs to not rely
+    // as heavily on LocalSourceNode; I initially tried this, but it relied on a lot of
+    // copy-pasted code, and it requires some non-trivial deprecation for downgrading
+    // the result type of `.asSource()` to DataFlow::Node, so we've opted for this
+    // approach instead).
+    //
+    // Note: This is only needed at the module level -- uses inside functions appear as
+    // LocalSourceNodes as we expect.
+    //
+    // TODO: When rewriting SSA, we should be able to remove this workaround
+    ImportStar::namePossiblyDefinedInImportStar(this.(ExprNode).getNode(), _, any(Module m))
     or
     // We include all module variable nodes, as these act as stepping stones between writes and
     // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be
