@@ -70,7 +70,10 @@ module Flask {
    */
   module FlaskApp {
     /** Gets a reference to the `flask.Flask` class. */
-    API::Node classRef() { result = API::moduleImport("flask").getMember("Flask") }
+    API::Node classRef() {
+      result = API::moduleImport("flask").getMember("Flask") or
+      result = ModelOutput::getATypeNode("flask.Flask~Subclass").getASubclass*()
+    }
 
     /** Gets a reference to an instance of `flask.Flask` (a flask application). */
     API::Node instance() { result = classRef().getReturn() }
@@ -87,6 +90,8 @@ module Flask {
       result = API::moduleImport("flask").getMember("Blueprint")
       or
       result = API::moduleImport("flask").getMember("blueprints").getMember("Blueprint")
+      or
+      result = ModelOutput::getATypeNode("flask.Blueprint~Subclass").getASubclass*()
     }
 
     /** Gets a reference to an instance of `flask.Blueprint`. */
