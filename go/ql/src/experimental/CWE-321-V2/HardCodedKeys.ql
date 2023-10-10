@@ -20,19 +20,13 @@ module JwtParseWithConstantKeyConfig implements DataFlow::ConfigSig {
     // Find a node that has flow to a key Function argument
     // then find the first result node of this Function which is the secret key
     exists(FuncDef fd, DataFlow::Node n, DataFlow::ResultNode rn |
+      fd = n.asExpr()
+      or
+      n = fd.(FuncDecl).getFunction().getARead()
+    |
       GolangJwtKeyFunc::flow(n, _) and
       sink = rn and
-      fd = n.asExpr() and
       rn.getRoot() = fd and
-      rn.getIndex() = 0
-    )
-    or
-    exists(Function f, DataFlow::ResultNode rn |
-      GolangJwtKeyFunc::flow(f.getARead(), _) and
-      // sink is result of a method
-      sink = rn and
-      // the method is belong to a function in which is used as a JWT function key
-      rn.getRoot() = f.getFuncDecl() and
       rn.getIndex() = 0
     )
     or
