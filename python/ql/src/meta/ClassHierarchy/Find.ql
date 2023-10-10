@@ -27,6 +27,7 @@ private import semmle.python.frameworks.RestFramework
 private import semmle.python.frameworks.SqlAlchemy
 private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Urllib3
+private import semmle.python.frameworks.Pydantic
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -408,6 +409,12 @@ class StdlibLogger extends FindSubclassesSpec {
   StdlibLogger() { this = "logging.Logger~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = Stdlib::Logger::subclassRef() }
+}
+
+class PydanticBaseModel extends FindSubclassesSpec {
+  PydanticBaseModel() { this = "pydantic.BaseModel~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Pydantic::BaseModel::subclassRef() }
 }
 
 bindingset[fullyQualified]
