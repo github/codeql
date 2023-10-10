@@ -16,6 +16,7 @@ private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.Requests
 private import semmle.python.frameworks.Starlette
 private import semmle.python.frameworks.ClickhouseDriver
+private import semmle.python.frameworks.Aiohttp
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -239,6 +240,14 @@ class ClickhouseClient extends FindSubclassesSpec {
   ClickhouseClient() { this = "clickhouse_driver.client.Client~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = ClickhouseDriver::Client::subclassRef() }
+}
+
+class AiohttpSession extends FindSubclassesSpec {
+  AiohttpSession() { this = "aiohttp.ClientSession~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = AiohttpClientModel::ClientSession::classRef()
+  }
 }
 
 bindingset[fullyQualified]
