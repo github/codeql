@@ -1,11 +1,11 @@
 import javascript
 
-query Expr getImportAssertionFromImport(ImportDeclaration decl) {
-  result = decl.getImportAssertion()
+query Expr getImportAttributesFromImport(ImportDeclaration decl) {
+  result = decl.getImportAttributes()
 }
 
-query Expr getImportAssertionFromExport(ExportDeclaration decl) {
-  result = decl.getImportAssertion()
+query Expr getImportAttributesFromExport(ExportDeclaration decl) {
+  result = decl.getImportAttributes()
 }
 
 query Expr getImportAttributes(DynamicImportExpr imprt) { result = imprt.getImportAttributes() }
