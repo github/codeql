@@ -41,9 +41,9 @@ predicate localFlowStep(
 ) {
   pred = succ.getAPredecessor() and predlbl = succlbl
   or
-  DataFlow::SharedFlowStep::step(pred, succ) and predlbl = succlbl
+  DataFlow::LegacyFlowStep::step(pred, succ) and predlbl = succlbl
   or
-  DataFlow::SharedFlowStep::step(pred, succ, predlbl, succlbl)
+  DataFlow::LegacyFlowStep::step(pred, succ, predlbl, succlbl)
   or
   exists(boolean vp | configuration.isAdditionalFlowStep(pred, succ, vp) |
     vp = true and

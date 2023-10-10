@@ -1177,7 +1177,7 @@ private string getARelevantProp(DataFlow::Configuration cfg) {
 private predicate isAdditionalLoadStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  SharedFlowStep::loadStep(pred, succ, prop)
+  LegacyFlowStep::loadStep(pred, succ, prop)
   or
   cfg.isAdditionalLoadStep(pred, succ, prop)
 }
@@ -1188,7 +1188,7 @@ private predicate isAdditionalLoadStep(
 private predicate isAdditionalStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg
 ) {
-  SharedFlowStep::storeStep(pred, succ, prop)
+  LegacyFlowStep::storeStep(pred, succ, prop)
   or
   cfg.isAdditionalStoreStep(pred, succ, prop)
 }
@@ -1200,13 +1200,13 @@ private predicate isAdditionalLoadStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp,
   DataFlow::Configuration cfg
 ) {
-  SharedFlowStep::loadStoreStep(pred, succ, loadProp, storeProp)
+  LegacyFlowStep::loadStoreStep(pred, succ, loadProp, storeProp)
   or
   cfg.isAdditionalLoadStoreStep(pred, succ, loadProp, storeProp)
   or
   loadProp = storeProp and
   (
-    SharedFlowStep::loadStoreStep(pred, succ, loadProp)
+    LegacyFlowStep::loadStoreStep(pred, succ, loadProp)
     or
     cfg.isAdditionalLoadStoreStep(pred, succ, loadProp)
   )

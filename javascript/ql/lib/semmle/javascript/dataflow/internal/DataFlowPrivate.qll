@@ -586,6 +586,9 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
     node1 = TFlowSummaryNode(input) and
     node2 = TFlowSummaryNode(output)
   )
+  or
+  // NOTE: For consistency with readStep/storeStep, we do not translate these steps to jump steps automatically.
+  DataFlow::AdditionalFlowStep::step(node1, node2)
 }
 
 predicate localMustFlowStep(Node node1, Node node2) { node1 = node2.getImmediatePredecessor() }
@@ -601,6 +604,8 @@ predicate jumpStep(Node node1, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  DataFlow::AdditionalFlowStep::jumpStep(node1, node2)
 }
 
 /**
@@ -629,6 +634,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     contentSet = MkAwaited() and
     c = ContentSet::promiseValue()
   )
+  or
+  DataFlow::AdditionalFlowStep::readStep(node1, c, node2)
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
@@ -667,6 +674,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2 = TFlowSummaryNode(output) and
     c = ContentSet::promiseValue()
   )
+  or
+  DataFlow::AdditionalFlowStep::storeStep(node1, c, node2)
 }
 
 /**
