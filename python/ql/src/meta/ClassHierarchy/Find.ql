@@ -15,6 +15,7 @@ private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.Requests
 private import semmle.python.frameworks.Starlette
+private import semmle.python.frameworks.ClickhouseDriver
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -232,6 +233,12 @@ class StarletteWebsocket extends FindSubclassesSpec {
   StarletteWebsocket() { this = "starlette.websockets.WebSocket~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = Starlette::WebSocket::classRef() }
+}
+
+class ClickhouseClient extends FindSubclassesSpec {
+  ClickhouseClient() { this = "clickhouse_driver.client.Client~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = ClickhouseDriver::Client::subclassRef() }
 }
 
 bindingset[fullyQualified]
