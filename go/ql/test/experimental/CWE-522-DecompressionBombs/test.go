@@ -7,11 +7,11 @@ package main
 //go:generate depstubber -vendor  github.com/golang/snappy Reader NewReader
 //go:generate depstubber -vendor  github.com/klauspost/compress/snappy "" NewReader
 //go:generate depstubber -vendor  github.com/klauspost/compress/s2 Reader NewReader
-//go:generate depstubber -vendor  github.com/klauspost/compress/gzip Reader NewReader 
-//go:generate depstubber -vendor  github.com/klauspost/pgzip Reader NewReader 
-//go:generate depstubber -vendor  github.com/klauspost/compress/zstd Decoder NewReader 
+//go:generate depstubber -vendor  github.com/klauspost/compress/gzip Reader NewReader
+//go:generate depstubber -vendor  github.com/klauspost/pgzip Reader NewReader
+//go:generate depstubber -vendor  github.com/klauspost/compress/zstd Decoder NewReader
 //go:generate depstubber -vendor  github.com/DataDog/zstd "" NewReader
-//go:generate depstubber -vendor  github.com/ulikunitz/xz Reader NewReader 
+//go:generate depstubber -vendor  github.com/ulikunitz/xz Reader NewReader
 //go:generate depstubber -vendor  github.com/klauspost/compress/zip FileHeader,File,Reader,ReadCloser NewReader,OpenReader
 
 import (
@@ -23,6 +23,12 @@ import (
 	"compress/gzip"
 	"compress/zlib"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"testing/fstest"
+
 	zstdDataDog "github.com/DataDog/zstd"
 	bzip2Dsnet "github.com/dsnet/compress/bzip2"
 	flateDsnet "github.com/dsnet/compress/flate"
@@ -36,11 +42,6 @@ import (
 	zstdKlauspost "github.com/klauspost/compress/zstd"
 	pzipKlauspost "github.com/klauspost/pgzip"
 	"github.com/ulikunitz/xz"
-	"io"
-	"io/ioutil"
-	"net/http"
-	"os"
-	"testing/fstest"
 )
 
 func main() {
