@@ -22,10 +22,6 @@ deprecated class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegExpInjection::Sink }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof RegExpInjection::SanitizerGuard
-  }
-
   override predicate isSanitizer(DataFlow::Node node) { node instanceof RegExpInjection::Sanitizer }
 }
 

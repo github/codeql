@@ -29,7 +29,7 @@ deprecated class OgnlInjectionFlowConfig extends TaintTracking::Configuration {
  * A taint-tracking configuration for unvalidated user input that is used in OGNL EL evaluation.
  */
 module OgnlInjectionFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof OgnlInjectionSink }
 

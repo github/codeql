@@ -27,7 +27,7 @@ deprecated class LogInjectionConfiguration extends TaintTracking::Configuration 
  * A taint-tracking configuration for tracking untrusted user input used in log entries.
  */
 module LogInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof LogInjectionSink }
 
