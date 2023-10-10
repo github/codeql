@@ -152,6 +152,8 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
     n = call.asBoundCall(boundArgs).getArgument(pos.asPositional() - boundArgs)
   )
   or
+  pos.isFunctionSelfReference() and n = call.asOrdinaryCall().getCalleeNode()
+  or
   pos.isThis() and n = TConstructorThisArgumentNode(call.asOrdinaryCall().asExpr())
   or
   // For now, treat all spread argument as flowing into the 'arguments' array, regardless of preceding arguments
@@ -348,6 +350,7 @@ newtype TParameterPosition =
   MkPositionalParameter(int n) { n = [0 .. getMaxArity()] } or
   MkPositionalLowerBound(int n) { n = [0 .. getMaxArity()] } or
   MkThisParameter() or
+  MkFunctionSelfReferenceParameter() or
   MkArgumentsArrayParameter()
 
 class ParameterPosition extends TParameterPosition {
@@ -363,6 +366,8 @@ class ParameterPosition extends TParameterPosition {
 
   predicate isThis() { this = MkThisParameter() }
 
+  predicate isFunctionSelfReference() { this = MkFunctionSelfReferenceParameter() }
+
   predicate isArgumentsArray() { this = MkArgumentsArrayParameter() }
 
   string toString() {
@@ -371,6 +376,8 @@ class ParameterPosition extends TParameterPosition {
     result = this.asPositionalLowerBound().toString() + ".."
     or
     this.isThis() and result = "this"
+    or
+    this.isFunctionSelfReference() and result = "function"
     or
     this.isArgumentsArray() and result = "arguments-array"
   }

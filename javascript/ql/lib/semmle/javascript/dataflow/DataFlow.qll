@@ -1433,6 +1433,30 @@ module DataFlow {
   }
 
   /**
+   * A node representing the hidden parameter of a function by which a function can refer to itself.
+   */
+  class FunctionSelfReferenceNode extends DataFlow::Node, TFunctionSelfReferenceNode {
+    private Function function;
+
+    FunctionSelfReferenceNode() { this = TFunctionSelfReferenceNode(function) }
+
+    /** Gets the function. */
+    Function getFunction() { result = function }
+
+    override StmtContainer getContainer() { result = function }
+
+    override BasicBlock getBasicBlock() { result = function.getEntryBB() }
+
+    override string toString() { result = "[function self-reference] " + function.toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  /**
    * A post-update node whose pre-node corresponds to an expression. See `DataFlow::PostUpdateNode` for more details.
    */
   class ExprPostUpdateNode extends DataFlow::Node, TExprPostUpdateNode, Private::PostUpdateNode {

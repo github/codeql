@@ -1888,6 +1888,8 @@ module PathNode {
     or
     // Skip captured variable nodes as the successor will be a use of that variable anyway.
     nd = DataFlow::capturedVariableNode(_)
+    or
+    nd instanceof DataFlow::FunctionSelfReferenceNode
   }
 }
 
