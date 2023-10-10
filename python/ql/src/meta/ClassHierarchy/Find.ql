@@ -21,6 +21,7 @@ private import semmle.python.frameworks.Fabric
 private import semmle.python.frameworks.Httpx
 private import semmle.python.frameworks.Invoke
 private import semmle.python.frameworks.MarkupSafe
+private import semmle.python.frameworks.Multidict
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -308,6 +309,12 @@ class MarkupSafe extends FindSubclassesSpec {
   MarkupSafe() { this = "markupsafe.Markup~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = MarkupSafeModel::Markup::classRef() }
+}
+
+class Multidict extends FindSubclassesSpec {
+  Multidict() { this = "multidict.MultiDictProxy~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Multidict::MultiDictProxy::classRef() }
 }
 
 bindingset[fullyQualified]
