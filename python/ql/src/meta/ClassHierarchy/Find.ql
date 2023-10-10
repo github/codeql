@@ -26,6 +26,7 @@ private import semmle.python.frameworks.Pycurl
 private import semmle.python.frameworks.RestFramework
 private import semmle.python.frameworks.SqlAlchemy
 private import semmle.python.frameworks.Tornado
+private import semmle.python.frameworks.Urllib3
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -395,6 +396,12 @@ class TornadoRequest extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = Tornado::TornadoModule::HttpUtil::HttpServerRequest::classRef()
   }
+}
+
+class Urllib3PoolManager extends FindSubclassesSpec {
+  Urllib3PoolManager() { this = "urllib3.PoolManager~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Urllib3::PoolManager::classRef() }
 }
 
 bindingset[fullyQualified]
