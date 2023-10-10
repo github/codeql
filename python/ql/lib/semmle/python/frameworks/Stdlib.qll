@@ -255,8 +255,10 @@ module Stdlib {
    */
   module Logger {
     /** Gets a reference to the `logging.Logger` class or any subclass. */
-    private API::Node subclassRef() {
+    API::Node subclassRef() {
       result = API::moduleImport("logging").getMember("Logger").getASubclass*()
+      or
+      result = ModelOutput::getATypeNode("logging.Logger~Subclass").getASubclass*()
     }
 
     /**

@@ -404,6 +404,12 @@ class Urllib3PoolManager extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = Urllib3::PoolManager::classRef() }
 }
 
+class StdlibLogger extends FindSubclassesSpec {
+  StdlibLogger() { this = "logging.Logger~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Stdlib::Logger::subclassRef() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
