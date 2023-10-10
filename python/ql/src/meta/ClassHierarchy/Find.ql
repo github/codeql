@@ -28,6 +28,7 @@ private import semmle.python.frameworks.SqlAlchemy
 private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Urllib3
 private import semmle.python.frameworks.Pydantic
+private import semmle.python.frameworks.Peewee
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -415,6 +416,12 @@ class PydanticBaseModel extends FindSubclassesSpec {
   PydanticBaseModel() { this = "pydantic.BaseModel~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = Pydantic::BaseModel::subclassRef() }
+}
+
+class PeeweeDatabase extends FindSubclassesSpec {
+  PeeweeDatabase() { this = "peewee.Database~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Peewee::Database::subclassRef() }
 }
 
 bindingset[fullyQualified]
