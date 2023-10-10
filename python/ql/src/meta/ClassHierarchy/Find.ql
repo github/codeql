@@ -22,6 +22,7 @@ private import semmle.python.frameworks.Httpx
 private import semmle.python.frameworks.Invoke
 private import semmle.python.frameworks.MarkupSafe
 private import semmle.python.frameworks.Multidict
+private import semmle.python.frameworks.Pycurl
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -315,6 +316,12 @@ class Multidict extends FindSubclassesSpec {
   Multidict() { this = "multidict.MultiDictProxy~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = Multidict::MultiDictProxy::classRef() }
+}
+
+class PyCurl extends FindSubclassesSpec {
+  PyCurl() { this = "pycurl.Curl~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Pycurl::Curl::classRef() }
 }
 
 bindingset[fullyQualified]
