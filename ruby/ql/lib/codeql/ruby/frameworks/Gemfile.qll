@@ -61,7 +61,7 @@ module Gemfile {
     string toString() { result = this.toSourceString() }
 
     /**
-     * The representation of the comparator in source code.
+     * Gets the representation of the comparator in source code.
      * This is defined separately so that we can change the `toString` implementation without breaking `parseConstraint`.
      */
     string toSourceString() {
