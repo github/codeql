@@ -67,8 +67,8 @@ namespace Semmle.Extraction.CSharp
             foreach (var assembly in compilation.References.OfType<PortableExecutableReference>())
             {
                 // CIL first - it takes longer.
-                if (options.CIL)
-                    extractionTasks.Add(() => DoExtractCIL(assembly));
+                // if (options.CIL)
+                //    extractionTasks.Add(() => DoExtractCIL(assembly));
                 extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
             }
         }
