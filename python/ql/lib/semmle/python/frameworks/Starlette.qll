@@ -13,6 +13,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -35,6 +36,8 @@ module Starlette {
       result = API::moduleImport("starlette").getMember("websockets").getMember("WebSocket")
       or
       result = API::moduleImport("fastapi").getMember("WebSocket")
+      or
+      result = ModelOutput::getATypeNode("starlette.websockets.WebSocket~Subclass").getASubclass*()
     }
 
     /**
