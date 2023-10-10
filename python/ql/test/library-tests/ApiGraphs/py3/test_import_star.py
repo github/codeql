@@ -6,6 +6,8 @@ from unknown import * #$ use=moduleImport("unknown")
 # going into it from its corresponding `GlobalSsaVariable`.
 hello() #$ MISSING: use=moduleImport("unknown").getMember("hello").getReturn()
 
+print(const_from_unknown) #$ MISSING: use=moduleImport("unknown").getMember("const_from_unknown")
+
 # We don't want our analysis to think that either `non_module_member` or `outer_bar` can
 # come from `from unknown import *`
 non_module_member
