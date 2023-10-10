@@ -14,6 +14,7 @@ private import semmle.python.frameworks.Django
 private import semmle.python.frameworks.Tornado
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.Requests
+private import semmle.python.frameworks.Starlette
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -225,6 +226,12 @@ class HttpClientHttpResponse extends FindSubclassesSpec {
   HttpClientHttpResponse() { this = "http.client.HTTPResponse~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = StdlibPrivate::HttpResponse::classRef() }
+}
+
+class StarletteWebsocket extends FindSubclassesSpec {
+  StarletteWebsocket() { this = "starlette.websockets.WebSocket~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Starlette::WebSocket::classRef() }
 }
 
 bindingset[fullyQualified]
