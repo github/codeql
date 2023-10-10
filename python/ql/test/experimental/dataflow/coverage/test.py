@@ -435,10 +435,14 @@ def test_and(x = True):
 
 
 # 6.12. Assignment expressions
-def test_assignment_expression():
+def test_assignment_expression_flow_lhs():
     x = NONSOURCE
-    SINK(x := SOURCE) #$ MISSING:flow="SOURCE -> x"
+    if x := SOURCE:
+        SINK(x) #$ flow="SOURCE, l:-1 -> x"
 
+def test_assignment_expression_flow_out():
+    x = NONSOURCE
+    SINK(x := SOURCE) #$ flow="SOURCE -> AssignExpr"
 
 # 6.13. Conditional expressions
 def test_conditional_true():
@@ -460,13 +464,13 @@ def test_conditional_false_guards():
 # Condition is evaluated first, so x is SOURCE once chosen
 def test_conditional_evaluation_true():
     x = NONSOURCE
-    SINK(x if (SOURCE == (x := SOURCE)) else NONSOURCE) #$ MISSING:flow="SOURCE -> IfExp"
+    SINK(x if (SOURCE == (x := SOURCE)) else NONSOURCE) #$ flow="SOURCE -> IfExp"
 
 
 # Condition is evaluated first, so x is SOURCE once chosen
 def test_conditional_evaluation_false():
     x = NONSOURCE
-    SINK(NONSOURCE if (NONSOURCE == (x := SOURCE)) else x) #$ MISSING:flow="SOURCE -> IfExp"
+    SINK(NONSOURCE if (NONSOURCE == (x := SOURCE)) else x) #$ flow="SOURCE -> IfExp"
 
 
 # 6.14. Lambdas

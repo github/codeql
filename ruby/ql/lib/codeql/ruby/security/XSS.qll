@@ -35,13 +35,6 @@ private module Shared {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "server-side cross-site scripting" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   private class ErbOutputMethodCallArgumentNode extends DataFlow::Node {
     private MethodCall call;
 
@@ -261,13 +254,6 @@ module ReflectedXss {
   class Sanitizer = Shared::Sanitizer;
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for stored XSS vulnerabilities.
-   */
-  deprecated class SanitizerGuard = Shared::SanitizerGuard;
-
-  /**
    * An additional step that is preserves dataflow in the context of reflected XSS.
    */
   predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
@@ -316,13 +302,6 @@ module StoredXss {
 
   /** A sanitizer for stored XSS vulnerabilities. */
   class Sanitizer = Shared::Sanitizer;
-
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for stored XSS vulnerabilities.
-   */
-  deprecated class SanitizerGuard = Shared::SanitizerGuard;
 
   /**
    * An additional step that preserves dataflow in the context of stored XSS.

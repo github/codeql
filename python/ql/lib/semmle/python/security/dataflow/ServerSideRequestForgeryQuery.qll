@@ -35,10 +35,6 @@ deprecated class FullServerSideRequestForgeryConfiguration extends TaintTracking
     or
     node instanceof FullUrlControlSanitizer
   }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
 
 /**
@@ -93,10 +89,6 @@ deprecated class PartialServerSideRequestForgeryConfiguration extends TaintTrack
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
 
 /**

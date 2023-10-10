@@ -6,7 +6,7 @@ private import semmle.code.java.security.ArithmeticCommon
 
 /** A taint-tracking configuration to reason about overflow from unvalidated user input. */
 module RemoteUserInputOverflowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
@@ -17,7 +17,7 @@ module RemoteUserInputOverflowConfig implements DataFlow::ConfigSig {
 
 /** A taint-tracking configuration to reason about underflow from unvalidated user input. */
 module RemoteUserInputUnderflowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
