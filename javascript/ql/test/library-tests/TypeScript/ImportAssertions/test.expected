@@ -11,6 +11,10 @@ getImportAttributesFromImport
 | ts-import-assertions.ts:4:1:4:51 | import  ... son" }; | ts-import-assertions.ts:4:35:4:50 | { type: "json" } |
 | ts-import-assertions.ts:5:1:5:50 | import  ... son" }; | ts-import-assertions.ts:5:34:5:49 | { type: "json" } |
 | ts-import-assertions.ts:6:1:6:46 | import  ... son" }; | ts-import-assertions.ts:6:30:6:45 | { type: "json" } |
+| ts-import-assertions.ts:17:1:17:40 | import  ... son" }; | ts-import-assertions.ts:17:24:17:39 | { type: "json" } |
+| ts-import-assertions.ts:18:1:18:53 | import  ... son" }; | ts-import-assertions.ts:18:37:18:52 | { type: "json" } |
+| ts-import-assertions.ts:19:1:19:52 | import  ... son" }; | ts-import-assertions.ts:19:36:19:51 | { type: "json" } |
+| ts-import-assertions.ts:20:1:20:48 | import  ... son" }; | ts-import-assertions.ts:20:32:20:47 | { type: "json" } |
 getImportAttributesFromExport
 | js-import-assertions.js:6:1:6:50 | export  ... son" }; | js-import-assertions.js:6:34:6:49 | { type: "json" } |
 | js-import-assertions.js:7:1:7:45 | export  ... son" }; | js-import-assertions.js:7:29:7:44 | { type: "json" } |
@@ -21,8 +25,12 @@ getImportAttributesFromExport
 | ts-import-assertions.ts:8:1:8:50 | export  ... son" }; | ts-import-assertions.ts:8:34:8:49 | { type: "json" } |
 | ts-import-assertions.ts:9:1:9:45 | export  ... son" }; | ts-import-assertions.ts:9:29:9:44 | { type: "json" } |
 | ts-import-assertions.ts:10:1:10:51 | export  ... son" }; | ts-import-assertions.ts:10:35:10:50 | { type: "json" } |
+| ts-import-assertions.ts:22:1:22:52 | export  ... son" }; | ts-import-assertions.ts:22:36:22:51 | { type: "json" } |
+| ts-import-assertions.ts:23:1:23:47 | export  ... son" }; | ts-import-assertions.ts:23:31:23:46 | { type: "json" } |
+| ts-import-assertions.ts:24:1:24:53 | export  ... son" }; | ts-import-assertions.ts:24:37:24:52 | { type: "json" } |
 getImportOptions
 | js-import-assertions.js:10:12:10:55 | import( ... n" } }) | js-import-assertions.js:10:29:10:54 | { with: ... on" } } |
 | js-import-assertions.js:24:12:24:57 | import( ... n" } }) | js-import-assertions.js:24:29:24:56 | { asser ... on" } } |
 | ts-import-assertions.ts:12:12:12:55 | import( ... n" } }) | ts-import-assertions.ts:12:29:12:54 | { with: ... on" } } |
+| ts-import-assertions.ts:26:12:26:57 | import( ... n" } }) | ts-import-assertions.ts:26:29:26:56 | { asser ... on" } } |
 errors
