@@ -362,6 +362,24 @@ class SqlAlchemySession extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = SqlAlchemy::Session::classRef() }
 }
 
+class UrlLibParseSplitResult extends FindSubclassesSpec {
+  UrlLibParseSplitResult() { this = "urllib.parse.SplitResult~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = Stdlib::SplitResult::classRef() }
+}
+
+class StdlibHttpConnection extends FindSubclassesSpec {
+  StdlibHttpConnection() { this = "http.client.HTTPConnection~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = StdlibPrivate::HttpConnection::classRef() }
+}
+
+class StringIO extends FindSubclassesSpec {
+  StringIO() { this = "io.StringIO~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = StdlibPrivate::StringIO::classRef() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
