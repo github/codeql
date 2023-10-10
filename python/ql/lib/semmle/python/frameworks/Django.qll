@@ -838,6 +838,10 @@ module PrivateDjango {
               or
               // Commonly used alias
               result = models().getMember("RawSQL")
+              or
+              result =
+                ModelOutput::getATypeNode("django.db.models.expressions.RawSQL~Subclass")
+                    .getASubclass*()
             }
 
             /**
@@ -1172,6 +1176,9 @@ module PrivateDjango {
             or
             // handle django.http.HttpRequest alias
             result = http().getMember("HttpRequest")
+            or
+            result =
+              ModelOutput::getATypeNode("django.http.request.HttpRequest~Subclass").getASubclass*()
           }
 
           /**
@@ -1475,7 +1482,7 @@ module PrivateDjango {
           API::Node classRef() {
             result = baseClassRef().getASubclass*() or
             result =
-              ModelOutput::getATypeNode("Django.http.response.HttpResponsePermanentRedirect~Subclass")
+              ModelOutput::getATypeNode("django.http.response.HttpResponsePermanentRedirect~Subclass")
                   .getASubclass*()
           }
 

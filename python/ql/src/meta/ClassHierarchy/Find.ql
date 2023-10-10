@@ -259,6 +259,22 @@ class FabricConnection extends FindSubclassesSpec {
   }
 }
 
+class DjangoRawSql extends FindSubclassesSpec {
+  DjangoRawSql() { this = "django.db.models.expressions.RawSQL~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DB::Models::Expressions::RawSql::classRef()
+  }
+}
+
+class DjangoHttpRequest extends FindSubclassesSpec {
+  DjangoHttpRequest() { this = "django.http.request.HttpRequest~Subclass" }
+
+  override API::Node getAlreadyModeledClass() {
+    result = PrivateDjango::DjangoImpl::DjangoHttp::Request::HttpRequest::classRef()
+  }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
