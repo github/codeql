@@ -24,6 +24,7 @@ private import semmle.python.frameworks.MarkupSafe
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Pycurl
 private import semmle.python.frameworks.RestFramework
+private import semmle.python.frameworks.SqlAlchemy
 import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions as Extensions
 
 class FlaskViewClasses extends FindSubclassesSpec {
@@ -335,6 +336,24 @@ class RestFrameworkResponse extends FindSubclassesSpec {
   RestFrameworkResponse() { this = "rest_framework.response.Response~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = RestFramework::Response::classRef() }
+}
+
+class SqlAlchemyEngine extends FindSubclassesSpec {
+  SqlAlchemyEngine() { this = "sqlalchemy.engine.Engine~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = SqlAlchemy::Engine::classRef() }
+}
+
+class SqlAlchemyConnection extends FindSubclassesSpec {
+  SqlAlchemyConnection() { this = "sqlalchemy.engine.Connection~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = SqlAlchemy::Connection::classRef() }
+}
+
+class SqlAlchemySession extends FindSubclassesSpec {
+  SqlAlchemySession() { this = "sqlalchemy.orm.Session~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = SqlAlchemy::Session::classRef() }
 }
 
 bindingset[fullyQualified]
