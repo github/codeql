@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for Gemfiles, including version constraint logic.
+ */
+
 private import codeql.ruby.AST
 
 /**
@@ -19,6 +23,9 @@ module Gemfile {
   class Gem extends MethodCall {
     Gem() { this.getMethodName() = "gem" and this.getFile() = getGemfile() }
 
+    /**
+     * Gets the name of the gem in this version constraint.
+     */
     string getName() { result = this.getArgument(0).getConstantValue().getStringlikeValue() }
 
     /**
@@ -86,6 +93,10 @@ module Gemfile {
     )
   }
 
+  /**
+   * A version constraint in a `gem` call. This consists of a version number and an optional comparator, for example
+   * `>= 1.2.3`.
+   */
   class VersionConstraint extends string {
     Comparator comp;
     string versionString;
