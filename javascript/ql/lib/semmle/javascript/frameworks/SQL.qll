@@ -104,7 +104,7 @@ private module Postgres {
   API::Node clientOrPool() { result = API::Node::ofType("pg", ["Client", "PoolClient", "Pool"]) }
 
   /** A call to the Postgres `query` method. */
-  private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+  private class QueryCall extends DatabaseAccess, API::CallNode {
     QueryCall() { this = clientOrPool().getMember(["execute", "query"]).getACall() }
 
     override DataFlow::Node getAResult() {
@@ -117,8 +117,13 @@ private module Postgres {
       PromiseFlow::loadStep(this.getALocalUse(), result, Promises::valueProp())
     }
 
-    override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getAQueryArgument() {
+      result = this.getArgument(0) or result = this.getParameter(0).getMember("text").asSink()
+    }
   }
+
+  /** Gets a Postgres Query member. */
+  API::Node query() { result = API::moduleImport("pg").getMember("Query") }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
@@ -126,6 +131,8 @@ private module Postgres {
       this = any(QueryCall qc).getAQueryArgument()
       or
       this = API::moduleImport("pg-cursor").getParameter(0).asSink()
+      or
+      this = query().getParameter(0).asSink()
     }
   }
 
