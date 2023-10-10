@@ -26,4 +26,4 @@ updates:
       - dependency-name: "golang.org/x/mod"
       - dependency-name: "golang.org/x/tools"
     reviewers:
-      - "github/codeql-go-team"
+      - "github/codeql-go"
