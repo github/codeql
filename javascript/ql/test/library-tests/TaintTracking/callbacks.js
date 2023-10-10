@@ -58,3 +58,18 @@ function test() {
     sink(x); // NOT OK
   });
 }
+
+function forwardTaint3(x, cb) {
+  cb(x); // Same as 'forwardTaint' but copied to avoid interference between tests
+  cb(x);
+}
+
+function forwardTaint4(x, cb) {
+  forwardTaint3(x, cb); // Same as 'forwardTaint2' but copied to avoid interference between tests
+  forwardTaint3(x, cb);
+}
+
+function test2() {
+  forwardTaint4(source(), x => sink(x)); // NOT OK
+  forwardTaint4("safe", x => sink(x)); // OK [INCONSISTENCY]
+}
