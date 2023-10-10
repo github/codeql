@@ -57,6 +57,12 @@ app.get('/user/:id', function(req, res) {
   }
 });
 
+app.get('/user/:id', function(req, res) {
+  const url = req.params.id;
+  // Good: response is stringified and interpreted as json
+  res.send(JSON.stringify(url)); // OK
+});
+
 function escapeHtml1 (str) {
   if (!/["'&<>]/.exec(str)) {
       return str;

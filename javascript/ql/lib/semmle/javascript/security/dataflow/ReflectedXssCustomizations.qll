@@ -4,7 +4,6 @@
  */
 
 import javascript
-
 module ReflectedXss {
   private import Xss::Shared as Shared
 
@@ -147,6 +146,13 @@ module ReflectedXss {
   { }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
+  private class JSONParseSanitzier extends Sanitizer {
+    JSONParseSanitzier() {
+      this instanceof JsonStringifyCall and
+      this instanceof HttpResponseSink
+    }
+  }
 
   /** A third-party controllable request input, considered as a flow source for reflected XSS. */
   class ThirdPartyRequestInputAccessAsSource extends Source {
