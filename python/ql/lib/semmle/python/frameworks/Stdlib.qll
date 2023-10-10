@@ -182,8 +182,10 @@ module Stdlib {
    */
   module SplitResult {
     /** Gets a reference to the `urllib.parse.SplitResult` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("urllib").getMember("parse").getMember("SplitResult")
+      or
+      result = ModelOutput::getATypeNode("urllib.parse.SplitResult~Subclass").getASubclass*()
     }
 
     /**
@@ -2306,7 +2308,7 @@ module StdlibPrivate {
    */
   module HttpConnection {
     /** Gets a reference to the `http.client.HttpConnection` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       exists(string className | className in ["HTTPConnection", "HTTPSConnection"] |
         // Python 3
         result = API::moduleImport("http").getMember("client").getMember(className)
@@ -2317,6 +2319,8 @@ module StdlibPrivate {
         result =
           API::moduleImport("six").getMember("moves").getMember("http_client").getMember(className)
       )
+      or
+      result = ModelOutput::getATypeNode("http.client.HTTPConnection~Subclass").getASubclass*()
     }
 
     /**
@@ -3550,8 +3554,10 @@ module StdlibPrivate {
    */
   module StringIO {
     /** Gets a reference to the `io.StringIO` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("io").getMember(["StringIO", "BytesIO"])
+      or
+      result = ModelOutput::getATypeNode("io.StringIO~Subclass").getASubclass*()
     }
 
     /**
