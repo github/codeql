@@ -32,6 +32,8 @@ module AiohttpWebModel {
     /** Gets a reference to the `aiohttp.web.View` class or any subclass. */
     API::Node subclassRef() {
       result = API::moduleImport("aiohttp").getMember("web").getMember("View").getASubclass*()
+      or
+      result = ModelOutput::getATypeNode("aiohttp.web.View~Subclass").getASubclass*()
     }
   }
 
