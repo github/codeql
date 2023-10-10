@@ -384,10 +384,63 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
 
 predicate forceHighPrecision(Content c) { none() }
 
-class ContentApprox = Unit;
+newtype TContentApprox =
+  TApproxPropertyContent() or
+  TApproxMapKey() or
+  TApproxMapValue() or
+  TApproxSetElement() or
+  TApproxIteratorElement() or
+  TApproxIteratorError() or
+  TApproxPromiseValue() or
+  TApproxPromiseError() or
+  TApproxCapturedContent()
+
+class ContentApprox extends TContentApprox {
+  string toString() {
+    this = TApproxPropertyContent() and result = "TApproxPropertyContent"
+    or
+    this = TApproxMapKey() and result = "TApproxMapKey"
+    or
+    this = TApproxMapValue() and result = "TApproxMapValue"
+    or
+    this = TApproxSetElement() and result = "TApproxSetElement"
+    or
+    this = TApproxIteratorElement() and result = "TApproxIteratorElement"
+    or
+    this = TApproxIteratorError() and result = "TApproxIteratorError"
+    or
+    this = TApproxPromiseValue() and result = "TApproxPromiseValue"
+    or
+    this = TApproxPromiseError() and result = "TApproxPromiseError"
+    or
+    this = TApproxCapturedContent() and result = "TApproxCapturedContent"
+  }
+}
 
 pragma[inline]
-ContentApprox getContentApprox(Content c) { exists(result) and exists(c) }
+ContentApprox getContentApprox(Content c) {
+  c instanceof MkPropertyContent and result = TApproxPropertyContent()
+  or
+  c instanceof MkArrayElementUnknown and result = TApproxPropertyContent()
+  or
+  c instanceof MkMapKey and result = TApproxMapKey()
+  or
+  c instanceof MkMapValueWithKnownKey and result = TApproxMapValue()
+  or
+  c instanceof MkMapValueWithUnknownKey and result = TApproxMapValue()
+  or
+  c instanceof MkSetElement and result = TApproxSetElement()
+  or
+  c instanceof MkIteratorElement and result = TApproxIteratorElement()
+  or
+  c instanceof MkIteratorError and result = TApproxIteratorError()
+  or
+  c instanceof MkPromiseValue and result = TApproxPromiseValue()
+  or
+  c instanceof MkPromiseError and result = TApproxPromiseError()
+  or
+  c instanceof MkCapturedContent and result = TApproxCapturedContent()
+}
 
 cached
 private newtype TDataFlowCall =
