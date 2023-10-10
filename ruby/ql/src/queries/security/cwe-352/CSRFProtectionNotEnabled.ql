@@ -44,6 +44,6 @@ where
   (
     railsPreVersion3()
     or
-    not any(MethodCall m).getMethodName() = "csrf_meta_tags"
+    not any(MethodCall m).getMethodName() = ["csrf_meta_tags", "csrf_meta_tag"]
   )
 select c, "Potential CSRF vulnerability due to forgery protection not being enabled."
