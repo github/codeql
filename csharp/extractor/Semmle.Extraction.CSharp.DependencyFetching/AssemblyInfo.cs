@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         /// <summary>
         /// The version number of the .NET Core framework that this assembly targets.
-        /// 
+        ///
         /// This is extracted from the `TargetFrameworkAttribute` of the assembly, e.g.
         /// ```
         /// [assembly:TargetFramework(".NETCoreApp,Version=v7.0")]
@@ -165,6 +165,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 unsafe
                 {
                     var reader = new MetadataReader(metadata.Pointer, metadata.Length);
+                    if (!reader.IsAssembly)
+                    {
+                        throw new AssemblyLoadException();
+                    }
+
                     var def = reader.GetAssemblyDefinition();
 
                     // This is how you compute the public key token from the full public key.

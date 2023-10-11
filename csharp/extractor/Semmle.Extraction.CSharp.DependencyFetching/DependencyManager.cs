@@ -644,9 +644,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public void Dispose()
         {
-            packageDirectory?.Dispose();
+            try
+            {
+                packageDirectory?.Dispose();
+            }
+            catch (Exception exc)
+            {
+                progressMonitor.LogInfo("Couldn't delete package directory: " + exc.Message);
+            }
             if (cleanupTempWorkingDirectory)
-                tempWorkingDirectory?.Dispose();
+            {
+                try
+                {
+                    tempWorkingDirectory?.Dispose();
+                }
+                catch (Exception exc)
+                {
+                    progressMonitor.LogInfo("Couldn't delete temporary working directory: " + exc.Message);
+                }
+            }
         }
     }
 }
