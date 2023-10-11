@@ -119,7 +119,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var dependencies = Assets.GetCompilationDependencies(progressMonitor, assets1.Union(assets2));
 
                 var paths = dependencies
-                    .RequiredPaths
+                    .Paths
                     .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
                     .ToList();
                 dllPaths.UnionWith(paths);
@@ -356,7 +356,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void LogAllUnusedPackages(DependencyContainer dependencies) =>
             GetAllPackageDirectories()
-                .Where(package => !dependencies.UsedPackages.Contains(package))
+                .Where(package => !dependencies.Packages.Contains(package))
                 .ForEach(package => progressMonitor.LogInfo($"Unused package: {package}"));
 
         private void GenerateSourceFileFromImplicitUsings()
