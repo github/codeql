@@ -322,7 +322,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var emptyVersion = new Version(0, 0);
-            sortedReferences = sortedReferences.OrderBy(r => r.NetCoreVersion ?? emptyVersion).ThenBy(r => r.Version ?? emptyVersion).ToList();
+            sortedReferences = sortedReferences
+                .OrderBy(r => r.NetCoreVersion ?? emptyVersion)
+                .ThenBy(r => r.Version ?? emptyVersion)
+                .ThenBy(r => r.Filename)
+                .ToList();
 
             var finalAssemblyList = new Dictionary<string, AssemblyInfo>();
 
