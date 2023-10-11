@@ -114,6 +114,12 @@ newtype TNode =
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+  } or
+  /** A synthetic node representing a captured variable. */
+  TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+  /** A synthetic node representing the heap of a function. Used for variable capture. */
+  TLambdaSelfReferenceNode(Function f) {
+    f = any(VariableCapture::CapturedVariable v).getACapturingScope()
   }
 
 private import semmle.python.internal.CachedStages
@@ -472,6 +478,29 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 }
 
 /**
+ * A synthesized data flow node representing a closure object that tracks
+ * captured variables.
+ */
+class CaptureNode extends Node, TCaptureNode {
+  private VariableCapture::Flow::SynthesizedCaptureNode cn;
+
+  CaptureNode() { this = TCaptureNode(cn) }
+
+  /** Gets the `SynthesizedCaptureNode` that this node represents. */
+  VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result = TFunction(cn.getEnclosingCallable())
+    or
+    result = TModule(cn.getEnclosingCallable())
+  }
+
+  override Location getLocation() { result = cn.getLocation() }
+
+  override string toString() { result = cn.toString() }
+}
+
+/**
  * Gets a node that controls whether other nodes are evaluated.
  *
  * In the base case, this is the last node of `conditionBlock`, and `flipped` is `false`.
@@ -602,7 +631,9 @@ newtype TContent =
     exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
       attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
     )
-  }
+  } or
+  /** A captured variable. */
+  TCapturedVariableContent(VariableCapture::CapturedVariable v)
 
 /**
  * A data-flow value can have associated content.
@@ -663,6 +694,18 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+}
+
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  /** Gets the captured variable. */
+  VariableCapture::CapturedVariable getVariable() { result = v }
+
+  override string toString() { result = "captured " + v }
 }
 
 /**

@@ -378,6 +378,193 @@ module LocalFlow {
   }
 }
 
+/** Provides logic related to captured variables. */
+module VariableCapture {
+  private import codeql.dataflow.VariableCapture as Shared
+
+  class ExprCfgNode extends ControlFlowNode {
+    ExprCfgNode() { isExpressionNode(this) }
+  }
+
+  private predicate closureFlowStep(ExprCfgNode e1, ExprCfgNode e2) {
+    // simpleAstFlowStep(e1, e2)
+    // or
+    exists(SsaVariable def |
+      def.getAUse() = e2 and
+      def.getAnUltimateDefinition().getDefinition().(DefinitionNode).getValue() = e1
+    )
+  }
+
+  private module CaptureInput implements Shared::InputSig<Location> {
+    private import python as P
+
+    class BasicBlock extends P::BasicBlock {
+      Callable getEnclosingCallable() { result = this.getScope() }
+
+      // TODO: check that this gives useful results
+      Location getLocation() { result = super.getNode(0).getLocation() }
+    }
+
+    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
+      result = bb.getImmediateDominator()
+    }
+
+    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+
+    class CapturedVariable extends LocalVariable {
+      Function f;
+
+      CapturedVariable() {
+        this.getScope() = f and
+        this.getAnAccess().getScope() != f
+      }
+
+      Callable getCallable() { result = f }
+
+      Location getLocation() { result = f.getLocation() }
+
+      /** Gets a scope that captures this variable. */
+      Scope getACapturingScope() {
+        result = this.getAnAccess().getScope().getScope*() and
+        result.getScope+() = f
+      }
+    }
+
+    class CapturedParameter extends CapturedVariable {
+      CapturedParameter() { this.isParameter() }
+
+      ControlFlowNode getCfgNode() { result.getNode().(Parameter) = this.getAnAccess() }
+    }
+
+    class Expr extends ExprCfgNode {
+      predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+    }
+
+    class VariableWrite extends ControlFlowNode {
+      CapturedVariable v;
+
+      VariableWrite() { this = v.getAStore().getAFlowNode() }
+
+      CapturedVariable getVariable() { result = v }
+
+      predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+    }
+
+    class VariableRead extends Expr {
+      CapturedVariable v;
+
+      VariableRead() { this = v.getALoad().getAFlowNode() }
+
+      CapturedVariable getVariable() { result = v }
+    }
+
+    class ClosureExpr extends Expr {
+      ClosureExpr() {
+        this.getNode() instanceof CallableExpr
+        or
+        this.getNode() instanceof Comp
+      }
+
+      predicate hasBody(Callable body) {
+        body = this.getNode().(CallableExpr).getInnerScope()
+        or
+        body = this.getNode().(Comp).getFunction()
+      }
+
+      predicate hasAliasedAccess(Expr f) { closureFlowStep+(this, f) and not closureFlowStep(f, _) }
+    }
+
+    class Callable extends Scope {
+      predicate isConstructor() { none() }
+    }
+  }
+
+  class CapturedVariable = CaptureInput::CapturedVariable;
+
+  class ClosureExpr = CaptureInput::ClosureExpr;
+
+  module Flow = Shared::Flow<Location, CaptureInput>;
+
+  private Flow::ClosureNode asClosureNode(Node n) {
+    result = n.(CaptureNode).getSynthesizedCaptureNode()
+    or
+    result.(Flow::ExprNode).getExpr() = n.(CfgNode).getNode()
+    or
+    result.(Flow::VariableWriteSourceNode).getVariableWrite() = n.(CfgNode).getNode()
+    or
+    result.(Flow::ExprPostUpdateNode).getExpr() =
+      n.(PostUpdateNode).getPreUpdateNode().(CfgNode).getNode()
+    or
+    result.(Flow::ParameterNode).getParameter().getCfgNode() = n.(CfgNode).getNode()
+    or
+    result.(Flow::ThisParameterNode).getCallable() = n.(LambdaSelfReferenceNode).getCallable()
+  }
+
+  predicate storeStep(Node nodeFrom, CapturedVariableContent c, Node nodeTo) {
+    Flow::storeStep(asClosureNode(nodeFrom), c.getVariable(), asClosureNode(nodeTo))
+  }
+
+  predicate readStep(Node nodeFrom, CapturedVariableContent c, Node nodeTo) {
+    Flow::readStep(asClosureNode(nodeFrom), c.getVariable(), asClosureNode(nodeTo))
+  }
+
+  predicate valueStep(Node nodeFrom, Node nodeTo) {
+    Flow::localFlowStep(asClosureNode(nodeFrom), asClosureNode(nodeTo))
+  }
+
+  // Note: Learn from JS, https://github.com/github/codeql/pull/14412
+  // - JS: Capture flow
+  // - JS: Disallow consecutive captured contents
+  private module Debug {
+    predicate flowStoreStep(
+      Node nodeFrom, Flow::ClosureNode closureNodeFrom, CapturedVariable v,
+      Flow::ClosureNode closureNodeTo, Node nodeTo
+    ) {
+      closureNodeFrom = asClosureNode(nodeFrom) and
+      closureNodeTo = asClosureNode(nodeTo) and
+      Flow::storeStep(closureNodeFrom, v, closureNodeTo)
+    }
+
+    predicate unmappedFlowStoreStep(
+      Flow::ClosureNode closureNodeFrom, CapturedVariable v, Flow::ClosureNode closureNodeTo
+    ) {
+      Flow::storeStep(closureNodeFrom, v, closureNodeTo) and
+      not flowStoreStep(_, closureNodeFrom, v, closureNodeTo, _)
+    }
+
+    predicate flowReadStep(
+      Node nodeFrom, Flow::ClosureNode closureNodeFrom, CapturedVariable v,
+      Flow::ClosureNode closureNodeTo, Node nodeTo
+    ) {
+      closureNodeFrom = asClosureNode(nodeFrom) and
+      closureNodeTo = asClosureNode(nodeTo) and
+      Flow::readStep(closureNodeFrom, v, closureNodeTo)
+    }
+
+    predicate unmappedFlowReadStep(
+      Flow::ClosureNode closureNodeFrom, CapturedVariable v, Flow::ClosureNode closureNodeTo
+    ) {
+      Flow::readStep(closureNodeFrom, v, closureNodeTo) and
+      not flowReadStep(_, closureNodeFrom, v, closureNodeTo, _)
+    }
+
+    predicate flowValueStep(
+      Node nodeFrom, Flow::ClosureNode closureNodeFrom, Flow::ClosureNode closureNodeTo, Node nodeTo
+    ) {
+      closureNodeFrom = asClosureNode(nodeFrom) and
+      closureNodeTo = asClosureNode(nodeTo) and
+      Flow::localFlowStep(closureNodeFrom, closureNodeTo)
+    }
+
+    predicate unmappedFlowValueStep(
+      Flow::ClosureNode closureNodeFrom, Flow::ClosureNode closureNodeTo
+    ) {
+      Flow::localFlowStep(closureNodeFrom, closureNodeTo) and
+      not flowValueStep(_, closureNodeFrom, closureNodeTo, _)
+    }
+  }
+}
+
 //--------
 // Local flow
 //--------
@@ -471,6 +658,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
   or
   summaryFlowSteps(nodeFrom, nodeTo)
+  or
+  variableCaptureFlowStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -492,6 +681,11 @@ private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
 
 predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
   IncludePostUpdateFlow<PhaseDependentFlow<summaryLocalStep/2>::step/2>::step(nodeFrom, nodeTo)
+}
+
+predicate variableCaptureFlowStep(Node nodeFrom, Node nodeTo) {
+  IncludePostUpdateFlow<PhaseDependentFlow<VariableCapture::valueStep/2>::step/2>::step(nodeFrom,
+    nodeTo)
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
@@ -557,7 +751,7 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
-predicate localMustFlowStep(Node node1, Node node2) { none() }
+predicate localMustFlowStep(Node nodeFrom, Node nodeTo) { none() }
 
 /**
  * Gets the type of `node`.
@@ -661,6 +855,8 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
   or
   synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
+  or
+  VariableCapture::storeStep(nodeFrom, c, nodeTo)
 }
 
 /**
@@ -864,6 +1060,8 @@ predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
     nodeTo.(FlowSummaryNode).getSummaryNode())
   or
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
+  or
+  VariableCapture::readStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -993,6 +1191,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthDictSplatArgumentNode
   or
   n instanceof SynthDictSplatParameterNode
+  // or
+  // n instanceof CaptureNode
 }
 
 class LambdaCallKind = Unit;
@@ -1029,6 +1229,11 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  or
+  exists(Function f |
+    VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(f) and
+    p = TLambdaSelfReferenceNode(f)
+  )
 }
 
 /** An approximated `Content`. */

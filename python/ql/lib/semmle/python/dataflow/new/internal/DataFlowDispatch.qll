@@ -43,6 +43,7 @@ private import semmle.python.dataflow.new.internal.TypeTracker::CallGraphConstru
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
+  TLambdaSelfParameterPosition() or
   TPositionalParameterPosition(int index) {
     index = any(Parameter p).getPosition()
     or
@@ -79,6 +80,9 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self`/`cls` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
+  /** Holds if this position represents a reference to a lambda itself. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfParameterPosition() }
+
   /** Holds if this position represents a positional parameter at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalParameterPosition(index) }
 
@@ -110,6 +114,8 @@ class ParameterPosition extends TParameterPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     exists(int index | this.isPositional(index) and result = "position " + index)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
@@ -130,6 +136,7 @@ class ParameterPosition extends TParameterPosition {
 newtype TArgumentPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfArgumentPosition() or
+  TLambdaSelfArgumentPosition() or
   TPositionalArgumentPosition(int index) {
     exists(any(CallNode c).getArg(index))
     or
@@ -153,6 +160,9 @@ newtype TArgumentPosition =
 class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a `self`/`cls` argument. */
   predicate isSelf() { this = TSelfArgumentPosition() }
+
+  /** Holds if this position represents a lambda `self` argument. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfArgumentPosition() }
 
   /** Holds if this position represents a positional argument at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalArgumentPosition(index) }
@@ -183,6 +193,8 @@ class ArgumentPosition extends TArgumentPosition {
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
+  or
+  ppos.isLambdaSelf() and apos.isLambdaSelf()
   or
   exists(int index | ppos.isPositional(index) and apos.isPositional(index))
   or
@@ -1507,6 +1519,36 @@ abstract class ParameterNodeImpl extends Node {
   }
 }
 
+/**
+ * The value of a lambda itself at function entry, viewed as a node in a data
+ * flow graph.
+ *
+ * This is used for tracking flow through captured variables, and we use a
+ * separate node and parameter/argument positions in order to distinguish
+ * "lambda self" from "normal self", as lambdas may also access outer `self`
+ * variables (through variable capture).
+ */
+class LambdaSelfReferenceNode extends ParameterNodeImpl, TLambdaSelfReferenceNode {
+  private Function callable;
+
+  LambdaSelfReferenceNode() { this = TLambdaSelfReferenceNode(callable) }
+
+  final Function getCallable() { result = callable }
+
+  override Parameter getParameter() { none() }
+
+  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    c = TFunction(callable) and
+    pos.isLambdaSelf()
+  }
+
+  override Scope getScope() { result = callable }
+
+  override Location getLocation() { result = callable.getLocation() }
+
+  override string toString() { result = "lambda self in " + callable }
+}
+
 /** A parameter for a library callable with a flow summary. */
 class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
   SummaryParameterNode() {
@@ -1576,6 +1618,33 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
   }
 
   override Node getPreUpdateNode() { result = pre }
+}
+
+private class CapturePostUpdateNode extends PostUpdateNodeImpl, CaptureNode {
+  private CaptureNode pre;
+
+  CapturePostUpdateNode() {
+    VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+      pre.getSynthesizedCaptureNode())
+  }
+
+  override Node getPreUpdateNode() { result = pre }
+}
+
+class CaptureArgumentNode extends CfgNode, ArgumentNode {
+  CallNode callNode;
+
+  CaptureArgumentNode() {
+    this.getNode() = callNode.getFunction() and
+    exists(Function target | resolveCall(callNode, target, _) |
+      target = any(VariableCapture::CapturedVariable v).getACapturingScope()
+    )
+  }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    callNode = call.getNode() and
+    pos.isLambdaSelf()
+  }
 }
 
 /** Gets a viable run-time target for the call `call`. */
