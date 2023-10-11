@@ -13,6 +13,10 @@ module ImproperValidationOfArrayIndexLocalConfig implements DataFlow::ConfigSig 
   predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBounds(sink.asExpr())
   }
+
+  predicate isBarrier(DataFlow::Node node) { node.getType() instanceof BooleanType }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /**
