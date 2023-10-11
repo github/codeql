@@ -28,7 +28,7 @@
                The following code uses a hard-coded string as a secret for parsing user provided JWTs. In this case, an attacker can very easily forge a token by using the hard-coded secret.
           </p>
 
-          <sample src="ExampleGood.go" />
+          <sample src="ExampleBad.go" />
 
      </example>
      <references>
