@@ -1,3 +1,9 @@
+## 0.8.0
+
+### Minor Analysis Improvements
+
+* Built-in Ruby queries now use the new DataFlow API.
+
 ## 0.7.5
 
 No user-facing changes.

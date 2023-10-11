@@ -1,3 +1,7 @@
+## 0.8.0
+
+No user-facing changes.
+
 ## 0.7.5
 
 ### Bug Fixes
