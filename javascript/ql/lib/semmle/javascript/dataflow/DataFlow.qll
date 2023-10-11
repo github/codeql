@@ -1293,7 +1293,7 @@ module DataFlow {
       override DataFlow::Node getCalleeNode() { result = DataFlow::valueNode(astNode.getTag()) }
 
       override DataFlow::Node getArgument(int i) {
-        // the first parameter send to the function is the string parts, which we don't model.
+        // the first argument sent to the function is the array of string parts, which we don't model.
         // rank is 1-indexed, which is perfect here.
         result =
           DataFlow::valueNode(rank[i](Expr e, int index |
