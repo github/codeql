@@ -52,5 +52,6 @@ import NoValidation::PathGraph
 
 from NoValidation::PathNode source, NoValidation::PathNode sink
 where NoValidation::flowPath(source, sink)
-select sink.getNode(), source, sink, "This JWT is parsed without verification and received from $@.",
-  source.getNode(), "this user-controlled source"
+select sink.getNode(), source, sink,
+  "This JWT is parsed without verification and received from $@.", source.getNode(),
+  "this user-controlled source"
