@@ -2674,17 +2674,43 @@ public class Parser {
   // - 'async /*foo*/ function' is OK.
   // - 'async /*\n*/ function' is invalid.
   boolean isAsyncFunction() {
+    return isAsyncKeyword("async", "function");
+  }
+
+  boolean isAwaitUsing() {
+    return isAsyncKeyword("await", "using");
+  }
+
+  // check 'pre [no LineTerminator here] keyword'
+  // e.g. `await using" or `async function`.
+  // is only used for async/await parsing, so it requires ecmaVersion >= 8.
+  boolean isAsyncKeyword(String pre, String keyword) {
     if (this.type != TokenType.name
         || this.options.ecmaVersion() < 8
-        || !this.value.equals("async")) return false;
+        || !this.value.equals(pre)) return false;
 
     Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
     m.find(this.pos);
     int next = m.end();
+    int len = keyword.length();
     return !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
-        && inputSubstring(next, next + 8).equals("function")
-        && (next + 8 == this.input.length()
-            || !Identifiers.isIdentifierChar(this.input.codePointAt(next + 8), false));
+        && inputSubstring(next, next + len).equals(keyword)
+        && (next + len == this.input.length()
+            || !Identifiers.isIdentifierChar(this.input.codePointAt(next + len), false));
+  }
+
+  // matches "using [identifier]"
+  boolean isUsingDecl() {
+    if (this.type != TokenType.name
+        || this.options.ecmaVersion() < 8
+        || !this.value.equals("using")) return false;
+
+    Matcher m = Whitespace.skipWhiteSpace.matcher(this.input);
+    m.find(this.pos);
+    int next = m.end();
+    return this.input.length() > next &&
+        !Whitespace.lineBreakG.matcher(inputSubstring(this.pos, next)).matches()
+        && Identifiers.isIdentifierChar(this.input.codePointAt(next), false);
   }
 
   /**
@@ -2737,7 +2763,7 @@ public class Parser {
       return this.parseThrowStatement(startLoc);
     } else if (starttype == TokenType._try) {
       return this.parseTryStatement(startLoc);
-    } else if (starttype == TokenType._const || starttype == TokenType._var) {
+    } else if (starttype == TokenType._const || starttype == TokenType._var || this.isUsingDecl()) {
       if (kind == null) kind = String.valueOf(this.value);
       if (!declaration && !kind.equals("var")) this.unexpected();
       return this.parseVarStatement(startLoc, kind);
@@ -2761,6 +2787,10 @@ public class Parser {
           : this.parseExport(startLoc, exports);
 
     } else {
+      if (this.isAwaitUsing() && (this.inAsync || options.esnext() && !this.inFunction)) {
+        this.next();
+        return this.parseVarStatement(startLoc, "using");
+      }
       if (this.isAsyncFunction() && declaration) {
         this.next();
         return this.parseFunctionStatement(startLoc, true);
@@ -2840,7 +2870,10 @@ public class Parser {
     this.expect(TokenType.parenL);
     if (this.type == TokenType.semi) return this.parseFor(startLoc, null);
     boolean isLet = this.isLet();
-    if (this.type == TokenType._var || this.type == TokenType._const || isLet) {
+    if (this.isAwaitUsing() && this.inAsync) {
+      this.next(); // just skip the await and treat it as a `using` statement
+    }
+    if (this.type == TokenType._var || this.type == TokenType._const || isLet || (this.type == TokenType.name && this.value.equals("using"))) {
       Position initStartLoc = this.startLoc;
       String kind = isLet ? "let" : String.valueOf(this.value);
       this.next();
@@ -3122,7 +3155,7 @@ public class Parser {
       Expression init = null;
       if (this.eat(TokenType.eq)) {
         init = this.parseMaybeAssign(isFor, null, null);
-      } else if (kind.equals("const")
+      } else if ((kind.equals("const") || kind.equals("using"))
           && !(this.type == TokenType._in
               || (this.options.ecmaVersion() >= 6 && this.isContextual("of")))) {
         this.raiseRecoverable(

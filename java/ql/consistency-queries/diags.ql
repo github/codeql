@@ -28,7 +28,8 @@ string diagnosticMessage(Diagnostic d) {
 // something is fixed.
 query predicate unusedDiagnosticException(DiagnosticException de) { not exists(de.getException()) }
 
-query predicate unexpectedDiagnostic(Diagnostic d, string s) {
+query predicate unexpectedDiagnostic(Compilation c, int f, int i, Diagnostic d, string s) {
+  d.getCompilationInfo(c, f, i) and
   s = diagnosticMessage(d) and
   not d = any(DiagnosticException de).getException()
 }

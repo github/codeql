@@ -678,6 +678,8 @@ private predicate builtinFunction(
   or
   name = "cap" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
+  name = "clear" and pure = false and mayPanic = false and mustPanic = false and variadic = false
+  or
   name = "close" and pure = false and mayPanic = true and mustPanic = false and variadic = false
   or
   name = "complex" and pure = true and mayPanic = true and mustPanic = false and variadic = false
@@ -691,6 +693,10 @@ private predicate builtinFunction(
   name = "len" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
   name = "make" and pure = true and mayPanic = true and mustPanic = false and variadic = true
+  or
+  name = "max" and pure = true and mayPanic = false and mustPanic = false and variadic = true
+  or
+  name = "min" and pure = true and mayPanic = false and mustPanic = false and variadic = true
   or
   name = "new" and pure = true and mayPanic = false and mustPanic = false and variadic = false
   or
@@ -795,6 +801,9 @@ module Builtin {
   /** Gets the built-in function `cap`. */
   BuiltinFunction cap() { result.getName() = "cap" }
 
+  /** Gets the built-in function `clear`. */
+  BuiltinFunction clear() { result.getName() = "clear" }
+
   /** Gets the built-in function `close`. */
   BuiltinFunction close() { result.getName() = "close" }
 
@@ -815,6 +824,12 @@ module Builtin {
 
   /** Gets the built-in function `make`. */
   BuiltinFunction make() { result.getName() = "make" }
+
+  /** Gets the built-in function `max`. */
+  BuiltinFunction max_() { result.getName() = "max" }
+
+  /** Gets the built-in function `min`. */
+  BuiltinFunction min_() { result.getName() = "min" }
 
   /** Gets the built-in function `new`. */
   BuiltinFunction new() { result.getName() = "new" }

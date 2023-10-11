@@ -1,3 +1,67 @@
+## 0.6.5
+
+No user-facing changes.
+
+## 0.6.4
+
+### Minor Analysis Improvements
+
+* Added [http.Error](https://pkg.go.dev/net/http#Error) to XSS sanitzers.
+
+## 0.6.3
+
+No user-facing changes.
+
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Logrus' `WithContext` methods are no longer treated as if they output the values stored in that context to a log message.
+
+## 0.6.1
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* Parameter nodes now exist for unused parameters as well as used parameters.
+* Add support for v4 of the [Go Micro framework](https://github.com/go-micro/go-micro).
+* Support for the [Bun framework](https://bun.uptrace.dev/) has been added.
+* Support for [gqlgen](https://github.com/99designs/gqlgen) has been added.
+* Support for the [go-pg framework](https://github.com/go-pg/pg) has been improved.
+
+## 0.6.0
+
+### Deprecated APIs
+
+* The `LogInjection::Configuration` taint flow configuration class has been deprecated. Use the `LogInjection::Flow` module instead.
+
+### Minor Analysis Improvements
+
+* When a result of path query flows through a function modeled using `DataFlow::FunctionModel` or `TaintTracking::FunctionModel`, the path now includes nodes corresponding to the input and output to the function. This brings it in line with functions modeled using Models-as-Data.
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Fixed data flow through variadic function parameters. The arguments corresponding to a variadic parameter are no longer returned by `CallNode.getArgument(int i)` and `CallNode.getAnArgument()`, and hence aren't `ArgumentNode`s. They now have one result, which is an `ImplicitVarargsSlice` node. For example, a call `f(a, b, c)` to a function `f(T...)` is treated like `f([]T{a, b, c})`. The old behaviour is preserved by `CallNode.getSyntacticArgument(int i)` and `CallNode.getASyntacticArgument()`. `CallExpr.getArgument(int i)` and `CallExpr.getAnArgument()` are unchanged, and will still have three results in the example given.
+
 ## 0.5.1
 
 ### Minor Analysis Improvements

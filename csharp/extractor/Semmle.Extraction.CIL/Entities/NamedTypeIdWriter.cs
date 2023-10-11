@@ -1,5 +1,4 @@
 using System.Linq;
-using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {

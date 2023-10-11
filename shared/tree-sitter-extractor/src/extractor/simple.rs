@@ -1,7 +1,6 @@
 use crate::trap;
+use globset::{GlobBuilder, GlobSetBuilder};
 use rayon::prelude::*;
-use std::collections::HashMap;
-use std::ffi::{OsStr, OsString};
 use std::fs::File;
 use std::io::BufRead;
 use std::path::{Path, PathBuf};
@@ -13,7 +12,7 @@ pub struct LanguageSpec {
     pub prefix: &'static str,
     pub ts_language: tree_sitter::Language,
     pub node_types: &'static str,
-    pub file_extensions: Vec<OsString>,
+    pub file_globs: Vec<String>,
 }
 
 pub struct Extractor {
@@ -83,16 +82,26 @@ impl Extractor {
             schemas.push(schema);
         }
 
-        // Construct a map from file extension -> LanguageSpec
-        let mut file_extension_language_mapping: HashMap<&OsStr, Vec<usize>> = HashMap::new();
-        for (i, lang) in self.languages.iter().enumerate() {
-            for (j, _ext) in lang.file_extensions.iter().enumerate() {
-                let indexes = file_extension_language_mapping
-                    .entry(&lang.file_extensions[j])
-                    .or_default();
-                indexes.push(i);
+        // Construct a single globset containing all language globs,
+        // and a mapping from glob index to language index.
+        let (globset, glob_language_mapping) = {
+            let mut builder = GlobSetBuilder::new();
+            let mut glob_lang_mapping = vec![];
+            for (i, lang) in self.languages.iter().enumerate() {
+                for glob_str in &lang.file_globs {
+                    let glob = GlobBuilder::new(glob_str)
+                        .literal_separator(true)
+                        .build()
+                        .expect("invalid glob");
+                    builder.add(glob);
+                    glob_lang_mapping.push(i);
+                }
             }
-        }
+            (
+                builder.build().expect("failed to build globset"),
+                glob_lang_mapping,
+            )
+        };
 
         let lines: std::io::Result<Vec<String>> =
             std::io::BufReader::new(file_list).lines().collect();
@@ -108,18 +117,29 @@ impl Extractor {
                 let source = std::fs::read(&path)?;
                 let mut trap_writer = trap::Writer::new();
 
-                match path.extension() {
+                match path.file_name() {
                     None => {
-                        tracing::error!(?path, "No extension found, skipping file.");
+                        tracing::error!(?path, "No file name found, skipping file.");
                     }
-                    Some(ext) => {
-                        if let Some(indexes) = file_extension_language_mapping.get(ext) {
-                            for i in indexes {
-                                let lang = &self.languages[*i];
+                    Some(filename) => {
+                        let matches = globset.matches(filename);
+                        if matches.is_empty() {
+                            tracing::error!(?path, "No matching language found, skipping file.");
+                        } else {
+                            let mut languages_processed = vec![false; self.languages.len()];
+
+                            for m in matches {
+                                let i = glob_language_mapping[m];
+                                if languages_processed[i] {
+                                    continue;
+                                }
+                                languages_processed[i] = true;
+                                let lang = &self.languages[i];
+
                                 crate::extractor::extract(
                                     lang.ts_language,
                                     lang.prefix,
-                                    &schemas[*i],
+                                    &schemas[i],
                                     &mut diagnostics_writer,
                                     &mut trap_writer,
                                     &path,
@@ -130,11 +150,9 @@ impl Extractor {
                                 std::fs::copy(&path, &src_archive_file)?;
                                 write_trap(&self.trap_dir, &path, &trap_writer, trap_compression)?;
                             }
-                        } else {
-                            tracing::warn!(?path, "No language matches path, skipping file.");
                         }
                     }
-                };
+                }
                 Ok(()) as std::io::Result<()>
             })
             .expect("failed to extract files");

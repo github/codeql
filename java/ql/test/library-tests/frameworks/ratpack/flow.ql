@@ -7,7 +7,7 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
     n.asExpr().(MethodAccess).getMethod().hasName("taint")
     or
-    n instanceof RemoteFlowSource
+    n instanceof ThreatModelFlowSource
   }
 
   predicate isSink(DataFlow::Node n) {
@@ -15,12 +15,4 @@ module Config implements DataFlow::ConfigSig {
   }
 }
 
-module Flow = TaintTracking::Global<Config>;
-
-class HasFlowTest extends InlineFlowTest {
-  HasFlowTest() { this = "HasFlowTest" }
-
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
-
-  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) { Flow::flow(src, sink) }
-}
+import TaintFlowTest<Config>

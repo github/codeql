@@ -13,6 +13,7 @@ xmlFiles
 | project/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml:0:0:0:0 | project/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml |
 | project/build/intermediates/incremental/mergeReleaseResources/merger.xml:0:0:0:0 | project/build/intermediates/incremental/mergeReleaseResources/merger.xml |
 | project/build/intermediates/incremental/mergeReleaseShaders/merger.xml:0:0:0:0 | project/build/intermediates/incremental/mergeReleaseShaders/merger.xml |
+| project/build/intermediates/lint_vital_partial_results/release/out/lint-issues-release.xml:0:0:0:0 | project/build/intermediates/lint_vital_partial_results/release/out/lint-issues-release.xml |
 | project/build/intermediates/merged_manifest/release/AndroidManifest.xml:0:0:0:0 | project/build/intermediates/merged_manifest/release/AndroidManifest.xml |
 | project/build/intermediates/merged_manifests/release/AndroidManifest.xml:0:0:0:0 | project/build/intermediates/merged_manifests/release/AndroidManifest.xml |
 | project/build/intermediates/packaged_manifests/release/AndroidManifest.xml:0:0:0:0 | project/build/intermediates/packaged_manifests/release/AndroidManifest.xml |

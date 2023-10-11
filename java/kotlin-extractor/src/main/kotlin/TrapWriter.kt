@@ -48,6 +48,15 @@ class TrapLabelManager {
      * duplication.
      */
     val genericSpecialisationsExtracted = HashSet<String>()
+
+    /**
+     * Sometimes, when we extract a file class we don't have the IrFile
+     * for it, so we are not able to give it a location. This means that
+     * the location is written outside of the label creation.
+     * This allows us to keep track of whether we've written the location
+     * already in this TRAP file, to avoid duplication.
+     */
+    val fileClassLocationsExtracted = HashSet<IrFile>()
 }
 
 /**
@@ -57,7 +66,9 @@ class TrapLabelManager {
  * share the same `TrapLabelManager` and `BufferedWriter`.
  */
 // TODO lm was `protected` before anonymousTypeMapping and locallyVisibleFunctionLabelMapping moved into it. Should we re-protect it and provide accessors?
-open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelManager, private val bw: BufferedWriter, val diagnosticTrapWriter: TrapWriter?) {
+abstract class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelManager, private val bw: BufferedWriter) {
+    abstract fun getDiagnosticTrapWriter(): DiagnosticTrapWriter
+
     /**
      * Returns the label that is defined to be the given key, if such
      * a label exists, and `null` otherwise. Most users will want to use
@@ -223,7 +234,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
         val len = str.length
         val newLen = UTF8Util.encodablePrefixLength(str, MAX_STRLEN)
         if (newLen < len) {
-            loggerBase.warn(diagnosticTrapWriter ?: this,
+            loggerBase.warn(this.getDiagnosticTrapWriter(),
                 "Truncated string of length $len",
                 "Truncated string of length $len, starting '${str.take(100)}', ending '${str.takeLast(100)}'")
             return str.take(newLen)
@@ -237,14 +248,43 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
      * writer etc), but using the given `filePath` for locations.
      */
     fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
-        FileTrapWriter(loggerBase, lm, bw, diagnosticTrapWriter, filePath, populateFileTables)
+        FileTrapWriter(loggerBase, lm, bw, this.getDiagnosticTrapWriter(), filePath, populateFileTables)
 
     /**
      * Gets a FileTrapWriter like this one (using the same label manager,
      * writer etc), but using the given `IrFile` for locations.
      */
     fun makeSourceFileTrapWriter(file: IrFile, populateFileTables: Boolean) =
-        SourceFileTrapWriter(loggerBase, lm, bw, diagnosticTrapWriter, file, populateFileTables)
+        SourceFileTrapWriter(loggerBase, lm, bw, this.getDiagnosticTrapWriter(), file, populateFileTables)
+}
+
+/**
+ * A `PlainTrapWriter` has no additional context of its own.
+ */
+class PlainTrapWriter (
+    loggerBase: LoggerBase,
+    lm: TrapLabelManager,
+    bw: BufferedWriter,
+    val dtw: DiagnosticTrapWriter
+): TrapWriter (loggerBase, lm, bw) {
+    override fun getDiagnosticTrapWriter(): DiagnosticTrapWriter {
+        return dtw
+    }
+}
+
+/**
+ * A `DiagnosticTrapWriter` is a TrapWriter that diagnostics can be
+ * written to; i.e. it has the #compilation label defined. In practice,
+ * this means that it is a TrapWriter for the invocation TRAP file.
+ */
+class DiagnosticTrapWriter (
+    loggerBase: LoggerBase,
+    lm: TrapLabelManager,
+    bw: BufferedWriter
+): TrapWriter (loggerBase, lm, bw) {
+    override fun getDiagnosticTrapWriter(): DiagnosticTrapWriter {
+        return this
+    }
 }
 
 /**
@@ -259,15 +299,19 @@ open class FileTrapWriter (
     loggerBase: LoggerBase,
     lm: TrapLabelManager,
     bw: BufferedWriter,
-    diagnosticTrapWriter: TrapWriter?,
+    val dtw: DiagnosticTrapWriter,
     val filePath: String,
     populateFileTables: Boolean
-): TrapWriter (loggerBase, lm, bw, diagnosticTrapWriter) {
+): TrapWriter (loggerBase, lm, bw) {
 
     /**
      * The ID for the file that we are extracting from.
      */
     val fileId = mkFileId(filePath, populateFileTables)
+
+    override fun getDiagnosticTrapWriter(): DiagnosticTrapWriter {
+        return dtw
+    }
 
     private fun offsetMinOf(default: Int, vararg options: Int?): Int {
         if (default == UNDEFINED_OFFSET || default == SYNTHETIC_OFFSET) {
@@ -349,10 +393,10 @@ class SourceFileTrapWriter (
     loggerBase: LoggerBase,
     lm: TrapLabelManager,
     bw: BufferedWriter,
-    diagnosticTrapWriter: TrapWriter?,
+    dtw: DiagnosticTrapWriter,
     val irFile: IrFile,
     populateFileTables: Boolean) :
-    FileTrapWriter(loggerBase, lm, bw, diagnosticTrapWriter, irFile.path, populateFileTables) {
+    FileTrapWriter(loggerBase, lm, bw, dtw, irFile.path, populateFileTables) {
 
     /**
      * The file entry for the file that we are extracting from.
@@ -363,14 +407,14 @@ class SourceFileTrapWriter (
     override fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
         if (startOffset == UNDEFINED_OFFSET || endOffset == UNDEFINED_OFFSET) {
             if (startOffset != endOffset) {
-                loggerBase.warn(this, "Location with inconsistent offsets (start $startOffset, end $endOffset)", null)
+                loggerBase.warn(dtw, "Location with inconsistent offsets (start $startOffset, end $endOffset)", null)
             }
             return getWholeFileLocation()
         }
 
         if (startOffset == SYNTHETIC_OFFSET || endOffset == SYNTHETIC_OFFSET) {
             if (startOffset != endOffset) {
-                loggerBase.warn(this, "Location with inconsistent offsets (start $startOffset, end $endOffset)", null)
+                loggerBase.warn(dtw, "Location with inconsistent offsets (start $startOffset, end $endOffset)", null)
             }
             return getWholeFileLocation()
         }
@@ -390,14 +434,14 @@ class SourceFileTrapWriter (
     override fun getLocationString(e: IrElement): String {
         if (e.startOffset == UNDEFINED_OFFSET || e.endOffset == UNDEFINED_OFFSET) {
             if (e.startOffset != e.endOffset) {
-                loggerBase.warn(this, "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})", null)
+                loggerBase.warn(dtw, "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})", null)
             }
             return "<unknown location while processing $filePath>"
         }
 
         if (e.startOffset == SYNTHETIC_OFFSET || e.endOffset == SYNTHETIC_OFFSET) {
             if (e.startOffset != e.endOffset) {
-                loggerBase.warn(this, "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})", null)
+                loggerBase.warn(dtw, "Location with inconsistent offsets (start ${e.startOffset}, end ${e.endOffset})", null)
             }
             return "<synthetic location while processing $filePath>"
         }

@@ -73,6 +73,7 @@ class AstNode(Locatable):
     pass
 
 @group("type")
+@ql.hideable
 class Type(Element):
     name: string
     canonical_type: "Type"
@@ -80,14 +81,20 @@ class Type(Element):
 @group("decl")
 class Decl(AstNode):
     module: "ModuleDecl"
-    members: list["Decl"] | child
+    members: list["Decl"] | child | desc("""
+        Prefer to use more specific methods (such as `EnumDecl.getEnumElement`) rather than relying
+        on the order of members given by `getMember`. In some cases the order of members may not
+        align with expectations, and could change in future releases.
+    """)
 
 @group("expr")
+@ql.hideable
 class Expr(AstNode):
     """The base class for all expressions in Swift."""
     type: optional[Type]
 
 @group("pattern")
+@ql.hideable
 class Pattern(AstNode):
     pass
 
@@ -228,7 +235,8 @@ class ParamDecl(VarDecl):
     """)
 
 class Callable(Element):
-    name: optional[string] | doc("name of this callable")
+    name: optional[string] | doc("name of this callable") | desc("The name includes argument "
+        "labels of the callable, for example `myFunction(arg:)`.")
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
@@ -253,7 +261,10 @@ class PrefixOperatorDecl(OperatorDecl):
 
 class TypeDecl(ValueDecl):
     name: string
-    base_types: list[Type]
+    inherited_types: list[Type] | desc("""
+        This only returns the types effectively appearing in the declaration. In particular it
+        will not resolve `TypeAliasDecl`s or consider base types added by extensions.
+    """)
 
 class AbstractTypeParamDecl(TypeDecl):
     pass
@@ -391,7 +402,7 @@ class CapturedDecl(Decl):
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
-    closure_body: "ExplicitClosureExpr" | child
+    closure_body: "ClosureExpr" | child
 
 class CollectionExpr(Expr):
     pass
@@ -692,8 +703,6 @@ class InjectIntoOptionalExpr(ImplicitConversionExpr):
 
 class InterpolatedStringLiteralExpr(LiteralExpr):
     interpolation_expr: optional[OpaqueValueExpr]
-    interpolation_count_expr: optional[Expr] | child
-    literal_capacity_expr: optional[Expr] | child
     appending_expr: optional[TapExpr] | child
 
 class LinearFunctionExpr(ImplicitConversionExpr):
@@ -929,6 +938,7 @@ class StmtCondition(AstNode):
     elements: list[ConditionElement] | child
 
 class BraceStmt(Stmt):
+    variables: list[VarDecl] | synth | child | doc("variable declared in the scope of this brace statement")
     elements: list[AstNode] | child
 
 class BreakStmt(Stmt):
@@ -979,8 +989,9 @@ class DoStmt(LabeledStmt):
 
 class ForEachStmt(LabeledStmt):
     pattern: Pattern | child
-    sequence: Expr | child
     where: optional[Expr] | child
+    iteratorVar: optional[PatternBindingDecl] | child
+    nextCall: optional[Expr] | child
     body: BraceStmt | child
 
 class LabeledConditionalStmt(LabeledStmt):

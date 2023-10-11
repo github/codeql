@@ -1,6 +1,5 @@
-using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp;
 using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -17,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (init is null)
             {
                 // This is the output assembly
-                assemblyPath = ((TracingExtractor)cx.Extractor).OutputPath;
+                assemblyPath = cx.Extractor.OutputPath;
                 assembly = cx.Compilation.Assembly;
             }
             else
@@ -64,8 +63,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Assembly CreateOutputAssembly(Context cx)
         {
-            if (cx.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
-                throw new InternalError("Attempting to create the output assembly in standalone extraction mode");
             return AssemblyConstructorFactory.Instance.CreateEntity(cx, outputAssemblyCacheKey, null);
         }
 

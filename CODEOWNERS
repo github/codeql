@@ -8,7 +8,6 @@
 /swift/ @github/codeql-swift
 /misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
-/java/kotlin-explorer/ @github/codeql-kotlin
 
 # ML-powered queries
 /javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers

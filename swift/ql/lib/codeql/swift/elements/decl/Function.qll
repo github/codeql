@@ -6,6 +6,16 @@ private import codeql.swift.elements.decl.Method
  */
 class Function extends Generated::Function, Callable {
   override string toString() { result = this.getName() }
+
+  /**
+   * Gets the name of this function, without the argument list. For example
+   * a function with name `myFunction(arg:)` has short name `myFunction`.
+   */
+  string getShortName() {
+    // match as many characters as possible that are not `(`.
+    // (`*+` is possessive matching)
+    result = this.getName().regexpCapture("([^(]*+).*", 1)
+  }
 }
 
 /**

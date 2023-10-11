@@ -7,15 +7,6 @@
 import java
 
 /**
- * DEPRECATED: Use `conditionCheckMethodArgument` instead.
- * Holds if `m` is a non-overridable method that checks that its first argument
- * is equal to `checkTrue` and throws otherwise.
- */
-deprecated predicate conditionCheckMethod(Method m, boolean checkTrue) {
-  conditionCheckMethodArgument(m, 0, checkTrue)
-}
-
-/**
  * Holds if `m` is a non-overridable method that checks that its zero-indexed `argument`
  * is equal to `checkTrue` and throws otherwise.
  */
@@ -103,15 +94,6 @@ private predicate condtionCheckMethodTestingFramework(Method m, int argument, bo
     or
     checkTrue = false and m.hasName("assertFalse")
   )
-}
-
-/**
- * DEPRECATED: Use `conditionCheckArgument` instead.
- * Holds if `ma` is an access to a non-overridable method that checks that its
- * first argument is equal to `checkTrue` and throws otherwise.
- */
-deprecated predicate conditionCheck(MethodAccess ma, boolean checkTrue) {
-  conditionCheckArgument(ma, 0, checkTrue)
 }
 
 /**

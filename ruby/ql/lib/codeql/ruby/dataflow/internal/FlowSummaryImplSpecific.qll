@@ -11,21 +11,29 @@ private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Public
 private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 
+/**
+ * A class of callables that are candidates for flow summary modeling.
+ */
 class SummarizedCallableBase = string;
+
+/**
+ * A class of callables that are candidates for neutral modeling.
+ */
+class NeutralCallableBase = string;
 
 DataFlowCallable inject(SummarizedCallable c) { result.asLibraryCallable() = c }
 
 /** Gets the parameter position representing a callback itself, if any. */
-ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `self` for callbacks
-
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
+ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
 
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(ContentSet c) { any() }
+
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c, rk]
@@ -62,11 +70,11 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral summary model exists for `c` with provenance `provenance`,
- * which means that there is no flow through `c`.
+ * Holds if a neutral model exists for `c` of kind `kind`
+ * and with provenance `provenance`.
  * Note. Neutral models have not been implemented for Ruby.
  */
-predicate neutralSummaryElement(FlowSummary::SummarizedCallable c, string provenance) { none() }
+predicate neutralElement(NeutralCallableBase c, string kind, string provenance) { none() }
 
 bindingset[arg]
 private SummaryComponent interpretElementArg(string arg) {
@@ -120,6 +128,9 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     or
     arg = "hash-splat" and
     ppos.isHashSplat()
+    or
+    arg = "splat" and
+    ppos.isSplat(0)
   )
   or
   result = interpretElementArg(c.getAnArgument("Element"))
@@ -139,8 +150,53 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   )
 }
 
-/** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) { none() }
+private string getContentSpecific(Content c) {
+  exists(string name | c = TFieldContent(name) and result = "Field[" + name + "]")
+  or
+  exists(ConstantValue cv |
+    c = TKnownElementContent(cv) and result = "Element[" + cv.serialize() + "!]"
+  )
+  or
+  c = TUnknownElementContent() and result = "Element[?]"
+}
+
+private string getContentSetSpecific(ContentSet cs) {
+  exists(Content c | cs = TSingletonContent(c) and result = getContentSpecific(c))
+  or
+  cs = TAnyElementContent() and result = "Element[any]"
+  or
+  exists(Content::KnownElementContent kec |
+    cs = TKnownOrUnknownElementContent(kec) and
+    result = "Element[" + kec.getIndex().serialize() + "]"
+  )
+  or
+  exists(int lower, boolean includeUnknown, string unknown |
+    cs = TElementLowerBoundContent(lower, includeUnknown) and
+    (if includeUnknown = true then unknown = "" else unknown = "!") and
+    result = "Element[" + lower + ".." + unknown + "]"
+  )
+}
+
+/** Gets the textual representation of a summary component in the format used for MaD models. */
+string getMadRepresentationSpecific(SummaryComponent sc) {
+  exists(ContentSet cs | sc = TContentSummaryComponent(cs) and result = getContentSetSpecific(cs))
+  or
+  exists(ContentSet cs |
+    sc = TWithoutContentSummaryComponent(cs) and
+    result = "WithoutElement[" + getContentSetSpecific(cs) + "]"
+  )
+  or
+  exists(ContentSet cs |
+    sc = TWithContentSummaryComponent(cs) and
+    result = "WithElement[" + getContentSetSpecific(cs) + "]"
+  )
+  or
+  exists(ReturnKind rk |
+    sc = TReturnSummaryComponent(rk) and
+    not rk = getReturnValueKind() and
+    result = "ReturnValue[" + rk + "]"
+  )
+}
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPosition(ParameterPosition pos) {
@@ -162,6 +218,9 @@ string getParameterPosition(ParameterPosition pos) {
   pos.isSelf() and
   result = "self"
   or
+  pos.isLambdaSelf() and
+  result = "lambda-self"
+  or
   pos.isBlock() and
   result = "block"
   or
@@ -170,11 +229,19 @@ string getParameterPosition(ParameterPosition pos) {
   or
   pos.isAnyNamed() and
   result = "any-named"
+  or
+  pos.isHashSplat() and
+  result = "hash-splat"
+  or
+  pos.isSplat(0) and
+  result = "splat"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
 string getArgumentPosition(ArgumentPosition pos) {
   pos.isSelf() and result = "self"
+  or
+  pos.isLambdaSelf() and result = "lambda-self"
   or
   pos.isBlock() and result = "block"
   or
@@ -316,6 +383,9 @@ ArgumentPosition parseParamBody(string s) {
   s = "self" and
   result.isSelf()
   or
+  s = "lambda-self" and
+  result.isLambdaSelf()
+  or
   s = "block" and
   result.isBlock()
   or
@@ -345,6 +415,9 @@ ParameterPosition parseArgBody(string s) {
   or
   s = "self" and
   result.isSelf()
+  or
+  s = "lambda-self" and
+  result.isLambdaSelf()
   or
   s = "block" and
   result.isBlock()

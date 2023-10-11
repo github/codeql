@@ -13,7 +13,7 @@ abstract class JexlEvaluationSink extends DataFlow::ExprNode { }
 
 /** Default sink for JXEL injection vulnerabilities. */
 private class DefaultJexlEvaluationSink extends JexlEvaluationSink {
-  DefaultJexlEvaluationSink() { sinkNode(this, "jexl") }
+  DefaultJexlEvaluationSink() { sinkNode(this, "jexl-injection") }
 }
 
 /**
@@ -63,7 +63,7 @@ deprecated class JexlInjectionConfig extends TaintTracking::Configuration {
  * It supports both JEXL 2 and 3.
  */
 module JexlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
 

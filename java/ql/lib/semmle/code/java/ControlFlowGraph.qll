@@ -365,7 +365,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a non-overridable method that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private Method nonReturningMethod() {
     result instanceof MethodExit
     or
@@ -382,7 +381,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a virtual method that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private EffectivelyNonVirtualMethod likelyNonReturningMethod() {
     result.getReturnType() instanceof VoidType and
     not exists(ReturnStmt ret | ret.getEnclosingCallable() = result) and
@@ -402,7 +400,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a statement that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private Stmt nonReturningStmt() {
     result instanceof ThrowStmt
     or
@@ -424,7 +421,6 @@ private module ControlFlowGraphImpl {
   /**
    * Gets an expression that always throws an exception or calls `exit`.
    */
-  pragma[assume_small_delta]
   private Expr nonReturningExpr() {
     result = nonReturningMethodAccess()
     or
@@ -480,6 +476,8 @@ private module ControlFlowGraphImpl {
       this instanceof RValue
       or
       this instanceof Call // includes both expressions and statements
+      or
+      this instanceof ErrorExpr
       or
       this instanceof ReturnStmt
       or
@@ -873,7 +871,13 @@ private module ControlFlowGraphImpl {
     )
     or
     // the last node in a case rule is the last node in the right-hand side
-    last(n.(SwitchCase).getRuleStatement(), last, completion)
+    // if the rhs is a statement we wrap the completion as a break
+    exists(Completion caseCompletion |
+      last(n.(SwitchCase).getRuleStatement(), last, caseCompletion) and
+      if caseCompletion instanceof NormalOrBooleanCompletion
+      then completion = anonymousBreakCompletion()
+      else completion = caseCompletion
+    )
     or
     // ...and if the rhs is an expression we wrap the completion as a yield
     exists(Completion caseCompletion |

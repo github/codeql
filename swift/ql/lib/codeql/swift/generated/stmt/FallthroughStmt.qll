@@ -10,11 +10,8 @@ module Generated {
 
     /**
      * Gets the fallthrough source of this fallthrough statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    CaseStmt getImmediateFallthroughSource() {
+    CaseStmt getFallthroughSource() {
       result =
         Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
               .(Raw::FallthroughStmt)
@@ -22,36 +19,13 @@ module Generated {
     }
 
     /**
-     * Gets the fallthrough source of this fallthrough statement.
-     */
-    final CaseStmt getFallthroughSource() {
-      exists(CaseStmt immediate |
-        immediate = this.getImmediateFallthroughSource() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
-    }
-
-    /**
      * Gets the fallthrough dest of this fallthrough statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    CaseStmt getImmediateFallthroughDest() {
+    CaseStmt getFallthroughDest() {
       result =
         Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
               .(Raw::FallthroughStmt)
               .getFallthroughDest())
-    }
-
-    /**
-     * Gets the fallthrough dest of this fallthrough statement.
-     */
-    final CaseStmt getFallthroughDest() {
-      exists(CaseStmt immediate |
-        immediate = this.getImmediateFallthroughDest() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }

@@ -20,9 +20,6 @@ class JacksonJsonIgnoreAnnotation extends NonReflectiveAnnotation {
   }
 }
 
-/** DEPRECATED: Alias for JacksonJsonIgnoreAnnotation */
-deprecated class JacksonJSONIgnoreAnnotation = JacksonJsonIgnoreAnnotation;
-
 /** A type whose values may be serialized using the Jackson JSON framework. */
 abstract class JacksonSerializableType extends Type { }
 
@@ -149,7 +146,6 @@ class JacksonSerializableField extends SerializableField {
 
 /** A field that may be deserialized using the Jackson JSON framework. */
 class JacksonDeserializableField extends DeserializableField {
-  pragma[assume_small_delta]
   JacksonDeserializableField() {
     exists(JacksonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and

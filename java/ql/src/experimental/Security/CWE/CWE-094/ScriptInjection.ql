@@ -131,11 +131,11 @@ class ScriptInjectionSink extends DataFlow::ExprNode {
 }
 
 /**
- * A taint tracking configuration that tracks flow from `RemoteFlowSource` to an argument
+ * A taint tracking configuration that tracks flow from `ThreatModelFlowSource` to an argument
  * of a method call that executes injected script.
  */
 module ScriptInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ScriptInjectionSink }
 }

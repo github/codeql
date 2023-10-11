@@ -3,7 +3,49 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["play.mvc", "Http$RequestHeader", False, "getHeader", "", "", "ReturnValue", "remote", "manual"]
-      - ["play.mvc", "Http$RequestHeader", False, "getQueryString", "", "", "ReturnValue", "remote", "manual"]
-      - ["play.mvc", "Http$RequestHeader", False, "header", "", "", "ReturnValue", "remote", "manual"]
-      - ["play.mvc", "Http$RequestHeader", False, "queryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$Request", True, "body", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", True, "cookie", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", True, "cookies", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", True, "getHeader", "", "", "ReturnValue", "remote", "manual"] # v2.4.x
+      - ["play.mvc", "Http$RequestHeader", True, "getHeaders", "", "", "ReturnValue", "remote", "manual"] # v2.7.x
+      - ["play.mvc", "Http$RequestHeader", True, "getQueryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", True, "header", "", "", "ReturnValue", "remote", "manual"] # v2.7.x
+      - ["play.mvc", "Http$RequestHeader", True, "headers", "", "", "ReturnValue", "remote", "manual"] # v2.4.x
+      - ["play.mvc", "Http$RequestHeader", True, "host", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", True, "path", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", True, "queryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", True, "remoteAddress", "", "", "ReturnValue", "remote", "manual"]
+      - ["play.mvc", "Http$RequestHeader", True, "uri", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["play.mvc", "Result", False, "addingToSession", "", "", "Argument[1..2]", "trust-boundary-violation", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["play.mvc", "Http$RequestBody", True, "as", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$RequestBody", True, "asBytes", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # v2.7.x
+      - ["play.mvc", "Http$RequestBody", True, "asFormUrlEncoded", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$RequestBody", True, "asJson", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$RequestBody", True, "asMultipartFormData", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$RequestBody", True, "asRaw", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$RequestBody", True, "asText", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$RequestBody", True, "asXml", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$RequestBody", True, "parseJson", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # v2.7.x
+      - ["play.mvc", "Http$MultipartFormData", True, "asFormUrlEncoded", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$MultipartFormData", True, "getFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$MultipartFormData", True, "getFiles", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$MultipartFormData$FilePart", True, "getContentType", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$MultipartFormData$FilePart", True, "getDispositionType", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # v2.7.x
+      - ["play.mvc", "Http$MultipartFormData$FilePart", True, "getFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # v2.4.x
+      - ["play.mvc", "Http$MultipartFormData$FilePart", True, "getFilename", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$MultipartFormData$FilePart", True, "getKey", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$MultipartFormData$FilePart", True, "getRef", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # v2.7.x
+      - ["play.mvc", "Http$RawBuffer", True, "asBytes", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$RawBuffer", True, "asFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$Cookie", True, "name", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$Cookie", True, "value", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$Cookies", True, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["play.mvc", "Http$Cookies", True, "getCookie", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # v2.7.x

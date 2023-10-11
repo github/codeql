@@ -80,35 +80,50 @@ def run_process(cmd, capture_output=False):
                   errors='replace'), file=sys.stderr)
         raise e
 
+def write_arg_file(arg_file, args):
+    with open(arg_file, 'w') as f:
+        for arg in args:
+            if "'" in arg:
+                raise Exception('Single quote in argument: ' + arg)
+            f.write("'" + arg.replace('\\', '/') + "'\n")
 
-def compile_to_dir(srcs, classpath, java_classpath, output):
+def compile_to_dir(build_dir, srcs, language_version, classpath, java_classpath, output):
     # Use kotlinc to compile .kt files:
+    kotlin_arg_file = build_dir + '/kotlin.args'
+    kotlin_args = ['-Werror',
+                   '-opt-in=kotlin.RequiresOptIn',
+                   '-opt-in=org.jetbrains.kotlin.ir.symbols.IrSymbolInternals',
+                   '-d', output,
+                   '-module-name', 'codeql-kotlin-extractor',
+                   '-Xsuppress-version-warnings',
+                   '-language-version', language_version,
+                   '-no-reflect', '-no-stdlib',
+                   '-jvm-target', '1.8',
+                   '-classpath', classpath] + srcs
+    write_arg_file(kotlin_arg_file, kotlin_args)
     run_process([kotlinc,
-                 # kotlinc can default to 256M, which isn't enough when we are extracting the build
-                 '-J-Xmx2G',
-                 '-Werror',
-                 '-opt-in=kotlin.RequiresOptIn',
-                 '-d', output,
-                 '-module-name', 'codeql-kotlin-extractor',
-                 '-no-reflect', '-no-stdlib',
-                 '-jvm-target', '1.8',
-                 '-classpath', classpath] + srcs)
+                # kotlinc can default to 256M, which isn't enough when we are extracting the build
+                '-J-Xmx2G',
+                '@' + kotlin_arg_file])
 
     # Use javac to compile .java files, referencing the Kotlin class files:
-    run_process([javac,
-                 '-d', output,
+    java_arg_file = build_dir + '/java.args'
+    java_args = ['-d', output,
                  '-source', '8', '-target', '8',
-                 '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] + [s for s in srcs if s.endswith(".java")])
+                 '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] \
+              + [s for s in srcs if s.endswith(".java")]
+    write_arg_file(java_arg_file, java_args)
+    run_process([javac, '@' + java_arg_file])
 
 
-def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output):
+def compile_to_jar(build_dir, tmp_src_dir, srcs, language_version, classpath, java_classpath, output):
     class_dir = build_dir + '/classes'
 
     if os.path.exists(class_dir):
         shutil.rmtree(class_dir)
     os.makedirs(class_dir)
 
-    compile_to_dir(srcs, classpath, java_classpath, class_dir)
+    compile_to_dir(build_dir, srcs, language_version, classpath, java_classpath, class_dir)
 
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',
@@ -119,30 +134,6 @@ def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, outp
 
 def find_sources(path):
     return glob.glob(path + '/**/*.kt', recursive=True) + glob.glob(path + '/**/*.java', recursive=True)
-
-
-def get_kotlin_lib_folder():
-    x = run_process([kotlinc, '-version', '-verbose'], capture_output=True)
-    output = x.stderr.decode(encoding='UTF-8', errors='strict')
-    m = re.match(
-        r'.*\nlogging: using Kotlin home directory ([^\n]+)\n.*', output)
-    if m is None:
-        raise Exception('Cannot determine kotlinc home directory')
-    kotlin_home = m.group(1)
-    print("Kotlin home directory: " + kotlin_home)
-    return kotlin_home + '/lib'
-
-
-def get_gradle_lib_folder():
-    x = run_process(['gradle', 'getHomeDir'], capture_output=True)
-    output = x.stdout.decode(encoding='UTF-8', errors='strict')
-    m = re.search(r'(?m)^> Task :getHomeDir\n([^\n]+)$', output)
-    if m is None:
-        print("gradle getHomeDir output:\n" + output, file=sys.stderr)
-        raise Exception('Cannot determine gradle home directory')
-    gradle_home = m.group(1)
-    print("Gradle home directory: " + gradle_home)
-    return gradle_home + '/lib'
 
 
 def find_jar(path, base):
@@ -180,7 +171,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
         shutil.rmtree(tmp_src_dir)
     shutil.copytree('src', tmp_src_dir)
 
-    include_version_folder = tmp_src_dir + '/main/kotlin/utils/versions/to_include'
+    include_version_folder = tmp_src_dir + '/main/kotlin/utils/this_version'
     os.makedirs(include_version_folder)
 
     resource_dir = tmp_src_dir + '/main/resources/com/github/codeql'
@@ -203,18 +194,16 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
                 # copy and overwrite files from the version folder to the include folder
                 shutil.copytree(d, include_version_folder, dirs_exist_ok=True)
 
+    language_version = str(parsed_current_version[0]) + '.' + str(parsed_current_version[1])
+
     # remove all version folders:
-    for version in kotlin_plugin_versions.many_versions:
-        d = tmp_src_dir + '/main/kotlin/utils/versions/v_' + \
-            version.replace('.', '_')
-        if os.path.exists(d):
-            shutil.rmtree(d)
+    shutil.rmtree(tmp_src_dir + '/main/kotlin/utils/versions')
 
     srcs = find_sources(tmp_src_dir)
 
     transform_to_embeddable(srcs)
 
-    compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output)
+    compile_to_jar(build_dir, tmp_src_dir, srcs, language_version, classpath, java_classpath, output)
 
     shutil.rmtree(tmp_src_dir)
 

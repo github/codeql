@@ -3,10 +3,8 @@ import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.security.XSS
 import TestUtilities.InlineExpectationsTest
 
-class JaxRsTest extends InlineExpectationsTest {
-  JaxRsTest() { this = "JaxRsTest" }
-
-  override string getARelevantTag() {
+module JaxRsTest implements TestSig {
+  string getARelevantTag() {
     result =
       [
         "ResourceMethod", "RootResourceClass", "NonRootResourceClass",
@@ -18,7 +16,7 @@ class JaxRsTest extends InlineExpectationsTest {
       ]
   }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "ResourceMethod" and
     exists(JaxRsResourceMethod resourceMethod |
       resourceMethod.getLocation() = location and
@@ -168,3 +166,5 @@ class JaxRsTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<JaxRsTest>

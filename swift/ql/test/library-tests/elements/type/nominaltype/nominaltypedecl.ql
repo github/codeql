@@ -1,9 +1,15 @@
 import swift
 
 string describe(TypeDecl td) {
-  result = "getAliasedType:" + td.(TypeAliasDecl).getAliasedType()
+  result = "getName:" + td.getName()
   or
-  result = "getABaseType:" + td.(NominalTypeDecl).getABaseType()
+  result = "getFullName:" + td.getFullName()
+  or
+  result = "getAliasedType:" + td.(TypeAliasDecl).getAliasedType().toString()
+  or
+  result = "getABaseType:" + td.getABaseType().toString()
+  or
+  result = "getABaseTypeDecl:" + td.getABaseTypeDecl().toString()
 }
 
 from VarDecl v, TypeDecl td

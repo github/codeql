@@ -1,12 +1,10 @@
 import go
 import TestUtilities.InlineExpectationsTest
 
-class FunctionIsVariadicTest extends InlineExpectationsTest {
-  FunctionIsVariadicTest() { this = "Function::IsVariadicTest" }
+module FunctionIsVariadicTest implements TestSig {
+  string getARelevantTag() { result = "isVariadic" }
 
-  override string getARelevantTag() { result = "isVariadic" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(CallExpr ce |
       ce.getTarget().isVariadic() and
       ce.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -17,3 +15,5 @@ class FunctionIsVariadicTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<FunctionIsVariadicTest>

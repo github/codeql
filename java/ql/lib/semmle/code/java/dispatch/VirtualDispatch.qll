@@ -102,6 +102,8 @@ private module Dispatch {
     or
     t instanceof Interface and not t.fromSource()
     or
+    t instanceof TypeInputStream
+    or
     t.hasQualifiedName("java.io", "Serializable")
     or
     t.hasQualifiedName("java.lang", "Iterable")

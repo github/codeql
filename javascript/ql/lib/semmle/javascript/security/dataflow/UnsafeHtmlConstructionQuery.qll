@@ -31,10 +31,8 @@ class Configration extends TaintTracking::Configuration {
     node instanceof DomBasedXss::Sanitizer
     or
     node instanceof UnsafeJQueryPlugin::Sanitizer
-  }
-
-  override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
-    DomBasedXss::isOptionallySanitizedEdge(pred, succ)
+    or
+    DomBasedXss::isOptionallySanitizedNode(node)
   }
 
   // override to require that there is a path without unmatched return steps

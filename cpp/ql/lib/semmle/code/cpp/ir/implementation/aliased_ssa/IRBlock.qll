@@ -9,6 +9,22 @@ import Imports::EdgeKind
 private import Cached
 
 /**
+ * Holds if `block` is a block in `func` and `sortOverride`, `sortKey1`, and `sortKey2` are the
+ * sort keys of the block (derived from its first instruction)
+ */
+pragma[nomagic]
+private predicate blockSortKeys(
+  IRFunction func, IRBlockBase block, int sortOverride, int sortKey1, int sortKey2
+) {
+  block.getEnclosingIRFunction() = func and
+  block.getFirstInstruction().hasSortKeys(sortKey1, sortKey2) and
+  // Ensure that the block containing `EnterFunction` always comes first.
+  if block.getFirstInstruction() instanceof EnterFunctionInstruction
+  then sortOverride = 0
+  else sortOverride = 1
+}
+
+/**
  * A basic block in the IR. A basic block consists of a sequence of `Instructions` with the only
  * incoming edges at the beginning of the sequence and the only outgoing edges at the end of the
  * sequence.
@@ -37,17 +53,14 @@ class IRBlockBase extends TIRBlock {
     exists(IRConfiguration::IRConfiguration config |
       config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
     ) and
-    this =
-      rank[result + 1](IRBlock funcBlock, int sortOverride, int sortKey1, int sortKey2 |
-        funcBlock.getEnclosingFunction() = this.getEnclosingFunction() and
-        funcBlock.getFirstInstruction().hasSortKeys(sortKey1, sortKey2) and
-        // Ensure that the block containing `EnterFunction` always comes first.
-        if funcBlock.getFirstInstruction() instanceof EnterFunctionInstruction
-        then sortOverride = 0
-        else sortOverride = 1
-      |
-        funcBlock order by sortOverride, sortKey1, sortKey2
-      )
+    exists(IRFunction func |
+      this =
+        rank[result + 1](IRBlock funcBlock, int sortOverride, int sortKey1, int sortKey2 |
+          blockSortKeys(func, funcBlock, sortOverride, sortKey1, sortKey2)
+        |
+          funcBlock order by sortOverride, sortKey1, sortKey2
+        )
+    )
   }
 
   /**
@@ -255,28 +268,14 @@ private module Cached {
   cached
   newtype TIRBlock = MkIRBlock(Instruction firstInstr) { startsBasicBlock(firstInstr) }
 
-  /** Gets the index of `i` in its `IRBlock`. */
-  private int getMemberIndex(Instruction i) {
-    startsBasicBlock(i) and
-    result = 0
-    or
-    exists(Instruction iPrev |
-      adjacentInBlock(iPrev, i) and
-      result = getMemberIndex(iPrev) + 1
-    )
-  }
-
-  private module BlockAdjacency = QlBuiltins::EquivalenceRelation<Instruction, adjacentInBlock/2>;
+  /** Holds if `i` is the `index`th instruction the block starting with `first`. */
+  private Instruction getInstructionFromFirst(Instruction first, int index) =
+    shortestDistances(startsBasicBlock/1, adjacentInBlock/2)(first, result, index)
 
   /** Holds if `i` is the `index`th instruction in `block`. */
   cached
   Instruction getInstruction(TIRBlock block, int index) {
-    exists(Instruction first | block = MkIRBlock(first) |
-      first = result and index = 0
-      or
-      index = getMemberIndex(result) and
-      BlockAdjacency::getEquivalenceClass(first) = BlockAdjacency::getEquivalenceClass(result)
-    )
+    result = getInstructionFromFirst(getFirstInstruction(block), index)
   }
 
   cached

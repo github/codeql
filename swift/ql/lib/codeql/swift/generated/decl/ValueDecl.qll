@@ -25,7 +25,7 @@ module Generated {
     final Type getInterfaceType() {
       exists(Type immediate |
         immediate = this.getImmediateInterfaceType() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
   }

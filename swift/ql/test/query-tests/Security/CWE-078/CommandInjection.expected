@@ -1,0 +1,306 @@
+edges
+| CommandInjection.swift:58:22:58:33 | command | CommandInjection.swift:62:16:62:16 | command |
+| CommandInjection.swift:58:22:58:33 | command [some:0] | CommandInjection.swift:62:16:62:16 | command [some:0] |
+| CommandInjection.swift:62:16:62:16 | command | CommandInjection.swift:62:16:62:16 | command [some:0] |
+| CommandInjection.swift:69:8:69:12 | let ...? [some:0, some:0] | CommandInjection.swift:69:12:69:12 | userControlledString [some:0] |
+| CommandInjection.swift:69:8:69:12 | let ...? [some:0] | CommandInjection.swift:69:12:69:12 | userControlledString |
+| CommandInjection.swift:69:12:69:12 | userControlledString | CommandInjection.swift:75:27:75:27 | userControlledString |
+| CommandInjection.swift:69:12:69:12 | userControlledString | CommandInjection.swift:78:43:78:43 | userControlledString |
+| CommandInjection.swift:69:12:69:12 | userControlledString [some:0] | CommandInjection.swift:78:43:78:43 | userControlledString [some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | CommandInjection.swift:75:27:75:27 | userControlledString |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | CommandInjection.swift:78:43:78:43 | userControlledString |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0, some:0] | CommandInjection.swift:69:8:69:12 | let ...? [some:0, some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:69:8:69:12 | let ...? [some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0, some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:78:43:78:43 | userControlledString [some:0] |
+| CommandInjection.swift:75:2:75:2 | [post] task1 [arguments, Collection element] | CommandInjection.swift:75:2:75:2 | [post] task1 |
+| CommandInjection.swift:75:20:75:47 | [...] [Collection element] | CommandInjection.swift:75:2:75:2 | [post] task1 [arguments, Collection element] |
+| CommandInjection.swift:75:27:75:27 | userControlledString | CommandInjection.swift:75:20:75:47 | [...] [Collection element] |
+| CommandInjection.swift:78:5:78:9 | let ...? [some:0] | CommandInjection.swift:78:9:78:9 | validatedString |
+| CommandInjection.swift:78:9:78:9 | validatedString | CommandInjection.swift:81:31:81:31 | validatedString |
+| CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) | CommandInjection.swift:81:31:81:31 | validatedString |
+| CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] | CommandInjection.swift:78:5:78:9 | let ...? [some:0] |
+| CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:58:22:58:33 | command |
+| CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) |
+| CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
+| CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | CommandInjection.swift:58:22:58:33 | command [some:0] |
+| CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
+| CommandInjection.swift:81:6:81:6 | [post] task2 [arguments, Collection element] | CommandInjection.swift:81:6:81:6 | [post] task2 |
+| CommandInjection.swift:81:24:81:46 | [...] [Collection element] | CommandInjection.swift:81:6:81:6 | [post] task2 [arguments, Collection element] |
+| CommandInjection.swift:81:31:81:31 | validatedString | CommandInjection.swift:81:24:81:46 | [...] [Collection element] |
+| CommandInjection.swift:99:8:99:12 | let ...? [some:0] | CommandInjection.swift:99:12:99:12 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:114:36:114:36 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:115:28:115:28 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:119:45:119:45 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:120:28:120:36 | ... .+(_:_:) ... |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:124:46:124:46 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:125:22:125:22 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:132:24:132:24 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:142:42:142:42 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:143:75:143:75 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:146:35:146:35 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:147:70:147:70 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:152:53:152:53 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:155:52:155:52 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:156:33:156:33 | userControlledString |
+| CommandInjection.swift:99:12:99:12 | userControlledString | CommandInjection.swift:158:57:158:57 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:114:36:114:36 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:115:28:115:28 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:119:45:119:45 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:120:28:120:36 | ... .+(_:_:) ... |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:124:46:124:46 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:125:22:125:22 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:132:24:132:24 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:142:42:142:42 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:143:75:143:75 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:146:35:146:35 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:147:70:147:70 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:152:53:152:53 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:155:52:155:52 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:156:33:156:33 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:158:57:158:57 | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:99:8:99:12 | let ...? [some:0] |
+| CommandInjection.swift:114:2:114:2 | [post] task3 [executableURL] | CommandInjection.swift:114:2:114:2 | [post] task3 |
+| CommandInjection.swift:114:24:114:56 | call to URL.init(string:) [some:0] | CommandInjection.swift:114:24:114:57 | ...! |
+| CommandInjection.swift:114:24:114:57 | ...! | CommandInjection.swift:114:2:114:2 | [post] task3 [executableURL] |
+| CommandInjection.swift:114:36:114:36 | userControlledString | CommandInjection.swift:114:24:114:56 | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:115:2:115:2 | [post] task3 [arguments, Collection element] | CommandInjection.swift:115:2:115:2 | [post] task3 |
+| CommandInjection.swift:115:20:115:48 | [...] [Collection element] | CommandInjection.swift:115:2:115:2 | [post] task3 [arguments, Collection element] |
+| CommandInjection.swift:115:28:115:28 | userControlledString | CommandInjection.swift:115:20:115:48 | [...] [Collection element] |
+| CommandInjection.swift:119:2:119:2 | [post] task4 [executableURL] | CommandInjection.swift:119:2:119:2 | [post] task4 |
+| CommandInjection.swift:119:24:119:65 | call to URL.init(fileURLWithPath:) | CommandInjection.swift:119:2:119:2 | [post] task4 [executableURL] |
+| CommandInjection.swift:119:45:119:45 | userControlledString | CommandInjection.swift:119:24:119:65 | call to URL.init(fileURLWithPath:) |
+| CommandInjection.swift:120:2:120:2 | [post] task4 [arguments, Collection element] | CommandInjection.swift:120:2:120:2 | [post] task4 |
+| CommandInjection.swift:120:20:120:56 | [...] [Collection element] | CommandInjection.swift:120:2:120:2 | [post] task4 [arguments, Collection element] |
+| CommandInjection.swift:120:28:120:36 | ... .+(_:_:) ... | CommandInjection.swift:120:20:120:56 | [...] [Collection element] |
+| CommandInjection.swift:124:2:124:7 | [post] ...? [executableURL] | CommandInjection.swift:124:2:124:7 | [post] ...? |
+| CommandInjection.swift:124:25:124:66 | call to URL.init(fileURLWithPath:) | CommandInjection.swift:124:2:124:7 | [post] ...? [executableURL] |
+| CommandInjection.swift:124:46:124:46 | userControlledString | CommandInjection.swift:124:25:124:66 | call to URL.init(fileURLWithPath:) |
+| CommandInjection.swift:125:2:125:7 | [post] ...? [arguments, Collection element] | CommandInjection.swift:125:2:125:7 | [post] ...? |
+| CommandInjection.swift:125:21:125:42 | [...] [Collection element] | CommandInjection.swift:125:2:125:7 | [post] ...? [arguments, Collection element] |
+| CommandInjection.swift:125:22:125:22 | userControlledString | CommandInjection.swift:125:21:125:42 | [...] [Collection element] |
+| CommandInjection.swift:132:24:132:24 | userControlledString | CommandInjection.swift:142:42:142:42 | userControlledString |
+| CommandInjection.swift:132:24:132:24 | userControlledString | CommandInjection.swift:143:75:143:75 | userControlledString |
+| CommandInjection.swift:132:24:132:24 | userControlledString | CommandInjection.swift:146:35:146:35 | userControlledString |
+| CommandInjection.swift:132:24:132:24 | userControlledString | CommandInjection.swift:147:70:147:70 | userControlledString |
+| CommandInjection.swift:132:24:132:24 | userControlledString | CommandInjection.swift:152:53:152:53 | userControlledString |
+| CommandInjection.swift:132:24:132:24 | userControlledString | CommandInjection.swift:155:52:155:52 | userControlledString |
+| CommandInjection.swift:132:24:132:24 | userControlledString | CommandInjection.swift:156:33:156:33 | userControlledString |
+| CommandInjection.swift:132:24:132:24 | userControlledString | CommandInjection.swift:158:57:158:57 | userControlledString |
+| CommandInjection.swift:143:67:143:95 | [...] [Collection element] | CommandInjection.swift:143:67:143:95 | [...] |
+| CommandInjection.swift:143:75:143:75 | userControlledString | CommandInjection.swift:143:67:143:95 | [...] [Collection element] |
+| CommandInjection.swift:146:23:146:55 | call to URL.init(string:) [some:0] | CommandInjection.swift:146:23:146:56 | ...! |
+| CommandInjection.swift:146:35:146:35 | userControlledString | CommandInjection.swift:146:23:146:55 | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:147:62:147:90 | [...] [Collection element] | CommandInjection.swift:147:62:147:90 | [...] |
+| CommandInjection.swift:147:70:147:70 | userControlledString | CommandInjection.swift:147:62:147:90 | [...] [Collection element] |
+| CommandInjection.swift:152:41:152:73 | call to URL.init(string:) [some:0] | CommandInjection.swift:152:41:152:74 | ...! |
+| CommandInjection.swift:152:53:152:53 | userControlledString | CommandInjection.swift:152:41:152:73 | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:155:40:155:72 | call to URL.init(string:) [some:0] | CommandInjection.swift:155:40:155:73 | ...! |
+| CommandInjection.swift:155:40:155:72 | call to URL.init(string:) [some:0] | CommandInjection.swift:155:40:155:73 | ...! |
+| CommandInjection.swift:155:40:155:73 | ...! | file://:0:0:0:0 | url |
+| CommandInjection.swift:155:52:155:52 | userControlledString | CommandInjection.swift:155:40:155:72 | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:156:32:156:53 | [...] [Collection element] | CommandInjection.swift:156:32:156:53 | [...] |
+| CommandInjection.swift:156:33:156:33 | userControlledString | CommandInjection.swift:156:32:156:53 | [...] [Collection element] |
+| CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] | CommandInjection.swift:158:45:158:78 | ...! |
+| CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] | CommandInjection.swift:158:45:158:78 | ...! |
+| CommandInjection.swift:158:45:158:78 | ...! | file://:0:0:0:0 | url |
+| CommandInjection.swift:158:57:158:57 | userControlledString | CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:172:3:172:3 | newValue [Collection element] | CommandInjection.swift:173:19:173:19 | newValue [Collection element] |
+| CommandInjection.swift:172:3:172:3 | newValue [Collection element] | CommandInjection.swift:174:20:174:20 | newValue [Collection element] |
+| CommandInjection.swift:172:3:172:3 | newValue [Collection element] | CommandInjection.swift:175:19:175:19 | newValue [Collection element] |
+| CommandInjection.swift:173:4:173:4 | [post] getter for .p1 [arguments, Collection element] | CommandInjection.swift:173:4:173:4 | [post] getter for .p1 |
+| CommandInjection.swift:173:19:173:19 | newValue [Collection element] | CommandInjection.swift:173:4:173:4 | [post] getter for .p1 [arguments, Collection element] |
+| CommandInjection.swift:174:4:174:6 | [post] ...! [arguments, Collection element] | CommandInjection.swift:174:4:174:6 | [post] ...! |
+| CommandInjection.swift:174:20:174:20 | newValue [Collection element] | CommandInjection.swift:174:4:174:6 | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:175:4:175:4 | [post] ...! [arguments, Collection element] | CommandInjection.swift:175:4:175:4 | [post] ...! |
+| CommandInjection.swift:175:19:175:19 | newValue [Collection element] | CommandInjection.swift:175:4:175:4 | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:180:9:180:13 | let ...? [some:0] | CommandInjection.swift:180:13:180:13 | userControlledString |
+| CommandInjection.swift:180:13:180:13 | userControlledString | CommandInjection.swift:184:19:184:19 | userControlledString |
+| CommandInjection.swift:180:13:180:13 | userControlledString | CommandInjection.swift:190:31:190:31 | userControlledString |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:184:19:184:19 | userControlledString |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:190:31:190:31 | userControlledString |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) [some:0] | CommandInjection.swift:180:9:180:13 | let ...? [some:0] |
+| CommandInjection.swift:184:18:184:39 | [...] [Collection element] | CommandInjection.swift:186:18:186:18 | tainted1 [Collection element] |
+| CommandInjection.swift:184:18:184:39 | [...] [Collection element] | CommandInjection.swift:187:19:187:19 | tainted1 [Collection element] |
+| CommandInjection.swift:184:18:184:39 | [...] [Collection element] | CommandInjection.swift:188:18:188:18 | tainted1 [Collection element] |
+| CommandInjection.swift:184:19:184:19 | userControlledString | CommandInjection.swift:184:18:184:39 | [...] [Collection element] |
+| CommandInjection.swift:186:3:186:3 | [post] getter for .p1 [arguments, Collection element] | CommandInjection.swift:186:3:186:3 | [post] getter for .p1 |
+| CommandInjection.swift:186:18:186:18 | tainted1 [Collection element] | CommandInjection.swift:186:3:186:3 | [post] getter for .p1 [arguments, Collection element] |
+| CommandInjection.swift:186:18:186:18 | tainted1 [Collection element] | CommandInjection.swift:187:19:187:19 | tainted1 [Collection element] |
+| CommandInjection.swift:186:18:186:18 | tainted1 [Collection element] | CommandInjection.swift:188:18:188:18 | tainted1 [Collection element] |
+| CommandInjection.swift:187:3:187:5 | [post] ...! [arguments, Collection element] | CommandInjection.swift:187:3:187:5 | [post] ...! |
+| CommandInjection.swift:187:19:187:19 | tainted1 [Collection element] | CommandInjection.swift:187:3:187:5 | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:187:19:187:19 | tainted1 [Collection element] | CommandInjection.swift:188:18:188:18 | tainted1 [Collection element] |
+| CommandInjection.swift:188:3:188:3 | [post] ...! [arguments, Collection element] | CommandInjection.swift:188:3:188:3 | [post] ...! |
+| CommandInjection.swift:188:18:188:18 | tainted1 [Collection element] | CommandInjection.swift:188:3:188:3 | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:190:30:190:51 | [...] [Collection element] | CommandInjection.swift:192:18:192:18 | tainted2 [Collection element] |
+| CommandInjection.swift:190:30:190:51 | [...] [Collection element] | CommandInjection.swift:193:19:193:19 | tainted2 [Collection element] |
+| CommandInjection.swift:190:30:190:51 | [...] [Collection element] | CommandInjection.swift:194:18:194:18 | tainted2 [Collection element] |
+| CommandInjection.swift:190:30:190:51 | [...] [Collection element] | CommandInjection.swift:196:13:196:13 | tainted2 [Collection element] |
+| CommandInjection.swift:190:31:190:31 | userControlledString | CommandInjection.swift:190:30:190:51 | [...] [Collection element] |
+| CommandInjection.swift:192:3:192:3 | [post] getter for .p1 [arguments, Collection element] | CommandInjection.swift:192:3:192:3 | [post] getter for .p1 |
+| CommandInjection.swift:192:18:192:18 | tainted2 [Collection element] | CommandInjection.swift:192:3:192:3 | [post] getter for .p1 [arguments, Collection element] |
+| CommandInjection.swift:193:3:193:5 | [post] ...! [arguments, Collection element] | CommandInjection.swift:193:3:193:5 | [post] ...! |
+| CommandInjection.swift:193:19:193:19 | tainted2 [Collection element] | CommandInjection.swift:193:3:193:5 | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:194:3:194:3 | [post] ...! [arguments, Collection element] | CommandInjection.swift:194:3:194:3 | [post] ...! |
+| CommandInjection.swift:194:18:194:18 | tainted2 [Collection element] | CommandInjection.swift:194:3:194:3 | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:196:13:196:13 | tainted2 [Collection element] | CommandInjection.swift:172:3:172:3 | newValue [Collection element] |
+| file://:0:0:0:0 | url | file://:0:0:0:0 | url |
+| file://:0:0:0:0 | url | file://:0:0:0:0 | url |
+nodes
+| CommandInjection.swift:58:22:58:33 | command | semmle.label | command |
+| CommandInjection.swift:58:22:58:33 | command [some:0] | semmle.label | command [some:0] |
+| CommandInjection.swift:62:16:62:16 | command | semmle.label | command |
+| CommandInjection.swift:62:16:62:16 | command [some:0] | semmle.label | command [some:0] |
+| CommandInjection.swift:62:16:62:16 | command [some:0] | semmle.label | command [some:0] |
+| CommandInjection.swift:69:8:69:12 | let ...? [some:0, some:0] | semmle.label | let ...? [some:0, some:0] |
+| CommandInjection.swift:69:8:69:12 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| CommandInjection.swift:69:12:69:12 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:69:12:69:12 | userControlledString [some:0] | semmle.label | userControlledString [some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0, some:0] | semmle.label | call to String.init(contentsOf:) [some:0, some:0] |
+| CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) [some:0] | semmle.label | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:75:2:75:2 | [post] task1 | semmle.label | [post] task1 |
+| CommandInjection.swift:75:2:75:2 | [post] task1 [arguments, Collection element] | semmle.label | [post] task1 [arguments, Collection element] |
+| CommandInjection.swift:75:20:75:47 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:75:27:75:27 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:78:5:78:9 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| CommandInjection.swift:78:9:78:9 | validatedString | semmle.label | validatedString |
+| CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) | semmle.label | call to validateCommand(_:) |
+| CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] | semmle.label | call to validateCommand(_:) [some:0] |
+| CommandInjection.swift:78:43:78:43 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | semmle.label | userControlledString [some:0] |
+| CommandInjection.swift:81:6:81:6 | [post] task2 | semmle.label | [post] task2 |
+| CommandInjection.swift:81:6:81:6 | [post] task2 [arguments, Collection element] | semmle.label | [post] task2 [arguments, Collection element] |
+| CommandInjection.swift:81:24:81:46 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:81:31:81:31 | validatedString | semmle.label | validatedString |
+| CommandInjection.swift:99:8:99:12 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| CommandInjection.swift:99:12:99:12 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) [some:0] | semmle.label | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:114:2:114:2 | [post] task3 | semmle.label | [post] task3 |
+| CommandInjection.swift:114:2:114:2 | [post] task3 [executableURL] | semmle.label | [post] task3 [executableURL] |
+| CommandInjection.swift:114:24:114:56 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:114:24:114:57 | ...! | semmle.label | ...! |
+| CommandInjection.swift:114:36:114:36 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:115:2:115:2 | [post] task3 | semmle.label | [post] task3 |
+| CommandInjection.swift:115:2:115:2 | [post] task3 [arguments, Collection element] | semmle.label | [post] task3 [arguments, Collection element] |
+| CommandInjection.swift:115:20:115:48 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:115:28:115:28 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:119:2:119:2 | [post] task4 | semmle.label | [post] task4 |
+| CommandInjection.swift:119:2:119:2 | [post] task4 [executableURL] | semmle.label | [post] task4 [executableURL] |
+| CommandInjection.swift:119:24:119:65 | call to URL.init(fileURLWithPath:) | semmle.label | call to URL.init(fileURLWithPath:) |
+| CommandInjection.swift:119:45:119:45 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:120:2:120:2 | [post] task4 | semmle.label | [post] task4 |
+| CommandInjection.swift:120:2:120:2 | [post] task4 [arguments, Collection element] | semmle.label | [post] task4 [arguments, Collection element] |
+| CommandInjection.swift:120:20:120:56 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:120:28:120:36 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
+| CommandInjection.swift:124:2:124:7 | [post] ...? | semmle.label | [post] ...? |
+| CommandInjection.swift:124:2:124:7 | [post] ...? [executableURL] | semmle.label | [post] ...? [executableURL] |
+| CommandInjection.swift:124:25:124:66 | call to URL.init(fileURLWithPath:) | semmle.label | call to URL.init(fileURLWithPath:) |
+| CommandInjection.swift:124:46:124:46 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:125:2:125:7 | [post] ...? | semmle.label | [post] ...? |
+| CommandInjection.swift:125:2:125:7 | [post] ...? [arguments, Collection element] | semmle.label | [post] ...? [arguments, Collection element] |
+| CommandInjection.swift:125:21:125:42 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:125:22:125:22 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:132:24:132:24 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:142:42:142:42 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:143:67:143:95 | [...] | semmle.label | [...] |
+| CommandInjection.swift:143:67:143:95 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:143:75:143:75 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:146:23:146:55 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:146:23:146:56 | ...! | semmle.label | ...! |
+| CommandInjection.swift:146:35:146:35 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:147:62:147:90 | [...] | semmle.label | [...] |
+| CommandInjection.swift:147:62:147:90 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:147:70:147:70 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:152:41:152:73 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:152:41:152:74 | ...! | semmle.label | ...! |
+| CommandInjection.swift:152:53:152:53 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:155:40:155:72 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:155:40:155:73 | ...! | semmle.label | ...! |
+| CommandInjection.swift:155:40:155:73 | ...! | semmle.label | ...! |
+| CommandInjection.swift:155:52:155:52 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:156:32:156:53 | [...] | semmle.label | [...] |
+| CommandInjection.swift:156:32:156:53 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:156:33:156:33 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:158:45:158:77 | call to URL.init(string:) [some:0] | semmle.label | call to URL.init(string:) [some:0] |
+| CommandInjection.swift:158:45:158:78 | ...! | semmle.label | ...! |
+| CommandInjection.swift:158:45:158:78 | ...! | semmle.label | ...! |
+| CommandInjection.swift:158:57:158:57 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:172:3:172:3 | newValue [Collection element] | semmle.label | newValue [Collection element] |
+| CommandInjection.swift:173:4:173:4 | [post] getter for .p1 | semmle.label | [post] getter for .p1 |
+| CommandInjection.swift:173:4:173:4 | [post] getter for .p1 [arguments, Collection element] | semmle.label | [post] getter for .p1 [arguments, Collection element] |
+| CommandInjection.swift:173:19:173:19 | newValue [Collection element] | semmle.label | newValue [Collection element] |
+| CommandInjection.swift:174:4:174:6 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:174:4:174:6 | [post] ...! [arguments, Collection element] | semmle.label | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:174:20:174:20 | newValue [Collection element] | semmle.label | newValue [Collection element] |
+| CommandInjection.swift:175:4:175:4 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:175:4:175:4 | [post] ...! [arguments, Collection element] | semmle.label | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:175:19:175:19 | newValue [Collection element] | semmle.label | newValue [Collection element] |
+| CommandInjection.swift:180:9:180:13 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| CommandInjection.swift:180:13:180:13 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) [some:0] | semmle.label | call to String.init(contentsOf:) [some:0] |
+| CommandInjection.swift:184:18:184:39 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:184:19:184:19 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:186:3:186:3 | [post] getter for .p1 | semmle.label | [post] getter for .p1 |
+| CommandInjection.swift:186:3:186:3 | [post] getter for .p1 [arguments, Collection element] | semmle.label | [post] getter for .p1 [arguments, Collection element] |
+| CommandInjection.swift:186:18:186:18 | tainted1 [Collection element] | semmle.label | tainted1 [Collection element] |
+| CommandInjection.swift:187:3:187:5 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:187:3:187:5 | [post] ...! [arguments, Collection element] | semmle.label | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:187:19:187:19 | tainted1 [Collection element] | semmle.label | tainted1 [Collection element] |
+| CommandInjection.swift:188:3:188:3 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:188:3:188:3 | [post] ...! [arguments, Collection element] | semmle.label | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:188:18:188:18 | tainted1 [Collection element] | semmle.label | tainted1 [Collection element] |
+| CommandInjection.swift:190:30:190:51 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| CommandInjection.swift:190:31:190:31 | userControlledString | semmle.label | userControlledString |
+| CommandInjection.swift:192:3:192:3 | [post] getter for .p1 | semmle.label | [post] getter for .p1 |
+| CommandInjection.swift:192:3:192:3 | [post] getter for .p1 [arguments, Collection element] | semmle.label | [post] getter for .p1 [arguments, Collection element] |
+| CommandInjection.swift:192:18:192:18 | tainted2 [Collection element] | semmle.label | tainted2 [Collection element] |
+| CommandInjection.swift:193:3:193:5 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:193:3:193:5 | [post] ...! [arguments, Collection element] | semmle.label | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:193:19:193:19 | tainted2 [Collection element] | semmle.label | tainted2 [Collection element] |
+| CommandInjection.swift:194:3:194:3 | [post] ...! | semmle.label | [post] ...! |
+| CommandInjection.swift:194:3:194:3 | [post] ...! [arguments, Collection element] | semmle.label | [post] ...! [arguments, Collection element] |
+| CommandInjection.swift:194:18:194:18 | tainted2 [Collection element] | semmle.label | tainted2 [Collection element] |
+| CommandInjection.swift:196:13:196:13 | tainted2 [Collection element] | semmle.label | tainted2 [Collection element] |
+| file://:0:0:0:0 | url | semmle.label | url |
+| file://:0:0:0:0 | url | semmle.label | url |
+| file://:0:0:0:0 | url | semmle.label | url |
+| file://:0:0:0:0 | url | semmle.label | url |
+subpaths
+| CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:58:22:58:33 | command | CommandInjection.swift:62:16:62:16 | command | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) |
+| CommandInjection.swift:78:43:78:43 | userControlledString | CommandInjection.swift:58:22:58:33 | command | CommandInjection.swift:62:16:62:16 | command [some:0] | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
+| CommandInjection.swift:78:43:78:43 | userControlledString [some:0] | CommandInjection.swift:58:22:58:33 | command [some:0] | CommandInjection.swift:62:16:62:16 | command [some:0] | CommandInjection.swift:78:27:78:63 | call to validateCommand(_:) [some:0] |
+#select
+| CommandInjection.swift:75:2:75:2 | [post] task1 | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | CommandInjection.swift:75:2:75:2 | [post] task1 | This command depends on a $@. | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:81:6:81:6 | [post] task2 | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | CommandInjection.swift:81:6:81:6 | [post] task2 | This command depends on a $@. | CommandInjection.swift:69:40:69:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:114:2:114:2 | [post] task3 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:114:2:114:2 | [post] task3 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:115:2:115:2 | [post] task3 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:115:2:115:2 | [post] task3 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:119:2:119:2 | [post] task4 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:119:2:119:2 | [post] task4 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:120:2:120:2 | [post] task4 | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:120:2:120:2 | [post] task4 | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:124:2:124:7 | [post] ...? | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:124:2:124:7 | [post] ...? | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:125:2:125:7 | [post] ...? | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:125:2:125:7 | [post] ...? | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:142:42:142:42 | userControlledString | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:142:42:142:42 | userControlledString | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:143:67:143:95 | [...] | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:143:67:143:95 | [...] | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:146:23:146:56 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:146:23:146:56 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:147:62:147:90 | [...] | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:147:62:147:90 | [...] | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:152:41:152:74 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:152:41:152:74 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:155:40:155:73 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:155:40:155:73 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:156:32:156:53 | [...] | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:156:32:156:53 | [...] | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:158:45:158:78 | ...! | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | CommandInjection.swift:158:45:158:78 | ...! | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:173:4:173:4 | [post] getter for .p1 | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:173:4:173:4 | [post] getter for .p1 | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:174:4:174:6 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:174:4:174:6 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:175:4:175:4 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:175:4:175:4 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:186:3:186:3 | [post] getter for .p1 | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:186:3:186:3 | [post] getter for .p1 | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:187:3:187:5 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:187:3:187:5 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:188:3:188:3 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:188:3:188:3 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:192:3:192:3 | [post] getter for .p1 | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:192:3:192:3 | [post] getter for .p1 | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:193:3:193:5 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:193:3:193:5 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| CommandInjection.swift:194:3:194:3 | [post] ...! | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | CommandInjection.swift:194:3:194:3 | [post] ...! | This command depends on a $@. | CommandInjection.swift:180:41:180:95 | call to String.init(contentsOf:) | user-provided value |
+| file://:0:0:0:0 | url | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | file://:0:0:0:0 | url | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |
+| file://:0:0:0:0 | url | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | file://:0:0:0:0 | url | This command depends on a $@. | CommandInjection.swift:99:40:99:94 | call to String.init(contentsOf:) | user-provided value |

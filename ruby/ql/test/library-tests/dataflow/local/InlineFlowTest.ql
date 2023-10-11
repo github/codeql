@@ -4,8 +4,9 @@
 
 import codeql.ruby.AST
 import TestUtilities.InlineFlowTest
-import PathGraph
+import DefaultFlowTest
+import TaintFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, DefaultTaintFlowConf conf
-where conf.hasFlowPath(source, sink)
+from TaintFlow::PathNode source, TaintFlow::PathNode sink
+where TaintFlow::flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

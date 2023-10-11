@@ -13,8 +13,9 @@
 import javascript
 import semmle.javascript.RestrictedLocations
 
-from ConstDeclStmt cds, VariableDeclarator decl, VarDef def, Variable v
+from DeclStmt cds, VariableDeclarator decl, VarDef def, Variable v
 where
+  (cds instanceof ConstDeclStmt or cds instanceof UsingDeclStmt) and
   decl = cds.getADecl() and
   def.getAVariable() = v and
   decl.getBindingPattern().getAVariable() = v and

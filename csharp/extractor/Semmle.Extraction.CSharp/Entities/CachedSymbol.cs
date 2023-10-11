@@ -1,11 +1,10 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Entities;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -98,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // Some built in operators lack locations, so loc is null.
                     yield return Context.CreateLocation(ReportingLocation);
-                    if (!Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone) && loc.Kind == LocationKind.SourceFile)
+                    if (loc.Kind == LocationKind.SourceFile)
                         yield return Assembly.CreateOutputAssembly(Context);
                 }
             }

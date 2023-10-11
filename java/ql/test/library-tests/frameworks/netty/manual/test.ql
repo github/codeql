@@ -7,16 +7,10 @@ module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     DefaultFlowConfig::isSource(node)
     or
-    node instanceof RemoteFlowSource
+    node instanceof ThreatModelFlowSource
   }
 
   predicate isSink = DefaultFlowConfig::isSink/1;
 }
 
-module Flow = TaintTracking::Global<Config>;
-
-class Test extends InlineFlowTest {
-  override predicate hasTaintFlow(DataFlow::Node source, DataFlow::Node sink) {
-    Flow::flow(source, sink)
-  }
-}
+import FlowTest<DefaultFlowConfig, Config>

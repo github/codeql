@@ -77,16 +77,16 @@ class JsonpBuilderExpr extends AddExpr {
   Expr getJsonExpr() { result = this.getLeftOperand().(AddExpr).getRightOperand() }
 }
 
-/** A data flow configuration tracing flow from remote sources to jsonp function name. */
-module RemoteFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+/** A data flow configuration tracing flow from threat model sources to jsonp function name. */
+module ThreatModelFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(JsonpBuilderExpr jhe | jhe.getFunctionName() = sink.asExpr())
   }
 }
 
-module RemoteFlow = DataFlow::Global<RemoteFlowConfig>;
+module ThreatModelFlow = DataFlow::Global<ThreatModelFlowConfig>;
 
 /** A data flow configuration tracing flow from json data into the argument `json` of JSONP-like string `someFunctionName + "(" + json + ")"`. */
 module JsonDataFlowConfig implements DataFlow::ConfigSig {
@@ -105,7 +105,7 @@ module JsonpInjectionFlowConfig implements DataFlow::ConfigSig {
     exists(JsonpBuilderExpr jhe |
       jhe = src.asExpr() and
       JsonDataFlow::flowTo(DataFlow::exprNode(jhe.getJsonExpr())) and
-      RemoteFlow::flowTo(DataFlow::exprNode(jhe.getFunctionName()))
+      ThreatModelFlow::flowTo(DataFlow::exprNode(jhe.getFunctionName()))
     )
   }
 

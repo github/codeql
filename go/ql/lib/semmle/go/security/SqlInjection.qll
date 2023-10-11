@@ -14,9 +14,11 @@ module SqlInjection {
   import SqlInjectionCustomizations::SqlInjection
 
   /**
+   * DEPRECATED: Use `Flow` instead.
+   *
    * A taint-tracking configuration for reasoning about SQL-injection vulnerabilities.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "SqlInjection" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -31,9 +33,20 @@ module SqlInjection {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
   }
+
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+      NoSql::isAdditionalMongoTaintStep(pred, succ)
+    }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  }
+
+  /** Tracks taint flow for reasoning about SQL-injection vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
 }

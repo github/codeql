@@ -28,3 +28,10 @@ func readTest(req *http.Request) string {
 	req.Body.Read(b)
 	return string(b)
 }
+
+func clearTest(req *http.Request) string {
+	b := make([]byte, 8)
+	req.Body.Read(b)
+	clear(b) // should prevent taint flow
+	return string(b)
+}

@@ -8,8 +8,4 @@
 
 import swift
 
-select count(File f, int line |
-    exists(Location loc |
-      not loc instanceof UnknownLocation and loc.getFile() = f and loc.getStartLine() = line
-    )
-  )
+select sum(File f | | f.getNumberOfLinesOfCode())
