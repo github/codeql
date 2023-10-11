@@ -42,7 +42,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install GNU tar
         if: runner.os == 'macOS'
         run: |
@@ -113,7 +113,7 @@ jobs:
   compile-queries:
     runs-on: ubuntu-latest-xl
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Fetch CodeQL
         uses: ./.github/actions/fetch-codeql
       - name: Cache compilation cache
@@ -145,7 +145,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, compile-queries]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: ruby.dbscheme
@@ -206,7 +206,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [package]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Fetch CodeQL
         uses: ./.github/actions/fetch-codeql
 

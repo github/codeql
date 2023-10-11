@@ -47,6 +47,7 @@ extensions:
       - ["System.Collections.Generic", "List<>", False, "FindAll", "(System.Predicate<T>)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Collections.Generic", "List<>", False, "FindLast", "(System.Predicate<T>)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["System.Collections.Generic", "List<>", False, "FindLast", "(System.Predicate<T>)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["System.Collections.Generic", "List<>", False, "ForEach", "(System.Action<T>)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["System.Collections.Generic", "List<>", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Collections.Generic.List<>+Enumerator.Current]", "value", "manual"]
       - ["System.Collections.Generic", "List<>", False, "GetRange", "(System.Int32,System.Int32)", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections.Generic", "List<>", False, "InsertRange", "(System.Int32,System.Collections.Generic.IEnumerable<T>)", "", "Argument[1].Element", "Argument[this].Element", "value", "manual"]

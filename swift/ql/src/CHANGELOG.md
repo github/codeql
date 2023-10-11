@@ -1,3 +1,13 @@
+## 0.2.5
+
+No user-facing changes.
+
+## 0.2.4
+
+### New Queries
+
+* Added new query "Incomplete regular expression for hostnames" (`swift/incomplete-hostname-regexp`). This query finds regular expressions matching a URL or hostname that may match more hostnames than expected.
+
 ## 0.2.3
 
 No user-facing changes.

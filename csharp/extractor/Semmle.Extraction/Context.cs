@@ -153,9 +153,9 @@ namespace Semmle.Extraction
         /// Enqueue the given action to be performed later.
         /// </summary>
         /// <param name="toRun">The action to run.</param>
-        public void PopulateLater(Action a)
+        public void PopulateLater(Action a, bool preserveDuplicationKey = true)
         {
-            var key = GetCurrentTagStackKey();
+            var key = preserveDuplicationKey ? GetCurrentTagStackKey() : null;
             if (key is not null)
             {
                 // If we are currently executing with a duplication guard, then the same

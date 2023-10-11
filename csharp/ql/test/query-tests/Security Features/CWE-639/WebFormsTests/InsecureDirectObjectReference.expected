@@ -1,0 +1,1 @@
+| EditComment.aspx.cs:7:20:7:29 | btn1_Click | This method may be missing authorization checks for which users can access the resource of the provided ID. |

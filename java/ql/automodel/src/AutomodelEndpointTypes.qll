@@ -28,12 +28,6 @@ abstract class SinkType extends EndpointType {
   SinkType() { any() }
 }
 
-/** A class for source types that can be predicted by a classifier. */
-abstract class SourceType extends EndpointType {
-  bindingset[this]
-  SourceType() { any() }
-}
-
 /** The `Negative` class for non-sinks. */
 class NegativeSinkType extends SinkType {
   NegativeSinkType() { this = "non-sink" }
@@ -57,4 +51,15 @@ class RequestForgerySinkType extends SinkType {
 /** A sink relevant to the command injection query. */
 class CommandInjectionSinkType extends SinkType {
   CommandInjectionSinkType() { this = "command-injection" }
+}
+
+/** A class for source types that can be predicted by a classifier. */
+abstract class SourceType extends EndpointType {
+  bindingset[this]
+  SourceType() { any() }
+}
+
+/** A source of remote data. */
+class RemoteSourceType extends SourceType {
+  RemoteSourceType() { this = "remote" }
 }

@@ -272,9 +272,9 @@ func test_optionals(y: Int?) {
     sink(opt: y?.signum())
 
     sink(arg: x ?? 0) // $ flow=259
-    sink(arg: x ?? source()) // $ flow=259 MISSING: flow=276
+    sink(arg: x ?? source()) // $ flow=259 flow=275
     sink(arg: y ?? 0)
-    sink(arg: y ?? source()) // $ MISSING: flow=278
+    sink(arg: y ?? source()) // $ flow=277
 
     sink(arg: x != nil ? x! : 0) // $ flow=259
     sink(arg: x != nil ? x! : source()) // $ flow=259 flow=280
@@ -612,7 +612,7 @@ func inoutConstructor() {
 }
 
 struct S {
-  let x: Int
+  var x: Int
 
   init(x: Int) {
     self.x = x
@@ -629,7 +629,7 @@ func testKeyPath() {
 }
 
 struct S2 {
-  let s: S
+  var s: S
 
   init(s: S) {
     self.s = s
@@ -706,7 +706,7 @@ func testArray() {
     sink(arg: arr4[0]) // $ MISSING: flow=692
 
     var arr5 = Array(repeating: source(), count: 2)
-    sink(arg: arr5[0]) // $ MISSING: flow=708
+    sink(arg: arr5[0]) // $ flow=708
 
     var arr6 = [1,2,3]
     arr6.insert(source(), at: 2)
@@ -765,4 +765,110 @@ func testOptionalKeyPathForce() {
     let s2 = S2_Optional(s: s)
     let f = \S2_Optional.s!.x
     sink(arg: s2[keyPath: f]) // $ flow=764
+}
+
+func testDictionary() {
+    var dict1 = [1:2, 3:4, 5:6]
+    sink(arg: dict1[1])
+
+    dict1[1] = source()
+
+    sink(arg: dict1[1]) // $ flow=774
+
+    var dict2 = [source(): 1]
+    sink(arg: dict2[1])
+
+    for (key, value) in dict2 {
+        sink(arg: key) // $ MISSING: flow=778
+        sink(arg: value)
+    }
+
+    var dict3 = [1: source()]
+    sink(arg: dict3[1]) // $ flow=786
+
+    dict3[source()] = 2
+
+    sink(arg: dict3.randomElement()!.0) // $ flow=789
+    sink(arg: dict3.randomElement()!.1) // $ flow=786
+
+    for (key, value) in dict3 {
+        sink(arg: key) // $ MISSING: flow=789
+        sink(arg: value) // $ MISSING: flow=786
+    }
+
+    var dict4 = [1:source()]
+    sink(arg: dict4.updateValue(1, forKey: source())!) // $ flow=799
+    sink(arg: dict4.updateValue(source(), forKey: 2)!) // $ SPURIOUS: flow=799
+    sink(arg: dict4.randomElement()!.0) // $ flow=800
+    sink(arg: dict4.randomElement()!.1) // $ flow=799 flow=801
+    sink(arg: dict4.keys.randomElement()) // $ MISSING: flow=800
+    sink(arg: dict4.values.randomElement()) // $ MISSING: flow=799 flow=801
+}
+
+struct S3 {
+  init(_ v: Int) {
+    self.v = v
+  }
+
+  func getv() -> Int { return v }
+
+  var v: Int
+}
+
+func testStruct() {
+    var s1 = S3(source())
+    var s2 = S3(0)
+
+    sink(arg: s1.v) // $ flow=819
+    sink(arg: s2.v)
+    sink(arg: s1.getv()) // $ flow=819
+    sink(arg: s2.getv())
+
+    s1.v = 0
+    s2.v = source()
+
+    sink(arg: s1.v)
+    sink(arg: s2.v) // $ flow=828
+    sink(arg: s1.getv())
+    sink(arg: s2.getv()) // $ flow=828
+}
+
+func testNestedKeyPathWrite() {
+  var s2 = S2(s: S(x: 1))
+  sink(arg: s2.s.x)
+  var f = \S2.s.x
+  s2[keyPath: f] = source()
+  sink(arg: s2.s.x) // $ flow=840
+}
+
+func testVarargs1(args: Int...) {
+    sink(arg: args)
+    sink(arg: args[0]) // $ flow=871
+}
+
+func testVarargs2(_ v: Int, _ args: Int...) {
+    sink(arg: v) // $ flow=872
+    sink(arg: args)
+    sink(arg: args[0])
+    sink(arg: args[1])
+}
+
+func testVarargs3(_ v: Int, _ args: Int...) {
+    sink(arg: v)
+    sink(arg: args)
+    sink(arg: args[0]) // $ SPURIOUS: flow=873
+    sink(arg: args[1]) // $ flow=873
+
+    for arg in args {
+        sink(arg: arg) // $ MISSING: flow=873
+    }
+
+    let myKeyPath = \[Int][1]
+    sink(arg: args[keyPath: myKeyPath]) // $ flow=873
+}
+
+func testVarargsCaller() {
+    testVarargs1(args: source())
+    testVarargs2(source(), 2, 3)
+    testVarargs3(1, 2, source())
 }

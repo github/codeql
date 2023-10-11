@@ -128,7 +128,7 @@ x = Foo.new
 x.flowToSelf(tainted)
 sink(x) # $ hasTaintFlow=tainted
 
-Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted
+Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted $ hasTaintFlow=tainted
 Foo.sinkAnyArg(key: tainted) # $ hasValueFlow=tainted
 
 Foo.sinkAnyNamedArg(tainted)

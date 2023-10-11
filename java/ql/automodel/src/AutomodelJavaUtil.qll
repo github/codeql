@@ -39,14 +39,9 @@ predicate isKnownKind(string kind, AutomodelEndpointTypes::EndpointType type) {
   or
   kind = "command-injection" and
   type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
-}
-
-/** Gets the models-as-data description for the method argument with the index `index`. */
-bindingset[index]
-string getArgumentForIndex(int index) {
-  index = -1 and result = "Argument[this]"
   or
-  index >= 0 and result = "Argument[" + index + "]"
+  kind = "remote" and
+  type instanceof AutomodelEndpointTypes::RemoteSourceType
 }
 
 /**

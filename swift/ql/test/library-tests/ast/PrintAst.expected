@@ -3300,6 +3300,44 @@ cfg.swift:
 #  526|     Type = Int
 #  533| [ConcreteVarDecl] i
 #  533|     Type = Int
+#  538| [NamedFunction] testNilCoalescing(x:)
+#  538|     InterfaceType = (Int?) -> Int
+#  538|   getParam(0): [ParamDecl] x
+#  538|       Type = Int?
+#  538|   getBody(): [BraceStmt] { ... }
+#  539|     getElement(0): [ReturnStmt] return ...
+#  539|       getResult(): [BinaryExpr] ... ??(_:_:) ...
+#  539|         getFunction(): [DeclRefExpr] ??(_:_:)
+#  539|         getArgument(0): [Argument] : x
+#  539|           getExpr(): [DeclRefExpr] x
+#  539|         getArgument(1): [Argument] : { ... }
+#  539|           getExpr(): [AutoClosureExpr] { ... }
+#  539|             getBody(): [BraceStmt] { ... }
+#  539|               getElement(0): [ReturnStmt] return ...
+#  539|                 getResult(): [IntegerLiteralExpr] 0
+#  542| [NamedFunction] testNilCoalescing2(x:)
+#  542|     InterfaceType = (Bool?) -> Int
+#  542|   getParam(0): [ParamDecl] x
+#  542|       Type = Bool?
+#  542|   getBody(): [BraceStmt] { ... }
+#  543|     getElement(0): [IfStmt] if ... then { ... } else { ... }
+#  543|       getCondition(): [StmtCondition] StmtCondition
+#  543|         getElement(0): [ConditionElement] ... ??(_:_:) ...
+#  543|           getBoolean(): [BinaryExpr] ... ??(_:_:) ...
+#  543|             getFunction(): [DeclRefExpr] ??(_:_:)
+#  543|             getArgument(0): [Argument] : x
+#  543|               getExpr(): [DeclRefExpr] x
+#  543|             getArgument(1): [Argument] : { ... }
+#  543|               getExpr(): [AutoClosureExpr] { ... }
+#  543|                 getBody(): [BraceStmt] { ... }
+#  543|                   getElement(0): [ReturnStmt] return ...
+#  543|                     getResult(): [BooleanLiteralExpr] false
+#  543|       getThen(): [BraceStmt] { ... }
+#  544|         getElement(0): [ReturnStmt] return ...
+#  544|           getResult(): [IntegerLiteralExpr] 1
+#  545|       getElse(): [BraceStmt] { ... }
+#  546|         getElement(0): [ReturnStmt] return ...
+#  546|           getResult(): [IntegerLiteralExpr] 0
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...

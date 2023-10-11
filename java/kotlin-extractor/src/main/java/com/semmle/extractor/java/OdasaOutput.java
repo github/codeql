@@ -219,23 +219,6 @@ public class OdasaOutput {
 	}
 
 	/*
-	 * Deletion of existing trap files.
-	 */
-
-	private void deleteTrapFileAndDependencies(IrElement sym, String signature) {
-		File trap = trapFileForDecl(sym, signature);
-		if (trap.exists()) {
-			trap.delete();
-			File depFile = new File(trap.getParentFile(), trap.getName().replace(".trap.gz", ".dep"));
-			if (depFile.exists())
-				depFile.delete();
-			File metadataFile = new File(trap.getParentFile(), trap.getName().replace(".trap.gz", ".metadata"));
-			if (metadataFile.exists())
-				metadataFile.delete();
-		}
-	}
-
-	/*
 	 * Trap writers.
 	 */
 
@@ -516,31 +499,11 @@ public class OdasaOutput {
 				}
 			}
 		}
-
-		private LockDirectory getExtractorLockDir() {
-			return LockDirectory.instance(currentSpecFileEntry.getTrapFolder(), log);
-		}
-
-		private void lockTrapFile(File trapFile) {
-			getExtractorLockDir().blockingLock(LockingMode.Exclusive, trapFile, "Java extractor lock");
-		}
-
-		private void unlockTrapFile(File trapFile) {
-			boolean success = getExtractorLockDir().maybeUnlock(LockingMode.Exclusive, trapFile);
-			if (!success) {
-				log.warn("Trap file was not locked: " + trapFile);
-			}
-		}
 	}
 
 	/*
 	 * Class version tracking.
 	 */
-
-	private static final String MAJOR_VERSION = "majorVersion";
-	private static final String MINOR_VERSION = "minorVersion";
-	private static final String LAST_MODIFIED = "lastModified";
-	private static final String EXTRACTOR_NAME = "extractorName";
 
 	private static class TrapClassVersion {
 		private int majorVersion;
@@ -709,27 +672,4 @@ public class OdasaOutput {
 			return majorVersion + "." + minorVersion + "-" + lastModified + "-" + extractorName;
 		}
 	}
-
-	private TrapClassVersion readVersionInfo(File trap) {
-		int majorVersion = 0;
-		int minorVersion = 0;
-		long lastModified = 0;
-		String extractorName = null;
-		File metadataFile = new File(trap.getAbsolutePath().replace(".trap.gz", ".metadata"));
-		if (metadataFile.exists()) {
-			Map<String,String> metadataMap = FileUtil.readPropertiesCSV(metadataFile);
-			try {
-				majorVersion = Integer.parseInt(metadataMap.get(MAJOR_VERSION));
-				minorVersion = Integer.parseInt(metadataMap.get(MINOR_VERSION));
-				lastModified = Long.parseLong(metadataMap.get(LAST_MODIFIED));
-				extractorName = metadataMap.get(EXTRACTOR_NAME);
-			} catch (NumberFormatException e) {
-				log.warn("Invalid class file version for " + trap.getAbsolutePath(), e);
-			}
-		} else {
-			log.warn("Trap metadata file does not exist: " + metadataFile.getAbsolutePath());
-		}
-		return new TrapClassVersion(majorVersion, minorVersion, lastModified, extractorName);
-	}
-
 }
