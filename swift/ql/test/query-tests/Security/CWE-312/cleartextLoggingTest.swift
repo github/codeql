@@ -222,23 +222,23 @@ func test4(harmless: String, password: String) {
 	print(harmless, to: &myString1)
 	print(myString1) // safe
 
-	print(password, to: &myString2) // $ SPURIOUS: hasCleartextLogging=225
-	print(myString2) // $ MISSING: hasCleartextLogging=225
+	print(password, to: &myString2)
+	print(myString2) // $ hasCleartextLogging=225
 
-	print("log: " + password, to: &myString3) // $ SPURIOUS: hasCleartextLogging=228
-	print(myString3) // $ MISSING: hasCleartextLogging=228
+	print("log: " + password, to: &myString3)
+	print(myString3) // $ hasCleartextLogging=228
 
 	debugPrint(harmless, to: &myString4)
 	debugPrint(myString4) // safe
 
-	debugPrint(password, to: &myString5) // $ SPURIOUS: hasCleartextLogging=234
-	debugPrint(myString5) // $ MISSING: hasCleartextLogging=234
+	debugPrint(password, to: &myString5)
+	debugPrint(myString5) // $ hasCleartextLogging=234
 
 	dump(harmless, to: &myString6)
 	dump(myString6) // safe
 
-	dump(password, to: &myString7) // $ SPURIOUS: hasCleartextLogging=240
-	dump(myString7) // $ MISSING: hasCleartextLogging=240
+	dump(password, to: &myString7)
+	dump(myString7) // $ hasCleartextLogging=240
 
 	myString8.write(harmless)
 	print(myString8)
@@ -257,9 +257,9 @@ func test4(harmless: String, password: String) {
 	password.write(to: &myString12)
 	print(myString12) // $ hasCleartextLogging=257
 
-	print(password, to: &myString13) // $ SPURIOUS: hasCleartextLogging=260
-    debugPrint(password, to: &myString13) // $ SPURIOUS: hasCleartextLogging=261
-	dump(password, to: &myString13) // $ SPURIOUS: hasCleartextLogging=262
+	print(password, to: &myString13) // $ safe - only printed to another string
+    debugPrint(password, to: &myString13) // $ safe - only printed to another string
+	dump(password, to: &myString13) // $ safe - only printed to another string
 	myString13.write(password) // safe - only printed to another string
 	password.write(to: &myString13) // safe - only printed to another string
 }

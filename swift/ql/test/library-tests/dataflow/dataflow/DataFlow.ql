@@ -3,7 +3,9 @@
  */
 
 import swift
+import FlowConfig
+import TestFlow::PathGraph
 
-from Function f
-where f.getName().matches("os_log%")
-select f, concat(f.getInterfaceType().toString(), ", ")
+from TestFlow::PathNode src, TestFlow::PathNode sink
+where TestFlow::flowPath(src, sink)
+select sink, src, sink, "result"

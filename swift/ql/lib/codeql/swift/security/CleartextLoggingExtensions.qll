@@ -99,12 +99,8 @@ private class LoggingSinks extends SinkModelCsv {
       [
         ";;false;print(_:separator:terminator:);;;Argument[0..2];log-injection",
         ";;false;print(_:separator:terminator:toStream:);;;Argument[0..2];log-injection",
-        ";;false;print(_:separator:terminator:to:);;;Argument[0..2];log-injection",
         ";;false;debugPrint(_:separator:terminator:);;;Argument[0..2];log-injection",
-        ";;false;debugPrint(_:separator:terminator:to:);;;Argument[0..2];log-injection",
         ";;false;dump(_:name:indent:maxDepth:maxItems:);;;Argument[0..1];log-injection",
-        ";;false;dump(_:to:name:indent:maxDepth:maxItems:);;;Argument[0];log-injection",
-        ";;false;dump(_:to:name:indent:maxDepth:maxItems:);;;Argument[2];log-injection",
         ";;false;assert(_:_:file:line:);;;Argument[1];log-injection",
         ";;false;assertionFailure(_:file:line:);;;Argument[0];log-injection",
         ";;false;precondition(_:_:file:line:);;;Argument[1];log-injection",
