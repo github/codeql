@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* Added Json.Stringify sanitizer to js/reflected-xss query.
