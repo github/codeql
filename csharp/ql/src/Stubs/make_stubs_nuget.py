@@ -193,7 +193,7 @@ for framework in frameworks:
         pf.write('</Project>\n')
 
         for pathInfo in pathInfos:
-            if 'packs/' + framework.lower() in pathInfo.lower():
+            if framework.lower() + '.ref' in pathInfo.lower():
                 copiedFiles.add(pathInfo)
                 shutil.copy2(pathInfos[pathInfo], os.path.join(
                     frameworksDir, framework))
@@ -207,7 +207,7 @@ with open(os.path.join(frameworksDir, 'Microsoft.NETCore.App', 'Microsoft.NETCor
     pf.write('</Project>\n')
 
     for pathInfo in pathInfos:
-        if 'packs/microsoft.netcore.app.ref/' in pathInfo.lower():
+        if 'microsoft.netcore.app.ref/' in pathInfo.lower():
             copiedFiles.add(pathInfo)
             shutil.copy2(pathInfos[pathInfo], frameworkDir)
 
