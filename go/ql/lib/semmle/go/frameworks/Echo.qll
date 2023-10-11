@@ -98,4 +98,18 @@ private module Echo {
 
     override Http::ResponseWriter getResponseWriter() { none() }
   }
+
+  /**
+   * The File system access sinks
+   */
+  class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
+    FsOperations() {
+      exists(Method m |
+        m.hasQualifiedName(packagePath(), "Context", ["Attachment", "File"]) and
+        this = m.getACall()
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+  }
 }
