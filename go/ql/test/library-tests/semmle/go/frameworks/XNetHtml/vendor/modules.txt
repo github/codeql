@@ -1,3 +1,4 @@
-# golang.org/x/net v0.0.0-20201010224723-4f7140c49acb
+# golang.org/x/net v0.17.0
 ## explicit
-golang.org/x/net
+golang.org/x/net/html
+golang.org/x/net/html/atom
