@@ -35,14 +35,14 @@ private module SyntheticGlobals {
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
+ArgumentPosition callbackSelfParameterPosition() { result.isDelegateSelf() }
 
 /** Gets the synthesized data-flow call for `receiver`. */
 SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) {
-  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+  exists(Type t | result.asGvnType() = Gvn::getGlobalValueNumber(t) |
     t = c.(FieldContent).getField().getType()
     or
     t = c.(PropertyContent).getProperty().getType()
@@ -56,7 +56,7 @@ DataFlowType getContentType(Content c) {
 
 /** Gets the type of the parameter at the given position. */
 DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
-  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+  exists(Type t | result.asGvnType() = Gvn::getGlobalValueNumber(t) |
     exists(int i |
       pos.getPosition() = i and
       t = c.getParameter(i).getType()
@@ -69,7 +69,7 @@ DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(DotNet::Callable c, ReturnKind rk) {
-  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+  exists(Type t | result.asGvnType() = Gvn::getGlobalValueNumber(t) |
     rk instanceof NormalReturnKind and
     (
       t = c.(Constructor).getDeclaringType()
@@ -88,10 +88,13 @@ DataFlowType getReturnType(DotNet::Callable c, ReturnKind rk) {
  */
 DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
   exists(SystemLinqExpressions::DelegateExtType dt |
-    t = Gvn::getGlobalValueNumber(dt) and
-    result =
+    t.asGvnType() = Gvn::getGlobalValueNumber(dt) and
+    result.asGvnType() =
       Gvn::getGlobalValueNumber(dt.getDelegateType().getParameter(pos.getPosition()).getType())
   )
+  or
+  pos.isDelegateSelf() and
+  result = t
 }
 
 /**
@@ -101,15 +104,15 @@ DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
   rk instanceof NormalReturnKind and
   exists(SystemLinqExpressions::DelegateExtType dt |
-    t = Gvn::getGlobalValueNumber(dt) and
-    result = Gvn::getGlobalValueNumber(dt.getDelegateType().getReturnType())
+    t.asGvnType() = Gvn::getGlobalValueNumber(dt) and
+    result.asGvnType() = Gvn::getGlobalValueNumber(dt.getDelegateType().getReturnType())
   )
 }
 
 /** Gets the type of synthetic global `sg`. */
 DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) {
   exists(sg) and
-  result = Gvn::getGlobalValueNumber(any(ObjectType t))
+  result.asGvnType() = Gvn::getGlobalValueNumber(any(ObjectType t))
 }
 
 /**
@@ -223,6 +226,9 @@ string getParameterPosition(ParameterPosition pos) {
   or
   pos.isThisParameter() and
   result = "this"
+  or
+  pos.isDelegateSelf() and
+  result = "delegate-self"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
@@ -231,6 +237,9 @@ string getArgumentPosition(ArgumentPosition pos) {
   or
   pos.isQualifier() and
   result = "this"
+  or
+  pos.isDelegateSelf() and
+  result = "delegate-self"
 }
 
 /** Holds if input specification component `c` needs a reference. */
@@ -312,6 +321,9 @@ ArgumentPosition parseParamBody(string s) {
   or
   s = "this" and
   result.isQualifier()
+  or
+  s = "delegate-self" and
+  result.isDelegateSelf()
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
@@ -321,4 +333,7 @@ ParameterPosition parseArgBody(string s) {
   or
   s = "this" and
   result.isThisParameter()
+  or
+  s = "delegate-self" and
+  result.isDelegateSelf()
 }

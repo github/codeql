@@ -49,7 +49,7 @@ private class CoreDataStore extends CleartextStorageDatabaseSink {
     // with `coreDataObj.data` is a sink.
     // (ideally this would be only members with the `@NSManaged` attribute)
     exists(NominalType t, Expr e |
-      t.getABaseType*().getUnderlyingType().getName() = "NSManagedObject" and
+      t.getUnderlyingType().getABaseType*().getName() = "NSManagedObject" and
       this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
       e.getFullyConverted().getType() = t and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
@@ -67,7 +67,7 @@ private class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlo
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
     exists(NominalType t, Expr e |
-      t.getABaseType*().getUnderlyingType().getName() = "RealmSwiftObject" and
+      t.getUnderlyingType().getABaseType*().getName() = "RealmSwiftObject" and
       this.getPreUpdateNode().asExpr() = e and
       e.getFullyConverted().getType() = t and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
@@ -114,7 +114,7 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
 }
 
 /**
- * An barrier for cleartext database storage vulnerabilities.
+ * A barrier for cleartext database storage vulnerabilities.
  *  - encryption; encrypted values are not cleartext.
  *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
@@ -128,15 +128,9 @@ private class CleartextStorageDatabaseDefaultBarrier extends CleartextStorageDat
 /**
  * An additional taint step for cleartext database storage vulnerabilities.
  */
-private class CleartextStorageDatabaseArrayAdditionalFlowStep extends CleartextStorageDatabaseAdditionalFlowStep
+private class CleartextStorageDatabaseFieldsAdditionalFlowStep extends CleartextStorageDatabaseAdditionalFlowStep
 {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // needed until we have proper content flow through arrays.
-    exists(ArrayExpr arr |
-      nodeFrom.asExpr() = arr.getAnElement() and
-      nodeTo.asExpr() = arr
-    )
-    or
     // if an object is sensitive, its fields are always sensitive
     // (this is needed because the sensitive data sources are in a sense
     //  approximate; for example we might identify `passwordBox` as a source,

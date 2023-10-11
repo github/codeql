@@ -47,6 +47,10 @@ private module Input implements InputSig<PythonDataFlow> {
   predicate identityLocalStepExclude(Node n) {
     not exists(n.getLocation().getFile().getRelativePath())
   }
+
+  predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
+    isArgumentNode(arg, call, _)
+  }
 }
 
 module Consistency = MakeConsistency<PythonDataFlow, PythonTaintTracking, Input>;

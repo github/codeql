@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["GitHub.CodeQL","PublicClass",true,"sourceStuff","()","","ReturnValue","remote","manual"]
+
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["GitHub.CodeQL","PublicClass",true,"sinkStuff","(System.String)","","Argument[0]","sql-injection","manual"]
+
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["GitHub.CodeQL","PublicClass",true,"summaryStuff","(System.String)","","Argument[0]","ReturnValue","taint","manual"]
+
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["GitHub.CodeQL","PublicClass","neutralStuff","(System.String)","summary","manual"]

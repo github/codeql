@@ -1,8 +1,9 @@
 name: codeql/dataflow
-version: 0.0.4
+version: 0.1.0
 groups: shared
 library: true
 dependencies:
   codeql/ssa: ${workspace}
+  codeql/typetracking: ${workspace}
   codeql/util: ${workspace}
 warnOnImplicitThis: true

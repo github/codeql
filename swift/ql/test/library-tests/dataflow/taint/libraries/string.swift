@@ -226,8 +226,9 @@ func taintThroughSimpleStringOperations() {
   sink(arg: String(format: tainted, locale: nil, 1, 2, 3)) // $ tainted=217
   sink(arg: String(format: tainted, locale: nil, arguments: [])) // $ tainted=217
   sink(arg: String.localizedStringWithFormat(tainted, 1, 2, 3)) // $ tainted=217
-  sink(arg: String(format: "%s", tainted)) // $ MISSING: tainted=217
-  sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ MISSING: tainted=218
+  sink(arg: String.localizedStringWithFormat("%i %s %i", 1, tainted, 3)) // $ tainted=217
+  sink(arg: String(format: "%s", tainted)) // $ tainted=217
+  sink(arg: String(format: "%i %i %i", 1, 2, taintedInt)) // $ tainted=218
 
   sink(arg: String(repeating: clean, count: 2))
   sink(arg: String(repeating: tainted, count: 2)) // $ tainted=217
@@ -235,7 +236,6 @@ func taintThroughSimpleStringOperations() {
   sink(arg: tainted.dropFirst(10)) // $ tainted=217
   sink(arg: tainted.dropLast(10)) // $ tainted=217
   sink(arg: tainted.substring(from: tainted.startIndex)) // $ tainted=217
-
   sink(arg: tainted.lowercased()) // $ tainted=217
   sink(arg: tainted.uppercased()) // $ tainted=217
   sink(arg: tainted.lowercased(with: nil)) // $ tainted=217
@@ -584,12 +584,12 @@ func taintedThroughConversion() {
   sink(arg: String(0))
   sink(arg: String(source())) // $ tainted=585
   sink(arg: Int(0).description)
-  sink(arg: source().description) // $ MISSING: tainted=587
+  sink(arg: source().description) // $ tainted=587
   sink(arg: String(describing: 0))
   sink(arg: String(describing: source())) // $ tainted=589
 
   sink(arg: Int("123")!)
-  sink(arg: Int(source2())!) // $ MISSING: tainted=592
+  sink(arg: Int(source2())!) // $ tainted=592
 }
 
 func untaintedFields() {

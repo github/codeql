@@ -79,7 +79,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     let re1 = try Regex(#"<script.*?>.*?<\/script>"#).ignoresCase(true)
     _ = try re1.firstMatch(in: tainted)
 
-    // BAD - doesn't match `</script >` [NOT DETECTED - all regexs with mode flags are currently missed by the query]
+    // BAD - doesn't match `</script >`
     let re2a = try Regex(#"(?is)<script.*?>.*?<\/script>"#)
     _ = try re2a.firstMatch(in: tainted)
     // BAD - doesn't match `</script >`
@@ -125,7 +125,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     let re9 = try Regex(#"<script(\s|\w|=|")*?>.*?<\/script[^>]*>"#).ignoresCase(true).dotMatchesNewlines(true)
     _ = try re9.firstMatch(in: tainted)
 
-    // BAD - does not match double quotes for attribute values [NOT DETECTED]
+    // BAD - does not match double quotes for attribute values
     let re10a = try Regex(#"(?is)<script(\s|\w|=|')*?>.*?<\/script[^>]*>"#)
     _ = try re10a.firstMatch(in: tainted)
     // BAD - does not match double quotes for attribute values
@@ -136,7 +136,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     let ns10 = try NSRegularExpression(pattern: #"<script(\s|\w|=|')*?>.*?<\/script[^>]*>"#, options: options10)
     _ = ns10.firstMatch(in: tainted, range: NSMakeRange(0, tainted.utf16.count))
 
-    // BAD - does not match tabs between attributes [NOT DETECTED]
+    // BAD - does not match tabs between attributes
     let re11a = try Regex(#"(?is)<script( |\n|\w|=|'|")*?>.*?<\/script[^>]*>"#)
     _ = try re11a.firstMatch(in: tainted)
     // BAD - does not match tabs between attributes
@@ -147,7 +147,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     let ns11 = try NSRegularExpression(pattern: #"<script( |\n|\w|=|'|")*?>.*?<\/script[^>]*>"#, options: options11)
     _ = ns11.firstMatch(in: tainted, range: NSMakeRange(0, tainted.utf16.count))
 
-    // BAD - does not match uppercase SCRIPT tags [NOT DETECTED]
+    // BAD - does not match uppercase SCRIPT tags
     let re12a = try Regex(#"(?s)<script.*?>.*?<\/script[^>]*>"#)
     _ = try re12a.firstMatch(in: tainted)
     // BAD - does not match uppercase SCRIPT tags
@@ -157,7 +157,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     let ns12 = try NSRegularExpression(pattern: #"<script.*?>.*?<\/script[^>]*>"#, options: .dotMatchesLineSeparators)
     _ = ns12.firstMatch(in: tainted, range: NSMakeRange(0, tainted.utf16.count))
 
-    // BAD - does not match mixed case script tags [NOT DETECTED]
+    // BAD - does not match mixed case script tags
     let re13a = try Regex(#"(?s)<(script|SCRIPT).*?>.*?<\/(script|SCRIPT)[^>]*>"#)
     _ = try re13a.firstMatch(in: tainted)
     // BAD - does not match mixed case script tags
@@ -167,7 +167,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     let ns13 = try NSRegularExpression(pattern: #"<(script|SCRIPT).*?>.*?<\/(script|SCRIPT)[^>]*>"#, options: .dotMatchesLineSeparators)
     _ = ns13.firstMatch(in: tainted, range: NSMakeRange(0, tainted.utf16.count))
 
-    // BAD - doesn't match newlines in the end tag [NOT DETECTED]
+    // BAD - doesn't match newlines in the end tag
     let re14a = try Regex(#"(?i)<script[^>]*?>[\s\S]*?<\/script.*>"#)
     _ = try re14a.firstMatch(in: tainted)
     // BAD - doesn't match newlines in the end tag

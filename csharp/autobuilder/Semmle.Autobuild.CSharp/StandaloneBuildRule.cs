@@ -8,6 +8,13 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     internal class StandaloneBuildRule : IBuildRule<CSharpAutobuildOptions>
     {
+        private readonly string? dotNetPath;
+
+        internal StandaloneBuildRule(string? dotNetPath)
+        {
+            this.dotNetPath = dotNetPath;
+        }
+
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
             BuildScript GetCommand(string? solution)
@@ -28,11 +35,15 @@ namespace Semmle.Autobuild.CSharp
                 if (solution is not null)
                     cmd.QuoteArgument(solution);
 
-                cmd.Argument("--references:.");
-
                 if (!builder.Options.NugetRestore)
                 {
                     cmd.Argument("--skip-nuget");
+                }
+
+                if (!string.IsNullOrEmpty(this.dotNetPath))
+                {
+                    cmd.Argument("--dotnet");
+                    cmd.QuoteArgument(this.dotNetPath);
                 }
 
                 return cmd.Script;

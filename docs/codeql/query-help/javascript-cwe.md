@@ -1,6 +1,6 @@
-# CWE coverage for JavaScript
+# CWE coverage for JavaScript and TypeScript
 
-An overview of CWE coverage for JavaScript in the latest release of CodeQL.
+An overview of CWE coverage for JavaScript and TypeScript in the latest release of CodeQL.
 
 ## Overview
 

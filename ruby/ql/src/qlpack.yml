@@ -1,6 +1,6 @@
 name: codeql/ruby-queries
-version: 0.7.5
-groups: 
+version: 0.8.0
+groups:
   - ruby
   - queries
 suites: codeql-suites
