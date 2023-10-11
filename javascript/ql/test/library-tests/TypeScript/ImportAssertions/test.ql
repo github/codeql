@@ -8,6 +8,6 @@ query Expr getImportAttributesFromExport(ExportDeclaration decl) {
   result = decl.getImportAttributes()
 }
 
-query Expr getImportAttributes(DynamicImportExpr imprt) { result = imprt.getImportAttributes() }
+query Expr getImportOptions(DynamicImportExpr imprt) { result = imprt.getImportOptions() }
 
 query JSParseError errors() { any() }

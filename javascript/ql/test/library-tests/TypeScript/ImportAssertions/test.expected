@@ -21,7 +21,7 @@ getImportAttributesFromExport
 | ts-import-assertions.ts:8:1:8:52 | export  ... son" }; | ts-import-assertions.ts:8:36:8:51 | { type: "json" } |
 | ts-import-assertions.ts:9:1:9:47 | export  ... son" }; | ts-import-assertions.ts:9:31:9:46 | { type: "json" } |
 | ts-import-assertions.ts:10:1:10:53 | export  ... son" }; | ts-import-assertions.ts:10:37:10:52 | { type: "json" } |
-getImportAttributes
+getImportOptions
 | js-import-assertions.js:10:12:10:55 | import( ... n" } }) | js-import-assertions.js:10:29:10:54 | { with: ... on" } } |
 | js-import-assertions.js:24:12:24:57 | import( ... n" } }) | js-import-assertions.js:24:29:24:56 | { asser ... on" } } |
 | ts-import-assertions.ts:12:12:12:57 | import( ... n" } }) | ts-import-assertions.ts:12:29:12:56 | { asser ... on" } } |
