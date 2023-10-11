@@ -68,19 +68,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///   }
         /// }
         /// 
-        /// Returns dependencies
-        ///   RequiredPaths = {
+        /// Adds the following dependencies
+        ///   Paths: {
         ///     "castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll",
         ///     "json.net/1.0.33/lib/netstandard2.0/Json.Net.dll"
         ///   }
-        ///   UsedPackages = {
+        ///   Packages: {
         ///     "castle.core",
         ///     "json.net"
         ///   }
         /// </summary>
-        private DependencyContainer AddPackageDependencies(JObject json, DependencyContainer dependencies)
+        private void AddPackageDependencies(JObject json, DependencyContainer dependencies)
         {
-            // If there are more than one framework we need to pick just one.
+            // If there is more than one framework we need to pick just one.
             // To ensure stability we pick one based on the lexicographic order of
             // the framework names.
             var references = json
@@ -93,7 +93,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (references is null)
             {
                 progressMonitor.LogDebug("No references found in the targets section in the assets file.");
-                return dependencies;
+                return;
             }
 
             // Find all the compile dependencies for each reference and
@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     // If this is a .NET framework reference then include everything.
                     if (netFrameworks.Any(framework => name.StartsWith(framework)))
                     {
-                        dependencies.Add(name);
+                        dependencies.AddFramework(name);
                     }
                     else
                     {
@@ -120,7 +120,69 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     }
                 });
 
-            return dependencies;
+            return;
+        }
+
+        /// <summary>
+        /// Add the framework dependencies from the assets file to dependencies.
+        ///
+        /// Example:
+        /// "project": {
+        //     "version": "1.0.0",
+        //     "frameworks": {
+        //         "net7.0": {
+        //             "frameworkReferences": {
+        //                 "Microsoft.AspNetCore.App": {
+        //                     "privateAssets": "none"
+        //                 },
+        //                 "Microsoft.NETCore.App": {
+        //                     "privateAssets": "all"
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        //
+        /// Adds the following dependencies
+        ///   Paths: {
+        ///     "microsoft.aspnetcore.app.ref",
+        ///     "microsoft.netcore.app.ref"
+        ///   }
+        ///   Packages: {
+        ///     "microsoft.aspnetcore.app.ref",
+        ///     "microsoft.netcore.app.ref"
+        ///   }
+        /// </summary>
+        private void AddFrameworkDependencies(JObject json, DependencyContainer dependencies)
+        {
+
+            var frameworks = json
+                .GetProperty("project")?
+                .GetProperty("frameworks");
+
+            if (frameworks is null)
+            {
+                progressMonitor.LogDebug("No framework section in assets.json.");
+                return;
+            }
+
+            // If there is more than one framework we need to pick just one.
+            // To ensure stability we pick one based on the lexicographic order of
+            // the framework names.
+            var references = frameworks
+                .Properties()?
+                .MaxBy(p => p.Name)?
+                .Value["frameworkReferences"] as JObject;
+
+            if (references is null)
+            {
+                progressMonitor.LogDebug("No framework references in assets.json.");
+                return;
+            }
+
+            references
+                .Properties()
+                .ForEach(f => dependencies.AddFramework($"{f.Name}.Ref".ToLowerInvariant()));
         }
 
         /// <summary>
@@ -134,6 +196,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 var obj = JObject.Parse(json);
                 AddPackageDependencies(obj, dependencies);
+                AddFrameworkDependencies(obj, dependencies);
                 return true;
             }
             catch (Exception e)

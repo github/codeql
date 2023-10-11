@@ -9,8 +9,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class DependencyContainer
     {
-        private readonly List<string> requiredPaths = new();
-        private readonly HashSet<string> usedPackages = new();
+        /// <summary>
+        /// Paths to dependencies required for compilation.
+        /// </summary>
+        public List<string> Paths { get; } = new();
+
+        /// <summary>
+        /// Packages that are used as a part of the required dependencies.
+        /// </summary>
+        public HashSet<string> Packages { get; } = new();
 
         /// <summary>
         /// In most cases paths in asset files point to dll's or the empty _._ file, which
@@ -33,16 +40,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .First();
 
         /// <summary>
-        /// Paths to dependencies required for compilation.
-        /// </summary>
-        public IEnumerable<string> RequiredPaths => requiredPaths;
-
-        /// <summary>
-        /// Packages that are used as a part of the required dependencies.
-        /// </summary>
-        public HashSet<string> UsedPackages => usedPackages;
-
-        /// <summary>
         /// Add a dependency inside a package.
         /// </summary>
         public void Add(string package, string dependency)
@@ -51,19 +48,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var d = dependency.Replace('/', Path.DirectorySeparatorChar);
 
             var path = Path.Combine(p, ParseFilePath(d));
-            requiredPaths.Add(path);
-            usedPackages.Add(GetPackageName(p));
+            Paths.Add(path);
+            Packages.Add(GetPackageName(p));
         }
 
         /// <summary>
-        /// Add a dependency to an entire package
+        /// Add a dependency to an entire framework package.
         /// </summary>
-        public void Add(string package)
+        public void AddFramework(string framework)
         {
-            var p = package.Replace('/', Path.DirectorySeparatorChar);
+            var p = framework.Replace('/', Path.DirectorySeparatorChar);
 
-            requiredPaths.Add(p);
-            usedPackages.Add(GetPackageName(p));
+            Paths.Add(p);
+            Packages.Add(GetPackageName(p));
         }
     }
 }
