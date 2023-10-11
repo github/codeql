@@ -159,8 +159,8 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
     NSLog(pass_phrase) // $ hasCleartextLogging=159
 
     os_log("%@", log: .default, type: .default, "") // safe
-    os_log("%@", log: .default, type: .default, password) // $ MISSING: hasCleartextLogging=161
-    os_log("%@ %@ %@", log: .default, type: .default, "", "", password) // $ MISSING: hasCleartextLogging=162
+    os_log("%@", log: .default, type: .default, password) // $ hasCleartextLogging=162
+    os_log("%@ %@ %@", log: .default, type: .default, "", "", password) // $ hasCleartextLogging=163
 
 }
 
