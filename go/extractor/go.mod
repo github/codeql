@@ -1,4 +1,4 @@
-module github.com/github/codeql-go
+module github.com/github/codeql-go/extractor
 
 go 1.21
 
