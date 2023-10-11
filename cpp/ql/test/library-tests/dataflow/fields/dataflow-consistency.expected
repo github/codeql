@@ -10,7 +10,6 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-missingToString
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
@@ -192,3 +191,5 @@ uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
 uniqueContentApprox
 identityLocalStep
+missingArgumentCall
+multipleArgumentCall

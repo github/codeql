@@ -58,6 +58,16 @@ signature module InputSig<DF::InputSig DataFlowLang> {
 
   /** Holds if `n` should be excluded from the consistency test `identityLocalStep`. */
   default predicate identityLocalStepExclude(DataFlowLang::Node n) { none() }
+
+  /** Holds if `arg` should be excluded from the consistency test `missingArgumentCall`. */
+  default predicate missingArgumentCallExclude(DataFlowLang::ArgumentNode arg) { none() }
+
+  /** Holds if `(arg, call)` should be excluded from the consistency test `multipleArgumentCall`. */
+  default predicate multipleArgumentCallExclude(
+    DataFlowLang::ArgumentNode arg, DataFlowLang::DataFlowCall call
+  ) {
+    none()
+  }
 }
 
 module MakeConsistency<
@@ -144,13 +154,6 @@ module MakeConsistency<
       c = count(n.toString()) and
       c != 1 and
       msg = "Node should have one toString but has " + c + "."
-    )
-  }
-
-  query predicate missingToString(string msg) {
-    exists(int c |
-      c = strictcount(Node n | not exists(n.toString())) and
-      msg = "Nodes without toString: " + c
     )
   }
 
@@ -259,21 +262,33 @@ module MakeConsistency<
     not Input::viableImplInCallContextTooLargeExclude(call, ctx, callable)
   }
 
+  private predicate uniqueParameterNodeAtPositionInclude(
+    DataFlowCallable c, ParameterPosition pos, Node p
+  ) {
+    not Input::uniqueParameterNodeAtPositionExclude(c, pos, p) and
+    isParameterNode(p, c, pos)
+  }
+
   query predicate uniqueParameterNodeAtPosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
-    not Input::uniqueParameterNodeAtPositionExclude(c, pos, p) and
-    isParameterNode(p, c, pos) and
-    not exists(unique(Node p0 | isParameterNode(p0, c, pos))) and
+    uniqueParameterNodeAtPositionInclude(c, pos, p) and
+    not exists(unique(Node p0 | uniqueParameterNodeAtPositionInclude(c, pos, p0))) and
     msg = "Parameters with overlapping positions."
+  }
+
+  private predicate uniqueParameterNodePositionInclude(
+    DataFlowCallable c, ParameterPosition pos, Node p
+  ) {
+    not Input::uniqueParameterNodePositionExclude(c, pos, p) and
+    isParameterNode(p, c, pos)
   }
 
   query predicate uniqueParameterNodePosition(
     DataFlowCallable c, ParameterPosition pos, Node p, string msg
   ) {
-    not Input::uniqueParameterNodePositionExclude(c, pos, p) and
-    isParameterNode(p, c, pos) and
-    not exists(unique(ParameterPosition pos0 | isParameterNode(p, c, pos0))) and
+    uniqueParameterNodePositionInclude(c, pos, p) and
+    not exists(unique(ParameterPosition pos0 | uniqueParameterNodePositionInclude(c, pos0, p))) and
     msg = "Parameter node with multiple positions."
   }
 
@@ -286,5 +301,22 @@ module MakeConsistency<
     simpleLocalFlowStep(n, n) and
     not Input::identityLocalStepExclude(n) and
     msg = "Node steps to itself"
+  }
+
+  query predicate missingArgumentCall(ArgumentNode arg, string msg) {
+    not Input::missingArgumentCallExclude(arg) and
+    not isArgumentNode(arg, _, _) and
+    msg = "Missing call for argument node."
+  }
+
+  private predicate multipleArgumentCallInclude(ArgumentNode arg, DataFlowCall call) {
+    isArgumentNode(arg, call, _) and
+    not Input::multipleArgumentCallExclude(arg, call)
+  }
+
+  query predicate multipleArgumentCall(ArgumentNode arg, DataFlowCall call, string msg) {
+    multipleArgumentCallInclude(arg, call) and
+    strictcount(DataFlowCall call0 | multipleArgumentCallInclude(arg, call0)) > 1 and
+    msg = "Multiple calls for argument node."
   }
 }

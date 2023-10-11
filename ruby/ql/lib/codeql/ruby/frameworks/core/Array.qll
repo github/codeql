@@ -47,11 +47,11 @@ module Array {
     override MethodCall getACallSimple() { result = getAStaticArrayCall("[]") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      exists(ArrayIndex i |
-        input = "Argument[" + i + "]" and
-        output = "ReturnValue.Element[" + i + "]" and
-        preservesValue = true
-      )
+      // we make use of the special `splat` argument kind, which contains all positional
+      // arguments wrapped in an implicit array, as well as explicit splat arguments
+      input = "Argument[splat]" and
+      output = "ReturnValue" and
+      preservesValue = true
     }
   }
 
@@ -210,9 +210,28 @@ module Array {
     }
   }
 
+  private predicate isKnownRange(RangeLiteral rl, int start, int end) {
+    (
+      // Either an explicit, positive beginning index...
+      start = rl.getBegin().getConstantValue().getInt() and start >= 0
+      or
+      // Or a begin-less one, since `..n` is equivalent to `0..n`
+      not exists(rl.getBegin()) and start = 0
+    ) and
+    // There must be an explicit end. An end-less range like `2..` is not
+    // treated as a known range, since we don't track the length of the array.
+    exists(int e | e = rl.getEnd().getConstantValue().getInt() and e >= 0 |
+      rl.isInclusive() and end = e
+      or
+      rl.isExclusive() and end = e - 1
+    )
+  }
+
   /**
    * A call to `[]` with an unknown argument, which could be either an index or
-   * a range.
+   * a range. To avoid spurious flow, we are going to ignore the possibility
+   * that the argument might be a range (unless it is an explicit range literal,
+   * see `ElementReferenceRangeReadUnknownSummary`).
    */
   private class ElementReferenceReadUnknownSummary extends ElementReferenceReadSummary {
     ElementReferenceReadUnknownSummary() {
@@ -223,7 +242,7 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
-      output = ["ReturnValue", "ReturnValue.Element[?]"] and
+      output = "ReturnValue" and
       preservesValue = true
     }
   }
@@ -242,24 +261,8 @@ module Array {
       )
       or
       mc.getNumberOfArguments() = 1 and
-      exists(RangeLiteral rl |
-        rl = mc.getArgument(0) and
-        (
-          // Either an explicit, positive beginning index...
-          start = rl.getBegin().getConstantValue().getInt() and start >= 0
-          or
-          // Or a begin-less one, since `..n` is equivalent to `0..n`
-          not exists(rl.getBegin()) and start = 0
-        ) and
-        // There must be an explicit end. An end-less range like `2..` is not
-        // treated as a known range, since we don't track the length of the array.
-        exists(int e | e = rl.getEnd().getConstantValue().getInt() and e >= 0 |
-          rl.isInclusive() and end = e
-          or
-          rl.isExclusive() and end = e - 1
-        ) and
-        this = methodName + "(" + start + ".." + end + ")"
-      )
+      isKnownRange(mc.getArgument(0), start, end) and
+      this = methodName + "(" + start + ".." + end + ")"
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
@@ -291,12 +294,7 @@ module Array {
         )
         or
         mc.getNumberOfArguments() = 1 and
-        exists(RangeLiteral rl | rl = mc.getArgument(0) |
-          exists(rl.getBegin()) and
-          not exists(int b | b = rl.getBegin().getConstantValue().getInt() and b >= 0)
-          or
-          not exists(int e | e = rl.getEnd().getConstantValue().getInt() and e >= 0)
-        )
+        mc.getArgument(0) = any(RangeLiteral range | not isKnownRange(range, _, _))
       )
     }
 

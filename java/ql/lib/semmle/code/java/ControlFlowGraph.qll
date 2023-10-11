@@ -477,6 +477,8 @@ private module ControlFlowGraphImpl {
       or
       this instanceof Call // includes both expressions and statements
       or
+      this instanceof ErrorExpr
+      or
       this instanceof ReturnStmt
       or
       this instanceof ThrowStmt
@@ -869,7 +871,13 @@ private module ControlFlowGraphImpl {
     )
     or
     // the last node in a case rule is the last node in the right-hand side
-    last(n.(SwitchCase).getRuleStatement(), last, completion)
+    // if the rhs is a statement we wrap the completion as a break
+    exists(Completion caseCompletion |
+      last(n.(SwitchCase).getRuleStatement(), last, caseCompletion) and
+      if caseCompletion instanceof NormalOrBooleanCompletion
+      then completion = anonymousBreakCompletion()
+      else completion = caseCompletion
+    )
     or
     // ...and if the rhs is an expression we wrap the completion as a yield
     exists(Completion caseCompletion |

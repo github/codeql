@@ -222,13 +222,6 @@ abstract class DefaultTaintSanitizer extends DataFlow::Node { }
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { node instanceof DefaultTaintSanitizer }
 
-/**
- * DEPRECATED: Use `DefaultTaintSanitizer` instead.
- *
- * A sanitizer guard in all global taint flow configurations but not in local taint.
- */
-abstract deprecated class DefaultTaintSanitizerGuard extends DataFlow::BarrierGuard { }
-
 private predicate equalityTestGuard(DataFlow::Node g, Expr e, boolean outcome) {
   exists(DataFlow::EqualityTestNode eq, DataFlow::Node nonConstNode |
     eq = g and

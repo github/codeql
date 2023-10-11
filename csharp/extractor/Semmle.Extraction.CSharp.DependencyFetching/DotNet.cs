@@ -1,73 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Semmle.Util;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
     /// Utilities to run the "dotnet" command.
     /// </summary>
-    internal class DotNet : IDotNet
+    internal partial class DotNet : IDotNet
     {
-        private const string dotnet = "dotnet";
+        private readonly IDotNetCliInvoker dotnetCliInvoker;
         private readonly ProgressMonitor progressMonitor;
 
-        public DotNet(ProgressMonitor progressMonitor)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
+            this.dotnetCliInvoker = dotnetCliInvoker;
             Info();
         }
+
+        private DotNet(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
+
+        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor) => new DotNet(dotnetCliInvoker, progressMonitor);
+
+        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor) => new DotNet(options, progressMonitor);
 
         private void Info()
         {
             // TODO: make sure the below `dotnet` version is matching the one specified in global.json
-            var res = RunCommand("--info");
+            var res = dotnetCliInvoker.RunCommand("--info");
             if (!res)
             {
-                throw new Exception($"{dotnet} --info failed.");
+                throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
             }
         }
 
-        private static ProcessStartInfo MakeDotnetStartInfo(string args, bool redirectStandardOutput) =>
-            new ProcessStartInfo(dotnet, args)
-            {
-                UseShellExecute = false,
-                RedirectStandardOutput = redirectStandardOutput
-            };
+        private static string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory) =>
+            $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
 
-        private bool RunCommand(string args)
+        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, string? pathToNugetConfig = null)
         {
-            progressMonitor.RunningProcess($"{dotnet} {args}");
-            using var proc = Process.Start(MakeDotnetStartInfo(args, redirectStandardOutput: false));
-            proc?.WaitForExit();
-            var exitCode = proc?.ExitCode ?? -1;
-            if (exitCode != 0)
-            {
-                progressMonitor.CommandFailed(dotnet, args, exitCode);
-                return false;
-            }
-            return true;
-        }
-
-        public bool RestoreToDirectory(string projectOrSolutionFile, string packageDirectory, string? pathToNugetConfig = null)
-        {
-            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
+            var args = GetRestoreArgs(projectFile, packageDirectory);
             if (pathToNugetConfig != null)
+            {
                 args += $" --configfile \"{pathToNugetConfig}\"";
-            return RunCommand(args);
+            }
+
+            return dotnetCliInvoker.RunCommand(args);
+        }
+
+        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, out IEnumerable<string> projects)
+        {
+            var args = GetRestoreArgs(solutionFile, packageDirectory);
+            args += " --verbosity normal";
+            if (dotnetCliInvoker.RunCommand(args, out var output))
+            {
+                var regex = RestoreProjectRegex();
+                projects = output
+                    .Select(line => regex.Match(line))
+                    .Where(match => match.Success)
+                    .Select(match => match.Groups[1].Value);
+                return true;
+            }
+
+            projects = Array.Empty<string>();
+            return false;
         }
 
         public bool New(string folder)
         {
             var args = $"new console --no-restore --output \"{folder}\"";
-            return RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public bool AddPackage(string folder, string package)
         {
             var args = $"add \"{folder}\" package \"{package}\" --no-restore";
-            return RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
 
         public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
@@ -76,22 +87,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private IList<string> GetListed(string args, string artifact)
         {
-            progressMonitor.RunningProcess($"{dotnet} {args}");
-            var pi = MakeDotnetStartInfo(args, redirectStandardOutput: true);
-            var exitCode = pi.ReadOutput(out var artifacts);
-            if (exitCode != 0)
+            if (dotnetCliInvoker.RunCommand(args, out var artifacts))
             {
-                progressMonitor.CommandFailed(dotnet, args, exitCode);
-                return new List<string>();
+                return artifacts;
             }
-            progressMonitor.LogInfo($"Found {artifact}s: {string.Join("\n", artifacts)}");
-            return artifacts;
+            return new List<string>();
         }
 
         public bool Exec(string execArgs)
         {
             var args = $"exec {execArgs}";
-            return RunCommand(args);
+            return dotnetCliInvoker.RunCommand(args);
         }
+
+        [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
+        private static partial Regex RestoreProjectRegex();
     }
 }

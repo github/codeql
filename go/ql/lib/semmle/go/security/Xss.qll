@@ -35,13 +35,6 @@ module SharedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for XSS vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * An expression that is sent as part of an HTTP response body, considered as an
    * XSS sink.
    *
@@ -105,6 +98,18 @@ module SharedXss {
     JsonMarshalSanitizer() {
       exists(MarshalingFunction mf | mf.getFormat() = "JSON" |
         this = mf.getOutput().getNode(mf.getACall())
+      )
+    }
+  }
+
+  /**
+   * A http.Error function returns with the ContentType of text/plain, and is not a valid XSS sink
+   */
+  class ErrorSanitizer extends Sanitizer {
+    ErrorSanitizer() {
+      exists(Function f, DataFlow::CallNode call | call = f.getACall() |
+        f.hasQualifiedName("net/http", "Error") and
+        call.getArgument(1) = this
       )
     }
   }

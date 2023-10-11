@@ -131,7 +131,10 @@ private module RestFramework {
           "initial", "http_method_not_allowed", "permission_denied", "throttled",
           "get_authenticate_header", "perform_content_negotiation", "perform_authentication",
           "check_permissions", "check_object_permissions", "check_throttles", "determine_version",
-          "initialize_request", "finalize_response", "dispatch", "options"
+          "initialize_request", "finalize_response", "dispatch", "options",
+          // ModelViewSet
+          // https://github.com/encode/django-rest-framework/blob/master/rest_framework/viewsets.py
+          "create", "retrieve", "update", "partial_update", "destroy", "list"
         ]
     }
   }

@@ -15,14 +15,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Locate all reference files and index them.
         /// </summary>
-        /// <param name="dirs">Directories to search.</param>
+        /// <param name="paths">
+        /// Paths to search. Directories are searched recursively. Files are added directly to the
+        /// assembly cache.
+        /// </param>
         /// <param name="progressMonitor">Callback for progress.</param>
-        public AssemblyCache(IEnumerable<string> dirs, ProgressMonitor progressMonitor)
+        public AssemblyCache(IEnumerable<string> paths, ProgressMonitor progressMonitor)
         {
-            foreach (var dir in dirs)
+            foreach (var path in paths)
             {
-                progressMonitor.FindingFiles(dir);
-                AddReferenceDirectory(dir);
+                if (File.Exists(path))
+                {
+                    pendingDllsToIndex.Enqueue(path);
+                }
+                else
+                {
+                    progressMonitor.FindingFiles(path);
+                    AddReferenceDirectory(path);
+                }
             }
             IndexReferences();
         }
@@ -60,7 +70,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var info in assemblyInfoByFileName.Values
                 .OrderBy(info => info.Name)
                 .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
-                .ThenBy(info => info.Version ?? emptyVersion))
+                .ThenBy(info => info.Version ?? emptyVersion)
+                .ThenBy(info => info.Filename))
             {
                 foreach (var index in info.IndexStrings)
                 {

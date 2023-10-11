@@ -80,12 +80,6 @@ class ConstantValue extends TConstantValue {
   /** Holds if this is the regexp value `/s/flags` . */
   predicate isRegExpWithFlags(string s, string flags) { this = TRegExp(s, flags) }
 
-  /** DEPRECATED: Use `getStringlikeValue` instead. */
-  deprecated string getStringOrSymbol() { result = this.getStringlikeValue() }
-
-  /** DEPRECATED: Use `isStringlikeValue` instead. */
-  deprecated predicate isStringOrSymbol(string s) { s = this.getStringlikeValue() }
-
   /** Gets the string/symbol/regexp value, if any. */
   string getStringlikeValue() { result = [this.getString(), this.getSymbol(), this.getRegExp()] }
 

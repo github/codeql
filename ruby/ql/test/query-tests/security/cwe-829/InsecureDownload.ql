@@ -1,7 +1,5 @@
-import codeql.ruby.AST
-import codeql.ruby.DataFlow
 import codeql.ruby.security.InsecureDownloadQuery
-import Flow::PathGraph
+import InsecureDownloadFlow::PathGraph
 import TestUtilities.InlineExpectationsTest
 import TestUtilities.InlineFlowTestUtil
 
@@ -10,7 +8,7 @@ module FlowTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "BAD" and
-    exists(DataFlow::Node src, DataFlow::Node sink | Flow::flow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink | InsecureDownloadFlow::flow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
@@ -20,6 +18,6 @@ module FlowTest implements TestSig {
 
 import MakeTest<FlowTest>
 
-from Flow::PathNode source, Flow::PathNode sink
-where Flow::flowPath(source, sink)
+from InsecureDownloadFlow::PathNode source, InsecureDownloadFlow::PathNode sink
+where InsecureDownloadFlow::flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

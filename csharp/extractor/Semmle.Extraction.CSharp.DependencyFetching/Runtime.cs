@@ -17,8 +17,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private const string aspNetCoreApp = "Microsoft.AspNetCore.App";
 
         private readonly IDotNet dotNet;
-        private readonly Lazy<Dictionary<string, DotnetVersion>> newestRuntimes;
-        private Dictionary<string, DotnetVersion> NewestRuntimes => newestRuntimes.Value;
+        private readonly Lazy<Dictionary<string, DotNetVersion>> newestRuntimes;
+        private Dictionary<string, DotNetVersion> NewestRuntimes => newestRuntimes.Value;
         private static string ExecutingRuntime => RuntimeEnvironment.GetRuntimeDirectory();
 
         public Runtime(IDotNet dotNet)
@@ -36,17 +36,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// It is assume that the format of a listed runtime is something like:
         /// Microsoft.NETCore.App 7.0.2 [/usr/share/dotnet/shared/Microsoft.NETCore.App]
         /// </summary>
-        private static Dictionary<string, DotnetVersion> ParseRuntimes(IList<string> listed)
+        private static Dictionary<string, DotNetVersion> ParseRuntimes(IList<string> listed)
         {
             // Parse listed runtimes.
-            var runtimes = new Dictionary<string, DotnetVersion>();
+            var runtimes = new Dictionary<string, DotNetVersion>();
             var regex = RuntimeRegex();
             listed.ForEach(r =>
             {
                 var match = regex.Match(r);
                 if (match.Success)
                 {
-                    runtimes.AddOrUpdateToLatest(match.Groups[1].Value, new DotnetVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
+                    runtimes.AddOrUpdateToLatest(match.Groups[1].Value, new DotNetVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
                 }
             });
 
@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Returns a dictionary mapping runtimes to their newest version.
         /// </summary>
-        internal Dictionary<string, DotnetVersion> GetNewestRuntimes()
+        internal Dictionary<string, DotNetVersion> GetNewestRuntimes()
         {
             var listed = dotNet.GetListedRuntimes();
             return ParseRuntimes(listed);

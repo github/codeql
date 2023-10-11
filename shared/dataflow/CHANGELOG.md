@@ -1,3 +1,17 @@
+## 0.0.4
+
+No user-facing changes.
+
+## 0.0.3
+
+### New Features
+
+* The various inline flow test libraries have been consolidated as a shared library part in the dataflow qlpack.
+
+### Minor Analysis Improvements
+
+* The shared taint-tracking library is now part of the dataflow qlpack.
+
 ## 0.0.2
 
 ### Major Analysis Improvements
