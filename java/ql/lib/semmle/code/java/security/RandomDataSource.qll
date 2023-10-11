@@ -160,7 +160,9 @@ class ApacheCommonsRandomStringSource extends RandomDataSource {
   ApacheCommonsRandomStringSource() {
     exists(Method m | m = this.getMethod() |
       m.getName().matches("random%") and
-      m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "RandomStringUtils")
+      m.getDeclaringType()
+          .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"],
+            "RandomStringUtils")
     )
   }
 
