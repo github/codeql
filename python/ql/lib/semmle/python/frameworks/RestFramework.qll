@@ -331,6 +331,23 @@ module RestFramework {
    * See https://www.django-rest-framework.org/api-guide/exceptions/#api-reference
    */
   module ApiException {
+    API::Node classRef() {
+      exists(string className |
+        className in [
+            "APIException", "ValidationError", "ParseError", "AuthenticationFailed",
+            "NotAuthenticated", "PermissionDenied", "NotFound", "NotAcceptable"
+          ] and
+        result =
+          API::moduleImport("rest_framework")
+              .getMember("exceptions")
+              .getMember(className)
+              .getASubclass*()
+      )
+      or
+      result =
+        ModelOutput::getATypeNode("rest_framework.exceptions.APIException~Subclass").getASubclass*()
+    }
+
     /** A direct instantiation of `rest_framework.exceptions.ApiException` or subclass. */
     private class ClassInstantiation extends Http::Server::HttpResponse::Range,
       DataFlow::CallCfgNode
@@ -348,6 +365,8 @@ module RestFramework {
               .getMember("exceptions")
               .getMember(className)
               .getACall()
+        or
+        this = classRef().getACall() and className = "APIException"
       }
 
       override DataFlow::Node getBody() {

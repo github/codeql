@@ -445,6 +445,12 @@ class DjangoFileField extends FindSubclassesSpec {
   }
 }
 
+class RestFrameworkApiException extends FindSubclassesSpec {
+  RestFrameworkApiException() { this = "rest_framework.exceptions.APIException~Subclass" }
+
+  override API::Node getAlreadyModeledClass() { result = RestFramework::ApiException::classRef() }
+}
+
 bindingset[fullyQualified]
 predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
