@@ -20,6 +20,7 @@ private import Numeric
 private import PointerTypes
 private import Sequence
 private import Set
+private import Stream
 private import String
 private import Url
 private import UrlSession
